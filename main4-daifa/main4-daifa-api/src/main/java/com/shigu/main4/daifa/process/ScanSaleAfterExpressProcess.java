@@ -36,7 +36,7 @@ public interface ScanSaleAfterExpressProcess {
      * ====================================================================================
      * 
      */
-    List<ExpressRelevanceVO> expressScan(ExpressScanBO bo)throws DaifaException;
+    List<ExpressRelevanceVO> expressScan(String expressCode);
 
     /**
      * ====================================================================================
@@ -50,7 +50,7 @@ public interface ScanSaleAfterExpressProcess {
      * ====================================================================================
      *
      */
-    String expressScanInStock(ExpressScanInStockBO bo)throws DaifaException;
+    String expressScanInStock(ExpressScanInStockBO bo);
 
     /**
      * ====================================================================================

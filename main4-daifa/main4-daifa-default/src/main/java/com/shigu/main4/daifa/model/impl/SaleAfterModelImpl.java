@@ -323,6 +323,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         //读取退款成功的id集合
         List<Long> entIds = new ArrayList<>();
         for (DaifaAfterSaleSub sub1 : subs) {
+            if(sub1.getAfterStatus()>4){
+                continue;
+            }
             if(sub1.getInStock()==null){
                 storeRefundRefuse(sub1.getDfOrderId(),"未收到货");
                 continue;
@@ -330,6 +333,10 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
                 entIds.add(sub1.getAfterSaleSubId());
             }
+        }
+        //entIds数量为0,即所有都已经处理过,跳出
+        if(entIds.size()==0){
+            return null;
         }
         //设置为已退款
         DaifaAfterSaleSub update = new DaifaAfterSaleSub();
@@ -375,25 +382,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
      */
     @Override
     public String storeRefundRefuse(Long orderId, String reason) throws DaifaException {
-        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
-        tmp.setRefundId(refundId);
-        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
-        if (subs.size() == 0) {
+        DaifaAfterSaleSub sub = new DaifaAfterSaleSub();
+        sub.setDfOrderId(orderId);
+        sub = daifaAfterSaleSubMapper.selectOne(sub);
+        if (sub == null) {
             //售后申请不存在
             throw new DaifaException("售后申请不存在");
-        }
-        DaifaAfterSaleSub sub = null;
-        for (DaifaAfterSaleSub sub1 : subs) {
-            if (sub1.getStoreDealStatus() != null && sub1.getStoreDealStatus() == 1) {
-                throw new DaifaException("售后已定义为档口同意");
-            }
-            if (sub1.getDfOrderId().longValue() == orderId) {
-                sub = sub1;
-            }
-        }
-        if (sub == null) {
-            //订单信息错误,orderId与refundId不匹配
-            throw new DaifaException("订单信息错误,orderId与refundId不匹配");
         }
         if (sub.getAfterStatus() != 4) {
             //售后状态错误,未收到货
@@ -410,9 +404,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
 
         //校验是否处理完整个refund
-        tmp = new DaifaAfterSaleSub();
-        tmp.setRefundId(refundId);
-        subs = daifaAfterSaleSubMapper.select(tmp);
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(sub.getRefundId());
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         for (DaifaAfterSaleSub s : subs) {
             if (s.getAfterStatus() != 5&&s.getInStock()!=null) {
                 return null;
@@ -441,7 +435,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
      * @方法名： refundFailInStock
      * @user gzy 2017/9/15 11:45
      * @功能： 售后入库  客服处理
-     * @param: orderId代发子订单ID, inStockType入库类型(1售后退货入库2退货失败入库)，stockLocktion库位
+     * @param: orderId代发子订单ID, inStockType入库类型(1售后退货入库2退货失败入库)，stockLocktion库位,sendPhone包裹手机号(退货入库时传)
      * @return:
      * @exception: ====================================================================================
      */
@@ -463,9 +457,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         sub.setAfterSaleSubId(tmp.getAfterSaleSubId());
         sub.setInStock(inStockType);
         sub.setStockLocation(stockLocktion);
-        if(inStockType==1){
-            sub.setReceivedTime(new Date());
-        }
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(sub);
         if(inStockType==1){
             if(StringUtils.isEmpty(tmp.getApplyExpressCode())){
@@ -548,16 +539,20 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             throw new DaifaException("议价信息错误");
         }
         if(daifaAfterMoneyConsults.get(0).getConsultType()==2){
-            //当前已处于""状态
-            throw new DaifaException("当前已处于\"拒绝协商金额\"状态");
+            DaifaAfterMoneyConsult insert=new DaifaAfterMoneyConsult();
+            insert.setRefundId(refundId);
+            insert.setCreateTime(new Date());
+            insert.setConsultType(1);
+            insert.setConsultBatch(daifaAfterMoneyConsults.size()+1);
+            insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
+            daifaAfterMoneyConsultMapper.insertSelective(insert);
+        }else{
+            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
+            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
+            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
+            daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
         }
-        DaifaAfterMoneyConsult insert=new DaifaAfterMoneyConsult();
-        insert.setRefundId(refundId);
-        insert.setCreateTime(new Date());
-        insert.setConsultType(2);
-        insert.setConsultBatch(daifaAfterMoneyConsults.size()+1);
-        insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
-        daifaAfterMoneyConsultMapper.insertSelective(insert);
+
 
         //todo 发送改金额消息
         return null;

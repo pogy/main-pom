@@ -12,10 +12,13 @@ import com.shigu.main4.daifa.bo.RebackPrintExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ScanSaleAfterExpressModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
+@Scope("prototype")
 public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
@@ -44,6 +47,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                     stock.setOrderCode(sub.getOrderCode());
                     stock.setReceivedExpressCode(expressCode);
                     stock.setReceivedExpressName(sub.getApplyExpressName());
+                    stock.setCreateTime(new Date());
                     daifaAfterReceiveExpresStockMapper.insertSelective(stock);
                 }
             }else{
@@ -63,6 +67,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                             stocks.get(0).setDfOrderId(sub.getDfOrderId());
                             daifaAfterReceiveExpresStockMapper.updateByPrimaryKeySelective(stock);
                         }else{
+                            stock.setCreateTime(new Date());
                             stock.setReceivedExpressCode(stocks.get(0).getReceivedExpressCode());
                             stock.setReceivedExpressName(stocks.get(0).getReceivedExpressName());
                             daifaAfterReceiveExpresStockMapper.insertSelective(stock);
@@ -70,12 +75,16 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                     }
                 }
             }
+            DaifaAfterSaleSub sub=new DaifaAfterSaleSub();
+            sub.setAfterStatus(4);
+            sub.setReceivedTime(new Date());
+            daifaAfterSaleSubMapper.updateByExampleSelective(sub,daifaAfterSaleSubExample);
         }
         return null;
     }
 
     @Override
-    public String expressScanInStock(String expressName, String expressCode, String stockLocation, String sendPhone) throws DaifaException {
+    public String expressScanInStock(String expressName, String expressCode, String stockLocation, String sendPhone){
         DaifaAfterReceiveExpresStock stock=new DaifaAfterReceiveExpresStock();
         stock.setReceivedExpressCode(expressCode);
         stock=daifaAfterReceiveExpresStockMapper.selectOne(stock);

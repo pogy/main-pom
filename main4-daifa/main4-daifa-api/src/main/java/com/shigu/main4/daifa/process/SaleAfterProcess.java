@@ -133,5 +133,18 @@ public interface SaleAfterProcess {
      */
     String moneyConsult(Long refundId,String money)throws DaifaException;
 
+    /**
+     * ====================================================================================
+     * @方法名： moneyConsult  客服发起
+     * @user zf 2017/9/20 9:30
+     * @功能： 退货入库  SaleAfterModel.refundFailInStock
+     * @param: orderId子单ID,stockLocktion货架号,sendPhone包裹手机号
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    void saleInStock(Long orderId,String stockLocktion,String sendPhone) throws DaifaException;
+
 
 }

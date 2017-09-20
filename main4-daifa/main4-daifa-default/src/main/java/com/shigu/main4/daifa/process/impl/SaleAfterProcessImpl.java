@@ -178,4 +178,9 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
         SpringBeanFactory.getBean(SaleAfterModel.class, refundId).moneyConsult(money);
         return null;
     }
+
+    @Override
+    public void saleInStock(Long orderId, String stockLocktion, String sendPhone) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class).refundFailInStock(orderId,1,stockLocktion,sendPhone);
+    }
 }

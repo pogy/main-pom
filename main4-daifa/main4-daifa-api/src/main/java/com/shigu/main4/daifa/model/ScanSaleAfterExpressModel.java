@@ -40,7 +40,7 @@ public interface ScanSaleAfterExpressModel {
      * ====================================================================================
      * 
      */
-    String expressScanInStock(String expressName,String expressCode,String stockLocation,String sendPhone)throws DaifaException;
+    String expressScanInStock(String expressName,String expressCode,String stockLocation,String sendPhone);
 
     /**
      * ====================================================================================
