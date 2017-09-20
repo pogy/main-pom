@@ -277,6 +277,7 @@ public class CdnService {
         example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
         example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
 //        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
+//        example.or().andTypeEqualTo(5).andTargetIdEqualTo(floor);//按楼层
         List<ItemTradeForbid> itemTradeForbids = itemTradeForbidMapper.selectByExample(example);
         if (itemTradeForbids.size() == 0) {
             return true;
