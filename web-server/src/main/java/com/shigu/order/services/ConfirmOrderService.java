@@ -132,6 +132,7 @@ public class ConfirmOrderService {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             //按店分子单信息
             Long marketId = null;
+            Long floorId = null;
             Long shopId = null;
             List<Long> shopGoodsIds = Lists.newArrayList();
             for (ConfirmSubOrderBO confirmSubOrderBO: confirmSubOrderBOS) {
@@ -155,13 +156,17 @@ public class ConfirmOrderService {
                 if (marketId == null) {
                     marketId=productVO.getMarketId();
                 }
+                if (floorId == null) {
+                    floorId = productVO.getFloorId();
+                }
                 if (shopId == null) {
                     shopId=productVO.getShopId();
                 }
             }
-
-            if (!itemProductProcess.listGoodsCanSale(marketId,shopId,shopGoodsIds,webSite)) {
-                throw new JsonErrException("订单中含有不可售商品，请检查订单");
+            if (shopGoodsIds.size()>0) {
+                if (!itemProductProcess.listGoodsCanSale(marketId,floorId,shopId,shopGoodsIds,webSite)) {
+                    throw new JsonErrException("订单中含有不可售商品，请检查订单");
+                }
             }
         }
         itemOrderBO.setSubOrders(subOrders);

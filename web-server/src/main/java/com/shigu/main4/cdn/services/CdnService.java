@@ -2,7 +2,6 @@ package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ItemTradeForbidExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.*;
@@ -298,7 +297,7 @@ public class CdnService {
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
-        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
+        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getFloorId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());

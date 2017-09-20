@@ -42,7 +42,7 @@ public interface ItemProductProcess {
      * @param webSite
      * @return
      */
-    Boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite);
+    Boolean canSale(Long marketId,Long floorId,Long storeId,Long goodsId,String webSite);
 
     /**
      * 检测商品是否可销售
@@ -52,5 +52,5 @@ public interface ItemProductProcess {
      * @param webSite
      * @return
      */
-    Boolean listGoodsCanSale(Long marketId, Long storeId, List<Long> goodsId, String webSite);
+    Boolean listGoodsCanSale(Long marketId,Long floorId, Long storeId, List<Long> goodsId, String webSite);
 }

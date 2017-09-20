@@ -13,7 +13,7 @@ public class ItemTradeForbid implements Serializable {
 	private Long forbidId;
 
     /**
-     * 1、按市场，2、按店，3、按商品，4、按类目
+     * 1、按市场，2、按店，3、按商品，4、按类目，5、按楼层
      */
 	private Integer type;
 
@@ -26,6 +26,11 @@ public class ItemTradeForbid implements Serializable {
      * 发件单位
      */
 	private Long senderId;
+
+    /**
+     * 0 禁止销售，1 允许销售
+     */
+	private Boolean canSale;
 
 	public void setForbidId(Long forbidId) {
 		this.forbidId = forbidId;
@@ -57,6 +62,14 @@ public class ItemTradeForbid implements Serializable {
 
 	public Long getSenderId() {
 		return this.senderId;
+	}
+
+	public void setCanSale(Boolean canSale) {
+		this.canSale = canSale;
+	}
+
+	public Boolean getCanSale() {
+		return this.canSale;
 	}
 
 }
