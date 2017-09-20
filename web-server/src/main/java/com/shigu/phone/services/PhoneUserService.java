@@ -1,22 +1,40 @@
 package com.shigu.phone.services;
 
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.AboutMeRequest;
-import com.openJar.requests.app.ChangePasswordRequest;
-import com.openJar.responses.app.AboutMeResponse;
-import com.openJar.responses.app.ChangePasswordResponse;
+import com.openJar.requests.app.*;
+import com.openJar.responses.app.*;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.shigu.buyer.bo.LoginByPhoneBO;
 import com.shigu.buyer.services.UserAccountService;
+import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
+import com.shigu.component.shiro.enums.UserType;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.UUIDGenerator;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
+import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
+import com.shigu.phone.api.actions.PhoneMsgAction;
+import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.PhoneVerify;
+import com.shigu.session.main4.Rds3TempUser;
+import com.shigu.session.main4.ShopSession;
+import com.shigu.session.main4.enums.LoginFromType;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 类名：PhoneUserService
@@ -76,7 +94,7 @@ public class PhoneUserService {
     /**
      * 移动端登录
      */
-    public LoginResponse login(LoginRequest request,HttpServletRequest servletRequest){
+    public LoginResponse login( LoginRequest request, HttpServletRequest servletRequest){
         LoginResponse resp=new LoginResponse();
         Integer phoneType = request.getType();
         if (phoneType==1){
@@ -164,7 +182,7 @@ public class PhoneUserService {
      * @param request
      * @return
      */
-    public RegistResponse regist(RegistRequest request){
+    public RegistResponse regist( RegistRequest request){
         RegistResponse resp = new RegistResponse();
         PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_REGIST_TYPE_MSG,PhoneVerify.class);
         if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
@@ -199,7 +217,7 @@ public class PhoneUserService {
      * @param request
      * @return
      */
-    public BindUserResponse bindUser(BindUserRequest request,String remoteAddr){
+    public BindUserResponse bindUser( BindUserRequest request, String remoteAddr){
         BindUserResponse resp = new BindUserResponse();
         PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
         if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
