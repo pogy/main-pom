@@ -3,8 +3,6 @@ import com.openJar.requests.app.ShopSearchRequest;
 import com.openJar.requests.app.StoreCollectRequest;
 import com.openJar.responses.app.ShopSearchResponse;
 import com.openJar.responses.app.StoreCollectResponse;
-import com.openJar.tools.OpenClient;
-import com.openJar.tools.PcOpenClient;
 import org.junit.Test;
 
 /**
@@ -15,8 +13,7 @@ import org.junit.Test;
  * 项目：main-pom
  * 描述：
  */
-public class ShopTest {
-    static OpenClient client = new PcOpenClient("3838438", "37456A6A5CA10F9A988F12BFECD88575", "test");
+public class ShopTest extends BaseSDKClientTest {
     @Test
     public void testShopSearch() {
         ShopSearchRequest req = new ShopSearchRequest();

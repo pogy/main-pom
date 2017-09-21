@@ -246,11 +246,11 @@ public class PhoneUserService {
         resp.setUserId(personalSession.getUserId());
         resp.setUserNick(personalSession.getUserNick());
         resp.setImgsrc(personalSession.getHeadUrl());
-        boolean isSeller = personalSession.getLogshop() != null || (personalSession.getLogshop() == null && personalSession.getOtherShops().size() > 0);
+        boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         resp.setImSeller(isSeller);
         String token = EncryptUtil.genRandomPwd(36);
         //todo:之后使用的是tempID还是登陆唯一标志需要确认，token保存时长暂时用1小时，保存用户信息
-        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+rds3TempUser.getLoginFromType().getValue()+"_"+rds3TempUser.getSubUserKey()+"_"+token,personalSession,3600*1);
+        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+personalSession.getUserId()+"_"+token,personalSession,3600*1);
         resp.setToken(token);
         resp.setSuccess(true);
         return resp;
