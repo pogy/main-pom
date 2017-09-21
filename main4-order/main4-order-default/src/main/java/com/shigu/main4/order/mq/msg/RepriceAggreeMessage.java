@@ -2,11 +2,12 @@ package com.shigu.main4.order.mq.msg;
 
 /**
  * Created by cdh on 2017/9/21.
- * Path com.shigu.main4.order.mq.msg.RepriceApplyMessage
+ * Path com.shigu.main4.order.mq.msg.RepriceAggreeMessage
  */
-public class RepriceApplyMessage {
+public class RepriceAggreeMessage {
+
     private Long refundId;
-    private Long storeMoney;
+    private boolean agree ;
 
     public Long getRefundId() {
         return refundId;
@@ -16,11 +17,11 @@ public class RepriceApplyMessage {
         this.refundId = refundId;
     }
 
-    public Long getStoreMoney() {
-        return storeMoney;
+    public boolean isAgree() {
+        return agree;
     }
 
-    public void setStoreMoney(Long storeMoney) {
-        this.storeMoney = storeMoney;
+    public void setAgree(boolean agree) {
+        this.agree = agree;
     }
 }
