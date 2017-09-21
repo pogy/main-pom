@@ -360,7 +360,7 @@
         <#if childOrder.putInStorageType == 1>
         <p>商品已入库</p>
         <!--<b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>-->
-        <b jbtn="failRefund">退款失败入库</b>
+        <b jbtn="failRefund" data-id="${afterSale.refundId!}">退款失败入库</b>
         <#elseif childOrder.putInStorageType == 2>
         <p class="fcF40">商品未入库</p>
         </#if>
