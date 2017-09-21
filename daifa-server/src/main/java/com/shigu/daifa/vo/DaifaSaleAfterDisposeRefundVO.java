@@ -4,6 +4,7 @@ import java.util.List;
 
 public class DaifaSaleAfterDisposeRefundVO {
     private Long refundId;
+    private Boolean allNotPutInIs;
     private List<DaifaSaleAfterDisposeSubVO> childOrders;
 
     public Long getRefundId() {
@@ -20,5 +21,13 @@ public class DaifaSaleAfterDisposeRefundVO {
 
     public void setChildOrders(List<DaifaSaleAfterDisposeSubVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public Boolean getAllNotPutInIs() {
+        return this.allNotPutInIs;
+    }
+
+    public void setAllNotPutInIs(Boolean allNotPutInIs) {
+        this.allNotPutInIs = allNotPutInIs;
     }
 }
