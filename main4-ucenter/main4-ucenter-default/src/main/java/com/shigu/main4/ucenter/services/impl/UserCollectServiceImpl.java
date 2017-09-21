@@ -114,6 +114,11 @@ public class UserCollectServiceImpl implements UserCollectService {
         return pager;
     }
 
+    @Override
+    public ShiguPager<ItemCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type) {
+        return null;
+    }
+
     /**
      * 按主键批量删除收藏记录
      *
