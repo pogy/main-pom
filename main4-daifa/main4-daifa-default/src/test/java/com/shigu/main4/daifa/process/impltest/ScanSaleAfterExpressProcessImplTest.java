@@ -76,7 +76,7 @@ public class ScanSaleAfterExpressProcessImplTest extends BaseSpringTest {
 
         DaifaAfterSaleSub result = daifaAfterSaleSubMapper.selectByPrimaryKey(1l);
         Assert.assertNotNull(result.getLastDoTime());
-        assertEquals("remark1:remark2",result.getRemark());
+        assertEquals("remark1\nremark2",result.getRemark());
         assertEquals(bo.getChangeExpressCode(),result.getChangeExpressCode());
         assertEquals(bo.getChangeExpressName(),result.getChangeExpressName());
     }
@@ -116,7 +116,7 @@ public class ScanSaleAfterExpressProcessImplTest extends BaseSpringTest {
 
         DaifaAfterSaleSub result = daifaAfterSaleSubMapper.selectByPrimaryKey(1l);
         Assert.assertNotNull(result.getLastDoTime());
-        assertEquals("remark1:remark2",result.getRemark());
+        assertEquals("remark1\nremark2",result.getRemark());
         assertEquals(bo.getReturnExpressCode(),result.getReturnExpressCode());
         assertEquals(bo.getReturnExpressName(),result.getReturnExpressName());
 

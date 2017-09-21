@@ -4,14 +4,18 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
+import com.shigu.daifa.bo.ParcelSearchBO;
+import com.shigu.daifa.bo.PutInStorageBO;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.vo.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.bo.ExpressScanInStockBO;
 import com.shigu.main4.daifa.bo.SaleAfterRemarkerBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
+import com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,10 @@ public class DaifaSaleAfterService {
     private DaifaRefuseReasonMapper daifaRefuseReasonMapper;
     @Autowired
     private SaleAfterProcess saleAfterProcess;
+    @Autowired
+    private ScanSaleAfterExpressProcess scanSaleAfterExpressProcess;
+    @Autowired
+    private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
 
     /**
      * 列表
@@ -367,4 +375,105 @@ public class DaifaSaleAfterService {
     public void agreeAfterSale(Long refundId) throws DaifaException {
         saleAfterProcess.afterApplyDeal(refundId,1,null);
     }
+
+    /**
+     * 退回单
+     * @param
+     */
+    public List<DaifaOrder> returnOrder(){
+        DaifaOrderExample example = new DaifaOrderExample();
+        example.createCriteria().andReturnGoodsStatusEqualTo(2).or().andChangeStatusEqualTo(2);//已换货 已退货
+        return daifaOrderMapper.selectByExample(example);
+    }
+
+    /**
+     * 包裹入库
+     * @param
+     */
+    public void putInStorage(PutInStorageBO bo) {
+        ExpressScanInStockBO expressScanInStockBO = new ExpressScanInStockBO();
+        expressScanInStockBO.setExpressCode(bo.getPostCode());
+        expressScanInStockBO.setExpressName(bo.getPostName());
+        expressScanInStockBO.setSendPhone(bo.getTelephone());
+        expressScanInStockBO.setStockLocation(bo.getStockCode());
+        scanSaleAfterExpressProcess.expressScanInStock(expressScanInStockBO);
+    }
+
+    /**
+     * 子单入库
+     * @param
+     */
+    public void childOrderInStorage(String stockCode,Long childOrderId) throws DaifaException{
+        DaifaAfterSaleSub daifaAfterSaleSub  = new DaifaAfterSaleSub();
+        daifaAfterSaleSub.setDfOrderId(childOrderId);
+        daifaAfterSaleSub = daifaAfterSaleSubMapper.selectOne(daifaAfterSaleSub);
+        saleAfterProcess.saleInStock(childOrderId,stockCode,daifaAfterSaleSub.getBuyerTelephone());
+    }
+
+    /**
+     * 全部包裹数量
+     * @param
+     */
+    public ParcelSearchOrderStatisticsVO getOrderStatistics(ParcelSearchBO bo) {
+        ParcelSearchOrderStatisticsVO vo = new ParcelSearchOrderStatisticsVO();
+        DaifaAfterReceiveExpresStock daifaAfterReceiveExpresStock = new DaifaAfterReceiveExpresStock();
+        int allPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
+        daifaAfterReceiveExpresStock.setRelevanceStatus(0);//查有关联数量
+        int unmatchPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
+
+        vo.setAllPackbagNum(allPackbagNum+"");
+        vo.setMatchedPackbagNum((allPackbagNum - unmatchPackbagNum)+"");
+        vo.setMatchedPackbagNum(unmatchPackbagNum+"");
+        return vo;
+    }
+
+    /**
+     * 添加包裹备注接口
+     * @param packbagId   包裹id
+     * @param remarkCon
+     * @throws DaifaException
+     */
+    public void addPackageRemark(Long packbagId,String remarkCon) throws DaifaException {
+
+        DaifaAfterSale sale = daifaAfterSaleMapper.selectByPrimaryKey(packbagId);
+        if(sale== null){
+            throw new DaifaException("packbagId错误");
+        }
+        SaleAfterRemarkerBO bo=new SaleAfterRemarkerBO();
+        bo.setAfterSaleId(packbagId);
+        bo.setRemark(remarkCon);
+        saleAfterProcess.saleAfterRemark(bo);
+    }
+
+    /**
+     * 查询包裹
+     * @throws DaifaException
+     */
+    public ShiguPager<DaifaAfterReceiveExpresStockVO> getDaifaAfterReceiveExpresStock(ParcelSearchBO bo){
+        DaifaAfterReceiveExpresStockExample example = new DaifaAfterReceiveExpresStockExample();
+        example.createCriteria().andReceivedExpressCodeEqualTo(bo.getPostCode()).andSendPhoneEqualTo(bo.getTelphone())
+                .andRelevanceStatusEqualTo(bo.getMatchState());
+        List<DaifaAfterReceiveExpresStock>  daifaAfterReceiveExpresStocks = daifaAfterReceiveExpresStockMapper.selectByExample(example);
+        List<DaifaAfterReceiveExpresStockVO> daifaAfterReceiveExpresStockVOS = new ArrayList<>();
+        for (DaifaAfterReceiveExpresStock item : daifaAfterReceiveExpresStocks){
+            DaifaAfterReceiveExpresStockVO daifaAfterReceiveExpresStockVO = new DaifaAfterReceiveExpresStockVO();
+            daifaAfterReceiveExpresStockVO.setPackageId(item.getDfOrderId()+"");
+            daifaAfterReceiveExpresStockVO.setPostName(item.getReceivedExpressName());
+            daifaAfterReceiveExpresStockVO.setPostCode(item.getReceivedExpressCode());
+            daifaAfterReceiveExpresStockVO.setTelephone(item.getSendPhone());
+            daifaAfterReceiveExpresStockVO.setMatchingOrder(item.getRelevanceStatus() == 0 ? false : true);
+            daifaAfterReceiveExpresStockVO.setMatchingTime(DateUtil.dateToString(item.getCreateTime(),DateUtil.patternD));
+            daifaAfterReceiveExpresStockVO.setPackageRemark("");//TODO 备注
+            //TODO 组装数据
+        }
+
+        ShiguPager<DaifaAfterReceiveExpresStockVO> pager = new ShiguPager<>();
+        pager.setContent(daifaAfterReceiveExpresStockVOS);
+        pager.setNumber(bo.getPage());
+        pager.calPages(daifaAfterReceiveExpresStocks.size(),10);
+        return pager;
+    }
+
+
+
 }
