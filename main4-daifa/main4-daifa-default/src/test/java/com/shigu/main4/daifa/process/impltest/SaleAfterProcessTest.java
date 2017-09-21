@@ -12,7 +12,6 @@ import com.shigu.main4.daifa.bo.ExpressScanInStockBO;
 import com.shigu.main4.daifa.bo.MoneyConsultBO;
 import com.shigu.main4.daifa.bo.SaleAfterBO;
 import com.shigu.main4.daifa.bo.SaleAfterExpressBO;
-import com.shigu.main4.daifa.bo.SaleAfterRemarkerBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess;
@@ -23,7 +22,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -47,11 +49,8 @@ public class SaleAfterProcessTest extends BaseSpringTest {
     @Autowired
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
 
-    static Long refundId = 999991L;
-    static Long errorRefundId = 888881L;
-    static Long daifaAfterSaleId = 1l;
-    static Long daifaTradeId = 1l;
-
+    static Long refundId = 999999L;
+    static Long errorRefundId = 888888L;
 
     static String postCode = "111111111";
     static String errPostCode = "111111112";
@@ -60,12 +59,12 @@ public class SaleAfterProcessTest extends BaseSpringTest {
     static String huojia = "1";
     static String errorHuojia = "2";
 
-//            @Test
-//    @Transactional
+    @Test
+@Transactional
 //    售后写入
     public void newSaleAfter_test() {
         DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
-        daifaTradeExample.createCriteria().andSendStatusEqualTo(2).andGoodsNumGreaterThan(1L);
+        daifaTradeExample.createCriteria().andSendStatusEqualTo(2).andGoodsNumGreaterThan(1L).andDfTradeIdEqualTo(62017090295790L);
         daifaTradeExample.setOrderByClause("df_trade_id desc");
         daifaTradeExample.setEndIndex(1);
         Map<String, List<DaifaOrder>> orderGroup;
@@ -910,8 +909,8 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertTrue(isError);
     }
 
-//    @Test
-//    @Transactional
+    @Test
+    @Transactional
 //    改价
     public void moneyConsult_test() {
         moneyConsultRefuse_test();
@@ -968,38 +967,5 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertEquals(cs.get(1).getConsultType(), new Integer(1));
         assertEquals(cs.get(1).getConsultBatch(), new Integer(2));
         assertEquals(cs.get(1).getConsultMoney(), "20.00");
-    }
-
-//    @Test
-//    @Transactional
-    public void saleAfterRemark_test() throws DaifaException{
-        //插入主表数据
-        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
-        daifaAfterSale.setAfterSaleId(daifaAfterSaleId);
-        daifaAfterSale.setDfTradeId(daifaTradeId);
-        daifaAfterSale.setRemark("remark1");
-        daifaAfterSale.setReceiverState("1");
-        daifaAfterSale.setBuyerQq("110");
-        daifaAfterSaleMapper.insert(daifaAfterSale);
-        DaifaAfterSale daifaAfterSale1 = daifaAfterSaleMapper.selectByPrimaryKey(daifaAfterSaleId);
-        assertEquals("remark1",daifaAfterSale1.getRemark());
-
-        //插入附表数据
-        DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
-        daifaAfterSaleSub.setRefundId(refundId);
-        daifaAfterSaleSub.setAfterSaleId(daifaAfterSaleId);
-        int effectNum = daifaAfterSaleSubMapper.insert(daifaAfterSaleSub);
-        assertEquals(1,effectNum);
-
-        SaleAfterRemarkerBO bo = new SaleAfterRemarkerBO();
-        bo.setRefundId(refundId);
-        bo.setAfterSaleId(daifaAfterSaleId);
-        bo.setRemark("remark2");
-        saleAfterProcess.saleAfterRemark(bo);
-
-        DaifaAfterSale result = daifaAfterSaleMapper.selectByPrimaryKey(daifaAfterSaleId);
-        //remark以 " : "分割追加
-        assertEquals("remark1:remark2",result.getRemark());
-
     }
 }
