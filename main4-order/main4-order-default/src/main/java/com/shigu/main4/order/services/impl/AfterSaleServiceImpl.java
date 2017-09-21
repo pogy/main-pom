@@ -1,8 +1,10 @@
 package com.shigu.main4.order.services.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -48,6 +50,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -161,9 +166,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
-
-        // TODO: 退货退款消息推送
-//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subItemOrder);
+        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,refundCount, refundMoney, refundReason + "," + refundDesc,1);
         return refundId;
     }
 
@@ -180,9 +184,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
-
-        // TODO: 换货消息推送
-//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
+        // TODO: 换货消息推送，换货数量
+        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,0, 0L, refundReason + "," + refundDesc,2);
         return refundId;
     }
 
@@ -335,8 +339,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
-        //TODO: 暂时注释掉，消息接口可能有变化
-//        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
     }
 
     private String selCompanyById(Long expressId) {
