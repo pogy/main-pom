@@ -9,8 +9,11 @@ import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.shigu.buyer.bo.LoginByPhoneBO;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
+import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
+import com.shigu.component.shiro.exceptions.LoginAuthException;
+import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
@@ -25,16 +28,19 @@ import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
+import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.enums.LoginFromType;
+import com.shigu.tools.RedomUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -52,7 +58,8 @@ public class PhoneUserService {
 
     @Autowired
     private MemberLicenseMapper memberLicenseMapper;
-
+    @Autowired
+    SendMsgService sendMsgService;
     @Autowired
     private UserBaseService userBaseService;
 
@@ -100,68 +107,173 @@ public class PhoneUserService {
     public LoginResponse login( LoginRequest request, HttpServletRequest servletRequest){
         LoginResponse resp=new LoginResponse();
         Integer phoneType = request.getType();
+        OpenException openException=new OpenException();
         if (phoneType==1){
             //1普通账号密码登陆
             if(!StringUtil.isNull(request.getUserName())&&!StringUtil.isNull(request.getPassword())){
                 //用户名和密码不为空
                 Subject currentUser = SecurityUtils.getSubject();
-              //  String passWord = EncryptUtil.encrypt(request.getPassword());
-
                 CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                         request.getUserName(), request.getPassword(), false, servletRequest.getRemoteAddr(), "", UserType.MEMBER);
                 //星座用户登陆
                 token.setLoginFromType(LoginFromType.XZ);
                 token.setRememberMe(true);
-                //调用安全管理器,安全管理器调用realm
                 try {
+                    //调用安全管理器,安全管理器调用realm
                     currentUser.login(token);
                     currentUser.hasRole(RoleEnum.STORE.getValue());
+                    //返回需要数据
                     PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
                     resp.setUserId(personalSession.getUserId());
                     String headUrl = personalSession.getHeadUrl();
                     resp.setImgsrc(headUrl);
-
                     resp.setUserNick(personalSession.getUserNick());
                     String uuid = UUIDGenerator.getUUID();
                     //把token存入redis,设置存活时间30分钟
-                    redisIO.putFixedTemp("phone_login_token",uuid,1800);
+                   // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+                    Jedis jedis = redisIO.getJedis();
+                    jedis.setex("phone_login_token",1800, uuid);
                     //从redis取出token
-                    resp.setToken(redisIO.get("phone_login_token"));
+                    String token1 = redisIO.get("phone_login_token");
+                    resp.setToken(token1);
                     //imSeller
                     ShopSession logshop = personalSession.getLogshop();
                     if(!StringUtil.isNull(logshop)){
                         resp.setImSeller(true);
-
                     }else{
                         resp.setImSeller(false);
                     }
                     //查询是否绑定手机号
-//                    MemberLicenseExample memberLicenseExample=new MemberLicenseExample();
-//                    MemberLicenseExample memberLicenseExample = new MemberLicenseExample();
-//                    memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId());
-//                    MemberLicense memberLicense = new MemberLicense();
-//                    memberLicense.setUserId(personalSession.getUserId());
-//                    MemberLicense memberLicenses = memberLicenseMapper.selectOne(memberLicense);
-
+                    MemberLicenseExample memberLicenseExample=new MemberLicenseExample();
+                    memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId()).andLicenseTypeEqualTo(4);
+                    List<MemberLicense> memberLicensesList = memberLicenseMapper.selectByExample(memberLicenseExample);
+                    //如果为空,说明用户没有绑定手机号,抛异常
+                    if(memberLicensesList.size()==0&&memberLicensesList==null){
+                        openException.setErrMsg("未绑定手机号");
+                        resp.setException(openException);
+                        resp.setSuccess(false);
+                        return resp;
+                    }
                     resp.setSuccess(true);
                     return resp;
                 } catch (AuthenticationException e) {
                     //登陆失败
                     token.clear();
+                    openException.setErrMsg("用户名或密码错误");
+                    resp.setException(openException);
+                    resp.setSuccess(false);
+                    return resp;
                 }
-
-
             }
-
-
-
         }else if(phoneType==2){
-            //2手机验证码登陆
-            LoginByPhoneBO loginByPhoneBO=new LoginByPhoneBO();
-            loginByPhoneBO.setTelephone(request.getUserName());
-            loginByPhoneBO.setPhoneVerify(request.getPassword());
+            //2手机验证码登陆,UserName是手机号,password就是验证码
+            if(!StringUtil.isNull(request.getUserName())&&!StringUtil.isNull(request.getPassword())){
+                //得到redis存的验证码
+                String verify = redisIO.get("phone_login_type_msg_" + request.getUserName());
+
+                if (!verify.equals(request.getPassword())) {
+                    openException.setErrMsg("手机验证码错误");
+                    resp.setException(openException);
+                    resp.setSuccess(false);
+                    return resp;
+                }else{
+                        Subject currentUser = SecurityUtils.getSubject();
+                        CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                                request.getUserName(), null, false, servletRequest.getRemoteAddr(), "", UserType.MEMBER);
+                        //星座用户登陆
+                        token.setLoginFromType(LoginFromType.PHONE);
+                        token.setRememberMe(true);
+                        try {
+                            currentUser.login(token);
+                            currentUser.hasRole(RoleEnum.STORE.getValue());
+                            //返回需要数据
+                            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.PHONE);
+                            resp.setUserId(personalSession.getUserId());
+                            String headUrl = personalSession.getHeadUrl();
+                            resp.setImgsrc(headUrl);
+                            resp.setUserNick(personalSession.getUserNick());
+                            String uuid = UUIDGenerator.getUUID();
+                            //把token存入redis,设置存活时间30分钟
+                            // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+                            Jedis jedis = redisIO.getJedis();
+                            jedis.setex("phone_login_token",1800, uuid);
+                            //从redis取出token
+                            String token1 = redisIO.get("phone_login_token");
+                            resp.setToken(token1);
+                            //imSeller
+                            ShopSession logshop = personalSession.getLogshop();
+                            if(!StringUtil.isNull(logshop)){
+                                resp.setImSeller(true);
+                            }else{
+                                resp.setImSeller(false);
+                            }
+                        } catch (AuthenticationException e) {
+                            //登陆失败
+                            token.clear();
+                            openException.setErrMsg("手机号或验证码错误");
+                            resp.setException(openException);
+                            resp.setSuccess(false);
+                            return resp;
+                        }
+                }
+            }else{
+                //抛验证码错误
+                openException.setErrMsg("手机号或验证码未输入");
+                resp.setException(openException);
+                resp.setSuccess(false);
+                return resp;
+            }
         }else{
             //提示错误
+            openException.setErrMsg("登录类型错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
+
+        return resp;
+    }
+
+    /**
+     * 得到手机验证码
+     */
+    public GetPhoneMsgResponse getPhoneMsg(GetPhoneMsgRequest request){
+        GetPhoneMsgResponse resp=new GetPhoneMsgResponse();
+        OpenException openException=new OpenException();
+        String code= RedomUtil.redomNumber(6);
+        //发送短信
+        sendMsgService.sendVerificationCode(request.getTelephone(), code);
+        //客户状态
+        Integer type = request.getType();
+        if(type==1){
+            //登录
+            Jedis jedis = redisIO.getJedis();
+            jedis.setex("phone_login_type_msg_"+request.getTelephone(),600, code);
+            //存入redis,保存10分钟
+            resp.setMsgCode(redisIO.get("phone_login_type_msg_"+request.getTelephone()));
+            resp.setSuccess(true);
+        }else if(type==2){
+            //注册
+            Jedis jedis = redisIO.getJedis();
+            jedis.setex("phone_regist_type_msg_"+request.getTelephone(),600, code);
+            resp.setMsgCode(redisIO.get("phone_regist_type_msg_"+request.getTelephone()));
+            resp.setSuccess(true);
+        }else if(type==3){
+            //忘记密码
+            Jedis jedis = redisIO.getJedis();
+            jedis.setex("phone_forget_type_msg_"+request.getTelephone(),600, code);
+            resp.setMsgCode(redisIO.get("phone_forget_type_msg_"+request.getTelephone()));
+            resp.setSuccess(true);
+        }else if(type==4){
+            //绑定
+            Jedis jedis = redisIO.getJedis();
+            jedis.setex("phone_bind_type_msg_"+request.getTelephone(),600, code);
+            resp.setMsgCode(redisIO.get("phone_bind_type_msg_"+request.getTelephone()));
+            resp.setSuccess(true);
+        }else{
+            openException.setErrMsg("客户状态错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
         }
 
         return resp;

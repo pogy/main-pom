@@ -1,10 +1,6 @@
 package com.shigu.phone.apps.actions;
 
-import com.openJar.requests.app.AboutMeRequest;
-import com.openJar.requests.app.BindUserRequest;
-import com.openJar.requests.app.ChangePasswordRequest;
-import com.openJar.requests.app.LoginRequest;
-import com.openJar.requests.app.RegistRequest;
+import com.openJar.requests.app.*;
 import com.shigu.phone.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +42,7 @@ public class AppUserAction {
     //登录请求
     @RequestMapping("login")
     @ResponseBody
-    public JSONObject login( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
+    public JSONObject appLogin( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
 
@@ -63,5 +59,11 @@ public class AppUserAction {
         return JSONObject.fromObject(phoneUserService.bindUser(request,remoteAddr));
     }
 
-
+    //得到验证码
+    @RequestMapping("getPhoneMsg")
+    @ResponseBody
+    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest) {
+        String remoteAddr = httpRequest.getRemoteAddr();
+        return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
+    }
 }
