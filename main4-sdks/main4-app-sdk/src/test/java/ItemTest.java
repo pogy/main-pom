@@ -2,13 +2,9 @@ import com.alibaba.fastjson.JSON;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.requests.app.ItemSearchRequest;
 import com.openJar.requests.app.OneItemRequest;
-import com.openJar.requests.app.ShopSearchRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.openJar.responses.app.OneItemResponse;
-import com.openJar.responses.app.ShopSearchResponse;
-import com.openJar.tools.OpenClient;
-import com.openJar.tools.PcOpenClient;
 import org.junit.Test;
 
 /**
@@ -19,9 +15,7 @@ import org.junit.Test;
  * 项目：main-pom
  * 描述：
  */
-public class ItemTest {
-
-    static OpenClient client = new PcOpenClient("3838438", "37456A6A5CA10F9A988F12BFECD88575", "test");
+public class ItemTest extends BaseSDKClientTest {
 
     @Test
     public void testItemSearch() {

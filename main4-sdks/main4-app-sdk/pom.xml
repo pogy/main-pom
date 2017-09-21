@@ -39,6 +39,18 @@
             <version>${fastjson.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-tools</artifactId>
+            <version>4.2.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-session</artifactId>
+            <version>4.2.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
