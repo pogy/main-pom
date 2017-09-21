@@ -299,10 +299,6 @@
                 <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
                     <span>时间：${order.afterSaleTime!}</span>
-                    <#if order.oldOrder == true>
-                    <i class="fcF40 icon-old oldOrder"></i>
-                    </#if>
-                    
                 </td>
                 <td class="buyerInfo"  colspan="3">
                     <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
@@ -360,14 +356,16 @@
         <#if childOrder.putInStorageType == 1>
         <p>商品已入库</p>
         <!--<b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>-->
-        <b jbtn="failRefund" data-id="${afterSale.refundId!}">退款失败入库</b>
+        <b jbtn="failRefund">退款失败入库</b>
         <#elseif childOrder.putInStorageType == 2>
         <p class="fcF40">商品未入库</p>
         </#if>
     </td>
     <#if childOrder_index == 0>
     <td class="refundOpe" rowspan="${(afterSale.childOrders?size)!}">
+        <#if afterSale.allNotPutInIs == true>
         <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+        </#if>
     </td>
     </#if>
     <#else>
