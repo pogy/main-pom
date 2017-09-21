@@ -15,7 +15,6 @@
 
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" timeout="10000"/>
 
 
 </beans>
