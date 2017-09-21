@@ -2,10 +2,12 @@ package com.shigu.seller.services;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShopFitmentArea;
+import com.opentae.data.mall.beans.ShopFitmentModule;
 import com.opentae.data.mall.beans.ShopFitmentPage;
 import com.opentae.data.mall.examples.ShopFitmentAreaExample;
 import com.opentae.data.mall.examples.ShopFitmentPageExample;
 import com.opentae.data.mall.interfaces.ShopFitmentAreaMapper;
+import com.opentae.data.mall.interfaces.ShopFitmentModuleMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentPageMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -60,6 +62,9 @@ public class ShopDesignService {
 
     @Autowired
     ShopFitmentAreaMapper shopFitmentAreaMapper;
+
+    @Autowired
+    ShopFitmentModuleMapper shopFitmentModuleMapper;
 
     @Autowired
     ShopBaseService shopBaseService;
@@ -562,4 +567,13 @@ public class ShopDesignService {
         return vo;
     }
 
+    public boolean defaultModuleValueIs(Long moduleId){
+        ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
+        if (shopFitmentModule != null) {
+            if ("{}".equals(shopFitmentModule.getModuleValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

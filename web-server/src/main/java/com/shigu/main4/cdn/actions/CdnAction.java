@@ -613,6 +613,10 @@ public class CdnAction {
         if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
                 &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
                 &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){
+            //设置都为默认值后，检测大图区域数据是否是默认值
+            if (!shopDesignService.defaultModuleValueIs(vo.getFitmentAreas().get(0).getAllarea().get(0).getModuleId())) {
+                return false;
+            }
             return true;
         }else{
             return false;
