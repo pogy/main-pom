@@ -48,7 +48,7 @@ public class DaifaAllOrderIndexAction {
 
     @RequestMapping("daifa/orderAll")
     public String allOrderPage(AllOrderBO bo, Model model) throws ExecutionException, InterruptedException {
-//        daifaAllOrderIndexService.timeOutExcute();
+        daifaAllOrderIndexService.timeOutExcute();
         Future<OrderStatisticsVO> future = daifaAllOrderIndexService.statisticsToday();
 
         Session session = SecurityUtils.getSubject().getSession();
