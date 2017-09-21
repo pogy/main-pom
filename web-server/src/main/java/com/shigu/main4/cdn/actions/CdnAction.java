@@ -19,10 +19,12 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.item.vo.ItemGoatCidAndWebsiteVO;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
@@ -881,11 +883,10 @@ public class CdnAction {
     @RequestMapping("/itemGoat")
     @ResponseBody
     public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
-        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
-        String website = cdnService.getWebsite(goodsId);
-        if (StringUtil.isNull(website)){
-            throw new JsonErrException("未获取到站点信息");
-        }
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
+        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
+        String website = itemGoatCidAndWebsiteVO.getWebsite();
+
         Object objFormCache = null;
         if(instanOfWoman){//父级或父父级cid=16的为女装
             objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_WOMAN));
@@ -906,11 +907,10 @@ public class CdnAction {
     @RequestMapping("/itemBottomGoat")
     @ResponseBody
     public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
-        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
-        String website = cdnService.getWebsite(goodsId);
-        if (StringUtil.isNull(website)){
-            throw new JsonErrException("未获取到站点信息");
-        }
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
+        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
+        String website = itemGoatCidAndWebsiteVO.getWebsite();
+
         Object objFormCache = null;
         if(instanOfWoman){//父级或父父级cid=16的为女装
             objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN));
@@ -919,6 +919,22 @@ public class CdnAction {
         }
         List<ItemGoatVO> goatList = ItemGoatVO.copyListFromCache(objFormCache);
         return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    private ItemGoatCidAndWebsiteVO getCidAndWebsite(Long goodsId)throws JsonErrException{
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = null;
+        try {
+            itemGoatCidAndWebsiteVO = itemCatService.getItemCid(goodsId);
+        } catch (ItemException e) {
+            throw new JsonErrException(e.getMessage());
+        }finally {
+            if (itemGoatCidAndWebsiteVO == null ||
+                    itemGoatCidAndWebsiteVO.getCid() == null ||
+                    StringUtil.isNull(itemGoatCidAndWebsiteVO.getWebsite())) {
+                throw new JsonErrException("未查询到分站信息");
+            }
+        }
+        return  itemGoatCidAndWebsiteVO;
     }
 
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
