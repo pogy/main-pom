@@ -47,6 +47,7 @@ public class OrderMessageProducter {
         order_refund_hasitem("refund_hasitem_"),
         refund_courier_number("courier_"),
         refund_courier_number_modify("courier_modify_"),
+        reprice_agree("reprice_"),
         ;
 
         public final String preKey;
@@ -203,6 +204,15 @@ public class OrderMessageProducter {
             msg = "填写快递单";
         }
         sendAsync(tag, BaseMessage.success(courier.getRefundId().toString(), msg, courier));
+    }
+
+    public void repriceAgree(Long refundId,boolean agree) {
+        RepriceAgreeMessage repriceAgreeMessage = new RepriceAgreeMessage();
+        repriceAgreeMessage.setRefundId(refundId);
+        repriceAgreeMessage.setAgree(agree);
+        OrderMQTag tag = OrderMQTag.reprice_agree;
+        String msg = "同意/拒绝议价";
+        sendAsync(tag,BaseMessage.success(refundId.toString(),msg,repriceAgreeMessage));
     }
 
     public void error(OrderMQTag tag, String key, String msg) {

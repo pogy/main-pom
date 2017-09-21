@@ -7,7 +7,6 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -67,8 +66,6 @@ public class DfMessageListener implements MessageListener {
         reprice_apply(RepriceApplyMessage.class),
 
         after_sale_accept(AfterSaleAcceptMessage.class),
-
-        reprice_aggree(RepriceAggreeMessage.class),
         ;
         public final Class<?> clazz;
 
@@ -118,8 +115,6 @@ public class DfMessageListener implements MessageListener {
                 break;
             case after_sale_accept:
                 afterSaleAccept(baseMessage);
-            case reprice_aggree:
-                repriceAggree(baseMessage);
                 break;
         }
         return Action.CommitMessage;
@@ -192,23 +187,4 @@ public class DfMessageListener implements MessageListener {
             refundModel.sellerAgree();
         }
     }
-
-    /**
-     * 买家同意/拒绝议价
-     * @param msg
-     */
-    public  void  repriceAggree(BaseMessage<RepriceAggreeMessage> msg){
-        RepriceAggreeMessage data = msg.getData();
-        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId());
-        if (data.isAgree()){
-            try {
-                refundModel.buyerReprice();
-            } catch (Main4Exception e) {
-                e.printStackTrace();
-            }
-        }else{
-            refundModel.buyerNoReprice();
-        }
-    }
-
 }

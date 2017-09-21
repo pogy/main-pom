@@ -1,12 +1,15 @@
 package com.shigu.main4.order.mq.msg;
 
+import java.io.Serializable;
+
 /**
  * Created by cdh on 2017/9/21.
- * Path com.shigu.main4.order.mq.msg.RepriceAggreeMessage
+ * Path com.shigu.main4.order.mq.msg.RepriceAgreeMessage
  */
-public class RepriceAggreeMessage {
-
+public class RepriceAgreeMessage implements Serializable{
+    //退货编号
     private Long refundId;
+    //true或false，同意或拒绝
     private boolean agree ;
 
     public Long getRefundId() {

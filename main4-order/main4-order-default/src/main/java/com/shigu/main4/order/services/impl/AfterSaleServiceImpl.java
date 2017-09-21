@@ -413,6 +413,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         } else {
             refundItemOrder.buyerNoReprice();
         }
+        orderMessageProducter.repriceAgree(refundId,isAgree);
     }
 
     /**
