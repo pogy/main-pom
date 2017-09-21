@@ -10,7 +10,7 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AfterSaleDataVO {
+public class DaifaCutomerDataVO {
     private Long afterSaleId;
     private Long orderId;
     private String tradeCode;
@@ -33,7 +33,7 @@ public class AfterSaleDataVO {
     private String imWw;
     private String imQq;
     private String imTel;
-    private List<AfterSaleDataSubVO> childOrders;
+    private List<DaifaCustomerDataSubVO> childOrders;
 
     public String getReceiverAddress() {
         return receiverAddress;
@@ -155,11 +155,11 @@ public class AfterSaleDataVO {
         this.tradeTime = tradeTime;
     }
 
-    public List<AfterSaleDataSubVO> getChildOrders() {
+    public List<DaifaCustomerDataSubVO> getChildOrders() {
         return childOrders;
     }
 
-    public void setChildOrders(List<AfterSaleDataSubVO> childOrders) {
+    public void setChildOrders(List<DaifaCustomerDataSubVO> childOrders) {
         this.childOrders = childOrders;
     }
 

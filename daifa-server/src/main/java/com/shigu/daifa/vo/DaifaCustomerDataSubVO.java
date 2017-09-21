@@ -8,7 +8,7 @@ package com.shigu.daifa.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AfterSaleDataSubVO {
+public class DaifaCustomerDataSubVO {
     private String childOrderId;//子单id
     private String imgSrc;//商品图片
     private String title;//商品标题

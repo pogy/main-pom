@@ -5,13 +5,13 @@ import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.SaleAfterBO;
-import com.shigu.daifa.vo.DaifaSaleAfter;
-import com.shigu.daifa.vo.DaifaSaleAfterRefund;
-import com.shigu.daifa.vo.DaifaSaleAfterStock;
-import com.shigu.daifa.vo.DaifaSaleAfterSub;
+import com.shigu.daifa.vo.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.bo.SaleAfterRemarkerBO;
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.SaleAfterProcess;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,17 @@ public class DaifaSaleAfterService {
     private DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
     @Autowired
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
+    @Autowired
+    private DaifaRefuseReasonMapper daifaRefuseReasonMapper;
+    @Autowired
+    private SaleAfterProcess saleAfterProcess;
 
-    public ShiguPager<DaifaSaleAfter> afterSaleOrder(SaleAfterBO bo){
+    /**
+     * 列表
+     * @param bo
+     * @return
+     */
+    public ShiguPager<DaifaSaleAfter> afterSaleOrder(SaleAfterBO bo,Long sellerId){
         List<Long> saleIds=new ArrayList<>();
         if(!StringUtils.isEmpty(bo.getBackPostCode())){
             DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
@@ -41,7 +50,7 @@ public class DaifaSaleAfterService {
             saleIds= BeanMapper.getFieldList(subs,"afterSaleId",Long.class);
         }
         DaifaAfterSaleExample daifaAfterSaleExample=new DaifaAfterSaleExample();
-        DaifaAfterSaleExample.Criteria ce=daifaAfterSaleExample.createCriteria();
+        DaifaAfterSaleExample.Criteria ce=daifaAfterSaleExample.createCriteria().andSellerIdEqualTo(sellerId);
         if(saleIds.size()>0){
             ce.andAfterSaleIdIn(saleIds);
         }
@@ -287,4 +296,74 @@ public class DaifaSaleAfterService {
         return pager;
     }
 
+    /**
+     * 改价格
+     * @param refundId
+     * @param refundMoney
+     * @throws DaifaException
+     */
+    public void editRefund(Long refundId, String refundMoney) throws DaifaException {
+        saleAfterProcess.moneyConsult(refundId,refundMoney);
+    }
+
+    /**
+     * 售后备注
+     * @param orderId
+     * @param remarkCon
+     * @throws DaifaException
+     */
+    public void addAfterServerRemarkJson(Long orderId, String remarkCon) throws DaifaException {
+        DaifaAfterSaleExample daifaAfterSaleExample=new DaifaAfterSaleExample();
+        daifaAfterSaleExample.createCriteria().andDfTradeIdEqualTo(orderId);
+        List<DaifaAfterSale> sales=daifaAfterSaleMapper.selectFieldsByExample(daifaAfterSaleExample,FieldUtil.codeFields("after_sale_id"));
+        if(sales.size()!=1){
+            throw new DaifaException("orderId错误");
+        }
+        SaleAfterRemarkerBO bo=new SaleAfterRemarkerBO();
+        bo.setAfterSaleId(sales.get(0).getAfterSaleId());
+        bo.setRemark(remarkCon);
+        saleAfterProcess.saleAfterRemark(bo);
+    }
+
+    /**
+     * 获取拒绝原因列表
+     * @return
+     */
+    public List<RefuseReasonVO> getRefuseReason() {
+        DaifaRefuseReasonExample daifaRefuseReasonExample=new DaifaRefuseReasonExample();
+        daifaRefuseReasonExample.createCriteria().andDealReasonTypeEqualTo(1);
+        daifaRefuseReasonExample.setOrderByClause("deal_reason_id asc");
+        List<DaifaRefuseReason> list=daifaRefuseReasonMapper.selectByExample(daifaRefuseReasonExample);
+        List<RefuseReasonVO> vos=new ArrayList<>();
+        for(DaifaRefuseReason re:list){
+            RefuseReasonVO vo=new RefuseReasonVO();
+            vo.setText(re.getDealReason());
+            vo.setType(re.getDealReasonId());
+            vos.add(vo);
+        }
+        return vos;
+    }
+
+    /**
+     * 拒绝受理
+     * @param refundId
+     * @param dealReasonId
+     * @throws DaifaException
+     */
+    public void refuseAfterSale(Long refundId, Long dealReasonId) throws DaifaException {
+        DaifaRefuseReason reason=daifaRefuseReasonMapper.selectByPrimaryKey(dealReasonId);
+        if(reason==null){
+            throw new DaifaException("原因类型错误");
+        }
+        saleAfterProcess.afterApplyDeal(refundId,2,reason.getDealReason());
+    }
+
+    /**
+     * 受理
+     * @param refundId
+     * @throws DaifaException
+     */
+    public void agreeAfterSale(Long refundId) throws DaifaException {
+        saleAfterProcess.afterApplyDeal(refundId,1,null);
+    }
 }

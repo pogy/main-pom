@@ -289,13 +289,13 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
     @Override
     public int saleAfterRemark(Long afterSaleId, String remark) throws DaifaException {
-        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
-        daifaAfterSale.setAfterSaleId(afterSaleId);
         DaifaAfterSale oldSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
         if (oldSale == null) {
             throw new DaifaException("售后申请不存在");
         }
-        daifaAfterSale.setRemark(oldSale.getRemark()+":"+remark);
+        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
+        daifaAfterSale.setAfterSaleId(afterSaleId);
+        daifaAfterSale.setRemark(oldSale.getRemark()+"<br>"+remark);
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 
