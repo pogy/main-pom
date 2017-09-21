@@ -2,7 +2,7 @@ package com.shigu.daifa.vo;
 
 import java.util.List;
 
-public class DaifaSaleAfterRefund {
+public class DaifaSaleAfterRefundVO {
     private Long refundId;
     private Integer afterSaleState;
     private String afterSalePostCode;
@@ -12,8 +12,8 @@ public class DaifaSaleAfterRefund {
     private Integer refundFeeType;
     private String refundForShop;
     private List<String> editIndo;
-    private List<DaifaSaleAfterStock> putInStorageState;
-    private List<DaifaSaleAfterSub> childOrders;
+    private List<DaifaSaleAfterStockVO> putInStorageState;
+    private List<DaifaSaleAfterSubVO> childOrders;
 
     public Long getRefundId() {
         return this.refundId;
@@ -87,19 +87,19 @@ public class DaifaSaleAfterRefund {
         this.editIndo = editIndo;
     }
 
-    public List<DaifaSaleAfterStock> getPutInStorageState() {
+    public List<DaifaSaleAfterStockVO> getPutInStorageState() {
         return this.putInStorageState;
     }
 
-    public void setPutInStorageState(List<DaifaSaleAfterStock> putInStorageState) {
+    public void setPutInStorageState(List<DaifaSaleAfterStockVO> putInStorageState) {
         this.putInStorageState = putInStorageState;
     }
 
-    public List<DaifaSaleAfterSub> getChildOrders() {
+    public List<DaifaSaleAfterSubVO> getChildOrders() {
         return this.childOrders;
     }
 
-    public void setChildOrders(List<DaifaSaleAfterSub> childOrders) {
+    public void setChildOrders(List<DaifaSaleAfterSubVO> childOrders) {
         this.childOrders = childOrders;
     }
 }

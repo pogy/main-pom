@@ -563,7 +563,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         //测试一,售后不存在
         boolean isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(-1L, "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(-1L, "测试", errorHuojia);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(), "售后申请不存在");
             isError = true;
@@ -578,7 +578,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         daifaAfterSaleSubMapper.updateByExampleSelective(update, daifaAfterSaleSubExample);
         isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia);
         } catch (DaifaException e) {
             isError = true;
             assertEquals(e.getMessage(), "售后状态错误,未收到货");
@@ -593,7 +593,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         //测试三,
         isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia);
         } catch (DaifaException e) {
             isError = true;
             assertEquals(e.getMessage(), "售后状态错误,未收到货");
@@ -624,7 +624,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         //测试一,售后不存在
         boolean isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(-1L, "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(-1L, "测试", errorHuojia);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(), "售后申请不存在");
             isError = true;
@@ -639,7 +639,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         daifaAfterSaleSubMapper.updateByExampleSelective(update, daifaAfterSaleSubExample);
         isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia);
         } catch (DaifaException e) {
             isError = true;
             assertEquals(e.getMessage(), "售后状态错误,未收到货");
@@ -654,7 +654,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         //测试三,
         isError = false;
         try {
-            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia, sendPhone);
+            saleAfterProcess.storeRefundRefuse(subs.get(0).getDfOrderId(), "测试", errorHuojia);
         } catch (DaifaException e) {
             isError = true;
             assertEquals(e.getMessage(), "售后状态错误,未收到货");

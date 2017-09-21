@@ -41,7 +41,7 @@ public class DaifaSaleAfterService {
      * @param bo
      * @return
      */
-    public ShiguPager<DaifaSaleAfter> afterSaleOrder(SaleAfterBO bo,Long sellerId){
+    public ShiguPager<DaifaSaleAfterVO> afterSaleOrder(SaleAfterBO bo, Long sellerId){
         List<Long> saleIds=new ArrayList<>();
         if(!StringUtils.isEmpty(bo.getBackPostCode())){
             DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
@@ -68,7 +68,7 @@ public class DaifaSaleAfterService {
         }
 
         int count=daifaAfterSaleMapper.countByExample(daifaAfterSaleExample);
-        List<DaifaSaleAfter> vos=new ArrayList<>();
+        List<DaifaSaleAfterVO> vos=new ArrayList<>();
         if(count>0){
             daifaAfterSaleExample.setStartIndex((bo.getPage()-1)*10);
             daifaAfterSaleExample.setEndIndex(10);
@@ -105,7 +105,7 @@ public class DaifaSaleAfterService {
             Map<Long,List<DaifaAfterMoneyConsult>> moneyGroup=BeanMapper.groupBy(cs,"refundId",Long.class);
             for(DaifaAfterSale sale:sales){
                 DaifaTrade t=tradeMap.get(sale.getDfTradeId());
-                DaifaSaleAfter vo=new DaifaSaleAfter();
+                DaifaSaleAfterVO vo=new DaifaSaleAfterVO();
                 vo.setAllChildRemark(sale.getRemark());
                 vo.setAfterSaleTime(DateUtil.dateToString(sale.getCreateTime(),DateUtil.patternD));
                 vo.setBuyerRemark(sale.getBuyerRemark());
@@ -123,9 +123,9 @@ public class DaifaSaleAfterService {
                 vo.setSendTime(DateUtil.dateToString(t.getSendTime(),DateUtil.patternD));
                 vo.setServersFee(t.getServicesFee());
                 vo.setTotalFee(t.getTotalFee());
-
+                vo.setIsTbOrder(t.getDaifaType()==2);
                 Integer num=0;
-                List<DaifaSaleAfterRefund> refunds=new ArrayList<>();
+                List<DaifaSaleAfterRefundVO> refunds=new ArrayList<>();
                 List<DaifaAfterSaleSub> ss=subsGroup.get(sale.getAfterSaleId());
                 for(DaifaAfterSaleSub s:subs){
                     if(s.getRefundId()==null){
@@ -142,7 +142,7 @@ public class DaifaSaleAfterService {
                         }
                         tmp.put(s.getRefundId(),s.getRefundId());
                         List<DaifaAfterSaleSub> sublist=refundGroup.get(s.getRefundId());
-                        DaifaSaleAfterRefund refund=new DaifaSaleAfterRefund();
+                        DaifaSaleAfterRefundVO refund=new DaifaSaleAfterRefundVO();
                         refund.setRefundId(s.getRefundId());
                         refund.setAfterSalePostCode(sublist.get(0).getApplyExpressCode());
                         refund.setAfterSalePostName(sublist.get(0).getApplyExpressName());
@@ -221,24 +221,24 @@ public class DaifaSaleAfterService {
                         int innum=0;
                         int ennum=0;
 
-                        List<DaifaSaleAfterSub> subvos=new ArrayList<>();
+                        List<DaifaSaleAfterSubVO> subvos=new ArrayList<>();
                         for(DaifaAfterSaleSub sub:sublist){
-                            DaifaSaleAfterSub subvo=new DaifaSaleAfterSub();
-                            DaifaOrder o=orderMap.get(s.getDfOrderId());
-                            subvo.setChildOrderId(s.getDfOrderId());
-                            subvo.setChildRemark(s.getRemark());
+                            DaifaSaleAfterSubVO subvo=new DaifaSaleAfterSubVO();
+                            DaifaOrder o=orderMap.get(sub.getDfOrderId());
+                            subvo.setChildOrderId(sub.getDfOrderId());
+                            subvo.setChildRemark(sub.getRemark());
                             subvo.setChildServersFee(o.getSingleServicesFee());
-                            subvo.setGoodsProperty(s.getPropStr());
-                            subvo.setImgSrc(s.getPicPath());
-                            subvo.setNum(s.getGoodsNum());
+                            subvo.setGoodsProperty(sub.getPropStr());
+                            subvo.setImgSrc(sub.getPicPath());
+                            subvo.setNum(sub.getGoodsNum());
                             subvo.setPayPrice(o.getSinglePiPrice());
                             subvo.setPiPrice(o.getSinglePiPrice());
                             subvo.setTitle(o.getTitle());
                             subvo.setStoreGoodsCode(o.getStoreGoodsCode());
-                            if(s.getInStock()!=null&&s.getInStock()==1){
+                            if(sub.getInStock()!=null&&sub.getInStock()==1){
                                 innum++;
                             }
-                            if(s.getInStock()!=null&&s.getInStock()==2){
+                            if(sub.getInStock()!=null&&sub.getInStock()==2){
                                 ennum++;
                             }
                             subvos.add(subvo);
@@ -246,15 +246,15 @@ public class DaifaSaleAfterService {
                         }
                         refund.setChildOrders(subvos);
 
-                        List<DaifaSaleAfterStock> stocks=new ArrayList<>();
+                        List<DaifaSaleAfterStockVO> stocks=new ArrayList<>();
                         if(innum>0){
-                            DaifaSaleAfterStock stock=new DaifaSaleAfterStock();
+                            DaifaSaleAfterStockVO stock=new DaifaSaleAfterStockVO();
                             stock.setType(1);
                             stock.setStorageNum(innum);
                             stocks.add(stock);
                         }
                         if(ennum>0){
-                            DaifaSaleAfterStock stock=new DaifaSaleAfterStock();
+                            DaifaSaleAfterStockVO stock=new DaifaSaleAfterStockVO();
                             stock.setType(2);
                             stock.setStorageNum(ennum);
                             stocks.add(stock);
@@ -263,10 +263,10 @@ public class DaifaSaleAfterService {
                         refunds.add(refund);
                     }else{
                         num++;
-                        DaifaSaleAfterRefund refund=new DaifaSaleAfterRefund();
+                        DaifaSaleAfterRefundVO refund=new DaifaSaleAfterRefundVO();
                         refund.setAfterSaleState(0);
-                        List<DaifaSaleAfterSub> subvos=new ArrayList<>();
-                        DaifaSaleAfterSub subvo=new DaifaSaleAfterSub();
+                        List<DaifaSaleAfterSubVO> subvos=new ArrayList<>();
+                        DaifaSaleAfterSubVO subvo=new DaifaSaleAfterSubVO();
                         DaifaOrder o=orderMap.get(s.getDfOrderId());
                         subvo.setChildOrderId(s.getDfOrderId());
                         subvo.setChildRemark(s.getRemark());
@@ -290,7 +290,7 @@ public class DaifaSaleAfterService {
                 vos.add(vo);
             }
         }
-        ShiguPager<DaifaSaleAfter> pager=new ShiguPager<>();
+        ShiguPager<DaifaSaleAfterVO> pager=new ShiguPager<>();
         pager.setContent(vos);
         pager.setNumber(bo.getPage());
         pager.calPages(count,10);

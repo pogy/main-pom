@@ -1,15 +1,8 @@
 package com.shigu.daifa.vo;
 
-/**
- * Created by pc on 2017-08-31.
- *
- * @author pc
- * @version 3.0.0-SNAPSHOT
- * @description
- * @since 3.0.0-SNAPSHOT
- */
-public class DaifaCustomerDataSubVO extends ChildOrderVO{
+public class DaifaSaleAfterSubVO extends ChildOrderVO{
     private String childServersFee;
+    private String childRemark;
 
     public String getChildServersFee() {
         return this.childServersFee;
@@ -17,5 +10,13 @@ public class DaifaCustomerDataSubVO extends ChildOrderVO{
 
     public void setChildServersFee(String childServersFee) {
         this.childServersFee = childServersFee;
+    }
+
+    public String getChildRemark() {
+        return this.childRemark;
+    }
+
+    public void setChildRemark(String childRemark) {
+        this.childRemark = childRemark;
     }
 }

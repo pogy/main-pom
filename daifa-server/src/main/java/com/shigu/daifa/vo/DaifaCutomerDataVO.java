@@ -33,6 +33,7 @@ public class DaifaCutomerDataVO {
     private String imWw;
     private String imQq;
     private String imTel;
+    private Boolean isTbOrder;
     private List<DaifaCustomerDataSubVO> childOrders;
 
     public String getReceiverAddress() {
@@ -209,5 +210,13 @@ public class DaifaCutomerDataVO {
 
     public void setImTel(String imTel) {
         this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

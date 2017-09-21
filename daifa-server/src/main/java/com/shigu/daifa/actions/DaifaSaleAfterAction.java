@@ -4,7 +4,7 @@ import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.services.DaifaSaleAfterService;
-import com.shigu.daifa.vo.DaifaSaleAfter;
+import com.shigu.daifa.vo.DaifaSaleAfterVO;
 import com.shigu.daifa.vo.RefuseReasonVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -31,7 +31,7 @@ public class DaifaSaleAfterAction {
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        ShiguPager<DaifaSaleAfter> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId());
+        ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId());
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));

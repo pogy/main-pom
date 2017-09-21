@@ -18,7 +18,7 @@ public class DaifaSendOrderSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = 6673583507338856608L;
     @Column("daifa_send_order.df_order_id")
-    private String childOrderId;//子单id
+    private Long childOrderId;//子单id
     @Column("daifa_send_order.pic_path")
     private String imgSrc;//商品图片
     @Column("daifa_send_order.title")
@@ -32,7 +32,7 @@ public class DaifaSendOrderSimple implements Serializable{
     @Column("daifa_send_order.single_pi_price")
     private String payPrice;//商品实际支付价
     @Column("daifa_send_order.goods_num")
-    private String num;//商品数量
+    private Integer num;//商品数量
     @Column("daifa_send_order.take_goods_status")
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
     @Column("daifa_send_order.refund_status")
@@ -45,11 +45,11 @@ public class DaifaSendOrderSimple implements Serializable{
         return serialVersionUID;
     }
 
-    public String getChildOrderId() {
+    public Long getChildOrderId() {
         return childOrderId;
     }
 
-    public void setChildOrderId(String childOrderId) {
+    public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
     }
 
@@ -101,11 +101,11 @@ public class DaifaSendOrderSimple implements Serializable{
         this.payPrice = payPrice;
     }
 
-    public String getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
