@@ -64,6 +64,8 @@ public class DfMessageListener implements MessageListener {
         shop_refuse(ShopRefuseMessage.class),
 
         reprice_apply(RepriceApplyMessage.class),
+
+        after_sale_accept(AfterSaleAcceptMessage.class),
         ;
         public final Class<?> clazz;
 
@@ -110,6 +112,9 @@ public class DfMessageListener implements MessageListener {
                 break;
             case reprice_apply:
                 repriceApply(baseMessage);
+                break;
+            case after_sale_accept:
+                afterSaleAccept(baseMessage);
                 break;
         }
         return Action.CommitMessage;
@@ -171,5 +176,15 @@ public class DfMessageListener implements MessageListener {
         //议价原因
         String proposalMsg = "卖家议价";
         SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).sellerProposal(data.getStoreMoney(),proposalMsg);
+    }
+
+    public void afterSaleAccept(BaseMessage<AfterSaleAcceptMessage> msg){
+        AfterSaleAcceptMessage data = msg.getData();
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId());
+        if (!data.getCanRefund()) {
+            refundModel.sellerRefuse(data.getReason());
+        }else {
+            refundModel.sellerAgree();
+        }
     }
 }
