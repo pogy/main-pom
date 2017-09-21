@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>售后订单 - 星帮后台管理 - 四季星座网</title>
+    <title>售后处理 - 星帮后台管理 - 四季星座网</title>
 
     
     
@@ -17,23 +17,17 @@
 
 
     
-    <link href="http://style.571xz.com/v2/dfgl/css/afterSaleOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/dfgl/css/afterSaleProcess.css" rel="stylesheet">
     
 
     
 
     
 
-    
-        
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-        
-            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-        
-    
-    <script src="http://style.571xz.com/v2/dfgl/js/afterSaleOrder.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/afterSaleProcess.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -132,7 +126,7 @@
                     
                     <li>
                         
-                        <a  class="current" href="afterSaleOrder.htm"><i></i>售后订单</a>
+                        <a href="afterSaleOrder.htm"><i></i>售后订单</a>
                         
                     </li>
                     
@@ -144,7 +138,7 @@
                     
                     <li>
                         
-                        <a href="afterSaleProcess.htm"><i></i>售后处理</a>
+                        <a  class="current" href="afterSaleProcess.htm"><i></i>售后处理</a>
                         
                     </li>
                     
@@ -183,50 +177,7 @@
 
     </div>
     <div class="contentBox">
-        <div class="statistics yahei fc9">
-    <ul>
-        <li>
-            <span class="fs20 arail fc3">${orderStatistics.afterOrderNum!}</span>
-            <p>售后订单（单）</p>
-        </li>
-        <li>
-            <span class="fs20 arail fc3">${orderStatistics.refundsNum!}</span>
-            <p>退货退款（单）</p>
-        </li>
-        <li>
-            <span class="fs20 arail fc3">${orderStatistics.exchangeNum!}</span>
-            <p>换货（单）</p>
-        </li>
-        <li>
-            <span class="fs20 arail fc3">${orderStatistics.beenShippedGoodsFee!}</span>
-            <p>今日发货金额（元）</p>
-        </li>
-        <li>
-            <span class="fs20 arail fc3">${orderStatistics.stockoutNum!}</span>
-            <p>今日缺货（件）</p>
-        </li>
-    </ul>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="orderSearch orderSearchBox">
+        <div class="orderSearch orderSearchBox">
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
         <li><label>收货人手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
@@ -338,6 +289,7 @@
                 <td class="otherFee">其他费用</td>
                 <td class="orderState">订单状态</td>
                 <td class="orderOpe">操作</td>
+                <td class="refundOpe">退款操作</td>
                 <td class="tradeState">交易状态</td>
             </tr>
         </thead>
@@ -347,9 +299,12 @@
                 <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
                     <span>时间：${order.afterSaleTime!}</span>
+                    <#if order.oldOrder == true>
+                    <i class="fcF40 icon-old oldOrder"></i>
+                    </#if>
                     
                 </td>
-                <td class="buyerInfo"  colspan="2">
+                <td class="buyerInfo"  colspan="3">
                     <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
                 </td>
                 <td class="rightConBox" colspan="4">
@@ -392,85 +347,40 @@
     <td class="otherFee">
         <p>服务费：${childOrder.childServersFee!}</p>
     </td>
-    <#if childOrder_index == 0>
-    <td class="orderState" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.afterSaleState == 1>
-        <p class="fcF40">申请退货退款</p>    
-        <#elseif afterSale.afterSaleState == 2>
-        <p class="fcG">退货退款已同意</p>
-        <#elseif afterSale.afterSaleState == 3>
-        <p class="fcF40">退货退款已拒绝</p>
-        <#elseif afterSale.afterSaleState == 4>
-        <p>已发退货商品</p>
-        <#elseif afterSale.afterSaleState == 5>
-        <p>退货已收到</p>
-        <#elseif afterSale.afterSaleState == 21>
-        <p class="fcF40">申请换货</p>
-        <#elseif afterSale.afterSaleState == 22>
-        <p class="fcG">换货已同意</p>
-        <#elseif afterSale.afterSaleState == 23>
-        <p class="fcF40">换货已拒绝</p>
-        <#elseif afterSale.afterSaleState == 24>
-        <p>已发换货商品</p>
-        <#elseif afterSale.afterSaleState == 25>
-        <p>换货已收到</p>
+    <td class="orderState">
+        <#if childOrder.afterSaleState == 1>
+        <p class="fcF40">申请退货退款</p>
         </#if>
         
-        <#if afterSale.afterSalePostName??>
-        <p>${afterSale.afterSalePostName!}</p>
-        <p>(${afterSale.afterSalePostCode!})</p>
-        <#else>
-        <p>${afterSale.opeReason!}</p>
+        <p>${childOrder.afterSalePostName!}</p>
+        <p>(${childOrder.afterSalePostCode!})</p>
+    </td>
+    <#if afterSale.refundId??>
+    <td class="orderOpe">
+        <#if childOrder.putInStorageType == 1>
+        <p>商品已入库</p>
+        <!--<b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>-->
+        <b jbtn="failRefund">退款失败入库</b>
+        <#elseif childOrder.putInStorageType == 2>
+        <p class="fcF40">商品未入库</p>
         </#if>
     </td>
-    </#if>
     <#if childOrder_index == 0>
-        <td class="orderOpe" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.afterSaleState == 1 || afterSale.afterSaleState == 21>
-            <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
-            <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
-        <#else>
-            <#if (afterSale.putInStorageState?size) gt 0>
-                <#list afterSale.putInStorageState as sto>
-                    <#if sto.type == 1>
-                    <p>商品已入库x${sto.storageNum!}</p>
-                    <#elseif sto.type == 2>
-                    <p>退货失败入库x${sto.storageNum!}</p>
-                    </#if>
-                </#list>
-            </#if>
-            
-            <#if afterSale.refundState == 1>
-            <p>档口已退款</p>
-            <p class="fcF40">
-                <div class="pr moneyBox fcF40">
-                    ${afterSale.refundForShop!}
-                    <#if afterSale.refundFeeType == 1>
-                    <span class="spanIcon editIcon">改</span>
-                    <#elseif afterSale.refundFeeType == 2>
-                    <span class="spanIcon">拒</span>
-                    </#if>
-                    <div class="editInfo pa">
-                        <#list afterSale.editInfo as info>
-                        <p>${info!}</p>
-                        </#list>
-                    </div>
-                </div>
-            </p>
-            <p><b class="fcBlue editBtn" jbtn="editBtn" data-id="${afterSale.refundId!}">修改</b></p>
-            <#elseif afterSale.refundState == 2>
-            <p class="fcG">已退款</p>
-            <p class="fcF40">${afterSale.refundForShop!}</p>
-            </#if>
-        </#if>
-        </td>
+    <td class="refundOpe" rowspan="${(afterSale.childOrders?size)!}">
+        <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+    </td>
     </#if>
+    <#else>
+    <td class="orderOpe">
+        
+    </td>
+    <td class="refundOpe">
+        
+    </td>
+    </#if>
+    
     <#if childOrder_index == 0 && afterSale_index == 0>
     <td class="tradeState" rowspan="${order.childOrderNum!}">
-        <p>已发货</p>
-        <p>${order.sendTime!}</p>
-        <p>${order.expressName!}</p>
-        <p>(${order.expressCode!})</p>
         <div class="remarkCon">
             ${order.allChildRemark}
         </div>
@@ -507,40 +417,6 @@
 
 
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
