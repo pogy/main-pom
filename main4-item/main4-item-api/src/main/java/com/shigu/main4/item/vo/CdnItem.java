@@ -65,6 +65,10 @@ public class CdnItem implements Serializable{
      */
     private Long marketId;
     /**
+     * 楼层ID
+     */
+    private Long floorId;
+    /**
      * 价格
      */
     private String price;
@@ -225,5 +229,13 @@ public class CdnItem implements Serializable{
 
     public void setNum(Long num) {
         this.num = num;
+    }
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
     }
 }
