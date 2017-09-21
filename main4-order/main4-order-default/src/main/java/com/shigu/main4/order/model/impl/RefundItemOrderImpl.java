@@ -279,20 +279,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     /**
-     * 议价申请
-     *
-     * @param money
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void bargaining(Long money) {
-        ItemOrderRefund refund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
-        refund.setSellerProposalMoney(money);
-        itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-    }
-
-
-    /**
      * 买家附议
      */
     @Override

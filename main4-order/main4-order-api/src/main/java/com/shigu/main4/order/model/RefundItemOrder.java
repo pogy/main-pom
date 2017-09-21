@@ -80,12 +80,6 @@ public interface RefundItemOrder {
      */
     void sellerProposal(Long money, String msg);
 
-
-    /**
-     * 申请议价
-     */
-    void bargaining(Long money);
-
     /**
      * 买家附议
      */
