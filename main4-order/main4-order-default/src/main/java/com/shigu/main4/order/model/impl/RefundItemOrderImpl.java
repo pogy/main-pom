@@ -1,13 +1,11 @@
 package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSender;
 import com.opentae.data.mall.beans.ItemRefundLog;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
-import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
@@ -53,6 +51,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     private Boolean fromUser;
 
+
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
@@ -64,6 +63,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -216,6 +218,26 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     /**
+     * 受理/拒绝 退换请求
+     *
+     * @param canRefund
+     * @param reason
+     * @param daifaReceiveAddr
+     */
+    @Override
+    public void sellerAgreeOrRefuse(boolean canRefund, String reason, String daifaReceiveAddr) {
+        ItemOrderRefund refund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        if (canRefund) {
+            refund.setReason(reason);
+            Long senderId = itemOrderMapper.selectByPrimaryKey(refund.getOid()).getSenderId();
+            ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
+            itemOrderSender.setAddress(daifaReceiveAddr);
+            itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+            itemOrderSenderMapper.updateByPrimaryKeySelective(itemOrderSender);
+        }
+    }
+
+    /**
      * 用户已发件
      *
      * @param buyerCourier
@@ -255,6 +277,20 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
         refundStateChangeAndLog(RefundStateEnum.SELLER_REPRICE, msg);
     }
+
+    /**
+     * 议价申请
+     *
+     * @param money
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void bargaining(Long money) {
+        ItemOrderRefund refund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        refund.setSellerProposalMoney(money);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+    }
+
 
     /**
      * 买家附议

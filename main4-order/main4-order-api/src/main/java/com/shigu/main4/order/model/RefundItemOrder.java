@@ -54,6 +54,16 @@ public interface RefundItemOrder {
     void sellerRefuse(String reason);
 
     /**
+     * 受理/拒绝 退换请求
+     * @param refoundId
+     * @param canRefund
+     * @param reason
+     * @param daifaReceiveAddr
+     */
+
+    void sellerAgreeOrRefuse(boolean canRefund, String reason, String daifaReceiveAddr);
+
+    /**
      * 用户已发件
      * @param buyerCourier
      */
@@ -69,6 +79,12 @@ public interface RefundItemOrder {
      * @param money
      */
     void sellerProposal(Long money, String msg);
+
+
+    /**
+     * 申请议价
+     */
+    void bargaining(Long money);
 
     /**
      * 买家附议
