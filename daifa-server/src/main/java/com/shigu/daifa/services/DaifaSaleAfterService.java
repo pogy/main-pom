@@ -143,6 +143,7 @@ public class DaifaSaleAfterService {
                         tmp.put(s.getRefundId(),s.getRefundId());
                         List<DaifaAfterSaleSub> sublist=refundGroup.get(s.getRefundId());
                         DaifaSaleAfterRefund refund=new DaifaSaleAfterRefund();
+                        refund.setRefundId(s.getRefundId());
                         refund.setAfterSalePostCode(sublist.get(0).getApplyExpressCode());
                         refund.setAfterSalePostName(sublist.get(0).getApplyExpressName());
                         refund.setOpeReason(sublist.get(0).getApplyRefuseReason());
@@ -331,7 +332,7 @@ public class DaifaSaleAfterService {
      */
     public List<RefuseReasonVO> getRefuseReason() {
         DaifaRefuseReasonExample daifaRefuseReasonExample=new DaifaRefuseReasonExample();
-        daifaRefuseReasonExample.createCriteria().andDealReasonTypeEqualTo(1);
+        daifaRefuseReasonExample.createCriteria().andDealReasonTypeEqualTo(1).andUseStatusEqualTo(1);
         daifaRefuseReasonExample.setOrderByClause("deal_reason_id asc");
         List<DaifaRefuseReason> list=daifaRefuseReasonMapper.selectByExample(daifaRefuseReasonExample);
         List<RefuseReasonVO> vos=new ArrayList<>();

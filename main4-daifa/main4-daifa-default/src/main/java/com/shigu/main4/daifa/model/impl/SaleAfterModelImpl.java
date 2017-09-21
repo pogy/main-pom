@@ -51,8 +51,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
     private Long refundId;
 
-    public SaleAfterModelImpl(Long refundId) {
+    public SaleAfterModelImpl(Long refundId) throws DaifaException {
         super();
+        if(refundId==null){
+            throw new DaifaException("refundId is null");
+        }
         this.refundId = refundId;
     }
     public SaleAfterModelImpl() {
@@ -132,6 +135,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setRemark(null);
                 sub.setRemark1(null);
                 sub.setRemark2(null);
+                sub.setSellerId(trade.getSellerId());
                 if (o.getOrderCode().equals(orderCode.toString()) && i < num) {
                     i++;
                     sub.setRefundId(refundId);
