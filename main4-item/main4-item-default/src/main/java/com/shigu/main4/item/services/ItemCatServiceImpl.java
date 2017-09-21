@@ -103,12 +103,14 @@ public class ItemCatServiceImpl implements ItemCatService{
     @Override
     public boolean instanOfWoman(Long cid) {
         Long parentId = parentCats(cid);
-        if (parentId == null || parentId != 16){//父级或者父父级的cid等于16为女装
-            parentId =  parentCats(cid);
-            if (parentId == null || parentId != 16) {
-                return false;
+        if (parentId != null && parentId == 16){//父级或者父父级的cid等于16为女装
+            return true;
+        }else{
+            parentId =  parentCats(parentId);
+            if (parentId != null && parentId == 16) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

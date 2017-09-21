@@ -505,4 +505,22 @@ public class CdnService {
         }
         return shiguGoodsIdGenerator.getWebSite();
     }
+
+    /**
+     * 按商品ID查cid
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public Long getCid(Long goodsId,String webSite){
+        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,cid"));
+        if (tiny != null) {
+            return tiny.getCid();
+        }else{
+            return null;
+        }
+    }
 }

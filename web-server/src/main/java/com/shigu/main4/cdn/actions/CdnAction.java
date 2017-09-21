@@ -880,12 +880,16 @@ public class CdnAction {
      */
     @RequestMapping("/itemGoat")
     @ResponseBody
-    public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
-        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
+    public Object itemGoat (Long goodsId) throws JsonErrException{
         String website = cdnService.getWebsite(goodsId);
         if (StringUtil.isNull(website)){
             throw new JsonErrException("未获取到站点信息");
         }
+        Long cid=cdnService.getCid(goodsId,website);
+        if (cid == null) {
+            throw new JsonErrException("未找到类目ID");
+        }
+        boolean instanOfWoman = itemCatService.instanOfWoman(cid);
         Object objFormCache = null;
         if(instanOfWoman){//父级或父父级cid=16的为女装
             objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_WOMAN));
