@@ -16,6 +16,8 @@ public class StoreCollectRequest extends Request<StoreCollectResponse> {
 	//用户ID	必须
 	@NotNull
 	private Long userId;
+	//分站标志
+	private String webSite;
 	//页码
 	private Integer index;
 	//页长
@@ -42,6 +44,17 @@ public class StoreCollectRequest extends Request<StoreCollectResponse> {
 
 	public void setSize(Integer size){
 		this.size=size;
+	}
+
+	public String getWebSite() {
+		if (webSite == null) {
+			return "hz";
+		}
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 
 	public String testApiUrl(){

@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.ImgSearchResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:ImgSearchRequest
  * 类路径:com.openJar.requests.appImgSearchRequest
@@ -11,6 +14,7 @@ import com.openJar.responses.app.ImgSearchResponse;
  */
 public class ImgSearchRequest extends Request<ImgSearchResponse> {
 	//图片链接	必须
+	@NotNull
 	private String imgurl;
 	//分站标识
 	private String webSite;
@@ -23,6 +27,9 @@ public class ImgSearchRequest extends Request<ImgSearchResponse> {
 	}
 
 	public String getWebSite(){
+		if (webSite == null) {
+			return "hz";
+		}
 		return webSite;
 	}
 

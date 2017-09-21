@@ -109,7 +109,7 @@ public class PhoneStoreService {
      */
     public StoreCollectResponse storeCollect(StoreCollectRequest request) {
         StoreCollectResponse resp = new StoreCollectResponse();
-        ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(request.getUserId(), null, request.getIndex(), request.getSize());
+        ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(request.getUserId(), request.getWebSite(), request.getIndex(), request.getSize());
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
         ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(request.getSize());

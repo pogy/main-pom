@@ -25,6 +25,7 @@ public class ItemSearchRequest extends Request<ItemSearchResponse> {
 	private Integer index;
 	//页长
 	private Integer size;
+	//todo:排序字段以 com.shigu.main4.item.enums.SearchOrderBy中的值为准
 	//排序，综合：comp，新品：xp，人气：popular，价格低到高：price-asc，价格高到低：price-desc
 	private String orderBy;
 	//1普通搜索，2商品库	必须
