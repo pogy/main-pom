@@ -84,12 +84,6 @@ public class OrderModelImpl implements OrderModel {
         this.orderBO = bo;
     }
 
-    @PostConstruct
-    public void  beforeInit(){
-        if (orderBO!=null){
-            init();
-        }
-    }
 
     /**
      * 创建订单
@@ -131,6 +125,9 @@ public class OrderModelImpl implements OrderModel {
             if(orderBO.getBuyer ()!=null) {
                 daifaTrade.setBuyerWw (orderBO.getBuyer().getAliWw ());
                 daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
+                daifaTrade.setBuyerQq(orderBO.getBuyer().getImQq());
+                daifaTrade.setBuyerTelephone(orderBO.getBuyer().getPhone());
+                daifaTrade.setBuyerId(orderBO.getBuyer().getBuyerId());
             }
             List<ServiceBO> services = orderBO.getServices();
             BigNumber serviceTradeFee = new BigNumber("0.00");
@@ -194,7 +191,7 @@ public class OrderModelImpl implements OrderModel {
                         }
                         subOrderModelBO.setSinglePay(MoneyUtil.dealPrice(MoneyUtil.StringToLong(bo.getSinglePay())+MoneyUtil.StringToLong(subOrderModelBO.getSingleServicesFee())));
                         subOrderModelBO.setTotalFee(subOrderModelBO.getSinglePay());
-                        SpringBeanFactory.getBean(SubOrderModelImpl.class,subOrderModelBO);
+                        SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                         BigNumber singlePay = new BigNumber(bo.getSinglePay());
                         goodsFee = goodsFee.Add(singlePay);
                     }

@@ -33,6 +33,11 @@ public class ItemOrderSub implements Serializable {
 	private Integer num;
 
     /**
+     * 缺货数量
+     */
+	private Integer outOfStok;
+
+    /**
      * 应付总额
      */
 	private Long shouldPayMoney;
@@ -170,6 +175,14 @@ public class ItemOrderSub implements Serializable {
 
 	public Integer getNum() {
 		return this.num;
+	}
+
+	public void setOutOfStok(Integer outOfStok) {
+		this.outOfStok = outOfStok;
+	}
+
+	public Integer getOutOfStok() {
+		return this.outOfStok;
 	}
 
 	public void setShouldPayMoney(Long shouldPayMoney) {

@@ -1,18 +1,14 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
-import com.opentae.data.daifa.examples.DaifaGgoodsExample;
-import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.beans.GgoodsForPrint;
@@ -22,21 +18,15 @@ import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.daifa.vo.PrintTagVO;
+import com.shigu.main4.daifa.vo.UnComleteAllVO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @类编号
@@ -51,6 +41,7 @@ import java.util.Map;
  */
 @Service("takeGoodsIssueProcess")
 public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
+    private static final Logger logger = LoggerFactory.getLogger(TakeGoodsIssueProcessImpl.class);
 
     private final static Integer EZINT = 7; //截取长度
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
@@ -303,9 +294,17 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
         subOrderModel.noTake();
     }
-
+    /**
+     * 按人头,拿到货
+     * @param wholeId 拿货员ID
+     * @param shopId 档口ID
+     * @param issueIds 分配记录ID串
+     * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
+     * @return 缺货了的子单ID
+     */
     @Override
-    public void uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+    public List<Long> uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+        List<Long> notTakeDfOrderIds=new ArrayList<>();
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
         ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId).andStoreIdEqualTo(shopId);
@@ -348,6 +347,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             for(DaifaGgoods g:gmap.values()){
                 SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
                 subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
             }
         }else{
             //缺货
@@ -355,6 +355,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 DaifaGgoods g=gmap.get(id);
                 SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
                 subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
                 gmap.remove(id);
             }
             //剩下的已拿
@@ -363,6 +364,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 subOrderModel.haveTake();
             }
         }
+        return notTakeDfOrderIds;
     }
 
     /**
@@ -370,21 +372,21 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      * @param date yyyyMMdd
      * @param sellerId 代发机构id
      * @throws DaifaException
+     * @return 缺货了的子单ID
      */
     @Override
-    public void completeWithDate(String date,Long sellerId) throws DaifaException {
+    public List<Long> completeWithDate(String date,Long sellerId) throws DaifaException {
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
         ge.createCriteria().andCreateDateEqualTo(date).andOperateIsEqualTo(0).andSellerIdEqualTo(sellerId);
         List<DaifaGgoods> daifaGgoods =daifaGgoodsMapper.selectFieldsByExample(ge
                 ,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        List<Long> notTakeDfOrderIds=new ArrayList<>();
         for (DaifaGgoods daifaGgood : daifaGgoods) {
              SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,daifaGgood.getDfOrderId());
              subOrderModel.noTake();
-
+            notTakeDfOrderIds.add(daifaGgood.getDfOrderId());
         }
-
-
-
+        return notTakeDfOrderIds;
     }
 
 
@@ -559,5 +561,90 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         daifaWaitSendOrder.setRefundStatus(2);
         daifaWaitSendOrder.setRefundTime(new Date());
         daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
+    }
+
+
+
+
+    @Override
+    public UnComleteAllVO uncompleteAllNew(Long wholeId, Long shopId, List<Long> issueIds, Boolean idIsCheck) throws DaifaException {
+        String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
+        DaifaGgoodsExample ge=new DaifaGgoodsExample();
+        ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId).andStoreIdEqualTo(shopId);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(ge,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        Map<Long,DaifaGgoods> gmap= BeanMapper.list2Map(gs,"takeGoodsId",Long.class);
+        //校验是否存在不可操作数据
+        for(Long id:issueIds){
+            DaifaGgoods g=gmap.get(id);
+            if(g==null){
+                throw new DaifaException("存在非该拿货员的分配数据");
+            }
+            if(g.getOperateIs()==1){
+                throw new DaifaException("存在已拿货完成的分配数据");
+            }
+            if(g.getUseStatus()==0){
+                throw new DaifaException("存在无效的分配数据");
+            }
+            if(!g.getCreateDate().equals(date)){
+                throw new DaifaException("存在不是今天的分配数据");
+            }
+        }
+        //清理不可操作的数据
+        List<Long> keys=new ArrayList<>(gmap.keySet());
+        for(Long id:keys){
+            DaifaGgoods g=gmap.get(id);
+            if(g.getOperateIs()==1||g.getUseStatus()==0||!g.getCreateDate().equals(date)){
+                gmap.remove(id);
+            }
+        }
+        List<Long> oids=BeanMapper.getFieldList(gmap.values(),"dfOrderId",Long.class);
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+        List<DaifaOrder> os=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id,take_goods_status"));
+        Map<Long,DaifaOrder> orderMap=BeanMapper.list2Map(os,"dfOrderId",Long.class);
+
+        UnComleteAllVO vo=new UnComleteAllVO();
+        List<Long> notTakeDfOrderIds=new ArrayList<>();
+        List<Long> takeDfOrderIds=new ArrayList<>();
+
+        //根据idIsCheck对相应的数据进行已拿操作
+        if(idIsCheck){
+            //已拿
+            for(Long id:issueIds){
+                DaifaGgoods g=gmap.get(id);
+                if(orderMap.get(g.getDfOrderId())!=null&&orderMap.get(g.getDfOrderId()).getTakeGoodsStatus()==2){
+                    takeDfOrderIds.add(g.getDfOrderId());
+                }
+                SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
+                subOrderModel.haveTake();
+                gmap.remove(id);
+            }
+            //剩下的缺货
+            for(DaifaGgoods g:gmap.values()){
+                SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
+                subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
+            }
+        }else{
+            //缺货
+            for(Long id:issueIds){
+                DaifaGgoods g=gmap.get(id);
+                if(orderMap.get(g.getDfOrderId())!=null&&orderMap.get(g.getDfOrderId()).getTakeGoodsStatus()==2){
+                    takeDfOrderIds.add(g.getDfOrderId());
+                }
+                SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
+                subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
+                gmap.remove(id);
+            }
+            //剩下的已拿
+            for(DaifaGgoods g:gmap.values()){
+                SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
+                subOrderModel.haveTake();
+            }
+        }
+        vo.setNotTakeIds(notTakeDfOrderIds);
+        vo.setTakeIds(takeDfOrderIds);
+        return vo;
     }
 }

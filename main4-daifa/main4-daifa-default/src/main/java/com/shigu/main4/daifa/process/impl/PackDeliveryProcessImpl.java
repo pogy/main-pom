@@ -1,7 +1,9 @@
 package com.shigu.main4.daifa.process.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -13,16 +15,20 @@ import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.vo.ExpressVO;
+import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.main4.daifa.vo.PrintExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service("packDeliveryProcess")
 public class PackDeliveryProcessImpl implements PackDeliveryProcess {
+    private static final Logger logger = LoggerFactory.getLogger(PackDeliveryProcessImpl.class);
     @Autowired
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
@@ -35,6 +41,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private DaifaSellerMapper daifaSellerMapper;
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    private DaifaWaitSendMapper daifaWaitSendMapper;
+
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
@@ -183,4 +192,26 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         daifaSendMapper.updateByPrimaryKeySelective(senduex);
         return print;
     }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    public OrderSendErrorDealVO dealOrderSendError (Long dfTradeId, String receiverName, String receiverAddr) throws DaifaException{
+        DaifaTrade dt=new DaifaTrade ();
+        dt.setDfTradeId (dfTradeId);
+        dt.setReceiverName (receiverName);
+        dt.setReceiverAddress (receiverAddr);
+        daifaTradeMapper.updateByPrimaryKeySelective (dt);
+        DaifaWaitSend waitSend=new DaifaWaitSend();
+        waitSend.setDfTradeId (dfTradeId);
+        waitSend.setReceiverName (receiverName);
+        waitSend.setReceiverAddress (receiverAddr);
+        DaifaWaitSendExample waitSendExample=new DaifaWaitSendExample ();
+        waitSendExample.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+        daifaWaitSendMapper.updateByExampleSelective (waitSend,waitSendExample);
+        OrderSendErrorDealVO vo=new OrderSendErrorDealVO();
+        vo.setDfTradeId (dfTradeId);
+        vo.setSuccess ("OK");
+        return vo;
+    }
+
 }

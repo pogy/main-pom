@@ -151,6 +151,6 @@ public class CartChildOrderVO implements Comparable<CartChildOrderVO> {
 
     @Override
     public int compareTo(CartChildOrderVO o) {
-        return o == null ? 1 : lastModify.compareTo(o.getLastModify());
+        return o == null ? 1 : (lastModify == null?0:lastModify.compareTo(o.getLastModify()));
     }
 }

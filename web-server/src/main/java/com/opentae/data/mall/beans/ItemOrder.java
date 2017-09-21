@@ -83,6 +83,11 @@ public class ItemOrder implements Serializable {
      */
 	private Boolean disenable;
 
+    /**
+     * 是否已设置淘宝发货,0:未设置,1:已设置
+     */
+    private Boolean tbSend;
+
 	public void setOid(Long oid) {
 		this.oid = oid;
 	}
@@ -203,4 +208,17 @@ public class ItemOrder implements Serializable {
 		return this.disenable;
 	}
 
+    /**
+     * 获取 是否已设置淘宝发货,0:未设置,1:已设置
+     */
+    public Boolean getTbSend() {
+        return this.tbSend;
+    }
+
+    /**
+     * 设置 是否已设置淘宝发货,0:未设置,1:已设置
+     */
+    public void setTbSend(Boolean tbSend) {
+        this.tbSend = tbSend;
+    }
 }

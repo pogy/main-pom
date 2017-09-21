@@ -139,6 +139,14 @@
         <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
+            <label>可发状态：</label>
+            <select class="fmInput" name="canSendState">
+                <option>请选择订单</option>
+                <option value="1" <#if query.canSendState == '1'>selected</#if>>可发货订单</option>
+                <option value="2" <#if query.canSendState == '2'>selected</#if>>不可发货订单</option>
+            </select>
+        </li>
+        <li>
 
 <#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
@@ -187,7 +195,6 @@
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -205,7 +212,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"canSendState","value":"${query.canSendState!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -257,12 +264,13 @@
                 </#if>
                 
             </div>
+            <div class="buyerInfo fl">
+                <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
+            </div>
             <div class="rightConBox fr">
                 <div class="fl pr receiverAddress">
                     <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
-                    <div class="pa addressCon">
-                        ${order.receiverAddress!}
-                    </div>
+                    <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
                 </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">

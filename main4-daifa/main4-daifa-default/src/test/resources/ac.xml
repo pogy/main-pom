@@ -23,7 +23,7 @@
             </map>
         </property>
     </bean>
-    <import resource="spring-database/*.xml"/>
+    <import resource="spring-database/test.xml"/>
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
     </bean>

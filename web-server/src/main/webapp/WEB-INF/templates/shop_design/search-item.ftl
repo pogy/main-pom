@@ -215,6 +215,7 @@
         </div>
         <div class="goods_list clearfix" id="content">
             <div class="goods_list_bd">
+            <#if goodsList.content?size gt 0>
             <#list goodsList.content as g>
                 <div class="item-c">
                     <div class="item">
@@ -251,6 +252,11 @@
                     </div>
                 </div>
             </#list>
+            <#else>
+                <div style="background: url(http://style.571xz.com/xz/css/img/ku.png) no-repeat center 70px; padding: 200px 0">
+                    <p style="font-size: 18px; text-align: center;">Sorry, 未查询到相应商品~</p>
+                </div>
+            </#if>
             </div>
         </div>
     <#assign pageparam="id="+shop.shopId/>

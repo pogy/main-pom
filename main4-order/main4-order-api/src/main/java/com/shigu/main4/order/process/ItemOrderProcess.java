@@ -1,5 +1,7 @@
 package com.shigu.main4.order.process;
 
+import com.shigu.main4.order.exceptions.TbSendException;
+
 /**
  * 订单服务
  */
@@ -12,4 +14,16 @@ public interface ItemOrderProcess {
      * @param soidpid
      */
     void outOfStock(Long soidpid);
+
+    /**
+     * 缺货后，重新拿到货
+     * @param soidpid
+     */
+    void cancleOutOfStock(Long soidpid);
+
+    /**
+     * 回标运单号
+     * @param oid
+     */
+    void tbSend(Long oid) throws TbSendException;
 }

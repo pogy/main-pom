@@ -433,5 +433,26 @@ public class UserLicenseServiceImpl implements UserLicenseService {
         return memberLicense.getUserId();
     }
 
+    /**
+     * 根据userId查询权益手机号
+     * @param userId
+     * @return
+     */
+    @Override
+    public String findPhoneByUserId(Long userId) {
+        if(userId == null){
+            return null;
+        }
+        MemberLicense memberLicense = new MemberLicense();
+        memberLicense.setUserId(userId);
+        memberLicense.setLicenseType(MemberLicenseType.PHONE_BIND.getValue());
+        memberLicense.setLicenseFailure(1);
+        memberLicense = memberLicenseMapper.selectOne(memberLicense);
+        if(memberLicense == null){
+            return null;
+        }
+        return memberLicense.getContext();
+    }
+
 
 }

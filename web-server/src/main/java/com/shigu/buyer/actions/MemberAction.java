@@ -30,6 +30,7 @@ import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
+import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -38,10 +39,7 @@ import com.shigu.session.main4.tool.BeanMapper;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.DateParseUtil;
-import com.shigu.tools.EmailUtil;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -122,6 +120,10 @@ public class MemberAction {
 
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
+
+    @Autowired
+    SendMsgService sendMsgService;
+
     /**
      * 分销商首页
      * @return
@@ -415,7 +417,6 @@ public class MemberAction {
         userCollectService.delShopCollection(ps.getUserId(),parseIds(ids));
         return JsonResponseUtil.success().element("msg","删除成功");
     }
-
     /**
      * 安全设置首页
      * @return
@@ -424,6 +425,14 @@ public class MemberAction {
     public String safeindex(HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
+
+        try {
+            Boolean info_payPwd = memberSimpleService.selIsPayPwdByUserId(ps.getUserId());
+            model.addAttribute("info_payPwd",info_payPwd);
+        } catch (Main4Exception e) {
+            e.printStackTrace();
+
+        }
         if(safeAbout!=null){
             model.addAttribute("safe_level",safeAbout.getScore());
             List<UserLicense> licenses=safeAbout.getLicenses();
@@ -642,7 +651,7 @@ public class MemberAction {
      */
     @RequestMapping("member/safeXgPaymm")
     public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
-        model.addAttribute("hasPayPwd",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()));
+        model.addAttribute("forPayPswType",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()) ? 2 : 1);
         return "buyer/safeXgPaymm";
     }
 
@@ -677,6 +686,48 @@ public class MemberAction {
         return JsonResponseUtil.success();
     }
 
+    /**
+     * 忘记支付密码页面
+     * @return
+     */
+    @RequestMapping("member/safeXgPaymmForget")
+    public String safeXgPaymmForget(HttpSession session, Model model) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+        model.addAttribute("telphone",telephone);
+        model.addAttribute("forPayPswType",3);
+        return "buyer/safeXgPaymm";
+    }
+
+    @RequestMapping("member/saveBackPayPassword")
+    @ResponseBody
+    public JSONObject changePayPassword(String code,String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+
+        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        if(phoneCode==null||!phoneCode.getVerify().equals(code)
+                ||!phoneCode.getPhone().equals(telephone)){//验证不通过
+            throw new JsonErrException("验证码错误");
+        }else {
+            userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        }
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping("member/getVerCode")
+    public JSONObject getVerCode(HttpSession session) throws JsonErrException {
+
+        String code= RedomUtil.redomNumber(6);
+        //直接获取用户手机信息，发送验证码
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+
+        session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
+        return JsonResponseUtil.success();
+    }
 
     /**
      * 验证是否忘记密码来的

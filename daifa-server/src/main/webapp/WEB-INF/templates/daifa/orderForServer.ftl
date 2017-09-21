@@ -150,7 +150,6 @@
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -220,12 +219,13 @@
                 </#if>
                 
             </div>
+            <div class="buyerInfo fl">
+                <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
+            </div>
             <div class="rightConBox fr">
                 <div class="fl pr receiverAddress">
                     <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
-                    <div class="pa addressCon">
-                        ${order.receiverAddress!}
-                    </div>
+                    <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
                 </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">

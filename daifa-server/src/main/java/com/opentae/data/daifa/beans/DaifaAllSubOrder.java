@@ -17,7 +17,15 @@ public class DaifaAllSubOrder implements Serializable{
     @Transient
     private static final long serialVersionUID = -4039183803628953148L;
     @Column("daifa_order.df_order_id")
-    private String childOrderId;//子单id
+    private String childOrderId;//代发子单id
+
+    @Column("daifa_order.order_code")
+    private String orderCode;//订单子订单ID
+    @Column("daifa_order.order_partition_id")
+    private String orderPartitionId;//折单ID
+
+
+
     @Column("daifa_order.pic_path")
     private String imgSrc;//商品图片
     @Column("daifa_order.title")
@@ -200,5 +208,21 @@ public class DaifaAllSubOrder implements Serializable{
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public String getOrderCode () {
+        return orderCode;
+    }
+
+    public void setOrderCode (String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getOrderPartitionId () {
+        return orderPartitionId;
+    }
+
+    public void setOrderPartitionId (String orderPartitionId) {
+        this.orderPartitionId = orderPartitionId;
     }
 }

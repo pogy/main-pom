@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/lottery4.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/lottery5.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/lottery4.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/lottery5.js"></script>
 </head>
 <body>
 
@@ -387,8 +387,8 @@ var webSite = '${webSite!}';
     <div class="layout awardsBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动大揭秘</span></h2>
         <ol>
-            <li>1、一等奖：斐尔可键盘；</li>
-            <li>2、二等奖：ikbc茶轴键盘；</li>
+            <li>1、一等奖：Apple iPad mini4；</li>
+            <li>2、二等奖：AC4000夜鹰X6S千兆游戏无线路由器；</li>
             <li>3、三等奖：耳机，键盘，电子称等电子生活用品随机领取；</li>
             <li>4、参与奖：小茗同学，红牛等健康饮品随机领取。</li>
         </ol>
@@ -396,7 +396,7 @@ var webSite = '${webSite!}';
     <div class="layout rulesBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动规则</span></h2>
         <ol>
-            <li>1、活动时间：上新及抽奖时间：2017.09.11--2017.09.18日。</li>
+            <li>1、活动时间：上新及抽奖时间：2017.09.18--2017.09.25日。</li>
             <li>2、活动商品：仅限“活动页商品”。</li>
             <li>3、抽奖次数：每个ID最多5次，即上新商品个数分别为3、5、9、13、20。</li>
             <li>4、上新商品：须为不同新品，不可同一新品重复上架，否则不计入上新数量。</li>

@@ -55,6 +55,11 @@ public class OrderBO implements Serializable{
      */
     private Integer pageSize;
 
+    /**
+     * 搜索订单类型 1:淘宝
+     */
+    private Integer orderType;
+
 
 
     /**
@@ -171,4 +176,18 @@ public class OrderBO implements Serializable{
     public Integer getStockoutNum() { return stockoutNum; }
 
     public void setStockoutNum(Integer stockoutNum) { this.stockoutNum = stockoutNum; }
+
+    /**
+     * 获取 搜索订单类型 1:淘宝
+     */
+    public Integer getOrderType() {
+        return this.orderType;
+    }
+
+    /**
+     * 设置 搜索订单类型 1:淘宝
+     */
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
 }

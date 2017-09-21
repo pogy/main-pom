@@ -230,7 +230,7 @@ var webSite = '${vo.storeRelation.webSite!}';
                     <p class="wa_shop_goods_title"><a href="item.htm?id=${item.itemId!}&numId=${vo.storeRelation.storeId!}">${item.title!}</a></p>
                     <p><i>￥</i><em>${item.price!}</em></p>
                     <p class="wa_shop_button">
-                        <a class="wa_shop_buttion_up" href="http://www.571xz.net/publish.htm?id=${item.itemId!}&amp;wsit=1"  title="上传淘宝" target="_blank" >淘宝</a>
+                        <a class="wa_shop_buttion_up" href="http://upload.571xz.com/publish.htm?id=${item.itemId!}&amp;wsit=1"  title="上传淘宝" target="_blank" >淘宝</a>
                         <a class="wa_shop_buttion_up" href="http://1688.571xz.com/offer/publish.htm?id=${item.itemId!}"  title="上传阿里" target="_blank">阿里</a>
                         <a href="javascript:;" class="wa_shop_buttion_up j_weixin" title="上传微信" data-id="${item.itemId!}">微信</a>
                         <a class="wa_shop_buttion_add wa_shop_buttion_up" href="javascript:sc_goods(${item.itemId!})" title="加数据包">数据包</a>
@@ -376,7 +376,7 @@ var webSite = '${vo.storeRelation.webSite!}';
                         <p class="wa_shop_goods_title"><a href="item.htm?id=${item.itemId!}&numId=${vo.storeRelation.storeId!}">${item.title!}</a></p>
                         <p><i>￥</i><em>${item.price!}</em></p>
                         <p class="wa_shop_button">
-                            <a class="wa_shop_buttion_up" href="http://www.571xz.net/publish.htm?id=${item.itemId!}&amp;wsit=1"  title="上传淘宝" target="_blank" >淘宝</a>
+                            <a class="wa_shop_buttion_up" href="http://upload.571xz.com/publish.htm?id=${item.itemId!}&amp;wsit=1"  title="上传淘宝" target="_blank" >淘宝</a>
                             <a class="wa_shop_buttion_up" href="http://1688.571xz.com/offer/publish.htm?id=${item.itemId!}"  title="上传阿里" target="_blank">阿里</a>
                             <a href="javascript:;" class="wa_shop_buttion_up j_weixin" title="上传微信" data-id="${item.itemId!}">微信</a>
                             <a class="wa_shop_buttion_add wa_shop_buttion_up" href="javascript:sc_goods(${item.itemId!})" title="加数据包">数据包</a>

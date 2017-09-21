@@ -380,5 +380,10 @@
             <artifactId>main4-order-api</artifactId>
             <version>${main4-order-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>create-excel</groupId>
+            <artifactId>create-excel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

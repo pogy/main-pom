@@ -9,11 +9,13 @@ import com.shigu.main4.cdn.services.OldStoreNumShowService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
@@ -43,9 +45,11 @@ import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
+import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -120,6 +124,9 @@ public class CdnAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    ItemCatService itemCatService;
 
     /**
      * 联系我们
@@ -859,6 +866,54 @@ public class CdnAction {
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
         return "cdn/item";
+    }
+
+    /**
+     * 获取商品详情页左侧广告  随机显示9条
+     * @param goodsId 当前访问商品Id
+     * @return
+     */
+    @RequestMapping("/itemGoat")
+    @ResponseBody
+    public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
+        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
+        String website = cdnService.getWebsite(goodsId);
+        if (StringUtil.isNull(website)){
+            throw new JsonErrException("未获取到站点信息");
+        }
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatLists = ItemGoatVO.copyListFromCache(objFormCache);
+        Set<ItemGoatVO>  goatList = new HashSet<>(goatLists);
+        Collections.shuffle(goatLists);//乱序
+        return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    /**
+     * 获取商品详情页底部广告  固定显示5条
+     * @param goodsId 当前访问商品Id
+     * @return
+     */
+    @RequestMapping("/itemBottomGoat")
+    @ResponseBody
+    public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
+        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
+        String website = cdnService.getWebsite(goodsId);
+        if (StringUtil.isNull(website)){
+            throw new JsonErrException("未获取到站点信息");
+        }
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_BOTTOM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatList = ItemGoatVO.copyListFromCache(objFormCache);
+        return JsonResponseUtil.success().element("goatList",goatList);
     }
 
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {

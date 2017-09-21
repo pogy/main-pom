@@ -120,6 +120,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setFinishTime(order.getFinishTime());
         orderVO.setOuterId(order.getOuterId());
         orderVO.setUserId(order.getUserId());
+        orderVO.setTbSend(order.getTbSend());
         return orderVO;
     }
 
@@ -403,6 +404,7 @@ public class ItemOrderImpl implements ItemOrder {
         com.opentae.data.mall.beans.ItemOrder order=new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
         order.setPayedFee(payMoney);
+        order.setPayTime(new Date());
         itemOrderMapper.updateByPrimaryKeySelective(order);
         changeStatus(OrderStatus.BUYER_PAYED);
     }

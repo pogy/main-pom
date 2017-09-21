@@ -17,8 +17,8 @@ import java.util.List;
 public class DaifaSendSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
-    @Column("daifa_send.dws_id")
-    private String dswId;//代发id
+    @Column("daifa_send.send_id")
+    private String sendId;//代发id
     @Column("daifa_send.df_trade_id")
     private String orderId;//订单id
     @Column("daifa_send.send_status")
@@ -41,10 +41,14 @@ public class DaifaSendSimple implements Serializable{
     private String expressName;//快递名
     @Column("daifa_send.express_code")
     private String expressCode;//快递单号
-    @Column("daifa_send.trade_discount_fee")
+    @Column("daifa_trade.trade_discount_fee")
     private String discountFee;//减免费用
-    @Column("daifa_send.services_fee")
+    @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
 
     private List<DaifaSendOrderSimple> childOrders;//子单数据
 
@@ -163,11 +167,27 @@ public class DaifaSendSimple implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public String getDswId() {
-        return dswId;
+    public String getSendId() {
+        return this.sendId;
     }
 
-    public void setDswId(String dswId) {
-        this.dswId = dswId;
+    public void setSendId(String sendId) {
+        this.sendId = sendId;
+    }
+
+    public String getImQq() {
+        return imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
     }
 }

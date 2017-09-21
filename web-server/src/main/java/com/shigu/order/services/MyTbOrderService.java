@@ -1,14 +1,14 @@
 package com.shigu.order.services;
 
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.OrderCity;
 import com.opentae.data.mall.beans.OrderProv;
 import com.opentae.data.mall.beans.OrderTown;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.OrderCityExample;
-import com.opentae.data.mall.examples.OrderProvExample;
-import com.opentae.data.mall.examples.OrderTownExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;
@@ -36,6 +36,7 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.order.OrderSubmitType;
+import com.shigu.order.vo.OnsaleMarket;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.order.vo.TbOrderAddressInfoVO;
 import com.shigu.order.vo.TinyVO;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by zf on 2017/7/21.
@@ -71,6 +73,9 @@ public class MyTbOrderService {
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private MultipleMapper multipleMapper;
 
 
 
@@ -123,7 +128,15 @@ public class MyTbOrderService {
     }
 
     public ShiguPager<GoodsVO> selectglGoods(String keyword,String webSite, Integer page, Integer size){
-        ShiguAggsPager pager= itemSearchService.searchItem(keyword,webSite,null, null,null,null,null,null,null,null,null, SearchOrderBy.COMMON,page,size,false);
+        //查出支持的几个市场
+        ItemTradeForbidExample forbidExample=new ItemTradeForbidExample();
+        ShiguMarketExample marketExample=new ShiguMarketExample();
+        MultipleExample multipleExample=MultipleExampleBuilder.from(marketExample).leftJoin(forbidExample)
+                .on(forbidExample.createCriteria().equalTo(ItemTradeForbidExample.targetId,ShiguMarketExample.marketId)
+                .andTypeEqualTo(1)).where(marketExample.createCriteria().andIsParentEqualTo(1L).andWebSiteEqualTo(webSite),forbidExample.createCriteria().andForbidIdIsNull()).build();
+        List<OnsaleMarket> onsaleMarkets=multipleMapper.selectFieldsByMultipleExample(multipleExample,OnsaleMarket.class);
+        List<Long> mids=onsaleMarkets.stream().map(OnsaleMarket::getMarketId).collect(Collectors.toList());
+        ShiguAggsPager pager= itemSearchService.searchForTbItem(keyword,webSite,mids, SearchOrderBy.COMMON,page,size);
         ShiguPager<GoodsVO> vo=new ShiguPager<>();
         List<GoodsVO> gs=new ArrayList<>();
         List<Long> ids=new ArrayList<>();
@@ -294,6 +307,8 @@ public class MyTbOrderService {
                         subvo.setXzPrice(rgv.getPiPriceString());
                         subvo.setWebSite(rgv.getWebSite());
                         lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
+                    }else {
+                        vo.setCanOrder(false);
                     }
                 } catch (NotFindRelationGoodsException e) {
                     vo.setCanOrder(false);
