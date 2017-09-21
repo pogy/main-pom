@@ -4,10 +4,12 @@ import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
 import com.opentae.data.mall.beans.MemberLicense;
+import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.shigu.buyer.bo.LoginByPhoneBO;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
+import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -35,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 类名：PhoneUserService
@@ -102,26 +105,28 @@ public class PhoneUserService {
             if(!StringUtil.isNull(request.getUserName())&&!StringUtil.isNull(request.getPassword())){
                 //用户名和密码不为空
                 Subject currentUser = SecurityUtils.getSubject();
-                String passWord = EncryptUtil.encrypt(request.getPassword());
+              //  String passWord = EncryptUtil.encrypt(request.getPassword());
 
                 CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                        request.getUserName(), passWord, false, servletRequest.getRemoteAddr(), "", UserType.MEMBER);
+                        request.getUserName(), request.getPassword(), false, servletRequest.getRemoteAddr(), "", UserType.MEMBER);
                 //星座用户登陆
                 token.setLoginFromType(LoginFromType.XZ);
                 token.setRememberMe(true);
                 //调用安全管理器,安全管理器调用realm
                 try {
-                   // currentUser.login(token);
-                   // currentUser.hasRole(RoleEnum.STORE.getValue());
+                    currentUser.login(token);
+                    currentUser.hasRole(RoleEnum.STORE.getValue());
                     PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
                     resp.setUserId(personalSession.getUserId());
                     String headUrl = personalSession.getHeadUrl();
                     resp.setImgsrc(headUrl);
 
-
                     resp.setUserNick(personalSession.getUserNick());
-                    //生成token,存入redis里(未实现)
                     String uuid = UUIDGenerator.getUUID();
+                    //把token存入redis,设置存活时间30分钟
+                    redisIO.putFixedTemp("phone_login_token",uuid,1800);
+                    //从redis取出token
+                    resp.setToken(redisIO.get("phone_login_token"));
                     //imSeller
                     ShopSession logshop = personalSession.getLogshop();
                     if(!StringUtil.isNull(logshop)){
@@ -130,7 +135,14 @@ public class PhoneUserService {
                     }else{
                         resp.setImSeller(false);
                     }
-                    resp.setToken(uuid);
+                    //查询是否绑定手机号
+//                    MemberLicenseExample memberLicenseExample=new MemberLicenseExample();
+//                    MemberLicenseExample memberLicenseExample = new MemberLicenseExample();
+//                    memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId());
+//                    MemberLicense memberLicense = new MemberLicense();
+//                    memberLicense.setUserId(personalSession.getUserId());
+//                    MemberLicense memberLicenses = memberLicenseMapper.selectOne(memberLicense);
+
                     resp.setSuccess(true);
                     return resp;
                 } catch (AuthenticationException e) {

@@ -43,6 +43,10 @@ public class ShopSearchRequest extends Request<ShopSearchResponse> {
 	}
 
 	public Integer getSize(){
+		if (size == null) {
+			//移动端默认个数
+			return 10;
+		}
 		return size;
 	}
 

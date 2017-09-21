@@ -14,6 +14,7 @@ public enum PhoneMsgTypeEnum {
     ,PHONE_BIND_TYPE_MSG("移动端绑定手机验证码","phone_bind_type_msg_")
     ,PHONE_RDS3_TEMP_USER_TYPE_MSG("移动端第三方登陆信息","phone_rd3_temp_user_type_msg_")
     ,PHONE_USER_INFO("移动端用户信息","phone_user_session_info_type_msg_")
+    ,PHONE_LOGIN_TOKEN("移动端登录token","phone_login_token")
     ,;
     private final String title;
     private final String type;
