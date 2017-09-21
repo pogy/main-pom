@@ -17,8 +17,6 @@ public class AfterSaleAcceptMessage implements Serializable {
     private Boolean canRefund;
     //退拒绝原因
     private String reason;
-    //代发的收货地址
-    private String daifaReceiveAddr;
 
     public Long getRefundId() {
         return refundId;
@@ -44,11 +42,4 @@ public class AfterSaleAcceptMessage implements Serializable {
         this.reason = reason;
     }
 
-    public String getDaifaReceiveAddr() {
-        return daifaReceiveAddr;
-    }
-
-    public void setDaifaReceiveAddr(String daifaReceiveAddr) {
-        this.daifaReceiveAddr = daifaReceiveAddr;
-    }
 }
