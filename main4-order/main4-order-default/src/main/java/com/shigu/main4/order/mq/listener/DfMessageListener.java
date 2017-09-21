@@ -60,6 +60,8 @@ public class DfMessageListener implements MessageListener {
         send_all(SendAllMessage.class),
 
         stop_trade(StopTradeMessage.class),
+
+        shop_refuse(ShopRefuseMessage.class),
         ;
         public final Class<?> clazz;
 
@@ -100,6 +102,9 @@ public class DfMessageListener implements MessageListener {
                 break;
             case stop_trade:
                 stopTrade(baseMessage);
+                break;
+            case shop_refuse:
+                shopRefuse(baseMessage);
                 break;
         }
         return Action.CommitMessage;
@@ -149,5 +154,10 @@ public class DfMessageListener implements MessageListener {
                 logger.error(e.getMessage(), e);
             }
         });
+    }
+
+    public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
+        ShopRefuseMessage data = msg.getData();
+        SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).shopRefuse(data.getNum());
     }
 }
