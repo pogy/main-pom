@@ -1,7 +1,9 @@
 package com.shigu.main4.item.services;
 
+import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.vo.EverUsedCat;
 import com.shigu.main4.item.vo.EverUsedCatForAdd;
+import com.shigu.main4.item.vo.ItemGoatCidAndWebsiteVO;
 import com.shigu.main4.item.vo.TbCat;
 
 import java.util.List;
@@ -46,5 +48,11 @@ public interface ItemCatService {
      */
     boolean instanOfWoman(Long cid);
 
-
+    /**
+     * 根据goodsId查cid
+     * @param goodsId
+     * @return
+     throws ItemException
+     */
+    public ItemGoatCidAndWebsiteVO getItemCid(Long goodsId) throws ItemException;
 }
