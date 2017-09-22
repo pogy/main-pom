@@ -1,10 +1,8 @@
 package com.shigu.admin.actions;
 
-import com.shigu.admin.bo.UserAndRoleBO;
-import com.shigu.admin.services.UserAndRoleService;
-import com.shigu.admin.vo.RoleTreeVO;
-import com.shigu.admin.vo.UserRoleVO;
-import com.shigu.admin.vo.UserTreeVO;
+import com.shigu.admin.bo.RoleAndPermissionBO;
+import com.shigu.admin.services.RoleAndPermissionService;
+import com.shigu.admin.vo.*;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +28,18 @@ import java.util.concurrent.ExecutionException;
 @Controller
 public class RoleAndPermissionAction {
     @Autowired
-    UserAndRoleService userAndRoleService;
+    RoleAndPermissionService roleAndPermissionService;
 
-    @RequestMapping("admin/userAndRole")
-    public String userAndRole(UserAndRoleBO bo, Model model) throws ExecutionException, InterruptedException {
-
+    @RequestMapping("admin/roleAndPermission")
+    public String roleAndPermission(RoleAndPermissionBO bo, Model model) throws ExecutionException, InterruptedException {
 
         //Session session = SecurityUtils.getSubject().getSession();
         //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=999999990L;
 
-        List<UserTreeVO> userTree= userAndRoleService.listAllUser (sellerId);
-        List<RoleTreeVO> roleTree= userAndRoleService.listAllRole (sellerId);
-
-        model.addAttribute("userTree", userTree);
+        List<RoleTreeVO> roleTree= roleAndPermissionService.listAllRole (sellerId);
+        List<PermissionTreeVO> permissionTree= roleAndPermissionService.listAllPermission (sellerId);
+        model.addAttribute("permissionTree", permissionTree);
         model.addAttribute("query", bo);
         model.addAttribute("roleTree", roleTree);
         model.addAttribute("userName", "gzy");
@@ -54,7 +50,7 @@ public class RoleAndPermissionAction {
 
     /**
      * ====================================================================================
-     * @方法名： jsonUserAndRole
+     * @方法名： jsonRoleAndPermission
      * @user gzy 2017/9/21 14:00
      * @功能：
      * @param: [bo]
@@ -63,11 +59,11 @@ public class RoleAndPermissionAction {
      * ====================================================================================
      *
      */
-    @RequestMapping("admin/jsonUserAndRole")
+    @RequestMapping("admin/jsonRoleAndPermission")
     @ResponseBody
-    public JSONObject jsonUserAndRole(UserAndRoleBO bo) throws DaifaException {
+    public JSONObject jsonRoleAndPermission(RoleAndPermissionBO bo) throws DaifaException {
 
-        List<UserRoleVO> list=userAndRoleService.listRoleByUserId (bo.getUserId ());
+        List<RolePermissionVO> list=roleAndPermissionService.listPermissionByRoleId (bo.getRoleId ());
         JSONObject obj=new JSONObject ();
         obj.put ("list",list);
         obj.put ("result","success");
@@ -77,7 +73,7 @@ public class RoleAndPermissionAction {
     }
     /**
      * ====================================================================================
-     * @方法名： jsonInsertUserAndRoles
+     * @方法名： jsonupdateRoleAndPermissions
      * @user gzy 2017/9/22 10:06
      * @功能： 更新用户角色
      * @param: [bo]
@@ -86,12 +82,12 @@ public class RoleAndPermissionAction {
      * ====================================================================================
      *
      */
-    @RequestMapping("admin/jsonupdateUserAndRoles")
+    @RequestMapping("admin/jsonupdateRoleAndPermissions")
     @ResponseBody
-    public JSONObject updateUserAndRoles(UserAndRoleBO bo)throws DaifaException{
+    public JSONObject updateRoleAndPermissions(RoleAndPermissionBO bo)throws DaifaException{
 
         JSONObject obj=new JSONObject ();
-        int i= userAndRoleService.updateUserAndRoles (bo);
+        int i= roleAndPermissionService.updateRoleAndPermissions (bo);
         if(i>0){
             obj.put ("result","success");
             obj.put ("msg","操作成功");
