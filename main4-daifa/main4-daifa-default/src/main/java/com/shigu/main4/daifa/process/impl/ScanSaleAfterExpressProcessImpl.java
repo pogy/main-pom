@@ -3,12 +3,15 @@ package com.shigu.main4.daifa.process.impl;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaAfterSale;
 import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaTrade;
 import com.opentae.data.daifa.examples.DaifaAfterSaleExample;
 import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -36,6 +39,8 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
     private DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    private DaifaOrderMapper daifaOrderMapper;
 
     @Override
     public List<ExpressRelevanceVO> expressScan(String expressCode){
@@ -56,47 +61,85 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
         daifaAfterSaleSubExample.clear();
         daifaAfterSaleSubExample.createCriteria().andAfterSaleIdIn(saleIds);
         subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
-        Map<Long,List<DaifaAfterSaleSub>> subMap=BeanMapper.groupBy(subs,"afterSaleId",Long.class);
+        Map<Long,List<DaifaAfterSaleSub>> subGroup=BeanMapper.groupBy(subs,"afterSaleId",Long.class);
 
         DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
         daifaTradeExample.createCriteria().andDfTradeIdIn(dfTradeIds);
         List<DaifaTrade> trades=daifaTradeMapper.selectByExample(daifaTradeExample);
         Map<Long,DaifaTrade> tradeMap=BeanMapper.list2Map(trades,"dfTradeId",Long.class);
 
+        List<Long> oids=BeanMapper.getFieldList(subs,"dfOrderId",Long.class);
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+        List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
+        Map<Long,DaifaOrder> orderMap=BeanMapper.list2Map(orders,"dfOrderId",Long.class);
+
+
         for(DaifaAfterSale sale:sales){
             ExpressRelevanceVO vo=new ExpressRelevanceVO();
-            DaifaTrade trade=tradeMap.get(sale.getDfTradeId());
-            vo.setCreateTime(DateUtil.dateToString(trade.getCreateTime(),DateUtil.patternD));
-            vo.setDiscountFee(trade.getTradeDiscountFee());
-            vo.setDfTradeId(trade.getDfTradeId());
-            vo.setExpressFee(trade.getExpressFee());
-            vo.setImWw(trade.getBuyerWw());
-            vo.setReceiverAddress(trade.getReceiverAddress());
-            vo.setReceiverName(trade.getReceiverName());
-            vo.setReceiverPhone(trade.getReceiverPhone());
-            vo.setRemark(sale.getRemark());
-            vo.setServersFee(trade.getServicesFee());
-            vo.setTotalFee(trade.getTotalFee());
-            vo.setSaleId(sale.getAfterSaleId());
-            List<ExpressRelevanceSubVO> subVOs=new ArrayList<>();
-            for(DaifaAfterSaleSub sub:subMap.get(sale.getAfterSaleId())){
+            DaifaTrade t=tradeMap.get(sale.getDfTradeId());
+            vo.setAllChildRemark(sale.getRemark());
+            vo.setAfterSaleTime(DateUtil.dateToString(sale.getCreateTime(),DateUtil.patternD));
+            vo.setBuyerRemark(sale.getBuyerRemark());
+            vo.setDiscountFee(t.getTradeDiscountFee());
+            vo.setExpressCode(t.getExpressCode());
+            vo.setExpressFee(t.getExpressFee());
+            vo.setExpressName(t.getExpressName());
+            vo.setImQq(t.getBuyerQq());
+            vo.setImTel(t.getBuyerTelephone());
+            vo.setImWw(t.getBuyerWw());
+            vo.setOrderId(t.getDfTradeId());
+            vo.setReceiverAddress(t.getReceiverAddress());
+            vo.setReceiverName(t.getReceiverName());
+            vo.setReceiverPhone(t.getReceiverPhone());
+            vo.setSendTime(DateUtil.dateToString(t.getSendTime(),DateUtil.patternD));
+            vo.setServersFee(t.getServicesFee());
+            vo.setTotalFee(t.getTotalFee());
+            vo.setIsTbOrder(t.getDaifaType()==2);
+            List<ExpressRelevanceSubVO> subvos=new ArrayList<>();
+            List<DaifaAfterSaleSub> subList=subGroup.get(sale.getAfterSaleId());
+            for(DaifaAfterSaleSub s:subList){
                 ExpressRelevanceSubVO subvo=new ExpressRelevanceSubVO();
-                subvo.setAfterStatus(sub.getAfterStatus());
-                subvo.setDfOrderId(sub.getDfOrderId());
-                subvo.setGoodsNum(sub.getGoodsNum());
-                subvo.setImgUrl(sub.getPicPath());
-                subvo.setTitle(sub.getTitle());
-                subvo.setIsScan(expressCode.equals(sub.getApplyExpressCode())?1:0);
-                subvo.setPiPrice(sub.getSinglePiPrice());
-                subvo.setPostCode(sub.getApplyExpressCode());
-                subvo.setPostName(sub.getApplyExpressName());
-                subvo.setPrice(sub.getSinglePrice());
-                subvo.setPropStr(sub.getPropStr());
-                subvo.setSingleServerFee(MoneyUtil.dealPrice(MoneyUtil.StringToLong(trade.getServicesFee())/trade.getGoodsNum()));
-                subvo.setStoreGoodsCode(sub.getStoreGoodsCode());
-                subVOs.add(subvo);
+                DaifaOrder o=orderMap.get(s.getDfOrderId());
+                subvo.setChildOrderId(s.getDfOrderId());
+                subvo.setChildRemark(s.getRemark());
+                subvo.setChildServersFee(o.getSingleServicesFee());
+                subvo.setGoodsProperty(s.getPropStr());
+                subvo.setImgSrc(s.getPicPath());
+                subvo.setNum(s.getGoodsNum());
+                subvo.setPayPrice(o.getSinglePiPrice());
+                subvo.setPiPrice(o.getSinglePiPrice());
+                subvo.setTitle(o.getTitle());
+                subvo.setStoreGoodsCode(o.getStoreGoodsCode());
+                subvo.setAfterSalePostCode(s.getApplyExpressCode());
+                subvo.setAfterSalePostName(s.getApplyExpressName());
+                switch (s.getAfterStatus()){
+                    case 1: case 2: {
+                        subvo.setAfterSaleState(1);
+                        break;
+                    }
+                    case 3:{
+                        subvo.setAfterSaleState(4);
+                        break;
+                    }
+                    case 4: case 5: case 6: case 7: case 10:{
+                        subvo.setAfterSaleState(5);
+                        break;
+                    }
+                }
+                if(subvo.getAfterSaleState()==null){
+                    subvo.setAfterSaleState(0);
+                }else{
+                    subvo.setAfterSaleState(s.getAfterType()==2?subvo.getAfterSaleState()+20:subvo.getAfterSaleState());
+                }
+                subvo.setChildRemark(o.getOrderRemark());
+                subvo.setChildServersFee(o.getSingleServicesFee());
+                subvo.setIsInCangKu(s.getInStock()==null);
+                subvo.setNowScanPostIs(expressCode.equals(s.getApplyExpressCode()));
+                subvos.add(subvo);
             }
-            vo.setOrders(subVOs);
+            vo.setChildOrders(subvos);
+            vo.setChildOrderNum(subList.size());
             list.add(vo);
         }
         return list;

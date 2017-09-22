@@ -393,10 +393,10 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertNotEquals(list.size(), 0);
         int num = 0;
         for (ExpressRelevanceVO vo : list) {
-            for (ExpressRelevanceSubVO svo : vo.getOrders()) {
-                if (svo.getIsScan() == 1) {
+            for (ExpressRelevanceSubVO svo : vo.getChildOrders()) {
+                if (svo.getNowScanPostIs()) {
                     num++;
-                    assertEquals(svo.getPostCode(), postCode);
+                    assertEquals(svo.getAfterSalePostCode(), postCode);
                 }
             }
         }

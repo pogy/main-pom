@@ -2,16 +2,13 @@ package com.shigu.daifa.actions;
 
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.shigu.daifa.services.DaifaSaleAfterService;
-import com.shigu.daifa.vo.DaifaAfterReceiveExpresStockVO;
+import com.shigu.daifa.vo.*;
 import com.shigu.daifa.bo.ParcelSearchBO;
 import com.shigu.daifa.bo.PutInStorageBO;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.services.DaifaSaleAfterService;
-import com.shigu.daifa.vo.AfterSumVO;
-import com.shigu.daifa.vo.DaifaSaleAfterVO;
-import com.shigu.daifa.vo.RefuseReasonVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
@@ -94,10 +91,27 @@ public class DaifaSaleAfterAction {
     }
 
     @RequestMapping("daifa/returnOrder")
-    public String returnOrder(HttpServletRequest request,Model model) throws DaifaException {
-        List<DaifaOrder> daifaOrders = daifaSaleAfterService.returnOrder();
-        //TODO
-        return "daifa/parcelSweepCode";
+    @ResponseBody
+    public JSONObject returnOrder(String postCode) throws DaifaException {
+        List<DaifaSalePackageOrderVO> daifaOrders = daifaSaleAfterService.returnOrder(postCode);
+        JSONObject obj=JsonResponseUtil.success();
+        obj.put("orders",daifaOrders);
+        obj.put("postCode",postCode);
+        obj.put("callbackMsg","售后订单中暂无找到对应的此快递单号，建议此包裹入库");
+        if(daifaOrders.size()>0){
+            String postName=null;
+            find:for(DaifaSalePackageOrderVO vo:daifaOrders){
+                for(DaifaSalePackageOrderSubVO subvo:vo.getChildOrders()){
+                    if(postCode.equals(subvo.getAfterSalePostCode())){
+                        postName=subvo.getAfterSalePostName();
+                        break find;
+                    }
+                }
+            }
+            obj.put("postName",postName);
+            obj.put("callbackMsg","已查询到此快递单在如下售后订单中，并且已自动标记已收到售后商品");
+        }
+        return obj;
     }
 
     /**

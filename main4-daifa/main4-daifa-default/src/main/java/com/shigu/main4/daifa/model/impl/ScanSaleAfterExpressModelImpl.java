@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Repository
@@ -29,6 +30,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
         DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
         daifaAfterSaleSubExample.createCriteria().andApplyExpressCodeEqualTo(expressCode);
         List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
+        List<Long> updateIds=new ArrayList<>();
         if(subs.size()==0){
             throw new DaifaException("not find after-sale");
         }else{
@@ -49,6 +51,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                     stock.setReceivedExpressName(sub.getApplyExpressName());
                     stock.setCreateTime(new Date());
                     daifaAfterReceiveExpresStockMapper.insertSelective(stock);
+                    updateIds.add(sub.getAfterSaleSubId());
                 }
             }else{
                 List<Long> oids= BeanMapper.getFieldList(stocks,"dfOrderId",Long.class);
@@ -72,13 +75,18 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                             stock.setReceivedExpressName(stocks.get(0).getReceivedExpressName());
                             daifaAfterReceiveExpresStockMapper.insertSelective(stock);
                         }
+                        updateIds.add(sub.getAfterSaleSubId());
                     }
                 }
             }
-            DaifaAfterSaleSub sub=new DaifaAfterSaleSub();
-            sub.setAfterStatus(4);
-            sub.setReceivedTime(new Date());
-            daifaAfterSaleSubMapper.updateByExampleSelective(sub,daifaAfterSaleSubExample);
+        }
+        if(updateIds.size()>0){
+            DaifaAfterSaleSub sub1=new DaifaAfterSaleSub();
+            sub1.setAfterStatus(4);
+            sub1.setReceivedTime(new Date());
+            daifaAfterSaleSubExample.clear();
+            daifaAfterSaleSubExample.createCriteria().andAfterSaleSubIdIn(updateIds);
+            daifaAfterSaleSubMapper.updateByExampleSelective(sub1,daifaAfterSaleSubExample);
         }
         return null;
     }

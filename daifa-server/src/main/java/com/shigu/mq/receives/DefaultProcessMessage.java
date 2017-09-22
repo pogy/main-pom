@@ -51,7 +51,7 @@ public class DefaultProcessMessage {
                 orderConsumerService.setPost(body);
                 break;
             }
-            case REPROCE_AGREE:{
+            case REPRICE_AGREE:{
                 orderConsumerService.reproce(body);
                 break;
             }

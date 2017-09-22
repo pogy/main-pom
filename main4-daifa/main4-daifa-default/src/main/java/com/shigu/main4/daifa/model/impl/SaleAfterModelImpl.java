@@ -331,7 +331,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
         //读取退款成功的id集合
         List<Long> entIds = new ArrayList<>();
+        Long maxMoney=0L;
         for (DaifaAfterSaleSub sub1 : subs) {
+            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
             if(sub1.getAfterStatus()>4){
                 continue;
             }
@@ -342,6 +344,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
                 entIds.add(sub1.getAfterSaleSubId());
             }
+        }
+        if(MoneyUtil.StringToLong(money)>maxMoney){
+            throw new DaifaException("售后状态错误,超过可退总额");
         }
         //entIds数量为0,即所有都已经处理过,跳出
         if(entIds.size()==0){
@@ -370,7 +375,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
         map.put("refundId",refundId);
-        map.put("storeMoney",money);
+        map.put("storeMoney",MoneyUtil.StringToLong(money));
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");
@@ -595,6 +600,17 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //议价信息错误
             throw new DaifaException("议价信息错误");
         }
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(refundId);
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
+        Long maxMoney=0L;
+        for (DaifaAfterSaleSub sub1 : subs) {
+            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+        }
+        if(MoneyUtil.StringToLong(money)>maxMoney){
+            throw new DaifaException("售后状态错误,超过可退总额");
+        }
+
         if(daifaAfterMoneyConsults.get(0).getConsultType()==2){
             DaifaAfterMoneyConsult insert=new DaifaAfterMoneyConsult();
             insert.setRefundId(refundId);
@@ -613,7 +629,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
         map.put("refundId",refundId);
-        map.put("storeMoney",money);
+        map.put("storeMoney",MoneyUtil.StringToLong(money));
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");

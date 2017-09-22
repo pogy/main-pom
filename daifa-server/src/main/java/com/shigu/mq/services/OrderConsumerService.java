@@ -99,8 +99,8 @@ public class OrderConsumerService {
             ReturnExpress ex=JSON.parseObject(JSON.toJSONString(res.getData()), ReturnExpress.class);
             SaleAfterExpressBO bo=new SaleAfterExpressBO();
             bo.setRefundId(ex.getRefundId());
-            bo.setExpressCode(ex.getCourierNO());
-            bo.setExpressName(ex.getCourier());
+            bo.setExpressCode(ex.getCourierNumber());
+            bo.setExpressName(ex.getCompany());
             try {
                 saleAfterProcess.saleAfterExpress(bo);
             } catch (DaifaException e) {

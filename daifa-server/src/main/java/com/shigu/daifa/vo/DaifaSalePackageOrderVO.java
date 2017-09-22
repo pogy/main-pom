@@ -1,20 +1,8 @@
-package com.shigu.main4.daifa.vo;
+package com.shigu.daifa.vo;
 
-import java.io.Serializable;
 import java.util.List;
 
-/**
- * @类编号
- * @类名称：ExpressRelevanceVO
- * @文件路径：com.shigu.main4.daifa.vo.ExpressRelevanceVO
- * @内容摘要：
- * @编码作者：gzy
- * @创建日期：2017/9/15 12:25
- * @version: main-pom
- * @since: main-pom
- * @commonents:
- */
-public class ExpressRelevanceVO implements Serializable{
+public class DaifaSalePackageOrderVO {
     private Long orderId;
     private String sendTime;
     private String afterSaleTime;
@@ -34,7 +22,7 @@ public class ExpressRelevanceVO implements Serializable{
     private Integer childOrderNum;
     private String allChildRemark;
     private Boolean isTbOrder;
-    private List<ExpressRelevanceSubVO> childOrders;
+    private List<DaifaSalePackageOrderSubVO> childOrders;
 
     public Long getOrderId() {
         return this.orderId;
@@ -188,11 +176,11 @@ public class ExpressRelevanceVO implements Serializable{
         this.isTbOrder = isTbOrder;
     }
 
-    public List<ExpressRelevanceSubVO> getChildOrders() {
+    public List<DaifaSalePackageOrderSubVO> getChildOrders() {
         return this.childOrders;
     }
 
-    public void setChildOrders(List<ExpressRelevanceSubVO> childOrders) {
+    public void setChildOrders(List<DaifaSalePackageOrderSubVO> childOrders) {
         this.childOrders = childOrders;
     }
 }

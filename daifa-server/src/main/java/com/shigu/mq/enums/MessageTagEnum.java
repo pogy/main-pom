@@ -10,7 +10,7 @@ public enum MessageTagEnum {
     ORDER_REFUND_HASITEM("order_refund_hasitem","申请退货"),
     REFUND_COURIER_NUMBER("refund_courier_number","退货填写快递单"),
     REFUND_COURIER_NUMBER_MODIFY("refund_courier_number_modify","退货修改快递单"),
-    REPROCE_AGREE("reprice_agree","同意/拒绝议价");
+    REPRICE_AGREE("reprice_agree","同意/拒绝议价");
     private String tag;
     private String detail;
     MessageTagEnum(String tag, String detail){
