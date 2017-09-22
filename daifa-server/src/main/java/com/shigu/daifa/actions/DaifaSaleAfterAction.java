@@ -8,6 +8,8 @@ import com.shigu.daifa.bo.PutInStorageBO;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
+import com.shigu.daifa.services.DaifaSaleAfterService;
+import com.shigu.daifa.vo.AfterSumVO;
 import com.shigu.daifa.vo.DaifaSaleAfterVO;
 import com.shigu.daifa.vo.RefuseReasonVO;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -38,8 +40,10 @@ public class DaifaSaleAfterAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId());
+        AfterSumVO sum=daifaSaleAfterService.sum(auth.getDaifaSellerId());
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
+        model.addAttribute("orderStatistics",sum);
         model.addAttribute("pageOption",pager.selPageOption(10));
         return "daifa/afterSaleOrder";
     }

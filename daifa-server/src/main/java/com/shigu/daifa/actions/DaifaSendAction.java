@@ -5,6 +5,7 @@ import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SendBO;
 import com.shigu.daifa.services.DaifaSendService;
 import com.shigu.daifa.vo.DaifaSendVO;
+import com.shigu.daifa.vo.SendSumVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,12 @@ public class DaifaSendAction {
     }
     @RequestMapping("daifa/hasBeenShipped")
     public String daifaSendIndex(SendBO bo , Model model){
+
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaSendVO> pager = daifaSendService.selPageData(bo,auth.getDaifaSellerId());
-
+        SendSumVO sum=daifaSendService.sum(auth.getDaifaSellerId());
         model.addAttribute("orders",pager.getContent());
+        model.addAttribute("orderStatistics",sum);
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
 

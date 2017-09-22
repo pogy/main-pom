@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper">
+
+
+    <select id="selectAfterCount" resultType="java.lang.Integer">
+        select
+          count(DISTINCT df_trade_id)
+        from
+          daifa_after_sale_sub
+        where
+          seller_id=${sellerId}
+        <if test="afterType!=null">
+          and after_type=${afterType}
+        </if>
+        and after_status not in (0,7,10)
+    </select>
+</mapper>
