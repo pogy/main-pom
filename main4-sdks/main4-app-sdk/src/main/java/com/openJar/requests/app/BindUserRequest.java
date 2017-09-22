@@ -22,9 +22,9 @@ public class BindUserRequest extends Request<BindUserResponse> {
 	//验证码	必须
 	@NotNull
 	private String code;
-	//绑定类型,淘宝3,qq4,微信5,阿里6,星座7,手机7
+	//绑定类型:淘宝 TAOBAO,qq QQ,微信 WX,阿里 ALI,星座 XZ,手机 PHONE
 	@NotNull
-	private Integer type;
+	private String type;
 	//第三方用户名
 	private String userNick;
 
@@ -52,11 +52,11 @@ public class BindUserRequest extends Request<BindUserResponse> {
 		this.code=code;
 	}
 
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

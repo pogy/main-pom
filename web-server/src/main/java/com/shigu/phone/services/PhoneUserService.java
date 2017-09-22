@@ -359,7 +359,7 @@ public class PhoneUserService {
         }
         Rds3TempUser rds3TempUser = new Rds3TempUser();
         rds3TempUser.setSubUserKey(request.getTempId());
-        rds3TempUser.setLoginFromType(LoginFromType.getLoginFromType(request.getType()));
+        rds3TempUser.setLoginFromType(LoginFromType.valueOf(request.getType()));
         rds3TempUser.setSubUserName(request.getUserNick());
         //Rds3TempUser rds3TempUser = phoneMsgAction.getPhoneMsg(request.getTempId(), PhoneMsgTypeEnum.PHONE_RDS3_TEMP_USER_TYPE_MSG, Rds3TempUser.class);
         if (!request.getTempId().equals(rds3TempUser.getSubUserKey())) {
