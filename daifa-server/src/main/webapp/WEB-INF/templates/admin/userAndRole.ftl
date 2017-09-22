@@ -7,15 +7,35 @@
     <title>用户角色 - 星帮后台管理 - 四季星座网</title>
 
 <#include "/common/host_config.ftl">
-
-    <link href="http://style.571xz.com/v2/dfgl/css/scanBarCode.css" rel="stylesheet">
-
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <!--
-    <script src="http://style.571xz.com/v2/dfgl/js/userAndRole.js"></script>
+    <link href="http://style.571xz.com/v2/dfgl/css/scanBarCode.css" rel="stylesheet">
     -->
+    <link href="${daifa_host}/fonts/demo.css" rel="stylesheet">
+    <link href="${daifa_host}/css/table.css" rel="stylesheet">
+    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    <script src="${daifa_host}js/admin/sys/userandrole/userAndRole.js"></script>
+
     <style>
-        .div-inline{ display:inline}
+        .div-inline{ display:inline;}
+        .divxz{
+            color: blue;
+            border: 1px solid #ffb6ac;
+            background-color: #FBEC88;
+        }
+        .div-tree{
+            float:left;
+            display:inline;
+            width:45%;
+            height: 800px;
+            padding-left: 10px;
+            margin-left: 10px;
+            margin-top: 10px;
+            border: 2px solid #95B8E7;
+        }
+        .button-position{
+            margin-left: 10px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -40,20 +60,24 @@
     <#include "/admin/common/menu_admin.ftl">
     </div>
     <div class="contentBox">
-        <input type="button" id="chanel1" name="chanel1" class="fmButton fmButton-blue" value="保存" onclick="saveUserAndRole()">
-        <input type="text" id="userId" name="userId" >
-        <div class="scanContainer fs14 yahei">
-            <div style="float:left;display:inline;width:45%;" >
+        <input type="button" id="chanel1" name="chanel1" class="fmButton fmButton-blue button-position" value="保存" onclick="saveUserAndRole()">
+        <input type="hidden" id="userId" name="userId" >
+        <div class="scanContainer fs14 yahei" style="margin-left: 10px;">
+            <div class="div-tree" >
             <ul class="clearfix">
+                <li class="tddiv" ><p>用户树</p></li>
             <#list userTree as listuser>
-                <li class="tddiv" onclick="checkUser('${listuser.daifaWorkerId!}');"><p>${listuser.userName!}</p></li>
+                <li id="liuserid" class="tddiv" onclick="checkUser(this,'${listuser.daifaWorkerId!}');">
+                    <p><i class="icon-c-user"></i>${listuser.userName!}<!--<i class="iconfont">&#xe65f;</i>--></p>
+               </li>
             </#list>
             </ul>
 
             </div>
 
-            <div style="float:left;display:inline;width:45%;" >
+            <div class="div-tree" >
                 <ul class="clearfix">
+                    <li class="tddiv" ><p>角色树</p></li>
                 <#list roleTree as listrole>
                     <li class="tddiv" >
                         <input type="checkbox" id="roleId" name="roleId" value="${listrole.roleId!}">
@@ -68,77 +92,7 @@
 </div>
 <!--省略end，让浏览器自动添加-->
 <script>
-    $(function(){
-        //左侧菜单的选中
 
-    });
-    //选择具体的用户并查询出选中的角色
-    function checkUser(userId){
-        $("#userId").val(userId);
-        //========================清理选中start==========
-        $("input[name^='roleId']").each(function(){
-
-            if($(this).prop("checked"))
-            {
-                $(this).removeAttr("checked");
-            }
-        });
-        //========================清理选中end==============
-        //查询这个用户下的角色
-        $.post(daifa_host+"admin/jsonUserAndRole.json",
-                {"userId":userId},
-                function(data){
-
-
-                    var lists=data.list;
-                    for(var i=0; i<lists.length;i++){
-                       var roleidse=lists[i].roleId;
-                        $("input[name^='roleId']").each(function(){
-                            if(this.value==roleidse){
-                                $(this).prop("checked",true);
-                            }
-                        });
-                    }
-                    /*if(data.result=="success"){
-                        alert("修改完成");
-                    }else{
-                        alert("修改失败,"+data.msg);
-                    }*/
-                });
-
-    }
-    //保存用户角色
-    function saveUserAndRole(){
-       var userId= $("#userId").val();
-       var roleIds=[];
-       //取得选中的roleId
-        //========================清理选中start==========
-        $("input[name^='roleId']").each(function(){
-
-            if($(this).prop("checked"))
-            {
-                //$(this).removeAttr("checked");
-                //roleId.
-                roleIds.push(this.value);
-
-            }
-        });
-        //========================清理选中end==============
-
-        roleIds.join(',');//以'，'分隔
-        //alert("userId="+userId+"@@@roleId="+roleIds);
-        $.post(daifa_host+"admin/jsonupdateUserAndRoles.json",
-                {"userId":userId,roleIds:roleIds},
-                function(data){
-
-                    if(data.result=="success"){
-                        alert(data.msg);
-                    }else{
-                        alert(data.msg);
-                    }
-
-                });
-    }
 </script>
 
 
