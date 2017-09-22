@@ -1285,8 +1285,8 @@ $(function(){
     $(document).on('click', '[jbtn=searchBtn]', function(){
         $$.search({
             page: 1,
-            roleName: $('.orderSearchBox [name=roleName]').val(),
-            roleTag: $('.orderSearchBox [name=roleTag]').val(),
+            namespace: $('.orderSearchBox [name=namespace]').val(),
+            permissionTag: $('.orderSearchBox [name=permissionTag]').val(),
             createUserId: $('.orderSearchBox [name=createUserId]').val(),
             status: $('.orderSearchBox [name=status]').val()
         });

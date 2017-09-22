@@ -17,7 +17,7 @@
             display: inline-block;
             text-align: right;
         }
-        .orderCon .tddiv{width:14%;}
+        .orderCon .tddiv{width:11%;}
     </style>
 </head>
 <body>
