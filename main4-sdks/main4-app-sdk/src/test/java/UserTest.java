@@ -1,5 +1,8 @@
 import com.openJar.requests.app.BindUserRequest;
+import com.openJar.requests.app.GetPhoneMsgRequest;
+import com.openJar.requests.app.RegistRequest;
 import com.openJar.responses.app.BindUserResponse;
+import com.openJar.responses.app.RegistResponse;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.Rds3TempUser;
@@ -15,6 +18,24 @@ import org.junit.Test;
  * 描述：
  */
 public class UserTest extends BaseSDKClientTest {
+
+    @Test
+    public void testMsgSendRegist() {
+        GetPhoneMsgRequest getPhoneMsgRequest = new GetPhoneMsgRequest();
+        getPhoneMsgRequest.setTelephone("18637515786");
+        getPhoneMsgRequest.setType(2);
+        client.execute(getPhoneMsgRequest);
+    }
+    @Test
+    public void testRegist() {
+        RegistRequest registRequest = new RegistRequest();
+        registRequest.setTelephone("18637515786");
+        registRequest.setPassword("z123456");
+        registRequest.setCode("543453");
+        RegistResponse execute = client.execute(registRequest);
+        sout(execute);
+    }
+
 
     @Test
     public void testBindUser() throws NoSuchFieldException, IllegalAccessException {

@@ -310,8 +310,10 @@ public class PhoneUserService {
      */
     public RegistResponse regist( RegistRequest request){
         RegistResponse resp = new RegistResponse();
-        PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_REGIST_TYPE_MSG,PhoneVerify.class);
-        if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
+        //PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_REGIST_TYPE_MSG,PhoneVerify.class);
+        String verifyCode = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_REGIST_TYPE_MSG, String.class);
+        //if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
+        if (verifyCode==null||!verifyCode.equals(request.getCode())) {
             OpenException openException = new OpenException();
             openException.setErrMsg("手机验证码错误");
             resp.setException(openException);
