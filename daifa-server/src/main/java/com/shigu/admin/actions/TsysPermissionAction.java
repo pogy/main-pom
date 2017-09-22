@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
  *@类编号：
  *@类名称：TsysPermissionAction.java
  *@文件路径：com.shigu.songhuoyi.actions.TsysPermissionAction
- *@内容摘要：
+ *@内容摘要：权限
  *@编码作者：自动生成
  *@完成日期：
  *@Date2017-09-19 04:12:07

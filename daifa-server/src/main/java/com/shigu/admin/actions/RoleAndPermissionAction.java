@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
  * @类编号
  * @类名称：RoleAndPermissionAction
  * @文件路径：com.shigu.admin.actions.RoleAndPermissionAction
- * @内容摘要：
+ * @内容摘要：角色权限
  * @编码作者：gzy
  * @创建日期：2017/9/22 14:55
  * @version: main-pom
