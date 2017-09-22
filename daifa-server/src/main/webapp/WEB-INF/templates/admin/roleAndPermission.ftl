@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>用户角色 - 星帮后台管理 - 四季星座网</title>
+    <title>角色权限 - 星帮后台管理 - 四季星座网</title>
 
 <#include "/common/host_config.ftl">
     <!--
