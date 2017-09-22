@@ -166,7 +166,6 @@ public class PhoneUserService {
             if(!StringUtil.isNull(request.getUserName())&&!StringUtil.isNull(request.getPassword())){
                 //得到redis存的验证码
                 String verify = redisIO.get("phone_login_type_msg_" + request.getUserName());
-
                 if (!verify.equals(request.getPassword())) {
                     openException.setErrMsg("手机验证码错误");
                     resp.setException(openException);
@@ -203,6 +202,8 @@ public class PhoneUserService {
                             }else{
                                 resp.setImSeller(false);
                             }
+                            resp.setSuccess(true);
+                            return resp;
                         } catch (AuthenticationException e) {
                             //登陆失败
                             token.clear();
@@ -286,6 +287,8 @@ public class PhoneUserService {
         OpenException openException=new OpenException();
         //用户验证不通过或原密码输入不正确
         if (!(redisIO.get("phone_login_token"+request.getUserId())).equals(request.getToken())|| !EncryptUtil.encrypt(request.getOldPwd()).equals(userBaseService.selUserPwdByUserId(request.getUserId()))) {
+            openException.setErrMsg("老密码错误");
+            resp.setException(openException);
             resp.setSuccess(false);
             return resp;
         }
