@@ -33,7 +33,7 @@ public class DaifaAfterReceiveExpresStockVO {
     /**
      * 是否匹配订单
      */
-    private boolean isMatchingOrder;
+    private Boolean isMatchingOrder;
     /**
      * 匹配时间
      */
@@ -77,14 +77,6 @@ public class DaifaAfterReceiveExpresStockVO {
         this.telephone = telephone;
     }
 
-    public boolean isMatchingOrder() {
-        return isMatchingOrder;
-    }
-
-    public void setMatchingOrder(boolean matchingOrder) {
-        isMatchingOrder = matchingOrder;
-    }
-
     public String getMatchingTime() {
         return matchingTime;
     }
@@ -107,5 +99,19 @@ public class DaifaAfterReceiveExpresStockVO {
 
     public void setOrders(List<DaifaSaleAfterVO> orders) {
         this.orders = orders;
+    }
+
+    /**
+     * 获取 是否匹配订单
+     */
+    public Boolean getIsMatchingOrder() {
+        return this.isMatchingOrder;
+    }
+
+    /**
+     * 设置 是否匹配订单
+     */
+    public void setIsMatchingOrder(Boolean isMatchingOrder) {
+        this.isMatchingOrder = isMatchingOrder;
     }
 }
