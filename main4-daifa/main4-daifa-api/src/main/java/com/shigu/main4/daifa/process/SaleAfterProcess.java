@@ -79,7 +79,7 @@ public interface SaleAfterProcess {
      * ====================================================================================
      *
      */
-    String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException;
+    String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException;
 
     /**
      * ====================================================================================
@@ -121,7 +121,7 @@ public interface SaleAfterProcess {
      */
     String moneyConsultRefuse(MoneyConsultBO bo)throws DaifaException;
 
-    String moneyConsult(MoneyConsultBO bo)throws DaifaException;
+    String moneyConsultAgree(MoneyConsultBO bo)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsult  客服发起

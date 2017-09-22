@@ -1,7 +1,5 @@
 package com.shigu.daifa.vo;
 
-import com.opentae.core.mybatis.config.Column;
-
 import java.util.List;
 
 /**
@@ -33,6 +31,7 @@ public class DaifaSendVO {
     private String imWw;
     private String imQq;
     private String imTel;
+    private Boolean isTbOrder;
     private List<SendOrderVO> childOrders;
 
     public Long getDwsId() {
@@ -201,5 +200,13 @@ public class DaifaSendVO {
 
     public void setImTel(String imTel) {
         this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

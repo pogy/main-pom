@@ -1,6 +1,6 @@
 package com.shigu.daifa.vo;
 
-public class DaifaSaleAfterStock {
+public class DaifaSaleAfterStockVO {
     private Integer type;
     private Integer storageNum;
 

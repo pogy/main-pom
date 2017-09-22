@@ -122,7 +122,7 @@ public class OrderConsumerService {
                 }
             }else{
                 try {
-                    saleAfterProcess.moneyConsult(bo);
+                    saleAfterProcess.moneyConsultAgree(bo);
                 } catch (DaifaException e) {
                     logger.error(e.getMessage());
                 }

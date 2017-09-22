@@ -51,8 +51,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
     private Long refundId;
 
-    public SaleAfterModelImpl(Long refundId) {
+    public SaleAfterModelImpl(Long refundId) throws DaifaException {
         super();
+        if(refundId==null){
+            throw new DaifaException("refundId is null");
+        }
         this.refundId = refundId;
     }
     public SaleAfterModelImpl() {
@@ -132,6 +135,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setRemark(null);
                 sub.setRemark1(null);
                 sub.setRemark2(null);
+                sub.setSellerId(trade.getSellerId());
                 if (o.getOrderCode().equals(orderCode.toString()) && i < num) {
                     i++;
                     sub.setRefundId(refundId);
@@ -289,21 +293,13 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
     @Override
     public int saleAfterRemark(Long afterSaleId, String remark) throws DaifaException {
-        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
-        tmp.setRefundId(refundId);
-        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
-        if (subs.size() == 0) {
-            //售后申请不存在
-            throw new DaifaException("售后申请不存在");
-        }
-
-        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
-        daifaAfterSale.setAfterSaleId(afterSaleId);
         DaifaAfterSale oldSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
         if (oldSale == null) {
             throw new DaifaException("售后申请不存在");
         }
-        daifaAfterSale.setRemark(oldSale.getRemark()+":"+remark);
+        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
+        daifaAfterSale.setAfterSaleId(afterSaleId);
+        daifaAfterSale.setRemark(oldSale.getRemark()+"<br>"+remark);
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 
@@ -414,6 +410,15 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         update.setAfterSaleSubId(sub.getAfterSaleSubId());
         update.setStoreReturnMoney("0.00");
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(update);
+
+        DaifaOrder o=new DaifaOrder();
+        o.setDfOrderId(sub.getDfOrderId());
+        if(sub.getAfterType()==1){
+            o.setReturnGoodsStatus(3);
+        }else{
+            o.setChangeStatus(3);
+        }
+        daifaOrderMapper.updateByPrimaryKeySelective(o);
 
         //校验是否处理完整个refund
         int num=0;
@@ -559,6 +564,23 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         DaifaAfterSaleSub update=new DaifaAfterSaleSub();
         update.setAfterStatus(6);
         updateAfterSubs(update);
+        DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
+        daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId).andStoreDealStatusEqualTo(1);
+        List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
+        if(subs.size()>0){
+            List<Long> oids=BeanMapper.getFieldList(subs,"dfOrderId",Long.class);
+            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+            daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+            DaifaOrder o=new DaifaOrder();
+            if(subs.get(0).getAfterType()==1){
+                o.setReturnGoodsStatus(2);
+                o.setReturnGoodsFinishTime(new Date());
+            }else{
+                o.setChangeStatus(2);
+                o.setChangeTime(new Date());
+            }
+            daifaOrderMapper.updateByExampleSelective(o,daifaOrderExample);
+        }
         return null;
     }
 

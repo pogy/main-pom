@@ -2,7 +2,7 @@ package com.shigu.daifa.vo;
 
 import java.util.List;
 
-public class DaifaSaleAfter {
+public class DaifaSaleAfterDisposeVO {
     private Long orderId;
     private String sendTime;
     private String afterSaleTime;
@@ -21,7 +21,8 @@ public class DaifaSaleAfter {
     private String serversFee;
     private Integer childOrderNum;
     private String allChildRemark;
-    private List<DaifaSaleAfterRefund> afterSales;
+    private Boolean isTbOrder;
+    private List<DaifaSaleAfterDisposeRefundVO> afterSales;
 
     public Long getOrderId() {
         return this.orderId;
@@ -37,6 +38,14 @@ public class DaifaSaleAfter {
 
     public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public String getAfterSaleTime() {
+        return this.afterSaleTime;
+    }
+
+    public void setAfterSaleTime(String afterSaleTime) {
+        this.afterSaleTime = afterSaleTime;
     }
 
     public String getImWw() {
@@ -159,19 +168,19 @@ public class DaifaSaleAfter {
         this.allChildRemark = allChildRemark;
     }
 
-    public List<DaifaSaleAfterRefund> getAfterSales() {
+    public List<DaifaSaleAfterDisposeRefundVO> getAfterSales() {
         return this.afterSales;
     }
 
-    public void setAfterSales(List<DaifaSaleAfterRefund> afterSales) {
+    public void setAfterSales(List<DaifaSaleAfterDisposeRefundVO> afterSales) {
         this.afterSales = afterSales;
     }
 
-    public String getAfterSaleTime() {
-        return this.afterSaleTime;
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
     }
 
-    public void setAfterSaleTime(String afterSaleTime) {
-        this.afterSaleTime = afterSaleTime;
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

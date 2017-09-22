@@ -32,6 +32,7 @@ public class DaifaWaitSendVO {
     private String imWw;
     private String imQq;
     private String imTel;
+    private Boolean isTbOrder;
     private List<WaitSendOrderVO> childOrders;
 
     public Long getDwsId() {
@@ -208,5 +209,13 @@ public class DaifaWaitSendVO {
 
     public void setImTel(String imTel) {
         this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

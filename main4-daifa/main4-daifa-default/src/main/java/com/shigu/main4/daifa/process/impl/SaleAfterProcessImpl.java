@@ -95,14 +95,14 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException {
+    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException {
         SaleAfterModel model=SpringBeanFactory.getBean(SaleAfterModel.class);
         model.storeRefundRefuse(orderId,reason);
         DaifaAfterSaleSub sub=new DaifaAfterSaleSub();
         sub.setDfOrderId(orderId);
         sub=daifaAfterSaleSubMapper.selectOne(sub);
         if(sub.getInStock()!=null){
-            model.refundFailInStock(orderId,2,stockLocktion,sendPhone);
+            model.refundFailInStock(orderId,2,stockLocktion,null);
         }
         return null;
     }
@@ -134,7 +134,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
 
     @Override
     public String saleAfterRemark(SaleAfterRemarkerBO bo) throws DaifaException {
-        SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).saleAfterRemark(bo.getAfterSaleId(),bo.getRemark());
+        SpringBeanFactory.getBean(SaleAfterModel.class).saleAfterRemark(bo.getAfterSaleId(),bo.getRemark());
         return null;
     }
 
@@ -164,7 +164,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     }
 
     @Override
-    public String moneyConsult(MoneyConsultBO bo) throws DaifaException {
+    public String moneyConsultAgree(MoneyConsultBO bo) throws DaifaException {
         SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).moneyConsultAgree();
         return null;
     }

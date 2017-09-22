@@ -21,10 +21,6 @@ public class SaleAfterRemarkerBO implements Serializable {
      * 主单ID
      */
     private Long  afterSaleId;
-    /**
-     * 售后ID
-     */
-    private Long refundId;
 
     /**
      * 代发备注
@@ -47,11 +43,4 @@ public class SaleAfterRemarkerBO implements Serializable {
         this.remark = remark;
     }
 
-    public Long getRefundId() {
-        return refundId;
-    }
-
-    public void setRefundId(Long refundId) {
-        this.refundId = refundId;
-    }
 }

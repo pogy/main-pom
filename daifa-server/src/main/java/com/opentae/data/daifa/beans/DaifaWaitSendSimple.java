@@ -34,7 +34,7 @@ public class DaifaWaitSendSimple implements Serializable{
     private String discountFee;//减免费用
     private String serversFee;//服务费用
     private String receiverAddress;
-
+    private Boolean isTbOrder;
     private List<DaifaWaitSendOrderSimple> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -187,5 +187,13 @@ public class DaifaWaitSendSimple implements Serializable{
 
     public void setImTel(String imTel) {
         this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

@@ -1,16 +1,15 @@
 package com.shigu.daifa.vo;
 
-public class DaifaSaleAfterSub {
-    private Long childOrderId;
-    private String imgSrc;
-    private String title;
-    private String goodsProperty;
-    private String storeGoodsCode;
-    private String piPrice;
-    private String payPrice;
-    private Integer num;
-    private String childServersFee;
-    private String childRemark;
+public class ChildOrderVO {
+    private Long childOrderId;//子单id
+    private String imgSrc;//商品图片
+    private String title;//商品标题
+    private String goodsProperty;//商品属性 颜色 尺码
+    private String goodsNo;//商品货号
+    private String piPrice;//商品批发价
+    private String payPrice;//商品实际支付价
+    private Integer num;//商品数量
+    private String storeGoodsCode;//商家编码
 
     public Long getChildOrderId() {
         return this.childOrderId;
@@ -44,12 +43,12 @@ public class DaifaSaleAfterSub {
         this.goodsProperty = goodsProperty;
     }
 
-    public String getStoreGoodsCode() {
-        return this.storeGoodsCode;
+    public String getGoodsNo() {
+        return this.goodsNo;
     }
 
-    public void setStoreGoodsCode(String storeGoodsCode) {
-        this.storeGoodsCode = storeGoodsCode;
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
     public String getPiPrice() {
@@ -76,19 +75,12 @@ public class DaifaSaleAfterSub {
         this.num = num;
     }
 
-    public String getChildServersFee() {
-        return this.childServersFee;
+    public String getStoreGoodsCode() {
+        return this.storeGoodsCode;
     }
 
-    public void setChildServersFee(String childServersFee) {
-        this.childServersFee = childServersFee;
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 
-    public String getChildRemark() {
-        return this.childRemark;
-    }
-
-    public void setChildRemark(String childRemark) {
-        this.childRemark = childRemark;
-    }
 }

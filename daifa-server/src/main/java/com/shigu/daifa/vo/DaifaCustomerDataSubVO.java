@@ -8,12 +8,8 @@ package com.shigu.daifa.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class SendOrderVO extends ChildOrderVO{
-
-    private String childServersFee;//子单服务费
-    private String childRemark;//子单备注
-
-
+public class DaifaCustomerDataSubVO extends ChildOrderVO{
+    private String childServersFee;
 
     public String getChildServersFee() {
         return this.childServersFee;
@@ -21,13 +17,5 @@ public class SendOrderVO extends ChildOrderVO{
 
     public void setChildServersFee(String childServersFee) {
         this.childServersFee = childServersFee;
-    }
-
-    public String getChildRemark() {
-        return this.childRemark;
-    }
-
-    public void setChildRemark(String childRemark) {
-        this.childRemark = childRemark;
     }
 }
