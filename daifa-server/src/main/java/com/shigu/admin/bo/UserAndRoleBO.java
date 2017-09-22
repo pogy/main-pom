@@ -25,5 +25,12 @@ public class UserAndRoleBO implements Serializable{
     public void setUserId (Long userId) {
         this.userId = userId;
     }
-    
+
+    public String getRoleIds () {
+        return roleIds;
+    }
+
+    public void setRoleIds (String roleIds) {
+        this.roleIds = roleIds;
+    }
 }
