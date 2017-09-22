@@ -347,15 +347,21 @@ public class PhoneUserService {
      */
     public BindUserResponse bindUser( BindUserRequest request, String remoteAddr){
         BindUserResponse resp = new BindUserResponse();
-        PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
-        if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
+        //PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
+        String phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,String.class);
+
+        if (phoneMsg==null||!phoneMsg.equals(request.getCode())) {
             OpenException openException = new OpenException();
             openException.setErrMsg("验证码错误");
             resp.setException(openException);
             resp.setSuccess(false);
             return resp;
         }
-        Rds3TempUser rds3TempUser = phoneMsgAction.getPhoneMsg(request.getTempId(), PhoneMsgTypeEnum.PHONE_RDS3_TEMP_USER_TYPE_MSG, Rds3TempUser.class);
+        Rds3TempUser rds3TempUser = new Rds3TempUser();
+        rds3TempUser.setSubUserKey(request.getTempId());
+        rds3TempUser.setLoginFromType(LoginFromType.getLoginFromType(request.getType()));
+        rds3TempUser.setSubUserName(request.getUserNick());
+        //Rds3TempUser rds3TempUser = phoneMsgAction.getPhoneMsg(request.getTempId(), PhoneMsgTypeEnum.PHONE_RDS3_TEMP_USER_TYPE_MSG, Rds3TempUser.class);
         if (!request.getTempId().equals(rds3TempUser.getSubUserKey())) {
             OpenException openException = new OpenException();
             openException.setErrMsg("账号或手机号错误");

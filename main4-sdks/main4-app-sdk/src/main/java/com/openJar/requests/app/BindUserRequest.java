@@ -22,6 +22,12 @@ public class BindUserRequest extends Request<BindUserResponse> {
 	//验证码	必须
 	@NotNull
 	private String code;
+	//绑定类型,淘宝3,qq4,微信5,阿里6,星座7,手机7
+	@NotNull
+	private Integer type;
+	//第三方用户名
+	private String userNick;
+
 	public String getTempId(){
 		return tempId;
 	}
@@ -44,6 +50,22 @@ public class BindUserRequest extends Request<BindUserResponse> {
 
 	public void setCode(String code){
 		this.code=code;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getUserNick() {
+		return userNick;
+	}
+
+	public void setUserNick(String userNick) {
+		this.userNick = userNick;
 	}
 
 	public String testApiUrl(){
