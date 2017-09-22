@@ -1,5 +1,6 @@
 package com.shigu.phone.services;
 
+import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,6 +106,8 @@ public class PhoneUserService {
         LoginResponse resp=new LoginResponse();
         Integer phoneType = request.getType();
         OpenException openException=new OpenException();
+        List<AppUser> appUsers=new ArrayList<AppUser>();
+        AppUser appUser=new AppUser();
         if (phoneType==1){
             //1普通账号密码登陆
             if(!StringUtil.isNull(request.getUserName())&&!StringUtil.isNull(request.getPassword())){
@@ -114,16 +118,18 @@ public class PhoneUserService {
                 //星座用户登陆
                 token.setLoginFromType(LoginFromType.XZ);
                 token.setRememberMe(true);
+
                 try {
                     //调用安全管理器,安全管理器调用realm
                     currentUser.login(token);
                     currentUser.hasRole(RoleEnum.STORE.getValue());
                     //返回需要数据
                     PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
-                    resp.setUserId(personalSession.getUserId());
+
+                    appUser.setUserId(personalSession.getUserId());
                     String headUrl = personalSession.getHeadUrl();
-                    resp.setImgsrc(headUrl);
-                    resp.setUserNick(personalSession.getUserNick());
+                    appUser.setImgsrc(headUrl);
+                    appUser.setUserNick(personalSession.getUserNick());
                     String uuid = UUIDGenerator.getUUID();
                     //把token存入redis,设置存活时间30分钟
                    // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
@@ -131,14 +137,16 @@ public class PhoneUserService {
                     jedis.setex("phone_login_token"+personalSession.getUserId(),1800, uuid);
                     //从redis取出token
                     String token1 = redisIO.get("phone_login_token"+personalSession.getUserId());
-                    resp.setToken(token1);
+                    appUser.setToken(token1);
                     //imSeller
                     ShopSession logshop = personalSession.getLogshop();
                     if(!StringUtil.isNull(logshop)){
-                        resp.setImSeller(true);
+                        appUser.setImSeller(true);
                     }else{
-                        resp.setImSeller(false);
+                        appUser.setImSeller(false);
                     }
+                    appUsers.add(appUser);
+                    resp.setUsers(appUsers);
                     //查询是否绑定手机号
                     MemberLicenseExample memberLicenseExample=new MemberLicenseExample();
                     memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId()).andLicenseTypeEqualTo(4);
@@ -182,11 +190,12 @@ public class PhoneUserService {
                             currentUser.login(token);
                             currentUser.hasRole(RoleEnum.STORE.getValue());
                             //返回需要数据
-                            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.PHONE);
-                            resp.setUserId(personalSession.getUserId());
+                            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
+
+                            appUser.setUserId(personalSession.getUserId());
                             String headUrl = personalSession.getHeadUrl();
-                            resp.setImgsrc(headUrl);
-                            resp.setUserNick(personalSession.getUserNick());
+                            appUser.setImgsrc(headUrl);
+                            appUser.setUserNick(personalSession.getUserNick());
                             String uuid = UUIDGenerator.getUUID();
                             //把token存入redis,设置存活时间30分钟
                             // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
@@ -194,14 +203,16 @@ public class PhoneUserService {
                             jedis.setex("phone_login_token"+personalSession.getUserId(),1800, uuid);
                             //从redis取出token
                             String token1 = redisIO.get("phone_login_token"+personalSession.getUserId());
-                            resp.setToken(token1);
+                            appUser.setToken(token1);
                             //imSeller
                             ShopSession logshop = personalSession.getLogshop();
                             if(!StringUtil.isNull(logshop)){
-                                resp.setImSeller(true);
+                                appUser.setImSeller(true);
                             }else{
-                                resp.setImSeller(false);
+                                appUser.setImSeller(false);
                             }
+                            appUsers.add(appUser);
+                            resp.setUsers(appUsers);
                             resp.setSuccess(true);
                             return resp;
                         } catch (AuthenticationException e) {
