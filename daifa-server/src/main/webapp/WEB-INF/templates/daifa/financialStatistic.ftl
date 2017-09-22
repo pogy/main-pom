@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>无货号订单 - 星帮后台管理 - 四季星座网</title>
+    <title>财务统计 - 星帮后台管理 - 四季星座网</title>
 
     
     
@@ -17,23 +17,17 @@
 
 
     
-    <link href="http://style.571xz.com/v2/dfgl/css/noGoodsnoOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/dfgl/css/financialStatistic.css" rel="stylesheet">
     
 
     
 
     
 
-    
-        
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-        
-            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-        
-    
-    <script src="http://style.571xz.com/v2/dfgl/js/noGoodsnoOrder.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/financialStatistic.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -167,7 +161,7 @@
                     
                     <li>
                         
-                        <a href="financialStatistic.htm"><i></i>财务统计</a>
+                        <a  class="current" href="financialStatistic.htm"><i></i>财务统计</a>
                         
                     </li>
                     
@@ -183,89 +177,62 @@
 
     </div>
     <div class="contentBox">
-        <div class="printTypeTabs">
+        <div class="orderSearch orderSearchBox">
     <ul>
-        <li ><a href="orderAll.htm">全部订单</a></li>
-        <li class="select"><a href="noGoodsnoOrder.htm">无货号订单</a></li>
-    </ul>
-</div>
-
-
-<div class="noGoodsnoOrderCon">
-    <div class="theadCon">
-        <ul class="">
-            <li class="childOrderId">子订单ID</li>
-            <li class="goodsInfo">商品信息</li>
-            <li class="marketCode">市场编码</li>
-            <li class="ope">操作</li>
-        </ul>
-    </div>
-    <#list childOrders as childOrder>
-    <div class="orderItemCon">
-        <div class="childOrderItem" data-id="${childOrder.childOrderId!}">
-    <ul class="clearfix">
-        <li class="childOrderId">${childOrder.childOrderId!}</li>
-        <li class="goodsInfo">
-            <div class="fl imgBox">
-                <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="54" height="54">
-            </div>
-            <p class="title"><a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank">${childOrder.title!}</a></p>
-            <p>商品属性：${childOrder.goodsProperty!}</p>
-        </li>
-        <li class="marketCode">
-            <p class="fcF40">暂无</p>
-        </li>
-        <li class="ope">
-            <b class="bindGoodsno" jbtn="bindGoodsno" data-id="${childOrder.goodsId!}">绑定货号</b>
-        </li>
-    </ul>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-    </#list>
-</div>
-    
+        <li><label>日期查询：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="time" placeholder="请选择时间" <#if query.time??> value="${query.time!}" </#if>></li>
+        <li>
 
 <#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
 
-<div class="jqPagination " id="jqPagination0" 
-    <#if $it.pageOption??>
-        data-option="${$it.pageOption!}" 
+    <#if $it.href??>
+    <a href="${$it.href!}"
     <#else>
-        data-option="${pageOption!}"
+    <b 
     </#if>
-></div>
 
 
+    class="fmButton
+        
+         fmButton-blue
+         searchBtn"
+    
+        jbtn="searchBtn"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        搜索
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
 
 
 
 
 
 </#list>
+</li>
+    </ul>
+</div>
 
 
 
@@ -279,21 +246,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<#assign text>{}</#assign>
+<#assign text>{"fields":[{"name":"time","value":"${query.time!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -317,6 +270,41 @@
 
 
 </#list>
+
+
+
+
+
+<div class="financialList">
+    <h3 class="fs20 fc3">今日所需费用 <span class="fs12 fc6">${query.time!}</span></h3>
+    <ul class="clearfix">
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.daifaNeedFee!}</p>
+            <p class="fc6">今日代发所需费用总额（元）</p>
+        </li>
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.getGoodsFee!}</p>
+            <p class="fc6">今日商品拿货所需总额（元）</p>
+        </li>
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.notYetGoodsFee!}</p>
+            <p class="fc6">今日未拿到货物货款总额（元）</p>
+        </li>
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.daifaServerFee!}</p>
+            <p class="fc6">今日代发服务费总额（元）</p>
+        </li>
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.shipmentsFee!}</p>
+            <p class="fc6">今日发货快递费总额（元）</p>
+        </li>
+        <li>
+            <p class="fcF40 fs20">${orderStatistics.refundFee!}</p>
+            <p class="fc6">今日退款总额（元）</p>
+        </li>
+    </ul>
+</div>
+
 
 
 

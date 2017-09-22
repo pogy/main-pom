@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>售后订单 - 星帮后台管理 - 四季星座网</title>
 
     
     
@@ -346,10 +346,7 @@
             <tr class="orderItemHead">
                 <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
-                    <span>时间：${order.tradeTime!}</span>
-                    <#if order.oldOrder == true>
-                    <i class="fcF40 icon-old oldOrder"></i>
-                    </#if>
+                    <span>时间：${order.afterSaleTime!}</span>
                     
                 </td>
                 <td class="buyerInfo"  colspan="2">
@@ -454,11 +451,13 @@
                     <span class="spanIcon">拒</span>
                     </#if>
                     <div class="editInfo pa">
-                        ${afterSale.editInfo}
+                        <#list afterSale.editInfo as info>
+                        <p>${info!}</p>
+                        </#list>
                     </div>
                 </div>
             </p>
-            <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
+            <p><b class="fcBlue editBtn" jbtn="editBtn" data-id="${afterSale.refundId!}">修改</b></p>
             <#elseif afterSale.refundState == 2>
             <p class="fcG">已退款</p>
             <p class="fcF40">${afterSale.refundForShop!}</p>
@@ -508,50 +507,6 @@
 
 
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
