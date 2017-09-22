@@ -53,7 +53,7 @@ public class OrderSendErrorDealService {
         if (StringUtils.hasText(bo.getPhone())) {
             exampleCriteria.andReceiverMobileEqualTo(bo.getPhone());
         }
-        if(bo.getFlo ()==1){
+        if(bo.getFlo ()!=null&&bo.getFlo ()==1){
             eca.andReceiverNameLike ("%&%").or().andReceiverAddressLike ("%&%");
             daifaTradeExample.and (eca);
         }

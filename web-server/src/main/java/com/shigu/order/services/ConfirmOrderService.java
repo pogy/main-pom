@@ -14,6 +14,7 @@ import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.process.ItemCartProcess;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
@@ -70,6 +71,9 @@ public class ConfirmOrderService {
     @Autowired
     private LogisticsService logisticsService;
 
+    @Autowired
+    private ItemProductProcess itemProductProcess;
+
 
 
 
@@ -107,7 +111,7 @@ public class ConfirmOrderService {
      * @param bo
      * @param orderSubmitVo
      */
-    private ItemOrderBO generateItemOrderBO(ConfirmBO bo, OrderSubmitVo orderSubmitVo) {
+    private ItemOrderBO generateItemOrderBO(ConfirmBO bo, OrderSubmitVo orderSubmitVo) throws JsonErrException {
         ItemOrderBO itemOrderBO = new ItemOrderBO();
         itemOrderBO.setUserId(orderSubmitVo.getUserId());
         itemOrderBO.setSenderId(bo.getSenderId());
@@ -126,6 +130,10 @@ public class ConfirmOrderService {
         String webSite = null;
         for (ConfirmOrderBO confirmOrderBO: confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
+            //按店分子单信息
+            Long marketId = null;
+            Long shopId = null;
+            List<Long> shopGoodsIds = Lists.newArrayList();
             for (ConfirmSubOrderBO confirmSubOrderBO: confirmSubOrderBOS) {
                 int num = confirmSubOrderBO.getNum();
                 if (num <= 0) {
@@ -140,9 +148,20 @@ public class ConfirmOrderService {
                 subOrder.setSkuId(productVO.getSelectiveSku().getSkuId());
                 subOrder.setWeight(productVO.getWeight());
                 subOrders.add(subOrder);
+                shopGoodsIds.add(productVO.getGoodsId());
                 if (webSite == null) {
                     webSite=productVO.getWebSite();
                 }
+                if (marketId == null) {
+                    marketId=productVO.getMarketId();
+                }
+                if (shopId == null) {
+                    shopId=productVO.getShopId();
+                }
+            }
+
+            if (!itemProductProcess.listGoodsCanSale(marketId,shopId,shopGoodsIds,webSite)) {
+                throw new JsonErrException("订单中含有不可售商品，请检查订单");
             }
         }
         itemOrderBO.setSubOrders(subOrders);

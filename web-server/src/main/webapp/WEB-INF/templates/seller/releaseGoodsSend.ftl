@@ -13,12 +13,12 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1501227529970" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1505784047309" rel="stylesheet">
             <link href="http://style.571xz.com/gys5/temp/webuploader/webuploader.css" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66:555/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -54,9 +54,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -87,9 +87,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -241,7 +241,7 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >广告申请</a></li> 
         <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
@@ -498,7 +498,7 @@ var webSite = '${webSite!}';
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1501227529970"></script>
+<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1505784047309"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

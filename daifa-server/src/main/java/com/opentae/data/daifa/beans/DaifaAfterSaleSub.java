@@ -24,9 +24,29 @@ public class DaifaAfterSaleSub implements Serializable {
 	private Long dfTradeId;
 
     /**
+     * 
+     */
+	private String tradeCode;
+
+    /**
      * 订单ID
      */
 	private Long dfOrderId;
+
+    /**
+     * 
+     */
+	private String orderCode;
+
+    /**
+     * 
+     */
+	private String orderPartitionId;
+
+    /**
+     * 退货ID
+     */
+	private Long refundId;
 
     /**
      * 代发ID
@@ -34,14 +54,74 @@ public class DaifaAfterSaleSub implements Serializable {
 	private Long sellerId;
 
     /**
-     * 代发名称
+     * 售后类型@1退货2换货
      */
-	private String sellerName;
+	private Integer afterType;
 
     /**
-     * 发货状态@2已发货
+     * 售后状态@0无售后1售后申请2申请处理3客户发货4收到货5档口退换货完成6客户确认7客户拒绝10协商解决
      */
-	private Integer sendStatus;
+	private Integer afterStatus;
+
+    /**
+     * 申请时间
+     */
+	private Date applyTime;
+
+    /**
+     * 售后申请状态@1同意并发送售后收货地址2拒绝
+     */
+	private Integer applyDealStatus;
+
+    /**
+     * 申请处理时间
+     */
+	private Date applyDealTime;
+
+    /**
+     * 拒绝申请的原因
+     */
+	private String applyRefuseReason;
+
+    /**
+     * 收货时间
+     */
+	private Date receivedTime;
+
+    /**
+     * 档口处理状态@1档口退换货完成2拒绝
+     */
+	private Integer storeDealStatus;
+
+    /**
+     * 档口处理的时间
+     */
+	private Date storeDealTime;
+
+    /**
+     * 档口拒绝的原因
+     */
+	private String storeRefuseReason;
+
+    /**
+     * 档口退回的金额@以元为单位
+     */
+	private String storeReturnMoney;
+
+    /**
+     * 最后的操作时间
+     */
+	private Date lastDoTime;
+
+    /**
+     * 寄回的快递名@退换货信息
+     */
+	private String applyExpressName;
+
+    /**
+     * 寄回的快递号@退换货信息
+     */
+	private String applyExpressCode;
 
     /**
      * 创建日期@ YYYYMMDD
@@ -49,74 +129,59 @@ public class DaifaAfterSaleSub implements Serializable {
 	private String createDate;
 
     /**
+     * 退货发回的快递单号
+     */
+	private String returnExpressCode;
+
+    /**
      * 创建时间
      */
 	private Date createTime;
 
     /**
-     * 退货状态@1申请退货2退货入库3退货成功4已结算5退货失败不支持6退货失败发回客户7已退款8退货失败等待发回客户
+     * 换回的快递单号
      */
-	private Integer returnStatus;
+	private String changeExpressCode;
 
     /**
-     * 换货状态@1申请换货2换货入库3换货成功4换货成功发回客户5换货失败6换货失败已寄回客户7已退款8不支持
+     * 退货发回的快递名
      */
-	private Integer changeStatus;
+	private String returnExpressName;
 
     /**
-     * 发货日期@ YYYYMMDD
+     * 换货发回快递名
      */
-	private String sendDate;
+	private String changeExpressName;
 
     /**
-     * 发货时间
+     * 发回日期@ YYYYMMDD
      */
-	private Date sendTime;
+	private String sendReturnDate;
 
     /**
-     * 寄回的快递名@退换货信息
+     * 发回时间
      */
-	private String returnPostNama;
-
-    /**
-     * 寄回的快递号@退换货信息
-     */
-	private String returnPostCode;
-
-    /**
-     * 要发回的快递ID
-     */
-	private Long postId;
-
-    /**
-     * 要发回的快递名
-     */
-	private String postName;
-
-    /**
-     * 要发回的快递单号
-     */
-	private String postCode;
+	private Date sendReturnTime;
 
     /**
      * 市场ID
      */
-	private Long parentMarketId;
+	private Long marketId;
 
     /**
      * 市场名
      */
-	private String parentMarketName;
+	private String marketName;
 
     /**
      * 楼层Id
      */
-	private Long marketId;
+	private Long floorId;
 
     /**
      * 楼层
      */
-	private String marketName;
+	private String floorName;
 
     /**
      * 店铺ID
@@ -164,12 +229,12 @@ public class DaifaAfterSaleSub implements Serializable {
 	private String picPath;
 
     /**
-     * 批发价
+     * 批发价@以元为单位
      */
 	private String singlePiPrice;
 
     /**
-     * 零售价
+     * 零售价@以元为单位
      */
 	private String singlePrice;
 
@@ -184,19 +249,14 @@ public class DaifaAfterSaleSub implements Serializable {
 	private Integer hasNum;
 
     /**
-     * 拿货识别码
+     * 入库类型@1售后退货入库2退货失败入库
      */
-	private String cdkey;
+	private Integer inStock;
 
     /**
-     * 淘宝类目ID
+     * 入库后存储的货架
      */
-	private Long cid;
-
-    /**
-     * 淘宝商品id
-     */
-	private Long goodsNummIid;
+	private String stockLocation;
 
     /**
      * 卖家备注
@@ -238,46 +298,6 @@ public class DaifaAfterSaleSub implements Serializable {
      */
 	private String remark2;
 
-    /**
-     * 备用3
-     */
-	private String remark3;
-
-    /**
-     * 备用4
-     */
-	private String remark4;
-
-    /**
-     * 备用5
-     */
-	private String remark5;
-
-    /**
-     * 备用6
-     */
-	private String remark6;
-
-    /**
-     * 备用7
-     */
-	private String remark7;
-
-    /**
-     * 备用8
-     */
-	private String remark8;
-
-    /**
-     * 备用9
-     */
-	private String remark9;
-
-    /**
-     * 备用10
-     */
-	private String remark10;
-
 	public void setAfterSaleSubId(Long afterSaleSubId) {
 		this.afterSaleSubId = afterSaleSubId;
 	}
@@ -302,12 +322,44 @@ public class DaifaAfterSaleSub implements Serializable {
 		return this.dfTradeId;
 	}
 
+	public void setTradeCode(String tradeCode) {
+		this.tradeCode = tradeCode;
+	}
+
+	public String getTradeCode() {
+		return this.tradeCode;
+	}
+
 	public void setDfOrderId(Long dfOrderId) {
 		this.dfOrderId = dfOrderId;
 	}
 
 	public Long getDfOrderId() {
 		return this.dfOrderId;
+	}
+
+	public void setOrderCode(String orderCode) {
+		this.orderCode = orderCode;
+	}
+
+	public String getOrderCode() {
+		return this.orderCode;
+	}
+
+	public void setOrderPartitionId(String orderPartitionId) {
+		this.orderPartitionId = orderPartitionId;
+	}
+
+	public String getOrderPartitionId() {
+		return this.orderPartitionId;
+	}
+
+	public void setRefundId(Long refundId) {
+		this.refundId = refundId;
+	}
+
+	public Long getRefundId() {
+		return this.refundId;
 	}
 
 	public void setSellerId(Long sellerId) {
@@ -318,20 +370,116 @@ public class DaifaAfterSaleSub implements Serializable {
 		return this.sellerId;
 	}
 
-	public void setSellerName(String sellerName) {
-		this.sellerName = sellerName;
+	public void setAfterType(Integer afterType) {
+		this.afterType = afterType;
 	}
 
-	public String getSellerName() {
-		return this.sellerName;
+	public Integer getAfterType() {
+		return this.afterType;
 	}
 
-	public void setSendStatus(Integer sendStatus) {
-		this.sendStatus = sendStatus;
+	public void setAfterStatus(Integer afterStatus) {
+		this.afterStatus = afterStatus;
 	}
 
-	public Integer getSendStatus() {
-		return this.sendStatus;
+	public Integer getAfterStatus() {
+		return this.afterStatus;
+	}
+
+	public void setApplyTime(Date applyTime) {
+		this.applyTime = applyTime;
+	}
+
+	public Date getApplyTime() {
+		return this.applyTime;
+	}
+
+	public void setApplyDealStatus(Integer applyDealStatus) {
+		this.applyDealStatus = applyDealStatus;
+	}
+
+	public Integer getApplyDealStatus() {
+		return this.applyDealStatus;
+	}
+
+	public void setApplyDealTime(Date applyDealTime) {
+		this.applyDealTime = applyDealTime;
+	}
+
+	public Date getApplyDealTime() {
+		return this.applyDealTime;
+	}
+
+	public void setApplyRefuseReason(String applyRefuseReason) {
+		this.applyRefuseReason = applyRefuseReason;
+	}
+
+	public String getApplyRefuseReason() {
+		return this.applyRefuseReason;
+	}
+
+	public void setReceivedTime(Date receivedTime) {
+		this.receivedTime = receivedTime;
+	}
+
+	public Date getReceivedTime() {
+		return this.receivedTime;
+	}
+
+	public void setStoreDealStatus(Integer storeDealStatus) {
+		this.storeDealStatus = storeDealStatus;
+	}
+
+	public Integer getStoreDealStatus() {
+		return this.storeDealStatus;
+	}
+
+	public void setStoreDealTime(Date storeDealTime) {
+		this.storeDealTime = storeDealTime;
+	}
+
+	public Date getStoreDealTime() {
+		return this.storeDealTime;
+	}
+
+	public void setStoreRefuseReason(String storeRefuseReason) {
+		this.storeRefuseReason = storeRefuseReason;
+	}
+
+	public String getStoreRefuseReason() {
+		return this.storeRefuseReason;
+	}
+
+	public void setStoreReturnMoney(String storeReturnMoney) {
+		this.storeReturnMoney = storeReturnMoney;
+	}
+
+	public String getStoreReturnMoney() {
+		return this.storeReturnMoney;
+	}
+
+	public void setLastDoTime(Date lastDoTime) {
+		this.lastDoTime = lastDoTime;
+	}
+
+	public Date getLastDoTime() {
+		return this.lastDoTime;
+	}
+
+	public void setApplyExpressName(String applyExpressName) {
+		this.applyExpressName = applyExpressName;
+	}
+
+	public String getApplyExpressName() {
+		return this.applyExpressName;
+	}
+
+	public void setApplyExpressCode(String applyExpressCode) {
+		this.applyExpressCode = applyExpressCode;
+	}
+
+	public String getApplyExpressCode() {
+		return this.applyExpressCode;
 	}
 
 	public void setCreateDate(String createDate) {
@@ -342,6 +490,14 @@ public class DaifaAfterSaleSub implements Serializable {
 		return this.createDate;
 	}
 
+	public void setReturnExpressCode(String returnExpressCode) {
+		this.returnExpressCode = returnExpressCode;
+	}
+
+	public String getReturnExpressCode() {
+		return this.returnExpressCode;
+	}
+
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
@@ -350,92 +506,44 @@ public class DaifaAfterSaleSub implements Serializable {
 		return this.createTime;
 	}
 
-	public void setReturnStatus(Integer returnStatus) {
-		this.returnStatus = returnStatus;
+	public void setChangeExpressCode(String changeExpressCode) {
+		this.changeExpressCode = changeExpressCode;
 	}
 
-	public Integer getReturnStatus() {
-		return this.returnStatus;
+	public String getChangeExpressCode() {
+		return this.changeExpressCode;
 	}
 
-	public void setChangeStatus(Integer changeStatus) {
-		this.changeStatus = changeStatus;
+	public void setReturnExpressName(String returnExpressName) {
+		this.returnExpressName = returnExpressName;
 	}
 
-	public Integer getChangeStatus() {
-		return this.changeStatus;
+	public String getReturnExpressName() {
+		return this.returnExpressName;
 	}
 
-	public void setSendDate(String sendDate) {
-		this.sendDate = sendDate;
+	public void setChangeExpressName(String changeExpressName) {
+		this.changeExpressName = changeExpressName;
 	}
 
-	public String getSendDate() {
-		return this.sendDate;
+	public String getChangeExpressName() {
+		return this.changeExpressName;
 	}
 
-	public void setSendTime(Date sendTime) {
-		this.sendTime = sendTime;
+	public void setSendReturnDate(String sendReturnDate) {
+		this.sendReturnDate = sendReturnDate;
 	}
 
-	public Date getSendTime() {
-		return this.sendTime;
+	public String getSendReturnDate() {
+		return this.sendReturnDate;
 	}
 
-	public void setReturnPostNama(String returnPostNama) {
-		this.returnPostNama = returnPostNama;
+	public void setSendReturnTime(Date sendReturnTime) {
+		this.sendReturnTime = sendReturnTime;
 	}
 
-	public String getReturnPostNama() {
-		return this.returnPostNama;
-	}
-
-	public void setReturnPostCode(String returnPostCode) {
-		this.returnPostCode = returnPostCode;
-	}
-
-	public String getReturnPostCode() {
-		return this.returnPostCode;
-	}
-
-	public void setPostId(Long postId) {
-		this.postId = postId;
-	}
-
-	public Long getPostId() {
-		return this.postId;
-	}
-
-	public void setPostName(String postName) {
-		this.postName = postName;
-	}
-
-	public String getPostName() {
-		return this.postName;
-	}
-
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
-
-	public String getPostCode() {
-		return this.postCode;
-	}
-
-	public void setParentMarketId(Long parentMarketId) {
-		this.parentMarketId = parentMarketId;
-	}
-
-	public Long getParentMarketId() {
-		return this.parentMarketId;
-	}
-
-	public void setParentMarketName(String parentMarketName) {
-		this.parentMarketName = parentMarketName;
-	}
-
-	public String getParentMarketName() {
-		return this.parentMarketName;
+	public Date getSendReturnTime() {
+		return this.sendReturnTime;
 	}
 
 	public void setMarketId(Long marketId) {
@@ -452,6 +560,22 @@ public class DaifaAfterSaleSub implements Serializable {
 
 	public String getMarketName() {
 		return this.marketName;
+	}
+
+	public void setFloorId(Long floorId) {
+		this.floorId = floorId;
+	}
+
+	public Long getFloorId() {
+		return this.floorId;
+	}
+
+	public void setFloorName(String floorName) {
+		this.floorName = floorName;
+	}
+
+	public String getFloorName() {
+		return this.floorName;
 	}
 
 	public void setStoreId(Long storeId) {
@@ -558,28 +682,20 @@ public class DaifaAfterSaleSub implements Serializable {
 		return this.hasNum;
 	}
 
-	public void setCdkey(String cdkey) {
-		this.cdkey = cdkey;
+	public void setInStock(Integer inStock) {
+		this.inStock = inStock;
 	}
 
-	public String getCdkey() {
-		return this.cdkey;
+	public Integer getInStock() {
+		return this.inStock;
 	}
 
-	public void setCid(Long cid) {
-		this.cid = cid;
+	public void setStockLocation(String stockLocation) {
+		this.stockLocation = stockLocation;
 	}
 
-	public Long getCid() {
-		return this.cid;
-	}
-
-	public void setGoodsNummIid(Long goodsNummIid) {
-		this.goodsNummIid = goodsNummIid;
-	}
-
-	public Long getGoodsNummIid() {
-		return this.goodsNummIid;
+	public String getStockLocation() {
+		return this.stockLocation;
 	}
 
 	public void setRemark(String remark) {
@@ -644,70 +760,6 @@ public class DaifaAfterSaleSub implements Serializable {
 
 	public String getRemark2() {
 		return this.remark2;
-	}
-
-	public void setRemark3(String remark3) {
-		this.remark3 = remark3;
-	}
-
-	public String getRemark3() {
-		return this.remark3;
-	}
-
-	public void setRemark4(String remark4) {
-		this.remark4 = remark4;
-	}
-
-	public String getRemark4() {
-		return this.remark4;
-	}
-
-	public void setRemark5(String remark5) {
-		this.remark5 = remark5;
-	}
-
-	public String getRemark5() {
-		return this.remark5;
-	}
-
-	public void setRemark6(String remark6) {
-		this.remark6 = remark6;
-	}
-
-	public String getRemark6() {
-		return this.remark6;
-	}
-
-	public void setRemark7(String remark7) {
-		this.remark7 = remark7;
-	}
-
-	public String getRemark7() {
-		return this.remark7;
-	}
-
-	public void setRemark8(String remark8) {
-		this.remark8 = remark8;
-	}
-
-	public String getRemark8() {
-		return this.remark8;
-	}
-
-	public void setRemark9(String remark9) {
-		this.remark9 = remark9;
-	}
-
-	public String getRemark9() {
-		return this.remark9;
-	}
-
-	public void setRemark10(String remark10) {
-		this.remark10 = remark10;
-	}
-
-	public String getRemark10() {
-		return this.remark10;
 	}
 
 }
