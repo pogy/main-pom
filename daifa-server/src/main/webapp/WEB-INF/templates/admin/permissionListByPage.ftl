@@ -10,6 +10,7 @@
 <!--<link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">-->
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+    <script src="${daifa_host}/js/admin/sys/common/common.js?t=201709121011"></script>
     <script src="${daifa_host}/js/admin/sys/permission/permission.js?t=201709121011"></script>
     <style>
         .ptitle{
