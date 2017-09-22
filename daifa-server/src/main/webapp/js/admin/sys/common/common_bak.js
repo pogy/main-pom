@@ -1,5 +1,5 @@
-
-
+//全部的
+//不要去引用
 /*==== code build by zstore0.2.2 ====*/
 
 /*====== xz/page#config.js:2 ======*/
@@ -1178,3 +1178,119 @@ $$('windowOperate', function(){
     return windowOperate;
 
 });
+
+
+
+/*====== dfgl/page#noSale.js:0 ===已废弃===*/
+$(function(){
+    var userList;
+    var childOrderId;
+    $(document).on('click', '[jbtn=noSale]', function(){
+        childOrderId = $(this).parents('.childOrderItem').attr('data-id');
+        if(!userList){
+            $$.post('getUserList.json', function(resp){
+                if(resp.err){
+                    $$.windowOperate.errorTip(resp.err);
+                }else{
+                    userList = resp.userList;
+                    $$.windowOperate.chooseUser(resp.userList);
+                }
+            });
+        }else{
+            $$.windowOperate.chooseUser(userList);
+        }
+    });
+
+    $(document).on('click', '[jbtn=submitAllocation]', function(){
+        var userid = $('.chooseUerWindow .chooseUserBox input:checked').attr('data-userid');
+        if(!userid || userid == ""){
+            return;
+        }else{
+            $('.chooseUerWindow .buttonbox .close').click();
+            $$.post('setTallyJson.json', function(resp){
+                if(resp.err){
+                    $$.windowOperate.errorTip(resp.err);
+                }else{
+                    $$.alert('标记成功', function(){
+                        location.reload();
+                    });
+                }
+            },{
+                userId: userid,
+                childOrderId: childOrderId
+            },{});
+        }
+    });
+});
+
+
+
+/*====== dfgl/page#setHaveGoodsTime.js:0 ===已废弃===*/
+$(function(){
+    $(document).on('click', '[jbtn=setTime]', function(){
+        var childOrderId = $(this).parents('.childOrderItem').attr('data-id');
+        $$.windowOperate.setTime(function(){
+            var timeStr = $('.setTimeBox .fmInput').val();
+            if(!timeStr){
+                return $$.windowOperate.errorTip('请填写时间');
+            }
+            $$.post('setTimeJson.json', function(resp){
+                if(resp.err){
+                    $$.windowOperate.errorTip(resp.err);
+                }else{
+                    $$.alert('设置成功', function(){
+                        location.reload();
+                    });
+                }
+            },{timeStr: timeStr, childOrderId: childOrderId});
+        });
+    });
+});
+
+
+
+/*====== dfgl/page#addChildRemark.js:0 ====已废弃==*/
+$(function(){
+    $(document).on('click', '[jbtn=addChildRemark]', function(){
+        var childOrderId = $(this).parents('.childOrderItem').attr('data-id');
+        $$.windowOperate.setRemark(function(){
+            var addRemarkCon = $('.setRemarkBox textarea').val();
+            if(!addRemarkCon || addRemarkCon == ""){
+                return $$.windowOperate.errorTip('请填写备注内容');
+            }
+            $$.post('addChildRemarkJson.json', function(resp){
+                if(resp.err){
+                    $$.windowOperate.errorTip(resp.err);
+                }else{
+                    $$.alert('添加成功', function(){
+                        location.reload();
+                    });
+                }
+            },{childOrderId: childOrderId, remarkCon: addRemarkCon});
+        });
+    });
+});
+
+
+
+/*====== dfgl/orderAll#orderCon.js:0 ======*/
+$(function(){
+    $$.pagination(function(page){
+        $$.search({page: page});
+    })
+});
+
+/*====== dfgl/orderAll#orderSearch.js:1 ======*/
+$(function(){
+    $(document).on('click', '[jbtn=searchBtn]', function(){
+        $$.search({
+            page: 1,
+            roleName: $('.orderSearchBox [name=roleName]').val(),
+            roleTag: $('.orderSearchBox [name=roleTag]').val(),
+            createUserId: $('.orderSearchBox [name=createUserId]').val(),
+            status: $('.orderSearchBox [name=status]').val()
+        });
+    });
+});
+
+
