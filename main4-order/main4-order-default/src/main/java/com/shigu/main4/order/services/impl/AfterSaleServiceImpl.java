@@ -166,7 +166,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
-        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subItemOrder);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,refundCount, refundMoney, refundReason + "," + refundDesc,1);
         return refundId;
     }
