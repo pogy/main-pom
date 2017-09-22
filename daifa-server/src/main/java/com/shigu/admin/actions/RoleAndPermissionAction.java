@@ -44,7 +44,7 @@ public class RoleAndPermissionAction {
         model.addAttribute("roleTree", roleTree);
         model.addAttribute("userName", "gzy");
 
-        return "admin/userAndRole";
+        return "admin/roleAndPermission";
 
     }
 
