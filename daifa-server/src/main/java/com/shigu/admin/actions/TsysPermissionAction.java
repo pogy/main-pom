@@ -44,7 +44,7 @@ public class TsysPermissionAction{
 	 *@return:
 	 *=========================================================
 	 */
-	@RequestMapping(value={"admin/tsysPermissionListByPage"},method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value={"admin/permissionListByPage"},method = {RequestMethod.GET,RequestMethod.POST})
 	public String listByPage(TsysPermissionBO bo , Model model)throws ExecutionException, InterruptedException{
 
 		//Session session = SecurityUtils.getSubject().getSession();
@@ -57,7 +57,7 @@ public class TsysPermissionAction{
 		model.addAttribute("query", bo);
 		model.addAttribute("pageOption", pageOption);
 		//model.addAttribute("userName", "gzy");
-		return "admin/tsysPermissionListByPage";
+		return "admin/permissionListByPage";
 
 	}
 

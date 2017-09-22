@@ -1295,17 +1295,18 @@ $(function(){
 
 //===================具体操作==================//
 //添加
-function addRole(){
+function addRecord(){
     var dstatus="<select id='status' name='status'>";
         dstatus+= "<option value='0'>不可用</option><option value='1'>可用</option>";
         dstatus+="</select>";
     $$.window.open($rtpl(function(){/*
 
-        <div style="display:inline"><label class="ptitle">角色名：</label><input id="roleName" name="roleName" type="text"  class="fmInput" /></div>
-        <div><label class="ptitle">角色标签：</label><input id="roleTag" name="roleTag" type="text"  class="fmInput" /></div>
+        <div style="display:inline"><label class="ptitle">namespace：</label><input id="namespace" name="namespace" type="text"  class="fmInput" /></div>
+        <div><label class="ptitle">父权限ID：</label><input id="parentPid" name="parentPid" type="text"  class="fmInput" /></div>
+        <div><label class="ptitle">权限标签：</label><input id="permissionTag" name="permissionTag" type="text"  class="fmInput" /></div>
         <div><label class="ptitle">代发机构：</label><input id="createUserId" name="createUserId" type="text"  class="fmInput" /></div>
         <div><label class="ptitle">状态：</label>{{#dstatus}}</div>
-        <div><label class="ptitle">角色备注：</label><input id="roleComment" name="roleComment" type="text"  class="fmInput" /></div>
+        <div><label class="ptitle">权限备注：</label><input id="permissionComment" name="permissionComment" type="text"  class="fmInput" /></div>
         <div >
             <input type="button" id="chanel1" name="chanel1" class="fmButton fmButton-blue" value="取消" jbtn="jqWindow.close">
             <input type="button" id="subc" name="subc" class="fmButton fmButton-blue" onclick="subdd();" value="确定">
@@ -1313,19 +1314,20 @@ function addRole(){
     */}
         ,{
             dstatus:dstatus
-        }),{title:"角色添加"});
+        }),{title:"权限添加"});
 }
 //添加的提交
 function subdd(){
 
-    var roleName=$("#roleName").val();
-    var roleTag=$("#roleTag").val();
+    var namespace=$("#namespace").val();
+    var parentPid=$("#parentPid").val();
     var createUserId=$("#createUserId").val();
+    var permissionTag=$("#permissionTag").val();
     var status=$("#status").val();
-    var roleComment=$("#roleComment").val();
+    var permissionComment=$("#permissionComment").val();
 
-    $.post(daifa_host+"admin/roleAdd.json",
-        {"roleName":roleName,"createUserId":createUserId,"status":status,"roleComment":roleComment,"roleTag":roleTag},
+    $.post(daifa_host+"admin/tsysPermissionAdd.json",
+        {"namespace":namespace,"parentPid":parentPid,"createUserId":createUserId,"permissionTag":permissionTag,"status":status,"permissionComment":permissionComment},
         function(data){
             if(data.result=="success"){
                 alert("修改完成");
@@ -1336,12 +1338,13 @@ function subdd(){
 }
 
 //修改
-function editRole(obj,roleId){
-    var roleName= $(obj).parent().prev().prev().prev().prev().prev().prev().children().html();//.val();
-    var roleTag= $(obj).parent().prev().prev().prev().prev().prev().children().html();
-    var createUserId= $(obj).parent().prev().prev().prev().prev().children().html();
-    var status= $(obj).parent().prev().prev().prev().children().html();
-    var roleComment= $(obj).parent().prev().prev().children().html();
+function editRecord(obj,permissionId){
+    var namespace= $(obj).parent().prev().prev().prev().prev().prev().prev().prev().children().html();//.val();
+    var permissionTag= $(obj).parent().prev().prev().prev().prev().prev().prev().children().html();//权限标签
+    var parentPid= $(obj).parent().prev().prev().children().html();//父权限ID
+    var createUserId= $(obj).parent().prev().prev().prev().prev().prev().children().html();//代发机构ID
+    var status= $(obj).parent().prev().prev().prev().prev().children().html();
+    var permissionComment= $(obj).parent().prev().prev().prev().children().html();//权限备注
      var dstatus="<select id='status' name='status'>";
          if(status=="可用"){
              dstatus+="<option value='0'>不可用</option><option value='1' selected>可用</option>";
@@ -1355,33 +1358,35 @@ function editRole(obj,roleId){
     $$.window.open($rtpl(function(){/*
 
         <input id="roleId" name="roleId" type="hidden" value="{{roleId}}"/>
-        <div style="display:inline"><label class="ptitle">角色名：</label><input id="roleName" name="roleName" type="text" value="{{roleName}}" class="fmInput" /></div>
-        <div><label class="ptitle">角色标签：</label><input id="roleTag" name="roleTag" type="text" value="{{roleTag}}" class="fmInput" /></div>
+        <div style="display:inline"><label class="ptitle">namespace：</label><input id="namespace" name="namespace" type="text" value="{{namespace}}" class="fmInput" /></div>
+        <div><label class="ptitle">父权限ID：</label><input id="parentPid" name="parentPid" type="text" value="{{parentPid}}"  class="fmInput" /></div>
+        <div><label class="ptitle">权限标签：</label><input id="permissionTag" name="permissionTag" type="text" value="{{permissionTag}}" class="fmInput" /></div>
         <div><label class="ptitle">代发机构：</label><input id="createUserId" name="createUserId" type="text" value="{{createUserId}}" class="fmInput" /></div>
         <div><label class="ptitle">状态：</label>{{#dstatus}}</div>
-        <div><label class="ptitle">角色备注：</label><input id="roleComment" name="roleComment" type="text" value="{{roleComment}}" class="fmInput" /></div>
+        <div><label class="ptitle">权限备注：</label><input id="permissionComment" name="permissionComment" type="text" value="{{permissionComment}}" class="fmInput" /></div>
         <div >
             <input type="button" id="chanel1" name="chanel1" class="fmButton fmButton-blue" value="取消" jbtn="jqWindow.close">
             <input type="button" id="subc" name="subc" class="fmButton fmButton-blue" onclick="subupdate();" value="确定">
         </div>
     */}
     ,{
-            roleId:roleId,roleName:roleName,roleTag:roleTag,createUserId:createUserId,dstatus:dstatus,roleComment:roleComment
-        }),{title:"角色修改"});
+            permissionId:permissionId,namespace:namespace,permissionTag:permissionTag,parentPid:parentPid,createUserId:createUserId,dstatus:dstatus,permissionComment:permissionComment
+        }),{title:"权限修改"});
        // return false;
 
 }
 //修改后的提交
 function subupdate(){
-   var roleId=$("#roleId").val();
-   var roleName=$("#roleName").val();
-    var roleTag=$("#roleTag").val();
+   var permissionId=$("#permissionId").val();
+   var namespace=$("#namespace").val();
+    var permissionTag=$("#permissionTag").val();
    var createUserId=$("#createUserId").val();
+   var parentPid=$("#parentPid").val();
    var status=$("#status").val();
-   var roleComment=$("#roleComment").val();
+   var permissionComment=$("#permissionComment").val();
 
-    $.post(daifa_host+"admin/roleEdit.json",
-        {"roleId":roleId,"roleName":roleName,"createUserId":createUserId,"status":status,"roleComment":roleComment,"roleTag":roleTag},
+    $.post(daifa_host+"admin/tsysPermissionEdit.json",
+        {"permissionId":permissionId,"namespace":namespace,"permissionTag":permissionTag,"createUserId":createUserId,parentPid:parentPid,"status":status,"permissionComment":permissionComment},
         function(data){
         if(data.result=="success"){
             alert("修改完成");
