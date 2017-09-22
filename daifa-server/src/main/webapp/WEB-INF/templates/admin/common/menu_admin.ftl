@@ -2,7 +2,7 @@
     <ul>
 
         <li>
-            <a class="current" href="adminOrder.htm" ><i class="icon-allorders"></i>全部订单</a>
+            <a  href="adminOrder.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
 
         <li>
@@ -30,7 +30,7 @@
                     <a href="roleListByPage.htm"><i></i>角色管理</a>
                 </li>
                 <li>
-                    <a href="userAndRole.htm"><i></i>用户角色</a>
+                    <a class="current" href="userAndRole.htm"><i></i>用户角色</a>
                 </li>
                 <li>
                     <a href="permissionListByPage.htm"><i></i>权限管理</a>
