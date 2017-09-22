@@ -46,9 +46,9 @@ function subdd(){
         {"roleName":roleName,"createUserId":createUserId,"status":status,"roleComment":roleComment,"roleTag":roleTag},
         function(data){
             if(data.result=="success"){
-                alert("修改完成");
+                $$.alert("修改完成");
             }else{
-                alert("修改失败,"+data.msg);
+                $$.alert("修改失败,"+data.msg);
             }
         })
 }
@@ -102,9 +102,9 @@ function subupdate(){
         {"roleId":roleId,"roleName":roleName,"createUserId":createUserId,"status":status,"roleComment":roleComment,"roleTag":roleTag},
         function(data){
         if(data.result=="success"){
-            alert("修改完成");
+            $$.alert("修改完成");
         }else{
-            alert("修改失败,"+data.msg);
+            $$.alert("修改失败,"+data.msg);
         }
     })
 }

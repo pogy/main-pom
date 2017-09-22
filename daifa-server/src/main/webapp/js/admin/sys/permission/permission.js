@@ -48,9 +48,9 @@ function subdd(){
         {"namespace":namespace,"parentPid":parentPid,"createUserId":createUserId,"permissionTag":permissionTag,"status":status,"permissionComment":permissionComment},
         function(data){
             if(data.result=="success"){
-                alert("修改完成");
+                $$.alert("修改完成");
             }else{
-                alert("修改失败,"+data.msg);
+                $$.alert("修改失败,"+data.msg);
             }
         })
 }
@@ -107,9 +107,9 @@ function subupdate(){
         {"permissionId":permissionId,"namespace":namespace,"permissionTag":permissionTag,"createUserId":createUserId,parentPid:parentPid,"status":status,"permissionComment":permissionComment},
         function(data){
         if(data.result=="success"){
-            alert("修改完成");
+            $$.alert("修改完成");
         }else{
-            alert("修改失败,"+data.msg);
+            $$.alert("修改失败,"+data.msg);
         }
     })
 }
