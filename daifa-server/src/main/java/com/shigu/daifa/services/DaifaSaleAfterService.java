@@ -522,11 +522,18 @@ public class DaifaSaleAfterService {
         saleAfterBO.setPage(bo.getPage());
         saleAfterBO.setTelephone(bo.getTelphone());
         List<DaifaSaleAfterVO>  daifaSaleAfterVOS = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
-
         Map<Long,List<DaifaSaleAfterVO>> daifaSaleAfterGroup = BeanMapper.groupBy(daifaSaleAfterVOS,"expressCode",Long.class);
-        for(Map.Entry<Long,List<DaifaSaleAfterVO>> entry : daifaSaleAfterGroup.entrySet()){
+        for (DaifaAfterReceiveExpresStock stock : matchStocks){
+            List<DaifaSaleAfterVO> dvo = daifaSaleAfterGroup.get(stock.getReceivedExpressCode());
             DaifaAfterReceiveExpresStockVO daifaAfterReceiveExpresStockVO = new DaifaAfterReceiveExpresStockVO();
-            daifaAfterReceiveExpresStockVO.setOrders(entry.getValue());
+            daifaAfterReceiveExpresStockVO.setPackageId(stock.getReceivedExpressId()+"");
+            daifaAfterReceiveExpresStockVO.setPostName(stock.getReceivedExpressName());
+            daifaAfterReceiveExpresStockVO.setPostCode(stock.getReceivedExpressCode());
+            daifaAfterReceiveExpresStockVO.setTelephone(stock.getSendPhone());
+            daifaAfterReceiveExpresStockVO.setMatchingOrder(stock.getRelevanceStatus() == 0 ? false :true);
+            daifaAfterReceiveExpresStockVO.setMatchingTime(DateUtil.dateToString(stock.getCreateTime(),DateUtil.patternD));
+            daifaAfterReceiveExpresStockVO.setPackageRemark(dvo.size()>0 ? dvo.get(0).getBuyerRemark() : "");
+            daifaAfterReceiveExpresStockVO.setOrders(dvo);
             vos.add(daifaAfterReceiveExpresStockVO);
         }
 
