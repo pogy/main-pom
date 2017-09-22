@@ -7,7 +7,7 @@ package com.shigu.daifa.vo;/**
  * @since 3.0.0-SNAPSHOT
  */
 
-import com.opentae.data.daifa.beans.DaifaAfterSale;
+import java.util.List;
 
 /**
  *Created By pc on 2017-09-21/17:42
@@ -15,7 +15,7 @@ import com.opentae.data.daifa.beans.DaifaAfterSale;
  */
 public class DaifaAfterReceiveExpresStockVO {
     /**
-     * 包裹id
+     * 包裹id(received_express_id)
      */
     private String packageId;
     /**
@@ -43,8 +43,7 @@ public class DaifaAfterReceiveExpresStockVO {
      */
     private String packageRemark;
 
-    private DaifaAfterSale orders;
-
+    private List<DaifaSaleAfterVO> orders;
 
     public String getPackageId() {
         return packageId;
@@ -100,5 +99,13 @@ public class DaifaAfterReceiveExpresStockVO {
 
     public void setPackageRemark(String packageRemark) {
         this.packageRemark = packageRemark;
+    }
+
+    public List<DaifaSaleAfterVO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<DaifaSaleAfterVO> orders) {
+        this.orders = orders;
     }
 }

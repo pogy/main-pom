@@ -84,7 +84,7 @@ public class DaifaSaleAfterService {
      * @param bo
      * @return
      */
-    public ShiguPager<DaifaSaleAfterVO> afterSaleOrder(SaleAfterBO bo, Long sellerId){
+    public ShiguPager<DaifaSaleAfterVO> afterSaleOrder(SaleAfterBO bo, Long sellerId,Integer pageSize){
         List<Long> saleIds=new ArrayList<>();
         if(!StringUtils.isEmpty(bo.getBackPostCode())){
             DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
@@ -113,8 +113,8 @@ public class DaifaSaleAfterService {
         int count=daifaAfterSaleMapper.countByExample(daifaAfterSaleExample);
         List<DaifaSaleAfterVO> vos=new ArrayList<>();
         if(count>0){
-            daifaAfterSaleExample.setStartIndex((bo.getPage()-1)*10);
-            daifaAfterSaleExample.setEndIndex(10);
+            daifaAfterSaleExample.setStartIndex((bo.getPage()-1)*pageSize);
+            daifaAfterSaleExample.setEndIndex(pageSize);
             daifaAfterSaleExample.setOrderByClause("afterSaleId desc");
 
 
@@ -484,31 +484,47 @@ public class DaifaSaleAfterService {
      * 查询包裹
      * @throws DaifaException
      */
-    public ShiguPager<DaifaAfterReceiveExpresStockVO> getDaifaAfterReceiveExpresStock(ParcelSearchBO bo){
-        DaifaAfterReceiveExpresStockExample example = new DaifaAfterReceiveExpresStockExample();
-        example.createCriteria().andReceivedExpressCodeEqualTo(bo.getPostCode()).andSendPhoneEqualTo(bo.getTelphone())
-                .andRelevanceStatusEqualTo(bo.getMatchState());
-        List<DaifaAfterReceiveExpresStock>  daifaAfterReceiveExpresStocks = daifaAfterReceiveExpresStockMapper.selectByExample(example);
-        List<DaifaAfterReceiveExpresStockVO> daifaAfterReceiveExpresStockVOS = new ArrayList<>();
-        for (DaifaAfterReceiveExpresStock item : daifaAfterReceiveExpresStocks){
-            DaifaAfterReceiveExpresStockVO daifaAfterReceiveExpresStockVO = new DaifaAfterReceiveExpresStockVO();
-            daifaAfterReceiveExpresStockVO.setPackageId(item.getDfOrderId()+"");
-            daifaAfterReceiveExpresStockVO.setPostName(item.getReceivedExpressName());
-            daifaAfterReceiveExpresStockVO.setPostCode(item.getReceivedExpressCode());
-            daifaAfterReceiveExpresStockVO.setTelephone(item.getSendPhone());
-            daifaAfterReceiveExpresStockVO.setMatchingOrder(item.getRelevanceStatus() == 0 ? false : true);
-            daifaAfterReceiveExpresStockVO.setMatchingTime(DateUtil.dateToString(item.getCreateTime(),DateUtil.patternD));
-            daifaAfterReceiveExpresStockVO.setPackageRemark("");//TODO 备注
-            //TODO 组装数据
+    public ShiguPager<DaifaAfterReceiveExpresStockVO> getDaifaAfterReceiveExpresStock(ParcelSearchBO bo, Long sellerId) throws DaifaException {
+        List<DaifaAfterReceiveExpresStockVO> vos = new ArrayList<>();
+        DaifaAfterReceiveExpresStockExample daifaAfterReceiveExpresStockExample = new DaifaAfterReceiveExpresStockExample();
+        daifaAfterReceiveExpresStockExample.createCriteria().andReceivedExpressCodeEqualTo(bo.getPostCode()).andSendPhoneEqualTo(bo.getTelphone());
+        daifaAfterReceiveExpresStockExample.setDistinct(true);
+        int count =daifaAfterReceiveExpresStockMapper.countByExample(daifaAfterReceiveExpresStockExample);
+        if(count>0) {
+            daifaAfterReceiveExpresStockExample.setStartIndex((bo.getPage() - 1) * 10);
+            daifaAfterReceiveExpresStockExample.setEndIndex(10);
+            daifaAfterReceiveExpresStockExample.setOrderByClause("received_express_id desc");
+        }
+        //所有
+        List<DaifaAfterReceiveExpresStock>  stocks = daifaAfterReceiveExpresStockMapper.selectByExample(daifaAfterReceiveExpresStockExample);
+        //matchState匹配的stock
+        List<DaifaAfterReceiveExpresStock> matchStocks = new ArrayList<>();
+        Set<String> matchStocksPostCodes = new HashSet<>();
+        for (DaifaAfterReceiveExpresStock stock : stocks){
+            if (stock.getRelevanceStatus() == bo.getMatchState()){
+                matchStocks.add(stock);
+                matchStocksPostCodes.add(stock.getReceivedExpressCode());
+            }
         }
 
-        ShiguPager<DaifaAfterReceiveExpresStockVO> pager = new ShiguPager<>();
-        pager.setContent(daifaAfterReceiveExpresStockVOS);
+        SaleAfterBO saleAfterBO = new SaleAfterBO();
+        saleAfterBO.setBackPostCode(bo.getPostCode());
+        saleAfterBO.setPage(bo.getPage());
+        saleAfterBO.setTelephone(bo.getTelphone());
+        List<DaifaSaleAfterVO>  daifaSaleAfterVOS = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
+
+        Map<Long,List<DaifaSaleAfterVO>> daifaSaleAfterGroup = BeanMapper.groupBy(daifaSaleAfterVOS,"expressCode",Long.class);
+        for(Map.Entry<Long,List<DaifaSaleAfterVO>> entry : daifaSaleAfterGroup.entrySet()){
+            DaifaAfterReceiveExpresStockVO daifaAfterReceiveExpresStockVO = new DaifaAfterReceiveExpresStockVO();
+            daifaAfterReceiveExpresStockVO.setOrders(entry.getValue());
+            vos.add(daifaAfterReceiveExpresStockVO);
+        }
+
+        ShiguPager<DaifaAfterReceiveExpresStockVO> pager=new ShiguPager<>();
+        pager.setContent(vos);
         pager.setNumber(bo.getPage());
-        pager.calPages(daifaAfterReceiveExpresStocks.size(),10);
+        pager.calPages(count,10);
         return pager;
     }
-
-
 
 }

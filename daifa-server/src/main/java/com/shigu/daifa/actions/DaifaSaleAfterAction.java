@@ -39,7 +39,7 @@ public class DaifaSaleAfterAction {
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId());
+        ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId(),10);
         AfterSumVO sum=daifaSaleAfterService.sum(auth.getDaifaSellerId());
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
@@ -143,7 +143,7 @@ public class DaifaSaleAfterAction {
         model.addAttribute("query",bo);
         model.addAttribute("orderStatistics",daifaSaleAfterService.getOrderStatistics(bo));
 
-        ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo);
+        ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo,auth.getDaifaSellerId());
         model.addAttribute("postList",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         return "daifa/parcelSearch";
