@@ -30,7 +30,7 @@ public class MessageQueueTest extends BaseTest {
 
     @Test
     public void testAgreeRefund(){
-        Long refundId=36548L;
+        Long refundId=37876L;
         try {
             RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
             refundItemOrder.success();
@@ -70,7 +70,7 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendRefundHasItem() {
-        orderMessageProducter.orderRefundHasItem(2L, 3L, 666L, "xxxx");
+//        orderMessageProducter.orderRefundHasItem(2L, 3L, 666L, "xxxx");
     }
 
     /**
@@ -78,7 +78,7 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendRefundNoMoney() {
-        orderMessageProducter.orderRefundHasItem(2L, 3L, 0L, "xxx");
+//        orderMessageProducter.orderRefundHasItem(2L, 3L, 0L, "xxx");
     }
 
     /**
