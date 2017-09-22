@@ -304,6 +304,8 @@ public class OrderModelImpl implements OrderModel {
         send.setSendStatus(2);
         send.setCreateTime(time);
         send.setCreateDate(date);
+        send.setSendDate(date);
+        send.setSendTime(time);
         daifaSendMapper.insertSelective(send);
 
         //更新代发货主表状态为已发货
@@ -311,6 +313,8 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
         DaifaWaitSend daifaWaitSend=new DaifaWaitSend();
         daifaWaitSend.setSendStatus(2);
+        daifaWaitSend.setSendDate(date);
+        daifaWaitSend.setSendTime(time);
         daifaWaitSendMapper.updateByExampleSelective(daifaWaitSend,daifaWaitSendExample);
 
 

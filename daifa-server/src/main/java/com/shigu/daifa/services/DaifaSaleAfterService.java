@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DaifaSaleAfterService {
@@ -38,11 +39,45 @@ public class DaifaSaleAfterService {
     @Autowired
     private DaifaRefuseReasonMapper daifaRefuseReasonMapper;
     @Autowired
+    private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+    @Autowired
     private SaleAfterProcess saleAfterProcess;
     @Autowired
     private ScanSaleAfterExpressProcess scanSaleAfterExpressProcess;
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
+    @Autowired
+    private DaifaSendService daifaSendService;
+
+
+
+    public AfterSumVO sum(Long sellerId){
+        Integer totalNum=daifaAfterSaleSubMapper.selectAfterCount(sellerId,null);
+        Integer returnNum=daifaAfterSaleSubMapper.selectAfterCount(sellerId,1);
+        Integer changeNum=daifaAfterSaleSubMapper.selectAfterCount(sellerId,2);
+        SendSumVO sendSum=daifaSendService.sum(sellerId);
+        int queCount = 0;
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andCreateDateEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB));
+        daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
+        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,
+                FieldUtil.codeFields("df_order_id,take_goods_status,goods_num"));
+        if(ts.size()>0){
+            Map<Long, List<DaifaGgoodsTasks>> goodsMap = BeanMapper.groupBy(ts, "dfOrderId", Long.class);
+            queCount=goodsMap.values().stream().map(daifaGgoodsTasksList ->
+                    daifaGgoodsTasksList.stream().findFirst().get())
+                    .collect(Collectors.toList())
+                    .stream().filter(daifaGgoodsTasks -> daifaGgoodsTasks.getTakeGoodsStatus()==2)
+                    .mapToInt(DaifaGgoodsTasks::getGoodsNum).sum();
+        }
+        AfterSumVO vo=new AfterSumVO();
+        vo.setAfterOrderNum(totalNum);
+        vo.setRefundsNum(returnNum);
+        vo.setExchangeNum(changeNum);
+        vo.setBeenShippedGoodsFee(sendSum.getBeenShippedGoodsFee());
+        vo.setStockoutNum(queCount);
+        return vo;
+    }
 
     /**
      * 列表
