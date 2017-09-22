@@ -154,11 +154,14 @@ public class DaifaSendService {
             daifaSendExample.setStartIndex((bo.getPage() - 1) * 10);
             daifaSendExample.setEndIndex(10);
         }
-        return MultipleExampleBuilder.from(daifaSendExample)
+        MultipleExampleBuilder build =MultipleExampleBuilder.from(daifaSendExample)
                 .join(daifaTradeExample)
-                .on(daifaSendExample.createCriteria().equalTo(DaifaSendExample.dfTradeId, DaifaTradeExample.dfTradeId))
-                .leftJoin(daifaSendOrderExample)
-                .on(daifaSendExample.createCriteria()
-                        .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId)).build();
+                .on(daifaSendExample.createCriteria().equalTo(DaifaSendExample.dfTradeId, DaifaTradeExample.dfTradeId));
+        if(isList){
+            build.leftJoin(daifaSendOrderExample)
+                    .on(daifaSendExample.createCriteria()
+                            .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId));
+        }
+        return build.build();
     }
 }
