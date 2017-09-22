@@ -6,14 +6,10 @@ import com.openJar.responses.app.*;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
-import com.shigu.buyer.bo.LoginByPhoneBO;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
-import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
-import com.shigu.component.shiro.exceptions.LoginAuthException;
-import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
@@ -132,9 +128,9 @@ public class PhoneUserService {
                     //把token存入redis,设置存活时间30分钟
                    // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                     Jedis jedis = redisIO.getJedis();
-                    jedis.setex("phone_login_token",1800, uuid);
+                    jedis.setex("phone_login_token"+personalSession.getUserId(),1800, uuid);
                     //从redis取出token
-                    String token1 = redisIO.get("phone_login_token");
+                    String token1 = redisIO.get("phone_login_token"+personalSession.getUserId());
                     resp.setToken(token1);
                     //imSeller
                     ShopSession logshop = personalSession.getLogshop();
@@ -196,9 +192,9 @@ public class PhoneUserService {
                             //把token存入redis,设置存活时间30分钟
                             // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                             Jedis jedis = redisIO.getJedis();
-                            jedis.setex("phone_login_token",1800, uuid);
+                            jedis.setex("phone_login_token"+personalSession.getUserId(),1800, uuid);
                             //从redis取出token
-                            String token1 = redisIO.get("phone_login_token");
+                            String token1 = redisIO.get("phone_login_token"+personalSession.getUserId());
                             resp.setToken(token1);
                             //imSeller
                             ShopSession logshop = personalSession.getLogshop();
@@ -287,16 +283,19 @@ public class PhoneUserService {
      */
     public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
         ChangePasswordResponse resp = new ChangePasswordResponse();
+        OpenException openException=new OpenException();
         //用户验证不通过或原密码输入不正确
-        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken()) || !EncryptUtil.encrypt(request.getOldPwd()).equals(userBaseService.selUserPwdByUserId(request.getUserId()))) {
+        if (!(redisIO.get("phone_login_token"+request.getUserId())).equals(request.getToken())|| !EncryptUtil.encrypt(request.getOldPwd()).equals(userBaseService.selUserPwdByUserId(request.getUserId()))) {
             resp.setSuccess(false);
             return resp;
         }
+
         try {
             userLicenseService.changePassword(request.getUserId(), request.getNewPwd());
             resp.setSuccess(true);
         } catch (Main4Exception e) {
-            resp.setException(new OpenException());
+            openException.setErrMsg("修改密码失败");
+            resp.setException(openException);
         }
         return resp;
     }

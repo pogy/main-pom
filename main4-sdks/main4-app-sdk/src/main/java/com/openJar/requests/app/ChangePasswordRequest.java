@@ -33,12 +33,12 @@ public class ChangePasswordRequest extends Request<ChangePasswordResponse> {
 		this.userId=userId;
 	}
 
-	public String getOldPwd(){
+	public String getOldPwd() {
 		return oldPwd;
 	}
 
-	public void setOldPwd(String oldPwd){
-		this.oldPwd=oldPwd;
+	public void setOldPwd( String oldPwd ) {
+		this.oldPwd = oldPwd;
 	}
 
 	public String getNewPwd(){

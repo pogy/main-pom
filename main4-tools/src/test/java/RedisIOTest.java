@@ -116,12 +116,12 @@ public class RedisIOTest {
         //删除
        // String uuid = UUIDGenerator.getUUID();
        // redisIO.putFixedTemp("phone_login_token",uuid,60);
-//        String phone_login_token = redisIO.get("phone_login_token");
-
-//        System.out.println("**********************************"+"phone_login_token="+phone_login_token);
-        redisIO.del("phone_login_token");
         String phone_login_token = redisIO.get("phone_login_token");
-        System.out.println("**********************************"+"phone_login_token"+phone_login_token);
+
+        System.out.println("**********************************"+"phone_login_token=***"+phone_login_token);
+       /* redisIO.del("phone_login_token");
+        String phone_login_token = redisIO.get("phone_login_token");
+        System.out.println("**********************************"+"phone_login_token"+phone_login_token);*/
     }
 
 }
