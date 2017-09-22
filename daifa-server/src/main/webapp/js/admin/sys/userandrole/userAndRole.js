@@ -50,23 +50,20 @@ function checkUser(obj,userId){
 //保存用户角色
 function saveUserAndRole(){
     var userId= $("#userId").val();
-    var roleIds=[];
+    var roleId=[];
     //取得选中的roleId
     //========================清理选中start==========
     $("input[name^='roleId']").each(function(){
 
         if($(this).prop("checked"))
         {
-            roleIds.push(this.value);
+            roleId.push(this.value);
         }
     });
     //========================清理选中end==============
-    roleIds.join(',');//以'，'分隔
-    //alert("userId="+userId+"@@@roleId="+roleIds);
     $.post(daifa_host+"admin/jsonupdateUserAndRoles.json",
-        {"userId":userId,roleIds:roleIds},
+        {"userId":userId,roleIds:roleId.join(',')},//以'，'分隔
         function(data){
-
             if(data.result=="success"){
                 alert(data.msg);
             }else{
