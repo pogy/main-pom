@@ -487,7 +487,13 @@ public class DaifaSaleAfterService {
     public ShiguPager<DaifaAfterReceiveExpresStockVO> getDaifaAfterReceiveExpresStock(ParcelSearchBO bo, Long sellerId) throws DaifaException {
         List<DaifaAfterReceiveExpresStockVO> vos = new ArrayList<>();
         DaifaAfterReceiveExpresStockExample daifaAfterReceiveExpresStockExample = new DaifaAfterReceiveExpresStockExample();
-        daifaAfterReceiveExpresStockExample.createCriteria().andReceivedExpressCodeEqualTo(bo.getPostCode()).andSendPhoneEqualTo(bo.getTelphone());
+        DaifaAfterReceiveExpresStockExample.Criteria criteria = daifaAfterReceiveExpresStockExample.createCriteria();
+        if (!StringUtils.isEmpty(bo.getPostCode())){
+            criteria.andReceivedExpressCodeEqualTo(bo.getPostCode());
+        }
+        if (!StringUtils.isEmpty(bo.getTelphone())){
+            criteria.andSendPhoneEqualTo(bo.getTelphone());
+        }
         daifaAfterReceiveExpresStockExample.setDistinct(true);
         int count =daifaAfterReceiveExpresStockMapper.countByExample(daifaAfterReceiveExpresStockExample);
         if(count>0) {
@@ -501,7 +507,11 @@ public class DaifaSaleAfterService {
         List<DaifaAfterReceiveExpresStock> matchStocks = new ArrayList<>();
         Set<String> matchStocksPostCodes = new HashSet<>();
         for (DaifaAfterReceiveExpresStock stock : stocks){
-            if (stock.getRelevanceStatus() == bo.getMatchState()){
+            if (stock.getRelevanceStatus()  == null){
+                matchStocks.add(stock);
+                matchStocksPostCodes.add(stock.getReceivedExpressCode());
+            }
+            if (stock.getRelevanceStatus()  != null && stock.getRelevanceStatus() == bo.getMatchState()){
                 matchStocks.add(stock);
                 matchStocksPostCodes.add(stock.getReceivedExpressCode());
             }
