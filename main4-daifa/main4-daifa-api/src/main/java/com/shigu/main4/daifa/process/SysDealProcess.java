@@ -1,6 +1,8 @@
 package com.shigu.main4.daifa.process;
 
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
+
 /**
  * @类编号
  * @类名称：SysDealProcess
@@ -22,4 +24,6 @@ public interface SysDealProcess {
     int permissionInsert(String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
 
     int permissionUpdate(Long permissionId,String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
+    //更新用户角色
+    int updateUserAndRoles (Long userId, String roleIds) throws DaifaException;
 }

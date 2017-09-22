@@ -1,5 +1,12 @@
 package com.shigu.main4.daifa.process.impltest;
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.SysDealProcess;
+import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.test.BaseSpringTest;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @类编号
  * @类名称：SysDealProcessImplTest
@@ -11,5 +18,27 @@ package com.shigu.main4.daifa.process.impltest;
  * @since: main-pom
  * @commonents:
  */
-public class SysDealProcessImplTest {
+public class SysDealProcessImplTest extends BaseSpringTest {
+
+
+
+    @Autowired
+    private SysDealProcess sysDealProcess;
+
+    @Test
+    public void updateUserAndRoles_test(){//OK
+
+        Long userId=new Long(3L);
+        String roleIds="2,3";
+
+
+        sysDealProcess = SpringBeanFactory.getBean(SysDealProcess.class);
+        try {
+            sysDealProcess.updateUserAndRoles (userId,roleIds);
+        } catch (DaifaException e) {
+            e.printStackTrace ();
+        }
+
+    }
+
 }
