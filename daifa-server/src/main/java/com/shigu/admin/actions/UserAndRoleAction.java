@@ -38,8 +38,6 @@ public class UserAndRoleAction {
 
     @RequestMapping("admin/userAndRole")
     public String userAndRole(UserAndRoleBO bo, Model model) throws ExecutionException, InterruptedException {
-
-
         //Session session = SecurityUtils.getSubject().getSession();
         //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=999999990L;
