@@ -68,7 +68,7 @@
                 <li class="tddiv" ><p>角色树</p></li>
             <#list roleTree as listrole>
                 <li id="liuserid" class="tddiv" onclick="checkRole(this,'${listrole.roleId!}');">
-                    <p><i class="icon-c-user"></i>${listrole.roleName!}<!--<i class="iconfont">&#xe65f;</i>--></p>
+                    <p><i class="icon-addr"></i>${listrole.roleName!}<!--<i class="iconfont">&#xe65f;</i>--></p>
                </li>
             </#list>
             </ul>

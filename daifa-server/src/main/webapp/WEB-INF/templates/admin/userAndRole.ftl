@@ -68,7 +68,7 @@
                 <li class="tddiv" ><p>用户树</p></li>
             <#list userTree as listuser>
                 <li id="liuserid" class="tddiv" onclick="checkUser(this,'${listuser.daifaWorkerId!}');">
-                    <p><i class="icon-c-user"></i>${listuser.userName!}<!--<i class="iconfont">&#xe65f;</i>--></p>
+                    <p><i class="icon-user"></i>${listuser.userName!}<!--<i class="iconfont">&#xe65f;</i>--></p>
                </li>
             </#list>
             </ul>
