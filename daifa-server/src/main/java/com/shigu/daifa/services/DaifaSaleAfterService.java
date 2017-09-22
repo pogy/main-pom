@@ -169,16 +169,16 @@ public class DaifaSaleAfterService {
                 vo.setIsTbOrder(t.getDaifaType()==2);
                 Integer num=0;
                 List<DaifaSaleAfterRefundVO> refunds=new ArrayList<>();
-                List<DaifaAfterSaleSub> ss=subsGroup.get(sale.getAfterSaleId());
-                for(DaifaAfterSaleSub s:subs){
+                List<DaifaAfterSaleSub> saleOfSubs=subsGroup.get(sale.getAfterSaleId());
+                for(DaifaAfterSaleSub s:saleOfSubs){
                     if(s.getRefundId()==null){
                         s.setRefundId(-1L);
                     }
                 }
-                Map<Long,List<DaifaAfterSaleSub>> refundGroup=BeanMapper.groupBy(ss,"refundId",Long.class);
+                Map<Long,List<DaifaAfterSaleSub>> refundGroup=BeanMapper.groupBy(saleOfSubs,"refundId",Long.class);
 
                 Map<Long,Long> tmp=new HashMap<>();
-                for(DaifaAfterSaleSub s:subs){
+                for(DaifaAfterSaleSub s:saleOfSubs){
                     if(s.getRefundId()!=null&&s.getRefundId()!=-1L){
                         if(tmp.get(s.getRefundId())!=null){
                             continue;
