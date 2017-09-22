@@ -30,7 +30,7 @@
             </list>
         </property>
     </bean>
-  <!--  <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
+    <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
                 <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
@@ -44,18 +44,18 @@
         <property name="username" value="${mysqljdbc.username}" />
         <property name="password" value="${mysqljdbc.password}" />
 
-        &lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
+        <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1" />
         <property name="minIdle" value="1" />
         <property name="maxActive" value="20" />
 
-        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
+        <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="60000" />
 
-        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
         <property name="timeBetweenEvictionRunsMillis" value="60000" />
 
-        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
         <property name="minEvictableIdleTimeMillis" value="300000" />
 
         <property name="validationQuery" value="SELECT 'x'" />
@@ -63,11 +63,11 @@
         <property name="testOnBorrow" value="false" />
         <property name="testOnReturn" value="false" />
 
-        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 &ndash;&gt;
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
         <property name="poolPreparedStatements" value="true" />
         <property name="maxPoolPreparedStatementPerConnectionSize" value="30" />
 
-        &lt;!&ndash; 配置监控统计拦截的filters，去掉后监控界面sql无法统计 &ndash;&gt;
+        <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
         <property name="filters" value="stat" />
     </bean>
 
@@ -96,9 +96,9 @@
     <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:/cache/item-cache.xml"/>
     </bean>
--->
-   <!-- <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+
+    <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcacheManager"/>
         <property name="transactionAware" value="true"/>
-    </bean>-->
+    </bean>
 </beans>

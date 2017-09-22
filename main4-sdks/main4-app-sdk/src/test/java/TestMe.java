@@ -24,12 +24,13 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         LoginRequest request=new LoginRequest ();
         request.setUserName("17637503238");
-        request.setPassword("fei691820");
-        request.setType(1);
+        request.setPassword("");
+        request.setType(2);
         LoginResponse response = client.execute(request);
 
         System.out.println(response.getBody());
     }
+    //发送手机号
     @Test
     public void  getPhoneMsgRequest  (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
