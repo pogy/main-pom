@@ -98,9 +98,9 @@ public class OrderSendErrorDealService {
         exampleCriteria.andRefundStatusGreaterThan (0).andTakeGoodsStatusEqualTo (1);
         if (bo.getDfTradeId() != null) {
             exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
-        }
+        }else{
             exampleCriteria.andPropStrLike ("%+%");
-
+        }
 
         int count= daifaOrderMapper.countByExample (example);
         bo.setCount (count);
