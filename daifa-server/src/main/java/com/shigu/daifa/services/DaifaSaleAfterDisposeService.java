@@ -130,7 +130,7 @@ public class DaifaSaleAfterDisposeService {
                             refund.setRefundId(s.getRefundId());
 
                             List<DaifaSaleAfterDisposeSubVO> subvos=new ArrayList<>();
-                            boolean isInStock=true;
+                            boolean showRefundAll=true;
                             for(DaifaAfterSaleSub sub:sublist){
                                 DaifaSaleAfterDisposeSubVO subvo=new DaifaSaleAfterDisposeSubVO();
                                 DaifaOrder o=orderMap.get(sub.getDfOrderId());
@@ -146,20 +146,37 @@ public class DaifaSaleAfterDisposeService {
                                 subvo.setStoreGoodsCode(o.getStoreGoodsCode());
                                 if(sub.getAfterStatus()>3){
                                     subvo.setAfterSaleState(sub.getAfterType()==1?5:25);
-                                    subvo.setPutInStorageType(sub.getInStock()!=null&&sub.getInStock()==1?1:2);
                                 }else{
                                     subvo.setAfterSaleState(0);
-                                    subvo.setPutInStorageType(3);
                                 }
-                                if(sub.getInStock()==null){
-                                    isInStock=false;
+                                refund.setRefundIs(false);
+                                if(sub.getAfterStatus()==4){
+                                    if(sub.getInStock()==null){
+                                        subvo.setPutInStorageType(2);
+                                    }else{
+                                        subvo.setPutInStorageType(sub.getInStock()==1?1:3);
+                                    }
+                                }else if(sub.getAfterStatus()>4){
+                                    refund.setRefundIs(true);
+                                    if(sub.getInStock()==1){
+                                        subvo.setPutInStorageType(4);
+                                    }else{
+                                        subvo.setPutInStorageType(3);
+                                    }
+                                }else if(sub.getAfterStatus()>0){
+                                    subvo.setPutInStorageType(2);
+                                }else{
+                                    subvo.setPutInStorageType(1);
+                                }
+                                if(sub.getInStock()!=null&&sub.getInStock()==1){
+                                    showRefundAll=false;
                                 }
                                 subvo.setAfterSalePostCode(sub.getApplyExpressCode());
                                 subvo.setAfterSalePostName(sub.getApplyExpressName());
                                 subvos.add(subvo);
                                 num++;
                             }
-                            refund.setAllNotPutInIs(isInStock);
+                            refund.setAllNotPutInIs(showRefundAll);
                             refund.setChildOrders(subvos);
                             refunds.add(refund);
                         }else{
