@@ -109,13 +109,13 @@ public class AfterSaleShowAction {
      * 提交快递
      *
      * @param refundId    退款id
-     * @param expressId   快递id
+     * @param expressName   快递id
      * @param expressCode 快递单号
      * @return json
      */
     @RequestMapping(value = "chooseExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject chooseExpress(String refundId, String expressId, String expressCode, HttpSession session) {
+    public JSONObject chooseExpress(String refundId, String expressName, String expressCode, HttpSession session) {
 
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
@@ -125,14 +125,14 @@ public class AfterSaleShowAction {
         if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
-        if (StringUtils.isEmpty(expressId)) {
+        if (StringUtils.isEmpty(expressName)) {
             return JsonResponseUtil.error("快递不能空");
         }
         if (StringUtils.isEmpty(expressCode)) {
             return JsonResponseUtil.error("快递单号不能空");
         }
 
-        afterSaleShowService.chooseExpress(refundId, expressId, expressCode);
+        afterSaleShowService.chooseExpress(refundId, expressName, expressCode);
         return JsonResponseUtil.success();
 
     }
@@ -140,13 +140,13 @@ public class AfterSaleShowAction {
     /**
      * 修改快递
      * @param refundId  售后id
-     * @param expressId 快递id
+     * @param expressName 快递id
      * @param expressCode 快递单号
      * @return  json
      */
     @RequestMapping(value = "modifyExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject modifyExpress(String refundId, String expressId, String expressCode,HttpSession session) {
+    public JSONObject modifyExpress(String refundId, String expressName, String expressCode,HttpSession session) {
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
         }
@@ -155,13 +155,13 @@ public class AfterSaleShowAction {
         if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
-        if (StringUtils.isEmpty(expressId)) {
+        if (StringUtils.isEmpty(expressName)) {
             return JsonResponseUtil.error("快递不能空");
         }
         if (StringUtils.isEmpty(expressCode)) {
             return JsonResponseUtil.error("快递单号不能空");
         }
-        afterSaleShowService.modifyExpress(refundId,expressId,expressCode);
+        afterSaleShowService.modifyExpress(refundId,expressName,expressCode);
 
         return JsonResponseUtil.success();
     }
