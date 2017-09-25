@@ -324,19 +324,18 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * 选择快递公司并提交
      *
      * @param refundId    :退换货id
-     * @param expressId   :快递公司id
+     * @param companyName   :快递公司名称
      * @param expressCode :快递单号
      * @create: zf
      */
     @Override
-    public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        modExpress(refundId, expressId, expressCode, false);
+    public void chooseExpress(Long refundId, String companyName, String expressCode) {
+        modExpress(refundId, companyName, expressCode, false);
     }
 
-    private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
+    private void modExpress(Long refundId, String company, String expressCode, boolean modify) {
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
-        //TODO: 暂时注释掉，消息接口可能有变化
-//        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+        orderMessageProducter.refundCourierNumberModify(refundId, company, expressCode, modify);
     }
 
     private String selCompanyById(Long expressId) {
@@ -349,15 +348,15 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * 修改快递公司
      *
      * @param refundId
-     * @param expressId
+     * @param companyName
      * @param expressCode
      * @create: zf
-     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
+     * @param: refundId 退换货id   companyName快递公司名称，expressCode快递单号
      * @return:
      */
     @Override
-    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
-        modExpress(refundId, expressId, expressCode, true);
+    public void modifyExpress(Long refundId, String companyName, String expressCode) {
+        modExpress(refundId, companyName, expressCode, true);
     }
     /**
      * 获取已填写的快递信息
