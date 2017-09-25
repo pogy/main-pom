@@ -173,7 +173,9 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                         subOrderModelBO.setWebSite(bo.getWebSite());
                         subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                        subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        if(num>1){
+                            subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        }
                         subOrderModelBO.setGoodsWeight (bo.getWeight ());//重量
                         if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
                             if(serviceBOMap.get (bo.getSoid ())!=null) {
