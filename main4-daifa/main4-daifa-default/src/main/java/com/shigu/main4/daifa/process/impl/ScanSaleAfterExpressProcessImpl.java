@@ -2,10 +2,7 @@ package com.shigu.main4.daifa.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.examples.DaifaAfterSaleExample;
-import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -155,11 +152,12 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
     }
 
     @Override
-    public void updatePackageRemark(Integer receivedExpressId, String packageRemark) {
+    public void updatePackageRemark(List<Integer> receivedExpressIds, String packageRemark) {
+        DaifaAfterReceiveExpresStockExample example=new DaifaAfterReceiveExpresStockExample();
+        example.createCriteria().andReceivedExpressIdIn(receivedExpressIds);
         DaifaAfterReceiveExpresStock stock = new DaifaAfterReceiveExpresStock();
-        stock.setReceivedExpressId(receivedExpressId);
         stock.setPackageRemark(packageRemark);
-        daifaAfterReceiveExpresStockMapper.updateByPrimaryKeySelective(stock);
+        daifaAfterReceiveExpresStockMapper.updateByExampleSelective(stock,example);
     }
 
 }

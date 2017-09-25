@@ -67,8 +67,8 @@ public interface ScanSaleAfterExpressProcess {
 
     /**
      * 修改daifa_after_receive_expres_stock备注
-     * @param receivedExpressId  主键
+     * @param receivedExpressIds  主键
      * @param packageRemark      备注
      */
-    void updatePackageRemark(Integer receivedExpressId,String packageRemark);
+    void updatePackageRemark(List<Integer> receivedExpressIds,String packageRemark);
 }
