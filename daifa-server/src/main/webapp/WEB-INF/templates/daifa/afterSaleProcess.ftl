@@ -361,7 +361,7 @@
         <p class="fcF40">商品未入库</p>
         <#elseif childOrder.putInStorageType == 3>
         <p class="fcF40">退款失败入库</p>
-        <#elseif childOrder.putInStorageType == 3>
+        <#elseif childOrder.putInStorageType == 4>
         <p class="fcF40">商品已退款</p>
         </#if>
     </td>
