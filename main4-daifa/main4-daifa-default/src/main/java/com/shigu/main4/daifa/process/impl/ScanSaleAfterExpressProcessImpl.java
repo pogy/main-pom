@@ -107,8 +107,16 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
                 subvo.setAfterSalePostCode(s.getApplyExpressCode());
                 subvo.setAfterSalePostName(s.getApplyExpressName());
                 switch (s.getAfterStatus()){
-                    case 1: case 2: {
+                    case 1:{
                         subvo.setAfterSaleState(1);
+                        break;
+                    }
+                    case 2: {
+                        if(s.getApplyDealStatus()==1){
+                            subvo.setAfterSaleState(2);
+                        }else{
+                            subvo.setAfterSaleState(3);
+                        }
                         break;
                     }
                     case 3:{
@@ -127,7 +135,7 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
                 }
                 subvo.setChildRemark(o.getOrderRemark());
                 subvo.setChildServersFee(o.getSingleServicesFee());
-                subvo.setIsInCangKu(s.getInStock()==null);
+                subvo.setIsInCangKu(s.getAfterStatus()==4&&s.getInStock()==null);
                 subvo.setNowScanPostIs(expressCode.equals(s.getApplyExpressCode()));
                 subvos.add(subvo);
             }
