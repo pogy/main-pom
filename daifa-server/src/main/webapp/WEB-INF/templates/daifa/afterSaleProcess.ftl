@@ -359,12 +359,18 @@
         <b jbtn="failRefund">退款失败入库</b>
         <#elseif childOrder.putInStorageType == 2>
         <p class="fcF40">商品未入库</p>
+        <#elseif childOrder.putInStorageType == 3>
+        <p class="fcF40">退款失败入库</p>
+        <#elseif childOrder.putInStorageType == 3>
+        <p class="fcF40">商品已退款</p>
         </#if>
     </td>
     <#if childOrder_index == 0>
     <td class="refundOpe" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.allNotPutInIs == true>
-        <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+        <#if afterSale.allNotPutInIs == false>
+            <#if afterSale.refundIs == false>
+            <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+            </#if>
         </#if>
     </td>
     </#if>
