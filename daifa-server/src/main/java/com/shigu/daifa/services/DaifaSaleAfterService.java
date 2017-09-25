@@ -603,20 +603,16 @@ public class DaifaSaleAfterService {
         DaifaAfterReceiveExpresStockExample example = new DaifaAfterReceiveExpresStockExample();
         example.createCriteria().andReceivedExpressCodeEqualTo(daifaAfterReceiveExpresStock.getReceivedExpressCode());
         List<DaifaAfterReceiveExpresStock> stocks = daifaAfterReceiveExpresStockMapper.selectByExample(example);
-        System.out.println();
-//        String packageRemark;
-//        for (DaifaAfterReceiveExpresStock stock : stocks) {
-//            DaifaAfterReceiveExpresStock newStock = new DaifaAfterReceiveExpresStock();
-//            newStock.setReceivedExpressId(stock.getReceivedExpressId());
-//            packageRemark = stock.getPackageRemark();
-//            if (stock.getPackageRemark() == null){
-//                packageRemark = remarkCon;
-//            }else{
-//                packageRemark +=  "<br>"+remarkCon;
-//            }
-//            newStock.setPackageRemark(packageRemark);
-//            daifaAfterReceiveExpresStockMapper.updatePackageRemark(stock.getReceivedExpressId(),packageRemark);
-//        }
+        String packageRemark;
+        for (DaifaAfterReceiveExpresStock stock : stocks) {
+            packageRemark = stock.getPackageRemark();
+            if (packageRemark == null){
+                packageRemark = remarkCon;
+            }else{
+                packageRemark +=  "<br>"+remarkCon;
+            }
+            scanSaleAfterExpressProcess.updatePackageRemark(stock.getReceivedExpressId(),packageRemark);
+        }
 
     }
 

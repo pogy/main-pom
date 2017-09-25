@@ -1,18 +1,12 @@
 package com.shigu.main4.daifa.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.DaifaAfterSale;
-import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
-import com.opentae.data.daifa.beans.DaifaOrder;
-import com.opentae.data.daifa.beans.DaifaTrade;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaAfterSaleExample;
 import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
-import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
-import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
@@ -41,6 +35,8 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     private DaifaOrderMapper daifaOrderMapper;
+    @Autowired
+    private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
 
     @Override
     public List<ExpressRelevanceVO> expressScan(String expressCode){
@@ -157,4 +153,13 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
         SpringBeanFactory.getBean(ScanSaleAfterExpressModel.class).rebackPrintExpress(bo);
         return null;
     }
+
+    @Override
+    public void updatePackageRemark(Integer receivedExpressId, String packageRemark) {
+        DaifaAfterReceiveExpresStock stock = new DaifaAfterReceiveExpresStock();
+        stock.setReceivedExpressId(receivedExpressId);
+        stock.setPackageRemark(packageRemark);
+        daifaAfterReceiveExpresStockMapper.updateByPrimaryKeySelective(stock);
+    }
+
 }
