@@ -362,7 +362,7 @@
         <#elseif childOrder.putInStorageType == 3>
         <p class="fcF40">退款失败入库</p>
         <#elseif childOrder.putInStorageType == 4>
-        <p class="fcF40">商品已退款</p>
+        <p>商品已退款</p>
         </#if>
     </td>
     <#if childOrder_index == 0>
@@ -370,6 +370,8 @@
         <#if afterSale.allNotPutInIs == false>
             <#if afterSale.refundIs == false>
             <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+            <#else>
+            <p>售后已处理</p>
             </#if>
         </#if>
     </td>
