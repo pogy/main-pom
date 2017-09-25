@@ -130,6 +130,7 @@ public class AfterSaleShowService {
                 //退货地址修饰
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
+                expressInit();
                 von = new RefundExpressDetorate(vo5, null);
                 break;
             }
@@ -182,6 +183,25 @@ public class AfterSaleShowService {
         return returnmap;
 
 
+    }
+
+    /**
+     * 物流信息对应数据库信息初始化
+     * @return
+     */
+    private void expressInit(){
+        if (RefundExpressDetorate.getExpress() == null) {
+            List<ExpressVo> expressVos = afterSaleService.selectExpress();
+            StringBuffer sb = new StringBuffer();
+            for (ExpressVo expressVo : expressVos) {
+                sb.append(',').append(expressVo.getExpressId()).append(':').append(expressVo.getExpressName());
+            }
+            if (sb.length()>0) {
+                RefundExpressDetorate.setExpress(sb.substring(1));
+            } else {
+                RefundExpressDetorate.setExpress("1:申通快递,2:圆通快递,3:韵达快递,4:百世汇通,5:EMS,6:其他");
+            }
+        }
     }
 
     public Map<String, Object> exchangeChildOrder(long childOrderId) {
@@ -243,6 +263,7 @@ public class AfterSaleShowService {
                 //退货地址修饰
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
+                expressInit();
                 von = new RefundExpressDetorate(vo5, null);
                 break;
             }
@@ -321,6 +342,7 @@ public class AfterSaleShowService {
             //退货地址修饰
             AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
             //快递列表修饰
+            expressInit();
             von = new RefundExpressDetorate(vo5, null);
         }
         return von;
