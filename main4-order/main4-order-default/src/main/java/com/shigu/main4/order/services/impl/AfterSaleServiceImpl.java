@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
@@ -164,6 +165,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
+        if (hasReturnGoodsOrExchange(subOrderId)) {
+            throw new OrderException("已经进行过退货/换货");
+        }
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
@@ -182,12 +186,22 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
+        if (hasReturnGoodsOrExchange(subOrderId)) {
+            throw new OrderException("已经进行过退货/换货");
+        }
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         // TODO: 换货消息推送，换货数量
         orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,0, 0L, refundReason + "," + refundDesc,2);
         return refundId;
+    }
+
+    private boolean hasReturnGoodsOrExchange(Long soid) {
+        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+        //查出子单是否有退换货记录
+        refundExample.createCriteria().andSoidEqualTo(soid).andTypeIn(Lists.newArrayList(2,3));
+        return itemOrderRefundMapper.countByExample(refundExample) > 0;
     }
 
     /**
