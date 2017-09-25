@@ -1,18 +1,13 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
-import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.*;
-
-import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
-import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.decorateUtil.AbstractRefundVo;
@@ -63,8 +58,8 @@ public class AfterSaleShowService {
                 , bo.getRefundReason(), bo.getRefundDesc());
     }
 
-    public void chooseExpress(String refundId, String expressId, String expressCode) {
-        afterSaleService.chooseExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
+    public void chooseExpress(String refundId, String expressName, String expressCode) {
+        afterSaleService.chooseExpress(Long.parseLong(refundId), expressName, expressCode);
     }
 
     public Map<String, Object> returnOrChange(String childOrderId) {
@@ -130,7 +125,6 @@ public class AfterSaleShowService {
                 //退货地址修饰
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
-                expressInit();
                 von = new RefundExpressDetorate(vo5, null);
                 break;
             }
@@ -183,25 +177,6 @@ public class AfterSaleShowService {
         return returnmap;
 
 
-    }
-
-    /**
-     * 物流信息对应数据库信息初始化
-     * @return
-     */
-    private void expressInit(){
-        if (RefundExpressDetorate.getExpress() == null) {
-            List<ExpressVo> expressVos = afterSaleService.selectExpress();
-            StringBuffer sb = new StringBuffer();
-            for (ExpressVo expressVo : expressVos) {
-                sb.append(',').append(expressVo.getExpressId()).append(':').append(expressVo.getExpressName());
-            }
-            if (sb.length()>0) {
-                RefundExpressDetorate.setExpress(sb.substring(1));
-            } else {
-                RefundExpressDetorate.setExpress("1:申通快递,2:圆通快递,3:韵达快递,4:百世汇通,5:EMS,6:其他");
-            }
-        }
     }
 
     public Map<String, Object> exchangeChildOrder(long childOrderId) {
@@ -263,7 +238,6 @@ public class AfterSaleShowService {
                 //退货地址修饰
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
-                expressInit();
                 von = new RefundExpressDetorate(vo5, null);
                 break;
             }
@@ -299,8 +273,8 @@ public class AfterSaleShowService {
         return returnmap;
     }
 
-    public void modifyExpress(String refundId, String expressId, String expressCode) {
-        afterSaleService.modifyExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
+    public void modifyExpress(String refundId, String expressName, String expressCode) {
+        afterSaleService.modifyExpress(Long.parseLong(refundId), expressName, expressCode);
     }
 
     public Long exchangeApply(AfterSaleBo bo) throws OrderException {
@@ -342,7 +316,6 @@ public class AfterSaleShowService {
             //退货地址修饰
             AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
             //快递列表修饰
-            expressInit();
             von = new RefundExpressDetorate(vo5, null);
         }
         return von;

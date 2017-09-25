@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class RefundExpressDetorate extends RefundVoDecorate {
     private List<ExpressVo> list;
-    private static String express;
+    private static String express="1:申通快递,2:圆通快递,3:韵达快递,4:百世汇通,5:EMS,6:其他";
     public RefundExpressDetorate(AbstractRefundVo vo, List<ExpressVo> list){
         super(vo);
         this.list = list;
@@ -48,13 +48,5 @@ public class RefundExpressDetorate extends RefundVoDecorate {
     public void doAdd() {
         setRefundExpress();
         super.doAdd();
-    }
-
-    public static String getExpress() {
-        return express;
-    }
-
-    public static void setExpress(String express) {
-        RefundExpressDetorate.express = express;
     }
 }
