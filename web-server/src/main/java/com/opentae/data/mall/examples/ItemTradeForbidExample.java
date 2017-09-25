@@ -11,6 +11,7 @@ public class ItemTradeForbidExample extends SgExample<ItemTradeForbidExample.Cri
     public static final Class<ItemTradeForbid> beanClass = ItemTradeForbid.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn senderId;
+    public static EntityColumn canSale;
     public static EntityColumn targetId;
     public static EntityColumn forbidId;
     public static EntityColumn type;
@@ -21,6 +22,7 @@ public class ItemTradeForbidExample extends SgExample<ItemTradeForbidExample.Cri
             listMap.put(column.getProperty(), column);
         }
         senderId = listMap.get("senderId");
+        canSale = listMap.get("canSale");
         targetId = listMap.get("targetId");
         forbidId = listMap.get("forbidId");
         type = listMap.get("type");
@@ -91,6 +93,53 @@ public class ItemTradeForbidExample extends SgExample<ItemTradeForbidExample.Cri
 
         public ItemTradeForbidExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
             return notBetween(senderId, value1, value2);
+        }
+        public ItemTradeForbidExample.Criteria andCanSaleIsNull() {
+            return isNull(canSale);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleIsNotNull() {
+            return isNotNull(canSale);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleEqualTo(Integer value) {
+            return equalTo(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleNotEqualTo(Integer value) {
+            return notEqualTo(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleGreaterThan(Integer value) {
+            return greaterThan(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleLessThan(Integer value) {
+            return lessThan(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(canSale, value);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleIn(List<Integer> values) {
+            return in(canSale, values);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleNotIn(List<Integer> values) {
+            return notIn(canSale, values);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleBetween(Integer value1, Integer value2) {
+            return between(canSale, value1, value2);
+        }
+
+        public ItemTradeForbidExample.Criteria andCanSaleNotBetween(Integer value1, Integer value2) {
+            return notBetween(canSale, value1, value2);
         }
         public ItemTradeForbidExample.Criteria andTargetIdIsNull() {
             return isNull(targetId);

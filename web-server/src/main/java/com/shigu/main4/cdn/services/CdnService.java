@@ -260,27 +260,27 @@ public class CdnService {
 
 
 
-////===================================================20170725张峰=======================================================
-//
-//    /**
-//     * 检测是否可销售
-//     * @param marketId
-//     * @param storeId
-//     * @param goodsId
-//     * @param webSite
-//     * @return
-//     */
-//    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
-//        if (!webSite.equals("hz")){
-//            return false;
-//        }
-//        ItemTradeForbidExample example=new ItemTradeForbidExample();
-//        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
-//        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
-//        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
-////        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
-//        return itemTradeForbidMapper.countByExample(example)==0;
-//    }
+//===================================================20170725张峰=======================================================
+
+    /**
+     * 检测是否可销售
+     * @param marketId
+     * @param storeId
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
+        if (!webSite.equals("hz")){
+            return false;
+        }
+        ItemTradeForbidExample example=new ItemTradeForbidExample();
+        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
+        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
+        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
+//        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
+        return itemTradeForbidMapper.countByExample(example)==0;
+    }
 
     /**
      * 商品详情页,商品数据
