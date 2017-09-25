@@ -44,8 +44,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
     @Autowired
-    private DaifaSellerMapper daifaSellerMapper;
-    @Autowired
     private MQUtil mqUtil;
 
 
@@ -224,11 +222,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         switch (status) {
             case 1: {
                 //同意受理
-                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
-                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
                 map.put("refundId",refundId);
                 map.put("canRefund",true);
-                map.put("daifaReceiveAddr",address);
                 break;
             }
             case 2: {
