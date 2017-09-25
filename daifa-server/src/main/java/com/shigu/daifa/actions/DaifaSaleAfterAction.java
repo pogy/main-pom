@@ -10,6 +10,7 @@ import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.services.DaifaSaleAfterService;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -173,7 +174,9 @@ public class DaifaSaleAfterAction {
     @RequestMapping("daifa/addPackageRemark")
     @ResponseBody
     public JSONObject addPackageRemark(Long packbagId,String remarkCon) throws DaifaException {
-        daifaSaleAfterService.addPackageRemark(packbagId,remarkCon);
+        if (!StringUtil.isNull(remarkCon)) {
+            daifaSaleAfterService.addPackageRemark(packbagId,remarkCon);
+        }
         return JsonResponseUtil.success();
     }
 

@@ -23,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -581,7 +584,7 @@ public class DaifaSaleAfterService {
 
         vo.setAllPackbagNum(allPackbagNum+"");
         vo.setMatchedPackbagNum((allPackbagNum - unmatchPackbagNum)+"");
-        vo.setMatchedPackbagNum(unmatchPackbagNum+"");
+        vo.setUnmatchPackbagNum(unmatchPackbagNum+"");
         return vo;
     }
 
@@ -591,16 +594,29 @@ public class DaifaSaleAfterService {
      * @param remarkCon
      * @throws DaifaException
      */
-    public void addPackageRemark(Long packbagId,String remarkCon) throws DaifaException {
-
-        DaifaAfterSale sale = daifaAfterSaleMapper.selectByPrimaryKey(packbagId);
-        if(sale== null){
-            throw new DaifaException("packbagId错误");
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    public void addPackageRemark(Long packbagId, String remarkCon) throws DaifaException {
+        DaifaAfterReceiveExpresStock daifaAfterReceiveExpresStock =  daifaAfterReceiveExpresStockMapper.selectByPrimaryKey(packbagId);
+        if (daifaAfterReceiveExpresStock == null || daifaAfterReceiveExpresStock.getReceivedExpressCode() == null) {
+            throw new DaifaException("未查询到包裹信息");
         }
-        SaleAfterRemarkerBO bo=new SaleAfterRemarkerBO();
-        bo.setAfterSaleId(packbagId);
-        bo.setRemark(remarkCon);
-        saleAfterProcess.saleAfterRemark(bo);
+        DaifaAfterReceiveExpresStockExample example = new DaifaAfterReceiveExpresStockExample();
+        example.createCriteria().andReceivedExpressCodeEqualTo(daifaAfterReceiveExpresStock.getReceivedExpressCode());
+        List<DaifaAfterReceiveExpresStock> stocks = daifaAfterReceiveExpresStockMapper.selectByExample(example);
+        String packageRemark;
+        for (DaifaAfterReceiveExpresStock stock : stocks) {
+            DaifaAfterReceiveExpresStock newStock = new DaifaAfterReceiveExpresStock();
+            newStock.setReceivedExpressId(stock.getReceivedExpressId());
+            packageRemark = stock.getPackageRemark();
+            if (stock.getPackageRemark() == null){
+                packageRemark = remarkCon;
+            }else{
+                packageRemark +=  "<br>"+remarkCon;
+            }
+            newStock.setPackageRemark(packageRemark);
+            daifaAfterReceiveExpresStockMapper.updatePackageRemark(stock.getReceivedExpressId(),packageRemark);
+        }
+
     }
 
     /**
@@ -625,7 +641,7 @@ public class DaifaSaleAfterService {
                     saleAfterBO.setTelephone(bo.getTelphone());
                     saleAfterBO.setBackPostCode(stock.getReceivedExpressCode());
                     dvo = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
-                    daifaAfterReceiveExpresStockVO.setPackageRemark(dvo.size()>0 ? dvo.get(0).getBuyerRemark() : "");
+                    daifaAfterReceiveExpresStockVO.setPackageRemark(stock.getPackageRemark());
                 }
                 daifaAfterReceiveExpresStockVO.setOrders(dvo);
                 daifaAfterReceiveExpresStockVO.setPackageId(stock.getReceivedExpressId()+"");

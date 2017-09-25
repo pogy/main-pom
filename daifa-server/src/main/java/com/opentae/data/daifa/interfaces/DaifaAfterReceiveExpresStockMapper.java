@@ -26,4 +26,6 @@ public interface DaifaAfterReceiveExpresStockMapper extends Mapper<DaifaAfterRec
                                                             @Param("status")Integer status,
                                                             @Param("start")Integer start,
                                                             @Param("end")Integer end);
+
+    void updatePackageRemark(@Param("receivedExpressId")Integer receivedExpressId,@Param("packageRemark") String packageRemark);
 }
