@@ -260,9 +260,8 @@ var webSite = '${webSite!}';
         <div class="rightBox yahei fr">
     <div class="awardInfo">
         <h3>秋装新品发布会活动奖品</h3>
-        
-        <div class="lastTerm">
-            <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
+        <div class="thisTerm">
+            <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
             <div class="awardBox">
                 <div class="awardList">
                     <ul class="clearfix">
@@ -281,6 +280,7 @@ var webSite = '${webSite!}';
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 
