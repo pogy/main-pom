@@ -46,6 +46,7 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ChangePasswordRequest  request=new ChangePasswordRequest();
         request.setUserId(1000085908L);
+
         request.setOldPwd("fei691820");
         request.setNewPwd("fei691820%");
         request.setToken("01de053bf53c47a2a9e14fca37354ed5");
