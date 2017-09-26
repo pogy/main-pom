@@ -2,6 +2,7 @@ package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemTradeForbidExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.*;

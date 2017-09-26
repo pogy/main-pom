@@ -1313,7 +1313,7 @@ function addRole(){
     */}
         ,{
             dstatus:dstatus
-        }),{title:"角色添加"});
+        }),{title:"角色添加",clsName:windowStyle});
 }
 //添加的提交
 function subdd(){
