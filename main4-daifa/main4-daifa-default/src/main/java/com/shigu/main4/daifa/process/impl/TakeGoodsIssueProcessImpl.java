@@ -11,15 +11,19 @@ import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.beans.GgoodsForPrint;
+import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.daifa.vo.UnComleteAllVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -42,6 +46,8 @@ import java.util.*;
 @Service("takeGoodsIssueProcess")
 public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     private static final Logger logger = LoggerFactory.getLogger(TakeGoodsIssueProcessImpl.class);
+    @Autowired
+    MQUtil mqUtil;
 
     private final static Integer EZINT = 7; //截取长度
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
@@ -408,6 +414,77 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 + bas[1];
     }
 
+    /**
+     * 未发退款(代发系统调起)
+     * @param dfOrderId
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    public void refundHasItemApply(Long dfOrderId) throws DaifaException {
+        DaifaWaitSendOrder o=new DaifaWaitSendOrder();
+        o.setDfOrderId(dfOrderId);
+        o=daifaWaitSendOrderMapper.selectOne(o);
+        if(o==null){
+            throw new DaifaException("不是待发货订单");
+        }
+        if(o.getTakeGoodsStatus()!=1){
+            throw new DaifaException("不是已拿货订单");
+        }
+        if(o.getSendStatus()==2){
+            throw new DaifaException("订单已发货");
+        }
+        if(o.getRefundStatus()!=0){
+            throw new DaifaException("订单已退款(已申请退款)");
+        }
+        DaifaWaitSendOrder o1=new DaifaWaitSendOrder();
+        o1.setDwsoId(o.getDwsoId());
+        o1.setRefundStatus(1);
+        daifaWaitSendOrderMapper.updateByPrimaryKeySelective(o1);
+
+        DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(dfOrderId);
+        JSONObject jsonObject=new JSONObject();
+        Map<String,Object> map=new HashMap<>();
+        map.put("psoid", order.getOrderPartitionId());
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.refundHasItem.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.refundHasItem.getMessageKey()+order.getOrderPartitionId(),
+                DaifaSendMqEnum.refundHasItem.getMessageTag(), jsonObject.toString());
+
+    }
+
+
+    /**
+     * 未发退款(订单系统调起)
+     * @param refundId
+     * @param psoid
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    public void refundHasItem(Long refundId, Long psoid) throws DaifaException {
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andOrderPartitionIdEqualTo(psoid.toString());
+        List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id"));
+        if(orders.size()!=0){
+            throw new DaifaException("订单不存在");
+        }
+        DaifaWaitSendOrder o=new DaifaWaitSendOrder();
+        o.setDfOrderId(orders.get(0).getDfOrderId());
+        o=daifaWaitSendOrderMapper.selectOne(o);
+        if(o==null){
+            throw new DaifaException("不是待发货订单");
+        }
+        if(o.getTakeGoodsStatus()!=1){
+            throw new DaifaException("不是已拿货订单");
+        }
+        if(o.getSendStatus()==2){
+            throw new DaifaException("订单已发货");
+        }
+        if(o.getRefundStatus()==2){
+            throw new DaifaException("订单已退款");
+        }
+        adminRefund(Collections.singletonList(o.getDfOrderId()),o.getDfTradeId(),refundId);
+    }
 
     /**
      * 手动退款,系统后台专用
