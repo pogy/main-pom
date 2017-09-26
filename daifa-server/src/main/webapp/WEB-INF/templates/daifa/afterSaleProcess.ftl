@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -356,7 +361,11 @@
         <#if childOrder.putInStorageType == 1>
         <p>商品已入库</p>
         <!--<b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>-->
-        <b jbtn="failRefund">退款失败入库</b>
+            <#if childOrder.afterSaleState == 5>
+            <b jbtn="failRefund">退款失败入库</b>
+            <#elseif childOrder.afterSaleState == 25>
+            <p>换货处理中</p>
+            </#if>
         <#elseif childOrder.putInStorageType == 2>
         <p class="fcF40">商品未入库</p>
         <#elseif childOrder.putInStorageType == 3>
@@ -367,12 +376,16 @@
     </td>
     <#if childOrder_index == 0>
     <td class="refundOpe" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.allNotPutInIs == false>
-            <#if afterSale.refundIs == false>
-            <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
-            <#else>
-            <p>售后已处理</p>
+        <#if childOrder.afterSaleState == 5>
+            <#if afterSale.allNotPutInIs == false>
+                <#if afterSale.refundIs == false>
+                <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
+                <#else>
+                <p>售后已处理</p>
+                </#if>
             </#if>
+        <#elseif childOrder.afterSaleState == 25>
+        <p>换货已收到</p>
         </#if>
     </td>
     </#if>

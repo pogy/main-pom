@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
         
@@ -399,6 +404,7 @@
             
             <#if childOrder.takeGoodsState == 1>
             <p>已拿到</p>
+            <p><b class="fcBlue" jbtn="refunBeforeSale">不发退款</b></p>
             <#elseif childOrder.takeGoodsState == 2>
             <p class="fcF40">缺货</p>
             </#if>
@@ -420,6 +426,12 @@
         </li>
     </ul>
 </div>
+
+
+
+
+
+
 
 
         </#list>
