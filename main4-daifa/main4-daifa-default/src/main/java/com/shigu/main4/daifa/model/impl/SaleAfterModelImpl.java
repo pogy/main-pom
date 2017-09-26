@@ -451,12 +451,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         //发送档口拒绝消息
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
-        map.put("refundId",refundId);
+        map.put("refundId",sub.getRefundId());
         map.put("num",num);
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+refundId,
+        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+sub.getRefundId(),
                 DaifaSendMqEnum.shopRefuse.getMessageTag(), jsonObject.toString());
         return null;
     }

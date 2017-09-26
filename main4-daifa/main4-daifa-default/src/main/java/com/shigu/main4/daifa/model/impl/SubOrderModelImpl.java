@@ -251,7 +251,7 @@ public class SubOrderModelImpl implements SubOrderModel {
                     wo.setCreateTime(time);
                     wo.setDwsId(insertWait.getDwsId());
                     wo.setInStockFlag(0);//入库状态默认
-                    wo.setHasNum(status==1&&o.getDfOrderId().longValue()==subOrderId?task.getGoodsNum():0);//设置已拿到数量
+                    wo.setHasNum(o.getDfOrderId().longValue() == subOrderId ?task.getGoodsNum():0);//设置已拿到数量
                     wo.setDaifaWorkerId(task.getDaifaWorkerId());
                     wo.setDaifaWorker(task.getDaifaWorker());
                     wo.setSendStatus(1);//设置待发货
