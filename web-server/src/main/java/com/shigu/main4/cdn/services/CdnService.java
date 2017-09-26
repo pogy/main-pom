@@ -2,6 +2,7 @@ package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemTradeForbidExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.*;
@@ -259,27 +260,27 @@ public class CdnService {
 
 
 
-////===================================================20170725张峰=======================================================
-//
-//    /**
-//     * 检测是否可销售
-//     * @param marketId
-//     * @param storeId
-//     * @param goodsId
-//     * @param webSite
-//     * @return
-//     */
-//    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
-//        if (!webSite.equals("hz")){
-//            return false;
-//        }
-//        ItemTradeForbidExample example=new ItemTradeForbidExample();
-//        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
-//        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
-//        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
-////        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
-//        return itemTradeForbidMapper.countByExample(example)==0;
-//    }
+//===================================================20170725张峰=======================================================
+
+    /**
+     * 检测是否可销售
+     * @param marketId
+     * @param storeId
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
+        if (!webSite.equals("hz")){
+            return false;
+        }
+        ItemTradeForbidExample example=new ItemTradeForbidExample();
+        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
+        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
+        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
+//        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
+        return itemTradeForbidMapper.countByExample(example)==0;
+    }
 
     /**
      * 商品详情页,商品数据
@@ -503,5 +504,23 @@ public class CdnService {
             return null;
         }
         return shiguGoodsIdGenerator.getWebSite();
+    }
+
+    /**
+     * 按商品ID查cid
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public Long getCid(Long goodsId,String webSite){
+        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,cid"));
+        if (tiny != null) {
+            return tiny.getCid();
+        }else{
+            return null;
+        }
     }
 }
