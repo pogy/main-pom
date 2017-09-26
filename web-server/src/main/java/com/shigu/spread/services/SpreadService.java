@@ -8,6 +8,7 @@ import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.vo.ImgBannerVO;
+//import com.shigu.spread.vo.ItemDetailGoatVO;
 import com.shigu.spread.vo.ItemSimpleInfo;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.slf4j.Logger;
