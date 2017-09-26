@@ -1,9 +1,8 @@
 package com.openJar.responses.app;
+
+
 import com.openJar.beans.app.AppUser;
 import com.openJar.responses.Response;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 类名:LoginResponse
@@ -13,13 +12,13 @@ import java.util.List;
  * 描述:用户登陆 http://www.571xz.com/api/getPhoneMsg.json telephone=手机号，type=login
  */
 public class LoginResponse extends Response {
-	private List<AppUser> users;
+	private AppUser users;
 
-	public void setUsers( List<AppUser> users ) {
+	public void setUsers( AppUser users ) {
 		this.users = users;
 	}
 
-	public List<AppUser> getUsers() {
+	public AppUser getUsers() {
 		return users;
 	}
 }

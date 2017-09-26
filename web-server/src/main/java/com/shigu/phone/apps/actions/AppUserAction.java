@@ -45,6 +45,12 @@ public class AppUserAction {
     public JSONObject appLogin( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
+    //忘记密码
+    @RequestMapping("forgetPassword")
+    @ResponseBody
+    public JSONObject appForgetPassword( @Valid ForgetPasswordRequest request) {
+        return JSONObject.fromObject(phoneUserService.forgetPassword(request));
+    }
 
     @RequestMapping("regist")
     @ResponseBody
