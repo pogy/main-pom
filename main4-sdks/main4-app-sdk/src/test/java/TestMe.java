@@ -24,8 +24,8 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         LoginRequest request=new LoginRequest ();
         request.setUserName("17637503238");
-        request.setPassword("515733");
-        request.setType(2);
+        request.setPassword("fei691820%");
+        request.setType(1);
         LoginResponse response = client.execute(request);
 
         System.out.println(response.getBody());
@@ -49,7 +49,7 @@ public class TestMe {
 
         request.setOldPwd("fei691820");
         request.setNewPwd("fei691820%");
-        request.setToken("01de053bf53c47a2a9e14fca37354ed5");
+        request.setToken("37ac3d92003943f9a667707599fa180a");
         ChangePasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
     }

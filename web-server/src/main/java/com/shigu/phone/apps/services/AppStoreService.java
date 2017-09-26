@@ -62,6 +62,7 @@ public class AppStoreService {
     public void setCdnService(CdnService cdnService) {
         this.cdnService = cdnService;
     }
+
     public OneShopResponse selOneShopInfo(OneShopRequest request) throws Main4Exception {
         OneShopResponse response = new OneShopResponse();
         //店铺基本信息

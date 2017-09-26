@@ -68,7 +68,7 @@ public class TestAboutMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         OneShopRequest request=new OneShopRequest();
         request.setWebSite("hz");
-        request.setShopId(15408L);
+        request.setShopId(41700L);
         OneShopResponse response = client.execute(request);
         System.out.println(response.getBody());
         System.out.println(""+response.getShopNum());
@@ -81,6 +81,7 @@ public class TestAboutMe {
         request.setUserId(1000085908L);
         request.setWebSite("hz");
         request.setGoodsId(20466357L);
+        request.setToken("ced93b4e002748a2b88a31a9967ae521");
         UpToWxResponse response = client.execute(request);
         System.out.println(response.getBody());
     }

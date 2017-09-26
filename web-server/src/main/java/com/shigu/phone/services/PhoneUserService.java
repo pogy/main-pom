@@ -303,8 +303,14 @@ public class PhoneUserService {
     public ChangePasswordResponse changePassword( ChangePasswordRequest request) {
         ChangePasswordResponse resp = new ChangePasswordResponse();
         OpenException openException=new OpenException();
+        if (StringUtil.isNull(redisIO.get("phone_login_token"+request.getUserId()))){
+            openException.setErrMsg("亲,您还未登录,请先登录");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
         //用户验证不通过或原密码输入不正确
-        if (!(redisIO.get("phone_login_token"+request.getUserId())).equals(request.getToken())|| !EncryptUtil.encrypt(request.getOldPwd()).equals(userBaseService.selUserPwdByUserId(request.getUserId()))) {
+        if (!EncryptUtil.encrypt(request.getOldPwd()).equals(userBaseService.selUserPwdByUserId(request.getUserId()))) {
             openException.setErrMsg("老密码错误");
             resp.setException(openException);
             resp.setSuccess(false);
