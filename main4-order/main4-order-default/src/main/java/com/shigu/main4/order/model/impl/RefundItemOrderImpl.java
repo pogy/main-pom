@@ -53,6 +53,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     private Boolean fromUser;
 
+
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
@@ -360,5 +361,21 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     public Long getRefundId() {
         return refundId;
+    }
+
+    @Override
+    public void shopRefuse(Integer num) {
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        if (itemOrderRefund.getFailNumber() >= num) {
+            return;
+        }
+        //本次售后退货全失败
+        boolean allRefundFailIs = itemOrderRefund.getNumber() <= num;
+        itemOrderRefund.setFailNumber(allRefundFailIs?itemOrderRefund.getNumber():num);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+        if (allRefundFailIs) {
+            String failMessage = "退货全部失败";
+            error(failMessage);
+        }
     }
 }

@@ -1,8 +1,11 @@
 package com.shigu.main4.order.services.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -48,6 +51,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -159,11 +165,13 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
+        if (hasReturnGoodsOrExchange(subOrderId)) {
+            throw new OrderException("已经进行过退货/换货");
+        }
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
-
-        // TODO: 退货退款消息推送
-//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
+        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,refundCount, refundMoney, refundReason + "," + refundDesc,1);
         return refundId;
     }
 
@@ -178,12 +186,22 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
+        if (hasReturnGoodsOrExchange(subOrderId)) {
+            throw new OrderException("已经进行过退货/换货");
+        }
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
-
-        // TODO: 换货消息推送
-//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
+        // TODO: 换货消息推送，换货数量,暂时用全换，代发先走通
+        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,itemOrderSub.getNum(), 0L, refundReason + "," + refundDesc,2);
         return refundId;
+    }
+
+    private boolean hasReturnGoodsOrExchange(Long soid) {
+        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+        //查出子单是否有退换货记录
+        refundExample.createCriteria().andSoidEqualTo(soid).andTypeIn(Lists.newArrayList(2,3));
+        return itemOrderRefundMapper.countByExample(refundExample) > 0;
     }
 
     /**
@@ -324,19 +342,18 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * 选择快递公司并提交
      *
      * @param refundId    :退换货id
-     * @param expressId   :快递公司id
+     * @param companyName   :快递公司名称
      * @param expressCode :快递单号
      * @create: zf
      */
     @Override
-    public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        modExpress(refundId, expressId, expressCode, false);
+    public void chooseExpress(Long refundId, String companyName, String expressCode) {
+        modExpress(refundId, companyName, expressCode, false);
     }
 
-    private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
+    private void modExpress(Long refundId, String company, String expressCode, boolean modify) {
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
-        //TODO: 暂时注释掉，消息接口可能有变化
-//        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+        orderMessageProducter.refundCourierNumberModify(refundId, company, expressCode, modify);
     }
 
     private String selCompanyById(Long expressId) {
@@ -349,15 +366,15 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * 修改快递公司
      *
      * @param refundId
-     * @param expressId
+     * @param companyName
      * @param expressCode
      * @create: zf
-     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
+     * @param: refundId 退换货id   companyName快递公司名称，expressCode快递单号
      * @return:
      */
     @Override
-    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
-        modExpress(refundId, expressId, expressCode, true);
+    public void modifyExpress(Long refundId, String companyName, String expressCode) {
+        modExpress(refundId, companyName, expressCode, true);
     }
     /**
      * 获取已填写的快递信息
@@ -410,6 +427,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         } else {
             refundItemOrder.buyerNoReprice();
         }
+        orderMessageProducter.repriceAgree(refundId,isAgree);
     }
 
     /**

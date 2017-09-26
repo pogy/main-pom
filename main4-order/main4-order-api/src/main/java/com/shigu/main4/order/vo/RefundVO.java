@@ -64,6 +64,11 @@ public class RefundVO implements Serializable{
      */
     private Integer type;
 
+    /**
+     * 退失败件数
+     */
+    private Integer failNumber;
+
     public Long getRefundId() {
         return refundId;
     }
@@ -166,5 +171,13 @@ public class RefundVO implements Serializable{
 
     public void setBuyerReturnTime(Date buyerReturnTime) {
         this.buyerReturnTime = buyerReturnTime;
+    }
+
+    public Integer getFailNumber() {
+        return failNumber;
+    }
+
+    public void setFailNumber(Integer failNumber) {
+        this.failNumber = failNumber;
     }
 }

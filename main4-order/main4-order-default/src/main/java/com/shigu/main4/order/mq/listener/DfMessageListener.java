@@ -60,6 +60,12 @@ public class DfMessageListener implements MessageListener {
         send_all(SendAllMessage.class),
 
         stop_trade(StopTradeMessage.class),
+
+        shop_refuse(ShopRefuseMessage.class),
+
+        reprice_apply(RepriceApplyMessage.class),
+
+        after_sale_accept(AfterSaleAcceptMessage.class),
         ;
         public final Class<?> clazz;
 
@@ -100,6 +106,15 @@ public class DfMessageListener implements MessageListener {
                 break;
             case stop_trade:
                 stopTrade(baseMessage);
+                break;
+            case shop_refuse:
+                shopRefuse(baseMessage);
+                break;
+            case reprice_apply:
+                repriceApply(baseMessage);
+                break;
+            case after_sale_accept:
+                afterSaleAccept(baseMessage);
                 break;
         }
         return Action.CommitMessage;
@@ -149,5 +164,27 @@ public class DfMessageListener implements MessageListener {
                 logger.error(e.getMessage(), e);
             }
         });
+    }
+
+    public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
+        ShopRefuseMessage data = msg.getData();
+        SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).shopRefuse(data.getNum());
+    }
+
+    public void repriceApply(BaseMessage<RepriceApplyMessage> msg) {
+        RepriceApplyMessage data = msg.getData();
+        //议价原因
+        String proposalMsg = "卖家议价";
+        SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).sellerProposal(data.getStoreMoney(),proposalMsg);
+    }
+
+    public void afterSaleAccept(BaseMessage<AfterSaleAcceptMessage> msg){
+        AfterSaleAcceptMessage data = msg.getData();
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId());
+        if (!data.getCanRefund()) {
+            refundModel.sellerRefuse(data.getReason());
+        }else {
+            refundModel.sellerAgree();
+        }
     }
 }

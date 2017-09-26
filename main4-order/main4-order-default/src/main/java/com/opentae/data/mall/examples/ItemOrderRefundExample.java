@@ -12,9 +12,10 @@ public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Cri
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn reason;
     public static EntityColumn soid;
-    public static EntityColumn refundMoney;
     public static EntityColumn sellerProposalMoney;
+    public static EntityColumn refundMoney;
     public static EntityColumn oid;
+    public static EntityColumn failNumber;
     public static EntityColumn type;
     public static EntityColumn buyerReturnTime;
     public static EntityColumn buyerCourier;
@@ -32,9 +33,10 @@ public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Cri
         }
         reason = listMap.get("reason");
         soid = listMap.get("soid");
-        refundMoney = listMap.get("refundMoney");
         sellerProposalMoney = listMap.get("sellerProposalMoney");
+        refundMoney = listMap.get("refundMoney");
         oid = listMap.get("oid");
+        failNumber = listMap.get("failNumber");
         type = listMap.get("type");
         buyerReturnTime = listMap.get("buyerReturnTime");
         buyerCourier = listMap.get("buyerCourier");
@@ -167,53 +169,6 @@ public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Cri
         public ItemOrderRefundExample.Criteria andSoidNotBetween(Long value1, Long value2) {
             return notBetween(soid, value1, value2);
         }
-        public ItemOrderRefundExample.Criteria andRefundMoneyIsNull() {
-            return isNull(refundMoney);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyIsNotNull() {
-            return isNotNull(refundMoney);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyEqualTo(Long value) {
-            return equalTo(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyNotEqualTo(Long value) {
-            return notEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThan(Long value) {
-            return greaterThan(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyLessThan(Long value) {
-            return lessThan(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyIn(List<Long> values) {
-            return in(refundMoney, values);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyNotIn(List<Long> values) {
-            return notIn(refundMoney, values);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            return between(refundMoney, value1, value2);
-        }
-
-        public ItemOrderRefundExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            return notBetween(refundMoney, value1, value2);
-        }
         public ItemOrderRefundExample.Criteria andSellerProposalMoneyIsNull() {
             return isNull(sellerProposalMoney);
         }
@@ -261,6 +216,53 @@ public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Cri
         public ItemOrderRefundExample.Criteria andSellerProposalMoneyNotBetween(Long value1, Long value2) {
             return notBetween(sellerProposalMoney, value1, value2);
         }
+        public ItemOrderRefundExample.Criteria andRefundMoneyIsNull() {
+            return isNull(refundMoney);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyIsNotNull() {
+            return isNotNull(refundMoney);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyEqualTo(Long value) {
+            return equalTo(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotEqualTo(Long value) {
+            return notEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThan(Long value) {
+            return greaterThan(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyLessThan(Long value) {
+            return lessThan(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyIn(List<Long> values) {
+            return in(refundMoney, values);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotIn(List<Long> values) {
+            return notIn(refundMoney, values);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
+            return between(refundMoney, value1, value2);
+        }
+
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(refundMoney, value1, value2);
+        }
         public ItemOrderRefundExample.Criteria andOidIsNull() {
             return isNull(oid);
         }
@@ -307,6 +309,53 @@ public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Cri
 
         public ItemOrderRefundExample.Criteria andOidNotBetween(Long value1, Long value2) {
             return notBetween(oid, value1, value2);
+        }
+        public ItemOrderRefundExample.Criteria andFailNumberIsNull() {
+            return isNull(failNumber);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberIsNotNull() {
+            return isNotNull(failNumber);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberEqualTo(Integer value) {
+            return equalTo(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberNotEqualTo(Integer value) {
+            return notEqualTo(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberGreaterThan(Integer value) {
+            return greaterThan(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberLessThan(Integer value) {
+            return lessThan(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(failNumber, value);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberIn(List<Integer> values) {
+            return in(failNumber, values);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberNotIn(List<Integer> values) {
+            return notIn(failNumber, values);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberBetween(Integer value1, Integer value2) {
+            return between(failNumber, value1, value2);
+        }
+
+        public ItemOrderRefundExample.Criteria andFailNumberNotBetween(Integer value1, Integer value2) {
+            return notBetween(failNumber, value1, value2);
         }
         public ItemOrderRefundExample.Criteria andTypeIsNull() {
             return isNull(type);
