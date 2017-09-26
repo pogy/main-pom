@@ -389,6 +389,23 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         return notTakeDfOrderIds;
     }
 
+    /**
+     * 未发退款(代发系统调起)
+     * @param dfOrderId
+     */
+    @Override
+    public void refundHasItemApply(Long dfOrderId) throws DaifaException {
+    }
+
+
+    /**
+     * 未发退款(订单系统调起)
+     * @param refundId
+     * @param psoid
+     */
+    @Override
+    public void refundHasItem(Long refundId, Long psoid) {
+    }
 
 
     /**
