@@ -115,10 +115,10 @@ public interface AfterSaleService {
      * 选择快递公司并提交
      * @create: zf
      * @param refundId:退换货id
-     * @param expressId:快递公司id
+     * @param companyName:快递公司名称
      * @param expressCode:快递单号
      */
-    void chooseExpress(Long refundId, Long  expressId, String expressCode);
+    void chooseExpress(Long refundId, String  companyName, String expressCode);
 
     /**
      * 获取已填写的快递信息
@@ -135,7 +135,7 @@ public interface AfterSaleService {
      * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
      * @return:
      */
-    void modifyExpress(Long refundId, Long  expressId, String expressCode);
+    void modifyExpress(Long refundId, String  companyName, String expressCode);
 
     /**
      * 退货简要信息
