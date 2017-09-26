@@ -65,4 +65,8 @@ public interface ItemProductProcess {
     //todo:兼容老接口，等订单系统开发完去掉
     @Deprecated
     Boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite);
+
+    //todo:兼容老接口，等订单系统开发完去掉
+    @Deprecated
+    Boolean listGoodsCanSale(Long marketId, Long storeId, List<Long> goodsId, String webSite);
 }
