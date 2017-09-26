@@ -455,4 +455,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         }
         return vo;
     }
+
+    @Override
+    public void wipeOffNewTip(Long refundId) {
+        ItemOrderRefund refund=new ItemOrderRefund();
+        refund.setRefundId(refundId);
+        refund.setUserApply(true);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+    }
 }

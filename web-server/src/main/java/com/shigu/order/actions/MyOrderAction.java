@@ -6,6 +6,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
+import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.order.services.MyOrderService;
@@ -41,6 +42,8 @@ import java.util.stream.Stream;
 public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
+    @Autowired
+    AfterSaleService afterSaleService;
 
 
     /**
@@ -69,6 +72,13 @@ public class MyOrderAction {
         model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
         return "buyer/myOrder";
 
+    }
+
+    @RequestMapping("wipeOffNewTip")
+    @ResponseBody
+    public JSONObject wipeOffNewTip(Long refundId){
+        afterSaleService.wipeOffNewTip(refundId);
+        return JsonResponseUtil.success();
     }
 
     /**
