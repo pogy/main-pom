@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -356,7 +361,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -412,9 +416,19 @@ var refundNum = '${refundNumber!}';
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                    退款类型：退货退款<br>
+                    退款金额：${record.refundCost!}<br>
+                    退款商品：（货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;&nbsp;件数：${record.goodsNum!}）
+                    </#if>
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                        <#if record.afterSaleInfoShowIs == true>
+                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
+                        </#if>
+                    </#if>
                 </#if>
                 </p>
             </div>
@@ -523,7 +537,6 @@ var refundNum = '${refundNumber!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -663,7 +676,6 @@ var refundId = '${refundId!}';
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -705,6 +717,7 @@ var refundId = '${refundId!}';
     
     
     <p><span class="fc6" data-expressId="${express.id!}">${express.name!}</span><span class="yahei fs14 vm">${express.code!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
+    
     
 </div>
 
@@ -772,7 +785,6 @@ var expressCreateTime = ${express.createTime!};
 
 
 
-
 </#list>
 
         
@@ -819,7 +831,6 @@ var expressCreateTime = ${express.createTime!};
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -892,9 +903,19 @@ var refundId = '${refundId!}';
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                    退款类型：退货退款<br>
+                    退款金额：${record.refundCost!}<br>
+                    退款商品：（货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;&nbsp;件数：${record.goodsNum!}）
+                    </#if>
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                        <#if record.afterSaleInfoShowIs == true>
+                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
+                        </#if>
+                    </#if>
                 </#if>
                 </p>
             </div>
@@ -935,9 +956,19 @@ var refundId = '${refundId!}';
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                    退款类型：退货退款<br>
+                    退款金额：${record.refundCost!}<br>
+                    退款商品：（货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;&nbsp;件数：${record.goodsNum!}）
+                    </#if>
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    <#if record.afterSaleType == 1>
+                        <#if record.afterSaleInfoShowIs == true>
+                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
+                        </#if>
+                    </#if>
                 </#if>
                 </p>
             </div>
@@ -1013,7 +1044,7 @@ var express = '${expressList!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
