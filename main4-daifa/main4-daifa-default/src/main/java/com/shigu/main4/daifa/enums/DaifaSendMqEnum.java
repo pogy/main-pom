@@ -12,7 +12,7 @@ public enum DaifaSendMqEnum {
     refund("refund_agree","refund_","同意退款"),
     cutOff("stop_trade","stop_trade_","截单"),
 //    downOrder("goods_soldout","goods_soldout_","下架"),
-//    haveDate("have_time","haveTime_","有货时间"),
+    haveDate("have_time","haveTime_","有货时间"),
 //    daifaRemark("remark_deal","remark_deal_","代发订单备注"),
 //    getGoods("get_goods","get_goods_","拿到货"),
 //    stockout("stockout","stockout_","拿不到货"),

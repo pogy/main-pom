@@ -9,10 +9,14 @@ import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.bo.SubOrderModelBO;
+import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.utils.CdkeyUtil;
+import com.shigu.main4.daifa.utils.MQUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -21,10 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -48,6 +49,8 @@ public class SubOrderModelImpl implements SubOrderModel {
     private DaifaWaitSendMapper daifaWaitSendMapper;
     @Autowired
     private DaifaWaitSendOrderMapper daifaWaitSendOrderMapper;
+    @Autowired
+    private MQUtil mqUtil;
     private SubOrderModelBO subOrderBO;
 
     private Long subOrderId;
@@ -127,6 +130,17 @@ public class SubOrderModelImpl implements SubOrderModel {
         DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
         daifaGgoodsExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
         daifaGgoodsMapper.updateByExampleSelective(ggoods,daifaGgoodsExample);
+
+        order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        JSONObject jsonObject=new JSONObject();
+        Map<String,Object> map=new HashMap<>();
+        map.put("subOrderId",order.getOrderCode());
+        map.put("day", DateUtil.dateToString(time,DateUtil.patternA));
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.haveDate.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.haveDate.getMessageKey()+order.getOrderCode(),
+                DaifaSendMqEnum.haveDate.getMessageTag(), jsonObject.toString());
     }
 
     @Override
