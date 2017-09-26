@@ -199,7 +199,11 @@ public class DaifaSaleAfterService {
                         refund.setOpeReason(sublist.get(0).getApplyRefuseReason());
                         List<Integer> status= Arrays.asList(5,7);
                         if(status.contains(sublist.get(0).getAfterStatus())){
-                            refund.setRefundState(1);
+                            if(sublist.get(0).getStoreDealStatus()==2){
+                                refund.setRefundState(0);
+                            }else{
+                                refund.setRefundState(1);
+                            }
                         }else if(sublist.get(0).getAfterStatus()==6){
                             refund.setRefundState(2);
                         }
