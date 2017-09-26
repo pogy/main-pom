@@ -1,9 +1,9 @@
 import com.openJar.requests.app.ChangePasswordRequest;
-import com.openJar.requests.app.DoStoreCollectRequest;
+import com.openJar.requests.app.ForgetPasswordRequest;
 import com.openJar.requests.app.GetPhoneMsgRequest;
 import com.openJar.requests.app.LoginRequest;
 import com.openJar.responses.app.ChangePasswordResponse;
-import com.openJar.responses.app.DoStoreCollectResponse;
+import com.openJar.responses.app.ForgetPasswordResponse;
 import com.openJar.responses.app.GetPhoneMsgResponse;
 import com.openJar.responses.app.LoginResponse;
 import com.openJar.tools.OpenClient;
@@ -24,8 +24,8 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         LoginRequest request=new LoginRequest ();
         request.setUserName("17637503238");
-        request.setPassword("fei691820%");
-        request.setType(1);
+        request.setPassword("515733");
+        request.setType(2);
         LoginResponse response = client.execute(request);
 
         System.out.println(response.getBody());
@@ -50,6 +50,16 @@ public class TestMe {
         request.setNewPwd("fei691820%");
         request.setToken("01de053bf53c47a2a9e14fca37354ed5");
         ChangePasswordResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+    @Test
+    public void  ForgetPasswordRequest   (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        ForgetPasswordRequest request=new ForgetPasswordRequest();
+        request.setTelephone("17637503238");
+        request.setMsgCode("405815");
+        request.setNewPassword("fei691820");
+        ForgetPasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
 }
