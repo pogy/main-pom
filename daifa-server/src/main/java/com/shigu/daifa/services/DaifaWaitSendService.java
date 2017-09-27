@@ -20,6 +20,12 @@ import com.shigu.daifa.vo.WaitSendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.order.services.AfterSaleService;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +46,10 @@ import java.util.Map;
  */
 @Service
 public class DaifaWaitSendService {
-
+    @Autowired
+    TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    private AfterSaleService afterSaleService;
     private DaifaMultipleMapper daifaMultipleMapper;
 
     @Autowired
@@ -152,5 +161,18 @@ public class DaifaWaitSendService {
         return pager;
     }
 
+    public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
+        Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
+        DaifaOrder o=daifaOrderMapper.selectByPrimaryKey(childOrderId);
+        Long refundId;
+        try {
+            refundId =afterSaleService.refundHasItem(new Long(o.getOrderPartitionId()), MoneyUtil.StringToLong(refundMoney));
+        } catch (Exception e) {
+            takeGoodsIssueProcess.refundHasItemErrorRollback(childOrderId,status);
+            return JsonResponseUtil.error(e.getMessage());
+        }
+        takeGoodsIssueProcess.refundHasItem(refundId,new Long(o.getOrderPartitionId()),MoneyUtil.StringToLong(refundMoney));
+        return JsonResponseUtil.success();
+    }
 
 }
