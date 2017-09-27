@@ -475,6 +475,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
     /**
      * 已拿到货未发退款
+     *
      * @param psoid
      * @param money
      * @return
@@ -486,7 +487,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
     @Transactional(rollbackFor = Exception.class)
     public Long refundHasItem(Long psoid, Long money) throws OrderException, RefundException, PayerException {
         SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(psoid);
-        if (subOrderSoidps.getAlreadyRefund()) {
+        if (subOrderSoidps.getAlreadyRefund() != null && subOrderSoidps.getAlreadyRefund()) {
             throw new OrderException(String.format("子单%d已经进行过退款", psoid));
         }
         Long soid = subOrderSoidps.getSoid();
