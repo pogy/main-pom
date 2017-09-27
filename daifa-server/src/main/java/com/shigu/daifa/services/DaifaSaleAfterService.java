@@ -92,57 +92,23 @@ public class DaifaSaleAfterService {
      * @return
      */
     public ShiguPager<DaifaSaleAfterVO> afterSaleOrder(SaleAfterBO bo, Long sellerId,Integer pageSize){
-        List<Long> saleIds=new ArrayList<>();
-        DaifaAfterSaleSubExample daifaAfterSaleSubExample2=new DaifaAfterSaleSubExample();
-        DaifaAfterSaleSubExample.Criteria criteria=daifaAfterSaleSubExample2.createCriteria();
-        if (bo.getStatus() != null) {//申请订单
-            if (bo.getStatus() ==1){//售后状态@0无售后1售后申请2申请处理3客户发货4收到货5档口退换货完成6客户确认7客户拒绝10协商解决'
-                criteria.andAfterStatusEqualTo(1);
-            }else if (bo.getStatus() ==2){//议价订单：2 3 4 7 
-                List<Integer> status = new ArrayList<>();
-                status.add(2);
-                status.add(3);
-                status.add(4);
-                status.add(7);
-                criteria.andAfterStatusIn(status);
-            }
+        Integer afterStatus = null;
+        if (bo.getStatus() ==1){//售后状态@0无售后1售后申请2申请处理3客户发货4收到货5档口退换货完成6客户确认7客户拒绝10协商解决'
+            afterStatus = 1;
+        }else if (bo.getStatus() ==2){//议价订单 7
+            afterStatus = 7;
         }
-        if(!StringUtils.isEmpty(bo.getBackPostCode())){
-            criteria.andApplyExpressCodeEqualTo(bo.getBackPostCode());
-        }
-
-        List<DaifaAfterSaleSub> subs2=daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExample2, FieldUtil.codeFields("after_sale_id"));
-        saleIds= BeanMapper.getFieldList(subs2,"afterSaleId",Long.class);
-
-        DaifaAfterSaleExample daifaAfterSaleExample=new DaifaAfterSaleExample();
-        DaifaAfterSaleExample.Criteria ce=daifaAfterSaleExample.createCriteria().andSellerIdEqualTo(sellerId);
-        if(saleIds.size()>0){
-            ce.andAfterSaleIdIn(saleIds);
-        }
-        if(!StringUtils.isEmpty(bo.getOrderId())){
-            ce.andDfTradeIdLike("%"+bo.getOrderId());
-        }
-        if(!StringUtils.isEmpty(bo.getTelephone())){
-            ce.andReceiverMobileEqualTo(bo.getTelephone());
-        }
-        if(!StringUtils.isEmpty(bo.getStartTime())){
-            ce.andCreateDateGreaterThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getStartTime(),DateUtil.patternA),DateUtil.patternB));
-        }
-        if(!StringUtils.isEmpty(bo.getEndTime())){
-            ce.andCreateDateLessThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getEndTime(),DateUtil.patternA),DateUtil.patternB));
-        }
-
-        int count=daifaAfterSaleMapper.countByExample(daifaAfterSaleExample);
+        int count=daifaAfterSaleMapper.countAfterSaleSub(bo.getBackPostCode(),afterStatus,sellerId);
         List<DaifaSaleAfterVO> vos=new ArrayList<>();
         if(count>0){
-            daifaAfterSaleExample.setStartIndex((bo.getPage()-1)*pageSize);
-            daifaAfterSaleExample.setEndIndex(pageSize);
-            daifaAfterSaleExample.setOrderByClause("afterSaleId desc");
+            String startTime = DateUtil.dateToString(DateUtil.stringToDate(bo.getStartTime(),DateUtil.patternA),DateUtil.patternB);
+            String endTime = DateUtil.dateToString(DateUtil.stringToDate(bo.getEndTime(),DateUtil.patternA),DateUtil.patternB);
+            Integer startIndex = (bo.getPage()-1)*pageSize;
+            Integer endIndex = pageSize;
 
-
-
-            List<DaifaAfterSale> sales=daifaAfterSaleMapper.selectByConditionList(daifaAfterSaleExample);
-            saleIds=BeanMapper.getFieldList(sales,"afterSaleId",Long.class);
+            List<DaifaAfterSale> sales=daifaAfterSaleMapper.selectAfterSaleOrder(bo.getOrderId(),bo.getTelephone(),
+                    bo.getBackPostCode(),startTime,endTime,afterStatus,sellerId,startIndex,endIndex);
+            List<Long> saleIds=BeanMapper.getFieldList(sales,"afterSaleId",Long.class);
             List<Long> tids=BeanMapper.getFieldList(sales,"dfTradeId",Long.class);
 
             DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
