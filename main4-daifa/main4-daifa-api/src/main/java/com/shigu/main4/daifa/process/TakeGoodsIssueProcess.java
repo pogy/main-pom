@@ -92,14 +92,7 @@ public interface TakeGoodsIssueProcess {
      * 未发退款(代发系统调起)
      * @param dfOrderId
      */
-    void refundHasItemApply(Long dfOrderId) throws DaifaException;
-
-    /**
-     * 未发退款(订单系统调起)
-     * @param refundId
-     * @param psoid
-     */
-    void refundHasItem(Long refundId,Long psoid);
+    void refundHasItemApply(Long dfOrderId,String money) throws DaifaException;
 
     /**
      * 手动退款,系统后台专用
