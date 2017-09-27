@@ -254,7 +254,7 @@ var webSite = '${webSite!}';
             <label>退款原因：</label>
             
 
-<#assign text>{"name":"reason","value":"0"}</#assign>
+<#assign text>{"name":"reason","value":3}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 <div class="fmSelect" id="refundReason">
