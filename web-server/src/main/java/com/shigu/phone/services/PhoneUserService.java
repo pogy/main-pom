@@ -304,8 +304,14 @@ public class PhoneUserService {
     public ChangePasswordResponse changePassword( ChangePasswordRequest request) {
         ChangePasswordResponse resp = new ChangePasswordResponse();
         OpenException openException=new OpenException();
-        if (StringUtil.isNull(redisIO.get("phone_login_token"+request.getUserId()))){
+        if (StringUtil.isNull(redisIO.get("phone_login_token"+request.getUserId()))||StringUtil.isNull(request.getToken())){
             openException.setErrMsg("亲,您还未登录,请先登录");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
+        if(!redisIO.get("phone_login_token"+request.getUserId()).equals(request.getToken())){
+            openException.setErrMsg("登录信息被篡改");
             resp.setException(openException);
             resp.setSuccess(false);
             return resp;
