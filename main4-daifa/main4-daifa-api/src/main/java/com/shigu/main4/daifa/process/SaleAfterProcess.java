@@ -121,6 +121,12 @@ public interface SaleAfterProcess {
      */
     String moneyConsultRefuse(MoneyConsultBO bo)throws DaifaException;
 
+    /**
+     * 客户同意协商金额
+     * @param bo
+     * @return
+     * @throws DaifaException
+     */
     String moneyConsultAgree(MoneyConsultBO bo)throws DaifaException;
     /**
      * ====================================================================================
@@ -147,6 +153,12 @@ public interface SaleAfterProcess {
      *
      */
     void saleInStock(Long orderId,String stockLocktion,String sendPhone) throws DaifaException;
+
+    /**
+     * 换货完成
+     * @param refundId
+     */
+    void changeEnt(Long refundId) throws DaifaException;
 
 
 }

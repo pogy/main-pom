@@ -1,5 +1,6 @@
 package com.shigu.mq.receives;
 
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.mq.enums.MessageTagEnum;
 import com.shigu.mq.services.OrderConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,10 @@ public class DefaultProcessMessage {
             }
             case REPRICE_AGREE:{
                 orderConsumerService.reproce(body);
+                break;
+            }
+            case ORDER_REFUND_HAVEITEM:{
+                orderConsumerService.hasItemRefund(body);
                 break;
             }
             default:{

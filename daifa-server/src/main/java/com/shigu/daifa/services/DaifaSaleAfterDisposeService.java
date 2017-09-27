@@ -146,6 +146,9 @@ public class DaifaSaleAfterDisposeService {
                                 subvo.setStoreGoodsCode(o.getStoreGoodsCode());
                                 if(sub.getAfterStatus()>3){
                                     subvo.setAfterSaleState(sub.getAfterType()==1?5:25);
+                                    if(sub.getAfterType()==2&&sub.getAfterStatus()==6){
+                                        subvo.setAfterSaleState(26);
+                                    }
                                 }else{
                                     subvo.setAfterSaleState(0);
                                 }

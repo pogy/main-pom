@@ -633,6 +633,27 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         return null;
     }
 
+    @Override
+    public String changeEnt() throws DaifaException {
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(refundId);
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
+        if (subs.size() == 0) {
+            //售后申请不存在
+            throw new DaifaException("售后申请不存在");
+        }
+        if(subs.get(0).getAfterType()!=2){
+            throw new DaifaException("不是换货售后");
+        }
+        if(subs.get(0).getAfterStatus()!=4){
+            throw new DaifaException("代发未收到货");
+        }
+        DaifaAfterSaleSub update=new DaifaAfterSaleSub();
+        update.setAfterStatus(6);
+        updateAfterSubs(update);
+        return null;
+    }
+
     private void updateAfterSubs(DaifaAfterSaleSub sub) {
         DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
         daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId);

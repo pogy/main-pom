@@ -420,7 +420,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public void refundHasItemApply(Long dfOrderId) throws DaifaException {
+    public void refundHasItemApply(Long dfOrderId,String money) throws DaifaException {
         DaifaWaitSendOrder o=new DaifaWaitSendOrder();
         o.setDfOrderId(dfOrderId);
         o=daifaWaitSendOrderMapper.selectOne(o);
@@ -436,6 +436,10 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if(o.getRefundStatus()!=0){
             throw new DaifaException("订单已退款(已申请退款)");
         }
+        Long price=MoneyUtil.StringToLong(money);
+        if(MoneyUtil.StringToLong(o.getSinglePiPrice())>price){
+            throw new DaifaException("金额超过商品金额");
+        }
         DaifaWaitSendOrder o1=new DaifaWaitSendOrder();
         o1.setDwsoId(o.getDwsoId());
         o1.setRefundStatus(1);
@@ -445,6 +449,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
         map.put("psoid", order.getOrderPartitionId());
+        map.put("money",price);
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.refundHasItem.getMsg());
         jsonObject.put("status","true");
@@ -461,7 +466,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public void refundHasItem(Long refundId, Long psoid) throws DaifaException {
+    public void refundHasItem(Long refundId, Long psoid,Long refundPrice) throws DaifaException {
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andOrderPartitionIdEqualTo(psoid.toString());
         List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id"));
@@ -483,7 +488,11 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if(o.getRefundStatus()==2){
             throw new DaifaException("订单已退款");
         }
-        adminRefund(Collections.singletonList(o.getDfOrderId()),o.getDfTradeId(),refundId);
+        if(MoneyUtil.StringToLong(o.getSinglePiPrice())>refundPrice){
+            throw new DaifaException("金额超过商品金额");
+        }
+
+        adminRefund(Collections.singletonList(o.getDfOrderId()),o.getDfTradeId(),refundId,refundPrice);
     }
 
     /**
@@ -497,7 +506,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public void adminRefund(List<Long> dfOrderIds, Long tid, Long refundId) throws DaifaException {
+    public void adminRefund(List<Long> dfOrderIds, Long tid, Long refundId,Long money) throws DaifaException {
         DaifaOrderExample searchDaifaOrderExample=new DaifaOrderExample();
         searchDaifaOrderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
         List<DaifaOrder> cheakedOrders=daifaOrderMapper.selectByExample(searchDaifaOrderExample);
@@ -596,16 +605,19 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 }
             }
         }
-        tui(refundId,dfOrderIds,tid);
+        tui(refundId,dfOrderIds,tid,money);
     }
 
-    private void tui(Long refundId,List<Long> subOrderIds,Long tid){
+    private void tui(Long refundId,List<Long> subOrderIds,Long tid,Long money){
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andDfOrderIdIn(subOrderIds);
         DaifaOrder daifaOrder=new DaifaOrder();
         daifaOrder.setRefundStatus(2);
         daifaOrder.setRefundId(refundId);
         daifaOrder.setRefundFinishTime(new Date());
+        if(money!=null){
+            daifaOrder.setRefundMoneyHasItem(MoneyUtil.dealPrice(money));
+        }
         daifaOrderMapper.updateByExampleSelective(daifaOrder,daifaOrderExample);
 
         //更新已分配表状态为已退款
