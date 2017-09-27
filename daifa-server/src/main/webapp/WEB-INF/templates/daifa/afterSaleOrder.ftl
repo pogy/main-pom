@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
         
@@ -414,6 +419,8 @@
         <p>已发换货商品</p>
         <#elseif afterSale.afterSaleState == 25>
         <p>换货已收到</p>
+        <#elseif afterSale.afterSaleState == 26>
+        <p>换货已完成</p>
         </#if>
         
         <#if afterSale.afterSalePostName??>

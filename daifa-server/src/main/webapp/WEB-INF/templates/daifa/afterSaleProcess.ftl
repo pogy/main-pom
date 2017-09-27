@@ -365,6 +365,8 @@
             <b jbtn="failRefund">退款失败入库</b>
             <#elseif childOrder.afterSaleState == 25>
             <p>换货处理中</p>
+            <#elseif childOrder.afterSaleState == 26>
+            <p>换货已完成</p>
             </#if>
         <#elseif childOrder.putInStorageType == 2>
         <p class="fcF40">商品未入库</p>
@@ -386,6 +388,8 @@
             </#if>
         <#elseif childOrder.afterSaleState == 25>
         <p>换货已收到</p>
+        <#elseif childOrder.afterSaleState == 26>
+        <p>换货已完成</p>
         </#if>
     </td>
     </#if>
