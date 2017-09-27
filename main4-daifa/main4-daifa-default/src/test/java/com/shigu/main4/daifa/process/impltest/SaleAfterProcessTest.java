@@ -127,7 +127,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertTrue(isError);
         //测试三,未发货订单
         DaifaOrderExample testOrderExample = new DaifaOrderExample();
-        testOrderExample.createCriteria().andOrderStatusLessThan(3L).andRefundIdIsNull();
+        testOrderExample.createCriteria().andOrderStatusLessThan(3).andRefundIdIsNull();
         testOrderExample.setOrderByClause("df_order_id desc");
         testOrderExample.setStartIndex(0);
         testOrderExample.setEndIndex(1);

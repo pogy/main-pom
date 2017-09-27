@@ -95,7 +95,10 @@ public class DaifaSaleAfterService {
         List<Long> saleIds=new ArrayList<>();
         if(!StringUtils.isEmpty(bo.getBackPostCode())){
             DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
-            daifaAfterSaleSubExample.createCriteria().andApplyExpressCodeEqualTo(bo.getBackPostCode());
+            DaifaAfterSaleSubExample.Criteria ce=daifaAfterSaleSubExample.createCriteria();
+            if(!StringUtils.isEmpty(bo.getBackPostCode())){
+                ce.andApplyExpressCodeEqualTo(bo.getBackPostCode());
+            }
             List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExample, FieldUtil.codeFields("after_sale_id"));
             saleIds= BeanMapper.getFieldList(subs,"afterSaleId",Long.class);
         }
@@ -226,18 +229,18 @@ public class DaifaSaleAfterService {
                             }
                             subvos.add(subvo);
                             num++;
+                            if(sub.getAfterStatus()==6){
+                                refund.setRefundState(2);
+                            }else if(status.contains(sub.getAfterStatus())){
+                                if(sub.getStoreDealStatus()==2&&refund.getRefundState()==null){
+                                    refund.setRefundState(0);
+                                }else{
+                                    refund.setRefundState(1);
+                                }
+                            }
                         }
                         switch (s.getAfterType()){
                             case 1:{
-                                if(status.contains(sublist.get(0).getAfterStatus())){
-                                    if(sublist.get(0).getStoreDealStatus()==2){
-                                        refund.setRefundState(0);
-                                    }else{
-                                        refund.setRefundState(1);
-                                    }
-                                }else if(sublist.get(0).getAfterStatus()==6){
-                                    refund.setRefundState(2);
-                                }
                                 List<DaifaAfterMoneyConsult> moneys=moneyGroup.get(s.getRefundId());
 
                                 if(moneys!=null&&moneys.size()>0){

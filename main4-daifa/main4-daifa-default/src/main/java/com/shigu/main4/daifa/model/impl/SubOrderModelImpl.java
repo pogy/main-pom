@@ -134,12 +134,12 @@ public class SubOrderModelImpl implements SubOrderModel {
         order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
-        map.put("subOrderId",order.getOrderCode());
+        map.put("psoid",order.getOrderPartitionId());
         map.put("day", DateUtil.dateToString(time,DateUtil.patternA));
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.haveDate.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.haveDate.getMessageKey()+order.getOrderCode(),
+        mqUtil.sendMessage(DaifaSendMqEnum.haveDate.getMessageKey()+order.getOrderPartitionId(),
                 DaifaSendMqEnum.haveDate.getMessageTag(), jsonObject.toString());
     }
 

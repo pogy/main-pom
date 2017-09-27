@@ -69,6 +69,8 @@ public class DaifaAllOrderIndexService {
         this.orderManageProcess = orderManageProcess;
     }
 
+    @Autowired
+    private DaifaAllocatedService daifaAllocatedService;
     public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo,Long sellerId) {
 
 
@@ -221,6 +223,7 @@ public class DaifaAllOrderIndexService {
             return JsonResponseUtil.error("时间不能空");
         }
         orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
+        daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("设置成功");
     }
 

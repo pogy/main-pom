@@ -55,4 +55,5 @@ public class SaleAfterBO {
     public void setPage(Integer page) {
         this.page = page;
     }
+
 }
