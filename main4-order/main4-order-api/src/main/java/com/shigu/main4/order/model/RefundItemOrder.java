@@ -108,4 +108,11 @@ public interface RefundItemOrder {
      * @param num 退失败数量
      */
     void shopRefuse(Integer num);
+
+    /**
+     * 已拿未发退款
+     * @param psoid
+     * @param money
+     */
+    void refundHasItem(Long psoid,Long money) throws PayerException, RefundException;
 }
