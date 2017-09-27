@@ -188,7 +188,18 @@
 
     </div>
     <div class="contentBox">
-        <div class="statistics yahei fc9">
+        <div class="printTypeTabs">
+    <ul>
+        <li <#if !query.status>class="select"</#if> data-type=""><a href="afterSaleOrder.htm">全部订单</a></li>
+        <li <#if query.status == 1>class="select"</#if> data-type='1'><a href="afterSaleOrder.htm?status=1">申请订单</a></li>
+        <li <#if query.status == 2>class="select"</#if> data-type='2'><a href="afterSaleOrder.htm?status=2">议价订单</a></li>
+    </ul>
+</div>
+
+
+
+
+<div class="statistics yahei fc9">
     <ul>
         <li>
             <span class="fs20 arail fc3">${orderStatistics.afterOrderNum!}</span>
