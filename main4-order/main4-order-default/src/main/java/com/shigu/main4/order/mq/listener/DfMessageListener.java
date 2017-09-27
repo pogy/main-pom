@@ -6,7 +6,9 @@ import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -44,6 +46,9 @@ public class DfMessageListener implements MessageListener {
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Autowired
+    private SubOrderSoidpsMapper subOrderSoidpsMapper;
+
+    @Autowired
     private SoidsCreater soidsCreater;
 
     @Autowired
@@ -66,7 +71,8 @@ public class DfMessageListener implements MessageListener {
         reprice_apply(RepriceApplyMessage.class),
 
         after_sale_accept(AfterSaleAcceptMessage.class),
-        ;
+
+        refund_has_item(RefundHasItemMessage.class),;
         public final Class<?> clazz;
 
         DfMqTag(Class<?> clazz) {
@@ -116,6 +122,9 @@ public class DfMessageListener implements MessageListener {
             case after_sale_accept:
                 afterSaleAccept(baseMessage);
                 break;
+            case refund_has_item:
+                refundHasItem(baseMessage);
+                break;
         }
         return Action.CommitMessage;
     }
@@ -152,10 +161,10 @@ public class DfMessageListener implements MessageListener {
         soidsCreater.selSoidsBySoidps(msg.getData().getRefundSubOrderIds()).forEach((k, v) -> {
             SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
             try {
-                SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(k);
-                Long price=v.size()* subSimple.getPrice();
-                if(subSimple.getOtherRefundPrice()!=null){
-                    price+=subSimple.getOtherRefundPrice();
+                SubAfterSaleSimpleOrderVO subSimple = afterSaleService.subAfterSaleSimpleOrder(k);
+                Long price = v.size() * subSimple.getPrice();
+                if (subSimple.getOtherRefundPrice() != null) {
+                    price += subSimple.getOtherRefundPrice();
                 }
                 Long refundId = subItemOrder.refundApply(4, v.size(), price, msg.getMsg());
 
@@ -168,23 +177,48 @@ public class DfMessageListener implements MessageListener {
 
     public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
         ShopRefuseMessage data = msg.getData();
-        SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).shopRefuse(data.getNum());
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum());
     }
 
     public void repriceApply(BaseMessage<RepriceApplyMessage> msg) {
         RepriceApplyMessage data = msg.getData();
         //议价原因
-        String proposalMsg = "卖家议价";
-        SpringBeanFactory.getBean(RefundItemOrder.class,data.getRefundId()).sellerProposal(data.getStoreMoney(),proposalMsg);
+        String proposalMsg = "卖家确定退货金额";
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).sellerProposal(data.getStoreMoney(), proposalMsg);
     }
 
-    public void afterSaleAccept(BaseMessage<AfterSaleAcceptMessage> msg){
+    public void afterSaleAccept(BaseMessage<AfterSaleAcceptMessage> msg) {
         AfterSaleAcceptMessage data = msg.getData();
         RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId());
         if (!data.getCanRefund()) {
             refundModel.sellerRefuse(data.getReason());
-        }else {
+        } else {
             refundModel.sellerAgree();
+        }
+    }
+
+    /**
+     * 已拿到货未发退款消息
+     * @param msg
+     */
+    public void refundHasItem(BaseMessage<RefundHasItemMessage> msg) {
+        RefundHasItemMessage data = msg.getData();
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(data.getPsoid());
+        if (subOrderSoidps.getStockStatus() != 2) {
+            logger.error(String.format("子单%d已经进行过退款", data.getPsoid()));
+            return;
+        }
+        Long soid = subOrderSoidps.getSoid();
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, soid);
+        try {
+            Long refundId = subItemOrder.refundApply(4, 1, data.getMoney(), msg.getMsg());
+            SpringBeanFactory.getBean(RefundItemOrder.class, refundId).success();
+            subOrderSoidps.setStockStatus(1);
+            subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+            orderMessageProducter.orderRefundHaveItem(refundId, data.getPsoid(), data.getMoney());
+        } catch (PayerException | RefundException | OrderException e) {
+            logger.error(e.getMessage());
+            return;
         }
     }
 }
