@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -420,7 +421,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public void refundHasItemApply(Long dfOrderId,String money) throws DaifaException {
+    public Integer refundHasItemApply(Long dfOrderId,String money) throws DaifaException {
         DaifaWaitSendOrder o=new DaifaWaitSendOrder();
         o.setDfOrderId(dfOrderId);
         o=daifaWaitSendOrderMapper.selectOne(o);
@@ -436,26 +437,32 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if(o.getRefundStatus()!=0){
             throw new DaifaException("订单已退款(已申请退款)");
         }
-        Long price=MoneyUtil.StringToLong(money);
-        if(MoneyUtil.StringToLong(o.getSinglePiPrice())>price){
-            throw new DaifaException("金额超过商品金额");
+        Long price=null;
+        if(!StringUtils.isEmpty(money)){
+            price=MoneyUtil.StringToLong(money);
+            if(MoneyUtil.StringToLong(o.getSinglePiPrice())<price){
+                throw new DaifaException("金额超过商品金额");
+            }
+        }
+        if(price==null){
+            price=MoneyUtil.StringToLong(o.getSinglePiPrice());
         }
         DaifaWaitSendOrder o1=new DaifaWaitSendOrder();
         o1.setDwsoId(o.getDwsoId());
         o1.setRefundStatus(1);
         daifaWaitSendOrderMapper.updateByPrimaryKeySelective(o1);
+        return o.getRefundStatus();
+    }
 
-        DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(dfOrderId);
-        JSONObject jsonObject=new JSONObject();
-        Map<String,Object> map=new HashMap<>();
-        map.put("psoid", order.getOrderPartitionId());
-        map.put("money",price);
-        jsonObject.put("data",map);
-        jsonObject.put("msg", DaifaSendMqEnum.refundHasItem.getMsg());
-        jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.refundHasItem.getMessageKey()+order.getOrderPartitionId(),
-                DaifaSendMqEnum.refundHasItem.getMessageTag(), jsonObject.toString());
-
+    @Override
+    public void refundHasItemErrorRollback(Long dfOrderId, Integer status) throws DaifaException {
+        DaifaWaitSendOrder o=new DaifaWaitSendOrder();
+        o.setDfOrderId(dfOrderId);
+        o=daifaWaitSendOrderMapper.selectOne(o);
+        DaifaWaitSendOrder o1=new DaifaWaitSendOrder();
+        o1.setDwsoId(o.getDwsoId());
+        o1.setRefundStatus(status==null?0:status);
+        daifaWaitSendOrderMapper.updateByPrimaryKeySelective(o1);
     }
 
 

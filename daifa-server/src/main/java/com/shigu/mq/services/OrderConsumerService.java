@@ -134,15 +134,4 @@ public class OrderConsumerService {
         }
     }
 
-    public void hasItemRefund(String body) {
-        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
-        if(res.isStatus()){
-            HasItemRefund ex=JSON.parseObject(JSON.toJSONString(res.getData()), HasItemRefund.class);
-            try {
-                takeGoodsIssueProcess.refundHasItem(ex.getRefundId(),ex.getPsoid(),ex.getRefundPrice());
-            } catch (DaifaException e) {
-                logger.error(e.getMessage());
-            }
-        }
-    }
 }

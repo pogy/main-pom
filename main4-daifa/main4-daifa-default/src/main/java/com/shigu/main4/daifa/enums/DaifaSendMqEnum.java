@@ -25,7 +25,6 @@ public enum DaifaSendMqEnum {
 //    afterSaleFinished("after_sale_finished","after_sale_","售后完成","售后失败"),
     repriceApply("reprice_apply","apply_","议价"),
     shopRefuse("shop_refuse","refuse_","档口拒绝退货"),
-    refundHasItem("refund_has_item","refund_has_","未发退款")
 
 
     ;

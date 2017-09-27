@@ -56,10 +56,6 @@ public class DefaultProcessMessage {
                 orderConsumerService.reproce(body);
                 break;
             }
-            case ORDER_REFUND_HAVEITEM:{
-                orderConsumerService.hasItemRefund(body);
-                break;
-            }
             default:{
                 break;
             }
