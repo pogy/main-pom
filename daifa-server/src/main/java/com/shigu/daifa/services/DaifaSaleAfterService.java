@@ -93,15 +93,27 @@ public class DaifaSaleAfterService {
      */
     public ShiguPager<DaifaSaleAfterVO> afterSaleOrder(SaleAfterBO bo, Long sellerId,Integer pageSize){
         List<Long> saleIds=new ArrayList<>();
-        if(!StringUtils.isEmpty(bo.getBackPostCode())){
-            DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
-            DaifaAfterSaleSubExample.Criteria ce=daifaAfterSaleSubExample.createCriteria();
-            if(!StringUtils.isEmpty(bo.getBackPostCode())){
-                ce.andApplyExpressCodeEqualTo(bo.getBackPostCode());
+        DaifaAfterSaleSubExample daifaAfterSaleSubExample2=new DaifaAfterSaleSubExample();
+        DaifaAfterSaleSubExample.Criteria criteria=daifaAfterSaleSubExample2.createCriteria();
+        if (bo.getStatus() != null) {//申请订单
+            if (bo.getStatus() ==1){//售后状态@0无售后1售后申请2申请处理3客户发货4收到货5档口退换货完成6客户确认7客户拒绝10协商解决'
+                criteria.andAfterStatusEqualTo(1);
+            }else if (bo.getStatus() ==2){//议价订单：2 3 4 7 
+                List<Integer> status = new ArrayList<>();
+                status.add(2);
+                status.add(3);
+                status.add(4);
+                status.add(7);
+                criteria.andAfterStatusIn(status);
             }
-            List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExample, FieldUtil.codeFields("after_sale_id"));
-            saleIds= BeanMapper.getFieldList(subs,"afterSaleId",Long.class);
         }
+        if(!StringUtils.isEmpty(bo.getBackPostCode())){
+            criteria.andApplyExpressCodeEqualTo(bo.getBackPostCode());
+        }
+
+        List<DaifaAfterSaleSub> subs2=daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExample2, FieldUtil.codeFields("after_sale_id"));
+        saleIds= BeanMapper.getFieldList(subs2,"afterSaleId",Long.class);
+
         DaifaAfterSaleExample daifaAfterSaleExample=new DaifaAfterSaleExample();
         DaifaAfterSaleExample.Criteria ce=daifaAfterSaleExample.createCriteria().andSellerIdEqualTo(sellerId);
         if(saleIds.size()>0){
