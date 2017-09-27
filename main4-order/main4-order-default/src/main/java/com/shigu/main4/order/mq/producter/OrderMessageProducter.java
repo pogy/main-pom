@@ -48,7 +48,6 @@ public class OrderMessageProducter {
         refund_courier_number("courier_"),
         refund_courier_number_modify("courier_modify_"),
         reprice_agree("reprice_"),
-        order_refund_haveitem("refund_haveitem_"),
         ;
 
         public final String preKey;
@@ -216,16 +215,6 @@ public class OrderMessageProducter {
         sendAsync(tag,BaseMessage.success(refundId.toString(),msg,repriceAgreeMessage));
     }
 
-    /**
-     * 已拿到货未发退款
-     */
-    public void orderRefundHaveItem(Long refundId,Long psoid,Long refundPrice) {
-        OrderRefundHaveitemMessage message = new OrderRefundHaveitemMessage();
-        message.setRefundId(refundId);
-        message.setPsoid(psoid);
-        message.setRefundPrice(refundPrice);
-        sendAsync(OrderMQTag.order_refund_haveitem,BaseMessage.success(psoid.toString(),"确认未发退款",message));
-    }
 
     public void error(OrderMQTag tag, String key, String msg) {
         sendAsync(tag, BaseMessage.error(key, msg));

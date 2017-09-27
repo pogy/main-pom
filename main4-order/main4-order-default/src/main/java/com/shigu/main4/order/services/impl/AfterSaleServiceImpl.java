@@ -3,13 +3,17 @@ package com.shigu.main4.order.services.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SoidsCreater;
@@ -25,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +44,7 @@ import java.util.stream.Collectors;
  * @since 3.0.0-SNAPSHOT
  */
 @Service("afterSaleService")
-public class AfterSaleServiceImpl implements AfterSaleService{
+public class AfterSaleServiceImpl implements AfterSaleService {
 
     private static final Logger logger = LoggerFactory.getLogger(AfterSaleServiceImpl.class);
 
@@ -54,6 +59,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private SubOrderSoidpsMapper subOrderSoidpsMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -75,7 +83,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         vo.setPicUrl(product.getPicUrl());
         vo.setPrice(product.getPrice());
         vo.setRefundNum(0);
-        for (RefundTypeEnum type: RefundTypeEnum.values()) {
+        for (RefundTypeEnum type : RefundTypeEnum.values()) {
             RefundVO refundVO = subItemOrder.refundInfos(type);
             if (refundVO != null) {
                 vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
@@ -85,17 +93,17 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
         Long oid = subItemOrderVO.getOid();
         ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, oid);
-        List<SubItemOrderVO> subOrders=order.subOrdersInfo();
+        List<SubItemOrderVO> subOrders = order.subOrdersInfo();
         List<Long> allSubId = subOrders.stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
-        int allSubNum=subOrders.stream().mapToInt(SubItemOrderVO::getNum).sum();
+        int allSubNum = subOrders.stream().mapToInt(SubItemOrderVO::getNum).sum();
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setOid(oid);
-        List<ItemOrderRefund> refunds=itemOrderRefundMapper.select(refund);
+        List<ItemOrderRefund> refunds = itemOrderRefundMapper.select(refund);
         allSubId.removeAll(refunds.stream().map(ItemOrderRefund::getSoid).distinct().collect(Collectors.toList()));
         //除本单以外，其它全部已经退款成功
-        int allrefunded=refunds.stream().mapToInt(ItemOrderRefund::getNumber).sum();
+        int allrefunded = refunds.stream().mapToInt(ItemOrderRefund::getNumber).sum();
         //除本单外，其它都已退
-        if (allrefunded==allSubNum-subItemOrderVO.getNum()&&allSubId.size() == 1 && allSubId.get(0).equals(subOrderId)) {
+        if (allrefunded == allSubNum - subItemOrderVO.getNum() && allSubId.size() == 1 && allSubId.get(0).equals(subOrderId)) {
             vo.setOtherRefundPrice(order.orderOtherAmount());
         }
         return vo;
@@ -138,9 +146,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     @Override
     public Long preRefundApply(Long subOrderId, int refundCount, Long refundMoney) throws OrderException {
         //1、本订单退过款，不能再发起
-        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
+        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
         refundExample.createCriteria().andSoidEqualTo(subOrderId).andTypeEqualTo(RefundTypeEnum.ONLY_REFUND.type);
-        if(itemOrderRefundMapper.countByExample(refundExample)>0){
+        if (itemOrderRefundMapper.countByExample(refundExample) > 0) {
             throw new OrderException("退款失败，同一子单不能发起两次退款");
         }
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
@@ -164,14 +172,14 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * @create: zf
      */
     @Override
-    public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
+    public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney, String refundReason, String refundDesc) throws OrderException {
         if (hasReturnGoodsOrExchange(subOrderId)) {
             throw new OrderException("已经进行过退货/换货");
         }
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
-        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,refundCount, refundMoney, refundReason + "," + refundDesc,1);
+        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, refundCount, refundMoney, refundReason + "," + refundDesc, 1);
         return refundId;
     }
 
@@ -193,14 +201,14 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         // TODO: 换货消息推送，换货数量,暂时用全换，代发先走通
-        orderMessageProducter.orderRefundHasItem(refundId,itemOrderSub.getOid(), subOrderId,itemOrderSub.getNum(), 0L, refundReason + "," + refundDesc,2);
+        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum(), 0L, refundReason + "," + refundDesc, 2);
         return refundId;
     }
 
     private boolean hasReturnGoodsOrExchange(Long soid) {
         ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
         //查出子单是否有退换货记录
-        refundExample.createCriteria().andSoidEqualTo(soid).andTypeIn(Lists.newArrayList(2,3));
+        refundExample.createCriteria().andSoidEqualTo(soid).andTypeIn(Lists.newArrayList(2, 3));
         return itemOrderRefundMapper.countByExample(refundExample) > 0;
     }
 
@@ -278,9 +286,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         AfterSaleInfoVO infoVO = new AfterSaleInfoVO();
         infoVO.setRefundId(refundId);
         //如果退完成,返回实际退款
-        if(refundinfo.getRefundState().equals(RefundStateEnum.ENT_REFUND)){
+        if (refundinfo.getRefundState().equals(RefundStateEnum.ENT_REFUND)) {
             infoVO.setRefundPrice(refundinfo.getRefundMoney());
-        }else{
+        } else {
             infoVO.setRefundPrice(refundinfo.getHopeMoney());
         }
         return infoVO;
@@ -301,7 +309,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
             vo.setLogTime(DateUtil.dateToString(o.getCreateTime(), null));
             vo.setLogDesc(o.getMsg());
             vo.setUserType(o.getImBuyer() ? UserTypeEnum.BUYER : UserTypeEnum.CUSTOM_SERVICE);
-            vo.setHeadImgUrl(o.getImBuyer() ? "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/buyer_42px.jpg":"http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/seller_42px.jpg");
+            vo.setHeadImgUrl(o.getImBuyer() ? "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/buyer_42px.jpg" : "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/seller_42px.jpg");
             vo.setUserNick(o.getImBuyer() ? "你" : "卖家");
             return vo;
         }).collect(Collectors.toList());
@@ -342,7 +350,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * 选择快递公司并提交
      *
      * @param refundId    :退换货id
-     * @param companyName   :快递公司名称
+     * @param companyName :快递公司名称
      * @param expressCode :快递单号
      * @create: zf
      */
@@ -376,6 +384,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public void modifyExpress(Long refundId, String companyName, String expressCode) {
         modExpress(refundId, companyName, expressCode, true);
     }
+
     /**
      * 获取已填写的快递信息
      *
@@ -391,7 +400,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         String[] buyerCourier = refundinfo.getBuyerCourier().split(":");
         vo.setExpressCode(refundinfo.getBuyerCourier());
         vo.setExpressName("");// TODO：没有保存退货发货的公司
-        vo.setReturnableExpressTime(refundinfo.getBuyerReturnTime()!=null?refundinfo.getBuyerReturnTime().getTime():null);
+        vo.setReturnableExpressTime(refundinfo.getBuyerReturnTime() != null ? refundinfo.getBuyerReturnTime().getTime() : null);
 //        try {
 //            vo.setExpressDetails(itemOrderService.expressLog("", refundinfo.getBuyerCourier()));
 //        } catch (ParseException e) {
@@ -427,7 +436,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         } else {
             refundItemOrder.buyerNoReprice();
         }
-        orderMessageProducter.repriceAgree(refundId,isAgree);
+        orderMessageProducter.repriceAgree(refundId, isAgree);
     }
 
     /**
@@ -458,9 +467,34 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Override
     public void wipeOffNewTip(Long refundId) {
-        ItemOrderRefund refund=new ItemOrderRefund();
+        ItemOrderRefund refund = new ItemOrderRefund();
         refund.setRefundId(refundId);
         refund.setUserShow(true);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+    }
+
+    /**
+     * 已拿到货未发退款
+     * @param psoid
+     * @param money
+     * @return
+     * @throws OrderException
+     * @throws RefundException
+     * @throws PayerException
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long refundHasItem(Long psoid, Long money) throws OrderException, RefundException, PayerException {
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(psoid);
+        if (subOrderSoidps.getAlreadyRefund()) {
+            throw new OrderException(String.format("子单%d已经进行过退款", psoid));
+        }
+        Long soid = subOrderSoidps.getSoid();
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, soid);
+        Long refundId = subItemOrder.refundApply(4, 1, money, "已拿到货退款");
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).success();
+        subOrderSoidps.setAlreadyRefund(true);
+        subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+        return refundId;
     }
 }
