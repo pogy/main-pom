@@ -159,4 +159,9 @@ public interface AfterSaleService {
      * @return
      */
     AfterSaleEntVO afterEnt(Long refundId);
+
+    /**
+     * 表示已看过售后信息接口
+     */
+    void wipeOffNewTip(Long refundId);
 }

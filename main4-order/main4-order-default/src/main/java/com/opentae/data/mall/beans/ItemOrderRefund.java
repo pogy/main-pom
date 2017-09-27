@@ -2,8 +2,8 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class ItemOrderRefund implements Serializable {
     /**
@@ -79,9 +79,19 @@ public class ItemOrderRefund implements Serializable {
 	private Date buyerReturnTime;
 
     /**
-     * 退货失败件数
+     * 退失败件数
      */
 	private Integer failNumber;
+
+    /**
+     * 用户是否知晓，0用户未知，1用户已知
+     */
+	private Boolean userShow;
+
+    /**
+     * 0初始，1售后同意，2售后已发货，3档口退货中，4金额改变
+     */
+	private Integer refundSubInfo;
 
 	public void setRefundId(Long refundId) {
 		this.refundId = refundId;
@@ -201,6 +211,22 @@ public class ItemOrderRefund implements Serializable {
 
 	public Integer getFailNumber() {
 		return this.failNumber;
+	}
+
+	public void setUserShow(Boolean userShow) {
+		this.userShow = userShow;
+	}
+
+	public Boolean getUserShow() {
+		return this.userShow;
+	}
+
+	public void setRefundSubInfo(Integer refundSubInfo) {
+		this.refundSubInfo = refundSubInfo;
+	}
+
+	public Integer getRefundSubInfo() {
+		return this.refundSubInfo;
 	}
 
 }

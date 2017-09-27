@@ -144,6 +144,18 @@ public class ItemProductProcessImpl implements ItemProductProcess {
         return true;
     }
 
+    @Override
+    @Deprecated
+    public Boolean canSale(Long marketId, Long storeId, Long goodsId, String webSite) {
+        return canSale(marketId,null,storeId,goodsId,webSite);
+    }
+
+    @Override
+    @Deprecated
+    public Boolean listGoodsCanSale(Long marketId, Long storeId, List<Long> goodsId, String webSite) {
+        return listGoodsCanSale(marketId,null, storeId, goodsId, webSite);
+    }
+
     /**
      * 按类型区分过的可售/不可售记录
      * @param typeForbidList
