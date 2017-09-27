@@ -142,10 +142,10 @@ public class PhoneStoreService {
      */
     public DoStoreCollectResponse doStoreCollect(DoStoreCollectRequest request) {
         DoStoreCollectResponse resp = new DoStoreCollectResponse();
-        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken())) {
-            resp.setSuccess(false);
-            return resp;
-        }
+//        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken())) {
+//            resp.setSuccess(false);
+//            return resp;
+//        }
         if (request.getYesOrNo()) {
             try {
                 addShopCollection(request);

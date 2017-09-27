@@ -2,6 +2,7 @@ package com.shigu.phone.services;
 
 import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
+import com.openJar.requests.Request;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
 import com.opentae.data.mall.beans.MemberLicense;
@@ -391,6 +392,29 @@ public class PhoneUserService {
             resp.setSuccess(false);
             return resp;
         }
+        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getTelephone(), LoginFromType.XZ);
+        AppUser appUser=new AppUser();
+        appUser.setUserId(personalSession.getUserId());
+        String headUrl = personalSession.getHeadUrl();
+        appUser.setImgsrc(headUrl);
+        appUser.setUserNick(personalSession.getUserNick());
+        String uuid = UUIDGenerator.getUUID();
+        //把token存入redis,设置存活时间30分钟
+        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+        Jedis jedis = redisIO.getJedis();
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, uuid);
+        //从redis取出token
+        String token1 = redisIO.get("phone_login_token" + personalSession.getUserId());
+        appUser.setToken(token1);
+        //imSeller
+        ShopSession logshop = personalSession.getLogshop();
+
+        if (!StringUtil.isNull(logshop)) {
+            appUser.setImSeller(true);
+        } else {
+            appUser.setImSeller(false);
+        }
+        resp.setUsers(appUser);
         resp.setSuccess(true);
         return resp;
     }

@@ -1,11 +1,5 @@
-import com.openJar.requests.app.ChangePasswordRequest;
-import com.openJar.requests.app.ForgetPasswordRequest;
-import com.openJar.requests.app.GetPhoneMsgRequest;
-import com.openJar.requests.app.LoginRequest;
-import com.openJar.responses.app.ChangePasswordResponse;
-import com.openJar.responses.app.ForgetPasswordResponse;
-import com.openJar.responses.app.GetPhoneMsgResponse;
-import com.openJar.responses.app.LoginResponse;
+import com.openJar.requests.app.*;
+import com.openJar.responses.app.*;
 import com.openJar.tools.OpenClient;
 import com.openJar.tools.PcOpenClient;
 import org.junit.Test;
@@ -35,8 +29,8 @@ public class TestMe {
     public void  getPhoneMsgRequest  (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         GetPhoneMsgRequest request=new GetPhoneMsgRequest ();
-        request.setTelephone("17637503238");
-        request.setType(1);
+        request.setTelephone("17637503239");
+        request.setType(2);
         GetPhoneMsgResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -48,7 +42,7 @@ public class TestMe {
         request.setUserId(1000085908L);
 
         request.setOldPwd("fei691820");
-        request.setNewPwd("fei691820%");
+        request.setNewPwd("fei691820");
         request.setToken("37ac3d92003943f9a667707599fa180a");
         ChangePasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -61,6 +55,27 @@ public class TestMe {
         request.setMsgCode("405815");
         request.setNewPassword("fei691820");
         ForgetPasswordResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+    @Test
+    public void  RegistRequest   (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        RegistRequest request=new RegistRequest();
+        request.setTelephone("17637503239");
+        request.setPassword("fei691820");
+        request.setCode("683552");
+        RegistResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+    @Test
+    public void  DoStoreCollectRequest(){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        DoStoreCollectRequest request=new DoStoreCollectRequest();
+        request.setShopId(43455L);
+        request.setToken("ad24a062bbe646bd9a18cf159c69ce39");
+        request.setUserId(1000085908L);
+        request.setYesOrNo(true);
+        DoStoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
 }
