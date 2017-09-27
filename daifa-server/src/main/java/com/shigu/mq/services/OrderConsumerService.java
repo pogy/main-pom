@@ -70,7 +70,7 @@ public class OrderConsumerService {
                 }
                 orderManageProcess.autoRefund(refund.getRefundId(), bos);
                 //=============事物end=================
-            } catch (Exception e) {
+            } catch (DaifaException e) {
                 logger.error(e.getMessage());
             }
         }
