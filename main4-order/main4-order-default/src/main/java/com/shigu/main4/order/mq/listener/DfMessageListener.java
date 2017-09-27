@@ -6,7 +6,10 @@ import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.SubOrderSoidps;
+import com.opentae.data.mall.examples.SubOrderSoidpsExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -44,6 +47,9 @@ public class DfMessageListener implements MessageListener {
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Autowired
+    private SubOrderSoidpsMapper subOrderSoidpsMapper;
+
+    @Autowired
     private SoidsCreater soidsCreater;
 
     @Autowired
@@ -60,6 +66,13 @@ public class DfMessageListener implements MessageListener {
         send_all(SendAllMessage.class),
 
         stop_trade(StopTradeMessage.class),
+
+        shop_refuse(ShopRefuseMessage.class),
+
+        reprice_apply(RepriceApplyMessage.class),
+
+        after_sale_accept(AfterSaleAcceptMessage.class),
+
         ;
         public final Class<?> clazz;
 
@@ -101,6 +114,15 @@ public class DfMessageListener implements MessageListener {
             case stop_trade:
                 stopTrade(baseMessage);
                 break;
+            case shop_refuse:
+                shopRefuse(baseMessage);
+                break;
+            case reprice_apply:
+                repriceApply(baseMessage);
+                break;
+            case after_sale_accept:
+                afterSaleAccept(baseMessage);
+                break;
         }
         return Action.CommitMessage;
     }
@@ -137,17 +159,44 @@ public class DfMessageListener implements MessageListener {
         soidsCreater.selSoidsBySoidps(msg.getData().getRefundSubOrderIds()).forEach((k, v) -> {
             SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
             try {
-                SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(k);
-                Long price=v.size()* subSimple.getPrice();
-                if(subSimple.getOtherRefundPrice()!=null){
-                    price+=subSimple.getOtherRefundPrice();
+                SubAfterSaleSimpleOrderVO subSimple = afterSaleService.subAfterSaleSimpleOrder(k);
+                Long price = v.size() * subSimple.getPrice();
+                if (subSimple.getOtherRefundPrice() != null) {
+                    price += subSimple.getOtherRefundPrice();
                 }
                 Long refundId = subItemOrder.refundApply(4, v.size(), price, msg.getMsg());
-
+                SubOrderSoidps soidps = new SubOrderSoidps();
+                soidps.setAlreadyRefund(true);
+                SubOrderSoidpsExample example = new SubOrderSoidpsExample();
+                example.createCriteria().andSoidpIdIn(v);
+                subOrderSoidpsMapper.updateByExampleSelective(soidps,example);
                 orderMessageProducter.orderRefundNoItem(refundId, k, v);
             } catch (OrderException e) {
                 logger.error(e.getMessage(), e);
             }
         });
     }
+
+    public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
+        ShopRefuseMessage data = msg.getData();
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum());
+    }
+
+    public void repriceApply(BaseMessage<RepriceApplyMessage> msg) {
+        RepriceApplyMessage data = msg.getData();
+        //议价原因
+        String proposalMsg = "卖家确定退货金额";
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).sellerProposal(data.getStoreMoney(), proposalMsg);
+    }
+
+    public void afterSaleAccept(BaseMessage<AfterSaleAcceptMessage> msg) {
+        AfterSaleAcceptMessage data = msg.getData();
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId());
+        if (!data.getCanRefund()) {
+            refundModel.sellerRefuse(data.getReason());
+        } else {
+            refundModel.sellerAgree();
+        }
+    }
+
 }

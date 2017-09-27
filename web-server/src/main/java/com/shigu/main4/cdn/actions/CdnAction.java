@@ -13,14 +13,18 @@ import com.shigu.main4.cdn.services.OldStoreNumShowService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.exceptions.ItemException;
+import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.item.vo.ItemGoatCidAndWebsiteVO;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
@@ -30,26 +34,20 @@ import com.shigu.main4.storeservices.ShopDiscusService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
-import com.shigu.main4.vo.FitmentArea;
-import com.shigu.main4.vo.FitmentModule;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
-import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
-import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
@@ -57,10 +55,11 @@ import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
+import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,8 +72,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.*;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -134,6 +131,9 @@ public class CdnAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    ItemCatService itemCatService;
 
     /**
      * 联系我们
@@ -613,6 +613,10 @@ public class CdnAction {
         if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
                 &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
                 &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){
+            //设置都为默认值后，检测大图区域数据是否是默认值
+            if (!shopDesignService.defaultModuleValueIs(vo.getFitmentAreas().get(0).getAllarea().get(0).getModuleId())) {
+                return false;
+            }
             return true;
         }else{
             return false;
@@ -873,6 +877,68 @@ public class CdnAction {
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
         return "cdn/item";
+    }
+
+    /**
+     * 获取商品详情页左侧广告  随机显示9条
+     * @param goodsId 当前访问商品Id
+     * @return
+     */
+    @RequestMapping("/itemGoat")
+    @ResponseBody
+    public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
+        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
+        String website = itemGoatCidAndWebsiteVO.getWebsite();
+
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatLists = ItemGoatVO.copyListFromCache(objFormCache);
+        Set<ItemGoatVO>  goatList = new HashSet<>(goatLists);
+        Collections.shuffle(goatLists);//乱序
+        return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    /**
+     * 获取商品详情页底部广告  固定显示5条
+     * @param goodsId 当前访问商品Id
+     * @return
+     */
+    @RequestMapping("/itemBottomGoat")
+    @ResponseBody
+    public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
+        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
+        String website = itemGoatCidAndWebsiteVO.getWebsite();
+
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(website,SpreadEnum.ITEM_BOTTOM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatList = ItemGoatVO.copyListFromCache(objFormCache);
+        return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    private ItemGoatCidAndWebsiteVO getCidAndWebsite(Long goodsId)throws JsonErrException{
+        ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = null;
+        try {
+            itemGoatCidAndWebsiteVO = itemCatService.getItemCid(goodsId);
+        } catch (ItemException e) {
+            throw new JsonErrException(e.getMessage());
+        }finally {
+            if (itemGoatCidAndWebsiteVO == null ||
+                    itemGoatCidAndWebsiteVO.getCid() == null ||
+                    StringUtil.isNull(itemGoatCidAndWebsiteVO.getWebsite())) {
+                throw new JsonErrException("未查询到分站信息");
+            }
+        }
+        return  itemGoatCidAndWebsiteVO;
     }
 
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {

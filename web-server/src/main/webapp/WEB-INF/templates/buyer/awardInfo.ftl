@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/awardInfo.css?v=2017090401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/awardInfov1.css?v=2017090401" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/awardInfo.js?v=2017090401"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/awardInfov1.js?v=2017090401"></script>
 </head>
 <body>
 
@@ -280,26 +280,7 @@ var webSite = '${webSite!}';
                 </div>
             </div>
         </div>
-        <div class="lastTerm">
-            <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
-            <div class="awardBox">
-                <div class="awardList">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="findGoods">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="dailyFind">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 

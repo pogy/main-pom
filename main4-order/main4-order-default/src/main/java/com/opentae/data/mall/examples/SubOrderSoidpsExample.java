@@ -13,6 +13,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
     public static EntityColumn soid;
     public static EntityColumn stockStatus;
     public static EntityColumn soidpId;
+    public static EntityColumn alreadyRefund;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -22,6 +23,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
         soid = listMap.get("soid");
         stockStatus = listMap.get("stockStatus");
         soidpId = listMap.get("soidpId");
+        alreadyRefund = listMap.get("alreadyRefund");
         }
 
     public SubOrderSoidpsExample() {
@@ -183,6 +185,53 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
 
         public SubOrderSoidpsExample.Criteria andSoidpIdNotBetween(Long value1, Long value2) {
             return notBetween(soidpId, value1, value2);
+        }
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundIsNull() {
+            return isNull(alreadyRefund);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundIsNotNull() {
+            return isNotNull(alreadyRefund);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundEqualTo(Boolean value) {
+            return equalTo(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundNotEqualTo(Boolean value) {
+            return notEqualTo(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundGreaterThan(Boolean value) {
+            return greaterThan(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundLessThan(Boolean value) {
+            return lessThan(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(alreadyRefund, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundIn(List<Boolean> values) {
+            return in(alreadyRefund, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundNotIn(List<Boolean> values) {
+            return notIn(alreadyRefund, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundBetween(Boolean value1, Boolean value2) {
+            return between(alreadyRefund, value1, value2);
+        }
+
+        public SubOrderSoidpsExample.Criteria andAlreadyRefundNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(alreadyRefund, value1, value2);
         }
     }
 }

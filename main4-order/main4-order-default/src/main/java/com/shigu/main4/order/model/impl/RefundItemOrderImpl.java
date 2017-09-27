@@ -2,6 +2,7 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
@@ -11,6 +12,7 @@ import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.enums.RefundSubInfo;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -52,6 +54,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 用于RefundItemOrderImpl(RefundApplyBO apply, Boolean fromUser)形式构建
      */
     private Boolean fromUser;
+
 
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
@@ -132,6 +135,19 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setRefundId(refundId);
         refund.setStatus(refundStateEnum.refundStatus);
+        Boolean userShow=refundStateEnum.refundStatus==RefundStateEnum.DISPOSE_REFUND.refundStatus
+                ||refundStateEnum.refundStatus==RefundStateEnum.ENT_REFUND.refundStatus
+                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_REFUND.refundStatus
+                ||refundStateEnum.refundStatus==RefundStateEnum.NOT_REFUND.refundStatus
+                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_CACHED.refundStatus
+                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_REPRICE.refundStatus;
+        refund.setUserShow(!userShow);
+        //卖家受理
+        if(refundStateEnum.refundStatus==RefundStateEnum.DISPOSE_REFUND.refundStatus){
+            refund.setRefundSubInfo(RefundSubInfo.SELLERACCPET.value);
+        }else if(refundStateEnum.refundStatus==RefundStateEnum.SELLER_REPRICE.refundStatus){
+            refund.setRefundSubInfo(RefundSubInfo.PRICECHANGE.value);
+        }
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
     }
 
@@ -178,9 +194,34 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public Long apply(RefundApplyBO applyBO, Boolean fromUser) {
-        ItemOrderRefund itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
-        itemOrderRefund.setUserApply(fromUser);
-        itemOrderRefundMapper.insertSelective(itemOrderRefund);
+        //是否已存在的系统退款（特殊退款类型，可退多次）
+        boolean existedSystemRefund = false;
+        ItemOrderRefund itemOrderRefund = null;
+        //截单\代发已拿到货退款情况另外处理
+        if (applyBO.getType()==4) {
+            itemOrderRefund = new ItemOrderRefund();
+            itemOrderRefund.setType(applyBO.getType());
+            itemOrderRefund.setSoid(applyBO.getSoid());
+            itemOrderRefund = itemOrderRefundMapper.selectOne(itemOrderRefund);
+            //表中已经存在记录
+            if (itemOrderRefund != null) {
+                //退款记录原数据
+                itemOrderRefund.setNumber(itemOrderRefund.getNumber()+applyBO.getNumber());
+                //本次退款数据
+                itemOrderRefund.setHopeMoney(applyBO.getHopeMoney());
+                itemOrderRefund.setReason(applyBO.getReason());
+                itemOrderRefund.setUserApply(fromUser);
+                //为了使本类型的退款能进行多次
+                itemOrderRefund.setStatus(0);
+                itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+                existedSystemRefund = true;
+            }
+        }
+        if (!existedSystemRefund) {
+            itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
+            itemOrderRefund.setUserApply(fromUser);
+            itemOrderRefundMapper.insertSelective(itemOrderRefund);
+        }
         ItemRefundLog refundLog = new ItemRefundLog();
         refundLog.setRefundId(itemOrderRefund.getRefundId());
         refundLog.setFromStatus(-1);
@@ -197,6 +238,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerAgree() {
+
         refundStateChangeAndLog(RefundStateEnum.DISPOSE_REFUND, null);
     }
 
@@ -213,6 +255,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refund.setFailMsg(reason);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
         refundStateChangeAndLog(RefundStateEnum.SELLER_REFUND, reason);
+
     }
 
     /**
@@ -228,6 +271,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         orderRefund.setRefundId(refundId);
         orderRefund.setBuyerCourier(buyerCourier);
         orderRefund.setBuyerReturnTime(new Date());
+        orderRefund.setRefundSubInfo(RefundSubInfo.BUYERSENDED.value);
         itemOrderRefundMapper.updateByPrimaryKeySelective(orderRefund);
     }
 
@@ -361,4 +405,31 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     public Long getRefundId() {
         return refundId;
     }
+
+    @Override
+    public void shopRefuse(Integer num) {
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        if (itemOrderRefund.getFailNumber() >= num) {
+            return;
+        }
+        //本次售后退货全失败
+        boolean allRefundFailIs = itemOrderRefund.getNumber() <= num;
+        itemOrderRefund.setFailNumber(allRefundFailIs?itemOrderRefund.getNumber():num);
+        itemOrderRefund.setRefundSubInfo(RefundSubInfo.WORKING.value);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+        ItemRefundLog refundLog = new ItemRefundLog();
+        refundLog.setRefundId(this.refundId);
+        refundLog.setFromStatus(this.refundinfo().getRefundState().refundStatus);
+        refundLog.setToStatus(this.refundinfo().getRefundState().refundStatus);
+        refundLog.setImBuyer(false);
+        refundLog.setCreateTime(new Date());
+        refundLog.setMsg("档口退货失败["+num+"]件");
+        itemRefundLogMapper.insertSelective(refundLog);
+        if (allRefundFailIs) {
+            String failMessage = "退货全部失败";
+            error(failMessage);
+        }
+
+    }
+
 }

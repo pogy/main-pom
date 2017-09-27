@@ -110,6 +110,12 @@ public interface TakeGoodsIssueProcess {
     void refundHasItem(Long refundId, Long psoid,Long refundPrice) throws DaifaException;
 
     /**
+     * 未发退款(代发系统调起)
+     * @param dfOrderId
+     */
+    void refundHasItemApply(Long dfOrderId,String money) throws DaifaException;
+
+    /**
      * 手动退款,系统后台专用
      * 该操作会将订单变成缺货,然后改为退款状态
      * 如果订单已拿到(无论是否已发货),都改成缺货,同时在待分配表写一条缺货数据,然后进行退款
