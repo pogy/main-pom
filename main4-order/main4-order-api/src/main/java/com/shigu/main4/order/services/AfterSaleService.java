@@ -174,4 +174,11 @@ public interface AfterSaleService {
      * @return
      */
     Long refundHasItem(Long psoid,Long money) throws OrderException, RefundException, PayerException;
+
+    /**
+     * 换货完成接口
+     * @param refundId
+     * @param userId
+     */
+    void finishExchange(Long refundId,Long userId) throws OrderException;
 }

@@ -115,4 +115,9 @@ public interface RefundItemOrder {
      * @param money
      */
     void refundHasItem(Long psoid,Long money) throws PayerException, RefundException;
+
+    /**
+     * 换货完成，不进行款项操作
+     */
+    void finishExchange();
 }

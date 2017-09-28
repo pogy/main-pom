@@ -234,4 +234,10 @@ public class AfterSaleShowAction {
         return JsonResponseUtil.success();
     }
 
+    public JSONObject finishExchange(Long refundId,HttpSession session) throws OrderException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        afterSaleShowService.finishExchange(refundId,ps.getUserId());
+        return JsonResponseUtil.success();
+    }
+
 }

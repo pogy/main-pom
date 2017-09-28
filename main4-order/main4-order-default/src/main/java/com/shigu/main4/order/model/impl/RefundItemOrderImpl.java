@@ -483,4 +483,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             }
         }
     }
+
+    @Override
+    public void finishExchange() {
+        refundStateChangeAndLog(RefundStateEnum.ENT_REFUND,"换货完成");
+    }
 }

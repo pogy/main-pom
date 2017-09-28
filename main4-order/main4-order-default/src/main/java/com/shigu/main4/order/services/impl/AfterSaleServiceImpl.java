@@ -491,4 +491,19 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundHasItem(psoid, money);
         return refundId;
     }
+
+    /**
+     * 换货完成接口
+     * @param refundId
+     * @param userId
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void finishExchange(Long refundId, Long userId) throws OrderException {
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+        if (SpringBeanFactory.getBean(ItemOrder.class,refundModel.refundinfo().getOid()).orderInfo().getUserId() != userId) {
+            throw new OrderException("不能操作他人订单");
+        }
+        refundModel.finishExchange();
+    }
 }
