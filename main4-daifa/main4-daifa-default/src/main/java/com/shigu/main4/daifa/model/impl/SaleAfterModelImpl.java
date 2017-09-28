@@ -294,7 +294,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
         daifaAfterSale.setAfterSaleId(afterSaleId);
-        daifaAfterSale.setRemark(oldSale.getRemark()+"<br>"+remark);
+        daifaAfterSale.setRemark(oldSale.getRemark()==null?remark:(oldSale.getRemark()+"<br>"+remark));
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 

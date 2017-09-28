@@ -476,7 +476,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andOrderPartitionIdEqualTo(psoid.toString());
         List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id"));
-        if(orders.size()!=0){
+        if(orders.size()!=1){
             throw new DaifaException("订单不存在");
         }
         DaifaWaitSendOrder o=new DaifaWaitSendOrder();
@@ -494,7 +494,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if(o.getRefundStatus()==2){
             throw new DaifaException("订单已退款");
         }
-        if(MoneyUtil.StringToLong(o.getSinglePiPrice())>refundPrice){
+        if(MoneyUtil.StringToLong(o.getSinglePiPrice())<refundPrice){
             throw new DaifaException("金额超过商品金额");
         }
 
@@ -548,7 +548,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
             DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
             daifaGgoodsTasksExample.createCriteria().andDfOrderIdEqualTo(dfOrderId);
-            daifaGgoodsTasksExample.setOrderByClause("tasks_id asc");
+            daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
             List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectByExample(daifaGgoodsTasksExample);
             if(ts.size()==0){
                 continue;

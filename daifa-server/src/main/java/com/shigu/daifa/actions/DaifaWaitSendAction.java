@@ -8,6 +8,7 @@ import com.shigu.daifa.vo.DaifaWaitSendVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -52,18 +53,7 @@ public class DaifaWaitSendAction {
     @RequestMapping("daifa/noPostRefund")
     @ResponseBody
     public JSONObject noPostRefund(Long childOrderId,String refundMoney) throws DaifaException {
-        Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
-        Long refundId=null;
-        try {
-            //todo 调order
-
-        } catch (Exception e) {
-            takeGoodsIssueProcess.refundHasItemErrorRollback(childOrderId,status);
-            return JsonResponseUtil.error(e.getMessage());
-        }
-//        takeGoodsIssueProcess.refundHasItem(refundId,);
-
-        return JsonResponseUtil.success();
+        return daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
     }
 
 }
