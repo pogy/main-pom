@@ -484,7 +484,6 @@ public class AfterSaleServiceImpl implements AfterSaleService {
      * @throws PayerException
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Long refundHasItem(Long psoid, Long money) throws OrderException, RefundException, PayerException {
         Long soid = soidsCreater.selSoidBySoidp(psoid);
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, soid);
