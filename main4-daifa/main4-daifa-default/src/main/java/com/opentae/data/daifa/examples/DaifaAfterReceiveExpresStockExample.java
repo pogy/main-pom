@@ -15,6 +15,7 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
     public static EntityColumn tradeCode;
     public static EntityColumn dfTradeId;
     public static EntityColumn receivedExpressName;
+    public static EntityColumn packageRemark;
     public static EntityColumn createTime;
     public static EntityColumn receivedExpressCode;
     public static EntityColumn receivedExpressId;
@@ -34,6 +35,7 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
         tradeCode = listMap.get("tradeCode");
         dfTradeId = listMap.get("dfTradeId");
         receivedExpressName = listMap.get("receivedExpressName");
+        packageRemark = listMap.get("packageRemark");
         createTime = listMap.get("createTime");
         receivedExpressCode = listMap.get("receivedExpressCode");
         receivedExpressId = listMap.get("receivedExpressId");
@@ -275,6 +277,61 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
 
         public Criteria andReceivedExpressNameNotBetween(String value1, String value2) {
             return notBetween(receivedExpressName, value1, value2);
+        }
+        public Criteria andPackageRemarkIsNull() {
+            return isNull(packageRemark);
+        }
+
+        public Criteria andPackageRemarkIsNotNull() {
+            return isNotNull(packageRemark);
+        }
+
+        public Criteria andPackageRemarkEqualTo(String value) {
+            return equalTo(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkNotEqualTo(String value) {
+            return notEqualTo(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkGreaterThan(String value) {
+            return greaterThan(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkLessThan(String value) {
+            return lessThan(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkLike(String value) {
+            return like(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkNotLike(String value) {
+            return notLike(packageRemark, value);
+        }
+
+        public Criteria andPackageRemarkIn(List<String> values) {
+            return in(packageRemark, values);
+        }
+
+        public Criteria andPackageRemarkNotIn(List<String> values) {
+            return notIn(packageRemark, values);
+        }
+
+        public Criteria andPackageRemarkBetween(String value1, String value2) {
+            return between(packageRemark, value1, value2);
+        }
+
+        public Criteria andPackageRemarkNotBetween(String value1, String value2) {
+            return notBetween(packageRemark, value1, value2);
         }
         public Criteria andCreateTimeIsNull() {
             return isNull(createTime);

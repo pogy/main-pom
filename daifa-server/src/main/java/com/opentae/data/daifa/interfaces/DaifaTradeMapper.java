@@ -28,6 +28,6 @@ import java.util.Date;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaTradeMapper extends Mapper<DaifaTrade>{
-        TodayCount selectTodayCount(@Param("startTime")String startTime, @Param("endTime")String endTime);
-        TodayCount selectSendCount(@Param("startTime")String startTime, @Param("endTime")String endTime);
+        TodayCount selectTodayCount(@Param("startTime")String startTime, @Param("endTime")String endTime,@Param("sellerId")Long sellerId);
+//        TodayCount selectSendCount(@Param("startTime")String startTime, @Param("endTime")String endTime);
 }

@@ -66,7 +66,7 @@ public interface SaleAfterModel {
      * ====================================================================================
      * 
      */
-    String saleAfterRemark(Long refundId,Long orderId,String remark)throws DaifaException;
+    int saleAfterRemark(Long afterSaleId,String remark)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： storeRefundMoney
@@ -95,8 +95,8 @@ public interface SaleAfterModel {
      * ====================================================================================
      * @方法名： refundFailInStock
      * @user gzy 2017/9/15 11:45
-     * @功能： 退货失败入库  客服处理
-     * @param: orderId代发子订单ID,inStockType入库类型(1售后退货入库2退货失败入库)，stockLocktion库位
+     * @功能： 售后入库  客服处理
+     * @param: orderId代发子订单ID,inStockType入库类型(1售后退货入库2退货失败入库)，stockLocktion库位,sendPhone包裹手机号(退货入库时传)
      * @return: 
      * @exception: 
      * ====================================================================================
@@ -117,6 +117,13 @@ public interface SaleAfterModel {
      * 
      */
     String moneyConsultRefuse()throws DaifaException;
+
+    /**
+     * 客户同意协商金额
+     * @return
+     * @throws DaifaException
+     */
+    String moneyConsultAgree()throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsult
@@ -130,5 +137,11 @@ public interface SaleAfterModel {
      * 
      */
     String moneyConsult(String money)throws DaifaException;
+
+    /**
+     * 换货完成
+     * @return
+     */
+    String changeEnt() throws DaifaException;
 
 }

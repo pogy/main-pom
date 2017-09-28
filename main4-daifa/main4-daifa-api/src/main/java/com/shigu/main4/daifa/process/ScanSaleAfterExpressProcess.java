@@ -36,7 +36,7 @@ public interface ScanSaleAfterExpressProcess {
      * ====================================================================================
      * 
      */
-    List<ExpressRelevanceVO> expressScan(ExpressScanBO bo)throws DaifaException;
+    List<ExpressRelevanceVO> expressScan(String expressCode);
 
     /**
      * ====================================================================================
@@ -50,7 +50,7 @@ public interface ScanSaleAfterExpressProcess {
      * ====================================================================================
      *
      */
-    String expressScanInStock(ExpressScanInStockBO bo)throws DaifaException;
+    String expressScanInStock(ExpressScanInStockBO bo);
 
     /**
      * ====================================================================================
@@ -64,4 +64,11 @@ public interface ScanSaleAfterExpressProcess {
      *
      */
     String rebackPrintExpress(RebackPrintExpressBO bo)throws DaifaException;
+
+    /**
+     * 修改daifa_after_receive_expres_stock备注
+     * @param receivedExpressIds  主键
+     * @param packageRemark      备注
+     */
+    void updatePackageRemark(List<Integer> receivedExpressIds,String packageRemark);
 }

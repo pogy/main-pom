@@ -21,7 +21,7 @@
                     <key>
                         <bean class="com.aliyun.openservices.ons.api.bean.Subscription">
                             <property name="topic" value="${MQ_TRADE_TOPIC}"/> <!--订阅另外一个Topic -->
-                            <property name="expression" value="${MQ_TRADE_TAG1}||${MQ_TRADE_TAG2}"/> <!-- 订阅多个Tag -->
+                            <property name="expression" value="${MQ_TRADE_TAG1}||${MQ_TRADE_TAG2}||${MQ_TRADE_TAG3}||${MQ_TRADE_TAG4}||${MQ_TRADE_TAG5}"/> <!-- 订阅多个Tag -->
                         </bean>
                     </key>
                 </entry>

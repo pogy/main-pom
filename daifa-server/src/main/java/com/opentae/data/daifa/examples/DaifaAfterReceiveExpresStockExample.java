@@ -14,6 +14,7 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
     public static EntityColumn tradeCode;
     public static EntityColumn dfTradeId;
     public static EntityColumn receivedExpressName;
+    public static EntityColumn packageRemark;
     public static EntityColumn createTime;
     public static EntityColumn receivedExpressCode;
     public static EntityColumn receivedExpressId;
@@ -33,6 +34,7 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
         tradeCode = listMap.get("tradeCode");
         dfTradeId = listMap.get("dfTradeId");
         receivedExpressName = listMap.get("receivedExpressName");
+        packageRemark = listMap.get("packageRemark");
         createTime = listMap.get("createTime");
         receivedExpressCode = listMap.get("receivedExpressCode");
         receivedExpressId = listMap.get("receivedExpressId");
@@ -274,6 +276,61 @@ public class DaifaAfterReceiveExpresStockExample extends SgExample<DaifaAfterRec
 
         public DaifaAfterReceiveExpresStockExample.Criteria andReceivedExpressNameNotBetween(String value1, String value2) {
             return notBetween(receivedExpressName, value1, value2);
+        }
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkIsNull() {
+            return isNull(packageRemark);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkIsNotNull() {
+            return isNotNull(packageRemark);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkEqualTo(String value) {
+            return equalTo(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkNotEqualTo(String value) {
+            return notEqualTo(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkGreaterThan(String value) {
+            return greaterThan(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkLessThan(String value) {
+            return lessThan(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkLike(String value) {
+            return like(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkNotLike(String value) {
+            return notLike(packageRemark, value);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkIn(List<String> values) {
+            return in(packageRemark, values);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkNotIn(List<String> values) {
+            return notIn(packageRemark, values);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkBetween(String value1, String value2) {
+            return between(packageRemark, value1, value2);
+        }
+
+        public DaifaAfterReceiveExpresStockExample.Criteria andPackageRemarkNotBetween(String value1, String value2) {
+            return notBetween(packageRemark, value1, value2);
         }
         public DaifaAfterReceiveExpresStockExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);
