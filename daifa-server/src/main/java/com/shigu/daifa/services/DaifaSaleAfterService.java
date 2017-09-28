@@ -139,7 +139,6 @@ public class DaifaSaleAfterService {
                 daifaAfterMoneyConsultExample.setOrderByClause("after_consult_id asc");
                 List<DaifaAfterMoneyConsult> cs=daifaAfterMoneyConsultMapper.selectByExample(daifaAfterMoneyConsultExample);
                 Map<Long,List<DaifaAfterMoneyConsult>> moneyGroup=BeanMapper.groupBy(cs,"refundId",Long.class);
-                List<Integer> status= Arrays.asList(5,7);
 
                 for(DaifaAfterSale sale:sales){
                     DaifaTrade t=tradeMap.get(sale.getDfTradeId());
@@ -190,6 +189,7 @@ public class DaifaSaleAfterService {
                             int ennum=0;
                             Long shopMoney=0L;
                             String shop=null;
+                            int stopDealNum=0;
                             for(DaifaAfterSaleSub sub:sublist){
                                 DaifaSaleAfterSubVO subvo=new DaifaSaleAfterSubVO();
                                 DaifaOrder o=orderMap.get(sub.getDfOrderId());
@@ -214,13 +214,15 @@ public class DaifaSaleAfterService {
                                 num++;
                                 if(sub.getAfterStatus()==6){
                                     refund.setRefundState(2);
-                                }else if(status.contains(sub.getAfterStatus())){
-                                    if(sub.getStoreDealStatus()==2&&refund.getRefundState()==null){
-                                        refund.setRefundState(0);
-                                    }else{
-                                        refund.setRefundState(1);
-                                    }
                                 }
+                                if(sub.getAfterStatus()==4){
+                                    stopDealNum++;
+                                }
+                            }
+                            if(stopDealNum==0){
+                                refund.setRefundState(1);
+                            }else{
+                                refund.setRefundState(0);
                             }
                             switch (s.getAfterType()){
                                 case 1:{
