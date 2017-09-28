@@ -103,9 +103,10 @@ public class MyOrderService {
             List<Long> soids = myOrderVOS.stream().flatMap(myOrderVO -> myOrderVO.getChildOrders().stream())
                     .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
-            itemOrderRefundExample.createCriteria().andSoidIn(soids).andTypeIn(types);
+            itemOrderRefundExample.createCriteria().andSoidIn(soids);
             List<ItemOrderRefund> afters = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
             Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
+
             myOrderVOS.forEach(myOrderVO -> {
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {
                     subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
@@ -114,6 +115,7 @@ public class MyOrderService {
                             List<AfterSalingVO> afterSaling = new ArrayList<>();
                             ItemOrderRefund refund = afterGroup.get(afterSaleVO.getRefundId());
                             if (refund != null) {
+                                subMyOrderVO.setHasAfter(true);
                                 afterSaleVO.setRefuseReason(refund.getFailMsg());
                                 AfterSalingVO asa = new AfterSalingVO();
                                 switch (refund.getRefundSubInfo()) {

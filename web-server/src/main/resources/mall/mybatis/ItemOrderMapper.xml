@@ -24,7 +24,7 @@
         item_order_sub.num as num,
         item_order_sub.out_of_stok as stockoutNum,
         item_order_refund.refund_id as refundId,
-        item_order_refund.number-item_order_refund.fail_number as afterSaleNum,
+        if(item_order_refund.type!=5,item_order_refund.number-item_order_refund.fail_number,item_order_refund.fail_number) as afterSaleNum,
         item_order_refund.type as type,
         IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 4, 3, 1))) as state
         FROM
