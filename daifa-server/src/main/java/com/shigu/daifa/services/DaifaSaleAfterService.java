@@ -215,7 +215,7 @@ public class DaifaSaleAfterService {
                                 if(sub.getAfterStatus()==6){
                                     refund.setRefundState(2);
                                 }
-                                if(sub.getAfterStatus()==4){
+                                if(sub.getAfterStatus()<5){
                                     stopDealNum++;
                                 }
                             }
