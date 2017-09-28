@@ -109,24 +109,26 @@ public class MyOrderService {
                             if (refund != null) {
                                 afterSaleVO.setRefuseReason(refund.getFailMsg());
                                 AfterSalingVO asa = new AfterSalingVO();
-                                switch (refund.getRefundSubInfo()){
-                                    case 0: case 1: case 2:{
+                                switch (refund.getRefundSubInfo()) {
+                                    case 0:
+                                    case 1:
+                                    case 2: {
                                         asa.setType(refund.getRefundSubInfo());
                                         afterSaling.add(asa);
                                         break;
                                     }
-                                    case 4:{
+                                    case 4: {
                                         asa.setType(5);
                                         afterSaling.add(asa);
                                         break;
                                     }
-                                    case 3:{
-                                        if(refund.getNumber()-refund.getFailNumber()>0){
+                                    case 3: {
+                                        if (refund.getNumber() - refund.getFailNumber() > 0) {
                                             asa.setType(4);
-                                            asa.setOpeAfterSaleNum(refund.getNumber()-refund.getFailNumber());
+                                            asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
                                             afterSaling.add(asa);
                                         }
-                                        if(refund.getFailNumber()>0){
+                                        if (refund.getFailNumber() > 0) {
                                             asa.setType(3);
                                             asa.setOpeAfterSaleNum(refund.getFailNumber());
                                             afterSaling.add(asa);
@@ -170,7 +172,8 @@ public class MyOrderService {
             }
             List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
             if (afterSales != null && !afterSales.isEmpty()) {
-                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
+                //未发货退货数量
+                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4 || a.getType() == 5).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
                 subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
             }
         });
