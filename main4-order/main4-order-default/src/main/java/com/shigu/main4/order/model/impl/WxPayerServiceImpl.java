@@ -168,10 +168,13 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         try {
             WXPay.doRefundBusiness(reqData, resultListener);
         } catch (Exception e) {
+            logger.error("微信退款异常",e);
             throw new PayerException("微信退款请求失败");
         }
-        if (!resultListener.isSuccess())
+        if (!resultListener.isSuccess()) {
+            logger.error("微信退款请求失败"+JSON.toJSONString(orderPay)+" refundFee=["+refundFee+"]");
             throw new PayerException("请求失败");
+        }
     }
 
     private class ResultListener implements RefundBusiness.ResultListener {
