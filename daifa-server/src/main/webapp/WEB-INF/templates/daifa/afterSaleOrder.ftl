@@ -451,7 +451,11 @@
             <#if (afterSale.putInStorageState?size) gt 0>
                 <#list afterSale.putInStorageState as sto>
                     <#if sto.type == 1>
-                    <p>商品已入库x${sto.storageNum!}</p>
+                        <#if afterSale.refundState == 1 || afterSale.refundState == 2>
+                        <p>商品已退款x${sto.storageNum!}</p>
+                        <#else>
+                        <p>商品已入库x${sto.storageNum!}</p>
+                        </#if>
                     <#elseif sto.type == 2>
                     <p>退货失败入库x${sto.storageNum!}</p>
                     </#if>
