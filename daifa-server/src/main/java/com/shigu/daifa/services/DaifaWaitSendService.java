@@ -120,7 +120,7 @@ public class DaifaWaitSendService {
                     subVo.setRefundState(daifaWaitSendOrderSimple.getRefundStatus());
                     BeanUtils.copyProperties(daifaWaitSendOrderSimple, subVo);
                     subList.add(subVo);
-                    oids.add(new Long(daifaWaitSendOrderSimple.getChildOrderId()));
+                    oids.add(daifaWaitSendOrderSimple.getChildOrderId());
                 }
                 vo.setChildOrders(subList);
             }
@@ -139,12 +139,12 @@ public class DaifaWaitSendService {
 
                 for(DaifaWaitSendVO send:sends){
                     for(WaitSendOrderVO so:send.getChildOrders()){
-                        DaifaOrder o=map.get(new Long(so.getChildOrderId()));
+                        DaifaOrder o=map.get(so.getChildOrderId());
                         if(o!=null){
                             so.setChildServersFee(o.getSingleServicesFee());
                             so.setChildRemark(o.getOrderRemark());
                         }
-                        List<DaifaGgoodsTasks> t=taskMap.get(new Long(so.getChildOrderId()));
+                        List<DaifaGgoodsTasks> t=taskMap.get(so.getChildOrderId());
                         if(t!=null&&t.size()>0){
                             if(so.getRefundState()==2&&t.get(0).getEndStatus()==1){
                                 so.setRefundState(3);
