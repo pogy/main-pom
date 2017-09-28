@@ -42,7 +42,7 @@
             </if>
             <if test="endTime!=null and endTime !=''">
                 <![CDATA[
-                 and s1.create_date <= #{startTime}
+                 and s1.create_date <= #{endTime}
                 ]]>
             </if>
 
