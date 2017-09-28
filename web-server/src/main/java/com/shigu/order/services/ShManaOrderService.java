@@ -22,6 +22,7 @@ public class ShManaOrderService {
         }
         OrderBO orderBO = new OrderBO();
         return myOrderService.selectMyOrderPager(bo.getPage(), bo.getSize(), true,userId,orderBO,bo.getShStatus());
-        //return MyOrderService.OrderQuery.getShOrderQuery(userId,bo.getShStatus()).selectMyOrderPager(bo.getPage(),bo.getSize());
+        //OrderQuery query = SpringBeanFactory.getBean(QueryByShManaOrder.class, userId, bo.getShStatus());
+        //return query.selectMyOrderPager(bo.getPage(),bo.getSize());
     }
 }

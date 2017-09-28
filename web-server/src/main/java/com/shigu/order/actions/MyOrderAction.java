@@ -181,7 +181,7 @@ public class MyOrderAction {
             return "trade/noOrderInfo";
         } else {
 
-            MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId);
+            MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId,ps.getUserId());
             model.addAttribute("orderDetailVO", detailVo);
             model.addAttribute("orderStateText", detailVo.getOrderStateText());
             model.addAttribute("orderCreateTime", detailVo.getOrderCreateTime());
