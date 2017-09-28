@@ -130,12 +130,14 @@ public class MyOrderService {
                                         break;
                                     }
                                     case 3: {
-                                        if (refund.getNumber() - refund.getFailNumber() > 0) {
+                                        if (afterSaleVO.getState()!=1&&refund.getNumber() - refund.getFailNumber() > 0) {
+                                            asa = new AfterSalingVO();
                                             asa.setType(4);
                                             asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
                                             afterSaling.add(asa);
                                         }
                                         if (refund.getFailNumber() > 0) {
+                                            asa = new AfterSalingVO();
                                             asa.setType(3);
                                             asa.setOpeAfterSaleNum(refund.getFailNumber());
                                             afterSaling.add(asa);
