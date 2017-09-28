@@ -173,7 +173,7 @@ public class DaifaSaleAfterService {
 
                     Map<Long,Long> tmp=new HashMap<>();
                     for(DaifaAfterSaleSub s:saleOfSubs){
-                        if(s.getRefundId()!=null&&s.getRefundId()!=-1L){
+                        if(s.getRefundId()!=null&&s.getRefundId()!=-1L&&s.getAfterType()!=null){
                             if(tmp.get(s.getRefundId())!=null){
                                 continue;
                             }
