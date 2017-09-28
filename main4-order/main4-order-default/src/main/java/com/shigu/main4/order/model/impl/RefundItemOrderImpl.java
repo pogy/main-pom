@@ -245,7 +245,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         itemRefundLog.setImBuyer(fromUser);
         itemRefundLog.setMsg(applyBO.getReason());
         itemRefundLogMapper.insertSelective(itemRefundLog);
-        return itemOrderRefund.getRefundId();
+        return refundId = itemOrderRefund.getRefundId();
     }
 
     /**
