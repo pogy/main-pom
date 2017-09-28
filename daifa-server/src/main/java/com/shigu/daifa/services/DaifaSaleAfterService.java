@@ -219,10 +219,12 @@ public class DaifaSaleAfterService {
                                     stopDealNum++;
                                 }
                             }
-                            if(stopDealNum==0){
-                                refund.setRefundState(1);
-                            }else{
-                                refund.setRefundState(0);
+                            if(refund.getRefundState()==null){
+                                if(stopDealNum==0){
+                                    refund.setRefundState(1);
+                                }else{
+                                    refund.setRefundState(0);
+                                }
                             }
                             switch (s.getAfterType()){
                                 case 1:{
