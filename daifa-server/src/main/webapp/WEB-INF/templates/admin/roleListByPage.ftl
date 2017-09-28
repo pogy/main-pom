@@ -18,7 +18,6 @@
             text-align: right;
         }
         .orderCon .tddiv{width:14%;}
-
     </style>
 </head>
 <body>
@@ -57,6 +56,7 @@
                 <li><label>可用状态：</label>
                     <input type="text" class="fmInput" name="status" <#if query.status??> value="${query.status!}" </#if>>
                 </li>
+                <li><label>创建日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
                 <li>
 
                 <#assign text>{}</#assign>
@@ -87,7 +87,7 @@
             </ul>
         </div>
 
-    <#assign text>{"fields":[{"name":"roleTag","value":"${query.roleTag!}"},{"name":"roleName","value":"${query.roleName!}"},{"name":"status","value":"${query.status!}"},{"name":"createUserId","value":"${query.createUserId!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"roleTag","value":"${query.roleTag!}"},{"name":"roleName","value":"${query.roleName!}"},{"name":"status","value":"${query.status!}"},{"name":"createUserId","value":"${query.createUserId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>

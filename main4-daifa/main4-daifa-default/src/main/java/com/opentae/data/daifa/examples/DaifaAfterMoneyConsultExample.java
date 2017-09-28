@@ -14,7 +14,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
     public static EntityColumn consultType;
     public static EntityColumn consultMoney;
     public static EntityColumn createTime;
-    public static EntityColumn afterSaleSubId;
     public static EntityColumn consultBatch;
     public static EntityColumn remark1;
     public static EntityColumn afterConsultId;
@@ -30,7 +29,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
         consultType = listMap.get("consultType");
         consultMoney = listMap.get("consultMoney");
         createTime = listMap.get("createTime");
-        afterSaleSubId = listMap.get("afterSaleSubId");
         consultBatch = listMap.get("consultBatch");
         remark1 = listMap.get("remark1");
         afterConsultId = listMap.get("afterConsultId");
@@ -206,53 +204,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
 
         public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
-        }
-        public Criteria andAfterSaleSubIdIsNull() {
-            return isNull(afterSaleSubId);
-        }
-
-        public Criteria andAfterSaleSubIdIsNotNull() {
-            return isNotNull(afterSaleSubId);
-        }
-
-        public Criteria andAfterSaleSubIdEqualTo(Long value) {
-            return equalTo(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdNotEqualTo(Long value) {
-            return notEqualTo(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdGreaterThan(Long value) {
-            return greaterThan(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdLessThan(Long value) {
-            return lessThan(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(afterSaleSubId, value);
-        }
-
-        public Criteria andAfterSaleSubIdIn(List<Long> values) {
-            return in(afterSaleSubId, values);
-        }
-
-        public Criteria andAfterSaleSubIdNotIn(List<Long> values) {
-            return notIn(afterSaleSubId, values);
-        }
-
-        public Criteria andAfterSaleSubIdBetween(Long value1, Long value2) {
-            return between(afterSaleSubId, value1, value2);
-        }
-
-        public Criteria andAfterSaleSubIdNotBetween(Long value1, Long value2) {
-            return notBetween(afterSaleSubId, value1, value2);
         }
         public Criteria andConsultBatchIsNull() {
             return isNull(consultBatch);

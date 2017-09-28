@@ -4,18 +4,12 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.examples.DaifaGgoodsExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.examples.DaifaWorkerExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.AllOrderBO;
-import com.shigu.daifa.vo.AllSubOrderVO;
-import com.shigu.daifa.vo.DaifaAllOrderVO;
-import com.shigu.daifa.vo.DaifaWorkerVO;
-import com.shigu.daifa.vo.OrderStatisticsVO;
+import com.shigu.daifa.vo.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -30,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by pc on 2017-08-14.
@@ -42,6 +37,8 @@ import java.util.concurrent.*;
 @Service
 public class DaifaAllOrderIndexService {
     private static String LAST_OUT_TIME;//最后一次超时保存的时间yyyyMMdd
+    @Autowired
+    private DaifaSendService daifaSendService;
 
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
@@ -60,16 +57,10 @@ public class DaifaAllOrderIndexService {
     public void setDaifaWorkerMapper(DaifaWorkerMapper daifaWorkerMapper) {
         this.daifaWorkerMapper = daifaWorkerMapper;
     }
-    private DaifaGgoodsMapper daifaGgoodsMapper;
+    private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
     @Autowired
-    public void setDaifaGgoodsMapper(DaifaGgoodsMapper daifaGgoodsMapper) {
-        this.daifaGgoodsMapper = daifaGgoodsMapper;
-    }
-
-    private DaifaOrderMapper daifaOrderMapper;
-    @Autowired
-    public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
-        this.daifaOrderMapper = daifaOrderMapper;
+    public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
+        this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
     }
 
     private OrderManageProcess orderManageProcess;
@@ -78,6 +69,8 @@ public class DaifaAllOrderIndexService {
         this.orderManageProcess = orderManageProcess;
     }
 
+    @Autowired
+    private DaifaAllocatedService daifaAllocatedService;
     public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo,Long sellerId) {
 
 
@@ -230,6 +223,7 @@ public class DaifaAllOrderIndexService {
             return JsonResponseUtil.error("时间不能空");
         }
         orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
+        daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("设置成功");
     }
 
@@ -249,15 +243,18 @@ public class DaifaAllOrderIndexService {
 
 
     }
-    public Future<OrderStatisticsVO> statisticsToday(){
+    public Future<OrderStatisticsVO> statisticsToday(Long sellerId){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<OrderStatisticsVO> future = executorService.submit(new TaskStaticsToday());
+        Future<OrderStatisticsVO> future = executorService.submit(new TaskStaticsToday(sellerId));
         executorService.shutdown();
         return future;
     }
 
     class TaskStaticsToday implements Callable<OrderStatisticsVO>{
-
+        Long sellerId;
+        TaskStaticsToday(Long sellerId){
+            this.sellerId=sellerId;
+        }
         @Override
         public OrderStatisticsVO call() throws Exception {
             DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
@@ -266,35 +263,27 @@ public class DaifaAllOrderIndexService {
             Date isEndTime = DateUtil.getIsEndTime(date);
             daifaTradeExample.createCriteria().andCreateTimeGreaterThan(date);
             TodayCount orderCount = daifaTradeMapper.selectTodayCount(DateUtil.dateToString(isStartTime,DateUtil.patternD)
-                    ,DateUtil.dateToString(isEndTime,DateUtil.patternD));
+                    ,DateUtil.dateToString(isEndTime,DateUtil.patternD),sellerId);
             OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
             orderStatisticsVO.setTotalNumber(orderCount.getTotalNumber());
             orderStatisticsVO.setTotalMoney(orderCount.getTotalMoney());
-            TodayCount sendCount = daifaTradeMapper.selectSendCount(DateUtil.dateToString(isStartTime,DateUtil.patternD)
-                    ,DateUtil.dateToString(isEndTime,DateUtil.patternD));
-            if(sendCount!=null) {
-                orderStatisticsVO.setSendMoney(sendCount.getSendMoney());
-                orderStatisticsVO.setSendNumber(sendCount.getSendNumber());
-            }
+            SendSumVO sum=daifaSendService.sum(sellerId);
+            orderStatisticsVO.setSendMoney(sum.getBeenShippedGoodsFee());
+            orderStatisticsVO.setSendNumber(sum.getBeenShippedGoods());
             int queCount = 0;
-
-
-            DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
-            daifaGgoodsExample.createCriteria().andCreateTimeGreaterThanOrEqualTo(isStartTime).andCreateTimeLessThanOrEqualTo(isEndTime).andTakeGoodsStatusEqualTo(2);
-            List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectByExample(daifaGgoodsExample);
-            if(daifaGgoods.size()>0){
-                Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-                Set<Long> orderIds = goodsMap.keySet();
-                DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-                daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
-                List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
-                for (DaifaOrder daifaOrder : daifaOrders) {
-                    if(daifaOrder.getTakeGoodsStatus() ==2){
-                        queCount+=daifaOrder.getGoodsNum();
-                    }
-                }
+            DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+            daifaGgoodsTasksExample.createCriteria().andCreateDateEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB));
+            daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
+            List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,
+                    FieldUtil.codeFields("df_order_id,take_goods_status,goods_num"));
+            if(ts.size()>0){
+                Map<Long, List<DaifaGgoodsTasks>> goodsMap = BeanMapper.groupBy(ts, "dfOrderId", Long.class);
+                queCount=goodsMap.values().stream().map(daifaGgoodsTasksList ->
+                        daifaGgoodsTasksList.stream().findFirst().get())
+                        .collect(Collectors.toList())
+                        .stream().filter(daifaGgoodsTasks -> daifaGgoodsTasks.getTakeGoodsStatus()==2)
+                        .mapToInt(DaifaGgoodsTasks::getGoodsNum).sum();
             }
-
             orderStatisticsVO.setStockoutNumber(queCount);
             return orderStatisticsVO;
         }

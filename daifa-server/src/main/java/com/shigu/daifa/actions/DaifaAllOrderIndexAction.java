@@ -49,10 +49,9 @@ public class DaifaAllOrderIndexAction {
     @RequestMapping("daifa/orderAll")
     public String allOrderPage(AllOrderBO bo, Model model) throws ExecutionException, InterruptedException {
         daifaAllOrderIndexService.timeOutExcute();
-        Future<OrderStatisticsVO> future = daifaAllOrderIndexService.statisticsToday();
-
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Future<OrderStatisticsVO> future = daifaAllOrderIndexService.statisticsToday(auth.getDaifaSellerId());
         List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo, auth.getDaifaSellerId());
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();

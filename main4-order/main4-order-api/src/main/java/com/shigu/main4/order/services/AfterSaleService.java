@@ -1,6 +1,8 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.servicevo.*;
@@ -164,4 +166,12 @@ public interface AfterSaleService {
      * 表示已看过售后信息接口
      */
     void wipeOffNewTip(Long refundId);
+
+    /**
+     * 已拿到货退款
+     * @param psoid
+     * @param money
+     * @return
+     */
+    Long refundHasItem(Long psoid,Long money) throws OrderException, RefundException, PayerException;
 }

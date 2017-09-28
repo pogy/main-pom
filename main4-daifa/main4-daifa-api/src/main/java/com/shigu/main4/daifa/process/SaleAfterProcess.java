@@ -79,7 +79,7 @@ public interface SaleAfterProcess {
      * ====================================================================================
      *
      */
-    String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException;
+    String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException;
 
     /**
      * ====================================================================================
@@ -105,7 +105,7 @@ public interface SaleAfterProcess {
      * ====================================================================================
      * 
      */
-    String saleAfterRemark(SaleAfterBO bo)throws DaifaException;
+    String saleAfterRemark(SaleAfterRemarkerBO bo)throws DaifaException;
 
     /**
      * ====================================================================================
@@ -120,6 +120,14 @@ public interface SaleAfterProcess {
      *
      */
     String moneyConsultRefuse(MoneyConsultBO bo)throws DaifaException;
+
+    /**
+     * 客户同意协商金额
+     * @param bo
+     * @return
+     * @throws DaifaException
+     */
+    String moneyConsultAgree(MoneyConsultBO bo)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsult  客服发起
@@ -132,6 +140,25 @@ public interface SaleAfterProcess {
      *
      */
     String moneyConsult(Long refundId,String money)throws DaifaException;
+
+    /**
+     * ====================================================================================
+     * @方法名： moneyConsult  客服发起
+     * @user zf 2017/9/20 9:30
+     * @功能： 退货入库  SaleAfterModel.refundFailInStock
+     * @param: orderId子单ID,stockLocktion货架号,sendPhone包裹手机号
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    void saleInStock(Long orderId,String stockLocktion,String sendPhone) throws DaifaException;
+
+    /**
+     * 换货完成
+     * @param refundId
+     */
+    void changeEnt(Long refundId) throws DaifaException;
 
 
 }

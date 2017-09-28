@@ -61,12 +61,11 @@ public class TsysRoleAction {
    @RequestMapping("admin/roleAdd")
     @ResponseBody
     public JSONObject insert(TsysRoleBO bo) throws DaifaException {
-        System.out.println("11111111");
        int i=tsysRoleService.insert (bo);
        if(i>0){
            return JsonResponseUtil.success();
        }else{
-           return JsonResponseUtil.error ("修改错误！");
+           return JsonResponseUtil.error ("插入错误！");
        }
 
     }
@@ -85,7 +84,7 @@ public class TsysRoleAction {
     @RequestMapping("admin/roleEdit")
     @ResponseBody
     public JSONObject update(TsysRoleBO bo) throws DaifaException {
-        System.out.println("2222222");
+
         int i= tsysRoleService.update (bo);
             if(i>0){
                 return JsonResponseUtil.success();

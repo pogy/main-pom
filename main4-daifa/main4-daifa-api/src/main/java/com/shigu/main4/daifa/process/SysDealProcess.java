@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process;
 
-import com.shigu.main4.daifa.bo.TsysRoleBO;
+
+import com.shigu.main4.daifa.exceptions.DaifaException;
 
 /**
  * @类编号
@@ -19,4 +20,10 @@ public interface SysDealProcess {
     int roleInsert(String roleName,String roleTag,Long createUserId,Long status,String roleComment);
 
     int roleUpdate(Long roleId,String roleName,String roleTag,Long createUserId,Long status,String roleComment);
+    ////TsysPermission
+    int permissionInsert(String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
+
+    int permissionUpdate(Long permissionId,String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
+    //更新用户角色
+    int updateUserAndRoles (Long userId, String roleIds) throws DaifaException;
 }
