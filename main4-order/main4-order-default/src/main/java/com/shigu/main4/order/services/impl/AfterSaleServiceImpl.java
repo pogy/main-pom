@@ -86,7 +86,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         for (RefundTypeEnum type : RefundTypeEnum.values()) {
             RefundVO refundVO = subItemOrder.refundInfos(type);
             if (refundVO != null) {
-                vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
+                vo.setRefundNum(vo.getRefundNum() + (type.type==5?refundVO.getFailNumber():refundVO.getNumber()));
             }
         }
         vo.setOtherRefundPrice(0L);
