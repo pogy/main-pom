@@ -475,6 +475,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
     /**
      * 已拿到货未发退款
+     *
      * @param psoid
      * @param money
      * @return
@@ -485,16 +486,10 @@ public class AfterSaleServiceImpl implements AfterSaleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long refundHasItem(Long psoid, Long money) throws OrderException, RefundException, PayerException {
-        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(psoid);
-        if (subOrderSoidps.getAlreadyRefund()) {
-            throw new OrderException(String.format("子单%d已经进行过退款", psoid));
-        }
-        Long soid = subOrderSoidps.getSoid();
+        Long soid = soidsCreater.selSoidBySoidp(psoid);
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, soid);
-        Long refundId = subItemOrder.refundApply(4, 1, money, "已拿到货退款");
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).success();
-        subOrderSoidps.setAlreadyRefund(true);
-        subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+        Long refundId = subItemOrder.refundApply(5, 1, money, "已拿到货退款");
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundHasItem(psoid, money);
         return refundId;
     }
 }
