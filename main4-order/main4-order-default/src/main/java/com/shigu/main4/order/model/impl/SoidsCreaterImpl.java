@@ -50,7 +50,7 @@ public class SoidsCreaterImpl implements SoidsCreater {
     @Override
     public Long selSoidBySoidp(Long soidp) {
         SubOrderSoidps soidps=subOrderSoidpsMapper.selectByPrimaryKey(soidp);
-        return soidps!=null?soidps.getSoidpId():null;
+        return soidps!=null?soidps.getSoid():null;
     }
 
     @Override
