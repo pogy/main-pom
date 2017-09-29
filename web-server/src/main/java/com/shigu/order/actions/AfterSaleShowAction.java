@@ -235,6 +235,8 @@ public class AfterSaleShowAction {
         return JsonResponseUtil.success();
     }
 
+    @RequestMapping("finishExchange")
+    @ResponseBody
     public JSONObject finishExchange(Long refundId,HttpSession session) throws OrderException, DaifaException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         afterSaleShowService.finishExchange(refundId,ps.getUserId());
