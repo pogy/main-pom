@@ -1,9 +1,5 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.examples.ItemOrderExample;
-import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
-import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.bo.ShManaOrderBo;
@@ -26,5 +22,7 @@ public class ShManaOrderService {
         }
         OrderBO orderBO = new OrderBO();
         return myOrderService.selectMyOrderPager(bo.getPage(), bo.getSize(), true,userId,orderBO,bo.getShStatus());
+        //OrderQuery query = SpringBeanFactory.getBean(QueryByShManaOrder.class, userId, bo.getShStatus());
+        //return query.selectMyOrderPager(bo.getPage(),bo.getSize());
     }
 }

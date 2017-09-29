@@ -2,6 +2,7 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
@@ -231,6 +232,12 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("缺少参数同意");
         }
         afterSaleShowService.agreeRefunMoney(Long.parseLong(refundId),agreeState);
+        return JsonResponseUtil.success();
+    }
+
+    public JSONObject finishExchange(Long refundId,HttpSession session) throws OrderException, DaifaException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        afterSaleShowService.finishExchange(refundId,ps.getUserId());
         return JsonResponseUtil.success();
     }
 

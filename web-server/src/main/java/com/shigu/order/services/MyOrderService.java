@@ -1,5 +1,6 @@
 package com.shigu.order.services;
 
+import com.google.common.collect.Lists;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
@@ -22,11 +23,14 @@ import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.*;
 import com.shigu.tools.DateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -79,7 +83,11 @@ public class MyOrderService {
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
         return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
+        //OrderQuery orderQuery = OrderQuery.getOrderQuery(userId, bo);
+        //return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
     }
+
+
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, boolean onlyRefund, Long userId, OrderBO bo, Integer shStatus) {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
@@ -96,9 +104,10 @@ public class MyOrderService {
             List<Long> soids = myOrderVOS.stream().flatMap(myOrderVO -> myOrderVO.getChildOrders().stream())
                     .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
-            itemOrderRefundExample.createCriteria().andSoidIn(soids).andTypeIn(types);
+            itemOrderRefundExample.createCriteria().andSoidIn(soids);
             List<ItemOrderRefund> afters = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
             Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
+
             myOrderVOS.forEach(myOrderVO -> {
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {
                     subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
@@ -107,26 +116,31 @@ public class MyOrderService {
                             List<AfterSalingVO> afterSaling = new ArrayList<>();
                             ItemOrderRefund refund = afterGroup.get(afterSaleVO.getRefundId());
                             if (refund != null) {
+                                subMyOrderVO.setHasAfter(true);
                                 afterSaleVO.setRefuseReason(refund.getFailMsg());
                                 AfterSalingVO asa = new AfterSalingVO();
-                                switch (refund.getRefundSubInfo()){
-                                    case 0: case 1: case 2:{
+                                switch (refund.getRefundSubInfo()) {
+                                    case 0:
+                                    case 1:
+                                    case 2: {
                                         asa.setType(refund.getRefundSubInfo());
                                         afterSaling.add(asa);
                                         break;
                                     }
-                                    case 4:{
+                                    case 4: {
                                         asa.setType(5);
                                         afterSaling.add(asa);
                                         break;
                                     }
-                                    case 3:{
-                                        if(refund.getNumber()-refund.getFailNumber()>0){
+                                    case 3: {
+                                        if (afterSaleVO.getState()!=1&&refund.getNumber() - refund.getFailNumber() > 0) {
+                                            asa = new AfterSalingVO();
                                             asa.setType(4);
-                                            asa.setOpeAfterSaleNum(refund.getNumber()-refund.getFailNumber());
+                                            asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
                                             afterSaling.add(asa);
                                         }
-                                        if(refund.getFailNumber()>0){
+                                        if (refund.getFailNumber() > 0) {
+                                            asa = new AfterSalingVO();
                                             asa.setType(3);
                                             asa.setOpeAfterSaleNum(refund.getFailNumber());
                                             afterSaling.add(asa);
@@ -170,7 +184,8 @@ public class MyOrderService {
             }
             List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
             if (afterSales != null && !afterSales.isEmpty()) {
-                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
+                //未发货退货数量
+                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4 || a.getType() == 5).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
                 subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
             }
         });
@@ -213,12 +228,13 @@ public class MyOrderService {
         return itemOrderService.expressInfo(orderId);
     }
 
-    public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
+    public MyOrderDetailVO orderDetail(Long orderId,Long userId) throws Main4Exception, ParseException {
         MyOrderDetailVO vo = new MyOrderDetailVO();
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
         OrderBO orderBO = new OrderBO();
         orderBO.setOrderId(orderId);
         ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false, null, orderBO, null);
+        //ShiguPager<MyOrderVO> pager = OrderQuery.getOrderQuery(userId, orderBO).selectMyOrderPager(1, 1);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
         vo.setExpress(orderListService.selectExpress(orderId));
         vo.setOrderAddrInfo(expressAddrInfo(orderId));
@@ -276,4 +292,5 @@ public class MyOrderService {
             throw new Main4Exception(e.getMessage());
         }
     }
+
 }

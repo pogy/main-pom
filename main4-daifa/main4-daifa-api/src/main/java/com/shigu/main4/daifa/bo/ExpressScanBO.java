@@ -14,4 +14,19 @@ import java.io.Serializable;
  * @commonents:
  */
 public class ExpressScanBO implements Serializable{
+
+    private static final long serialVersionUID = 8943958156594342413L;
+
+    /**
+     * 快递单号
+     */
+    String expressCode;
+
+    public String getExpressCode() {
+        return expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode;
+    }
 }

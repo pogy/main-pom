@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("saleAfterProcess")
 public class SaleAfterProcessImpl implements SaleAfterProcess {
     private static final Logger logger = LoggerFactory.getLogger(SaleAfterProcessImpl.class);
     @Autowired
@@ -95,14 +95,14 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException {
+    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException {
         SaleAfterModel model=SpringBeanFactory.getBean(SaleAfterModel.class);
         model.storeRefundRefuse(orderId,reason);
         DaifaAfterSaleSub sub=new DaifaAfterSaleSub();
         sub.setDfOrderId(orderId);
         sub=daifaAfterSaleSubMapper.selectOne(sub);
         if(sub.getInStock()!=null){
-            model.refundFailInStock(orderId,2,stockLocktion,sendPhone);
+            model.refundFailInStock(orderId,2,stockLocktion,null);
         }
         return null;
     }
@@ -133,7 +133,8 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     }
 
     @Override
-    public String saleAfterRemark(SaleAfterBO bo) throws DaifaException {
+    public String saleAfterRemark(SaleAfterRemarkerBO bo) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class).saleAfterRemark(bo.getAfterSaleId(),bo.getRemark());
         return null;
     }
 
@@ -161,6 +162,13 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
         }
         return null;
     }
+
+    @Override
+    public String moneyConsultAgree(MoneyConsultBO bo) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).moneyConsultAgree();
+        return null;
+    }
+
     /**
      * ====================================================================================
      * @方法名： moneyConsult  客服发起
@@ -176,5 +184,15 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     public String moneyConsult(Long refundId,String money) throws DaifaException {
         SpringBeanFactory.getBean(SaleAfterModel.class, refundId).moneyConsult(money);
         return null;
+    }
+
+    @Override
+    public void saleInStock(Long orderId, String stockLocktion, String sendPhone) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class).refundFailInStock(orderId,1,stockLocktion,sendPhone);
+    }
+
+    @Override
+    public void changeEnt(Long refundId) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class,refundId).changeEnt();
     }
 }

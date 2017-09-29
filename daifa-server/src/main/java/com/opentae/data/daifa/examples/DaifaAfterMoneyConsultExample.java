@@ -29,7 +29,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
 
     public static EntityColumn afterConsultId;
-    public static EntityColumn afterSaleSubId;
     public static EntityColumn refundId;
     public static EntityColumn createTime;
     public static EntityColumn consultType;
@@ -49,8 +48,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
 
 
         afterConsultId = listMap.get("afterConsultId");
-
-        afterSaleSubId = listMap.get("afterSaleSubId");
 
         refundId = listMap.get("refundId");
 
@@ -138,59 +135,6 @@ public class DaifaAfterMoneyConsultExample extends SgExample<DaifaAfterMoneyCons
 
         public DaifaAfterMoneyConsultExample.Criteria andAfterConsultIdNotLike(String value) {
             return notLike(afterConsultId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdIsNull() {
-            return isNull(afterSaleSubId);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdIsNotNull() {
-            return isNotNull(afterSaleSubId);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdEqualTo(java.lang.Long value) {
-            return equalTo(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdNotEqualTo(java.lang.Long value) {
-            return notEqualTo(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdGreaterThan(java.lang.Long value) {
-            return greaterThan(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdGreaterThanOrEqualTo(java.lang.Long value) {
-            return greaterThanOrEqualTo(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdLessThan(java.lang.Long value) {
-            return lessThan(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdLessThanOrEqualTo(java.lang.Long value) {
-            return lessThanOrEqualTo(afterSaleSubId, value);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdIn(List<java.lang.Long> values) {
-            return in(afterSaleSubId, values);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdNotIn(List<java.lang.Long> values) {
-            return notIn(afterSaleSubId, values);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdBetween(java.lang.Long value1, java.lang.Long value2) {
-            return between(afterSaleSubId, value1, value2);
-        }
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdNotBetween(java.lang.Long value1, java.lang.Long value2) {
-            return notBetween(afterSaleSubId, value1, value2);
-        }
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdLike(String value) {return like(afterSaleSubId, value);}
-
-        public DaifaAfterMoneyConsultExample.Criteria andAfterSaleSubIdNotLike(String value) {
-            return notLike(afterSaleSubId, value);
         }
 
         public DaifaAfterMoneyConsultExample.Criteria andRefundIdIsNull() {
