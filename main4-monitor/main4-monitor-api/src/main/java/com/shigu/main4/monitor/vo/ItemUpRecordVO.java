@@ -123,6 +123,10 @@ public class ItemUpRecordVO implements Serializable{
      * 下游numIid
      */
     private Long fenNumiid;
+    /**
+     * 淘宝子类目id
+     */
+    private Long cid;
 
 
     public String getSupperImww() {
@@ -331,5 +335,13 @@ public class ItemUpRecordVO implements Serializable{
 
     public void setFenNumiid(Long fenNumiid) {
         this.fenNumiid = fenNumiid;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 }
