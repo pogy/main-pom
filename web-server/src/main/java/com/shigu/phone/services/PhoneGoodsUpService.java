@@ -1,5 +1,6 @@
 package com.shigu.phone.services;
 
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.responses.app.ImgUploadResponse;
@@ -17,9 +18,13 @@ import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.tools.OSSUtil;
+import org.elasticsearch.common.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 /**
@@ -117,10 +122,35 @@ public class PhoneGoodsUpService {
         return resp;
     }
 
-    public ImgUploadResponse ImgUpload(ImgUploadRequest request){
+    public ImgUploadResponse imgUpload(ImgUploadRequest request){
 
         ImgUploadResponse response = new ImgUploadResponse();
+        if (StringUtils.isEmpty(request.getExtension()) || (request.getType() != 1 && request.getUserId() == null)) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("参数错误");
+            response.setException(openException);
+            response.setSuccess(false);
+            return response;
+        }
 
-        return  response;
+        try {
+            String base64 = request.getFile();
+            byte[] file  = Base64.decode(base64);
+            String fileName = request.getType().toString();
+            if (request.getUserId() != null) {
+                fileName += "_"+request.getUserId();
+            }
+            fileName += request.getExtension();
+            OSSUtil.addItemPic(fileName,new ByteArrayInputStream(file));
+            response.setBody("上传成功");
+            response.setSuccess(true);
+            return  response;
+        } catch (Exception e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("上传失败");
+            response.setException(openException);
+            response.setSuccess(false);
+            return response;
+        }
     }
 }

@@ -11,17 +11,28 @@ import com.openJar.responses.app.ImgUploadResponse;
  */
 public class ImgUploadRequest extends Request<ImgUploadResponse> {
 	//图片文件数据	必须
-	private byte[] file;
+	private String file;
 	//1、普通文件数据，2、图搜文件数据	必须
 	private Integer type;
 	//如果type!=1，需要传入userId
 	private Long userId;
-	public byte[] getFile(){
+
+	private String extension;
+
+	public String getFile() {
 		return file;
 	}
 
-	public void setFile(byte[] file){
-		this.file=file;
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
 	}
 
 	public Integer getType(){
