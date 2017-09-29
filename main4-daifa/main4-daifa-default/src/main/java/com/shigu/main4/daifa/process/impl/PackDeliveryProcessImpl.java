@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -27,6 +28,7 @@ import java.util.*;
 
 @Service("packDeliveryProcess")
 public class PackDeliveryProcessImpl implements PackDeliveryProcess {
+    private static final Logger logger = LoggerFactory.getLogger(PackDeliveryProcessImpl.class);
     @Autowired
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
@@ -81,6 +83,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             }
             if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
+            }
+            if(o.getTakeGoodsStatus()==1&&(o.getRefundStatus() == null||o.getRefundStatus()==1)){
+                throw new DaifaException("此条码对应的商品已申请未发退款(退款进行中),请稍后重试");
             }
         }
 

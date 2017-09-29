@@ -52,7 +52,14 @@ public class AfterSaleData implements Serializable {
     private Integer oldOrder;
     @Column("daifa_trade.send_status")
     private Integer sendStatus;
-
+    @Column("daifa_trade.buyer_ww")
+    private String imWw;
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<AfterSaleSubData> childOrders;
 
     public String getReceiverAddress() {
@@ -197,5 +204,37 @@ public class AfterSaleData implements Serializable {
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

@@ -8,6 +8,8 @@
         <result column="send_status" property="tradeState" jdbcType="DECIMAL"/>
         <result column="create_time" property="tradeTime" jdbcType="VARCHAR"/>
         <result column="buyer_ww" property="imWw" jdbcType="VARCHAR"/>
+        <result column="buyer_qq" property="imQq" jdbcType="VARCHAR"/>
+        <result column="buyer_telephone" property="imTel" jdbcType="VARCHAR"/>
         <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
         <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR"/>
         <result column="buyer_remark" property="buyerRemark" jdbcType="VARCHAR"/>
@@ -16,6 +18,7 @@
         <result column="express_name" property="expressName" jdbcType="VARCHAR"/>
         <result column="express_code" property="expressCode" jdbcType="VARCHAR"/>
         <result column="trade_discount_fee" property="discountFee" jdbcType="VARCHAR"/>
+        <result column="is_tb_order" property="isTbOrder" jdbcType="BOOLEAN"/>
         <result column="services_fee" property="serversFee" jdbcType="VARCHAR"/>
         <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR"/>
         <collection property="childOrders" ofType="com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple"
@@ -42,6 +45,8 @@
 			f.send_status,
 			f.create_time,
 			f.buyer_ww,
+            f.buyer_qq,
+            f.buyer_telephone,
 			f.receiver_name,
 			f.receiver_phone,
 			f.buyer_remark,
@@ -52,6 +57,7 @@
 			f.trade_discount_fee,
 			f.services_fee,
 			f.receiver_address,
+            f.daifa_type=2 is_tb_order,
 			d.df_order_id,
 			d.pic_path,
 			d.title,
@@ -66,7 +72,7 @@
 		FROM
 			(
 				SELECT
-					e.*,c.trade_discount_fee,c.services_fee
+					e.*,c.trade_discount_fee,c.services_fee,c.daifa_type
 				FROM
 					daifa_wait_send e,
 					(
@@ -74,7 +80,8 @@
 							v.DWS_ID,
 							v.df_trade_id,
 							t.trade_discount_fee,
-							t.services_fee
+							t.services_fee,
+                            t.daifa_type
 						FROM
                           (select t1.df_trade_id,t1.dws_id FROM
 							daifa_wait_send t1

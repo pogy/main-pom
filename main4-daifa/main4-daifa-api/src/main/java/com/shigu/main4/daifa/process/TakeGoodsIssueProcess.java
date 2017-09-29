@@ -2,6 +2,7 @@ package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.PrintTagVO;
+import com.shigu.main4.daifa.vo.UnComleteAllVO;
 
 import java.util.List;
 
@@ -86,6 +87,27 @@ public interface TakeGoodsIssueProcess {
      */
 
     List<Long> completeWithDate(String date, Long sellerId) throws DaifaException;
+    /**
+     * 未发退款(代发系统调起)
+     * @param dfOrderId
+     */
+
+    Integer refundHasItemApply(Long dfOrderId,String money) throws DaifaException;
+
+    /**
+     * 未发退款失败时回滚
+     * @param dfOrderId
+     * @param status
+     */
+    void refundHasItemErrorRollback(Long dfOrderId,Integer status) throws DaifaException;
+    /**
+     * 未发退款
+     * @param refundId
+     * @param psoid
+     * @param refundPrice
+     * @throws DaifaException
+     */
+    void refundHasItem(Long refundId, Long psoid,Long refundPrice) throws DaifaException;
 
     /**
      * 手动退款,系统后台专用
@@ -96,6 +118,12 @@ public interface TakeGoodsIssueProcess {
      * @param refundId
      * @throws DaifaException
      */
-    void adminRefund(List<Long> dfOrderIds,Long tid,Long refundId) throws DaifaException;
+    void adminRefund(List<Long> dfOrderIds,Long tid,Long refundId,Long money) throws DaifaException;
+
+
+
+
+
+    UnComleteAllVO uncompleteAllNew(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
 }

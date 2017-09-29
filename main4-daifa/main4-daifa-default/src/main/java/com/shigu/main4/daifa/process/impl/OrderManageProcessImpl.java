@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
@@ -24,7 +26,7 @@ import java.util.*;
 
 @Service("orderManageProcess")
 public class OrderManageProcessImpl implements OrderManageProcess {
-
+    private static final Logger logger = LoggerFactory.getLogger(OrderManageProcessImpl.class);
     private final int MAX_TIME_OUT = 3;//3天为最大超时时间
 
     @Autowired
@@ -59,7 +61,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     }
 
     /**
-     * 售后备注
+     * 客服查询备注
      * @param orderId 单号
      * @param mark 备注内容给
      */

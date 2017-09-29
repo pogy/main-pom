@@ -10,8 +10,8 @@ import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.daifa.bo.AfterSaleBO;
-import com.shigu.daifa.vo.AfterSaleDataSubVO;
-import com.shigu.daifa.vo.AfterSaleDataVO;
+import com.shigu.daifa.vo.DaifaCustomerDataSubVO;
+import com.shigu.daifa.vo.DaifaCutomerDataVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -35,7 +35,7 @@ import java.util.List;
  * @since 3.0.0-SNAPSHOT
  */
 @Service
-public class DaifaAfterSaleService {
+public class DaifaCustomerService {
 
     private DaifaMultipleMapper daifaMultipleMapper;
 
@@ -62,8 +62,8 @@ public class DaifaAfterSaleService {
         this.orderManageProcess = orderManageProcess;
     }
 
-    public ShiguPager<AfterSaleDataVO> afterSaleData(Long daifaSellerId, AfterSaleBO bo) {
-        ShiguPager<AfterSaleDataVO> pager = new ShiguPager<>();
+    public ShiguPager<DaifaCutomerDataVO> afterSaleData(Long daifaSellerId, AfterSaleBO bo) {
+        ShiguPager<DaifaCutomerDataVO> pager = new ShiguPager<>();
         DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
         DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
         DaifaTradeExample.Criteria salece = daifaTradeExample.createCriteria();
@@ -86,7 +86,7 @@ public class DaifaAfterSaleService {
         }
 
         int count = daifaTradeMapper.countByExample(daifaTradeExample);
-        List<AfterSaleDataVO> afterSaleDataVOS = new ArrayList<>();
+        List<DaifaCutomerDataVO> afterSaleDataVOS = new ArrayList<>();
         if (count > 0) {
             int start = (Integer.parseInt(bo.getPage()) - 1) * 10;
             int end = 10;
@@ -99,7 +99,7 @@ public class DaifaAfterSaleService {
 
 
             for (AfterSaleData afterSaleDatum : afterSaleData) {
-                AfterSaleDataVO vo = new AfterSaleDataVO();
+                DaifaCutomerDataVO vo = new DaifaCutomerDataVO();
                 switch (afterSaleDatum.getOldOrder()){
                     case 0:{
                         vo.setOldOrder(false);
@@ -114,12 +114,15 @@ public class DaifaAfterSaleService {
                     }
                 }
                 BeanUtils.copyProperties(afterSaleDatum, vo, "childOrders");
+                if("无".equals(vo.getImWw())){
+                    vo.setImWw(null);
+                }
                 vo.setSendTime(DateUtil.dateToString(afterSaleDatum.getSendTime(), DateUtil.patternA));
                 vo.setTradeTime(DateUtil.dateToString(afterSaleDatum.getCreateTime(), DateUtil.patternA));
                 afterSaleDataVOS.add(vo);
-                List<AfterSaleDataSubVO> afterSaleDataSubVOS = new ArrayList<>();
+                List<DaifaCustomerDataSubVO> afterSaleDataSubVOS = new ArrayList<>();
                 for (AfterSaleSubData afterSaleSubData : afterSaleDatum.getChildOrders()) {
-                    AfterSaleDataSubVO subVO = new AfterSaleDataSubVO();
+                    DaifaCustomerDataSubVO subVO = new DaifaCustomerDataSubVO();
                     BeanUtils.copyProperties(afterSaleSubData, subVO);
                     afterSaleDataSubVOS.add(subVO);
                 }

@@ -3,8 +3,8 @@ package com.shigu.daifa.actions;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.AfterSaleBO;
-import com.shigu.daifa.services.DaifaAfterSaleService;
-import com.shigu.daifa.vo.AfterSaleDataVO;
+import com.shigu.daifa.services.DaifaCustomerService;
+import com.shigu.daifa.vo.DaifaCutomerDataVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -27,18 +27,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @since 3.0.0-SNAPSHOT
  */
 @Controller
-public class DaifaAfterSaleAction {
+public class DaifaCustomerAction {
 
-    private DaifaAfterSaleService daifaAfterSaleService;
+    private DaifaCustomerService daifaCustomerService;
     @Autowired
-    public void setDaifaAfterSaleService(DaifaAfterSaleService daifaAfterSaleService) {
-        this.daifaAfterSaleService = daifaAfterSaleService;
+    public void setDaifaCustomerService(DaifaCustomerService daifaCustomerService) {
+        this.daifaCustomerService = daifaCustomerService;
     }
+
     @RequestMapping("daifa/orderForServer")
     public String afterSale(AfterSaleBO bo,Model model) {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        ShiguPager<AfterSaleDataVO> pager = daifaAfterSaleService.afterSaleData(auth.getDaifaSellerId(),bo);
+        ShiguPager<DaifaCutomerDataVO> pager = daifaCustomerService.afterSaleData(auth.getDaifaSellerId(),bo);
 
 
         model.addAttribute("orders",pager.getContent());
@@ -57,6 +58,6 @@ public class DaifaAfterSaleAction {
         if(StringUtils.isEmpty(remarkCon)){
             return JsonResponseUtil.error("备注不能为空");
         }
-        return daifaAfterSaleService.addServerRemarkJson(orderId,remarkCon);
+        return daifaCustomerService.addServerRemarkJson(orderId,remarkCon);
     }
 }

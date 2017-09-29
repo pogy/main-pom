@@ -93,8 +93,6 @@ public class SubItemOrderImpl implements SubItemOrder{
     @Override
     public Long refundApply(Integer type, Integer number, Long money, String reason) throws OrderException {
         //限制一下,如果退过了,不能再退
-        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
-        refundExample.createCriteria().andSoidEqualTo(this.getSubOrderId());
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.2-SNAPSHOT</version>
+        <version>4.2.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -379,6 +379,11 @@
             <groupId>sites.main</groupId>
             <artifactId>main4-order-api</artifactId>
             <version>${main4-order-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>create-excel</groupId>
+            <artifactId>create-excel</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

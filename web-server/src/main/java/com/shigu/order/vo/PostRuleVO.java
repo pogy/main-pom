@@ -99,7 +99,7 @@ public class PostRuleVO implements Comparable<PostRuleVO>{
 
     @Override
     public int compareTo(PostRuleVO o) {
-        if(this.name!=null&&this.name.equals("yunda")&&o.getName()!=null&&!o.name.equals("yunda")){
+        if(this.name!=null&&this.name.equals("yuantong")&&o.getName()!=null&&!o.name.equals("yuantong")){
             return -1;
         }
         return 0;

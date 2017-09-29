@@ -125,6 +125,9 @@ public class OrderModelImpl implements OrderModel {
             if(orderBO.getBuyer ()!=null) {
                 daifaTrade.setBuyerWw (orderBO.getBuyer().getAliWw ());
                 daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
+                daifaTrade.setBuyerQq(orderBO.getBuyer().getImQq());
+                daifaTrade.setBuyerTelephone(orderBO.getBuyer().getPhone());
+                daifaTrade.setBuyerId(orderBO.getBuyer().getBuyerId());
             }
             List<ServiceBO> services = orderBO.getServices();
             BigNumber serviceTradeFee = new BigNumber("0.00");
@@ -170,7 +173,9 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                         subOrderModelBO.setWebSite(bo.getWebSite());
                         subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                        subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        if(num>1){
+                            subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        }
                         subOrderModelBO.setGoodsWeight (bo.getWeight ());//重量
                         if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
                             if(serviceBOMap.get (bo.getSoid ())!=null) {
@@ -247,8 +252,8 @@ public class OrderModelImpl implements OrderModel {
                 jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
                 jsonObject.put("status","true");
                 String message = jsonObject.toString();
-                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+trade.getTradeCode(),
-                        DaifaSendMqEnum.cutOff.getMessageKey(), message);
+                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageKey()+trade.getTradeCode(),
+                        DaifaSendMqEnum.cutOff.getMessageTag(), message);
 
             }
         }
@@ -301,6 +306,8 @@ public class OrderModelImpl implements OrderModel {
         send.setSendStatus(2);
         send.setCreateTime(time);
         send.setCreateDate(date);
+        send.setSendDate(date);
+        send.setSendTime(time);
         daifaSendMapper.insertSelective(send);
 
         //更新代发货主表状态为已发货
@@ -308,6 +315,8 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
         DaifaWaitSend daifaWaitSend=new DaifaWaitSend();
         daifaWaitSend.setSendStatus(2);
+        daifaWaitSend.setSendDate(date);
+        daifaWaitSend.setSendTime(time);
         daifaWaitSendMapper.updateByExampleSelective(daifaWaitSend,daifaWaitSendExample);
 
 
@@ -338,8 +347,8 @@ public class OrderModelImpl implements OrderModel {
         obj.put("data",map);
         obj.put("msg","全单发货");
         obj.put("status",true);
-        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+t.getTradeCode(),
-                DaifaSendMqEnum.sendAll.getMessageKey(), obj.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageKey()+t.getTradeCode(),
+                DaifaSendMqEnum.sendAll.getMessageTag(), obj.toString());
     }
 
     /**
@@ -351,9 +360,9 @@ public class OrderModelImpl implements OrderModel {
     @Transactional(propagation=Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void autoRefund(Long refundId, List<Long> subOrderIds) throws DaifaException {
         //检测是否可以自动退款
-        List<Long> sts=new ArrayList<>();
-        sts.add((long)SubOrderStatus.NO_PAY.getValue());
-        sts.add((long)SubOrderStatus.SENDED.getValue());
+        List<Integer> sts=new ArrayList<>();
+        sts.add(SubOrderStatus.NO_PAY.getValue());
+        sts.add(SubOrderStatus.SENDED.getValue());
         DaifaOrderExample orderExample=new DaifaOrderExample();
         orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusIn(sts);
         if(daifaOrderMapper.countByExample(orderExample)>0){//有单子处在不可退状态
@@ -417,8 +426,8 @@ public class OrderModelImpl implements OrderModel {
             obj.put("msg",msg);
             obj.put("status",false);
         }
-        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
-                DaifaSendMqEnum.refund.getMessageKey(),
+        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageKey()+refundId,
+                DaifaSendMqEnum.refund.getMessageTag(),
                 obj.toString());
     }
 

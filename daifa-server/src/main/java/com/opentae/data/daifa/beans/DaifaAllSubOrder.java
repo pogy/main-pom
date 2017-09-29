@@ -17,7 +17,15 @@ public class DaifaAllSubOrder implements Serializable{
     @Transient
     private static final long serialVersionUID = -4039183803628953148L;
     @Column("daifa_order.df_order_id")
-    private String childOrderId;//子单id
+    private Long childOrderId;//代发子单id
+
+    @Column("daifa_order.order_code")
+    private String orderCode;//订单子订单ID
+    @Column("daifa_order.order_partition_id")
+    private String orderPartitionId;//折单ID
+
+
+
     @Column("daifa_order.pic_path")
     private String imgSrc;//商品图片
     @Column("daifa_order.title")
@@ -31,7 +39,7 @@ public class DaifaAllSubOrder implements Serializable{
     @Column("daifa_order.single_pi_price")
     private String payPrice;//商品实际支付价
     @Column("daifa_order.goods_num")
-    private String num;//商品数量
+    private Integer num;//商品数量
     @Column("daifa_order.single_services_fee")
     private String childServersFee;//子单服务费用
     @Column("daifa_order.order_remark")
@@ -58,11 +66,11 @@ public class DaifaAllSubOrder implements Serializable{
         return serialVersionUID;
     }
 
-    public String getChildOrderId() {
+    public Long getChildOrderId() {
         return childOrderId;
     }
 
-    public void setChildOrderId(String childOrderId) {
+    public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
     }
 
@@ -114,11 +122,11 @@ public class DaifaAllSubOrder implements Serializable{
         this.payPrice = payPrice;
     }
 
-    public String getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
@@ -200,5 +208,21 @@ public class DaifaAllSubOrder implements Serializable{
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public String getOrderCode () {
+        return orderCode;
+    }
+
+    public void setOrderCode (String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getOrderPartitionId () {
+        return orderPartitionId;
+    }
+
+    public void setOrderPartitionId (String orderPartitionId) {
+        this.orderPartitionId = orderPartitionId;
     }
 }

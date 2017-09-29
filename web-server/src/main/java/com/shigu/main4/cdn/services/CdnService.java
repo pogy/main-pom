@@ -21,6 +21,7 @@ import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.newcdn.vo.*;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -43,7 +44,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * cdn服务
@@ -86,6 +86,8 @@ public class CdnService {
     ShiguShopLicenseMapper shiguShopLicenseMapper;
     @Autowired
     GoodsFileService goodsFileService;
+    @Autowired
+    ItemProductProcess itemProductProcess;
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
@@ -277,37 +279,7 @@ public class CdnService {
         example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
         example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
 //        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
-//        example.or().andTypeEqualTo(5).andTargetIdEqualTo(floor);//按楼层
-        List<ItemTradeForbid> itemTradeForbids = itemTradeForbidMapper.selectByExample(example);
-        if (itemTradeForbids.size() == 0) {
-            return true;
-        }
-        Map<Integer, ItemTradeForbid> typeMap = itemTradeForbids.parallelStream().collect(Collectors.toMap(ItemTradeForbid::getType, o -> o));
-        //按商品允许/禁止
-        ItemTradeForbid itemTradeForbid;
-        if ((itemTradeForbid = typeMap.get(3)) != null) {
-            return itemTradeForbid.getCanSale()==1;
-        }
-        //按店允许/禁止
-        if ((itemTradeForbid = typeMap.get(2)) != null) {
-            return itemTradeForbid.getCanSale()==1;
-        }
-        //按楼层
-        if ((itemTradeForbid = typeMap.get(5)) != null) {
-            return itemTradeForbid.getCanSale()==1;
-        }
-        //按市场
-        if ((itemTradeForbid = typeMap.get(1)) != null) {
-            return itemTradeForbid.getCanSale()==1;
-        }
-        //todo:目前没有按类目分的
-        ////按类目
-        //if ((itemTradeForbid = typeMap.get(4)) != null) {
-        //    return itemTradeForbid.getCanSale()==1;
-        //}
-
-        //不走到这一步
-        return true;
+        return itemTradeForbidMapper.countByExample(example)==0;
     }
 
     /**
@@ -326,7 +298,7 @@ public class CdnService {
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
-        vo.setOnlineSale(canSale(cdnItem.getMarketId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
+        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getFloorId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
@@ -520,5 +492,35 @@ public class CdnService {
             content.add(vo);
         });
         return pager;
+    }
+
+    /**
+     * 根据goodsId获取对应站点信息
+     * @return
+     */
+    public String getWebsite(Long goodsId){
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if (shiguGoodsIdGenerator == null) {
+            return null;
+        }
+        return shiguGoodsIdGenerator.getWebSite();
+    }
+
+    /**
+     * 按商品ID查cid
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public Long getCid(Long goodsId,String webSite){
+        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,cid"));
+        if (tiny != null) {
+            return tiny.getCid();
+        }else{
+            return null;
+        }
     }
 }

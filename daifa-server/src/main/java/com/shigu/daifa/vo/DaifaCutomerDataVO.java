@@ -10,7 +10,7 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AfterSaleDataVO {
+public class DaifaCutomerDataVO {
     private Long afterSaleId;
     private Long orderId;
     private String tradeCode;
@@ -29,7 +29,12 @@ public class AfterSaleDataVO {
     private String tradeTime;
     private Boolean oldOrder;
     private Integer sendStatus;
-    private List<AfterSaleDataSubVO> childOrders;
+
+    private String imWw;
+    private String imQq;
+    private String imTel;
+    private Boolean isTbOrder;
+    private List<DaifaCustomerDataSubVO> childOrders;
 
     public String getReceiverAddress() {
         return receiverAddress;
@@ -151,11 +156,11 @@ public class AfterSaleDataVO {
         this.tradeTime = tradeTime;
     }
 
-    public List<AfterSaleDataSubVO> getChildOrders() {
+    public List<DaifaCustomerDataSubVO> getChildOrders() {
         return childOrders;
     }
 
-    public void setChildOrders(List<AfterSaleDataSubVO> childOrders) {
+    public void setChildOrders(List<DaifaCustomerDataSubVO> childOrders) {
         this.childOrders = childOrders;
     }
 
@@ -181,5 +186,37 @@ public class AfterSaleDataVO {
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }
