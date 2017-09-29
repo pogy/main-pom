@@ -398,6 +398,8 @@ var webSite = '${webSite!}';
                                 ${afterSale.refuseReason!}
                             </div>
                         </div>
+                        <#elseif afterSale.state == 4>
+                        <p class="fcF40">档口退货失败</p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 4>
