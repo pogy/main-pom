@@ -86,7 +86,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         for (RefundTypeEnum type : RefundTypeEnum.values()) {
             RefundVO refundVO = subItemOrder.refundInfos(type);
             if (refundVO != null) {
-                vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
+                vo.setRefundNum(vo.getRefundNum() + (type.type==5?refundVO.getFailNumber():refundVO.getNumber()));
             }
         }
         vo.setOtherRefundPrice(0L);
@@ -252,7 +252,8 @@ public class AfterSaleServiceImpl implements AfterSaleService {
                 break;
             case NOT_REFUND:
                 //TODO: 该状态没有对应
-                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
+                afterSaleStatus = ReturnGoodsStatusEnum.REFUND_FAIL;
+                break;
             case BUYER_SEND:
                 afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
                 break;
@@ -490,5 +491,20 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         Long refundId = subItemOrder.refundApply(5, 1, money, "已拿到货退款");
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundHasItem(psoid, money);
         return refundId;
+    }
+
+    /**
+     * 换货完成接口
+     * @param refundId
+     * @param userId
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void finishExchange(Long refundId, Long userId) throws OrderException {
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+        if (SpringBeanFactory.getBean(ItemOrder.class,refundModel.refundinfo().getOid()).orderInfo().getUserId() != userId) {
+            throw new OrderException("不能操作他人订单");
+        }
+        refundModel.finishExchange();
     }
 }

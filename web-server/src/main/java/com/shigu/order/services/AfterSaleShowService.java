@@ -3,7 +3,9 @@ package com.shigu.order.services;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.*;
@@ -18,6 +20,7 @@ import com.shigu.order.vo.SubRefundOrderVO;
 import com.shigu.zf.utils.PriceConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -41,6 +44,8 @@ public class AfterSaleShowService {
     @Autowired
     private OrderManageProcess orderManageProcess;
 
+    @Autowired
+    private SaleAfterProcess saleAfterProcess;
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
@@ -111,6 +116,10 @@ public class AfterSaleShowService {
         AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
+            case REFUND_FAIL: {
+                //页面3-4
+                break;
+            }
             case RETURN_ENT: {
                 //页面4
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
@@ -241,6 +250,10 @@ public class AfterSaleShowService {
                 von = new RefundExpressDetorate(vo5, null);
                 break;
             }
+            case REFUND_FAIL:{
+                //换货失败
+                break;
+            }
             //3
             case RETURN_ENT: {
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
@@ -298,6 +311,18 @@ public class AfterSaleShowService {
         }
         afterSaleService.agreeOrRejectRefundPrice(refundId, isAgree);
 
+    }
+
+    /**
+     * 换货完成
+     * @param refundId
+     * @param userId
+     * @throws OrderException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void finishExchange(Long refundId,Long userId) throws OrderException, DaifaException {
+        afterSaleService.finishExchange(refundId,userId);
+        saleAfterProcess.changeEnt(refundId);
     }
 
     //修改快递和提教快递判断处理

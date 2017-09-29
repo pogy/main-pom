@@ -16,14 +16,14 @@ import java.io.Serializable;
 public class DaifaWaitSendOrderSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -4039183803628953148L;
-    private String childOrderId;//子单id
+    private Long childOrderId;//子单id
     private String imgSrc;//商品图片
     private String title;//商品标题
     private String goodsProperty;//商品属性 颜色 尺码
     private String goodsNo;//商品货号
     private String piPrice;//商品批发价
     private String payPrice;//商品实际支付价
-    private String num;//商品数量
+    private Integer num;//商品数量
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
     private Integer refundStatus;
     private String storeGoodsCode; //商家编码
@@ -33,11 +33,11 @@ public class DaifaWaitSendOrderSimple implements Serializable{
         return serialVersionUID;
     }
 
-    public String getChildOrderId() {
+    public Long getChildOrderId() {
         return childOrderId;
     }
 
-    public void setChildOrderId(String childOrderId) {
+    public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
     }
 
@@ -89,11 +89,11 @@ public class DaifaWaitSendOrderSimple implements Serializable{
         this.payPrice = payPrice;
     }
 
-    public String getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 

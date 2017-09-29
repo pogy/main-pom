@@ -14,11 +14,6 @@ public class DaifaAfterMoneyConsult implements Serializable {
 	private Long afterConsultId;
 
     /**
-     * 
-     */
-	private Long afterSaleSubId;
-
-    /**
      * 退货ID
      */
 	private Long refundId;
@@ -66,13 +61,6 @@ public class DaifaAfterMoneyConsult implements Serializable {
 		return this.afterConsultId;
 	}
 
-	public void setAfterSaleSubId(Long afterSaleSubId) {
-		this.afterSaleSubId = afterSaleSubId;
-	}
-
-	public Long getAfterSaleSubId() {
-		return this.afterSaleSubId;
-	}
 
 	public void setRefundId(Long refundId) {
 		this.refundId = refundId;

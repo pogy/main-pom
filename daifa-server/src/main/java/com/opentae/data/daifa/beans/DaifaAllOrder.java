@@ -57,6 +57,8 @@ public class DaifaAllOrder implements Serializable{
     private String serversFee;//服务费用
     @Column("daifa_trade.is_old")
     private Integer isOld;//是否是老订单
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<DaifaAllSubOrder> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -213,5 +215,13 @@ public class DaifaAllOrder implements Serializable{
 
     public void setImQq(String imQq) {
         this.imQq = imQq;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

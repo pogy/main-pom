@@ -37,6 +37,7 @@ public class DaifaAllOrderVO implements Serializable{
     private String discountFee;//减免费用
     private String serversFee;//服务费用
     private Boolean oldOrder;//是否是老代发数据
+    private Boolean isTbOrder;
     private List<AllSubOrderVO> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -194,5 +195,13 @@ public class DaifaAllOrderVO implements Serializable{
 
     public void setImQq(String imQq) {
         this.imQq = imQq;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

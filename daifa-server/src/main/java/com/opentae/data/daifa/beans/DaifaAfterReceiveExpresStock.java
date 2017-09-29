@@ -73,6 +73,11 @@ public class DaifaAfterReceiveExpresStock implements Serializable {
      */
 	private String stockLocation;
 
+    /**
+     * 
+     */
+	private String packageRemark;
+
 	public void setReceivedExpressId(Integer receivedExpressId) {
 		this.receivedExpressId = receivedExpressId;
 	}
@@ -175,6 +180,14 @@ public class DaifaAfterReceiveExpresStock implements Serializable {
 
 	public String getStockLocation() {
 		return this.stockLocation;
+	}
+
+	public void setPackageRemark(String packageRemark) {
+		this.packageRemark = packageRemark;
+	}
+
+	public String getPackageRemark() {
+		return this.packageRemark;
 	}
 
 }
