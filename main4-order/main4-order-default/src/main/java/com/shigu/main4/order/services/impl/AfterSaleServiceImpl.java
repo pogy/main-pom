@@ -252,7 +252,8 @@ public class AfterSaleServiceImpl implements AfterSaleService {
                 break;
             case NOT_REFUND:
                 //TODO: 该状态没有对应
-                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
+                afterSaleStatus = ReturnGoodsStatusEnum.REFUND_FAIL;
+                break;
             case BUYER_SEND:
                 afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
                 break;

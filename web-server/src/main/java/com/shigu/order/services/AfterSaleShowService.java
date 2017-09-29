@@ -116,6 +116,10 @@ public class AfterSaleShowService {
         AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
+            case REFUND_FAIL: {
+                //页面3-4
+                break;
+            }
             case RETURN_ENT: {
                 //页面4
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
@@ -244,6 +248,10 @@ public class AfterSaleShowService {
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
                 von = new RefundExpressDetorate(vo5, null);
+                break;
+            }
+            case REFUND_FAIL:{
+                //换货失败
                 break;
             }
             //3
