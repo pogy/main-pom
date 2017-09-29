@@ -21,5 +21,6 @@ import java.util.List;
 public interface ItemOrderMapper extends Mapper<ItemOrder> {
 
     List<MyOrderVO> selectMyOrderList(@Param("userId") Long userId, @Param("bo")OrderBO bo,@Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex,@Param("onlyRefund") Boolean onlyRefund,@Param("shStatus") Integer shStatus);
+    List<MyOrderVO> selectShOrderList(@Param("userId") Long userId, @Param("bo")OrderBO bo,@Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex,@Param("onlyRefund") Boolean onlyRefund,@Param("shStatus") Integer shStatus);
     int countMyOrderList(@Param("userId") Long userId, @Param("bo")OrderBO bo,@Param("onlyRefund") Boolean onlyRefund,@Param("shStatus") Integer shStatus);
 }
