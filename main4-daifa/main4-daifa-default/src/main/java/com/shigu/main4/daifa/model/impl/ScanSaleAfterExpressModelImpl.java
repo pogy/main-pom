@@ -95,8 +95,8 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
     public String expressScanInStock(String expressName, String expressCode, String stockLocation, String sendPhone){
         DaifaAfterReceiveExpresStock stock=new DaifaAfterReceiveExpresStock();
         stock.setReceivedExpressCode(expressCode);
-        stock=daifaAfterReceiveExpresStockMapper.selectOne(stock);
-        if(stock==null){
+        List<DaifaAfterReceiveExpresStock> stocks=daifaAfterReceiveExpresStockMapper.select(stock);
+        if(stocks.size()==0){
             stock=new DaifaAfterReceiveExpresStock();
             stock.setReceivedExpressName(expressName);
             stock.setReceivedExpressCode(expressCode);

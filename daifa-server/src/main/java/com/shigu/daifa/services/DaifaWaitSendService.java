@@ -162,6 +162,9 @@ public class DaifaWaitSendService {
     }
 
     public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
+        if(MoneyUtil.StringToLong(refundMoney)<0){
+            throw new DaifaException("金额错误");
+        }
         Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
         DaifaOrder o=daifaOrderMapper.selectByPrimaryKey(childOrderId);
         Long refundId;
