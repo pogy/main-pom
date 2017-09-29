@@ -6,6 +6,7 @@ import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.shigu.order.vo.MyOrderVO;
@@ -29,11 +30,14 @@ public class QueryByShManaOrder extends OrderQuery {
     Long userId;
     Integer shStatus;
     @Autowired
+    private ItemOrderMapper itemOrderMapper;
+    @Autowired
     private ItemOrderServiceMapper itemOrderServiceMapper;
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
     @Autowired
     private MultipleMapper tae_mall_multipleMapper;
+
     public QueryByShManaOrder(Long userId, Integer shStatus) {
         this.userId = userId;
         this.shStatus = shStatus;
@@ -54,7 +58,7 @@ public class QueryByShManaOrder extends OrderQuery {
         ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
         ItemOrderExample itemOrderExample = new ItemOrderExample();
         itemOrderExample.createCriteria().andUserIdEqualTo(userId);
-        ItemOrderExample.Criteria criteria = itemOrderExample.createCriteria().andRefundFeeIsNotNull();
+        ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andRefundIdIsNotNull();
         //判断是否有分类查询条件
         List<Integer> typeList = getTypeList();
         if (typeList != null) {
@@ -69,20 +73,21 @@ public class QueryByShManaOrder extends OrderQuery {
 
     @Override
     public List<MyOrderVO> selectOrderList(Integer number, Integer size) {
-        return null;
+        return itemOrderMapper.selectShOrderList(userId, getTypeList(), (number - 1) * size, size);
     }
 
     /**
      * 根据分类查询条件返回对应状态表
+     *
      * @return 不进行区分返回null
      */
     private List<Integer> getTypeList() {
         if (shStatus != null) {
             if (shStatus == 1) {
-                return Lists.newArrayList(1,4,5);
+                return Lists.newArrayList(1, 4, 5);
             }
             if (shStatus == 2) {
-                return Lists.newArrayList(2,3);
+                return Lists.newArrayList(2, 3);
             }
         }
         return null;

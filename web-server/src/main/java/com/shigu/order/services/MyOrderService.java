@@ -1,14 +1,12 @@
 package com.shigu.order.services;
 
-import com.google.common.collect.Lists;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
+import com.opentae.data.mall.examples.ItemOrderServiceExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -25,12 +23,11 @@ import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.OrderBO;
+import com.shigu.order.orderQuery.OrderQuery;
+import com.shigu.order.orderQuery.QueryByOrder;
 import com.shigu.order.vo.*;
 import com.shigu.tools.DateParseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -82,9 +79,9 @@ public class MyOrderService {
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
-        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
-        //OrderQuery orderQuery = OrderQuery.getOrderQuery(userId, bo);
-        //return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
+        //return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
+        OrderQuery orderQuery = SpringBeanFactory.getBean(QueryByOrder.class,userId, bo);
+        return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
     }
 
 
@@ -233,8 +230,8 @@ public class MyOrderService {
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
         OrderBO orderBO = new OrderBO();
         orderBO.setOrderId(orderId);
-        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false, null, orderBO, null);
-        //ShiguPager<MyOrderVO> pager = OrderQuery.getOrderQuery(userId, orderBO).selectMyOrderPager(1, 1);
+        //ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false, null, orderBO, null);
+        ShiguPager<MyOrderVO> pager = SpringBeanFactory.getBean(QueryByOrder.class,userId, orderBO).selectMyOrderPager(1, 1);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
         vo.setExpress(orderListService.selectExpress(orderId));
         vo.setOrderAddrInfo(expressAddrInfo(orderId));
