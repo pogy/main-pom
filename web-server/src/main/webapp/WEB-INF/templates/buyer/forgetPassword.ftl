@@ -47,7 +47,7 @@
                     <div class="pwdGroup">
                         <label>数字验证码：</label>
                         <input type="text" class="form-input imgValidate" maxlength="4" name="imgValidate" placeholder="右侧验证码" >
-                        <img id="checkCode" src="http://www.571xz.com/IMG.htm" />
+                        <img id="checkCode" src="IMG.htm" />
                     </div>
                 </div>
                 <div class="pwdValItems">
