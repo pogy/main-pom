@@ -19,6 +19,23 @@ import java.util.List;
 @Scope("singleton")
 @Lazy(true)
 public interface ItemOrderMapper extends Mapper<ItemOrder> {
+    /**
+     * 查询售后信息
+     * @param userId 必传
+     * @param typeList 查询状态列表，长度不能为0，查询所有售后则传null
+     * @param startIndex
+     * @param endIndex
+     * @return
+     */
     List<MyOrderVO> selectShOrderList(@Param("userId") Long userId, @Param("typeList") List<Integer> typeList, @Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex);
+
+    /**
+     * 查询订单信息
+     * @param userId 必传
+     * @param bo 非空
+     * @param startIndex
+     * @param endIndex
+     * @return
+     */
     List<MyOrderVO> selectMyOrderList(@Param("userId") Long userId, @Param("bo") OrderBO bo,@Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex);
 }
