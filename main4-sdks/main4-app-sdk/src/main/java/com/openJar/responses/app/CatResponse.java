@@ -12,6 +12,7 @@ import com.openJar.beans.app.AppCatGroup;
 public class CatResponse extends Response {
 	//类目分组数据	必须
 	private List<AppCatGroup> catGroups;
+
 	public List<AppCatGroup> getCatGroups(){
 		return catGroups;
 	}
@@ -19,5 +20,6 @@ public class CatResponse extends Response {
 	public void setCatGroups(List<AppCatGroup> catGroups){
 		this.catGroups=catGroups;
 	}
+
 
 }
