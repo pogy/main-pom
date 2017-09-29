@@ -25,7 +25,7 @@ public class TestAboutMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         CatRequest request=new CatRequest();
         request.setWebSite("hz");
-        request.setType(1);
+        request.setType(2);
         CatResponse response = client.execute(request);
         System.out.println(response.getBody());
         //System.out.println(response.getCatGroups());
@@ -135,7 +135,7 @@ public class TestAboutMe {
         MarketsResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
-    //失败
+
     //new成功
     @Test
     public void  ShopCatRequest (){

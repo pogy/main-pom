@@ -16,22 +16,22 @@ import org.junit.Test;
 public class ShopTest extends BaseSDKClientTest {
     @Test
     public void testShopSearch() {
-        ShopSearchRequest req = new ShopSearchRequest();
-        req.setKeyword("星座");
-        req.setWebSite("hz");
-        req.setIndex(1);
-        req.setSize(20);
-        ShopSearchResponse resp = client.execute(req);
-        System.out.println(JSON.toJSONString(resp));
+//        ShopSearchRequest req = new ShopSearchRequest();
+//        req.setKeyword("星座");
+//        req.setWebSite("hz");
+//        req.setIndex(1);
+//        req.setSize(20);
+//        ShopSearchResponse resp = client.execute(req);
+//        System.out.println(JSON.toJSONString(resp));
     }
 
     @Test
     public void testStoreCollect(){
-        StoreCollectRequest req = new StoreCollectRequest();
-        req.setUserId(9968L);
-        req.setIndex(1);
-        req.setSize(12);
-        StoreCollectResponse resp = client.execute(req);
-        System.out.println(JSON.toJSONString(resp));
+//        StoreCollectRequest req = new StoreCollectRequest();
+//        req.setUserId(9968L);
+//        req.setIndex(1);
+//        req.setSize(12);
+//        StoreCollectResponse resp = client.execute(req);
+//        System.out.println(JSON.toJSONString(resp));
     }
 }

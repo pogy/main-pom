@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.openJar.beans.app.AppCat;
 import com.openJar.beans.app.AppCatGroup;
 import com.openJar.beans.app.AppSearchNav;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.CatRequest;
 import com.openJar.requests.app.SearchNavRequest;
 import com.openJar.requests.app.SitesRequest;
@@ -12,6 +13,7 @@ import com.openJar.responses.app.SearchNavResponse;
 import com.openJar.responses.app.SitesResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.apps.services.AppStaticService;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
@@ -49,13 +51,166 @@ public class AppStaticAction {
     @RequestMapping("app/cat")
     @ResponseBody
     public JSONObject cat(CatRequest request) throws Main4Exception {
+        CatResponse resp=new CatResponse();
+        OpenException openException = new OpenException();
+        PhoneCategoryEnum[] arr = PhoneCategoryEnum.values();
+        List<AppCatGroup> catGroups=new ArrayList<>();
         if (request.getWebSite() == null||request.getType() == null) {
-            throw new Main4Exception("缺少参数");
+            openException.setErrMsg("未绑定手机号");
+            resp.setException(openException);
+            resp.setSuccess(false);
         }
-        if(!TYPES.contains(request.getType())){
-            throw new Main4Exception("参数错误");
+
+        for(PhoneCategoryEnum categoryEnum:arr){
+            if(request.getType()==1){
+                //1男装，
+                if(categoryEnum.getIndex()==1){
+                    //男装上衣1
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup1=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup1.setTitle("男装上衣");
+                    appCatGroup1.setCats(cats);
+                    catGroups.add(appCatGroup1);
+                }else if(categoryEnum.getIndex()==2){
+                    //男士下装2
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup2=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup2.setTitle("男士下装");
+                    appCatGroup2.setCats(cats);
+                    catGroups.add(appCatGroup2);
+                }else if(categoryEnum.getIndex()==3){
+                    //男鞋3
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup3=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup3.setTitle("男鞋");
+                    appCatGroup3.setCats(cats);
+                    catGroups.add(appCatGroup3);
+                }
+            }else{
+                //2女装
+                if(categoryEnum.getIndex()==4){
+                    //女装上衣4
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup4=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup4.setTitle("女装上衣");
+                    appCatGroup4.setCats(cats);
+                    catGroups.add(appCatGroup4);
+                }else if(categoryEnum.getIndex()==5){
+                    //女士下装5
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup5=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup5.setTitle("女士下装");
+                    appCatGroup5.setCats(cats);
+                    catGroups.add(appCatGroup5);
+                }else if(categoryEnum.getIndex()==6){
+                    //女鞋6
+                    AppCat appCat=new AppCat();
+                    AppCatGroup appCatGroup6=new AppCatGroup();
+                    List<AppCat> cats=new ArrayList<>();
+                    if(categoryEnum.getType()==1){
+                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                    }else if(categoryEnum.getType()==2){
+                        appCat.setCid(categoryEnum.getCid());
+                    }
+                    appCat.setName(categoryEnum.getName());
+                    appCat.setKeyword(categoryEnum.getKeyword());
+                    appCat.setImgsrc(categoryEnum.getImgsrc());
+                    cats.add(appCat);
+                    appCatGroup6.setTitle("女鞋");
+                    appCatGroup6.setCats(cats);
+                    catGroups.add(appCatGroup6);
+                }
+            }
+            if(categoryEnum.getIndex()==7){
+                //箱包7
+                AppCat appCat=new AppCat();
+                AppCatGroup appCatGroup7=new AppCatGroup();
+                List<AppCat> cats=new ArrayList<>();
+                if(categoryEnum.getType()==1){
+                    appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                }else if(categoryEnum.getType()==2){
+                    appCat.setCid(categoryEnum.getCid());
+                }
+                appCat.setName(categoryEnum.getName());
+                appCat.setKeyword(categoryEnum.getKeyword());
+                appCat.setImgsrc(categoryEnum.getImgsrc());
+                cats.add(appCat);
+                appCatGroup7.setTitle("箱包");
+                appCatGroup7.setCats(cats);
+                catGroups.add(appCatGroup7);
+            }else if(categoryEnum.getIndex()==8){
+                //配饰8
+                AppCat appCat=new AppCat();
+                AppCatGroup appCatGroup8=new AppCatGroup();
+                List<AppCat> cats=new ArrayList<>();
+                if(categoryEnum.getType()==1){
+                    appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+                }else if(categoryEnum.getType()==2){
+                    appCat.setCid(categoryEnum.getCid());
+                }
+                appCat.setName(categoryEnum.getName());
+                appCat.setKeyword(categoryEnum.getKeyword());
+                appCat.setImgsrc(categoryEnum.getImgsrc());
+                cats.add(appCat);
+                appCatGroup8.setTitle("配饰");
+                appCatGroup8.setCats(cats);
+                catGroups.add(appCatGroup8);
+            }
         }
-        List<AppCatGroup> list=new ArrayList<>();
+        resp.setCatGroups(catGroups);
+        resp.setSuccess(true);
+        return JSONObject.fromObject(resp);
+       /* List<AppCatGroup> list=new ArrayList<>();
         List<CateNav> cates= categoryInSearchService.selCates(request.getWebSite());
         for(CateNav cate:cates){
             if(CATIDS.contains(cate.getId())){
@@ -120,9 +275,9 @@ public class AppStaticAction {
             }
         }
         CatResponse response=new CatResponse();
-        response.setCatGroups(list);
-        response.setSuccess(true);
-        return JSONObject.fromObject(response);
+        response.setCatGroups(list);*/
+        /*resp.setSuccess(true);
+        return JSONObject.fromObject(resp);*/
     }
 
     @RequestMapping("app/searchNav")
