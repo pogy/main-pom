@@ -1,6 +1,7 @@
 package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.*;
+import com.openJar.responses.app.BindUserResponse;
 import com.shigu.phone.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,8 @@ public class AppUserAction {
     @ResponseBody
     public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) {
         String remoteAddr = httpRequest.getRemoteAddr();
-        return JSONObject.fromObject(phoneUserService.bindUser(request,remoteAddr));
+        BindUserResponse bindUserResponse = phoneUserService.bindUser(request, remoteAddr);
+        return JSONObject.fromObject(bindUserResponse);
     }
 
     //得到验证码

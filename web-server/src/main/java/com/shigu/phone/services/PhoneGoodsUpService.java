@@ -1,6 +1,8 @@
 package com.shigu.phone.services;
 
+import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.UpToWxRequest;
+import com.openJar.responses.app.ImgUploadResponse;
 import com.openJar.responses.app.UpToWxResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
@@ -113,5 +115,12 @@ public class PhoneGoodsUpService {
         itemUpRecordService.addItemUpRecord(bo);
         resp.setSuccess(true);
         return resp;
+    }
+
+    public ImgUploadResponse ImgUpload(ImgUploadRequest request){
+
+        ImgUploadResponse response = new ImgUploadResponse();
+
+        return  response;
     }
 }

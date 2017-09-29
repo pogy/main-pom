@@ -2,6 +2,7 @@ import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
 import com.openJar.tools.OpenClient;
 import com.openJar.tools.PcOpenClient;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -63,12 +64,13 @@ public class TestAboutMe {
     }
 
     //失败1
+    //new成功
     @Test
     public void  OneShopRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         OneShopRequest request=new OneShopRequest();
         request.setWebSite("hz");
-        request.setShopId(41700L);
+        request.setShopId(41700L);//请检查shopId是否存在是否与站点对应
         OneShopResponse response = client.execute(request);
         System.out.println(response.getBody());
         System.out.println(""+response.getShopNum());
@@ -134,24 +136,28 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
     //失败
+    //new成功
     @Test
     public void  ShopCatRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ShopCatRequest  request=new ShopCatRequest ();
         request.setWebSite("hz");
-        request.setShopId(15408L);
+//        request.setShopId(15408L);//无子集测试
+        request.setShopId(29737l);//有子集测试
         ShopCatResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
-    //失败
+    //成功
     @Test
     public void TestImgSpread(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ImgSpreadRequest request=new ImgSpreadRequest();
-        request.setSpreadCode("QZGG");
+        request.setSpreadCode("WOMAN-DT");//必须是图片式广告（goat_one_location表中goatType为0的广告）
+
         request.setWebSite("hz");
         ImgSpreadResponse response = client.execute(request);
         System.out.println(response.getBody());
+        Assert.assertTrue(response.isSuccess());
     }
     //失败,地址
     @Test
@@ -173,11 +179,16 @@ public class TestAboutMe {
     public void bindUserRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         BindUserRequest request=new BindUserRequest();
-        request.setCode("17637503238");
+        request.setTempId("222");
+//        request.setTelephone("17637503238");
+        request.setTelephone("13999999999");
         request.setCode("790692");
+        request.setType("QQ");
+        request.setUserNick("胡汉三");
         BindUserResponse response = client.execute(request);
         System.out.println(response.getBody());
         System.out.println(response.getUserNick()+response.getImgsrc()+response.getToken()+response.getImSeller()+response.getUserId());
+        Assert.assertTrue(response.isSuccess());
     }
     //未知
     @Test

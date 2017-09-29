@@ -1,5 +1,6 @@
 package com.shigu.phone.apps.actions;
 
+import com.google.gson.JsonObject;
 import com.openJar.commons.ResponseUtil;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.ShopSearchResponse;
@@ -40,7 +41,7 @@ public class AppStoreAction {
         if(result.hasErrors()){
            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
-        return JSONObject.fromObject(ResponseUtil.dealResponse(appStoreService.selOneShopInfo(request)));
+        return JSONObject.fromObject(appStoreService.selOneShopInfo(request));
     }
     @RequestMapping("markets")
     @ResponseBody
@@ -48,7 +49,7 @@ public class AppStoreAction {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
-        return JSONObject.fromObject(ResponseUtil.dealResponse(appStoreService.selMarketData(request)));
+        return JSONObject.fromObject(appStoreService.selMarketData(request));
     }
     @RequestMapping("shopCat")
     @ResponseBody
@@ -56,7 +57,7 @@ public class AppStoreAction {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
-        return JSONObject.fromObject(ResponseUtil.dealResponse(appStoreService.selShopCat(request)));
+        return JSONObject.fromObject(appStoreService.selShopCat(request));
     }
 
 

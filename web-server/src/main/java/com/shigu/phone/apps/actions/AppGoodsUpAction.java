@@ -1,5 +1,6 @@
 package com.shigu.phone.apps.actions;
 
+import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.shigu.phone.services.PhoneGoodsUpService;
 import net.sf.json.JSONObject;
@@ -32,5 +33,14 @@ public class AppGoodsUpAction {
     public JSONObject upToWx(@Valid UpToWxRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneGoodsUpService.upToWx(request));
     }
+
+
+    @RequestMapping("ImgUpload")
+    @ResponseBody
+    public JSONObject upToWx(@Valid ImgUploadRequest request, BindingResult bindingResult) {
+
+        return JSONObject.fromObject(phoneGoodsUpService.ImgUpload(request));
+    }
+
 
 }

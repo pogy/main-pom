@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.beans.app.AppImgBanner;
 import com.openJar.beans.app.AppItemSpread;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.ImgSpreadRequest;
 import com.openJar.requests.app.ItemSpreadRequest;
 import com.openJar.responses.app.ImgSpreadResponse;
