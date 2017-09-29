@@ -1,21 +1,18 @@
 package com.shigu.daifa.services;
 
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
-import com.opentae.data.daifa.examples.*;
+import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
 import com.shigu.daifa.bo.WaitSendBO;
-import com.shigu.daifa.vo.DaifaSendVO;
 import com.shigu.daifa.vo.DaifaWaitSendVO;
-import com.shigu.daifa.vo.SendOrderVO;
 import com.shigu.daifa.vo.WaitSendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -32,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

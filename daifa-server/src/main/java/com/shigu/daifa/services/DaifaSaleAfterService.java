@@ -183,7 +183,6 @@ public class DaifaSaleAfterService {
                             refund.setRefundId(s.getRefundId());
                             refund.setAfterSalePostCode(sublist.get(0).getApplyExpressCode());
                             refund.setAfterSalePostName(sublist.get(0).getApplyExpressName());
-                            refund.setOpeReason(sublist.get(0).getApplyRefuseReason());
                             List<DaifaSaleAfterSubVO> subvos=new ArrayList<>();
                             int innum=0;
                             int ennum=0;
@@ -193,6 +192,7 @@ public class DaifaSaleAfterService {
                             for(DaifaAfterSaleSub sub:sublist){
                                 DaifaSaleAfterSubVO subvo=new DaifaSaleAfterSubVO();
                                 DaifaOrder o=orderMap.get(sub.getDfOrderId());
+                                refund.setOpeReason(s.getAfterType()==1?o.getReCause():o.getChangeReason());
                                 subvo.setChildOrderId(sub.getDfOrderId());
                                 subvo.setChildRemark(sub.getRemark());
                                 subvo.setChildServersFee(o.getSingleServicesFee());
@@ -302,6 +302,10 @@ public class DaifaSaleAfterService {
                                     break;
                                 }
                             }
+                            if(s.getApplyRefuseReason()!=null){
+                                refund.setOpeReason(s.getApplyRefuseReason());
+                            }
+
                             refund.setChildOrders(subvos);
 
                             List<DaifaSaleAfterStockVO> stocks=new ArrayList<>();
