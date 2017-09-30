@@ -1,23 +1,33 @@
 package com.shigu.phone.services;
 
+import com.openJar.beans.app.AppItemUploaded;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.ImgUploadRequest;
+import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
+import com.openJar.requests.app.UploadedItemRequest;
 import com.openJar.responses.app.ImgUploadResponse;
+import com.openJar.responses.app.InstockMyItemResponse;
 import com.openJar.responses.app.UpToWxResponse;
+import com.openJar.responses.app.UploadedItemResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.session.main4.enums.LoginFromType;
+import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.OSSUtil;
 import org.elasticsearch.common.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +35,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -57,6 +69,8 @@ public class PhoneGoodsUpService {
 
     @Autowired
     private RegisterAndLoginService registerAndLoginService;
+    @Autowired
+    private MemberSimpleService memberSimpleService;
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
         UpToWxResponse resp = new UpToWxResponse();
@@ -154,5 +168,43 @@ public class PhoneGoodsUpService {
             response.setSuccess(false);
             return response;
         }
+    }
+
+    public UploadedItemResponse uploadedItem(UploadedItemRequest request) {
+        if(request.getIndex()==null){
+            request.setIndex(1);
+        }
+        UploadedItemResponse res=new UploadedItemResponse();
+        String nick=memberSimpleService.selNick(request.getUserId());
+        ShiguPager<OnekeyRecoreVO> pager;
+        if(nick==null){
+            pager=itemUpRecordService.uploadedItems(request.getUserId(),request.getType(),request.getIndex(),10);
+        }else{
+            pager=itemUpRecordService.uploadedItems(request.getUserId(),nick,request.getType(),request.getIndex(),10);
+        }
+        pager.calPages(pager.getTotalCount(),10);
+        res.setTotal(pager.getTotalCount());
+        res.setHasNext(request.getIndex()<100&&request.getIndex()<pager.getTotalPages());
+
+        List<AppItemUploaded> eds=new ArrayList<>();
+        for(OnekeyRecoreVO vo:pager.getContent()){
+            AppItemUploaded ed=new AppItemUploaded();
+            ed.setGoodsId(vo.getId());
+            ed.setSupperDown(vo.getUnShelve());
+            ed.setImDown(vo.getTbUnSheLve());
+            ed.setImgsrc(vo.getImgsrc());
+            ed.setPiprice(vo.getPiprice());
+            ed.setTitle(vo.getTitle());
+            ed.setUploadId(vo.getOnekeyId());
+            eds.add(ed);
+        }
+        res.setItems(eds);
+        res.setSuccess(true);
+        return res;
+    }
+
+    public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
+        InstockMyItemResponse res=new InstockMyItemResponse();
+        return null;
     }
 }

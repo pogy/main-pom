@@ -124,6 +124,8 @@ public class ItemUpRecordVO implements Serializable{
      */
     private Long fenNumiid;
 
+    private Boolean tbSoldout;
+
 
     public String getSupperImww() {
         return supperImww;
@@ -331,5 +333,13 @@ public class ItemUpRecordVO implements Serializable{
 
     public void setFenNumiid(Long fenNumiid) {
         this.fenNumiid = fenNumiid;
+    }
+
+    public Boolean getTbSoldout() {
+        return this.tbSoldout;
+    }
+
+    public void setTbSoldout(Boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
     }
 }

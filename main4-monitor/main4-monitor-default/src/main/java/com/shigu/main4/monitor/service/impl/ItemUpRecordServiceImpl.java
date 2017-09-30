@@ -237,6 +237,61 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         return uploadedItemsCommon(boleanQueryBuilder,fromDate,toDate,pageNo,pageSize);
     }
 
+    @Override
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, int type, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+        boleanQueryBuilder.must(query);
+
+        if(type==2){
+            QueryBuilder queryType1 = QueryBuilders.termQuery("shopSoldout", true);
+            QueryBuilder queryType2 = QueryBuilders.termQuery("tbSoldout", false);
+            boleanQueryBuilder.must(queryType1);
+            boleanQueryBuilder.must(queryType2);
+        }else if(type==3){
+            QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
+            boleanQueryBuilder.must(queryType);
+        }
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,null,null,pageNo,pageSize);
+    }
+
+    @Override
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String tbNick, int type, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        if(tbNick!=null){
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.should(query);
+            QueryBuilder nickQuery=QueryBuilders.termQuery("fenUserNick", tbNick);
+            boleanQueryBuilder.should(nickQuery);
+            boleanQueryBuilder.minimumNumberShouldMatch(1);
+        }else{
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+        }
+        if(type==2){
+            QueryBuilder queryType1 = QueryBuilders.termQuery("shopSoldout", true);
+            QueryBuilder queryType2 = QueryBuilders.termQuery("tbSoldout", false);
+            boleanQueryBuilder.must(queryType1);
+            boleanQueryBuilder.must(queryType2);
+        }else if(type==3){
+            QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
+            boleanQueryBuilder.must(queryType);
+        }
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,null,null,pageNo,pageSize);
+    }
+
     /**
      * 公共查,已上传
      * @param boleanQueryBuilder
@@ -316,6 +371,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 }else{
                     onekeyRecoreVO.setUnShelve(true);
                 }
+                onekeyRecoreVO.setTbUnSheLve(shiguGoodsUp.getTbSoldout()!=null&&shiguGoodsUp.getTbSoldout());
                 onekeyRecoreVOList.add(onekeyRecoreVO);
             }
         }

@@ -24,6 +24,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     private String target;
     /** true/false 已/未下架 */
     private boolean unShelve;
+    private boolean tbUnSheLve;
 
     public Long getId() {
         return id;
@@ -111,5 +112,12 @@ public class OnekeyRecoreVO implements java.io.Serializable {
 
     public void setUnShelve(boolean unShelve) {
         this.unShelve = unShelve;
+    }
+    public boolean getTbUnSheLve() {
+        return tbUnSheLve;
+    }
+
+    public void setTbUnSheLve(boolean tbUnSheLve) {
+        this.tbUnSheLve = tbUnSheLve;
     }
 }

@@ -47,6 +47,22 @@ public interface ItemUpRecordService {
     ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick, String target, String keyword, Date fromDate, Date toDate,
                                              int pageNo, int pageSize);
 
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,int type,int pageNo, int pageSize);
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick,int type,int pageNo, int pageSize);
+
+
     /**
      * 删除一键上传记录
      * @param userId 用户ID
