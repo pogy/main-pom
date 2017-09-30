@@ -387,7 +387,7 @@ var webSite = '${webSite!}';
                             </div>
                         </div>
                         <#elseif afterSale.state == 4>
-                        <p class="fcF40">档口退货失败</p>
+                        <p><a class="fcF40" href="refund.htm?refundId=${afterSale.refundId!}" target="_blank">档口退货失败</a></p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 3>
