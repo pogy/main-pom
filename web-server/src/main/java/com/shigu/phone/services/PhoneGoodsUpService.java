@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 类名：PhoneGoodsUpService
@@ -136,10 +137,11 @@ public class PhoneGoodsUpService {
         try {
             String base64 = request.getFile();
             byte[] file  = Base64.decode(base64);
-            String fileName = request.getType().toString();
+            String fileName = request.getType().toString()+"_";
             if (request.getUserId() != null) {
-                fileName += "_"+request.getUserId();
+                fileName += request.getUserId()+"_";
             }
+            fileName += UUID.randomUUID().toString().replace("-","");
             fileName += request.getExtension();
             OSSUtil.addItemPic(fileName,new ByteArrayInputStream(file));
             response.setBody("上传成功");

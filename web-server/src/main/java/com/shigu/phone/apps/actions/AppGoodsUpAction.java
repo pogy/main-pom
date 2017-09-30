@@ -38,7 +38,6 @@ public class AppGoodsUpAction {
     @RequestMapping("imgUpload")
     @ResponseBody
     public JSONObject upToWx(@Valid ImgUploadRequest request, BindingResult bindingResult) {
-
         return JSONObject.fromObject(phoneGoodsUpService.imgUpload(request));
     }
 
