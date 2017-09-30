@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrderv1.css" rel="stylesheet">
     
 
     
@@ -38,7 +38,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/shManaOrder.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/shManaOrderv1.js"></script>
 </head>
 <body>
 
@@ -335,11 +335,20 @@ var webSite = '${webSite!}';
         </div>
     </li>
     <li class="price yahei">&yen;${childOrder.price!}</li>
-    <li class="num">${childOrder.num!}</li>
+    <li class="num">
+        ${childOrder.num!}
+        <#if childOrder.stockoutNum??>
+        <div class="pr stockoutNum">
+            <p class="fcF40"><i class="icon-c-warn"></i>缺货 x${childOrder.stockoutNum!}</p>
+            <#if childOrder.haveGoodsTime??>
+            <div class="pa haveGoodsTime">
+                ${childOrder.haveGoodsTime!} 有货
+            </div>
+            </#if>
+        </div>
+        </#if>
+    </li>
     <li class="opera">
-        
-        
-        
         <#if order.mainState == 3 || order.mainState == 4>
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
@@ -377,6 +386,8 @@ var webSite = '${webSite!}';
                                 ${afterSale.refuseReason!}
                             </div>
                         </div>
+                        <#elseif afterSale.state == 4>
+                        <p class="fcF40">档口退货失败</p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 3>
@@ -398,11 +409,14 @@ var webSite = '${webSite!}';
                                 ${afterSale.refuseReason!}
                             </div>
                         </div>
-                        <#elseif afterSale.state == 4>
-                        <p class="fcF40">档口退货失败</p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 4>
+                        <#if afterSale.state == 2>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
+                        </#if>
+                    </#if>
+                    <#if afterSale.type == 5>
                         <#if afterSale.state == 2>
                         <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
                         </#if>

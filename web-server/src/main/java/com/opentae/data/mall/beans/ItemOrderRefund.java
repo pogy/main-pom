@@ -210,10 +210,6 @@ public class ItemOrderRefund implements Serializable {
 	}
 
 	public Integer getFailNumber() {
-		//当售后类型为可多次退款类型时，failNum记录该类型退款申请总件数，返回0
-		if (type==5) {
-			return 0;
-		}
 		return this.failNumber;
 	}
 

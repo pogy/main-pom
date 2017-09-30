@@ -6,6 +6,7 @@ import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.shigu.order.bo.OrderBO;
@@ -35,6 +36,8 @@ public class QueryByOrder extends OrderQuery {
     private ItemOrderServiceMapper itemOrderServiceMapper;
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
     @Autowired
     private MultipleMapper tae_mall_multipleMapper;
 
@@ -99,6 +102,6 @@ public class QueryByOrder extends OrderQuery {
 
     @Override
     public List<MyOrderVO> selectOrderList(Integer number, Integer size) {
-        return null;
+        return itemOrderMapper.selectMyOrderList(userId,bo,(number-1)*size,size);
     }
 }
