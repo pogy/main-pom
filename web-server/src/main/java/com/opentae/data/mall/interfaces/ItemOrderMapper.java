@@ -22,7 +22,7 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     /**
      * 查询售后信息
      * @param userId 必传
-     * @param typeList 查询状态列表，长度不能为0，查询所有售后则传null
+     * @param typeList 查询售后状态列表，必须有值，售后值为：2 退货，3 换货
      * @param startIndex
      * @param endIndex
      * @return

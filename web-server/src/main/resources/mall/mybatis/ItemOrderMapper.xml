@@ -37,7 +37,7 @@
         AND item_order.disenable = 0
         AND item_order.oid = item_order_refund.oid
         <if test="typeList!=null">
-            AND item_order.type IN
+            AND item_order_refund.type IN
             <foreach collection="typeList" index="index" item="type" open="("
                      separator="," close=")">
                 #{type}
@@ -49,13 +49,6 @@
         INNER JOIN item_order_logistics ON item_order.oid=item_order_logistics.oid
         INNER JOIN item_order_sub ON  item_order.oid=item_order_sub.oid
         LEFT JOIN item_order_refund ON item_order_sub.soid=item_order_refund.soid
-        <if test="typeList!=null">
-            AND item_order.type IN
-            <foreach collection="typeList" index="index" item="type" open="("
-                     separator="," close=")">
-                #{type}
-            </foreach>
-        </if>
 
     </select>
 

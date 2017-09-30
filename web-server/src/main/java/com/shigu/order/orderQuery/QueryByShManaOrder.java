@@ -57,13 +57,10 @@ public class QueryByShManaOrder extends OrderQuery {
     public int selectCount() {
         ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
         ItemOrderExample itemOrderExample = new ItemOrderExample();
-        itemOrderExample.createCriteria().andUserIdEqualTo(userId);
-        ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andRefundIdIsNotNull();
-        //判断是否有分类查询条件
+        itemOrderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
+        //查询售后只查询已发货的，typeList一定有值
         List<Integer> typeList = getTypeList();
-        if (typeList != null) {
-            criteria.andTypeIn(typeList);
-        }
+        refundExample.createCriteria().andRefundIdIsNotNull().andTypeIn(typeList);
         MultipleExample multipleExample = MultipleExampleBuilder.from(itemOrderExample)
                 .innerJoin(refundExample).on(itemOrderExample.createCriteria().equalTo(ItemOrderExample.oid, ItemOrderRefundExample.oid))
                 .build();
@@ -84,12 +81,12 @@ public class QueryByShManaOrder extends OrderQuery {
     private List<Integer> getTypeList() {
         if (shStatus != null) {
             if (shStatus == 1) {
-                return Lists.newArrayList(1, 4, 5);
+                return Lists.newArrayList(2);
             }
             if (shStatus == 2) {
-                return Lists.newArrayList(2, 3);
+                return Lists.newArrayList(3);
             }
         }
-        return null;
+        return Lists.newArrayList(2,3);
     }
 }
