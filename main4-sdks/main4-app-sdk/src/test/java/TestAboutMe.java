@@ -98,7 +98,7 @@ public class TestAboutMe {
         StoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
-    //失败1
+    //成功
     @Test
     public void ImgSearchRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
@@ -107,14 +107,19 @@ public class TestAboutMe {
         request.setWebSite("hz");
         ImgSearchResponse response = client.execute(request);
         System.out.println(response.getBody());
+        Assert.assertTrue(response.isSuccess());
     }
-    //缺参数
+    //成功
     @Test
     public void ShopSearchRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ShopSearchRequest request=new ShopSearchRequest();
-        request.setWebSite("hz");
-
+        //关键词 keyword   档口号  默认 ""
+        //分站标识webSite  站点    默认 "hz"
+        //页码，默认1开始 index    第几页  默认 1
+        //页长  size;              每页数据条数  默认 15
+        request.setWebSite("hz");//有站点信息
+//        request.setWebSite("xxx");//无站点信息
         ShopSearchResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
