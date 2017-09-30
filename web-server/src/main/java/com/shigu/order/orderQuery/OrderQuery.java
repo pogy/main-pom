@@ -95,12 +95,13 @@ public abstract class OrderQuery {
                                 case 3: {
                                     int number = refund.getType()==5?refund.getFailNumber():refund.getNumber();
                                     int failNumber = refund.getType()==5?refund.getFailNumber()-refund.getNumber():refund.getFailNumber();
-                                    if (number - failNumber > 0) {
+                                    if (number - failNumber > 0&& refund.getStatus()>6) {
                                         asa.setType(4);
                                         asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
                                         afterSaling.add(asa);
                                     }
                                     if (failNumber > 0) {
+                                        asa=new AfterSalingVO();
                                         asa.setType(3);
                                         asa.setOpeAfterSaleNum(refund.getFailNumber());
                                         afterSaling.add(asa);
