@@ -197,8 +197,6 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         if (hasReturnGoodsOrExchange(subOrderId)) {
             throw new OrderException("已经进行过退货/换货");
         }
-        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
         itemOrderRefundExample.createCriteria().andSoidEqualTo(subOrderId);
@@ -211,6 +209,8 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             }
             alreadyRefundNumber+=itemOrderRefund.getNumber();
         }
+        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+                .refundApply(3, alreadyRefundNumber, 0L, refundReason + "," + refundDesc);
         // TODO: 换货消息推送，换货数量,暂时用剩余所有未进行过退款和售后的数量
         orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc, 2);
         return refundId;
