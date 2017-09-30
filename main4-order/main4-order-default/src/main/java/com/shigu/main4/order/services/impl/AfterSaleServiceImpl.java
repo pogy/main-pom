@@ -210,7 +210,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             alreadyRefundNumber+=itemOrderRefund.getNumber();
         }
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(3, alreadyRefundNumber, 0L, refundReason + "," + refundDesc);
+                .refundApply(3, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc);
         // TODO: 换货消息推送，换货数量,暂时用剩余所有未进行过退款和售后的数量
         orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc, 2);
         return refundId;
