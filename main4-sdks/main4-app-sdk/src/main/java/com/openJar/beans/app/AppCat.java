@@ -17,6 +17,17 @@ public class AppCat extends OpenBean {
 	private Long cid;
 	//类目图片链接
 	private String imgsrc;
+	private Integer type;//1cid查询,2keyword查询
+
+	public void setType( Integer type ) {
+		this.type = type;
+	}
+
+	public Integer getType() {
+
+		return type;
+	}
+
 	public String getName(){
 		return name;
 	}
