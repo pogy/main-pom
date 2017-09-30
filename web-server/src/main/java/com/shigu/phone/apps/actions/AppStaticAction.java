@@ -83,6 +83,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -103,6 +104,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -123,6 +125,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -146,6 +149,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -166,6 +170,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -186,6 +191,7 @@ public class AppStaticAction {
                         appCat.setName(categoryEnum.getName());
                         appCat.setKeyword(categoryEnum.getKeyword());
                         appCat.setImgsrc(categoryEnum.getImgsrc());
+                        appCat.setType(categoryEnum.getType());
                         cats.add(appCat);
                     }
                     appCatGroup1.setCats(cats);
@@ -208,6 +214,7 @@ public class AppStaticAction {
                     appCat.setName(categoryEnum.getName());
                     appCat.setKeyword(categoryEnum.getKeyword());
                     appCat.setImgsrc(categoryEnum.getImgsrc());
+                    appCat.setType(categoryEnum.getType());
                     cats.add(appCat);
                 }
                 appCatGroup1.setCats(cats);
@@ -228,6 +235,7 @@ public class AppStaticAction {
                     appCat.setName(categoryEnum.getName());
                     appCat.setKeyword(categoryEnum.getKeyword());
                     appCat.setImgsrc(categoryEnum.getImgsrc());
+                    appCat.setType(categoryEnum.getType());
                     cats.add(appCat);
                 }
                 appCatGroup1.setCats(cats);
