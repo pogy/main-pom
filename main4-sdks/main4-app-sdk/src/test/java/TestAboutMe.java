@@ -5,6 +5,8 @@ import com.openJar.tools.PcOpenClient;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.*;
+import java.util.Base64;
 import java.util.Date;
 
 public class TestAboutMe {
@@ -257,5 +259,45 @@ public class TestAboutMe {
 
         DoStoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
+    }
+
+    //失败
+    @Test
+    public void ImgUploadRequest() throws FileNotFoundException {
+        OpenClient client = new PcOpenClient("3838438", "37456A6A5CA10F9A988F12BFECD88575", "test");
+
+        String filePath = "D:\\test.png";
+//        String filePath = "D:\\test2.jpg";
+        String extention = filePath.substring(filePath.indexOf("."),filePath.length());
+        byte[] file = TestAboutMe.fileToByteArrays(filePath);
+
+        ImgUploadRequest request = new ImgUploadRequest();
+        request.setFile( Base64.getEncoder().encodeToString(file));
+        request.setType(1);
+        request.setUserId(13456872821l);
+        request.setExtension(extention);
+
+        System.out.println(request.testApiUrl());
+        ImgUploadResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+
+
+    public static byte[] fileToByteArrays(String filePath) {
+        byte[] buff = null;
+        InputStream is = null;
+        try {
+            File file = new File(filePath);
+            is = new BufferedInputStream(new FileInputStream(file));
+            buff = new byte[is.available()]; // available适合于本地文件读取，不适用于网络文件
+            is.read(buff);
+        } catch (IOException ex) {
+        } finally {
+            try {
+                is.close();
+            } catch (IOException ex) {
+            }
+        }
+        return buff;
     }
 }
