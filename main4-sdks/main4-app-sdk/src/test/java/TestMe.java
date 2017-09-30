@@ -21,7 +21,8 @@ public class TestMe {
         request.setPassword("fei691820%");
         request.setType(1);
         LoginResponse response = client.execute(request);
-
+        System.out.println(response.getUsers().getUserId());//1000085908
+        System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
         System.out.println(response.getBody());
     }
     //发送手机号

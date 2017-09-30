@@ -84,8 +84,9 @@ public class TestAboutMe {
         UpToWxRequest  request=new UpToWxRequest ();
         request.setUserId(1000085908L);
         request.setWebSite("hz");
-        request.setGoodsId(20466357L);
-        request.setToken("ced93b4e002748a2b88a31a9967ae521");
+        request.setGoodsId(20065019L);
+//        request.setGoodsId(20466357L);
+        request.setToken("865c7c17a0374c11950f1946926d48b0");
         UpToWxResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
