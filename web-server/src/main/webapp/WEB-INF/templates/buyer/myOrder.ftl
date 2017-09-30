@@ -502,6 +502,11 @@ var webSite = '${webSite!}';
                         <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
                         </#if>
                     </#if>
+                    <#if afterSale.type == 5>
+                        <#if afterSale.state == 2>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
+                        </#if>
+                    </#if>
                 </#list>
             <#else>
                 <#if order.mainState == 2>
