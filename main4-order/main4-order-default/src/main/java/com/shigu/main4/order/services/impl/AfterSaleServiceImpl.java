@@ -200,8 +200,19 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
-        // TODO: 换货消息推送，换货数量,暂时用全换，代发先走通
-        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum(), 0L, refundReason + "," + refundDesc, 2);
+        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+        itemOrderRefundExample.createCriteria().andSoidEqualTo(subOrderId);
+        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+        int alreadyRefundNumber = 0;
+        for (ItemOrderRefund itemOrderRefund : itemOrderRefunds) {
+            if (itemOrderRefund.getType() == 5) {
+                alreadyRefundNumber+=itemOrderRefund.getFailNumber();
+                continue;
+            }
+            alreadyRefundNumber+=itemOrderRefund.getNumber();
+        }
+        // TODO: 换货消息推送，换货数量,暂时用剩余所有未进行过退款和售后的数量
+        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc, 2);
         return refundId;
     }
 
