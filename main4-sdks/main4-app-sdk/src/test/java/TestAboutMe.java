@@ -132,10 +132,11 @@ public class TestAboutMe {
     public void MarketsRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         MarketsRequest request=new MarketsRequest();
-        request.setMid(1L);
+        request.setMid(0L);//市场ID,如果传入空，默认返回这个分站的默认市
         request.setWebSite("hz");
         MarketsResponse response = client.execute(request);
         System.out.println(response.getBody());
+        Assert.assertTrue(response.isSuccess());
     }
 
     //new成功
