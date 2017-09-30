@@ -1,6 +1,7 @@
 package com.shigu.phone.apps.services;
 
 import com.openJar.beans.app.*;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.MarketsRequest;
 import com.openJar.requests.app.OneShopRequest;
 import com.openJar.requests.app.ShopCatRequest;
@@ -125,6 +126,13 @@ public class AppStoreService {
 
         }
         MarketVO marketVO = marketListService.selMarketData(request.getMid(), null);
+        if (marketVO == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("未查询到市场信息");
+            response.setException(openException);
+            response.setSuccess(false);
+            return response;
+        }
         AppMarket appMarket = new AppMarket();
         appMarket.setMarketName(marketVO.getMarketName());
         appMarket.setWebSite(marketVO.getWebSite());
