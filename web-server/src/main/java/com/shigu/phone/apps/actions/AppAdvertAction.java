@@ -9,6 +9,7 @@ import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.AppAdvertService;
+import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -42,16 +43,9 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/imgSpread")
     @ResponseBody
-    public JSONObject imgSpread(ImgSpreadRequest request){
-        ImgSpreadResponse response =null;
-        OpenException openException = null;
+    public JSONObject imgSpread(ImgSpreadRequest request,ImgSpreadResponse response){
         if(request.getSpreadCode() == null || request.getWebSite() == null){
-            openException = new OpenException();
-            openException.setErrMsg("缺少参数");
-            response = new ImgSpreadResponse();
-            response.setSuccess(false);
-            response.setException(openException);
-            return JSONObject.fromObject(response);
+            return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -61,12 +55,7 @@ public class AppAdvertAction {
             }
         }
         if (spread == null) {
-            openException = new OpenException();
-            openException.setErrMsg("缺少错误:spreadCode="+request.getSpreadCode());
-            response = new ImgSpreadResponse();
-            response.setSuccess(false);
-            response.setException(openException);
-            return JSONObject.fromObject(response);
+            return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
         }
         return JSONObject.fromObject(appAdvertService.imgSpread(spread));
     }
@@ -78,16 +67,9 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/itemSpread")
     @ResponseBody
-    public JSONObject itemSpread(ItemSpreadRequest request) {
-        ImgSpreadResponse response =null;
-        OpenException openException = null;
+    public JSONObject itemSpread(ItemSpreadRequest request,ImgSpreadResponse response) {
         if(request.getSpreadCode() == null || request.getWebSite() == null){
-            openException = new OpenException();
-            openException.setErrMsg("缺少参数");
-            response = new ImgSpreadResponse();
-            response.setSuccess(false);
-            response.setException(openException);
-            return JSONObject.fromObject(response);
+            return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
 
         SpreadEnum spread=null;
@@ -98,12 +80,7 @@ public class AppAdvertAction {
             }
         }
         if (spread == null) {
-            openException = new OpenException();
-            openException.setErrMsg("缺少错误:spreadCode="+request.getSpreadCode());
-            response = new ImgSpreadResponse();
-            response.setSuccess(false);
-            response.setException(openException);
-            return JSONObject.fromObject(response);
+            return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
         }
         return JSONObject.fromObject(appAdvertService.itemSpread(request.getWebSite(),spread));
     }

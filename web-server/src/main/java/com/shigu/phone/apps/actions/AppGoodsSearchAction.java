@@ -3,8 +3,11 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.requests.app.ItemSearchRequest;
 import com.openJar.requests.app.OneItemRequest;
+import com.openJar.responses.app.ImgSearchResponse;
+import com.openJar.responses.app.ItemSearchResponse;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.phone.services.PhoneGoodsSearchService;
+import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,15 +34,15 @@ public class AppGoodsSearchAction {
 
     @RequestMapping("itemSearch")
     @ResponseBody
-    public JSONObject itemSearch(ItemSearchRequest request) {
+    public JSONObject itemSearch(ItemSearchRequest request, ItemSearchResponse response) {
         if (request.getType() == null) {
-            //TODO 统一异常处理 OpenException
+            return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (request.getType() == 1 && request.getCid() ==null) {//1商品库(cid不能为空)
-
+            return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (request.getType() == 2 && request.getKeyword() ==null) {//2普通搜索(keywords不为空)
-
+            return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (request.getOrderBy() == null) {
             request.setOrderBy(SearchOrderBy.NEW.getValue());
@@ -49,9 +52,9 @@ public class AppGoodsSearchAction {
 
     @RequestMapping("imgSearch")
     @ResponseBody
-    public JSONObject imgSearch(@Valid ImgSearchRequest request,BindingResult bindingResult) {
+    public JSONObject imgSearch(@Valid ImgSearchRequest request, ImgSearchResponse response) {
         if (request.getImgurl() == null) {
-            //TODO 异常
+            return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (request.getWebSite() == null) {
             request.setWebSite("hz");

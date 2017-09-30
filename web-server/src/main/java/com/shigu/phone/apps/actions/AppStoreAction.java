@@ -2,11 +2,16 @@ package com.shigu.phone.apps.actions;
 
 import com.google.gson.JsonObject;
 import com.openJar.commons.ResponseUtil;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
+import com.openJar.responses.app.MarketsResponse;
+import com.openJar.responses.app.OneShopResponse;
+import com.openJar.responses.app.ShopCatResponse;
 import com.openJar.responses.app.ShopSearchResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.services.PhoneStoreService;
+import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,25 +42,25 @@ public class AppStoreAction {
     }
     @RequestMapping("oneShop")
     @ResponseBody
-    public JSONObject selOneShopInfo(@Valid OneShopRequest request, BindingResult result) throws Main4Exception {
+    public JSONObject selOneShopInfo(@Valid OneShopRequest request,OneShopResponse response, BindingResult result) {
         if(result.hasErrors()){
-           throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+            return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
         }
         return JSONObject.fromObject(appStoreService.selOneShopInfo(request));
     }
     @RequestMapping("markets")
     @ResponseBody
-    public JSONObject selMarketData(@Valid MarketsRequest request,BindingResult result) throws Main4Exception {
+    public JSONObject selMarketData(@Valid MarketsRequest request, MarketsResponse response,BindingResult result)  {
         if(result.hasErrors()){
-            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+            return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
         }
         return JSONObject.fromObject(appStoreService.selMarketData(request));
     }
     @RequestMapping("shopCat")
     @ResponseBody
-    public JSONObject selShopCat(@Valid ShopCatRequest request,BindingResult result) throws Main4Exception {
+    public JSONObject selShopCat(@Valid ShopCatRequest request, ShopCatResponse response,BindingResult result){
         if(result.hasErrors()){
-            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+            return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
         }
         return JSONObject.fromObject(appStoreService.selShopCat(request));
     }
@@ -68,7 +73,7 @@ public class AppStoreAction {
      */
     @RequestMapping("shopSearch")
     @ResponseBody
-    public JSONObject shopSearch(ShopSearchRequest request) throws Main4Exception {
+    public JSONObject shopSearch(ShopSearchRequest request) {
         if(request.getWebSite()==null){
             request.setWebSite("hz");
         }
@@ -81,8 +86,7 @@ public class AppStoreAction {
         if (request.getSize() == null) {
             request.setSize(15);
         }
-        ShopSearchResponse response = phoneStoreService.shopSearch(request);
-        return JSONObject.fromObject(response);
+        return JSONObject.fromObject(phoneStoreService.shopSearch(request));
     }
 
 

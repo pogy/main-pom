@@ -16,6 +16,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.apps.services.AppStaticService;
+import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import net.sf.json.JSONObject;
@@ -49,7 +50,7 @@ public class AppStaticAction {
 
     @RequestMapping("app/cat")
     @ResponseBody
-    public JSONObject cat(CatRequest request) throws Main4Exception {
+    public JSONObject cat(CatRequest request) {
         CatResponse resp=new CatResponse();
         OpenException openException = new OpenException();
         PhoneCategoryEnum[] arr = PhoneCategoryEnum.values();
@@ -58,6 +59,7 @@ public class AppStaticAction {
             openException.setErrMsg("缺少参数");
             resp.setException(openException);
             resp.setSuccess(false);
+            return JSONObject.fromObject(resp);
         }
         Map<Integer,List<PhoneCategoryEnum>> map= BeanMapper.groupBy(Arrays.asList(arr),"index",Integer.class);
         for (Map.Entry<Integer, List<PhoneCategoryEnum>> entry :map.entrySet()){
@@ -251,12 +253,12 @@ public class AppStaticAction {
 
     @RequestMapping("app/searchNav")
     @ResponseBody
-    public JSONObject searchNav(SearchNavRequest request) throws Main4Exception {
+    public JSONObject searchNav(SearchNavRequest request,SearchNavResponse response)  {
         if (request.getType() == null||request.getWebSite()==null) {
-            throw new Main4Exception("缺少参数");
+            return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
         if(!TYPES.contains(request.getType())){
-            throw new Main4Exception("参数错误");
+            return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         List<AppSearchNav> list=new ArrayList<>();
         List<CateNav> cates;
@@ -274,7 +276,6 @@ public class AppStaticAction {
             ca.setNavId(new Long(cate.getId()));
             list.add(ca);
         }
-        SearchNavResponse response=new SearchNavResponse();
         response.setSuccess(true);
         response.setNavs(list);
         return JSONObject.fromObject(response);

@@ -64,12 +64,16 @@ public class AppStoreService {
         this.cdnService = cdnService;
     }
 
-    public OneShopResponse selOneShopInfo(OneShopRequest request) throws Main4Exception {
+    public OneShopResponse selOneShopInfo(OneShopRequest request) {
         OneShopResponse response = new OneShopResponse();
         //店铺基本信息
         StoreRelation storeRelation = storeRelationService.selRelationById(request.getShopId());
         if(storeRelation == null){
-            throw new Main4Exception("店铺不存在");
+            OpenException openException = new OpenException();
+            openException.setErrMsg("店铺不存在");
+            response.setException(openException);
+            response.setSuccess(false);
+            return  response;
         }
 
         //商品数量

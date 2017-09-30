@@ -74,8 +74,11 @@ public class PhoneGoodsUpService {
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
         UpToWxResponse resp = new UpToWxResponse();
+        OpenException openException = new OpenException();
         //验证不通过
         if (!registerAndLoginService.checkToken(request.getUserId(),request.getToken())) {
+            openException.setErrMsg("tocken验证失败");
+            resp.setException(openException);
             resp.setSuccess(false);
             return resp;
         }
@@ -86,6 +89,12 @@ public class PhoneGoodsUpService {
         bo.setFenUserId(request.getUserId());
         bo.setFenUserNick(memberUser.getUserNick());
         CdnItem cdnItem = showForCdnService.selItemById(request.getGoodsId(), request.getWebSite());
+        if (cdnItem == null) {
+            openException.setErrMsg("未查询到商品："+request.getGoodsId());
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
         bo.setFenPrice(cdnItem.getPiPrice());
         bo.setSupperPiPrice(cdnItem.getPiPrice());
         bo.setSupperPrice(cdnItem.getPrice());
