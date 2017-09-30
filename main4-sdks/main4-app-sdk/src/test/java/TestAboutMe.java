@@ -118,16 +118,22 @@ public class TestAboutMe {
         ShopSearchResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
-    //失败
+    //成功
     @Test
     public void ItemSearchRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSearchRequest request=new ItemSearchRequest();
+//        request.setType(2);//2普通搜索(keywords不为空)
+//        request.setKeyword("袜子");
+
+        request.setType(1);//1商品库(cid不能为空)
+        request.setCid(50000557l);//针织衫/毛衣
 
         ItemSearchResponse response = client.execute(request);
         System.out.println(response.getBody());
+        Assert.assertTrue(response.isSuccess());
     }
-    //失败
+    //成功
     @Test
     public void MarketsRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
