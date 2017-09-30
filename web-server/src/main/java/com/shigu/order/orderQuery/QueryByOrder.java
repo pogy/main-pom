@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +46,16 @@ public class QueryByOrder extends OrderQuery {
     QueryByOrder(Long userId, OrderBO bo) {
         this.userId = userId;
         this.bo = bo;
+        if (bo.getEt() != null) {
+            Date et = bo.getEt();
+            Calendar instance = Calendar.getInstance();
+            instance.setTime(et);
+            instance.set(Calendar.HOUR_OF_DAY,23);
+            instance.set(Calendar.MINUTE,59);
+            instance.set(Calendar.SECOND,59);
+            et = instance.getTime();
+            bo.setEt(et);
+        }
     }
 
     @Override
