@@ -69,6 +69,18 @@ public class AppStoreAction {
     @RequestMapping("shopSearch")
     @ResponseBody
     public JSONObject shopSearch(ShopSearchRequest request) throws Main4Exception {
+        if(request.getWebSite()==null){
+            request.setWebSite("hz");
+        }
+        if (request.getKeyword() == null) {
+            request.setKeyword("");
+        }
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null) {
+            request.setSize(15);
+        }
         ShopSearchResponse response = phoneStoreService.shopSearch(request);
         return JSONObject.fromObject(response);
     }

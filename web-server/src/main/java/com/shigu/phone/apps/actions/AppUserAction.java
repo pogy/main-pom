@@ -70,8 +70,7 @@ public class AppUserAction {
     //得到验证码
     @RequestMapping("getPhoneMsg")
     @ResponseBody
-    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest) {
-        String remoteAddr = httpRequest.getRemoteAddr();
+    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request) {
         return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
     }
 }

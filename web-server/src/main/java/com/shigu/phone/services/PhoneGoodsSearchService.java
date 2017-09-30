@@ -80,8 +80,7 @@ public class PhoneGoodsSearchService {
         bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
         bo.setPage(request.getIndex());
         bo.setRows(request.getSize());
-        SearchOrderBy orderBy = request.getOrderBy() == null?SearchOrderBy.NEW : SearchOrderBy.valueIs(request.getOrderBy());
-        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, orderBy, false).getSearchData();
+        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
         resp.setTotal(result.getTotalCount());
         resp.setHasNext(result.getNumber() < result.getTotalPages());
         resp.setItems(result.getContent().parallelStream().map(o -> {
@@ -103,9 +102,12 @@ public class PhoneGoodsSearchService {
         ImgSearchResponse resp = new ImgSearchResponse();
         try {
             resp.setItems(goodsSearchService.searchByPic(request.getImgurl(), request.getWebSite()).parallelStream().map(o -> {
-                AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-                vo.setGoodsId(Long.valueOf(o.getId()));
-                return vo;
+                if (o != null) {
+                    AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
+                    vo.setGoodsId(Long.valueOf(o.getId()));
+                    return vo;
+                }
+                return null;
             }).collect(Collectors.toList()));
             resp.setSuccess(true);
         } catch (IOException e) {

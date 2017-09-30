@@ -3,6 +3,7 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.requests.app.ItemSearchRequest;
 import com.openJar.requests.app.OneItemRequest;
+import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.phone.services.PhoneGoodsSearchService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,21 @@ public class AppGoodsSearchAction {
         if (request.getType() == 2 && request.getKeyword() ==null) {//2普通搜索(keywords不为空)
 
         }
+        if (request.getOrderBy() == null) {
+            request.setOrderBy(SearchOrderBy.NEW.getValue());
+        }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
 
     @RequestMapping("imgSearch")
     @ResponseBody
     public JSONObject imgSearch(@Valid ImgSearchRequest request,BindingResult bindingResult) {
+        if (request.getImgurl() == null) {
+            //TODO 异常
+        }
+        if (request.getWebSite() == null) {
+            request.setWebSite("hz");
+        }
         return JSONObject.fromObject(phoneGoodsSearchService.imgSearch(request));
     }
 
