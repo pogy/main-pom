@@ -31,6 +31,15 @@ public class AppGoodsSearchAction {
     @RequestMapping("itemSearch")
     @ResponseBody
     public JSONObject itemSearch(ItemSearchRequest request) {
+        if (request.getType() == null) {
+            //TODO 统一异常处理 OpenException
+        }
+        if (request.getType() == 1 && request.getCid() ==null) {//1商品库(cid不能为空)
+
+        }
+        if (request.getType() == 2 && request.getKeyword() ==null) {//2普通搜索(keywords不为空)
+
+        }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
 

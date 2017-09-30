@@ -80,7 +80,8 @@ public class PhoneGoodsSearchService {
         bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
         bo.setPage(request.getIndex());
         bo.setRows(request.getSize());
-        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
+        SearchOrderBy orderBy = request.getOrderBy() == null?SearchOrderBy.NEW : SearchOrderBy.valueIs(request.getOrderBy());
+        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, orderBy, false).getSearchData();
         resp.setTotal(result.getTotalCount());
         resp.setHasNext(result.getNumber() < result.getTotalPages());
         resp.setItems(result.getContent().parallelStream().map(o -> {

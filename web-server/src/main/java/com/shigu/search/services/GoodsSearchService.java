@@ -222,6 +222,9 @@ public class GoodsSearchService {
         }
         //查店,有shopId优先查shopId
         List<SearchShopSimple> shops;
+        if (bo.getWebSite() == null) {
+            bo.setWebSite("hz");
+        }
         if (bo.getShopId() != null) {
             shops = shopSearchService.selShopByIds(Lists.newArrayList(bo.getShopId()),bo.getWebSite());
         } else {
