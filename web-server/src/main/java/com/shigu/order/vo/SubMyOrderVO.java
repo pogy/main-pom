@@ -57,6 +57,12 @@ public class SubMyOrderVO {
     @Column("item_order_sub.out_of_stok")
     private Integer stockoutNum;
 
+    /**
+     * 有货时间
+     */
+    @Column("item_order_sub.out_of_stok_reason")
+    private String haveGoodsTime;
+
     private List<AfterSaleVO> afterSales;
 
     private Boolean hasAfter;
@@ -220,5 +226,13 @@ public class SubMyOrderVO {
 
     public void setRefundCount(Integer refundCount) {
         this.refundCount = refundCount;
+    }
+
+    public String getHaveGoodsTime() {
+        return haveGoodsTime;
+    }
+
+    public void setHaveGoodsTime(String haveGoodsTime) {
+        this.haveGoodsTime = haveGoodsTime;
     }
 }

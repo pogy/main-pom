@@ -21,6 +21,7 @@
         item_order_sub.color as color,
         item_order_sub.size as size,
         item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
         CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
         item_order_sub.num as num,
         item_order_sub.out_of_stok as stockoutNum,
@@ -75,6 +76,7 @@
         item_order_sub.color as color,
         item_order_sub.size as size,
         item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
         CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
         item_order_sub.num as num,
         item_order_sub.out_of_stok as stockoutNum,
@@ -156,6 +158,7 @@
         <result column="price" property="price"/>
         <result column="num" property="num"/>
         <result column="stockoutNum" property="stockoutNum"/>
+        <result column="haveGoodsTime" property="haveGoodsTime"/>
         <collection property="afterSales" resultMap="AfterSaleVO"/>
     </resultMap>
 
