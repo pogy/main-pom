@@ -100,7 +100,7 @@ public class TestAboutMe {
         StoreCollectRequest  request=new StoreCollectRequest ();
 //        request.setUserId(1000085908L);//收藏夹为空
         request.setUserId(9968L);
-//        request.setIndex(2);
+        request.setIndex(2);
         StoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -136,8 +136,8 @@ public class TestAboutMe {
         ItemSearchRequest request=new ItemSearchRequest();
 //        request.setType(2);//2普通搜索(keywords不为空)
 //        request.setKeyword("袜子");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+        request.setStartTime("2017-9-02");
+        request.setEndTime("2017-9-04");
         request.setType(1);//1商品库(cid不能为空)
         request.setCid(50000557l);//针织衫/毛衣
 

@@ -31,6 +31,7 @@ import com.shigu.search.vo.GoodsInSearch;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -77,12 +78,18 @@ public class PhoneGoodsSearchService {
             }
             bo.setSort(request.getOrderBy());
             final String dateFormat = "yyyy.MM.dd";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
-            Date startTime  = sdf.parse(request.getStartTime());
-            Date endtTime  = sdf.parse(request.getEndTime());
+            SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.patternA);
+            Date startTime = null;
+            Date endtTime = null;
+            if (!StringUtils.isEmpty(request.getStartTime())) {
+                startTime  = sdf.parse(request.getStartTime());
+            }
+            if (!StringUtils.isEmpty(request.getEndTime())) {
+                endtTime  = sdf.parse(request.getEndTime());
+            }
 
-            bo.setSt(request.getStartTime() == null ? null : DateUtil.dateToString(startTime, dateFormat));
-            bo.setEt(request.getEndTime() == null ? null : DateUtil.dateToString(endtTime, dateFormat));
+            bo.setSt(startTime == null? null : DateUtil.dateToString(startTime, dateFormat));
+            bo.setEt(endtTime == null ? null : DateUtil.dateToString(endtTime, dateFormat));
             bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
             bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
             bo.setPage(request.getIndex());
@@ -98,10 +105,12 @@ public class PhoneGoodsSearchService {
             resp.setSuccess(true);
             return resp;
         } catch (ParseException e) {
-            e.printStackTrace();
+            OpenException openException = new OpenException();
+            openException.setErrMsg(e.getMessage());
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
         }
-        resp.setSuccess(true);
-        return resp;
     }
 
     /**
