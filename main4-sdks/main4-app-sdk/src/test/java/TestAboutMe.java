@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 
@@ -135,6 +136,7 @@ public class TestAboutMe {
         ItemSearchRequest request=new ItemSearchRequest();
 //        request.setType(2);//2普通搜索(keywords不为空)
 //        request.setKeyword("袜子");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         request.setType(1);//1商品库(cid不能为空)
         request.setCid(50000557l);//针织衫/毛衣
@@ -148,7 +150,7 @@ public class TestAboutMe {
     public void MarketsRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         MarketsRequest request=new MarketsRequest();
-        request.setMid(0L);//市场ID,如果传入空，默认返回这个分站的默认市
+        request.setMid(1L);//市场ID,如果传入空，默认返回这个分站的默认市
         request.setWebSite("hz");
         MarketsResponse response = client.execute(request);
         System.out.println(response.getBody());

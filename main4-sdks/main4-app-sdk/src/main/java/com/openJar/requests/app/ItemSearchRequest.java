@@ -35,9 +35,9 @@ public class ItemSearchRequest extends Request<ItemSearchResponse> {
 	//价格区间结束
 	private String endPrice;
 	//创建时间开始
-	private Date startTime;
+	private String  startTime;
 	//创建时间结束
-	private Date endTime;
+	private String endTime;
 	public String getKeyword(){
 		return keyword;
 	}
@@ -126,20 +126,20 @@ public class ItemSearchRequest extends Request<ItemSearchResponse> {
 		this.endPrice=endPrice;
 	}
 
-	public Date getStartTime(){
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime){
-		this.startTime=startTime;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
-	public Date getEndTime(){
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime){
-		this.endTime=endTime;
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	public String testApiUrl(){
