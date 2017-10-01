@@ -380,11 +380,11 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
 
     @Test
     @Transactional
-    public void uncompleteAll_test() throws DaifaException {
+    public void uncompleteAllNew_test() throws DaifaException {
         boolean b=false;
         String date= DateUtil.dateToString(new Date(),DateUtil.patternB);
         try {
-            takeGoodsIssueProcess.uncompleteAll(2L,1L, Collections.singletonList(1L),true);
+            takeGoodsIssueProcess.uncompleteAllNew(2L,1L, Collections.singletonList(1L),true);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(),"存在非该拿货员的分配数据");
             b=true;
@@ -412,7 +412,7 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
         System.out.println("拿货完成,制造缺货状态");
         bean.finishTakeGoods();
         try {
-            takeGoodsIssueProcess.uncompleteAll(2L,1L,Collections.singletonList(gs.get(0).getTakeGoodsId()),true);
+            takeGoodsIssueProcess.uncompleteAllNew(2L,1L,Collections.singletonList(gs.get(0).getTakeGoodsId()),true);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(),"存在已拿货完成的分配数据");
             b=true;
@@ -440,7 +440,7 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
         g.setCreateDate("20170809");
         daifaGgoodsMapper.updateByPrimaryKeySelective(g);
         try {
-            takeGoodsIssueProcess.uncompleteAll(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
+            takeGoodsIssueProcess.uncompleteAllNew(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(),"存在不是今天的分配数据");
             b=true;
@@ -452,7 +452,7 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
         g.setUseStatus(0);
         daifaGgoodsMapper.updateByPrimaryKeySelective(g);
         try {
-            takeGoodsIssueProcess.uncompleteAll(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
+            takeGoodsIssueProcess.uncompleteAllNew(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
         } catch (DaifaException e) {
             assertEquals(e.getMessage(),"存在无效的分配数据");
             b=true;
@@ -463,7 +463,7 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
         g.setUseStatus(1);
         daifaGgoodsMapper.updateByPrimaryKeySelective(g);
 
-        takeGoodsIssueProcess.uncompleteAll(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
+        takeGoodsIssueProcess.uncompleteAllNew(2L,1L,Collections.singletonList(goods.getTakeGoodsId()),true);
 
         DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
         daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(99999L);
