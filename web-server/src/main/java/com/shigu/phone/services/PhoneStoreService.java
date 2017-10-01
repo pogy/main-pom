@@ -110,6 +110,10 @@ public class PhoneStoreService {
     public StoreCollectResponse storeCollect(StoreCollectRequest request) {
         StoreCollectResponse resp = new StoreCollectResponse();
         ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(request.getUserId(), request.getWebSite(), request.getIndex(), request.getSize());
+        if (shopCollectVOShiguPager.getTotalCount() == 0) {
+            resp.setSuccess(true);
+           return resp;//收藏夹无商品
+        }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
         ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(request.getSize());
@@ -142,10 +146,13 @@ public class PhoneStoreService {
      */
     public DoStoreCollectResponse doStoreCollect(DoStoreCollectRequest request) {
         DoStoreCollectResponse resp = new DoStoreCollectResponse();
-//        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken())) {
-//            resp.setSuccess(false);
-//            return resp;
-//        }
+        OpenException openException = new OpenException();
+        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken())) {
+            openException.setErrMsg("tocken验证失败");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
         if (request.getYesOrNo()) {
             try {
                 addShopCollection(request);

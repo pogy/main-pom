@@ -29,7 +29,6 @@ public class AppGoodsUpAction {
     @Autowired
     private PhoneGoodsUpService phoneGoodsUpService;
 
-    //todo:token验证
     @RequestMapping("upToWx")
     @ResponseBody
     public JSONObject upToWx(@Valid UpToWxRequest request, BindingResult bindingResult) {

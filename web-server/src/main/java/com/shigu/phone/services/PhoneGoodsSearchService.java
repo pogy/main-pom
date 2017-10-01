@@ -130,7 +130,7 @@ public class PhoneGoodsSearchService {
             resp.setGoodsNo(goods.getGoodsNo());
             resp.setPrice(goods.getPiPrice());
             resp.setTitle(goods.getTitle());
-            resp.setCreateTime(DateUtil.stringToDate(goods.getPostTime(), DateUtil.patternA));
+            resp.setCreateTime(goods.getPostTime());
             resp.setImgSrcs(goods.getImgUrls());
             resp.setGoodsLicenses(goods.getServices());
             resp.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
@@ -152,7 +152,11 @@ public class PhoneGoodsSearchService {
             resp.setStarNum(shop.getStarNum().intValue());
             resp.setSuccess(true);
         } catch (CdnException | TemplateException | IOException e) {
-            resp.setException(new OpenException());
+            OpenException openException = new OpenException();
+            openException.setErrMsg(e.getMessage());
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
         }
         return resp;
     }

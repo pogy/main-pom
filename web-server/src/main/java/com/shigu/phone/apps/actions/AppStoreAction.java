@@ -1,20 +1,14 @@
 package com.shigu.phone.apps.actions;
 
-import com.google.gson.JsonObject;
-import com.openJar.commons.ResponseUtil;
-import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
-import com.openJar.responses.app.MarketsResponse;
-import com.openJar.responses.app.OneShopResponse;
-import com.openJar.responses.app.ShopCatResponse;
-import com.openJar.responses.app.ShopSearchResponse;
-import com.shigu.main4.common.exceptions.Main4Exception;
+import com.openJar.responses.app.*;
 import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.services.PhoneStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -74,10 +68,10 @@ public class AppStoreAction {
     @RequestMapping("shopSearch")
     @ResponseBody
     public JSONObject shopSearch(ShopSearchRequest request) {
-        if(request.getWebSite()==null){
+        if(StringUtils.isEmpty(request.getWebSite())){
             request.setWebSite("hz");
         }
-        if (request.getKeyword() == null) {
+        if (StringUtils.isEmpty(request.getKeyword())) {
             request.setKeyword("");
         }
         if (request.getIndex() == null) {
@@ -109,7 +103,16 @@ public class AppStoreAction {
      */
     @RequestMapping("storeCollect")
     @ResponseBody
-    public JSONObject storeCollect(StoreCollectRequest request, BindingResult bindingResult) {
+    public JSONObject storeCollect(StoreCollectRequest request, StoreCollectResponse response, BindingResult bindingResult) {
+        if (request.getUserId() == null) {
+            return WrapperUtil.wrapperOpenException("参数错误",response);
+        }
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null) {
+            request.setSize(15);
+        }
         return JSONObject.fromObject(phoneStoreService.storeCollect(request));
     }
 }

@@ -70,7 +70,7 @@ public class AppUserAction {
     //得到验证码
     @RequestMapping("getPhoneMsg")
     @ResponseBody
-    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request) {
+    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest) {
         return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
     }
 }

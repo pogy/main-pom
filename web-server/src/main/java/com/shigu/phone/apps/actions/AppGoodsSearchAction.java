@@ -11,6 +11,7 @@ import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,11 +42,14 @@ public class AppGoodsSearchAction {
         if (request.getType() == 1 && request.getCid() ==null) {//1商品库(cid不能为空)
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
-        if (request.getType() == 2 && request.getKeyword() ==null) {//2普通搜索(keywords不为空)
+        if (request.getType() == 2 && StringUtils.isEmpty(request.getKeyword())) {//2普通搜索(keywords不为空)
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
-        if (request.getOrderBy() == null) {
-            request.setOrderBy(SearchOrderBy.NEW.getValue());
+        if (StringUtils.isEmpty(request.getOrderBy())) {
+            request.setOrderBy(SearchOrderBy.COMMON.getValue());
+        }
+        if (request.getWebSite() == null) {
+            request.setWebSite("hz");
         }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
@@ -65,6 +69,9 @@ public class AppGoodsSearchAction {
     @RequestMapping("oneItem")
     @ResponseBody
     public JSONObject oneItem(@Valid OneItemRequest request, BindingResult bindingResult) {
+        if (request.getWebSite() == null) {
+            request.setWebSite("hz");
+        }
         return JSONObject.fromObject(phoneGoodsSearchService.oneItem(request));
     }
 

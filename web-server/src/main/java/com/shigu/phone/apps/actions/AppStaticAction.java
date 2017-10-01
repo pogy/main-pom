@@ -22,6 +22,7 @@ import com.shigu.search.vo.CateNav;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -52,14 +53,10 @@ public class AppStaticAction {
     @ResponseBody
     public JSONObject cat(CatRequest request) {
         CatResponse resp=new CatResponse();
-        OpenException openException = new OpenException();
         PhoneCategoryEnum[] arr = PhoneCategoryEnum.values();
         List<AppCatGroup> catGroups=new ArrayList<>();
         if (request.getWebSite() == null||request.getType() == null) {
-            openException.setErrMsg("缺少参数");
-            resp.setException(openException);
-            resp.setSuccess(false);
-            return JSONObject.fromObject(resp);
+            return WrapperUtil.wrapperOpenException("缺少参数",resp);
         }
         Map<Integer,List<PhoneCategoryEnum>> map= BeanMapper.groupBy(Arrays.asList(arr),"index",Integer.class);
         for (Map.Entry<Integer, List<PhoneCategoryEnum>> entry :map.entrySet()){
@@ -254,7 +251,7 @@ public class AppStaticAction {
     @RequestMapping("app/searchNav")
     @ResponseBody
     public JSONObject searchNav(SearchNavRequest request,SearchNavResponse response)  {
-        if (request.getType() == null||request.getWebSite()==null) {
+        if (request.getType() == null|| StringUtils.isEmpty(request.getWebSite())) {
             return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
         if(!TYPES.contains(request.getType())){
