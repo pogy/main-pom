@@ -59,7 +59,8 @@ public class TestAboutMe {
     public void  SearchNavRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         SearchNavRequest  request=new SearchNavRequest ();
-        request.setType(1);
+        request.setType(2);
+//        request.setSid(30l);
         request.setWebSite("hz");
         SearchNavResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -86,7 +87,7 @@ public class TestAboutMe {
         request.setWebSite("hz");
         request.setGoodsId(20065019L);
 //        request.setGoodsId(20466357L);
-        request.setToken("8cf4e332ba4f431e959f8a78851ea09e");
+        request.setToken("abf09d9222bf4bc2b9bef4eda2d23c64");
         UpToWxResponse response = client.execute(request);
         System.out.println(response.isSuccess());
     }
