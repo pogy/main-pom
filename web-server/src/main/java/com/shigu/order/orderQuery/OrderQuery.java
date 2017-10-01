@@ -50,7 +50,9 @@ public abstract class OrderQuery {
         pager.calPages(orderCount,size);
         if (orderCount>0) {
             List<MyOrderVO> myOrderVOS = selectOrderList(number, size);
-            packageMyOrderVO(myOrderVOS);
+            if (myOrderVOS.size()>0) {
+                packageMyOrderVO(myOrderVOS);
+            }
             pager.setContent(myOrderVOS);
         }
         return pager;
