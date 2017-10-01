@@ -33,7 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -61,33 +63,43 @@ public class PhoneGoodsSearchService {
      */
     public ItemSearchResponse itemSearch(ItemSearchRequest request) {
         ItemSearchResponse resp = new ItemSearchResponse();
-        SearchBO bo = new SearchBO();
-        bo.setWebSite(request.getWebSite());
-        bo.setKeyword(request.getKeyword());
-        bo.setMid(request.getMarketId());
-        bo.setCid(request.getCid());
-        bo.setPid(request.getCid());
-        bo.setShopId(request.getStoreId());
-        if (request.getType() != null && request.getType() == 2) {
-            //商品库搜索顺序
-            bo.setFrom("goods");
+        try {
+            SearchBO bo = new SearchBO();
+            bo.setWebSite(request.getWebSite());
+            bo.setKeyword(request.getKeyword());
+            bo.setMid(request.getMarketId());
+            bo.setCid(request.getCid());
+            bo.setPid(request.getCid());
+            bo.setShopId(request.getStoreId());
+            if (request.getType() != null && request.getType() == 2) {
+                //商品库搜索顺序
+                bo.setFrom("goods");
+            }
+            bo.setSort(request.getOrderBy());
+            final String dateFormat = "yyyy.MM.dd";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+            Date startTime  = sdf.parse(request.getStartTime());
+            Date endtTime  = sdf.parse(request.getEndTime());
+
+            bo.setSt(request.getStartTime() == null ? null : DateUtil.dateToString(startTime, dateFormat));
+            bo.setEt(request.getEndTime() == null ? null : DateUtil.dateToString(endtTime, dateFormat));
+            bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
+            bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
+            bo.setPage(request.getIndex());
+            bo.setRows(request.getSize());
+            ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
+            resp.setTotal(result.getTotalCount());
+            resp.setHasNext(result.getNumber() < result.getTotalPages());
+            resp.setItems(result.getContent().parallelStream().map(o -> {
+                AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
+                vo.setGoodsId(Long.valueOf(o.getId()));
+                return vo;
+            }).collect(Collectors.toList()));
+            resp.setSuccess(true);
+            return resp;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        bo.setSort(request.getOrderBy());
-        final String dateFormat = "yyyy.MM.dd";
-        bo.setSt(request.getStartTime() == null ? null : DateUtil.dateToString(request.getStartTime(), dateFormat));
-        bo.setEt(request.getEndTime() == null ? null : DateUtil.dateToString(request.getEndTime(), dateFormat));
-        bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
-        bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
-        bo.setPage(request.getIndex());
-        bo.setRows(request.getSize());
-        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
-        resp.setTotal(result.getTotalCount());
-        resp.setHasNext(result.getNumber() < result.getTotalPages());
-        resp.setItems(result.getContent().parallelStream().map(o -> {
-            AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-            vo.setGoodsId(Long.valueOf(o.getId()));
-            return vo;
-        }).collect(Collectors.toList()));
         resp.setSuccess(true);
         return resp;
     }
