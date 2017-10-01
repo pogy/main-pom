@@ -25,10 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 类名：CatDataInit
@@ -88,15 +85,16 @@ public class CatDataInit {
         }
         Collections.sort(rankingCateLineVOS,new RankingCateLineVO.RankingCateComparator());
         int i = 0;
-        List<RankingCateLineVO> resultRankingList = Lists.newArrayList();
+        Map<String,RankingCateLineVO> resultRankingMap = new LinkedHashMap<>(3);
+
         for (RankingCateLineVO rankingCateLineVO : rankingCateLineVOS) {
             if (i++>3) {
                 break;
             }
             rankingCateLineVO.setRank(i);
-            resultRankingList.add(rankingCateLineVO);
+            resultRankingMap.put(rankingCateLineVO.getText(),rankingCateLineVO);
         }
-        redisIO.putTemp(getPreFix(WOMAN_CAT_UP_COUNT_INDEX,pem),resultRankingList,3600*24*180);
+        redisIO.putTemp(getPreFix(WOMAN_CAT_UP_COUNT_INDEX,pem),resultRankingMap,3600*24*180);
     }
 
     public List<ShiguTaobaocat> cats(List<Long> parentCids) {
@@ -143,7 +141,7 @@ public class CatDataInit {
                         aLong = 0L;
                     }
                     aLong++;
-                    redisIO.putTemp(index, aLong, 3600 * 24 * 180);
+                    redisIO.putTemp(index, aLong, 3600 * 24 * 10);
                 }
             }
         }
