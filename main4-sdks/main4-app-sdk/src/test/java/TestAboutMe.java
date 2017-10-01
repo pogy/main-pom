@@ -283,16 +283,20 @@ public class TestAboutMe {
     public void ImgUploadRequest() throws FileNotFoundException {
         OpenClient client = new PcOpenClient("3838438", "37456A6A5CA10F9A988F12BFECD88575", "test");
 
-        String filePath = "D:\\test.png";
-//        String filePath = "D:\\test2.jpg";
-        String extention = filePath.substring(filePath.indexOf("."),filePath.length());
-        byte[] file = TestAboutMe.fileToByteArrays(filePath);
-
+//        String filePath = "D:\\test.png";
+////        String filePath = "D:\\test2.jpg";
+//        String extention = filePath.substring(filePath.indexOf("."),filePath.length());
+//        byte[] file = TestAboutMe.fileToByteArrays(filePath);
+//
         ImgUploadRequest request = new ImgUploadRequest();
-        request.setFile( Base64.getEncoder().encodeToString(file));
-        request.setType(1);
-        request.setUserId(13456872821l);
-        request.setExtension(extention);
+//        request.setFile( Base64.getEncoder().encodeToString(file));
+////        request.setType(1);
+//        request.setUserId(13456872821l);
+
+        request.setUserId(1000085908l);
+        //原头像地址  http://imgs.571xz.net/mall/file/1505284291244.jpg
+        request.setFile("http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/file/0000f74780d536ba489cc897e64d6b39.jpg");
+        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
 
         System.out.println(request.testApiUrl());
         ImgUploadResponse response = client.execute(request);
