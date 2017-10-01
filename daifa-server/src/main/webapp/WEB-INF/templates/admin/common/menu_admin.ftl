@@ -32,7 +32,9 @@
                 -->
             </ul>
         </li>
-
+        <li>
+            <a  href="ggoodsUnListByPage.htm" ><i class="icon-allorders"></i>拿货未完成数据</a>
+        </li>
         <li>
             <a href="javascript:;" ><i class="icon-allocation"></i>系统管理</a>
             <ul>
