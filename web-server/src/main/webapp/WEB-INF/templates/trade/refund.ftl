@@ -310,7 +310,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="refundDesc">
             <label>退款说明：</label>
-            <textarea></textarea>
+            <textarea maxlength="26"></textarea>
         </li>
         <li>
 
@@ -417,18 +417,18 @@ var refundNum = '${refundNumber!}';
                 <p>
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
-                    </#if>
+                    
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                         <#if record.afterSaleInfoShowIs == true>
                         货号：${childOrderCode!}&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;件数：${failNum!}&nbsp;&nbsp;${failReason!}
                         </#if>
-                    </#if>
+                    
                 </#if>
                 </p>
             </div>
@@ -904,18 +904,18 @@ var refundId = '${refundId!}';
                 <p>
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
-                    </#if>
+                    
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                         <#if record.afterSaleInfoShowIs == true>
                         货号：${childOrderCode!}&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;件数：${failNum!}&nbsp;&nbsp;${failReason!}
                         </#if>
-                    </#if>
+                    
                 </#if>
                 </p>
             </div>
@@ -957,18 +957,18 @@ var refundId = '${refundId!}';
                 <p>
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
-                    </#if>
+                    
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
+                    
                         <#if record.afterSaleInfoShowIs == true>
                         货号：${childOrderCode!}&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;件数：${failNum!}&nbsp;&nbsp;${failReason!}
                         </#if>
-                    </#if>
+                    
                 </#if>
                 </p>
             </div>
