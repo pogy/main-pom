@@ -125,7 +125,7 @@ public class DfMessageListener implements MessageListener {
                 afterSaleAccept(baseMessage);
                 break;
             case have_time:
-
+                haveTime(baseMessage);
                 break;
         }
         return Action.CommitMessage;
