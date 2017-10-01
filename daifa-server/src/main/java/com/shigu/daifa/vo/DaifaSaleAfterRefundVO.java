@@ -11,7 +11,7 @@ public class DaifaSaleAfterRefundVO {
     private Integer refundState;
     private Integer refundFeeType;
     private String refundForShop;
-    private List<String> editIndo;
+    private List<String> editInfo;
     private List<DaifaSaleAfterStockVO> putInStorageState;
     private List<DaifaSaleAfterSubVO> childOrders;
 
@@ -79,12 +79,12 @@ public class DaifaSaleAfterRefundVO {
         this.refundForShop = refundForShop;
     }
 
-    public List<String> getEditIndo() {
-        return this.editIndo;
+    public List<String> getEditInfo() {
+        return this.editInfo;
     }
 
-    public void setEditIndo(List<String> editIndo) {
-        this.editIndo = editIndo;
+    public void setEditInfo(List<String> editInfo) {
+        this.editInfo = editInfo;
     }
 
     public List<DaifaSaleAfterStockVO> getPutInStorageState() {

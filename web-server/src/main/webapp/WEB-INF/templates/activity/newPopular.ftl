@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/newPopular5.css?v=20180821" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/newPopular6.css?v=20180821" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/newPopular5.js?v=20180821"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/newPopular6.js?v=20180821"></script>
 </head>
 <body>
 
@@ -314,8 +314,8 @@ var webSite = '${webSite!}';
 <div class="content clearfix">
     <div class="banner">
         <div class="contanir layout pr">
-            <div class="pa ruleBtn" jbtn="ruleBtn"></div>
-            <a class="pa raffleBtn" href="http://www.571xz.com/activity/lottery.htm" target="_blank"></a>
+            
+            
         </div>
     </div>
     <div class="goodsListShow layout">

@@ -44,8 +44,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
     @Autowired
-    private DaifaSellerMapper daifaSellerMapper;
-    @Autowired
     private MQUtil mqUtil;
 
 
@@ -224,11 +222,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         switch (status) {
             case 1: {
                 //同意受理
-                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
-                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
                 map.put("refundId",refundId);
                 map.put("canRefund",true);
-                map.put("daifaReceiveAddr",address);
                 break;
             }
             case 2: {
@@ -299,7 +294,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
         daifaAfterSale.setAfterSaleId(afterSaleId);
-        daifaAfterSale.setRemark(oldSale.getRemark()+"<br>"+remark);
+        daifaAfterSale.setRemark(oldSale.getRemark()==null?remark:(oldSale.getRemark()+"<br>"+remark));
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 
@@ -331,7 +326,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
         //读取退款成功的id集合
         List<Long> entIds = new ArrayList<>();
+        Long maxMoney=0L;
         for (DaifaAfterSaleSub sub1 : subs) {
+            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
             if(sub1.getAfterStatus()>4){
                 continue;
             }
@@ -342,6 +339,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
                 entIds.add(sub1.getAfterSaleSubId());
             }
+        }
+        if(MoneyUtil.StringToLong(money)>maxMoney){
+            throw new DaifaException("售后状态错误,超过可退总额");
         }
         //entIds数量为0,即所有都已经处理过,跳出
         if(entIds.size()==0){
@@ -370,7 +370,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
         map.put("refundId",refundId);
-        map.put("storeMoney",money);
+        map.put("storeMoney",MoneyUtil.StringToLong(money));
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");
@@ -451,12 +451,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         //发送档口拒绝消息
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
-        map.put("refundId",refundId);
+        map.put("refundId",sub.getRefundId());
         map.put("num",num);
         jsonObject.put("data",map);
-        jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
+        jsonObject.put("msg",StringUtils.isEmpty(reason)?DaifaSendMqEnum.shopRefuse.getMsg():reason);
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+refundId,
+        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+sub.getRefundId(),
                 DaifaSendMqEnum.shopRefuse.getMessageTag(), jsonObject.toString());
         return null;
     }
@@ -595,6 +595,17 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //议价信息错误
             throw new DaifaException("议价信息错误");
         }
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(refundId);
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
+        Long maxMoney=0L;
+        for (DaifaAfterSaleSub sub1 : subs) {
+            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+        }
+        if(MoneyUtil.StringToLong(money)>maxMoney){
+            throw new DaifaException("售后状态错误,超过可退总额");
+        }
+
         if(daifaAfterMoneyConsults.get(0).getConsultType()==2){
             DaifaAfterMoneyConsult insert=new DaifaAfterMoneyConsult();
             insert.setRefundId(refundId);
@@ -613,12 +624,33 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         JSONObject jsonObject=new JSONObject();
         Map<String,Object> map=new HashMap<>();
         map.put("refundId",refundId);
-        map.put("storeMoney",money);
+        map.put("storeMoney",MoneyUtil.StringToLong(money));
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");
         mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageKey()+refundId,
                 DaifaSendMqEnum.repriceApply.getMessageTag(), jsonObject.toString());
+        return null;
+    }
+
+    @Override
+    public String changeEnt() throws DaifaException {
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(refundId);
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
+        if (subs.size() == 0) {
+            //售后申请不存在
+            throw new DaifaException("售后申请不存在");
+        }
+        if(subs.get(0).getAfterType()!=2){
+            throw new DaifaException("不是换货售后");
+        }
+        if(subs.get(0).getAfterStatus()!=4){
+            throw new DaifaException("代发未收到货");
+        }
+        DaifaAfterSaleSub update=new DaifaAfterSaleSub();
+        update.setAfterStatus(6);
+        updateAfterSubs(update);
         return null;
     }
 

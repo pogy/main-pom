@@ -2,17 +2,15 @@ package com.shigu.daifa.actions;
 
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.shigu.daifa.services.DaifaSaleAfterService;
-import com.shigu.daifa.vo.DaifaAfterReceiveExpresStockVO;
+import com.shigu.daifa.vo.*;
 import com.shigu.daifa.bo.ParcelSearchBO;
 import com.shigu.daifa.bo.PutInStorageBO;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.services.DaifaSaleAfterService;
-import com.shigu.daifa.vo.AfterSumVO;
-import com.shigu.daifa.vo.DaifaSaleAfterVO;
-import com.shigu.daifa.vo.RefuseReasonVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -39,7 +37,7 @@ public class DaifaSaleAfterAction {
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId());
+        ShiguPager<DaifaSaleAfterVO> pager=daifaSaleAfterService.afterSaleOrder(bo,auth.getDaifaSellerId(),10);
         AfterSumVO sum=daifaSaleAfterService.sum(auth.getDaifaSellerId());
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
@@ -94,10 +92,27 @@ public class DaifaSaleAfterAction {
     }
 
     @RequestMapping("daifa/returnOrder")
-    public String returnOrder(HttpServletRequest request,Model model) throws DaifaException {
-        List<DaifaOrder> daifaOrders = daifaSaleAfterService.returnOrder();
-        //TODO
-        return "daifa/parcelSweepCode";
+    @ResponseBody
+    public JSONObject returnOrder(String postCode) throws DaifaException {
+        List<DaifaSalePackageOrderVO> daifaOrders = daifaSaleAfterService.returnOrder(postCode);
+        JSONObject obj=JsonResponseUtil.success();
+        obj.put("orders",daifaOrders);
+        obj.put("postCode",postCode);
+        obj.put("callbackMsg","售后订单中暂无找到对应的此快递单号，建议此包裹入库");
+        if(daifaOrders.size()>0){
+            String postName=null;
+            find:for(DaifaSalePackageOrderVO vo:daifaOrders){
+                for(DaifaSalePackageOrderSubVO subvo:vo.getChildOrders()){
+                    if(postCode.equals(subvo.getAfterSalePostCode())){
+                        postName=subvo.getAfterSalePostName();
+                        break find;
+                    }
+                }
+            }
+            obj.put("postName",postName);
+            obj.put("callbackMsg","已查询到此快递单在如下售后订单中，并且已自动标记已收到售后商品");
+        }
+        return obj;
     }
 
     /**
@@ -143,7 +158,7 @@ public class DaifaSaleAfterAction {
         model.addAttribute("query",bo);
         model.addAttribute("orderStatistics",daifaSaleAfterService.getOrderStatistics(bo));
 
-        ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo);
+        ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo,auth.getDaifaSellerId());
         model.addAttribute("postList",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         return "daifa/parcelSearch";
@@ -159,7 +174,9 @@ public class DaifaSaleAfterAction {
     @RequestMapping("daifa/addPackageRemark")
     @ResponseBody
     public JSONObject addPackageRemark(Long packbagId,String remarkCon) throws DaifaException {
-        daifaSaleAfterService.addPackageRemark(packbagId,remarkCon);
+        if (!StringUtil.isNull(remarkCon)) {
+            daifaSaleAfterService.addPackageRemark(packbagId,remarkCon);
+        }
         return JsonResponseUtil.success();
     }
 

@@ -85,6 +85,9 @@
 						FROM
                           (select t1.df_trade_id,t1.dws_id FROM
 							daifa_wait_send t1
+                            JOIN
+                            (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+                            ON t1.dws_id=t3.dws_id
 							LEFT JOIN (
 								SELECT
 									a.df_trade_id,
@@ -155,6 +158,9 @@
         FROM
         (select t1.df_trade_id,t1.dws_id from
         daifa_wait_send t1
+        JOIN
+        (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+        ON t1.dws_id=t3.dws_id
         LEFT JOIN (
         SELECT
         a.df_trade_id,

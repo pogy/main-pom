@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>售后订单 - 星帮后台管理 - 四季星座网</title>
 
     
     
@@ -22,6 +22,11 @@
 
     
 
+    
+    
+    
+    
+    
     
 
     
@@ -183,7 +188,18 @@
 
     </div>
     <div class="contentBox">
-        <div class="statistics yahei fc9">
+        <div class="printTypeTabs">
+    <ul>
+        <li <#if !query.status>class="select"</#if> data-type=""><a href="afterSaleOrder.htm">全部订单</a></li>
+        <li <#if query.status == 1>class="select"</#if> data-type='1'><a href="afterSaleOrder.htm?status=1">申请订单</a></li>
+        <li <#if query.status == 2>class="select"</#if> data-type='2'><a href="afterSaleOrder.htm?status=2">议价订单</a></li>
+    </ul>
+</div>
+
+
+
+
+<div class="statistics yahei fc9">
     <ul>
         <li>
             <span class="fs20 arail fc3">${orderStatistics.afterOrderNum!}</span>
@@ -298,7 +314,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"backPostCode","value":"${query.backPostCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"backPostCode","value":"${query.backPostCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -327,6 +343,8 @@
 
 
 
+
+
 <div class="orderCon">
     <table>
         <thead class="theadCon">
@@ -346,10 +364,7 @@
             <tr class="orderItemHead">
                 <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
-                    <span>时间：${order.tradeTime!}</span>
-                    <#if order.oldOrder == true>
-                    <i class="fcF40 icon-old oldOrder"></i>
-                    </#if>
+                    <span>时间：${order.afterSaleTime!}</span>
                     
                 </td>
                 <td class="buyerInfo"  colspan="2">
@@ -417,6 +432,8 @@
         <p>已发换货商品</p>
         <#elseif afterSale.afterSaleState == 25>
         <p>换货已收到</p>
+        <#elseif afterSale.afterSaleState == 26>
+        <p>换货已完成</p>
         </#if>
         
         <#if afterSale.afterSalePostName??>
@@ -432,11 +449,17 @@
         <#if afterSale.afterSaleState == 1 || afterSale.afterSaleState == 21>
             <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
             <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
+        <#elseif afterSale.afterSaleState == 26>
+            <p>换货已完成</p>
         <#else>
             <#if (afterSale.putInStorageState?size) gt 0>
                 <#list afterSale.putInStorageState as sto>
                     <#if sto.type == 1>
-                    <p>商品已入库x${sto.storageNum!}</p>
+                        <#if afterSale.refundState == 1 || afterSale.refundState == 2>
+                        <p>商品已退款x${sto.storageNum!}</p>
+                        <#else>
+                        <p>商品已入库x${sto.storageNum!}</p>
+                        </#if>
                     <#elseif sto.type == 2>
                     <p>退货失败入库x${sto.storageNum!}</p>
                     </#if>
@@ -454,11 +477,13 @@
                     <span class="spanIcon">拒</span>
                     </#if>
                     <div class="editInfo pa">
-                        ${afterSale.editInfo}
+                        <#list afterSale.editInfo as info>
+                        <p>${info!}</p>
+                        </#list>
                     </div>
                 </div>
             </p>
-            <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
+            <p><b class="fcBlue editBtn" jbtn="editBtn" data-id="${afterSale.refundId!}">修改</b></p>
             <#elseif afterSale.refundState == 2>
             <p class="fcG">已退款</p>
             <p class="fcF40">${afterSale.refundForShop!}</p>
@@ -508,50 +533,6 @@
 
 
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

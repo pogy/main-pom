@@ -102,4 +102,10 @@ public interface RefundItemOrder {
     void error(String reason);
 
     Long getRefundId();
+
+    /**
+     * 退货失败
+     * @param num 退失败数量
+     */
+    void shopRefuse(Integer num);
 }

@@ -7,6 +7,7 @@ public class SaleAfterBO {
     private String startTime;
     private String endTime;
     private Integer page;
+    private Integer status;
 
     public String getOrderId() {
         return this.orderId;
@@ -54,5 +55,13 @@ public class SaleAfterBO {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

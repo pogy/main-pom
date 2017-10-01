@@ -173,7 +173,9 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                         subOrderModelBO.setWebSite(bo.getWebSite());
                         subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                        subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        if(num>1){
+                            subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                        }
                         subOrderModelBO.setGoodsWeight (bo.getWeight ());//重量
                         if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
                             if(serviceBOMap.get (bo.getSoid ())!=null) {
@@ -358,9 +360,9 @@ public class OrderModelImpl implements OrderModel {
     @Transactional(propagation=Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void autoRefund(Long refundId, List<Long> subOrderIds) throws DaifaException {
         //检测是否可以自动退款
-        List<Long> sts=new ArrayList<>();
-        sts.add((long)SubOrderStatus.NO_PAY.getValue());
-        sts.add((long)SubOrderStatus.SENDED.getValue());
+        List<Integer> sts=new ArrayList<>();
+        sts.add(SubOrderStatus.NO_PAY.getValue());
+        sts.add(SubOrderStatus.SENDED.getValue());
         DaifaOrderExample orderExample=new DaifaOrderExample();
         orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusIn(sts);
         if(daifaOrderMapper.countByExample(orderExample)>0){//有单子处在不可退状态

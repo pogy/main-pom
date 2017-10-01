@@ -46,7 +46,9 @@ public class OrderMessageProducter {
         order_refund_noitem("refund_"),
         order_refund_hasitem("refund_hasitem_"),
         refund_courier_number("courier_"),
-        refund_courier_number_modify("courier_modify_");
+        refund_courier_number_modify("courier_modify_"),
+        reprice_agree("reprice_"),
+        ;
 
         public final String preKey;
 
@@ -175,21 +177,16 @@ public class OrderMessageProducter {
         sendAsync(OrderMQTag.order_refund_noitem, BaseMessage.success(refund.getRefundId().toString(), "仅退款", refund));
     }
 
-    public void orderRefundHasItem(Long refundId, Long subOrderId, Long money, String reason) {
-        RefundMessage refund = new RefundMessage();
+    public void orderRefundHasItem(Long refundId,Long oid, Long subOrderId,Integer num, Long money, String reason,Integer type) {
+        RefundApplyMessage refund = new RefundApplyMessage();
         refund.setRefundId(refundId);
-        refund.setMoney(money);
+        refund.setOid(oid);
+        refund.setSoid(subOrderId);
+        refund.setHopeMoney(money);
         refund.setReason(reason);
-
-        ArrayList<SubOrderMessage> soids = new ArrayList<>();
-        SubOrderMessage subOrder = new SubOrderMessage();
-        subOrder.setSoid(subOrderId);
-        subOrder.setSoidps(Arrays.asList(subOrderId));
-        subOrder.setSingleMoney(money);
-        soids.add(subOrder);
-        refund.setSuborders(soids);
-
-        sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), "退货退款", refund));
+        refund.setNum(num);
+        refund.setType(type);
+        sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), type==1?"退货退款":"换货", refund));
     }
 
     public void refundCourierNumberModify(Long refundId, String company, String courierNumber, boolean modify) {
@@ -208,6 +205,16 @@ public class OrderMessageProducter {
         }
         sendAsync(tag, BaseMessage.success(courier.getRefundId().toString(), msg, courier));
     }
+
+    public void repriceAgree(Long refundId,boolean agree) {
+        RepriceAgreeMessage repriceAgreeMessage = new RepriceAgreeMessage();
+        repriceAgreeMessage.setRefundId(refundId);
+        repriceAgreeMessage.setAgree(agree);
+        OrderMQTag tag = OrderMQTag.reprice_agree;
+        String msg = "同意/拒绝议价";
+        sendAsync(tag,BaseMessage.success(refundId.toString(),msg,repriceAgreeMessage));
+    }
+
 
     public void error(OrderMQTag tag, String key, String msg) {
         sendAsync(tag, BaseMessage.error(key, msg));

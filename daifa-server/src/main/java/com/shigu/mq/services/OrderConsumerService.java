@@ -5,6 +5,7 @@ import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.mq.beans.*;
 import com.shigu.mq.receives.SendMessageListener;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class OrderConsumerService {
     private OrderManageProcess orderManageProcess;
     @Autowired
     private SaleAfterProcess saleAfterProcess;
+    @Autowired
+    private TakeGoodsIssueProcess takeGoodsIssueProcess;
 
 
     public void orderConvertTrade(String body){
@@ -67,7 +70,7 @@ public class OrderConsumerService {
                 }
                 orderManageProcess.autoRefund(refund.getRefundId(), bos);
                 //=============事物end=================
-            } catch (Exception e) {
+            } catch (DaifaException e) {
                 logger.error(e.getMessage());
             }
         }
@@ -99,8 +102,8 @@ public class OrderConsumerService {
             ReturnExpress ex=JSON.parseObject(JSON.toJSONString(res.getData()), ReturnExpress.class);
             SaleAfterExpressBO bo=new SaleAfterExpressBO();
             bo.setRefundId(ex.getRefundId());
-            bo.setExpressCode(ex.getCourierNO());
-            bo.setExpressName(ex.getCourier());
+            bo.setExpressCode(ex.getCourierNumber());
+            bo.setExpressName(ex.getCompany());
             try {
                 saleAfterProcess.saleAfterExpress(bo);
             } catch (DaifaException e) {
@@ -130,4 +133,5 @@ public class OrderConsumerService {
 
         }
     }
+
 }

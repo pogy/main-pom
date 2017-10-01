@@ -118,6 +118,11 @@ public interface SaleAfterModel {
      */
     String moneyConsultRefuse()throws DaifaException;
 
+    /**
+     * 客户同意协商金额
+     * @return
+     * @throws DaifaException
+     */
     String moneyConsultAgree()throws DaifaException;
     /**
      * ====================================================================================
@@ -132,5 +137,11 @@ public interface SaleAfterModel {
      * 
      */
     String moneyConsult(String money)throws DaifaException;
+
+    /**
+     * 换货完成
+     * @return
+     */
+    String changeEnt() throws DaifaException;
 
 }

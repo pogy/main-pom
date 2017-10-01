@@ -127,7 +127,7 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertTrue(isError);
         //测试三,未发货订单
         DaifaOrderExample testOrderExample = new DaifaOrderExample();
-        testOrderExample.createCriteria().andOrderStatusLessThan(3L).andRefundIdIsNull();
+        testOrderExample.createCriteria().andOrderStatusLessThan(3).andRefundIdIsNull();
         testOrderExample.setOrderByClause("df_order_id desc");
         testOrderExample.setStartIndex(0);
         testOrderExample.setEndIndex(1);
@@ -393,10 +393,10 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertNotEquals(list.size(), 0);
         int num = 0;
         for (ExpressRelevanceVO vo : list) {
-            for (ExpressRelevanceSubVO svo : vo.getOrders()) {
-                if (svo.getIsScan() == 1) {
+            for (ExpressRelevanceSubVO svo : vo.getChildOrders()) {
+                if (svo.getNowScanPostIs()) {
                     num++;
-                    assertEquals(svo.getPostCode(), postCode);
+                    assertEquals(svo.getAfterSalePostCode(), postCode);
                 }
             }
         }

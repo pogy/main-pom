@@ -190,4 +190,9 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     public void saleInStock(Long orderId, String stockLocktion, String sendPhone) throws DaifaException {
         SpringBeanFactory.getBean(SaleAfterModel.class).refundFailInStock(orderId,1,stockLocktion,sendPhone);
     }
+
+    @Override
+    public void changeEnt(Long refundId) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class,refundId).changeEnt();
+    }
 }

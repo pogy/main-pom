@@ -15,42 +15,49 @@ import java.util.List;
  * @commonents:
  */
 public class ExpressRelevanceVO implements Serializable{
-    private Long saleId;
-    private Long dfTradeId;
-    private String createTime;
+    private Long orderId;
+    private String sendTime;
+    private String afterSaleTime;
     private String imWw;
+    private String imTel;
+    private String imQq;
     private String receiverName;
     private String receiverPhone;
     private String receiverAddress;
+    private String buyerRemark;
     private String totalFee;
     private String expressFee;
+    private String expressName;
+    private String expressCode;
     private String discountFee;
     private String serversFee;
-    private String remark;
-    private List<ExpressRelevanceSubVO> orders;
+    private Integer childOrderNum;
+    private String allChildRemark;
+    private Boolean isTbOrder;
+    private List<ExpressRelevanceSubVO> childOrders;
 
-    public Long getSaleId() {
-        return this.saleId;
+    public Long getOrderId() {
+        return this.orderId;
     }
 
-    public void setSaleId(Long saleId) {
-        this.saleId = saleId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public Long getDfTradeId() {
-        return this.dfTradeId;
+    public String getSendTime() {
+        return this.sendTime;
     }
 
-    public void setDfTradeId(Long dfTradeId) {
-        this.dfTradeId = dfTradeId;
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
     }
 
-    public String getCreateTime() {
-        return this.createTime;
+    public String getAfterSaleTime() {
+        return this.afterSaleTime;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setAfterSaleTime(String afterSaleTime) {
+        this.afterSaleTime = afterSaleTime;
     }
 
     public String getImWw() {
@@ -59,6 +66,22 @@ public class ExpressRelevanceVO implements Serializable{
 
     public void setImWw(String imWw) {
         this.imWw = imWw;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
     }
 
     public String getReceiverName() {
@@ -85,6 +108,14 @@ public class ExpressRelevanceVO implements Serializable{
         this.receiverAddress = receiverAddress;
     }
 
+    public String getBuyerRemark() {
+        return this.buyerRemark;
+    }
+
+    public void setBuyerRemark(String buyerRemark) {
+        this.buyerRemark = buyerRemark;
+    }
+
     public String getTotalFee() {
         return this.totalFee;
     }
@@ -99,6 +130,22 @@ public class ExpressRelevanceVO implements Serializable{
 
     public void setExpressFee(String expressFee) {
         this.expressFee = expressFee;
+    }
+
+    public String getExpressName() {
+        return this.expressName;
+    }
+
+    public void setExpressName(String expressName) {
+        this.expressName = expressName;
+    }
+
+    public String getExpressCode() {
+        return this.expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode;
     }
 
     public String getDiscountFee() {
@@ -117,19 +164,35 @@ public class ExpressRelevanceVO implements Serializable{
         this.serversFee = serversFee;
     }
 
-    public String getRemark() {
-        return this.remark;
+    public Integer getChildOrderNum() {
+        return this.childOrderNum;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setChildOrderNum(Integer childOrderNum) {
+        this.childOrderNum = childOrderNum;
     }
 
-    public List<ExpressRelevanceSubVO> getOrders() {
-        return this.orders;
+    public String getAllChildRemark() {
+        return this.allChildRemark;
     }
 
-    public void setOrders(List<ExpressRelevanceSubVO> orders) {
-        this.orders = orders;
+    public void setAllChildRemark(String allChildRemark) {
+        this.allChildRemark = allChildRemark;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
+    }
+
+    public List<ExpressRelevanceSubVO> getChildOrders() {
+        return this.childOrders;
+    }
+
+    public void setChildOrders(List<ExpressRelevanceSubVO> childOrders) {
+        this.childOrders = childOrders;
     }
 }

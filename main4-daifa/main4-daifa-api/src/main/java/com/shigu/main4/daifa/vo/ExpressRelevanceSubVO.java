@@ -3,34 +3,37 @@ package com.shigu.main4.daifa.vo;
 import java.io.Serializable;
 
 public class ExpressRelevanceSubVO implements Serializable {
-    private Long dfOrderId;
-    private String imgUrl;
-    private String title;
-    private String propStr;
-    private String storeGoodsCode;
-    private Integer goodsNum;
-    private String price;
-    private String piPrice;
-    private String singleServerFee;
-    private Integer afterStatus;
-    private String postName;
-    private String postCode;
-    private Integer isScan;
+    private Long childOrderId;//子单id
+    private String imgSrc;//商品图片
+    private String title;//商品标题
+    private String goodsProperty;//商品属性 颜色 尺码
+    private String goodsNo;//商品货号
+    private String piPrice;//商品批发价
+    private String payPrice;//商品实际支付价
+    private Integer num;//商品数量
+    private String storeGoodsCode;//商家编码
+    private String childServersFee;
+    private Boolean isInCangKu;
+    private String childRemark;
+    private Integer afterSaleState;
+    private String afterSalePostCode;
+    private String afterSalePostName;
+    private Boolean nowScanPostIs;
 
-    public Long getDfOrderId() {
-        return this.dfOrderId;
+    public Long getChildOrderId() {
+        return this.childOrderId;
     }
 
-    public void setDfOrderId(Long dfOrderId) {
-        this.dfOrderId = dfOrderId;
+    public void setChildOrderId(Long childOrderId) {
+        this.childOrderId = childOrderId;
     }
 
-    public String getImgUrl() {
-        return this.imgUrl;
+    public String getImgSrc() {
+        return this.imgSrc;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     public String getTitle() {
@@ -41,36 +44,20 @@ public class ExpressRelevanceSubVO implements Serializable {
         this.title = title;
     }
 
-    public String getPropStr() {
-        return this.propStr;
+    public String getGoodsProperty() {
+        return this.goodsProperty;
     }
 
-    public void setPropStr(String propStr) {
-        this.propStr = propStr;
+    public void setGoodsProperty(String goodsProperty) {
+        this.goodsProperty = goodsProperty;
     }
 
-    public String getStoreGoodsCode() {
-        return this.storeGoodsCode;
+    public String getGoodsNo() {
+        return this.goodsNo;
     }
 
-    public void setStoreGoodsCode(String storeGoodsCode) {
-        this.storeGoodsCode = storeGoodsCode;
-    }
-
-    public Integer getGoodsNum() {
-        return this.goodsNum;
-    }
-
-    public void setGoodsNum(Integer goodsNum) {
-        this.goodsNum = goodsNum;
-    }
-
-    public String getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
     public String getPiPrice() {
@@ -81,43 +68,83 @@ public class ExpressRelevanceSubVO implements Serializable {
         this.piPrice = piPrice;
     }
 
-    public String getSingleServerFee() {
-        return this.singleServerFee;
+    public String getPayPrice() {
+        return this.payPrice;
     }
 
-    public void setSingleServerFee(String singleServerFee) {
-        this.singleServerFee = singleServerFee;
+    public void setPayPrice(String payPrice) {
+        this.payPrice = payPrice;
     }
 
-    public Integer getAfterStatus() {
-        return this.afterStatus;
+    public Integer getNum() {
+        return this.num;
     }
 
-    public void setAfterStatus(Integer afterStatus) {
-        this.afterStatus = afterStatus;
+    public void setNum(Integer num) {
+        this.num = num;
     }
 
-    public String getPostName() {
-        return this.postName;
+    public String getStoreGoodsCode() {
+        return this.storeGoodsCode;
     }
 
-    public void setPostName(String postName) {
-        this.postName = postName;
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 
-    public String getPostCode() {
-        return this.postCode;
+    public String getChildServersFee() {
+        return this.childServersFee;
     }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
+    public void setChildServersFee(String childServersFee) {
+        this.childServersFee = childServersFee;
     }
 
-    public Integer getIsScan() {
-        return this.isScan;
+    public Boolean getIsInCangKu() {
+        return this.isInCangKu;
     }
 
-    public void setIsScan(Integer isScan) {
-        this.isScan = isScan;
+    public void setIsInCangKu(Boolean isInCangKu) {
+        this.isInCangKu = isInCangKu;
+    }
+
+    public String getChildRemark() {
+        return this.childRemark;
+    }
+
+    public void setChildRemark(String childRemark) {
+        this.childRemark = childRemark;
+    }
+
+    public Integer getAfterSaleState() {
+        return this.afterSaleState;
+    }
+
+    public void setAfterSaleState(Integer afterSaleState) {
+        this.afterSaleState = afterSaleState;
+    }
+
+    public String getAfterSalePostCode() {
+        return this.afterSalePostCode;
+    }
+
+    public void setAfterSalePostCode(String afterSalePostCode) {
+        this.afterSalePostCode = afterSalePostCode;
+    }
+
+    public String getAfterSalePostName() {
+        return this.afterSalePostName;
+    }
+
+    public void setAfterSalePostName(String afterSalePostName) {
+        this.afterSalePostName = afterSalePostName;
+    }
+
+    public Boolean getNowScanPostIs() {
+        return this.nowScanPostIs;
+    }
+
+    public void setNowScanPostIs(Boolean nowScanPostIs) {
+        this.nowScanPostIs = nowScanPostIs;
     }
 }

@@ -2,8 +2,8 @@ package com.shigu.mq.beans;
 
 public class ReturnExpress {
     private Long refundId;
-    private String courier;
-    private String courierNO;
+    private String company;
+    private String courierNumber;
 
     public Long getRefundId() {
         return this.refundId;
@@ -13,19 +13,19 @@ public class ReturnExpress {
         this.refundId = refundId;
     }
 
-    public String getCourier() {
-        return this.courier;
+    public String getCompany() {
+        return this.company;
     }
 
-    public void setCourier(String courier) {
-        this.courier = courier;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    public String getCourierNO() {
-        return courierNO;
+    public String getCourierNumber() {
+        return this.courierNumber;
     }
 
-    public void setCourierNO(String courierNO) {
-        this.courierNO = courierNO;
+    public void setCourierNumber(String courierNumber) {
+        this.courierNumber = courierNumber;
     }
 }

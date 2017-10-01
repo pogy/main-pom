@@ -18,6 +18,7 @@
         item_order_sub.title as title,
         item_order_sub.pic_url as imgsrc,
         item_order_sub.color as color,
+        item_order_sub.size as size,
         item_order_sub.goods_no as goodsNo,
         CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
         item_order_sub.num as num,

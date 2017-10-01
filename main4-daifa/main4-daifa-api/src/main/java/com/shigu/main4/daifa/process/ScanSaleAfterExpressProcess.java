@@ -64,4 +64,11 @@ public interface ScanSaleAfterExpressProcess {
      *
      */
     String rebackPrintExpress(RebackPrintExpressBO bo)throws DaifaException;
+
+    /**
+     * 修改daifa_after_receive_expres_stock备注
+     * @param receivedExpressIds  主键
+     * @param packageRemark      备注
+     */
+    void updatePackageRemark(List<Integer> receivedExpressIds,String packageRemark);
 }

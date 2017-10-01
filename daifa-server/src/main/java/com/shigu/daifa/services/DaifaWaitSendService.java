@@ -1,32 +1,34 @@
 package com.shigu.daifa.services;
 
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
-import com.opentae.data.daifa.examples.*;
+import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
 import com.shigu.daifa.bo.WaitSendBO;
-import com.shigu.daifa.vo.DaifaSendVO;
 import com.shigu.daifa.vo.DaifaWaitSendVO;
-import com.shigu.daifa.vo.SendOrderVO;
 import com.shigu.daifa.vo.WaitSendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.order.services.AfterSaleService;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,10 @@ import java.util.Map;
  */
 @Service
 public class DaifaWaitSendService {
-
+    @Autowired
+    TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    private AfterSaleService afterSaleService;
     private DaifaMultipleMapper daifaMultipleMapper;
 
     @Autowired
@@ -111,7 +116,7 @@ public class DaifaWaitSendService {
                     subVo.setRefundState(daifaWaitSendOrderSimple.getRefundStatus());
                     BeanUtils.copyProperties(daifaWaitSendOrderSimple, subVo);
                     subList.add(subVo);
-                    oids.add(new Long(daifaWaitSendOrderSimple.getChildOrderId()));
+                    oids.add(daifaWaitSendOrderSimple.getChildOrderId());
                 }
                 vo.setChildOrders(subList);
             }
@@ -130,12 +135,12 @@ public class DaifaWaitSendService {
 
                 for(DaifaWaitSendVO send:sends){
                     for(WaitSendOrderVO so:send.getChildOrders()){
-                        DaifaOrder o=map.get(new Long(so.getChildOrderId()));
+                        DaifaOrder o=map.get(so.getChildOrderId());
                         if(o!=null){
                             so.setChildServersFee(o.getSingleServicesFee());
                             so.setChildRemark(o.getOrderRemark());
                         }
-                        List<DaifaGgoodsTasks> t=taskMap.get(new Long(so.getChildOrderId()));
+                        List<DaifaGgoodsTasks> t=taskMap.get(so.getChildOrderId());
                         if(t!=null&&t.size()>0){
                             if(so.getRefundState()==2&&t.get(0).getEndStatus()==1){
                                 so.setRefundState(3);
@@ -152,5 +157,21 @@ public class DaifaWaitSendService {
         return pager;
     }
 
+    public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
+        if(MoneyUtil.StringToLong(refundMoney)<0){
+            throw new DaifaException("金额错误");
+        }
+        Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
+        DaifaOrder o=daifaOrderMapper.selectByPrimaryKey(childOrderId);
+        Long refundId;
+        try {
+            refundId =afterSaleService.refundHasItem(new Long(o.getOrderPartitionId()), MoneyUtil.StringToLong(refundMoney));
+        } catch (Exception e) {
+            takeGoodsIssueProcess.refundHasItemErrorRollback(childOrderId,status);
+            return JsonResponseUtil.error(e.getMessage());
+        }
+        takeGoodsIssueProcess.refundHasItem(refundId,new Long(o.getOrderPartitionId()),MoneyUtil.StringToLong(refundMoney));
+        return JsonResponseUtil.success();
+    }
 
 }
