@@ -54,6 +54,7 @@ public class AppAdvertService {
         for(ItemSpreadVO item:itemGoat){
             AppItemSpread sp= BeanMapper.map(item,AppItemSpread.class);
             sp.setGoodsId(item.getId());
+            sp.setText(item.getTitle());
             spreads.add(sp);
         }
         ItemSpreadResponse response=new ItemSpreadResponse();
