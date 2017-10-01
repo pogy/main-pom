@@ -23,11 +23,10 @@ import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.OSSUtil;
 import org.elasticsearch.common.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,12 +70,14 @@ public class PhoneGoodsUpService {
     private RegisterAndLoginService registerAndLoginService;
     @Autowired
     private MemberSimpleService memberSimpleService;
+    @Autowired
+    private RedisIO redisIO;
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
         UpToWxResponse resp = new UpToWxResponse();
         OpenException openException = new OpenException();
         //验证不通过
-        if (!registerAndLoginService.checkToken(request.getUserId(),request.getToken())) {
+        if (!request.getToken().equals(redisIO.get("phone_login_token" + request.getUserId()))) {
             openException.setErrMsg("tocken验证失败");
             resp.setException(openException);
             resp.setSuccess(false);

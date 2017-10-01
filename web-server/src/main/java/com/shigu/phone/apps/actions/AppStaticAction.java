@@ -10,11 +10,10 @@ import com.openJar.requests.app.SearchNavRequest;
 import com.openJar.requests.app.SitesRequest;
 import com.openJar.responses.app.CatResponse;
 import com.openJar.responses.app.SearchNavResponse;
-import com.openJar.responses.app.SitesResponse;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
+import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
 import com.shigu.phone.apps.services.AppStaticService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.search.services.CategoryInSearchService;
@@ -264,10 +263,21 @@ public class AppStaticAction {
         }else{
             cates=categoryInSearchService.selSubCates(request.getSid()+"", request.getType()==1?SearchCategory.CATEGORY:SearchCategory.MARKET,request.getWebSite());
         }
+        if (cates == null || cates.isEmpty()) {
+            response.setSuccess(true);
+            response.setNavs(null);
+            return JSONObject.fromObject(response);
+        }
         for(CateNav cate:cates){
             if(REMOVEIDS.contains(cate.getId())){
                 continue;
             }
+           if (request.getType() == 2){
+                if (PhoneSearchCategoryEnum.WOMAN_CATEGORY.getCateValues().contains(cate.getId()))continue;
+           }
+           if (request.getType() == 3){
+                if (PhoneSearchCategoryEnum.MAN_CATEGORY.getCateValues().contains(cate.getId()))continue;
+           }
             AppSearchNav ca=new AppSearchNav();
             ca.setName(cate.getText());
             ca.setNavId(new Long(cate.getId()));
