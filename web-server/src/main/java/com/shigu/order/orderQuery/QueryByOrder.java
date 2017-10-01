@@ -74,7 +74,7 @@ public class QueryByOrder extends OrderQuery {
         ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
         ItemOrderLogisticsExample itemOrderLogisticsExample = new ItemOrderLogisticsExample();
         //订单查询条件
-        ItemOrderExample.Criteria orderCriteria = itemOrderExample.createCriteria().andUserIdEqualTo(userId);
+        ItemOrderExample.Criteria orderCriteria = itemOrderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
         if (bo.getStatus() != null) {
             orderCriteria.andOrderStatusEqualTo(bo.getStatus());
         }
