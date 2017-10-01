@@ -2,11 +2,9 @@ package com.shigu.phone.services;
 
 import com.openJar.beans.app.AppItemUploaded;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
-import com.openJar.responses.app.ImgUploadResponse;
 import com.openJar.responses.app.InstockMyItemResponse;
 import com.openJar.responses.app.UpToWxResponse;
 import com.openJar.responses.app.UploadedItemResponse;
@@ -24,20 +22,13 @@ import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.tools.OSSUtil;
-import org.elasticsearch.common.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 类名：PhoneGoodsUpService
@@ -67,9 +58,8 @@ public class PhoneGoodsUpService {
     private MemberUserMapper memberUserMapper;
 
     @Autowired
-    private RegisterAndLoginService registerAndLoginService;
-    @Autowired
     private MemberSimpleService memberSimpleService;
+
     @Autowired
     private RedisIO redisIO;
 
@@ -145,39 +135,6 @@ public class PhoneGoodsUpService {
         itemUpRecordService.addItemUpRecord(bo);
         resp.setSuccess(true);
         return resp;
-    }
-
-    public ImgUploadResponse imgUpload(ImgUploadRequest request){
-
-        ImgUploadResponse response = new ImgUploadResponse();
-        if (StringUtils.isEmpty(request.getExtension()) || (request.getType() != 1 && request.getUserId() == null)) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("参数错误");
-            response.setException(openException);
-            response.setSuccess(false);
-            return response;
-        }
-
-        try {
-            String base64 = request.getFile();
-            byte[] file  = Base64.decode(base64);
-            String fileName = request.getType().toString()+"_";
-            if (request.getUserId() != null) {
-                fileName += request.getUserId()+"_";
-            }
-            fileName += UUID.randomUUID().toString().replace("-","");
-            fileName += request.getExtension();
-            OSSUtil.addItemPic(fileName,new ByteArrayInputStream(file));
-            response.setBody("上传成功");
-            response.setSuccess(true);
-            return  response;
-        } catch (Exception e) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("上传失败");
-            response.setException(openException);
-            response.setSuccess(false);
-            return response;
-        }
     }
 
     public UploadedItemResponse uploadedItem(UploadedItemRequest request) {

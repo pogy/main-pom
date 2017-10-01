@@ -73,4 +73,16 @@ public class AppUserAction {
     public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest) {
         return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
     }
+
+    /**
+     * 修改用户头像
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping("imgUpload")
+    @ResponseBody
+    public JSONObject upToWx(@Valid ImgUploadRequest request, BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneUserService.imgUpload(request));
+    }
 }

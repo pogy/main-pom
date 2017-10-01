@@ -35,13 +35,6 @@ public class AppGoodsUpAction {
         return JSONObject.fromObject(phoneGoodsUpService.upToWx(request));
     }
 
-
-    @RequestMapping("imgUpload")
-    @ResponseBody
-    public JSONObject upToWx(@Valid ImgUploadRequest request, BindingResult bindingResult) {
-        return JSONObject.fromObject(phoneGoodsUpService.imgUpload(request));
-    }
-
     @RequestMapping("uploadedItem")
     @ResponseBody
     public JSONObject uploadedItem(UploadedItemRequest request){

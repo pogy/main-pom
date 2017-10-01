@@ -23,12 +23,14 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.services.SendMsgService;
@@ -473,6 +475,27 @@ public class PhoneUserService {
         resp.setToken(token);
         resp.setSuccess(true);
         return resp;
+    }
+
+
+    public ImgUploadResponse imgUpload(ImgUploadRequest request){
+//        System.err.println(userBaseService.selUserInfo(request.getUserId()).getHeadUrl());
+        ImgUploadResponse response = new ImgUploadResponse();
+        try {
+            UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+            userInfoUpdate.setUserId(request.getUserId());
+            userInfoUpdate.setHeadUrl(request.getFile());
+            userBaseService.updateUserInfo(userInfoUpdate);
+        } catch (UpdateUserInfoException e) {
+//            e.printStackTrace();
+            OpenException openException = new OpenException();
+            openException.setErrMsg("头像上传失败");
+            response.setException(openException);
+            response.setSuccess(false);
+            return response;
+        }
+        response.setSuccess(true);
+        return response;
     }
 
 }
