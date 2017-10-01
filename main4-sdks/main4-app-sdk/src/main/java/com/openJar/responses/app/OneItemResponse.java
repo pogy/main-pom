@@ -19,8 +19,8 @@ public class OneItemResponse extends Response {
 	private List<String> imgSrcs;
 	//货号
 	private String goodsNo;
-	//发布时间
-	private Date createTime;
+	//发布时间yyyy-MM-dd
+	private String createTime;
 	//商品权益
 	private List<String> goodsLicenses;
 	//商品价格
@@ -73,12 +73,12 @@ public class OneItemResponse extends Response {
 		this.goodsNo=goodsNo;
 	}
 
-	public Date getCreateTime(){
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<String> getGoodsLicenses(){

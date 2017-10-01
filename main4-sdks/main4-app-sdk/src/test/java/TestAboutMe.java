@@ -77,7 +77,7 @@ public class TestAboutMe {
         System.out.println(response.getBody());
         System.out.println(""+response.getShopNum());
     }
-    //失败,缺少地址错误
+    //成功
     @Test
     public void  UpToWxRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
@@ -86,16 +86,18 @@ public class TestAboutMe {
         request.setWebSite("hz");
         request.setGoodsId(20065019L);
 //        request.setGoodsId(20466357L);
-        request.setToken("865c7c17a0374c11950f1946926d48b0");
+        request.setToken("8cf4e332ba4f431e959f8a78851ea09e");
         UpToWxResponse response = client.execute(request);
-        System.out.println(response.getBody());
+        System.out.println(response.isSuccess());
     }
-    //失败
+    //成功
     @Test
     public void  StoreCollectRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         StoreCollectRequest  request=new StoreCollectRequest ();
-        request.setUserId(1000085908L);
+//        request.setUserId(1000085908L);//收藏夹为空
+        request.setUserId(9968L);
+//        request.setIndex(2);
         StoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -205,12 +207,13 @@ public class TestAboutMe {
         System.out.println(response.getUserNick()+response.getImgsrc()+response.getToken()+response.getImSeller()+response.getUserId());
         Assert.assertTrue(response.isSuccess());
     }
-    //未知
+    //成功
     @Test
     public void  OneItemRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         OneItemRequest request=new OneItemRequest();
-        request.setItemId(6000025358001L);
+//        request.setItemId(6000025358001L);//无商品
+        request.setItemId(20060755L);//有商品
         OneItemResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
