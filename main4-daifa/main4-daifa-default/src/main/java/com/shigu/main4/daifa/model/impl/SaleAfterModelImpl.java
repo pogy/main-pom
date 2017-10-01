@@ -454,7 +454,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         map.put("refundId",sub.getRefundId());
         map.put("num",num);
         jsonObject.put("data",map);
-        jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
+        jsonObject.put("msg",StringUtils.isEmpty(reason)?DaifaSendMqEnum.shopRefuse.getMsg():reason);
         jsonObject.put("status","true");
         mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+sub.getRefundId(),
                 DaifaSendMqEnum.shopRefuse.getMessageTag(), jsonObject.toString());
