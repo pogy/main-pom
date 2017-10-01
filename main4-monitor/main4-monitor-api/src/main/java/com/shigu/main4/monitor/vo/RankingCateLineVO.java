@@ -1,6 +1,7 @@
 package com.shigu.main4.monitor.vo;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * 类名：RankingCateLineVO
@@ -12,12 +13,22 @@ import java.io.Serializable;
  */
 public class RankingCateLineVO implements Serializable {
 
+    //排名
+    private Integer rank;
     //  统计条上的文本
     private String text;
     //  统计条上的数量
     private Long totalNum;
     //  统计条上升名次
     private Integer upPos;
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
 
     public String getText() {
         return text;
@@ -41,5 +52,13 @@ public class RankingCateLineVO implements Serializable {
 
     public void setUpPos(Integer upPos) {
         this.upPos = upPos;
+    }
+
+    public static class RankingCateComparator implements Comparator<RankingCateLineVO> {
+
+        @Override
+        public int compare(RankingCateLineVO o1, RankingCateLineVO o2) {
+            return (int) (o1.getTotalNum() - o2.getTotalNum());
+        }
     }
 }
