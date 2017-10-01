@@ -183,7 +183,7 @@ public class DfMessageListener implements MessageListener {
 
     public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
         ShopRefuseMessage data = msg.getData();
-        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum());
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum(),msg.getMsg());
     }
 
     public void repriceApply(BaseMessage<RepriceApplyMessage> msg) {
