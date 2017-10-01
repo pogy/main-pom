@@ -31,6 +31,12 @@ public class RefundLogVO implements Serializable{
      */
     private String logDesc;
 
+    private Integer afterSaleType;
+
+    private String refundCost;
+
+
+
     /**
      * 获取 用户类型: 0平台客服，1普通用户
      */

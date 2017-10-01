@@ -107,7 +107,7 @@ public interface RefundItemOrder {
      * 退货失败
      * @param num 退失败数量
      */
-    void shopRefuse(Integer num);
+    void shopRefuse(Integer num, String reason);
 
     /**
      * 已拿未发退款
