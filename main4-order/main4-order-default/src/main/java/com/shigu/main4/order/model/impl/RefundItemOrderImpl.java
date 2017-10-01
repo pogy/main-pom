@@ -439,7 +439,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         ItemRefundLog refundLog = new ItemRefundLog();
         refundLog.setRefundId(this.refundId);
         refundLog.setFromStatus(this.refundinfo().getRefundState().refundStatus);
-        refundLog.setToStatus(this.refundinfo().getRefundState().refundStatus);
+        refundLog.setToStatus(RefundStateEnum.NOT_REFUND.refundStatus);
         refundLog.setImBuyer(false);
         refundLog.setCreateTime(new Date());
         refundLog.setMsg("档口退货失败[" + num + "]件:"+reason);

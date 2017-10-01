@@ -1,5 +1,7 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -43,7 +45,8 @@ public class AfterSaleShowService {
     private PreSaleShowService preSaleShowService;
     @Autowired
     private OrderManageProcess orderManageProcess;
-
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
     @Autowired
     private SaleAfterProcess saleAfterProcess;
     @Autowired
@@ -100,7 +103,7 @@ public class AfterSaleShowService {
         if (shStatusEnum == null || shStatusEnum.shStatus == 2) {
             return null;
         }
-
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
@@ -113,7 +116,7 @@ public class AfterSaleShowService {
         //退款信息编号和钱修饰
         AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
         //申请信息修饰
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist,itemOrderRefund);
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
             case REFUND_FAIL: {
@@ -210,6 +213,7 @@ public class AfterSaleShowService {
         if (shStatusEnum == null || shStatusEnum.shStatus == 1) {
             return null;
         }
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AbstractRefundVo vo = new OrderExchangeVo();
@@ -222,7 +226,7 @@ public class AfterSaleShowService {
         //退款信息编号和钱修饰
         AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
         //申请信息修饰
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist,itemOrderRefund);
         AbstractRefundVo von = null;
 
         switch (afterSaleStatusVO.getAfterSaleStatus()) {

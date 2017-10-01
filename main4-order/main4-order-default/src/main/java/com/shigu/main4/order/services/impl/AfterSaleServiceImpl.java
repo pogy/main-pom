@@ -323,6 +323,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             vo.setUserType(o.getImBuyer() ? UserTypeEnum.BUYER : UserTypeEnum.CUSTOM_SERVICE);
             vo.setHeadImgUrl(o.getImBuyer() ? "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/buyer_42px.jpg" : "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/seller_42px.jpg");
             vo.setUserNick(o.getImBuyer() ? "你" : "卖家");
+            vo.setToStatus(o.getToStatus());
             return vo;
         }).collect(Collectors.toList());
     }
