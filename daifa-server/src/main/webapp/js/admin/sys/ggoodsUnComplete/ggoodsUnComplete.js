@@ -30,6 +30,7 @@ function ggoodsUnComplete(sellerId,createDate){
         function(data){
         if(data.result=="success"){
             $$.alert("修改完成");
+            location.reload();
         }else{
             $$.alert("修改失败,"+data.msg);
         }
