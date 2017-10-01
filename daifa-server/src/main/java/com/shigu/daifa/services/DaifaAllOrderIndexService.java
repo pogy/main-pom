@@ -229,6 +229,7 @@ public class DaifaAllOrderIndexService {
 
     public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
+        daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
     }
 
