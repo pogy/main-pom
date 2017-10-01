@@ -39,7 +39,8 @@ public class TestAboutMe {
     public void ItemSpreadRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSpreadRequest request=new ItemSpreadRequest();
-        request.setSpreadCode("QZGG");
+        request.setSpreadCode("MAN-TJDK");
+//        request.setSpreadCode("QZGG");
         request.setWebSite("hz");
         ItemSpreadResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -296,7 +297,7 @@ public class TestAboutMe {
         request.setUserId(1000085908l);
         //原头像地址  http://imgs.571xz.net/mall/file/1505284291244.jpg
         request.setFile("http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/file/0000f74780d536ba489cc897e64d6b39.jpg");
-        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
+//        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
 
         System.out.println(request.testApiUrl());
         ImgUploadResponse response = client.execute(request);
