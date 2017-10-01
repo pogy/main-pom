@@ -426,7 +426,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     @Override
-    public void shopRefuse(Integer num) {
+    public void shopRefuse(Integer num, String reason) {
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         if (itemOrderRefund.getFailNumber() >= num) {
             return;
@@ -442,10 +442,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refundLog.setToStatus(this.refundinfo().getRefundState().refundStatus);
         refundLog.setImBuyer(false);
         refundLog.setCreateTime(new Date());
-        refundLog.setMsg("档口退货失败[" + num + "]件");
+        refundLog.setMsg("档口退货失败[" + num + "]件:"+reason);
         itemRefundLogMapper.insertSelective(refundLog);
         if (allRefundFailIs) {
-            String failMessage = "退货全部失败";
+            String failMessage = "退货全部失败"+reason;
             error(failMessage);
         }
 
