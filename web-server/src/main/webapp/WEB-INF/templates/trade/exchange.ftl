@@ -726,7 +726,7 @@ var expressCreateTime = ${express.createTime!};
                 ${record.recordContent!}<br>
                     <#if record.afterSaleType == 1>
                         <#if record.afterSaleInfoShowIs == true>
-                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
+                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
                         </#if>
                     </#if>
                 </#if>
@@ -779,7 +779,7 @@ var expressCreateTime = ${express.createTime!};
                 ${record.recordContent!}<br>
                     <#if record.afterSaleType == 1>
                         <#if record.afterSaleInfoShowIs == true>
-                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
+                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
                         </#if>
                     </#if>
                 </#if>
