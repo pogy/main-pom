@@ -279,7 +279,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="refundDesc">
             <label>换货说明：</label>
-            <textarea ></textarea>
+            <textarea placeholder="最多16个字符" maxlength="16"></textarea>
         </li>
         <li>
 
