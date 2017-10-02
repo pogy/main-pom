@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -107,7 +108,7 @@ public class AfterSaleShowService {
             return null;
         }
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
-        SubAfterSaleSimpleOrderVO subAfterSaleSimpleOrderVO = afterSaleService.subAfterSaleSimpleOrder(itemOrderRefund.getSoid());
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(itemOrderRefund.getSoid());
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
@@ -189,9 +190,10 @@ public class AfterSaleShowService {
             returnmap.replace("refundStateNum", 3);
             returnmap.replace("returnState", 1);
         }
-        returnmap.put("childOrderCode",subAfterSaleSimpleOrderVO.getGoodsNo());
-        returnmap.put("childOrderColor",subAfterSaleSimpleOrderVO.getColor());
-        returnmap.put("childOrderSize",subAfterSaleSimpleOrderVO.getSize());
+        returnmap.put("childOrderCode",itemOrderSub.getGoodsNo());
+        returnmap.put("childOrderColor",itemOrderSub.getColor());
+        returnmap.put("childOrderSize",itemOrderSub.getSize());
+        returnmap.put("afterGoodsNum",itemOrderRefund.getNumber());
         return returnmap;
 
 
