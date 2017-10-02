@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 @Service
@@ -22,20 +23,21 @@ public class DaifaFinanceService {
         }else{
             day= DateUtil.dateToString(DateUtil.stringToDate(time,DateUtil.patternA),DateUtil.patternB);
         }
+
         //拿货费用
-        String takeFee=daifaSelFinaceMapper.selectTodayTakeFee(day,sellerId);
+        String takeFee=toDouble(daifaSelFinaceMapper.selectTodayTakeFee(day,sellerId));
 
         //未拿费
-        String notTakeFee=daifaSelFinaceMapper.selectTodayNotTakeFee(day,sellerId);
+        String notTakeFee=toDouble(daifaSelFinaceMapper.selectTodayNotTakeFee(day,sellerId));
 
         //代发费
-        String serverFee=daifaSelFinaceMapper.selectTodayServerFee(day,sellerId);
+        String serverFee=toDouble(daifaSelFinaceMapper.selectTodayServerFee(day,sellerId));
 
         //快递费
-        String postFee=daifaSelFinaceMapper.selectTodayPostFee(day,sellerId);
+        String postFee=toDouble(daifaSelFinaceMapper.selectTodayPostFee(day,sellerId));
 
         //退款
-        String refundFee=daifaSelFinaceMapper.selectTodayRefundFee(day,sellerId);
+        String refundFee=toDouble(daifaSelFinaceMapper.selectTodayRefundFee(day,sellerId));
 
         //需要费用
         String totalFee= MoneyUtil.dealPrice(MoneyUtil.StringToLong(takeFee)+MoneyUtil.StringToLong(postFee));
@@ -49,5 +51,15 @@ public class DaifaFinanceService {
         vo.setRefundFee(refundFee);
         return vo;
 
+    }
+
+    private String toDouble(String fee){
+        try {
+            Double d=new Double(fee);
+            DecimalFormat df = new DecimalFormat("0.00");
+            return df.format(d);
+        } catch (Exception e) {
+            return "0.00";
+        }
     }
 }
