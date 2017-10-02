@@ -41,14 +41,14 @@ public class RefundLogDecorate extends RefundVoDecorate {
             log.setUserType(logVO.getUserType().type);
             log.setUserHeadimg(logVO.getHeadImgUrl());
             log.setAfterSaleType(itemOrderRefund.getType()==2?1:itemOrderRefund.getType()==3?2:null);
-            if (itemOrderRefund.getUserShow() != null && !itemOrderRefund.getUserShow() && (logVO.getToStatus()==4)) {
-                log.setAfterSaleInfoShowIs(false);
-            }else {
+            if (logVO.getToStatus()==0) {
                 log.setAfterSaleInfoShowIs(true);
+            }else {
+                log.setAfterSaleInfoShowIs(false);
             }
             alist.add(log);
         }
-        map.put("afterSaleCost",itemOrderRefund.getHopeMoney());
+        map.put("afterSaleCost",String.format("%.2f",itemOrderRefund.getHopeMoney()*0.01));
         map.put("failReason",itemOrderRefund.getFailMsg());
         map.put("failNum",itemOrderRefund.getFailNumber());
         map.put("applylist",alist);

@@ -107,6 +107,7 @@ public class AfterSaleShowService {
             return null;
         }
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        SubAfterSaleSimpleOrderVO subAfterSaleSimpleOrderVO = afterSaleService.subAfterSaleSimpleOrder(itemOrderRefund.getSoid());
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
@@ -188,7 +189,10 @@ public class AfterSaleShowService {
             returnmap.replace("refundStateNum", 3);
             returnmap.replace("returnState", 1);
         }
-
+        returnmap.put("childOrderCode",subAfterSaleSimpleOrderVO.getGoodsNo());
+        returnmap.put("childOrderColor",subAfterSaleSimpleOrderVO.getColor());
+        returnmap.put("childOrderSize",subAfterSaleSimpleOrderVO.getSize());
+        returnmap.put("afterGoodsNum",subAfterSaleSimpleOrderVO.getNum());
         return returnmap;
 
 
