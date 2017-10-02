@@ -192,6 +192,7 @@ public class AfterSaleShowService {
         returnmap.put("childOrderCode",subAfterSaleSimpleOrderVO.getGoodsNo());
         returnmap.put("childOrderColor",subAfterSaleSimpleOrderVO.getColor());
         returnmap.put("childOrderSize",subAfterSaleSimpleOrderVO.getSize());
+        returnmap.put("afterGoodsNum",subAfterSaleSimpleOrderVO.getNum());
         return returnmap;
 
 
