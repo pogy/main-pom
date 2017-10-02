@@ -310,7 +310,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="refundDesc">
             <label>退款说明：</label>
-            <textarea maxlength="20" placeholder="最多填写20个字符"></textarea>
+            <textarea maxlength="16" placeholder="最多填写16个字符"></textarea>
         </li>
         <li>
 
