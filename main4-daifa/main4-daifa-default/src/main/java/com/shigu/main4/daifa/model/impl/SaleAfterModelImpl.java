@@ -97,6 +97,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //申请的售后的件数大于可申请售后的数量
             throw new DaifaException("申请的售后的件数大于可申请售后的数量");
         }
+
+        List<Long> afterOids=BeanMapper.getFieldList(orders,"dfOrderId",Long.class);
+
         DaifaAfterSale after = new DaifaAfterSale();
         after.setDfTradeId(orders.get(0).getDfTradeId());
         after = daifaAfterSaleMapper.selectOne(after);
@@ -134,7 +137,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setRemark1(null);
                 sub.setRemark2(null);
                 sub.setSellerId(trade.getSellerId());
-                if (o.getOrderCode().equals(orderCode.toString()) && i < num) {
+                if (afterOids.contains(o.getDfOrderId()) && i < num) {
                     i++;
                     sub.setRefundId(refundId);
                     sub.setAfterType(afterType);
@@ -573,8 +576,17 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
             DaifaOrder o=new DaifaOrder();
             if(subs.get(0).getAfterType()==1){
+                DaifaAfterMoneyConsultExample daifaAfterMoneyConsultExample = new DaifaAfterMoneyConsultExample();
+                daifaAfterMoneyConsultExample.createCriteria().andRefundIdEqualTo(subs.get(0).getRefundId());
+                daifaAfterMoneyConsultExample.setOrderByClause("after_consult_id desc");
+                List<DaifaAfterMoneyConsult> daifaAfterMoneyConsults = daifaAfterMoneyConsultMapper.selectByExample(daifaAfterMoneyConsultExample);
                 o.setReturnGoodsStatus(2);
                 o.setReturnGoodsFinishTime(new Date());
+                if(daifaAfterMoneyConsults.size()==0){
+                    o.setReturnGoodsFee(subs.get(0).getStoreReturnMoney());
+                }else{
+                    o.setReturnGoodsFee(daifaAfterMoneyConsults.get(0).getConsultMoney());
+                }
             }else{
                 o.setChangeStatus(2);
                 o.setChangeTime(new Date());

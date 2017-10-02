@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.daifa.interfaces.DaifaSelFinaceMapper">
 
-    <select id="selectTodayTakeGoods" resultType="java.lang.String">
-        select sum(t.single_pi_price) from(
+    <select id="selectTodayTakeFee" resultType="java.lang.String">
+        select ifnull(sum(t.single_pi_price),0) from(
             select
               t1.df_order_id,
               t1.single_pi_price
@@ -34,9 +34,9 @@
         )t
     </select>
 
-    <select id="selectTodayTakeGoods" resultType="java.lang.String">
+    <select id="selectTodayNotTakeFee" resultType="java.lang.String">
         SELECT
-          sum(t.single_pi_price)
+          ifnull(sum(t.single_pi_price),0)
         FROM
         (
             SELECT
@@ -54,8 +54,66 @@
     </select>
 
     <select id="selectTodayServerFee" resultType="java.lang.String">
-        
+        SELECT
+            ifnull(sum(t.services_fee),0)
+        FROM
+            (
+                SELECT
+                    t1.df_trade_id,
+                    t1.services_fee
+                FROM
+                    daifa_trade t1
+                LEFT JOIN daifa_order t2 ON t1.df_trade_id = t2.df_trade_id
+                WHERE
+                    t1.seller_id =${sellerId}
+                AND t2.refund_status = 0
+                AND date_format(t1.create_time, "%Y%m%d") =${day}
+                GROUP BY
+                    df_trade_id
+            ) t
 
     </select>
+
+    <select id="selectTodayPostFee" resultType="java.lang.String">
+        SELECT
+            ifnull(sum(express_fee),0)
+        FROM
+            daifa_send
+        WHERE
+            create_date = ${day}
+        AND seller_id = ${sellerId}
+    </select>
+
+    <select id="selectTodayRefundFee" resultType="java.lang.String">
+        SELECT
+            IFNULL(sum(t.rf), 0)
+        FROM
+            (
+                SELECT
+                    t1.*,
+                IF (
+                    t1.return_goods_finish_time IS NOT NULL,
+                    return_goods_fee,
+                    single_pi_price
+                ) rf,
+                IFNULL(
+                    t1.return_goods_finish_time,
+                    t1.refund_finish_time
+                ) rt
+                FROM
+                    daifa_order t1,
+                    daifa_trade t2
+                WHERE
+                    t1.df_trade_id = t2.df_trade_id
+                AND t2.seller_id = ${sellerId}
+                AND (
+                    t1.return_goods_finish_time IS NOT NULL
+                    OR t1.refund_finish_time IS NOT NULL
+                )
+            ) t
+        WHERE
+            date_format(t.rt, "%Y%m%d") = ${day}
+    </select>
+
 
 </mapper>
