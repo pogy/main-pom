@@ -48,8 +48,14 @@ public class AppGoodsSearchAction {
         if (StringUtils.isEmpty(request.getOrderBy())) {
             request.setOrderBy(SearchOrderBy.COMMON.getValue());
         }
-        if (request.getWebSite() == null) {
+        if (StringUtils.isEmpty(request.getWebSite())) {
             request.setWebSite("hz");
+        }
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null) {
+            request.setSize(15);
         }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
