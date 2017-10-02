@@ -79,7 +79,7 @@ public class DaifaWaitSendService {
         List<DaifaWaitSendVO> sends = new ArrayList<>();
         int count = daifaWaitSendMapper.selectWaitSendsCount(daifaSellerId,
                 bo.getOrderId(),
-                StringUtils.hasText(bo.getTelphone())?bo.getTelphone():null,
+                StringUtils.hasText(bo.getTelephone())?bo.getTelephone():null,
                 bo.getBuyerId(),
                 StringUtils.hasText(bo.getStartTime())?DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"):null,
                 StringUtils.hasText(bo.getEndTime())?DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"):null,
@@ -93,7 +93,7 @@ public class DaifaWaitSendService {
 //            List<DaifaWaitSendSimple> daifaWaitSendSimples = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaWaitSendSimple.class);
             List<DaifaWaitSendSimple> daifaWaitSendSimples=daifaWaitSendMapper.selectWaitSends(daifaSellerId,
                     bo.getOrderId(),
-                    StringUtils.hasText(bo.getTelphone())?bo.getTelphone():null,
+                    StringUtils.hasText(bo.getTelephone())?bo.getTelephone():null,
                     bo.getBuyerId(),
                     StringUtils.hasText(bo.getStartTime())?DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"):null,
                     StringUtils.hasText(bo.getEndTime())?DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"):null,

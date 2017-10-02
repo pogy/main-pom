@@ -94,7 +94,7 @@ public class DaifaAllOrderIndexService {
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
-            ce.andDfTradeIdLike("%" + bo.getOrderId());
+            ce.andCustomSql("(df_trade_id like('$"+bo.getOrderId()+"') or trade_code="+bo.getOrderId()+")");
         }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");

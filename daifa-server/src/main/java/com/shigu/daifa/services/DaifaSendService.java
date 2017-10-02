@@ -127,8 +127,8 @@ public class DaifaSendService {
         if (StringUtils.hasText(bo.getReceiver())) {
             ce.andReceiverNameEqualTo(bo.getReceiver());
         }
-        if (StringUtils.hasText(bo.getTelphone())) {
-            ce.andReceiverPhoneEqualTo(bo.getTelphone());
+        if (StringUtils.hasText(bo.getTelephone())) {
+            ce.andReceiverPhoneEqualTo(bo.getTelephone());
         }
         if (bo.getBuyerId() != null) {
             ce.andBuyerIdEqualTo(bo.getBuyerId());
