@@ -76,7 +76,7 @@ public class DaifaCustomerService {
             salece.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
         }
         if (StringUtils.hasText(bo.getTelphone())) {
-            salece.andReceiverMobileEqualTo(bo.getTelphone());
+            salece.andReceiverPhoneEqualTo(bo.getTelphone());
         }
         if (StringUtils.hasText(bo.getReceiver())) {
             salece.andReceiverNameEqualTo(bo.getReceiver());
