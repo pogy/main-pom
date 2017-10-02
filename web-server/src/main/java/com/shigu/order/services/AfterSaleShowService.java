@@ -61,6 +61,9 @@ public class AfterSaleShowService {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
+        if (20<bo.getRefundReason().length()+(bo.getRefundDesc()==null?4:bo.getRefundDesc().length())) {
+            throw new JsonErrException("申请理由过长");
+        }
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
                 ,refundMoney
                 , bo.getRefundReason(), bo.getRefundDesc());
@@ -295,6 +298,9 @@ public class AfterSaleShowService {
     }
 
     public Long exchangeApply(AfterSaleBo bo) throws OrderException {
+        if ((bo.getRefundDesc()==null?4:bo.getRefundDesc().length())+bo.getRefundReason().length()>20) {
+            throw new OrderException("申请原因过长");
+        }
         return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundReason(), bo.getRefundDesc());
     }
 
