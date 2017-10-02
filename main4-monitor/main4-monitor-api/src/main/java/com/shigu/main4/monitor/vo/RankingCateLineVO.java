@@ -58,7 +58,7 @@ public class RankingCateLineVO implements Serializable {
 
         @Override
         public int compare(RankingCateLineVO o1, RankingCateLineVO o2) {
-            return (int) (o1.getTotalNum() - o2.getTotalNum());
+            return (int) (o2.getTotalNum() - o1.getTotalNum());
         }
     }
 }

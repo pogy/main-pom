@@ -9,6 +9,8 @@ import com.opentae.data.mall.examples.ShiguTaobaocatExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
 import com.shigu.main4.tools.RedisIO;
@@ -54,6 +56,21 @@ public class CatDataInit {
 
     String WOMAN_CAT_UP_COUNT_INDEX = "woman_cat_upload_count_index_";
 
+    @Autowired
+    RankingSimpleService rankingSimpleService;
+
+    @Test
+    public void getListTest(){
+        try {
+            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L, 0);
+            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L, 0);
+            System.out.println(womanList);
+            System.out.println(manList);
+        } catch (Main4Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 获取期次时间戳
      * @param prePemNum 往前推期次
@@ -73,7 +90,7 @@ public class CatDataInit {
     public void filledCidScore(){
         int pem = 0;
         List<RankingCateLineVO> rankingCateLineVOS = Lists.newArrayList();
-        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(16L))) {
+        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(30L))) {
             Long uploadCount = redisIO.get(getPreFix(CAT_UP_COUNT_INDEX,pem)+shiguTaobaocat.getCid(), Long.class);
             RankingCateLineVO lineVO = new RankingCateLineVO();
             if (uploadCount == null) {
@@ -88,13 +105,13 @@ public class CatDataInit {
         Map<String,RankingCateLineVO> resultRankingMap = new LinkedHashMap<>(3);
 
         for (RankingCateLineVO rankingCateLineVO : rankingCateLineVOS) {
-            if (i++>3) {
+            if (++i>3) {
                 break;
             }
             rankingCateLineVO.setRank(i);
             resultRankingMap.put(rankingCateLineVO.getText(),rankingCateLineVO);
         }
-        redisIO.putTemp(getPreFix(WOMAN_CAT_UP_COUNT_INDEX,pem),resultRankingMap,3600*24*180);
+        redisIO.putTemp(getPreFix(MAN_CAT_UP_COUNT_INDEX,pem),resultRankingMap,3600*24*180);
     }
 
     public List<ShiguTaobaocat> cats(List<Long> parentCids) {
