@@ -22,7 +22,7 @@ public class AppItemSpread extends OpenBean {
 	//档口号
 	private String storeNum;
 	//描述
-	private String text;
+	private String title;
 	public String getGoodsId(){
 		return goodsId;
 	}
@@ -71,11 +71,11 @@ public class AppItemSpread extends OpenBean {
 		this.storeNum=storeNum;
 	}
 
-	public String getText() {
-		return text;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
