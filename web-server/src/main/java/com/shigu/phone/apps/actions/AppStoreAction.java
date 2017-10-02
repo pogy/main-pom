@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
+import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.services.PhoneStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
@@ -89,9 +90,9 @@ public class AppStoreAction {
      * @param request
      * @return
      */
-    @RequestMapping("doStoreCollectRequest")
+    @RequestMapping("doStoreCollect")
     @ResponseBody
-    public JSONObject doStoreCollectRequest(@Valid DoStoreCollectRequest request, BindingResult bindingResult) {
+    public JSONObject doStoreCollectRequest(@Valid DoStoreCollectRequest request, BindingResult bindingResult)  {
         return JSONObject.fromObject(phoneStoreService.doStoreCollect(request));
     }
 
