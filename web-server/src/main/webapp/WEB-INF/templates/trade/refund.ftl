@@ -418,9 +418,11 @@ var refundNum = '${refundNumber!}';
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
                     
+                    <#if record.afterSaleInfoShowIs == true>
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
+                    </#if>
                     
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
@@ -905,9 +907,11 @@ var refundId = '${refundId!}';
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
                     
+                    <#if record.afterSaleInfoShowIs == true>
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
+                    </#if>
                     
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
@@ -958,9 +962,11 @@ var refundId = '${refundId!}';
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
                     
+                    <#if record.afterSaleInfoShowIs == true>
                     退款类型：退货退款<br>
                     退款金额：${afterSaleCost!}<br>
                     退款商品：（货号：${childOrderCode!}&nbsp;&nbsp;&nbsp;颜色：${childOrderColor!}&nbsp;&nbsp;&nbsp;尺码：${childOrderSize!}&nbsp;&nbsp;&nbsp;件数：${afterGoodsNum!}）
+                    </#if>
                     
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
