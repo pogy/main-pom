@@ -48,7 +48,7 @@ public class RefundLogDecorate extends RefundVoDecorate {
             }
             alist.add(log);
         }
-        map.put("afterSaleCost",itemOrderRefund.getHopeMoney());
+        map.put("afterSaleCost",String.format("%.2f",itemOrderRefund.getHopeMoney()*0.01));
         map.put("failReason",itemOrderRefund.getFailMsg());
         map.put("failNum",itemOrderRefund.getFailNumber());
         map.put("applylist",alist);
