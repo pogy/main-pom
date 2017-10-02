@@ -86,6 +86,10 @@ public class CdnItem implements Serializable{
      * 在售状态,true为在售
      */
     private Boolean onsale;
+    /**
+     * 子类目Id
+     */
+    private Long cid;
 
     public Boolean getOnsale() {
         return onsale;
@@ -237,5 +241,13 @@ public class CdnItem implements Serializable{
 
     public void setFloorId(Long floorId) {
         this.floorId = floorId;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 }

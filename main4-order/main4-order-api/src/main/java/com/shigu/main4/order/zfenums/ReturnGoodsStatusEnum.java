@@ -11,6 +11,7 @@ public enum ReturnGoodsStatusEnum {
     REFUND_MONEY_CHANGED(4),//退款金额已修改               售前退款类型下无次状态
     REFUSE_MONEY_CHANGED(5),//不同意金额修改               售前退款类型下无次状态
     RETURN_ENT(6),//退(换)货完成                             售前退款类型下为"退款完成"
+    REFUND_FAIL(7),//售后失败
     ;
     public final int returnGoodsStatus;
 

@@ -9,16 +9,13 @@ import java.util.Date;
  * Created by zf on 2017/7/17.
  */
 public class OrderBO implements Serializable{
+    //订单条件
     /**
      * 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */
     //private MainOrderStatusEnum status;
 
     private Integer status;
-    /**
-     * 货号
-     */
-    private String goodsNo;
     /**
      * 开始时间
      */
@@ -34,6 +31,20 @@ public class OrderBO implements Serializable{
      */
     private Long orderId;
     /**
+     * 搜索订单类型 1:淘宝
+     */
+    private Integer orderType;
+    //子单条件
+    /**
+     * 货号
+     */
+    private String goodsNo;
+    /**
+     * 缺货数量
+     */
+    private Integer stockoutNum;
+    //物流条件
+    /**
      * 收件人
      */
     private String receiver;
@@ -42,26 +53,13 @@ public class OrderBO implements Serializable{
      */
     private String telePhone;
     /**
+     * 页长
+     */
+    private Integer pageSize;
+    /**
      * 页码
      */
     private Integer page;
-    /**
-     * 页长
-     */
-    private Integer stockoutNum;
-
-    /**
-     * 缺货数量
-     */
-    private Integer pageSize;
-
-    /**
-     * 搜索订单类型 1:淘宝
-     */
-    private Integer orderType;
-
-
-
     /**
      * 获取 货号
      */

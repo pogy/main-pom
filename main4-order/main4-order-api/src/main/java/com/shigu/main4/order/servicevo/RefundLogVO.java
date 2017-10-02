@@ -32,6 +32,23 @@ public class RefundLogVO implements Serializable{
     private String logDesc;
 
     /**
+     * 售后状态
+     */
+    private Integer toStatus;
+    /**
+     * 信息是否对客户可见
+     */
+    private Boolean afterSaleInfoShowIs;
+
+    public Boolean getAfterSaleInfoShowIs() {
+        return afterSaleInfoShowIs;
+    }
+
+    public void setAfterSaleInfoShowIs(Boolean afterSaleInfoShowIs) {
+        this.afterSaleInfoShowIs = afterSaleInfoShowIs;
+    }
+
+    /**
      * 获取 用户类型: 0平台客服，1普通用户
      */
     public UserTypeEnum getUserType() {
@@ -93,5 +110,13 @@ public class RefundLogVO implements Serializable{
      */
     public void setLogDesc(String logDesc) {
         this.logDesc = logDesc;
+    }
+
+    public Integer getToStatus() {
+        return toStatus;
+    }
+
+    public void setToStatus(Integer toStatus) {
+        this.toStatus = toStatus;
     }
 }

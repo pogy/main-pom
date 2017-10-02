@@ -1,9 +1,13 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.*;
@@ -18,6 +22,7 @@ import com.shigu.order.vo.SubRefundOrderVO;
 import com.shigu.zf.utils.PriceConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -40,7 +45,10 @@ public class AfterSaleShowService {
     private PreSaleShowService preSaleShowService;
     @Autowired
     private OrderManageProcess orderManageProcess;
-
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
+    @Autowired
+    private SaleAfterProcess saleAfterProcess;
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
@@ -53,6 +61,9 @@ public class AfterSaleShowService {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
+        if (20<bo.getRefundReason().length()+(bo.getRefundDesc()==null?4:bo.getRefundDesc().length())) {
+            throw new JsonErrException("申请理由过长");
+        }
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
                 ,refundMoney
                 , bo.getRefundReason(), bo.getRefundDesc());
@@ -95,7 +106,7 @@ public class AfterSaleShowService {
         if (shStatusEnum == null || shStatusEnum.shStatus == 2) {
             return null;
         }
-
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
@@ -108,9 +119,13 @@ public class AfterSaleShowService {
         //退款信息编号和钱修饰
         AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
         //申请信息修饰
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist,itemOrderRefund);
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
+            case REFUND_FAIL: {
+                //页面3-4
+                break;
+            }
             case RETURN_ENT: {
                 //页面4
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
@@ -201,6 +216,7 @@ public class AfterSaleShowService {
         if (shStatusEnum == null || shStatusEnum.shStatus == 1) {
             return null;
         }
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AbstractRefundVo vo = new OrderExchangeVo();
@@ -213,7 +229,7 @@ public class AfterSaleShowService {
         //退款信息编号和钱修饰
         AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
         //申请信息修饰
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist,itemOrderRefund);
         AbstractRefundVo von = null;
 
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
@@ -239,6 +255,10 @@ public class AfterSaleShowService {
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
                 von = new RefundExpressDetorate(vo5, null);
+                break;
+            }
+            case REFUND_FAIL:{
+                //换货失败
                 break;
             }
             //3
@@ -278,6 +298,9 @@ public class AfterSaleShowService {
     }
 
     public Long exchangeApply(AfterSaleBo bo) throws OrderException {
+        if ((bo.getRefundDesc()==null?4:bo.getRefundDesc().length())+bo.getRefundReason().length()>20) {
+            throw new OrderException("申请原因过长");
+        }
         return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundReason(), bo.getRefundDesc());
     }
 
@@ -298,6 +321,18 @@ public class AfterSaleShowService {
         }
         afterSaleService.agreeOrRejectRefundPrice(refundId, isAgree);
 
+    }
+
+    /**
+     * 换货完成
+     * @param refundId
+     * @param userId
+     * @throws OrderException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void finishExchange(Long refundId,Long userId) throws OrderException, DaifaException {
+        afterSaleService.finishExchange(refundId,userId);
+        saleAfterProcess.changeEnt(refundId);
     }
 
     //修改快递和提教快递判断处理

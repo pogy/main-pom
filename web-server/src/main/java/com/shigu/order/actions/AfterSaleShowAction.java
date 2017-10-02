@@ -2,6 +2,7 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +37,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("order/")
 public class AfterSaleShowAction {
+
     @Autowired
     private AfterSaleShowService afterSaleShowService;
 
@@ -67,13 +71,15 @@ public class AfterSaleShowAction {
     public String refund(@RequestParam(value = "childOrderId",required = false)String childOrderId
             , @RequestParam(value = "refundId",required = false)String refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
-
+        List<String> stateList= Arrays.asList("1、买家申请退货退款","2、等待处理退货申请","3、买家退货","4、退货退款完成");
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refundChildOrder(childOrderId);
+            map.put("refundDesc",stateList);
             model.addAllAttributes(map);
             return "trade/refund";
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refund(refundId,express);
+            map.put("refundDesc",stateList);
             model.addAllAttributes(map);
             return "trade/refund";
         }
@@ -92,13 +98,16 @@ public class AfterSaleShowAction {
     public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
             , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
+        List<String> stateList= Arrays.asList("1、买家申请换货","2、等待处理换货申请","3、换货完成");
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
+            map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
             return "trade/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
+            map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
             return "trade/exchange";
         }
@@ -231,6 +240,14 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("缺少参数同意");
         }
         afterSaleShowService.agreeRefunMoney(Long.parseLong(refundId),agreeState);
+        return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("finishExchange")
+    @ResponseBody
+    public JSONObject finishExchange(Long refundId,HttpSession session) throws OrderException, DaifaException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        afterSaleShowService.finishExchange(refundId,ps.getUserId());
         return JsonResponseUtil.success();
     }
 

@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -302,7 +307,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
             <b class="cancel" id="cancelOrderBtn">取消订单</b>
@@ -455,6 +459,8 @@ $(function(){
                                 <p class="fcF40">售后处理中</p>
                                 <#elseif afterSale.state == 3>
                                 <p class="fcF40">退货申请已拒绝</p>
+                                <#elseif afterSale.state == 4>
+                                <p class="fcF40">档口退货失败</p>
                                 </#if>
                             </#if>
                             <#if afterSale.type == 3>
@@ -467,6 +473,11 @@ $(function(){
                                 </#if>
                             </#if>
                             <#if afterSale.type == 4>
+                                <#if afterSale.state == 2>
+                                <p class="fcBlue">自动退款 x${afterSale.afterSaleNum!}</p>
+                                </#if>
+                            </#if>
+                            <#if afterSale.type == 5>
                                 <#if afterSale.state == 2>
                                 <p class="fcBlue">自动退款 x${afterSale.afterSaleNum!}</p>
                                 </#if>
@@ -523,7 +534,7 @@ $(function(){
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
