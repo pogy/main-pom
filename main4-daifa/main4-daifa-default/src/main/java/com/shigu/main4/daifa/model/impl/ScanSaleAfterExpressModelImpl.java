@@ -48,6 +48,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                     stock.setTradeCode(sub.getTradeCode());
                     stock.setOrderCode(sub.getOrderCode());
                     stock.setReceivedExpressCode(expressCode);
+                    stock.setSendPhone(sub.getBuyerTelephone());
                     stock.setReceivedExpressName(sub.getApplyExpressName());
                     stock.setCreateTime(new Date());
                     daifaAfterReceiveExpresStockMapper.insertSelective(stock);
