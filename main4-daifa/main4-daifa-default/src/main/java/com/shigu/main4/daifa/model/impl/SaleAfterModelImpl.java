@@ -106,10 +106,10 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
         Date time = new Date();
         String date = DateUtil.dateToString(time, DateUtil.patternB);
+        DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
 
         List<Long> updateIds = new ArrayList<>();
         if (after == null) {
-            DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
             if (trade.getSendStatus() != 2) {
                 //未发货,不能申请售后
                 throw new DaifaException("未发货,不能申请售后");
@@ -133,6 +133,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setAfterStatus(0);
                 sub.setCreateDate(date);
                 sub.setCreateTime(time);
+                sub.setBuyerTelephone(after.getBuyerTelephone());
                 sub.setRemark(null);
                 sub.setRemark1(null);
                 sub.setRemark2(null);
@@ -162,6 +163,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             sub.setAfterType(afterType);
             sub.setApplyTime(time);
             sub.setAfterStatus(1);
+            sub.setBuyerTelephone(after.getBuyerTelephone());
             DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
             daifaAfterSaleSubExample.createCriteria().andDfOrderIdIn(updateIds);
             daifaAfterSaleSubMapper.updateByExampleSelective(sub, daifaAfterSaleSubExample);
@@ -576,17 +578,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
             DaifaOrder o=new DaifaOrder();
             if(subs.get(0).getAfterType()==1){
-                DaifaAfterMoneyConsultExample daifaAfterMoneyConsultExample = new DaifaAfterMoneyConsultExample();
-                daifaAfterMoneyConsultExample.createCriteria().andRefundIdEqualTo(subs.get(0).getRefundId());
-                daifaAfterMoneyConsultExample.setOrderByClause("after_consult_id desc");
-                List<DaifaAfterMoneyConsult> daifaAfterMoneyConsults = daifaAfterMoneyConsultMapper.selectByExample(daifaAfterMoneyConsultExample);
                 o.setReturnGoodsStatus(2);
                 o.setReturnGoodsFinishTime(new Date());
-                if(daifaAfterMoneyConsults.size()==0){
-                    o.setReturnGoodsFee(subs.get(0).getStoreReturnMoney());
-                }else{
-                    o.setReturnGoodsFee(daifaAfterMoneyConsults.get(0).getConsultMoney());
-                }
             }else{
                 o.setChangeStatus(2);
                 o.setChangeTime(new Date());
