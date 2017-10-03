@@ -42,10 +42,10 @@ public class AfterSaleData implements Serializable {
     private String serversFee;
     @Column("daifa_trade.after_remark")
     private String childRemark;
-    @Column("daifa_trade.send_time")
-    private Date sendTime;
-    @Column("daifa_trade.create_time")
-    private Date createTime;
+    @Column("DATE_FORMAT(daifa_trade.send_time,'%Y-%m-%d %H:%i:%s')")
+    private String sendTime;
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
+    private String tradeTime;
     @Column("daifa_trade.trade_code")
     private String tradeCode;
     @Column("daifa_trade.is_old")
@@ -154,11 +154,11 @@ public class AfterSaleData implements Serializable {
         this.childRemark = childRemark;
     }
 
-    public Date getSendTime() {
+    public String getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Date sendTime) {
+    public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
     }
 
@@ -166,12 +166,12 @@ public class AfterSaleData implements Serializable {
         return orderId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getTradeTime() {
+        return tradeTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setTradeTime(String tradeTime) {
+        this.tradeTime = tradeTime;
     }
 
     public List<AfterSaleSubData> getChildOrders() {

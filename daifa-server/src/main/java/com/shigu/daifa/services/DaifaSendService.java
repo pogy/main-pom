@@ -161,7 +161,6 @@ public class DaifaSendService {
             build.leftJoin(daifaSendOrderExample)
                     .on(daifaSendExample.createCriteria()
                             .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId));
-
         }
         MultipleExample me=build.build();
         if(isList){

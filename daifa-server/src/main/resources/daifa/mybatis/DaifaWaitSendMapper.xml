@@ -43,7 +43,7 @@
 			f.dws_id,
 			f.df_trade_id,
 			f.send_status,
-			f.create_time,
+            DATE_FORMAT(f.create_time,'%Y-%m-%d %H:%i:%s')create_time,
 			f.buyer_ww,
             f.buyer_qq,
             f.buyer_telephone,

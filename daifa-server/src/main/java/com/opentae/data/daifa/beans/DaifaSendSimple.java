@@ -23,9 +23,9 @@ public class DaifaSendSimple implements Serializable{
     private Long orderId;//订单id
     @Column("daifa_send.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
-    @Column("daifa_trade.create_time")
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
     private String tradeTime;//交易时间
-    @Column("daifa_send.create_time")
+    @Column("DATE_FORMAT(daifa_send.create_time,'%Y-%m-%d %H:%i:%s')")
     private String sendTime;
     @Column("daifa_send.buyer_ww")
     private String imWw;//分销商ww

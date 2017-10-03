@@ -25,7 +25,7 @@ public class DaifaAllOrder implements Serializable{
     private String tradeCode;//订单编号
     @Column("daifa_trade.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
-    @Column("daifa_trade.create_time")
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
     private String tradeTime;//交易时间
     @Column("daifa_trade.buyer_ww")
     private String imWw;//分销商ww
