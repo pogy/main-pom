@@ -133,7 +133,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setAfterStatus(0);
                 sub.setCreateDate(date);
                 sub.setCreateTime(time);
-                sub.setBuyerTelephone(after.getBuyerTelephone());
+                sub.setBuyerTelephone(trade.getReceiverPhone());
                 sub.setRemark(null);
                 sub.setRemark1(null);
                 sub.setRemark2(null);
@@ -163,7 +163,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             sub.setAfterType(afterType);
             sub.setApplyTime(time);
             sub.setAfterStatus(1);
-            sub.setBuyerTelephone(after.getBuyerTelephone());
+            sub.setBuyerTelephone(trade.getReceiverPhone());
             DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
             daifaAfterSaleSubExample.createCriteria().andDfOrderIdIn(updateIds);
             daifaAfterSaleSubMapper.updateByExampleSelective(sub, daifaAfterSaleSubExample);
