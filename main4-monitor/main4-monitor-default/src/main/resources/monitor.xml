@@ -27,4 +27,5 @@
     <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.monitor.services.ShopBrowerService" ref="shopBrowerService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.monitor.services.StarCaculateService" ref="starCaculateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.RankingSimpleService" ref="rankingSimpleService" retries="0" timeout="20000"/>
 </beans>

@@ -17,7 +17,7 @@ public class RankingVO {
     //排行榜id，用于查看完整榜单的参数
     private Long rankingId;
     //排行榜标题
-    private Long rankingTitle;
+    private String rankingTitle;
     //左侧数据统计条列表 类目排行数据，只有按类型排行时才有
     private List<RankingCateLineVO> cateLineList;
     //店铺排行榜列表 结果非空，按类型排行和档口排行都有数据
@@ -31,11 +31,11 @@ public class RankingVO {
         this.rankingId = rankingId;
     }
 
-    public Long getRankingTitle() {
+    public String getRankingTitle() {
         return rankingTitle;
     }
 
-    public void setRankingTitle(Long rankingTitle) {
+    public void setRankingTitle(String rankingTitle) {
         this.rankingTitle = rankingTitle;
     }
 

@@ -20,11 +20,10 @@ public interface RankingSimpleService {
     /**
      * 根据顶级类目（目前只有男装/女装）获取前三名排行数据
      * @param cid
-     * @param periodNum
      * @return
      * @throws Main4Exception
      */
-    List<RankingCateLineVO> getRankingCateLinesByCids(Long cid, int periodNum) throws Main4Exception;
+    List<RankingCateLineVO> getRankingCateLinesByCids(Long cid) throws Main4Exception;
 
     /**
      * 根据类目排名店铺（目前只有男装、女装、综合，以市场区分）

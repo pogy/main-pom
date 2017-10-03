@@ -45,18 +45,12 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
 
 
     @Override
-    public List<RankingCateLineVO> getRankingCateLinesByCids(Long cid, int periodNum) throws Main4Exception {
-        List<RankingCateLineVO> rankingCateList = Lists.newArrayList();
-        String key = CidMapEnum.map(cid) + getWeekTimeStamp(periodNum) + "_";
-        Map map = redisIO.get(key, LinkedHashMap.class);
-        if (map != null) {
-            for (Object o : map.values()) {
-                RankingCateLineVO rankingCateLineVO = JSON.parseObject(o.toString(), RankingCateLineVO.class);
-                rankingCateList.add(rankingCateLineVO);
-            }
+    public List<RankingCateLineVO> getRankingCateLinesByCids(Long cid) throws Main4Exception {
+        List<RankingCateLineVO> list = redisIO.getList(CidMapEnum.map(cid) + getWeekTimeStamp(0), RankingCateLineVO.class);
+        if (list == null) {
+            list = redisIO.getList(CidMapEnum.map(cid) + getWeekTimeStamp(1), RankingCateLineVO.class);
         }
-        rankingCateList.sort(new RankingCateLineVO.RankingCateComparator());
-        return rankingCateList;
+        return list;
     }
 
     /**

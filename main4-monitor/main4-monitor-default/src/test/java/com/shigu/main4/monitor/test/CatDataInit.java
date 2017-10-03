@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getWeekTimeStamp;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -71,26 +72,12 @@ public class CatDataInit {
         }
     }
 
-    /**
-     * 获取期次时间戳
-     * @param prePemNum 往前推期次
-     * @return
-     */
-    public String selPemTimeStamp(int prePemNum){
-        Date now = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.add(Calendar.DATE,-7*prePemNum);
-        Date newTime = calendar.getTime();
-        return new SimpleDateFormat("yyyy-MM-dd").format(newTime);
-    }
 
     @Test
     public void filledCidScore(){
         int pem = 0;
         List<RankingCateLineVO> rankingCateLineVOS = Lists.newArrayList();
-        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(30L))) {
+        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(16L))) {
             Long uploadCount = redisIO.get(getPreFix(CAT_UP_COUNT_INDEX,pem)+shiguTaobaocat.getCid(), Long.class);
             RankingCateLineVO lineVO = new RankingCateLineVO();
             if (uploadCount == null) {
@@ -102,16 +89,15 @@ public class CatDataInit {
         }
         Collections.sort(rankingCateLineVOS,new RankingCateLineVO.RankingCateComparator());
         int i = 0;
-        Map<String,RankingCateLineVO> resultRankingMap = new LinkedHashMap<>(3);
-
-        for (RankingCateLineVO rankingCateLineVO : rankingCateLineVOS) {
-            if (++i>3) {
-                break;
-            }
-            rankingCateLineVO.setRank(i);
-            resultRankingMap.put(rankingCateLineVO.getText(),rankingCateLineVO);
+        int size = rankingCateLineVOS.size();
+        if (size>3) {
+            rankingCateLineVOS = rankingCateLineVOS.subList(0,3);
         }
-        redisIO.putTemp(getPreFix(MAN_CAT_UP_COUNT_INDEX,pem),resultRankingMap,3600*24*180);
+        for (RankingCateLineVO rankingCateLineVO : rankingCateLineVOS) {
+            ++i;
+            rankingCateLineVO.setRank(i);
+        }
+        redisIO.putTemp(WOMAN_CAT_UP_COUNT_INDEX+getWeekTimeStamp(pem),rankingCateLineVOS,3600*24*180);
     }
 
     public List<ShiguTaobaocat> cats(List<Long> parentCids) {
@@ -129,7 +115,7 @@ public class CatDataInit {
     }
 
     private String getPreFix(String prefixIndex,int pem){
-        String formatPrefix = prefixIndex + selPemTimeStamp(pem) + "_";
+        String formatPrefix = prefixIndex + getWeekTimeStamp(pem) + "_";
         return formatPrefix;
     }
 
