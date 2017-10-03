@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
  * 描述:单商品信息
  */
 public class OneItemRequest extends Request<OneItemResponse> {
+	private Long userId;
 	//分站标识
 	private String webSite;
 	//商品ID	必须
@@ -43,4 +44,11 @@ public class OneItemRequest extends Request<OneItemResponse> {
 		return HostEnum.REST+"oneItem.json";
 	}
 
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 }

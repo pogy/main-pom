@@ -14,7 +14,7 @@ public class OneItemResponse extends Response {
 	//标题	必须
 	private String title;
 	//商品ID	必须
-	private Long goodsId;
+	private String goodsId;
 	//商品5张图
 	private List<String> imgSrcs;
 	//货号
@@ -41,6 +41,8 @@ public class OneItemResponse extends Response {
 	private List<AppItemKv> itemKvs;
 	//店铺头像
 	private String shopHeadUrl;
+	//是否已收藏
+	private Integer type;
 	public String getTitle(){
 		return title;
 	}
@@ -49,12 +51,12 @@ public class OneItemResponse extends Response {
 		this.title=title;
 	}
 
-	public Long getGoodsId(){
+	public String getGoodsId() {
 		return goodsId;
 	}
 
-	public void setGoodsId(Long goodsId){
-		this.goodsId=goodsId;
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
 	}
 
 	public List<String> getImgSrcs(){
@@ -161,4 +163,11 @@ public class OneItemResponse extends Response {
 		this.shopHeadUrl=shopHeadUrl;
 	}
 
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 }

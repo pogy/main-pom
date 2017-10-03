@@ -10,7 +10,7 @@ import com.openJar.utils.OpenBean;
  */
 public class AppGoodsBlock extends OpenBean {
 	//商品ID
-	private Long goodsId;
+	private String goodsId;
 	//标题
 	private String title;
 	//高亮型标题
@@ -29,12 +29,23 @@ public class AppGoodsBlock extends OpenBean {
 	private String goodsNo;
 	//高亮型货号，一般情况下此字段为null，如果有值说明货号匹配上了
 	private String highLightGoodsNo;
-	public Long getGoodsId(){
+	//收藏夹ID
+	private String collectId;
+
+	public String getCollectId() {
+		return collectId;
+	}
+
+	public void setCollectId(String collectId) {
+		this.collectId = collectId;
+	}
+
+	public String getGoodsId() {
 		return goodsId;
 	}
 
-	public void setGoodsId(Long goodsId){
-		this.goodsId=goodsId;
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
 	}
 
 	public String getTitle(){

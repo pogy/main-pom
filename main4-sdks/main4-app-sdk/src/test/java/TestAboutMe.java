@@ -306,6 +306,53 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
 
+    //成功
+    @Test
+    public void  goodsCollectRequest (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        GoodsCollectRequest  request=new GoodsCollectRequest ();
+
+        request.setUserId(1000085908l);
+//        request.setGoodsId(9903766l);
+//        request.setStoreId(35611l);
+
+        request.setGoodsId(20033321l);
+        request.setStoreId(40903l);
+
+//
+//        request.setGoodsId(21466866l);
+//        request.setStoreId(41384l);
+
+        GoodsCollectResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+
+    //成功
+    @Test
+    public void  delItemCollectRequest (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        DelItemCollectRequest  request=new DelItemCollectRequest ();
+
+        request.setUserId(1000085908l);
+        request.setCollectIds("851450,,851451");
+        request.setToken("123123");
+
+        DelItemCollectResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+
+    //成功
+    @Test
+    public void  itemCollectRequest (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        ItemCollectRequest  request=new ItemCollectRequest ();
+
+        request.setUserId(1000085908l);
+
+       ItemCollectResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+
 
     public static byte[] fileToByteArrays(String filePath) {
         byte[] buff = null;
