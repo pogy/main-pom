@@ -203,7 +203,7 @@ public class DaifaAllOrderIndexService {
         AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId = user.getDaifaSellerId();
         DaifaWorkerExample daifaWorkerExample = new DaifaWorkerExample();
-        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId);
+        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId).andUseStatusEqualTo(1);
         List<DaifaWorker> workers = daifaWorkerMapper.selectFieldsByExample(daifaWorkerExample
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker"));
 

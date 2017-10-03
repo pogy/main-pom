@@ -5,6 +5,7 @@ import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.PrintGoodsTagBO;
 import com.shigu.daifa.bo.SelectDaifaGgoodsListBO;
+import com.shigu.daifa.services.DaifaAllOrderIndexService;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -27,6 +28,8 @@ import java.util.List;
 public class DaifaAllocatedAction {
     @Autowired
     DaifaAllocatedService daifaAllocatedService;
+    @Autowired
+    DaifaAllOrderIndexService daifaAllOrderIndexService;
 
     /**
      * 已分配列表
@@ -48,7 +51,7 @@ public class DaifaAllocatedAction {
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
-        model.addAttribute("workers",daifaAllocatedService.selWorkerList(daifaUser.getDaifaSellerId()));
+        model.addAttribute("workers",daifaAllOrderIndexService.getUserList());
         return "daifa/orderHasAllocation";
     }
 
@@ -81,7 +84,7 @@ public class DaifaAllocatedAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
-        List<DaifaWorkerVO> vos=daifaAllocatedService.selWorkerList(sellerId);
+        List<DaifaWorkerVO> vos=daifaAllOrderIndexService.getUserList();
         JSONObject obj=JsonResponseUtil.success();
         obj.put("userList",vos);
         return obj;
