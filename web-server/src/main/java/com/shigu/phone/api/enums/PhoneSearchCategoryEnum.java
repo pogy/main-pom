@@ -15,9 +15,9 @@ import java.util.List;
  */
 public enum PhoneSearchCategoryEnum {
 
-    TOTAL_CATEGORY(1),
-    MAN_CATEGORY(2),
-    WOMAN_CATEGORY(3);
+    TOTAL_CATEGORY(0),
+    MAN_CATEGORY(1),
+    WOMAN_CATEGORY(2);
 
 
     /**
@@ -25,17 +25,26 @@ public enum PhoneSearchCategoryEnum {
      */
     int type;
 
+    public List<Integer> getTypes(){
+        List<Integer> list = new ArrayList<>();
+        list.add(TOTAL_CATEGORY.getType());
+        list.add(MAN_CATEGORY.getType());
+        list.add(WOMAN_CATEGORY.getType());
+        return list;
+    }
+
     public List<String> getCateValues(){
         List<String> list = new ArrayList<>();
-       if (this.type == 2){//男类
+        if (this.type == 1){//男类
             list.add("30");//男装
             list.add("50011740");//男鞋
-        }else if(this.type == 3){//女类
+        }else if(this.type == 2){//女类
             list.add("16");//女装
             list.add("50006843");//女鞋
         }
         return list;
     }
+
 
     PhoneSearchCategoryEnum(int type) {
         this.type = type;

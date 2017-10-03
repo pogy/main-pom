@@ -29,7 +29,6 @@ import java.util.*;
 
 @Controller
 public class AppStaticAction {
-    private static final Set<Integer> TYPES = ImmutableSet.of(1,2,3);
     private static final Set<String> CATIDS = ImmutableSet.of("16", "30","50011740","50006843");
     private static final Set<String> REMOVEIDS=ImmutableSet.of("50000852","50008897","1629","50001748","50005867","50011130");
     private static final Set<String> SEXCIDS=ImmutableSet.of("50010850","50011277","162116","50000697","121434004","50008904",
@@ -253,7 +252,7 @@ public class AppStaticAction {
         if (request.getType() == null|| StringUtils.isEmpty(request.getWebSite())) {
             return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
-        if(!TYPES.contains(request.getType())){
+        if(!PhoneSearchCategoryEnum.TOTAL_CATEGORY.getTypes().contains(request.getType())){
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         List<AppSearchNav> list=new ArrayList<>();
@@ -261,7 +260,7 @@ public class AppStaticAction {
         if(request.getSid()==null){
             cates= categoryInSearchService.selCates(request.getWebSite());
         }else{
-            cates=categoryInSearchService.selSubCates(request.getSid()+"", request.getType()==1?SearchCategory.CATEGORY:SearchCategory.MARKET,request.getWebSite());
+            cates=categoryInSearchService.selSubCates(request.getSid()+"", request.getType()==0?SearchCategory.CATEGORY:SearchCategory.MARKET,request.getWebSite());
         }
         if (cates == null || cates.isEmpty()) {
             response.setSuccess(true);
@@ -272,10 +271,10 @@ public class AppStaticAction {
             if(REMOVEIDS.contains(cate.getId())){
                 continue;
             }
-           if (request.getType() == 2){
+           if (request.getType() == 1){
                 if (PhoneSearchCategoryEnum.WOMAN_CATEGORY.getCateValues().contains(cate.getId()))continue;
            }
-           if (request.getType() == 3){
+           if (request.getType() == 2){
                 if (PhoneSearchCategoryEnum.MAN_CATEGORY.getCateValues().contains(cate.getId()))continue;
            }
             AppSearchNav ca=new AppSearchNav();
