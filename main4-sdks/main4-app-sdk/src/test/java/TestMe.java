@@ -17,20 +17,20 @@ public class TestMe {
     public void  LoginRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         LoginRequest request=new LoginRequest ();
-        request.setUserName("15669267663");
-        request.setPassword("asd158684");
+        request.setUserName("17637503238");
+        request.setPassword("fei691820");
         request.setType(1);
         LoginResponse response = client.execute(request);
-        System.out.println(response.getUsers().getUserId());//1000084567
-        System.out.println(response.getUsers().getToken());//17e400a8654543a8b4449a8c1c96cda2
+        System.out.println(response.getUsers().getUserId());//1000085908
+        System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
         System.out.println(response.getBody());
     }
-    //发送手机号
+    //发送验证码
     @Test
     public void  getPhoneMsgRequest  (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         GetPhoneMsgRequest request=new GetPhoneMsgRequest ();
-        request.setTelephone("15669267663");
+        request.setTelephone("17637503238");
         request.setType(3);
         GetPhoneMsgResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -41,9 +41,10 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ChangePasswordRequest  request=new ChangePasswordRequest();
         request.setUserId(1000085908L);
+
         request.setOldPwd("fei691820");
-        request.setNewPwd("fei691820");
-        request.setToken("37ac3d92003943f9a667707599fa180a");
+        request.setNewPwd("fei691820%");
+        request.setToken("d6d035ec810c4612bd2cb8f0f80f1bb6");
         ChangePasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -52,8 +53,8 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ForgetPasswordRequest request=new ForgetPasswordRequest();
         request.setTelephone("17637503238");
-        request.setMsgCode("795918");
-        request.setNewPassword("fei691820");
+        request.setMsgCode("037452");
+        request.setNewPassword("fei691820%");
         ForgetPasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -61,19 +62,28 @@ public class TestMe {
     public void  RegistRequest   (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         RegistRequest request=new RegistRequest();
-        request.setTelephone("17637503239");
+        request.setTelephone("17637503231");
         request.setPassword("fei691820");
-        request.setCode("683552");
+        request.setCode("125195");
         RegistResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+    @Test
+    public void  OrtherLoginRequest    (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        OrtherLoginRequest  request=new OrtherLoginRequest ();
+        request.setType(1);
+        request.setNick("tb9950563");
+        OrtherLoginResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
     @Test
     public void  DoStoreCollectRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         DoStoreCollectRequest request=new DoStoreCollectRequest();
-        request.setShopId(16339L);
-        request.setToken("758bcd4c9c2b47d1b5763c63031b76d2");
-        request.setUserId(1000084567L);
+        request.setShopId(43455L);
+        request.setToken("ad24a062bbe646bd9a18cf159c69ce39");
+        request.setUserId(1000085908L);
         request.setYesOrNo(true);
         DoStoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());

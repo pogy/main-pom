@@ -68,7 +68,7 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
 
-    //失败1
+
     //new成功
     @Test
     public void  OneShopRequest(){
@@ -89,9 +89,10 @@ public class TestAboutMe {
         request.setWebSite("hz");
         request.setGoodsId(20065019L);
 //        request.setGoodsId(20466357L);
-        request.setToken("abf09d9222bf4bc2b9bef4eda2d23c64");
+        request.setToken("4d7659c4adc7410db39db8dcfd7fc1dd");
         UpToWxResponse response = client.execute(request);
         System.out.println(response.isSuccess());
+        System.out.println(response.getBody());
     }
     //成功
     @Test
@@ -281,7 +282,7 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
 
-    //失败
+    //成功
     @Test
     public void ImgUploadRequest() throws FileNotFoundException {
         OpenClient client = new PcOpenClient("3838438", "37456A6A5CA10F9A988F12BFECD88575", "test");
