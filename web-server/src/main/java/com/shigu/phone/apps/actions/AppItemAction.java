@@ -1,8 +1,10 @@
 package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.DelItemCollectRequest;
+import com.openJar.requests.app.GoodsCollectRequest;
 import com.openJar.requests.app.ItemCollectRequest;
 import com.openJar.responses.app.DelItemCollectResponse;
+import com.openJar.responses.app.GoodsCollectResponse;
 import com.openJar.responses.app.ItemCollectResponse;
 import com.shigu.phone.apps.services.AppItemService;
 import com.shigu.phone.wrapper.WrapperUtil;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 /**
@@ -48,6 +51,21 @@ public class AppItemAction {
         }
 
         return JSONObject.fromObject(appItemService.delItemCollect(request));
+    }
+
+    /**
+     * 商品收藏/取消收藏
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("goodsCollect")
+    @ResponseBody
+    public JSONObject goodsCollectRequest(GoodsCollectRequest request, GoodsCollectResponse response){
+        if (request.getGoodsId() == null || request.getStoreId() == null || request.getUserId() == null) {
+            return WrapperUtil.wrapperOpenException("参数错误",response);
+        }
+        return JSONObject.fromObject(appItemService.collectItem(request));
     }
 
 }

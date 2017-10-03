@@ -99,7 +99,7 @@ public class PhoneStoreService {
             vo.setImQq(o.getImqq());
             vo.setMainCase(o.getMainCate());
             vo.setItemNum(o.getGoodsCount());
-            vo.setShopHeadUrl(o.getImgsrc());
+            vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",o.getAliww()));
             return vo;
         }).collect(Collectors.toList()));
         resp.setSuccess(true);
@@ -135,6 +135,7 @@ public class PhoneStoreService {
             shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(), o.getWebSite()).intValue());
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
+            shop.setShopHeadUrl(shop.getShopHeadUrl().replace("回车间",o.getImAliww()));
             return shop;
         }).collect(Collectors.toList()));
         resp.setTotal(shopCollectVOShiguPager.getTotalCount());

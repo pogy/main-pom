@@ -25,6 +25,8 @@ import com.shigu.main4.newcdn.vo.CdnGoodsInfoVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ShopCollect;
+import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.vo.GoodsInSearch;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +58,9 @@ public class PhoneGoodsSearchService {
 
     @Autowired
     private CdnService cdnService;
+
+    @Autowired
+    private UserCollectService userCollectService;
 
     /**
      * 移动端商品搜索
@@ -99,7 +105,7 @@ public class PhoneGoodsSearchService {
             resp.setHasNext(result.getNumber() < result.getTotalPages());
             resp.setItems(result.getContent().parallelStream().map(o -> {
                 AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-                vo.setGoodsId(Long.valueOf(o.getId()));
+                vo.setGoodsId(o.getId());
                 return vo;
             }).collect(Collectors.toList()));
             resp.setSuccess(true);
@@ -125,7 +131,7 @@ public class PhoneGoodsSearchService {
             resp.setItems(goodsSearchService.searchByPic(request.getImgurl(), request.getWebSite()).parallelStream().map(o -> {
                 if (o != null) {
                     AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-                    vo.setGoodsId(Long.valueOf(o.getId()));
+                    vo.setGoodsId(o.getId());
                     return vo;
                 }
                 return null;
@@ -147,7 +153,7 @@ public class PhoneGoodsSearchService {
         try {
             //商品数据填充
             CdnGoodsInfoVO goods = cdnService.cdnGoodsInfo(request.getItemId());
-            resp.setGoodsId(goods.getGoodsId());
+            resp.setGoodsId(goods.getGoodsId()+"");
             resp.setGoodsNo(goods.getGoodsNo());
             resp.setPrice(goods.getPiPrice());
             resp.setTitle(goods.getTitle());
@@ -172,6 +178,19 @@ public class PhoneGoodsSearchService {
             resp.setMarket(shop.getMarketName());
             resp.setStarNum(shop.getStarNum().intValue());
             resp.setSuccess(true);
+            if (request.getUserId() == null) {
+                resp.setType(0);
+            }else {
+                // 查询商品是否收藏
+                ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(request.getUserId(),request.getItemId(),request.getWebSite());
+                int type = 1;
+                if (itemCollectInfoVO == null || itemCollectInfoVO.getUseStatus() == null){
+                   type = 0;
+                }else{
+                    type = itemCollectInfoVO.getUseStatus();
+                }
+                resp.setType(type);
+            }
         } catch (CdnException | TemplateException | IOException e) {
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());

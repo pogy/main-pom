@@ -12,8 +12,10 @@ import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.MarketListService;
+import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
+import com.shigu.main4.cdn.vo.ShopInFloorVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.newcdn.vo.CdnShopCatVO;
@@ -152,7 +154,27 @@ public class AppStoreService {
             appMarket.setMarketTags(appMarketTags);
         }
 
-        List<AppFloor> appFloors = BeanMapper.mapList(marketVO.getFloorVOs(), AppFloor.class);
+        List<FloorVO> floorVOs = marketVO.getFloorVOs();
+        List<AppFloor> appFloors = new ArrayList<>();
+        floorVOs.stream().filter(item->item!=null).forEach(item->{
+            AppFloor appFloor = new AppFloor();
+            List<AppShopInFloor> appShopInFloors = new ArrayList<>();
+            List<ShopInFloorVO> shopInFloorVOS =  item.getStores();
+            shopInFloorVOS.stream().filter(shopInFloorVO->shopInFloorVO!=null).forEach(shopInFloorVO->{
+                AppShopInFloor appShopInFloor = new AppShopInFloor();
+                appShopInFloor.setStoreId(shopInFloorVO.getId());
+                appShopInFloor.setCate(shopInFloorVO.getCate());
+                appShopInFloor.setIsNew(shopInFloorVO.getIsNew());
+                appShopInFloor.setNum(shopInFloorVO.getNum());
+                appShopInFloor.setTags(shopInFloorVO.getTags());
+
+                appShopInFloors.add(appShopInFloor);
+            });
+            appFloor.setTitle(item.getTitle());
+            appFloor.setStores(appShopInFloors);
+
+            appFloors.add(appFloor);
+        });
         appMarket.setFloors(appFloors);
         response.setMarket(appMarket);
         response.setSuccess(true);
