@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.enums.CidMapEnum;
+import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
 import com.shigu.main4.monitor.vo.RankingShopVO;
@@ -34,7 +35,7 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
      * @param periodNum 往前搜索的星期数 0是本周，1是上周。。。
      * @return
      */
-    private String getWeekTimeStamp(int periodNum) {
+    public static String getWeekTimeStamp(int periodNum) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(new Date());
         instance.set(Calendar.DAY_OF_WEEK, 1);
@@ -58,9 +59,21 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
         return rankingCateList;
     }
 
+    /**
+     * 获取当前期店铺排行数据
+     * @return
+     */
     @Override
-    public List<RankingShopVO> selRankingShopBy(List<Long> marketIds, Integer size) {
-
-        return null;
+    public List<RankingShopVO> selRankingShopBy(CidMarketIdMapEnum cat) {
+        String key = cat.getIndexPrefix() + getWeekTimeStamp(0);
+        List<RankingShopVO> list = redisIO.getList(key, RankingShopVO.class);
+        if (list == null) {
+            //如果当前期数据还不存在（还在计算过程中），则返回上一期数据
+            key = cat.getIndexPrefix() + getWeekTimeStamp(1);
+            list = redisIO.getList(key,RankingShopVO.class);
+        }
+        return list;
     }
+
+
 }
