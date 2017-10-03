@@ -29,7 +29,7 @@ import java.util.*;
 
 @Controller
 public class AppStaticAction {
-    private static final Set<Integer> TYPES = ImmutableSet.of(1,2);
+    private static final Set<Integer> TYPES = ImmutableSet.of(1,2,3);
     private static final Set<String> CATIDS = ImmutableSet.of("16", "30","50011740","50006843");
     private static final Set<String> REMOVEIDS=ImmutableSet.of("50000852","50008897","1629","50001748","50005867","50011130");
     private static final Set<String> SEXCIDS=ImmutableSet.of("50010850","50011277","162116","50000697","121434004","50008904",

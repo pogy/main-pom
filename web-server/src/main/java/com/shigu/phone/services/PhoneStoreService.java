@@ -18,8 +18,10 @@ import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserCollectService;
@@ -64,6 +66,9 @@ public class PhoneStoreService {
 
     @Autowired
     private MultipleMapper tae_mall_multipleMapper;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 移动端店铺搜索
@@ -145,9 +150,14 @@ public class PhoneStoreService {
      * @return
      */
     public DoStoreCollectResponse doStoreCollect(DoStoreCollectRequest request) {
+
+
+
         DoStoreCollectResponse resp = new DoStoreCollectResponse();
         OpenException openException = new OpenException();
-        if (!registerAndLoginService.checkToken(request.getUserId(), request.getToken())) {
+        String token = redisIO.get("phone_login_token" + request.getUserId());
+
+        if (!token.equals( request.getToken())) {
             openException.setErrMsg("tocken验证失败");
             resp.setException(openException);
             resp.setSuccess(false);

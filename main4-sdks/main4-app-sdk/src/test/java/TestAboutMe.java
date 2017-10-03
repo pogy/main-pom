@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 
@@ -39,7 +40,8 @@ public class TestAboutMe {
     public void ItemSpreadRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSpreadRequest request=new ItemSpreadRequest();
-        request.setSpreadCode("QZGG");
+        request.setSpreadCode("MAN-TJDK");
+//        request.setSpreadCode("QZGG");
         request.setWebSite("hz");
         ItemSpreadResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -98,7 +100,7 @@ public class TestAboutMe {
         StoreCollectRequest  request=new StoreCollectRequest ();
 //        request.setUserId(1000085908L);//收藏夹为空
         request.setUserId(9968L);
-//        request.setIndex(2);
+        request.setIndex(2);
         StoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -134,7 +136,8 @@ public class TestAboutMe {
         ItemSearchRequest request=new ItemSearchRequest();
 //        request.setType(2);//2普通搜索(keywords不为空)
 //        request.setKeyword("袜子");
-
+        request.setStartTime("2017-9-02");
+        request.setEndTime("2017-9-04");
         request.setType(1);//1商品库(cid不能为空)
         request.setCid(50000557l);//针织衫/毛衣
 
@@ -147,7 +150,7 @@ public class TestAboutMe {
     public void MarketsRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         MarketsRequest request=new MarketsRequest();
-        request.setMid(0L);//市场ID,如果传入空，默认返回这个分站的默认市
+        request.setMid(1L);//市场ID,如果传入空，默认返回这个分站的默认市
         request.setWebSite("hz");
         MarketsResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -296,7 +299,7 @@ public class TestAboutMe {
         request.setUserId(1000085908l);
         //原头像地址  http://imgs.571xz.net/mall/file/1505284291244.jpg
         request.setFile("http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/file/0000f74780d536ba489cc897e64d6b39.jpg");
-        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
+//        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
 
         System.out.println(request.testApiUrl());
         ImgUploadResponse response = client.execute(request);

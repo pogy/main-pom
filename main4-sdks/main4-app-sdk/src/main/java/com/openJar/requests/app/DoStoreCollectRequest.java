@@ -1,5 +1,6 @@
 package com.openJar.requests.app;
 
+import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.DoStoreCollectResponse;
 
@@ -43,13 +44,11 @@ public class DoStoreCollectRequest extends Request<DoStoreCollectResponse> {
 
     public void setToken(String token) { this.token = token; }
 
-    @Override
-    public String restApiUrl() {
-        return null;
+    public String testApiUrl(){
+        return HostEnum.TEST+"doStoreCollect.json";
     }
 
-    @Override
-    public String testApiUrl() {
-        return null;
+    public String restApiUrl(){
+        return HostEnum.REST+"doStoreCollect.json";
     }
 }

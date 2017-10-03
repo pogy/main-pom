@@ -40,6 +40,12 @@ public class AppUserAction {
     public JSONObject appChangePassword(@Valid ChangePasswordRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneUserService.changePassword(request));
     }
+    //第三方登录
+    @RequestMapping("ortherLogin")
+    @ResponseBody
+    public JSONObject appOrtherLogin( @Valid OrtherLoginRequest request, BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneUserService.ortherLogin(request));
+    }
     //登录请求
     @RequestMapping("login")
     @ResponseBody

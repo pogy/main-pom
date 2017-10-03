@@ -21,6 +21,8 @@ public class AppItemSpread extends OpenBean {
 	private String marketText;
 	//档口号
 	private String storeNum;
+	//描述
+	private String title;
 	public String getGoodsId(){
 		return goodsId;
 	}
@@ -69,4 +71,11 @@ public class AppItemSpread extends OpenBean {
 		this.storeNum=storeNum;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

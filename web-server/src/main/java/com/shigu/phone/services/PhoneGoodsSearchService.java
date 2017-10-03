@@ -31,9 +31,12 @@ import com.shigu.search.vo.GoodsInSearch;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -61,35 +64,53 @@ public class PhoneGoodsSearchService {
      */
     public ItemSearchResponse itemSearch(ItemSearchRequest request) {
         ItemSearchResponse resp = new ItemSearchResponse();
-        SearchBO bo = new SearchBO();
-        bo.setWebSite(request.getWebSite());
-        bo.setKeyword(request.getKeyword());
-        bo.setMid(request.getMarketId());
-        bo.setCid(request.getCid());
-        bo.setPid(request.getCid());
-        bo.setShopId(request.getStoreId());
-        if (request.getType() != null && request.getType() == 2) {
-            //商品库搜索顺序
-            bo.setFrom("goods");
+        try {
+            SearchBO bo = new SearchBO();
+            bo.setWebSite(request.getWebSite());
+            bo.setKeyword(request.getKeyword());
+            bo.setMid(request.getMarketId());
+            bo.setCid(request.getCid());
+            bo.setPid(request.getCid());
+            bo.setShopId(request.getStoreId());
+            if (request.getType() != null && request.getType() == 2) {
+                //商品库搜索顺序
+                bo.setFrom("goods");
+            }
+            bo.setSort(request.getOrderBy());
+            final String dateFormat = "yyyy.MM.dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.patternA);
+            Date startTime = null;
+            Date endtTime = null;
+            if (!StringUtils.isEmpty(request.getStartTime())) {
+                startTime  = sdf.parse(request.getStartTime());
+            }
+            if (!StringUtils.isEmpty(request.getEndTime())) {
+                endtTime  = sdf.parse(request.getEndTime());
+            }
+
+            bo.setSt(startTime == null? null : DateUtil.dateToString(startTime, dateFormat));
+            bo.setEt(endtTime == null ? null : DateUtil.dateToString(endtTime, dateFormat));
+            bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
+            bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
+            bo.setPage(request.getIndex());
+            bo.setRows(request.getSize());
+            ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
+            resp.setTotal(result.getTotalCount());
+            resp.setHasNext(result.getNumber() < result.getTotalPages());
+            resp.setItems(result.getContent().parallelStream().map(o -> {
+                AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
+                vo.setGoodsId(Long.valueOf(o.getId()));
+                return vo;
+            }).collect(Collectors.toList()));
+            resp.setSuccess(true);
+            return resp;
+        } catch (ParseException e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg(e.getMessage());
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
         }
-        bo.setSort(request.getOrderBy());
-        final String dateFormat = "yyyy.MM.dd";
-        bo.setSt(request.getStartTime() == null ? null : DateUtil.dateToString(request.getStartTime(), dateFormat));
-        bo.setEt(request.getEndTime() == null ? null : DateUtil.dateToString(request.getEndTime(), dateFormat));
-        bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
-        bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
-        bo.setPage(request.getIndex());
-        bo.setRows(request.getSize());
-        ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
-        resp.setTotal(result.getTotalCount());
-        resp.setHasNext(result.getNumber() < result.getTotalPages());
-        resp.setItems(result.getContent().parallelStream().map(o -> {
-            AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-            vo.setGoodsId(Long.valueOf(o.getId()));
-            return vo;
-        }).collect(Collectors.toList()));
-        resp.setSuccess(true);
-        return resp;
     }
 
     /**

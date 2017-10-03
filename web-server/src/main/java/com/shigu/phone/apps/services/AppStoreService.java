@@ -12,8 +12,8 @@ import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.MarketListService;
+import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.newcdn.vo.CdnShopCatVO;
@@ -140,8 +140,18 @@ public class AppStoreService {
         AppMarket appMarket = new AppMarket();
         appMarket.setMarketName(marketVO.getMarketName());
         appMarket.setWebSite(marketVO.getWebSite());
-        List<AppMarketTag> appMarketTags = BeanMapper.mapList(marketVO.getMarketTags(), AppMarketTag.class);
-        appMarket.setMarketTags(appMarketTags);
+        List<MarketTagVO> marketTagVOS =  marketVO.getMarketTags();
+        if (marketTagVOS != null) {
+            List<AppMarketTag> appMarketTags = new ArrayList<>();
+            for (MarketTagVO item : marketTagVOS){
+                AppMarketTag itemTag = new AppMarketTag();
+                itemTag.setMid(item.getId());
+                itemTag.setName(item.getName());
+                appMarketTags.add(itemTag);
+            }
+            appMarket.setMarketTags(appMarketTags);
+        }
+
         List<AppFloor> appFloors = BeanMapper.mapList(marketVO.getFloorVOs(), AppFloor.class);
         appMarket.setFloors(appFloors);
         response.setMarket(appMarket);
