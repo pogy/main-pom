@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -61,6 +62,9 @@ public class AfterSaleShowService {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
+        if (20<bo.getRefundReason().length()+(bo.getRefundDesc()==null?4:bo.getRefundDesc().length())) {
+            throw new JsonErrException("申请理由过长");
+        }
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
                 ,refundMoney
                 , bo.getRefundReason(), bo.getRefundDesc());
@@ -104,6 +108,7 @@ public class AfterSaleShowService {
             return null;
         }
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(itemOrderRefund.getSoid());
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
@@ -185,7 +190,10 @@ public class AfterSaleShowService {
             returnmap.replace("refundStateNum", 3);
             returnmap.replace("returnState", 1);
         }
-
+        returnmap.put("childOrderCode",itemOrderSub.getGoodsNo());
+        returnmap.put("childOrderColor",itemOrderSub.getColor());
+        returnmap.put("childOrderSize",itemOrderSub.getSize());
+        returnmap.put("afterGoodsNum",itemOrderRefund.getNumber());
         return returnmap;
 
 
@@ -295,6 +303,9 @@ public class AfterSaleShowService {
     }
 
     public Long exchangeApply(AfterSaleBo bo) throws OrderException {
+        if ((bo.getRefundDesc()==null?4:bo.getRefundDesc().length())+bo.getRefundReason().length()>20) {
+            throw new OrderException("申请原因过长");
+        }
         return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundReason(), bo.getRefundDesc());
     }
 
