@@ -64,6 +64,9 @@ public abstract class OrderQuery {
      * @param myOrderVOS
      */
     public void packageMyOrderVO(List<MyOrderVO> myOrderVOS) {
+        for (MyOrderVO myOrderVO : myOrderVOS) {
+            myOrderVO.setTradeTime(myOrderVO.getTradeTime().replace(".0",""));
+        }
         List<Integer> types = Arrays.asList(2, 3);
         List<Long> soids = myOrderVOS.stream().flatMap(myOrderVO -> myOrderVO.getChildOrders().stream())
                 .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());
