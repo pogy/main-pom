@@ -5,7 +5,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.tools.OssIO;
@@ -20,6 +20,7 @@ import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.PackageItem;
 import com.shigu.main4.ucenter.vo.ShopCollect;
+import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.session.main4.tool.BeanMapper;
@@ -31,8 +32,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -112,6 +111,66 @@ public class UserCollectServiceImpl implements UserCollectService {
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
+    }
+
+    /**
+     * 查询本收藏该宝贝信息
+     * @param userId 用户ID
+     * @param goodsId 商品ID
+     * @param webSite 分站标识
+     * @return
+     */
+    @Override
+    public ItemCollectInfoVO selItemCollectionInfo(Long userId, Long goodsId, String webSite) {
+        if (userId == null || goodsId == null) {
+            if(logger.isErrorEnabled()){
+                logger.error("查询店铺收藏的宝贝信息失败: [userId="+userId+" , goodsId="+goodsId+" , webSite="+webSite+"]");
+            }
+        }
+        ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+        shiguGoodsCollect.setUserId(userId);
+        shiguGoodsCollect.setGoodsId(goodsId);
+        if(!StringUtil.isNull(webSite)){
+            shiguGoodsCollect.setWebsite(webSite);
+        }
+        shiguGoodsCollect =  shiguGoodsCollectMapper.selectOne(shiguGoodsCollect);
+        if ( shiguGoodsCollect == null) {
+            return null;
+        }
+        return BeanMapper.map(shiguGoodsCollect,ItemCollectInfoVO.class);
+    }
+
+    /**
+     * 按条件查询收藏商品
+     * @param userId
+     * @param goodsId
+     * @param useStatus
+     * @param storeId
+     * @param webSite
+     * @return
+     */
+    @Override
+    public List<ItemCollectInfoVO> selItemCollection(Long userId, Long goodsId, Integer useStatus, Long storeId, String webSite) {
+        ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
+        ShiguGoodsCollectExample.Criteria criteria = collectExample.createCriteria();
+        if (userId != null) {
+            criteria.andUserIdEqualTo(userId);
+        }
+        if (goodsId != null) {
+            criteria.andGoodsIdEqualTo(goodsId);
+        }
+        if (useStatus != null) {
+            criteria.andUseStatusEqualTo(useStatus);
+        }
+        if (storeId != null) {
+            criteria.andStoreIdEqualTo(storeId);
+        }
+        if (!StringUtil.isNull(webSite)) {
+            criteria.andWebsiteEqualTo(webSite);
+        }
+        List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
+        if (shiguGoodsCollects == null || shiguGoodsCollects.isEmpty())return null;
+        return BeanMapper.mapList(shiguGoodsCollects,ItemCollectInfoVO.class);
     }
 
     /**
