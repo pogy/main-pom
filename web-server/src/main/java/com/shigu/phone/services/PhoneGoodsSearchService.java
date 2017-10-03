@@ -38,6 +38,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -159,7 +160,17 @@ public class PhoneGoodsSearchService {
             resp.setTitle(goods.getTitle());
             resp.setCreateTime(goods.getPostTime());
             resp.setImgSrcs(goods.getImgUrls());
-            resp.setGoodsLicenses(goods.getServices());
+            //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
+            List<String> services = goods.getServices();
+            List<String> list=new ArrayList<>();
+            for (String s:services) {
+                if("1".equals(s)){
+                    list.add("可退款");
+                }else if("2".equals(s)){
+                    list.add("可换款");
+                }
+            }
+            resp.setGoodsLicenses(list);
             resp.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
                 JSONObject color = (JSONObject) o;
                 return color.get("text").toString();

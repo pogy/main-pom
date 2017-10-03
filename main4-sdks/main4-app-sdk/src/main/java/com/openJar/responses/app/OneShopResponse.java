@@ -22,6 +22,17 @@ public class OneShopResponse extends Response {
 	private Integer todayAdd;
 	//星星数	必须
 	private Integer starNum;
+	//店铺头像
+	private String shopHeadUrl =  "http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";;
+
+	public String getShopHeadUrl() {
+		return shopHeadUrl;
+	}
+
+	public void setShopHeadUrl( String shopHeadUrl ) {
+		this.shopHeadUrl = shopHeadUrl;
+	}
+
 	public Long getShopId(){
 		return shopId;
 	}

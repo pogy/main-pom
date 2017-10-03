@@ -11,7 +11,9 @@ import java.util.List;
  */
 public class AppShopInFloor extends OpenBean {
 	//店铺ID
+//	private Long storeId;
 	private Long storeId;
+
 	//档口号
 	private String num;
 	//新品标识，1为新品
@@ -20,12 +22,13 @@ public class AppShopInFloor extends OpenBean {
 	private String cate;
 	//退换服务，1退，2换
 	private List<Integer> tags;
-	public Long getStoreId(){
+
+	public Long getStoreId() {
 		return storeId;
 	}
 
-	public void setStoreId(Long storeId){
-		this.storeId=storeId;
+	public void setStoreId( Long storeId ) {
+		this.storeId = storeId;
 	}
 
 	public String getNum(){

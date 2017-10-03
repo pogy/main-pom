@@ -99,6 +99,7 @@ public class AppStoreService {
         response.setStarNum(starNum.intValue());
         response.setTelephone(storeRelation.getTelephone());
         response.setTodayAdd(todayAdd);
+        response.setShopHeadUrl(response.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
         return response;
     }
     public MarketsResponse selMarketData(MarketsRequest request){
