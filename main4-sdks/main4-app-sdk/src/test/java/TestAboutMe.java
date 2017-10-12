@@ -132,12 +132,15 @@ public class TestAboutMe {
     public void ItemSearchRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSearchRequest request=new ItemSearchRequest();
-//        request.setType(2);//2普通搜索(keywords不为空)
+        request.setType(2);//2普通搜索(keywords不为空)
 //        request.setKeyword("袜子");
-        request.setStartTime("2017-9-02");
-        request.setEndTime("2017-9-04");
-        request.setType(1);//1商品库(cid不能为空)
-        request.setCid(50000557l);//针织衫/毛衣
+        request.setKeyword("外套");
+//        request.setStartTime("2017-9-02");
+//        request.setEndTime("2017-9-04");
+//        request.setType(1);//1商品库(cid不能为空)
+//        request.setCid(50000557l);//针织衫/毛衣
+
+//        request.setType(3);//1商品库(cid不能为空)
 
         ItemSearchResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -361,22 +364,4 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
 
-
-    public static byte[] fileToByteArrays(String filePath) {
-        byte[] buff = null;
-        InputStream is = null;
-        try {
-            File file = new File(filePath);
-            is = new BufferedInputStream(new FileInputStream(file));
-            buff = new byte[is.available()]; // available适合于本地文件读取，不适用于网络文件
-            is.read(buff);
-        } catch (IOException ex) {
-        } finally {
-            try {
-                is.close();
-            } catch (IOException ex) {
-            }
-        }
-        return buff;
-    }
 }

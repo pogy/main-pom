@@ -9,19 +9,11 @@ import com.openJar.utils.OpenBean;
  * 描述:叶子级店内类目
  */
 public class AppShopCatSub extends OpenBean {
-	//商品数量
-	private Integer itemNum;
+
 	//店内类目ID
 	private String scid;
 	//店内类目名
 	private String catName;
-	public Integer getItemNum(){
-		return itemNum;
-	}
-
-	public void setItemNum(Integer itemNum){
-		this.itemNum=itemNum;
-	}
 
 	public String getScid(){
 		return scid;
