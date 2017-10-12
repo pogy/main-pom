@@ -582,12 +582,10 @@ public class DaifaSaleAfterService {
      * 全部包裹数量
      * @param
      */
-    public ParcelSearchOrderStatisticsVO getOrderStatistics(ParcelSearchBO bo) {
+    public ParcelSearchOrderStatisticsVO getOrderStatistics() {
         ParcelSearchOrderStatisticsVO vo = new ParcelSearchOrderStatisticsVO();
-        DaifaAfterReceiveExpresStock daifaAfterReceiveExpresStock = new DaifaAfterReceiveExpresStock();
-        int allPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
-        daifaAfterReceiveExpresStock.setRelevanceStatus(0);//查有关联数量
-        int unmatchPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
+        int allPackbagNum = daifaAfterReceiveExpresStockMapper.selectExpressPackageCount(null,null,null);
+        int unmatchPackbagNum = daifaAfterReceiveExpresStockMapper.selectExpressPackageCount(null,null,0);;
 
         vo.setAllPackbagNum(allPackbagNum+"");
         vo.setMatchedPackbagNum((allPackbagNum - unmatchPackbagNum)+"");
