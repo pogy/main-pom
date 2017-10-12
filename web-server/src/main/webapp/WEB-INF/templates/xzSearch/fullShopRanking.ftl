@@ -37,7 +37,7 @@
 </#list>
 <#include "/__private_template__/xzSearch__common__nav.ftl">
 <div class="layout shopRanking">
-    <h3 class="title">${shopRanking.title!}</h3>
+    <h3 class="title">${shopRanking.rankingTitle!}</h3>
     <div class="tableBox">
         <table border="0">
              <thead>
