@@ -230,10 +230,12 @@ var webSite = '${webSite!}';
                 <label>订单编号：</label>
                 <p class="fs14 arail">${orderId!}</p>
             </li>
+            <#if orderDealTime??>
             <li>
                 <label>成交时间：</label>
                 <p class="fs14 arail">${orderDealTime!}</p>
             </li>
+            </#if>
             <li>
                 <label>收货人信息：</label>
                 <p>${orderAddrInfo.name!},${orderAddrInfo.phone!},${orderAddrInfo.address!}</p>

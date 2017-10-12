@@ -47,15 +47,16 @@ public class RankingListShowService {
     public ShiguPager<RankingShopVO> getRankingShopVOPager(CidMarketIdMapEnum cidMarketIdMapEnum,Integer page,Integer size) {
         ShiguPager<RankingShopVO> pager = new ShiguPager<>();
         List<RankingShopVO> rankingShopVOS = rankingSimpleService.selRankingShopBy(cidMarketIdMapEnum);
+        pager.setNumber(page);
         pager.calPages(rankingShopVOS.size(),size);
         int startIndex = (page - 1) * size;
         int endIndex = startIndex + size;
-        if (startIndex>size) {
+        if (startIndex>rankingShopVOS.size()) {
             pager.setContent(rankingShopVOS.subList(0,0));
-        } else if(endIndex>size) {
-            pager.setContent(rankingShopVOS.subList(startIndex,size));
+        } else if(endIndex>rankingShopVOS.size()) {
+            pager.setContent(rankingShopVOS.subList(startIndex,rankingShopVOS.size()));
         } else {
-            pager.setContent(rankingShopVOS.subList(startIndex,size));
+            pager.setContent(rankingShopVOS.subList(startIndex,endIndex));
         }
         return pager;
     }
