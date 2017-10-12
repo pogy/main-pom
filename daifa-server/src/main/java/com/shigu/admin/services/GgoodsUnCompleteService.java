@@ -1,5 +1,6 @@
 package com.shigu.admin.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
@@ -54,7 +55,7 @@ public class GgoodsUnCompleteService {
         example.setDistinct (true);
         List<GgoodsUmCompleteVO> listVO=new ArrayList<> ();
         //按条件查询本页数据
-        List<DaifaGgoods> list= daifaGgoodsMapper.selectFieldsByExample (example, "create_date,daifa_worker,daifa_worker_id,seller_id");;
+        List<DaifaGgoods> list= daifaGgoodsMapper.selectFieldsByExample (example, FieldUtil.codeFields ("create_date,daifa_worker,daifa_worker_id,seller_id"));;
 
         if(list.size ()>0){
             for (DaifaGgoods ggoods: list) {
