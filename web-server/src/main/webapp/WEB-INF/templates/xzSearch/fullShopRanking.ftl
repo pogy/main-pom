@@ -62,7 +62,7 @@
 </#list>
 </span>
                     </td>
-                    <td>${shopItem.goodsNum!}</td>
+                    <td>${shopItem.goodsCount!}</td>
                     <td>
                         ${shopItem.exponent!}
                     </td>
