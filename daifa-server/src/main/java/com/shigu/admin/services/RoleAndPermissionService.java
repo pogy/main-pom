@@ -1,5 +1,6 @@
 package com.shigu.admin.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 
@@ -66,7 +67,7 @@ public class RoleAndPermissionService {
 
         TsysRoleExample example=new TsysRoleExample ();
         example.createCriteria ().andCreateUserIdEqualTo (sellerId).andStatusEqualTo (1L);
-        List<TsysRole> list=tsysRoleMapper.selectFieldsByExample (example, "role_id,role_name,role_tag");
+        List<TsysRole> list=tsysRoleMapper.selectFieldsByExample (example, FieldUtil.codeFields ("role_id,role_name,role_tag"));
         List<RoleTreeVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (TsysRole record: list) {
@@ -94,7 +95,7 @@ public class RoleAndPermissionService {
 
         TsysPermissionExample example=new TsysPermissionExample ();
         example.createCriteria ().andCreateUserIdEqualTo (sellerId).andStatusEqualTo (1L);
-        List<TsysPermission> list=tsysPermissionMapper.selectFieldsByExample (example, "permission_id,permission_comment,permission_tag");//参数2是数据库中的字段以，分隔
+        List<TsysPermission> list=tsysPermissionMapper.selectFieldsByExample (example, FieldUtil.codeFields ("permission_id,permission_comment,permission_tag"));//参数2是数据库中的字段以，分隔
         List<PermissionTreeVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (TsysPermission record: list) {
@@ -122,7 +123,7 @@ public class RoleAndPermissionService {
 
         TsysRolePermissionExample example=new TsysRolePermissionExample ();
         example.createCriteria ().andRoleIdEqualTo (roleId);
-        List<TsysRolePermission> list=tsysRolePermissionMapper.selectFieldsByExample (example, "role_permission_id,role_id,permission_id");
+        List<TsysRolePermission> list=tsysRolePermissionMapper.selectFieldsByExample (example, FieldUtil.codeFields ("role_permission_id,role_id,permission_id"));
         List<RolePermissionVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (TsysRolePermission record: list) {
