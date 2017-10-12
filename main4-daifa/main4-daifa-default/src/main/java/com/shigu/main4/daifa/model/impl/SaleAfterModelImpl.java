@@ -620,10 +620,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.insertSelective(insert);
         }else{
-            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
-            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
-            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
-            daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
+            throw new DaifaException("每次用户拒绝议价,只能设置一次金额");
+//            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
+//            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
+//            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
+//            daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
         }
         //发送改金额消息
         JSONObject jsonObject=new JSONObject();

@@ -220,7 +220,7 @@ public class DaifaSaleAfterService {
                                 }
                             }
                             if(refund.getRefundState()==null){
-                                if(stopDealNum==0){
+                                if(stopDealNum==0&&ennum<sublist.size()){
                                     refund.setRefundState(1);
                                 }else{
                                     refund.setRefundState(0);
