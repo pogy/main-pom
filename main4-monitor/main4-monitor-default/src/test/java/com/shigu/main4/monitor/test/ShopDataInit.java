@@ -58,47 +58,47 @@ public class ShopDataInit {
     RedisIO redisIO;
 
     @Test
-    public void initMan(){
-        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING,1);
-        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING,1);
-        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING,1);
-        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING,0);
-        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING,0);
-        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING,0);
+    public void initMan() {
+        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 1);
+        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 1);
+        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 1);
+        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 0);
+        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 0);
+        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 0);
     }
 
-    public void upDataToRedis(CidMarketIdMapEnum cat,int pem){
-        String fromTime = getWeekTimeStamp(pem+1) + " 00:00:00";
+    public void upDataToRedis(CidMarketIdMapEnum cat, int pem) {
+        String fromTime = getWeekTimeStamp(pem + 1) + " 00:00:00";
         String toTime = getWeekTimeStamp(pem) + " 00:00:00";
         Client searchClient = ElasticConfiguration.searchClient;
         SearchRequestBuilder searchRequestBuilder = searchClient.prepareSearch("shigugoodsup").setTypes("hz");
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         for (Long aLong : cat.getMarketIds()) {
-            boolQuery.should(QueryBuilders.termQuery("supperMarketId",aLong));
+            boolQuery.should(QueryBuilders.termQuery("supperMarketId", aLong));
         }
         searchRequestBuilder.setQuery(QueryBuilders.boolQuery().must(boolQuery).must(QueryBuilders.rangeQuery("daiTime").from(fromTime).to(toTime))).setSize(0);
         searchRequestBuilder.addAggregation(AggregationBuilders.terms("shopUpCount").field("supperStoreId").size(500).subAggregation(AggregationBuilders.count("shopUpManCount").field("fenUserId")));
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
         List<Terms.Bucket> shopUpCount = ((LongTerms) searchResponse.getAggregations().get("shopUpCount")).getBuckets();
-        Map<Long,Long> shopIdUpManCount = new LinkedHashMap<>(500);
+        Map<Long, Long> shopIdUpManCount = new LinkedHashMap<>(500);
         //先筛选出类目中一周内上传人数前500的店铺
         for (Terms.Bucket bucket : shopUpCount) {
             //shopId
             Long shopId = bucket.getKeyAsNumber().longValue();
             //上传人数
             Long upManCount = ((InternalValueCount) bucket.getAggregations().get("shopUpManCount")).getValue();
-            shopIdUpManCount.put(shopId,upManCount);
+            shopIdUpManCount.put(shopId, upManCount);
         }
         List<Long> shopIdList = shopIdUpManCount.keySet().stream().collect(Collectors.toList());
         int loopSize = shopIdList.size();
         int stepSize = 50;
-        Map<Long,Long> shopUpNewCount = new LinkedHashMap<>(500);
-        for (int i =0;i*stepSize<loopSize;i++) {
-            List<Long> subList = shopIdList.subList(i * stepSize, (i+1) * stepSize>loopSize?loopSize:(i+1)*stepSize);
+        Map<Long, Long> shopUpNewCount = new LinkedHashMap<>(500);
+        for (int i = 0; i * stepSize < loopSize; i++) {
+            List<Long> subList = shopIdList.subList(i * stepSize, (i + 1) * stepSize > loopSize ? loopSize : (i + 1) * stepSize);
             SearchRequestBuilder searchRequestBuilder1 = searchClient.prepareSearch("goods").setTypes("hz");
             BoolQueryBuilder shouldShop = QueryBuilders.boolQuery();
             for (Long aLong : subList) {
-                shouldShop.should(QueryBuilders.termQuery("storeId",aLong));
+                shouldShop.should(QueryBuilders.termQuery("storeId", aLong));
             }
             searchRequestBuilder1.setQuery(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("loadDate").from(fromTime).to(toTime)).must(shouldShop)).setSize(0)
                     .addAggregation(AggregationBuilders.terms("shopItemNewCount").field("storeId").size(5));
@@ -106,69 +106,70 @@ public class ShopDataInit {
             LongTerms shopItemNewCount = shopUpNewResult.getAggregations().get("shopItemNewCount");
             for (Terms.Bucket bucket : shopItemNewCount.getBuckets()) {
                 long shopId = bucket.getKeyAsNumber().longValue();
-                shopUpNewCount.put(shopId,bucket.getDocCount());
+                shopUpNewCount.put(shopId, bucket.getDocCount());
             }
         }
         List<RankingShopVO> rankingShopVOS = new ArrayList<>(500);
         for (Long shopId : shopIdList) {
-            rankingShopVOS.add(getShopExponent(shopId,shopIdUpManCount.get(shopId),shopUpNewCount.get(shopId)));
+            rankingShopVOS.add(getShopExponent(shopId, shopIdUpManCount.get(shopId), shopUpNewCount.get(shopId)));
         }
         //截取算分前200的档口
         rankingShopVOS.sort(new RankingShopVO.RankingShopComparator());
-        rankingShopVOS = rankingShopVOS.subList(0,200<rankingShopVOS.size()?200:rankingShopVOS.size());
-        List<RankingShopVO> pastRankingShop = redisIO.getList(cat.getIndexPrefix() + fromTime, RankingShopVO.class);
+        rankingShopVOS = rankingShopVOS.subList(0, 200 < rankingShopVOS.size() ? 200 : rankingShopVOS.size());
+        List<RankingShopVO> pastRankingShop = redisIO.getList(cat.getIndexPrefix() + getWeekTimeStamp(pem + 1), RankingShopVO.class);
         int i = 0;
         for (RankingShopVO rankingShopVO : rankingShopVOS) {
             Long shopId = rankingShopVO.getShopId();
             rankingShopVO.setRank(++i);
             ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
             ShiguMarket shiguMarket = shiguMarketMapper.selectByPrimaryKey(shiguShop.getMarketId());
-            rankingShopVO.setFullShopName(shiguMarket.getMarketName()+" "+shiguShop.getShopNum());
+            rankingShopVO.setFullShopName(shiguMarket.getMarketName() + " " + shiguShop.getShopNum());
             ShiguShopLicense shiguShopLicense = new ShiguShopLicense();
             shiguShopLicense.setShopId(shopId);
             shiguShopLicense.setLicenseType(6);
             shiguShopLicense.setLicenseFailure(0);
             shiguShopLicense = shiguShopLicenseMapper.selectOne(shiguShopLicense);
-            rankingShopVO.setShopLevel(shiguShopLicense==null?0L:Long.valueOf(shiguShopLicense.getContext()));
+            rankingShopVO.setShopLevel(shiguShopLicense == null ? 0L : Long.valueOf(shiguShopLicense.getContext()));
             ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
             example.setWebSite(shiguShop.getWebSite());
             example.createCriteria().andStoreIdEqualTo(shopId);
             rankingShopVO.setGoodsCount(shiguGoodsTinyMapper.countByExample(example));
             if (pastRankingShop == null) {
-                rankingShopVO.setChangeNum(201-rankingShopVO.getRank());
+                rankingShopVO.setChangeNum(201 - rankingShopVO.getRank());
                 continue;
             }
             for (RankingShopVO shopVO : pastRankingShop) {
                 if (shopId.equals(shopVO.getShopId())) {
-                    rankingShopVO.setChangeNum(shopVO.getRank()-rankingShopVO.getRank());
+                    rankingShopVO.setChangeNum(shopVO.getRank() - rankingShopVO.getRank());
                     break;
                 }
             }
             if (rankingShopVO.getChangeNum() == null) {
-                rankingShopVO.setChangeNum(201-rankingShopVO.getRank());
+                rankingShopVO.setChangeNum(201 - rankingShopVO.getRank());
             }
         }
         //排行结果保存15天
-        redisIO.putTemp(cat.getIndexPrefix()+getWeekTimeStamp(pem),rankingShopVOS,3600*24*15);
+        redisIO.putTemp(cat.getIndexPrefix() + getWeekTimeStamp(pem), rankingShopVOS, 3600 * 24 * 15);
     }
 
     /**
      * 计算档口对应的排行权重
+     *
      * @param shopId
      * @param shopUpMan
      * @param shopUpNew
      * @return
      */
-    private RankingShopVO getShopExponent(Long shopId,Long shopUpMan,Long shopUpNew) {
+    private RankingShopVO getShopExponent(Long shopId, Long shopUpMan, Long shopUpNew) {
         RankingShopVO rankingShopVO = new RankingShopVO();
         //在上传量粗排出的店铺中设置保底上新量权重为10件的权重
-        if (shopUpNew == null||shopUpNew<10) {
+        if (shopUpNew == null || shopUpNew < 10) {
             shopUpNew = 10L;
         }
         rankingShopVO.setShopId(shopId);
         long docCount = shopUpNew;
         //上款量超过1000部分权重
-        long kWeight = docCount / 1000*100;
+        long kWeight = docCount / 1000 * 100;
         //上款量百位级权重
         long hWeight = (docCount % 1000) / 100 * 100;
         //上款量百位以下权重
@@ -177,7 +178,7 @@ public class ShopDataInit {
         long boostUpNew = kWeight > 0 ? (kWeight > 1000 ? 3000 : kWeight + 2000) : hWeight > 0 ? hWeight + 1000 : perWeight;
         long shopUploadScore = shopUpMan * 50;
         long boostUploadMan = shopUploadScore > 7000 ? 7000 : shopUploadScore;
-        rankingShopVO.setExponent(boostUpNew+boostUploadMan);
+        rankingShopVO.setExponent(boostUpNew + boostUploadMan);
         return rankingShopVO;
     }
 }

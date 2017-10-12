@@ -50,12 +50,12 @@ public class RankingListShowService {
         pager.calPages(rankingShopVOS.size(),size);
         int startIndex = (page - 1) * size;
         int endIndex = startIndex + size;
-        if (startIndex>size) {
+        if (startIndex>rankingShopVOS.size()) {
             pager.setContent(rankingShopVOS.subList(0,0));
-        } else if(endIndex>size) {
-            pager.setContent(rankingShopVOS.subList(startIndex,size));
+        } else if(endIndex>rankingShopVOS.size()) {
+            pager.setContent(rankingShopVOS.subList(startIndex,rankingShopVOS.size()));
         } else {
-            pager.setContent(rankingShopVOS.subList(startIndex,size));
+            pager.setContent(rankingShopVOS.subList(startIndex,endIndex));
         }
         return pager;
     }
