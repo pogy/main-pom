@@ -582,12 +582,10 @@ public class DaifaSaleAfterService {
      * 全部包裹数量
      * @param
      */
-    public ParcelSearchOrderStatisticsVO getOrderStatistics(ParcelSearchBO bo) {
+    public ParcelSearchOrderStatisticsVO getOrderStatistics() {
         ParcelSearchOrderStatisticsVO vo = new ParcelSearchOrderStatisticsVO();
-        DaifaAfterReceiveExpresStock daifaAfterReceiveExpresStock = new DaifaAfterReceiveExpresStock();
-        int allPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
-        daifaAfterReceiveExpresStock.setRelevanceStatus(0);//查有关联数量
-        int unmatchPackbagNum = daifaAfterReceiveExpresStockMapper.selectCount(daifaAfterReceiveExpresStock);
+        int allPackbagNum = daifaAfterReceiveExpresStockMapper.selectExpressPackageCount(null,null,null);
+        int unmatchPackbagNum = daifaAfterReceiveExpresStockMapper.selectExpressPackageCount(null,null,0);;
 
         vo.setAllPackbagNum(allPackbagNum+"");
         vo.setMatchedPackbagNum((allPackbagNum - unmatchPackbagNum)+"");
@@ -647,7 +645,6 @@ public class DaifaSaleAfterService {
                     saleAfterBO.setTelephone(stock.getSendPhone());
                     saleAfterBO.setBackPostCode(stock.getReceivedExpressCode());
                     dvo = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
-                    daifaAfterReceiveExpresStockVO.setPackageRemark(stock.getPackageRemark());
                 }
                 daifaAfterReceiveExpresStockVO.setOrders(dvo);
                 daifaAfterReceiveExpresStockVO.setPackageId(stock.getReceivedExpressId()+"");
@@ -656,6 +653,7 @@ public class DaifaSaleAfterService {
                 daifaAfterReceiveExpresStockVO.setTelephone(stock.getSendPhone());
                 daifaAfterReceiveExpresStockVO.setIsMatchingOrder(stock.getRelevanceStatus()==1);
                 daifaAfterReceiveExpresStockVO.setMatchingTime(DateUtil.dateToString(stock.getCreateTime(),DateUtil.patternD));
+                daifaAfterReceiveExpresStockVO.setPackageRemark(stock.getPackageRemark());
                 vos.add(daifaAfterReceiveExpresStockVO);
             }
         }
