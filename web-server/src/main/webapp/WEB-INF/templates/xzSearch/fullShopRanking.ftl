@@ -52,7 +52,7 @@
                 <#list shopRanking.shopList as shopItem>
                 <tr>
                     <td  class="firstTd<#if shopItem.rank == 1> num1<#elseif shopItem.rank == 2> num2<#elseif shopItem.rank == 3> num3</#if>">
-                        <span class="rank-num"><#if shopItem.rank gt 2>${shopItem.rank!}</#if></span>
+                        <span class="rank-num"><#if shopItem.rank gt 3>${shopItem.rank!}</#if></span>
                         <a class="place" href="/shop.htm?id=${shopItem.shopId!}">${shopItem.fullShopName!}</a>
                         <span class="honor">
 <#assign text>{"num":shopItem.shopLevel}</#assign>
