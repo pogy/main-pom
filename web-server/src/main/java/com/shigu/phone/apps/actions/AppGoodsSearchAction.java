@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 类名：AppGoodsSearchAction
@@ -36,6 +38,10 @@ public class AppGoodsSearchAction {
     @RequestMapping("itemSearch")
     @ResponseBody
     public JSONObject itemSearch(ItemSearchRequest request, ItemSearchResponse response) {
+        List<Integer> types = Arrays.asList(1,2,3);
+        if (!types.contains(request.getType())){
+            return WrapperUtil.wrapperOpenException("参数错误",response);
+        }
         if (request.getType() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
@@ -43,6 +49,9 @@ public class AppGoodsSearchAction {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (request.getType() == 2 && StringUtils.isEmpty(request.getKeyword())) {//2普通搜索(keywords不为空)
+            return WrapperUtil.wrapperOpenException("参数错误",response);
+        }
+        if (request.getType() == 3 && StringUtils.isEmpty(request.getStoreId())) {//3店铺(storeId不为空)
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (StringUtils.isEmpty(request.getOrderBy())) {
@@ -55,7 +64,7 @@ public class AppGoodsSearchAction {
             request.setIndex(1);
         }
         if (request.getSize() == null) {
-            request.setSize(15);
+            request.setSize(30);
         }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }

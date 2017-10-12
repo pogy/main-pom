@@ -91,4 +91,17 @@ public class AppUserAction {
     public JSONObject upToWx(@Valid ImgUploadRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneUserService.imgUpload(request));
     }
+
+    /**
+     * 获取 OSS 临时授权
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping("createPostSignInfo")
+    @ResponseBody
+    public JSONObject createPostSignInfo(CreatePostSignInfoRequest request,BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneUserService.createPostSignInfo());
+    }
+
 }

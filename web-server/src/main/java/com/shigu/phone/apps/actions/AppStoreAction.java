@@ -79,7 +79,7 @@ public class AppStoreAction {
             request.setIndex(1);
         }
         if (request.getSize() == null) {
-            request.setSize(15);
+            request.setSize(30);
         }
         return JSONObject.fromObject(phoneStoreService.shopSearch(request));
     }
@@ -112,7 +112,7 @@ public class AppStoreAction {
             request.setIndex(1);
         }
         if (request.getSize() == null) {
-            request.setSize(15);
+            request.setSize(30);
         }
         return JSONObject.fromObject(phoneStoreService.storeCollect(request));
     }

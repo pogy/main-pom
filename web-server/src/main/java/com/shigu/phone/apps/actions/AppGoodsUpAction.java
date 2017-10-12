@@ -38,6 +38,12 @@ public class AppGoodsUpAction {
     @RequestMapping("uploadedItem")
     @ResponseBody
     public JSONObject uploadedItem(UploadedItemRequest request){
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null) {
+            request.setSize(30);
+        }
         return JSONObject.fromObject(phoneGoodsUpService.uploadedItem(request));
     }
     @RequestMapping("instockMyItem")

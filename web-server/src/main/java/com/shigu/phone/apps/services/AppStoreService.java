@@ -185,7 +185,7 @@ public class AppStoreService {
         ShopCatResponse response = new ShopCatResponse();
         List<CdnShopCatVO> cdnShopCatVOS = cdnService.cdnShopCat(request.getShopId());
         List<AppShopCat> appShopCats = new ArrayList<>();
-        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+//        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
         for (CdnShopCatVO cdnShopCatVO : cdnShopCatVOS) {
             AppShopCat cat = new AppShopCat();
             cat.setCatName(cdnShopCatVO.getName());
@@ -195,14 +195,20 @@ public class AppStoreService {
                 AppShopCatSub catSub = new AppShopCatSub();
                 catSub.setCatName(shopCatVO.getName());
                 catSub.setScid(shopCatVO.getCid().toString());
-                goodsTinyExample.clear();
-                goodsTinyExample.createCriteria()
-                        .andGoodsStatusEqualTo(0)
-                        .andStoreIdEqualTo(request.getShopId())
-                        .andCidEqualTo(shopCatVO.getCid());
-                int itemNum = shiguGoodsTinyMapper.countByExample(goodsTinyExample);
-                catSub.setItemNum(itemNum);
+//                goodsTinyExample.clear();
+//                goodsTinyExample.setWebSite(request.getWebSite());
+//                goodsTinyExample.createCriteria()
+//                        .andGoodsStatusEqualTo(0)
+//                        .andStoreIdEqualTo(request.getShopId())
+//                        .andCidEqualTo(shopCatVO.getCid());
+//                int itemNum = shiguGoodsTinyMapper.countByExample(goodsTinyExample);
+//                catSub.setItemNum(itemNum);
                 appShopCatSubs.add(catSub);
+            }
+            if (cdnShopCatVO.getSubCats() == null) {
+                cat.setItemNum(0);
+            }else{
+                cat.setItemNum(cdnShopCatVO.getSubCats().size());
             }
             cat.setSubCats(appShopCatSubs);
             appShopCats.add(cat);

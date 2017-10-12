@@ -20,6 +20,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
@@ -49,7 +50,9 @@ import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类名：PhoneUserService
@@ -91,6 +94,9 @@ public class PhoneUserService {
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private OssIO ossIO;
 
     /**
      * 移动端我的信息
@@ -608,6 +614,34 @@ public class PhoneUserService {
         }
         response.setSuccess(true);
         return response;
+    }
+
+    /**
+     * 获取 OSS 临时授权
+     * @return
+     */
+    public CreatePostSignInfoResponse createPostSignInfo(){
+        CreatePostSignInfoResponse response = new CreatePostSignInfoResponse();
+        Map<String, String> postSignInfo = null;
+        try {
+            postSignInfo = ossIO.createPostSignInfo("shigu/mall/file/");
+
+            response.setAccessid(postSignInfo.get("accessid"));
+            response.setPolicy(postSignInfo.get("policy"));
+            response.setSignature(postSignInfo.get("signature"));
+            response.setDir(postSignInfo.get("dir"));
+            response.setHost(postSignInfo.get("host"));
+            response.setExpire(postSignInfo.get("expire"));
+            response.setSuccess(true);
+
+            return response;
+        } catch (UnsupportedEncodingException e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("获取临时授权失败");
+            response.setException(openException);
+            response.setSuccess(false);
+            return response;
+        }
     }
 
 }

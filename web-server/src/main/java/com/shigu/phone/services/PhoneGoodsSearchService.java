@@ -23,6 +23,7 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.newcdn.vo.CdnGoodsInfoVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
@@ -62,6 +63,9 @@ public class PhoneGoodsSearchService {
 
     @Autowired
     private UserCollectService userCollectService;
+
+    @Autowired
+    private OssIO ossIO;
 
     /**
      * 移动端商品搜索
@@ -141,6 +145,9 @@ public class PhoneGoodsSearchService {
         } catch (IOException e) {
             resp.setException(new OpenException());
         }
+        //搜索完毕，删除临时图片 TODO 删除路径待确认
+        String str = request.getImgurl();
+        ossIO.deleteFile("mall/file/" + str.substring(str.lastIndexOf("/") + 1));
         return resp;
     }
 
