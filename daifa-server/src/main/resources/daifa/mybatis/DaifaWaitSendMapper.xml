@@ -98,6 +98,7 @@
 								WHERE
 									a.SELLER_ID = ${dfSellerId}
 								AND a.SEND_STATUS = 1
+                                AND a.order_display = 1
 								AND a.DWS_ID = b.DWS_ID
 								AND b.take_goods_status != 1
 								AND b.refund_status = 0
@@ -107,6 +108,7 @@
 							WHERE
 								SEND_STATUS = 1
 							AND SELLER_ID = ${dfSellerId}
+                            AND t1.order_display = 1
 							<if test="status==1">
 								AND t2.df_trade_id IS NULL
 							</if>
@@ -171,6 +173,7 @@
         WHERE
         a.SELLER_ID = ${dfSellerId}
         AND a.SEND_STATUS = 1
+        AND a.order_display = 1
         AND a.DWS_ID = b.DWS_ID
         AND b.take_goods_status != 1
         AND b.refund_status = 0
@@ -180,6 +183,7 @@
         WHERE
         SEND_STATUS = 1
         AND SELLER_ID = ${dfSellerId}
+        AND t1.order_display = 1
         <if test="status==1">
             AND t2.df_trade_id IS NULL
         </if>
