@@ -156,7 +156,7 @@ public class DaifaSaleAfterAction {
         model.addAttribute("userIcon","");
         model.addAttribute("userName",auth.getDaifaUserName());
         model.addAttribute("query",bo);
-        model.addAttribute("orderStatistics",daifaSaleAfterService.getOrderStatistics(bo));
+        model.addAttribute("orderStatistics",daifaSaleAfterService.getOrderStatistics());
 
         ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo,auth.getDaifaSellerId());
         model.addAttribute("postList",pager.getContent());
