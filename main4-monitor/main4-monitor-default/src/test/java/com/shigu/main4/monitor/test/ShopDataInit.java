@@ -1,9 +1,11 @@
 package com.shigu.main4.monitor.test;
 
+import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguShopLicense;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.configs.ElasticConfiguration;
@@ -50,12 +52,16 @@ public class ShopDataInit {
     ShiguShopMapper shiguShopMapper;
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-
+    @Autowired
+    ShiguMarketMapper shiguMarketMapper;
     @Autowired
     RedisIO redisIO;
 
     @Test
     public void initMan(){
+        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING,1);
+        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING,1);
+        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING,1);
         upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING,0);
         upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING,0);
         upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING,0);
@@ -116,7 +122,8 @@ public class ShopDataInit {
             Long shopId = rankingShopVO.getShopId();
             rankingShopVO.setRank(++i);
             ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
-            rankingShopVO.setFullShopName(shiguShop.getParentMarketName()+" "+shiguShop.getShopNum());
+            ShiguMarket shiguMarket = shiguMarketMapper.selectByPrimaryKey(shiguShop.getMarketId());
+            rankingShopVO.setFullShopName(shiguMarket.getMarketName()+" "+shiguShop.getShopNum());
             ShiguShopLicense shiguShopLicense = new ShiguShopLicense();
             shiguShopLicense.setShopId(shopId);
             shiguShopLicense.setLicenseType(6);

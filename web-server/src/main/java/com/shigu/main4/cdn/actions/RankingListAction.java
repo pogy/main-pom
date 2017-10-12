@@ -30,9 +30,12 @@ public class RankingListAction {
     RankingListShowService rankingListShowService;
 
     @RequestMapping("fullShopRanking")
-    public String fullShopRanking(Long type, Integer page, Model model) throws Main4Exception {
+    public String fullShopRanking(Long id, Integer page, Model model) throws Main4Exception {
         //todo:具体实现
-        CidMarketIdMapEnum cidMarketIdMapEnum = CidMarketIdMapEnum.cidMarketIdMap(type);
+        CidMarketIdMapEnum cidMarketIdMapEnum = CidMarketIdMapEnum.cidMarketIdMap(id);
+        if (page == null) {
+            page = 1;
+        }
         ShiguPager<RankingShopVO> rankingShopVOPager = rankingListShowService.getRankingShopVOPager(cidMarketIdMapEnum, page, 20);
         RankingVO shopRanking = new RankingVO();
         shopRanking.setRankingId(cidMarketIdMapEnum.cid);
@@ -48,7 +51,7 @@ public class RankingListAction {
         //todo:具体实现
         List<RankingVO> rankingCateList = new ArrayList<>();
         rankingCateList.add(rankingListShowService.getCatRanking(CidMapEnum.MAN_CAT_RANKING, CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING));
-        rankingCateList.add(rankingListShowService.getCatRanking(CidMapEnum.WOMAN_CAT_RANKING,CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING));
+        rankingCateList.add(rankingListShowService.getCatRanking(CidMapEnum.WOMAN_CAT_RANKING,CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING));
         ArrayList<RankingVO> rankingShopList = new ArrayList<>();
         rankingShopList.add(rankingListShowService.getShopRanking(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING));
         model.addAttribute("rankingCateList",rankingCateList);
