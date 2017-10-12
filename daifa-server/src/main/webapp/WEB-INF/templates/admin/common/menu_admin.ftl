@@ -6,7 +6,17 @@
         </li>
 
         <li>
-            <a href="orderSendErrorindex.htm"><i class="icon-allorders"></i>订单发货错误</a>
+            <a href="javascript:;" ><i class="icon-allorders"></i>订单发货错误</a>
+            <ul>
+                <li>
+                    <a id="niemenu" href="orderSendErrorindex.htm"><i></i>主单错误</a>
+                </li>
+
+                <li>
+                    <a id="niemenu" href="orderSendErrorSubindex.htm"><i></i>子单属性错误</a>
+                </li>
+
+            </ul>
         </li>
 
         <li>
@@ -22,7 +32,9 @@
                 -->
             </ul>
         </li>
-
+        <li>
+            <a  href="ggoodsUnListByPage.htm" ><i class="icon-allorders"></i>拿货未完成数据</a>
+        </li>
         <li>
             <a href="javascript:;" ><i class="icon-allocation"></i>系统管理</a>
             <ul>

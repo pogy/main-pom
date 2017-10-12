@@ -2,10 +2,13 @@ package com.shigu.main4.daifa.process.impl;
 
 import com.opentae.data.daifa.beans.TsysPermission;
 import com.opentae.data.daifa.beans.TsysRole;
+import com.opentae.data.daifa.beans.TsysRolePermission;
 import com.opentae.data.daifa.beans.TsysUserRole;
+import com.opentae.data.daifa.examples.TsysRolePermissionExample;
 import com.opentae.data.daifa.examples.TsysUserRoleExample;
 import com.opentae.data.daifa.interfaces.TsysPermissionMapper;
 import com.opentae.data.daifa.interfaces.TsysRoleMapper;
+import com.opentae.data.daifa.interfaces.TsysRolePermissionMapper;
 import com.opentae.data.daifa.interfaces.TsysUserRoleMapper;
 import com.shigu.main4.daifa.bo.TsysRoleBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -40,6 +43,9 @@ public class SysDealProcessImpl implements SysDealProcess{
     TsysPermissionMapper tsysPermissionMapper;
     @Resource(name = "tae_daifa_tsysUserRoleMapper")
     TsysUserRoleMapper tsysUserRoleMapper;
+    @Resource(name = "tae_daifa_tsysRolePermissionMapper")
+    TsysRolePermissionMapper tsysRolePermissionMapper;
+
 
     /**
      * ====================================================================================
@@ -114,7 +120,17 @@ public class SysDealProcessImpl implements SysDealProcess{
         return tsysPermissionMapper.updateByPrimaryKeySelective (record);
     }
 
-
+    /**
+     * ====================================================================================
+     * @方法名： updateUserAndRoles
+     * @user gzy 2017/9/22 15:23
+     * @功能：修改用户角色
+     * @param: [userId, roleIds]
+     * @return: int
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @Override
     @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public int updateUserAndRoles (Long userId, String roleIds) throws DaifaException {
@@ -139,5 +155,41 @@ public class SysDealProcessImpl implements SysDealProcess{
 
        return tsysUserRoleMapper.insertListNoId (list);
 
+    }
+    /**
+     * ====================================================================================
+     * @方法名： updateRoleAndPermissions
+     * @user gzy 2017/9/22 15:22
+     * @功能：修改角色权限
+     * @param: [roleId, permissionIds]
+     * @return: int
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    public int updateRoleAndPermissions (Long roleId, String permissionIds) throws DaifaException {
+
+        String permissionIdss[]=permissionIds.split (",");
+        //删除原有的角色权限，
+        TsysRolePermissionExample example=new TsysRolePermissionExample ();
+        example.createCriteria ().andRoleIdEqualTo (roleId);
+        tsysRolePermissionMapper.deleteByExample (example);
+        List<TsysRolePermission> list=new ArrayList<> ();
+        //再进行插入相应的角色权限
+        if(permissionIdss.length>0){
+            for(String spermissionId:permissionIdss){
+                Long permissionId=new Long(spermissionId);
+                TsysRolePermission rolePermission=new TsysRolePermission();
+                rolePermission.setPermissionId (permissionId);
+                rolePermission.setRoleId (roleId);
+                rolePermission.setCreateTime (new Date ());
+                rolePermission.setLastModifyTime (new Date ());
+                list.add (rolePermission);
+            }
+        }
+
+        return tsysRolePermissionMapper.insertListNoId (list);
     }
 }

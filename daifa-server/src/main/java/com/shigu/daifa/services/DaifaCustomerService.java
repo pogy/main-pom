@@ -76,7 +76,7 @@ public class DaifaCustomerService {
             salece.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
         }
         if (StringUtils.hasText(bo.getTelphone())) {
-            salece.andReceiverMobileEqualTo(bo.getTelphone());
+            salece.andReceiverPhoneEqualTo(bo.getTelphone());
         }
         if (StringUtils.hasText(bo.getReceiver())) {
             salece.andReceiverNameEqualTo(bo.getReceiver());
@@ -117,8 +117,6 @@ public class DaifaCustomerService {
                 if("无".equals(vo.getImWw())){
                     vo.setImWw(null);
                 }
-                vo.setSendTime(DateUtil.dateToString(afterSaleDatum.getSendTime(), DateUtil.patternA));
-                vo.setTradeTime(DateUtil.dateToString(afterSaleDatum.getCreateTime(), DateUtil.patternA));
                 afterSaleDataVOS.add(vo);
                 List<DaifaCustomerDataSubVO> afterSaleDataSubVOS = new ArrayList<>();
                 for (AfterSaleSubData afterSaleSubData : afterSaleDatum.getChildOrders()) {

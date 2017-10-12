@@ -97,16 +97,19 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //申请的售后的件数大于可申请售后的数量
             throw new DaifaException("申请的售后的件数大于可申请售后的数量");
         }
+
+        List<Long> afterOids=BeanMapper.getFieldList(orders,"dfOrderId",Long.class);
+
         DaifaAfterSale after = new DaifaAfterSale();
         after.setDfTradeId(orders.get(0).getDfTradeId());
         after = daifaAfterSaleMapper.selectOne(after);
 
         Date time = new Date();
         String date = DateUtil.dateToString(time, DateUtil.patternB);
+        DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
 
         List<Long> updateIds = new ArrayList<>();
         if (after == null) {
-            DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
             if (trade.getSendStatus() != 2) {
                 //未发货,不能申请售后
                 throw new DaifaException("未发货,不能申请售后");
@@ -130,11 +133,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 sub.setAfterStatus(0);
                 sub.setCreateDate(date);
                 sub.setCreateTime(time);
+                sub.setBuyerTelephone(trade.getReceiverPhone());
                 sub.setRemark(null);
                 sub.setRemark1(null);
                 sub.setRemark2(null);
                 sub.setSellerId(trade.getSellerId());
-                if (o.getOrderCode().equals(orderCode.toString()) && i < num) {
+                if (afterOids.contains(o.getDfOrderId()) && i < num) {
                     i++;
                     sub.setRefundId(refundId);
                     sub.setAfterType(afterType);
@@ -159,6 +163,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             sub.setAfterType(afterType);
             sub.setApplyTime(time);
             sub.setAfterStatus(1);
+            sub.setBuyerTelephone(trade.getReceiverPhone());
             DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
             daifaAfterSaleSubExample.createCriteria().andDfOrderIdIn(updateIds);
             daifaAfterSaleSubMapper.updateByExampleSelective(sub, daifaAfterSaleSubExample);
@@ -294,7 +299,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
         daifaAfterSale.setAfterSaleId(afterSaleId);
-        daifaAfterSale.setRemark(oldSale.getRemark()+"<br>"+remark);
+        daifaAfterSale.setRemark(oldSale.getRemark()==null?remark:(oldSale.getRemark()+"<br>"+remark));
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 
@@ -454,7 +459,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         map.put("refundId",sub.getRefundId());
         map.put("num",num);
         jsonObject.put("data",map);
-        jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
+        jsonObject.put("msg",StringUtils.isEmpty(reason)?DaifaSendMqEnum.shopRefuse.getMsg():reason);
         jsonObject.put("status","true");
         mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+sub.getRefundId(),
                 DaifaSendMqEnum.shopRefuse.getMessageTag(), jsonObject.toString());
@@ -615,10 +620,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.insertSelective(insert);
         }else{
-            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
-            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
-            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
-            daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
+            throw new DaifaException("每次用户拒绝议价,只能设置一次金额");
+//            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
+//            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
+//            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
+//            daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
         }
         //发送改金额消息
         JSONObject jsonObject=new JSONObject();

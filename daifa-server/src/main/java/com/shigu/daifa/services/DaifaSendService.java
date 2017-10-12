@@ -127,8 +127,8 @@ public class DaifaSendService {
         if (StringUtils.hasText(bo.getReceiver())) {
             ce.andReceiverNameEqualTo(bo.getReceiver());
         }
-        if (StringUtils.hasText(bo.getTelphone())) {
-            ce.andReceiverPhoneEqualTo(bo.getTelphone());
+        if (StringUtils.hasText(bo.getTelephone())) {
+            ce.andReceiverPhoneEqualTo(bo.getTelephone());
         }
         if (bo.getBuyerId() != null) {
             ce.andBuyerIdEqualTo(bo.getBuyerId());
@@ -162,6 +162,10 @@ public class DaifaSendService {
                     .on(daifaSendExample.createCriteria()
                             .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId));
         }
-        return build.build();
+        MultipleExample me=build.build();
+        if(isList){
+            me.setOrderByClause("daifa_send.send_id desc");
+        }
+        return me;
     }
 }

@@ -37,13 +37,13 @@
             and received_express_code=#{postCode}
         </if>
         <if test="sendPhone!=null">
-            and send_phone=sendPhone
+            and send_phone=#{sendPhone}
         </if>
         <if test="status!=null">
-            and relevance_status=status
+            and relevance_status=#{status}
         </if>
         group by received_express_code
         order by received_express_id desc
-        limit ${start},${end}
+        limit #{start},#{end}
     </select>
 </mapper>

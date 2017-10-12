@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
  * @类编号
  * @类名称：TsysRoleAction
  * @文件路径：com.shigu.admin.actions.TsysRoleAction
- * @内容摘要：
+ * @内容摘要：角色
  * @编码作者：gzy
  * @创建日期：2017/9/18 09:15
  * @version: main-pom

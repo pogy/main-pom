@@ -25,7 +25,7 @@ public class SendBO {
     /**
      *收货人手机号
      */
-    private String telphone;
+    private String telephone;
     /**
      * 开始时间
      */
@@ -66,14 +66,6 @@ public class SendBO {
         this.receiver = receiver;
     }
 
-    public String getTelphone() {
-        return telphone;
-    }
-
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
-    }
-
     public int getPage() {
         return page;
     }
@@ -104,5 +96,19 @@ public class SendBO {
 
     public void setPostCode(String postCode) {
         this.postCode = postCode;
+    }
+
+    /**
+     *收货人手机号
+     */
+    public String getTelephone() {
+        return this.telephone;
+    }
+
+    /**
+     *收货人手机号
+     */
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 }

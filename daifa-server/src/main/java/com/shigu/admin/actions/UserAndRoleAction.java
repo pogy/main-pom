@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
  * @类编号
  * @类名称：UserAndRoleAction
  * @文件路径：com.shigu.admin.actions.UserAndRoleAction
- * @内容摘要：
+ * @内容摘要：用户角色
  * @编码作者：gzy
  * @创建日期：2017/9/21 11:12
  * @version: main-pom
@@ -38,8 +38,6 @@ public class UserAndRoleAction {
 
     @RequestMapping("admin/userAndRole")
     public String userAndRole(UserAndRoleBO bo, Model model) throws ExecutionException, InterruptedException {
-
-
         //Session session = SecurityUtils.getSubject().getSession();
         //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=999999990L;
