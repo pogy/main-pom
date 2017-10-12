@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -223,7 +228,7 @@
             <select class="fmInput" name="matchState">
                 <option>请选择匹配状态</option>
                 <option value="1" <#if query.matchState == "1">selected</#if>>已匹配订单</option>
-                <option value="2" <#if query.matchState == "2">selected</#if>>未匹配订单</option>
+                <option value="0" <#if query.matchState == "0">selected</#if>>未匹配订单</option>
             </select>
         </li>
         <li>
@@ -314,6 +319,7 @@
 
 
 </#list>
+
 
 
 

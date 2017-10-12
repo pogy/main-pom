@@ -164,7 +164,7 @@ public class DaifaSaleAfterDisposeService {
                                     }
                                 }else if(sub.getAfterStatus()>4){
                                     errorNum++;
-                                    if(sub.getInStock()==1){
+                                    if(sub.getInStock()!=null&&sub.getInStock()==1){
                                         subvo.setPutInStorageType(4);
                                     }else{
                                         subvo.setPutInStorageType(3);
