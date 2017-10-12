@@ -6,9 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
 
 public class TestAboutMe {
     //成功
@@ -351,6 +348,16 @@ public class TestAboutMe {
         request.setUserId(1000085908l);
 
        ItemCollectResponse response = client.execute(request);
+        System.out.println(response.getBody());
+    }
+
+    //成功
+    @Test
+    public void  testCreatePostSignInfoRequest (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        CreatePostSignInfoRequest request=new CreatePostSignInfoRequest ();
+
+        CreatePostSignInfoResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
 
