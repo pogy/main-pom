@@ -47,6 +47,7 @@ public class RankingListShowService {
     public ShiguPager<RankingShopVO> getRankingShopVOPager(CidMarketIdMapEnum cidMarketIdMapEnum,Integer page,Integer size) {
         ShiguPager<RankingShopVO> pager = new ShiguPager<>();
         List<RankingShopVO> rankingShopVOS = rankingSimpleService.selRankingShopBy(cidMarketIdMapEnum);
+        pager.setNumber(page);
         pager.calPages(rankingShopVOS.size(),size);
         int startIndex = (page - 1) * size;
         int endIndex = startIndex + size;
