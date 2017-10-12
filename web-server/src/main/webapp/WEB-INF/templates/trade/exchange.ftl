@@ -279,7 +279,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="refundDesc">
             <label>换货说明：</label>
-            <textarea ></textarea>
+            <textarea placeholder="最多16个字符" maxlength="16"></textarea>
         </li>
         <li>
 
@@ -717,18 +717,10 @@ var expressCreateTime = ${express.createTime!};
                 <p>
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
-                    退款类型：退货退款<br>
-                    退款金额：${record.refundCost!}<br>
-                    退款商品：（货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;&nbsp;件数：${record.goodsNum!}）
-                    </#if>
+                    
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
-                        <#if record.afterSaleInfoShowIs == true>
-                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
-                        </#if>
-                    </#if>
+                    
                 </#if>
                 </p>
             </div>
@@ -770,18 +762,10 @@ var expressCreateTime = ${express.createTime!};
                 <p>
                 <#if record.userType == 1>
                 买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
-                    退款类型：退货退款<br>
-                    退款金额：${record.refundCost!}<br>
-                    退款商品：（货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;&nbsp;件数：${record.goodsNum!}）
-                    </#if>
+                    
                 <#elseif record.userType == 0>
                 ${record.recordContent!}<br>
-                    <#if record.afterSaleType == 1>
-                        <#if record.afterSaleInfoShowIs == true>
-                        货号：${record.afterSaleGoodsNo!}&nbsp;&nbsp;颜色：${record.goodsColor!}&nbsp;&nbsp;尺码：${record.goodsSize!}&nbsp;&nbsp;${afterSale!}&nbsp;&nbsp;件数：${record.failNum!}&nbsp;&nbsp;${record.failReason!}
-                        </#if>
-                    </#if>
+                    
                 </#if>
                 </p>
             </div>

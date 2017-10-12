@@ -2,17 +2,16 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
+import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
-import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundSubInfo;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -68,6 +67,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
+    @Autowired
+    private SubOrderSoidpsMapper subOrderSoidpsMapper;
+
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
     }
@@ -86,7 +88,13 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @PostConstruct
     public void init() {
         if (refundApplyBO != null || fromUser != null) {
-            apply(refundApplyBO, fromUser);
+            //可以进行多次退款的另外处理
+            if (refundApplyBO.getType() == 5) {
+                multiRefundApply(refundApplyBO, fromUser);
+            } else {
+                //正常售后流程
+                apply(refundApplyBO, fromUser);
+            }
         }
     }
 
@@ -135,17 +143,17 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setRefundId(refundId);
         refund.setStatus(refundStateEnum.refundStatus);
-        Boolean userShow=refundStateEnum.refundStatus==RefundStateEnum.DISPOSE_REFUND.refundStatus
-                ||refundStateEnum.refundStatus==RefundStateEnum.ENT_REFUND.refundStatus
-                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_REFUND.refundStatus
-                ||refundStateEnum.refundStatus==RefundStateEnum.NOT_REFUND.refundStatus
-                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_CACHED.refundStatus
-                ||refundStateEnum.refundStatus==RefundStateEnum.SELLER_REPRICE.refundStatus;
+        Boolean userShow = refundStateEnum.refundStatus == RefundStateEnum.DISPOSE_REFUND.refundStatus
+                || refundStateEnum.refundStatus == RefundStateEnum.ENT_REFUND.refundStatus
+                || refundStateEnum.refundStatus == RefundStateEnum.SELLER_REFUND.refundStatus
+                || refundStateEnum.refundStatus == RefundStateEnum.NOT_REFUND.refundStatus
+                || refundStateEnum.refundStatus == RefundStateEnum.SELLER_CACHED.refundStatus
+                || refundStateEnum.refundStatus == RefundStateEnum.SELLER_REPRICE.refundStatus;
         refund.setUserShow(!userShow);
         //卖家受理
-        if(refundStateEnum.refundStatus==RefundStateEnum.DISPOSE_REFUND.refundStatus){
+        if (refundStateEnum.refundStatus == RefundStateEnum.DISPOSE_REFUND.refundStatus) {
             refund.setRefundSubInfo(RefundSubInfo.SELLERACCPET.value);
-        }else if(refundStateEnum.refundStatus==RefundStateEnum.SELLER_REPRICE.refundStatus){
+        } else if (refundStateEnum.refundStatus == RefundStateEnum.SELLER_REPRICE.refundStatus) {
             refund.setRefundSubInfo(RefundSubInfo.PRICECHANGE.value);
         }
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
@@ -160,7 +168,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      *
      * @param refundInfo 当前状态信息，可为null, 为null 会自助查询
      * @param state      修改后状态
-     * @param log           记录日志
+     * @param log        记录日志
      */
     @Transactional(rollbackFor = Exception.class)
     public void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state, String log) {
@@ -194,34 +202,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public Long apply(RefundApplyBO applyBO, Boolean fromUser) {
-        //是否已存在的系统退款（特殊退款类型，可退多次）
-        boolean existedSystemRefund = false;
-        ItemOrderRefund itemOrderRefund = null;
-        //截单\代发已拿到货退款情况另外处理
-        if (applyBO.getType()==4) {
-            itemOrderRefund = new ItemOrderRefund();
-            itemOrderRefund.setType(applyBO.getType());
-            itemOrderRefund.setSoid(applyBO.getSoid());
-            itemOrderRefund = itemOrderRefundMapper.selectOne(itemOrderRefund);
-            //表中已经存在记录
-            if (itemOrderRefund != null) {
-                //退款记录原数据
-                itemOrderRefund.setNumber(itemOrderRefund.getNumber()+applyBO.getNumber());
-                //本次退款数据
-                itemOrderRefund.setHopeMoney(applyBO.getHopeMoney());
-                itemOrderRefund.setReason(applyBO.getReason());
-                itemOrderRefund.setUserApply(fromUser);
-                //为了使本类型的退款能进行多次
-                itemOrderRefund.setStatus(0);
-                itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
-                existedSystemRefund = true;
-            }
-        }
-        if (!existedSystemRefund) {
-            itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
-            itemOrderRefund.setUserApply(fromUser);
-            itemOrderRefundMapper.insertSelective(itemOrderRefund);
-        }
+        ItemOrderRefund itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
+        itemOrderRefund.setUserApply(fromUser);
+        itemOrderRefundMapper.insertSelective(itemOrderRefund);
         ItemRefundLog refundLog = new ItemRefundLog();
         refundLog.setRefundId(itemOrderRefund.getRefundId());
         refundLog.setFromStatus(-1);
@@ -229,6 +212,39 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refundLog.setMsg(itemOrderRefund.getReason());
         refundLog.setImBuyer(fromUser);
         itemRefundLogMapper.insertSelective(refundLog);
+        return refundId = itemOrderRefund.getRefundId();
+    }
+
+    private Long multiRefundApply(RefundApplyBO applyBO, Boolean fromUser) {
+        ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+        itemOrderRefund.setType(applyBO.getType());
+        itemOrderRefund.setSoid(applyBO.getSoid());
+        itemOrderRefund = itemOrderRefundMapper.selectOne(itemOrderRefund);
+        ItemRefundLog itemRefundLog = new ItemRefundLog();
+        //表中已经存在记录
+        if (itemOrderRefund == null) {
+            itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
+            //本种类型用failNum记录申请退的件数，用num记录退成功的件数
+            itemOrderRefund.setNumber(0);
+            itemOrderRefund.setFailNumber(applyBO.getNumber());
+            itemOrderRefund.setUserApply(fromUser);
+            itemOrderRefundMapper.insertSelective(itemOrderRefund);
+        } else {
+            itemOrderRefund.setFailNumber(itemOrderRefund.getFailNumber() + applyBO.getNumber());
+            //总期望退款数
+            itemOrderRefund.setHopeMoney(applyBO.getHopeMoney() + itemOrderRefund.getHopeMoney());
+            itemOrderRefund.setReason(applyBO.getReason());
+            itemOrderRefund.setUserApply(fromUser);
+            itemOrderRefund.setStatus(0);
+            //为了使本类型的退款能进行多次
+            itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+        }
+        itemRefundLog.setRefundId(itemOrderRefund.getRefundId());
+        itemRefundLog.setFromStatus(-1);
+        itemRefundLog.setToStatus(RefundStateEnum.APPLY_REFUND.refundStatus);
+        itemRefundLog.setImBuyer(fromUser);
+        itemRefundLog.setMsg(applyBO.getReason());
+        itemRefundLogMapper.insertSelective(itemRefundLog);
         return refundId = itemOrderRefund.getRefundId();
     }
 
@@ -333,18 +349,18 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     public void success() throws PayerException, RefundException {
         //验证一下退款状态是否正常
-        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
+        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
         refundExample.createCriteria().andRefundIdEqualTo(refundId).andStatusEqualTo(0);
-        if(itemOrderRefundMapper.countByExample(refundExample)==0){
+        if (itemOrderRefundMapper.countByExample(refundExample) == 0) {
             throw new RefundException("重复退款");
         }
         //更新退款费
         //得到退单信息
         doRefundMoney(true);
-        RefundVO vo=refundinfo();
+        RefundVO vo = refundinfo();
         itemOrderMapper.addRefundMoney(vo.getOid(), vo.getHopeMoney());//更新订单中的退款额
         if (vo.getSoid() != null) {
-            itemOrderSubMapper.addRefundMoney(vo.getSoid(),vo.getHopeMoney());//更新订单的退款额
+            itemOrderSubMapper.addRefundMoney(vo.getSoid(), vo.getHopeMoney());//更新订单的退款额
         }
     }
 
@@ -363,13 +379,16 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Transactional(rollbackFor = Exception.class)
     public void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
+        if (refundinfo.getType() == 5) {
+            throw new RefundException("系统退款不走一般退款流程");
+        }
 
         // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
         Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
         ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
         List<PayedVO> payedVOS = itemOrder.payedInfo();
         for (PayedVO payedVO : payedVOS) {
-            if (payedVO.getMoney()-payedVO.getRefundMoney() >= money) {
+            if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
                 SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                         .refund(payedVO.getPayId(), money);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
@@ -383,7 +402,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         throw new RefundException(String.format(
                 "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d],退单号[%d]",
                 StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
-                money,refundId
+                money, refundId
         ));
     }
 
@@ -407,29 +426,66 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     @Override
-    public void shopRefuse(Integer num) {
+    public void shopRefuse(Integer num, String reason) {
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
         if (itemOrderRefund.getFailNumber() >= num) {
             return;
         }
         //本次售后退货全失败
         boolean allRefundFailIs = itemOrderRefund.getNumber() <= num;
-        itemOrderRefund.setFailNumber(allRefundFailIs?itemOrderRefund.getNumber():num);
+        itemOrderRefund.setFailNumber(allRefundFailIs ? itemOrderRefund.getNumber() : num);
         itemOrderRefund.setRefundSubInfo(RefundSubInfo.WORKING.value);
         itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
         ItemRefundLog refundLog = new ItemRefundLog();
         refundLog.setRefundId(this.refundId);
         refundLog.setFromStatus(this.refundinfo().getRefundState().refundStatus);
-        refundLog.setToStatus(this.refundinfo().getRefundState().refundStatus);
+        refundLog.setToStatus(RefundStateEnum.NOT_REFUND.refundStatus);
         refundLog.setImBuyer(false);
         refundLog.setCreateTime(new Date());
-        refundLog.setMsg("档口退货失败["+num+"]件");
+        refundLog.setMsg("档口退货失败[" + num + "]件:"+reason);
         itemRefundLogMapper.insertSelective(refundLog);
         if (allRefundFailIs) {
-            String failMessage = "退货全部失败";
+            String failMessage = "退货全部失败"+reason;
             error(failMessage);
         }
 
     }
 
+    @Override
+    public void refundHasItem(Long psoid, Long money) throws PayerException, RefundException {
+        RefundVO refundinfo = refundinfo();
+        if (refundinfo.getType() != 5) {
+            throw new RefundException("一般退款不经过系统退款流程");
+        }
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(psoid);
+        if (subOrderSoidps.getAlreadyRefund() != null && subOrderSoidps.getAlreadyRefund()) {
+            throw new RefundException(String.format("子单%d已经进行过退款", psoid));
+        }
+        subOrderSoidps.setAlreadyRefund(true);
+        subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+        for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
+            if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
+                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(), money);
+                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, String.format("拆单%d退款成功，退款金额%.2f元", psoid, money * 0.01));
+                ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+                itemOrderRefund.setRefundId(refundinfo.getRefundId());
+                //退钱数
+                itemOrderRefund.setRefundMoney(refundinfo.getRefundMoney() + money);
+                //本种类型特殊处理，退成功数量用number记录，总申请数用failNum记录
+                itemOrderRefund.setNumber(refundinfo.getNumber() + 1);
+                //退成功时减少申请总数
+                //itemOrderRefund.setFailNumber(refundinfo.getFailNumber()-1);
+                itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+                itemOrderMapper.addRefundMoney(refundinfo.getOid(), money);
+                if (refundinfo.getSoid() != null) {
+                    itemOrderSubMapper.addRefundMoney(refundinfo.getSoid(), money);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void finishExchange() {
+        refundStateChangeAndLog(RefundStateEnum.ENT_REFUND,"换货完成");
+    }
 }

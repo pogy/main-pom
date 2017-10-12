@@ -168,33 +168,53 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         try {
             WXPay.doRefundBusiness(reqData, resultListener);
         } catch (Exception e) {
+            logger.error("微信退款异常",e);
             throw new PayerException("微信退款请求失败");
         }
-        if (!resultListener.isSuccess())
-            throw new PayerException("请求失败");
+        if (!resultListener.isSuccess()){
+            if("NOTENOUGH".equals(resultListener.getErrCode())){//未结算里面余额不足
+                reqData.setRefund_account("REFUND_SOURCE_RECHARGE_FUNDS");
+                ResultListener resultListenerCache = new ResultListener();
+                try {
+                    WXPay.doRefundBusiness(reqData, resultListenerCache);
+                } catch (Exception e) {
+                    throw new PayerException("微信现金退款请求失败");
+                }
+                if(!resultListenerCache.isSuccess()){//现金余额也退不了
+                    throw new PayerException(resultListenerCache.getErrCode()+"请求失败");
+                }
+            }else{
+                throw new PayerException(resultListener.getErrCode()+"请求失败");
+            }
+        }
     }
 
     private class ResultListener implements RefundBusiness.ResultListener {
 
         private boolean success;
+        private String errCode;
 
         @Override
         public void onFailByReturnCodeError(RefundResData refundResData) {
+            errCode=refundResData.getErr_code();
             logger.error("[onFailByReturnCodeError]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onFailByReturnCodeFail(RefundResData refundResData) {
+            errCode=refundResData.getErr_code();
             logger.error("[onFailByReturnCodeFail]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onFailBySignInvalid(RefundResData refundResData) {
+            errCode=refundResData.getErr_code();
             logger.error("[onFailBySignInvalid]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onRefundFail(RefundResData refundResData) {
+            errCode=refundResData.getErr_code();
             logger.error("[onRefundFail]"+JSON.toJSONString(refundResData));
         }
 
@@ -205,6 +225,10 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
 
         public boolean isSuccess() {
             return success;
+        }
+
+        public String getErrCode() {
+            return errCode;
         }
     }
 
