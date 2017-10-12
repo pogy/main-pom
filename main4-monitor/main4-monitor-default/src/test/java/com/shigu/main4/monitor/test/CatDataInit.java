@@ -30,6 +30,7 @@ import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getW
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 类名：CatDataInit
@@ -153,11 +154,20 @@ public class CatDataInit {
                     .setScroll(TimeValue.timeValueMinutes(10))
                     .execute().actionGet();
             sum += scrollResp.getHits().hits().length;
+            Map<String,List<ItemUpRecordVO>> webSiteItemUpMap = new HashMap<>();
             for (SearchHit searchHitFields : scrollResp.getHits().hits()) {
                 ItemUpRecordVO itemUpRecordVO = JSON.parseObject(searchHitFields.getSourceAsString(), ItemUpRecordVO.class);
+                List<ItemUpRecordVO> itemUpRecordVOS = webSiteItemUpMap.get(itemUpRecordVO.getWebSite());
+                if (itemUpRecordVOS == null) {
+                    itemUpRecordVOS = new ArrayList<>();
+                    webSiteItemUpMap.put(itemUpRecordVO.getWebSite(),itemUpRecordVOS);
+                }
+                itemUpRecordVOS.add(itemUpRecordVO);
+            }
+            for (String webSite : webSiteItemUpMap.keySet()) {
                 ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-                example.setWebSite(itemUpRecordVO.getWebSite());
-                example.createCriteria().andGoodsIdEqualTo(itemUpRecordVO.getSupperGoodsId());
+                example.setWebSite(webSite);
+                example.createCriteria().andGoodsIdIn(webSiteItemUpMap.get(webSite).stream().map(ItemUpRecordVO::getSupperGoodsId).collect(Collectors.toList()));
                 for (ShiguGoodsTiny shiguGoodsTiny : shiguGoodsTinyMapper.selectByExample(example)) {
                     String index = formatPrefix + shiguGoodsTiny.getCid();
                     Long aLong = redisIO.get(index, Long.class);
