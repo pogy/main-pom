@@ -10,6 +10,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.monitor.enums.CidMapEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
@@ -60,11 +61,21 @@ public class CatDataInit {
     @Autowired
     RankingSimpleService rankingSimpleService;
 
+    /**
+     * 上周数据初始化
+     */
+    @Test
+    public void initCatData() throws Main4Exception {
+        initCatData(0);
+        filledCidScore(0,16L);
+        filledCidScore(0,30L);
+    }
+
     @Test
     public void getListTest(){
         try {
-            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L, 0);
-            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L, 0);
+            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L);
+            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L);
             System.out.println(womanList);
             System.out.println(manList);
         } catch (Main4Exception e) {
@@ -72,12 +83,16 @@ public class CatDataInit {
         }
     }
 
-
+    /**
+     * 排出对应期次顶级类目排行前三的子类目
+     * @param prePemNum 往前期次
+     * @param cid 顶级类目id
+     */
     @Test
-    public void filledCidScore(){
-        int pem = 0;
+    public void filledCidScore(int prePemNum,Long cid) throws Main4Exception {
+        int pem = prePemNum;
         List<RankingCateLineVO> rankingCateLineVOS = Lists.newArrayList();
-        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(16L))) {
+        for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(cid))) {
             Long uploadCount = redisIO.get(getPreFix(CAT_UP_COUNT_INDEX,pem)+shiguTaobaocat.getCid(), Long.class);
             RankingCateLineVO lineVO = new RankingCateLineVO();
             if (uploadCount == null) {
@@ -97,7 +112,7 @@ public class CatDataInit {
             ++i;
             rankingCateLineVO.setRank(i);
         }
-        redisIO.putTemp(WOMAN_CAT_UP_COUNT_INDEX+getWeekTimeStamp(pem),rankingCateLineVOS,3600*24*180);
+        redisIO.putTemp(CidMapEnum.map(cid)+getWeekTimeStamp(pem),rankingCateLineVOS,3600*24*180);
     }
 
     public List<ShiguTaobaocat> cats(List<Long> parentCids) {
@@ -119,12 +134,18 @@ public class CatDataInit {
         return formatPrefix;
     }
 
-    @Test
-    public void initCatData() {
-        String formatPrefix = getPreFix(CAT_UP_COUNT_INDEX,0);
+
+    /**
+     * 往前x期类目上传量数据初始化
+     * @param prePemNum
+     */
+    public void initCatData(int prePemNum) {
+        String formatPrefix = getPreFix(CAT_UP_COUNT_INDEX,prePemNum);
+        String fromTime = getWeekTimeStamp(prePemNum+1) + " 00:00:00";
+        String toTime = getWeekTimeStamp(prePemNum) + " 00:00:00";
         Client searchClient = ElasticConfiguration.searchClient;
         SearchResponse scrollResp = searchClient.prepareSearch("shigugoodsup").setTypes("hz").setSearchType(SearchType.SCAN)
-                .setSize(500).setScroll(TimeValue.timeValueMinutes(5)).setQuery(QueryBuilders.rangeQuery("daiTime").from("now-7d"))
+                .setSize(500).setScroll(TimeValue.timeValueMinutes(5)).setQuery(QueryBuilders.rangeQuery("daiTime").from(fromTime).to(toTime))
                 .execute().actionGet();
         long count = scrollResp.getHits().getTotalHits();
         for (int i = 0, sum = 0; sum < count; i++) {
