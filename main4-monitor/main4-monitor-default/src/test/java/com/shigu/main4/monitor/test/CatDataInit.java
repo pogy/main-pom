@@ -63,8 +63,8 @@ public class CatDataInit {
     @Test
     public void getListTest(){
         try {
-            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L, 0);
-            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L, 0);
+            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L);
+            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L);
             System.out.println(womanList);
             System.out.println(manList);
         } catch (Main4Exception e) {
