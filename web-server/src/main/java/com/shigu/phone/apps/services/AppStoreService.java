@@ -185,8 +185,12 @@ public class AppStoreService {
         ShopCatResponse response = new ShopCatResponse();
         List<CdnShopCatVO> cdnShopCatVOS = cdnService.cdnShopCat(request.getShopId());
         List<AppShopCat> appShopCats = new ArrayList<>();
-//        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+
+        int totalItemNum = 0;//全部商品数目
         for (CdnShopCatVO cdnShopCatVO : cdnShopCatVOS) {
+            int cItemNum = 0;//类目下商品总数
+
             AppShopCat cat = new AppShopCat();
             cat.setCatName(cdnShopCatVO.getName());
             cat.setScid(cdnShopCatVO.getCid().toString());
@@ -195,24 +199,23 @@ public class AppStoreService {
                 AppShopCatSub catSub = new AppShopCatSub();
                 catSub.setCatName(shopCatVO.getName());
                 catSub.setScid(shopCatVO.getCid().toString());
-//                goodsTinyExample.clear();
-//                goodsTinyExample.setWebSite(request.getWebSite());
-//                goodsTinyExample.createCriteria()
-//                        .andGoodsStatusEqualTo(0)
-//                        .andStoreIdEqualTo(request.getShopId())
-//                        .andCidEqualTo(shopCatVO.getCid());
-//                int itemNum = shiguGoodsTinyMapper.countByExample(goodsTinyExample);
-//                catSub.setItemNum(itemNum);
+                goodsTinyExample.clear();
+                goodsTinyExample.setWebSite(request.getWebSite());
+                goodsTinyExample.createCriteria()
+                        .andGoodsStatusEqualTo(0)
+                        .andStoreIdEqualTo(request.getShopId())
+                        .andCidEqualTo(shopCatVO.getCid());
+                int itemNum = shiguGoodsTinyMapper.countByExample(goodsTinyExample);
                 appShopCatSubs.add(catSub);
+
+                cItemNum += itemNum;
+                totalItemNum += itemNum;
             }
-            if (cdnShopCatVO.getSubCats() == null) {
-                cat.setItemNum(0);
-            }else{
-                cat.setItemNum(cdnShopCatVO.getSubCats().size());
-            }
+            cat.setItemNum(cItemNum);
             cat.setSubCats(appShopCatSubs);
             appShopCats.add(cat);
         }
+        response.setTotalItemNum(totalItemNum);
         response.setCats(appShopCats);
         response.setSuccess(true);
         return response;
