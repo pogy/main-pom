@@ -647,7 +647,6 @@ public class DaifaSaleAfterService {
                     saleAfterBO.setTelephone(stock.getSendPhone());
                     saleAfterBO.setBackPostCode(stock.getReceivedExpressCode());
                     dvo = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
-                    daifaAfterReceiveExpresStockVO.setPackageRemark(stock.getPackageRemark());
                 }
                 daifaAfterReceiveExpresStockVO.setOrders(dvo);
                 daifaAfterReceiveExpresStockVO.setPackageId(stock.getReceivedExpressId()+"");
@@ -656,6 +655,7 @@ public class DaifaSaleAfterService {
                 daifaAfterReceiveExpresStockVO.setTelephone(stock.getSendPhone());
                 daifaAfterReceiveExpresStockVO.setIsMatchingOrder(stock.getRelevanceStatus()==1);
                 daifaAfterReceiveExpresStockVO.setMatchingTime(DateUtil.dateToString(stock.getCreateTime(),DateUtil.patternD));
+                daifaAfterReceiveExpresStockVO.setPackageRemark(stock.getPackageRemark());
                 vos.add(daifaAfterReceiveExpresStockVO);
             }
         }
