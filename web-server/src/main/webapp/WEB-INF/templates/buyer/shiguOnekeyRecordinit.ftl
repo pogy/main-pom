@@ -362,7 +362,7 @@ var webSite = '${webSite!}';
         <li class="source"><#if goods.webSite == 'hz'>杭州<#elseif goods.webSite == 'bj'>北京<#elseif goods.webSite == 'cs'>常熟<#elseif goods.webSite == 'gz'>广州<#elseif goods.webSite == 'jx'>嘉兴</#if></li>
         <li class="time"><p>${goods.createtime!}</p></li>
         <li class="control">
-            <p><#if goods.target == 'tb'>淘宝<#elseif goods.target == 'wx'>微信</#if></p>
+            <p><#if goods.target == 'web-tb'>淘宝<#elseif goods.target == 'wx'>微信</#if></p>
             <button jbtn="rmvArddp" goodsid=${goods.onekeyId!}>删除</button>
         </li>
     </ul>
