@@ -1,5 +1,5 @@
 
-<div class="nav">
+<div class="nav"> 
     <div class="layout navCon">
         <div class="navList">
             <ul>
@@ -32,8 +32,8 @@
 </li>
 
 <li >
-    <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-        发现好货
+    <a href="/shopRanking.htm" target="_blank">
+        排行榜
         <i class="hot"></i>
         
     </a>
@@ -43,14 +43,6 @@
     <a href="/daifaIndex.htm" target="_blank">
         一件代发
         
-        
-    </a>
-</li>
-
-<li >
-    <a href="/shopRanking.htm" target="_blank">
-        排行榜
-        <i class="hot"></i>
         
     </a>
 </li>

@@ -24,7 +24,7 @@
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__private_template__/xzSearch__common__header.ftl">
-<#assign text>{}</#assign>
+<#assign text>{"fields":[{"name":"id","value":""+rankingId}]}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <#if $it.fields??>
@@ -35,63 +35,7 @@
 </form>
 </#if>
 </#list>
-<div class="nav">
-    <div class="layout navCon">
-        <div class="navList">
-            <ul>
-                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
-                <#if webSite == 'hz'>
-<li >
-    <a href="http://hz.571xz.com/market.htm" target="_blank">
-        逛市场
-        <i class="hot"></i>
-    </a>
-</li>
-<li >
-    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
-        商品库
-    </a>
-</li>
-<li >
-    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
-        今日新品
-    </a>
-</li>
-<li >
-    <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-        发现好货
-        <i class="hot"></i>
-    </a>
-</li>
-<li >
-    <a href="/daifaIndex.htm" target="_blank">
-        一件代发
-    </a>
-</li>
-<li class="actived">
-    <a href="/shopRanking.htm" target="_blank">
-        排行榜
-        <i class="hot"></i>
-    </a>
-</li>
-<li >
-    <a href="/shopIconCopyright.htm" target="_blank">
-        知识产权
-    </a>
-</li>
-<li >
-    <a href="http://zixun.571xz.com/index" target="_blank">
-        资讯
-    </a>
-</li>
-                <#elseif webSite == 'cs'>
-                <#elseif webSite == 'ss'>
-                <#elseif webSite == 'bj'>
-                <#elseif webSite == 'gz'>
-                </#if>
-        </div>
-    </div>
-</div>
+<#include "/__private_template__/xzSearch__common__nav.ftl">
 <div class="layout shopRanking">
     <h3 class="title">${shopRanking.title!}</h3>
     <div class="tableBox">
@@ -107,8 +51,8 @@
             <tbody>
                 <#list shopRanking.shopList as shopItem>
                 <tr>
-                    <td  class="firstTd<#if shopItem_index == 0> num1<#elseif shopItem_index == 1> num2<#elseif shopItem_index == 2> num3</#if>">
-                        <span class="rank-num"><#if shopItem_index gt 2>${shopItem_index + 1}</#if></span>
+                    <td  class="firstTd<#if shopItem.rank == 1> num1<#elseif shopItem.rank == 2> num2<#elseif shopItem.rank == 3> num3</#if>">
+                        <span class="rank-num"><#if shopItem.rank gt 2>${shopItem.rank!}</#if></span>
                         <a class="place" href="/shop.htm?id=${shopItem.shopId!}">${shopItem.fullShopName!}</a>
                         <span class="honor">
 <#assign text>{"num":shopItem.shopLevel}</#assign>
