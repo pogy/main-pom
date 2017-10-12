@@ -41,6 +41,7 @@ public class RankingListAction {
         shopRanking.setRankingId(cidMarketIdMapEnum.cid);
         shopRanking.setRankingTitle(cidMarketIdMapEnum.title);
         shopRanking.setShopList(rankingShopVOPager.getContent());
+        model.addAttribute("rankingId",shopRanking.getRankingId());
         model.addAttribute("shopRanking", shopRanking);
         model.addAttribute("pageOption",rankingShopVOPager.selPageOption(20));
         return "xzSearch/fullShopRanking";
