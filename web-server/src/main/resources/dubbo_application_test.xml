@@ -63,5 +63,6 @@
     <dubbo:reference interface="com.shigu.main4.monitor.services.RankingSimpleService" id="rankingSimpleService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000" />
 
 </beans>
