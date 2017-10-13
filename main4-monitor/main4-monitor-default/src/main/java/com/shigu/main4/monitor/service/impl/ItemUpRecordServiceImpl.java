@@ -23,6 +23,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.*;
@@ -53,6 +54,8 @@ import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
+
 /**
  * 商品上传服务实现类
  * Created by zhaohongbo on 17/3/13.
@@ -81,6 +84,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     @Autowired
     ProducerBean producer;
 
+    //上传类目统计前缀
+    String CAT_UP_COUNT_INDEX = "count_upload_for_cat_cid_index_";
 
     /**
      * 添加上传记录到es中
@@ -109,6 +114,17 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         //推送消息
         pushAddMessage(itemUpRecordVO);
 //        producer.sendAsync(new Message());
+
+        //每周类目上传统计
+        RankingPeriodEnum periodEnum = RankingPeriodEnum.RANKING_BY_WEEK;
+        String formatPrefix = CAT_UP_COUNT_INDEX + getPeriodTimeStamp(-1, periodEnum) + "_";
+        String index = formatPrefix + itemUpRecordVO.getCid();
+        Long aLong = redisIO.get(index, Long.class);
+        if (aLong == null) {
+            aLong = 0L;
+        }
+        aLong++;
+        redisIO.putTemp(index,aLong,3600*24*30);
         //添加星星数计算
         if(itemUpRecordVO.getSupperStoreId()!=null){
             try {
