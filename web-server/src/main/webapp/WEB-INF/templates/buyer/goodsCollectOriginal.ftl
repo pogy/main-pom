@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收藏的档口 - 分销商中心 - 四季星座网</title>
+    <title>收藏的商品 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/storeCollectinitv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/goodsCollectOriginal.css" rel="stylesheet">
     
 
     
@@ -38,7 +38,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/storeCollectinitv1.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/goodsCollectOriginal.js"></script>
 </head>
 <body>
 
@@ -363,8 +363,8 @@ var webSite = '${webSite!}';
 
 
     
-    <#if (shopList?size) gt 0>
-    <div class="dataList">
+    <#if (goodsList?size) gt 0>
+    <div id="dataList" class="dataList">
     <ul class="head clearfix">
         <li class="name">
             <label>
@@ -384,7 +384,7 @@ var webSite = '${webSite!}';
         type="checkbox"
         autocomplete="off"
         
-            name="allItems"
+            name="allFavoriteGoods"
         
         
         
@@ -432,15 +432,18 @@ var webSite = '${webSite!}';
 </#list>
 
             </label>
-            <button jbtn="deleteShops">批量删除</button>
+            <button jbtn="rmvFavoriteGoods">批量删除</button>
         </li>
+        <li class="piprice">批发价(元)</li>
+        <li class="gysName">供应商</li>
+        <li class="control">操作</li>
     </ul>
-        <#list shopList as shop>
-        <ul class="body clearfix" data-id="${shop.collId!}">
+        <#list goodsList as goods>
+        <ul class="body clearfix" goodsid="${goods.goodsId!}" data-id="${goods.collId!}">
             <li class="name">
-               
+                
 
-<#assign text>{"value":shop.collId}</#assign>
+<#assign text>{"value":goods.goodsId}</#assign>
 <#assign moduledata5=text?eval />
 <#list [moduledata5] as $it>
 <label class="fmCheckbox
@@ -472,7 +475,7 @@ var webSite = '${webSite!}';
         
         
         
-            data-selectParent="allItems"
+            data-selectParent="allFavoriteGoods"
         
         
         
@@ -501,145 +504,107 @@ var webSite = '${webSite!}';
 
 </#list>
 
-               <div class="fl">
-                   <a class="imgBox fl" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank"><img src="${shop.shopImgSrc!}_80x80.jpg" alt width=80 height=80></a>
-                   <div class="fl shopInfo">
-                       <p>
-                           <a class="marketAndShop" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank" title="${shop.marketName!}${shop.shopNum!}">${shop.marketName!}${shop.shopNum!}</a>
-                           
+                <a class="piclink fl" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">
+                    <img src="${goods.imgSrc!}_80x80.jpg">
+                </a>
+                <p>
+                    <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
+                </p>
+                <p><span>货号：1111</span></p>
+                <p class="saleState">
+                    <#if goods.onSaleIs == true>
+                    <i class="inSale"></i>
+                    <#else>
+                    <i class="noSale"></i>
+                    </#if>
+                </p>
+            </li>
+            <li class="piprice">
+                ${goods.piprice!}
+            </li>
+            <li class="gysName">
+                <p>电商基地</p>
+                <p>A112-A444</p>
+                <p>
+                    
 
-<#assign text>{"num":shop.starNum}</#assign>
+<#assign text>{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata6=text?eval />
 <#list [moduledata6] as $it>
-
-<em class="shopLevel">
-<#if $it.num lt 11>
-    <i class="star1"></i>
-<#elseif $it.num lt 41>
-    <i class="star1"></i>
-    <i class="star1"></i>
-<#elseif $it.num lt 91>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-<#elseif $it.num lt 151>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-<#elseif $it.num lt 251>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-    <i class="star1"></i>
-<#elseif $it.num lt 501>
-    <i class="star2"></i>
-<#elseif $it.num lt 1001>
-    <i class="star2"></i>
-    <i class="star2"></i>
-<#elseif $it.num lt 2001>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-<#elseif $it.num lt 5001>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-<#elseif $it.num lt 10001>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-    <i class="star2"></i>
-<#elseif $it.num lt 20001>
-    <i class="star3"></i>
-<#elseif $it.num lt 50001>
-    <i class="star3"></i>
-    <i class="star3"></i>
-<#elseif $it.num lt 100001>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-<#elseif $it.num lt 200001>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-<#elseif $it.num lt 500001>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-    <i class="star3"></i>
-<#elseif $it.num lt 1000001>
-    <i class="star4"></i>
-<#elseif $it.num lt 2000001>
-    <i class="star4"></i>
-    <i class="star4"></i>
-<#elseif $it.num lt 5000001>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-<#elseif $it.num lt 10000001>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-<#elseif $it.num gt 10000000>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-    <i class="star4"></i>
-</#if>
-</em>
-
-
-</#list>
-
-                       </p>
-                       <p>
-
-<#assign text>{"id":"${(shop.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
 
+                    
 
-<#assign text>{"id":"${(shop.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
+<#assign text>{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
 <#if $it.id != "">
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 
 </#list>
-</p>
-                   </div>
-               </div>
+
+                </p>
             </li>
-            <li class="shopGoodsImg">
-                <ul class="clearfix">
-                    <#if (shop.goodsList?size) gt 0>
-                        <#list shop.goodsList as goods>
-                        <li>
-                            <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgSrc!}_180x180.jpg" alt width=150 height=150></a>
-                        </li>
-                        </#list>
-                    <#else>
-                        <p class="fc6 notNewGoodsUp">暂时没有店铺的上新！去店铺看看吧～</p>
-                    </#if>
-                </ul>
-                <p><a href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">查看更多></a></p>
+            <li class="control">
+                
+
+<#assign text>{"dataId":goods.goodsId}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-sm
+         fmButton-gray-o
+        "
+    
+        jbtn="rmvFavoriteGoods"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        删除
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+
             </li>
-            
         </ul>
         </#list>
 </div>
+
 
 
 
