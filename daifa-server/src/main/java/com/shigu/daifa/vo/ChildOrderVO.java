@@ -1,34 +1,26 @@
 package com.shigu.daifa.vo;
 
-/**
- * Created by pc on 2017-08-31.
- *
- * @author pc
- * @version 3.0.0-SNAPSHOT
- * @description
- * @since 3.0.0-SNAPSHOT
- */
-public class AfterSaleDataSubVO {
-    private String childOrderId;//子单id
+public class ChildOrderVO {
+    private Long childOrderId;//子单id
     private String imgSrc;//商品图片
     private String title;//商品标题
     private String goodsProperty;//商品属性 颜色 尺码
     private String goodsNo;//商品货号
     private String piPrice;//商品批发价
     private String payPrice;//商品实际支付价
-    private String num;//商品数量
+    private Integer num;//商品数量
     private String storeGoodsCode;//商家编码
 
-    public String getChildOrderId() {
-        return childOrderId;
+    public Long getChildOrderId() {
+        return this.childOrderId;
     }
 
-    public void setChildOrderId(String childOrderId) {
+    public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
     }
 
     public String getImgSrc() {
-        return imgSrc;
+        return this.imgSrc;
     }
 
     public void setImgSrc(String imgSrc) {
@@ -36,7 +28,7 @@ public class AfterSaleDataSubVO {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -44,7 +36,7 @@ public class AfterSaleDataSubVO {
     }
 
     public String getGoodsProperty() {
-        return goodsProperty;
+        return this.goodsProperty;
     }
 
     public void setGoodsProperty(String goodsProperty) {
@@ -52,7 +44,7 @@ public class AfterSaleDataSubVO {
     }
 
     public String getGoodsNo() {
-        return goodsNo;
+        return this.goodsNo;
     }
 
     public void setGoodsNo(String goodsNo) {
@@ -60,7 +52,7 @@ public class AfterSaleDataSubVO {
     }
 
     public String getPiPrice() {
-        return piPrice;
+        return this.piPrice;
     }
 
     public void setPiPrice(String piPrice) {
@@ -68,26 +60,27 @@ public class AfterSaleDataSubVO {
     }
 
     public String getPayPrice() {
-        return payPrice;
+        return this.payPrice;
     }
 
     public void setPayPrice(String payPrice) {
         this.payPrice = payPrice;
     }
 
-    public String getNum() {
-        return num;
+    public Integer getNum() {
+        return this.num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
     public String getStoreGoodsCode() {
-        return storeGoodsCode;
+        return this.storeGoodsCode;
     }
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
     }
+
 }

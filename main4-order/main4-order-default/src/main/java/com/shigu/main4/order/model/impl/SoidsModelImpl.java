@@ -49,6 +49,15 @@ public class SoidsModelImpl implements SoidsModel {
     }
 
     @Override
+    public void havaTime(Long soidpid, String day) {
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
+        ItemOrderSub itemOrderSub = new ItemOrderSub();
+        itemOrderSub.setSoid(subOrderSoidps.getSoid());
+        itemOrderSub.setOutOfStokReason(day);
+        itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
+    }
+
+    @Override
     public void cancleOutOfStock(Long soidpid) {
         //更新拆单状态
         SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
@@ -60,6 +69,12 @@ public class SoidsModelImpl implements SoidsModel {
         int stockNum = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
         itemOrderSub.setOutOfStok(stockNum);
+        if (stockNum == 0) {
+            //没有缺货时，将有货时间置为空
+            itemOrderSub.setOutOfStokReason(null);
+            itemOrderSubMapper.updateByPrimaryKey(itemOrderSub);
+            return;
+        }
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
 }

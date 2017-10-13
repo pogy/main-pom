@@ -29,6 +29,14 @@ public class ItemOrderVO extends OrderVO {
      * 是否已淘宝发货
      */
     private Boolean tbSend;
+    /**
+     * 发货时间
+     */
+    private Date sendTime;
+    /**
+     * 支付时间
+     */
+    private Date payTime;
 
 
     public Long getSenderId() {
@@ -77,5 +85,21 @@ public class ItemOrderVO extends OrderVO {
 
     public void setTbSend(Boolean tbSend) {
         this.tbSend = tbSend;
+    }
+
+    public Date getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
+    }
+
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 }

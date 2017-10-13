@@ -124,6 +124,10 @@ public class ItemUpRecordVO implements Serializable{
      */
     private Long fenNumiid;
     /**
+     * 淘宝子类目id
+     */
+    private Long cid;
+    /**
      * 档口下架
      */
     private Boolean shopSoldout;
@@ -339,5 +343,13 @@ public class ItemUpRecordVO implements Serializable{
 
     public void setFenNumiid(Long fenNumiid) {
         this.fenNumiid = fenNumiid;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 }

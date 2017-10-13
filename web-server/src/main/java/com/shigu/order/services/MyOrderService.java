@@ -1,18 +1,16 @@
 package com.shigu.order.services;
 
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
+import com.opentae.data.mall.examples.ItemOrderServiceExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.exceptions.TbSendException;
@@ -23,16 +21,18 @@ import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.OrderBO;
-import com.shigu.order.vo.AfterSaleVO;
-import com.shigu.order.vo.MyOrderDetailVO;
-import com.shigu.order.vo.MyOrderVO;
+import com.shigu.order.orderQuery.OrderQuery;
+import com.shigu.order.orderQuery.QueryByOrder;
+import com.shigu.order.vo.*;
 import com.shigu.tools.DateParseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,6 +67,8 @@ public class MyOrderService {
 
     @Autowired
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Autowired
     private OrderManageProcess orderManageProcess;
@@ -77,52 +79,9 @@ public class MyOrderService {
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
-        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false,userId,bo,null);
-    }
-
-    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, boolean onlyRefund,Long userId,OrderBO bo,Integer shStatus) {
-        ShiguPager<MyOrderVO> pager = new ShiguPager<>();
-        pager.setNumber(number);
-        int orderCount = itemOrderMapper.countMyOrderList(userId,bo,onlyRefund,shStatus);
-        if (orderCount > 0) {
-            List<MyOrderVO> myOrderVOS;
-            // 查询数据
-            pager.calPages(orderCount, size);
-            //从订单来查,用mapper
-            int startIndex = (number - 1) * size;
-            myOrderVOS = itemOrderMapper.selectMyOrderList(userId,bo,startIndex,size,onlyRefund,shStatus);
-            pager.setContent(myOrderVOS);
-            packageMyOrderVO(pager.getContent());
-        }
-        return pager;
-    }
-
-    /**
-     * 订单列表信息填充
-     * @param myOrderVOList
-     */
-    public void packageMyOrderVO(List<MyOrderVO> myOrderVOList) {
-        List<Long> orderIds = myOrderVOList.stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
-
-        // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
-        ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
-        orderServiceExample.createCriteria().andOidIn(orderIds);
-        Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
-                .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
-
-        myOrderVOList.stream()
-                .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
-                .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
-            if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
-                subMyOrderVO.setStockoutNum(null);
-            }
-            List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
-            if (afterSales != null && !afterSales.isEmpty()) {
-                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
-                subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
-            }
-        });
+        //return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
+        OrderQuery orderQuery = SpringBeanFactory.getBean(QueryByOrder.class,userId, bo);
+        return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
     }
 
     public boolean orderBelongTo(Long orderId, Long userId) {
@@ -162,12 +121,13 @@ public class MyOrderService {
         return itemOrderService.expressInfo(orderId);
     }
 
-    public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
+    public MyOrderDetailVO orderDetail(Long orderId,Long userId) throws Main4Exception, ParseException {
         MyOrderDetailVO vo = new MyOrderDetailVO();
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
         OrderBO orderBO = new OrderBO();
         orderBO.setOrderId(orderId);
-        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false,null,orderBO,null);
+        //ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false, null, orderBO, null);
+        ShiguPager<MyOrderVO> pager = SpringBeanFactory.getBean(QueryByOrder.class,userId, orderBO).selectMyOrderPager(1, 1);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
         vo.setExpress(orderListService.selectExpress(orderId));
         vo.setOrderAddrInfo(expressAddrInfo(orderId));
@@ -209,13 +169,13 @@ public class MyOrderService {
         return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
     }
 
-    public void tbSend(Long userId,Long oid) throws Main4Exception {
-        ItemOrder o=itemOrderMapper.selectByPrimaryKey(oid);
-        if(o==null){
+    public void tbSend(Long userId, Long oid) throws Main4Exception {
+        ItemOrder o = itemOrderMapper.selectByPrimaryKey(oid);
+        if (o == null) {
             //订单不存在
             throw new Main4Exception("订单不存在");
         }
-        if(o.getUserId().longValue()!=userId){
+        if (o.getUserId().longValue() != userId) {
             //不是该用户的订单
             throw new Main4Exception("不是该用户的订单");
         }
@@ -225,4 +185,5 @@ public class MyOrderService {
             throw new Main4Exception(e.getMessage());
         }
     }
+
 }

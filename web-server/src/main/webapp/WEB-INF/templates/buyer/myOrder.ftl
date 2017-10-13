@@ -23,17 +23,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017091401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017091401" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017091401"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017091401"></script>
 </head>
 <body>
 
@@ -413,7 +418,14 @@ var webSite = '${webSite!}';
     <li class="num">
         <p>${childOrder.num!}</p>
         <#if childOrder.stockoutNum??>
-        <p class="fcF40">缺货 x${childOrder.stockoutNum!}</p>
+        <div class="pr stockoutNum">
+            <p class="fcF40"><i class="icon-c-warn"></i>缺货 x${childOrder.stockoutNum!}</p>
+            <#if childOrder.haveGoodsTime??>
+            <div class="pa haveGoodsTime">
+                ${childOrder.haveGoodsTime!} 有货
+            </div>
+            </#if>
+        </div>
         </#if>
     </li>
     <li class="opera">
@@ -425,8 +437,8 @@ var webSite = '${webSite!}';
         <#if order.mainState == 2 || order.mainState == 3 || order.mainState == 4>
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
-                <p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>
-                <!--<p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>-->
+                <!--<p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>-->
+                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 </#if>
                 
                 <#list childOrder.afterSales as afterSale>
@@ -437,23 +449,60 @@ var webSite = '${webSite!}';
                     </#if>
                     <#if afterSale.type == 2>
                         <#if afterSale.state == 2>
-                        <p class="fcF40">退货退款完成x${afterSale.afterSaleNum!}</p>
+                        <p><a class="fcF40" href="refund.htm?refundId=${afterSale.refundId!}" target="_blank">退货退款完成x${afterSale.afterSaleNum!}</a></p>
                         <#elseif afterSale.state == 1>
-                        <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
+                        <p><a class="fcF40" href="refund.htm?refundId=${afterSale.refundId!}" data-id="${afterSale.refundId!}" jbtn="afterSaleBtn" target="_blank">售后处理中<#if afterSale.newAfterSaleInfoIs == true><i class="afterSaleDot"></i></#if></a></p>
+                            <#list afterSale.afterSaling as after>
+                                <#if after.type == 1>
+                                <p class="fc6">售后已同意</p>
+                                <#elseif after.type == 2>
+                                <p class="fc6">售后已发货</p>
+                                <#elseif after.type == 3>
+                                <p class="fc6">档口退款失败 x${after.opeAfterSaleNum!}</p>
+                                <#elseif after.type == 4>
+                                <p class="fc6">档口已退款 x${after.opeAfterSaleNum!}</p>
+                                <#elseif after.type == 5>
+                                <p class="fc6">退款金额已更改</p>
+                                </#if>
+                            </#list>
                         <#elseif afterSale.state == 3>
-                        <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">退货申请已拒绝</a></p>
+                        <div class="refuseAfterSale pr">
+                            <p><a class="fcF40" href="refund.htm?refundId=${afterSale.refundId!}" target="_blank"><i class="icon-c-warn"></i>退货申请已拒绝</a></p>
+                            <div class="pa refuseReason fc6">
+                                ${afterSale.refuseReason!}
+                            </div>
+                        </div>
+                        <#elseif afterSale.state == 4>
+                        <p><a class="fcF40" href="refund.htm?refundId=${afterSale.refundId!}" target="_blank">档口退货失败</a></p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 3>
                         <#if afterSale.state == 2>
-                        <p class="fcF40">换货完成</p>
+                        <p><a class="fcBlue" href="exchange.htm?refundId=${afterSale.refundId!}" target="_blank">换货完成</a></p>
                         <#elseif afterSale.state == 1>
-                        <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
+                        <p><a class="fcF40" href="exchange.htm?refundId=${afterSale.refundId!}" data-id="${afterSale.refundId!}" jbtn="afterSaleBtn" target="_blank">售后处理中<#if afterSale.newAfterSaleInfoIs == true><i class="afterSaleDot"></i></#if></a></p>
+                            <#list afterSale.afterSaling as after>
+                                <#if after.type == 1>
+                                <p class="fc6">售后已同意</p>
+                                <#elseif after.type == 2>
+                                <p class="fc6">售后已发货</p>
+                                </#if>
+                            </#list>
                         <#elseif afterSale.state == 3>
-                        <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${afterSale.refundId!}" target="_blank">换货申请已拒绝</a></p>
+                        <div class="refuseAfterSale pr">
+                            <p><a class="fcF40" href="exchange.htm?refundId=${afterSale.refundId!}" target="_blank"><i class="icon-c-warn"></i>换货申请已拒绝</a></p>
+                            <div class="pa refuseReason fc6">
+                                ${afterSale.refuseReason!}
+                            </div>
+                        </div>
                         </#if>
                     </#if>
                     <#if afterSale.type == 4>
+                        <#if afterSale.state == 2>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
+                        </#if>
+                    </#if>
+                    <#if afterSale.type == 5>
                         <#if afterSale.state == 2>
                         <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
                         </#if>
@@ -463,8 +512,8 @@ var webSite = '${webSite!}';
                 <#if order.mainState == 2>
                 <p><a href="javascript:;" onclick="applyRefund(${childOrder.childOrderId!})">申请退款</a></p>
                 <#elseif order.mainState == 3>
-                <p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>
-                <!--<p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>-->
+                <!--<p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>-->
+                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 <#elseif order.mainState == 4>
                 ——
                 </#if>
@@ -542,11 +591,11 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 5>
             <p>交易取消</p>
             </#if>
-            <p><a href="${main_host!}order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 1>
             <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
             <#elseif order.mainState == 3>
-            <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
             <#if order.mainState == 3>
                 <#if order.isTbOrder == true>
@@ -560,6 +609,8 @@ var webSite = '${webSite!}';
         </#if>
     </li>
 </ul>
+
+
 
 
 

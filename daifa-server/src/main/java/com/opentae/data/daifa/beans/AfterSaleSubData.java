@@ -18,7 +18,7 @@ public class AfterSaleSubData implements Serializable {
     private static final long serialVersionUID = 2305293469566510639L;
 
     @Column("daifa_order.df_order_id")
-    private String childOrderId;//子单id
+    private Long childOrderId;//子单id
     @Column("daifa_order.pic_path")
     private String imgSrc;//商品图片
     @Column("daifa_order.title")
@@ -32,18 +32,18 @@ public class AfterSaleSubData implements Serializable {
     @Column("daifa_order.single_pi_price")
     private String payPrice;//商品实际支付价
     @Column("daifa_order.goods_num")
-    private String num;//商品数量
+    private Integer num;//商品数量
     @Column("daifa_order.single_services_fee")
     private String childServersFee;//子单服务费用
     @Column("daifa_order.store_goods_code")
     private String storeGoodsCode;
 
 
-    public String getChildOrderId() {
+    public Long getChildOrderId() {
         return childOrderId;
     }
 
-    public void setChildOrderId(String childOrderId) {
+    public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
     }
 
@@ -95,11 +95,11 @@ public class AfterSaleSubData implements Serializable {
         this.payPrice = payPrice;
     }
 
-    public String getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 

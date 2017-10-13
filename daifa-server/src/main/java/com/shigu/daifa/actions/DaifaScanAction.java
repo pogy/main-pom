@@ -3,6 +3,7 @@ package com.shigu.daifa.actions;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.vo.PrintPostVO;
+import com.shigu.daifa.vo.SendSumVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;

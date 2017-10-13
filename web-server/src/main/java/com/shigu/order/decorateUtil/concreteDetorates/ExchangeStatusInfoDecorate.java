@@ -31,7 +31,11 @@ public class ExchangeStatusInfoDecorate extends RefundVoDecorate {
         map.put("subOrderId", afterSaleStatusVO.getSubOrderId());
         map.put("refuseReason", afterSaleStatusVO.getContent());
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
-
+            case REFUND_FAIL:{
+                exchangeStateNum=2;
+                exchangeWaitState=4;
+                break;
+            }
             case DISPOSE_RETRUN_GOODS: {
                 exchangeStateNum = 2;
                 exchangeWaitState = 1;

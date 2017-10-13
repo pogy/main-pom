@@ -152,7 +152,7 @@ public class CargoManImpl implements CargoManModel {
                 //修改子订单表状态
                 DaifaOrder order = new DaifaOrder();
                 order.setDfOrderId(tasks.getDfOrderId());
-                order.setOrderStatus(2L);
+                order.setOrderStatus(2);
                 order.setAllocatStatus(1);
                 daifaOrderMapper.updateByPrimaryKeySelective(order);
             }

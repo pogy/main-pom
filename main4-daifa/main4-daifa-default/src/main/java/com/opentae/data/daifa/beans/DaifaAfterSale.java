@@ -2,8 +2,8 @@ package com.opentae.data.daifa.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 public class DaifaAfterSale implements Serializable {
     /**
@@ -112,6 +112,11 @@ public class DaifaAfterSale implements Serializable {
      * 备用2
      */
 	private String remark2;
+
+    /**
+     * 售后备注
+     */
+	private String remark;
 
 	public void setAfterSaleId(Long afterSaleId) {
 		this.afterSaleId = afterSaleId;
@@ -279,6 +284,14 @@ public class DaifaAfterSale implements Serializable {
 
 	public String getRemark2() {
 		return this.remark2;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getRemark() {
+		return this.remark;
 	}
 
 }

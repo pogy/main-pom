@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.2-SNAPSHOT</version>
+        <version>4.2.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -72,16 +72,10 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>xinzuo-mybatis</groupId>-->
-            <!--<artifactId>xinzuo-mybatis</artifactId>-->
-            <!--<version>${xinzuo-mybatis.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
+            <groupId>xinzuo-mybatis</groupId>
+            <artifactId>xinzuo-mybatis</artifactId>
+            <version>${xinzuo-mybatis.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

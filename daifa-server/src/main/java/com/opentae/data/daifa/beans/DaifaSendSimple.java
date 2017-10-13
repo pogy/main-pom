@@ -49,7 +49,8 @@ public class DaifaSendSimple implements Serializable{
     private String imQq;
     @Column("daifa_trade.buyer_telephone")
     private String imTel;
-
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<DaifaSendOrderSimple> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -189,5 +190,13 @@ public class DaifaSendSimple implements Serializable{
 
     public void setImTel(String imTel) {
         this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

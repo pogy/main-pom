@@ -1,6 +1,7 @@
 package com.shigu.admin.bo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @类编号
@@ -15,6 +16,10 @@ import java.io.Serializable;
  */
 public class TsysRoleBO implements Serializable{
 
+    /**创建日期的开始*/
+    private String startTime;
+    /**创建日期的结束*/
+    private String endTime;
     /**角色名称*/
     private String roleName;
     /**角色标签*/
@@ -99,4 +104,6 @@ public class TsysRoleBO implements Serializable{
     public void setRoleId (Long roleId) {
         this.roleId = roleId;
     }
+
+   
 }
