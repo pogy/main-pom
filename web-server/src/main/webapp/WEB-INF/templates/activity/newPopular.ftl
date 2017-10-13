@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>秋装新品发布会 - 四季星座网</title>
+    <title>时尚大咖 - 四季星座网</title>
 
     
     
@@ -16,17 +16,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/newPopular6.css?v=20180821" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/newPopular6.css?v=2017092901" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/newPopular6.js?v=20180821"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/newPopular6.js?v=2017092901"></script>
 </head>
 <body>
 
@@ -275,8 +280,8 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
