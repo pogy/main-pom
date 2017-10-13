@@ -116,7 +116,7 @@ public class ShopDataInit {
         }
         List<RankingShopVO> rankingShopVOS = new ArrayList<>(500);
         for (Long shopId : shopIdList) {
-            rankingShopVOS.add(getShopExponent(shopId, shopIdUpManCount.get(shopId), shopUpNewCount.get(shopId)));
+            rankingShopVOS.add(getShopExponent(shopId, shopIdUpManCount.get(shopId), shopUpNewCount.get(shopId), cat.totalScore));
         }
         //截取算分前200的档口
         rankingShopVOS.sort(new RankingShopVO.RankingShopComparator());
@@ -163,15 +163,18 @@ public class ShopDataInit {
      * @param shopId
      * @param shopUpMan
      * @param shopUpNew
+     * @param totalScore
      * @return
      */
-    private RankingShopVO getShopExponent(Long shopId, Long shopUpMan, Long shopUpNew) {
+    private RankingShopVO getShopExponent(Long shopId, Long shopUpMan, Long shopUpNew, int totalScore) {
         RankingShopVO rankingShopVO = new RankingShopVO();
         //在上传量粗排出的店铺中设置保底上新量权重为10件的权重
         if (shopUpNew == null || shopUpNew < 10) {
             shopUpNew = 10L;
         }
         rankingShopVO.setShopId(shopId);
+        int upNewMaxScore = totalScore * 3 / 10;
+        int upManMaxScore = totalScore * 7 / 10;
         long docCount = shopUpNew;
         //上款量超过1000部分权重
         long kWeight = docCount / 1000 * 100;
@@ -180,9 +183,9 @@ public class ShopDataInit {
         //上款量百位以下权重
         long perWeight = (docCount % 100) * 10;
         //最终上款量权重
-        long boostUpNew = kWeight > 0 ? (kWeight > 1000 ? 3000 : kWeight + 2000) : hWeight > 0 ? hWeight + 1000 : perWeight;
+        long boostUpNew = kWeight > 0 ? (kWeight > (upNewMaxScore - 2000) ? upNewMaxScore : kWeight + 2000) : hWeight > 0 ? hWeight + 1000 : perWeight;
         long shopUploadScore = shopUpMan * 50;
-        long boostUploadMan = shopUploadScore > 7000 ? 7000 : shopUploadScore;
+        long boostUploadMan = shopUploadScore > upManMaxScore ? upManMaxScore : shopUploadScore;
         rankingShopVO.setExponent(boostUpNew + boostUploadMan);
         return rankingShopVO;
     }
