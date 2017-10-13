@@ -14,7 +14,17 @@ import com.openJar.responses.Response;
 public class LoginResponse extends Response {
 	private AppUser users;
 
-	public void setUsers( AppUser users ) {
+	private  Boolean ReturnState;
+
+	public Boolean getReturnState() {
+		return ReturnState;
+	}
+
+	public void setReturnState(Boolean returnState) {
+		ReturnState = returnState;
+	}
+
+	public void setUsers(AppUser users ) {
 		this.users = users;
 	}
 

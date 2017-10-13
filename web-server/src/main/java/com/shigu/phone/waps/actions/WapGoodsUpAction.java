@@ -1,7 +1,10 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.requests.app.InstockMyItemRequest;
+import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
 import com.openJar.responses.app.UploadedItemResponse;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.services.PhoneGoodsUpService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -27,6 +30,8 @@ public class WapGoodsUpAction {
 
     @Autowired
     private PhoneGoodsUpService phoneGoodsUpService;
+    @Autowired
+    private RedisIO redisIO;
 
     @RequestMapping("uploadedItem")
     @ResponseBody
@@ -40,4 +45,31 @@ public class WapGoodsUpAction {
         UploadedItemResponse res=phoneGoodsUpService.uploadedItem(request);
         return JSONObject.fromObject(res);
     }
+
+
+    @RequestMapping("upToWx")
+    @ResponseBody
+    public JSONObject upToWx(HttpSession session, String webSite,Long goodsId) {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String token = redisIO.get("phone_login_token" + ps.getUserId());
+        UpToWxRequest upToWxRequest = new UpToWxRequest();
+        upToWxRequest.setGoodsId(goodsId);
+        upToWxRequest.setToken(token);
+        upToWxRequest.setUserId(ps.getUserId());
+        upToWxRequest.setWebSite(webSite);
+        return JSONObject.fromObject(phoneGoodsUpService.upToWx(upToWxRequest));
+    }
+
+//    @RequestMapping("instockMyItem")
+//    @ResponseBody
+//    public JSONObject instockMyItem(HttpSession session,String uploadId){
+//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        String token = redisIO.get("phone_login_token" + ps.getUserId());
+//        InstockMyItemRequest request = new InstockMyItemRequest();
+//        request.setToken(token);
+//        request.setUploadId(uploadId);
+//        request.setUserId(ps.getUserId());
+//
+//        return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
+//    }
 }
