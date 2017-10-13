@@ -53,133 +53,7 @@
 
 <div class="mainContent">
     <div class="sideBarBox">
-        <div class="sidebar fl yahei">
-    <ul>
-        
-            <li>
-                
-                <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-                
-                
-            </li>
-        
-            <li>
-                
-                <a  href="orderForServer.htm" ><i class="icon-allorders"></i>客服查询</a>
-                
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="orderAllocation.htm"><i></i>任务分配</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="orderHasAllocation.htm"><i></i>我的任务</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="hasBeenShipped.htm"><i></i>已发货订单</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="notYetSipped.htm"><i></i>未发货订单</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>售后管理</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="afterSaleOrder.htm"><i></i>售后订单</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="parcelSweepCode.htm"><i></i>包裹扫码</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="afterSaleProcess.htm"><i></i>售后处理</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a  class="current" href="parcelSearch.htm"><i></i>包裹查询</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>财务管理</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="financialStatistic.htm"><i></i>财务统计</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
-    </ul>
-</div>
-
-
-
-
+    <#include "/common/menu_daifa.ftl">
     </div>
     <div class="contentBox">
         <div class="statistics yahei fc9">
@@ -198,26 +72,6 @@
         </li>
     </ul>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <div class="orderSearch">
     <ul class="orderSearchBox">
@@ -245,14 +99,10 @@
 
 
     class="fmButton
-        
+
          fmButton-blue
          searchBtn"
-    
         jbtn="searchBtn"
-    
-    
-        
         <#if $it.title??>
             title=""
         </#if>
@@ -276,24 +126,10 @@
     </b>
     </#if>
 
-
-
-
-
 </#list>
 </li>
     </ul>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 <#assign text>{"fields":[{"name":"postCode","value":"${query.postCode!}"},{"name":"telphone","value":"${query.telphone!}"},{"name":"matchState","value":"${query.matchState!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
@@ -314,18 +150,7 @@
 </form>
 </#if>
 
-
-
-
-
 </#list>
-
-
-
-
-
-
-
 
 <div class="postCon">
     <div class="theadCon">
@@ -473,13 +298,6 @@
     </#if>
 </tr>
 
-
-
-
-
-
-
-
                     </#list>
                     </#list>
                 </tbody>
@@ -505,101 +323,22 @@
     </#if>
 ></div>
 
-
-
-
-
-
-
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
+<script>
+    /*=================左侧菜单的选中===============*/
+    $(function(){
 
+        $("a[id^='daifamenu']").each(function(){
+            if($(this).prop("href").indexOf("parcelSearch.htm")>0){
+                $(this).prop("class","current");
+            }
+        });
+    });
+</script>
 
 
 
