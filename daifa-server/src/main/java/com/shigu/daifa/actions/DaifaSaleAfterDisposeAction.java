@@ -22,9 +22,20 @@ public class DaifaSaleAfterDisposeAction {
     @Autowired
     DaifaSaleAfterDisposeService daifaSaleAfterDisposeService;
 
-
+    /**
+     * ====================================================================================
+     * @方法名： afterSaleProcess
+     * @user gzy 2017/10/13 13:14
+     * @功能：售后处理
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/afterSaleProcess")
     public String afterSaleProcess(SaleAfterBO bo, Model model){
+
         if(bo.getPage()==null){
             bo.setPage(1);
         }
@@ -34,19 +45,42 @@ public class DaifaSaleAfterDisposeAction {
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("menu","afterSaleProcess.htm");//前台所要的左边菜单
         return "daifa/afterSaleProcess";
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： writeRefund
+     * @user gzy 2017/10/13 13:14
+     * @功能：
+     * @param: [refundId, refundMoney]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/writeRefund")
     @ResponseBody
     public JSONObject writeRefund(Long refundId,String refundMoney) throws DaifaException {
+
         daifaSaleAfterDisposeService.writeRefund(refundId,refundMoney);
         return JsonResponseUtil.success();
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： writeStockCode
+     * @user gzy 2017/10/13 13:14
+     * @功能：
+     * @param: [childOrderId, stockCode, reason]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/writeStockCode")
     @ResponseBody
     public JSONObject writeStockCode(Long childOrderId,String stockCode,String reason) throws DaifaException {
+
         daifaSaleAfterDisposeService.writeStockCode(childOrderId,stockCode,reason);
         return JsonResponseUtil.success();
     }

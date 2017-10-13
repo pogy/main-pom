@@ -45,7 +45,17 @@ public class DaifaAllOrderIndexAction {
     public void setDaifaAllOrderIndexService(DaifaAllOrderIndexService daifaAllOrderIndexService) {
         this.daifaAllOrderIndexService = daifaAllOrderIndexService;
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： allOrderPage
+     * @user gzy 2017/10/13 13:06
+     * @功能：全部订单
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/orderAll")
     public String allOrderPage(AllOrderBO bo, Model model) throws ExecutionException, InterruptedException {
         daifaAllOrderIndexService.timeOutExcute();
@@ -61,16 +71,38 @@ public class DaifaAllOrderIndexAction {
         model.addAttribute("userName", auth.getDaifaUserName());
 
         model.addAttribute("orderStatistics",future.get());
+        model.addAttribute("menu","orderAll.htm");//前台所要的左边菜单
         return "daifa/orderAll";
 
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： addChildRemarkJson
+     * @user gzy 2017/10/13 13:06
+     * @功能：
+     * @param: [childOrderId, remarkCon]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping(value = "daifa/addChildRemarkJson", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject addChildRemarkJson(@RequestParam(value = "childOrderId") Long childOrderId, String remarkCon) throws DaifaException {
+
         return daifaAllOrderIndexService.addChildRemarkJson(childOrderId, remarkCon);
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： getUserList
+     * @user gzy 2017/10/13 13:07
+     * @功能：
+     * @param: []
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping(value = "daifa/getUserList", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject getUserList() {
@@ -78,12 +110,17 @@ public class DaifaAllOrderIndexAction {
         return JsonResponseUtil.success().element("userList", workers);
     }
 
+    
     /**
-     * 设置有货时间
+     * ====================================================================================
+     * @方法名： setTimeJson
+     * @user gzy 2017/10/13 13:07
+     * @功能：设置有货时间
+     * @param: [childOrderId 子单id, timeStr 时间]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
      *
-     * @param childOrderId 字单id
-     * @param timeStr      时间
-     * @return json
      */
     @RequestMapping(value = "daifa/setTimeJson", method = RequestMethod.POST)
     @ResponseBody
@@ -91,7 +128,17 @@ public class DaifaAllOrderIndexAction {
 
         return daifaAllOrderIndexService.setTimeJson(childOrderId, timeStr);
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： setTallyJson
+     * @user gzy 2017/10/13 13:08
+     * @功能：
+     * @param: [userId, childOrderId]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping(value = "daifa/setTallyJson", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject setTallyJson(Long userId, @RequestParam("childOrderId") Long childOrderId) throws DaifaException {

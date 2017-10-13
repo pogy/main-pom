@@ -29,6 +29,17 @@ public class DaifaSendAction {
     public void setDaifaWaitSendService(DaifaSendService daifaSendService) {
         this.daifaSendService = daifaSendService;
     }
+    /**
+     * ====================================================================================
+     * @方法名： daifaSendIndex
+     * @user gzy 2017/10/13 13:16
+     * @功能：已发货订单
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/hasBeenShipped")
     public String daifaSendIndex(SendBO bo , Model model){
 
@@ -39,7 +50,7 @@ public class DaifaSendAction {
         model.addAttribute("orderStatistics",sum);
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
-
+        model.addAttribute("menu","hasBeenShipped.htm");//前台所要的左边菜单
         return "daifa/hasBeenShipped";
     }
 

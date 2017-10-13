@@ -30,8 +30,20 @@ import java.util.List;
 public class DaifaSaleAfterAction {
     @Autowired
     DaifaSaleAfterService daifaSaleAfterService;
+    /**
+     * ====================================================================================
+     * @方法名： afterSaleOrder
+     * @user gzy 2017/10/13 13:01
+     * @功能：售后订单
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/afterSaleOrder")
     public String afterSaleOrder(SaleAfterBO bo, Model model){
+
         if(bo.getPage()==null){
             bo.setPage(1);
         }
@@ -43,57 +55,135 @@ public class DaifaSaleAfterAction {
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("orderStatistics",sum);
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("menu","afterSaleOrder.htm");//前台所要的左边菜单
         return "daifa/afterSaleOrder";
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： addAfterServerRemarkJson
+     * @user gzy 2017/10/13 13:10
+     * @功能：
+     * @param: [orderId, remarkCon]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/addAfterServerRemarkJson")
     @ResponseBody
     public JSONObject addAfterServerRemarkJson(Long orderId,String remarkCon) throws DaifaException {
         daifaSaleAfterService.addAfterServerRemarkJson(orderId,remarkCon);
         return JsonResponseUtil.success();
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： getRefuseReason
+     * @user gzy 2017/10/13 13:10
+     * @功能：
+     * @param: []
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/getRefuseReason")
     @ResponseBody
     public JSONObject getRefuseReason(){
+
         List<RefuseReasonVO> list= daifaSaleAfterService.getRefuseReason();
         JSONObject obj=JsonResponseUtil.success();
         obj.put("refuseReason",list);
         return obj;
     }
+    /**
+     * ====================================================================================
+     * @方法名： refuseAfterSale
+     * @user gzy 2017/10/13 13:10
+     * @功能：
+     * @param: [refundId, type]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/refuseAfterSale")
     @ResponseBody
     public JSONObject refuseAfterSale(Long refundId,Long type) throws DaifaException {
         daifaSaleAfterService.refuseAfterSale(refundId,type);
         return JsonResponseUtil.success();
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： agreeAfterSale
+     * @user gzy 2017/10/13 13:10
+     * @功能：
+     * @param: [refundId]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/agreeAfterSale")
     @ResponseBody
     public JSONObject agreeAfterSale(Long refundId) throws DaifaException {
+
         daifaSaleAfterService.agreeAfterSale(refundId);
         return JsonResponseUtil.success();
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： editRefund
+     * @user gzy 2017/10/13 13:11
+     * @功能：
+     * @param: [refundId, refundMoney]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/editRefund")
     @ResponseBody
     public JSONObject editRefund(Long refundId,String refundMoney) throws DaifaException {
+
         daifaSaleAfterService.editRefund(refundId,refundMoney);
         return JsonResponseUtil.success();
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： parcelSweepCode
+     * @user gzy 2017/10/13 13:11
+     * @功能：包裹扫码
+     * @param: [request, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/parcelSweepCode")
     public String parcelSweepCode(HttpServletRequest request,Model model) throws DaifaException {
+
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         model.addAttribute("userIcon","");
         model.addAttribute("userName",auth.getDaifaUserName());
+        model.addAttribute("menu","parcelSweepCode.htm");//前台所要的左边菜单
         return "daifa/parcelSweepCode";
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： returnOrder
+     * @user gzy 2017/10/13 13:12
+     * @功能：
+     * @param: [postCode]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/returnOrder")
     @ResponseBody
     public JSONObject returnOrder(String postCode) throws DaifaException {
+
         List<DaifaSalePackageOrderVO> daifaOrders = daifaSaleAfterService.returnOrder(postCode);
         JSONObject obj=JsonResponseUtil.success();
         obj.put("orders",daifaOrders);
@@ -115,39 +205,59 @@ public class DaifaSaleAfterAction {
         return obj;
     }
 
+    
     /**
-     * 包裹入库
-     * @param bo
-     * @return
-     * @throws DaifaException
+     * ====================================================================================
+     * @方法名： putInStorage
+     * @user gzy 2017/10/13 13:12
+     * @功能：包裹入库
+     * @param: [bo]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/putInStorage")
     @ResponseBody
     public JSONObject putInStorage(PutInStorageBO bo) throws DaifaException {
+
         daifaSaleAfterService.putInStorage(bo);
         return JsonResponseUtil.success();
     }
-
+    
     /**
-     * 子单入库
-     * @param stockCode 库存编号
-     * @param childOrderId 子单id
-     * @return
-     * @throws DaifaException
+     * ====================================================================================
+     * @方法名： childOrderInStorage
+     * @user gzy 2017/10/13 13:12
+     * @功能：子单入库
+     * @param: [stockCode 库存编号, childOrderId 子单id]
+     * @return: net.sf.json.JSONObject
+     * @exception:DaifaException
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/childOrderInStorage")
     @ResponseBody
     public JSONObject childOrderInStorage(String stockCode,Long childOrderId) throws DaifaException {
+
         daifaSaleAfterService.childOrderInStorage(stockCode,childOrderId);
         return JsonResponseUtil.success();
     }
 
     /**
-     * 包裹查询
-     * @param
+     * ====================================================================================
+     * @方法名： parcelSearch
+     * @user gzy 2017/10/13 13:13
+     * @功能： 包裹查询
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/parcelSearch")
     public String parcelSearch(ParcelSearchBO bo,Model model) throws DaifaException {
+
         if(bo.getPage()==null){
             bo.setPage(1);
         }
@@ -161,19 +271,25 @@ public class DaifaSaleAfterAction {
         ShiguPager<DaifaAfterReceiveExpresStockVO> pager= daifaSaleAfterService.getDaifaAfterReceiveExpresStock(bo,auth.getDaifaSellerId());
         model.addAttribute("postList",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("menu","parcelSearch.htm");//前台所要的左边菜单
         return "daifa/parcelSearch";
     }
 
     /**
-     *添加包裹备注接口
-     * @param packbagId   包裹id
-     * @param remarkCon 添加的备注内容
-     * @return
-     * @throws DaifaException
+     * ====================================================================================
+     * @方法名： addPackageRemark
+     * @user gzy 2017/10/13 13:13
+     * @功能： 添加包裹备注接口
+     * @param: [packbagId 包裹id, remarkCon 添加的备注内容]
+     * @return: net.sf.json.JSONObject
+     * @exception: DaifaException
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/addPackageRemark")
     @ResponseBody
     public JSONObject addPackageRemark(Long packbagId,String remarkCon) throws DaifaException {
+
         if (!StringUtil.isNull(remarkCon)) {
             daifaSaleAfterService.addPackageRemark(packbagId,remarkCon);
         }

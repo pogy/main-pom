@@ -37,22 +37,44 @@ public class DaifaWaitSendAction {
     public void setDaifaWaitSendService(DaifaWaitSendService daifaWaitSendService) {
         this.daifaWaitSendService = daifaWaitSendService;
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： daifaWaitSendIndex
+     * @user gzy 2017/10/13 13:16
+     * @功能：未发货订单
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/notYetSipped")
     public String daifaWaitSendIndex(WaitSendBO bo , Model model){
+
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaWaitSendVO> pager = daifaWaitSendService.selPageData(bo,auth.getDaifaSellerId());
 
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
-
+        model.addAttribute("menu","notYetSipped.htm");//前台所要的左边菜单
         return "daifa/notYetSipped";
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： noPostRefund
+     * @user gzy 2017/10/13 13:17
+     * @功能：
+     * @param: [childOrderId, refundMoney]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/noPostRefund")
     @ResponseBody
     public JSONObject noPostRefund(Long childOrderId,String refundMoney) throws DaifaException {
+
         return daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
     }
 
