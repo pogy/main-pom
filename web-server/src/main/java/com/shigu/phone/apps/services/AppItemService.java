@@ -64,7 +64,7 @@ public class AppItemService {
 
     public GoodsCollectResponse collectItem(GoodsCollectRequest request){
         GoodsCollectResponse response = new GoodsCollectResponse();
-        Boolean isSuccess = phoneCdnService.addItemCollect(request.getUserId(),request.getStoreId(),request.getGoodsId());
+        Boolean isSuccess = phoneCdnService.addItemCollect(request.getUserId(),request.getStoreId(),request.getGoodsId(),request.getWebSite());
         response.setSuccess(isSuccess);
         if (!isSuccess){
             OpenException openException = new OpenException();

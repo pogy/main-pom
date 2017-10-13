@@ -21,6 +21,7 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.newcdn.vo.CdnShopCatVO;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -183,38 +184,36 @@ public class AppStoreService {
     }
     public ShopCatResponse selShopCat(ShopCatRequest request){
         ShopCatResponse response = new ShopCatResponse();
-        List<CdnShopCatVO> cdnShopCatVOS = cdnService.cdnShopCat(request.getShopId());
+
         List<AppShopCat> appShopCats = new ArrayList<>();
-        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+        Long totalItemNum = 0l;//全部商品数目
+        List<CatPolymerization> catPolymerizations = cdnService.formatCatPoly(request.getShopId());
+        for (CatPolymerization parentItem : catPolymerizations){
+            AppShopCat appShopCat = new AppShopCat();
+            if (parentItem.getSubPolymerizations() != null && !parentItem.getSubPolymerizations().isEmpty()){//顶级类目
 
-        int totalItemNum = 0;//全部商品数目
-        for (CdnShopCatVO cdnShopCatVO : cdnShopCatVOS) {
-            int cItemNum = 0;//类目下商品总数
+                appShopCat.setScid(String.valueOf(parentItem.getCid()));
+                appShopCat.setCatName(parentItem.getName());
+                List<CatPolymerization> subPolymerizations = parentItem.getSubPolymerizations();
 
-            AppShopCat cat = new AppShopCat();
-            cat.setCatName(cdnShopCatVO.getName());
-            cat.setScid(cdnShopCatVO.getCid().toString());
-            List<AppShopCatSub> appShopCatSubs = new ArrayList<>();
-            for (CdnShopCatVO shopCatVO : cdnShopCatVO.getSubCats()) {
-                AppShopCatSub catSub = new AppShopCatSub();
-                catSub.setCatName(shopCatVO.getName());
-                catSub.setScid(shopCatVO.getCid().toString());
-                goodsTinyExample.clear();
-                goodsTinyExample.setWebSite(request.getWebSite());
-                goodsTinyExample.createCriteria()
-                        .andGoodsStatusEqualTo(0)
-                        .andStoreIdEqualTo(request.getShopId())
-                        .andCidEqualTo(shopCatVO.getCid());
-                int itemNum = shiguGoodsTinyMapper.countByExample(goodsTinyExample);
-                appShopCatSubs.add(catSub);
+                List<AppShopCatSub> appShopCatSubs= new ArrayList<>();
+                Long itemNum  = 0l;
+                for (CatPolymerization item : subPolymerizations){
+                    AppShopCatSub catSub = new AppShopCatSub();
+                    catSub.setScid(String.valueOf(item.getCid()));
+                    catSub.setCatName(item.getName());
+                    catSub.setItemNum(item.getNumber()==null?0:item.getNumber());
 
-                cItemNum += itemNum;
+                    appShopCatSubs.add(catSub);
+                    itemNum += item.getNumber();
+                }
+                appShopCat.setItemNum(itemNum);
+                appShopCat.setSubCats(appShopCatSubs);
                 totalItemNum += itemNum;
             }
-            cat.setItemNum(cItemNum);
-            cat.setSubCats(appShopCatSubs);
-            appShopCats.add(cat);
+            appShopCats.add(appShopCat);
         }
+
         response.setTotalItemNum(totalItemNum);
         response.setCats(appShopCats);
         response.setSuccess(true);

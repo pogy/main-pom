@@ -139,20 +139,15 @@ public class PhoneCdnService {
      * @param userId
      * @return
      */
-    public boolean addItemCollect(Long userId,Long storeId,Long goodsId){
+    public boolean addItemCollect(Long userId,Long storeId,Long goodsId,String webSite){
 
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
-        //查出店、webSite
-        ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
-        if(sgig==null){
-            return false;
-        }
-        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, sgig.getWebSite());
+        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
         if (itemCollectInfoVO == null) {//从未收藏过，添加收藏记录
             itemCollect.setItemId(goodsId);
             itemCollect.setStoreId(storeId);
-            itemCollect.setWebsite(sgig.getWebSite());
+            itemCollect.setWebsite(webSite);
             try {
                 userCollectService.addItemCollection(itemCollect);
             } catch (ItemCollectionException e) {

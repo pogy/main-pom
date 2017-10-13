@@ -65,6 +65,9 @@ public class AppItemAction {
         if (request.getGoodsId() == null || request.getStoreId() == null || request.getUserId() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
+        if (StringUtils.isEmpty(request.getWebSite())) {
+            request.setWebSite("hz");
+        }
         return JSONObject.fromObject(appItemService.collectItem(request));
     }
 
