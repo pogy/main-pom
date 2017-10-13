@@ -5,34 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>售后处理 - 星帮后台管理 - 四季星座网</title>
-
-    
-    
-    
     
 <#include "/common/host_config.ftl">
-
-
-
-
-
-    
     <link href="http://style.571xz.com/v2/dfgl/css/afterSaleProcess.css" rel="stylesheet">
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-
-    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
     <script src="http://style.571xz.com/v2/dfgl/js/afterSaleProcess.js"></script>
+    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -45,11 +23,9 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
+            <input id="menus" type="hidden" value="${menu}"/>
     </div>
 </div>
-
-
-
 
 <div class="mainContent">
     <div class="sideBarBox">
@@ -108,15 +84,10 @@
     </b>
     </#if>
 
-
-
-
-
 </#list>
 </li>
     </ul>
 </div>
-
 
 <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"backPostCode","value":"${query.backPostCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
@@ -136,17 +107,7 @@
     </#list>
 </form>
 </#if>
-
-
-
-
-
 </#list>
-
-
-
-
-
 <div class="orderCon">
     <table>
         <thead class="theadCon">
@@ -275,16 +236,12 @@
     </td>
     </#if>
 </tr>
-
-
             </#list>
             </#list>
         </tbody>
         </#list>
     </table>
 </div>
-    
-
 <#assign text>{}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
@@ -302,14 +259,3 @@
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-<script>
-    /*=================左侧菜单的选中===============*/
-    $(function(){
-
-        $("a[id^='daifamenu']").each(function(){
-            if($(this).prop("href").indexOf("afterSaleProcess.htm")>0){
-                $(this).prop("class","current");
-            }
-        });
-    });
-</script>

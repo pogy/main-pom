@@ -13,6 +13,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/dfgl/js/financialStatistic.js"></script>
+    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -25,19 +26,13 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
+            <input id="menus" type="hidden" value="${menu}"/>
     </div>
 </div>
 
-
-
-
 <div class="mainContent">
     <div class="sideBarBox">
-
     <#include "/common/menu_daifa.ftl">
-
-
-
     </div>
     <div class="contentBox">
         <div class="orderSearch orderSearchBox">
@@ -87,28 +82,10 @@
     <#else>
     </b>
     </#if>
-
-
-
-
-
 </#list>
 </li>
     </ul>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <#assign text>{"fields":[{"name":"time","value":"${query.time!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
@@ -127,17 +104,7 @@
     </#list>
 </form>
 </#if>
-
-
-
-
-
 </#list>
-
-
-
-
-
 <div class="financialList">
     <h3 class="fs20 fc3">今日所需费用 <span class="fs12 fc6">${query.time!}</span></h3>
     <ul class="clearfix">
@@ -170,14 +137,3 @@
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-<script>
-    /*=================左侧菜单的选中===============*/
-    $(function(){
-
-        $("a[id^='daifamenu']").each(function(){
-            if($(this).prop("href").indexOf("financialStatistic.htm")>0){
-                $(this).prop("class","current");
-            }
-        });
-    });
-</script>

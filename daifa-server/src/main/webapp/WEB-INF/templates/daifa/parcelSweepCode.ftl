@@ -5,29 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>包裹扫码 - 星帮后台管理 - 四季星座网</title>
-
-    
-    
-    
-    
 <#include "/common/host_config.ftl">
-
-
-
-
-
-    
     <link href="http://style.571xz.com/v2/dfgl/css/parcelSweepCode.css" rel="stylesheet">
-    
-
-    
-
-    
-
-    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
     <script src="http://style.571xz.com/v2/dfgl/js/parcelSweepCode.js"></script>
+    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -40,6 +22,7 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
+            <input id="menus" type="hidden" value="${menu}"/>
     </div>
 </div>
 <div class="mainContent">
@@ -61,8 +44,6 @@
 <div class="orderCon">
     
 </div>
-    
-
 <#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
@@ -79,18 +60,3 @@
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-<script>
-    /*=================左侧菜单的选中===============*/
-    $(function(){
-
-        $("a[id^='daifamenu']").each(function(){
-            if($(this).prop("href").indexOf("parcelSweepCode.htm")>0){
-                $(this).prop("class","current");
-            }
-        });
-    });
-</script>
-
-
-
-
