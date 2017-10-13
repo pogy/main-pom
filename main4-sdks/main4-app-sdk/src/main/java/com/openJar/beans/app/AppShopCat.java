@@ -17,7 +17,7 @@ public class AppShopCat extends OpenBean {
 	//如果没有子集，这里为空
 	private List<AppShopCatSub> subCats;
 	//商品数量
-	private Integer itemNum;
+	private Long itemNum;
 
 	public String getScid(){
 		return scid;
@@ -43,11 +43,11 @@ public class AppShopCat extends OpenBean {
 		this.subCats=subCats;
 	}
 
-	public Integer getItemNum() {
+	public Long getItemNum() {
 		return itemNum;
 	}
 
-	public void setItemNum(Integer itemNum) {
+	public void setItemNum(Long itemNum) {
 		this.itemNum = itemNum;
 	}
 }

@@ -24,6 +24,12 @@ public class GoodsCollectRequest  extends Request<GoodsCollectResponse> {
 	 */
 	private Long storeId;
 
+	/**
+	 * 站点
+	 * @return
+	 */
+	private String webSite;
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -46,6 +52,14 @@ public class GoodsCollectRequest  extends Request<GoodsCollectResponse> {
 
 	public void setStoreId(Long storeId) {
 		this.storeId = storeId;
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 
 	public String testApiUrl(){

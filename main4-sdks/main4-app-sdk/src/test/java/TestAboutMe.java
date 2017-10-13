@@ -165,7 +165,11 @@ public class TestAboutMe {
         ShopCatRequest  request=new ShopCatRequest ();
         request.setWebSite("hz");
 //        request.setShopId(15408L);//无子集测试
-        request.setShopId(29737l);//有子集测试
+//        request.setShopId(29737l);//有子集测试
+//        request.setShopId(27425l);//有子集测试
+//        request.setShopId(27453l);//有子集测试
+        request.setShopId(41254l);//有子集测试
+
         ShopCatResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -313,13 +317,17 @@ public class TestAboutMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         GoodsCollectRequest  request=new GoodsCollectRequest ();
 
-        request.setUserId(1000085908l);
+//        request.setUserId(1000085908l);
 //        request.setGoodsId(9903766l);
 //        request.setStoreId(35611l);
 
-        request.setGoodsId(20033321l);
-        request.setStoreId(40903l);
+//        request.setGoodsId(20033321l);
+//        request.setStoreId(40903l);
 
+//
+        request.setUserId(1000016976l);
+        request.setGoodsId(21533000l);
+        request.setStoreId(41700l);
 //
 //        request.setGoodsId(21466866l);
 //        request.setStoreId(41384l);

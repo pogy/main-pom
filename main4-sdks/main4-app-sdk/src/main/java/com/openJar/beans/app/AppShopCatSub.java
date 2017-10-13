@@ -15,6 +15,8 @@ public class AppShopCatSub extends OpenBean {
 	//店内类目名
 	private String catName;
 
+	private Long itemNum;
+
 	public String getScid(){
 		return scid;
 	}
@@ -31,4 +33,11 @@ public class AppShopCatSub extends OpenBean {
 		this.catName=catName;
 	}
 
+	public Long getItemNum() {
+		return itemNum;
+	}
+
+	public void setItemNum(Long itemNum) {
+		this.itemNum = itemNum;
+	}
 }
