@@ -34,7 +34,17 @@ import java.util.concurrent.ExecutionException;
 public class TsysRoleAction {
     @Autowired
     TsysRoleService tsysRoleService;
-
+    /**
+     * ====================================================================================
+     * @方法名： listByPage
+     * @user gzy 2017/10/13 14:37
+     * @功能：角色列表
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/roleListByPage")
     public String listByPage(TsysRoleBO bo, Model model) throws ExecutionException, InterruptedException {
 

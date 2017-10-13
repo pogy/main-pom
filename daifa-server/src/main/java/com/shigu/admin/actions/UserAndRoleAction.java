@@ -38,9 +38,20 @@ import java.util.concurrent.ExecutionException;
 public class UserAndRoleAction {
     @Autowired
     UserAndRoleService userAndRoleService;
-
+    /**
+     * ====================================================================================
+     * @方法名： userAndRole
+     * @user gzy 2017/10/13 14:36
+     * @功能：用户角色
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/userAndRole")
     public String userAndRole(UserAndRoleBO bo, Model model) throws ExecutionException, InterruptedException {
+
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         Long sellerId=999999990L;

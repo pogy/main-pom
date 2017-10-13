@@ -39,13 +39,15 @@ public class TsysPermissionAction{
 
 
 	/**
+	 * ====================================================================================
+	 * @方法名： listByPage
+	 * @user gzy 2017/10/13 14:37
+	 * @功能：权限列表
+	 * @param: [bo, model]
+	 * @return: java.lang.String
+	 * @exception:
+	 * ====================================================================================
 	 *
-	 *=========================================================
-	 *Mr Gzy自动生成
-	 *@方法名：
-	 *@功能：
-	 *@return:
-	 *=========================================================
 	 */
 	@RequestMapping(value={"admin/permissionListByPage"},method = {RequestMethod.GET,RequestMethod.POST})
 	public String listByPage(TsysPermissionBO bo , Model model)throws ExecutionException, InterruptedException{
