@@ -6,10 +6,13 @@ import com.shigu.admin.services.UserAndRoleService;
 import com.shigu.admin.vo.RoleTreeVO;
 import com.shigu.admin.vo.UserRoleVO;
 import com.shigu.admin.vo.UserTreeVO;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -35,11 +38,22 @@ import java.util.concurrent.ExecutionException;
 public class UserAndRoleAction {
     @Autowired
     UserAndRoleService userAndRoleService;
-
+    /**
+     * ====================================================================================
+     * @方法名： userAndRole
+     * @user gzy 2017/10/13 14:36
+     * @功能：用户角色
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/userAndRole")
     public String userAndRole(UserAndRoleBO bo, Model model) throws ExecutionException, InterruptedException {
-        //Session session = SecurityUtils.getSubject().getSession();
-        //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         Long sellerId=999999990L;
 
         List<UserTreeVO> userTree= userAndRoleService.listAllUser (sellerId);
@@ -48,7 +62,7 @@ public class UserAndRoleAction {
         model.addAttribute("userTree", userTree);
         model.addAttribute("query", bo);
         model.addAttribute("roleTree", roleTree);
-        model.addAttribute("userName", "gzy");
+        model.addAttribute("userName", auth);
 
         return "admin/userAndRole";
 
