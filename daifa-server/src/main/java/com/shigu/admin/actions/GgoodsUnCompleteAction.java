@@ -3,9 +3,12 @@ package com.shigu.admin.actions;
 import com.shigu.admin.bo.GgoodsUmCompleteBO;
 import com.shigu.admin.services.GgoodsUnCompleteService;
 import com.shigu.admin.vo.GgoodsUmCompleteVO;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,15 +47,15 @@ public class GgoodsUnCompleteAction {
     @RequestMapping("admin/ggoodsUnListByPage")
     public String listByPage(GgoodsUmCompleteBO bo, Model model) throws ExecutionException, InterruptedException {
 
-        //Session session = SecurityUtils.getSubject().getSession();
-        //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<GgoodsUmCompleteVO> listVO = ggoodsUnCompleteService.listByPage(bo);
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("list", listVO);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
-        model.addAttribute("userName", "gzy");
+        model.addAttribute("userName", auth);
         return "admin/ggoodsUnListByPage";
     }
 
