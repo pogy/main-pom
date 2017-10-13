@@ -49,7 +49,8 @@ public class OrderSendErrorDealAction {
      */
     @RequestMapping("admin/orderSendErrorindex")
     public String orderSendErrorDealindex(OrderSendErrorDealBO bo, Model model){
-
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaTrade> list=null;
     if(bo.getDfTradeId ()==null&&bo.getPhone ()==null){
         bo.setFlo (1);
@@ -69,7 +70,7 @@ public class OrderSendErrorDealAction {
         model.addAttribute("query", bo);
 
         model.addAttribute("pageOption", pageOption);
-
+        model.addAttribute("userName", auth);
         return "admin/orderSendErrorDeal";
     }
     /**
@@ -107,7 +108,8 @@ public class OrderSendErrorDealAction {
      */
     @RequestMapping("admin/orderSendErrorSubindex")
     public String orderSendErrorSubindex(OrderSendErrorDealBO bo, Model model){
-
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         if(bo.getCount ()==null){
             bo.setCount (1);
         }
@@ -120,7 +122,7 @@ public class OrderSendErrorDealAction {
         model.addAttribute("query", bo);
 
         model.addAttribute("pageOption", pageOption);
-
+        model.addAttribute("userName", auth);
         return "admin/orderSendErrorSubindex";
     }
     /**
