@@ -35,7 +35,6 @@
                     <#list rankingCateItem.cateLineList as cateLine>
                     <li>
                         <div class="colorBlock <#if cateLine_index == 0>first<#elseif cateLine_index == 1>second<#elseif cateLine_index == 2>last</#if>">
-                             <h4>上升${cateLine.upPos!}</h4>
                              <div class="details">
                                 <p>${cateLine.text!}</p>
                                 <p>${cateLine.totalNum!}</p>

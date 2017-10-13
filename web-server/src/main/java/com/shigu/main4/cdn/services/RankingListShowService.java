@@ -5,6 +5,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.monitor.enums.CidMapEnum;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.RankingShopVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,32 +32,32 @@ public class RankingListShowService {
         RankingVO rankingVO = new RankingVO();
         rankingVO.setRankingId(cidMapEnum.cid);
         rankingVO.setRankingTitle(cidMapEnum.title);
-        rankingVO.setCateLineList(rankingSimpleService.getRankingCateLinesByCids(cidMapEnum.cid));
-        rankingVO.setShopList(getRankingShopVOPager(cidMarketIdMapEnum,1,10).getContent());
+        rankingVO.setCateLineList(rankingSimpleService.getRankingCateLinesByCids(cidMapEnum.cid, cidMapEnum.cidMarketIdMapEnum.periodEnum));
+        rankingVO.setShopList(getRankingShopVOPager(cidMarketIdMapEnum, 1, 10).getContent());
         return rankingVO;
     }
 
-    public RankingVO getShopRanking(CidMarketIdMapEnum cidMarketIdMapEnum){
+    public RankingVO getShopRanking(CidMarketIdMapEnum cidMarketIdMapEnum) {
         RankingVO rankingVO = new RankingVO();
         rankingVO.setRankingId(cidMarketIdMapEnum.cid);
         rankingVO.setRankingTitle(cidMarketIdMapEnum.title);
-        rankingVO.setShopList(getRankingShopVOPager(cidMarketIdMapEnum,1,10).getContent());
+        rankingVO.setShopList(getRankingShopVOPager(cidMarketIdMapEnum, 1, 10).getContent());
         return rankingVO;
     }
 
-    public ShiguPager<RankingShopVO> getRankingShopVOPager(CidMarketIdMapEnum cidMarketIdMapEnum,Integer page,Integer size) {
+    public ShiguPager<RankingShopVO> getRankingShopVOPager(CidMarketIdMapEnum cidMarketIdMapEnum, Integer page, Integer size) {
         ShiguPager<RankingShopVO> pager = new ShiguPager<>();
         List<RankingShopVO> rankingShopVOS = rankingSimpleService.selRankingShopBy(cidMarketIdMapEnum);
         pager.setNumber(page);
-        pager.calPages(rankingShopVOS.size(),size);
+        pager.calPages(rankingShopVOS.size(), size);
         int startIndex = (page - 1) * size;
         int endIndex = startIndex + size;
-        if (startIndex>rankingShopVOS.size()) {
-            pager.setContent(rankingShopVOS.subList(0,0));
-        } else if(endIndex>rankingShopVOS.size()) {
-            pager.setContent(rankingShopVOS.subList(startIndex,rankingShopVOS.size()));
+        if (startIndex > rankingShopVOS.size()) {
+            pager.setContent(rankingShopVOS.subList(0, 0));
+        } else if (endIndex > rankingShopVOS.size()) {
+            pager.setContent(rankingShopVOS.subList(startIndex, rankingShopVOS.size()));
         } else {
-            pager.setContent(rankingShopVOS.subList(startIndex,endIndex));
+            pager.setContent(rankingShopVOS.subList(startIndex, endIndex));
         }
         return pager;
     }

@@ -1,10 +1,9 @@
 package com.shigu.main4.monitor.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.enums.CidMapEnum;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
 import com.shigu.main4.monitor.vo.RankingShopVO;
@@ -13,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 类名：RankingSimpleServiceImpl
@@ -30,41 +31,42 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
     RedisIO redisIO;
 
     /**
-     * 拿到一周起始时间的时间戳（周日）
+     * 拿到指定周期起始时间的时间戳
      *
-     * @param periodNum 往前搜索的星期数 0是本周，1是上周。。。
+     * @param periodNum
+     * @param periodEnum
      * @return
      */
-    public static String getWeekTimeStamp(int periodNum) {
+    public static String getPeriodTimeStamp(int periodNum, RankingPeriodEnum periodEnum) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(new Date());
-        instance.set(Calendar.DAY_OF_WEEK, 1);
-        instance.add(Calendar.DATE, -7 * periodNum);
+        instance.set(periodEnum.startDay, 1);
+        instance.add(periodEnum.stepPeriod, periodEnum.stepLength * periodNum);
         return new SimpleDateFormat("yyyy-MM-dd").format(instance.getTime());
     }
 
-
     @Override
-    public List<RankingCateLineVO> getRankingCateLinesByCids(Long cid) throws Main4Exception {
-        List<RankingCateLineVO> list = redisIO.getList(CidMapEnum.map(cid) + getWeekTimeStamp(0), RankingCateLineVO.class);
+    public List<RankingCateLineVO> getRankingCateLinesByCids(Long cid, RankingPeriodEnum periodEnum) throws Main4Exception {
+        List<RankingCateLineVO> list = redisIO.getList(CidMapEnum.map(cid) + getPeriodTimeStamp(0, periodEnum), RankingCateLineVO.class);
         if (list == null) {
-            list = redisIO.getList(CidMapEnum.map(cid) + getWeekTimeStamp(1), RankingCateLineVO.class);
+            list = redisIO.getList(CidMapEnum.map(cid) + getPeriodTimeStamp(1, periodEnum), RankingCateLineVO.class);
         }
         return list;
     }
 
     /**
      * 获取当前期店铺排行数据
+     *
      * @return
      */
     @Override
     public List<RankingShopVO> selRankingShopBy(CidMarketIdMapEnum cat) {
-        String key = cat.getIndexPrefix() + getWeekTimeStamp(0);
+        String key = cat.getIndexPrefix() + getPeriodTimeStamp(0, cat.periodEnum);
         List<RankingShopVO> list = redisIO.getList(key, RankingShopVO.class);
         if (list == null) {
             //如果当前期数据还不存在（还在计算过程中），则返回上一期数据
-            key = cat.getIndexPrefix() + getWeekTimeStamp(1);
-            list = redisIO.getList(key,RankingShopVO.class);
+            key = cat.getIndexPrefix() + getPeriodTimeStamp(1, cat.periodEnum);
+            list = redisIO.getList(key, RankingShopVO.class);
         }
         return list;
     }

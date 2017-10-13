@@ -258,7 +258,7 @@ var webSite = '${webSite!}';
                 <#if webSite =="hz" || webSite == 'cs'>
                 <li ><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == "hz">
-                <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                <li><a href="http://www.571xz.com/shopRanking.htm" target="_blank">排行榜<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="/daifaIndex.htm" target="_blank">一件代发</a></li>
                 <#if webSite == "hz">

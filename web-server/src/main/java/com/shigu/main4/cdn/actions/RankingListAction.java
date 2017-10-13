@@ -55,6 +55,7 @@ public class RankingListAction {
         rankingCateList.add(rankingListShowService.getCatRanking(CidMapEnum.WOMAN_CAT_RANKING,CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING));
         ArrayList<RankingVO> rankingShopList = new ArrayList<>();
         rankingShopList.add(rankingListShowService.getShopRanking(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING));
+        rankingShopList.add(rankingListShowService.getShopRanking(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING_MONTH));
         model.addAttribute("rankingCateList",rankingCateList);
         model.addAttribute("rankingShopList",rankingShopList);
         return "xzSearch/shopRanking";
