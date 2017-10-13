@@ -108,7 +108,8 @@ public class OrderSendErrorDealAction {
      */
     @RequestMapping("admin/orderSendErrorSubindex")
     public String orderSendErrorSubindex(OrderSendErrorDealBO bo, Model model){
-
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         if(bo.getCount ()==null){
             bo.setCount (1);
         }
@@ -121,7 +122,7 @@ public class OrderSendErrorDealAction {
         model.addAttribute("query", bo);
 
         model.addAttribute("pageOption", pageOption);
-
+        model.addAttribute("userName", auth);
         return "admin/orderSendErrorSubindex";
     }
     /**
