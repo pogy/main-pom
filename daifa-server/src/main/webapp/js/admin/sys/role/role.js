@@ -45,7 +45,7 @@ function addRole(){
     */}
         ,{
             dstatus:dstatus
-        }),{title:"角色添加",clsName:windowStyle});
+        }),{title:"角色添加"});
 }
 //添加的提交
 function subdd(){
@@ -60,9 +60,10 @@ function subdd(){
         {"roleName":roleName,"createUserId":createUserId,"status":status,"roleComment":roleComment,"roleTag":roleTag},
         function(data){
             if(data.result=="success"){
-                $$.alert("修改完成");
+                $$.alert("添加完成");
+                location.reload();
             }else{
-                $$.alert("修改失败,"+data.msg);
+                $$.alert("添加失败,"+data.msg);
             }
         })
 }
@@ -117,6 +118,7 @@ function subupdate(){
         function(data){
         if(data.result=="success"){
             $$.alert("修改完成");
+            location.reload();
         }else{
             $$.alert("修改失败,"+data.msg);
         }
