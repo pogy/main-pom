@@ -10,6 +10,7 @@ import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.vo.RankingShopVO;
 import com.shigu.main4.tools.RedisIO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -17,8 +18,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -29,10 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getWeekTimeStamp;
+import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
 
 /**
  * 类名：ShopDataInit
@@ -59,17 +61,20 @@ public class ShopDataInit {
 
     @Test
     public void initMan() {
-        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 1);
-        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 1);
-        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 1);
-        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 0);
-        upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 0);
-        upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 0);
+        //upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 1, RankingPeriodEnum.RANKING_BY_WEEK);
+        //upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 1, RankingPeriodEnum.RANKING_BY_WEEK);
+        //upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 1, RankingPeriodEnum.RANKING_BY_WEEK);
+        //upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING, 0, RankingPeriodEnum.RANKING_BY_WEEK);
+        //upDataToRedis(CidMarketIdMapEnum.MAN_CAT_SHOP_RANKING, 0, RankingPeriodEnum.RANKING_BY_WEEK);
+        //upDataToRedis(CidMarketIdMapEnum.WOMAN_CAT_SHOP_RANKING, 0, RankingPeriodEnum.RANKING_BY_WEEK);
+
+        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING_MONTH, 1, RankingPeriodEnum.RANKING_BY_MONTH);
+        upDataToRedis(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING_MONTH, 0, RankingPeriodEnum.RANKING_BY_MONTH);
     }
 
-    public void upDataToRedis(CidMarketIdMapEnum cat, int pem) {
-        String fromTime = getWeekTimeStamp(pem + 1) + " 00:00:00";
-        String toTime = getWeekTimeStamp(pem) + " 00:00:00";
+    public void upDataToRedis(CidMarketIdMapEnum cat, int pem, RankingPeriodEnum periodEnum) {
+        String fromTime = getPeriodTimeStamp(pem + 1, periodEnum) + " 00:00:00";
+        String toTime = getPeriodTimeStamp(pem, periodEnum) + " 00:00:00";
         Client searchClient = ElasticConfiguration.searchClient;
         SearchRequestBuilder searchRequestBuilder = searchClient.prepareSearch("shigugoodsup").setTypes("hz");
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
@@ -111,12 +116,12 @@ public class ShopDataInit {
         }
         List<RankingShopVO> rankingShopVOS = new ArrayList<>(500);
         for (Long shopId : shopIdList) {
-            rankingShopVOS.add(getShopExponent(shopId, shopIdUpManCount.get(shopId), shopUpNewCount.get(shopId)));
+            rankingShopVOS.add(getShopExponent(shopId, shopIdUpManCount.get(shopId), shopUpNewCount.get(shopId), cat.totalScore));
         }
         //截取算分前200的档口
         rankingShopVOS.sort(new RankingShopVO.RankingShopComparator());
         rankingShopVOS = rankingShopVOS.subList(0, 200 < rankingShopVOS.size() ? 200 : rankingShopVOS.size());
-        List<RankingShopVO> pastRankingShop = redisIO.getList(cat.getIndexPrefix() + getWeekTimeStamp(pem + 1), RankingShopVO.class);
+        List<RankingShopVO> pastRankingShop = redisIO.getList(cat.getIndexPrefix() + getPeriodTimeStamp(pem + 1, periodEnum), RankingShopVO.class);
         int i = 0;
         for (RankingShopVO rankingShopVO : rankingShopVOS) {
             Long shopId = rankingShopVO.getShopId();
@@ -149,7 +154,7 @@ public class ShopDataInit {
             }
         }
         //排行结果保存15天
-        redisIO.putTemp(cat.getIndexPrefix() + getWeekTimeStamp(pem), rankingShopVOS, 3600 * 24 * 15);
+        redisIO.putTemp(cat.getIndexPrefix() + getPeriodTimeStamp(pem, periodEnum), rankingShopVOS, 3600 * 24 * 15);
     }
 
     /**
@@ -158,15 +163,18 @@ public class ShopDataInit {
      * @param shopId
      * @param shopUpMan
      * @param shopUpNew
+     * @param totalScore
      * @return
      */
-    private RankingShopVO getShopExponent(Long shopId, Long shopUpMan, Long shopUpNew) {
+    private RankingShopVO getShopExponent(Long shopId, Long shopUpMan, Long shopUpNew, int totalScore) {
         RankingShopVO rankingShopVO = new RankingShopVO();
         //在上传量粗排出的店铺中设置保底上新量权重为10件的权重
         if (shopUpNew == null || shopUpNew < 10) {
             shopUpNew = 10L;
         }
         rankingShopVO.setShopId(shopId);
+        int upNewMaxScore = totalScore * 3 / 10;
+        int upManMaxScore = totalScore * 7 / 10;
         long docCount = shopUpNew;
         //上款量超过1000部分权重
         long kWeight = docCount / 1000 * 100;
@@ -175,9 +183,9 @@ public class ShopDataInit {
         //上款量百位以下权重
         long perWeight = (docCount % 100) * 10;
         //最终上款量权重
-        long boostUpNew = kWeight > 0 ? (kWeight > 1000 ? 3000 : kWeight + 2000) : hWeight > 0 ? hWeight + 1000 : perWeight;
+        long boostUpNew = kWeight > 0 ? (kWeight > (upNewMaxScore - 2000) ? upNewMaxScore : kWeight + 2000) : hWeight > 0 ? hWeight + 1000 : perWeight;
         long shopUploadScore = shopUpMan * 50;
-        long boostUploadMan = shopUploadScore > 7000 ? 7000 : shopUploadScore;
+        long boostUploadMan = shopUploadScore > upManMaxScore ? upManMaxScore : shopUploadScore;
         rankingShopVO.setExponent(boostUpNew + boostUploadMan);
         return rankingShopVO;
     }
