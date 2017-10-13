@@ -829,8 +829,10 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         //3、更新shigu_goods_tiny表数据、shigu_goods_extends表数据，shigu_prop_imgs表数据。
         ItemHelper.SynItemContainer container = ItemHelper.helpMe(synItem);
         ShiguGoodsTiny goodsTiny = container.getTiny();
-        if (objectIsNotBlank(goodsTiny))
+        goodsTiny.setCreated(null);//更新的时候不更新创建时间
+        if (objectIsNotBlank(goodsTiny)){
             shiguGoodsTinyMapper.updateByPrimaryKeySelective(goodsTiny);
+        }
         ShiguGoodsExtends goodsExtends = container.getGoodsExtends();
         if (objectIsNotBlank(goodsExtends))
             shiguGoodsExtendsMapper.updateByPrimaryKeySelective(goodsExtends);
