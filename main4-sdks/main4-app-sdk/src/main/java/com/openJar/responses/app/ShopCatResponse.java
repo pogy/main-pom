@@ -12,6 +12,7 @@ import com.openJar.beans.app.AppShopCat;
 public class ShopCatResponse extends Response {
 	//店内类目信息	必须
 	private List<AppShopCat> cats;
+	private long totalItemNum;
 	public List<AppShopCat> getCats(){
 		return cats;
 	}
@@ -20,4 +21,11 @@ public class ShopCatResponse extends Response {
 		this.cats=cats;
 	}
 
+	public long getTotalItemNum() {
+		return totalItemNum;
+	}
+
+	public void setTotalItemNum(long totalItemNum) {
+		this.totalItemNum = totalItemNum;
+	}
 }
