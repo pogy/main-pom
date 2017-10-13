@@ -45,6 +45,7 @@ public class DaifaSaleAfterDisposeAction {
         model.addAttribute("query",bo);
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("userName",auth.getDaifaUserName ());
         model.addAttribute("menu","afterSaleProcess.htm");//前台所要的左边菜单
         return "daifa/afterSaleProcess";
     }

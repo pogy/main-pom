@@ -65,7 +65,6 @@ public class DaifaAllOrderIndexAction {
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("userName", auth.getDaifaUserName());
-
         model.addAttribute("orderStatistics",future.get());
         model.addAttribute("menu","orderAll.htm");//前台所要的左边菜单
         return "daifa/orderAll";

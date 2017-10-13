@@ -42,6 +42,7 @@ public class NoGoodsnoOrderAction {
         ShiguPager<NoGoodsnoOrder> pager=noGoodsnoOrderService.selNoGoodsnoOrderList(page,daifaUser.getDaifaSellerId());
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("userName",daifaUser.getDaifaUserName ());
         model.addAttribute("menu","noGoodsnoOrder.htm");//前台所要的左边菜单
         return "daifa/noGoodsnoOrder";
     }

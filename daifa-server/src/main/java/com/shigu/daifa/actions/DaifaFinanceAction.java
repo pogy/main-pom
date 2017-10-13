@@ -40,6 +40,7 @@ public class DaifaFinanceAction {
         map.put("time",time);
         model.addAttribute("query",map);
         model.addAttribute("orderStatistics",vo);
+        model.addAttribute("userName",auth.getDaifaUserName ());
         model.addAttribute("menu","financialStatistic.htm");//前台所要的左边菜单
         return  "daifa/financialStatistic";
     }

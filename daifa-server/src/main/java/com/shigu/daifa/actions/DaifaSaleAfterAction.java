@@ -52,6 +52,7 @@ public class DaifaSaleAfterAction {
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("orderStatistics",sum);
         model.addAttribute("pageOption",pager.selPageOption(10));
+        model.addAttribute("userName",auth.getDaifaUserName ());
         model.addAttribute("menu","afterSaleOrder.htm");//前台所要的左边菜单
         return "daifa/afterSaleOrder";
     }
