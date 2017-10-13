@@ -1,6 +1,5 @@
 package com.shigu.daifa.actions;
 
-import com.opentae.data.daifa.beans.DaifaOrder;
 import com.shigu.daifa.services.DaifaSaleAfterService;
 import com.shigu.daifa.vo.*;
 import com.shigu.daifa.bo.ParcelSearchBO;
@@ -8,7 +7,6 @@ import com.shigu.daifa.bo.PutInStorageBO;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.SaleAfterBO;
-import com.shigu.daifa.services.DaifaSaleAfterService;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
