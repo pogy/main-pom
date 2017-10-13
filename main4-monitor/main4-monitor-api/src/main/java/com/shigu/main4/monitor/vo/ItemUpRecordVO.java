@@ -352,4 +352,20 @@ public class ItemUpRecordVO implements Serializable{
     public void setCid(Long cid) {
         this.cid = cid;
     }
+
+    public Boolean getShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout(Boolean shopSoldout) {
+        this.shopSoldout = shopSoldout;
+    }
+
+    public Boolean getTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout(Boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
+    }
 }
