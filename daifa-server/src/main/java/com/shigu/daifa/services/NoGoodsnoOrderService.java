@@ -34,7 +34,7 @@ public class NoGoodsnoOrderService {
         if(count>0){
             daifaOrderExample.setStartIndex((page-1)*10);
             daifaOrderExample.setEndIndex(10);
-            List<DaifaOrder> os=daifaOrderMapper.selectByExample(daifaOrderExample);
+            List<DaifaOrder> os=daifaOrderMapper.selectByConditionList(daifaOrderExample);
             List<NoGoodsnoOrder> vos=new ArrayList<>();
             for(DaifaOrder o:os){
                 NoGoodsnoOrder vo=new NoGoodsnoOrder();

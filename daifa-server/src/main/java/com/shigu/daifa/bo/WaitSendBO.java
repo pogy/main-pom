@@ -25,7 +25,7 @@ public class WaitSendBO{
     /**
      *收货人手机号
      */
-    private String telphone;
+    private String telephone;
     /**
      * 开始时间
      */
@@ -73,12 +73,12 @@ public class WaitSendBO{
         this.receiver = receiver;
     }
 
-    public String getTelphone() {
-        return telphone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public int getPage() {

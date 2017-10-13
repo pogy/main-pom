@@ -128,9 +128,11 @@ public class DaifaSaleAfterDisposeService {
                             List<DaifaAfterSaleSub> sublist=refundGroup.get(s.getRefundId());
                             DaifaSaleAfterDisposeRefundVO refund=new DaifaSaleAfterDisposeRefundVO();
                             refund.setRefundId(s.getRefundId());
-
+                            refund.setRefundIs(false);
                             List<DaifaSaleAfterDisposeSubVO> subvos=new ArrayList<>();
                             boolean showRefundAll=true;
+                            int errorNum=0;
+                            int waitNum=0;
                             for(DaifaAfterSaleSub sub:sublist){
                                 DaifaSaleAfterDisposeSubVO subvo=new DaifaSaleAfterDisposeSubVO();
                                 DaifaOrder o=orderMap.get(sub.getDfOrderId());
@@ -152,16 +154,17 @@ public class DaifaSaleAfterDisposeService {
                                 }else{
                                     subvo.setAfterSaleState(0);
                                 }
-                                refund.setRefundIs(false);
+
                                 if(sub.getAfterStatus()==4){
                                     if(sub.getInStock()==null){
                                         subvo.setPutInStorageType(2);
                                     }else{
+                                        waitNum++;
                                         subvo.setPutInStorageType(sub.getInStock()==1?1:3);
                                     }
                                 }else if(sub.getAfterStatus()>4){
-                                    refund.setRefundIs(true);
-                                    if(sub.getInStock()==1){
+                                    errorNum++;
+                                    if(sub.getInStock()!=null&&sub.getInStock()==1){
                                         subvo.setPutInStorageType(4);
                                     }else{
                                         subvo.setPutInStorageType(3);
@@ -171,13 +174,16 @@ public class DaifaSaleAfterDisposeService {
                                 }else{
                                     subvo.setPutInStorageType(1);
                                 }
-                                if(sub.getInStock()!=null&&sub.getInStock()==1){
-                                    showRefundAll=false;
-                                }
                                 subvo.setAfterSalePostCode(sub.getApplyExpressCode());
                                 subvo.setAfterSalePostName(sub.getApplyExpressName());
                                 subvos.add(subvo);
                                 num++;
+                            }
+                            if(errorNum==sublist.size()){
+                                refund.setRefundIs(true);
+                            }
+                            if(waitNum!=0){
+                                showRefundAll=false;
                             }
                             refund.setAllNotPutInIs(showRefundAll);
                             refund.setChildOrders(subvos);

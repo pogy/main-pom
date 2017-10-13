@@ -26,4 +26,8 @@ public interface SysDealProcess {
     int permissionUpdate(Long permissionId,String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
     //更新用户角色
     int updateUserAndRoles (Long userId, String roleIds) throws DaifaException;
+    //更新角色权限
+    int updateRoleAndPermissions (Long roleId, String permissionIds) throws DaifaException;
+
+
 }

@@ -70,16 +70,6 @@ public interface TakeGoodsIssueProcess {
     void uncomplete(Long issueId) throws DaifaException;
 
     /**
-     * 按人头,拿到货
-     * @param wholeId 拿货员ID
-     * @param shopId 档口ID
-     * @param issueIds 分配记录ID串
-     * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
-     * @return 缺货了的子单ID
-     */
-    List<Long> uncompleteAll(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
-
-    /**
      * 按日期,拿货完成
      * @param date yyyyMMdd
      * @throws DaifaException

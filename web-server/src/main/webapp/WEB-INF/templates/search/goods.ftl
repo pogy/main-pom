@@ -19,6 +19,7 @@
   </head>
 <body>
 <#include "/common/host_config.ftl">
+<#include "/common/zhuge.ftl">
 
 <div class="topbar">
     <div class="layout">

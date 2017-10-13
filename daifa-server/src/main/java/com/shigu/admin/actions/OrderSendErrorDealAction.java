@@ -1,5 +1,6 @@
 package com.shigu.admin.actions;
 
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaTrade;
 import com.shigu.admin.bo.OrderSendErrorDealBO;
 import com.shigu.admin.services.OrderSendErrorDealService;
@@ -92,4 +93,56 @@ public class OrderSendErrorDealAction {
         orderSendErrorDealService.dealOrderSendError (dfTradeId,receiverName,receiverAddr);
         return JsonResponseUtil.success();
     }
+    //===============================子单商品属性里有+=============================================
+    /**
+     * ====================================================================================
+     * @方法名： orderSendErrorSubindex
+     * @user gzy 2017/9/22 18:08
+     * @功能：子单列表
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("admin/orderSendErrorSubindex")
+    public String orderSendErrorSubindex(OrderSendErrorDealBO bo, Model model){
+
+        if(bo.getCount ()==null){
+            bo.setCount (1);
+        }
+        if(bo.getPage ()==null){
+            bo.setPage (1+"");
+        }
+        List<DaifaOrder> list= orderSendErrorDealService.queryErrorSubOrder(bo);
+        String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
+        model.addAttribute("orders", list);
+        model.addAttribute("query", bo);
+
+        model.addAttribute("pageOption", pageOption);
+
+        return "admin/orderSendErrorSubindex";
+    }
+    /**
+     * ====================================================================================
+     * @方法名： dealSubOrderErrorJson
+     * @user gzy 2017/9/22 18:20
+     * @功能：子单的更新
+     * @param: [dfOrderId, propStr]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("admin/dealSubOrderErrorJson")
+    @ResponseBody
+    public JSONObject dealSubOrderErrorJson(Long dfOrderId,String propStr) throws DaifaException {
+
+        if (dfOrderId == null||propStr == null) {
+            throw new DaifaException("缺少参数");
+        }
+        orderSendErrorDealService.dealSubOrderError (dfOrderId,propStr);
+        return JsonResponseUtil.success();
+    }
+
 }

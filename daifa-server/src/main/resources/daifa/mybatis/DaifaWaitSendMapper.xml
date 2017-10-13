@@ -43,7 +43,7 @@
 			f.dws_id,
 			f.df_trade_id,
 			f.send_status,
-			f.create_time,
+            DATE_FORMAT(f.create_time,'%Y-%m-%d %H:%i:%s')create_time,
 			f.buyer_ww,
             f.buyer_qq,
             f.buyer_telephone,
@@ -85,6 +85,9 @@
 						FROM
                           (select t1.df_trade_id,t1.dws_id FROM
 							daifa_wait_send t1
+                            JOIN
+                            (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+                            ON t1.dws_id=t3.dws_id
 							LEFT JOIN (
 								SELECT
 									a.df_trade_id,
@@ -95,6 +98,7 @@
 								WHERE
 									a.SELLER_ID = ${dfSellerId}
 								AND a.SEND_STATUS = 1
+                                AND a.order_display = 1
 								AND a.DWS_ID = b.DWS_ID
 								AND b.take_goods_status != 1
 								AND b.refund_status = 0
@@ -104,6 +108,7 @@
 							WHERE
 								SEND_STATUS = 1
 							AND SELLER_ID = ${dfSellerId}
+                            AND t1.order_display = 1
 							<if test="status==1">
 								AND t2.df_trade_id IS NULL
 							</if>
@@ -155,6 +160,9 @@
         FROM
         (select t1.df_trade_id,t1.dws_id from
         daifa_wait_send t1
+        JOIN
+        (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+        ON t1.dws_id=t3.dws_id
         LEFT JOIN (
         SELECT
         a.df_trade_id,
@@ -165,6 +173,7 @@
         WHERE
         a.SELLER_ID = ${dfSellerId}
         AND a.SEND_STATUS = 1
+        AND a.order_display = 1
         AND a.DWS_ID = b.DWS_ID
         AND b.take_goods_status != 1
         AND b.refund_status = 0
@@ -174,6 +183,7 @@
         WHERE
         SEND_STATUS = 1
         AND SELLER_ID = ${dfSellerId}
+        AND t1.order_display = 1
         <if test="status==1">
             AND t2.df_trade_id IS NULL
         </if>

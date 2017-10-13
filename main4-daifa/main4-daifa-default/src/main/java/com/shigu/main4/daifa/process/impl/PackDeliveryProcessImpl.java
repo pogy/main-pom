@@ -4,6 +4,7 @@ import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
+import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -216,5 +217,21 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         vo.setSuccess ("OK");
         return vo;
     }
+
+    @Override
+    public int dealSubOrderError(Long dfOrderId,String propStr)throws DaifaException{
+        DaifaOrder order=new DaifaOrder ();
+        order.setDfOrderId (dfOrderId);
+        order.setPropStr (propStr);
+        daifaOrderMapper.updateByPrimaryKeySelective (order);
+        DaifaWaitSendOrder worder=new DaifaWaitSendOrder();
+        worder.setDfOrderId (dfOrderId);
+        worder.setPropStr (propStr);
+        DaifaWaitSendOrderExample example=new DaifaWaitSendOrderExample ();
+        example.createCriteria ().andDfOrderIdEqualTo (dfOrderId);
+      return  daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
+    }
+
+
 
 }

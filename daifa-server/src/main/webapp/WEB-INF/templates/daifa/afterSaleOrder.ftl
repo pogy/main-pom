@@ -343,6 +343,8 @@
 
 
 
+
+
 <div class="orderCon">
     <table>
         <thead class="theadCon">
@@ -447,11 +449,17 @@
         <#if afterSale.afterSaleState == 1 || afterSale.afterSaleState == 21>
             <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
             <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
+        <#elseif afterSale.afterSaleState == 26>
+            <p>换货已完成</p>
         <#else>
             <#if (afterSale.putInStorageState?size) gt 0>
                 <#list afterSale.putInStorageState as sto>
                     <#if sto.type == 1>
-                    <p>商品已入库x${sto.storageNum!}</p>
+                        <#if afterSale.refundState == 1 || afterSale.refundState == 2>
+                        <p>商品已退款x${sto.storageNum!}</p>
+                        <#else>
+                        <p>商品已入库x${sto.storageNum!}</p>
+                        </#if>
                     <#elseif sto.type == 2>
                     <p>退货失败入库x${sto.storageNum!}</p>
                     </#if>

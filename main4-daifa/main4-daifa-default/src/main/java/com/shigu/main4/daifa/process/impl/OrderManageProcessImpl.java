@@ -255,6 +255,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         }else{
             ce.andReturnStatusNotEqualTo(2);
         }
+        daifaGgoodsTasksExample.setOrderByClause("delist_is desc,end_status desc,take_goods_status desc,youhuo_date desc");
         List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id,use_status,delist_is"));
         List<Long> oidps = new ArrayList<>();
         for (DaifaGgoodsTasks t : tasks) {

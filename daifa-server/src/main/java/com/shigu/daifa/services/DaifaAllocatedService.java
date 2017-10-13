@@ -149,22 +149,6 @@ public class DaifaAllocatedService {
         }
     }
 
-    public List<DaifaWorkerVO> selWorkerList(Long sellerId){
-        DaifaWorker tmpw=new DaifaWorker();
-        tmpw.setDaifaSellerId(sellerId);
-        tmpw.setUseStatus(1);
-        tmpw.setWorkType(1);
-        List<DaifaWorker> ws=daifaWorkerMapper.select(tmpw);
-        List<DaifaWorkerVO> vos=new ArrayList<>();
-        for(DaifaWorker w:ws){
-            DaifaWorkerVO vo=new DaifaWorkerVO();
-            vo.setId(w.getDaifaWorkerId());
-            vo.setName(w.getUserName());
-            vos.add(vo);
-        }
-        return vos;
-    }
-
     public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids)throws DaifaException{
         List<PrintTagVO> printTagVOS=new ArrayList<>();
         if(ids==null){

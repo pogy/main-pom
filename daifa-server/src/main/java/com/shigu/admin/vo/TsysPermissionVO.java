@@ -26,7 +26,7 @@ public class TsysPermissionVO implements Serializable{
 //permission_tag
 	private String permissionTag;//权限标签
 //create_time
-	private Date createTime;//创建时间
+	private String createTime;//创建时间
 //create_user_id
 	private Long createUserId;//创建者Id
 //status
@@ -100,27 +100,15 @@ public class TsysPermissionVO implements Serializable{
     public void setPermissionTag(String permissionTag) {
         this.permissionTag = permissionTag;
     }
-	/**
-  	* 
-  	*=========================================================
-  	*create_time
- 		*@自动生成
- 		*=========================================================
-  	*/
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    /**
-  	* 
-  	*=========================================================
-  	*create_time
- 		*@自动生成
- 		*=========================================================
-  	*/
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getCreateTime () {
+		return createTime;
+	}
+
+	public void setCreateTime (String createTime) {
+		this.createTime = createTime;
+	}
+
 	/**
   	* 
   	*=========================================================

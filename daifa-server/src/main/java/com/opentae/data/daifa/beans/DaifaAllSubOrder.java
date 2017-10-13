@@ -48,7 +48,7 @@ public class DaifaAllSubOrder implements Serializable{
     private Integer allotState;//分配状态 1待分配2已分配
     @Column("daifa_order.take_goods_status")
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
-    @Column("daifa_order.have_goods_date")
+    @Column("DATE_FORMAT(daifa_order.have_goods_date,'%Y-%m-%d %H:%i:%s')")
     private String haveGoodsTime;//有货时间
     @Column("daifa_order.delist_is")
     private Boolean noSaleIs;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架

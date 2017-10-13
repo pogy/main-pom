@@ -1,5 +1,6 @@
 package com.shigu.admin.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaWorker;
 import com.opentae.data.daifa.beans.TsysRole;
 import com.opentae.data.daifa.beans.TsysUserRole;
@@ -71,7 +72,7 @@ public class UserAndRoleService {
 
         DaifaWorkerExample example=new DaifaWorkerExample ();
         example.createCriteria ().andDaifaSellerIdEqualTo (sellerId).andUseStatusEqualTo (1);
-         List<DaifaWorker> list=daifaWorkerMapper.selectFieldsByExample (example, "daifa_worker_id,user_Name");//参数2是数据库中的字段以，分隔
+         List<DaifaWorker> list=daifaWorkerMapper.selectFieldsByExample (example, FieldUtil.codeFields ("daifa_worker_id,user_name"));//参数2是数据库中的字段以，分隔
         List<UserTreeVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (DaifaWorker user: list) {
@@ -98,7 +99,7 @@ public class UserAndRoleService {
 
         TsysRoleExample example=new TsysRoleExample ();
         example.createCriteria ().andCreateUserIdEqualTo (sellerId).andStatusEqualTo (1L);
-        List<TsysRole> list=tsysRoleMapper.selectFieldsByExample (example, "role_id,role_name,role_tag");
+        List<TsysRole> list=tsysRoleMapper.selectFieldsByExample (example, FieldUtil.codeFields ("role_id,role_name,role_tag"));
         List<RoleTreeVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (TsysRole record: list) {
@@ -125,7 +126,7 @@ public class UserAndRoleService {
 
         TsysUserRoleExample example=new TsysUserRoleExample ();
         example.createCriteria ().andUserIdEqualTo (userId);
-        List<TsysUserRole> list=tsysUserRoleMapper.selectFieldsByExample (example,"user_role_id,user_id,role_id");
+        List<TsysUserRole> list=tsysUserRoleMapper.selectFieldsByExample (example,FieldUtil.codeFields ("user_role_id,user_id,role_id"));
         List<UserRoleVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (TsysUserRole record: list) {
