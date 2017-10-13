@@ -29,10 +29,7 @@ import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.RedomUtil;
-import com.shigu.tools.ResultRetUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -189,12 +186,15 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("ortherLogin")
-    public String ortherLogin(int ortherLoginType,String backUrl,HttpSession session){
+    public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
         LoginLinkUtil llu = new LoginLinkUtil();
         String url="";
         switch(ortherLoginType) {
             case 1:
                 url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                if(HttpRequestUtil.checkAgentIsMobile(request)){
+                    url=url.replace("&view=web","&view=wap");
+                }
                 break;
             case 2:
                 url = llu.callAliUrl();
