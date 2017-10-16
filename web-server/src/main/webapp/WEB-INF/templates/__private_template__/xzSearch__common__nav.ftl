@@ -1,6 +1,6 @@
 
-<div class="nav"> 
-    <div class="layout navCon">
+<div class="nav">
+    <div class="layout navCon"> 
         <div class="navList">
             <ul>
                 <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
@@ -67,6 +67,10 @@
 </li>
 
 <li 
+    
+        <#if 'shopIconCopyright' == $pageid>class="actived"</#if>
+    
+        <#if 'bqsqIndex' == $pageid>class="actived"</#if>
     
     
 >
