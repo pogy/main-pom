@@ -219,14 +219,18 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     }
 
     @Override
-    public int dealSubOrderError(Long dfOrderId,String propStr)throws DaifaException{
+    public int dealSubOrderError(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode)throws DaifaException{
         DaifaOrder order=new DaifaOrder ();
         order.setDfOrderId (dfOrderId);
         order.setPropStr (propStr);
+        order.setGoodsCode (goodsCode);
+        order.setStoreGoodsCode (storeGoodsCode);
         daifaOrderMapper.updateByPrimaryKeySelective (order);
         DaifaWaitSendOrder worder=new DaifaWaitSendOrder();
         worder.setDfOrderId (dfOrderId);
         worder.setPropStr (propStr);
+        worder.setGgoodsCode (goodsCode);
+        worder.setStoreGoodsCode (storeGoodsCode);
         DaifaWaitSendOrderExample example=new DaifaWaitSendOrderExample ();
         example.createCriteria ().andDfOrderIdEqualTo (dfOrderId);
       return  daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
