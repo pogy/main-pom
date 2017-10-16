@@ -2,16 +2,22 @@ package com.shigu.admin.services;
 
 
 import com.opentae.data.daifa.beans.DaifaWaitSend;
+import com.opentae.data.daifa.beans.TsysRole;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
 
 import com.shigu.admin.bo.OrderWaitSendBO;
+import com.shigu.admin.vo.DaifaWaitSendDealVO;
+import com.shigu.admin.vo.TsysRoleVO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.tools.DateParseUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +49,7 @@ public class DaifaWaitSendDealService {
      * ====================================================================================
      *
      */
-    public List<DaifaWaitSend> waitSendList(OrderWaitSendBO bo){
+    public List<DaifaWaitSendDealVO> waitSendList(OrderWaitSendBO bo){
 
         DaifaWaitSendExample example = new DaifaWaitSendExample ();
         DaifaWaitSendExample.Criteria exampleCriteria = example.createCriteria();
@@ -63,7 +69,22 @@ public class DaifaWaitSendDealService {
         int rows = 10;
         example.setStartIndex((page - 1) * rows);
         example.setEndIndex(rows);
-        return daifaWaitSendMapper.selectByExample (example);
+        List<DaifaWaitSend> list= daifaWaitSendMapper.selectByExample (example);
+
+        List<DaifaWaitSendDealVO> listVO=new ArrayList<> ();
+        if(list.size ()>0){
+            for (DaifaWaitSend order: list) {
+                //设置成前台可用的页面
+                DaifaWaitSendDealVO vo=new DaifaWaitSendDealVO ();
+                BeanUtils.copyProperties(order, vo );
+                vo.setCreateTime (DateParseUtil.parseDate ("yyyy-MM-dd hh:mm:ss", order.getCreateTime ()));
+                listVO.add (vo);
+            }
+        }
+        //返回前台页面
+        return listVO;
+
+
     }
     /**
      * ====================================================================================
