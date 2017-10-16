@@ -9,13 +9,16 @@ import com.openJar.responses.app.MarketsResponse;
 import com.openJar.responses.app.OneShopResponse;
 import com.openJar.responses.app.ShopCatResponse;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.MarketListService;
 import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.newcdn.vo.CdnShopCatVO;
@@ -66,6 +69,11 @@ public class AppStoreService {
     public void setCdnService(CdnService cdnService) {
         this.cdnService = cdnService;
     }
+    public ShiguStoreCollectMapper shiguStoreCollectMapper;
+    @Autowired
+    public void setShiguStoreCollectMapper(ShiguStoreCollectMapper shiguStoreCollectMapper) {
+        this.shiguStoreCollectMapper = shiguStoreCollectMapper;
+    }
 
     public OneShopResponse selOneShopInfo(OneShopRequest request) {
         OneShopResponse response = new OneShopResponse();
@@ -101,6 +109,17 @@ public class AppStoreService {
         response.setTelephone(storeRelation.getTelephone());
         response.setTodayAdd(todayAdd);
         response.setShopHeadUrl(response.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
+        //店铺是否已收藏
+        if (StringUtil.isNull(request.getUserId())) {
+            response.setIsCollect(0);
+        }else {
+            ShiguStoreCollectExample example = new ShiguStoreCollectExample();
+            example.createCriteria().andUserIdEqualTo(request.getUserId()).andStoreIdEqualTo(request.getShopId());
+            int count = shiguStoreCollectMapper.countByExample(example);
+            response.setIsCollect(count == 0 ? 0 : 1);
+
+
+        }
         return response;
     }
     public MarketsResponse selMarketData(MarketsRequest request){
@@ -186,7 +205,7 @@ public class AppStoreService {
         ShopCatResponse response = new ShopCatResponse();
 
         List<AppShopCat> appShopCats = new ArrayList<>();
-        Long totalItemNum = 0l;//全部商品数目
+        Long totalItemNum = 0L;//全部商品数目
         List<CatPolymerization> catPolymerizations = cdnService.formatCatPoly(request.getShopId());
         for (CatPolymerization parentItem : catPolymerizations){
             AppShopCat appShopCat = new AppShopCat();
@@ -197,7 +216,7 @@ public class AppStoreService {
                 List<CatPolymerization> subPolymerizations = parentItem.getSubPolymerizations();
 
                 List<AppShopCatSub> appShopCatSubs= new ArrayList<>();
-                Long itemNum  = 0l;
+                Long itemNum  = 0L;
                 for (CatPolymerization item : subPolymerizations){
                     AppShopCatSub catSub = new AppShopCatSub();
                     catSub.setScid(String.valueOf(item.getCid()));
