@@ -2,13 +2,10 @@ package com.shigu.admin.services;
 
 
 import com.opentae.data.daifa.beans.DaifaWaitSend;
-import com.opentae.data.daifa.beans.TsysRole;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
-
 import com.shigu.admin.bo.OrderWaitSendBO;
 import com.shigu.admin.vo.DaifaWaitSendDealVO;
-import com.shigu.admin.vo.TsysRoleVO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.tools.DateParseUtil;
@@ -59,8 +56,8 @@ public class DaifaWaitSendDealService {
             exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId());
         }
 
-        if (StringUtils.hasText(bo.getSendName ())) {
-            exampleCriteria.andBuyerNameEqualTo (bo.getSendName ());
+        if (StringUtils.hasText(bo.getReceiverName ())) {
+            exampleCriteria.andReceiverNameEqualTo (bo.getReceiverName ());
         }
 
         int count= daifaWaitSendMapper.countByExample (example);

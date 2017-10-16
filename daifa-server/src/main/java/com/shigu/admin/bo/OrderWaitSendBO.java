@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 public class OrderWaitSendBO implements Serializable {
     private Long dfTradeId;//主订单号
-    private String sendName;//发货人
+    private String receiverName;//收货人
     /**
      * 当前页
      */
@@ -33,12 +33,12 @@ public class OrderWaitSendBO implements Serializable {
         this.dfTradeId = dfTradeId;
     }
 
-    public String getSendName () {
-        return sendName;
+    public String getReceiverName () {
+        return receiverName;
     }
 
-    public void setSendName (String sendName) {
-        this.sendName = sendName;
+    public void setReceiverName (String receiverName) {
+        this.receiverName = receiverName;
     }
 
     public String getPage () {
