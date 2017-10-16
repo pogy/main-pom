@@ -642,7 +642,6 @@ public class DaifaSaleAfterService {
                 if(stock.getRelevanceStatus()==1){
                     SaleAfterBO saleAfterBO = new SaleAfterBO();
                     saleAfterBO.setPage(1);
-                    saleAfterBO.setTelephone(stock.getSendPhone());
                     saleAfterBO.setBackPostCode(stock.getReceivedExpressCode());
                     dvo = afterSaleOrder(saleAfterBO,sellerId,100).getContent();
                 }
