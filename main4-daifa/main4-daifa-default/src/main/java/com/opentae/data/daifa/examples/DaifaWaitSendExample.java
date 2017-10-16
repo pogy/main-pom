@@ -164,9 +164,6 @@ public class DaifaWaitSendExample extends SgExample<DaifaWaitSendExample.Criteri
             return notBetween(dwsId, value1, value2);
         }
 
-
-
-
         public Criteria andOrderDisplayIsNull() {
             return isNull(orderDisplay);
         }
@@ -222,8 +219,6 @@ public class DaifaWaitSendExample extends SgExample<DaifaWaitSendExample.Criteri
         public Criteria andOrderDisplayNotBetween(Integer value1, Integer value2) {
             return notBetween(orderDisplay, value1, value2);
         }
-
-        /////////////////
 
         public Criteria andDfTradeIdIsNull() {
             return isNull(dfTradeId);
