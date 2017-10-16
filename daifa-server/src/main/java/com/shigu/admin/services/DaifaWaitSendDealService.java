@@ -62,6 +62,9 @@ public class DaifaWaitSendDealService {
 
         int count= daifaWaitSendMapper.countByExample (example);
         bo.setCount (count);
+        if (StringUtils.isEmpty(bo.getPage())) {
+            bo.setPage("1");
+        }
         int page = Integer.parseInt(bo.getPage());
         int rows = 10;
         example.setStartIndex((page - 1) * rows);
