@@ -53,11 +53,6 @@ public class DaifaWaitSendDealAction {
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaWaitSendDealVO> list=null;
-        if(bo.getDfTradeId ()==null&&bo.getReceiverName ()==null){
-
-            list = daifaWaitSendDealService.waitSendList (bo);
-            bo.setCount (list.size ());
-        }
         if(bo.getCount ()==null){
             bo.setCount (1);
         }
@@ -65,6 +60,7 @@ public class DaifaWaitSendDealAction {
             bo.setPage (1+"");
         }
 
+            list = daifaWaitSendDealService.waitSendList (bo);
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("lists", list);
         model.addAttribute("query", bo);
