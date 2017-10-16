@@ -138,12 +138,12 @@ public class OrderSendErrorDealAction {
      */
     @RequestMapping("admin/dealSubOrderErrorJson")
     @ResponseBody
-    public JSONObject dealSubOrderErrorJson(Long dfOrderId,String propStr) throws DaifaException {
+    public JSONObject dealSubOrderErrorJson(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode) throws DaifaException {
 
         if (dfOrderId == null||propStr == null) {
             throw new DaifaException("缺少参数");
         }
-        orderSendErrorDealService.dealSubOrderError (dfOrderId,propStr);
+        orderSendErrorDealService.dealSubOrderError (dfOrderId,propStr,goodsCode,storeGoodsCode);
         return JsonResponseUtil.success();
     }
 
