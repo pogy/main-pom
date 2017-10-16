@@ -58,7 +58,7 @@ public class DaifaWaitSendDealAction {
             bo.setPage (1+"");
         }
 
-            list = daifaWaitSendDealService.waitSendList (bo);
+        list = daifaWaitSendDealService.waitSendList (bo);
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("lists", list);
         model.addAttribute("query", bo);
