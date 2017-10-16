@@ -95,7 +95,7 @@ public class OrderSendErrorDealService {
 
         DaifaOrderExample example=new DaifaOrderExample ();
         DaifaOrderExample.Criteria exampleCriteria = example.createCriteria();
-        exampleCriteria.andRefundStatusGreaterThan (0).andTakeGoodsStatusEqualTo (1);
+        exampleCriteria.andRefundStatusGreaterThan (0);//.andTakeGoodsStatusEqualTo (1);
         if (bo.getDfTradeId() != null) {
             exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
         }else{
@@ -112,9 +112,9 @@ public class OrderSendErrorDealService {
 
     }
 
-    public void dealSubOrderError(Long dfOrderId,String propStr)throws DaifaException{
+    public void dealSubOrderError(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode)throws DaifaException{
 
-        packDeliveryProcess.dealSubOrderError (dfOrderId,propStr);
+        packDeliveryProcess.dealSubOrderError (dfOrderId,propStr, goodsCode, storeGoodsCode);
     }
 
 
