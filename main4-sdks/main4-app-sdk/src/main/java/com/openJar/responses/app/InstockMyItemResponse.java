@@ -4,7 +4,7 @@ import com.openJar.responses.Response;
  * 类名:InstockMyItemResponse
  * 类路径:com.openJar.responses.appInstockMyItemResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:下架我的宝贝？
  */
 public class InstockMyItemResponse extends Response {

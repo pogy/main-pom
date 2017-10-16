@@ -119,6 +119,27 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         }
     }
 
+    @Override
+    public void updateItemUpload(ItemUpRecordVO itemUpRecordVO,String oneKeyId) {
+        if(itemUpRecordVO == null || StringUtils.isEmpty(oneKeyId)){
+            return;
+        }
+        itemUpRecordVO.setStatus(0L);
+
+        JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
+        Object supperPiPrice = goodsUp.get("supperPiPrice");
+        if (supperPiPrice != null) {
+            Double piPrice = Double.valueOf(supperPiPrice.toString()) * 100;
+            goodsUp.put("supperPiPrice", piPrice.longValue());
+        }
+        SimpleElaBean bean = new SimpleElaBean();
+        bean.setIndex("shigugoodsup");
+        bean.setType(itemUpRecordVO.getWebSite());
+        bean.setSource(goodsUp.toJSONString());
+        bean.setPk(oneKeyId);
+        redisIO.rpush(goodslistName,bean);
+    }
+
     /**
      * 添加消息
      * @param itemUpRecordVO
@@ -290,6 +311,31 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
         boleanQueryBuilder.must(queryStatus);
         return uploadedItemsCommon(boleanQueryBuilder,null,null,pageNo,pageSize);
+    }
+
+    @Override
+    public SingleItemUpRecordVO singleUploadedItem(String uploadId) {
+        if(StringUtils.isEmpty(uploadId)){
+            return null;
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        QueryBuilder queryId = QueryBuilders.termQuery("_id", uploadId);
+        boleanQueryBuilder.must(queryId);
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+        srb.setSize(1);
+        srb.setFrom(0);
+
+        srb.setQuery(boleanQueryBuilder);
+        // 默认条件
+        SearchResponse response = srb.execute().actionGet();
+        SearchHit[] hits = response.getHits().getHits();
+        if (hits != null && hits.length > 0) {
+            SingleItemUpRecordVO shiguGoodsUp = JSON.parseObject(hits[0].getSourceAsString(), SingleItemUpRecordVO.class);
+            shiguGoodsUp.setOneKeyId(hits[0].getId());
+            return shiguGoodsUp;
+        }else{
+            return null;
+        }
     }
 
     /**

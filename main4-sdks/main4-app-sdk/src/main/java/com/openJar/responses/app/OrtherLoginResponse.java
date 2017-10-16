@@ -1,45 +1,52 @@
 package com.openJar.responses.app;
-
-import com.openJar.beans.app.AppUser;
 import com.openJar.responses.Response;
-
+import com.openJar.beans.app.AppUser;
 /**
- * 类名：OrtherLoginResponse
- * 类路径：com.openJar.responses.app.OrtherLoginResponse
- * 创建者：任真飞
- * 创建时间：2017-10-01 17:40
- * 项目：main-pom
- * 描述：
+ * 类名:OrtherLoginResponse
+ * 类路径:com.openJar.responses.appOrtherLoginResponse
+ * 创建者:自动生成
+ * 创建时间:2017-10-16
+ * 描述:第三方登录-微信,淘宝登录
  */
-public class OrtherLoginResponse  extends Response {
-    //已经绑定星座网返回的数据
-    private AppUser users;
-    //未绑定星座网账号,返回数据唯一键
-    private String tempId;
-    //0未绑定星座网1绑定星座网
-    private Integer type;
+public class OrtherLoginResponse extends Response {
+	//已经绑定星座网返回的数据
+	private AppUser users;
+	//未绑定星座网账号,返回数据唯一键
+	private String tempId;
+	//0未绑定星座网1绑定星座网
+	private Integer type;
+	//跳转地址	必须
+	private String url;
+	public AppUser getUsers(){
+		return users;
+	}
 
-    public Integer getType() {
-        return type;
-    }
+	public void setUsers(AppUser users){
+		this.users=users;
+	}
 
-    public void setType( Integer type ) {
-        this.type = type;
-    }
+	public String getTempId(){
+		return tempId;
+	}
 
-    public AppUser getUsers() {
-        return users;
-    }
+	public void setTempId(String tempId){
+		this.tempId=tempId;
+	}
 
-    public void setUsers( AppUser users ) {
-        this.users = users;
-    }
+	public Integer getType(){
+		return type;
+	}
 
-    public String getTempId() {
-        return tempId;
-    }
+	public void setType(Integer type){
+		this.type=type;
+	}
 
-    public void setTempId( String tempId ) {
-        this.tempId = tempId;
-    }
+	public String getUrl(){
+		return url;
+	}
+
+	public void setUrl(String url){
+		this.url=url;
+	}
+
 }

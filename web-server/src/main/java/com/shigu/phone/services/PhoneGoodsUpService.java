@@ -12,13 +12,16 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.monitor.vo.SingleItemUpRecordVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.RedisIO;
@@ -171,7 +174,17 @@ public class PhoneGoodsUpService {
     }
 
     public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
+        //查询上传记录
+        SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(request.getUploadId());
+        if(singleItemUpRecordVO != null){
+            //todo 先下架淘宝
+
+            //再修改上传记录
+            ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
+            itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());
+        }
         InstockMyItemResponse res=new InstockMyItemResponse();
-        return null;
+        res.setSuccess(true);
+        return res;
     }
 }

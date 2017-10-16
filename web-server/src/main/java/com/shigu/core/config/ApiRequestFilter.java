@@ -10,8 +10,13 @@ import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.SignErrorException;
 import com.shigu.api.exceptions.SystemException;
 import com.shigu.api.responses.SystemResponse;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.phone.apps.utils.TokenUtil;
+import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +28,8 @@ import java.util.*;
  */
 @Repository("tae_apiRequestFilter")
 public class ApiRequestFilter implements Filter {
+    @Autowired
+    RedisIO redisIO;
 
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -60,6 +67,16 @@ public class ApiRequestFilter implements Filter {
             Map.Entry<String,JsonElement> entry=it.next();
             String key=entry.getKey();
             m.putAll(dealObject(key,entry.getValue()));
+            if(key.equals("token")){
+                try {
+                    Long userId=parseUserId(entry.getValue().getAsString());
+                    String[] userIds={userId+""};
+                    m.put("userId",userIds);
+                } catch (SystemException e) {
+                    writeFalseToResponse(response,e);
+                    return;
+                }
+            }
         }
         try {
             chain.doFilter(request, response);
@@ -138,10 +155,37 @@ public class ApiRequestFilter implements Filter {
      * @throws IOException
      */
     private void writeFalseToResponse(ServletResponse response) throws IOException {
-        SystemResponse rsp = new SystemResponse();
         SystemException e= new SystemException();
+        e.setErrMsg("验签失败");
+        writeFalseToResponse(response,e);
+    }
+    private void writeFalseToResponse(ServletResponse response,SystemException e) throws IOException {
+        SystemResponse rsp = new SystemResponse();
         rsp.setSuccess(false);
         rsp.setException(e);
         response.getWriter().print(JSONObject.fromObject(ResponseUtil.dealResponse(rsp).toString()));
+    }
+
+
+    private Long parseUserId(String token) throws SystemException {
+        if(StringUtils.isEmpty(token)){
+            SystemException e= new SystemException();
+            e.setErrMsg("登录过期");
+            throw e;
+        }
+        String str= TokenUtil.parse(token);
+        if(StringUtils.isEmpty(str)){
+            SystemException e= new SystemException();
+            e.setErrMsg("登录过期");
+            throw e;
+        }
+        Long userId=new Long(str.split(",")[1]);
+        String oldToken=redisIO.get("phone_login_token"+userId);
+        if(oldToken==null||!token.equals(oldToken)){
+            SystemException e= new SystemException();
+            e.setErrMsg("登录过期");
+            throw e;
+        }
+        return userId;
     }
 }

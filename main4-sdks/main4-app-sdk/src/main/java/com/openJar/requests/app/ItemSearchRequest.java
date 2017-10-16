@@ -2,12 +2,12 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.ItemSearchResponse;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 /**
  * 类名:ItemSearchRequest
  * 类路径:com.openJar.requests.appItemSearchRequest
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:商品搜索
  */
 public class ItemSearchRequest extends Request<ItemSearchResponse> {
@@ -25,18 +25,18 @@ public class ItemSearchRequest extends Request<ItemSearchResponse> {
 	private Integer index;
 	//页长
 	private Integer size;
-	//todo:排序字段以 com.shigu.main4.item.enums.SearchOrderBy中的值为准
-	//排序，综合：comp，新品：xp，人气：popular，价格低到高：price-asc，价格高到低：price-desc
+	//排序，综合：common，新品：xp，人气：popular，价格低到高：price-asc，&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格高到低：price-desc
 	private String orderBy;
-	//1普通搜索，2商品库	必须
+	//1商品库cid不能为空,2普通搜索keyword不能为空，&nbsp;&nbsp;&nbsp;&nbsp;3店铺搜索storeId不能为空	必须
+	@NotNull(message = "type is null")
 	private Integer type;
 	//价格区间开始
 	private String startPrice;
 	//价格区间结束
 	private String endPrice;
-	//创建时间开始
-	private String  startTime;
-	//创建时间结束
+	//创建时间开始yyyy-MM-dd
+	private String startTime;
+	//创建时间结束yyyy-MM-dd
 	private String endTime;
 	public String getKeyword(){
 		return keyword;
@@ -126,20 +126,20 @@ public class ItemSearchRequest extends Request<ItemSearchResponse> {
 		this.endPrice=endPrice;
 	}
 
-	public String getStartTime() {
+	public String getStartTime(){
 		return startTime;
 	}
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setStartTime(String startTime){
+		this.startTime=startTime;
 	}
 
-	public String getEndTime() {
+	public String getEndTime(){
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setEndTime(String endTime){
+		this.endTime=endTime;
 	}
 
 	public String testApiUrl(){

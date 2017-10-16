@@ -5,7 +5,7 @@ import com.openJar.utils.OpenBean;
  * 类名:AppSearchNav
  * 类路径:com.openJar.beans.appAppSearchNav
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:搜索筛选条件
  */
 public class AppSearchNav extends OpenBean {

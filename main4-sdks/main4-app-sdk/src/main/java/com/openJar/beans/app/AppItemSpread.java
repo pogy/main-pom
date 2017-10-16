@@ -5,7 +5,7 @@ import com.openJar.utils.OpenBean;
  * 类名:AppItemSpread
  * 类路径:com.openJar.beans.appAppItemSpread
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:商品类广告
  */
 public class AppItemSpread extends OpenBean {
@@ -71,11 +71,12 @@ public class AppItemSpread extends OpenBean {
 		this.storeNum=storeNum;
 	}
 
-	public String getTitle() {
+	public String getTitle(){
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitle(String title){
+		this.title=title;
 	}
+
 }

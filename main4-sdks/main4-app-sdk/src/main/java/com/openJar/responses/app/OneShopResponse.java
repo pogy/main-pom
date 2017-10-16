@@ -4,7 +4,7 @@ import com.openJar.responses.Response;
  * 类名:OneShopResponse
  * 类路径:com.openJar.responses.appOneShopResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:查询单个店铺信息
  */
 public class OneShopResponse extends Response {
@@ -22,17 +22,10 @@ public class OneShopResponse extends Response {
 	private Integer todayAdd;
 	//星星数	必须
 	private Integer starNum;
-	//店铺头像
-	private String shopHeadUrl =  "http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";;
-
-	public String getShopHeadUrl() {
-		return shopHeadUrl;
-	}
-
-	public void setShopHeadUrl( String shopHeadUrl ) {
-		this.shopHeadUrl = shopHeadUrl;
-	}
-
+	//店铺头像	必须
+	private String shopHeadUrl;
+	//是否收藏&nbsp;1&nbsp;收藏&nbsp;&nbsp;0未收藏
+	private Integer isCollect;
 	public Long getShopId(){
 		return shopId;
 	}
@@ -87,6 +80,22 @@ public class OneShopResponse extends Response {
 
 	public void setStarNum(Integer starNum){
 		this.starNum=starNum;
+	}
+
+	public String getShopHeadUrl(){
+		return shopHeadUrl;
+	}
+
+	public void setShopHeadUrl(String shopHeadUrl){
+		this.shopHeadUrl=shopHeadUrl;
+	}
+
+	public Integer getIsCollect(){
+		return isCollect;
+	}
+
+	public void setIsCollect(Integer isCollect){
+		this.isCollect=isCollect;
 	}
 
 }

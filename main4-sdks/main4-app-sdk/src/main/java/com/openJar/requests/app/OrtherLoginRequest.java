@@ -1,55 +1,53 @@
 package com.openJar.requests.app;
-
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
-import com.openJar.responses.app.OneShopResponse;
 import com.openJar.responses.app.OrtherLoginResponse;
-
+import javax.validation.constraints.NotNull;
 /**
- * 类名：OrtherLoginRequest
- * 类路径：com.openJar.requests.app.OrtherLoginRequest
- * 创建者：任真飞
- * 创建时间：2017-10-01 15:10
- * 项目：main-pom
- * 描述：
+ * 类名:OrtherLoginRequest
+ * 类路径:com.openJar.requests.appOrtherLoginRequest
+ * 创建者:自动生成
+ * 创建时间:2017-10-16
+ * 描述:第三方登录-微信,淘宝登录
  */
 public class OrtherLoginRequest extends Request<OrtherLoginResponse> {
-    //1:淘宝,2:微信
-    private Integer type;
-    //淘宝必须传入,授权返回的nick
-    private String nick;
-    //微信必须传入,授权返回的参数唯一标识
-    private String key;
+	//第三方登录类型1:淘宝,2:微信	必须
+	@NotNull(message = "type is null")
+	private Integer type;
+	//淘宝必须传入,授权返回的nick
+	private String nick;
+	//微信必须传入,授权返回的参数唯一标识
+	private String key;
+	public Integer getType(){
+		return type;
+	}
 
-    public String getKey() {
-        return key;
-    }
+	public void setType(Integer type){
+		this.type=type;
+	}
 
-    public void setKey( String key ) {
-        this.key = key;
-    }
+	public String getNick(){
+		return nick;
+	}
 
-    public Integer getType() {
-        return type;
-    }
+	public void setNick(String nick){
+		this.nick=nick;
+	}
 
-    public void setType( Integer type ) {
-        this.type = type;
-    }
+	public String getKey(){
+		return key;
+	}
 
-    public String getNick() {
-        return nick;
-    }
+	public void setKey(String key){
+		this.key=key;
+	}
 
-    public void setNick( String nick ) {
-        this.nick = nick;
-    }
+	public String testApiUrl(){
+		return HostEnum.TEST+"ortherLogin.json";
+	}
 
-    public String testApiUrl(){
-        return HostEnum.TEST+"ortherLogin.json";
-    }
+	public String restApiUrl(){
+		return HostEnum.REST+"ortherLogin.json";
+	}
 
-    public String restApiUrl(){
-        return HostEnum.REST+"ortherLogin.json";
-    }
 }

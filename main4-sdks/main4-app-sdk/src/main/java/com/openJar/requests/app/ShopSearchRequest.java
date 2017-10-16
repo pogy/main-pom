@@ -6,7 +6,7 @@ import com.openJar.responses.app.ShopSearchResponse;
  * 类名:ShopSearchRequest
  * 类路径:com.openJar.requests.appShopSearchRequest
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:档口搜索
  */
 public class ShopSearchRequest extends Request<ShopSearchResponse> {
@@ -43,10 +43,6 @@ public class ShopSearchRequest extends Request<ShopSearchResponse> {
 	}
 
 	public Integer getSize(){
-		if (size == null) {
-			//移动端默认个数
-			return 10;
-		}
 		return size;
 	}
 

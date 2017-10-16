@@ -2,14 +2,12 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.MarketsResponse;
-
 import javax.validation.constraints.NotNull;
-
 /**
  * 类名:MarketsRequest
  * 类路径:com.openJar.requests.appMarketsRequest
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:市场数据
  */
 public class MarketsRequest extends Request<MarketsResponse> {

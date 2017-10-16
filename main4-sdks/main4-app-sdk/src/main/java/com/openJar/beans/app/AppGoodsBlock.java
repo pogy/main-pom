@@ -5,7 +5,7 @@ import com.openJar.utils.OpenBean;
  * 类名:AppGoodsBlock
  * 类路径:com.openJar.beans.appAppGoodsBlock
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:商品块信息
  */
 public class AppGoodsBlock extends OpenBean {
@@ -31,21 +31,12 @@ public class AppGoodsBlock extends OpenBean {
 	private String highLightGoodsNo;
 	//收藏夹ID
 	private String collectId;
-
-	public String getCollectId() {
-		return collectId;
-	}
-
-	public void setCollectId(String collectId) {
-		this.collectId = collectId;
-	}
-
-	public String getGoodsId() {
+	public String getGoodsId(){
 		return goodsId;
 	}
 
-	public void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
+	public void setGoodsId(String goodsId){
+		this.goodsId=goodsId;
 	}
 
 	public String getTitle(){
@@ -118,6 +109,14 @@ public class AppGoodsBlock extends OpenBean {
 
 	public void setHighLightGoodsNo(String highLightGoodsNo){
 		this.highLightGoodsNo=highLightGoodsNo;
+	}
+
+	public String getCollectId(){
+		return collectId;
+	}
+
+	public void setCollectId(String collectId){
+		this.collectId=collectId;
 	}
 
 }

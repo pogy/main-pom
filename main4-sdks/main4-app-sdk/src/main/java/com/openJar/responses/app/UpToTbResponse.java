@@ -4,7 +4,7 @@ import com.openJar.responses.Response;
  * 类名:UpToTbResponse
  * 类路径:com.openJar.responses.appUpToTbResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:上传淘宝?
  */
 public class UpToTbResponse extends Response {

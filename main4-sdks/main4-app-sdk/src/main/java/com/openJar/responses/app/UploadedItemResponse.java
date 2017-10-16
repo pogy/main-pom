@@ -6,8 +6,8 @@ import com.openJar.beans.app.AppItemUploaded;
  * 类名:UploadedItemResponse
  * 类路径:com.openJar.responses.appUploadedItemResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
- * 描述:已上传宝贝？
+ * 创建时间:2017-10-16
+ * 描述:已上传宝贝
  */
 public class UploadedItemResponse extends Response {
 	//是否有下一页	必须

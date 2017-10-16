@@ -6,7 +6,7 @@ import com.openJar.beans.app.AppShopBlock;
  * 类名:StoreCollectResponse
  * 类路径:com.openJar.responses.appStoreCollectResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:店铺收藏夹
  */
 public class StoreCollectResponse extends Response {

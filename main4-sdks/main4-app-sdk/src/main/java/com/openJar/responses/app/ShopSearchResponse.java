@@ -6,7 +6,7 @@ import com.openJar.beans.app.AppShopBlock;
  * 类名:ShopSearchResponse
  * 类路径:com.openJar.responses.appShopSearchResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:档口搜索
  */
 public class ShopSearchResponse extends Response {

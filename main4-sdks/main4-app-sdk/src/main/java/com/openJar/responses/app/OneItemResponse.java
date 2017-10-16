@@ -1,13 +1,12 @@
 package com.openJar.responses.app;
 import com.openJar.responses.Response;
 import java.util.List;
-import java.util.Date;
 import com.openJar.beans.app.AppItemKv;
 /**
  * 类名:OneItemResponse
  * 类路径:com.openJar.responses.appOneItemResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:单商品信息
  */
 public class OneItemResponse extends Response {
@@ -19,7 +18,7 @@ public class OneItemResponse extends Response {
 	private List<String> imgSrcs;
 	//货号
 	private String goodsNo;
-	//发布时间yyyy-MM-dd
+	//发布时间&nbsp;yyyy-MM-dd
 	private String createTime;
 	//商品权益
 	private List<String> goodsLicenses;
@@ -41,8 +40,8 @@ public class OneItemResponse extends Response {
 	private List<AppItemKv> itemKvs;
 	//店铺头像
 	private String shopHeadUrl;
-	//是否已收藏
-	private Integer type;
+	//商品是否收藏状态：0:未收藏&nbsp;1:&nbsp;收藏
+	private int type;
 	public String getTitle(){
 		return title;
 	}
@@ -51,12 +50,12 @@ public class OneItemResponse extends Response {
 		this.title=title;
 	}
 
-	public String getGoodsId() {
+	public String getGoodsId(){
 		return goodsId;
 	}
 
-	public void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
+	public void setGoodsId(String goodsId){
+		this.goodsId=goodsId;
 	}
 
 	public List<String> getImgSrcs(){
@@ -75,12 +74,12 @@ public class OneItemResponse extends Response {
 		this.goodsNo=goodsNo;
 	}
 
-	public String getCreateTime() {
+	public String getCreateTime(){
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+	public void setCreateTime(String createTime){
+		this.createTime=createTime;
 	}
 
 	public List<String> getGoodsLicenses(){
@@ -163,11 +162,12 @@ public class OneItemResponse extends Response {
 		this.shopHeadUrl=shopHeadUrl;
 	}
 
-	public Integer getType() {
+	public int getType(){
 		return type;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setType(int type){
+		this.type=type;
 	}
+
 }

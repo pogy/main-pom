@@ -6,7 +6,7 @@ import com.openJar.beans.app.AppSite;
  * 类名:SitesResponse
  * 类路径:com.openJar.responses.appSitesResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:分站集合
  */
 public class SitesResponse extends Response {

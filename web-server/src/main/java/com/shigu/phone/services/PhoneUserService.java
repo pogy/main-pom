@@ -33,6 +33,7 @@ import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
+import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
@@ -147,11 +148,12 @@ public class PhoneUserService {
                     //返回需要数据
                     PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
 
-                    appUser.setUserId(personalSession.getUserId());
+//                    appUser.setUserId(personalSession.getUserId());
                     String headUrl = personalSession.getHeadUrl();
                     appUser.setImgsrc(headUrl);
                     appUser.setUserNick(personalSession.getUserNick());
-                    String uuid = UUIDGenerator.getUUID();
+//                    String uuid = UUIDGenerator.getUUID();
+                    String uuid= TokenUtil.format(personalSession.getUserId());
                     //把token存入redis,设置存活时间30分钟
                     // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                     Jedis jedis = redisIO.getJedis();
@@ -227,7 +229,7 @@ public class PhoneUserService {
                         //返回需要数据
                         PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getUserName(), LoginFromType.XZ);
 
-                        appUser.setUserId(personalSession.getUserId());
+//                        appUser.setUserId(personalSession.getUserId());
                         String headUrl = personalSession.getHeadUrl();
                         appUser.setImgsrc(headUrl);
                         appUser.setUserNick(personalSession.getUserNick());
@@ -303,7 +305,7 @@ public class PhoneUserService {
                         logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
                         return null;
                     }
-                    appUser.setUserId(memberUser.getUserId());
+//                    appUser.setUserId(memberUser.getUserId());
                     //用户头像封装
                     String url = memberUser.getPortraitUrl();
                     if(url != null && url.startsWith("/SGimg/")){
@@ -520,7 +522,7 @@ public class PhoneUserService {
         }
         PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getTelephone(), LoginFromType.XZ);
         AppUser appUser=new AppUser();
-        appUser.setUserId(personalSession.getUserId());
+//        appUser.setUserId(personalSession.getUserId());
         String headUrl = personalSession.getHeadUrl();
         appUser.setImgsrc(headUrl);
         appUser.setUserNick(personalSession.getUserNick());

@@ -6,7 +6,7 @@ import java.util.List;
  * 类名:AppCatGroup
  * 类路径:com.openJar.beans.appAppCatGroup
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:类目分组
  */
 public class AppCatGroup extends OpenBean {

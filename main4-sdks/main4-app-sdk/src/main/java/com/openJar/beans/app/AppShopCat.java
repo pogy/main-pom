@@ -6,7 +6,7 @@ import java.util.List;
  * 类名:AppShopCat
  * 类路径:com.openJar.beans.appAppShopCat
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:父级店内类目
  */
 public class AppShopCat extends OpenBean {
@@ -18,7 +18,6 @@ public class AppShopCat extends OpenBean {
 	private List<AppShopCatSub> subCats;
 	//商品数量
 	private Long itemNum;
-
 	public String getScid(){
 		return scid;
 	}
@@ -43,11 +42,12 @@ public class AppShopCat extends OpenBean {
 		this.subCats=subCats;
 	}
 
-	public Long getItemNum() {
+	public Long getItemNum(){
 		return itemNum;
 	}
 
-	public void setItemNum(Long itemNum) {
-		this.itemNum = itemNum;
+	public void setItemNum(Long itemNum){
+		this.itemNum=itemNum;
 	}
+
 }

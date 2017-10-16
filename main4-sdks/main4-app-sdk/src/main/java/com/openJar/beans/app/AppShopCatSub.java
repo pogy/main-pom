@@ -5,18 +5,16 @@ import com.openJar.utils.OpenBean;
  * 类名:AppShopCatSub
  * 类路径:com.openJar.beans.appAppShopCatSub
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:叶子级店内类目
  */
 public class AppShopCatSub extends OpenBean {
-
 	//店内类目ID
 	private String scid;
 	//店内类目名
 	private String catName;
-
+	//商品条数
 	private Long itemNum;
-
 	public String getScid(){
 		return scid;
 	}
@@ -33,11 +31,12 @@ public class AppShopCatSub extends OpenBean {
 		this.catName=catName;
 	}
 
-	public Long getItemNum() {
+	public Long getItemNum(){
 		return itemNum;
 	}
 
-	public void setItemNum(Long itemNum) {
-		this.itemNum = itemNum;
+	public void setItemNum(Long itemNum){
+		this.itemNum=itemNum;
 	}
+
 }

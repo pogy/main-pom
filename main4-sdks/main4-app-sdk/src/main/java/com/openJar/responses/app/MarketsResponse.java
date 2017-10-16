@@ -5,7 +5,7 @@ import com.openJar.beans.app.AppMarket;
  * 类名:MarketsResponse
  * 类路径:com.openJar.responses.appMarketsResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:市场数据
  */
 public class MarketsResponse extends Response {

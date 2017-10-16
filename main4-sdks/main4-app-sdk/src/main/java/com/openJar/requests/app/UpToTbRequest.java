@@ -2,43 +2,42 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.UpToTbResponse;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 /**
  * 类名:UpToTbRequest
  * 类路径:com.openJar.requests.appUpToTbRequest
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:上传淘宝?
  */
 public class UpToTbRequest extends Request<UpToTbResponse> {
-	//用户ID	必须
-	private Long userId;
 	//分站	必须
+	@NotNull(message = "webSite is null")
 	private String webSite;
 	//原始商品Id	必须
+	@NotNull(message = "goodsId is null")
 	private Long goodsId;
 	//运费模板ID
 	private Long templateId;
 	//宝贝标题	必须
+	@NotNull(message = "title is null")
 	private String title;
 	//宝贝&nbsp;价格	必须
+	@NotNull(message = "price is null")
 	private String price;
 	//是否承诺退换货	必须
+	@NotNull(message = "canRefund is null")
 	private Boolean canRefund;
 	//不传表示『立即』
 	private Date listTime;
 	//是否橱窗推荐	必须
+	@NotNull(message = "needCase is null")
 	private Boolean needCase;
 	//每次登陆，用户的唯一码	必须
+	@NotNull(message = "token is null")
 	private String token;
-	public Long getUserId(){
-		return userId;
-	}
-
-	public void setUserId(Long userId){
-		this.userId=userId;
-	}
-
+	private Long userId;
 	public String getWebSite(){
 		return webSite;
 	}
@@ -109,6 +108,14 @@ public class UpToTbRequest extends Request<UpToTbResponse> {
 
 	public void setToken(String token){
 		this.token=token;
+	}
+
+	public Long getUserId(){
+		return userId;
+	}
+
+	public void setUserId(Long userId){
+		this.userId=userId;
 	}
 
 	public String testApiUrl(){

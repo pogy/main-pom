@@ -12,11 +12,18 @@ import java.util.Date;
  */
 public class OpenToBean {
 
+    static String uri="E:/java/main-pom/main4-sdks/main4-app-sdk";
+
     public static void main(String[] args) throws IOException {
         Document d= Jsoup.connect("http://open.571xz.com/detail_detail.action?cid=78").get();
         Elements as=d.select(".api-list").get(0).select("a");
         for(Element a:as){
-            create("http://open.571xz.com/"+a.attr("href"));
+            try {
+                create("http://open.571xz.com/"+a.attr("href"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("http://open.571xz.com/"+a.attr("href"));
+            }
         }
     }
 
@@ -26,8 +33,8 @@ public class OpenToBean {
         Document d = Jsoup.connect(url).get();
         String requestName = d.select(".open-bg").get(0).html().split(" ")[0].split("\\.")[4];
         String responseName = requestName.replace("Request", "Response");
-        File reqFile = new File("E:/java/main-pom/main4-app-sdk/src/main/java/com/openJar/requests/app/" + requestName + ".java");
-        File resFile = new File("E:/java/main-pom/main4-app-sdk/src/main/java/com/openJar/responses/app/" + responseName + ".java");
+        File reqFile = new File(uri+"/src/main/java/com/openJar/requests/app/" + requestName + ".java");
+        File resFile = new File(uri+"/src/main/java/com/openJar/responses/app/" + responseName + ".java");
         req(d, reqFile, requestName, responseName);
         res(d, resFile, responseName);
     }
@@ -80,6 +87,7 @@ public class OpenToBean {
                     t2.append("\t\tthis.").append(name).append("=").append(name).append(";\n");
                     t2.append("\t}\n\n");
                 }
+
             } else {
                 t.append("\tprivate ").append(tds.get(1).html().trim()).append(" ").append(tds.get(0).html().trim()).append(";\n");
                 t2.append("\tpublic ").append(tds.get(1).html().trim()).append(" get").append(toUpperCase(tds.get(0).html().trim())).append("(){\n");
@@ -88,6 +96,15 @@ public class OpenToBean {
                 t2.append("\tpublic void set").append(toUpperCase(tds.get(0).html().trim())).append("(").append(tds.get(1).html().trim()).append(" ").append(tds.get(0).html().trim()).append("){\n");
                 t2.append("\t\tthis.").append(tds.get(0).html().trim()).append("=").append(tds.get(0).html().trim()).append(";\n");
                 t2.append("\t}\n\n");
+                if(tds.get(0).html().trim().equals("token")){
+                    t.append("\tprivate ").append("Long userId;\n");
+                    t2.append("\tpublic ").append("Long getUserId(){\n");
+                    t2.append("\t\treturn ").append("userId;\n");
+                    t2.append("\t}\n\n");
+                    t2.append("\tpublic void setUserId(Long userId){\n");
+                    t2.append("\t\tthis.userId=userId;\n");
+                    t2.append("\t}\n\n");
+                }
             }
         }
         t2.append("\tpublic String testApiUrl(){\n");
@@ -211,7 +228,7 @@ public class OpenToBean {
         }
         t.append(t2);
         t.append("}");
-        print(new File("E:/java/main-pom/main4-app-sdk/src/main/java/com/openJar/beans/app/" + d.select(".title").html().trim() + ".java"), imp.toString() + t);
+        print(new File(uri+"/src/main/java/com/openJar/beans/app/" + d.select(".title").html().trim() + ".java"), imp.toString() + t);
         return d.select(".title").html().trim();
     }
 

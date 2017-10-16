@@ -5,7 +5,7 @@ import com.openJar.utils.OpenBean;
  * 类名:AppShopBlock
  * 类路径:com.openJar.beans.appAppShopBlock
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:店铺块信息
  */
 public class AppShopBlock extends OpenBean {
@@ -31,8 +31,10 @@ public class AppShopBlock extends OpenBean {
 	private String mainCase;
 	//商品数
 	private Integer itemNum;
-	//店铺默认头像
-	private String shopHeadUrl="http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
+	//店铺头像
+	private String shopHeadUrl;
+	//市场收藏id
+	private String marketCollectId;
 	public Long getShopId(){
 		return shopId;
 	}
@@ -127,6 +129,14 @@ public class AppShopBlock extends OpenBean {
 
 	public void setShopHeadUrl(String shopHeadUrl){
 		this.shopHeadUrl=shopHeadUrl;
+	}
+
+	public String getMarketCollectId(){
+		return marketCollectId;
+	}
+
+	public void setMarketCollectId(String marketCollectId){
+		this.marketCollectId=marketCollectId;
 	}
 
 }

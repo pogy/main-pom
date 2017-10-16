@@ -6,7 +6,7 @@ import com.openJar.beans.app.AppGoodsBlock;
  * 类名:ItemCollectResponse
  * 类路径:com.openJar.responses.appItemCollectResponse
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:商品收藏夹？
  */
 public class ItemCollectResponse extends Response {

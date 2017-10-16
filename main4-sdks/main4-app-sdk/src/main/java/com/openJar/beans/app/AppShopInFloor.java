@@ -6,14 +6,12 @@ import java.util.List;
  * 类名:AppShopInFloor
  * 类路径:com.openJar.beans.appAppShopInFloor
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:楼层里的店铺
  */
 public class AppShopInFloor extends OpenBean {
 	//店铺ID
-//	private Long storeId;
 	private Long storeId;
-
 	//档口号
 	private String num;
 	//新品标识，1为新品
@@ -22,13 +20,12 @@ public class AppShopInFloor extends OpenBean {
 	private String cate;
 	//退换服务，1退，2换
 	private List<Integer> tags;
-
-	public Long getStoreId() {
+	public Long getStoreId(){
 		return storeId;
 	}
 
-	public void setStoreId( Long storeId ) {
-		this.storeId = storeId;
+	public void setStoreId(Long storeId){
+		this.storeId=storeId;
 	}
 
 	public String getNum(){

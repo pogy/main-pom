@@ -5,7 +5,7 @@ import com.openJar.utils.OpenBean;
  * 类名:AppCat
  * 类路径:com.openJar.beans.appAppCat
  * 创建者:自动生成
- * 创建时间:2017-08-29
+ * 创建时间:2017-10-16
  * 描述:类目
  */
 public class AppCat extends OpenBean {
@@ -17,17 +17,8 @@ public class AppCat extends OpenBean {
 	private Long cid;
 	//类目图片链接
 	private String imgsrc;
-	private Integer type;//1cid查询,2keyword查询
-
-	public void setType( Integer type ) {
-		this.type = type;
-	}
-
-	public Integer getType() {
-
-		return type;
-	}
-
+	//1cid查询,2keyword查询
+	private Integer type;
 	public String getName(){
 		return name;
 	}
@@ -58,6 +49,14 @@ public class AppCat extends OpenBean {
 
 	public void setImgsrc(String imgsrc){
 		this.imgsrc=imgsrc;
+	}
+
+	public Integer getType(){
+		return type;
+	}
+
+	public void setType(Integer type){
+		this.type=type;
 	}
 
 }
