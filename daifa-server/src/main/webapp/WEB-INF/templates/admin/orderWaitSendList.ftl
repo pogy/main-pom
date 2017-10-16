@@ -159,8 +159,12 @@
                     <li class="tddiv"><p>${list.receiverAddress!}</p></li>
 
                     <li class="tddiv">
-                       <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="不显示" onclick="editDisplay(this,'${list.dfTradeId!}',0)">
-                        <input type="button" name="refundfax1" id="refundfax1" class="fmButton fmButton-blue" value="显示" onclick="editDisplay(this,'${list.dfTradeId!}',1)">
+                        <#if list.orderDisplay == 0>
+                            <input type="button" name="refundfax1" id="refundfax1" class="fmButton fmButton-blue" value="显示" onclick="editDisplay(this,'${list.dfTradeId!}',1)">
+                        <#elseif list.orderDisplay == 1>
+                            <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="不显示" onclick="editDisplay(this,'${list.dfTradeId!}',0)">
+                        </#if>
+
                     </li>
                 </ul>
             </div>
