@@ -21,7 +21,10 @@ public class DaifaSysAdminLoginAction {
             return "redirect:/admin/adminOrder.htm";
         }
         if (checkerPass.equals(pass)) {
-            session.setAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION, new Object());
+
+            String daifaAdmin=DaifaSessionConfig.DAIFA_SYS_DISPLAY;
+
+            session.setAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION, daifaAdmin);
             return "redirect:/admin/adminOrder.htm";
         }
         model.addAttribute("pass", pass);
