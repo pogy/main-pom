@@ -34,4 +34,9 @@ public class TrademarkAction {
         trademarkService.giveInfoToServer(ps.getUserId(),bo);
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("bqsqIndex")
+    public String bqsqIndex(){
+        return "xzSearch/bqsqIndex";
+    }
 }
