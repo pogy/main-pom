@@ -3,17 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>订单发货错误 - 星帮后台管理 - 四季星座网</title>
+    <title>待发表显示处理 - 星帮后台管理 - 四季星座网</title>
 <#include "/common/host_config.ftl">
 
-    <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
+    <link href="${daifa_host}/css/table.css" rel="stylesheet">
+<!--<link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">-->
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/sys/common/common.js?t=201709121011"></script>
-    <script src="${daifa_host}/js/admin/orderSendErrorDeal/orderSendErrorSub.js?t=201709121011"></script>
+    <script src="${daifa_host}/js/admin/sys/waitsend/waitsend.js?t=201709121011"></script>
     <style>
-
-        .orderCon .tddiv{width:11%;}
+        .ptitle{
+            width: 100px;
+            display: inline-block;
+            text-align: right;
+        }
+        .orderCon .tddiv{width:10%;}
     </style>
 </head>
 <body>
@@ -46,8 +51,8 @@
 
         <div class="orderSearch orderSearchBox">
             <ul>
-                <li><label>主订单ID：</label><input type="text" class="fmInput" name="dfTradeId" <#if query.dfTradeId??> value="${query.dfTradeId!}" </#if> ></li>
-
+                <li><label>交易号：</label><input type="text" class="fmInput" name="dfTradeId" <#if query.dfTradeId??> value="${query.dfTradeId!}" </#if> ></li>
+                <li><label>收货人：</label><input type="text" class="fmInput" name="receiverName" <#if query.receiverName??> value="${query.receiverName!}" </#if>></li>
                 <li>
 
                 <#assign text>{}</#assign>
@@ -78,7 +83,7 @@
             </ul>
         </div>
 
-    <#assign text>{"fields":[{"name":"dfTradeId","value":"${query.dfTradeId!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"dfTradeId","value":"${query.dfTradeId!}"},{"name":"receiverName","value":"${query.receiverName!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>
@@ -98,35 +103,65 @@
         </#if>
     </#list>
 
+        <div class="orderSearch orderSearchBox">
+
+        </div>
+
+
         <div class="orderCon">
             <div class="theadCon">
                 <ul class="">
-                    <li class="tddiv">主订单号|子订单号</li>
-                    <li class="tddiv">标题</li>
-                    <li class="tddiv">市场-楼层-档口-货号</li>
-                    <li class="tddiv">商品属性</li>
-                    <li class="tddiv">货号</li>
-                    <li class="tddiv">商家编码</li>
-                    <li class="tddiv">数量</li>
-                    <li class="tddiv">订单状态</li>
+
+                    <li class="tddiv">订单号</li>
+                    <li class="tddiv">代发机构ID</li>
+                    <li class="tddiv">发货状态</li>
+                    <li class="tddiv">创建时间</li>
+                    <li class="tddiv">快递名</li>
+                    <li class="tddiv">收件人手机号</li>
+                    <li class="tddiv">是否显示</li>
+                    <li class="tddiv">收件人姓名</li>
+                    <li class="tddiv">收件人详细地址</li>
+
                     <li class="tddiv">操作</li>
                 </ul>
             </div>
-        <#list orders as order>
+        <#list lists as list>
             <div class="orderItem">
-
-
             <div class="childOrderItem" >
                 <ul class="clearfix">
-                    <li class="tddiv">${order.dfTradeId!}|<br>${order.dfOrderId!}</li>
-                    <li class="tddiv">${order.title!}</li>
-                    <li class="tddiv">${order.marketName!}-${order.floorName!}-${order.storeNum!}-${order.goodsCode!}</li>
-                    <li class="tddiv"><input type="text" id="propStr" name="propStr" value="${order.propStr!}" style="width:200px" class="fmInput"/></li>
-                    <li class="tddiv"><input type="text" id="goodsCode" name="goodsCode" value="${order.goodsCode!}" style="width:200px" class="fmInput"/></li>
-                    <li class="tddiv"><input type="text" id="storeGoodsCode" name="storeGoodsCode" value="${order.storeGoodsCode!}" style="width:200px" class="fmInput"/></li>
-                    <li class="tddiv">${order.goodsNum!}</li>
-                    <li class="tddiv">${order.orderStatus!}</li>
-                    <li class="tddiv"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editProp(this,'${order.dfOrderId!}')" class="fmButton fmButton-blue"/></li>
+                    <li class="tddiv"><p>${list.dfTradeId!}|${list.tradeCode!}</p></li>
+                    <li class="tddiv">
+                        <p class="title">${list.sellerId!}</p>
+                    </li>
+                    <li class="tddiv">
+                        <#if list.sendStatus == 1>
+                            <p class="fc3">待发货</p>
+                        <#elseif list.sendStatus == 2>
+                            <p>已发货</p>
+                        </#if>
+                    </li>
+                    <li class="tddiv"><p>${list.createTime!}</p></li>
+                    <li class="tddiv"><p>${list.expressName!}</p></li>
+                    <li class="tddiv"><p>${list.receiverPhone!}</p></li>
+                    <li class="tddiv">
+
+                        <#if list.orderDisplay == 0>
+                            <p class="fc3">不显示</p>
+                        <#elseif list.orderDisplay == 1>
+                            <p>显示</p>
+                        </#if>
+                    </li>
+
+
+                    <li class="tddiv">
+                            <p class="fc3">${list.receiverName!}</p>
+                    </li>
+                    <li class="tddiv"><p>${list.receiverAddress!}</p></li>
+
+                    <li class="tddiv">
+                       <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="不显示" onclick="editDisplay(this,'${list.dfTradeId!}',0)">
+                        <input type="button" name="refundfax1" id="refundfax1" class="fmButton fmButton-blue" value="显示" onclick="editDisplay(this,'${list.dfTradeId!}',1)">
+                    </li>
                 </ul>
             </div>
 

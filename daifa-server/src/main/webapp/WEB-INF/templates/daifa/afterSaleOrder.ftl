@@ -75,11 +75,7 @@
 <#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b </#if>class="fmButton fmButton-blue searchBtn" jbtn="searchBtn" <#if $it.title??> title="" </#if> <#if $it.id??> id=""  </#if>>  搜索<#if $it.href??></a><#else></b></#if>
+    <#if $it.href??><a href="${$it.href!}" <#else> <b </#if>class="fmButton fmButton-blue searchBtn" jbtn="searchBtn" <#if $it.title??> title="" </#if> <#if $it.id??> id=""  </#if>>  搜索<#if $it.href??></a><#else></b></#if>
 </#list>
 </li>
     </ul>
@@ -265,15 +261,12 @@
     </td>
     </#if>
 </tr>
-
-
             </#list>
             </#list>
         </tbody>
         </#list>
     </table>
 </div>
-    
 
 <#assign text>{}</#assign>
 <#assign moduledata2=text?eval />
@@ -291,8 +284,3 @@
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-
-
-
-
-
