@@ -41,23 +41,44 @@ public class ItemRestoreByImage extends BaseSpringTest {
         List<ShiguGoodsTiny> newtinys=shiguGoodsTinyMapper.selectByExample(example);
         for(ShiguGoodsTiny tiny:newtinys){
             Long oldGid=imgMap.get(codeImage(tiny.getPicUrl()+"_240x240.jpg"));
-            ShiguGoodsTiny oldTiny=null;
-            Long newGid=tiny.getGoodsId();
-            if(oldGid!=null){
-                ShiguGoodsTiny selTiny=new ShiguGoodsTiny();
-                selTiny.setGoodsId(oldGid);
-                selTiny.setWebSite("hz");
-                oldTiny=shiguGoodsTinyMapper.selectByPrimaryKey(selTiny);
-                shiguGoodsTinyMapper.deleteByPrimaryKey(selTiny);
-            }else {
-                continue;
-            }
-            shiguGoodsTinyMapper.deleteByPrimaryKey(tiny);
-            tiny.setGoodsId(oldGid);
-            shiguGoodsTinyMapper.insert(tiny);
-            oldTiny.setGoodsId(newGid);
-            shiguGoodsTinyMapper.insert(oldTiny);
+            replaceTwo(oldGid,tiny);
         }
+    }
+
+    /**
+     * 交换2个商品的ID(权重)
+     * @param oldGid
+     * @param tiny
+     */
+    private void replaceTwo(Long oldGid,ShiguGoodsTiny tiny){
+
+        ShiguGoodsTiny oldTiny=null;
+        Long newGid=tiny.getGoodsId();
+        if(oldGid!=null){
+            ShiguGoodsTiny selTiny=new ShiguGoodsTiny();
+            selTiny.setGoodsId(oldGid);
+            selTiny.setWebSite("hz");
+            oldTiny=shiguGoodsTinyMapper.selectByPrimaryKey(selTiny);
+            shiguGoodsTinyMapper.deleteByPrimaryKey(selTiny);
+        }else {
+            return;
+        }
+        shiguGoodsTinyMapper.deleteByPrimaryKey(tiny);
+        tiny.setGoodsId(oldGid);
+        shiguGoodsTinyMapper.insert(tiny);
+        oldTiny.setGoodsId(newGid);
+        shiguGoodsTinyMapper.insert(oldTiny);
+    }
+
+    @Test
+    public void replace(){
+        Long newId=21638048L;
+        Long oldId=21619326L;
+        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+        tiny.setWebSite("hz");
+        tiny.setGoodsId(newId);
+        tiny=shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        replaceTwo(oldId,tiny);
     }
 
     @Test
