@@ -1,7 +1,6 @@
 package com.shigu.admin.actions;
 
 import com.shigu.admin.bo.OrderWaitSendBO;
-import com.shigu.admin.bo.TsysRoleBO;
 import com.shigu.admin.services.DaifaWaitSendDealService;
 import com.shigu.admin.vo.DaifaWaitSendDealVO;
 import com.shigu.config.DaifaSessionConfig;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 /**
