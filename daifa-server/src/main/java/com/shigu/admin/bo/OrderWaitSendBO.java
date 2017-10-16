@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class OrderWaitSendBO implements Serializable {
     private Long dfTradeId;//主订单号
     private String receiverName;//收货人
+    private Integer orderDisplay;//待发货订单是否显示0不显示1显示
     /**
      * 当前页
      */
@@ -55,5 +56,13 @@ public class OrderWaitSendBO implements Serializable {
 
     public void setCount (Integer count) {
         this.count = count;
+    }
+
+    public Integer getOrderDisplay () {
+        return orderDisplay;
+    }
+
+    public void setOrderDisplay (Integer orderDisplay) {
+        this.orderDisplay = orderDisplay;
     }
 }
