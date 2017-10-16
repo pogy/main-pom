@@ -43,6 +43,8 @@ public class DaifaWaitSendExample extends SgExample<DaifaWaitSendExample.Criteri
     public static EntityColumn buyerQq;
     public static EntityColumn buyerWw;
     public static EntityColumn receiverZip;
+    public static EntityColumn orderDisplay;
+
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -82,6 +84,8 @@ public class DaifaWaitSendExample extends SgExample<DaifaWaitSendExample.Criteri
         buyerQq = listMap.get("buyerQq");
         buyerWw = listMap.get("buyerWw");
         receiverZip = listMap.get("receiverZip");
+        orderDisplay = listMap.get("orderDisplay");
+
     }
 
     public DaifaWaitSendExample() {
@@ -158,6 +162,63 @@ public class DaifaWaitSendExample extends SgExample<DaifaWaitSendExample.Criteri
         public DaifaWaitSendExample.Criteria andDwsIdNotBetween(Long value1, Long value2) {
             return notBetween(dwsId, value1, value2);
         }
+
+        public Criteria andOrderDisplayIsNull() {
+            return isNull(orderDisplay);
+        }
+
+        public Criteria andOrderDisplayIsNotNull() {
+            return isNotNull(orderDisplay);
+        }
+
+        public Criteria andOrderDisplayEqualTo(Integer value) {
+            return equalTo(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayNotEqualTo(Integer value) {
+            return notEqualTo(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayGreaterThan(Integer value) {
+            return greaterThan(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayLessThan(Integer value) {
+            return lessThan(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayLike(String value) {
+            return like(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayNotLike(String value) {
+            return notLike(orderDisplay, value);
+        }
+
+        public Criteria andOrderDisplayIn(List<Integer> values) {
+            return in(orderDisplay, values);
+        }
+
+        public Criteria andOrderDisplayNotIn(List<Integer> values) {
+            return notIn(orderDisplay, values);
+        }
+
+        public Criteria andOrderDisplayBetween(Integer value1, Integer value2) {
+            return between(orderDisplay, value1, value2);
+        }
+
+        public Criteria andOrderDisplayNotBetween(Integer value1, Integer value2) {
+            return notBetween(orderDisplay, value1, value2);
+        }
+
         public DaifaWaitSendExample.Criteria andDfTradeIdIsNull() {
             return isNull(dfTradeId);
         }
