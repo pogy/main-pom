@@ -1,7 +1,6 @@
 package com.shigu.admin.actions;
 
 import com.shigu.admin.bo.OrderWaitSendBO;
-import com.shigu.admin.bo.TsysRoleBO;
 import com.shigu.admin.services.DaifaWaitSendDealService;
 import com.shigu.admin.vo.DaifaWaitSendDealVO;
 import com.shigu.config.DaifaSessionConfig;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 /**
@@ -53,11 +51,6 @@ public class DaifaWaitSendDealAction {
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaWaitSendDealVO> list=null;
-        if(bo.getDfTradeId ()==null&&bo.getReceiverName ()==null){
-
-            list = daifaWaitSendDealService.waitSendList (bo);
-            bo.setCount (list.size ());
-        }
         if(bo.getCount ()==null){
             bo.setCount (1);
         }
@@ -65,6 +58,7 @@ public class DaifaWaitSendDealAction {
             bo.setPage (1+"");
         }
 
+            list = daifaWaitSendDealService.waitSendList (bo);
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("lists", list);
         model.addAttribute("query", bo);

@@ -1,6 +1,5 @@
 package com.shigu.admin.services;
 
-
 import com.opentae.data.daifa.beans.DaifaWaitSend;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
@@ -13,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +58,17 @@ public class DaifaWaitSendDealService {
             exampleCriteria.andReceiverNameEqualTo (bo.getReceiverName ());
         }
 
-        int count= daifaWaitSendMapper.countByExample (example);
-        bo.setCount (count);
+        if (StringUtils.isEmpty(bo.getPage())) {
+            bo.setPage("1");
+        }
         int page = Integer.parseInt(bo.getPage());
         int rows = 10;
         example.setStartIndex((page - 1) * rows);
         example.setEndIndex(rows);
-        List<DaifaWaitSend> list= daifaWaitSendMapper.selectByExample (example);
+        int count= daifaWaitSendMapper.countByExample (example);
 
+        List<DaifaWaitSend> list= daifaWaitSendMapper.selectByConditionList (example);
+        bo.setCount (count);
         List<DaifaWaitSendDealVO> listVO=new ArrayList<> ();
         if(list.size ()>0){
             for (DaifaWaitSend order: list) {
@@ -80,7 +81,6 @@ public class DaifaWaitSendDealService {
         }
         //返回前台页面
         return listVO;
-
 
     }
     /**
