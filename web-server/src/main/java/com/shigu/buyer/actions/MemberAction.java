@@ -1,9 +1,9 @@
 package com.shigu.buyer.actions;
 
-import com.alibaba.fastjson.JSON;
-import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.buyer.bo.*;
-import com.shigu.buyer.services.*;
+import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -11,7 +11,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
@@ -24,7 +24,7 @@ import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
-import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
+import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
 import com.shigu.services.SendMsgService;
@@ -43,13 +43,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -370,7 +363,6 @@ public class MemberAction {
         //【档口在售】和【档口已下架】，且【淘宝已下架】
         return "buyer/shiguOnekeyRecordinit";
     }
-
 
     /**
      * 删除一键上传商品

@@ -94,7 +94,7 @@ public class DaifaAllOrderIndexService {
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
-            ce.andDfTradeIdLike("%" + bo.getOrderId());
+            ce.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
         }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
@@ -203,7 +203,7 @@ public class DaifaAllOrderIndexService {
         AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId = user.getDaifaSellerId();
         DaifaWorkerExample daifaWorkerExample = new DaifaWorkerExample();
-        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId);
+        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId).andUseStatusEqualTo(1);
         List<DaifaWorker> workers = daifaWorkerMapper.selectFieldsByExample(daifaWorkerExample
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker"));
 
@@ -229,6 +229,7 @@ public class DaifaAllOrderIndexService {
 
     public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
+        daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
     }
 

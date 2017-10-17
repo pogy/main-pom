@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>排行榜 - 四季星座网</title>
 <#include "/common/base__config.ftl">
 <#assign $pageid>shopRanking</#assign>
 <#assign webSite>hz</#assign>

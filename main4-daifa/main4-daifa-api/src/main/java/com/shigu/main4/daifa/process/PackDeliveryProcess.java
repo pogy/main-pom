@@ -27,4 +27,6 @@ public interface PackDeliveryProcess {
 
 
     OrderSendErrorDealVO dealOrderSendError(Long dfTradeId, String receiverName, String receiverAddr)throws DaifaException;
+
+    int dealSubOrderError(Long dfOrderId,String propStr)throws DaifaException;
 }

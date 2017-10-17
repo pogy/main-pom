@@ -33,7 +33,7 @@
               and s1.df_trade_id like ("%${orderId}%")
             </if>
             <if test="telephone!=null">
-              and s1.buyer_telephone = #{telephone}
+              and s1.receiver_mobile = #{telephone}
             </if>
             <if test="startTime!=null and startTime !=''">
                 <![CDATA[
@@ -42,7 +42,7 @@
             </if>
             <if test="endTime!=null and endTime !=''">
                 <![CDATA[
-                 and s1.create_date <= #{startTime}
+                 and s1.create_date <= #{endTime}
                 ]]>
             </if>
 

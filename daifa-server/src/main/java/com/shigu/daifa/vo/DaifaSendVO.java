@@ -11,7 +11,7 @@ import java.util.List;
  * @since 3.0.0-SNAPSHOT
  */
 public class DaifaSendVO {
-    private Long dwsId;
+    private Long sendId;
     private Long orderId;
     private String tradeCode;
     private String receiverName;
@@ -34,13 +34,6 @@ public class DaifaSendVO {
     private Boolean isTbOrder;
     private List<SendOrderVO> childOrders;
 
-    public Long getDwsId() {
-        return dwsId;
-    }
-
-    public void setDwsId(Long dwsId) {
-        this.dwsId = dwsId;
-    }
 
     public Long getOrderId() {
         return orderId;
@@ -208,5 +201,13 @@ public class DaifaSendVO {
 
     public void setIsTbOrder(Boolean isTbOrder) {
         this.isTbOrder = isTbOrder;
+    }
+
+    public Long getSendId() {
+        return this.sendId;
+    }
+
+    public void setSendId(Long sendId) {
+        this.sendId = sendId;
     }
 }

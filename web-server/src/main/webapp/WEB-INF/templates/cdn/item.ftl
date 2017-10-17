@@ -17,17 +17,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=20117092901" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=20117092901"></script>
 </head>
 <body>
 
@@ -1057,6 +1062,8 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 
 </div>
+
+
 
 
 

@@ -70,7 +70,18 @@ public class TsysPermissionService {
            // ce.andRoleNameEqualTo (bo.getRoleName());
             //ce.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
         //}
-
+        if (bo.getNamespace()!=null&& StringUtils.hasText(bo.getNamespace()+"")) {//
+            ce.andNamespaceEqualTo (bo.getNamespace());
+        }
+        if (bo.getPermissionTag()!=null&& StringUtils.hasText(bo.getPermissionTag()+"")) {//
+            ce.andPermissionTagEqualTo (bo.getPermissionTag());
+        }
+        if(bo.getCreateUserId()!=null&&StringUtils.hasText(bo.getCreateUserId()+"")){//sellerId
+            ce.andCreateUserIdEqualTo (bo.getCreateUserId ());
+        }
+        if(bo.getStatus()!=null&&StringUtils.hasText(bo.getStatus()+"")){//可用状态
+            ce.andStatusEqualTo (bo.getStatus ());
+        }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }

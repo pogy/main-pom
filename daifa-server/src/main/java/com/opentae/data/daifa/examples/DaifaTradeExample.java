@@ -2749,5 +2749,9 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
         public DaifaTradeExample.Criteria andPayStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(payStatus, value1, value2);
         }
+        public DaifaTradeExample.Criteria andCustomSql(String sql){
+            this.addCriterion(sql);
+            return this;
+        }
     }
 }

@@ -1,7 +1,10 @@
 package com.shigu.admin.services;
 
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaTrade;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.admin.bo.OrderSendErrorDealBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -27,6 +30,8 @@ import java.util.List;
 public class OrderSendErrorDealService {
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private PackDeliveryProcess packDeliveryProcess;
     /**
@@ -75,5 +80,42 @@ public class OrderSendErrorDealService {
 
         packDeliveryProcess.dealOrderSendError (dfTradeId,receiverName,receiverAddr);
     }
+    /**
+     * ====================================================================================
+     * @方法名： queryErrorSubOrder
+     * @user gzy 2017/9/22 17:49
+     * @功能：子订单的商品属性里有'+'的就是有问题的要处理的
+     * @param: [bo]
+     * @return: java.util.List<com.opentae.data.daifa.beans.DaifaOrder>
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public List<DaifaOrder> queryErrorSubOrder(OrderSendErrorDealBO bo){
+
+        DaifaOrderExample example=new DaifaOrderExample ();
+        DaifaOrderExample.Criteria exampleCriteria = example.createCriteria();
+        exampleCriteria.andRefundStatusGreaterThan (0).andTakeGoodsStatusEqualTo (1);
+        if (bo.getDfTradeId() != null) {
+            exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
+        }else{
+            exampleCriteria.andPropStrLike ("%+%");
+        }
+
+        int count= daifaOrderMapper.countByExample (example);
+        bo.setCount (count);
+        int page = Integer.parseInt(bo.getPage());
+        int rows = 10;
+        example.setStartIndex((page - 1) * rows);
+        example.setEndIndex(rows);
+        return daifaOrderMapper.selectByExample (example);
+
+    }
+
+    public void dealSubOrderError(Long dfOrderId,String propStr)throws DaifaException{
+
+        packDeliveryProcess.dealSubOrderError (dfOrderId,propStr);
+    }
+
 
 }
