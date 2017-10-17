@@ -257,8 +257,6 @@
         <#if $it.text??>
             ${$it.text!}
         </#if>
-    
-    
         <#if $it.html??>
             ${$it.html}
         </#if>
@@ -358,6 +356,3 @@
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-
-
-

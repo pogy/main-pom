@@ -44,45 +44,8 @@
 <#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-        
-         fmButton-blue
-         searchBtn"
-    
-        jbtn="searchBtn"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        搜索
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
+ <#if $it.href??><a href="${$it.href!}" <#else> <b </#if> class="fmButton fmButton-blue searchBtn" jbtn="searchBtn" <#if $it.title??> title="" </#if><#if $it.id??> id="" </#if>>
+搜索<#if $it.href??></a><#else></b></#if>
 
 </#list>
 </li>

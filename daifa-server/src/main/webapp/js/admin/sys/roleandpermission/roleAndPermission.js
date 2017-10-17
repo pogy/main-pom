@@ -6,7 +6,6 @@ $(function(){
             $(this).prop("class","current");
         }
     });
-
 });
 
 //选择具体的用户并查询出选中的角色
