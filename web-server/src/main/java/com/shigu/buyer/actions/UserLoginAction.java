@@ -706,12 +706,20 @@ public class UserLoginAction {
      */
     @RequestMapping("loginortherSystem")
     public String loginortherSystem(String backUrl,Model model,HttpSession session) throws Main4Exception {
+        /*if(!SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
 
+        }*/
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if(ps!=null) {
-           String key= Opt3Des.encryptPlainData (ps.getUserId ()+"");
+            Long shopId=0L;
+            if(ps.getLogshop ()!=null){
+                shopId= ps.getLogshop ().getShopId ();
+            }
+
+          // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
+            String key= Opt3Des.encryptPlainData (shopId+"");
            String back=backUrl+"?key="+key;
-           System.out.println (back);
+          // System.out.println (back);
             return "redirect:"+back;
         }else{
             return "redirect:frameLogin.htm";
