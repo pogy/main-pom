@@ -803,7 +803,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             return Collections.EMPTY_LIST;
         }
         String webSite = shiguShop.getWebSite();
-        goodsNewList = searchItemOnsale(null, shopId, webSite, "time_down", 1, 5).getContent();
+        goodsNewList = searchItemOnsale(null, shopId, webSite, "time_down", 1, 4).getContent();
         goodsNewCache.put(shopId,goodsNewList);
         return goodsNewList;
     }

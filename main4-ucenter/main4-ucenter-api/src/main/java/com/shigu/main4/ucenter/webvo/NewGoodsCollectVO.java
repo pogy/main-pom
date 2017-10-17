@@ -1,10 +1,10 @@
-package com.shigu.buyer.vo;
+package com.shigu.main4.ucenter.webvo;
 
 import java.io.Serializable;
 
 /**
  * 类名：NewGoodsCollectVO
- * 类路径：com.shigu.buyer.vo.NewGoodsCollectVO
+ * 类路径：com.shigu.main4.ucenter.webvo.NewGoodsCollectVO
  * 创建者：王浩翔
  * 创建时间：2017-10-13 14:08
  * 项目：main-pom
@@ -25,7 +25,6 @@ public class NewGoodsCollectVO implements Serializable{
     private String imWw;
     //QQ
     private String imQq;
-
     //商品图片
     private String imgSrc;
     //商品标题

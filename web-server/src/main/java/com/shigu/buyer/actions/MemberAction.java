@@ -24,7 +24,7 @@ import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
-import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
 import com.shigu.services.SendMsgService;
@@ -66,7 +66,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -217,25 +216,13 @@ public class MemberAction {
     }
 
     /**
-     * 个人中心,我的收藏,
+     * 新版个人中心,我的收藏
+     * @param bo
+     * @param page
+     * @param session
+     * @param model
      * @return
      */
-    @RequestMapping("member/goodsCollect")
-    public String goodsCollect(GoodsCollectBO bo,HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollectionsByType(ps.getUserId(), bo.getKeyword(), bo.getWebsite(),
-                bo.getPage(), bo.getRows(), bo.getType());
-        if(pager.getContent()!=null)
-            model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("keyword", bo.getKeyword());
-
-        return "buyer/goodsCollect";
-    }
-
-    //todo
     @RequestMapping("member/goodsCollectOriginal")
     public String goodsCollectOriginal(StoreCollectBO bo,Integer page,HttpSession session,Model model) {
         //一页12条数据

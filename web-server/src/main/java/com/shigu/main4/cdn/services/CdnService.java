@@ -171,6 +171,8 @@ public class CdnService {
         itemCollect.setItemId(bo.getGoodsId());
         itemCollect.setStoreId(sgt.getStoreId());
         itemCollect.setWebsite(sgig.getWebSite());
+        itemCollect.setTitle(sgt.getTitle());
+        itemCollect.setType(2);
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {

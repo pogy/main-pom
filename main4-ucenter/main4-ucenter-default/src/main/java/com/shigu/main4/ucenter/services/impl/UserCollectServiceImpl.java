@@ -17,11 +17,9 @@ import com.shigu.main4.ucenter.util.DataPackageUtil;
 import com.shigu.main4.ucenter.util.FileOperator;
 import com.shigu.main4.ucenter.util.FilePathConstant;
 import com.shigu.main4.ucenter.util.UtilCharacter;
-import com.shigu.main4.ucenter.vo.DataPackage;
-import com.shigu.main4.ucenter.vo.ItemCollect;
-import com.shigu.main4.ucenter.vo.PackageItem;
-import com.shigu.main4.ucenter.vo.ShopCollect;
+import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopInfo;
 import com.shigu.session.main4.tool.BeanMapper;
@@ -118,8 +116,79 @@ public class UserCollectServiceImpl implements UserCollectService {
     }
 
     @Override
-    public ShiguPager<ItemCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type) {
-        return null;
+    public ShiguPager<NewGoodsCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type) {
+        ShiguPager<NewGoodsCollectVO> pager = new ShiguPager<>();
+        if (pageNo < 1)
+            pageNo = 1;
+        if (pageSize < 1)
+            pageSize = 10;
+        if (StringUtils.isEmpty(webSite))
+            webSite = "hz";
+        pager.setNumber(pageNo);
+
+        if (userId == null)
+            return pager;
+        List<NewGoodsCollectVO> context = new ArrayList<>(pageSize);
+        pager.setContent(context);
+        ShiguGoodsCollectExample shiguGoodsCollectExample = new ShiguGoodsCollectExample();
+        shiguGoodsCollectExample.createCriteria().andUserIdEqualTo(userId).andWebsiteEqualTo(webSite).andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(keyword)) {
+            //新收藏，存收藏时title
+            shiguGoodsCollectExample.createCriteria().andRemark1Like(keyword);
+        }
+        int count = shiguGoodsCollectMapper.countByExample(shiguGoodsCollectExample);
+        pager.calPages(count, pageSize);
+        if (count > 0) {
+            shiguGoodsCollectExample.setStartIndex((pageNo -1 ) * pageSize);
+            shiguGoodsCollectExample.setEndIndex(pageSize);
+            List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByConditionList(shiguGoodsCollectExample);
+            List<Long> goodsIds = shiguGoodsCollects.stream().map(ShiguGoodsCollect::getGoodsId).collect(Collectors.toList());
+            List<Long> shopIds = shiguGoodsCollects.stream().map(ShiguGoodsCollect::getStoreId).collect(Collectors.toList());
+            Map<Long, CollectSimpleGoodsInfo> goodsIdInfoMap = selSimpleCollectGoodsInfoList(goodsIds, webSite).stream().collect(Collectors.toMap(CollectSimpleGoodsInfo::getGoodsId, o -> o));
+            Map<Long, ShopInfo> shopIdInfoMap = selShopInfoByShopIds(shopIds).stream().collect(Collectors.toMap(ShopInfo::getShopId, o -> o));
+            shiguGoodsCollects.forEach(o->{
+                NewGoodsCollectVO newGoodsCollectVO = new NewGoodsCollectVO();
+                newGoodsCollectVO.setCollId(o.getGoodsCollectId());
+                CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(o.getGoodsId());
+                newGoodsCollectVO.setGoodsId(o.getGoodsId());
+                newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
+                newGoodsCollectVO.setTitle(goodsInfo.getTitle());
+                newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
+                newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
+                newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                ShopInfo shopInfo = shopIdInfoMap.get(o.getStoreId());
+                newGoodsCollectVO.setShopId(o.getStoreId());
+                newGoodsCollectVO.setMarketName(shopInfo.getMarketName());
+                newGoodsCollectVO.setShopNum(shopInfo.getShopNum());
+                newGoodsCollectVO.setImQq(shopInfo.getImQq());
+                newGoodsCollectVO.setImWw(shopInfo.getImWw());
+                context.add(newGoodsCollectVO);
+            });
+        }
+        return pager;
+    }
+
+    private List<CollectSimpleGoodsInfo> selSimpleCollectGoodsInfoList(List<Long> goodsIds,String webSite){
+        List<CollectSimpleGoodsInfo> simpleGoodsInfos = Lists.newArrayList();
+        ShiguGoodsTinyExample tinyExample = new ShiguGoodsTinyExample();
+        tinyExample.setWebSite(webSite);
+        tinyExample.createCriteria().andGoodsIdIn(goodsIds);
+        simpleGoodsInfos.addAll(shiguGoodsTinyMapper.selectByExample(tinyExample).stream().map(o -> {
+            CollectSimpleGoodsInfo goodsInfo = BeanMapper.map(o, CollectSimpleGoodsInfo.class);
+            goodsInfo.setOnSaleIs(true);
+            return goodsInfo;
+        }).collect(Collectors.toList()));
+        if (goodsIds.size()>simpleGoodsInfos.size()) {
+            ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
+            shiguGoodsSoldoutExample.setWebSite(webSite);
+            shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(goodsIds);
+            simpleGoodsInfos.addAll(shiguGoodsSoldoutMapper.selectByExample(shiguGoodsSoldoutExample).stream().map(o->{
+                CollectSimpleGoodsInfo goodsInfo = BeanMapper.map(o, CollectSimpleGoodsInfo.class);
+                goodsInfo.setOnSaleIs(false);
+                return goodsInfo;
+            }).collect(Collectors.toList()));
+        }
+        return simpleGoodsInfos;
     }
 
     /**
@@ -156,6 +225,8 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
             goodsCollect.setGoodsId(collect.getItemId());
+            goodsCollect.setRemark1(collect.getTitle());
+            goodsCollect.setType(collect.getType());
             shiguGoodsCollectMapper.insertSelective(goodsCollect);
         } else
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);

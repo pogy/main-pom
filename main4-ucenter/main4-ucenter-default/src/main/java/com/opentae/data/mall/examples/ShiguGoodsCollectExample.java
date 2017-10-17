@@ -17,9 +17,10 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
     public static EntityColumn remark15;
     public static EntityColumn remark14;
     public static EntityColumn remark13;
-    public static EntityColumn goodsId;
     public static EntityColumn remark12;
+    public static EntityColumn goodsId;
     public static EntityColumn remark11;
+    public static EntityColumn type;
     public static EntityColumn remark19;
     public static EntityColumn remark20;
     public static EntityColumn website;
@@ -51,9 +52,10 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         remark15 = listMap.get("remark15");
         remark14 = listMap.get("remark14");
         remark13 = listMap.get("remark13");
-        goodsId = listMap.get("goodsId");
         remark12 = listMap.get("remark12");
+        goodsId = listMap.get("goodsId");
         remark11 = listMap.get("remark11");
+        type = listMap.get("type");
         remark19 = listMap.get("remark19");
         remark20 = listMap.get("remark20");
         website = listMap.get("website");
@@ -470,53 +472,6 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         public ShiguGoodsCollectExample.Criteria andRemark13NotBetween(String value1, String value2) {
             return notBetween(remark13, value1, value2);
         }
-        public ShiguGoodsCollectExample.Criteria andGoodsIdIsNull() {
-            return isNull(goodsId);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdIsNotNull() {
-            return isNotNull(goodsId);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdEqualTo(Long value) {
-            return equalTo(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdNotEqualTo(Long value) {
-            return notEqualTo(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdGreaterThan(Long value) {
-            return greaterThan(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdLessThan(Long value) {
-            return lessThan(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(goodsId, value);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdIn(List<Long> values) {
-            return in(goodsId, values);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdNotIn(List<Long> values) {
-            return notIn(goodsId, values);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
-            return between(goodsId, value1, value2);
-        }
-
-        public ShiguGoodsCollectExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
-            return notBetween(goodsId, value1, value2);
-        }
         public ShiguGoodsCollectExample.Criteria andRemark12IsNull() {
             return isNull(remark12);
         }
@@ -572,6 +527,53 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         public ShiguGoodsCollectExample.Criteria andRemark12NotBetween(String value1, String value2) {
             return notBetween(remark12, value1, value2);
         }
+        public ShiguGoodsCollectExample.Criteria andGoodsIdIsNull() {
+            return isNull(goodsId);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdIsNotNull() {
+            return isNotNull(goodsId);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdEqualTo(Long value) {
+            return equalTo(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdNotEqualTo(Long value) {
+            return notEqualTo(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdGreaterThan(Long value) {
+            return greaterThan(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdLessThan(Long value) {
+            return lessThan(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodsId, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdIn(List<Long> values) {
+            return in(goodsId, values);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdNotIn(List<Long> values) {
+            return notIn(goodsId, values);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+            return between(goodsId, value1, value2);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+            return notBetween(goodsId, value1, value2);
+        }
         public ShiguGoodsCollectExample.Criteria andRemark11IsNull() {
             return isNull(remark11);
         }
@@ -626,6 +628,53 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
 
         public ShiguGoodsCollectExample.Criteria andRemark11NotBetween(String value1, String value2) {
             return notBetween(remark11, value1, value2);
+        }
+        public ShiguGoodsCollectExample.Criteria andTypeIsNull() {
+            return isNull(type);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
+        }
+
+        public ShiguGoodsCollectExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
         public ShiguGoodsCollectExample.Criteria andRemark19IsNull() {
             return isNull(remark19);
