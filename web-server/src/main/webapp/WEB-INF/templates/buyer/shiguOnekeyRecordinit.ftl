@@ -265,7 +265,7 @@ var webSite = '${webSite!}';
         <div class="rightBox fr">
     
 
-<#assign text>{"fields":[{"name":"uploadGoodsState","value":"${query.uploadGoodsState!}"},{"name":"startTime","value":query.startTime},{"name":"endTime","value":query.endTime},{"name":"shopState","value":"${query.shopState!}"},{"name":"tbState","value":"${query.tbState!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"uploadGoodsState","value":"${query.uploadGoodsState!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"shopState","value":"${query.shopState!}"},{"name":"tbState","value":"${query.tbState!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -306,9 +306,9 @@ var webSite = '${webSite!}';
     <ul class="clearfix">
         <li>
             <label>时间：</label>
-            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="startTime" placeholder="开始时间" <#if query.startTime??>value="${query.startTime?string('yyyy-MM-dd')}"</#if>>
+            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="startTime" placeholder="开始时间" <#if query.startTime??>value="${query.startTime!}"</#if>>
             <span class="divideLine">-</span>
-            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="endTime" placeholder="截止时间" <#if query.endTime??>value="${query.endTime?string('yyyy-MM-dd')}"</#if>>
+            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="endTime" placeholder="截止时间" <#if query.endTime??>value="${query.endTime!}"</#if>>
         </li>
         <li><label>档口状态：</label>
 
