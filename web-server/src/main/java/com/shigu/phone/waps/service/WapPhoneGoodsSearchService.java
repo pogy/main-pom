@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * 描述：移动端商品搜索service
  */
 @Service
-public class WapGoodsSearchSere {
+public class WapPhoneGoodsSearchService {
 
     @Autowired
     private GoodsSearchService goodsSearchService;

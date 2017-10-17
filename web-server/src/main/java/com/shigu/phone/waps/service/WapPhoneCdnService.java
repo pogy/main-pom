@@ -32,8 +32,7 @@ import java.util.Map;
  * Created by zhaohongbo on 17/3/7.
  */
 @Service
-public class WapCdnService {
-
+public class WapPhoneCdnService{
     @Autowired
     private UserCollectService userCollectService;
 

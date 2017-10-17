@@ -5,6 +5,7 @@ import com.openJar.beans.app.AppItemSpread;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
 import com.shigu.phone.waps.vo.ImgSpreadVO;
+import com.shigu.phone.waps.vo.WapItemSpreadVo;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -55,15 +56,23 @@ public class WapAdvertService {
      */
     public ItemSpreadResponse itemSpread(String webSite, SpreadEnum spread){
         List<ItemSpreadVO> itemGoat = spreadService.selItemSpreads(webSite,spread).selReal();
-        List<AppItemSpread> spreads=new ArrayList<>();
+        List<WapItemSpreadVo> list=new ArrayList<>();
+        itemGoat.stream().forEach(o->{
+            new WapItemSpreadVo();
+        });
         for(ItemSpreadVO item:itemGoat){
             AppItemSpread sp= BeanMapper.map(item,AppItemSpread.class);
             sp.setGoodsId(item.getId());
+
+
+
+
+
             sp.setTitle(item.getTitle());
-            spreads.add(sp);
+//            spreads.add(sp);
         }
         ItemSpreadResponse response=new ItemSpreadResponse();
-        response.setSpreads(spreads);
+//        response.setSpreads(spreads);
         response.setSuccess(true);
         return response;
     }

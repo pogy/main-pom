@@ -65,8 +65,8 @@ import java.util.Map;
  * 描述：移动端用户服务
  */
 @Service
-public class WapUserService {
-    private static final Logger logger = LoggerFactory.getLogger(WapUserService.class);
+public class WapPhoneUserService {
+    private static final Logger logger = LoggerFactory.getLogger(PhoneUserService.class);
     @Autowired
     private MemberLicenseMapper memberLicenseMapper;
     @Autowired

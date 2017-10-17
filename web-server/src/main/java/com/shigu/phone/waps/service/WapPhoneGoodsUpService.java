@@ -43,7 +43,7 @@ import java.util.List;
  */
 
 @Service
-public class WapGoodsUpService {
+public class WapPhoneGoodsUpService {
 
     @Autowired
     private ItemUpRecordService itemUpRecordService;

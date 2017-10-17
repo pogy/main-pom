@@ -55,26 +55,23 @@ public class WapAdvertAction {
 
     @RequestMapping("itemSpread")
     @ResponseBody
-    public JSONObject itemSpread(String code, String webSite) {
-        ItemSpreadRequest request = new ItemSpreadRequest();
-        request.setSpreadCode(code);
-        request.setWebSite(webSite);
-        ItemSpreadResponse response = new ItemSpreadResponse();
-        if(request.getSpreadCode() == null || StringUtils.isEmpty(request.getWebSite())){
-            return WrapperUtil.wrapperOpenException("缺少参数",response);
-        }
+    public JSONObject itemSpread(String spreadCode, String webSite) {
 
+        if(spreadCode == null || StringUtils.isEmpty(webSite)){
+            return  JsonResponseUtil.error("缺少参数");
+
+        }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
-            if(spreadEnum.getCode().equals(request.getSpreadCode())){
+            if(spreadEnum.getCode().equals(spreadCode)){
                 spread=spreadEnum;
                 break;
             }
         }
         if (spread == null) {
-            return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
+            return  JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode);
         }
-        response= wapAdvertService.itemSpread(webSite, spread);
-        return JSONObject.fromObject(response);
+       wapAdvertService.itemSpread(webSite, spread);
+        return JSONObject.fromObject("");
     }
 }
