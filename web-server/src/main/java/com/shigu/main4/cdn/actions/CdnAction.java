@@ -794,6 +794,7 @@ public class CdnAction {
             record.setSupperStoreId(cdnItem.getShopId());
             record.setSupperMarketId(cdnItem.getMarketId());
             record.setSupperNumiid(cdnItem.getTbNumIid());
+            record.setCid(cdnItem.getCid());
             if (!cdnItem.getImgUrl().isEmpty()) {
                 String img = cdnItem.getImgUrl().get(0);
                 record.setSupperImage(img);

@@ -253,6 +253,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         return uploadedItemsCommon(boleanQueryBuilder,fromDate,toDate,pageNo,pageSize);
     }
 
+    //todo 需要修改为新版
     /**
      * 公共查,已上传
      * @param boleanQueryBuilder
@@ -310,7 +311,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 onekeyRecoreVO.setCreateDate(DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD));
                 onekeyRecoreVO.setId(shiguGoodsUp.getSupperGoodsId());
                 onekeyRecoreVO.setImgsrc(shiguGoodsUp.getSupperImage());
-                onekeyRecoreVO.setTarget(shiguGoodsUp.getFlag());
+                onekeyRecoreVO.setFlag(shiguGoodsUp.getFlag());
                 onekeyRecoreVO.setTitle(shiguGoodsUp.getSupperGoodsName());
                 onekeyRecoreVO.setWebSite(shiguGoodsUp.getWebSite());
                 onekeyRecoreVO.setOnekeyId(hit.getId());
@@ -328,9 +329,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 if(shiguGoodsTiny != null){
                     onekeyRecoreVO.setLiprice(shiguGoodsTiny.getPriceString());
                     onekeyRecoreVO.setPiprice(shiguGoodsTiny.getPiPriceString());
-                    onekeyRecoreVO.setUnShelve(false);
+                    onekeyRecoreVO.setShopSoldout(false);
                 }else{
-                    onekeyRecoreVO.setUnShelve(true);
+                    onekeyRecoreVO.setShopSoldout(true);
                 }
                 onekeyRecoreVOList.add(onekeyRecoreVO);
             }
