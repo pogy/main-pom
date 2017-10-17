@@ -80,7 +80,7 @@
 
                 </#list>
                 </li>
-                <li><a  class="fmButton fmButton-blue searchBtn" onclick="downloadExcelSubmit()">导出Excel</a></li>
+
             </ul>
         </div>
 
@@ -104,7 +104,9 @@
         </#if>
 
     </#list>
-
+        <div class="orderSearch orderSearchBox">
+            <a  class="fmButton fmButton-blue searchBtn" onclick="downloadExcelSubmit()">导出Excel</a>
+        </div>
         <div class="orderCon">
             <div class="theadCon">
                 <ul class="">
