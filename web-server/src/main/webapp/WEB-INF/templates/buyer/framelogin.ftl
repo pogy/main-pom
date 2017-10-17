@@ -95,7 +95,7 @@
             <div class="fastLoginIn">
                 <p>你也可以用以下方式登录</p>
                 <ul>
-                    <li><a href="${main_host!}ortherLogin.htm?ortherLoginType=5&backUrl=http://local.571xz.net:9001/main4/loginortherSystem.htm?backUrl=http://www.baidu.com" target="_blank" alt="淘宝账号登陆" title="淘宝账号登陆"><i class="iconfont icon-taobao"></i><span>淘宝账号</span></a></li>
+                    <li><a href="${main_host!}ortherLogin.htm?ortherLoginType=5&backUrl=${main_host!}loginortherSystem.htm?backUrl=http://www.baidu.com" target="_self" alt="淘宝账号登陆" title="淘宝账号登陆"><i class="iconfont icon-taobao"></i><span>淘宝账号</span></a></li>
 
                 </ul>
             </div>
@@ -104,8 +104,8 @@
 
 //var backUrl = '${backUrl!}';
         //var backUrl = 'http://local.571xz.net:9001/main4/';
-        var backUrl = 'http://local.571xz.net:9001/main4/loginortherSystem.htm?backUrl=http://www.baidu.com';
-        var taoUrl="";
+        var backUrl = '${main_host!}loginortherSystem.htm?backUrl=http://www.baidu.com';
+
 /*============ loginV2/login#loginForm END ============*/
 
 
