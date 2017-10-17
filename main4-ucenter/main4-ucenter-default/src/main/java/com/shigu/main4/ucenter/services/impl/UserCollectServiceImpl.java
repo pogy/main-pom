@@ -1,5 +1,6 @@
 package com.shigu.main4.ucenter.services.impl;
 
+import com.google.common.collect.Lists;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
@@ -22,6 +23,7 @@ import com.shigu.main4.ucenter.vo.PackageItem;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.ShopInfo;
 import com.shigu.session.main4.tool.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/2/25.
@@ -639,72 +642,16 @@ public class UserCollectServiceImpl implements UserCollectService {
         pager.calPages(count, pageSize);
         if (count > 0) {
             List<ShiguStoreCollect> shiguStoreCollects = shiguStoreCollectMapper.selectByConditionList(collectExample);
-
-            Map<Long, ShiguShop> goodsTinyMap = Collections.EMPTY_MAP;
-            Map<Long, ShiguMarket> marketMap = Collections.EMPTY_MAP;
-            List<ShiguShop> shiguShops = Collections.EMPTY_LIST;
-            try {
-                //准备店铺数据
-                List<Long> storeIds = BeanMapper.getFieldList(shiguStoreCollects, "storeId", Long.TYPE);
-                if (storeIds.size() > 0) {
-                    ShiguShopExample shopExample = new ShiguShopExample();
-                    shopExample.setWebSite(webSite);
-                    shopExample.createCriteria().andShopIdIn(storeIds);
-                    shiguShops = shiguShopMapper.selectByExample(shopExample);
-                    goodsTinyMap = BeanMapper.list2Map(shiguShops, "shopId", Long.class);
-                }
-            } catch (Exception e) {
-                logger.warn("店铺数据准备失败", e);
-            }
-            try {
-                //准备市场数据
-                List<Long> marketIds = BeanMapper.getFieldList(shiguShops, "marketId", Long.TYPE);
-                marketIds.addAll(BeanMapper.getFieldList(shiguShops, "floorId", Long.TYPE));
-                if (marketIds.size() > 0) {
-                    ShiguMarketExample marketExample = new ShiguMarketExample();
-                    marketExample.setWebSite(webSite);
-                    marketExample.createCriteria().andMarketIdIn(marketIds);
-                    marketMap = BeanMapper.list2Map(
-                            shiguMarketMapper.selectFieldsByExample(
-                                    marketExample,
-                                    FieldUtil.codeFields("market_id,market_name")
-                            ),
-                            "marketId",
-                            Long.class
-                    );
-                }
-            } catch (Exception e) {
-                logger.warn("店铺数据准备失败", e);
-            }
-
             List<ShopCollectVO> vos = new ArrayList<>(shiguStoreCollects.size());
             pager.setContent(vos);
-
-            for (ShiguStoreCollect storeCollect : shiguStoreCollects) {
-                ShopCollectVO vo = new ShopCollectVO();
-                vo.setId(storeCollect.getStoreCollectId());
-                vo.setShopId(storeCollect.getStoreId());
-                vo.setWebsite(webSite);
-                ShiguShop shop = goodsTinyMap.get(storeCollect.getStoreId());
-                if (shop != null) {
-                    vo.setAddress(shop.getAddress());
-                    vo.setMainBus(shop.getMainBus());
-                    vo.setShopName(shop.getShopName());
-                    vo.setShopNum(shop.getShopNum());
-                    ShiguMarket market = marketMap.get(shop.getMarketId());
-                    if (market != null) {
-                        vo.setMarket(market.getMarketName());
-                    }
-                    ShiguMarket floor = marketMap.get(shop.getFloorId());
-                    if (floor != null) {
-                        String voMarket = vo.getMarket();
-                        if (voMarket == null)
-                            voMarket = "";
-                        vo.setMarket(voMarket + floor.getMarketName());
-                    }
-                }
-                vos.add(vo);
+            Map<Long, ShopInfo> shopIdInfoMap = selShopInfoByShopIds(shiguStoreCollects.stream().map(ShiguStoreCollect::getStoreId).collect(Collectors.toList())).stream().collect(Collectors.toMap(ShopInfo::getShopId, o -> o));
+            for (ShiguStoreCollect shiguStoreCollect : shiguStoreCollects) {
+                ShopCollectVO shopCollect = BeanMapper.map(shopIdInfoMap.get(shiguStoreCollect.getStoreId()),ShopCollectVO.class);
+                shopCollect.setCollId(shiguStoreCollect.getStoreCollectId());
+                shopCollect.setWebSite(shiguStoreCollect.getWebSite());
+                vos.add(shopCollect);
             }
+            pager.setContent(vos);
         }
         return pager;
     }
@@ -747,5 +694,31 @@ public class UserCollectServiceImpl implements UserCollectService {
             shiguStoreCollectMapper.insertSelective(storeCollect);
         } else
             throw new ShopCollectionException(ShopCollectionException.ShopCollecExcpEnum.CollectionAlreadyExist);
+    }
+
+    @Override
+    public List<ShopInfo> selShopInfoByShopIds(List<Long> shopIds) {
+        String defaultShopImgUrl = "";
+        List<ShopInfo> shopInfoList = Lists.newArrayList();
+        ShiguShopExample shopExample = new ShiguShopExample();
+        shopExample.createCriteria().andShopIdIn(shopIds);
+        List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
+        List<Long> marketIds = Collections.EMPTY_LIST;
+        marketIds.addAll(shiguShops.stream().map(ShiguShop::getMarketId).collect(Collectors.toSet()));
+        ShiguMarketExample marketExample = new ShiguMarketExample();
+        marketExample.createCriteria().andMarketIdIn(marketIds);
+        Map<Long, ShiguMarket> marketIdInfoMap = shiguMarketMapper.selectByExample(marketExample).stream().collect(Collectors.toMap(ShiguMarket::getMarketId, o -> o));
+        for (ShiguShop shiguShop : shiguShops) {
+            ShopInfo shopInfo = new ShopInfo();
+            shopInfo.setShopId(shiguShop.getShopId());
+            shopInfo.setShopNum(shiguShop.getShopNum());
+            shopInfo.setImWw(shiguShop.getImAliww());
+            shopInfo.setImQq(shiguShop.getImQq());
+            //todo 暂时没有店铺图片
+            shopInfo.setShopImgSrc(defaultShopImgUrl);
+            shopInfo.setMarketName(marketIdInfoMap.get(shiguShop.getMarketId()).getMarketName());
+            shopInfoList.add(shopInfo);
+        }
+        return shopInfoList;
     }
 }

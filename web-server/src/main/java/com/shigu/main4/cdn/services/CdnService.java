@@ -444,7 +444,7 @@ public class CdnService {
         for(ShopCollectVO p:pager.getContent()){
             CdnCollectShopVO vo=new CdnCollectShopVO();
             vo.setId(p.getShopId());
-            vo.setName(p.getMarket()+p.getShopNum());
+            vo.setName(p.getMarketName()+p.getShopNum());
             vos.add(vo);
         }
         return vos;

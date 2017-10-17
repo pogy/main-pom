@@ -3,10 +3,7 @@ package com.shigu.buyer.actions;
 import com.alibaba.fastjson.JSON;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.buyer.bo.*;
-import com.shigu.buyer.services.GoodsupRecordSimpleService;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.services.UserAccountService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -124,6 +121,9 @@ public class MemberAction {
     @Autowired
     SendMsgService sendMsgService;
 
+    @Autowired
+    UserCollectSimpleService userCollectSimpleService;
+
     /**
      * 分销商首页
      * @return
@@ -233,6 +233,19 @@ public class MemberAction {
         model.addAttribute("keyword", bo.getKeyword());
 
         return "buyer/goodsCollect";
+    }
+
+    //todo
+    @RequestMapping("member/goodsCollectOriginal")
+    public String goodsCollectOriginal(StoreCollectBO bo,Integer page,HttpSession session,Model model) {
+        //一页12条数据
+        int size = 12;
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
+        model.addAttribute("goodsList",pager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",pager.selPageOption(size));
+        return "buyer/goodsCollectOriginal";
     }
 
     /**
@@ -397,12 +410,10 @@ public class MemberAction {
     @RequestMapping("member/storeCollectinit")
     public String storeCollectinit(StoreCollectBO bo, HttpSession session, Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getRows());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("page",bo.getPage());
-        model.addAttribute("get",bo);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("goodslist",pager.getContent());
+        ShiguPager<NewStoreCollectVO> pager=userCollectSimpleService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getSize());
+        model.addAttribute("pageOption",pager.selPageOption(bo.getSize()));
+        model.addAttribute("query",bo);
+        model.addAttribute("shopList",pager.getContent());
         return "buyer/storeCollectinit";
     }
 

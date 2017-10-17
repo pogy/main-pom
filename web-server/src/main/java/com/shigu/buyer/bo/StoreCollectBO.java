@@ -15,7 +15,7 @@ public class StoreCollectBO implements Serializable{
 
     private Integer page;
 
-    private Integer rows=12;
+    private Integer size=12;
 
     public Integer getPage() {
         if(page==null||page<1){
@@ -28,11 +28,11 @@ public class StoreCollectBO implements Serializable{
         this.page = page;
     }
 
-    public Integer getRows() {
-        return rows;
+    public Integer getSize() {
+        return size;
     }
 
-    public void setRows(Integer rows) {
+    public void setSize(Integer size) {
 //        this.rows = rows;
     }
     public String getWebsite() {

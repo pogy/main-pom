@@ -8,6 +8,7 @@ import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.ShopInfo;
 
 import java.util.List;
 
@@ -94,4 +95,6 @@ public interface UserCollectService {
      * @param collect
      */
     void addShopCollection(ShopCollect collect) throws ShopCollectionException;
+
+    List<ShopInfo> selShopInfoByShopIds(List<Long> shopIds);
 }
