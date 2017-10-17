@@ -4,6 +4,7 @@ import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
 import com.openJar.responses.app.UploadedItemResponse;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.services.PhoneGoodsUpService;
 import com.shigu.session.main4.PersonalSession;
@@ -33,7 +34,7 @@ public class WapGoodsUpAction {
     @Autowired
     private RedisIO redisIO;
 
-    @RequestMapping("uploadedItem")
+    @RequestMapping("queryUploadedGoodsList")
     @ResponseBody
     public JSONObject uploadedItem(HttpSession session,Integer type, Integer index, Integer size){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -60,16 +61,13 @@ public class WapGoodsUpAction {
         return JSONObject.fromObject(phoneGoodsUpService.upToWx(upToWxRequest));
     }
 
-//    @RequestMapping("instockMyItem")
-//    @ResponseBody
-//    public JSONObject instockMyItem(HttpSession session,String uploadId){
-//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        String token = redisIO.get("phone_login_token" + ps.getUserId());
-//        InstockMyItemRequest request = new InstockMyItemRequest();
-//        request.setToken(token);
-//        request.setUploadId(uploadId);
-//        request.setUserId(ps.getUserId());
-//
-//        return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
-//    }
+    @RequestMapping("instockUploadGoods")
+    @ResponseBody
+    public JSONObject instockMyItem(HttpSession session,String uploadId) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        InstockMyItemRequest request = new InstockMyItemRequest();
+        request.setUploadId(uploadId);
+        request.setUserId(ps.getUserId());
+        return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
+    }
 }

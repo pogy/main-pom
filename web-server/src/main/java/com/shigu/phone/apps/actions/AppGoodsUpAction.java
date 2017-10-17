@@ -4,6 +4,7 @@ import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.services.PhoneGoodsUpService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class AppGoodsUpAction {
     }
     @RequestMapping("instockMyItem")
     @ResponseBody
-    public JSONObject instockMyItem(InstockMyItemRequest request){
+    public JSONObject instockMyItem(InstockMyItemRequest request) throws Main4Exception {
         return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
     }
 }

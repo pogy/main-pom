@@ -173,12 +173,12 @@ public class PhoneGoodsUpService {
         return res;
     }
 
-    public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
+    public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) throws Main4Exception {
         //查询上传记录
         SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(request.getUploadId());
         if(singleItemUpRecordVO != null){
-            //todo 先下架淘宝
-
+            //下架淘宝
+            itemUpRecordService.soldOutTbItem(request.getUserId(),singleItemUpRecordVO.getFenNumiid());
             //再修改上传记录
             ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
             itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());

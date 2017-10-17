@@ -34,6 +34,10 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
             appResolveException(response,ex);
             return null;
         }
+        if(request.getServletPath().contains("/wap/")&&request.getServletPath().endsWith(".json")){
+            wapResolveException(response,ex);
+            return null;
+        }
 		if(request.getServletPath().endsWith(".json")){//json类型的问题
 			Map<String,Object> otherFields = null;
 			if (ex instanceof JsonErrException) {
@@ -56,14 +60,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			} else {
 				response.setContentType("application/json");//修复post异常信息未被解析为json
 			}
-			try {
-				PrintWriter writer = response.getWriter();
-				writer.print(jsonString);
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            writer(response,jsonString);
 			return null;
 		}else if(ex instanceof Main4Exception){//页面已知的错误
 			request.setAttribute("errMsg",ex.getMessage());
@@ -84,13 +81,26 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
         String jsonString = JSONObject.fromObject(systemResponse).toString();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        writer(response,jsonString);
+    }
+    private void wapResolveException(HttpServletResponse response,Exception ex){
+        SystemResponse systemResponse=new SystemResponse();
+        systemResponse.setSuccess(false);
+        JSONObject errJson=JSONObject.fromObject(systemResponse);
+        errJson.put("msg",ex.getMessage());
+        String jsonString = errJson.toString();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        writer(response,jsonString);
+    }
+
+    private void writer(HttpServletResponse response,String jsonString){
         try {
             PrintWriter writer = response.getWriter();
             writer.print(jsonString);
             writer.flush();
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 }
