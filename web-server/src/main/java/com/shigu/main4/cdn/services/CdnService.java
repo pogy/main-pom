@@ -165,7 +165,7 @@ public class CdnService {
         ShiguGoodsTiny sgt=new ShiguGoodsTiny();
         sgt.setGoodsId(bo.getGoodsId());
         sgt.setWebSite(sgig.getWebSite());
-        sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id"));
+        sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
         if(sgt==null){
             return false;
         }
@@ -173,7 +173,7 @@ public class CdnService {
         itemCollect.setStoreId(sgt.getStoreId());
         itemCollect.setWebsite(sgig.getWebSite());
         itemCollect.setTitle(sgt.getTitle());
-        itemCollect.setType(1);
+        itemCollect.setType(type);
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {

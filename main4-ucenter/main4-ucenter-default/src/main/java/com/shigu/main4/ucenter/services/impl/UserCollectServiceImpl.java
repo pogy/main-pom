@@ -774,7 +774,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         ShiguShopExample shopExample = new ShiguShopExample();
         shopExample.createCriteria().andShopIdIn(shopIds);
         List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
-        List<Long> marketIds = Collections.EMPTY_LIST;
+        List<Long> marketIds = Lists.newArrayList();
         marketIds.addAll(shiguShops.stream().map(ShiguShop::getMarketId).collect(Collectors.toSet()));
         ShiguMarketExample marketExample = new ShiguMarketExample();
         marketExample.createCriteria().andMarketIdIn(marketIds);

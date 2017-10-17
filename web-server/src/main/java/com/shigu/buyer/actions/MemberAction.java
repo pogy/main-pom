@@ -356,20 +356,6 @@ public class MemberAction {
         model.addAttribute("page",bo.getPage());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("goodslist", list);
-
-        //淘宝在售
-        if (bo.isTbSoldout() == false) {
-            //仅【档口在售】且【淘宝在售】；
-            if (bo.isShopSoldout() == false) {
-                return "buyer/shiguOnekeyRecordinit";
-            }
-            if (bo.isShopSoldout() == true){
-                //仅【档口已下架】且【淘宝在售】；
-                return "buyer/shiguOnekeyRecordinit";
-            }
-            return "buyer/shiguOnekeyRecordinit";
-        }
-        //【档口在售】和【档口已下架】，且【淘宝已下架】
         return "buyer/shiguOnekeyRecordinit";
     }
 
