@@ -152,24 +152,18 @@ public class PhoneStoreService {
      */
     public DoStoreCollectResponse doStoreCollect(DoStoreCollectRequest request) {
 
-
-
         DoStoreCollectResponse resp = new DoStoreCollectResponse();
         OpenException openException = new OpenException();
-        String token = redisIO.get("phone_login_token" + request.getUserId());
+//        String token = redisIO.get("phone_login_token" + request.getUserId());
 
-        if (!token.equals( request.getToken())) {
-            openException.setErrMsg("tocken验证失败");
-            resp.setException(openException);
-            resp.setSuccess(false);
-            return resp;
-        }
+//        if (!token.equals( request.getToken())) {
+//            openException.setErrMsg("tocken验证失败");
+//            resp.setException(openException);
+//            resp.setSuccess(false);
+//            return resp;
+//        }
         if (request.getYesOrNo()) {
-            try {
                 addShopCollection(request);
-            } catch (ShopCollectionException e) {
-                resp.setException(new OpenException());
-            }
         } else {
             delShopCollection(request);
         }
@@ -193,7 +187,7 @@ public class PhoneStoreService {
      * @param request
      * @throws ShopCollectionException
      */
-    private void addShopCollection(DoStoreCollectRequest request) throws ShopCollectionException {
+    private void addShopCollection(DoStoreCollectRequest request) {
         ScStoreBO bo = new ScStoreBO();
         bo.setStore_id(request.getShopId());
         cdnService.addShopCollect(request.getUserId(), bo);
