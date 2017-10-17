@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.services.PhoneStoreService;
@@ -31,6 +32,10 @@ public class AppStoreAction {
 
     @Autowired
     private PhoneStoreService phoneStoreService;
+
+    @Autowired
+    private RedisIO redisIO;
+
     @Autowired
     public void setAppStoreService(AppStoreService appStoreService) {
         this.appStoreService = appStoreService;
