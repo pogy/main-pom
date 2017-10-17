@@ -148,12 +148,13 @@ public class CdnService {
 
 
     /**
-     * 收藏商品
+     * 添加到收藏/数据包
      * @param userId
      * @param bo
+     * @param type 类型：1.数据包，2.收藏
      * @return
      */
-    public boolean addItemCollect(Long userId,ScGoodsBO bo){
+    public boolean addItemCollect(Long userId,ScGoodsBO bo,int type){
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
         //查出店、webSite
@@ -172,7 +173,7 @@ public class CdnService {
         itemCollect.setStoreId(sgt.getStoreId());
         itemCollect.setWebsite(sgig.getWebSite());
         itemCollect.setTitle(sgt.getTitle());
-        itemCollect.setType(2);
+        itemCollect.setType(1);
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {

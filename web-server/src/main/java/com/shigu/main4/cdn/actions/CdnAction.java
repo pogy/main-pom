@@ -503,7 +503,19 @@ public class CdnAction {
     }
 
     /**
-     * 收藏商品
+     * 添加到商品收藏
+     * @return
+     */
+    @RequestMapping("addGoodsFavorite")
+    @ResponseBody
+    public JSONObject addGoodsFavorite(@Valid ScGoodsBO bo,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        cdnService.addItemCollect(ps.getUserId(),bo,2);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 添加到数据包
      * @param bo
      */
     @RequestMapping({"jsonScAddGoods","jsonScAdd"})
@@ -516,7 +528,7 @@ public class CdnAction {
             return;
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(cdnService.addItemCollect(ps.getUserId(),bo)){
+        if(cdnService.addItemCollect(ps.getUserId(),bo,1)){
 //            return JsonResponseUtil.success();
             ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
         }else{

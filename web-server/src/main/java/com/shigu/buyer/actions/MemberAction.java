@@ -204,7 +204,7 @@ public class MemberAction {
     }
 
     /**
-     * 删除收藏
+     * 从数据包移除
      * @return
      */
     @RequestMapping("member/rmv_mydp")
@@ -233,6 +233,19 @@ public class MemberAction {
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(size));
         return "buyer/goodsCollectOriginal";
+    }
+
+    /**
+     * 删除收藏的商品
+     * @param ids
+     * @param session
+     * @return
+     */
+    @RequestMapping("member/rmvFavoriteGoods")
+    public JSONObject rmvFavoriteGoods(String ids,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        userCollectSimpleService.delCollectGoods(ps.getUserId(),ids);
+        return JsonResponseUtil.success();
     }
 
     /**

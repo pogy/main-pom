@@ -16,6 +16,7 @@ import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,5 +65,17 @@ public class UserCollectSimpleService {
             collectVOs.add(map);
         }
         return pager;
+    }
+
+    public void delCollectGoods(Long userId,String collectIds){
+        if (userId == null) {
+            return;
+        }
+        String[] splitIds = collectIds.split(",");
+        if (splitIds.length == 0) {
+            return;
+        }
+        List<Long> collect = Arrays.stream(splitIds).map(o -> Long.valueOf(o)).collect(Collectors.toList());
+        userCollectService.delItemCollection(userId,collect);
     }
 }
