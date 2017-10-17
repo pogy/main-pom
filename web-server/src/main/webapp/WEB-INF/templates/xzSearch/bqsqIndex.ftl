@@ -233,7 +233,7 @@
 <div class="bottomContact yahei">
     <ul>
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a><em></em></li>
-        <li><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=1030995998" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a><em></em></li>
+        <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a><em></em></li>
         <li><i class="icon-s-tel"></i><span>400-076-1116</span></li>
     </ul>
 </div>
