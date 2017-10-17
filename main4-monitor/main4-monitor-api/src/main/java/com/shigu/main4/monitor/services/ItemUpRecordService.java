@@ -27,6 +27,13 @@ public interface ItemUpRecordService {
     void updateItemUpload(ItemUpRecordVO itemUpRecordVO,String oneKeyId);
 
     /**
+     * 淘宝下架
+     * @param userId
+     * @param numIid
+     */
+    void soldOutTbItem(Long userId,Long numIid) throws Main4Exception;
+
+    /**
      * 查最后一次上传的时间
      * @param userId
      * @param supperGoodsId
