@@ -1,7 +1,9 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.requests.app.MarketsRequest;
 import com.openJar.requests.app.OneShopRequest;
 import com.openJar.requests.app.ShopCatRequest;
+import com.openJar.responses.app.MarketsResponse;
 import com.openJar.responses.app.ShopCatResponse;
 import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
@@ -47,6 +49,15 @@ public class WapStoreAction {
         shopCatRequest.getShopId();
         shopCatRequest.getWebSite();
         return JSONObject.fromObject(appStoreService.selShopCat(shopCatRequest));
+    }
+
+    @RequestMapping("markets")
+    @ResponseBody
+    public JSONObject selMarketData(@Valid MarketsRequest request, MarketsResponse response, BindingResult result)  {
+        if(result.hasErrors()){
+            return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
+        }
+        return JSONObject.fromObject(appStoreService.selMarketData(request));
     }
 
 }
