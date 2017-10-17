@@ -77,7 +77,7 @@ public class UserCollectSimpleService {
         for (ShopCollectVO shopCollectVO : shopCollectVOS) {
             NewStoreCollectVO map = BeanMapper.map(shopCollectVO, NewStoreCollectVO.class);
             map.setStarNum(shopForCdnService.selShopStarById(shopCollectVO.getShopId()));
-            map.setGoodsList(shopForCdnService.searchItemOnsale(null, shopCollectVO.getShopId(), webSite, "time_down", 1, 3).getContent().stream().map(o->{
+            map.setGoodsList(shopForCdnService.shopGoodsNew(shopCollectVO.getShopId()).stream().map(o->{
                 SimpleGoodsInfoVO goodsInfoVO = new SimpleGoodsInfoVO();
                 goodsInfoVO.setGoodsId(o.getItemId());
                 goodsInfoVO.setImgSrc(o.getImgUrl());
