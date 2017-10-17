@@ -47,6 +47,12 @@ public class AppUserAction {
     public JSONObject appLogin( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
+    //登录请求
+    @RequestMapping("ortherLogin")
+    public String appOtherLogin( @Valid OrtherLoginRequest request) {
+        String s = phoneUserService.ortherLogin(request);
+        return s;
+    }
     //忘记密码
     @RequestMapping("forgetPassword")
     @ResponseBody

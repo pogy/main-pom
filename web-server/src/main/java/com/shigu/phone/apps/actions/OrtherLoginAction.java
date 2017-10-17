@@ -25,12 +25,12 @@ public class OrtherLoginAction {
     private PhoneUserService phoneUserService;
     //第三方登录
     @RequestMapping("phoneOrtherLogin")
-    @ResponseBody
-    public JSONObject passwordLogin(String nick,String key,Integer type){
+    public String passwordLogin(String nick,String key,Integer type){
         OrtherLoginRequest request=new OrtherLoginRequest();
         request.setType(type);
         request.setNick(nick);
         request.setKey(key);
-        return JSONObject.fromObject(phoneUserService.ortherLogin(request));
+        String url=phoneUserService.ortherLogin(request);
+        return "redirect:"+url;
     }
 }
