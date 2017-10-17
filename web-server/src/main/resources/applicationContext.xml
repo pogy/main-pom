@@ -77,5 +77,14 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <import resource="mvc.xml"/>
     <!--<import resource="message_queue.xml"/>-->
     <import resource="message_queue_test.xml"/>
+
+
+    <!--app访问拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/app/**"/>
+            <bean class="com.shigu.core.config.AppInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
 

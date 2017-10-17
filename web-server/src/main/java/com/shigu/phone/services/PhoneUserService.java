@@ -52,6 +52,7 @@ import redis.clients.jedis.Jedis;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -154,13 +155,12 @@ public class PhoneUserService {
                     appUser.setUserNick(personalSession.getUserNick());
 //                    String uuid = UUIDGenerator.getUUID();
                     String uuid= TokenUtil.format(personalSession.getUserId());
+                    String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
                     //把token存入redis,设置存活时间30分钟
                     // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                     Jedis jedis = redisIO.getJedis();
-                    jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, uuid);
-                    //从redis取出token
-                    String token1 = redisIO.get("phone_login_token" + personalSession.getUserId());
-                    appUser.setToken(token1);
+                    jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+                    appUser.setToken(uuid);
                     //是否是商家
                     ShiguShopExample shiguShopExample=new ShiguShopExample();
                     shiguShopExample.createCriteria().andUserIdEqualTo(personalSession.getUserId());
@@ -182,7 +182,7 @@ public class PhoneUserService {
                     memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId()).andLicenseTypeEqualTo(4);
                     List<MemberLicense> memberLicensesList = memberLicenseMapper.selectByExample(memberLicenseExample);
                     //如果为空,说明用户没有绑定手机号,抛异常
-                    if (memberLicensesList.size() == 0 && memberLicensesList == null) {
+                    if (memberLicensesList.size() == 0) {
                         openException.setErrMsg("未绑定手机号");
                         resp.setException(openException);
                         resp.setSuccess(false);
