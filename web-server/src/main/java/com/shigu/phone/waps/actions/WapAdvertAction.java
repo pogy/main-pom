@@ -5,14 +5,19 @@ import com.openJar.requests.app.ItemSpreadRequest;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
 import com.shigu.phone.apps.services.AppAdvertService;
+import com.shigu.phone.waps.service.WapAdvertService;
+import com.shigu.phone.waps.vo.ImgSpreadVO;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -21,35 +26,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/wap")
 public class WapAdvertAction {
     @Autowired
-    AppAdvertService appAdvertService;
+    WapAdvertService wapAdvertService;
 
     @RequestMapping("imgSpread")
     @ResponseBody
-    public JSONObject imgSpread(String code, String webSite){
-
-        ImgSpreadRequest imgSpreadRequest = new ImgSpreadRequest();
-        imgSpreadRequest.setSpreadCode(code);
-        imgSpreadRequest.setWebSite(webSite);
-
-        ImgSpreadResponse response = new ImgSpreadResponse();
+    public JSONObject imgSpread(String spreadCode, String webSite){
 
 
-        if(code == null || StringUtils.isEmpty(webSite)){
-            return WrapperUtil.wrapperOpenException("缺少参数",response);
+        if(spreadCode == null || StringUtils.isEmpty(webSite)){
+            return JsonResponseUtil.error("缺少参数");
         }
+
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
-            if(spreadEnum.getCode().equals(code)){
+            if(spreadEnum.getCode().equals(spreadCode)){
                 spread=spreadEnum;
                 break;
             }
         }
         if (spread == null) {
-            return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+code,response);
+            return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode);
         }
-        response=appAdvertService.imgSpread(spread);
+        List<ImgSpreadVO> imgSpreadVOS = wapAdvertService.imgSpread(spread);
 
-        return JSONObject.fromObject(response);
+        return  JsonResponseUtil.success().element("spreads",imgSpreadVOS);
     }
 
 
@@ -74,7 +74,7 @@ public class WapAdvertAction {
         if (spread == null) {
             return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
         }
-        response= appAdvertService.itemSpread(webSite, spread);
+        response= wapAdvertService.itemSpread(webSite, spread);
         return JSONObject.fromObject(response);
     }
 }
