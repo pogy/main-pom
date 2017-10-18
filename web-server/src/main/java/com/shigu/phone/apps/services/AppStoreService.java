@@ -26,6 +26,7 @@ import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.phone.apps.utils.ImgUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,7 +109,7 @@ public class AppStoreService {
         response.setStarNum(starNum.intValue());
         response.setTelephone(storeRelation.getTelephone());
         response.setTodayAdd(todayAdd);
-        response.setShopHeadUrl(response.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
+        response.setShopHeadUrl(ImgUtils.headUrl(storeRelation.getImWw()));
         //店铺是否已收藏
         if (StringUtil.isNull(request.getUserId())) {
             response.setIsCollect(0);
