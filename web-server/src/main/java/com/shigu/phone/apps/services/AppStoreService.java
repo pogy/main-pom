@@ -8,12 +8,32 @@ import com.openJar.requests.app.ShopCatRequest;
 import com.openJar.responses.app.MarketsResponse;
 import com.openJar.responses.app.OneShopResponse;
 import com.openJar.responses.app.ShopCatResponse;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguStoreCollectExample;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
+import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.cdn.services.MarketListService;
+import com.shigu.main4.cdn.vo.FloorVO;
+import com.shigu.main4.cdn.vo.MarketTagVO;
+import com.shigu.main4.cdn.vo.MarketVO;
+import com.shigu.main4.cdn.vo.ShopInFloorVO;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.newcdn.vo.CdnShopCatVO;
+import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.CatPolymerization;
+import com.shigu.main4.vo.StoreRelation;
 import com.shigu.phone.baseservices.BaseStoreService;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopCatVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pc on 2017-08-29.
@@ -47,7 +67,6 @@ public class AppStoreService {
         } catch (OpenException e) {
             response.setSuccess(false);
             response.setException(e);
-            return  response;
         }
         return response;
     }

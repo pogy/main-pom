@@ -34,7 +34,6 @@ import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.StoreSelFromEsService;
 import com.shigu.search.vo.StoreInSearch;
@@ -123,7 +122,7 @@ public class WapStoreService {
         response.setStarNum(starNum.intValue());
         response.setTelephone(storeRelation.getTelephone());
         response.setTodayAdd(todayAdd);
-        response.setShopHeadUrl(ImgUtils.headUrl(storeRelation.getImWw()));
+        response.setShopHeadUrl(response.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
         //店铺是否已收藏
         if (StringUtil.isNull(request.getUserId())) {
             response.setIsCollect(0);

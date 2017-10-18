@@ -145,8 +145,6 @@ public class ApiRequestFilter implements Filter {
         writeFalseToResponse(response,e);
     }
     public static void writeFalseToResponse(ServletResponse response,SystemException e) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
         SystemResponse rsp = new SystemResponse();
         rsp.setSuccess(false);
         rsp.setException(e);
