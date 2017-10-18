@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,66 +70,66 @@ public class BasePhoneCdnService {
             throw openException;
         }
         ShiguPager<SearchItem> searchItem = itemSearchService.searchItemByIds(goodsIds, "hz", index, pageSize);
+        searchItem.calPages(searchItem.getTotalCount(),pageSize);
         List<SearchItem> searchItems = searchItem.getContent();
-        List<Long> storeIds = BeanMapper.getFieldList(searchItems,"storeId",Long.class);
-
-        ShiguShopExample shopExample = new ShiguShopExample();
-        shopExample.createCriteria().andShopIdIn(storeIds);
-        List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
-        Map<Long,List<ShiguShop>> shiguShopGroup = BeanMapper.groupBy(shiguShops,"shopId",Long.class);
-        List<Long> marketIds = BeanMapper.getFieldList(shiguShops,"marketId",Long.class);
-
-        ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-        shiguMarketExample.createCriteria().andMarketIdIn(marketIds);
-        List<ShiguMarket> shiguMarkets = shiguMarketMapper.selectByExample(shiguMarketExample);
-        Map<Long,List<ShiguMarket>> shiguMarketGroup = BeanMapper.groupBy(shiguMarkets,"marketId",Long.class);
-
-        List<AppGoodsBlock> appGoodsBlocks = new ArrayList<>();
-        searchItems.stream().filter(item->item!=null).forEach(item->{
-            List<ShiguShop> shiguShopList = shiguShopGroup.get(item.getStoreId());
-            ShiguShop shiguShop = null;
-            if (shiguShopList != null && !shiguShopList.isEmpty()) {
-                shiguShop = shiguShopList.get(0);
-            }
-            List<ShiguMarket> shiguMarketsList = null;
-            ShiguMarket shiguMarket = null;
-            if (shiguShop != null) {
-                shiguMarketsList = shiguMarketGroup.get(shiguShop.getMarketId());
-            }
-            if (shiguMarketsList != null && !shiguMarketsList.isEmpty()) {
-                shiguMarket = shiguMarketsList.get(0);
-            }
-
-            List<ItemCollectInfoVO> itemCollectInfoVOS1 = itemCollectInfoGroup.get(item.getItemId());
-            ItemCollectInfoVO itemCollectInfoVO = null;
-            if (itemCollectInfoVOS1 != null && !itemCollectInfoVOS1.isEmpty()) {
-                itemCollectInfoVO = itemCollectInfoVOS1.get(0);
-            }
-
-            AppGoodsBlock appGoodsBlock = new AppGoodsBlock();
-            appGoodsBlock.setGoodsId(item.getItemId()+"");
-            appGoodsBlock.setTitle(item.getTitle());
-            appGoodsBlock.setHighLightTitle(item.getHighLightTitle());
-            appGoodsBlock.setImgsrc(item.getPicUrl());
-            appGoodsBlock.setPiprice(item.getPrice());
-            if (shiguShop != null && shiguMarket != null) {
-                appGoodsBlock.setFullStoreName(shiguMarket.getMarketName()+" "+shiguShop.getShopName());//市场档口，空格隔开
-            }
-            appGoodsBlock.setAliww(userInfo.getImWw());
-            appGoodsBlock.setStoreid(item.getStoreId());
-            appGoodsBlock.setGoodsNo(item.getGoodsNo());
-            appGoodsBlock.setHighLightGoodsNo(item.getHighLightGoodsNo());
-            if (itemCollectInfoVO != null) {
-                appGoodsBlock.setCollectId(itemCollectInfoVO.getGoodsCollectId()+"");
-            }
-            appGoodsBlocks.add(appGoodsBlock);
-
-        });
-
         BaseCollectItemVO vo  = new BaseCollectItemVO();
-        vo.setHasNext(appGoodsBlocks.size()>searchItem.getTotalCount());
-        vo.setItems(appGoodsBlocks);
+        vo.setHasNext(searchItem.getNumber()<searchItem.getTotalPages());
+        vo.setItems(new ArrayList<>());
         vo.setTotal(searchItem.getTotalCount());
+        if(searchItems.size()>0){
+            List<Long> storeIds = BeanMapper.getFieldList(searchItems,"storeId",Long.class);
+
+            ShiguShopExample shopExample = new ShiguShopExample();
+            shopExample.createCriteria().andShopIdIn(storeIds);
+            List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
+            Map<Long,List<ShiguShop>> shiguShopGroup = BeanMapper.groupBy(shiguShops,"shopId",Long.class);
+            List<Long> marketIds = BeanMapper.getFieldList(shiguShops,"marketId",Long.class);
+
+            ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+            shiguMarketExample.createCriteria().andMarketIdIn(marketIds);
+            List<ShiguMarket> shiguMarkets = shiguMarketMapper.selectByExample(shiguMarketExample);
+            Map<Long,List<ShiguMarket>> shiguMarketGroup = BeanMapper.groupBy(shiguMarkets,"marketId",Long.class);
+            List<AppGoodsBlock> appGoodsBlocks=vo.getItems();
+            searchItems.stream().filter(item->item!=null).forEach(item->{
+                List<ShiguShop> shiguShopList = shiguShopGroup.get(item.getStoreId());
+                ShiguShop shiguShop = null;
+                if (shiguShopList != null && !shiguShopList.isEmpty()) {
+                    shiguShop = shiguShopList.get(0);
+                }
+                List<ShiguMarket> shiguMarketsList = null;
+                ShiguMarket shiguMarket = null;
+                if (shiguShop != null) {
+                    shiguMarketsList = shiguMarketGroup.get(shiguShop.getMarketId());
+                }
+                if (shiguMarketsList != null && !shiguMarketsList.isEmpty()) {
+                    shiguMarket = shiguMarketsList.get(0);
+                }
+
+                List<ItemCollectInfoVO> itemCollectInfoVOS1 = itemCollectInfoGroup.get(item.getItemId());
+                ItemCollectInfoVO itemCollectInfoVO = null;
+                if (itemCollectInfoVOS1 != null && !itemCollectInfoVOS1.isEmpty()) {
+                    itemCollectInfoVO = itemCollectInfoVOS1.get(0);
+                }
+
+                AppGoodsBlock appGoodsBlock = new AppGoodsBlock();
+                appGoodsBlock.setGoodsId(item.getItemId()+"");
+                appGoodsBlock.setTitle(item.getTitle());
+                appGoodsBlock.setHighLightTitle(item.getHighLightTitle());
+                appGoodsBlock.setImgsrc(item.getPicUrl());
+                appGoodsBlock.setPiprice(item.getPrice());
+                if (shiguShop != null && shiguMarket != null) {
+                    appGoodsBlock.setFullStoreName(shiguMarket.getMarketName()+" "+shiguShop.getShopName());//市场档口，空格隔开
+                }
+                appGoodsBlock.setAliww(userInfo.getImWw());
+                appGoodsBlock.setStoreid(item.getStoreId());
+                appGoodsBlock.setGoodsNo(item.getGoodsNo());
+                appGoodsBlock.setHighLightGoodsNo(item.getHighLightGoodsNo());
+                if (itemCollectInfoVO != null) {
+                    appGoodsBlock.setCollectId(itemCollectInfoVO.getGoodsCollectId()+"");
+                }
+                appGoodsBlocks.add(appGoodsBlock);
+            });
+        }
         return vo;
     }
 
