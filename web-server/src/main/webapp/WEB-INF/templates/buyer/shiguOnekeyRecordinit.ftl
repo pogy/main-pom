@@ -297,9 +297,18 @@ var webSite = '${webSite!}';
     <ul class="pageTabs clearfix">
     <li <#if !query.uploadGoodsState >class="select"</#if>><a href="javascript:;" data-state="">全部</a></li>
     <li <#if query.uploadGoodsState == 1 >class="select"</#if>><a href="javascript:;" data-state="1">档口在售</a></li>
-    <li <#if query.uploadGoodsState == 2 >class="select"</#if>><a href="javascript:;" data-state="2">淘宝已下架</a></li>
+    <li <#if query.uploadGoodsState == 2 >class="select"</#if>>
+        <a href="javascript:;" class="pr" data-state="2">
+            档口已下架
+            <#if shopDownNum??>
+            <i class="shopDownNum pa">${shopDownNum!}</i>
+            </#if>
+        </a>
+    </li>
     <li <#if query.uploadGoodsState == 3 >class="select"</#if>><a href="javascript:;" data-state="3">历史上传</a></li>
 </ul>
+
+
 
 
     <div class="searchBar">
