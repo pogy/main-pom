@@ -1,5 +1,6 @@
 package com.shigu.outsystem.actions;
 
+import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.tools.JsonResponseUtil;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class OutShopGoodsAction {
         List<Long> shopIdList=new ArrayList ();
         shopIdList.add (shopId);
 
-        ShiguAggsPager shopGoods=itemSearchService.searchItem (null, null, null, null, shopIdList, null, null, null, null, null, null, page, pageSize, true);
+        ShiguAggsPager shopGoods=itemSearchService.searchItem (null, "hz", null, null, shopIdList, null, null, null, null, null, SearchOrderBy.NEW, page, pageSize, true);
 
         return JSONObject.fromObject (shopGoods);
 
