@@ -24,6 +24,7 @@ import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopCatVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +106,7 @@ public class BaseStoreService {
         vo.setStarNum(starNum.intValue());
         vo.setTelephone(storeRelation.getTelephone());
         vo.setTodayAdd(todayAdd);
-        vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
+        vo.setShopHeadUrl(ImgUtils.headUrl(storeRelation.getImWw()));
         //店铺是否已收藏
         if (userId == null) {
             vo.setIsCollect(0);

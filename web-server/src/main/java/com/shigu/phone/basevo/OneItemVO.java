@@ -39,7 +39,7 @@ public class OneItemVO implements Serializable {
     //商品参数
     private List<AppItemKv> itemKvs;
     //店铺头像
-    private String shopHeadUrl= "http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
+    private String shopHeadUrl;
     //商品是否收藏状态：0:未收藏&nbsp;1:&nbsp;收藏
     private int type;
 

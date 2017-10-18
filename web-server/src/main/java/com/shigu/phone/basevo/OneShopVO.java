@@ -21,7 +21,7 @@ public class OneShopVO implements Serializable{
     //星星数	必须
     private Integer starNum;
     //店铺头像	必须
-    private String shopHeadUrl = "http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
+    private String shopHeadUrl;
     //是否收藏&nbsp;1&nbsp;收藏&nbsp;&nbsp;0未收藏
     private Integer isCollect;
 

@@ -12,6 +12,7 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -29,14 +30,25 @@ public class AppInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) throws Exception {
+                             HttpServletResponse response, Object handler){
         String url = request.getServletPath();
         if (!url.startsWith("/app/")) {
             return true;
         }
         url = url.replace("/app/", "").split("\\.")[0];
         String classPath = "com.openJar.requests.app." + toUpperCase(url) + "Request";
-        Class<?> clazz = Class.forName(classPath);
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(classPath);
+        } catch (Exception e) {
+            try {
+                SystemException ex=new SystemException();
+                ex.setErrMsg("非法请求");
+                ApiRequestFilter.writeFalseToResponse(response, ex);
+                return false;
+            } catch (IOException e1) {
+            }
+        }
         Map<String, String[]> map = request.getParameterMap();
         if (checkedHasToken(clazz)) {
             Long userId;
@@ -44,7 +56,10 @@ public class AppInterceptor implements HandlerInterceptor {
                 userId = parseUserId(request.getParameter("token"));
             } catch (SystemException e) {
                 if (checkedTokenIsNotNull(clazz)) {
-                    ApiRequestFilter.writeFalseToResponse(response, e);
+                    try {
+                        ApiRequestFilter.writeFalseToResponse(response, e);
+                    } catch (IOException e1) {
+                    }
                     return false;
                 }
                 map.remove("userId");

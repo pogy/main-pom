@@ -14,6 +14,7 @@ import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.search.bo.SearchBO;
@@ -131,7 +132,7 @@ public class BasePhoneGoodsSearchService {
         vo.setStoreNum(shop.getShopNo());
         vo.setMarket(shop.getMarketName());
         vo.setStarNum(shop.getStarNum().intValue());
-        vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",shop.getImWw()));
+        vo.setShopHeadUrl(ImgUtils.headUrl(shop.getImWw()));
         if (userId == null) {
             vo.setType(0);
         }else {
