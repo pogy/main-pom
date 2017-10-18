@@ -15,7 +15,7 @@ public class StoreInSearch implements Serializable{
     /**
      * 档口图标
      */
-    private String imgsrc="http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
+    private String imgsrc;
     /**
      * 档口名称
      */

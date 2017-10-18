@@ -25,6 +25,7 @@ import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
 import com.shigu.search.bo.StorenumBO;
@@ -99,7 +100,7 @@ public class BasedPhoneStoreService {
             vo.setImQq(o.getImqq());
             vo.setMainCase(o.getMainCate());
             vo.setItemNum(o.getGoodsCount());
-            vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",o.getAliww()));
+            vo.setShopHeadUrl(ImgUtils.headUrl(o.getAliww()));
             return vo;
         }).collect(Collectors.toList()));
         return shopSearchVO;
@@ -132,7 +133,7 @@ public class BasedPhoneStoreService {
             shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(), o.getWebSite()).intValue());
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
-            shop.setShopHeadUrl(shop.getShopHeadUrl().replace("回车间",o.getImAliww()));
+            shop.setShopHeadUrl(ImgUtils.headUrl(o.getImAliww()));
             return shop;
         }).collect(Collectors.toList()));
         storeCollectVO.setTotal(shopCollectVOShiguPager.getTotalCount());
