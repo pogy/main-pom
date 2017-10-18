@@ -39,4 +39,5 @@ public class WapStoreService {
         }
         return shopCatVO.getCats();
     }
+
 }

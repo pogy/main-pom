@@ -45,10 +45,21 @@ public class AppItemService {
 
     public DelItemCollectResponse delItemCollect(DelItemCollectRequest request){
         DelItemCollectResponse response = new DelItemCollectResponse();
-        if(baseItemService.delItemCollect(request.getCollectIds(), request.getUserId())){
+        OpenException openException = new OpenException();
+
+        List<String> list = Arrays.asList(request.getCollectIds().split(","));
+        List<Long> collectIds = new ArrayList<>();
+        list.stream().filter(item->item.trim().matches("^([0-9])+$")).forEach(item->{
+            collectIds.add(Long.parseLong(item.trim()));
+        });
+        if (collectIds == null || collectIds.isEmpty()) {
+            response.setSuccess(true);
+            return response;
+        }
+
+        if(baseItemService.delItemCollect(collectIds, request.getUserId())){
             response.setSuccess(true);
         }else{
-            OpenException openException = new OpenException();
             openException.setErrMsg("删除商品收藏夹数据失败");
             response.setException(openException);
             response.setSuccess(false);

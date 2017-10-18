@@ -28,13 +28,9 @@ public class BaseItemService {
         return basePhoneCdnService.selItemCollect(userId,index, size);
     }
 
-    public Boolean delItemCollect(String collectIdsStr,Long userId){
+    public Boolean delItemCollect(List<Long> collectIds,Long userId){
         try {
-            List<String> list = Arrays.asList(collectIdsStr.split(","));
-            List<Long> collectIds = new ArrayList<>();
-            list.stream().filter(item->item.trim().matches("^([0-9])+$")).forEach(item->{
-                collectIds.add(Long.parseLong(item.trim()));
-            });
+
             basePhoneCdnService.delItemCollect(userId,collectIds);
             return Boolean.TRUE;
         } catch (Exception e) {

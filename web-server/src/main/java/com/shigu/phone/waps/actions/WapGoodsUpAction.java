@@ -1,5 +1,6 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
@@ -7,8 +8,10 @@ import com.openJar.responses.app.UploadedItemResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.apps.services.PhoneGoodsUpService;
+import com.shigu.phone.waps.service.WapPhoneGoodsUpService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,44 +33,52 @@ import javax.servlet.http.HttpSession;
 public class WapGoodsUpAction {
 
     @Autowired
-    private PhoneGoodsUpService phoneGoodsUpService;
+    private WapPhoneGoodsUpService wapPhoneGoodsUpService;
     @Autowired
     private RedisIO redisIO;
 
+    /**
+     * 已上传宝贝
+     * @param type
+     * @param index
+     * @param size
+     * @return
+     */
     @RequestMapping("queryUploadedGoodsList")
     @ResponseBody
-    public JSONObject uploadedItem(HttpSession session,Integer type, Integer index, Integer size){
+    public JSONObject queryUploadedGoodsList(HttpSession session,Integer type, Integer index, Integer size){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        UploadedItemRequest request=new UploadedItemRequest();
-        request.setIndex(index);
-        request.setSize(size);
-        request.setType(type);
-        request.setUserId(ps.getUserId());
-        UploadedItemResponse res=phoneGoodsUpService.uploadedItem(request);
-        return JSONObject.fromObject(res);
+        return JsonResponseUtil.success().element("uploadedGoodsList",wapPhoneGoodsUpService.uploadedItem(type, index, size, ps.getUserId()));
     }
 
-
+    /**
+     * 上传微信
+     * @param session
+     * @param webSite
+     * @param goodsId
+     * @return
+     */
     @RequestMapping("upToWx")
     @ResponseBody
-    public JSONObject upToWx(HttpSession session, String webSite,Long goodsId) {
+    public JSONObject upToWx(HttpSession session,String webSite,Long goodsId) throws OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String token = redisIO.get("phone_login_token" + ps.getUserId());
-        UpToWxRequest upToWxRequest = new UpToWxRequest();
-        upToWxRequest.setGoodsId(goodsId);
-        upToWxRequest.setToken(token);
-        upToWxRequest.setUserId(ps.getUserId());
-        upToWxRequest.setWebSite(webSite);
-        return JSONObject.fromObject(phoneGoodsUpService.upToWx(upToWxRequest));
+        wapPhoneGoodsUpService.upToWx(webSite,goodsId,ps.getUserId());
+        return JsonResponseUtil.success().element("upToWx","上传成功");
     }
 
-    @RequestMapping("instockUploadGoods")
+    /**
+     * 下架我的宝贝
+     * @param session
+     * @param uploadId
+     * @return
+     * @throws Main4Exception
+     * @throws OpenException
+     */
+    @RequestMapping("downGoodsUploaded")
     @ResponseBody
-    public JSONObject instockMyItem(HttpSession session,String uploadId) throws Main4Exception {
+    public JSONObject downGoodsUploaded(HttpSession session,String uploadId) throws Main4Exception, OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        InstockMyItemRequest request = new InstockMyItemRequest();
-        request.setUploadId(uploadId);
-        request.setUserId(ps.getUserId());
-        return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
+        wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());
+        return JsonResponseUtil.success().element("downGoodsUploaded","下架成功");
     }
 }

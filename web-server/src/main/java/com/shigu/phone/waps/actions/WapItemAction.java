@@ -5,6 +5,8 @@ import com.openJar.requests.app.GoodsCollectRequest;
 import com.openJar.responses.app.GoodsCollectResponse;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import com.shigu.phone.waps.service.WapItemService;
+import com.shigu.phone.waps.service.WapPhoneStoreService;
+import com.shigu.phone.waps.service.WapStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -25,8 +28,10 @@ import javax.servlet.http.HttpSession;
 public class WapItemAction {
     @Autowired
     private WapItemService wapItemService;
+    @Autowired
+    private WapPhoneStoreService wapPhoneStoreService;
 
-    @RequestMapping("itemCollect")
+    @RequestMapping("queryGoodsCollectList")
     @ResponseBody
     public JSONObject itemCollect(HttpSession session,Integer size,Integer index){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -35,18 +40,32 @@ public class WapItemAction {
         }
         try {
             BaseCollectItemVO baseCollectItemVO = wapItemService.collectItem(ps.getUserId(), index, size);
-            //TODO
+            return JsonResponseUtil
+                    .success()
+                    .element("hasNext",baseCollectItemVO.getHasNext())
+                    .element("total",baseCollectItemVO.getTotal())
+                    .element("items",baseCollectItemVO.getItems());
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg());
         }
-        return null;
     }
 
-    @RequestMapping("delItemCollect")
+    @RequestMapping("deleteCollect")
     @ResponseBody
-    public JSONObject delItemCollect (HttpSession session,String collectIds){
+    public JSONObject delItemCollect (HttpSession session,String type,List<Long> collectIds){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return null;
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId is null");
+        }
+        if ("goods".equalsIgnoreCase(type)){//取消收藏商品
+            wapItemService.delItemCollect(collectIds,ps.getUserId());
+            return JsonResponseUtil.success();
+        }else if("shop".equalsIgnoreCase(type)){//取消收藏店铺
+            wapPhoneStoreService.delStoreCollect(collectIds,ps.getUserId());
+            return JsonResponseUtil.success();
+        }else{
+            return JsonResponseUtil.error("type can not be resolved");
+        }
     }
 
     /**
