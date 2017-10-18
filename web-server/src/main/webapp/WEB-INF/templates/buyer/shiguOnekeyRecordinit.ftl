@@ -519,6 +519,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="piprice">批发价(元)</li>
         <li class="gysName">供应商</li>
+        <li class="upTime">上架时间</li>
         <li class="control">操作</li>
     </ul>
     <#if (goodsList?size) gt 0 >
@@ -595,6 +596,19 @@ var webSite = '${webSite!}';
                     <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
                 <p class="fl"><span>货号：1111</span></p>
+                <p class="fl">
+                    <#if goods.shopSaleState == 1>
+                    <i class="shopSaleState"></i>
+                    <#elseif goods.shopSaleState == 2>
+                    <i class="shopSaleState noSale"></i>
+                    </#if>
+                    
+                    <#if goods.taobaoSaleState == 1>
+                    <i class="taobaoSaleState"></i>
+                    <#elseif goods.taobaoSaleState == 2>
+                    <i class="taobaoSaleState noSale"></i>
+                    </#if>
+                </p>
             </li>
             <li class="piprice">
                 ${goods.piprice!}
@@ -625,7 +639,11 @@ var webSite = '${webSite!}';
 
                 </p>
             </li>
+            <li class="upTime">
+                <p>${goods.upTime!}</p>
+            </li>
             <li class="control">
+                <#if goods.taobaoSaleState == 1>
                 
 
 <#assign text>{}</#assign>
@@ -677,6 +695,7 @@ var webSite = '${webSite!}';
 
 </#list>
 
+                </#if>
             </li>
         </ul>
         </#list>
