@@ -2,14 +2,10 @@ package com.shigu.phone.waps.actions;
 
 import com.openJar.beans.app.AppMarket;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.OneShopRequest;
-import com.openJar.requests.app.ShopCatRequest;
-import com.openJar.requests.app.ShopSearchRequest;
+import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
 import com.shigu.phone.waps.service.WapStoreService;
-import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.tools.JsonResponseUtil;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,16 +25,16 @@ public class WapStoreAction {
     @Autowired
     private WapPhoneStoreService wapPhoneStoreService;
 
-    @RequestMapping("oneShop")
+    @RequestMapping("queryShopData")
     @ResponseBody
-    public JSONObject selOneShopInfo(  String webSite,Long shopId  ) {
-
-        OneShopRequest oneShopRequest = new OneShopRequest();
-        oneShopRequest.setShopId(shopId);
-        oneShopRequest.setWebSite(webSite);
-        return JSONObject.fromObject(wapStoreService.selOneShopInfo(oneShopRequest));
+    public JSONObject selOneShopInfo(String webSite,Long shopId ) {
+        try {
+            OneShopVO oneShopVO = wapStoreService.selOneShopInfo(shopId, webSite, null);
+            return JsonResponseUtil.success().element("cats",oneShopVO);
+        } catch (OpenException e) {
+           return JsonResponseUtil.error(e.getErrMsg());
+        }
     }
-
 
     @RequestMapping("queryShopCategory")
     @ResponseBody
@@ -57,7 +53,6 @@ public class WapStoreAction {
         }
     }
 
-
     /**
      * 查询店铺列表
      * @param keyword
@@ -66,22 +61,10 @@ public class WapStoreAction {
      * @param size
      * @return
      */
-    @RequestMapping(" queryShopList")
+    @RequestMapping("queryShopList")
     @ResponseBody
     public JSONObject shopSearch(String keyword, String webSite,Integer index,Integer size) {
-        if(StringUtils.isEmpty(webSite)){
-           webSite = "hz";
-        }
-        if (StringUtils.isEmpty(keyword)) {
-            keyword = "";
-        }
-        if (index == null) {
-            index = 1;
-        }
-        if (size == null) {
-            size = 30;
-        }
-        return JSONObject.fromObject(wapPhoneStoreService.shopSearch(keyword,webSite,index,size));
+        return JsonResponseUtil.success().element("",wapPhoneStoreService.shopSearch(keyword,webSite,index,size));
     }
 
 

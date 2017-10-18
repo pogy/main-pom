@@ -74,14 +74,8 @@ public class PhoneStoreService {
             basedPhoneStoreService.doStoreCollect(request.getShopId(),request.getYesOrNo(),request.getUserId());
             resp.setSuccess(true);
             return resp;
-        } catch (ShopCollectionException|OpenException e) {
-            OpenException openException = new OpenException();
-            if (request.getYesOrNo()){
-                openException.setErrMsg("收藏失败");
-            }else{
-                openException.setErrMsg("取消收藏失败");
-            }
-            resp.setException(openException);
+        } catch (OpenException e) {
+            resp.setException(e);
             resp.setSuccess(false);
             return resp;
         }
