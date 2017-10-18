@@ -32,7 +32,7 @@ public class WapStoreService {
         return baseStoreService.selMarketData(mid,webSite);
     }
 
-    public List<AppShopCat> selShopCat(String webSite,Long shopId){
+    public List<AppShopCat> selShopCat(String webSite,Long shopId) throws OpenException {
         ShopCatVO shopCatVO = baseStoreService.selShopCat(shopId);
         if (shopCatVO == null) {
             return null;

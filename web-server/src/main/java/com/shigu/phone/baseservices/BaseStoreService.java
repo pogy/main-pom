@@ -18,11 +18,13 @@ import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
-import com.shigu.main4.vo.CatPolymerization;
+import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.vo.ShopCat;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.OneShopVO;
@@ -75,6 +77,7 @@ public class BaseStoreService {
     public void setShiguStoreCollectMapper(ShiguStoreCollectMapper shiguStoreCollectMapper) {
         this.shiguStoreCollectMapper = shiguStoreCollectMapper;
     }
+
 
     public OneShopVO selOneShopInfo(Long shopId,String webSite,Long userId) throws OpenException {
         //店铺基本信息
@@ -194,40 +197,42 @@ public class BaseStoreService {
         return appMarket;
     }
 
-    public ShopCatVO selShopCat(Long shopId){
+    public ShopCatVO selShopCat(Long shopId) throws OpenException {
 
+        OpenException openException = new OpenException();
+        StoreRelation storeRelation = storeRelationService.selRelationById(shopId);
+        if(storeRelation==null){
+            openException.setErrMsg("未查询到档口");
+            throw openException;
+        }
+        List<ShopCat> cats=shopForCdnService.selShopCatsById(shopId);
         List<AppShopCat> appShopCats = new ArrayList<>();
-        Long totalItemNum = 0L;//全部商品数目
-        List<CatPolymerization> catPolymerizations = cdnService.formatCatPoly(shopId);
-        for (CatPolymerization parentItem : catPolymerizations){
-            AppShopCat appShopCat = new AppShopCat();
-            if (parentItem.getSubPolymerizations() != null && !parentItem.getSubPolymerizations().isEmpty()){//顶级类目
 
-                appShopCat.setScid(String.valueOf(parentItem.getCid()));
-                appShopCat.setCatName(parentItem.getName());
-                List<CatPolymerization> subPolymerizations = parentItem.getSubPolymerizations();
-
-                List<AppShopCatSub> appShopCatSubs= new ArrayList<>();
-                Long itemNum  = 0L;
-                for (CatPolymerization item : subPolymerizations){
-                    AppShopCatSub catSub = new AppShopCatSub();
-                    catSub.setScid(String.valueOf(item.getCid()));
-                    catSub.setCatName(item.getName());
-                    catSub.setItemNum(item.getNumber()==null?0:item.getNumber());
-
-                    appShopCatSubs.add(catSub);
-                    itemNum += item.getNumber();
-                }
-                appShopCat.setItemNum(itemNum);
-                appShopCat.setSubCats(appShopCatSubs);
-                totalItemNum += itemNum;
+        ShiguPager<ItemShowBlock> items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(), "time_down", 1, 0);
+        AppShopCat appShopCat = new AppShopCat();
+        appShopCat.setItemNum(new Long(items.getTotalCount()));
+        appShopCat.setCatName("全部分类");
+        appShopCats.add(appShopCat);
+        for(ShopCat cat : cats){
+            items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(),null,cat.getCid(),"time_down",null,null, 1, 0);
+            AppShopCat appShopCat1 = new AppShopCat();
+            appShopCat1.setItemNum(new Long(items.getTotalCount()));
+            appShopCat1.setCatName(cat.getName());
+            appShopCat1.setScid(cat.getCid());
+            List<AppShopCatSub> catAlls = new ArrayList<>();
+            for(ShopCat subCat:cat.getSubCats()){
+                AppShopCatSub appShopCatSub = new AppShopCatSub();
+                appShopCatSub.setScid(subCat.getCid());
+                appShopCatSub.setCatName(subCat.getName());
+                catAlls.add(appShopCatSub);
             }
+            appShopCat.setSubCats(catAlls);
             appShopCats.add(appShopCat);
         }
 
         ShopCatVO vo = new ShopCatVO();
         vo.setCats(appShopCats);
-        vo.setTotalItemNum(totalItemNum);
+        vo.setTotalItemNum(new Long(items.getTotalCount()));
         return vo;
     }
 }

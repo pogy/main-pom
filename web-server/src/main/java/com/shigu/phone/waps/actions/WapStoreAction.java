@@ -1,6 +1,7 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.beans.app.AppMarket;
+import com.openJar.beans.app.AppShopCat;
 import com.openJar.exceptions.OpenException;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 
 /**
@@ -38,7 +41,12 @@ public class WapStoreAction {
     @RequestMapping("queryShopCategory")
     @ResponseBody
     public JSONObject ShopCat( String webSite,Long shopId ){
-        return JsonResponseUtil.success().element("cats",wapStoreService.selShopCat(webSite,shopId));
+        try {
+            List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId);
+            return JsonResponseUtil.success().element("cats",appShopCats);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error("查询失败");
+        }
     }
 
     @RequestMapping("getMarketList")

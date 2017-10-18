@@ -87,4 +87,16 @@ public class WapItemAction {
         }
         return JSONObject.fromObject(response);
     }
+
+    /**
+     * 商品收藏/取消收藏
+     * @return
+     */
+    @RequestMapping("hasCollected")
+    @ResponseBody
+    public JSONObject hasCollected(String userId,String type,String id,HttpSession session){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+
+        return null;
+    }
 }

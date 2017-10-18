@@ -82,12 +82,18 @@ public class AppStoreService {
         }
         return response;
     }
-    public ShopCatResponse selShopCat(ShopCatRequest request){
-        ShopCatResponse response = new ShopCatResponse();
-        ShopCatVO shopCatVO = baseStoreService.selShopCat(request.getShopId());//webSite 未使用
-        response.setTotalItemNum(shopCatVO.getTotalItemNum());
-        response.setCats(shopCatVO.getCats());
-        response.setSuccess(true);
+    public ShopCatResponse selShopCat(ShopCatRequest request) {
+        ShopCatResponse response = null;
+        try {
+            response = new ShopCatResponse();
+            ShopCatVO shopCatVO = baseStoreService.selShopCat(request.getShopId());//webSite 未使用
+            response.setTotalItemNum(shopCatVO.getTotalItemNum());
+            response.setCats(shopCatVO.getCats());
+            response.setSuccess(true);
+        } catch (OpenException e) {
+            response.setSuccess(false);
+            response.setException(e);
+        }
         return response;
     }
 }
