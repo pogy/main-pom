@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.BindUserResponse;
+import com.openJar.responses.app.OtherLoginResponse;
 import com.shigu.phone.apps.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,10 @@ public class AppUserAction {
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
     //登录请求
-    @RequestMapping("ortherLogin")
-    public String appOtherLogin( @Valid OrtherLoginRequest request) {
-        String s = phoneUserService.ortherLogin(request);
-        return s;
+    @RequestMapping("otherLogin")
+    @ResponseBody
+    public JSONObject appOtherLogin( @Valid OtherLoginRequest request) {
+        return JSONObject.fromObject(phoneUserService.otherLogin(request));
     }
     //忘记密码
     @RequestMapping("forgetPassword")

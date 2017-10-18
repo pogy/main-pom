@@ -1,12 +1,18 @@
 package com.shigu.phone.apps.actions;
 
-import com.openJar.requests.app.OrtherLoginRequest;
+import com.shigu.buyer.actions.UserLoginAction;
 import com.shigu.phone.apps.services.PhoneUserService;
 import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * 类名：OrtherLoginAction
@@ -18,16 +24,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class OrtherLoginAction {
+    private static final Logger logger = Logger.getLogger(OrtherLoginAction.class);
     @Autowired
     private PhoneUserService phoneUserService;
     //第三方登录
     @RequestMapping("phoneOrtherLogin")
     public String passwordLogin(String nick,String key,Integer type){
-        OrtherLoginRequest request=new OrtherLoginRequest();
-        request.setType(type);
-        request.setNick(nick);
-        request.setKey(key);
-        String url=phoneUserService.ortherLogin(request);
-        return "redirect:"+url;
+        try {//为什么decode来decode去,不知道,返回照做
+            String name= URLDecoder.decode(URLDecoder.decode(nick,"utf-8"),"utf-8");
+            String userNick= URLEncoder.encode(URLEncoder.encode(name, "utf-8"), "utf-8");
+            String url="alidao://sjxz/taobao/author?userNick="+userNick;
+            return "redirect:"+url;
+        } catch (UnsupportedEncodingException e1) {
+            logger.error("用户名转义出错",e1);
+        }
+        return "";
     }
 }

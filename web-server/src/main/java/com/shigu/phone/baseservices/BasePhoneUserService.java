@@ -242,65 +242,6 @@ public class BasePhoneUserService {
         return appUser;
     }
 
-    //第三方登录
-    public String ortherLogin(Integer type,String nick,String key ){
-        AppUser appUser=new AppUser();
-        if(type == 1){
-            //1:淘宝
-            //传入参数完整
-            MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
-            memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andSubUserNameEqualTo(nick);
-            List<MemberUserSub> memberUserSubs = memberUserSubMapper.selectByExample(memberUserSubExample);
-            if(memberUserSubs.size()>0){
-                //用户附表有用户数据
-                MemberUserSub mus=memberUserSubs.get(0);
-                MemberUser memberUser=memberUserMapper.selectFieldsByPrimaryKey(mus.getUserId(),
-                        FieldUtil.codeFields("user_id,user_nick,portrait_url"));
-                if(memberUser==null){//数据异常
-                    logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
-                    return null;
-                }
-//                    appUser.setUserId(memberUser.getUserId());
-                //用户头像封装
-                String url = memberUser.getPortraitUrl();
-                if(url != null && url.startsWith("/SGimg/")){
-                    url="//sgimage.571xz.com/new_image_site"+url;
-                }
-                appUser.setImgsrc(url);
-                //是否是商户
-                if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
-                    appUser.setImSeller(true);
-                }else{
-                    appUser.setImSeller(false);
-                }
-
-
-                String uuid= TokenUtil.format(memberUser.getUserId());
-                String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                //把token存入redis,设置存活时间30分钟
-                // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-                Jedis jedis = redisIO.getJedis();
-                jedis.setex("phone_login_token" + memberUser.getUserId(), 1800, inRedisToken);
-                appUser.setToken(uuid);
-                appUser.setUserNick(memberUser.getUserNick());
-
-
-                return "alidao://sjxz/taobao/author?state=1&imSeller="+ appUser.getImSeller()+"&imgsrc="+appUser.getImgsrc()+ "&userNick="+appUser.getUserNick()+"&token="+appUser.getToken()+"&tempId=null";
-            }else{
-                //根据昵称查询唯一键
-                TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-                taobaoSessionMapExample.createCriteria().andNickEqualTo(nick);
-                List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-
-                String tempId= taobaoSessionMaps.get(0).getUserId()+"";
-
-                return "alidao://sjxz/taobao/author?state=0&imSeller=null&imgsrc=null&userNick=null&token=null&tempId="+tempId;
-            }
-
-        }
-        return "";
-     }
-
     /**
      * 得到手机验证码
      */

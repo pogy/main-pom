@@ -68,12 +68,12 @@ public class TestMe {
         System.out.println(response.getBody());
     }
     @Test
-    public void  OrtherLoginRequest    (){
+    public void  OtherLoginRequest    (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
-        OrtherLoginRequest  request=new OrtherLoginRequest ();
+        OtherLoginRequest  request=new OtherLoginRequest ();
         request.setType(1);
         request.setNick("tb9950563");
-        OrtherLoginResponse response = client.execute(request);
+        OtherLoginResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
     @Test

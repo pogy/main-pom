@@ -8,7 +8,7 @@ import com.openJar.beans.app.AppUser;
  * 创建时间:2017-10-16
  * 描述:第三方登录-微信,淘宝登录
  */
-public class OrtherLoginResponse extends Response {
+public class OtherLoginResponse extends Response {
 	//已经绑定星座网返回的数据
 	private AppUser users;
 	//未绑定星座网账号,返回数据唯一键
@@ -16,37 +16,29 @@ public class OrtherLoginResponse extends Response {
 	//0未绑定星座网1绑定星座网
 	private Integer type;
 	//跳转地址	必须
-	private String url;
-	public AppUser getUsers(){
+
+
+	public AppUser getUsers() {
 		return users;
 	}
 
-	public void setUsers(AppUser users){
-		this.users=users;
+	public void setUsers( AppUser users ) {
+		this.users = users;
 	}
 
-	public String getTempId(){
+	public String getTempId() {
 		return tempId;
 	}
 
-	public void setTempId(String tempId){
-		this.tempId=tempId;
+	public void setTempId( String tempId ) {
+		this.tempId = tempId;
 	}
 
-	public Integer getType(){
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(Integer type){
-		this.type=type;
+	public void setType( Integer type ) {
+		this.type = type;
 	}
-
-	public String getUrl(){
-		return url;
-	}
-
-	public void setUrl(String url){
-		this.url=url;
-	}
-
 }
