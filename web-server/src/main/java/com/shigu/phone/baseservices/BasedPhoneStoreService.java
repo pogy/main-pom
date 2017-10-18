@@ -133,7 +133,7 @@ public class BasedPhoneStoreService {
             shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(), o.getWebSite()).intValue());
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
-            shop.setShopHeadUrl(shop.getShopHeadUrl().replace("回车间",o.getImAliww()));
+            shop.setShopHeadUrl(ImgUtils.headUrl(o.getImAliww()));
             return shop;
         }).collect(Collectors.toList()));
         storeCollectVO.setTotal(shopCollectVOShiguPager.getTotalCount());

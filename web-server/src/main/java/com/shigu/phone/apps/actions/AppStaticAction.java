@@ -15,10 +15,13 @@ import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
 import com.shigu.phone.apps.services.AppStaticService;
+import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -29,6 +32,8 @@ import java.util.*;
 
 @Controller
 public class AppStaticAction {
+    private static final Logger logger = LoggerFactory.getLogger(AppStaticAction.class);
+
     private static final Set<String> CATIDS = ImmutableSet.of("16", "30","50011740","50006843");
     private static final Set<String> REMOVEIDS=ImmutableSet.of("50000852","50008897","1629","50001748","50005867","50011130");
     private static final Set<String> SEXCIDS=ImmutableSet.of("50010850","50011277","162116","50000697","121434004","50008904",
@@ -56,6 +61,7 @@ public class AppStaticAction {
         if (request.getWebSite() == null||request.getType() == null) {
             return WrapperUtil.wrapperOpenException("缺少参数",resp);
         }
+
         Map<Integer,List<PhoneCategoryEnum>> map= BeanMapper.groupBy(Arrays.asList(arr),"index",Integer.class);
         for (Map.Entry<Integer, List<PhoneCategoryEnum>> entry :map.entrySet()){
             Integer key = entry.getKey();
@@ -201,6 +207,8 @@ public class AppStaticAction {
 
                 AppCatGroup appCatGroup1=new AppCatGroup();
                 appCatGroup1.setTitle("箱包");
+                //日志
+                logger.debug("箱包");
                 for(PhoneCategoryEnum categoryEnum:list){
                     AppCat appCat=new AppCat();
                     if(categoryEnum.getType()==1){

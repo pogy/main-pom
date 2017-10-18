@@ -419,14 +419,16 @@ public class BasePhoneUserService {
         String headUrl = personalSession.getHeadUrl();
         appUser.setImgsrc(headUrl);
         appUser.setUserNick(personalSession.getUserNick());
-        String uuid = UUIDGenerator.getUUID();
+        //token
+        String uuid= TokenUtil.format(personalSession.getUserId());
+        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
         //把token存入redis,设置存活时间30分钟
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, uuid);
-        //从redis取出token
-        String token1 = redisIO.get("phone_login_token" + personalSession.getUserId());
-        appUser.setToken(token1);
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+        appUser.setToken(uuid);
+
+
         //imSeller
         ShopSession logshop = personalSession.getLogshop();
 

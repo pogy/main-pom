@@ -1,5 +1,6 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.beans.app.AppItemSpread;
 import com.openJar.requests.app.ImgSpreadRequest;
 import com.openJar.requests.app.ItemSpreadRequest;
 import com.openJar.responses.app.ImgSpreadResponse;
@@ -28,15 +29,18 @@ public class WapAdvertAction {
     @Autowired
     WapAdvertService wapAdvertService;
 
-    @RequestMapping("imgSpread")
+    /**
+     * 图片式广告数据
+     * @param spreadCode
+     * @param webSite
+     * @return
+     */
+    @RequestMapping("queryPicGoatList")
     @ResponseBody
-    public JSONObject imgSpread(String spreadCode, String webSite){
-
-
+    public JSONObject queryPicGoatList(String spreadCode, String webSite){
         if(spreadCode == null || StringUtils.isEmpty(webSite)){
             return JsonResponseUtil.error("缺少参数");
         }
-
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
             if(spreadEnum.getCode().equals(spreadCode)){
@@ -52,14 +56,17 @@ public class WapAdvertAction {
         return  JsonResponseUtil.success().element("spreads",imgSpreadVOS);
     }
 
-
-    @RequestMapping("itemSpread")
+    /**
+     * 商品广告数据
+     * @param spreadCode
+     * @param webSite
+     * @return
+     */
+    @RequestMapping("queryGoodsGoatList")
     @ResponseBody
-    public JSONObject itemSpread(String spreadCode, String webSite) {
-
+    public JSONObject queryGoodsGoatList(String spreadCode, String webSite) {
         if(spreadCode == null || StringUtils.isEmpty(webSite)){
             return  JsonResponseUtil.error("缺少参数");
-
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -71,7 +78,7 @@ public class WapAdvertAction {
         if (spread == null) {
             return  JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode);
         }
-       wapAdvertService.itemSpread(webSite, spread);
-        return JSONObject.fromObject("");
+        List<AppItemSpread> appItemSpreads = wapAdvertService.itemSpread(webSite, spread);
+        return JsonResponseUtil.success().element("spreads",appItemSpreads);
     }
 }
