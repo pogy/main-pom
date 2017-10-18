@@ -1,17 +1,13 @@
 package com.openJar.requests.app;
+
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
-import com.openJar.responses.app.OrtherLoginResponse;
+import com.openJar.responses.app.OtherLoginResponse;
+
 import javax.validation.constraints.NotNull;
-/**
- * 类名:OrtherLoginRequest
- * 类路径:com.openJar.requests.appOrtherLoginRequest
- * 创建者:自动生成
- * 创建时间:2017-10-16
- * 描述:第三方登录-微信,淘宝登录
- */
-public class OrtherLoginRequest extends Request<OrtherLoginResponse> {
-	//第三方登录类型1:淘宝,2:微信	必须
+
+public class OtherLoginRequest extends Request<OtherLoginResponse> {
+    //第三方登录类型1:淘宝,2:微信	必须
 	@NotNull(message = "type is null")
 	private Integer type;
 	//淘宝必须传入,授权返回的nick
@@ -43,11 +39,11 @@ public class OrtherLoginRequest extends Request<OrtherLoginResponse> {
 	}
 
 	public String testApiUrl(){
-		return HostEnum.TEST+"ortherLogin.json";
+		return HostEnum.TEST+"otherLogin.json";
 	}
 
 	public String restApiUrl(){
-		return HostEnum.REST+"ortherLogin.json";
+		return HostEnum.REST+"otherLogin.json";
 	}
 
 }

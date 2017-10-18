@@ -92,9 +92,9 @@ public class WapPhoneUserService {
     }
 
     //第三方登录
-    public String  ortherLogin(Integer type,String nick,String key ) {
-        return basePhoneUserService.ortherLogin(type,nick,key);
-    }
+   /* public String  ortherLogin(Integer type,String nick,String key ) {
+        return basePhoneUserService.otherLogin(type,nick,key);
+    }*/
 
     /**
      * 得到手机验证码
