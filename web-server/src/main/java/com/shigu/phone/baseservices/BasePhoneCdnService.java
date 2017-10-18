@@ -1,41 +1,43 @@
-package com.shigu.phone.services;
+package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.exceptions.OpenException;
-import com.openJar.responses.app.ItemCollectResponse;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemSearchService;
-import com.shigu.main4.item.vo.*;
+import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * cdn服务
  * Created by zhaohongbo on 17/3/7.
  */
 @Service
-public class PhoneCdnService {
+public class BasePhoneCdnService {
 
     @Autowired
     private UserCollectService userCollectService;
 
     @Autowired
     private ItemSearchService itemSearchService;
-
-    @Autowired
-    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
     private UserBaseService userBaseService;
@@ -52,23 +54,19 @@ public class PhoneCdnService {
      * @param userId
      * @return
      */
-    public ItemCollectResponse selItemCollect(Long userId, Integer index, Integer pageSize){
-        ItemCollectResponse response = new ItemCollectResponse();
-
+    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize) throws OpenException {
         List<ItemCollectInfoVO> itemCollectInfoVOS = userCollectService.selItemCollection(userId,null,null,null,null);
         Map<Long,List<ItemCollectInfoVO>> itemCollectInfoGroup = BeanMapper.groupBy(itemCollectInfoVOS,"goodsId",Long.class);
         List<Long> goodsIds = BeanMapper.getFieldList(itemCollectInfoVOS,"goodsId",Long.class);
+
         if (goodsIds == null || goodsIds.isEmpty()) {
-            response.setSuccess(true);
-            return response;
+           return null;
         }
         UserInfo userInfo = userBaseService.selUserInfo(userId);
         if (userInfo == null) {
             OpenException openException = new OpenException();
             openException.setErrMsg("该用户不存在");
-            response.setException(openException);
-            response.setSuccess(false);
-            return response;
+            throw openException;
         }
         ShiguPager<SearchItem> searchItem = itemSearchService.searchItemByIds(goodsIds, "hz", index, pageSize);
         List<SearchItem> searchItems = searchItem.getContent();
@@ -127,11 +125,11 @@ public class PhoneCdnService {
 
         });
 
-        response.setItems(appGoodsBlocks);
-        response.setTotal(searchItem.getTotalCount());
-        response.setHasNext(appGoodsBlocks.size()>searchItem.getTotalCount());
-        response.setSuccess(true);
-        return response;
+        BaseCollectItemVO vo  = new BaseCollectItemVO();
+        vo.setHasNext(appGoodsBlocks.size()>searchItem.getTotalCount());
+        vo.setItems(appGoodsBlocks);
+        vo.setTotal(searchItem.getTotalCount());
+        return vo;
     }
 
     /**

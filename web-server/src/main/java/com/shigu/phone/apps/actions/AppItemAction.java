@@ -68,7 +68,7 @@ public class AppItemAction {
         if (StringUtils.isEmpty(request.getWebSite())) {
             request.setWebSite("hz");
         }
-        return JSONObject.fromObject(appItemService.collectItem(request));
+        return JSONObject.fromObject(appItemService.collectGoods(request));
     }
 
 }

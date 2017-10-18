@@ -6,7 +6,7 @@ import com.openJar.requests.app.OneItemRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.shigu.main4.item.enums.SearchOrderBy;
-import com.shigu.phone.services.PhoneGoodsSearchService;
+import com.shigu.phone.apps.services.PhoneGoodsSearchService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

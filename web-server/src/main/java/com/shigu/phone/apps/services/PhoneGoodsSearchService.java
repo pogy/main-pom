@@ -1,4 +1,4 @@
-package com.shigu.phone.services;
+package com.shigu.phone.apps.services;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +28,9 @@ import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
+import com.shigu.phone.baseservices.BasePhoneGoodsSearchService;
+import com.shigu.phone.basevo.ItemSearchVO;
+import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.vo.GoodsInSearch;
@@ -46,7 +49,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类名：PhoneGoodsSearchService
- * 类路径：com.shigu.phone.services.PhoneGoodsSearchService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneGoodsSearchService
  * 创建者：王浩翔
  * 创建时间：2017-08-29 14:35
  * 项目：main-pom
@@ -56,16 +59,7 @@ import java.util.stream.Collectors;
 public class PhoneGoodsSearchService {
 
     @Autowired
-    private GoodsSearchService goodsSearchService;
-
-    @Autowired
-    private CdnService cdnService;
-
-    @Autowired
-    private UserCollectService userCollectService;
-
-    @Autowired
-    private OssIO ossIO;
+    private BasePhoneGoodsSearchService basePhoneGoodsSearchService;
 
     /**
      * 移动端商品搜索
@@ -105,15 +99,12 @@ public class PhoneGoodsSearchService {
             bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
             bo.setPage(request.getIndex());
             bo.setRows(request.getSize());
-            ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(request.getOrderBy()), false).getSearchData();
-            resp.setTotal(result.getTotalCount());
-            resp.setHasNext(result.getNumber() < result.getTotalPages());
-            resp.setItems(result.getContent().parallelStream().map(o -> {
-                AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-                vo.setGoodsId(o.getId());
-                return vo;
-            }).collect(Collectors.toList()));
+
+            ItemSearchVO itemSearchVO = basePhoneGoodsSearchService.itemSearch(bo, request.getOrderBy());
             resp.setSuccess(true);
+            resp.setHasNext(itemSearchVO.getHasNext());
+            resp.setItems(itemSearchVO.getItems());
+            resp.setTotal(itemSearchVO.getTotal());
             return resp;
         } catch (ParseException e) {
             OpenException openException = new OpenException();
@@ -133,21 +124,15 @@ public class PhoneGoodsSearchService {
     public ImgSearchResponse imgSearch(ImgSearchRequest request) {
         ImgSearchResponse resp = new ImgSearchResponse();
         try {
-            resp.setItems(goodsSearchService.searchByPic(request.getImgurl(), request.getWebSite()).parallelStream().map(o -> {
-                if (o != null) {
-                    AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
-                    vo.setGoodsId(o.getId());
-                    return vo;
-                }
-                return null;
-            }).collect(Collectors.toList()));
+            List<AppGoodsBlock> appGoodsBlocks = basePhoneGoodsSearchService.imgSearch(request.getImgurl(), request.getWebSite());
+            resp.setItems(appGoodsBlocks);
             resp.setSuccess(true);
         } catch (IOException e) {
-            resp.setException(new OpenException());
+           OpenException openException = new OpenException();
+           openException.setErrMsg(e.getMessage());
+           resp.setSuccess(false);
+           resp.setException(openException);
         }
-        //搜索完毕，删除临时图片 TODO 删除路径待确认
-        String str = request.getImgurl();
-        ossIO.deleteFile("mall/file/" + str.substring(str.lastIndexOf("/") + 1));
         return resp;
     }
 
@@ -159,62 +144,28 @@ public class PhoneGoodsSearchService {
     public OneItemResponse oneItem(OneItemRequest request) {
         OneItemResponse resp = new OneItemResponse();
         try {
-            //商品数据填充
-            CdnGoodsInfoVO goods = cdnService.cdnGoodsInfo(request.getItemId());
-            resp.setGoodsId(goods.getGoodsId()+"");
-            resp.setGoodsNo(goods.getGoodsNo());
-            resp.setPrice(goods.getPiPrice());
-            resp.setTitle(goods.getTitle());
-            resp.setCreateTime(goods.getPostTime());
-            resp.setImgSrcs(goods.getImgUrls());
-            //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
-            List<String> services = goods.getServices();
-            List<String> list=new ArrayList<>();
-            for (String s:services) {
-                if("1".equals(s)){
-                    list.add("可退款");
-                }else if("2".equals(s)){
-                    list.add("可换款");
-                }
-            }
-            resp.setGoodsLicenses(list);
-            resp.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
-                JSONObject color = (JSONObject) o;
-                return color.get("text").toString();
-            }).collect(Collectors.toList()));
-            resp.setSize(JSONArray.parseArray(goods.getSizesMeta()).parallelStream().map(Object::toString).collect(Collectors.toList()));
-            resp.setItemKvs(goods.getNormalAttrs().parallelStream().map(o -> {
-                AppItemKv itemKv = new AppItemKv();
-                itemKv.setKey(o.getName());
-                itemKv.setValue(o.getValue());
-                return itemKv;
-            }).collect(Collectors.toList()));
-            //店铺数据填充
-            CdnShopInfoVO shop = cdnService.cdnShopInfo(goods.getShopId());
-            resp.setStoreId(goods.getShopId());
-            resp.setStoreNum(shop.getShopNo());
-            resp.setMarket(shop.getMarketName());
-            resp.setStarNum(shop.getStarNum().intValue());
-            resp.setSuccess(true);
-            if (request.getUserId() == null) {
-                resp.setType(0);
-            }else {
-                // 查询商品是否收藏
-                ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(request.getUserId(),request.getItemId(),request.getWebSite());
-                int type = 1;
-                if (itemCollectInfoVO == null || itemCollectInfoVO.getUseStatus() == null){
-                   type = 0;
-                }else{
-                    type = itemCollectInfoVO.getUseStatus();
-                }
-                resp.setType(type);
-            }
-        } catch (CdnException | TemplateException | IOException e) {
+            OneItemVO oneItemVO = basePhoneGoodsSearchService.oneItem(request.getWebSite(), request.getItemId(), request.getUserId());
+            resp.setTitle(oneItemVO.getTitle());
+            resp.setGoodsId(oneItemVO.getGoodsId());
+            resp.setImgSrcs(oneItemVO.getImgSrcs());
+            resp.setGoodsNo(oneItemVO.getGoodsNo());
+            resp.setCreateTime(oneItemVO.getCreateTime());
+            resp.setGoodsLicenses(oneItemVO.getGoodsLicenses());
+            resp.setPrice(oneItemVO.getPrice());
+            resp.setStoreId(oneItemVO.getStoreId());
+            resp.setMarket(oneItemVO.getMarket());
+            resp.setStoreNum(oneItemVO.getStoreNum());
+            resp.setStarNum(oneItemVO.getStarNum());
+            resp.setColors(oneItemVO.getColors());
+            resp.setSize(oneItemVO.getSize());
+            resp.setItemKvs(oneItemVO.getItemKvs());
+            resp.setShopHeadUrl(oneItemVO.getShopHeadUrl());
+            resp.setType(oneItemVO.getType());
+        } catch (TemplateException|CdnException|IOException e) {
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());
-            resp.setException(openException);
             resp.setSuccess(false);
-            return resp;
+            resp.setException(openException);
         }
         return resp;
     }

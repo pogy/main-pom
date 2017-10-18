@@ -1,4 +1,4 @@
-package com.shigu.phone.services;
+package com.shigu.phone.baseservices;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.openJar.beans.app.AppShopBlock;
@@ -18,7 +18,6 @@ import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
@@ -26,6 +25,8 @@ import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.phone.basevo.ShopSearchVO;
+import com.shigu.phone.basevo.StoreCollectVO;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.StoreSelFromEsService;
 import com.shigu.search.vo.StoreInSearch;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类名：PhoneStoreService
- * 类路径：com.shigu.phone.services.PhoneStoreService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneStoreService
  * 创建者：王浩翔
  * 创建时间：2017-08-31 15:38
  * 项目：main-pom
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class PhoneStoreService {
+public class BasedPhoneStoreService {
 
     @Autowired
     private UserCollectService userCollectService;
@@ -73,20 +74,19 @@ public class PhoneStoreService {
     /**
      * 移动端店铺搜索
      *
-     * @param request
      * @return
      */
-    public ShopSearchResponse shopSearch(ShopSearchRequest request) {
+    public ShopSearchVO shopSearch(String keyword, String webSite,Integer index,Integer size) {
         StorenumBO bo = new StorenumBO();
-        bo.setKeyword(request.getKeyword());
-        bo.setWebSite(request.getWebSite());
-        bo.setPage(request.getIndex());
-        bo.setRows(request.getSize());
+        bo.setKeyword(keyword);
+        bo.setWebSite(webSite);
+        bo.setPage(index);
+        bo.setRows(size);
         ShiguPager<StoreInSearch> result = storeSelFromEsService.searchStore(bo);
-        ShopSearchResponse resp = new ShopSearchResponse();
-        resp.setTotal(result.getTotalCount());
-        resp.setHasNext(result.getNumber() < result.getTotalPages());
-        resp.setShops(result.getContent().parallelStream().map(o -> {
+        ShopSearchVO shopSearchVO = new ShopSearchVO();
+        shopSearchVO.setTotal(result.getTotalCount());
+        shopSearchVO.setHasNext(result.getNumber() < result.getTotalPages());
+        shopSearchVO.setShops(result.getContent().parallelStream().map(o -> {
             AppShopBlock vo = new AppShopBlock();
             vo.setShopId(Long.valueOf(o.getId()));
             vo.setMarket(o.getFullMarketText());
@@ -102,26 +102,23 @@ public class PhoneStoreService {
             vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",o.getAliww()));
             return vo;
         }).collect(Collectors.toList()));
-        resp.setSuccess(true);
-        return resp;
+        return shopSearchVO;
     }
 
     /**
      * 店铺收藏夹
      *
-     * @param request
      * @return
      */
-    public StoreCollectResponse storeCollect(StoreCollectRequest request) {
-        StoreCollectResponse resp = new StoreCollectResponse();
-        ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(request.getUserId(), request.getWebSite(), request.getIndex(), request.getSize());
+    public StoreCollectVO storeCollect(Long userId, String webSite,Integer index,Integer size) {
+        StoreCollectVO storeCollectVO = new StoreCollectVO();
+        ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(userId, webSite, index, size);
         if (shopCollectVOShiguPager.getTotalCount() == 0) {
-            resp.setSuccess(true);
-           return resp;//收藏夹无商品
+           return storeCollectVO;//收藏夹无商品
         }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
-        ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(request.getSize());
+        ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(size);
         ShiguMarketExample marketExample = new ShiguMarketExample();
         ShiguShopExample shopExample = new ShiguShopExample();
         MultipleExample example = MultipleExampleBuilder.from(shopExample)
@@ -129,7 +126,7 @@ public class PhoneStoreService {
                 .build();
         example.setGroupByClause("shigu_shop.shop_id");
         appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, AppShopBlockBean.class));
-        resp.setShops(appShopBlockBeans.parallelStream().map(o -> {
+        storeCollectVO.setShops(appShopBlockBeans.parallelStream().map(o -> {
             AppShopBlock shop = BeanMapper.map(o, AppShopBlock.class);
             //从ShopCdn拿档口商品数量
             shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(), o.getWebSite()).intValue());
@@ -138,64 +135,41 @@ public class PhoneStoreService {
             shop.setShopHeadUrl(shop.getShopHeadUrl().replace("回车间",o.getImAliww()));
             return shop;
         }).collect(Collectors.toList()));
-        resp.setTotal(shopCollectVOShiguPager.getTotalCount());
-        resp.setHasNext(shopCollectVOShiguPager.getNumber() < shopCollectVOShiguPager.getTotalPages());
-        resp.setSuccess(true);
-        return resp;
+        storeCollectVO.setTotal(shopCollectVOShiguPager.getTotalCount());
+        storeCollectVO.setHasNext(shopCollectVOShiguPager.getNumber() < shopCollectVOShiguPager.getTotalPages());
+        return storeCollectVO;
     }
 
     /**
      * 收藏OR取消收藏店铺
      *
-     * @param request
      * @return
      */
-    public DoStoreCollectResponse doStoreCollect(DoStoreCollectRequest request) {
-
-
-
-        DoStoreCollectResponse resp = new DoStoreCollectResponse();
-        OpenException openException = new OpenException();
-        String token = redisIO.get("phone_login_token" + request.getUserId());
-
-        if (!token.equals( request.getToken())) {
-            openException.setErrMsg("tocken验证失败");
-            resp.setException(openException);
-            resp.setSuccess(false);
-            return resp;
-        }
-        if (request.getYesOrNo()) {
-            try {
-                addShopCollection(request);
-            } catch (ShopCollectionException e) {
-                resp.setException(new OpenException());
-            }
+    public void doStoreCollect( Long shopId,boolean yesOrNo,Long userId) throws OpenException, ShopCollectionException {
+        if (yesOrNo) {
+            addShopCollection(userId,shopId);
         } else {
-            delShopCollection(request);
+            delShopCollection(userId,Lists.newArrayList(shopId));
         }
-        resp.setSuccess(true);
-        return resp;
     }
 
     /**
      * 删除店铺收藏
      *
-     * @param request
      * @return
      */
-    private void delShopCollection(DoStoreCollectRequest request) {
-        userCollectService.delShopCollectionByShopIds(request.getUserId(), Lists.newArrayList(request.getShopId()));
+    private void delShopCollection(Long userId,List<Long> shopIds) {
+        userCollectService.delShopCollectionByShopIds(userId,shopIds);
     }
 
     /**
      * 添加店铺收藏
      *
-     * @param request
      * @throws ShopCollectionException
      */
-    private void addShopCollection(DoStoreCollectRequest request) throws ShopCollectionException {
+    private void addShopCollection(Long userId,Long shopId) throws ShopCollectionException {
         ScStoreBO bo = new ScStoreBO();
-        bo.setStore_id(request.getShopId());
-        cdnService.addShopCollect(request.getUserId(), bo);
+        bo.setStore_id(shopId);
+        cdnService.addShopCollect(userId, bo);
     }
 }

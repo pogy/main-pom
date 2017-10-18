@@ -6,7 +6,7 @@ import com.openJar.requests.app.OneItemRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.shigu.main4.item.enums.SearchOrderBy;
-import com.shigu.phone.services.PhoneGoodsSearchService;
+import com.shigu.phone.apps.services.PhoneGoodsSearchService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -14,12 +14,10 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 

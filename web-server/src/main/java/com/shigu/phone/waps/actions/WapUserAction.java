@@ -3,19 +3,17 @@ package com.shigu.phone.waps.actions;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.BindUserResponse;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.phone.services.PhoneUserService;
+import com.shigu.phone.apps.services.PhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 /**
  * Created by Admin on 2017/10/13.

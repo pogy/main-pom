@@ -8,7 +8,7 @@ import com.openJar.responses.app.DelItemCollectResponse;
 import com.openJar.responses.app.GoodsCollectResponse;
 import com.openJar.responses.app.ItemCollectResponse;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.phone.services.PhoneCdnService;
+import com.shigu.phone.apps.services.PhoneCdnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

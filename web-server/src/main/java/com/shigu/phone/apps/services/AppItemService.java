@@ -5,7 +5,9 @@ import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.phone.services.PhoneCdnService;
+import com.shigu.phone.baseservices.BaseItemService;
+import com.shigu.phone.baseservices.BasePhoneCdnService;
+import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,49 +26,42 @@ import java.util.*;
 public class AppItemService {
 
     @Autowired
-    private PhoneCdnService phoneCdnService;
-    @Autowired
-    private RedisIO redisIO;
+    private BaseItemService baseItemService;
 
     public ItemCollectResponse collectItem(ItemCollectRequest request){
-        return phoneCdnService.selItemCollect(request.getUserId(), request.getIndex(), request.getSize());
+        ItemCollectResponse response = new ItemCollectResponse();
+        try {
+            BaseCollectItemVO baseCollectItemVO = baseItemService.collectItem(request.getUserId(), request.getIndex(), request.getSize());
+            response.setSuccess(true);
+            response.setHasNext(baseCollectItemVO.getHasNext());
+            response.setTotal(baseCollectItemVO.getTotal());
+            response.setItems(baseCollectItemVO.getItems());
+        } catch (OpenException e) {
+            response.setSuccess(false);
+            response.setException(e);
+        }
+        return response;
     }
 
     public DelItemCollectResponse delItemCollect(DelItemCollectRequest request){
         DelItemCollectResponse response = new DelItemCollectResponse();
-        //验证不通过
-        if (!request.getToken().equals(redisIO.get("phone_login_token" + request.getUserId()))) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("tocken验证失败");
-            response.setException(openException);
-            response.setSuccess(false);
-            return response;
-        }
-
-        try {
-            List<String> list = Arrays.asList(request.getCollectIds().split(","));
-            List<Long> collectIds = new ArrayList<>();
-            list.stream().filter(item->item.trim().matches("^([0-9])+$")).forEach(item->{
-                collectIds.add(Long.parseLong(item.trim()));
-            });
-            phoneCdnService.delItemCollect(request.getUserId(),collectIds);
-
+        if(baseItemService.delItemCollect(request.getCollectIds(), request.getUserId())){
             response.setSuccess(true);
-            return response;
-        } catch (Exception e) {
+        }else{
             OpenException openException = new OpenException();
             openException.setErrMsg("删除商品收藏夹数据失败");
             response.setException(openException);
             response.setSuccess(false);
-            return response;
         }
+        return response;
     }
 
-    public GoodsCollectResponse collectItem(GoodsCollectRequest request){
+    public GoodsCollectResponse collectGoods(GoodsCollectRequest request){
         GoodsCollectResponse response = new GoodsCollectResponse();
-        Boolean isSuccess = phoneCdnService.addItemCollect(request.getUserId(),request.getStoreId(),request.getGoodsId(),request.getWebSite());
-        response.setSuccess(isSuccess);
-        if (!isSuccess){
+        if(baseItemService.collectGoods(request.getUserId(),
+                request.getStoreId(), request.getGoodsId(), request.getWebSite())){
+            response.setSuccess(true);
+        }else{
             OpenException openException = new OpenException();
             openException.setErrMsg("收藏失败");
             response.setException(openException);

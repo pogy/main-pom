@@ -33,7 +33,7 @@ import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.utils.TokenUtil;
-import com.shigu.phone.services.PhoneUserService;
+import com.shigu.phone.apps.services.PhoneUserService;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
@@ -58,7 +58,7 @@ import java.util.Map;
 
 /**
  * 类名：PhoneUserService
- * 类路径：com.shigu.phone.services.PhoneUserService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneUserService
  * 创建者：王浩翔
  * 创建时间：2017-08-31 17:04
  * 项目：main-pom

@@ -28,7 +28,10 @@ import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.StoreSelFromEsService;
 import com.shigu.search.vo.StoreInSearch;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.zhb.utils.BeanMapper;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类名：PhoneStoreService
- * 类路径：com.shigu.phone.services.PhoneStoreService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneStoreService
  * 创建者：王浩翔
  * 创建时间：2017-08-31 15:38
  * 项目：main-pom
@@ -71,38 +74,39 @@ public class WapPhoneStoreService {
 
     /**
      * 移动端店铺搜索
-     *
-     * @param request
+     * @param keyword
+     * @param webSite
+     * @param index
+     * @param size
      * @return
      */
-    public ShopSearchResponse shopSearch(ShopSearchRequest request) {
+    public JSONObject shopSearch(String keyword, String webSite, Integer index, Integer size) {
         StorenumBO bo = new StorenumBO();
-        bo.setKeyword(request.getKeyword());
-        bo.setWebSite(request.getWebSite());
-        bo.setPage(request.getIndex());
-        bo.setRows(request.getSize());
+        bo.setKeyword(keyword);
+        bo.setWebSite(webSite);
+        bo.setPage(index);
+        bo.setRows(size);
         ShiguPager<StoreInSearch> result = storeSelFromEsService.searchStore(bo);
-        ShopSearchResponse resp = new ShopSearchResponse();
-        resp.setTotal(result.getTotalCount());
-        resp.setHasNext(result.getNumber() < result.getTotalPages());
-        resp.setShops(result.getContent().parallelStream().map(o -> {
-            AppShopBlock vo = new AppShopBlock();
-            vo.setShopId(Long.valueOf(o.getId()));
-            vo.setMarket(o.getFullMarketText());
-            vo.setHighLightMarket(o.getHighMarketName());
-            vo.setShopNum(o.getName());
-            vo.setHighLightShopNum(o.getHighName());
-            vo.setStarNum(o.getXy());
-            vo.setTelephone(o.getTel());
-            vo.setImAliww(o.getAliww());
-            vo.setImQq(o.getImqq());
-            vo.setMainCase(o.getMainCate());
-            vo.setItemNum(o.getGoodsCount());
-            vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",o.getAliww()));
-            return vo;
-        }).collect(Collectors.toList()));
-        resp.setSuccess(true);
-        return resp;
+        return JsonResponseUtil.success()
+                        .element("total",result.getTotalCount())
+                        .element("hasNext",result.getNumber() < result.getTotalPages())
+                        .element("shops",
+                            result.getContent().parallelStream().map(o -> {
+                                AppShopBlock vo = new AppShopBlock();
+                                vo.setShopId(Long.valueOf(o.getId()));
+                                vo.setMarket(o.getFullMarketText());
+                                vo.setHighLightMarket(o.getHighMarketName());
+                                vo.setShopNum(o.getName());
+                                vo.setHighLightShopNum(o.getHighName());
+                                vo.setStarNum(o.getXy());
+                                vo.setTelephone(o.getTel());
+                                vo.setImAliww(o.getAliww());
+                                vo.setImQq(o.getImqq());
+                                vo.setMainCase(o.getMainCate());
+                                vo.setItemNum(o.getGoodsCount());
+                                vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",o.getAliww()));
+                                return vo;
+                            }).collect(Collectors.toList()));
     }
 
     /**

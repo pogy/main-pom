@@ -1,10 +1,9 @@
 package com.shigu.phone.apps.actions;
 
-import com.openJar.requests.app.ImgUploadRequest;
 import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
-import com.shigu.phone.services.PhoneGoodsUpService;
+import com.shigu.phone.apps.services.PhoneGoodsUpService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

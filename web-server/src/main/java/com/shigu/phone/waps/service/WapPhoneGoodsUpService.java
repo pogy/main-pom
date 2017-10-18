@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * 类名：PhoneGoodsUpService
- * 类路径：com.shigu.phone.services.PhoneGoodsUpService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneGoodsUpService
  * 创建者：王浩翔
  * 创建时间：2017-08-30 9:22
  * 项目：main-pom

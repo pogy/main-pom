@@ -1,4 +1,4 @@
-package com.shigu.phone.services;
+package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppItemUploaded;
 import com.openJar.exceptions.OpenException;
@@ -12,7 +12,6 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -27,15 +26,17 @@ import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.phone.basevo.UploadedItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 类名：PhoneGoodsUpService
- * 类路径：com.shigu.phone.services.PhoneGoodsUpService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneGoodsUpService
  * 创建者：王浩翔
  * 创建时间：2017-08-30 9:22
  * 项目：main-pom
@@ -43,7 +44,7 @@ import java.util.List;
  */
 
 @Service
-public class PhoneGoodsUpService {
+public class BasePhoneGoodsUpService {
 
     @Autowired
     private ItemUpRecordService itemUpRecordService;
@@ -63,38 +64,27 @@ public class PhoneGoodsUpService {
     @Autowired
     private MemberSimpleService memberSimpleService;
 
-    @Autowired
-    private RedisIO redisIO;
-
-    public UpToWxResponse upToWx(UpToWxRequest request) {
+    public void upToWx(String webSite,Long goodsId,Long userId) throws OpenException {
         UpToWxResponse resp = new UpToWxResponse();
         OpenException openException = new OpenException();
-        //验证不通过
-        if (!request.getToken().equals(redisIO.get("phone_login_token" + request.getUserId()))) {
-            openException.setErrMsg("tocken验证失败");
-            resp.setException(openException);
-            resp.setSuccess(false);
-            return resp;
-        }
+
         ItemUpRecordVO bo = new ItemUpRecordVO();
         bo.setFlag("wx");
         bo.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
-        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(request.getUserId(), FieldUtil.codeFields("user_id,user_nick"));
-        bo.setFenUserId(request.getUserId());
+        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(userId, FieldUtil.codeFields("user_id,user_nick"));
+        bo.setFenUserId(userId);
         bo.setFenUserNick(memberUser.getUserNick());
-        CdnItem cdnItem = showForCdnService.selItemById(request.getGoodsId(), request.getWebSite());
+        CdnItem cdnItem = showForCdnService.selItemById(goodsId, webSite);
         if (cdnItem == null) {
-            openException.setErrMsg("未查询到商品："+request.getGoodsId());
-            resp.setException(openException);
-            resp.setSuccess(false);
-            return resp;
+            openException.setErrMsg("未查询到商品："+goodsId);
+            throw openException;
         }
         bo.setFenPrice(cdnItem.getPiPrice());
         bo.setSupperPiPrice(cdnItem.getPiPrice());
         bo.setSupperPrice(cdnItem.getPrice());
         bo.setStatus(0L);
         bo.setFenGoodsName(cdnItem.getTitle());
-        bo.setSupperGoodsId(request.getGoodsId());
+        bo.setSupperGoodsId(goodsId);
         bo.setSupperStoreId(cdnItem.getShopId());
         bo.setSupperMarketId(cdnItem.getMarketId());
         bo.setSupperNumiid(cdnItem.getTbNumIid());
@@ -109,7 +99,7 @@ public class PhoneGoodsUpService {
         ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
         bo.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
         bo.setSupperStoreName(shopBase.getShopName());
-        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId(), request.getWebSite());
+        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId(), webSite);
         if (storeRelation != null) {
             bo.setSupperStorenum(storeRelation.getStoreNum());
             bo.setSupperImww(storeRelation.getImWw());
@@ -118,7 +108,7 @@ public class PhoneGoodsUpService {
             bo.setSupperQq(storeRelation.getImQq());
         }
         StringBuilder sb = new StringBuilder();
-        for (String s : showForCdnService.selItemLicenses(request.getGoodsId(), cdnItem.getShopId())) {
+        for (String s : showForCdnService.selItemLicenses(goodsId, cdnItem.getShopId())) {
             switch (s) {
                 case "1":
                     sb.append("退现金");
@@ -136,25 +126,24 @@ public class PhoneGoodsUpService {
         }
         bo.setSupperServers(sb.toString());
         itemUpRecordService.addItemUpRecord(bo);
-        resp.setSuccess(true);
-        return resp;
+
     }
 
-    public UploadedItemResponse uploadedItem(UploadedItemRequest request) {
-        if(request.getIndex()==null){
-            request.setIndex(1);
+    public UploadedItemVO uploadedItem(Integer type,Integer index,Integer size,Long userId) {
+        if(index == null){
+            index = 1;
         }
-        UploadedItemResponse res=new UploadedItemResponse();
-        String nick=memberSimpleService.selNick(request.getUserId());
+        UploadedItemVO uploadedItemVO = new UploadedItemVO();
+        String nick=memberSimpleService.selNick(userId);
         ShiguPager<OnekeyRecoreVO> pager;
         if(nick==null){
-            pager=itemUpRecordService.uploadedItems(request.getUserId(),request.getType(),request.getIndex(),10);
+            pager=itemUpRecordService.uploadedItems(userId,type,index,size);
         }else{
-            pager=itemUpRecordService.uploadedItems(request.getUserId(),nick,request.getType(),request.getIndex(),10);
+            pager=itemUpRecordService.uploadedItems(userId,nick,type,index,size);
         }
         pager.calPages(pager.getTotalCount(),10);
-        res.setTotal(pager.getTotalCount());
-        res.setHasNext(request.getIndex()<100&&request.getIndex()<pager.getTotalPages());
+        uploadedItemVO.setTotal(pager.getTotalCount());
+        uploadedItemVO.setHasNext(index<100&&index<pager.getTotalPages());
 
         List<AppItemUploaded> eds=new ArrayList<>();
         for(OnekeyRecoreVO vo:pager.getContent()){
@@ -168,14 +157,13 @@ public class PhoneGoodsUpService {
             ed.setUploadId(vo.getOnekeyId());
             eds.add(ed);
         }
-        res.setItems(eds);
-        res.setSuccess(true);
-        return res;
+        uploadedItemVO.setItems(eds);
+        return uploadedItemVO;
     }
 
-    public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
+    public void instockMyItem(String uploadId,Long userId) {
         //查询上传记录
-        SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(request.getUploadId());
+        SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(uploadId);
         if(singleItemUpRecordVO != null){
             //todo 先下架淘宝
 
@@ -183,8 +171,6 @@ public class PhoneGoodsUpService {
             ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
             itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());
         }
-        InstockMyItemResponse res=new InstockMyItemResponse();
-        res.setSuccess(true);
-        return res;
+
     }
 }

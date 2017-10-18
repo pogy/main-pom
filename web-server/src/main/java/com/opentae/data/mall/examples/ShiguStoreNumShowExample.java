@@ -56,7 +56,7 @@ public class ShiguStoreNumShowExample extends SgExample<ShiguStoreNumShowExample
         parentMarket = listMap.get("parentMarket");
         storeNumId = listMap.get("storeNumId");
         parentMarketId = listMap.get("parentMarketId");
-        services = listMap.get("services");
+        services = listMap.get("baseservices");
         storeId = listMap.get("storeId");
         mainType = listMap.get("mainType");
         useStatus = listMap.get("useStatus");

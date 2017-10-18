@@ -87,7 +87,7 @@ public class WapItemAction {
         if (goodsId== null|| storeId == null || ps.getUserId() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
-        response=appItemService.collectItem(request);
+        response=appItemService.collectGoods(request);
         return JSONObject.fromObject(response);
     }
 }

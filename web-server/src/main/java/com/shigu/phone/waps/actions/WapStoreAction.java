@@ -1,21 +1,22 @@
 package com.shigu.phone.waps.actions;
 
-import com.openJar.requests.app.MarketsRequest;
+import com.openJar.beans.app.AppMarket;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.OneShopRequest;
 import com.openJar.requests.app.ShopCatRequest;
-import com.openJar.responses.app.MarketsResponse;
-import com.openJar.responses.app.ShopCatResponse;
+import com.openJar.requests.app.ShopSearchRequest;
+import com.shigu.phone.waps.service.WapPhoneStoreService;
+import com.shigu.phone.waps.service.WapStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSON;
 import net.sf.json.JSONObject;
-import com.shigu.phone.apps.services.AppStoreService;
-import com.shigu.phone.services.PhoneStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.Valid;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -23,13 +24,10 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/wap")
 public class WapStoreAction {
-    private AppStoreService appStoreService;
     @Autowired
-    private PhoneStoreService phoneStoreService;
+    private WapStoreService wapStoreService;
     @Autowired
-    public void setAppStoreService(AppStoreService appStoreService) {
-        this.appStoreService = appStoreService;
-    }
+    private WapPhoneStoreService wapPhoneStoreService;
 
     @RequestMapping("oneShop")
     @ResponseBody
@@ -38,26 +36,54 @@ public class WapStoreAction {
         OneShopRequest oneShopRequest = new OneShopRequest();
         oneShopRequest.setShopId(shopId);
         oneShopRequest.setWebSite(webSite);
-        return JSONObject.fromObject(appStoreService.selOneShopInfo(oneShopRequest));
+        return JSONObject.fromObject(wapStoreService.selOneShopInfo(oneShopRequest));
     }
 
 
-    @RequestMapping("shopCat")
+    @RequestMapping("queryShopCategory")
     @ResponseBody
     public JSONObject ShopCat( String webSite,Long shopId ){
-        ShopCatRequest shopCatRequest = new ShopCatRequest();
-        shopCatRequest.getShopId();
-        shopCatRequest.getWebSite();
-        return JSONObject.fromObject(appStoreService.selShopCat(shopCatRequest));
+        return JsonResponseUtil.success().element("cats",wapStoreService.selShopCat(webSite,shopId));
     }
 
-    @RequestMapping("markets")
+    @RequestMapping("getMarketList")
     @ResponseBody
-    public JSONObject selMarketData(@Valid MarketsRequest request, MarketsResponse response, BindingResult result)  {
-        if(result.hasErrors()){
-            return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
+    public JSONObject selMarketData(Long mid,String webSite)  {
+        try {
+            AppMarket appMarket = wapStoreService.selMarketData(mid, webSite);
+            return JsonResponseUtil.success().element("market",appMarket);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg());
         }
-        return JSONObject.fromObject(appStoreService.selMarketData(request));
     }
+
+
+    /**
+     * 查询店铺列表
+     * @param keyword
+     * @param webSite
+     * @param index
+     * @param size
+     * @return
+     */
+    @RequestMapping(" queryShopList")
+    @ResponseBody
+    public JSONObject shopSearch(String keyword, String webSite,Integer index,Integer size) {
+        if(StringUtils.isEmpty(webSite)){
+           webSite = "hz";
+        }
+        if (StringUtils.isEmpty(keyword)) {
+            keyword = "";
+        }
+        if (index == null) {
+            index = 1;
+        }
+        if (size == null) {
+            size = 30;
+        }
+        return JSONObject.fromObject(wapPhoneStoreService.shopSearch(keyword,webSite,index,size));
+    }
+
+
 
 }

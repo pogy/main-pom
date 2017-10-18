@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类名：PhoneGoodsSearchService
- * 类路径：com.shigu.phone.services.PhoneGoodsSearchService
+ * 类路径：com.shigu.phone.apps.baseservices.PhoneGoodsSearchService
  * 创建者：王浩翔
  * 创建时间：2017-08-29 14:35
  * 项目：main-pom

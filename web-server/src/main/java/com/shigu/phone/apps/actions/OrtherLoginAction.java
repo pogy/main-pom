@@ -1,15 +1,12 @@
 package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.OrtherLoginRequest;
-import com.shigu.buyer.bo.LoginBO;
-import com.shigu.phone.services.PhoneUserService;
+import com.shigu.phone.apps.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 类名：OrtherLoginAction

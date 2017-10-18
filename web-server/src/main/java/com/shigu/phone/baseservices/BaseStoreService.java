@@ -1,62 +1,48 @@
-package com.shigu.phone.waps.service;
+package com.shigu.phone.baseservices;
 
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.openJar.beans.app.*;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.*;
-import com.openJar.responses.app.*;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
-import com.opentae.core.mybatis.mapper.MultipleMapper;
+import com.openJar.requests.app.MarketsRequest;
+import com.openJar.requests.app.OneShopRequest;
+import com.openJar.requests.app.ShopCatRequest;
+import com.openJar.responses.app.MarketsResponse;
+import com.openJar.responses.app.OneShopResponse;
+import com.openJar.responses.app.ShopCatResponse;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
-import com.opentae.data.mall.multibeans.AppShopBlockBean;
-import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.MarketListService;
 import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
-import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
-import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.search.bo.StorenumBO;
-import com.shigu.search.services.StoreSelFromEsService;
-import com.shigu.search.vo.StoreInSearch;
-import com.shigu.zhb.utils.BeanMapper;
+import com.shigu.phone.basevo.OneShopVO;
+import com.shigu.phone.basevo.ShopCatVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * 类名：PhoneStoreService
- * 类路径：com.shigu.phone.apps.baseservices.PhoneStoreService
- * 创建者：王浩翔
- * 创建时间：2017-08-31 15:38
- * 项目：main-pom
- * 描述：
+ * Created by pc on 2017-08-29.
+ * app 店铺 service
+ *
+ * @author lys
+ * @version 3.0.0-SNAPSHOT
+ * @description
+ * @since 3.0.0-SNAPSHOT
  */
-
 @Service
-public class WapStoreService {
-
+public class BaseStoreService {
 
     private StoreRelationService storeRelationService;
     @Autowired
@@ -89,80 +75,76 @@ public class WapStoreService {
         this.shiguStoreCollectMapper = shiguStoreCollectMapper;
     }
 
-    public OneShopResponse selOneShopInfo(OneShopRequest request) {
-        OneShopResponse response = new OneShopResponse();
+    public OneShopVO selOneShopInfo(Long shopId,String webSite,Long userId) throws OpenException {
         //店铺基本信息
-        StoreRelation storeRelation = storeRelationService.selRelationById(request.getShopId());
+        StoreRelation storeRelation = storeRelationService.selRelationById(shopId);
         if(storeRelation == null){
             OpenException openException = new OpenException();
             openException.setErrMsg("店铺不存在");
-            response.setException(openException);
-            response.setSuccess(false);
-            return  response;
+            throw openException;
         }
 
         //商品数量
-        Long itemsNum = shopForCdnService.selItemNumberById(request.getShopId(), request.getWebSite());
+        Long itemsNum = shopForCdnService.selItemNumberById(shopId, webSite);
         //查询星星数
-        Long starNum = shopForCdnService.selShopStarById(request.getShopId());
+        Long starNum = shopForCdnService.selShopStarById(shopId);
 
         //今日上新数
         ShiguGoodsTinyExample tinyExample = new ShiguGoodsTinyExample();
-        tinyExample.setWebSite(request.getWebSite());
+        tinyExample.setWebSite(webSite);
         tinyExample.createCriteria()
-                .andStoreIdEqualTo(request.getShopId())
+                .andStoreIdEqualTo(shopId)
                 .andGoodsStatusEqualTo(0)
                 .andLoadDateGreaterThanOrEqualTo(DateUtil.getStartTime());
         int todayAdd = shiguGoodsTinyMapper.countByExample(tinyExample);
-        response.setSuccess(true);
-        response.setItemNum(itemsNum.intValue());
-        response.setMarket(storeRelation.getMarketName());
-        response.setShopId(request.getShopId());
-        response.setShopNum(storeRelation.getStoreNum());
-        response.setStarNum(starNum.intValue());
-        response.setTelephone(storeRelation.getTelephone());
-        response.setTodayAdd(todayAdd);
-        response.setShopHeadUrl(response.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
+        OneShopVO vo = new OneShopVO();
+        vo.setItemNum(itemsNum.intValue());
+        vo.setMarket(storeRelation.getMarketName());
+        vo.setShopId(shopId);
+        vo.setShopNum(storeRelation.getStoreNum());
+        vo.setStarNum(starNum.intValue());
+        vo.setTelephone(storeRelation.getTelephone());
+        vo.setTodayAdd(todayAdd);
+        vo.setShopHeadUrl(vo.getShopHeadUrl().replace("回车间",storeRelation.getImWw()));
         //店铺是否已收藏
-        if (StringUtil.isNull(request.getUserId())) {
-            response.setIsCollect(0);
+        if (userId == null) {
+            vo.setIsCollect(0);
         }else {
             ShiguStoreCollectExample example = new ShiguStoreCollectExample();
-            example.createCriteria().andUserIdEqualTo(request.getUserId()).andStoreIdEqualTo(request.getShopId());
+            example.createCriteria().andUserIdEqualTo(userId).andStoreIdEqualTo(shopId);
             int count = shiguStoreCollectMapper.countByExample(example);
-            response.setIsCollect(count == 0 ? 0 : 1);
-
-
+            vo.setIsCollect(count == 0 ? 0 : 1);
         }
-        return response;
+        return vo;
     }
+
     public AppMarket selMarketData(Long mid,String webSite) throws OpenException {
         if(mid == null){
-            switch (webSite){
-                case "hz":{
-                    mid = 1L;
-                    break;
-                }
-                case "cs":{
-                    mid = 43L;
-                    break;
-                }
-                case "jx":{
-                    mid = 33L;
-                    break;
-                }
-                case "ss":{
-                    mid = 61L;
-                    break;
-                }
-                case "kx":{
-                    mid = 68L;
-                    break;
-                }
-                default:{
-                    break;
-                }
-            }
+         switch (webSite){
+             case "hz":{
+                mid = 1L;
+                break;
+             }
+             case "cs":{
+                mid = 43L;
+                break;
+             }
+             case "jx":{
+                mid = 33L;
+                break;
+             }
+             case "ss":{
+                mid = 61L;
+                break;
+             }
+             case "kx":{
+                 mid = 68L;
+                 break;
+             }
+             default:{
+                 break;
+             }
+         }
 
         }
         MarketVO marketVO = marketListService.selMarketData(mid, null);
@@ -210,7 +192,9 @@ public class WapStoreService {
         appMarket.setFloors(appFloors);
         return appMarket;
     }
-    public List<AppShopCat> selShopCat(String webSite,Long shopId){
+
+    public ShopCatVO selShopCat(Long shopId){
+
         List<AppShopCat> appShopCats = new ArrayList<>();
         Long totalItemNum = 0L;//全部商品数目
         List<CatPolymerization> catPolymerizations = cdnService.formatCatPoly(shopId);
@@ -239,6 +223,10 @@ public class WapStoreService {
             }
             appShopCats.add(appShopCat);
         }
-        return appShopCats;
+
+        ShopCatVO vo = new ShopCatVO();
+        vo.setCats(appShopCats);
+        vo.setTotalItemNum(totalItemNum);
+        return vo;
     }
 }

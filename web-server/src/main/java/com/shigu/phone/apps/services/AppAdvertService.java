@@ -4,6 +4,7 @@ import com.openJar.beans.app.AppImgBanner;
 import com.openJar.beans.app.AppItemSpread;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
+import com.shigu.phone.baseservices.BaseAdvertService;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pc on 2017-08-29.
@@ -26,7 +28,7 @@ import java.util.List;
 @Service
 public class AppAdvertService {
     @Autowired
-    SpreadService spreadService;
+    private BaseAdvertService baseAdvertService;
 
     /**
      * 图片式广告数据
@@ -34,8 +36,8 @@ public class AppAdvertService {
      * @return
      */
     public ImgSpreadResponse imgSpread(SpreadEnum spread){
-        List<ImgBannerVO> imageGoat = spreadService.selImgBanners(spread).selReal();
-        List<AppImgBanner> spreads = BeanMapper.mapList(imageGoat,AppImgBanner.class);
+        List<ImgBannerVO> imgBannerVOS = baseAdvertService.imgSpread(spread);
+        List<AppImgBanner> spreads = BeanMapper.mapList(imgBannerVOS,AppImgBanner.class);
         ImgSpreadResponse response=new ImgSpreadResponse();
         response.setSpreads(spreads);
         response.setSuccess(true);
@@ -49,16 +51,9 @@ public class AppAdvertService {
      * @return
      */
     public ItemSpreadResponse itemSpread(String webSite, SpreadEnum spread){
-        List<ItemSpreadVO> itemGoat = spreadService.selItemSpreads(webSite,spread).selReal();
-        List<AppItemSpread> spreads=new ArrayList<>();
-        for(ItemSpreadVO item:itemGoat){
-            AppItemSpread sp= BeanMapper.map(item,AppItemSpread.class);
-            sp.setGoodsId(item.getId());
-            sp.setTitle(item.getTitle());
-            spreads.add(sp);
-        }
+        List<AppItemSpread> appItemSpreads = baseAdvertService.itemSpread(webSite, spread);
         ItemSpreadResponse response=new ItemSpreadResponse();
-        response.setSpreads(spreads);
+        response.setSpreads(appItemSpreads);
         response.setSuccess(true);
         return response;
     }

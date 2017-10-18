@@ -4,6 +4,7 @@ import com.openJar.beans.app.AppImgBanner;
 import com.openJar.beans.app.AppItemSpread;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
+import com.shigu.phone.baseservices.BaseAdvertService;
 import com.shigu.phone.waps.vo.ImgSpreadVO;
 import com.shigu.phone.waps.vo.WapItemSpreadVo;
 import com.shigu.spread.enums.SpreadEnum;
@@ -28,7 +29,7 @@ import java.util.List;
 @Service
 public class WapAdvertService {
     @Autowired
-    SpreadService spreadService;
+    BaseAdvertService baseAdvertService;
 
     /**
      * 图片式广告数据
@@ -36,15 +37,16 @@ public class WapAdvertService {
      * @return
      */
     public List<ImgSpreadVO> imgSpread(SpreadEnum spread){
-        List<ImgBannerVO> imageGoat = spreadService.selImgBanners(spread).selReal();
+        List<ImgBannerVO> imgBannerVOS = baseAdvertService.imgSpread(spread);
         List<ImgSpreadVO> list = new ArrayList<>();
-        imageGoat.stream().forEach(item->{
+        imgBannerVOS.stream().forEach(item->{
             ImgSpreadVO vo  = new ImgSpreadVO();
             vo.setHref(item.getHref());
             vo.setText(item.getText());
             vo.setImgsrc(item.getImgsrc());
             list.add(vo);
         });
+
         return list;
     }
 
@@ -54,26 +56,7 @@ public class WapAdvertService {
      * @param spread
      * @return
      */
-    public ItemSpreadResponse itemSpread(String webSite, SpreadEnum spread){
-        List<ItemSpreadVO> itemGoat = spreadService.selItemSpreads(webSite,spread).selReal();
-        List<WapItemSpreadVo> list=new ArrayList<>();
-        itemGoat.stream().forEach(o->{
-            new WapItemSpreadVo();
-        });
-        for(ItemSpreadVO item:itemGoat){
-            AppItemSpread sp= BeanMapper.map(item,AppItemSpread.class);
-            sp.setGoodsId(item.getId());
-
-
-
-
-
-            sp.setTitle(item.getTitle());
-//            spreads.add(sp);
-        }
-        ItemSpreadResponse response=new ItemSpreadResponse();
-//        response.setSpreads(spreads);
-        response.setSuccess(true);
-        return response;
+    public  List<AppItemSpread> itemSpread(String webSite, SpreadEnum spread){
+        return baseAdvertService.itemSpread(webSite, spread);
     }
 }
