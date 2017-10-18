@@ -26,7 +26,6 @@ import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.phone.services.PhoneUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

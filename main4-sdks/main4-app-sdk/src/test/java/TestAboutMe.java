@@ -13,7 +13,8 @@ public class TestAboutMe {
     public void aboutMe(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         AboutMeRequest request=new AboutMeRequest();
-        request.setUserId(1000085908L);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
+        //request.setUserId(1000085908L);
         AboutMeResponse response=client.execute(request);
         System.out.println(response.getBody());
         //System.out.println("getHeadUrl:"+response.getHeadUrl()+"getPhoneBind="+response.getPhoneBind()+"getUserNick="+response.getUserNick());
@@ -66,7 +67,7 @@ public class TestAboutMe {
     }
 
 
-    //new成功
+    //1
     @Test
     public void  OneShopRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
@@ -77,32 +78,33 @@ public class TestAboutMe {
         System.out.println(response.getBody());
         System.out.println(""+response.getShopNum());
     }
-    //成功
+    //
     @Test
     public void  UpToWxRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         UpToWxRequest  request=new UpToWxRequest ();
-        request.setUserId(1000085908L);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
         request.setWebSite("hz");
         request.setGoodsId(20065019L);
 //        request.setGoodsId(20466357L);
-        request.setToken("4d7659c4adc7410db39db8dcfd7fc1dd");
+       // request.setToken("4d7659c4adc7410db39db8dcfd7fc1dd");
         UpToWxResponse response = client.execute(request);
         System.out.println(response.isSuccess());
         System.out.println(response.getBody());
     }
-    //成功
+    //1
     @Test
     public void  StoreCollectRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         StoreCollectRequest  request=new StoreCollectRequest ();
 //        request.setUserId(1000085908L);//收藏夹为空
-        request.setUserId(9968L);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
+        request.setWebSite("hz");
         request.setIndex(2);
         StoreCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
-    //成功
+
     @Test
     public void ImgSearchRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
@@ -185,22 +187,8 @@ public class TestAboutMe {
         System.out.println(response.getBody());
         Assert.assertTrue(response.isSuccess());
     }
-    //失败,地址
-    @Test
-    public void ChangePasswordRequest(){
-        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
-        ChangePasswordRequest request=new ChangePasswordRequest();
-        //新密码
-        request.setNewPwd("fei691820");
-        //老密码
-        //request.getOldPwd("fei691820%");
-        request.setToken("");
-        //  request.setUserId("1000085908");
-        ChangePasswordResponse response = client.execute(request);
-        System.out.println(response.getBody());
-        //System.out.println(response.getCatGroups());
-    }
-    //失败地址
+
+    //失败地址1
     @Test
     public void bindUserRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
@@ -227,14 +215,13 @@ public class TestAboutMe {
         System.out.println(response.getBody());
     }
 
-    //失败,地址
+    //失败,地址1
     @Test
     public void  UpToTbRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         UpToTbRequest request=new UpToTbRequest();
-        request.setUserId(1000085908L);
         request.setWebSite("hz");
-
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
         UpToTbResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -300,8 +287,7 @@ public class TestAboutMe {
 //        request.setFile( Base64.getEncoder().encodeToString(file));
 ////        request.setType(1);
 //        request.setUserId(13456872821l);
-
-        request.setUserId(1000085908l);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
         //原头像地址  http://imgs.571xz.net/mall/file/1505284291244.jpg
         request.setFile("http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/file/0000f74780d536ba489cc897e64d6b39.jpg");
 //        request.setFile("http://imgs.571xz.net/mall/file/1505284291244.jpg");
@@ -325,7 +311,7 @@ public class TestAboutMe {
 //        request.setStoreId(40903l);
 
 //
-        request.setUserId(1000016976l);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
         request.setGoodsId(21533000l);
         request.setStoreId(41700l);
 //
@@ -341,10 +327,8 @@ public class TestAboutMe {
     public void  delItemCollectRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         DelItemCollectRequest  request=new DelItemCollectRequest ();
-
-        request.setUserId(1000085908l);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
         request.setCollectIds("851450,,851451");
-        request.setToken("123123");
 
         DelItemCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -355,8 +339,7 @@ public class TestAboutMe {
     public void  itemCollectRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemCollectRequest  request=new ItemCollectRequest ();
-
-        request.setUserId(1000085908l);
+        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
 
        ItemCollectResponse response = client.execute(request);
         System.out.println(response.getBody());
