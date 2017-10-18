@@ -165,7 +165,7 @@ public class BasedPhoneStoreService {
      *
      * @return
      */
-    private void delShopCollection(Long userId,List<Long> shopIds) {
+    public void delShopCollection(Long userId,List<Long> shopIds) {
         userCollectService.delShopCollectionByShopIds(userId,shopIds);
     }
 
@@ -174,7 +174,7 @@ public class BasedPhoneStoreService {
      *
      * @throws ShopCollectionException
      */
-    private void addShopCollection(Long userId,Long shopId) throws ShopCollectionException {
+    public void addShopCollection(Long userId,Long shopId) throws ShopCollectionException {
         ScStoreBO bo = new ScStoreBO();
         bo.setStore_id(shopId);
         cdnService.addShopCollect(userId, bo);

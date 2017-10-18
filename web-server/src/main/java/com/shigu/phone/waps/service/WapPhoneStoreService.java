@@ -86,4 +86,13 @@ public class WapPhoneStoreService {
         basedPhoneStoreService.doStoreCollect(shopId,yesOrNo,userId);
     }
 
+    /**
+     * 批量取消收藏店铺
+     *
+     * @return
+     */
+    public void delStoreCollect(List<Long> collectIds, Long userId){
+        basedPhoneStoreService.delShopCollection(userId,collectIds);
+    }
+
 }
