@@ -147,6 +147,7 @@ public class PhoneGoodsSearchService {
      */
     public OneItemResponse oneItem(OneItemRequest request) {
         OneItemResponse resp = new OneItemResponse();
+        resp.setSuccess(true);
         try {
             OneItemVO oneItemVO = basePhoneGoodsSearchService.oneItem(request.getWebSite(), request.getItemId(), request.getUserId());
             resp.setTitle(oneItemVO.getTitle());
