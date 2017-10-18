@@ -115,13 +115,13 @@ public class MemberAction {
     UserAccountService userAccountService;
 
     @Autowired
-    GoodsupRecordSimpleService goodsupRecordSimpleService;
-
-    @Autowired
     SendMsgService sendMsgService;
 
     @Autowired
     UserCollectSimpleService userCollectSimpleService;
+
+    @Autowired
+    GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     /**
      * 分销商首页
@@ -319,41 +319,17 @@ public class MemberAction {
     @RequestMapping("member/shiguOnekeyRecordinit")
     public String shiguOnekeyRecordinit(OnekeyRecordBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
-        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", "web-tb");
-        QueryBuilder tbSoldoutQuery = QueryBuilders.termsQuery("tbSoldout", bo.isTbSoldout());
-        QueryBuilder shopSoldoutQuery = QueryBuilders.termsQuery("shopSoldout", bo.isShopSoldout());
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        boolQuery.must(userQuery);
-        boolQuery.must(flagQuery);
-        boolQuery.mustNot(tbSoldoutQuery);
-        boolQuery.mustNot(shopSoldoutQuery);
-
-        srb.setQuery(boolQuery);
-        SearchResponse response = srb.execute().actionGet();
-        //聚合结果
-        SearchHits hits = response.getHits();
-        //总数
-        long totalHits = hits.getTotalHits();
-
-        List<ItemUpRecordVO> list = new ArrayList<>();
-        SearchHit[] searchHits = hits.hits();
-        for (SearchHit s : searchHits) {
-            //单条数据
-            String json = s.getSourceAsString();
-            //字符串转对象
-            ItemUpRecordVO itemUpRecordVO = JSON.parseObject(json, ItemUpRecordVO.class);
-            list.add(itemUpRecordVO);
-            System.out.println(itemUpRecordVO);
+        String nick;
+        if (ps.getLoginFromType().equals(LoginFromType.TAOBAO)) {
+            nick = ps.getLoginName();
+        } else {
+            nick=memberSimpleService.selNick(ps.getUserId());
         }
-        ShiguPager<ItemUpRecordVO> pager = new ShiguPager<ItemUpRecordVO>();
-        pager.setTotalCount(Integer.parseInt(String.valueOf(totalHits)));
-        pager.setContent(list);
-        model.addAttribute("get",bo);
-        model.addAttribute("page",bo.getPage());
+        ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(ps.getUserId(), nick, bo);
+        model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
+        model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodslist", list);
+        model.addAttribute("goodsList",pager.getContent());
         return "buyer/shiguOnekeyRecordinit";
     }
 
@@ -1021,20 +997,5 @@ public class MemberAction {
     }
 
 
-    /**
-     * 已上传的商品列表
-     * @param bo
-     * @param session
-     * @param model
-     * @return
-     */
-    //todo:前端url没定
-    public String goodsupRecordList(GoodsupSearchBO bo, HttpSession session, Model model) {
-        //todo:前端搜索条件字段没定
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ItemUpRecordVO> pager = goodsupRecordSimpleService.goodsupRecordList(ps.getUserId(), ps.getUserNick(), bo);
-        //todo:前端没开始，字段没定，模板还没有
-        return null;
-    }
 
 }

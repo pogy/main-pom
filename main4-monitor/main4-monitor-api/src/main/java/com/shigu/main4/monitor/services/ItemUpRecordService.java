@@ -1,13 +1,7 @@
 package com.shigu.main4.monitor.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.monitor.vo.DataLineVO;
-import com.shigu.main4.monitor.vo.HotUpItem;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.LastUploadedVO;
-import com.shigu.main4.monitor.vo.NoUpItem;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.monitor.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -31,21 +25,6 @@ public interface ItemUpRecordService {
      */
     LastUploadedVO selLastUpByIds(Long userId, Long supperGoodsId);
 
-    /**
-     * 查询已上传的宝贝
-     * @param userId 用户ID
-     * @return 已上传的宝贝分页信息
-     */
-    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String target, String keyword, Date fromDate, Date toDate,
-                                             int pageNo, int pageSize);
-
-    /**
-     * 查询已上传的宝贝
-     * @param userId 用户ID
-     * @return 已上传的宝贝分页信息
-     */
-    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick, String target, String keyword, Date fromDate, Date toDate,
-                                             int pageNo, int pageSize);
 
     /**
      * 删除一键上传记录
@@ -111,4 +90,5 @@ public interface ItemUpRecordService {
      * @return
      */
     List<DataLineVO> dailiSellerLevelLine(Long shopId);
+
 }
