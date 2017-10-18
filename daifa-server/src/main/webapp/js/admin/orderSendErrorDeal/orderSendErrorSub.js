@@ -29,7 +29,9 @@ $(function(){
 function editProp(obj,dfOrderId){
 
 
-    var propStr= $(obj).parent().prev().prev().prev().children().val();
+    var propStr= $(obj).parent().prev().prev().prev().prev().prev().children().val();
+    var goodsCode= $(obj).parent().prev().prev().prev().prev().children().val();
+    var storeGoodsCode= $(obj).parent().prev().prev().prev().children().val();
     //alert("receiverName="+receiverName+" @@@receiverAddr="+receiverAddr);
     $$.post('dealSubOrderErrorJson.json', function(resp){
         if(resp.err){
@@ -39,7 +41,7 @@ function editProp(obj,dfOrderId){
                 location.reload();
             });
         }
-    },{dfOrderId: dfOrderId, propStr:propStr});
+    },{dfOrderId: dfOrderId, propStr:propStr,goodsCode:goodsCode,storeGoodsCode:storeGoodsCode});
 }
 
 
