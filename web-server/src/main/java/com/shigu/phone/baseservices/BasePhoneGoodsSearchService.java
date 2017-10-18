@@ -9,16 +9,20 @@ import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.newcdn.vo.CdnGoodsInfoVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
+import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.GoodsInSearch;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +53,10 @@ public class BasePhoneGoodsSearchService {
 
     @Autowired
     private UserCollectService userCollectService;
+    @Autowired
+    private ShopForCdnService shopForCdnService;
+    @Autowired
+    private GoodsSelFromEsService goodsSelFromEsService;
 
     @Autowired
     private OssIO ossIO;
@@ -67,6 +76,50 @@ public class BasePhoneGoodsSearchService {
             appGoodsBlock.setGoodsId(o.getId());
             return appGoodsBlock;
         }).collect(Collectors.toList()));
+        return vo;
+    }
+    /**
+     * 移动端店内商品搜索
+     *
+     * @return
+     */
+    public ItemSearchVO itemSearch(SearchBO bo, String orderBy,Long shopId){
+        if("xp".equals(orderBy)){
+            orderBy="time_down";
+        }
+        ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemOnsale(null,shopId,bo.getWebSite(),null,bo.getCid()==null?null:bo.getCid().toString(),orderBy,null,null,bo.getPage(),bo.getRows());
+
+        ShiguPager<SearchItem> p=new ShiguPager<>();
+        p.setNumber(pager.getNumber());
+        p.setTotalPages(pager.getTotalPages());
+        p.setTotalCount(pager.getTotalCount());
+        p.setContent(pager.getContent().parallelStream().map(itemShowBlock -> {
+            SearchItem item=new SearchItem();
+            item.setGoodsNo(itemShowBlock.getGoodsNo());
+            item.setStoreId(itemShowBlock.getShopId());
+            item.setPrice(itemShowBlock.getPrice());
+            item.setTitle(itemShowBlock.getTitle());
+            item.setItemId(itemShowBlock.getItemId());
+            item.setPicUrl(itemShowBlock.getImgUrl());
+            item.setCreated(new Date());
+            if (itemShowBlock.getGoodsNo().contains("<em>")) {
+                item.setHighLightGoodsNo(itemShowBlock.getGoodsNo());
+                item.setGoodsNo(itemShowBlock.getGoodsNo().replace("<em>","").replace("</em>", ""));
+            } else {
+                item.setGoodsNo(null);
+                item.setHighLightTitle(itemShowBlock.getTitle());
+                item.setTitle(itemShowBlock.getTitle().replace("<em>","").replace("</em>", ""));
+            }
+            return item;
+        }).collect(Collectors.toList()));
+        ItemSearchVO vo=new ItemSearchVO();
+        vo.setItems(goodsSelFromEsService.addShopInfoToGoods(p,bo.getWebSite()).getContent().parallelStream().map(o -> {
+            AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
+            appGoodsBlock.setGoodsId(o.getId());
+            return appGoodsBlock;
+        }).collect(Collectors.toList()));
+        vo.setTotal(pager.getTotalCount());
+        vo.setHasNext(pager.getNumber() < pager.getTotalPages());
         return vo;
     }
 
