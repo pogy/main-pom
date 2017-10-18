@@ -53,7 +53,11 @@ public class GoodsupRecordSimpleService {
         }
         ShiguPager<OnekeyRecoreVO> pager = new ShiguPager<>();
         SearchRequestBuilder searchRequestBuilder = ElasticConfiguration.searchClient.prepareSearch(esIndex);
-        searchRequestBuilder.setQuery(buildQuery(userId, tbNick, bo)).addSort(SortBuilders.scoreSort()).addSort(SortBuilders.fieldSort("daiTime").order(SortOrder.DESC));
+        searchRequestBuilder.setQuery(buildQuery(userId, tbNick, bo));
+        if (bo.getUploadGoodsState() != null && bo.getUploadGoodsState()==3) {
+            searchRequestBuilder.addSort(SortBuilders.scoreSort().order(SortOrder.DESC));
+        }
+        searchRequestBuilder.addSort(SortBuilders.fieldSort("daiTime").order(SortOrder.DESC));
         searchRequestBuilder.setFrom((bo.getPage() - 1)*bo.getRows());
         searchRequestBuilder.setSize(bo.getRows());
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
@@ -141,7 +145,7 @@ public class GoodsupRecordSimpleService {
                 timeQuery.from(bo.getStartTime() + " 00:00:00");
             }
             if (StringUtils.isNotBlank(bo.getEndTime())) {
-                timeQuery.to(bo.getEndTime() + " 00:00:00");
+                timeQuery.to(bo.getEndTime() + " 23:59:59");
             }
             otherQuery.must(timeQuery);
         }
