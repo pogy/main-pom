@@ -53,9 +53,14 @@ public class PhoneGoodsUpService {
     }
 
     public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
-        basePhoneGoodsUpService.instockMyItem(request.getUploadId(), request.getUserId());
         InstockMyItemResponse res=new InstockMyItemResponse();
-        res.setSuccess(true);
+        try {
+            basePhoneGoodsUpService.instockMyItem(request.getUploadId(), request.getUserId());
+            res.setSuccess(true);
+        } catch (OpenException e) {
+           res.setException(e);
+           res.setSuccess(false);
+        }
         return res;
     }
 }

@@ -4,61 +4,16 @@ import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
-import com.opentae.data.mall.interfaces.*;
-import com.shigu.buyer.services.UserAccountService;
-import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
-import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.StringUtil;
-import com.shigu.main4.common.util.UUIDGenerator;
-import com.shigu.main4.tools.OssIO;
-import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.ucenter.enums.MemberLicenseType;
-import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
-import com.shigu.main4.ucenter.services.UserBaseService;
-import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.main4.ucenter.util.EncryptUtil;
-import com.shigu.main4.ucenter.vo.RegisterUser;
-import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
-import com.shigu.phone.api.actions.PhoneMsgAction;
-import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
-import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.baseservices.BasePhoneUserService;
 import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
-import com.shigu.phone.basevo.OrtherLoginVO;
-import com.shigu.services.SendMsgService;
-import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.Rds3TempUser;
-import com.shigu.session.main4.ShopSession;
-import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.tools.RedomUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 类名：PhoneUserService
@@ -107,20 +62,8 @@ public class PhoneUserService {
     }
 
     //第三方登录
-    public Object ortherLogin( OrtherLoginRequest request ) {
-        OrtherLoginResponse resp=new OrtherLoginResponse();
-        try {
-            OrtherLoginVO ortherLoginVO = basePhoneUserService.ortherLogin(request.getType(), request.getNick(), request.getKey());
-            resp.setTempId(ortherLoginVO.getTempId());
-            resp.setType(ortherLoginVO.getType());
-            resp.setUrl(ortherLoginVO.getUrl());
-            resp.setUsers(ortherLoginVO.getUsers());
-            resp.setSuccess(true);
-        } catch (OpenException e) {
-           resp.setException(e);
-           resp.setSuccess(false);
-        }
-        return resp;
+    public String ortherLogin( OrtherLoginRequest request ) {
+         return  basePhoneUserService.ortherLogin(request.getType(), request.getNick(), request.getKey());
     }
     /**
      * 得到手机验证码
@@ -147,7 +90,7 @@ public class PhoneUserService {
     public ChangePasswordResponse changePassword( ChangePasswordRequest request) {
         ChangePasswordResponse resp = new ChangePasswordResponse();
         try {
-            basePhoneUserService.changePassword(request.getOldPwd(), request.getNewPwd(),request.getUserId());
+            basePhoneUserService.changePassword(request.getOldPwd(), request.getNewPwd(),request.getUserId(),request.getToken());
             resp.setSuccess(true);
         }catch (OpenException e) {
             resp.setException(e);

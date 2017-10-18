@@ -1,5 +1,6 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
 import com.openJar.responses.app.UploadedItemResponse;

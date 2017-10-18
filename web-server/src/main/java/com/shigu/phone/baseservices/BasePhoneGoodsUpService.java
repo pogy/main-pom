@@ -12,6 +12,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -161,12 +162,18 @@ public class BasePhoneGoodsUpService {
         return uploadedItemVO;
     }
 
-    public void instockMyItem(String uploadId,Long userId) {
+    public void instockMyItem(String uploadId,Long userId) throws OpenException {
         //查询上传记录
         SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(uploadId);
         if(singleItemUpRecordVO != null){
             //下架淘宝
-            itemUpRecordService.soldOutTbItem(userId,singleItemUpRecordVO.getFenNumiid());
+            try {
+                itemUpRecordService.soldOutTbItem(userId,singleItemUpRecordVO.getFenNumiid());
+            } catch (Main4Exception e) {
+                OpenException openException = new OpenException();
+                openException.setErrMsg("下架淘宝失败");
+                throw openException;
+            }
             //再修改上传记录
             ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
             itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());

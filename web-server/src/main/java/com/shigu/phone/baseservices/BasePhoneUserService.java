@@ -7,7 +7,6 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.buyer.services.UserAccountService;
@@ -33,6 +32,7 @@ import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
+import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.BindUserVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.services.SendMsgService;
@@ -243,29 +243,23 @@ public class BasePhoneUserService {
     }
 
     //第三方登录
-    public String ortherLogin(Integer type,String nick,String key ) throws OpenException {
-        OrtherLoginResponse resp=new OrtherLoginResponse();
-        OpenException openException=new OpenException();
+    public String ortherLogin(Integer type,String nick,String key ){
         AppUser appUser=new AppUser();
         if(type == 1){
             //1:淘宝
-            if(StringUtil.isNull(nick)){
-                openException.setErrMsg("淘宝登录,缺少nick参数");
-                throw openException;
-            }else {
-               //传入参数完整
-                MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
-                memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andSubUserNameEqualTo(nick);
-                List<MemberUserSub> memberUserSubs = memberUserSubMapper.selectByExample(memberUserSubExample);
-                if(memberUserSubs.size()>0){
-                    //用户附表有用户数据
-                    MemberUserSub mus=memberUserSubs.get(0);
-                    MemberUser memberUser=memberUserMapper.selectFieldsByPrimaryKey(mus.getUserId(),
-                            FieldUtil.codeFields("user_id,user_nick,portrait_url"));
-                    if(memberUser==null){//数据异常
-                        logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
-                        return null;
-                    }
+            //传入参数完整
+            MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
+            memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andSubUserNameEqualTo(nick);
+            List<MemberUserSub> memberUserSubs = memberUserSubMapper.selectByExample(memberUserSubExample);
+            if(memberUserSubs.size()>0){
+                //用户附表有用户数据
+                MemberUserSub mus=memberUserSubs.get(0);
+                MemberUser memberUser=memberUserMapper.selectFieldsByPrimaryKey(mus.getUserId(),
+                        FieldUtil.codeFields("user_id,user_nick,portrait_url"));
+                if(memberUser==null){//数据异常
+                    logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
+                    return null;
+                }
 //                    appUser.setUserId(memberUser.getUserId());
                 //用户头像封装
                 String url = memberUser.getPortraitUrl();
@@ -293,13 +287,9 @@ public class BasePhoneUserService {
 
                 return "alidao://sjxz/taobao/author?state=1&imSeller="+ appUser.getImSeller()+"&imgsrc="+appUser.getImgsrc()+ "&userNick="+appUser.getUserNick()+"&token="+appUser.getToken()+"&tempId=null";
             }else{
-                //没有绑定星座网
-                openException.setErrMsg("亲,您还没有绑定星座网,请先去绑定");
-                resp.setException(openException);
-                resp.setType(0);
                 //根据昵称查询唯一键
                 TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-                taobaoSessionMapExample.createCriteria().andNickEqualTo(request.getNick());
+                taobaoSessionMapExample.createCriteria().andNickEqualTo(nick);
                 List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
 
                 String tempId= taobaoSessionMaps.get(0).getUserId()+"";
@@ -307,10 +297,10 @@ public class BasePhoneUserService {
                 return "alidao://sjxz/taobao/author?state=0&imSeller=null&imgsrc=null&userNick=null&token=null&tempId="+tempId;
             }
 
-
         }
         return "";
-    }
+     }
+
     /**
      * 得到手机验证码
      */
