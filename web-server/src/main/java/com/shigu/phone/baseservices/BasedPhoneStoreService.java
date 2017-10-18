@@ -146,9 +146,15 @@ public class BasedPhoneStoreService {
      *
      * @return
      */
-    public void doStoreCollect( Long shopId,boolean yesOrNo,Long userId) throws OpenException, ShopCollectionException {
+    public void doStoreCollect( Long shopId,boolean yesOrNo,Long userId) throws OpenException {
         if (yesOrNo) {
-            addShopCollection(userId,shopId);
+            try {
+                addShopCollection(userId,shopId);
+            } catch (ShopCollectionException e) {
+               OpenException openException  = new OpenException();
+               openException.setErrMsg("收藏失败");
+               throw openException;
+            }
         } else {
             delShopCollection(userId,Lists.newArrayList(shopId));
         }

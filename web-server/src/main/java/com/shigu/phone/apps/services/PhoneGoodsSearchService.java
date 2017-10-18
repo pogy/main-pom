@@ -99,8 +99,12 @@ public class PhoneGoodsSearchService {
             bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
             bo.setPage(request.getIndex());
             bo.setRows(request.getSize());
-
-            ItemSearchVO itemSearchVO = basePhoneGoodsSearchService.itemSearch(bo, request.getOrderBy());
+            ItemSearchVO itemSearchVO;
+            if(request.getStoreId()==null){
+                itemSearchVO = basePhoneGoodsSearchService.itemSearch(bo, request.getOrderBy());
+            }else{
+                itemSearchVO = basePhoneGoodsSearchService.itemSearch(bo, request.getOrderBy(),request.getStoreId());
+            }
             resp.setSuccess(true);
             resp.setHasNext(itemSearchVO.getHasNext());
             resp.setItems(itemSearchVO.getItems());
