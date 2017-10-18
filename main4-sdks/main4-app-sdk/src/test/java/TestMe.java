@@ -2,9 +2,7 @@ import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
 import com.openJar.tools.OpenClient;
 import com.openJar.tools.PcOpenClient;
-import com.shigu.main4.tools.RedisIO;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 类名：TestMe
@@ -15,17 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 描述：
  */
 public class TestMe {
-    @Autowired
-    private RedisIO redisIO;
     @Test
     public void  LoginRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         LoginRequest request=new LoginRequest ();
-        request.setUserName("15669267663");
-        request.setPassword("asd158684");
+        request.setUserName("17637503238");
+        request.setPassword("fei691820");
         request.setType(1);
         LoginResponse response = client.execute(request);
-//        System.out.println(response.getUsers().getUserId());//1000085908
+       // System.out.println(response.getUsers().getUserId());//1000085908
         System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
         System.out.println(response.getBody());
     }
@@ -90,8 +86,8 @@ public class TestMe {
         request.setType(1);
         LoginResponse response = client.execute(request);
 //        System.out.println(response.getUsers().getUserId());//1000085908
-        System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
-        System.out.println(response.getBody());
+       //System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
+       // System.out.println(response.getBody());
 
 
 //        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
