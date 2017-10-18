@@ -90,8 +90,8 @@ public class UserLoginAction {
     UserAccountService userAccountService;
 
     @RequestMapping("frameLogin")
-    public String frameLogin( HttpSession session, Model model){
-        //model.addAttribute("backUrl", bo.getBackUrl());
+    public String frameLogin( HttpSession session, Model model,String backUrl){
+        model.addAttribute("backUrl", backUrl);
         return "buyer/framelogin";
     }
 
