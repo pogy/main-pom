@@ -43,7 +43,7 @@ public class AppInterceptor implements HandlerInterceptor {
             try {
                 userId = parseUserId(request.getParameter("token"));
             } catch (SystemException e) {
-                if(checkedTokenIsNotNull(clazz)){
+                if (checkedTokenIsNotNull(clazz)) {
                     ApiRequestFilter.writeFalseToResponse(response, e);
                     return false;
                 }
@@ -53,7 +53,7 @@ public class AppInterceptor implements HandlerInterceptor {
             }
             String[] uid = {userId + ""};
             map.put("userId", uid);
-        }else{
+        } else {
             map.remove("userId");
         }
         return true;
@@ -95,18 +95,31 @@ public class AppInterceptor implements HandlerInterceptor {
             e.setErrMsg("登录过期");
             throw e;
         }
-        Long userId = new Long(str.split(",")[1]);
-        String[] oldTokenStrs = redisIO.get("phone_login_token" + userId).split("@@@@@---@@@@@");
-        String oldToken=oldTokenStrs[0];
+        Long userId;
+        try {
+            userId = new Long(str.split(",")[1]);
+        } catch (Exception ignored) {
+            SystemException e = new SystemException();
+            e.setErrMsg("登录过期");
+            throw e;
+        }
+        String otoken = redisIO.get("phone_login_token" + userId);
+        if (otoken == null) {
+            SystemException e = new SystemException();
+            e.setErrMsg("登录过期");
+            throw e;
+        }
+        String[] oldTokenStrs = otoken.split("@@@@@---@@@@@");
+        String oldToken = oldTokenStrs[0];
         if (oldToken == null || !token.equals(oldToken)) {
             SystemException e = new SystemException();
             e.setErrMsg("登录过期");
             throw e;
         }
-        Long time=new Long(oldTokenStrs[1]);
-        Long time2=new Date().getTime();
-        if(time2-time>600000L){
-            String uuid=oldToken+"@@@@@---@@@@@"+time2;
+        Long time = new Long(oldTokenStrs[1]);
+        Long time2 = new Date().getTime();
+        if (time2 - time > 600000L) {
+            String uuid = oldToken + "@@@@@---@@@@@" + time2;
             Jedis jedis = redisIO.getJedis();
             jedis.setex("phone_login_token" + userId, 1800, uuid);
         }
@@ -122,8 +135,8 @@ public class AppInterceptor implements HandlerInterceptor {
         String fieldname = "token";
         Field[] fields = class1.getDeclaredFields();
         boolean b = false;
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].getName().equals(fieldname)) {
+        for (Field field : fields) {
+            if (field.getName().equals(fieldname)) {
                 b = true;
                 break;
             }
@@ -131,12 +144,12 @@ public class AppInterceptor implements HandlerInterceptor {
         return b;
     }
 
-    private static boolean checkedTokenIsNotNull(Class class1){
+    private static boolean checkedTokenIsNotNull(Class class1) {
         String fieldname = "token";
         Field[] fields = class1.getDeclaredFields();
         boolean b = false;
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].getName().equals(fieldname) && fields[i].getAnnotation(NotNull.class) != null) {
+        for (Field field : fields) {
+            if (field.getName().equals(fieldname) && field.getAnnotation(NotNull.class) != null) {
                 b = true;
                 break;
             }

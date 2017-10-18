@@ -165,8 +165,8 @@ public class BasePhoneGoodsUpService {
         //查询上传记录
         SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(uploadId);
         if(singleItemUpRecordVO != null){
-            //todo 先下架淘宝
-
+            //下架淘宝
+            itemUpRecordService.soldOutTbItem(userId,singleItemUpRecordVO.getFenNumiid());
             //再修改上传记录
             ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
             itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());

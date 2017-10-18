@@ -33,10 +33,8 @@ import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
-import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.BindUserVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
-import com.shigu.phone.basevo.OrtherLoginVO;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
@@ -160,18 +158,9 @@ public class BasePhoneUserService {
                     Jedis jedis = redisIO.getJedis();
                     jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
                     appUser.setToken(uuid);
-                    //是否是商家
-                    ShiguShopExample shiguShopExample=new ShiguShopExample();
-                    shiguShopExample.createCriteria().andUserIdEqualTo(personalSession.getUserId());
-                    List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shiguShopExample);
-                    if(shiguShops.size()>0){
-                        ShiguShop shiguShop = shiguShops.get(0);
-                        Integer shopStatus = shiguShop.getShopStatus();//0是卖家,1不是卖家
-                        if(shopStatus==0){
-                            appUser.setImSeller(true);
-                        }else{
-                            appUser.setImSeller(false);
-                        }
+                    //是否是商户
+                    if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+                        appUser.setImSeller(true);
                     }else{
                         appUser.setImSeller(false);
                     }
@@ -221,26 +210,16 @@ public class BasePhoneUserService {
                         String headUrl = personalSession.getHeadUrl();
                         appUser.setImgsrc(headUrl);
                         appUser.setUserNick(personalSession.getUserNick());
-                        String uuid = UUIDGenerator.getUUID();
+                        String uuid= TokenUtil.format(personalSession.getUserId());
+                        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
                         //把token存入redis,设置存活时间30分钟
                         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                         Jedis jedis = redisIO.getJedis();
-                        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, uuid);
-                        //从redis取出token
-                        String token1 = redisIO.get("phone_login_token" + personalSession.getUserId());
-                        appUser.setToken(token1);
+                        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+                        appUser.setToken(uuid);
                         //是否是商户
-                        ShiguShopExample shiguShopExample=new ShiguShopExample();
-                        shiguShopExample.createCriteria().andUserIdEqualTo(personalSession.getUserId());
-                        List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shiguShopExample);
-                        if(shiguShops.size()>0){
-                            ShiguShop shiguShop = shiguShops.get(0);
-                            Integer shopStatus = shiguShop.getShopStatus();//0是卖家,1不是卖家
-                            if(shopStatus==0){
-                                appUser.setImSeller(true);
-                            }else{
-                                appUser.setImSeller(false);
-                            }
+                        if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+                            appUser.setImSeller(true);
                         }else{
                             appUser.setImSeller(false);
                         }
@@ -264,8 +243,8 @@ public class BasePhoneUserService {
     }
 
     //第三方登录
-    public OrtherLoginVO ortherLogin(Integer type,String nick,String key ) throws OpenException {
-        OrtherLoginVO ortherLoginVO = new OrtherLoginVO();
+    public String ortherLogin(Integer type,String nick,String key ) throws OpenException {
+        OrtherLoginResponse resp=new OrtherLoginResponse();
         OpenException openException=new OpenException();
         AppUser appUser=new AppUser();
         if(type == 1){
@@ -288,67 +267,50 @@ public class BasePhoneUserService {
                         return null;
                     }
 //                    appUser.setUserId(memberUser.getUserId());
-                    //用户头像封装
-                    String url = memberUser.getPortraitUrl();
-                    if(url != null && url.startsWith("/SGimg/")){
-                        url="//sgimage.571xz.com/new_image_site"+url;
-                    }
-                    appUser.setImgsrc(url);
-                    //是否是商户
-                    ShiguShopExample shiguShopExample=new ShiguShopExample();
-                    shiguShopExample.createCriteria().andUserIdEqualTo(memberUser.getUserId());
-                    List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shiguShopExample);
-                    if(shiguShops.size()>0){
-                        ShiguShop shiguShop = shiguShops.get(0);
-                        Integer shopStatus = shiguShop.getShopStatus();//0是卖家,1不是卖家
-                        if(shopStatus==0){
-                            appUser.setImSeller(true);
-                        }else{
-                            appUser.setImSeller(false);
-                        }
-                    }else{
-                        appUser.setImSeller(false);
-                    }
-
-                    String uuid = UUIDGenerator.getUUID();
-                    //把token存入redis,设置存活时间30分钟
-                    // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-                    Jedis jedis = redisIO.getJedis();
-                    jedis.setex("phone_login_token" + memberUser.getUserId(), 1800, uuid);
-                    //从redis取出token
-                    String token1 = redisIO.get("phone_login_token" + memberUser.getUserId());
-                    appUser.setToken(token1);
-                    appUser.setUserNick(memberUser.getUserNick());
-                    ortherLoginVO.setType(1);
-                    ortherLoginVO.setUsers(appUser);
-                }else{
-                    ortherLoginVO.setType(0);
-                    //根据昵称查询唯一键
-                    TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-                    taobaoSessionMapExample.createCriteria().andNickEqualTo(nick);
-                    List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-                    if(taobaoSessionMaps.size()>0){
-                        ortherLoginVO.setTempId(taobaoSessionMaps.get(0).getUserId()+"");
-                    }
-
+                //用户头像封装
+                String url = memberUser.getPortraitUrl();
+                if(url != null && url.startsWith("/SGimg/")){
+                    url="//sgimage.571xz.com/new_image_site"+url;
                 }
-            }
-        }else if(type == 2){
-            //2:微信
-            if(StringUtil.isNull(key)){
-                openException.setErrMsg("淘宝登录,缺少key参数");
-               throw openException;
+                appUser.setImgsrc(url);
+                //是否是商户
+                if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+                    appUser.setImSeller(true);
+                }else{
+                    appUser.setImSeller(false);
+                }
+
+
+                String uuid= TokenUtil.format(memberUser.getUserId());
+                String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
+                //把token存入redis,设置存活时间30分钟
+                // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+                Jedis jedis = redisIO.getJedis();
+                jedis.setex("phone_login_token" + memberUser.getUserId(), 1800, inRedisToken);
+                appUser.setToken(uuid);
+                appUser.setUserNick(memberUser.getUserNick());
+
+
+                return "alidao://sjxz/taobao/author?state=1&imSeller="+ appUser.getImSeller()+"&imgsrc="+appUser.getImgsrc()+ "&userNick="+appUser.getUserNick()+"&token="+appUser.getToken()+"&tempId=null";
             }else{
-                //传入参数完整
+                //没有绑定星座网
+                openException.setErrMsg("亲,您还没有绑定星座网,请先去绑定");
+                resp.setException(openException);
+                resp.setType(0);
+                //根据昵称查询唯一键
+                TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
+                taobaoSessionMapExample.createCriteria().andNickEqualTo(request.getNick());
+                List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
 
+                String tempId= taobaoSessionMaps.get(0).getUserId()+"";
+
+                return "alidao://sjxz/taobao/author?state=0&imSeller=null&imgsrc=null&userNick=null&token=null&tempId="+tempId;
             }
-        }else{
-            openException.setErrMsg("传入类型不对");
-            throw openException;
-        }
-        return ortherLoginVO;
-    }
 
+
+        }
+        return "";
+    }
     /**
      * 得到手机验证码
      */
@@ -390,9 +352,9 @@ public class BasePhoneUserService {
      *
      * @return
      */
-    public void changePassword( String oldPwd,String newPwd,Long userId) throws OpenException {
+    public void changePassword( String oldPwd,String newPwd,Long userId,String  token) throws OpenException {
         OpenException openException=new OpenException();
-        if (StringUtil.isNull(redisIO.get("phone_login_token"+userId))){
+        if (StringUtil.isNull(token)){
             openException.setErrMsg("亲,您还未登录,请先登录");
             throw openException;
         }

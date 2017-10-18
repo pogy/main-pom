@@ -8,14 +8,18 @@ import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.TaobaoSessionMap;
+import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.opentae.tbauth.configs.KeyConfig;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
@@ -27,6 +31,11 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.*;
 import com.shigu.main4.tools.RedisIO;
+import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.ItemUpdateDelistingRequest;
+import com.taobao.api.response.ItemUpdateDelistingResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -53,6 +62,9 @@ import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import static com.opentae.data.mall.examples.TaobaoSessionMapExample.appkey;
+import static com.opentae.data.mall.examples.TaobaoSessionMapExample.secret;
+
 /**
  * 商品上传服务实现类
  * Created by zhaohongbo on 17/3/13.
@@ -73,6 +85,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 
     @Autowired
     private StarCaculateService starCaculateService;
+
+    @Autowired
+    private MemberUserSubMapper memberUserSubMapper;
 
     @Autowired
     RedisIO redisIO;
@@ -125,7 +140,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             return;
         }
         itemUpRecordVO.setStatus(0L);
-
+        itemUpRecordVO.setTbSoldout(true);
         JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
         Object supperPiPrice = goodsUp.get("supperPiPrice");
         if (supperPiPrice != null) {
@@ -138,6 +153,31 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         bean.setSource(goodsUp.toJSONString());
         bean.setPk(oneKeyId);
         redisIO.rpush(goodslistName,bean);
+    }
+
+    @Override
+    public void soldOutTbItem(Long userId, Long numIid) throws Main4Exception {
+        MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
+        memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andUserIdEqualTo(userId);
+        List<MemberUserSub> subs=memberUserSubMapper.selectByExample(memberUserSubExample);
+        if(subs.size()==0){
+            throw new Main4Exception("未授权");
+        }
+        TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
+        taobaoSessionMapExample.createCriteria().andAppkeyEqualTo(KeyConfig.appKey).andUserIdEqualTo(new Long(subs.get(0).getSubUserKey()));
+        List<TaobaoSessionMap> maps=taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
+        if(maps.size()==0){
+            throw new Main4Exception("未授权");
+        }
+
+        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", KeyConfig.appKey, KeyConfig.secret);
+        ItemUpdateDelistingRequest req = new ItemUpdateDelistingRequest();
+        req.setNumIid(numIid);
+        try {
+            client.execute(req, maps.get(0).getSession());
+        } catch (ApiException ignored) {
+
+        }
     }
 
     /**
@@ -269,10 +309,11 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         boleanQueryBuilder.must(query);
 
         if(type==2){
-            QueryBuilder queryType1 = QueryBuilders.termQuery("shopSoldout", true);
-            QueryBuilder queryType2 = QueryBuilders.termQuery("tbSoldout", false);
-            boleanQueryBuilder.must(queryType1);
-            boleanQueryBuilder.must(queryType2);
+            QueryBuilder queryType11=QueryBuilders.termQuery("shopSoldout",true);
+            QueryBuilder queryType22 = QueryBuilders.termQuery("tbSoldout", false);
+
+            boleanQueryBuilder.must(queryType11);
+            boleanQueryBuilder.must(queryType22);
         }else if(type==3){
             QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
             boleanQueryBuilder.must(queryType);
@@ -300,10 +341,11 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             boleanQueryBuilder.must(query);
         }
         if(type==2){
-            QueryBuilder queryType1 = QueryBuilders.termQuery("shopSoldout", true);
-            QueryBuilder queryType2 = QueryBuilders.termQuery("tbSoldout", false);
-            boleanQueryBuilder.must(queryType1);
-            boleanQueryBuilder.must(queryType2);
+            QueryBuilder queryType11=QueryBuilders.termQuery("shopSoldout",true);
+            QueryBuilder queryType22 = QueryBuilders.termQuery("tbSoldout", false);
+
+            boleanQueryBuilder.must(queryType11);
+            boleanQueryBuilder.must(queryType22);
         }else if(type==3){
             QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
             boleanQueryBuilder.must(queryType);
@@ -653,7 +695,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 nicks.add(bucket.getKeyAsString());
             }
             TaobaoSessionMapExample sessionMapExample = new TaobaoSessionMapExample();
-            sessionMapExample.createCriteria().andAppkeyEqualTo("21720662").andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
+            sessionMapExample.createCriteria().andAppkeyEqualTo(KeyConfig.appKey).andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
             List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectFieldsByExample(sessionMapExample, FieldUtil.codeFields("tsm_id,nick,remark1"));
             Map<String, TaobaoSessionMap> sessionMap = BeanMapper.list2Map(taobaoSessionMaps, "nick", String.class);
 
