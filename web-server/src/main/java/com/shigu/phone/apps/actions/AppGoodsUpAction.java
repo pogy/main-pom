@@ -5,6 +5,7 @@ import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.PhoneGoodsUpService;
+import com.shigu.phone.wrapper.WrapperUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,13 +32,19 @@ public class AppGoodsUpAction {
 
     @RequestMapping("upToWx")
     @ResponseBody
-    public JSONObject upToWx(@Valid UpToWxRequest request, BindingResult bindingResult) {
+    public JSONObject upToWx(@Valid UpToWxRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneGoodsUpService.upToWx(request));
     }
 
     @RequestMapping("uploadedItem")
     @ResponseBody
-    public JSONObject uploadedItem(UploadedItemRequest request){
+    public JSONObject uploadedItem(@Valid UploadedItemRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         if (request.getIndex() == null) {
             request.setIndex(1);
         }
@@ -48,7 +55,10 @@ public class AppGoodsUpAction {
     }
     @RequestMapping("instockMyItem")
     @ResponseBody
-    public JSONObject instockMyItem(InstockMyItemRequest request) throws Main4Exception {
+    public JSONObject instockMyItem(@Valid InstockMyItemRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneGoodsUpService.instockMyItem(request));
     }
 }
