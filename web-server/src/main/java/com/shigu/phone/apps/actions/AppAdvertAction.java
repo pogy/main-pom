@@ -10,8 +10,11 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.Valid;
 
 /**
  * Created by pc on 2017-08-29.
@@ -32,7 +35,7 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/imgSpread")
     @ResponseBody
-    public JSONObject imgSpread(ImgSpreadRequest request,ImgSpreadResponse response){
+    public JSONObject imgSpread( @Valid ImgSpreadRequest request, ImgSpreadResponse response, BindingResult bindingResult){
         if(request.getSpreadCode() == null || StringUtils.isEmpty(request.getWebSite())){
             return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
@@ -56,7 +59,7 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/itemSpread")
     @ResponseBody
-    public JSONObject itemSpread(ItemSpreadRequest request,ImgSpreadResponse response) {
+    public JSONObject itemSpread(@Valid ItemSpreadRequest request,ImgSpreadResponse response, BindingResult bindingResult) {
         if(request.getSpreadCode() == null || StringUtils.isEmpty(request.getWebSite())){
             return WrapperUtil.wrapperOpenException("缺少参数",response);
         }

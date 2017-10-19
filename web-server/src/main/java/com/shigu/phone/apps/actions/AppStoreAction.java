@@ -72,7 +72,7 @@ public class AppStoreAction {
      */
     @RequestMapping("shopSearch")
     @ResponseBody
-    public JSONObject shopSearch(ShopSearchRequest request) {
+    public JSONObject shopSearch(@Valid ShopSearchRequest request, BindingResult bindingResult) {
         if(StringUtils.isEmpty(request.getWebSite())){
             request.setWebSite("hz");
         }
@@ -108,7 +108,7 @@ public class AppStoreAction {
      */
     @RequestMapping("storeCollect")
     @ResponseBody
-    public JSONObject storeCollect(StoreCollectRequest request, StoreCollectResponse response, BindingResult bindingResult) {
+    public JSONObject storeCollect(@Valid StoreCollectRequest request, StoreCollectResponse response, BindingResult bindingResult) {
         if (request.getUserId() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
