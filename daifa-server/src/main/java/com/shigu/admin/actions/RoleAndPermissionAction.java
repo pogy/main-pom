@@ -3,8 +3,11 @@ package com.shigu.admin.actions;
 import com.shigu.admin.bo.RoleAndPermissionBO;
 import com.shigu.admin.services.RoleAndPermissionService;
 import com.shigu.admin.vo.*;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +32,22 @@ import java.util.concurrent.ExecutionException;
 public class RoleAndPermissionAction {
     @Autowired
     RoleAndPermissionService roleAndPermissionService;
-
+    /**
+     * ====================================================================================
+     * @方法名： roleAndPermission
+     * @user gzy 2017/10/13 14:38
+     * @功能：角色权限
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/roleAndPermission")
     public String roleAndPermission(RoleAndPermissionBO bo, Model model) throws ExecutionException, InterruptedException {
 
-        //Session session = SecurityUtils.getSubject().getSession();
-        //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         Long sellerId=999999990L;
 
         List<RoleTreeVO> roleTree= roleAndPermissionService.listAllRole (sellerId);
@@ -42,17 +55,16 @@ public class RoleAndPermissionAction {
         model.addAttribute("permissionTree", permissionTree);
         model.addAttribute("query", bo);
         model.addAttribute("roleTree", roleTree);
-        model.addAttribute("userName", "gzy");
+        model.addAttribute("userName", auth);
 
         return "admin/roleAndPermission";
-
     }
 
     /**
      * ====================================================================================
      * @方法名： jsonRoleAndPermission
      * @user gzy 2017/9/21 14:00
-     * @功能：
+     * @功能：角色权限显示
      * @param: [bo]
      * @return: net.sf.json.JSONArray
      * @exception:

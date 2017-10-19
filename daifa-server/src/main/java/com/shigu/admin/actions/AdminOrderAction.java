@@ -49,16 +49,15 @@ public class AdminOrderAction {
     @RequestMapping("admin/adminOrder")
     public String adminOrder(AllOrderBO bo, Model model) throws ExecutionException, InterruptedException {
 
-       // bo.setStockoutFlag (1);
-        //Session session = SecurityUtils.getSubject().getSession();
-      //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo,999999990L);
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("orders", allOrders);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
-        model.addAttribute("userName", "gzy");
+        model.addAttribute("userName", auth);
 
         return "admin/index";
 

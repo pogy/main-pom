@@ -88,6 +88,9 @@ public class DaifaWaitSend implements Serializable {
 	private String buyerWw;
 	/**收件人邮编*/
 	private String receiverZip;
+
+	private Integer orderDisplay;//待发订单是否显示0不显示1显示
+
 	 
 	 //*************************get/set*****************************
     	/**
@@ -717,4 +720,12 @@ public class DaifaWaitSend implements Serializable {
     public void setReceiverZip(String receiverZip) {
         this.receiverZip = receiverZip;
     }
+
+	public Integer getOrderDisplay () {
+		return orderDisplay;
+	}
+
+	public void setOrderDisplay (Integer orderDisplay) {
+		this.orderDisplay = orderDisplay;
+	}
 }

@@ -175,11 +175,16 @@ public class OrderModelImplTest extends BaseSpringTest{
     @Test
     public void  testauto() throws DaifaException {
         List<Long> sub=new ArrayList<>();
-        sub.add(1L);
-        sub.add(40282L);
-        orderModel = SpringBeanFactory.getBean(OrderModel.class,62017081100004L);
-        orderModel.autoRefund(1234412L,sub);
+        //sub.add(1L);
+        sub.add(379726L);
+        orderModel = SpringBeanFactory.getBean(OrderModel.class,62017100804174L);
+        orderModel.autoRefund(39967L,sub);
     }
+
+
+
+
+
     public void createData(){
          DaifaTrade daifaTrade=new DaifaTrade();
         Date d=new Date();

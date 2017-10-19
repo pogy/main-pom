@@ -213,8 +213,8 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
                     indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
-                    indexShowService.manJack())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("棉衣",webSite,
+                    indexShowService.manMianyi())));
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
                     indexShowService.manFree())));
         }

@@ -215,6 +215,16 @@ public class IndexShowService {
     }
 
     /**
+     * 棉衣
+     * @return
+     */
+    public List<Long> manMianyi(){
+        List<Long> cids=new ArrayList<>();
+        cids.add(50011165L);
+        return cids;
+    }
+
+    /**
      * 男休闲
      * @return
      */
