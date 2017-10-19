@@ -229,9 +229,4 @@ public class BaseStoreService {
         return vo;
     }
 
-    public AppShopCat queryParentCatList(String webSite)  {
-
-        return null;
-    }
-
 }
