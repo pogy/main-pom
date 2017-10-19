@@ -142,12 +142,12 @@ public class IndexShowService {
      * 猜你喜欢
      * @return
      */
-    public ObjFromCache<LoveGoodsList> loveGoods(final String text, final String webSite, final List<Long> cids){
+    public ObjFromCache<LoveGoodsList> loveGoods(final int number,final String text, final String webSite, final List<Long> cids){
         return new ObjFromCache<LoveGoodsList>(redisForIndexPage,webSite+"_"+text,LoveGoodsList.class) {
             @Override
             public LoveGoodsList selReal() {
                 ShiguAggsPager pager=itemSearchService.searchItem(null,webSite,null,cids,null,null,null,null,
-                        null,null, SearchOrderBy.USER_LOVE,1,5,false);
+                        null,null, SearchOrderBy.USER_LOVE,1,number,false);
                 ShiguPager<GoodsInSearch> goodsInSearch=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 List<GoodsInSearch> items=goodsInSearch.getContent();
                 LoveGoodsList loveGoodsList=new LoveGoodsList();
