@@ -1,6 +1,8 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * 类名:AppShopInFloor
@@ -9,7 +11,7 @@ import java.util.List;
  * 创建时间:2017-10-16
  * 描述:楼层里的店铺
  */
-public class AppShopInFloor extends OpenBean {
+public class AppShopInFloor extends OpenBean implements Serializable {
 	//店铺ID
 	private Long storeId;
 	//档口号

@@ -1,6 +1,8 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * 类名:AppMarket
@@ -9,7 +11,7 @@ import java.util.List;
  * 创建时间:2017-10-16
  * 描述:市场
  */
-public class AppMarket extends OpenBean {
+public class AppMarket extends OpenBean implements Serializable {
 	//市场名称
 	private String marketName;
 	//分站标识

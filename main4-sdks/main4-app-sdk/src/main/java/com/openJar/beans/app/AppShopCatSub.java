@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppShopCatSub
  * 类路径:com.openJar.beans.appAppShopCatSub
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:叶子级店内类目
  */
-public class AppShopCatSub extends OpenBean {
+public class AppShopCatSub extends OpenBean implements Serializable {
 	//店内类目ID
 	private String scid;
 	//店内类目名

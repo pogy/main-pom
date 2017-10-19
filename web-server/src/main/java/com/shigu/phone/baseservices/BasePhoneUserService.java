@@ -388,16 +388,6 @@ public class BasePhoneUserService {
     public BindUserVO bindUser(BindUserBO bo) throws OpenException {
         BindUserVO bindUserVO = new BindUserVO();
         OpenException openException = new OpenException();
-        //PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
-//        String phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,String.class);
-//
-//        if (phoneMsg==null||!phoneMsg.equals(request.getCode())) {
-//            OpenException openException = new OpenException();
-//            openException.setErrMsg("验证码错误");
-//            resp.setException(openException);
-//            resp.setSuccess(false);
-//            return resp;
-//        }
         Rds3TempUser rds3TempUser = new Rds3TempUser();
         rds3TempUser.setSubUserKey(bo.getTempId());
         rds3TempUser.setLoginFromType(LoginFromType.valueOf(bo.getType()));

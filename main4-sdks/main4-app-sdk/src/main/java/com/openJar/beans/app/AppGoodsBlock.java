@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppGoodsBlock
  * 类路径:com.openJar.beans.appAppGoodsBlock
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:商品块信息
  */
-public class AppGoodsBlock extends OpenBean {
+public class AppGoodsBlock extends OpenBean implements Serializable {
 	//商品ID
 	private String goodsId;
 	//标题

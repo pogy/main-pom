@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppShopBlock
  * 类路径:com.openJar.beans.appAppShopBlock
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:店铺块信息
  */
-public class AppShopBlock extends OpenBean {
+public class AppShopBlock extends OpenBean implements Serializable {
 	//店铺ID
 	private Long shopId;
 	//市场
