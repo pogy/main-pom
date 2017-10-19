@@ -1,6 +1,8 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * 类名:AppCatGroup
@@ -9,7 +11,7 @@ import java.util.List;
  * 创建时间:2017-10-16
  * 描述:类目分组
  */
-public class AppCatGroup extends OpenBean {
+public class AppCatGroup extends OpenBean implements Serializable {
 	//标题
 	private String title;
 	//分组中的类目

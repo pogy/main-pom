@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppImgBanner
  * 类路径:com.openJar.beans.appAppImgBanner
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:图片广告
  */
-public class AppImgBanner extends OpenBean {
+public class AppImgBanner extends OpenBean implements Serializable {
 	//超链接
 	private String href;
 	//图片链接

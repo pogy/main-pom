@@ -14,6 +14,8 @@ public class OtherLoginRequest extends Request<OtherLoginResponse> {
 	private String nick;
 	//微信必须传入,授权返回的参数唯一标识
 	private String key;
+
+
 	public Integer getType(){
 		return type;
 	}

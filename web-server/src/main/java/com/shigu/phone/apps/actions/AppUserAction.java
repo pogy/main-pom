@@ -66,7 +66,7 @@ public class AppUserAction {
     public JSONObject appRegist(@Valid RegistRequest request,BindingResult bindingResult) {
         return JSONObject.fromObject(phoneUserService.regist(request));
     }
-
+    //
     @RequestMapping("bindUser")
     @ResponseBody
     public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) {
