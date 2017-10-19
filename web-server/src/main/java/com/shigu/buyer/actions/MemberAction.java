@@ -333,6 +333,25 @@ public class MemberAction {
         return "buyer/shiguOnekeyRecordinit";
     }
 
+    @RequestMapping("downTbGoods")
+    @ResponseBody
+    public JSONObject downTbGoods(String ids,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        try {
+            boolean taobaoAuth = ps.getLoginFromType().equals(LoginFromType.TAOBAO);
+            if (!taobaoAuth) {
+                throw new JsonErrException("需要淘宝授权");
+            }
+            goodsupRecordSimpleService.downTbGoods(userId,ps.getLoginName(),ids);
+        } catch (JsonErrException e) {
+            if (e.getMessage().contains("需要淘宝授权")) {
+                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://www.571xz.net/redirect_auth.jsp&state=login&view=web");
+            }
+        }
+        return JsonResponseUtil.success();
+    }
+
     /**
      * 删除一键上传商品
      * @return
