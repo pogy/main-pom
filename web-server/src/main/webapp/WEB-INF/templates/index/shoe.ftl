@@ -12,25 +12,6 @@
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
 
-'${test!}'
-        var hreflocation=window.location.href;
-          if(hreflocation.indexOf('http://www.571xz.com')==0||hreflocation.indexOf('http://571xz.com')==0){//仅首页
-              var province = '' ;
-              var city = '' ;
-              jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
-                  province = remote_ip_info["province"];
-                  if(province=='福建'){
-                      window.location.href="http://ss.571xz.com";
-                  }else if(province == '江苏'){
-                      window.location.href="http://cs.571xz.com";
-                  }else if(province == '广东'){
-                      window.location.href="http://gz.571xz.com";
-                  }else if(province == '吉林'){
-                      window.location.href="http://wa.571xz.com";
-                  }
-              }) ;
-          }
-
 /*============ xieIndex/page#layoutHeader END ============*/
 
 
