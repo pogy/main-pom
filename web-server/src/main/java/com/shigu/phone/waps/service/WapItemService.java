@@ -27,8 +27,20 @@ public class WapItemService {
         baseItemService.delItemCollect(collectIds,userId);
     }
 
-    public BaseCollectItemVO collectItem(Long userId,Integer index,Integer size) throws OpenException {
-       return baseItemService.collectItem(userId, index, size);
+    public BaseCollectItemVO selItemCollect(Long userId,Integer index,Integer size) throws OpenException {
+       return baseItemService.selItemCollect(userId, index, size);
+    }
+
+    public Long hasCollected(String goodsId, Long userId) throws OpenException {
+        Long id;
+        try {
+            id = Long.parseLong(goodsId);
+        } catch (NumberFormatException e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("查询失败["+ goodsId +"不能被转化成Long类型]");
+            throw openException;
+        }
+        return baseItemService.hasCollected(id, userId);
     }
 
 }

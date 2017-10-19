@@ -22,8 +22,12 @@ public class OneItemVO implements Serializable {
     private String createTime;
     //商品权益
     private List<String> goodsLicenses;
-    //商品价格
+    // 零售价
     private String price;
+    //商品价格
+    private String liPrice;
+    //利润
+    private String profit;
     //店铺ID
     private Long storeId;
     //市场
@@ -169,5 +173,21 @@ public class OneItemVO implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getLiPrice() {
+        return liPrice;
+    }
+
+    public void setLiPrice(String liPrice) {
+        this.liPrice = liPrice;
+    }
+
+    public String getProfit() {
+        return profit;
+    }
+
+    public void setProfit(String profit) {
+        this.profit = profit;
     }
 }

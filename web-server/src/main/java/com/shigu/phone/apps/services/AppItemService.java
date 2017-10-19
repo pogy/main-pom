@@ -1,12 +1,9 @@
 package com.shigu.phone.apps.services;
 
-import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.baseservices.BaseItemService;
-import com.shigu.phone.baseservices.BasePhoneCdnService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,7 @@ public class AppItemService {
     public ItemCollectResponse collectItem(ItemCollectRequest request){
         ItemCollectResponse response = new ItemCollectResponse();
         try {
-            BaseCollectItemVO baseCollectItemVO = baseItemService.collectItem(request.getUserId(), request.getIndex(), request.getSize());
+            BaseCollectItemVO baseCollectItemVO = baseItemService.selItemCollect(request.getUserId(), request.getIndex(), request.getSize());
             response.setSuccess(true);
             response.setHasNext(baseCollectItemVO.getHasNext());
             response.setTotal(baseCollectItemVO.getTotal());
@@ -69,7 +66,7 @@ public class AppItemService {
 
     public GoodsCollectResponse collectGoods(GoodsCollectRequest request){
         GoodsCollectResponse response = new GoodsCollectResponse();
-        if(baseItemService.collectGoods(request.getUserId(),
+        if(baseItemService.addItemCollect(request.getUserId(),
                 request.getStoreId(), request.getGoodsId(), request.getWebSite())){
             response.setSuccess(true);
         }else{

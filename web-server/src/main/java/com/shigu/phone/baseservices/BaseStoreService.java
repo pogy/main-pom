@@ -2,12 +2,6 @@ package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.*;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.MarketsRequest;
-import com.openJar.requests.app.OneShopRequest;
-import com.openJar.requests.app.ShopCatRequest;
-import com.openJar.responses.app.MarketsResponse;
-import com.openJar.responses.app.OneShopResponse;
-import com.openJar.responses.app.ShopCatResponse;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -19,7 +13,6 @@ import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.StoreRelationService;
@@ -235,4 +228,10 @@ public class BaseStoreService {
         vo.setTotalItemNum(new Long(items.getTotalCount()));
         return vo;
     }
+
+    public AppShopCat queryParentCatList(String webSite)  {
+
+        return null;
+    }
+
 }

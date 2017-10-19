@@ -3,8 +3,11 @@ package com.shigu.phone.waps.actions;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.GoodsCollectRequest;
 import com.openJar.responses.app.GoodsCollectResponse;
+import com.opentae.data.mall.beans.ShiguStoreCollect;
+import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import com.shigu.phone.waps.service.WapItemService;
+import com.shigu.phone.waps.service.WapPhoneCdnService;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
 import com.shigu.phone.waps.service.WapStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
@@ -30,6 +33,8 @@ public class WapItemAction {
     private WapItemService wapItemService;
     @Autowired
     private WapPhoneStoreService wapPhoneStoreService;
+    @Autowired
+    private WapPhoneCdnService wapPhoneCdnService;
 
     @RequestMapping("queryGoodsCollectList")
     @ResponseBody
@@ -39,7 +44,7 @@ public class WapItemAction {
             return JsonResponseUtil.error("userId si null");
         }
         try {
-            BaseCollectItemVO baseCollectItemVO = wapItemService.collectItem(ps.getUserId(), index, size);
+            BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size);
             return JsonResponseUtil
                     .success()
                     .element("hasNext",baseCollectItemVO.getHasNext())
@@ -68,24 +73,26 @@ public class WapItemAction {
         }
     }
 
-    /**
-     * 商品收藏/取消收藏
-     * @return
-     */
-    @RequestMapping("goodsCollect")
+    @RequestMapping("addCollect")
     @ResponseBody
-    public JSONObject goodsCollect(HttpSession session,Long goodsId,Long storeId){
+    public JSONObject addCollect (HttpSession session,String type,Long goodsId,Long storeId,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        GoodsCollectRequest request = new GoodsCollectRequest();
-        GoodsCollectResponse response = new GoodsCollectResponse();
-        request.setGoodsId(goodsId);
-        request.setStoreId(storeId);
-        request.setUserId(ps.getUserId());
-
-        if (goodsId== null|| storeId == null || ps.getUserId() == null) {
-            return WrapperUtil.wrapperOpenException("参数错误",response);
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId is null");
         }
-        return JSONObject.fromObject(response);
+        try {
+            if ("goods".equalsIgnoreCase(type)){//收藏商品
+                ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), storeId, goodsId, webSite);
+                return JsonResponseUtil.success().element("collectId",itemCollectInfoVO.getGoodsCollectId());
+            }else if("shop".equalsIgnoreCase(type)){//收藏店铺
+                ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore(storeId, ps.getUserId());
+                return JsonResponseUtil.success().element("collectId",shiguStoreCollect.getStoreCollectId());
+            }else{
+                return JsonResponseUtil.error("type can not be resolved");
+            }
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg());
+        }
     }
 
     /**
@@ -96,7 +103,21 @@ public class WapItemAction {
     @ResponseBody
     public JSONObject hasCollected(String userId,String type,String id,HttpSession session){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        return null;
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId is null");
+        }
+        try {
+            Long collectId;
+            if ("goods".equalsIgnoreCase(type)){//收藏商品
+                collectId = wapItemService.hasCollected(id,ps.getUserId());
+            }else if("shop".equalsIgnoreCase(type)){//收藏店铺
+                collectId = wapPhoneStoreService.hasCollected(id,ps.getUserId());
+            }else{
+                return JsonResponseUtil.error("type can not be resolved");
+            }
+            return JsonResponseUtil.success().element("collectId",collectId);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg());
+        }
     }
 }

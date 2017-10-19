@@ -101,6 +101,17 @@ public class AppStoreAction {
     }
 
     /**
+     * 取消收藏店铺
+     * @param request
+     * @return
+     */
+    @RequestMapping("delStoreCollect")
+    @ResponseBody
+    public JSONObject delStoreCollect(@Valid DelStoreCollectRequest request, BindingResult bindingResult)  {
+        return JSONObject.fromObject(phoneStoreService.delStoreCollect(request));
+    }
+
+    /**
      * 查询收藏的档口
      * @param request
      * @param bindingResult

@@ -42,6 +42,7 @@ public class AppItemAction {
         if (request.getSize() == null)request.setSize(30);
         return JSONObject.fromObject(appItemService.collectItem(request));
     }
+
     @RequestMapping("delItemCollect")
     @ResponseBody
     public JSONObject delItemCollectRequest (DelItemCollectRequest request, DelItemCollectResponse response){

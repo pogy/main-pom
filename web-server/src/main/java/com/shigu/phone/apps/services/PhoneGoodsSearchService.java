@@ -156,7 +156,7 @@ public class PhoneGoodsSearchService {
             resp.setGoodsNo(oneItemVO.getGoodsNo());
             resp.setCreateTime(oneItemVO.getCreateTime());
             resp.setGoodsLicenses(oneItemVO.getGoodsLicenses());
-            resp.setPrice(oneItemVO.getPrice());
+            resp.setPrice(oneItemVO.getLiPrice());
             resp.setStoreId(oneItemVO.getStoreId());
             resp.setMarket(oneItemVO.getMarket());
             resp.setStoreNum(oneItemVO.getStoreNum());

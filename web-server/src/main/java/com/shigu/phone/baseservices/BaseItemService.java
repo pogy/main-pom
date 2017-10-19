@@ -1,12 +1,12 @@
 package com.shigu.phone.baseservices;
 
 import com.openJar.exceptions.OpenException;
+import com.shigu.main4.ucenter.services.UserCollectService;
+import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +23,10 @@ public class BaseItemService {
 
     @Autowired
     private BasePhoneCdnService basePhoneCdnService;
+    @Autowired
+    private UserCollectService userCollectService;
 
-    public BaseCollectItemVO collectItem(Long userId, Integer index, Integer size) throws OpenException {
+    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size) throws OpenException {
         return basePhoneCdnService.selItemCollect(userId,index, size);
     }
 
@@ -39,10 +41,17 @@ public class BaseItemService {
 
     }
 
-    public Boolean collectGoods(Long userId,Long storeId,Long goodsId,String webSite ){
+    public boolean addItemCollect(Long userId, Long storeId, Long goodsId, String webSite ){
         return basePhoneCdnService.addItemCollect(userId,storeId,goodsId,webSite);
     }
 
-
-
+    public Long hasCollected(Long goodsId, Long userId) throws OpenException {
+        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, null);
+        if (itemCollectInfoVO == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("该商品未被收藏[goodsId="+goodsId+"]");
+            throw openException;
+        }
+        return itemCollectInfoVO.getGoodsCollectId();
+    }
 }

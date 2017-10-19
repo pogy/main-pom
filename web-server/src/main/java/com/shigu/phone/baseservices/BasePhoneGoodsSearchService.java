@@ -153,10 +153,11 @@ public class BasePhoneGoodsSearchService {
         CdnGoodsInfoVO goods = cdnService.cdnGoodsInfo(itemId);
         vo.setGoodsId(goods.getGoodsId()+"");
         vo.setGoodsNo(goods.getGoodsNo());
-        vo.setPrice(goods.getPiPrice());
+        vo.setPrice(goods.getLiPrice());
         vo.setTitle(goods.getTitle());
         vo.setCreateTime(goods.getPostTime());
         vo.setImgSrcs(goods.getImgUrls());
+        vo.setLiPrice(goods.getPiPrice());
         //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
         List<String> services = goods.getServices();
         List<String> list=new ArrayList<>();

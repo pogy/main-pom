@@ -1,45 +1,14 @@
 package com.shigu.phone.waps.service;
 
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.openJar.beans.app.AppShopBlock;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.DoStoreCollectRequest;
-import com.openJar.requests.app.StoreCollectRequest;
-import com.openJar.responses.app.DoStoreCollectResponse;
-import com.openJar.responses.app.StoreCollectResponse;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
-import com.opentae.core.mybatis.mapper.MultipleMapper;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.multibeans.AppShopBlockBean;
-import com.shigu.main4.cdn.bo.ScStoreBO;
-import com.shigu.main4.cdn.services.CdnService;
-import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
-import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.webvo.ShopCollectVO;
-import com.shigu.phone.apps.utils.ImgUtils;
+import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.shigu.phone.baseservices.BasedPhoneStoreService;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
-import com.shigu.search.bo.StorenumBO;
-import com.shigu.search.services.StoreSelFromEsService;
-import com.shigu.search.vo.StoreInSearch;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.zhb.utils.BeanMapper;
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 类名：PhoneStoreService
@@ -87,6 +56,16 @@ public class WapPhoneStoreService {
     }
 
     /**
+     * 收藏店铺
+     *
+     * @return
+     */
+    public ShiguStoreCollect collectStore(Long shopId, Long userId) throws OpenException {
+        return basedPhoneStoreService.collectStore(shopId,userId);
+    }
+
+
+    /**
      * 批量取消收藏店铺
      *
      * @return
@@ -95,4 +74,15 @@ public class WapPhoneStoreService {
         basedPhoneStoreService.delShopCollection(userId,collectIds);
     }
 
+    public Long hasCollected(String storeId, Long userId) throws OpenException {
+        Long id;
+        try {
+            id = Long.parseLong(storeId);
+        } catch (NumberFormatException e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("查询失败["+ storeId +"不能被转化成Long类型]");
+            throw openException;
+        }
+        return basedPhoneStoreService.hasCollected(id,userId);
+    }
 }

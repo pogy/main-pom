@@ -160,6 +160,33 @@ public class BasePhoneCdnService {
         return true;
     }
 
+    /**
+     * 收藏商品
+     * @param userId
+     * @return
+     */
+    public ItemCollectInfoVO collectItem(Long userId,Long storeId,Long goodsId,String webSite) throws OpenException {
+
+        ItemCollect itemCollect=new ItemCollect();
+        itemCollect.setUserId(userId);
+        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
+        if (itemCollectInfoVO == null) {//从未收藏过，添加收藏记录
+            itemCollect.setItemId(goodsId);
+            itemCollect.setStoreId(storeId);
+            itemCollect.setWebsite(webSite);
+            try {
+                userCollectService.addItemCollection(itemCollect);
+                return userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
+            } catch (ItemCollectionException e) {
+                OpenException openException = new OpenException();
+                openException.setErrMsg("查询失败 ["+e.getMessage()+"]");
+                throw openException;
+            }
+        }else{
+            return itemCollectInfoVO;
+        }
+    }
+
     public void delItemCollect(Long userId, List<Long> collectIds){
         userCollectService.delItemCollection(userId,collectIds);
     }
