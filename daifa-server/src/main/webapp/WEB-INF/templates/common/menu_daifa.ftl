@@ -57,5 +57,13 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a  href="javascript:;" ><i class="icon-allocation"></i>团队管理</a>
+            <ul>
+                <li>
+                    <a id="daifamenu" href="takeGoodsStatistic.htm"><i></i>拿货统计</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>
