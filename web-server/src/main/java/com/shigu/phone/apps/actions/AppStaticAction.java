@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.openJar.beans.app.AppCat;
 import com.openJar.beans.app.AppCatGroup;
 import com.openJar.beans.app.AppSearchNav;
+import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.CatRequest;
 import com.openJar.requests.app.SearchNavRequest;
@@ -28,6 +29,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -256,7 +258,7 @@ public class AppStaticAction {
 
     @RequestMapping("app/searchNav")
     @ResponseBody
-    public JSONObject searchNav(SearchNavRequest request,SearchNavResponse response)  {
+    public JSONObject searchNav(SearchNavRequest request, SearchNavResponse response)  {
         if (request.getType() == null|| StringUtils.isEmpty(request.getWebSite())) {
             return WrapperUtil.wrapperOpenException("缺少参数",response);
         }
