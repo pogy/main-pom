@@ -11,6 +11,10 @@
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/sys/common/common.js?t=201709121011"></script>
     <script src="${daifa_host}/js/admin/orderSendErrorDeal/orderSendErrorSub.js?t=201709121011"></script>
+    <style>
+
+        .orderCon .tddiv{width:11%;}
+    </style>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -97,13 +101,15 @@
         <div class="orderCon">
             <div class="theadCon">
                 <ul class="">
-                    <li class="childOrderId">主订单号|子订单号</li>
-                    <li class="childOrderId">标题</li>
-                    <li class="remark">市场-楼层-档口-货号</li>
-                    <li class="goodsInfo">商品属性</li>
-                    <li class="otherFee">数量</li>
-                    <li class="orderState">订单状态</li>
-                    <li class="tradeState">操作</li>
+                    <li class="tddiv">主订单号|子订单号</li>
+                    <li class="tddiv">标题</li>
+                    <li class="tddiv">市场-楼层-档口-货号</li>
+                    <li class="tddiv">商品属性</li>
+                    <li class="tddiv">货号</li>
+                    <li class="tddiv">商家编码</li>
+                    <li class="tddiv">数量</li>
+                    <li class="tddiv">订单状态</li>
+                    <li class="tddiv">操作</li>
                 </ul>
             </div>
         <#list orders as order>
@@ -112,13 +118,15 @@
 
             <div class="childOrderItem" >
                 <ul class="clearfix">
-                    <li class="childOrderId">${order.dfTradeId!}|${order.dfOrderId!}</li>
-                    <li class="childOrderId">${order.title!}</li>
-                    <li class="remark">${order.marketName!}-${order.floorName!}-${order.storeNum!}-${order.goodsCode!}</li>
-                    <li class="goodsInfo"><input type="text" id="propStr" name="propStr" value="${order.propStr!}" style="width:400px" class="fmInput"/></li>
-                    <li class="otherFee">${order.goodsNum!}</li>
-                    <li class="orderState">${order.orderStatus!}</li>
-                    <li class="tradeState"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editProp(this,'${order.dfOrderId!}')" class="fmButton fmButton-blue"/></li>
+                    <li class="tddiv">${order.dfTradeId!}|<br>${order.dfOrderId!}</li>
+                    <li class="tddiv">${order.title!}</li>
+                    <li class="tddiv">${order.marketName!}-${order.floorName!}-${order.storeNum!}-${order.goodsCode!}</li>
+                    <li class="tddiv"><input type="text" id="propStr" name="propStr" value="${order.propStr!}" style="width:200px" class="fmInput"/></li>
+                    <li class="tddiv"><input type="text" id="goodsCode" name="goodsCode" value="${order.goodsCode!}" style="width:200px" class="fmInput"/></li>
+                    <li class="tddiv"><input type="text" id="storeGoodsCode" name="storeGoodsCode" value="${order.storeGoodsCode!}" style="width:200px" class="fmInput"/></li>
+                    <li class="tddiv">${order.goodsNum!}</li>
+                    <li class="tddiv">${order.orderStatus!}</li>
+                    <li class="tddiv"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editProp(this,'${order.dfOrderId!}')" class="fmButton fmButton-blue"/></li>
                 </ul>
             </div>
 

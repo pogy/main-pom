@@ -70,4 +70,7 @@ public interface OrderManageProcess {
      * @param goodsNo
      */
     void putGoodsCode(Long dfOrderId,String goodsNo) throws DaifaException;
+
+
+    void dealWaitSendOrderDisplay(Long dfTradeId,Integer orderDisplay)throws DaifaException;
 }

@@ -2,6 +2,7 @@ package com.shigu.main4.monitor.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
 import com.shigu.main4.monitor.vo.RankingShopVO;
 
@@ -23,7 +24,7 @@ public interface RankingSimpleService {
      * @return
      * @throws Main4Exception
      */
-    List<RankingCateLineVO> getRankingCateLinesByCids(Long cid) throws Main4Exception;
+    List<RankingCateLineVO> getRankingCateLinesByCids(Long cid, RankingPeriodEnum periodEnum) throws Main4Exception;
 
     /**
      * 根据类目排名店铺（目前只有男装、女装、综合，以市场区分）

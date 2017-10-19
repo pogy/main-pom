@@ -42,6 +42,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaWaitSendOrderMapper daifaWaitSendOrderMapper;
     @Autowired
     DaifaSendOrderMapper daifaSendOrderMapper;
+    @Autowired
+    DaifaWaitSendMapper daifaWaitSendMapper;
 
     @Override
     public void newOrder(OrderBO order) {
@@ -318,6 +320,28 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         DaifaSendOrderExample daifaSendOrderExample=new DaifaSendOrderExample();
         daifaSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaSendOrderMapper.updateByExampleSelective(so,daifaSendOrderExample);
+    }
+    /**
+     * ====================================================================================
+     * @方法名： dealWaitSendOrderDisplay
+     * @user gzy 2017/10/16 13:08
+     * @功能：修改未发订单的显示状态
+     * @param: [dfTradeId, orderDisplay]
+     * @return: void
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @Override
+    public void dealWaitSendOrderDisplay (Long dfTradeId, Integer orderDisplay) throws DaifaException {
+
+        DaifaWaitSend wso=new DaifaWaitSend();
+        wso.setDfTradeId (dfTradeId);
+        wso.setOrderDisplay (orderDisplay);
+        DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
+        daifaWaitSendExample.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+        daifaWaitSendMapper.updateByExampleSelective (wso,daifaWaitSendExample);
+
     }
 
 

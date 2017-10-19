@@ -173,6 +173,16 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         }
         if (!resultListener.isSuccess()){
             if("NOTENOUGH".equals(resultListener.getErrCode())){//未结算里面余额不足
+                reqData = new RefundReqData(
+                        orderPay.getOuterPid(),
+                        wxOutTradeNo(orderPay.getApplyId()),
+                        null,
+                        "RF" + orderPay.getOuterPid() + orderPay.getRefundMoney(),
+                        orderPay.getMoney().intValue(),
+                        refundFee,
+                        orderPay.getOuterPuser(),
+                        null
+                );
                 reqData.setRefund_account("REFUND_SOURCE_RECHARGE_FUNDS");
                 ResultListener resultListenerCache = new ResultListener();
                 try {
