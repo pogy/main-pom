@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppCat
  * 类路径:com.openJar.beans.appAppCat
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:类目
  */
-public class AppCat extends OpenBean {
+public class AppCat extends OpenBean implements Serializable {
 	//类目名
 	private String name;
 	//关键词，如果这个字段有值，cid失效，以关键词方式查询

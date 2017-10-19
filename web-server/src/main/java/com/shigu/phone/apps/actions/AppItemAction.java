@@ -12,9 +12,12 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.validation.Valid;
 
 
 /**
@@ -34,7 +37,7 @@ public class AppItemAction {
 
     @RequestMapping("itemCollect")
     @ResponseBody
-    public JSONObject itemCollectRequest(ItemCollectRequest request, ItemCollectResponse response){
+    public JSONObject itemCollectRequest( @Valid ItemCollectRequest request, ItemCollectResponse response, BindingResult bindingResult){
         if (request.getUserId() == null) {
             return WrapperUtil.wrapperOpenException("userId si null",response);
         }
@@ -45,7 +48,7 @@ public class AppItemAction {
 
     @RequestMapping("delItemCollect")
     @ResponseBody
-    public JSONObject delItemCollectRequest (DelItemCollectRequest request, DelItemCollectResponse response){
+    public JSONObject delItemCollectRequest (@Valid DelItemCollectRequest request, DelItemCollectResponse response, BindingResult bindingResult){
         if (request.getUserId() == null || StringUtils.isEmpty(request.getCollectIds())
                 || StringUtils.isEmpty(request.getToken())) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
@@ -62,7 +65,7 @@ public class AppItemAction {
      */
     @RequestMapping("goodsCollect")
     @ResponseBody
-    public JSONObject goodsCollectRequest(GoodsCollectRequest request, GoodsCollectResponse response){
+    public JSONObject goodsCollectRequest(@Valid GoodsCollectRequest request, GoodsCollectResponse response, BindingResult bindingResult){
         if (request.getGoodsId() == null || request.getStoreId() == null || request.getUserId() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }

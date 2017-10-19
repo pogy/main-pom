@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppItemUploaded
  * 类路径:com.openJar.beans.appAppItemUploaded
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:已上传商品
  */
-public class AppItemUploaded extends OpenBean {
+public class AppItemUploaded extends OpenBean implements Serializable {
 	//商品ID
 	private Long goodsId;
 	//标题

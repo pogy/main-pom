@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppSearchNav
  * 类路径:com.openJar.beans.appAppSearchNav
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:搜索筛选条件
  */
-public class AppSearchNav extends OpenBean {
+public class AppSearchNav extends OpenBean implements Serializable {
 	//ID
 	private Long navId;
 	//标签名

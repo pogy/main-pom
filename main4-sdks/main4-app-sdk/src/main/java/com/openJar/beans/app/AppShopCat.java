@@ -1,6 +1,8 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * 类名:AppShopCat
@@ -9,7 +11,7 @@ import java.util.List;
  * 创建时间:2017-10-16
  * 描述:父级店内类目
  */
-public class AppShopCat extends OpenBean {
+public class AppShopCat extends OpenBean implements Serializable {
 	//父级店内类目ID
 	private String scid;
 	//店内类目名

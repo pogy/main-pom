@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppSite
  * 类路径:com.openJar.beans.appAppSite
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:分站
  */
-public class AppSite extends OpenBean {
+public class AppSite extends OpenBean implements Serializable {
 	//分站标识
 	private String webSite;
 	//分站中文名

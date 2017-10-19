@@ -1,6 +1,9 @@
 package com.openJar.beans.app;
 
 import com.openJar.utils.OpenBean;
+
+import java.io.Serializable;
+
 /**
  * 类名:AppUser
  * 类路径:com.openJar.beans.appAppUser
@@ -8,7 +11,7 @@ import com.openJar.utils.OpenBean;
  * 创建时间:2017-10-16
  * 描述:手机用户
  */
-public class AppUser extends OpenBean {
+public class AppUser extends OpenBean implements Serializable {
 	//是否是商家
 	private Boolean imSeller;
 	//头像

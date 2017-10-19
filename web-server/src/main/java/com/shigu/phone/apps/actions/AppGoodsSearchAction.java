@@ -37,7 +37,7 @@ public class AppGoodsSearchAction {
 
     @RequestMapping("itemSearch")
     @ResponseBody
-    public JSONObject itemSearch(ItemSearchRequest request, ItemSearchResponse response) {
+    public JSONObject itemSearch(@Valid ItemSearchRequest request, ItemSearchResponse response, BindingResult bindingResult) {
         List<Integer> types = Arrays.asList(1,2,3);
         if (!types.contains(request.getType())){
             return WrapperUtil.wrapperOpenException("参数错误",response);
@@ -71,7 +71,7 @@ public class AppGoodsSearchAction {
 
     @RequestMapping("imgSearch")
     @ResponseBody
-    public JSONObject imgSearch(@Valid ImgSearchRequest request, ImgSearchResponse response) {
+    public JSONObject imgSearch(@Valid ImgSearchRequest request, ImgSearchResponse response, BindingResult bindingResult) {
         if (request.getImgurl() == null) {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }

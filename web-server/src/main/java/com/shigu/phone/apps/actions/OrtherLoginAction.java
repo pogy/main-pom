@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -20,7 +21,7 @@ import java.net.URLEncoder;
  * 创建者：任真飞
  * 创建时间：2017-10-16 17:05
  * 项目：main-pom
- * 描述：第三方登录
+ * 描述：第三方淘宝登录
  */
 @Controller
 public class OrtherLoginAction {
@@ -29,7 +30,7 @@ public class OrtherLoginAction {
     private PhoneUserService phoneUserService;
     //第三方登录
     @RequestMapping("phoneOrtherLogin")
-    public String passwordLogin(String nick,String key,Integer type){
+    public String passwordLogin(String nick, String key,Integer type){
         try {//为什么decode来decode去,不知道,返回照做
             String name= URLDecoder.decode(URLDecoder.decode(nick,"utf-8"),"utf-8");
             String userNick= URLEncoder.encode(URLEncoder.encode(name, "utf-8"), "utf-8");

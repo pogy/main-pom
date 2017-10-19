@@ -374,16 +374,6 @@ public class BasePhoneUserService {
     public BindUserVO bindUser(BindUserBO bo) throws OpenException {
         BindUserVO bindUserVO = new BindUserVO();
         OpenException openException = new OpenException();
-        //PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
-//        String phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,String.class);
-//
-//        if (phoneMsg==null||!phoneMsg.equals(request.getCode())) {
-//            OpenException openException = new OpenException();
-//            openException.setErrMsg("验证码错误");
-//            resp.setException(openException);
-//            resp.setSuccess(false);
-//            return resp;
-//        }
         Rds3TempUser rds3TempUser = new Rds3TempUser();
         rds3TempUser.setSubUserKey(bo.getTempId());
         rds3TempUser.setLoginFromType(LoginFromType.valueOf(bo.getType()));
@@ -405,10 +395,15 @@ public class BasePhoneUserService {
         bindUserVO.setImgsrc(personalSession.getHeadUrl());
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         bindUserVO.setImSeller(isSeller);
-        String token = EncryptUtil.genRandomPwd(36);
-        //todo:之后使用的是tempID还是登陆唯一标志需要确认，token保存时长暂时用1小时，保存用户信息
-        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+personalSession.getUserId()+"_"+token,personalSession,3600*1);
-        bindUserVO.setToken(token);
+
+        //token
+        String uuid= TokenUtil.format(personalSession.getUserId());
+        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
+        //把token存入redis,设置存活时间30分钟
+        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+        Jedis jedis = redisIO.getJedis();
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+        bindUserVO.setToken(uuid);
         return bindUserVO;
     }
 

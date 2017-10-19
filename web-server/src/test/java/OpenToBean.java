@@ -176,7 +176,7 @@ public class OpenToBean {
     private static String createBean(String url) throws IOException {
         Document d = Jsoup.connect("http://open.571xz.com/" + url).get();
         StringBuilder imp = new StringBuilder();
-        imp.append("package com.openJar.beans.app;\n" + "\n" + "import com.openJar.utils.OpenBean;\n");
+        imp.append("package com.openJar.beans.app;\n" + "\n" + "import com.openJar.utils.OpenBean;\n" + "import java.io.Serializable;\n");
         if (d.select(".api-table").html().contains("[]")) {
             imp.append("import java.util.List;\n");
         }
@@ -188,7 +188,7 @@ public class OpenToBean {
         t.append(" * 创建时间:").append(DateUtil.dateToString(new Date(),DateUtil.patternA)).append("\n");
         t.append(" * 描述:").append(d.select(".introduction").html().trim()).append("\n");
         t.append(" */\n");
-        t.append("public class ").append(d.select(".title").html().trim()).append(" extends OpenBean {\n");
+        t.append("public class ").append(d.select(".title").html().trim()).append(" extends OpenBean implements Serializable {\n");
         Elements trs = d.select(".api-table tbody tr");
 
         StringBuilder t2 = new StringBuilder();

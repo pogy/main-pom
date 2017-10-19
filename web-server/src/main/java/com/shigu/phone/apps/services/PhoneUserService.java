@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
-import sun.reflect.misc.FieldUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -171,6 +170,7 @@ public class PhoneUserService {
             resp.setException(openException);
             resp.setSuccess(false);
         }
+        resp.setUserNick(request.getNick());
         resp.setSuccess(true);
         return resp;
     }
@@ -261,6 +261,14 @@ public class PhoneUserService {
      */
     public BindUserResponse bindUser( BindUserRequest request, String remoteAddr){
         BindUserResponse resp = new BindUserResponse();
+        //验证码校验
+        if(!request.getCode().equals(redisIO.get("phone_bind_type_msg_"+request.getTelephone()))){
+            OpenException openException = new OpenException();
+            openException.setErrMsg("验证码错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
         BindUserBO bo  = new BindUserBO();
         bo.setCode(request.getCode());
         bo.setRemoteAddr(remoteAddr);
@@ -268,6 +276,7 @@ public class PhoneUserService {
         bo.setTempId(request.getTempId());
         bo.setType(request.getType());
         bo.setUserNick(request.getUserNick());
+
         try {
             basePhoneUserService.bindUser(bo);
             resp.setSuccess(true);

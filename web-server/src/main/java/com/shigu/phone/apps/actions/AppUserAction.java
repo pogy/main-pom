@@ -3,6 +3,7 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.BindUserResponse;
 import com.openJar.responses.app.OtherLoginResponse;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,45 +32,66 @@ public class AppUserAction {
 
     @RequestMapping("aboutMe")
     @ResponseBody
-    public JSONObject aboutMe(@Valid AboutMeRequest request, BindingResult bindingResult) {
+    public JSONObject aboutMe(@Valid AboutMeRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.aboutMe(request));
     }
 
     //修改密码
     @RequestMapping("changePassword")
     @ResponseBody
-    public JSONObject appChangePassword(@Valid ChangePasswordRequest request, BindingResult bindingResult) {
+    public JSONObject appChangePassword(@Valid ChangePasswordRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.changePassword(request));
     }
 
     //登录请求
     @RequestMapping("login")
     @ResponseBody
-    public JSONObject appLogin( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
+    public JSONObject appLogin( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
     //登录请求
     @RequestMapping("otherLogin")
     @ResponseBody
-    public JSONObject appOtherLogin( @Valid OtherLoginRequest request) {
+    public JSONObject appOtherLogin( @Valid OtherLoginRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.otherLogin(request));
     }
     //忘记密码
     @RequestMapping("forgetPassword")
     @ResponseBody
-    public JSONObject appForgetPassword( @Valid ForgetPasswordRequest request) {
+    public JSONObject appForgetPassword(@Valid ForgetPasswordRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.forgetPassword(request));
     }
 
     @RequestMapping("regist")
     @ResponseBody
-    public JSONObject appRegist(@Valid RegistRequest request,BindingResult bindingResult) {
+    public JSONObject appRegist(@Valid RegistRequest request,BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.regist(request));
     }
-
+    //绑定用户
     @RequestMapping("bindUser")
     @ResponseBody
-    public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) {
+    public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         String remoteAddr = httpRequest.getRemoteAddr();
         BindUserResponse bindUserResponse = phoneUserService.bindUser(request, remoteAddr);
         return JSONObject.fromObject(bindUserResponse);
@@ -78,7 +100,10 @@ public class AppUserAction {
     //得到验证码
     @RequestMapping("getPhoneMsg")
     @ResponseBody
-    public JSONObject appGetPhoneMsg( @Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest) {
+    public JSONObject appGetPhoneMsg(@Valid GetPhoneMsgRequest request, HttpServletRequest httpRequest, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
     }
 
@@ -90,7 +115,10 @@ public class AppUserAction {
      */
     @RequestMapping("imgUpload")
     @ResponseBody
-    public JSONObject imgUpload(@Valid ImgUploadRequest request, BindingResult bindingResult) {
+    public JSONObject imgUpload(@Valid ImgUploadRequest request, BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.imgUpload(request));
     }
 
@@ -102,7 +130,10 @@ public class AppUserAction {
      */
     @RequestMapping("createPostSignInfo")
     @ResponseBody
-    public JSONObject createPostSignInfo(CreatePostSignInfoRequest request,BindingResult bindingResult) {
+    public JSONObject createPostSignInfo(@Valid CreatePostSignInfoRequest request,BindingResult bindingResult) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         return JSONObject.fromObject(phoneUserService.createPostSignInfo());
     }
 
