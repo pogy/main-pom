@@ -409,10 +409,15 @@ public class BasePhoneUserService {
         bindUserVO.setImgsrc(personalSession.getHeadUrl());
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         bindUserVO.setImSeller(isSeller);
-        String token = EncryptUtil.genRandomPwd(36);
-        //todo:之后使用的是tempID还是登陆唯一标志需要确认，token保存时长暂时用1小时，保存用户信息
-        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+personalSession.getUserId()+"_"+token,personalSession,3600*1);
-        bindUserVO.setToken(token);
+
+        //token
+        String uuid= TokenUtil.format(personalSession.getUserId());
+        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
+        //把token存入redis,设置存活时间30分钟
+        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+        Jedis jedis = redisIO.getJedis();
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+        bindUserVO.setToken(uuid);
         return bindUserVO;
     }
 

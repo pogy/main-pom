@@ -85,7 +85,7 @@ public class AppUserAction {
         }
         return JSONObject.fromObject(phoneUserService.regist(request));
     }
-    //
+    //绑定用户
     @RequestMapping("bindUser")
     @ResponseBody
     public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) throws Main4Exception {
