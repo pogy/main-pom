@@ -16,7 +16,16 @@ public class OtherLoginResponse extends Response {
 	//0未绑定星座网1绑定星座网
 	private Integer type;
 	//跳转地址	必须
+	//第三方昵称
+	private String userNick;
 
+	public String getUserNick() {
+		return userNick;
+	}
+
+	public void setUserNick( String userNick ) {
+		this.userNick = userNick;
+	}
 
 	public AppUser getUsers() {
 		return users;
