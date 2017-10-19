@@ -535,6 +535,7 @@ var webSite = '${webSite!}';
         <#list goodsList as goods>
         <ul class="body clearfix" goodsid="${goods.goodsId!}">
             <li class="name">
+                <#if goods.taobaoSaleState == 1>
                 
 
 <#assign text>{"value":goods.goodsId}</#assign>
@@ -598,6 +599,9 @@ var webSite = '${webSite!}';
 
 </#list>
 
+                <#elseif goods.taobaoSaleState == 2>
+                <span class="zwf fl"></span>
+                </#if>
                 <a class="piclink fl" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">
                     <img src="${goods.imgsrc!}_80x80.jpg">
                 </a>
