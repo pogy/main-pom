@@ -57,9 +57,15 @@ public class WapStoreAction {
 
     @RequestMapping("queryShopCategory")
     @ResponseBody
-    public JSONObject ShopCat( String webSite,Long shopId ){
+    public JSONObject ShopCat( String webSite,Long shopId ,Integer index,Integer size){
+        if (index == null) {
+            index = 1;
+        }
+        if (size == null) {
+            size = 30;
+        }
         try {
-            List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId);
+            List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId,index,size);
             return JsonResponseUtil.success().element("cats",appShopCats);
         } catch (OpenException e) {
             return JsonResponseUtil.error("查询失败");

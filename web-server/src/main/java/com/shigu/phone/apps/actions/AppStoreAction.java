@@ -61,6 +61,12 @@ public class AppStoreAction {
         if(result.hasErrors()){
             return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
         }
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null) {
+            request.setSize(30);
+        }
         return JSONObject.fromObject(appStoreService.selShopCat(request));
     }
 

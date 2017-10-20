@@ -190,7 +190,7 @@ public class BaseStoreService {
         return appMarket;
     }
 
-    public ShopCatVO selShopCat(Long shopId) throws OpenException {
+    public ShopCatVO selShopCat(Long shopId,Integer index,Integer size) throws OpenException {
 
         OpenException openException = new OpenException();
         StoreRelation storeRelation = storeRelationService.selRelationById(shopId);
@@ -201,13 +201,13 @@ public class BaseStoreService {
         List<ShopCat> cats=shopForCdnService.selShopCatsById(shopId);
         List<AppShopCat> appShopCats = new ArrayList<>();
 
-        ShiguPager<ItemShowBlock> items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(), "time_down", 1, 0);
+        ShiguPager<ItemShowBlock> items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(), "time_down", index, size);
         AppShopCat appShopCat = new AppShopCat();
         appShopCat.setItemNum(new Long(items.getTotalCount()));
         appShopCat.setCatName("全部分类");
         appShopCats.add(appShopCat);
         for(ShopCat cat : cats){
-            items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(),null,cat.getCid(),"time_down",null,null, 1, 0);
+            items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(),null,cat.getCid(),"time_down",null,null, index, size);
             AppShopCat appShopCat1 = new AppShopCat();
             appShopCat1.setItemNum(new Long(items.getTotalCount()));
             appShopCat1.setCatName(cat.getName());

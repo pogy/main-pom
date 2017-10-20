@@ -248,8 +248,8 @@ public class BasePhoneUserService {
     public String  getPhoneMsg(String telephone,Integer type) throws OpenException {
         OpenException openException=new OpenException();
         String code= RedomUtil.redomNumber(6);
-        //发送短信
-        sendMsgService.sendVerificationCode(telephone, code);
+        //发送短信  TODO 上线记得取消注释
+//        sendMsgService.sendVerificationCode(telephone, code);
         //客户状态
         if(type==1){
             //登录
