@@ -333,7 +333,7 @@ public class MemberAction {
         return "buyer/shiguOnekeyRecordinit";
     }
 
-    @RequestMapping("downTbGoods")
+    @RequestMapping("member/downTbGoods")
     @ResponseBody
     public JSONObject downTbGoods(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
