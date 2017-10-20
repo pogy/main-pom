@@ -259,6 +259,9 @@
                                 <#if childOrder_index == 0>
                                     <#if order.tradeState == 1>
                                         <p>未发货</p>
+
+                                            <p>（${order.expressCode!}）</p>
+
                                     <#elseif order.tradeState == 2>
                                         <p>已发货</p>
                                     </#if>
