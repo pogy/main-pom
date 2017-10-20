@@ -3,7 +3,6 @@ package com.shigu.main4.daifa.process.impl;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.examples.DaifaGoodsWeightExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -78,27 +77,13 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         if(daifaWaitSendOrder==null){
             throw new DaifaException("此条码对应的商品全部暂未拿到货");
         }
+        List<SubOrderExpressBO> list=cheackeSend(order.getDfTradeId());
+
         String lastScanDate= DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaWaitSendOrder updateWaitSendOrder=new DaifaWaitSendOrder();
         updateWaitSendOrder.setDwsoId(daifaWaitSendOrder.getDwsoId());
         updateWaitSendOrder.setLastScanDate(lastScanDate);
         daifaWaitSendOrderMapper.updateByPrimaryKeySelective(updateWaitSendOrder);
-
-        DaifaOrder tmpo=new DaifaOrder();
-        tmpo.setDfTradeId(order.getDfTradeId());
-        List<DaifaOrder> orders=daifaOrderMapper.select(tmpo);
-        for(DaifaOrder o:orders){
-            if(o.getAllocatStatus()==0&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
-                throw new DaifaException("此条码对应的部分商品未分配");
-            }
-            if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
-                throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
-            }
-            if(o.getTakeGoodsStatus()==1&&(o.getRefundStatus() == null||o.getRefundStatus()==1)){
-                throw new DaifaException("此条码对应的商品已申请未发退款(退款进行中),请稍后重试");
-            }
-        }
-
         DaifaWaitSendOrder tmpwo=new DaifaWaitSendOrder();
         tmpwo.setDfTradeId(order.getDfTradeId());
         List<DaifaWaitSendOrder> wos=daifaWaitSendOrderMapper.select(tmpwo);
@@ -115,17 +100,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         exbo.setReceiverName(trade.getReceiverName());
         exbo.setReceiverPhone(trade.getReceiverMobile()==null?trade.getReceiverPhone():trade.getReceiverMobile());
         exbo.setTid(trade.getDfTradeId());
-        List<SubOrderExpressBO> list=new ArrayList<>();
-        List<Long> oids=new ArrayList<>();
-        for(DaifaOrder o:orders){
-            SubOrderExpressBO so=new SubOrderExpressBO();
-            so.setGoodsNum(o.getGoodsNum());
-            so.setOrderId(o.getDfOrderId());
-            so.setPropStr(o.getPropStr());
-            so.setStoreGoodsCode(o.getStoreGoodsCode());
-            oids.add(o.getDfOrderId());
-            list.add(so);
-        }
+        List<Long> oids=BeanMapper.getFieldList(list,"orderId",Long.class);
         exbo.setList(list);
         ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
         ExpressVO exvo;
@@ -273,5 +248,67 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         mqUtil.sendMessage(DaifaSendMqEnum.weightSet.getMessageKey()+goodsId,
                 DaifaSendMqEnum.weightSet.getMessageTag(), jsonObject.toString());
 
+    }
+
+    @Override
+    public void queryExpressCode(Long dfTradeId) throws DaifaException {
+        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(dfTradeId);
+        if(trade==null||trade.getSendStatus()==2){
+            return;
+        }
+        List<SubOrderExpressBO> list;
+        try {
+            list = cheackeSend(dfTradeId);
+        } catch (DaifaException e) {
+            return;
+        }
+        OrderExpressBO exbo=new OrderExpressBO();
+        exbo.setExpressName(trade.getExpressName());
+        exbo.setReceiverAddress(trade.getReceiverAddress());
+        exbo.setReceiverName(trade.getReceiverName());
+        exbo.setReceiverPhone(trade.getReceiverMobile()==null?trade.getReceiverPhone():trade.getReceiverMobile());
+        exbo.setTid(trade.getDfTradeId());
+        exbo.setList(list);
+        ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
+        try {
+            expressModel.callExpress(exbo);
+        } catch (DaifaException e) {
+            List<String> errMsgs=Arrays.asList("快递鸟内部错误码：207,错误信息：单号不足请及时充值");
+            if(errMsgs.contains(e.getMessage())){
+                throw new DaifaException(trade.getExpressName()+"单号不足");
+            }
+        }
+    }
+
+    /**
+     * 校验是否可发货
+     * 如果可发,则返回因拿到的商品信息
+     * @param dfTradeId
+     */
+    private List<SubOrderExpressBO> cheackeSend(Long dfTradeId) throws DaifaException {
+        DaifaOrder tmpo=new DaifaOrder();
+        tmpo.setDfTradeId(dfTradeId);
+        List<DaifaOrder> orders=daifaOrderMapper.select(tmpo);
+        for(DaifaOrder o:orders){
+            if(o.getAllocatStatus()==0&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
+                throw new DaifaException("此条码对应的部分商品未分配");
+            }
+            if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
+                throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
+            }
+            if(o.getTakeGoodsStatus()==1&&(o.getRefundStatus() == null||o.getRefundStatus()==1)){
+                throw new DaifaException("此条码对应的商品已申请未发退款(退款进行中),请稍后重试");
+            }
+        }
+        List<SubOrderExpressBO> list=new ArrayList<>();
+        for(DaifaOrder o:orders){
+            SubOrderExpressBO so=new SubOrderExpressBO();
+            so.setGoodsNum(o.getGoodsNum());
+            so.setOrderId(o.getDfOrderId());
+            so.setPropStr(o.getPropStr());
+            so.setStoreGoodsCode(o.getStoreGoodsCode());
+            list.add(so);
+        }
+        return list;
     }
 }
