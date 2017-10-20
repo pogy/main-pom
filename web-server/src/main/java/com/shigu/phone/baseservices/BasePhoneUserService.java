@@ -153,10 +153,10 @@ public class BasePhoneUserService {
 //                    String uuid = UUIDGenerator.getUUID();
                     String uuid= TokenUtil.format(personalSession.getUserId());
                     String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                    //把token存入redis,设置存活时间30分钟
+                    //把token存入redis,设置存活时间一周
                     // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                     Jedis jedis = redisIO.getJedis();
-                    jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+                    jedis.setex("phone_login_token" + personalSession.getUserId(), 604800, inRedisToken);
                     appUser.setToken(uuid);
                     //是否是商户
                     if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
@@ -212,10 +212,10 @@ public class BasePhoneUserService {
                         appUser.setUserNick(personalSession.getUserNick());
                         String uuid= TokenUtil.format(personalSession.getUserId());
                         String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                        //把token存入redis,设置存活时间30分钟
+                        //把token存入redis,设置存活时间一周
                         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
                         Jedis jedis = redisIO.getJedis();
-                        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+                        jedis.setex("phone_login_token" + personalSession.getUserId(), 604800, inRedisToken);
                         appUser.setToken(uuid);
                         //是否是商户
                         if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
@@ -363,10 +363,10 @@ public class BasePhoneUserService {
         //token
         String uuid= TokenUtil.format(personalSession.getUserId());
         String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-        //把token存入redis,设置存活时间30分钟
+        //把token存入redis,设置存活时间一周
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 604800, inRedisToken);
         appUser.setToken(uuid);
 
 
@@ -413,10 +413,10 @@ public class BasePhoneUserService {
         //token
         String uuid= TokenUtil.format(personalSession.getUserId());
         String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-        //把token存入redis,设置存活时间30分钟
+        //把token存入redis,设置存活时间一周
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
+        jedis.setex("phone_login_token" + personalSession.getUserId(), 604800, inRedisToken);
         bindUserVO.setToken(uuid);
         return bindUserVO;
     }

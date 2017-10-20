@@ -58,15 +58,7 @@ public class AppUserAction {
         }
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
-    //登录请求
-    @RequestMapping("otherLogin")
-    @ResponseBody
-    public JSONObject appOtherLogin( @Valid OtherLoginRequest request, BindingResult bindingResult) throws Main4Exception {
-        if(bindingResult.hasErrors()){
-            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
-        return JSONObject.fromObject(phoneUserService.otherLogin(request));
-    }
+
     //忘记密码
     @RequestMapping("forgetPassword")
     @ResponseBody

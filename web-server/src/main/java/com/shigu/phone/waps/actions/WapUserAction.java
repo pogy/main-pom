@@ -81,15 +81,7 @@ public class WapUserAction {
     }
 
 
-    @RequestMapping("otherLogin")
-    @ResponseBody
-    public JSONObject ortherLogin(String key,String nick,Integer type) {
-        OtherLoginRequest request = new OtherLoginRequest();
-        request.setKey(key);
-        request.setNick(nick);
-        request.setType(type);
-        return JSONObject.fromObject(phoneUserService.otherLogin(request));
-    }
+
 
     @RequestMapping("forgetPassword")
     @ResponseBody
