@@ -57,7 +57,7 @@ public class WapUserAction {
         } catch (AuthenticationException e) {
             //登陆失败
             token.clear();
-            return JsonResponseUtil.success().element("success",false).element("msg","账号或密码错误");
+            return JsonResponseUtil.error("账号或密码错误").element("success",false);
         }
     }
 
@@ -73,7 +73,7 @@ public class WapUserAction {
             wapPhoneUserService.msgCodeLogin(user, pwd, request.getRemoteAddr());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
-            return JsonResponseUtil.success().element("success",false).element("msg",e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -89,8 +89,7 @@ public class WapUserAction {
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg())
-                                    .element("success",false)
-                                    .element("msg",e.getErrMsg());
+                                    .element("success",false);
         }
 
     }
@@ -107,8 +106,7 @@ public class WapUserAction {
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg())
-                    .element("success",false)
-                    .element("msg",e.getErrMsg());
+                    .element("success",false);
         }
     }
 
@@ -126,13 +124,13 @@ public class WapUserAction {
     public JSONObject ChangePassword(HttpSession session,String newPwd,String oldPwd) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         try {
             wapPhoneUserService.changePassword(oldPwd,newPwd,ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg",e.getErrMsg());
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
     }
 
@@ -151,8 +149,7 @@ public class WapUserAction {
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg())
-                    .element("success",false)
-                    .element("msg",e.getErrMsg());
+                    .element("success",false);
         }
     }
 
@@ -161,7 +158,7 @@ public class WapUserAction {
     public JSONObject needBindTelephone(HttpSession session ) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         boolean needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
         return JsonResponseUtil.success().element("success",true)
@@ -180,7 +177,7 @@ public class WapUserAction {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps.getUserId() == null) {
-                return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+                return JsonResponseUtil.error("用户未登录").element("success",false);
             }
             //是否是商户
             Subject subject = SecurityUtils.getSubject();
@@ -189,8 +186,7 @@ public class WapUserAction {
                                              .element("userId",ps.getUserId())
                                              .element("userType",isStore?2:1);
         } catch (Exception e) {
-            return JsonResponseUtil.success().element("success",false)
-                    .element("msg","查询失败");
+            return JsonResponseUtil.error("查询失败").element("success",false);
         }
     }
 
@@ -199,7 +195,7 @@ public class WapUserAction {
     public JSONObject loginOut(HttpSession session,String userId) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
@@ -211,11 +207,11 @@ public class WapUserAction {
     public JSONObject getUserData(HttpSession session,String userId) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId is null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         UserInfo userInfo = wapPhoneUserService.selUserInfo(ps.getUserId());
         if (userInfo == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userInfo is null");
+            return JsonResponseUtil.error("未查询到用户信息").element("success",false);
         }
         return JsonResponseUtil.success().element("success",true)
                                          .element("headUrl",userInfo.getHeadUrl())
@@ -223,11 +219,11 @@ public class WapUserAction {
                                          .element("phoneBind",userInfo.getTelephone());
     }
 
-    @RequestMapping("index")
-    public String index() {
-       return "waps/index";
-    }
-
+//    @RequestMapping("index")
+//    public String index() {
+//       return "waps/index";
+//    }
+//
 
 
 }

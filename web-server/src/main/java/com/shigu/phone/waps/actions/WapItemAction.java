@@ -41,7 +41,7 @@ public class WapItemAction {
     public JSONObject itemCollect(HttpSession session,Integer size,Integer index){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         if (size == null) {
             size = 1;
@@ -53,11 +53,12 @@ public class WapItemAction {
             BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size);
             return JsonResponseUtil
                     .success()
+                    .element("success",true)
                     .element("hasNext",baseCollectItemVO.getHasNext())
                     .element("total",baseCollectItemVO.getTotal())
                     .element("items",baseCollectItemVO.getItems());
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -66,16 +67,16 @@ public class WapItemAction {
     public JSONObject delItemCollect (HttpSession session,String type,List<Long> collectIds){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId is null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         if ("goods".equalsIgnoreCase(type)){//取消收藏商品
             wapItemService.delItemCollect(collectIds,ps.getUserId());
-            return JsonResponseUtil.success();
+            return JsonResponseUtil.success().element("success",true);
         }else if("shop".equalsIgnoreCase(type)){//取消收藏店铺
             wapPhoneStoreService.delStoreCollect(collectIds,ps.getUserId());
-            return JsonResponseUtil.success();
+            return JsonResponseUtil.success().element("success",true);
         }else{
-            return JsonResponseUtil.error("type can not be resolved");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
     }
 
@@ -84,20 +85,20 @@ public class WapItemAction {
     public JSONObject addCollect (HttpSession session,String type,Long goodsId,Long storeId,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId is null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         try {
             if ("goods".equalsIgnoreCase(type)){//收藏商品
                 ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), storeId, goodsId, webSite);
-                return JsonResponseUtil.success().element("collectId",itemCollectInfoVO.getGoodsCollectId());
+                return JsonResponseUtil.success().element("success",true).element("collectId",itemCollectInfoVO.getGoodsCollectId());
             }else if("shop".equalsIgnoreCase(type)){//收藏店铺
                 ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore(storeId, ps.getUserId());
-                return JsonResponseUtil.success().element("collectId",shiguStoreCollect.getStoreCollectId());
+                return JsonResponseUtil.success().element("success",true).element("collectId",shiguStoreCollect.getStoreCollectId());
             }else{
-                return JsonResponseUtil.error("type can not be resolved");
+                return JsonResponseUtil.error("参数错误").element("success",false);
             }
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -110,7 +111,7 @@ public class WapItemAction {
     public JSONObject hasCollected(String userId,String type,String id,HttpSession session){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId is null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         try {
             Long collectId;
@@ -119,11 +120,11 @@ public class WapItemAction {
             }else if("shop".equalsIgnoreCase(type)){//收藏店铺
                 collectId = wapPhoneStoreService.hasCollected(id,ps.getUserId());
             }else{
-                return JsonResponseUtil.error("type can not be resolved");
+                return JsonResponseUtil.error("参数错误").element("success",false);
             }
-            return JsonResponseUtil.success().element("collectId",collectId);
+            return JsonResponseUtil.success().element("success",true).element("collectId",collectId);
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 }

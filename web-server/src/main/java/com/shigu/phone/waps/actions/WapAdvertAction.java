@@ -39,7 +39,7 @@ public class WapAdvertAction {
     @ResponseBody
     public JSONObject queryPicGoatList(String spreadCode, String webSite){
         if(spreadCode == null || StringUtils.isEmpty(webSite)){
-            return JsonResponseUtil.error("缺少参数");
+            return JsonResponseUtil.error("缺少参数").element("success",false);
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -49,11 +49,11 @@ public class WapAdvertAction {
             }
         }
         if (spread == null) {
-            return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode);
+            return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode).element("success",false);
         }
         List<ImgSpreadVO> imgSpreadVOS = wapAdvertService.imgSpread(spread);
 
-        return  JsonResponseUtil.success().element("spreads",imgSpreadVOS);
+        return  JsonResponseUtil.success().element("success",true).element("spreads",imgSpreadVOS);
     }
 
     /**
@@ -66,7 +66,7 @@ public class WapAdvertAction {
     @ResponseBody
     public JSONObject queryGoodsGoatList(String spreadCode, String webSite) {
         if(spreadCode == null || StringUtils.isEmpty(webSite)){
-            return  JsonResponseUtil.error("缺少参数");
+            return JsonResponseUtil.error("缺少参数").element("success",false);
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -76,9 +76,9 @@ public class WapAdvertAction {
             }
         }
         if (spread == null) {
-            return  JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode);
+            return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode).element("success",false);
         }
         List<AppItemSpread> appItemSpreads = wapAdvertService.itemSpread(webSite, spread);
-        return JsonResponseUtil.success().element("spreads",appItemSpreads);
+        return JsonResponseUtil.success().element("success",true).element("spreads",appItemSpreads);
     }
 }

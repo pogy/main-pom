@@ -49,19 +49,19 @@ public class WapGoodsSearchAction {
 
         List<Integer> types = Arrays.asList(1,2,3);
         if (!types.contains(bo.getType())){
-            return JsonResponseUtil.error("参数错误");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (bo.getType() == null) {
-            return JsonResponseUtil.error("参数错误");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (bo.getType() == 1 && bo.getType() ==null) {//1商品库(cid不能为空)
-            return JsonResponseUtil.error("参数错误");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (bo.getType() == 2 && StringUtils.isEmpty(bo.getKeyword())) {//2普通搜索(keywords不为空)
-            return JsonResponseUtil.error("参数错误");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (bo.getType() == 3 && StringUtils.isEmpty(bo.getStoreId())) {//3店铺(storeId不为空)
-            return JsonResponseUtil.error("参数错误");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (StringUtils.isEmpty(bo.getOrderBy())) {
             bo.setOrderBy(SearchOrderBy.COMMON.getValue());
@@ -100,6 +100,7 @@ public class WapGoodsSearchAction {
             itemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
             return JsonResponseUtil
                         .success()
+                        .element("success",true)
                         .element("hasNext",itemSearchVo.getHasNext())
                         .element("total",itemSearchVo.getTotal())
                         .element("tems",itemSearchVo.getItems());
@@ -119,14 +120,14 @@ public class WapGoodsSearchAction {
         request.setWebSite(webSite);
         ImgSearchResponse response = new ImgSearchResponse();
         if (imgurl == null) {
-            return WrapperUtil.wrapperOpenException("参数错误",response);
+            return WrapperUtil.wrapperOpenException("参数错误",response).element("success",false);
         }
         if (webSite == null) {
             request.setWebSite("hz");
         }
         List<AppGoodsBlock> appGoodsBlocks = null;
             appGoodsBlocks = wapPhoneGoodsSearchService.imgSearch(imgurl, webSite);
-        return JsonResponseUtil.success().element("imgSearch",appGoodsBlocks);
+        return JsonResponseUtil.success().element("success",true).element("imgSearch",appGoodsBlocks);
     }
 
     /**
@@ -138,10 +139,11 @@ public class WapGoodsSearchAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         OneItemVO oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps.getUserId());
         if (oneItemVO == null) {
-            return JsonResponseUtil.error("未查询到数据");
+            return JsonResponseUtil.error("未查询到数据").element("success",false);
         }
         return JsonResponseUtil
                     .success()
+                    .element("success",true)
                     .element("title",oneItemVO.getTitle())
                     .element("goodsId",oneItemVO.getGoodsId())
                     .element("imgSrcs",oneItemVO.getImgSrcs())

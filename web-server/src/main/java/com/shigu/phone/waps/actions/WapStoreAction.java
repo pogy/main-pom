@@ -38,10 +38,11 @@ public class WapStoreAction {
         try {
             OneShopVO oneShopVO = wapStoreService.selOneShopInfo(shopId, webSite, null);
             if (oneShopVO == null) {
-                return JsonResponseUtil.error("未查询到数据");
+                return JsonResponseUtil.error("未查询到数据").element("success",false);
             }
             return JsonResponseUtil
                         .success()
+                        .element("success",true)
                         .element("shopId",oneShopVO.getShopId())
                         .element("market",oneShopVO.getMarket())
                         .element("shopNum",oneShopVO.getShopNum())
@@ -66,9 +67,9 @@ public class WapStoreAction {
         }
         try {
             List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId,index,size);
-            return JsonResponseUtil.success().element("cats",appShopCats);
+            return JsonResponseUtil.success().element("success",true).element("cats",appShopCats);
         } catch (OpenException e) {
-            return JsonResponseUtil.error("查询失败");
+            return JsonResponseUtil.error("查询失败").element("success",false);
         }
     }
 
@@ -77,9 +78,9 @@ public class WapStoreAction {
     public JSONObject selMarketData(Long mid,String webSite)  {
         try {
             AppMarket appMarket = wapStoreService.selMarketData(mid, webSite);
-            return JsonResponseUtil.success().element("market",appMarket);
+            return JsonResponseUtil.success().element("success",true).element("market",appMarket);
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -96,9 +97,10 @@ public class WapStoreAction {
     public JSONObject shopSearch(String keyword,String webSite,Integer index, Integer size) {
         ShopSearchVO shopSearchVO = wapPhoneStoreService.shopSearch(keyword,webSite,index, size);
         if (shopSearchVO == null) {
-            return JsonResponseUtil.error("未查询到数据");
+            return JsonResponseUtil.error("未查询到数据").element("success",false);
         }
-        return JsonResponseUtil.success().element("hasNext",shopSearchVO.getHasNext())
+        return JsonResponseUtil.success().element("success",false)
+                                         .element("hasNext",shopSearchVO.getHasNext())
                                          .element("total",shopSearchVO.getTotal())
                                          .element("shops",shopSearchVO.getShops());
     }
@@ -115,7 +117,7 @@ public class WapStoreAction {
     public JSONObject queryShopCollectList(HttpSession session,String webSite,Integer index,Integer size) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (index == null) {
             index = 1;
@@ -125,11 +127,14 @@ public class WapStoreAction {
         }
         StoreCollectVO storeCollectVO = wapPhoneStoreService.storeCollect(webSite, ps.getUserId(), index, size);
         if (storeCollectVO == null) {
-            return JsonResponseUtil.error("未查询到数据");
+            return JsonResponseUtil.error("未查询到数据").element("success",false);
         }
-        return JsonResponseUtil.success().element("hasNext",storeCollectVO.getHasNext())
-                .element("total",storeCollectVO.getTotal())
-                .element("shops",storeCollectVO.getShops());
+        return JsonResponseUtil
+                    .success()
+                    .element("success",true)
+                    .element("hasNext",storeCollectVO.getHasNext())
+                    .element("total",storeCollectVO.getTotal())
+                    .element("shops",storeCollectVO.getShops());
     }
 
 }

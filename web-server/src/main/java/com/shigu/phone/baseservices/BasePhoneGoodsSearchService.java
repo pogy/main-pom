@@ -76,14 +76,9 @@ public class BasePhoneGoodsSearchService {
      * @return
      */
     public ItemSearchVO itemSearch(SearchBO bo, String orderBy) throws OpenException {
-        //转mid
-        ShiguOuterMarket shiguOuterMarket = shiguOuterMarketMapper.selectByPrimaryKey(bo.getMid());
-        if (shiguOuterMarket == null || shiguOuterMarket.getMarketId() == null) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("未查询到市场信息");
-            throw openException;
+        if (bo.getMid() != null) {
+            parseMid(bo);
         }
-        bo.setMid(shiguOuterMarket.getMarketId());
 
         ItemSearchVO vo = new ItemSearchVO();
         ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(orderBy), false).getSearchData();
@@ -102,14 +97,9 @@ public class BasePhoneGoodsSearchService {
      * @return
      */
     public ItemSearchVO itemSearch(SearchBO bo, String orderBy,Long shopId) throws OpenException {
-        //转mid
-        ShiguOuterMarket shiguOuterMarket = shiguOuterMarketMapper.selectByPrimaryKey(bo.getMid());
-        if (shiguOuterMarket == null || shiguOuterMarket.getMarketId() == null) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("未查询到市场信息");
-            throw openException;
+        if (bo.getMid() != null) {
+            parseMid(bo);
         }
-        bo.setMid(shiguOuterMarket.getMarketId());
 
         if("xp".equals(orderBy)){
             orderBy="time_down";
@@ -148,6 +138,17 @@ public class BasePhoneGoodsSearchService {
         vo.setTotal(pager.getTotalCount());
         vo.setHasNext(pager.getNumber() < pager.getTotalPages());
         return vo;
+    }
+
+    public void parseMid(SearchBO bo) throws OpenException {
+        //转mid
+        ShiguOuterMarket shiguOuterMarket = shiguOuterMarketMapper.selectByPrimaryKey(bo.getMid());
+        if (shiguOuterMarket == null || shiguOuterMarket.getMarketId() == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("未查询到市场信息");
+            throw openException;
+        }
+        bo.setMid(shiguOuterMarket.getMarketId());
     }
 
     /**

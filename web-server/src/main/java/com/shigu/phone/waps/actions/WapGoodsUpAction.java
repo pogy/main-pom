@@ -49,13 +49,14 @@ public class WapGoodsUpAction {
     public JSONObject queryUploadedGoodsList(HttpSession session,Integer type, Integer index, Integer size){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         UploadedItemVO uploadedItemVO = wapPhoneGoodsUpService.uploadedItem(type, index, size, ps.getUserId());
         if (uploadedItemVO == null) {
-            return JsonResponseUtil.success().element("hasNext",false).element("total",0);
+            return JsonResponseUtil.success().element("success",true).element("hasNext",false).element("total",0);
         }
-        return JsonResponseUtil.success().element("hasNext",uploadedItemVO.getHasNext())
+        return JsonResponseUtil.success().element("success",true)
+                                         .element("hasNext",uploadedItemVO.getHasNext())
                                          .element("total",uploadedItemVO.getTotal())
                                          .element("items",uploadedItemVO.getItems());
     }
@@ -72,10 +73,10 @@ public class WapGoodsUpAction {
     public JSONObject upToWx(HttpSession session,String webSite,Long goodsId) throws OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         wapPhoneGoodsUpService.upToWx(webSite,goodsId,ps.getUserId());
-        return JsonResponseUtil.success().element("upToWx","上传成功");
+        return JsonResponseUtil.success().element("success",true).element("upToWx","上传成功");
     }
 
     /**
@@ -92,9 +93,9 @@ public class WapGoodsUpAction {
     public JSONObject downGoodsUploaded(HttpSession session,Long userId,String uploadId) throws Main4Exception, OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());
-        return JsonResponseUtil.success();
+        return JsonResponseUtil.success().element("success",true);
     }
 }

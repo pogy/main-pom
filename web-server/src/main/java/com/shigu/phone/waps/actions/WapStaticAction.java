@@ -48,7 +48,7 @@ public class WapStaticAction {
     @RequestMapping("getWebSites")
     @ResponseBody
     public JSONObject sites(){
-        return JsonResponseUtil.success().element("sites",wapStaticService.selWebSites());
+        return JsonResponseUtil.success().element("success",true).element("sites",wapStaticService.selWebSites());
     }
 
     @RequestMapping("getGoodsCatList")
@@ -56,9 +56,9 @@ public class WapStaticAction {
     public JSONObject cat(String webSite,Integer type) {
         List<AppCatGroup> appCatGroups = wapStaticService.selCat(webSite, type);
         if (appCatGroups == null){
-            return JsonResponseUtil.error("未查询到数据");
+            return JsonResponseUtil.error("未查询到数据").element("success",false);
         }
-        return JsonResponseUtil.success().element("catGroups",appCatGroups);
+        return JsonResponseUtil.success().element("success",true).element("catGroups",appCatGroups);
     }
 
     @RequestMapping("queryParentCatList")
@@ -67,9 +67,9 @@ public class WapStaticAction {
         List<ParentCatVO> list = null;
         try {
             list = wapStaticService.queryParentCatList(webSite);
-            return JsonResponseUtil.success().element("catGroups",list);
+            return JsonResponseUtil.success().element("success",true).element("catGroups",list);
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -80,14 +80,14 @@ public class WapStaticAction {
         try {
             parentId = Integer.valueOf(pid);
         } catch (NumberFormatException e) {
-            return JsonResponseUtil.error("pid can not be format to Integer [pid = "+pid+"]");
+            return JsonResponseUtil.error("参数错误 [pid = "+pid+"]").element("success",false);
         }
         List<SubCatVO> list = null;
         try {
             list = wapStaticService.querySubCatList(webSite,parentId);
-            return JsonResponseUtil.success().element("subCats",list);
+            return JsonResponseUtil.success().element("success",true).element("subCats",list);
         } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getErrMsg());
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
 
     }
