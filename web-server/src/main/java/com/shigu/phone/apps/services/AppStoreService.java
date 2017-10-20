@@ -86,7 +86,7 @@ public class AppStoreService {
         ShopCatResponse response = null;
         try {
             response = new ShopCatResponse();
-            ShopCatVO shopCatVO = baseStoreService.selShopCat(request.getShopId());//webSite 未使用
+            ShopCatVO shopCatVO = baseStoreService.selShopCat(request.getShopId(),request.getIndex(),request.getSize());//webSite 未使用
             response.setTotalItemNum(shopCatVO.getTotalItemNum());
             response.setCats(shopCatVO.getCats());
             response.setSuccess(true);

@@ -63,7 +63,7 @@ public class AppGoodsSearchAction {
         if (request.getIndex() == null) {
             request.setIndex(1);
         }
-        if (request.getSize() == null) {
+        if (request.getSize() == null || request.getSize() > 30) {
             request.setSize(30);
         }
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));

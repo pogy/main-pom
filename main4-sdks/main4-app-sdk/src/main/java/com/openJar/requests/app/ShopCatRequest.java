@@ -17,6 +17,8 @@ public class ShopCatRequest extends Request<ShopCatResponse> {
 	//店铺ID	必须
 	@NotNull(message = "shopId is null")
 	private Long shopId;
+	private Integer index;//页码
+	private Integer size;//页长
 	public String getWebSite(){
 		return webSite;
 	}
@@ -31,6 +33,22 @@ public class ShopCatRequest extends Request<ShopCatResponse> {
 
 	public void setShopId(Long shopId){
 		this.shopId=shopId;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 
 	public String testApiUrl(){

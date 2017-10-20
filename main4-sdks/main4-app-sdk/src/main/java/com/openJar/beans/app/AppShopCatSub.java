@@ -16,8 +16,8 @@ public class AppShopCatSub extends OpenBean implements Serializable {
 	private String scid;
 	//店内类目名
 	private String catName;
-	//商品条数
-	private Long itemNum;
+//	//商品条数
+//	private Long itemNum;
 	public String getScid(){
 		return scid;
 	}
@@ -34,12 +34,12 @@ public class AppShopCatSub extends OpenBean implements Serializable {
 		this.catName=catName;
 	}
 
-	public Long getItemNum(){
-		return itemNum;
-	}
-
-	public void setItemNum(Long itemNum){
-		this.itemNum=itemNum;
-	}
+//	public Long getItemNum(){
+//		return itemNum;
+//	}
+//
+//	public void setItemNum(Long itemNum){
+//		this.itemNum=itemNum;
+//	}
 
 }

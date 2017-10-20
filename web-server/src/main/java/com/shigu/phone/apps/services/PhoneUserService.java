@@ -18,12 +18,15 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.baseservices.BasePhoneUserService;
 import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.enums.LoginFromType;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +60,10 @@ public class PhoneUserService {
     private TaobaoSessionMapMapper taobaoSessionMapMapper;
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private UserBaseService userBaseService;
+
     /**
      * 移动端我的信息
      *
@@ -115,7 +122,7 @@ public class PhoneUserService {
     public ChangePasswordResponse changePassword( ChangePasswordRequest request) {
         ChangePasswordResponse resp = new ChangePasswordResponse();
         try {
-            basePhoneUserService.changePassword(request.getOldPwd(), request.getNewPwd(),request.getUserId(),request.getToken());
+            basePhoneUserService.changePassword(request.getOldPwd(), request.getNewPwd(),request.getUserId());
             resp.setSuccess(true);
         }catch (OpenException e) {
             resp.setException(e);
@@ -146,6 +153,8 @@ public class PhoneUserService {
         RegistResponse resp = new RegistResponse();
         try {
             AppUser appUser = basePhoneUserService.regist(request.getTelephone(), request.getCode(), request.getPassword());
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getTelephone(),LoginFromType.XZ);
+            appUser.setToken(createToken(personalSession.getUserId(),"phone_login_token"));
             resp.setUsers(appUser);
             resp.setSuccess(true);
         } catch (OpenException e) {
@@ -153,6 +162,17 @@ public class PhoneUserService {
             resp.setSuccess(false);
         }
         return resp;
+    }
+
+    public String createToken(Long userId,String key){
+        //token
+        String uuid= TokenUtil.format(userId);
+        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
+        //把token存入redis,设置存活时间30分钟
+        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
+        Jedis jedis = redisIO.getJedis();
+        jedis.setex(key+userId, 1800, inRedisToken);
+        return uuid;
     }
 
     /**

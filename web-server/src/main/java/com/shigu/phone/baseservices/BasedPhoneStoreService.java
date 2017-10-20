@@ -3,26 +3,20 @@ package com.shigu.phone.baseservices;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.openJar.beans.app.AppShopBlock;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.DoStoreCollectRequest;
-import com.openJar.requests.app.ShopSearchRequest;
-import com.openJar.requests.app.StoreCollectRequest;
-import com.openJar.responses.app.DoStoreCollectResponse;
-import com.openJar.responses.app.ShopSearchResponse;
-import com.openJar.responses.app.StoreCollectResponse;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
+import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
 import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.phone.apps.utils.ImgUtils;
@@ -58,9 +52,6 @@ public class BasedPhoneStoreService {
     private CdnService cdnService;
 
     @Autowired
-    private RegisterAndLoginService registerAndLoginService;
-
-    @Autowired
     private StoreSelFromEsService storeSelFromEsService;
 
     @Autowired
@@ -70,7 +61,7 @@ public class BasedPhoneStoreService {
     private MultipleMapper tae_mall_multipleMapper;
 
     @Autowired
-    private RedisIO redisIO;
+    ShiguStoreCollectMapper shiguStoreCollectMapper;
 
     /**
      * 移动端店铺搜索
@@ -115,7 +106,7 @@ public class BasedPhoneStoreService {
         StoreCollectVO storeCollectVO = new StoreCollectVO();
         ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(userId, webSite, index, size);
         if (shopCollectVOShiguPager.getTotalCount() == 0) {
-           return storeCollectVO;//收藏夹无商品
+           return null;//收藏夹无商品
         }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
@@ -178,5 +169,33 @@ public class BasedPhoneStoreService {
         ScStoreBO bo = new ScStoreBO();
         bo.setStore_id(shopId);
         cdnService.addShopCollect(userId, bo);
+    }
+
+    public Long hasCollected(Long storeId, Long userId) throws OpenException {
+        ShiguStoreCollect shiguStoreCollect = new ShiguStoreCollect();
+        shiguStoreCollect.setStoreId(storeId);
+        shiguStoreCollect.setUserId(userId);
+        shiguStoreCollect = shiguStoreCollectMapper.selectOne(shiguStoreCollect);
+        if (shiguStoreCollect == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("该档口未被收藏[storeId="+storeId+"]");
+            throw openException;
+        }
+        return shiguStoreCollect.getStoreCollectId();
+    }
+
+    public ShiguStoreCollect collectStore(Long shopId, Long userId) throws OpenException {
+        try {
+            addShopCollection(shopId,userId);
+        } catch (ShopCollectionException e) {
+           OpenException openException = new OpenException();
+           openException.setErrMsg(e.getMessage());
+           throw openException;
+        }
+
+        ShiguStoreCollect shiguStoreCollect = new ShiguStoreCollect();
+        shiguStoreCollect.setStoreId(shopId);
+        shiguStoreCollect.setUserId(userId);
+        return shiguStoreCollectMapper.selectOne(shiguStoreCollect);
     }
 }

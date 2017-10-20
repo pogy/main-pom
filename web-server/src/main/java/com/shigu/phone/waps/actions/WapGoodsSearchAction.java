@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapGoodsSearchAction {
 
     @Autowired
@@ -47,7 +47,6 @@ public class WapGoodsSearchAction {
     @ResponseBody
     public JSONObject queryGoodsList(ItemSearchBo bo) {
 
-        ItemSearchResponse response = new ItemSearchResponse();
         List<Integer> types = Arrays.asList(1,2,3);
         if (!types.contains(bo.getType())){
             return JsonResponseUtil.error("参数错误");
@@ -96,15 +95,17 @@ public class WapGoodsSearchAction {
         searchBO.setRows(bo.getSize());
 //        searchBO.setTotalPage();
 
-
-
-
-        ItemSearchVO ItemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("hasNext",ItemSearchVo.getHasNext());
-        jsonObject.put("total",ItemSearchVo.getTotal());
-        jsonObject.put("tems",ItemSearchVo.getItems());
-        return jsonObject;
+        ItemSearchVO itemSearchVo = null;
+        try {
+            itemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
+            return JsonResponseUtil
+                        .success()
+                        .element("hasNext",itemSearchVo.getHasNext())
+                        .element("total",itemSearchVo.getTotal())
+                        .element("tems",itemSearchVo.getItems());
+        } catch (Exception e) {
+           return JsonResponseUtil.error(e.getMessage());
+        }
     }
 
     /**
@@ -134,12 +135,28 @@ public class WapGoodsSearchAction {
     @RequestMapping("queryGoodsData")
     @ResponseBody
     public JSONObject queryGoodsData(HttpSession session, OneItemBo oneItemBo) throws CdnException, IOException, TemplateException {
-        if (oneItemBo.getWebSite() == null) {
-            oneItemBo.setWebSite("hz");
-        }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         OneItemVO oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps.getUserId());
-        return JsonResponseUtil.success().element("spreads",oneItemVO);
+        if (oneItemVO == null) {
+            return JsonResponseUtil.error("未查询到数据");
+        }
+        return JsonResponseUtil
+                    .success()
+                    .element("title",oneItemVO.getTitle())
+                    .element("goodsId",oneItemVO.getGoodsId())
+                    .element("imgSrcs",oneItemVO.getImgSrcs())
+                    .element("goodsNo",oneItemVO.getGoodsNo())
+                    .element("createTime",oneItemVO.getCreateTime())
+                    .element("goodsLicenses",oneItemVO.getGoodsLicenses())
+                    .element("price",oneItemVO.getPrice())
+                    .element("storeId",oneItemVO.getStoreId())
+                    .element("market",oneItemVO.getMarket())
+                    .element("storeNum",oneItemVO.getStoreNum())
+                    .element("starNum",oneItemVO.getStarNum())
+                    .element("colors",oneItemVO.getColors())
+                    .element("size",oneItemVO.getSize())
+                    .element("shopHeadUrl",oneItemVO.getShopHeadUrl())
+                    .element("itemKvs",oneItemVO.getItemKvs());
     }
 
 }

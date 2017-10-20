@@ -61,6 +61,12 @@ public class AppStoreAction {
         if(result.hasErrors()){
             return WrapperUtil.wrapperOpenException(result.getAllErrors().get(0).getDefaultMessage(),response);
         }
+        if (request.getIndex() == null) {
+            request.setIndex(1);
+        }
+        if (request.getSize() == null || request.getSize() > 30) {
+            request.setSize(30);
+        }
         return JSONObject.fromObject(appStoreService.selShopCat(request));
     }
 
@@ -101,6 +107,17 @@ public class AppStoreAction {
     }
 
     /**
+     * 取消收藏店铺
+     * @param request
+     * @return
+     */
+    @RequestMapping("delStoreCollect")
+    @ResponseBody
+    public JSONObject delStoreCollect(@Valid DelStoreCollectRequest request, BindingResult bindingResult)  {
+        return JSONObject.fromObject(phoneStoreService.delStoreCollect(request));
+    }
+
+    /**
      * 查询收藏的档口
      * @param request
      * @param bindingResult
@@ -115,7 +132,7 @@ public class AppStoreAction {
         if (request.getIndex() == null) {
             request.setIndex(1);
         }
-        if (request.getSize() == null) {
+        if (request.getSize() == null || request.getSize() > 30) {
             request.setSize(30);
         }
         return JSONObject.fromObject(phoneStoreService.storeCollect(request));

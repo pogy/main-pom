@@ -45,6 +45,7 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.RedomUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -88,13 +89,20 @@ public class WapPhoneUserService {
      * 移动端登录
      */
     public AppUser login( String userName,String password,Integer phoneType,String remoteAddr) throws OpenException {
-        return basePhoneUserService.login(userName, password, phoneType, remoteAddr);
+       return basePhoneUserService.login(userName, password, phoneType, remoteAddr);
     }
 
+
+    public AppUser msgCodeLogin( String userName,String password,String remoteAddr) throws OpenException {
+        return basePhoneUserService.msgCodeLogin(userName,password,remoteAddr);
+    }
+
+
+
     //第三方登录
-   /* public String  ortherLogin(Integer type,String nick,String key ) {
-        return basePhoneUserService.otherLogin(type,nick,key);
-    }*/
+    public String  ortherLogin(Integer type,String nick,String key ) {
+        return basePhoneUserService.ortherLogin(type,nick,key);
+    }
 
     /**
      * 得到手机验证码
@@ -104,12 +112,12 @@ public class WapPhoneUserService {
     }
 
     /**
-     * 移动端修改密码
+     * 修改密码
      *
      * @return
      */
-    public void changePassword( String oldPwd,String newPwd,Long userId,String token) throws OpenException {
-        basePhoneUserService.changePassword(oldPwd,newPwd,userId,token);
+    public void changePassword( String oldPwd,String newPwd,Long userId) throws OpenException {
+        basePhoneUserService.changePassword(oldPwd,newPwd,userId);
     }
 
     //忘记密码
@@ -141,6 +149,10 @@ public class WapPhoneUserService {
         basePhoneUserService.imgUpload(userInfoUpdate);
     }
 
+    public UserInfo selUserInfo(Long userId){
+        return basePhoneUserService.selUserInfo(userId);
+    }
+
     /**
      * 获取 OSS 临时授权
      * @return
@@ -149,4 +161,11 @@ public class WapPhoneUserService {
        return basePhoneUserService.createPostSignInfo();
     }
 
+    /**
+     * 是否需要绑定手机
+     * @param userId
+     */
+    public boolean needBindTelephone(Long userId) {
+        return basePhoneUserService.needBindTelephone(userId);
+    }
 }

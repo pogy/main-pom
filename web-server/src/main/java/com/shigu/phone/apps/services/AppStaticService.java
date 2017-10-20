@@ -44,6 +44,14 @@ public class AppStaticService {
         response.setSuccess(true);
         return response;
     }
+
+    public List<AppCatGroup>  selCat(String webSite, Integer type){
+        return baseStaticService.selCat(webSite,type);
+    }
+
+    public List<AppSearchNav> searchNav(Integer type, Long sid, String webSite){
+        return baseStaticService.searchNav(type,sid,webSite);
+    }
     public SearchNavResponse getSearchNav(SearchNavRequest request){
         SearchNavResponse response=new SearchNavResponse();
         OpenException openException = new OpenException();

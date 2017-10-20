@@ -283,13 +283,8 @@ public class BasePhoneUserService {
      *
      * @return
      */
-    public void changePassword( String oldPwd,String newPwd,Long userId,String  token) throws OpenException {
+    public void changePassword( String oldPwd,String newPwd,Long userId) throws OpenException {
         OpenException openException=new OpenException();
-        if (StringUtil.isNull(token)){
-            openException.setErrMsg("亲,您还未登录,请先登录");
-            throw openException;
-        }
-
         //用户验证不通过或原密码输入不正确
         if (!EncryptUtil.encrypt(oldPwd).equals(userBaseService.selUserPwdByUserId(userId))) {
             openException.setErrMsg("老密码错误");
@@ -432,10 +427,60 @@ public class BasePhoneUserService {
         }
     }
 
-    /**
-     * 获取 OSS 临时授权
-     * @return
-     */
+    public UserInfo selUserInfo(Long userId){
+        return userBaseService.selUserInfo(userId);
+    }
+
+
+    public AppUser msgCodeLogin( String userName,String password,String remoteAddr) throws OpenException {
+        AppUser appUser = new AppUser();
+        OpenException openException = new OpenException();
+        //得到redis存的验证码
+        String verify = redisIO.get("phone_login_type_msg_" + userName);
+        if (StringUtil.isNull(verify)) {
+            openException.setErrMsg("亲,您还没有发送验证码,请先发送验证码");
+            throw openException;
+        }
+        if (!verify.equals(password)) {
+            openException.setErrMsg("手机验证码错误");
+            throw openException;
+        } else {
+            Subject currentUser = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                    userName, null, false, remoteAddr, "", UserType.MEMBER);
+            //星座用户登陆
+            token.setLoginFromType(LoginFromType.PHONE);
+            token.setRememberMe(true);
+            try {
+                currentUser.login(token);
+                currentUser.hasRole(RoleEnum.STORE.getValue());
+                //返回需要数据
+                PersonalSession personalSession = userBaseService.selUserForSessionByUserName(userName, LoginFromType.XZ);
+
+//                        appUser.setUserId(personalSession.getUserId());
+                String headUrl = personalSession.getHeadUrl();
+                appUser.setImgsrc(headUrl);
+                appUser.setUserNick(personalSession.getUserNick());
+                //是否是商户
+                if (SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())) {
+                    appUser.setImSeller(true);
+                } else {
+                    appUser.setImSeller(false);
+                }
+                return appUser;
+            } catch (AuthenticationException e) {
+                //登陆失败
+                token.clear();
+                openException.setErrMsg("手机号或验证码错误");
+                throw openException;
+            }
+        }
+    }
+
+        /**
+         * 获取 OSS 临时授权
+         * @return
+         */
     public CreatePostSignInfoVO createPostSignInfo() throws OpenException {
         CreatePostSignInfoVO createPostSignInfoVO = new CreatePostSignInfoVO();
         try {
@@ -455,4 +500,24 @@ public class BasePhoneUserService {
         }
     }
 
+    /**
+     * 是否需要绑定手机
+     * @param userId
+     */
+    public boolean needBindTelephone(Long userId) {
+        //查询是否绑定手机号
+        MemberLicenseExample memberLicenseExample = new MemberLicenseExample();
+        memberLicenseExample.createCriteria().andUserIdEqualTo(userId).andLicenseTypeEqualTo(4);
+        List<MemberLicense> memberLicensesList = memberLicenseMapper.selectByExample(memberLicenseExample);
+        //如果为空,说明用户没有绑定手机号
+        if (memberLicensesList == null) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public String ortherLogin(Integer type, String nick, String key) {
+        return null;
+    }
 }

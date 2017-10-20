@@ -1,12 +1,24 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
-import com.openJar.responses.app.BindUserResponse;
+import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
+import com.shigu.component.shiro.enums.RoleEnum;
+import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.phone.apps.services.PhoneUserService;
+import com.shigu.main4.ucenter.vo.UserInfo;
+import com.shigu.phone.waps.service.WapPhoneUserService;
+import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.PhoneVerify;
+import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.RedomUtil;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,43 +31,85 @@ import javax.servlet.http.HttpSession;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapUserAction {
     @Autowired
-    private PhoneUserService phoneUserService;
-    @Autowired
-    private RedisIO redisIO;
+    private WapPhoneUserService wapPhoneUserService;
+
     /**
-     * 登陆
-     * @param servletRequest
-     * @param userName
+     * 账号密码登录
      * @param pwd
-     * @param type
      * @return
      */
-    @RequestMapping("login")
+    @RequestMapping("accountLogin")
     @ResponseBody
-    public JSONObject login(HttpServletRequest servletRequest,String userName ,String pwd,Integer type) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setPassword(pwd);
-        loginRequest.setType(type);
-        loginRequest.setUserName(userName);
-        return JSONObject.fromObject(phoneUserService.login(loginRequest,servletRequest));
+    public JSONObject accountLogin(HttpServletRequest request,String user ,String pwd) {
+        Subject currentUser = SecurityUtils.getSubject();
+        CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                user, pwd, false, request.getRemoteAddr(), "", UserType.MEMBER);
+        //星座用户登陆
+        token.setLoginFromType(LoginFromType.XZ);
+        token.setRememberMe(true);
+        try {
+            currentUser.login(token);
+            currentUser.hasRole(RoleEnum.STORE.getValue());
+            return JsonResponseUtil.success().element("success",true);
+        } catch (AuthenticationException e) {
+            //登陆失败
+            token.clear();
+            return JsonResponseUtil.success().element("success",false).element("msg","账号或密码错误");
+        }
+    }
+
+    /**
+     * 账号密码登录
+     * @param pwd
+     * @return
+     */
+    @RequestMapping("msgCodeLogin")
+    @ResponseBody
+    public JSONObject msgCodeLogin(HttpServletRequest request,String user ,String pwd) {
+        try {
+            wapPhoneUserService.msgCodeLogin(user, pwd, request.getRemoteAddr());
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.success().element("success",false).element("msg",e.getErrMsg());
+        }
+    }
+
+    /**
+     * 获取手机验证码
+     * @return
+     */
+    @RequestMapping("getPhoneMsgCode")
+    @ResponseBody
+    public JSONObject getPhoneMsgCode(Long telephone,Integer type) {
+        try {
+            wapPhoneUserService.getPhoneMsg(String.valueOf(telephone),type);
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg())
+                                    .element("success",false)
+                                    .element("msg",e.getErrMsg());
+        }
+
     }
 
     /**
      * 注册
      * @return
      */
-    @RequestMapping("regist")
+    @RequestMapping("userRegist")
     @ResponseBody
-    public JSONObject regist( String telephone,String code,String pwd) {
-
-        RegistRequest registRequest = new RegistRequest();
-        registRequest.setCode(code);
-        registRequest.setPassword(pwd);
-        registRequest.setTelephone(telephone);
-        return JSONObject.fromObject(phoneUserService.regist(registRequest));
+    public JSONObject userRegist( String telephone,String msgCode,String pwd){
+        try {
+            wapPhoneUserService.regist(telephone,msgCode,pwd);
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg())
+                    .element("success",false)
+                    .element("msg",e.getErrMsg());
+        }
     }
 
     @RequestMapping("aboutMe")
@@ -64,20 +118,22 @@ public class WapUserAction {
         AboutMeRequest request = new AboutMeRequest();
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         request.setUserId(ps.getUserId());
-        return JSONObject.fromObject(phoneUserService.aboutMe(request));
+        return null;
     }
 
     @RequestMapping("changePassword")
     @ResponseBody
     public JSONObject ChangePassword(HttpSession session,String newPwd,String oldPwd) {
-        ChangePasswordRequest request = new ChangePasswordRequest();
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String token = redisIO.get("phone_login_token" + ps.getUserId());
-        request.setNewPwd(newPwd);
-        request.setOldPwd(oldPwd);
-        request.setToken(token);
-        request.setUserId(ps.getUserId());
-        return JSONObject.fromObject(phoneUserService.changePassword(request));
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+        }
+        try {
+            wapPhoneUserService.changePassword(oldPwd,newPwd,ps.getUserId());
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg",e.getErrMsg());
+        }
     }
 
 
@@ -85,47 +141,87 @@ public class WapUserAction {
 
     @RequestMapping("forgetPassword")
     @ResponseBody
-    public JSONObject ForgetPassword(String msgCode,String password,String telephone) {
-        ForgetPasswordRequest request = new ForgetPasswordRequest();
-        request.setMsgCode(msgCode);
-        request.setNewPassword(password);
-        request.setTelephone(telephone);
-        return JSONObject.fromObject(phoneUserService.forgetPassword(request));
+    public JSONObject ForgetPassword(String msgCode,String newPwd,String telephone) {
+        try {
+            wapPhoneUserService.forgetPassword(telephone,msgCode,newPwd);
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg())
+                    .element("success",false)
+                    .element("msg",e.getErrMsg());
+        }
     }
 
-    @RequestMapping("bindUser")
+    @RequestMapping("needBindTelephone")
     @ResponseBody
-    public JSONObject appBindUser( HttpServletRequest httpRequest,String code,String telephone,String tempId,String type,String userNick) {
-        BindUserRequest request = new BindUserRequest();
-        request.setCode(code);
-        request.setTelephone(telephone);
-        request.setTempId(tempId);
-        request.setType(type);
-        request.setUserNick(userNick);
-        String remoteAddr = httpRequest.getRemoteAddr();
-        BindUserResponse bindUserResponse = phoneUserService.bindUser(request, remoteAddr);
-        return JSONObject.fromObject(bindUserResponse);
+    public JSONObject needBindTelephone(HttpSession session ) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+        }
+        boolean needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
+        return JsonResponseUtil.success().element("success",true)
+                                         .element("type",needBindTelephone?1:0);
     }
 
-    //得到验证码
-    @RequestMapping("getPhoneMsg")
+    @RequestMapping("bindTelephone")
     @ResponseBody
-    public JSONObject appGetPhoneMsg(String telephone,Integer type,HttpServletRequest httpRequest) {
-        GetPhoneMsgRequest request = new GetPhoneMsgRequest();
-        request.setTelephone(telephone);
-        request.setType(type);
-
-        return JSONObject.fromObject(phoneUserService.getPhoneMsg(request));
+    public JSONObject bindTelephone(Long telephone) {
+        return getPhoneMsgCode(telephone,4);
     }
 
-    @RequestMapping("imgUpload")
+    @RequestMapping("getUserLoginState")
     @ResponseBody
-    public JSONObject upToWx(HttpSession session,String file) {
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ImgUploadRequest request = new ImgUploadRequest();
-        request.setFile(file);
-        request.setUserId(ps.getUserId());
-        return JSONObject.fromObject(phoneUserService.imgUpload(request));
+    public JSONObject getUserLoginState(HttpSession session,Long telephone) {
+        try {
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if (ps.getUserId() == null) {
+                return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+            }
+            //是否是商户
+            Subject subject = SecurityUtils.getSubject();
+            boolean isStore = subject.hasRole(RoleEnum.STORE.getValue()) || subject.hasRole(RoleEnum.MORE_STORE.getValue());
+            return JsonResponseUtil.success().element("success",true)
+                                             .element("userId",ps.getUserId())
+                                             .element("userType",isStore?2:1);
+        } catch (Exception e) {
+            return JsonResponseUtil.success().element("success",false)
+                    .element("msg","查询失败");
+        }
+    }
+
+    @RequestMapping("loginOut")
+    @ResponseBody
+    public JSONObject loginOut(HttpSession session,String userId) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+        }
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        return JsonResponseUtil.success().element("success",true);
+    }
+
+    @RequestMapping("getUserData")
+    @ResponseBody
+    public JSONObject getUserData(HttpSession session,String userId) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId is null");
+        }
+        UserInfo userInfo = wapPhoneUserService.selUserInfo(ps.getUserId());
+        if (userInfo == null) {
+            return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userInfo is null");
+        }
+        return JsonResponseUtil.success().element("success",true)
+                                         .element("headUrl",userInfo.getHeadUrl())
+                                         .element("userNick",userInfo.getUserNick())
+                                         .element("phoneBind",userInfo.getTelephone());
+    }
+
+    @RequestMapping("index")
+    public String index() {
+       return "waps/index";
     }
 
 

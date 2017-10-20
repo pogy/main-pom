@@ -59,7 +59,7 @@ public class WapPhoneGoodsSearchService {
      * 移动端商品搜索
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo,String orderBy ) {
+    public ItemSearchVO itemSearch(SearchBO bo,String orderBy ) throws OpenException {
         return basePhoneGoodsSearchService.itemSearch(bo, orderBy);
     }
 

@@ -32,8 +32,8 @@ public class WapStoreService {
         return baseStoreService.selMarketData(mid,webSite);
     }
 
-    public List<AppShopCat> selShopCat(String webSite,Long shopId) throws OpenException {
-        ShopCatVO shopCatVO = baseStoreService.selShopCat(shopId);
+    public List<AppShopCat> selShopCat(String webSite,Long shopId,Integer index,Integer size) throws OpenException {
+        ShopCatVO shopCatVO = baseStoreService.selShopCat(shopId,index,size);
         if (shopCatVO == null) {
             return null;
         }
