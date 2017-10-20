@@ -3,9 +3,12 @@ package com.shigu.admin.actions;
 import com.shigu.admin.bo.TsysPermissionBO;
 import com.shigu.admin.services.TsysPermissionService;
 import com.shigu.admin.vo.TsysPermissionVO;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,19 +39,21 @@ public class TsysPermissionAction{
 
 
 	/**
+	 * ====================================================================================
+	 * @方法名： listByPage
+	 * @user gzy 2017/10/13 14:37
+	 * @功能：权限列表
+	 * @param: [bo, model]
+	 * @return: java.lang.String
+	 * @exception:
+	 * ====================================================================================
 	 *
-	 *=========================================================
-	 *Mr Gzy自动生成
-	 *@方法名：
-	 *@功能：
-	 *@return:
-	 *=========================================================
 	 */
 	@RequestMapping(value={"admin/permissionListByPage"},method = {RequestMethod.GET,RequestMethod.POST})
 	public String listByPage(TsysPermissionBO bo , Model model)throws ExecutionException, InterruptedException{
 
-		//Session session = SecurityUtils.getSubject().getSession();
-		//  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+		Session session = SecurityUtils.getSubject().getSession();
+		String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
 
 		List<TsysPermissionVO> list = tsysPermissionService.listByPage(bo);
 
@@ -56,7 +61,7 @@ public class TsysPermissionAction{
 		model.addAttribute("list", list);
 		model.addAttribute("query", bo);
 		model.addAttribute("pageOption", pageOption);
-		//model.addAttribute("userName", "gzy");
+		model.addAttribute("userName", auth);
 		return "admin/permissionListByPage";
 
 	}

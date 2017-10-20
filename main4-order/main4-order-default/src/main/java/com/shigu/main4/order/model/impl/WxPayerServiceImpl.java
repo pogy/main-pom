@@ -16,6 +16,7 @@ import com.shigu.main4.order.vo.PayApplyVO;
 import com.tencent.WXPay;
 import com.tencent.business.RefundBusiness;
 import com.tencent.common.Configure;
+import com.tencent.common.Signature;
 import com.tencent.protocol.refund_protocol.RefundReqData;
 import com.tencent.protocol.refund_protocol.RefundResData;
 import com.tencent.protocol.unify_protocol.UnifyPayReqData;
@@ -173,7 +174,18 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         }
         if (!resultListener.isSuccess()){
             if("NOTENOUGH".equals(resultListener.getErrCode())){//未结算里面余额不足
+                reqData = new RefundReqData(
+                        orderPay.getOuterPid(),
+                        wxOutTradeNo(orderPay.getApplyId()),
+                        null,
+                        "RF" + orderPay.getOuterPid() + orderPay.getRefundMoney(),
+                        orderPay.getMoney().intValue(),
+                        refundFee,
+                        orderPay.getOuterPuser(),
+                        null
+                );
                 reqData.setRefund_account("REFUND_SOURCE_RECHARGE_FUNDS");
+                reqData.setSign(Signature.getSign(reqData.toMap()));
                 ResultListener resultListenerCache = new ResultListener();
                 try {
                     WXPay.doRefundBusiness(reqData, resultListenerCache);

@@ -6,7 +6,6 @@ $(function(){
             $(this).prop("class","current");
         }
     });
-
 });
 
 //选择具体的用户并查询出选中的角色
@@ -63,6 +62,7 @@ function saveRoleAndPermission(){
         function(data){
             if(data.result=="success"){
                 $$.alert(data.msg);
+                location.reload();
             }else{
                 $$.alert(data.msg);
             }

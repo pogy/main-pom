@@ -3,6 +3,8 @@ package com.shigu.admin.actions;
 import com.shigu.admin.bo.TsysRoleBO;
 import com.shigu.admin.services.TsysRoleService;
 import com.shigu.admin.vo.TsysRoleVO;
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,19 +34,29 @@ import java.util.concurrent.ExecutionException;
 public class TsysRoleAction {
     @Autowired
     TsysRoleService tsysRoleService;
-
+    /**
+     * ====================================================================================
+     * @方法名： listByPage
+     * @user gzy 2017/10/13 14:37
+     * @功能：角色列表
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/roleListByPage")
     public String listByPage(TsysRoleBO bo, Model model) throws ExecutionException, InterruptedException {
 
-        //Session session = SecurityUtils.getSubject().getSession();
-        //  AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<TsysRoleVO> allOrders = tsysRoleService.listByPage(bo);
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("orders", allOrders);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
-        model.addAttribute("userName", "gzy");
+        model.addAttribute("userName", auth);
         return "admin/roleListByPage";
     }
 
