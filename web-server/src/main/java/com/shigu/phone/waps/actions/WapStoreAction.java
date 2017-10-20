@@ -25,7 +25,7 @@ import java.util.List;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapStoreAction {
     @Autowired
     private WapStoreService wapStoreService;
@@ -61,7 +61,7 @@ public class WapStoreAction {
         if (index == null) {
             index = 1;
         }
-        if (size == null) {
+        if (size == null || size > 30) {
             size = 30;
         }
         try {
@@ -116,6 +116,12 @@ public class WapStoreAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("userId si null").element("success",false).element("msg","userId si null");
+        }
+        if (index == null) {
+            index = 1;
+        }
+        if (size == null || size > 30) {//最大页长30
+            size = 30;
         }
         StoreCollectVO storeCollectVO = wapPhoneStoreService.storeCollect(webSite, ps.getUserId(), index, size);
         if (storeCollectVO == null) {

@@ -2,8 +2,14 @@ package com.shigu.phone.baseservices;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.openJar.actions.OpenAction;
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.beans.app.AppItemKv;
+import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguOuterMarket;
+import com.opentae.data.mall.examples.ShiguOuterMarketExample;
+import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -61,12 +67,24 @@ public class BasePhoneGoodsSearchService {
     @Autowired
     private OssIO ossIO;
 
+    @Autowired
+    private ShiguOuterMarketMapper shiguOuterMarketMapper;
+
     /**
      * 移动端商品搜索
      *
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo, String orderBy) {
+    public ItemSearchVO itemSearch(SearchBO bo, String orderBy) throws OpenException {
+        //转mid
+        ShiguOuterMarket shiguOuterMarket = shiguOuterMarketMapper.selectByPrimaryKey(bo.getMid());
+        if (shiguOuterMarket == null || shiguOuterMarket.getMarketId() == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("未查询到市场信息");
+            throw openException;
+        }
+        bo.setMid(shiguOuterMarket.getMarketId());
+
         ItemSearchVO vo = new ItemSearchVO();
         ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(orderBy), false).getSearchData();
         vo.setTotal(result.getTotalCount());
@@ -83,7 +101,16 @@ public class BasePhoneGoodsSearchService {
      *
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo, String orderBy,Long shopId){
+    public ItemSearchVO itemSearch(SearchBO bo, String orderBy,Long shopId) throws OpenException {
+        //转mid
+        ShiguOuterMarket shiguOuterMarket = shiguOuterMarketMapper.selectByPrimaryKey(bo.getMid());
+        if (shiguOuterMarket == null || shiguOuterMarket.getMarketId() == null) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("未查询到市场信息");
+            throw openException;
+        }
+        bo.setMid(shiguOuterMarket.getMarketId());
+
         if("xp".equals(orderBy)){
             orderBy="time_down";
         }

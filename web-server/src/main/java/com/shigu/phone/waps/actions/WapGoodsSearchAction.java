@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapGoodsSearchAction {
 
     @Autowired
@@ -95,15 +95,17 @@ public class WapGoodsSearchAction {
         searchBO.setRows(bo.getSize());
 //        searchBO.setTotalPage();
 
-
-
-
-        ItemSearchVO ItemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("hasNext",ItemSearchVo.getHasNext());
-        jsonObject.put("total",ItemSearchVo.getTotal());
-        jsonObject.put("tems",ItemSearchVo.getItems());
-        return jsonObject;
+        ItemSearchVO itemSearchVo = null;
+        try {
+            itemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
+            return JsonResponseUtil
+                        .success()
+                        .element("hasNext",itemSearchVo.getHasNext())
+                        .element("total",itemSearchVo.getTotal())
+                        .element("tems",itemSearchVo.getItems());
+        } catch (Exception e) {
+           return JsonResponseUtil.error(e.getMessage());
+        }
     }
 
     /**

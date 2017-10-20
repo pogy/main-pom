@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.*;
 
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapStaticAction {
     private static final Set<String> CATIDS = ImmutableSet.of("16", "30","50011740","50006843");
     private static final Set<String> REMOVEIDS=ImmutableSet.of("50000852","50008897","1629","50001748","50005867","50011130");

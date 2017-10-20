@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapUserAction {
     @Autowired
     private WapPhoneUserService wapPhoneUserService;
@@ -223,9 +223,9 @@ public class WapUserAction {
                                          .element("phoneBind",userInfo.getTelephone());
     }
 
-    @RequestMapping("appLogin")
+    @RequestMapping("index")
     public String index() {
-       return "waps/appLogin";
+       return "waps/index";
     }
 
 

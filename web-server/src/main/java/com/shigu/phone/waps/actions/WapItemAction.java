@@ -27,7 +27,7 @@ import java.util.List;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap")
+@RequestMapping("/wap/datas/")
 public class WapItemAction {
     @Autowired
     private WapItemService wapItemService;
@@ -42,6 +42,12 @@ public class WapItemAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("userId si null");
+        }
+        if (size == null) {
+            size = 1;
+        }
+        if (index == null || index > 30) {
+            index = 30;
         }
         try {
             BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size);

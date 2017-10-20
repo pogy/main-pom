@@ -75,7 +75,7 @@ public class PhoneGoodsSearchService {
             bo.setKeyword(request.getKeyword());
             bo.setMid(request.getMarketId());
             bo.setCid(request.getCid());
-            bo.setPid(request.getCid());
+//            bo.setPid(request.getCid());
             bo.setShopId(request.getStoreId());
             if (request.getType() != null && request.getType() == 2) {
                 //商品库搜索顺序
@@ -110,7 +110,7 @@ public class PhoneGoodsSearchService {
             resp.setItems(itemSearchVO.getItems());
             resp.setTotal(itemSearchVO.getTotal());
             return resp;
-        } catch (ParseException e) {
+        } catch (ParseException|OpenException e) {
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());
             resp.setException(openException);
