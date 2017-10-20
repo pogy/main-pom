@@ -4,10 +4,13 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.opentae.data.daifa.beans.DaifaCallExpress;
 import com.opentae.data.daifa.beans.DaifaPostCustomer;
 import com.opentae.data.daifa.beans.DaifaSeller;
+import com.opentae.data.daifa.beans.DaifaWaitSend;
 import com.opentae.data.daifa.examples.DaifaPostCustomerExample;
+import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.DaifaCallExpressMapper;
 import com.opentae.data.daifa.interfaces.DaifaPostCustomerMapper;
 import com.opentae.data.daifa.interfaces.DaifaSellerMapper;
+import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.beans.*;
 import com.shigu.main4.daifa.bo.OrderExpressBO;
@@ -49,6 +52,9 @@ public class ExpressModelImpl implements ExpressModel {
 
     @Resource(name = "tae_daifa_daifaSellerMapper")
     DaifaSellerMapper daifaSellerMapper;
+
+    @Resource(name = "tae_daifa_daifaWaitSendMapper")
+    DaifaWaitSendMapper daifaWaitSendMapper;
 
     @Autowired
     private KdConfig kdConfig;
@@ -154,6 +160,13 @@ public class ExpressModelImpl implements ExpressModel {
                     dce1.setSellerId (sellerId);
                     dce1.setJsonData (qvo.getJsonData ());
                     daifaCallExpressMapper.insertSelective (dce1);
+
+                    DaifaWaitSend send1=new DaifaWaitSend ();
+                    send1.setDfTradeId (bo.getTid ());
+                    send1.setExpressCode (qvo.getPostCode ());
+                    DaifaWaitSendExample snedExample=new DaifaWaitSendExample();
+                    snedExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
+                    daifaWaitSendMapper.updateByExampleSelective (send1,snedExample);
                     //设置VO
                     vo=new ExpressVO ();
                     vo.setTid (dce1.getDfTradeId ());
