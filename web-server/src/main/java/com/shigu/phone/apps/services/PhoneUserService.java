@@ -96,85 +96,6 @@ public class PhoneUserService {
         return resp;
     }
 
-    //第三方登录
-
-    public Object otherLogin( OtherLoginRequest request ) {
-        OtherLoginResponse resp=new OtherLoginResponse();
-        OpenException openException=new OpenException();
-        AppUser appUser=new AppUser();
-        if(request.getType()==1){
-            //1:淘宝
-            if(StringUtil.isNull(request.getNick())){
-                openException.setErrMsg("淘宝登录,缺少nick参数");
-                resp.setException(openException);
-                resp.setSuccess(false);
-            }else {
-                //传入参数完整
-                MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
-                memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andSubUserNameEqualTo(request.getNick());
-
-                List<MemberUserSub> memberUserSubs = memberUserSubMapper.selectByExample(memberUserSubExample);
-                if(memberUserSubs.size()>0){      //正确
-                    //用户附表有用户数据
-                    MemberUserSub mus=memberUserSubs.get(0);
-                    MemberUser memberUser=memberUserMapper.selectFieldsByPrimaryKey(mus.getUserId(),
-                            com.opentae.core.mybatis.utils.FieldUtil.codeFields("user_id,user_nick,portrait_url"));
-                    if(memberUser==null){//数据异常
-                        logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
-                        return null;
-                    }
-//                    appUser.setUserId(memberUser.getUserId());
-                    //用户头像封装
-                    String url = memberUser.getPortraitUrl();
-                    if(url != null && url.startsWith("/SGimg/")){
-                        url="//sgimage.571xz.com/new_image_site"+url;
-                    }
-                    appUser.setImgsrc(url);
-                    //是否是商户
-                    if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
-                        appUser.setImSeller(true);
-                    }else{
-                        appUser.setImSeller(false);
-                    }
-
-                    appUser.setToken(createToken(memberUser.getUserId(),"phone_login_token"));
-                    appUser.setUserNick(memberUser.getUserNick());
-                    resp.setType(1);
-                    resp.setUsers(appUser);
-                }else{
-                    //没有绑定星座网
-
-                    resp.setType(0);
-                    //根据昵称查询唯一键
-                    TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-                    taobaoSessionMapExample.createCriteria().andNickEqualTo(request.getNick());
-                    List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-                    if(taobaoSessionMaps.size()>0){
-                        resp.setTempId(taobaoSessionMaps.get(0).getUserId()+"");
-                    }
-
-                }
-            }
-        }else if(request.getType()==2){
-            //2:微信
-            if(StringUtil.isNull(request.getKey())){
-                openException.setErrMsg("登录,缺少key参数");
-                resp.setException(openException);
-                resp.setSuccess(false);
-            }else{
-                //传入参数完整
-
-            }
-        }else{
-            openException.setErrMsg("传入类型不对");
-            resp.setException(openException);
-            resp.setSuccess(false);
-        }
-        resp.setUserNick(request.getNick());
-        resp.setSuccess(true);
-        return resp;
-    }
-
 
     /**
      * 得到手机验证码
@@ -250,7 +171,7 @@ public class PhoneUserService {
         //把token存入redis,设置存活时间30分钟
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex(key+userId, 1800, inRedisToken);
+        jedis.setex(key+userId, 604800, inRedisToken);
         return uuid;
     }
 

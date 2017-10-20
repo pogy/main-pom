@@ -30,6 +30,7 @@ import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
+import com.shigu.phone.apps.services.PhoneUserService;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basevo.AboutMeVO;
@@ -70,6 +71,8 @@ public class BasePhoneUserService {
     private static final Logger logger = LoggerFactory.getLogger(BasePhoneUserService.class);
     @Autowired
     private MemberLicenseMapper memberLicenseMapper;
+    @Autowired
+    private PhoneUserService phoneUserService;
     @Autowired
     SendMsgService sendMsgService;
     @Autowired
@@ -150,14 +153,8 @@ public class BasePhoneUserService {
                     String headUrl = personalSession.getHeadUrl();
                     appUser.setImgsrc(headUrl);
                     appUser.setUserNick(personalSession.getUserNick());
-//                    String uuid = UUIDGenerator.getUUID();
-                    String uuid= TokenUtil.format(personalSession.getUserId());
-                    String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                    //把token存入redis,设置存活时间30分钟
-                    // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-                    Jedis jedis = redisIO.getJedis();
-                    jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
-                    appUser.setToken(uuid);
+                    //token
+                    appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
                     //是否是商户
                     if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
                         appUser.setImSeller(true);
@@ -210,13 +207,8 @@ public class BasePhoneUserService {
                         String headUrl = personalSession.getHeadUrl();
                         appUser.setImgsrc(headUrl);
                         appUser.setUserNick(personalSession.getUserNick());
-                        String uuid= TokenUtil.format(personalSession.getUserId());
-                        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                        //把token存入redis,设置存活时间30分钟
-                        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-                        Jedis jedis = redisIO.getJedis();
-                        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
-                        appUser.setToken(uuid);
+                       //获取token
+                        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
                         //是否是商户
                         if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
                             appUser.setImSeller(true);
@@ -248,8 +240,8 @@ public class BasePhoneUserService {
     public String  getPhoneMsg(String telephone,Integer type) throws OpenException {
         OpenException openException=new OpenException();
         String code= RedomUtil.redomNumber(6);
-        //发送短信  TODO 上线记得取消注释
-//        sendMsgService.sendVerificationCode(telephone, code);
+        //发送短信
+        sendMsgService.sendVerificationCode(telephone, code);
         //客户状态
         if(type==1){
             //登录
@@ -355,6 +347,9 @@ public class BasePhoneUserService {
         String headUrl = personalSession.getHeadUrl();
         appUser.setImgsrc(headUrl);
         appUser.setUserNick(personalSession.getUserNick());
+        //token
+        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
+
 
         //imSeller
         ShopSession logshop = personalSession.getLogshop();
@@ -395,15 +390,8 @@ public class BasePhoneUserService {
         bindUserVO.setImgsrc(personalSession.getHeadUrl());
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         bindUserVO.setImSeller(isSeller);
-
         //token
-        String uuid= TokenUtil.format(personalSession.getUserId());
-        String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-        //把token存入redis,设置存活时间30分钟
-        // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-        Jedis jedis = redisIO.getJedis();
-        jedis.setex("phone_login_token" + personalSession.getUserId(), 1800, inRedisToken);
-        bindUserVO.setToken(uuid);
+        bindUserVO.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
         return bindUserVO;
     }
 

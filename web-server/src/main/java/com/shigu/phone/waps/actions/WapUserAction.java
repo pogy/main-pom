@@ -135,11 +135,7 @@ public class WapUserAction {
     }
 
 
-    @RequestMapping("ortherLogin")
-    @ResponseBody
-    public JSONObject ortherLogin(String key,String nick,Integer type) {
-       return null;
-    }
+
 
     @RequestMapping("forgetPassword")
     @ResponseBody
