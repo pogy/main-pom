@@ -3,29 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <title>售后订单 - 星帮后台管理 - 四季星座网</title>
-
-
-
-
-
-<#include "/common/host_config.ftl">
-
-
+    <#include "/common/host_config.ftl">
     <link href="http://style.571xz.com/v2/dfgl/css/afterSaleOrder.css" rel="stylesheet">
-
-
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-
-
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-
-
     <script src="http://style.571xz.com/v2/dfgl/js/afterSaleOrder.js"></script>
-
     <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
-
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -41,14 +25,10 @@
         <input id="menus" type="hidden" value="${menu!}"/>
     </div>
 </div>
-
-
 <div class="mainContent">
     <div class="sideBarBox">
 
     <#include "/common/menu_daifa.ftl">
-
-
     </div>
 <div class="contentBox">
     <div class="printTypeTabs">
@@ -60,8 +40,6 @@
             </li>
         </ul>
     </div>
-
-
     <div class="statistics yahei fc9">
         <ul>
             <li>
@@ -86,8 +64,6 @@
             </li>
         </ul>
     </div>
-
-
     <div class="orderSearch orderSearchBox">
         <ul>
             <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??>
@@ -102,7 +78,6 @@
                     type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间"
                     <#if query.endTime??>value="${query.endTime!}"</#if>></li>
             <li>
-
             <#assign text>{}</#assign>
             <#assign moduledata0=text?eval />
             <#list [moduledata0] as $it>
@@ -167,7 +142,10 @@
 
 
 
-<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"backPostCode","value":"${query.backPostCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}
+    "},{"name":"telephone","value":"${query.telephone!}"},{"name":"backPostCode","value":"${query.backPostCode!}
+    "},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}
+    "},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
     <#if $it.fields??>
@@ -218,7 +196,6 @@
     <td class="leftConBox" colspan="2">
         <span>订单编号：${order.orderId!}</span>
         <span>时间：${order.afterSaleTime!}</span>
-
     </td>
     <td class="buyerInfo" colspan="2">
         <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank"
@@ -391,8 +368,6 @@
 
 
 </#list>
-
-
 </div>
 </div>
 <!--省略end，让浏览器自动添加-->
