@@ -65,7 +65,7 @@ public class GoodsupRecordSimpleService {
     TaobaoSynService taobaoSynService;
 
     /**
-     * 手动下架淘宝商品
+     * 分销商下架淘宝商品
      */
     public void downTbGoods(Long userId, String tbUserNick, String ids) throws JsonErrException {
         if (userId == null || StringUtils.isBlank(tbUserNick)) {
