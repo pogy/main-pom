@@ -50,7 +50,7 @@
               df_order_id
         ) t
         WHERE
-        t.minStatus != 1
+        t.minStatus =2
     </select>
 
     <select id="selectTodayServerFee" resultType="java.lang.String">
