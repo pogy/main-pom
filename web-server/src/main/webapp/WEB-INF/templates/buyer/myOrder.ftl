@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017091401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017101901" rel="stylesheet">
     
 
     
@@ -38,7 +38,8 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017091401"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017101901"></script>
+    
 </head>
 <body>
 
@@ -174,7 +175,7 @@ var webSite = '${webSite!}';
 <div class="header">
     <div class="layout">
         <a href="http://www.571xz.com" class="fl">
-            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width=168 height=28 />
         </a>
         <ul class="fl fs16 yahei clearfix">
             <li><a href="${main_host!}member/index.htm"  >首页</a></li>
@@ -382,6 +383,8 @@ var webSite = '${webSite!}';
 
 
 
+
+
     <div class="orderDetail">
     <div class="listHead clearfix">
         <ul>
@@ -414,12 +417,14 @@ var webSite = '${webSite!}';
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
-    <li class="price yahei">&yen;${childOrder.price!}</li>
+    <li class="price yahei fs14">&yen;${childOrder.price!}</li>
     <li class="num">
-        <p>${childOrder.num!}</p>
+        <p class="fs14">${childOrder.num!}</p>
         <#if childOrder.stockoutNum??>
         <div class="pr stockoutNum">
-            <p class="fcF40"><i class="icon-c-warn"></i>缺货 x${childOrder.stockoutNum!}</p>
+            <p class="fcF40">
+                <#if childOrder.haveGoodsTime??><i class="icon-time"></i></#if>缺货 x${childOrder.stockoutNum!}
+            </p>
             <#if childOrder.haveGoodsTime??>
             <div class="pa haveGoodsTime">
                 ${childOrder.haveGoodsTime!} 有货

@@ -67,6 +67,7 @@ function saveUserAndRole(){
         function(data){
             if(data.result=="success"){
                 $$.alert(data.msg);
+                location.reload();
             }else{
                 $$.alert(data.msg);
             }

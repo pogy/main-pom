@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyright.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyright1.css" rel="stylesheet">
     
 
     
@@ -31,7 +31,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyright.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyright1.js"></script>
 </head>
 <body>
 
@@ -316,7 +316,11 @@ var webSite = '${webSite!}';
 
 
 
-<div class="banner"></div>
+<div class="banner">
+    <div class="layout pr applyBox">
+        <a class="pa applyBtn" href="bqsqIndex.htm"></a>
+    </div>
+</div>
 
 <div class="copyrightList">
     <div class="layout">

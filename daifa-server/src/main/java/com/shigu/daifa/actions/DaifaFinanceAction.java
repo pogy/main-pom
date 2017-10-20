@@ -18,9 +18,20 @@ import java.util.Map;
 public class DaifaFinanceAction {
     @Autowired
     DaifaFinanceService daifaFinanceService;
-
+    /**
+     * ====================================================================================
+     * @方法名： financialStatistic
+     * @user gzy 2017/10/13 13:09
+     * @功能：财务统计
+     * @param: [time, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("daifa/financialStatistic")
     public String financialStatistic(String time, Model model){
+
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
 
@@ -29,6 +40,8 @@ public class DaifaFinanceAction {
         map.put("time",time);
         model.addAttribute("query",map);
         model.addAttribute("orderStatistics",vo);
+        model.addAttribute("userName",auth.getDaifaUserName ());
+        model.addAttribute("menu","financialStatistic.htm");//前台所要的左边菜单
         return  "daifa/financialStatistic";
     }
 }

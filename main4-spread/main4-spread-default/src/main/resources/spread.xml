@@ -31,5 +31,6 @@
     <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.spread.processes.HitDrawChooser" ref="hitDrawChooser" retries="0" timeout="20000"/>
+    <dubbo:service interface="com.shigu.main4.spread.service.TrademarkService" ref="trademarkService" retries="0" timeout="20000"/>
 
 </beans>

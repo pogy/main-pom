@@ -4,7 +4,9 @@
         <li>
             <a  href="adminOrder.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
-
+        <li>
+            <a  href="orderWaitSendList.htm" ><i class="icon-allorders"></i>未发货订单显示</a>
+        </li>
         <li>
             <a href="javascript:;" ><i class="icon-allorders"></i>订单发货错误</a>
             <ul>

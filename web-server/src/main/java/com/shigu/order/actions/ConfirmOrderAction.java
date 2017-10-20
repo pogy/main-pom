@@ -19,6 +19,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -139,7 +140,10 @@ public class ConfirmOrderAction {
     @ResponseBody
     @RequestMapping("collectCgneeJson")
     public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) throws JsonErrException {
-
+        if(StringUtils.isEmpty(buyerAddressItem.getName())||StringUtils.isEmpty(buyerAddressItem.getAddress())
+                ||StringUtils.isEmpty(buyerAddressItem.getPhone())){
+            throw new JsonErrException("地址缺少必要信息");
+        }
         Long userId = null;
         PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (sessionUser != null) {
