@@ -115,5 +115,26 @@
             date_format(t.rt, "%Y%m%d") = ${day}
     </select>
 
-
+    <select id="selectWorkerTakeNums" resultType="com.shigu.daifa.vo.WorkerTakeNumVO">
+        SELECT
+            t1.user_Name `name`,
+            t2.num num
+        FROM
+            daifa_worker t1,
+            (
+                SELECT
+                    daifa_worker_id,
+                    sum(goods_num) num
+                FROM
+                    daifa_ggoods
+                WHERE
+                    take_goods_status = 1
+                AND take_goods_date >= ${day}
+                AND seller_id=${sellerId}
+                GROUP BY
+                    daifa_worker_id
+            ) t2
+        WHERE
+            t1.daifa_worker_id = t2.daifa_worker_id
+    </select>
 </mapper>
