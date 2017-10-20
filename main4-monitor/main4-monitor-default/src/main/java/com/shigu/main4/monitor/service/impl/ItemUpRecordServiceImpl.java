@@ -16,6 +16,7 @@ import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.monitor.enums.RankingPeriodEnum;
@@ -33,6 +34,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
@@ -431,5 +433,170 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             }
         }
         return vos;
+    }
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @param target
+     * @param keyword
+     * @param fromDate
+     * @param toDate
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    @Override
+    @Deprecated
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String target, String keyword, Date fromDate, Date toDate, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+        boleanQueryBuilder.must(query);
+
+        if(!StringUtils.isEmpty(target)){
+            QueryBuilder queryTarget = QueryBuilders.termQuery("flag", target);
+            boleanQueryBuilder.must(queryTarget);
+        }
+
+        if(!StringUtils.isEmpty(keyword)){
+            QueryBuilder queryKeywork = QueryBuilders.matchQuery("supperGoodsName", keyword).minimumShouldMatch("90%");
+            boleanQueryBuilder.must(queryKeywork);
+        }
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,fromDate,toDate,pageNo,pageSize);
+    }
+
+    @Override
+    @Deprecated
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String tbNick, String target, String keyword, Date fromDate, Date toDate, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        if(tbNick!=null){
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.should(query);
+            QueryBuilder nickQuery=QueryBuilders.termQuery("fenUserNick", tbNick);
+            boleanQueryBuilder.should(nickQuery);
+            boleanQueryBuilder.minimumNumberShouldMatch(1);
+        }else{
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+        }
+        if(!StringUtils.isEmpty(target)){
+            QueryBuilder queryTarget = QueryBuilders.termQuery("flag", target);
+            boleanQueryBuilder.must(queryTarget);
+        }
+
+        if(!StringUtils.isEmpty(keyword)){
+            QueryBuilder queryKeywork = QueryBuilders.matchQuery("supperGoodsName", keyword).minimumShouldMatch("90%");
+            boleanQueryBuilder.must(queryKeywork);
+        }
+
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,fromDate,toDate,pageNo,pageSize);
+    }
+
+
+    /**
+     * 公共查,已上传
+     * @param boleanQueryBuilder
+     * @param fromDate
+     * @param toDate
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public ShiguPager<OnekeyRecoreVO> uploadedItemsCommon(BoolQueryBuilder boleanQueryBuilder,Date fromDate,Date toDate,int pageNo, int pageSize){
+
+
+        if(pageNo <=0 ){
+            pageNo = 1;
+        };
+        if(pageSize == 0){
+            pageSize = 10;
+        }
+
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+
+        if (fromDate != null) {
+            RangeQueryBuilder qb = QueryBuilders.rangeQuery("daiTime").from(DateUtil.dateToString(fromDate,DateUtil.patternD));
+            if (toDate != null) {
+                qb.to(DateUtil.dateToString(toDate,DateUtil.patternD));
+            }
+            boleanQueryBuilder.must(qb);
+        } else {
+            if (toDate != null) {
+                RangeQueryBuilder qb = QueryBuilders.rangeQuery("daiTime").to(DateUtil.dateToString(toDate,DateUtil.patternD));
+                boleanQueryBuilder.must(qb);
+            }
+        }
+        // 分页信息
+        int totalrow = pageSize * (pageNo - 1);
+        srb.setSize(pageSize);
+        srb.setFrom(totalrow);
+
+        srb.setQuery(boleanQueryBuilder);
+        // 默认条件
+        srb.addSort("daiTime", SortOrder.DESC);
+
+
+        SearchResponse response = srb.execute().actionGet();
+        SearchHit[] hits = response.getHits().getHits();
+        List<OnekeyRecoreVO> onekeyRecoreVOList = new ArrayList<OnekeyRecoreVO>();
+        if (hits != null && hits.length > 0) {
+            for (SearchHit hit : hits) {
+                ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+                if(shiguGoodsUp == null){
+                    continue;
+                }
+                OnekeyRecoreVO onekeyRecoreVO = new OnekeyRecoreVO();
+                onekeyRecoreVO.setCreatetime(shiguGoodsUp.getDaiTime());
+                onekeyRecoreVO.setCreateDate(DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD));
+                onekeyRecoreVO.setId(shiguGoodsUp.getSupperGoodsId());
+                onekeyRecoreVO.setImgsrc(shiguGoodsUp.getSupperImage());
+                onekeyRecoreVO.setFlag(shiguGoodsUp.getFlag());
+                onekeyRecoreVO.setTitle(shiguGoodsUp.getSupperGoodsName());
+                onekeyRecoreVO.setWebSite(shiguGoodsUp.getWebSite());
+                onekeyRecoreVO.setOnekeyId(hit.getId());
+                if(shiguGoodsUp.getWebSite()==null){//有部分坏的,记日志
+                    logger.error(shiguGoodsUp.getSupperGoodsId()+" in shigugoodsup has no webSite!!!");
+//                    continue;//跳过
+                    shiguGoodsUp.setWebSite("hz");//暂时认为是杭州站 的
+                }
+
+                Long goodsId = shiguGoodsUp.getSupperGoodsId();
+                ShiguGoodsTiny queryGoodsTiny = new ShiguGoodsTiny();
+                queryGoodsTiny.setGoodsId(goodsId);
+                queryGoodsTiny.setWebSite(shiguGoodsUp.getWebSite());
+                ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectOne(queryGoodsTiny);
+                if(shiguGoodsTiny != null){
+                    onekeyRecoreVO.setLiprice(shiguGoodsTiny.getPriceString());
+                    onekeyRecoreVO.setPiprice(shiguGoodsTiny.getPiPriceString());
+                    onekeyRecoreVO.setShopSoldout(false);
+                }else{
+                    onekeyRecoreVO.setShopSoldout(true);
+                }
+                onekeyRecoreVOList.add(onekeyRecoreVO);
+            }
+        }
+
+        // 查询总记录数
+        srb.setSearchType(SearchType.COUNT);
+        response = srb.execute().actionGet();
+        Long total = response.getHits().getTotalHits();
+
+        ShiguPager<OnekeyRecoreVO> shiguPager = new ShiguPager<OnekeyRecoreVO>();
+        shiguPager.setNumber(pageNo);
+        shiguPager.setContent(onekeyRecoreVOList);
+        shiguPager.calPages(total.intValue(), pageSize);
+        return shiguPager;
     }
 }
