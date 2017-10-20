@@ -76,7 +76,7 @@ public class OrtherLoginAction {
     }*/
     //第三方登录,淘宝授权成功跳转
     @RequestMapping("phoneOrtherLogin")
-    public String passwordLogin( @Valid AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception {
+    public String passwordLogin( @Valid AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -93,12 +93,11 @@ public class OrtherLoginAction {
         } catch (UnsupportedEncodingException e1) {
             logger.error("用户名转义出错",e1);
         }
-        map.put("userName", bo.getNick());
+        map.put("nick", bo.getNick());
         map.put("key", bo.getKey());
-        if(bo.getType()==1){
-            map.put("type", "tb");
-        }
-        if(MD5Attestation.unsignParamString (map, bo.getSign())){//去登陆
+        map.put("type", bo.getType()+"");
+        map.put("flag",bo.getFlag()+"");
+        if(MD5Attestation.signParamString(map).equals(bo.getSign())){//去登陆
             Subject currentUser = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                     usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
@@ -117,15 +116,11 @@ public class OrtherLoginAction {
             try {
                 currentUser.login(token);
                 //返回需要数据
-                PersonalSession personalSession = userBaseService.selUserForSessionByUserName(bo.getNick(), LoginFromType.TAOBAO);
+                PersonalSession personalSession = userBaseService.selUserForSessionByUserName(usernamezhong, LoginFromType.TAOBAO);
                 Long userId = personalSession.getUserId();
                 //token
-                String uuid= TokenUtil.format(personalSession.getUserId());
-                String inRedisToken= uuid+"@@@@@---@@@@@"+new Date().getTime();
-                //把token存入redis,设置存活时间一周时间
-                // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
-                Jedis jedis = redisIO.getJedis();
-                jedis.setex("phone_login_token" + personalSession.getUserId(), 604800, inRedisToken);
+                String uuid=phoneUserService.createToken(personalSession.getUserId(),"phone_login_token");
+
                 return "redirect:"+"alidao://sjxz/taobao/author?type=1&token="+uuid+"&userNick=null&tempId=null&flag=1";
             }catch (LoginAuthException e) {
                 TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
@@ -136,6 +131,6 @@ public class OrtherLoginAction {
             }
 
         }
-        return "";
+        return "redirect:error&nick="+bo.getNick()+"&type="+bo.getType()+"&key="+bo.getKey()+"flag="+bo.getFlag()+"&sign="+bo.getSign();
     }
 }

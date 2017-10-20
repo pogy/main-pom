@@ -135,6 +135,8 @@ public class TestAboutMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSearchRequest request=new ItemSearchRequest();
         request.setType(2);//2普通搜索(keywords不为空)
+        request.setWebSite("hz");
+
 //        request.setKeyword("袜子");
         request.setKeyword("外套");
 //        request.setStartTime("2017-9-02");
