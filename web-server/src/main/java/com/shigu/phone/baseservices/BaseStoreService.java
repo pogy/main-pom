@@ -220,7 +220,7 @@ public class BaseStoreService {
                 catAlls.add(appShopCatSub);
             }
             appShopCat.setSubCats(catAlls);
-            appShopCats.add(appShopCat);
+            appShopCats.add(appShopCat1);
         }
 
         ShopCatVO vo = new ShopCatVO();
