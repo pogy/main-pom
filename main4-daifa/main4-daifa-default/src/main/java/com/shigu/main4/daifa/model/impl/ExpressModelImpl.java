@@ -77,14 +77,12 @@ public class ExpressModelImpl implements ExpressModel {
     @Override
     public ExpressVO callExpress (OrderExpressBO bo) throws DaifaException{
 
-        ExpressVO vo=null;
+        ExpressVO vo;
         //先查询这个代发交易是否已经有快递鸟的信息了
         DaifaCallExpress dce= daifaCallExpressMapper.selectByPrimaryKey (bo.getTid ());
         if(dce!=null){
-             vo=new ExpressVO();
             vo=BeanMapper.map (dce,ExpressVO.class);
             vo.setTid (dce.getDfTradeId ());
-
         }else{
             //先用快递ID查询出快递鸟的账户信息
             DaifaPostCustomerExample example=new DaifaPostCustomerExample();
@@ -107,7 +105,7 @@ public class ExpressModelImpl implements ExpressModel {
             DaifaSeller seller= daifaSellerMapper.selectByPrimaryKey (sellerId);
             //发货信息
             SendBean send=new SendBean();
-            List goodsInfo=new ArrayList ();
+            List<String> goodsInfo=new ArrayList<>();
             for(SubOrderExpressBO sub:bo.getList ()){
                 String title = sub.getStoreGoodsCode() + "-" + sub.getPropStr() + "-" + sub.getGoodsNum();
                 goodsInfo.add (title);
@@ -128,11 +126,11 @@ public class ExpressModelImpl implements ExpressModel {
                 send.setReceiverAddress (adds[2]);
             }else {
                 send.setReceiverArea (adds[2]);
-                String readd = "";
+                StringBuilder readd = new StringBuilder();
                 for (int i = 3; i < adds.length; i++) {
-                    readd += adds[i] + " ";
+                    readd.append(adds[i]).append(" ");
                 }
-                send.setReceiverAddress (readd);
+                send.setReceiverAddress (readd.toString());
             }
 
             //发货人信息

@@ -1,10 +1,13 @@
 package com.shigu.main4.daifa.process;
 
 
+import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.main4.daifa.vo.PrintExpressVO;
+
+import java.util.List;
 
 /**
  * 打包发货
@@ -37,4 +40,11 @@ public interface PackDeliveryProcess {
      * @param sellerId
      */
     void updateGoodsWeight(Long subOrderId,Long weight,Long sellerId);
+
+    /**
+     * 尝试获取快递单号
+     * 获取成功则写入到daifa_wait_send表中(daifa_trade不写)
+     * @param dfTradeId
+     */
+    void queryExpressCode(Long dfTradeId) throws DaifaException;
 }
