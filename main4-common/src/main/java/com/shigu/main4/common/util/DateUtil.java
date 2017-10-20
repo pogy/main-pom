@@ -823,4 +823,15 @@ public static ArrayList getWeekListByMonth(int year, int month) {
         cd.add(Calendar.DATE, i);
         return cd.getTime();
     }
+
+    /**
+     * 获取当前月的第一天
+     * @return
+     */
+    public static Date getStartMouth(){
+        Calendar cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        return cale.getTime();
+    }
 }
