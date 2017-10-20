@@ -3,6 +3,7 @@ package com.shigu.main4.daifa.process.impl;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.DaifaGoodsWeightExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -11,20 +12,24 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.bo.DeliveryBO;
 import com.shigu.main4.daifa.bo.OrderExpressBO;
 import com.shigu.main4.daifa.bo.SubOrderExpressBO;
+import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
+import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.main4.daifa.vo.PrintExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service("packDeliveryProcess")
@@ -44,6 +49,10 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     private DaifaWaitSendMapper daifaWaitSendMapper;
+    @Autowired
+    private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
+    @Autowired
+    private MQUtil mqUtil;
 
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
@@ -236,6 +245,33 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
       return  daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
     }
 
+    public void updateGoodsWeight(Long subOrderId,Long weight,Long sellerId){
+        DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        Long goodsId=order.getGoodsId();
+        DaifaGoodsWeight w=daifaGoodsWeightMapper.selectByPrimaryKey(goodsId);
+        if(w!=null){
+            w.setGoodsWeight(weight);
+            w.setCreateTime(null);
+            w.setSellerId(null);
+            daifaGoodsWeightMapper.updateByPrimaryKeySelective(w);
+        }else{
+            w=new DaifaGoodsWeight();
+            w.setGoodsId(goodsId);
+            w.setGoodsWeight(weight);
+            w.setCreateTime(new Date());
+            w.setSellerId(sellerId);
+            daifaGoodsWeightMapper.insertSelective(w);
+        }
+        DecimalFormat df = new DecimalFormat("0.000");
+        Map<String,Object> map=new HashMap<>();
+        map.put("goodsId",goodsId);
+        map.put("weight",df.format(weight/1000));
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.weightSet.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.weightSet.getMessageKey()+goodsId,
+                DaifaSendMqEnum.weightSet.getMessageTag(), jsonObject.toString());
 
-
+    }
 }
