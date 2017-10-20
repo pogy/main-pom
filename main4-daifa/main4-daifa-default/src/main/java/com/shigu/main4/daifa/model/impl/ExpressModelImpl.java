@@ -1,16 +1,11 @@
 package com.shigu.main4.daifa.model.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.opentae.data.daifa.beans.DaifaCallExpress;
-import com.opentae.data.daifa.beans.DaifaPostCustomer;
-import com.opentae.data.daifa.beans.DaifaSeller;
-import com.opentae.data.daifa.beans.DaifaWaitSend;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaPostCustomerExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
-import com.opentae.data.daifa.interfaces.DaifaCallExpressMapper;
-import com.opentae.data.daifa.interfaces.DaifaPostCustomerMapper;
-import com.opentae.data.daifa.interfaces.DaifaSellerMapper;
-import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.beans.*;
 import com.shigu.main4.daifa.bo.OrderExpressBO;
@@ -55,6 +50,9 @@ public class ExpressModelImpl implements ExpressModel {
 
     @Resource(name = "tae_daifa_daifaWaitSendMapper")
     DaifaWaitSendMapper daifaWaitSendMapper;
+
+    @Resource(name = "tae_daifa_daifaTradeMapper")
+    DaifaTradeMapper daifaTradeMapper;
 
     @Autowired
     private KdConfig kdConfig;
@@ -167,6 +165,13 @@ public class ExpressModelImpl implements ExpressModel {
                     DaifaWaitSendExample snedExample=new DaifaWaitSendExample();
                     snedExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
                     daifaWaitSendMapper.updateByExampleSelective (send1,snedExample);
+
+                    DaifaTrade trade=new DaifaTrade ();
+                    trade.setDfTradeId (bo.getTid ());
+                    trade.setExpressCode (qvo.getPostCode ());
+                    DaifaTradeExample tradeExample=new DaifaTradeExample ();
+                    tradeExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
+                    daifaTradeMapper.updateByExampleSelective (trade,tradeExample);
                     //设置VO
                     vo=new ExpressVO ();
                     vo.setTid (dce1.getDfTradeId ());
