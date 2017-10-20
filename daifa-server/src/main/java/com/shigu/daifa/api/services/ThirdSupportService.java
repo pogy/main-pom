@@ -32,6 +32,7 @@ import com.shigu.main4.daifa.vo.UnComleteAllVO;
 import com.shigu.sms.beans.SmsSendResult;
 import com.shigu.sms.utils.SmsJsoup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -56,6 +57,8 @@ public class ThirdSupportService {
     PackDeliveryProcess packDeliveryProcess;
     @Autowired
     DaifaTradeMapper daifaTradeMapper;
+    @Value("${ERROR_SEND_PHONE}")
+    String errorSendPhone;
 
     public ThirdLoinResponse thirdLogin(String userName, String password) throws SystemInterfaceException {
         if (userName == null || userName.trim().length() == 0 || password == null || password.trim().length() == 0) {
@@ -621,7 +624,7 @@ public class ThirdSupportService {
                     for(String expressName:expressNames){
                         String str=expressName+"可用单号不足,请及时联系快递补充单号.";
                         SmsJsoup u=new SmsJsoup();
-                        String phones="";//接收号码集合
+                        String phones=errorSendPhone;//接收号码集合
                         Date sendTime=new Date();//定时发送时间
                         u.sendHySms(phones,str,sendTime);
                     }
