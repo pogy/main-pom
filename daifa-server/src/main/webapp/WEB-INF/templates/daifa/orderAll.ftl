@@ -290,6 +290,10 @@
             <#if childOrder_index == 0>
                 <#if order.tradeState == 1>
                 <p>未发货</p>
+                    <#if order.expressCode??>
+                    取得的快递号
+                        <p>（${order.expressCode!}）</p>
+                    </#if>
                 <#elseif order.tradeState == 2>
                 <p>已发货</p>
                 </#if>
