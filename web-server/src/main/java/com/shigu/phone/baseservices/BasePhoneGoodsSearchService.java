@@ -13,6 +13,7 @@ import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.SearchItem;
@@ -166,8 +167,11 @@ public class BasePhoneGoodsSearchService {
             return null;
         }).collect(Collectors.toList());
 
-        //搜索完毕，删除临时图片 TODO 删除路径待确认
-        ossIO.deleteFile("mall/file/" + imgUrl.substring(imgUrl.lastIndexOf("/") + 1));
+        String img =  imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
+        if(!StringUtil.isNull(img) && img.startsWith("imgSearch-")) {//headImg-xxx头像不删除  imgSearch-xxx图搜图片
+//        //搜索完毕，删除临时图片 TODO 手机端图搜只支持上传搜索，需要指定上传文件夹，搜索完毕删除临时图片
+            ossIO.deleteFile("shigu/mall/appfile/" +img );
+        }
         return appGoodsBlocks;
     }
 

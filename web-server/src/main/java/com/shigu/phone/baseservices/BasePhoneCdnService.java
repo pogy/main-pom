@@ -71,6 +71,7 @@ public class BasePhoneCdnService {
         }
         ShiguPager<SearchItem> searchItem = itemSearchService.searchItemByIds(goodsIds, "hz", index, pageSize);
         searchItem.calPages(searchItem.getTotalCount(),pageSize);
+        searchItem.setNumber(index);//设置当前页
         List<SearchItem> searchItems = searchItem.getContent();
         BaseCollectItemVO vo  = new BaseCollectItemVO();
         vo.setHasNext(searchItem.getNumber()<searchItem.getTotalPages());

@@ -110,6 +110,9 @@ public class BasedPhoneStoreService {
         }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
+        if (shopIds == null || shopIds.isEmpty()) {
+            return null;//不可能走到这吧
+        }
         ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(size);
         ShiguMarketExample marketExample = new ShiguMarketExample();
         ShiguShopExample shopExample = new ShiguShopExample();

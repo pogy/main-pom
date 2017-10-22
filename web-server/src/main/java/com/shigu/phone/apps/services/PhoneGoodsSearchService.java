@@ -18,6 +18,7 @@ import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
@@ -95,8 +96,8 @@ public class PhoneGoodsSearchService {
 
             bo.setSt(startTime == null? null : DateUtil.dateToString(startTime, dateFormat));
             bo.setEt(endtTime == null ? null : DateUtil.dateToString(endtTime, dateFormat));
-            bo.setSp(request.getStartPrice() == null ? null : Double.valueOf(request.getStartPrice()));
-            bo.setEp(request.getEndPrice() == null ? null : Double.valueOf(request.getEndPrice()));
+            bo.setSp(StringUtil.isNull(request.getStartPrice()) ? null : Double.valueOf(request.getStartPrice()));
+            bo.setEp(StringUtil.isNull(request.getEndPrice()) ? null : Double.valueOf(request.getEndPrice()));
             bo.setPage(request.getIndex());
             bo.setRows(request.getSize());
             ItemSearchVO itemSearchVO;
