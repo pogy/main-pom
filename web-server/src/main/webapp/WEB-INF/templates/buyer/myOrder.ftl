@@ -175,7 +175,7 @@ var webSite = '${webSite!}';
 <div class="header">
     <div class="layout">
         <a href="http://www.571xz.com" class="fl">
-            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width=168 height=28 />
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
         <ul class="fl fs16 yahei clearfix">
             <li><a href="${main_host!}member/index.htm"  >首页</a></li>
@@ -293,7 +293,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
