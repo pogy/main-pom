@@ -50,27 +50,17 @@
               df_order_id
         ) t
         WHERE
-        t.minStatus != 1
+        t.minStatus =2
     </select>
 
     <select id="selectTodayServerFee" resultType="java.lang.String">
         SELECT
-            ifnull(sum(t.services_fee),0)
-        FROM
-            (
-                SELECT
-                    t1.df_trade_id,
-                    t1.services_fee
+            sum(ifnull(services_fee,0))
                 FROM
-                    daifa_trade t1
-                LEFT JOIN daifa_order t2 ON t1.df_trade_id = t2.df_trade_id
+                    daifa_trade
                 WHERE
-                    t1.seller_id =${sellerId}
-                AND t2.refund_status = 0
-                AND date_format(t1.create_time, "%Y%m%d") =${day}
-                GROUP BY
-                    df_trade_id
-            ) t
+                    seller_id =${sellerId}
+                AND date_format(create_time, "%Y%m%d") =${day}
 
     </select>
 
