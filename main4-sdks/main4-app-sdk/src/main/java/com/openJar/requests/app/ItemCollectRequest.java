@@ -15,6 +15,8 @@ public class ItemCollectRequest extends Request<ItemCollectResponse> {
 	@NotNull(message = "token is null")
 	private String token;
 	private Long userId;
+	/**不传或者传空查所有站点下收藏*/
+	private String webSite;
 	//页码
 	private Integer index;
 	//页长
@@ -49,6 +51,14 @@ public class ItemCollectRequest extends Request<ItemCollectResponse> {
 
 	public void setSize(Integer size){
 		this.size=size;
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 
 	public String testApiUrl(){
