@@ -61,7 +61,9 @@ public class BasePhoneCdnService {
         List<Long> goodsIds = BeanMapper.getFieldList(itemCollectInfoVOS,"goodsId",Long.class);
 
         if (goodsIds == null || goodsIds.isEmpty()) {
-           return null;
+            OpenException openException = new OpenException();
+            openException.setErrMsg("你还没有收藏商品哟");
+            throw openException;
         }
         UserInfo userInfo = userBaseService.selUserInfo(userId);
         if (userInfo == null) {

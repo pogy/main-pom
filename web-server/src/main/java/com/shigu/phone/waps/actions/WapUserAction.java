@@ -1,11 +1,14 @@
 package com.shigu.phone.waps.actions;
 
+import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.ucenter.vo.UserInfo;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
+import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -58,15 +62,17 @@ public class WapUserAction {
     }
 
     /**
-     * 账号密码登录
-     * @param pwd
+     * 短信验证码登录
+     * @param request
+     * @param telephone
+     * @param msgCode
      * @return
      */
     @RequestMapping("msgCodeLogin")
     @ResponseBody
-    public JSONObject msgCodeLogin(HttpServletRequest request,String user ,String pwd) {
+    public JSONObject msgCodeLogin(HttpServletRequest request,String telephone ,String msgCode) {
         try {
-            wapPhoneUserService.msgCodeLogin(user, pwd, request.getRemoteAddr());
+            wapPhoneUserService.msgCodeLogin(telephone, msgCode, request.getRemoteAddr());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
@@ -96,9 +102,10 @@ public class WapUserAction {
      */
     @RequestMapping("userRegist")
     @ResponseBody
-    public JSONObject userRegist( String telephone,String msgCode,String pwd){
+    public JSONObject userRegist(HttpServletRequest request, String telephone,String msgCode,String pwd){
         try {
-            wapPhoneUserService.regist(telephone,msgCode,pwd);
+            wapPhoneUserService.regist(telephone, msgCode, pwd);
+            accountLogin(request,telephone,pwd);//登录
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg())
@@ -106,27 +113,19 @@ public class WapUserAction {
         }
     }
 
-    @RequestMapping("aboutMe")
-    @ResponseBody
-    public JSONObject aboutMe(HttpSession session) {
-        AboutMeRequest request = new AboutMeRequest();
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        request.setUserId(ps.getUserId());
-        return null;
-    }
 
     @RequestMapping("changePassword")
     @ResponseBody
     public JSONObject ChangePassword(HttpSession session,String newPwd,String oldPwd) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("参数错误").element("success",false);
         }
         try {
             wapPhoneUserService.changePassword(oldPwd,newPwd,ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
-            return JsonResponseUtil.error("参数错误").element("success",false);
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 
@@ -149,7 +148,7 @@ public class WapUserAction {
     @ResponseBody
     public JSONObject needBindTelephone(HttpSession session ) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         boolean needBindTelephone = false;
@@ -162,7 +161,7 @@ public class WapUserAction {
     @ResponseBody
     public JSONObject bindTelephone(HttpSession session,Long telephone) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         try {
@@ -179,7 +178,7 @@ public class WapUserAction {
     public JSONObject getUserLoginState(HttpSession session) {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            if (ps.getUserId() == null) {
+            if (ps == null || ps.getUserId() == null) {
                 return JsonResponseUtil.error("用户未登录").element("success",false);
             }
             //是否是商户
@@ -195,9 +194,9 @@ public class WapUserAction {
 
     @RequestMapping("loginOut")
     @ResponseBody
-    public JSONObject loginOut(HttpSession session,String userId) {
+    public JSONObject loginOut(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         Subject currentUser = SecurityUtils.getSubject();
@@ -209,18 +208,34 @@ public class WapUserAction {
     @ResponseBody
     public JSONObject getUserData(HttpSession session,String userId) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
-        UserInfo userInfo = wapPhoneUserService.selUserInfo(ps.getUserId());
-        if (userInfo == null) {
-            return JsonResponseUtil.error("未查询到用户信息").element("success",false);
+        Map<String, Object> otherPlatform = ps.getOtherPlatform();
+        String bingdTelephone = null;
+        if (otherPlatform != null) {
+            bingdTelephone = (String) otherPlatform.get("__bindPhone__");
         }
         return JsonResponseUtil.success().element("success",true)
-                                         .element("headUrl",userInfo.getHeadUrl())
-                                         .element("userNick",userInfo.getUserNick())
-                                         .element("phoneBind",userInfo.getTelephone());
+                                         .element("headUrl",ps.getHeadUrl())
+                                         .element("userNick",ps.getUserNick())
+                                         .element("phoneBind",bingdTelephone);
     }
 
+    /**
+     * 修改用户头像
+     * @return
+     */
+    @RequestMapping("updateHeardImg")
+    @ResponseBody
+    public JSONObject imgUpload(HttpSession session,HttpServletRequest request){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false);
+        }
+        return null;
+
+//        return JSONObject.fromObject(wapPhoneUserService.imgUpload(ps.getUserId(),fileName));
+    }
 
 }

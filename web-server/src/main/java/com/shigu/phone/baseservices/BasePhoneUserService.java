@@ -226,7 +226,7 @@ public class BasePhoneUserService {
         OpenException openException=new OpenException();
         String code= RedomUtil.redomNumber(6);
         //发送短信
-        sendMsgService.sendVerificationCode(telephone, code);
+//        sendMsgService.sendVerificationCode(telephone, code);
         //客户状态
         if(type==1){
             //登录
@@ -323,7 +323,7 @@ public class BasePhoneUserService {
                 throw openException;
             }
         } catch (Main4Exception e) {
-            openException.setErrMsg(e.getMessage());
+            openException.setErrMsg("注册失败");
             throw openException;
         }
         PersonalSession personalSession = userBaseService.selUserForSessionByUserName(telephone, LoginFromType.XZ);
@@ -333,7 +333,7 @@ public class BasePhoneUserService {
         appUser.setImgsrc(headUrl);
         appUser.setUserNick(personalSession.getUserNick());
         //token
-        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
+//        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
 
 
         //imSeller

@@ -6,15 +6,12 @@ import com.openJar.beans.app.AppCatGroup;
 import com.openJar.beans.app.AppSearchNav;
 import com.openJar.beans.app.AppSite;
 import com.opentae.data.mall.beans.ShiguSite;
-import com.opentae.data.mall.beans.ShiguTaobaocat;
 import com.opentae.data.mall.examples.ShiguSiteExample;
-import com.opentae.data.mall.examples.ShiguTaobaocatExample;
 import com.opentae.data.mall.interfaces.ShiguSiteMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
-import com.shigu.phone.basevo.CatVO;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import org.slf4j.Logger;
@@ -293,5 +290,9 @@ public class BaseStaticService {
 
     public List<CateNav> querySubCatList(String webSite, Integer pId) {
         return categoryInSearchService.selSubCates(String.valueOf(pId),SearchCategory.CATEGORY,webSite);
+    }
+
+    public List<CateNav> queryMarketListByPid(String webSite, String pid) {
+        return categoryInSearchService.selSubCates(pid,SearchCategory.MARKET,webSite);
     }
 }

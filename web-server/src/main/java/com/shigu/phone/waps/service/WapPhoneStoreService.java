@@ -8,6 +8,8 @@ import com.shigu.phone.basevo.StoreCollectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,8 +62,8 @@ public class WapPhoneStoreService {
      *
      * @return
      */
-    public ShiguStoreCollect collectStore(Long shopId, Long userId) throws OpenException {
-        return basedPhoneStoreService.collectStore(shopId,userId);
+    public ShiguStoreCollect collectStore(Long userId,Long shopId) throws OpenException {
+        return basedPhoneStoreService.collectStore(userId,shopId);
     }
 
 

@@ -13,6 +13,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
+import com.shigu.phone.basevo.MarketsVO;
 import com.shigu.phone.waps.service.WapStaticService;
 import com.shigu.phone.waps.vo.ParentCatVO;
 import com.shigu.phone.waps.vo.SubCatVO;
@@ -92,13 +93,14 @@ public class WapStaticAction {
 
     }
 
-
-
-
-    @RequestMapping("searchNav")
+    @RequestMapping("queryMarketListByPid")
     @ResponseBody
-    public JSONObject searchNav(Integer type,Long sid,String webSite)  {
-        wapStaticService.searchNav(type, sid, webSite);
-        return null;
+    public JSONObject queryMarketListByPid(String pid,String webSite)  {
+        try {
+            List<MarketsVO> vos = wapStaticService.queryMarketListByPid(pid,webSite);
+            return JsonResponseUtil.success().element("sucess",true).element("markets",vos);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getErrMsg()).element("sucess",false);
+        }
     }
 }

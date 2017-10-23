@@ -180,16 +180,14 @@ public class BasedPhoneStoreService {
         shiguStoreCollect.setUserId(userId);
         shiguStoreCollect = shiguStoreCollectMapper.selectOne(shiguStoreCollect);
         if (shiguStoreCollect == null) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("该档口未被收藏[storeId="+storeId+"]");
-            throw openException;
+           return null;
         }
         return shiguStoreCollect.getStoreCollectId();
     }
 
-    public ShiguStoreCollect collectStore(Long shopId, Long userId) throws OpenException {
+    public ShiguStoreCollect collectStore( Long userId,Long shopId) throws OpenException {
         try {
-            addShopCollection(shopId,userId);
+            addShopCollection(userId,shopId);
         } catch (ShopCollectionException e) {
            OpenException openException = new OpenException();
            openException.setErrMsg(e.getMessage());

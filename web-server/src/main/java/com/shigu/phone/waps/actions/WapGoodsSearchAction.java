@@ -1,10 +1,12 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.beans.app.AppGoodsBlock;
+import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.shigu.main4.cdn.exceptions.CdnException;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
@@ -80,7 +82,9 @@ public class WapGoodsSearchAction {
         searchBO.setD(bo.getD());
 //        searchBO.getBpic(bo.);
         searchBO.setCid(bo.getCid());
-        searchBO.setEp(Double.parseDouble(bo.getEndPrice()));
+        if (!StringUtil.isNull(bo.getEndPrice())) {
+            searchBO.setEp(Double.parseDouble(bo.getEndPrice()));
+        }
         searchBO.setEt(bo.getEndTime());
 //        searchBO.getFrom(bo.);
         searchBO.setKeyword(bo.getKeyword());
@@ -88,7 +92,9 @@ public class WapGoodsSearchAction {
         searchBO.setPid(bo.getPid());
         searchBO.setShopId(bo.getStoreId());
         searchBO.setSort(bo.getOrderBy());
-        searchBO.setSp(Double.parseDouble(bo.getStartPrice()));
+        if (!StringUtil.isNull(bo.getStartPrice())) {
+            searchBO.setSp(Double.parseDouble(bo.getStartPrice()));
+        }
         searchBO.setSt(bo.getStartTime());
         searchBO.setWebSite(bo.getWebSite());
         searchBO.setPage(bo.getIndex());
@@ -103,9 +109,9 @@ public class WapGoodsSearchAction {
                         .element("success",true)
                         .element("hasNext",itemSearchVo.getHasNext())
                         .element("total",itemSearchVo.getTotal())
-                        .element("tems",itemSearchVo.getItems());
-        } catch (Exception e) {
-           return JsonResponseUtil.error(e.getMessage());
+                        .element("items",itemSearchVo.getItems());
+        } catch (OpenException e) {
+           return JsonResponseUtil.error(e.getMessage()).element("sucess",false);
         }
     }
 

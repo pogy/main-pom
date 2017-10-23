@@ -34,9 +34,6 @@ public class WapStoreService {
 
     public List<AppShopCat> selShopCat(String webSite,Long shopId) throws OpenException {
         ShopCatVO shopCatVO = baseStoreService.selShopCat(shopId);
-        if (shopCatVO == null) {
-            return null;
-        }
         return shopCatVO.getCats();
     }
 

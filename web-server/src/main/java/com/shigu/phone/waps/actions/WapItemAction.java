@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,16 +63,16 @@ public class WapItemAction {
 
     @RequestMapping("deleteCollect")
     @ResponseBody
-    public JSONObject delItemCollect (HttpSession session,String type,List<Long> collectIds){
+    public JSONObject delItemCollect (HttpSession session,String type,Long[] collectIds){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         if ("goods".equalsIgnoreCase(type)){//取消收藏商品
-            wapItemService.delItemCollect(collectIds,ps.getUserId());
+            wapItemService.delItemCollect(Arrays.asList(collectIds),ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         }else if("shop".equalsIgnoreCase(type)){//取消收藏店铺
-            wapPhoneStoreService.delStoreCollect(collectIds,ps.getUserId());
+            wapPhoneStoreService.delStoreCollect(Arrays.asList(collectIds),ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         }else{
             return JsonResponseUtil.error("参数错误").element("success",false);
@@ -90,7 +91,7 @@ public class WapItemAction {
                 ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), null, id, webSite);
                 return JsonResponseUtil.success().element("success",true).element("collectId",itemCollectInfoVO.getGoodsCollectId());
             }else if("shop".equalsIgnoreCase(type)){//收藏店铺
-                ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore(id, ps.getUserId());
+                ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore( ps.getUserId(),id);
                 return JsonResponseUtil.success().element("success",true).element("collectId",shiguStoreCollect.getStoreCollectId());
             }else{
                 return JsonResponseUtil.error("参数错误").element("success",false);
