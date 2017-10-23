@@ -26,8 +26,8 @@ public class BaseItemService {
     @Autowired
     private UserCollectService userCollectService;
 
-    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size) throws OpenException {
-        return basePhoneCdnService.selItemCollect(userId,index, size);
+    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size,String webSite) throws OpenException {
+        return basePhoneCdnService.selItemCollect(userId,index, size,webSite);
     }
 
     public Boolean delItemCollect(List<Long> collectIds,Long userId){

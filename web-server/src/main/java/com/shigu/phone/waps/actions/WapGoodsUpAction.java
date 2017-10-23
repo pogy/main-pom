@@ -1,13 +1,7 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.InstockMyItemRequest;
-import com.openJar.requests.app.UpToWxRequest;
-import com.openJar.requests.app.UploadedItemRequest;
-import com.openJar.responses.app.UploadedItemResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.tools.RedisIO;
-import com.shigu.phone.apps.services.PhoneGoodsUpService;
 import com.shigu.phone.basevo.UploadedItemVO;
 import com.shigu.phone.waps.service.WapPhoneGoodsUpService;
 import com.shigu.session.main4.PersonalSession;
@@ -82,7 +76,6 @@ public class WapGoodsUpAction {
     /**
      * 下架已上传的商品
      * @param session
-     * @param userId
      * @param uploadId
      * @return
      * @throws Main4Exception
@@ -90,7 +83,7 @@ public class WapGoodsUpAction {
      */
     @RequestMapping("instockUploadGoods")
     @ResponseBody
-    public JSONObject downGoodsUploaded(HttpSession session,Long userId,String uploadId) throws Main4Exception, OpenException {
+    public JSONObject downGoodsUploaded(HttpSession session,String uploadId) throws Main4Exception, OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);

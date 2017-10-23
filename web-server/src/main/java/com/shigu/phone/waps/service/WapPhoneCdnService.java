@@ -23,8 +23,8 @@ public class WapPhoneCdnService{
      * @param userId
      * @return
      */
-    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize) throws OpenException {
-        return basePhoneCdnService.selItemCollect(userId, index, pageSize);
+    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize,String webSite) throws OpenException {
+        return basePhoneCdnService.selItemCollect(userId, index, pageSize,webSite);
     }
 
     /**

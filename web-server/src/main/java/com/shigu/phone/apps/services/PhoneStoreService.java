@@ -9,7 +9,7 @@ import com.openJar.responses.app.DelStoreCollectResponse;
 import com.openJar.responses.app.DoStoreCollectResponse;
 import com.openJar.responses.app.ShopSearchResponse;
 import com.openJar.responses.app.StoreCollectResponse;
-import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.baseservices.BasedPhoneStoreService;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
@@ -59,6 +59,7 @@ public class PhoneStoreService {
      */
     public StoreCollectResponse storeCollect(StoreCollectRequest request) {
         StoreCollectResponse resp = new StoreCollectResponse();
+        if(StringUtil.isNull(request.getWebSite()))request.setWebSite(null);
         StoreCollectVO storeCollectVO = basedPhoneStoreService.storeCollect(request.getUserId(), request.getWebSite(), request.getIndex(), request.getSize());
         if (storeCollectVO != null) {
             resp.setShops(storeCollectVO.getShops());

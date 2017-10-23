@@ -23,10 +23,10 @@ public class PhoneCdnService {
      * @param userId
      * @return
      */
-    public ItemCollectResponse selItemCollect(Long userId, Integer index, Integer pageSize){
+    public ItemCollectResponse selItemCollect(Long userId, Integer index, Integer pageSize,String webSite){
         ItemCollectResponse response = new ItemCollectResponse();
         try {
-            BaseCollectItemVO baseCollectItemVO = basePhoneCdnService.selItemCollect(userId, index, pageSize);
+            BaseCollectItemVO baseCollectItemVO = basePhoneCdnService.selItemCollect(userId, index, pageSize,webSite);
             response.setItems(baseCollectItemVO.getItems());
             response.setTotal(baseCollectItemVO.getTotal());
             response.setHasNext(baseCollectItemVO.getHasNext());

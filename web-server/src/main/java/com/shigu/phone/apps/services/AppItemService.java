@@ -3,6 +3,7 @@ package com.shigu.phone.apps.services;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.baseservices.BaseItemService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class AppItemService {
     public ItemCollectResponse collectItem(ItemCollectRequest request){
         ItemCollectResponse response = new ItemCollectResponse();
         try {
-            BaseCollectItemVO baseCollectItemVO = baseItemService.selItemCollect(request.getUserId(), request.getIndex(), request.getSize());
+            if (StringUtil.isNull(request.getWebSite()))request.setWebSite(null);
+            BaseCollectItemVO baseCollectItemVO = baseItemService.selItemCollect(request.getUserId(), request.getIndex(), request.getSize(),request.getWebSite());
             response.setSuccess(true);
             response.setHasNext(baseCollectItemVO.getHasNext());
             response.setTotal(baseCollectItemVO.getTotal());

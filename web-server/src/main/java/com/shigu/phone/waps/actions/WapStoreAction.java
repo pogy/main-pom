@@ -3,6 +3,7 @@ package com.shigu.phone.waps.actions;
 import com.openJar.beans.app.AppMarket;
 import com.openJar.beans.app.AppShopCat;
 import com.openJar.exceptions.OpenException;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
@@ -58,15 +59,9 @@ public class WapStoreAction {
 
     @RequestMapping("queryShopCategory")
     @ResponseBody
-    public JSONObject ShopCat( String webSite,Long shopId ,Integer index,Integer size){
-        if (index == null) {
-            index = 1;
-        }
-        if (size == null || size > 30) {
-            size = 30;
-        }
+    public JSONObject ShopCat( String webSite,Long shopId ){
         try {
-            List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId,index,size);
+            List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId);
             return JsonResponseUtil.success().element("success",true).element("cats",appShopCats);
         } catch (OpenException e) {
             return JsonResponseUtil.error("查询失败").element("success",false);
@@ -125,6 +120,7 @@ public class WapStoreAction {
         if (size == null || size > 30) {//最大页长30
             size = 30;
         }
+        if (StringUtil.isNull(webSite))webSite = null;
         StoreCollectVO storeCollectVO = wapPhoneStoreService.storeCollect(webSite, ps.getUserId(), index, size);
         if (storeCollectVO == null) {
             return JsonResponseUtil.error("未查询到数据").element("success",false);

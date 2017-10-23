@@ -5,16 +5,12 @@ import com.openJar.requests.app.*;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.phone.waps.service.WapPhoneUserService;
-import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.RedomUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -156,20 +152,31 @@ public class WapUserAction {
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
-        boolean needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
+        boolean needBindTelephone = false;
+        needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
         return JsonResponseUtil.success().element("success",true)
-                                         .element("type",needBindTelephone?1:0);
+                .element("type",needBindTelephone?0:1);
     }
 
     @RequestMapping("bindTelephone")
     @ResponseBody
-    public JSONObject bindTelephone(Long telephone) {
-        return getPhoneMsgCode(telephone,4);
+    public JSONObject bindTelephone(HttpSession session,Long telephone) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false);
+        }
+        try {
+            wapPhoneUserService.bindTelephone(ps.getUserId(),telephone);
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getMessage()).element("success",false);
+        }
+
     }
 
     @RequestMapping("getUserLoginState")
     @ResponseBody
-    public JSONObject getUserLoginState(HttpSession session,Long telephone) {
+    public JSONObject getUserLoginState(HttpSession session) {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps.getUserId() == null) {
@@ -214,12 +221,6 @@ public class WapUserAction {
                                          .element("userNick",userInfo.getUserNick())
                                          .element("phoneBind",userInfo.getTelephone());
     }
-
-//    @RequestMapping("index")
-//    public String index() {
-//       return "waps/index";
-//    }
-//
 
 
 }

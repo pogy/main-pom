@@ -55,8 +55,8 @@ public class BasePhoneCdnService {
      * @param userId
      * @return
      */
-    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize) throws OpenException {
-        List<ItemCollectInfoVO> itemCollectInfoVOS = userCollectService.selItemCollection(userId,null,null,null,null);
+    public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize,String webSite) throws OpenException {
+        List<ItemCollectInfoVO> itemCollectInfoVOS = userCollectService.selItemCollection(userId,null,null,null,webSite);
         Map<Long,List<ItemCollectInfoVO>> itemCollectInfoGroup = BeanMapper.groupBy(itemCollectInfoVOS,"goodsId",Long.class);
         List<Long> goodsIds = BeanMapper.getFieldList(itemCollectInfoVOS,"goodsId",Long.class);
 
@@ -69,7 +69,7 @@ public class BasePhoneCdnService {
             openException.setErrMsg("该用户不存在");
             throw openException;
         }
-        ShiguPager<SearchItem> searchItem = itemSearchService.searchItemByIds(goodsIds, "hz", index, pageSize);
+        ShiguPager<SearchItem> searchItem = itemSearchService.searchItemByIds(goodsIds, webSite, index, pageSize);
         searchItem.calPages(searchItem.getTotalCount(),pageSize);
         searchItem.setNumber(index);//设置当前页
         List<SearchItem> searchItems = searchItem.getContent();

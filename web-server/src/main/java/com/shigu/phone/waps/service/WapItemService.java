@@ -27,8 +27,8 @@ public class WapItemService {
         baseItemService.delItemCollect(collectIds,userId);
     }
 
-    public BaseCollectItemVO selItemCollect(Long userId,Integer index,Integer size) throws OpenException {
-       return baseItemService.selItemCollect(userId, index, size);
+    public BaseCollectItemVO selItemCollect(Long userId,Integer index,Integer size,String webSite) throws OpenException {
+       return baseItemService.selItemCollect(userId, index, size,webSite);
     }
 
     public Long hasCollected(String goodsId, Long userId) throws OpenException {

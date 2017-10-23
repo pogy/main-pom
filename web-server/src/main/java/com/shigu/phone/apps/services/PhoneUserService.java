@@ -4,19 +4,6 @@ import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
-import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.TaobaoSessionMap;
-import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
-import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.main4.common.tools.StringUtil;
-import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
@@ -27,17 +14,12 @@ import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
-import org.apache.shiro.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 类名：PhoneUserService
@@ -49,15 +31,9 @@ import java.util.List;
  */
 @Service
 public class PhoneUserService {
-    private static final Logger logger = LoggerFactory.getLogger(PhoneUserService.class);
+
     @Autowired
     private BasePhoneUserService basePhoneUserService;
-    @Resource(name = "tae_mall_memberUserSubMapper")
-    private MemberUserSubMapper memberUserSubMapper;
-    @Autowired
-    private MemberUserMapper memberUserMapper;
-    @Autowired
-    private TaobaoSessionMapMapper taobaoSessionMapMapper;
     @Autowired
     private RedisIO redisIO;
 

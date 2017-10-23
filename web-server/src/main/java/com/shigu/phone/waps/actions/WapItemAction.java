@@ -1,16 +1,13 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.GoodsCollectRequest;
-import com.openJar.responses.app.GoodsCollectResponse;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import com.shigu.phone.waps.service.WapItemService;
 import com.shigu.phone.waps.service.WapPhoneCdnService;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
-import com.shigu.phone.waps.service.WapStoreService;
-import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -38,7 +35,7 @@ public class WapItemAction {
 
     @RequestMapping("queryGoodsCollectList")
     @ResponseBody
-    public JSONObject itemCollect(HttpSession session,Integer size,Integer index){
+    public JSONObject itemCollect(HttpSession session,Integer size,Integer index,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
@@ -49,8 +46,9 @@ public class WapItemAction {
         if (index == null || index > 30) {
             index = 30;
         }
+        if (StringUtil.isNull(webSite))webSite = null;
         try {
-            BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size);
+            BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size,webSite);
             return JsonResponseUtil
                     .success()
                     .element("success",true)
@@ -82,17 +80,17 @@ public class WapItemAction {
 
     @RequestMapping("addCollect")
     @ResponseBody
-    public JSONObject addCollect (HttpSession session,String type,Long goodsId,Long storeId,String webSite){
+    public JSONObject addCollect (HttpSession session,String type,Long id,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         try {
             if ("goods".equalsIgnoreCase(type)){//收藏商品
-                ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), storeId, goodsId, webSite);
+                ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), null, id, webSite);
                 return JsonResponseUtil.success().element("success",true).element("collectId",itemCollectInfoVO.getGoodsCollectId());
             }else if("shop".equalsIgnoreCase(type)){//收藏店铺
-                ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore(storeId, ps.getUserId());
+                ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore(id, ps.getUserId());
                 return JsonResponseUtil.success().element("success",true).element("collectId",shiguStoreCollect.getStoreCollectId());
             }else{
                 return JsonResponseUtil.error("参数错误").element("success",false);

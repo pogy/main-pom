@@ -3,11 +3,8 @@ package com.shigu.phone.baseservices;
 import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.openJar.responses.app.*;
-import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
@@ -16,7 +13,6 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
-import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
@@ -31,7 +27,6 @@ import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.services.PhoneUserService;
-import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.BindUserVO;
@@ -45,16 +40,13 @@ import com.shigu.tools.RedomUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
-import org.apache.zookeeper.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
-import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,13 +71,6 @@ public class BasePhoneUserService {
     private UserBaseService userBaseService;
     @Autowired
     private MemberUserMapper memberUserMapper;
-    @Autowired
-    private TaobaoSessionMapMapper taobaoSessionMapMapper;
-    @Autowired
-    private ShiguShopMapper shiguShopMapper;
-    @Resource(name = "tae_mall_memberUserSubMapper")
-    private MemberUserSubMapper memberUserSubMapper;
-
     @Autowired
     private UserLicenseService userLicenseService;
 
@@ -489,14 +474,20 @@ public class BasePhoneUserService {
         memberLicenseExample.createCriteria().andUserIdEqualTo(userId).andLicenseTypeEqualTo(4);
         List<MemberLicense> memberLicensesList = memberLicenseMapper.selectByExample(memberLicenseExample);
         //如果为空,说明用户没有绑定手机号
-        if (memberLicensesList == null) {
-            return false;
-        }else{
+        if (memberLicensesList == null || memberLicensesList.isEmpty()) {
             return true;
+        }else{
+            return false;
         }
     }
 
-    public String ortherLogin(Integer type, String nick, String key) {
-        return null;
+    public void bindTelephone(Long userId, Long telephone) throws OpenException {
+        try {
+            userLicenseService.bindPhone(userId,String.valueOf(telephone));
+        } catch (Main4Exception e) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg(e.getMessage());
+            throw openException;
+        }
     }
 }
