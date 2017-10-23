@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap/datas/")
+@RequestMapping("datas/")
 public class WapUserAction {
     @Autowired
     private WapPhoneUserService wapPhoneUserService;

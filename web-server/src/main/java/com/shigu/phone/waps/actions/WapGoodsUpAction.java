@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
  * 描述：app端商品上传
  */
 @Controller
-@RequestMapping("/wap/datas/")
+@RequestMapping("datas/")
 public class WapGoodsUpAction {
 
     @Autowired

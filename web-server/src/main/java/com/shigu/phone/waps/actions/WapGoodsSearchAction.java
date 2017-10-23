@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Admin on 2017/10/13.
  */
 @Controller
-@RequestMapping("/wap/datas/")
+@RequestMapping("datas/")
 public class WapGoodsSearchAction {
 
     @Autowired
