@@ -107,64 +107,25 @@ public class AppStaticService {
                 if (key == 1) {
                     //男装上衣
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男装上衣");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 } else if (key == 2) {
                     //男士下装2
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男士下装");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 } else if (key == 3) {
                     //男鞋
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男鞋");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 }
@@ -173,64 +134,25 @@ public class AppStaticService {
                 if (key == 4) {
                     //女装上衣
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女装上衣");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 } else if (key == 5) {
                     //女士下装
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女士下装");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 } else if (key == 6) {
                     //女鞋
                     List<AppCat> cats = new ArrayList<>();
-
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女鞋");
-                    for (PhoneCategoryEnum categoryEnum : list) {
-                        AppCat appCat = new AppCat();
-                        if (categoryEnum.getType() == 1) {
-                            appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                        } else if (categoryEnum.getType() == 2) {
-                            appCat.setCid(categoryEnum.getCid());
-                        }
-                        appCat.setName(categoryEnum.getName());
-                        appCat.setKeyword(categoryEnum.getKeyword());
-                        appCat.setImgsrc(categoryEnum.getImgsrc());
-                        appCat.setType(categoryEnum.getType());
-                        cats.add(appCat);
-                    }
+                    getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
                 }
@@ -238,44 +160,18 @@ public class AppStaticService {
             if (key == 7) {
                 //箱包
                 List<AppCat> cats = new ArrayList<>();
-
                 AppCatGroup appCatGroup1 = new AppCatGroup();
                 appCatGroup1.setTitle("箱包");
                 //日志
-                for (PhoneCategoryEnum categoryEnum : list) {
-                    AppCat appCat = new AppCat();
-                    if (categoryEnum.getType() == 1) {
-                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                    } else if (categoryEnum.getType() == 2) {
-                        appCat.setCid(categoryEnum.getCid());
-                    }
-                    appCat.setName(categoryEnum.getName());
-                    appCat.setKeyword(categoryEnum.getKeyword());
-                    appCat.setImgsrc(categoryEnum.getImgsrc());
-                    appCat.setType(categoryEnum.getType());
-                    cats.add(appCat);
-                }
+                getTraverse(list, cats);
                 appCatGroup1.setCats(cats);
                 catGroups.add(appCatGroup1);
             } else if (key == 8) {
                 //配饰
                 List<AppCat> cats = new ArrayList<>();
-
                 AppCatGroup appCatGroup1 = new AppCatGroup();
                 appCatGroup1.setTitle("配饰");
-                for (PhoneCategoryEnum categoryEnum : list) {
-                    AppCat appCat = new AppCat();
-                    if (categoryEnum.getType() == 1) {
-                        appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
-                    } else if (categoryEnum.getType() == 2) {
-                        appCat.setCid(categoryEnum.getCid());
-                    }
-                    appCat.setName(categoryEnum.getName());
-                    appCat.setKeyword(categoryEnum.getKeyword());
-                    appCat.setImgsrc(categoryEnum.getImgsrc());
-                    appCat.setType(categoryEnum.getType());
-                    cats.add(appCat);
-                }
+                getTraverse(list, cats);
                 appCatGroup1.setCats(cats);
                 catGroups.add(appCatGroup1);
             }
@@ -285,5 +181,23 @@ public class AppStaticService {
         resp.setSuccess(true);
 
         return resp;
+    }
+    //遍历类目枚举
+    private void getTraverse( List<PhoneCategoryEnum> list, List<AppCat> cats ) {
+        for (PhoneCategoryEnum categoryEnum : list) {
+            AppCat appCat = new AppCat();
+            if (categoryEnum.getType() == 1) {
+                //搜索栏搜索
+                appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+            } else if (categoryEnum.getType() == 2) {
+                //类目搜索
+                appCat.setCid(categoryEnum.getCid());
+            }
+            appCat.setName(categoryEnum.getName());
+            appCat.setKeyword(categoryEnum.getKeyword());
+            appCat.setImgsrc(categoryEnum.getImgsrc());
+            appCat.setType(categoryEnum.getType());
+            cats.add(appCat);
+        }
     }
 }
