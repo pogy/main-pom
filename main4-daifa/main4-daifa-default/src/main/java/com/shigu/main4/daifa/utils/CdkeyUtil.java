@@ -17,8 +17,8 @@ public class CdkeyUtil {
 	//字母选择区域
 	private static String[] zimu={"A","B","C","D","E","F","G","H","J"
 		,"K","L","M","N","P","Q","R","S","T","U","V","W","X","Y"};
-	private static int number_size = 99;
-	private static Map map = new HashMap();
+	private static int number_size = 999;
+	private static Map<String, String> map = new HashMap<>();
 	
 	static{
 		map.put("0", "A");
@@ -110,7 +110,7 @@ public class CdkeyUtil {
 	/*
 	 * 通过数字或者cdkey
 	 */
-	public static String number2CDkey(int i,Date date)
+	private static String number2CDkey(int i, Date date)
 	{
 		int zimu_numbers = zimu_number(i);
 		int nextnumber = next_number(i);
@@ -138,7 +138,9 @@ public class CdkeyUtil {
 		}
 		return j;
 	}
-	/*
+
+
+    /*
 	 * 剩下的数字
 	 */
 	private static int next_number(int i)
@@ -155,13 +157,9 @@ public class CdkeyUtil {
 	private static String zimu_size(int i)
 	{
 		BigNumber number_10_jinzhi = new BigNumber(""+i,10) ;
-		if(number_10_jinzhi!=null)
-		{
-			BigNumber out =  number_10_jinzhi.HexConversion(zimu.length, 0);
-			return out.toString();
-		}
-		return "0";
-	}
+        BigNumber out =  number_10_jinzhi.HexConversion(zimu.length, 0);
+        return out.toString();
+    }
 	
 	//23进制数字转换成符合条件的字符串，根据map里面对应的来
 	private static String change(String old)
