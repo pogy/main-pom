@@ -54,8 +54,14 @@ public class WapStaticAction {
 
     @RequestMapping("getGoodsCatList")
     @ResponseBody
-    public JSONObject cat(String webSite,Integer type) {
-        List<AppCatGroup> appCatGroups = wapStaticService.selCat(webSite, type);
+    public JSONObject cat(String webSite,Integer pid) {
+        if (pid != null && pid == 30) {
+            pid = 2;
+        }
+        if (pid != null && pid == 16) {
+            pid = 1;
+        }
+        List<AppCatGroup> appCatGroups = wapStaticService.selCat(webSite, pid);
         if (appCatGroups == null){
             return JsonResponseUtil.error("未查询到数据").element("success",false);
         }

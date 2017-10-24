@@ -1,23 +1,26 @@
 package com.shigu.phone.waps.actions;
 
-import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.*;
+import com.shigu.component.encryption.MD5;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.ucenter.vo.UserInfoUpdate;
-import com.shigu.phone.basevo.CreatePostSignInfoVO;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.FileUtil;
+import com.shigu.main4.tools.OssIO;
+
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
+import org.elasticsearch.common.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -35,6 +42,8 @@ import java.util.Map;
 public class WapUserAction {
     @Autowired
     private WapPhoneUserService wapPhoneUserService;
+    @Autowired
+    private OssIO ossIO;
 
     /**
      * 账号密码登录
@@ -224,18 +233,39 @@ public class WapUserAction {
 
     /**
      * 修改用户头像
+     * @param session
+     * @param headerImg base64图片
      * @return
      */
-    @RequestMapping("updateHeardImg")
+    @RequestMapping("postHeaderImg")
     @ResponseBody
-    public JSONObject imgUpload(HttpSession session,HttpServletRequest request){
+    public JSONObject imgUpload(HttpSession session,String headerImg) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+            return JsonResponseUtil.error("用户未登录").element("success", false);
         }
-        return null;
+        if (StringUtil.isNull(headerImg)) {
+            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
+        }
+        byte[] bytes = Base64.getDecoder().decode(headerImg);
+        InputStream inputStream = new ByteArrayInputStream(bytes);
 
-//        return JSONObject.fromObject(wapPhoneUserService.imgUpload(ps.getUserId(),fileName));
+        String imgType = FileUtil.getFileType(inputStream);
+        if (!FileUtil.imgTypes.contains(imgType)) {
+            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
+        }
+        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
+        //上传头像
+        String headerImgSrc = ossIO.uploadFile(inputStream, filePath);
+
+        //修改头像
+        try {
+            wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
+            return JsonResponseUtil.success().element("sucess",true).element("headerImgSrc",headerImgSrc);
+        } catch (OpenException e) {
+            e.printStackTrace();
+            return JsonResponseUtil.error("修改用户头像失败").element("success", false);
+        }
     }
 
 }
