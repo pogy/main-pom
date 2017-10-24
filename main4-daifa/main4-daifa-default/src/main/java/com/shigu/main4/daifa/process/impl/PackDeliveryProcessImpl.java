@@ -293,10 +293,13 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             if(o.getAllocatStatus()==0&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未分配");
             }
+            if(o.getAllocatStatus()==1&&o.getTakeGoodsStatus()==0){
+                throw new DaifaException("此条码对应的部分商品正在拿货中,建议入库");
+            }
             if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
             }
-            if(o.getTakeGoodsStatus()==1&&(o.getRefundStatus() == null||o.getRefundStatus()==1)){
+            if(o.getTakeGoodsStatus()==1&&o.getRefundStatus() != null&&o.getRefundStatus()==1){
                 throw new DaifaException("此条码对应的商品已申请未发退款(退款进行中),请稍后重试");
             }
         }
