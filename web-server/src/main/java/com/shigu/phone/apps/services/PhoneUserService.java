@@ -49,6 +49,11 @@ public class PhoneUserService {
     public AboutMeResponse aboutMe( AboutMeRequest request) {
         AboutMeResponse resp = new AboutMeResponse();
         AboutMeVO aboutMeVO = basePhoneUserService.aboutMe(request.getUserId());
+        AppUser appUser=new AppUser();
+        appUser.setToken(request.getToken());
+        appUser.setUserNick(aboutMeVO.getUserNick());
+        appUser.setImgsrc(aboutMeVO.getHeadUrl());
+        resp.setUsers(appUser);
         resp.setUserNick(aboutMeVO.getUserNick());
         resp.setHeadUrl(aboutMeVO.getHeadUrl());
         resp.setPhoneBind(aboutMeVO.getPhoneBind());

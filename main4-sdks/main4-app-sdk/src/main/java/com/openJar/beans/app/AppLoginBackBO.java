@@ -14,7 +14,7 @@ public class AppLoginBackBO {
     /**
      * 第三方用户名
      */
-   // @NotEmpty(message = "第三方用户名不能为空")
+    @NotEmpty(message = "第三方用户名不能为空")
     private String nick;
     /**
      * 第三方唯一码
@@ -23,7 +23,7 @@ public class AppLoginBackBO {
     /**
      * 验签
      */
-//    @NotEmpty(message = "验证不能为空")
+    @NotEmpty(message = "验证不能为空")
     private String sign;
     /**
      * 类型
@@ -31,12 +31,12 @@ public class AppLoginBackBO {
      *
      *2--- wx   微信
      */
-   // @NotEmpty(message = "第三方登陆类型不能为空")
+    @NotEmpty(message = "第三方登陆类型不能为空")
     private Integer type;
     /**
      *flag值:0为订阅服务,1订阅服务
      */
-   // @NotEmpty(message = "订阅服务状态不能为空")
+
     private Integer flag;
 
     public AppLoginBackBO() {
