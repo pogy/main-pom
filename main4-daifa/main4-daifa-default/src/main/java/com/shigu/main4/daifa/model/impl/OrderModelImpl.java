@@ -168,6 +168,9 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setStoreGoodsCode (Pingyin.getPinYinHeadChar (bo.getMarketName ()) + "_" + bo.getShopNum () + "_" + bo.getGoodsNo ());
                         subOrderModelBO.setOrderDiscountFee ("0.00");
                         subOrderModelBO.setPropStr (bo.getColor () + ":" + bo.getSize ());
+                        String prop=subOrderModelBO.getPropStr ().replaceAll ("\\+","加");
+                        subOrderModelBO.setPropStr (prop);
+
                         subOrderModelBO.setGoodsNum (1);
                         subOrderModelBO.setSinglePiPrice (bo.getSinglePay ());
                         subOrderModelBO.setSellerId (orderBO.getSenderId ());
