@@ -6,10 +6,10 @@
 
     <title>我的订单 - 分销商中心 - 四季星座网</title>
 
-    
-    
-    
-    
+
+
+
+
 <#include "/common/host_config.ftl">
 
 
@@ -22,24 +22,23 @@
 
 
 
-    
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017101901" rel="stylesheet">
-    
 
-    
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017091401" rel="stylesheet">
 
-    
-    
-    
-    
-    
-    
 
-    
+
+
+
+
+
+
+
+
+
+
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017101901"></script>
-    
+
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017091401"></script>
 </head>
 <body>
 
@@ -50,26 +49,26 @@
 <div class="topbar">
     <div class="layout">
         <div class="fl">
-            
+
             <div class="loginBox fl">
-                
+
             </div>
         </div>
         <div class="fr">
             <ul class="menuContainer">
-                
-                 
+
+
                 <li class="noIndex">
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
-                
-                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
+
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
                 <li class="noDown">
                     <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
-                        
-                        
+
+
                     </a>
                 </li>
                 <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
@@ -93,11 +92,11 @@
                                 <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
                 </#if>
-                
-                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
+
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? >
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -107,7 +106,7 @@
                                 <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
                 </#if>
                 <li class="noDown">
@@ -119,7 +118,7 @@
                         <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
                         <div class="webNav cnBoxCon pa">
                             <h4 class="fs14 fcF40">市场大全</h4>
-                            
+
                             <ul>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
@@ -143,7 +142,7 @@
                                 <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
                 </#if>
             </ul>
@@ -192,78 +191,78 @@ var webSite = '${webSite!}';
 
     <h2>交易管理</h2>
     <ul>
-    
-        
-            
-            <li><a class="selected" href="${main_host!}order/myOrder.htm">我的订单</a></li> 
-            
-        
-    
-        
-            
+
+
+
+            <li><a class="selected" href="${main_host!}order/myOrder.htm">我的订单</a></li>
+
+
+
+
+
             <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
-            
-        
-    
-        
-            
+
+
+
+
+
             <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
-            
-        
-    
-    </ul> 
+
+
+
+    </ul>
 
     <h2>商品管理</h2>
     <ul>
-    
-        
-            
+
+
+
             <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
-            
-        
-    
-        
-            
+
+
+
+
+
             <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-            
-        
-    
-        
-            
+
+
+
+
+
             <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
-            
-        
-    
-    </ul> 
+
+
+
+    </ul>
 
     <h2>供应商申请</h2>
     <ul>
-    
-        
-            
+
+
+
             <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
-            
-        
-    
-    </ul> 
+
+
+
+    </ul>
 
     <h2>会员俱乐部</h2>
     <ul>
-    
-        
-            
+
+
+
             <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
-            
-        
-    
-    </ul> 
+
+
+
+    </ul>
 
 </div>
 
 
 
 
-        
+
 
 <#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"orderType","value":"${query.orderType!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
@@ -293,7 +292,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -323,7 +322,7 @@ var webSite = '${webSite!}';
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
         <li class="marginLeft">
-            
+
 
 <#assign text>{}</#assign>
 <#assign moduledata2=text?eval />
@@ -332,7 +331,7 @@ var webSite = '${webSite!}';
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
-    <b 
+    <b
     </#if>
 
 
@@ -340,26 +339,26 @@ var webSite = '${webSite!}';
         
          fmButton-orange
          searchBtn"
-    
+
         jbtn="searchBtn"
-    
-    
-        
+
+
+
         <#if $it.title??>
             title=""
         </#if>
-    
-    
-        
+
+
+
         <#if $it.id??>
             id=""
         </#if>
-    
+
 >
 
-    
+
         搜索订单
-    
+
 
 
     <#if $it.href??>
@@ -377,8 +376,6 @@ var webSite = '${webSite!}';
         </li>
     </ul>
 </div>
-
-
 
 
 
@@ -417,14 +414,12 @@ var webSite = '${webSite!}';
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
-    <li class="price yahei fs14">&yen;${childOrder.price!}</li>
+    <li class="price yahei">&yen;${childOrder.price!}</li>
     <li class="num">
-        <p class="fs14">${childOrder.num!}</p>
+        <p>${childOrder.num!}</p>
         <#if childOrder.stockoutNum??>
         <div class="pr stockoutNum">
-            <p class="fcF40">
-                <#if childOrder.haveGoodsTime??><i class="icon-time"></i></#if>缺货 x${childOrder.stockoutNum!}
-            </p>
+            <p class="fcF40"><i class="icon-c-warn"></i>缺货 x${childOrder.stockoutNum!}</p>
             <#if childOrder.haveGoodsTime??>
             <div class="pa haveGoodsTime">
                 ${childOrder.haveGoodsTime!} 有货
@@ -437,15 +432,15 @@ var webSite = '${webSite!}';
         <#if order.mainState == 1 || order.mainState == 5>
         ——
         </#if>
-        
-        
+
+
         <#if order.mainState == 2 || order.mainState == 3 || order.mainState == 4>
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
                 <!--<p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>-->
                 <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 </#if>
-                
+
                 <#list childOrder.afterSales as afterSale>
                     <#if afterSale.type == 1>
                         <#if afterSale.state == 2>
@@ -538,7 +533,7 @@ var webSite = '${webSite!}';
     <li class="orderState">
         <#if childOrder_index == 0>
             <#if order.mainState == 1>
-            
+
 
 <#assign text>{"href":"${main_host!}order/payMode.htm?orderId=${order.orderId!}"}</#assign>
 <#assign moduledata3=text?eval />
@@ -547,7 +542,7 @@ var webSite = '${webSite!}';
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
-    <b 
+    <b
     </#if>
 
 
@@ -555,24 +550,24 @@ var webSite = '${webSite!}';
         
          fmButton-orange
          toPay"
-    
-    
-        
+
+
+
         <#if $it.title??>
             title=""
         </#if>
-    
-    
-        
+
+
+
         <#if $it.id??>
             id=""
         </#if>
-    
+
 >
 
-    
+
         立即付款
-    
+
 
 
     <#if $it.href??>
@@ -639,16 +634,16 @@ var webSite = '${webSite!}';
     <#else>
         <p class="fs20 fc6 tac noOrder">暂无订单！</p>
     </#if>
-    
-    
+
+
 
 <#assign text>{}</#assign>
 <#assign moduledata4=text?eval />
 <#list [moduledata4] as $it>
 
-<div class="jqPagination " id="jqPagination0" 
+<div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
-        data-option="${$it.pageOption!}" 
+        data-option="${$it.pageOption!}"
     <#else>
         data-option="${pageOption!}"
     </#if>
@@ -709,7 +704,7 @@ var webSite = '${webSite!}';
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap"> 
+        <p class="sitemap">
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -719,10 +714,10 @@ var webSite = '${webSite!}';
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
+
+
             <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
@@ -734,13 +729,13 @@ var webSite = '${webSite!}';
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span>
             <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
-            <br> 
+            <br>
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
-            | 
+            |
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
                 <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
                 浙公网安备 33010202000302号
-            </a> 
+            </a>
         </p>
     </div>
 </div>
