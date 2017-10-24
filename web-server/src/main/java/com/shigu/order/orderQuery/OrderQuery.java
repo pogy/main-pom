@@ -1,16 +1,20 @@
 package com.shigu.order.orderQuery;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderServiceExample;
+import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.AfterSalingVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.order.vo.SubMyOrderVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +33,8 @@ import java.util.stream.Collectors;
 public abstract class OrderQuery {
     protected abstract ItemOrderServiceMapper getItemOrderServiceMapper();
     protected abstract ItemOrderRefundMapper getItemOrderRefundMapper();
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
     /**
      * 获取订单记录数量
      * @return
@@ -52,6 +58,17 @@ public abstract class OrderQuery {
             List<MyOrderVO> myOrderVOS = selectOrderList(number, size);
             if (myOrderVOS.size()>0) {
                 packageMyOrderVO(myOrderVOS);
+                //set已拿货数量
+                myOrderVOS.forEach(myOrderVO -> {
+                    myOrderVO.getChildOrders().forEach(subMyOrderVO ->{
+                        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+                        itemOrderSubExample.createCriteria().andSoidEqualTo(subMyOrderVO.getChildOrderId());
+                        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
+                        ItemOrderSub itemOrderSub = itemOrderSubs.get(0);
+                        subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
+                        System.out.println(itemOrderSub.getInStok());
+                    });
+                });
             }
             pager.setContent(myOrderVOS);
         }
@@ -64,18 +81,20 @@ public abstract class OrderQuery {
      * @param myOrderVOS
      */
     public void packageMyOrderVO(List<MyOrderVO> myOrderVOS) {
+
         for (MyOrderVO myOrderVO : myOrderVOS) {
             myOrderVO.setTradeTime(myOrderVO.getTradeTime().replace(".0",""));
+
         }
         List<Integer> types = Arrays.asList(2, 3);
         List<Long> soids = myOrderVOS.stream().flatMap(myOrderVO -> myOrderVO.getChildOrders().stream())
-                .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());
+                .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());//子单单号集合
         ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
         itemOrderRefundExample.createCriteria().andSoidIn(soids).andTypeIn(types);
         List<ItemOrderRefund> afters = getItemOrderRefundMapper().selectByExample(itemOrderRefundExample);
         Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
-        myOrderVOS.forEach(myOrderVO -> {
-            myOrderVO.getChildOrders().forEach(subMyOrderVO -> {
+        myOrderVOS.forEach(myOrderVO -> {//主单
+            myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
                 subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
                     afterSaleVO.setNewAfterSaleInfoIs(false);
                     if (types.contains(afterSaleVO.getType())) {

@@ -57,6 +57,12 @@ public class SubMyOrderVO {
     @Column("item_order_sub.out_of_stok")
     private Integer stockoutNum;
 
+
+    /**
+     * 已拿货数量
+     */
+    private Integer haveTakeGoodsNum;
+
     /**
      * 有货时间
      */
@@ -234,5 +240,12 @@ public class SubMyOrderVO {
 
     public void setHaveGoodsTime(String haveGoodsTime) {
         this.haveGoodsTime = haveGoodsTime;
+    }
+    public Integer getHaveTakeGoodsNum() {
+        return haveTakeGoodsNum;
+    }
+
+    public void setHaveTakeGoodsNum(Integer haveTakeGoodsNum) {
+        this.haveTakeGoodsNum = haveTakeGoodsNum;
     }
 }
