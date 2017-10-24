@@ -58,17 +58,17 @@ public abstract class OrderQuery {
             List<MyOrderVO> myOrderVOS = selectOrderList(number, size);
             if (myOrderVOS.size()>0) {
                 packageMyOrderVO(myOrderVOS);
-                //set已拿货数量
-                myOrderVOS.forEach(myOrderVO -> {
-                    myOrderVO.getChildOrders().forEach(subMyOrderVO ->{
-                        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
-                        itemOrderSubExample.createCriteria().andSoidEqualTo(subMyOrderVO.getChildOrderId());
-                        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
-                        ItemOrderSub itemOrderSub = itemOrderSubs.get(0);
-                        subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
-                        System.out.println(itemOrderSub.getInStok());
-                    });
-                });
+//                //set已拿货数量
+//                myOrderVOS.forEach(myOrderVO -> {
+//                    myOrderVO.getChildOrders().forEach(subMyOrderVO ->{
+//                        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+//                        itemOrderSubExample.createCriteria().andSoidEqualTo(subMyOrderVO.getChildOrderId());
+//                        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
+//                        ItemOrderSub itemOrderSub = itemOrderSubs.get(0);
+//                        subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
+//                        System.out.println(itemOrderSub.getInStok());
+//                    });
+//                });
             }
             pager.setContent(myOrderVOS);
         }
@@ -95,6 +95,8 @@ public abstract class OrderQuery {
         Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
         myOrderVOS.forEach(myOrderVO -> {//主单
             myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
+                ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
+                subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
                 subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
                     afterSaleVO.setNewAfterSaleInfoIs(false);
                     if (types.contains(afterSaleVO.getType())) {
