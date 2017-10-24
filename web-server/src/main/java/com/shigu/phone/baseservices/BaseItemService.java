@@ -45,12 +45,10 @@ public class BaseItemService {
         return basePhoneCdnService.addItemCollect(userId,storeId,goodsId,webSite);
     }
 
-    public Long hasCollected(Long goodsId, Long userId) throws OpenException {
+    public Long hasCollected(Long goodsId, Long userId){
         ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, null);
         if (itemCollectInfoVO == null) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("该商品未被收藏[goodsId="+goodsId+"]");
-            throw openException;
+          return null;
         }
         return itemCollectInfoVO.getGoodsCollectId();
     }

@@ -46,6 +46,8 @@ public class OneItemVO implements Serializable {
     private String shopHeadUrl;
     //商品是否收藏状态：0:未收藏&nbsp;1:&nbsp;收藏
     private int type;
+    //商品详情
+    private String details;
 
     public String getTitle() {
         return title;
@@ -189,5 +191,13 @@ public class OneItemVO implements Serializable {
 
     public void setProfit(String profit) {
         this.profit = profit;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

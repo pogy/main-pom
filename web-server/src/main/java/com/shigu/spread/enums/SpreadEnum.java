@@ -42,8 +42,8 @@ public enum SpreadEnum {
 
 
     //新增app端广告位
-    HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP推荐档口", "HZ-APP-MAN-TJDK"),
-    HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP推荐档口", "HZ-APP-WOMAN-TJDK")
+    HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP男装热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP男装推荐档口", "HZ-APP-MAN-TJDK"),
+    HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP女装热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP女装推荐档口", "HZ-APP-WOMAN-TJDK")
     ;
 
     SpreadEnum(String title, String code) {

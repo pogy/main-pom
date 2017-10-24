@@ -90,11 +90,14 @@ public class WapStoreAction {
     @RequestMapping("queryShopList")
     @ResponseBody
     public JSONObject shopSearch(String keyword,String webSite,Integer index, Integer size) {
+        if (StringUtil.isNull(keyword)) {
+            return JsonResponseUtil.error("请输入关键词").element("success",false);
+        }
         ShopSearchVO shopSearchVO = wapPhoneStoreService.shopSearch(keyword,webSite,index, size);
         if (shopSearchVO == null) {
             return JsonResponseUtil.error("未查询到数据").element("success",false);
         }
-        return JsonResponseUtil.success().element("success",false)
+        return JsonResponseUtil.success().element("success",true)
                                          .element("hasNext",shopSearchVO.getHasNext())
                                          .element("total",shopSearchVO.getTotal())
                                          .element("shops",shopSearchVO.getShops());

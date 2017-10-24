@@ -9,6 +9,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
 
+import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -16,6 +17,10 @@ import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -28,9 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Base64;
 import java.util.Map;
 
@@ -236,14 +239,30 @@ public class WapUserAction {
      * @param session
      * @param headerImg base64图片
      * @return
+     *<b>request payload<b/>
+     *<a href="http://blog.csdn.net/mhmyqn/article/details/25561535"></a>
      */
     @RequestMapping("postHeaderImg")
     @ResponseBody
-    public JSONObject imgUpload(HttpSession session,String headerImg) {
+    public JSONObject imgUpload(HttpSession session,String headerImg,HttpServletRequest request) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success", false);
         }
+
+        //解析文件
+        StringBuilder sb = new StringBuilder();
+        try(BufferedReader reader = request.getReader();) {
+            char[]buff = new char[1024];
+            int len;
+            while((len = reader.read(buff)) != -1) {
+                sb.append(buff,0, len);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        headerImg = (String)JSONObject.fromObject(sb.toString()).get("headerImg");
+
         if (StringUtil.isNull(headerImg)) {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
         }
@@ -251,7 +270,7 @@ public class WapUserAction {
         InputStream inputStream = new ByteArrayInputStream(bytes);
 
         String imgType = FileUtil.getFileType(inputStream);
-        if (!FileUtil.imgTypes.contains(imgType)) {
+        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
         }
         String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
@@ -267,5 +286,23 @@ public class WapUserAction {
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
         }
     }
+
+    @RequestMapping("getPostSignInfo")
+    @ResponseBody
+    public JSONObject createPostSignInfo(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false);
+        }
+        try {
+            CreatePostSignInfoVO postSignInfo = wapPhoneUserService.createPostSignInfo();
+            return JsonResponseUtil.success().element("success",true)
+                    .element("postSignInfo",postSignInfo);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error("获取授权失败").element("success",false);
+        }
+
+    }
+
 
 }

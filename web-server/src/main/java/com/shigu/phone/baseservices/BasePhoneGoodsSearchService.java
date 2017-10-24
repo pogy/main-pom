@@ -190,6 +190,7 @@ public class BasePhoneGoodsSearchService {
         vo.setCreateTime(goods.getPostTime());
         vo.setImgSrcs(goods.getImgUrls());
         vo.setLiPrice(goods.getPiPrice());
+        vo.setDetails(goods.getDescHtml());
         //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
         List<String> services = goods.getServices();
         List<String> list=new ArrayList<>();

@@ -141,30 +141,40 @@ public class WapGoodsSearchAction {
      */
     @RequestMapping("queryGoodsData")
     @ResponseBody
-    public JSONObject queryGoodsData(HttpSession session, OneItemBo oneItemBo) throws CdnException, IOException, TemplateException {
+    public JSONObject queryGoodsData(HttpSession session, OneItemBo oneItemBo){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        OneItemVO oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps.getUserId());
-        if (oneItemVO == null) {
-            return JsonResponseUtil.error("未查询到数据").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success", false);
         }
-        return JsonResponseUtil
-                    .success()
-                    .element("success",true)
-                    .element("title",oneItemVO.getTitle())
-                    .element("goodsId",oneItemVO.getGoodsId())
-                    .element("imgSrcs",oneItemVO.getImgSrcs())
-                    .element("goodsNo",oneItemVO.getGoodsNo())
-                    .element("createTime",oneItemVO.getCreateTime())
-                    .element("goodsLicenses",oneItemVO.getGoodsLicenses())
-                    .element("price",oneItemVO.getPrice())
-                    .element("storeId",oneItemVO.getStoreId())
-                    .element("market",oneItemVO.getMarket())
-                    .element("storeNum",oneItemVO.getStoreNum())
-                    .element("starNum",oneItemVO.getStarNum())
-                    .element("colors",oneItemVO.getColors())
-                    .element("size",oneItemVO.getSize())
-                    .element("shopHeadUrl",oneItemVO.getShopHeadUrl())
-                    .element("itemKvs",oneItemVO.getItemKvs());
+        OneItemVO oneItemVO = null;
+        try {
+            oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps.getUserId());
+            if (oneItemVO == null) {
+                return JsonResponseUtil.error("未查询到数据").element("success",false);
+            }
+            return JsonResponseUtil
+                        .success()
+                        .element("success",true)
+                        .element("title",oneItemVO.getTitle())
+                        .element("goodsId",oneItemVO.getGoodsId())
+                        .element("imgSrcs",oneItemVO.getImgSrcs())
+                        .element("goodsNo",oneItemVO.getGoodsNo())
+                        .element("createTime",oneItemVO.getCreateTime())
+                        .element("goodsLicenses",oneItemVO.getGoodsLicenses())
+                        .element("price",oneItemVO.getPrice())
+                        .element("storeId",oneItemVO.getStoreId())
+                        .element("market",oneItemVO.getMarket())
+                        .element("storeNum",oneItemVO.getStoreNum())
+                        .element("starNum",oneItemVO.getStarNum())
+                        .element("colors",oneItemVO.getColors())
+                        .element("size",oneItemVO.getSize())
+                        .element("shopHeadUrl",oneItemVO.getShopHeadUrl())
+                        .element("itemKvs",oneItemVO.getItemKvs())
+                        .element("details",oneItemVO.getDetails());
+        } catch (OpenException e) {
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
+        }
     }
 
 }
