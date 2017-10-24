@@ -10,7 +10,8 @@ $(function(){
         $$.search({
             page: 1,
             dfTradeId: $('.orderSearchBox [name=dfTradeId]').val(),
-            receiverName: $('.orderSearchBox [name=receiverName]').val()
+            receiverName: $('.orderSearchBox [name=receiverName]').val(),
+            orderDisplay:$('.orderSearchBox [name=orderDisplay]').val()
 
         });
     });
