@@ -54,6 +54,24 @@
                 <li><label>交易号：</label><input type="text" class="fmInput" name="dfTradeId" <#if query.dfTradeId??> value="${query.dfTradeId!}" </#if> ></li>
                 <li><label>收货人：</label><input type="text" class="fmInput" name="receiverName" <#if query.receiverName??> value="${query.receiverName!}" </#if>></li>
                 <li>
+                    <label>拿货人：</label><select class="fmInput" name="orderDisplay" <#if query.orderDisplay??> value="${query.orderDisplay!}" </#if>>
+                    <option value="-1">请选择</option>
+                <#if query.orderDisplay == 0>
+                    <option value="0" selected>不显示</option>
+                    <option value="1">显示</option>
+                <#elseif query.orderDisplay == 1>
+                    <option value="0">不显示</option>
+                    <option value="1" selected>显示</option>
+                <#elseif query.orderDisplay == -1>
+                    <option value="0">不显示</option>
+                    <option value="1" >显示</option>
+
+                </#if>
+
+                </select>
+                </li>
+
+                <li>
 
                 <#assign text>{}</#assign>
                 <#assign moduledata0=text?eval />
@@ -83,7 +101,7 @@
             </ul>
         </div>
 
-    <#assign text>{"fields":[{"name":"dfTradeId","value":"${query.dfTradeId!}"},{"name":"receiverName","value":"${query.receiverName!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"dfTradeId","value":"${query.dfTradeId!}"},{"name":"orderDisplay","value":"${query.orderDisplay!}"},{"name":"receiverName","value":"${query.receiverName!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>
