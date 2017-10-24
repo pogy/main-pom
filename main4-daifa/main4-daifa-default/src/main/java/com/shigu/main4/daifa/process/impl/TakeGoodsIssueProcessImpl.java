@@ -597,11 +597,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 gmap.remove(id);
             }
         }
-        List<Long> oids = BeanMapper.getFieldList(gmap.values(), "dfOrderId", Long.class);
-        DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-        daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
-        List<DaifaOrder> os = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id,take_goods_status"));
-        Map<Long, DaifaOrder> orderMap = BeanMapper.list2Map(os, "dfOrderId", Long.class);
 
         UnComleteAllVO vo = new UnComleteAllVO();
         List<Long> notTakeDfOrderIds = new ArrayList<>();
@@ -612,9 +607,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //已拿
             for (Long id : issueIds) {
                 DaifaGgoods g = gmap.get(id);
-                if (orderMap.get(g.getDfOrderId()) != null && orderMap.get(g.getDfOrderId()).getTakeGoodsStatus() == 2) {
-                    takeDfOrderIds.add(g.getDfOrderId());
-                }
+                takeDfOrderIds.add(g.getDfOrderId());
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
                 subOrderModel.haveTake();
                 gmap.remove(id);
@@ -629,9 +622,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //缺货
             for (Long id : issueIds) {
                 DaifaGgoods g = gmap.get(id);
-                if (orderMap.get(g.getDfOrderId()) != null && orderMap.get(g.getDfOrderId()).getTakeGoodsStatus() == 2) {
-                    takeDfOrderIds.add(g.getDfOrderId());
-                }
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
                 subOrderModel.noTake();
                 notTakeDfOrderIds.add(g.getDfOrderId());
@@ -640,6 +630,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //剩下的已拿
             for (DaifaGgoods g : gmap.values()) {
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
+                takeDfOrderIds.add(g.getDfOrderId());
                 subOrderModel.haveTake();
             }
         }
