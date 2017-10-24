@@ -129,23 +129,7 @@ public class BasePhoneUserService {
 
                 try {
                     //调用安全管理器,安全管理器调用realm
-                    currentUser.login(token);
-                    currentUser.hasRole(RoleEnum.STORE.getValue());
-                    //返回需要数据
-                    PersonalSession personalSession = userBaseService.selUserForSessionByUserName(userName, LoginFromType.XZ);
-
-//                    appUser.setUserId(personalSession.getUserId());
-                    String headUrl = personalSession.getHeadUrl();
-                    appUser.setImgsrc(headUrl);
-                    appUser.setUserNick(personalSession.getUserNick());
-                    //token
-                    appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
-                    //是否是商户
-                    if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
-                        appUser.setImSeller(true);
-                    }else{
-                        appUser.setImSeller(false);
-                    }
+                    PersonalSession personalSession = getPersonalSession(userName, appUser, currentUser, token);
                     //查询是否绑定手机号
                     MemberLicenseExample memberLicenseExample = new MemberLicenseExample();
                     memberLicenseExample.createCriteria().andUserIdEqualTo(personalSession.getUserId()).andLicenseTypeEqualTo(4);
@@ -183,25 +167,8 @@ public class BasePhoneUserService {
                     token.setLoginFromType(LoginFromType.PHONE);
                     token.setRememberMe(true);
                     try {
-                        currentUser.login(token);
-                        currentUser.hasRole(RoleEnum.STORE.getValue());
-                        //返回需要数据
-                        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(userName, LoginFromType.XZ);
+                        PersonalSession personalSession = getPersonalSession(userName, appUser, currentUser, token);
 
-//                        appUser.setUserId(personalSession.getUserId());
-                        String headUrl = personalSession.getHeadUrl();
-                        appUser.setImgsrc(headUrl);
-                        appUser.setUserNick(personalSession.getUserNick());
-                       //获取token
-                        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
-                        //是否是商户
-                        if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
-                            appUser.setImSeller(true);
-                        }else{
-                            appUser.setImSeller(false);
-                        }
-
-                        return appUser;
                     } catch (AuthenticationException e) {
                         //登陆失败
                         token.clear();
@@ -217,6 +184,27 @@ public class BasePhoneUserService {
         }
 
         return appUser;
+    }
+    //封装appUser参数
+    private PersonalSession getPersonalSession( String userName, AppUser appUser, Subject currentUser, CaptchaUsernamePasswordToken token ) {
+        currentUser.login(token);
+        currentUser.hasRole(RoleEnum.STORE.getValue());
+        //返回需要数据
+        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(userName, LoginFromType.XZ);
+
+//                    appUser.setUserId(personalSession.getUserId());
+        String headUrl = personalSession.getHeadUrl();
+        appUser.setImgsrc(headUrl);
+        appUser.setUserNick(personalSession.getUserNick());
+        //token
+        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
+        //是否是商户
+        if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+            appUser.setImSeller(true);
+        }else{
+            appUser.setImSeller(false);
+        }
+        return personalSession;
     }
 
     /**
