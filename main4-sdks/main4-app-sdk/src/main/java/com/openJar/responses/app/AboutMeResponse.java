@@ -1,4 +1,5 @@
 package com.openJar.responses.app;
+import com.openJar.beans.app.AppUser;
 import com.openJar.responses.Response;
 /**
  * 类名:AboutMeResponse
@@ -8,6 +9,15 @@ import com.openJar.responses.Response;
  * 描述:我的信息
  */
 public class AboutMeResponse extends Response {
+	//用户信息
+	private AppUser users;
+	public AppUser getUsers(){
+		return users;
+	}
+
+	public void setUsers(AppUser users){
+		this.users=users;
+	}
 	//头像
 	private String headUrl;
 	//用户昵称

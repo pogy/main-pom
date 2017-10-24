@@ -32,10 +32,9 @@ public class AppUserAction {
 
     @RequestMapping("aboutMe")
     @ResponseBody
-    public JSONObject aboutMe(@Valid AboutMeRequest request, BindingResult bindingResult) throws Main4Exception {
-        if(bindingResult.hasErrors()){
-            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public JSONObject aboutMe(AboutMeRequest request, BindingResult bindingResult) throws Main4Exception {
+
+
         return JSONObject.fromObject(phoneUserService.aboutMe(request));
     }
 

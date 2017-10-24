@@ -226,7 +226,7 @@ public class BasePhoneUserService {
         OpenException openException=new OpenException();
         String code= RedomUtil.redomNumber(6);
         //发送短信
-//        sendMsgService.sendVerificationCode(telephone, code);
+        sendMsgService.sendVerificationCode(telephone, code);
         //客户状态
         if(type==1){
             //登录

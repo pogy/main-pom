@@ -61,29 +61,56 @@ public class OrtherLoginAction {
     private RedisIO redisIO;
     @Autowired
     private TaobaoSessionMapMapper taobaoSessionMapMapper;
-    /*//第三方登录,淘宝授权成功跳转
-    @RequestMapping("phoneOrtherLogin")
-    public String passwordLogin(String nick, String key,Integer type,String sign,Integer flag){
-        try {//为什么decode来decode去,不知道,返回照做
-            String name= URLDecoder.decode(URLDecoder.decode(nick,"utf-8"),"utf-8");
-            String userNick= URLEncoder.encode(URLEncoder.encode(name, "utf-8"), "utf-8");
-            String url="alidao://sjxz/taobao/author?userNick="+userNick;
-            return "redirect:"+url;
-        } catch (UnsupportedEncodingException e1) {
-            logger.error("用户名转义出错",e1);
-        }
-        return "";
-    }*/
     //第三方登录,淘宝授权成功跳转
     @RequestMapping("phoneOrtherLogin")
-    public String passwordLogin( @Valid AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
-        if(result.hasErrors()){
-            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
-        }
+    public String passwordLogin(AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
+
         if(bo.getFlag()==0){
             //未定阅星座网服务
             return "redirect:"+"alidao://sjxz/taobao/author?type=null&token=null&userNick=null&tempId=null&flag=0";
         }
+        //shiro框架-----得到验证用户
+        Subject currentUser = SecurityUtils.getSubject();
+        CaptchaUsernamePasswordToken token = getToken(bo, result, request);
+
+        try {
+            currentUser.login(token);
+            //返回需要数据
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
+            Long userId = personalSession.getUserId();
+            //token
+            String uuid=phoneUserService.createToken(personalSession.getUserId(),"phone_login_token");
+
+            return "redirect:"+"alidao://sjxz/taobao/author?type=1&token="+uuid+"&userNick=null&tempId=null&flag=1";
+        }catch (LoginAuthException e) {
+            TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
+            taobaoSessionMapExample.createCriteria().andNickEqualTo(bo.getNick());
+            List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
+            String userId = taobaoSessionMaps.get(0).getUserId()+"";
+            return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+userId+"&flag=1";
+        }
+    }
+
+    @RequestMapping("otherLoginH5")
+    public String otherLoginH5(AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception {
+        //shiro框架-----得到验证用户
+        Subject currentUser = SecurityUtils.getSubject();
+        CaptchaUsernamePasswordToken token = getToken(bo, result, request);
+        try {
+            //绑定过星座网
+            currentUser.login(token);
+            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=1";
+        }catch (LoginAuthException e){
+            //未绑定星座网
+            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
+        }
+    }
+    //得到shiro验证的token
+    public CaptchaUsernamePasswordToken getToken(@Valid AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception {
+        if(result.hasErrors()){
+            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        CaptchaUsernamePasswordToken token=null;
         //这里用了老的代码
         String usernamezhong = bo.getNick();
         Map<String,String> map=new HashMap<String, String>();
@@ -97,40 +124,23 @@ public class OrtherLoginAction {
         map.put("key", bo.getKey());
         map.put("type", bo.getType()+"");
         map.put("flag",bo.getFlag()+"");
-        if(MD5Attestation.signParamString(map).equals(bo.getSign())){//去登陆
-            Subject currentUser = SecurityUtils.getSubject();
-            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+        if(MD5Attestation.signParamString(map).equals(bo.getSign())) {//去登陆
+            token = new CaptchaUsernamePasswordToken(
                     usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
             //选择登陆方式
             LoginFromType loginFromType;
-            if(bo.getType()==1){
-                loginFromType=LoginFromType.TAOBAO;
-            }else if(bo.getType()==2){
-                loginFromType=LoginFromType.WX;
-            }else{
+            if (bo.getType() == 1) {
+                loginFromType = LoginFromType.TAOBAO;
+            } else if (bo.getType() == 2) {
+                loginFromType = LoginFromType.WX;
+            } else {
                 throw new Main4Exception("登陆方式传入有错");
             }
             token.setLoginFromType(loginFromType);
             token.setRememberMe(true);
             token.setSubKey(bo.getKey());
-            try {
-                currentUser.login(token);
-                //返回需要数据
-                PersonalSession personalSession = userBaseService.selUserForSessionByUserName(usernamezhong, LoginFromType.TAOBAO);
-                Long userId = personalSession.getUserId();
-                //token
-                String uuid=phoneUserService.createToken(personalSession.getUserId(),"phone_login_token");
-
-                return "redirect:"+"alidao://sjxz/taobao/author?type=1&token="+uuid+"&userNick=null&tempId=null&flag=1";
-            }catch (LoginAuthException e) {
-                TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-                taobaoSessionMapExample.createCriteria().andNickEqualTo(bo.getNick());
-                List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-                String userId = taobaoSessionMaps.get(0).getUserId()+"";
-                return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+userId+"&flag=1";
-            }
-
+            return token;
         }
-        return "redirect:error&nick="+bo.getNick()+"&type="+bo.getType()+"&key="+bo.getKey()+"flag="+bo.getFlag()+"&sign="+bo.getSign();
+        return token;
     }
 }
