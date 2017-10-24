@@ -93,10 +93,15 @@ public class GoodsupRecordSimpleService {
         }
     }
 
+    /**
+     * 手动淘宝下架
+     * @param fenNumIid
+     * @param tbNick
+     * @throws TbItemSynException
+     */
     @Transactional(rollbackFor = Exception.class)
     public void downTbOneGoods(Long fenNumIid, String tbNick) throws TbItemSynException {
-        //todo 淘宝站更新淘宝下架接口
-        //taobaoSynService.downTbGoods(fenNumIid, tbNick);
+        taobaoSynService.downTbGoods(fenNumIid, tbNick);
     }
 
     /**
