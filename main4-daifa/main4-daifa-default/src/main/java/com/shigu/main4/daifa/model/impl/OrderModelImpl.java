@@ -149,7 +149,14 @@ public class OrderModelImpl implements OrderModel {
             addrs=addrs.replaceAll ("null","");
             addrs=addrs.replaceAll (" ","");
             ////////////////////////===============地址处理end============/////////////////////////////
-            daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs.trim ());
+            if(logisticsBO.getTown ()!=null){
+                daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs.trim ());
+            }else{
+                daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " "  + addrs.trim ());//区为空
+            }
+
+
+
             daifaTrade.setDaifaType (orderBO.getType ());
             daifaTrade.setExpressId (logisticsBO.getCompanyId ());
             daifaTrade.setExpressName (logisticsBO.getCompany ());
