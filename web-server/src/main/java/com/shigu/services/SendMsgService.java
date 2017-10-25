@@ -32,7 +32,7 @@ public class SendMsgService {
      * @param code 验证码
      */
     public void sendVerificationCode(String phone, String code){
-        String content = "【四季星座网】您正在进行手机验证，验证码" + code + "，请在10分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
+        String content = "您正在进行手机验证，验证码" + code + "，请在10分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
         sendSms_quick(phone,content);
     }
 
