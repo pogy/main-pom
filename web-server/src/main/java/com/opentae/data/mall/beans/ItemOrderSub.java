@@ -10,349 +10,365 @@ public class ItemOrderSub implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-    private Long soid;
+	private Long soid;
 
     /**
      * 订单号
      */
-    private Long oid;
+	private Long oid;
 
     /**
      * 产品ID
      */
-    private Long pid;
+	private Long pid;
 
     /**
      * sku信息
      */
-    private Long skuId;
+	private Long skuId;
 
     /**
      * 件数
      */
-    private Integer num;
+	private Integer num;
 
     /**
      * 缺货数量
      */
-    private Integer outOfStok;
-    /**
-     * 拿到货数量
-     */
-    private Integer inStok;
-
+	private Integer outOfStok;
 
     /**
      * 应付总额
      */
-    private Long shouldPayMoney;
+	private Long shouldPayMoney;
 
     /**
      * 实退
      */
-    private Long refundMoney;
+	private Long refundMoney;
 
     /**
      * 0初始状态，1已退，2已发
      */
-    private Integer status;
+	private Integer status;
 
     /**
      * 备注
      */
-    private String mark;
+	private String mark;
 
     /**
      * 交易信息ID
      */
-    private Long logisticsId;
+	private Long logisticsId;
 
     /**
      * 星座商品ID
      */
-    private Long goodsId;
+	private Long goodsId;
 
     /**
      * 图片链接
      */
-    private String picUrl;
+	private String picUrl;
 
     /**
      * 分站标识
      */
-    private String webSite;
+	private String webSite;
 
     /**
      * 标题
      */
-    private String title;
+	private String title;
 
     /**
      * 产品价格
      */
-    private Long price;
+	private Long price;
 
     /**
      * 市场ID
      */
-    private Long marketId;
+	private Long marketId;
 
     /**
      * 楼层ID
      */
-    private Long floorId;
+	private Long floorId;
 
     /**
      * 店铺ID
      */
-    private Long shopId;
+	private Long shopId;
 
     /**
      * 档口号
      */
-    private String shopNum;
+	private String shopNum;
 
     /**
      * 市场名字
      */
-    private String marketName;
+	private String marketName;
 
     /**
      * 楼层号
      */
-    private String floor;
+	private String floor;
 
     /**
      * 重量，克为单位
      */
-    private Long weight;
+	private Long weight;
 
     /**
      * 货号
      */
-    private String goodsNo;
+	private String goodsNo;
 
     /**
      * 尺码
      */
-    private String size;
+	private String size;
 
     /**
      * 颜色
      */
-    private String color;
+	private String color;
 
-    public void setSoid(Long soid) {
-        this.soid = soid;
-    }
+    /**
+     * 有货时间
+     */
+	private String outOfStokReason;
 
-    public Long getSoid() {
-        return this.soid;
-    }
+    /**
+     * 已拿到件数
+     */
+	private Integer inStok;
 
-    public void setOid(Long oid) {
-        this.oid = oid;
-    }
+	public void setSoid(Long soid) {
+		this.soid = soid;
+	}
 
-    public Long getOid() {
-        return this.oid;
-    }
+	public Long getSoid() {
+		return this.soid;
+	}
 
-    public void setPid(Long pid) {
-        this.pid = pid;
-    }
+	public void setOid(Long oid) {
+		this.oid = oid;
+	}
 
-    public Long getPid() {
-        return this.pid;
-    }
+	public Long getOid() {
+		return this.oid;
+	}
 
-    public void setSkuId(Long skuId) {
-        this.skuId = skuId;
-    }
+	public void setPid(Long pid) {
+		this.pid = pid;
+	}
 
-    public Long getSkuId() {
-        return this.skuId;
-    }
+	public Long getPid() {
+		return this.pid;
+	}
 
-    public void setNum(Integer num) {
-        this.num = num;
-    }
+	public void setSkuId(Long skuId) {
+		this.skuId = skuId;
+	}
 
-    public Integer getNum() {
-        return this.num;
-    }
+	public Long getSkuId() {
+		return this.skuId;
+	}
 
-    public void setOutOfStok(Integer outOfStok) {
-        this.outOfStok = outOfStok;
-    }
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 
-    public Integer getOutOfStok() {
-        return this.outOfStok;
-    }
+	public Integer getNum() {
+		return this.num;
+	}
 
-    public void setShouldPayMoney(Long shouldPayMoney) {
-        this.shouldPayMoney = shouldPayMoney;
-    }
+	public void setOutOfStok(Integer outOfStok) {
+		this.outOfStok = outOfStok;
+	}
 
-    public Long getShouldPayMoney() {
-        return this.shouldPayMoney;
-    }
+	public Integer getOutOfStok() {
+		return this.outOfStok;
+	}
 
-    public void setRefundMoney(Long refundMoney) {
-        this.refundMoney = refundMoney;
-    }
+	public void setShouldPayMoney(Long shouldPayMoney) {
+		this.shouldPayMoney = shouldPayMoney;
+	}
 
-    public Long getRefundMoney() {
-        return this.refundMoney;
-    }
+	public Long getShouldPayMoney() {
+		return this.shouldPayMoney;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public void setRefundMoney(Long refundMoney) {
+		this.refundMoney = refundMoney;
+	}
 
-    public Integer getStatus() {
-        return this.status;
-    }
+	public Long getRefundMoney() {
+		return this.refundMoney;
+	}
 
-    public void setMark(String mark) {
-        this.mark = mark;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public String getMark() {
-        return this.mark;
-    }
+	public Integer getStatus() {
+		return this.status;
+	}
 
-    public void setLogisticsId(Long logisticsId) {
-        this.logisticsId = logisticsId;
-    }
+	public void setMark(String mark) {
+		this.mark = mark;
+	}
 
-    public Long getLogisticsId() {
-        return this.logisticsId;
-    }
+	public String getMark() {
+		return this.mark;
+	}
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }
+	public void setLogisticsId(Long logisticsId) {
+		this.logisticsId = logisticsId;
+	}
 
-    public Long getGoodsId() {
-        return this.goodsId;
-    }
+	public Long getLogisticsId() {
+		return this.logisticsId;
+	}
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
 
-    public String getPicUrl() {
-        return this.picUrl;
-    }
+	public Long getGoodsId() {
+		return this.goodsId;
+	}
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
+	public void setPicUrl(String picUrl) {
+		this.picUrl = picUrl;
+	}
 
-    public String getWebSite() {
-        return this.webSite;
-    }
+	public String getPicUrl() {
+		return this.picUrl;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
 
-    public String getTitle() {
-        return this.title;
-    }
+	public String getWebSite() {
+		return this.webSite;
+	}
 
-    public void setPrice(Long price) {
-        this.price = price;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public Long getPrice() {
-        return this.price;
-    }
+	public String getTitle() {
+		return this.title;
+	}
 
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
+	public void setPrice(Long price) {
+		this.price = price;
+	}
 
-    public Long getMarketId() {
-        return this.marketId;
-    }
+	public Long getPrice() {
+		return this.price;
+	}
 
-    public void setFloorId(Long floorId) {
-        this.floorId = floorId;
-    }
+	public void setMarketId(Long marketId) {
+		this.marketId = marketId;
+	}
 
-    public Long getFloorId() {
-        return this.floorId;
-    }
+	public Long getMarketId() {
+		return this.marketId;
+	}
 
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
+	public void setFloorId(Long floorId) {
+		this.floorId = floorId;
+	}
 
-    public Long getShopId() {
-        return this.shopId;
-    }
+	public Long getFloorId() {
+		return this.floorId;
+	}
 
-    public void setShopNum(String shopNum) {
-        this.shopNum = shopNum;
-    }
+	public void setShopId(Long shopId) {
+		this.shopId = shopId;
+	}
 
-    public String getShopNum() {
-        return this.shopNum;
-    }
+	public Long getShopId() {
+		return this.shopId;
+	}
 
-    public void setMarketName(String marketName) {
-        this.marketName = marketName;
-    }
+	public void setShopNum(String shopNum) {
+		this.shopNum = shopNum;
+	}
 
-    public String getMarketName() {
-        return this.marketName;
-    }
+	public String getShopNum() {
+		return this.shopNum;
+	}
 
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
+	public void setMarketName(String marketName) {
+		this.marketName = marketName;
+	}
 
-    public String getFloor() {
-        return this.floor;
-    }
+	public String getMarketName() {
+		return this.marketName;
+	}
 
-    public void setWeight(Long weight) {
-        this.weight = weight;
-    }
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
 
-    public Long getWeight() {
-        return this.weight;
-    }
+	public String getFloor() {
+		return this.floor;
+	}
 
-    public void setGoodsNo(String goodsNo) {
-        this.goodsNo = goodsNo;
-    }
+	public void setWeight(Long weight) {
+		this.weight = weight;
+	}
 
-    public String getGoodsNo() {
-        return this.goodsNo;
-    }
+	public Long getWeight() {
+		return this.weight;
+	}
 
-    public void setSize(String size) {
-        this.size = size;
-    }
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
 
-    public String getSize() {
-        return this.size;
-    }
+	public String getGoodsNo() {
+		return this.goodsNo;
+	}
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+	public void setSize(String size) {
+		this.size = size;
+	}
 
-    public String getColor() {
-        return this.color;
-    }
-    public Integer getInStok() {
-        return inStok;
-    }
-    public void setInStok(Integer inStok) {
-        this.inStok = inStok;
-    }
+	public String getSize() {
+		return this.size;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getColor() {
+		return this.color;
+	}
+
+	public void setOutOfStokReason(String outOfStokReason) {
+		this.outOfStokReason = outOfStokReason;
+	}
+
+	public String getOutOfStokReason() {
+		return this.outOfStokReason;
+	}
+
+	public void setInStok(Integer inStok) {
+		this.inStok = inStok;
+	}
+
+	public Integer getInStok() {
+		return this.inStok;
+	}
+
 }
