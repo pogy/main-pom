@@ -24,6 +24,7 @@ import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
@@ -473,7 +474,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsList21init")
-    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException {
+    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
 
         model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
@@ -482,8 +483,12 @@ public class ShopAction {
         }
         //商品列表数据  String keyword,String goodsNo,Long numIid, Long shopId, int pageNo, int pageSize
         try {
-            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(bo.getKeyword(),bo.getGoodsNo(),bo.getGoodsNumIid()
-                    ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
+            StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
+            search.setKeyword(bo.getKeyword());
+            search.setGoodsNo(bo.getGoodsNo());
+            search.setNumIid(bo.getGoodsNumIid());
+            search.setState(bo.getState());
+            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);

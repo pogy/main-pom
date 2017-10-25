@@ -62,6 +62,15 @@ public class OnsaleItemVO {
 
     private String linkHrefPassword;
 
+    //是否已设置面料 1未设置 2已设置
+    private Integer constituentType;
+    //面料成分
+    private String fabric;
+    //里料成分
+    private String inFabric;
+    //总销量
+    private Integer saleCount;
+
     public void setType(String type) {
         this.type = type;
     }
@@ -111,6 +120,10 @@ public class OnsaleItemVO {
         this.setPrice3(onsaleItem.getPrice());
         this.setLoadDate(onsaleItem.getCreated());
         this.setIsShowcase(onsaleItem.getIsShowCase());
+        this.setSaleCount(onsaleItem.getSaleCount());
+        this.setFabric(onsaleItem.getFabric());
+        this.setInFabric(onsaleItem.getInFabric());
+        this.setConstituentType(onsaleItem.getConstituentType());
     }
 
     public Integer getIsShowcase() {
@@ -323,5 +336,37 @@ public class OnsaleItemVO {
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    public Integer getConstituentType() {
+        return constituentType;
+    }
+
+    public void setConstituentType(Integer constituentType) {
+        this.constituentType = constituentType;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
+    }
+
+    public Integer getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(Integer saleCount) {
+        this.saleCount = saleCount;
     }
 }

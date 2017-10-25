@@ -1,78 +1,71 @@
-package com.shigu.main4.item.vo;
+package com.shigu.main4.item.beans;
 
-
-import com.shigu.main4.item.enums.ItemFrom;
+import com.opentae.core.mybatis.config.Column;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 出售中的商品
- * Created by zhaohongbo on 17/3/2.
+ * 类名：GoodsInfoVO
+ * 类路径：com.shigu.main4.item.beans.GoodsInfoVO
+ * 创建者：王浩翔
+ * 创建时间：2017-10-25 14:41
+ * 项目：main-pom
+ * 描述：goodsTiny基础信息
  */
-public class OnsaleItem implements Serializable{
+public class GoodsInfoVO implements Serializable {
     /**
      * 商品ID
      */
+    @Column("shigu_goods_tiny_{webSite}.goods_id")
     private Long itemId;
     /**
      * 标题
      */
+    @Column("shigu_goods_tiny_{webSite}.title")
     private String title;
     /**
      * 首图
      */
+    @Column("shigu_goods_tiny_{webSite}.pic_url")
     private String picUrl;
     /**
      * 货号
      */
+    @Column("shigu_goods_tiny_{webSite}.goods_no")
     private String goodsNo;
     /**
      * 字符型的批发价
      * 以元为单位
      */
+    @Column("shigu_goods_tiny_{webSite}.pi_price_string")
     private String piPrice;
     /**
      * 字符型的零售价
      * 以元为单位
      */
+    @Column("shigu_goods_tiny_{webSite}.price_string")
     private String price;
-    /**
-     * 商品来源
-     */
-    private ItemFrom itemFrom;
     /**
      * 是否橱窗推荐,1是    0不是
      */
+    @Column("shigu_goods_tiny_{webSite}.is_Showcase")
     private Integer isShowCase;
     /**
      * 创建时间
      */
+    @Column("shigu_goods_tiny_{webSite}.created")
     private Date created;
-    /**
-     * 上货量
-     */
-    private Integer goodsUpNum;
     /**
      * 分站标识
      */
+    @Column("shigu_goods_tiny_{webSite}.web_site")
     private String webSite;
     /**
-     * 总销量
+     * 数据来源
      */
-    private Integer saleCount;
-    /**
-     * 面料成分
-     */
-    private String fabric;
-    /**
-     * 里料成分
-     */
-    private String inFabric;
-    /**
-     * 是否已设置面料 1未设置 2已设置
-     */
-    private Integer constituentType;
+    @Column("shigu_goods_tiny_{webSite}.is_excel_imp")
+    private Integer isExcelImp;
 
     public Long getItemId() {
         return itemId;
@@ -122,14 +115,6 @@ public class OnsaleItem implements Serializable{
         this.price = price;
     }
 
-    public ItemFrom getItemFrom() {
-        return itemFrom;
-    }
-
-    public void setItemFrom(ItemFrom itemFrom) {
-        this.itemFrom = itemFrom;
-    }
-
     public Integer getIsShowCase() {
         return isShowCase;
     }
@@ -146,14 +131,6 @@ public class OnsaleItem implements Serializable{
         this.created = created;
     }
 
-    public Integer getGoodsUpNum() {
-        return goodsUpNum;
-    }
-
-    public void setGoodsUpNum(Integer goodsUpNum) {
-        this.goodsUpNum = goodsUpNum;
-    }
-
     public String getWebSite() {
         return webSite;
     }
@@ -162,35 +139,11 @@ public class OnsaleItem implements Serializable{
         this.webSite = webSite;
     }
 
-    public Integer getSaleCount() {
-        return saleCount;
+    public Integer getIsExcelImp() {
+        return isExcelImp;
     }
 
-    public void setSaleCount(Integer saleCount) {
-        this.saleCount = saleCount;
-    }
-
-    public String getFabric() {
-        return fabric;
-    }
-
-    public void setFabric(String fabric) {
-        this.fabric = fabric;
-    }
-
-    public String getInFabric() {
-        return inFabric;
-    }
-
-    public void setInFabric(String inFabric) {
-        this.inFabric = inFabric;
-    }
-
-    public Integer getConstituentType() {
-        return constituentType;
-    }
-
-    public void setConstituentType(Integer constituentType) {
-        this.constituentType = constituentType;
+    public void setIsExcelImp(Integer isExcelImp) {
+        this.isExcelImp = isExcelImp;
     }
 }
