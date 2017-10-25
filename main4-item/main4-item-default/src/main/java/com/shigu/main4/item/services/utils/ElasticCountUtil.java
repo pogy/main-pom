@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
+import com.shigu.main4.item.vo.GoodsAggsVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class ElasticCountUtil {
      * @param tinies 商品集合
      * @return
      */
-    public GoodsupLongTerms countItemUp(List<ShiguGoodsTiny> tinies) {
-        GoodsupLongTerms goodsupLongTerms = new GoodsupLongTerms();
+    public GoodsupLongTerms<Integer> countItemUp(List<ShiguGoodsTiny> tinies) {
+        GoodsupLongTerms<Integer> goodsupLongTerms = new GoodsupLongTerms<Integer>();
 
         List<Long> goodsIds = new ArrayList<>(BeanMapper.getFieldSet(tinies, "goodsId", Long.class));
         if (!CollectionUtils.isEmpty(goodsIds)) {
@@ -66,5 +67,32 @@ public class ElasticCountUtil {
             }
         }
         return goodsupLongTerms;
+    }
+
+    public GoodsupLongTerms<GoodsAggsVO> selItemCountData(List<Long> goodsIds){
+        GoodsupLongTerms<GoodsAggsVO> itemResult = new GoodsupLongTerms<>();
+        if (!CollectionUtils.isEmpty(goodsIds)) {
+            GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+            example.createCriteria().andGoodsIdIn(goodsIds);
+            for (GoodsCountForsearch goodsCountForsearch : goodsCountForsearchMapper.selectByExample(example)) {
+                GoodsAggsVO goodsAggsVO = new GoodsAggsVO();
+                goodsAggsVO.addGoodsupNum(goodsCountForsearch.getUp().intValue());
+                goodsAggsVO.addSaleCount(goodsCountForsearch.getTrade().intValue());
+                goodsAggsVO.setFabric(goodsCountForsearch.getFabric());
+                goodsAggsVO.setInFabric(goodsCountForsearch.getInFabric());
+                itemResult.put(goodsCountForsearch.getGoodsId().toString(),goodsAggsVO);
+            }
+            GoodsupNorealExample norealExample = new GoodsupNorealExample();
+            norealExample.createCriteria().andItemIdIn(goodsIds);
+            for (GoodsupNoreal goodsupNoreal : goodsupNorealMapper.selectByExample(norealExample)) {
+                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.toString());
+                if (goodsAggsVO == null) {
+                    goodsAggsVO = new GoodsAggsVO();
+                    itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);
+                }
+                goodsAggsVO.addGoodsupNum(goodsupNoreal.getAddNum());
+            }
+        }
+        return itemResult;
     }
 }

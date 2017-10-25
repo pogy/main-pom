@@ -7,6 +7,6 @@ import java.util.HashMap;
  *
  * Created by zhaohongbo on 17/4/9.
  */
-public class GoodsupLongTerms extends HashMap<String,Integer> {
+public class GoodsupLongTerms<T> extends HashMap<String,T> {
 
 }

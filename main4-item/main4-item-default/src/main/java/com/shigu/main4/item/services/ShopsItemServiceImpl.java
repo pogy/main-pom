@@ -1,21 +1,27 @@
 package com.shigu.main4.item.services;
 
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.GoodsCountForsearchExample;
+import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguMarketMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.FileUtil;
+import com.shigu.main4.item.beans.GoodsInfoVO;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
+import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ShopsItemException;
@@ -35,10 +41,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/3/2.
  * 店内宝贝服务
+ *
  * @author wxc
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
@@ -57,6 +65,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     @Autowired
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
+
     @Autowired
     private ShowForCdnService showForCdnService;
 
@@ -65,6 +74,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     @Autowired
     private ElasticCountUtil elasticCountUtil;
+
+    @Autowired
+    private MultipleMapper multipleMapper;
 
     @Autowired
     OssIO ossIO;
@@ -78,7 +90,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      * @param shopId   店铺ID
      * @param pageNo   当前页
      * @param pageSize 每页条数
-     *
      * @return 分页查询
      */
     @Override
@@ -114,8 +125,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             @Override
             protected List<OnsaleItem> selectByExample(SgExample example) {
                 List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByConditionList(example);
-                GoodsupLongTerms countAgg = elasticCountUtil.countItemUp(shiguGoodsTinies);
-
+                GoodsupLongTerms<GoodsAggsVO> countAgg = elasticCountUtil.selItemCountData(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
                 List<OnsaleItem> onsaleItems = new ArrayList<>();
                 for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
                     OnsaleItem item = new OnsaleItem();
@@ -132,8 +142,17 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setItemId(tiny.getGoodsId());
                     item.setIsShowCase(tiny.getIsShowcase());
                     item.setGoodsUpNum(0);
-                    if (countAgg != null && (countAgg.get(item.getItemId().toString()) != null)){
-                        item.setGoodsUpNum(countAgg.get(item.getItemId().toString()) );
+                    item.setSaleCount(0);
+                    item.setConstituentType(1);
+                    GoodsAggsVO goodsAggsVO;
+                    if (countAgg != null && ((goodsAggsVO = countAgg.get(item.getItemId().toString())) != null)) {
+                        item.setGoodsUpNum(goodsAggsVO.getGoodsUpNum());
+                        item.setSaleCount(goodsAggsVO.getSaleCount());
+                        item.setFabric(goodsAggsVO.getFabric());
+                        item.setInFabric(goodsAggsVO.getInFabric());
+                        if (StringUtils.isNotBlank(goodsAggsVO.getFabric())) {
+                            item.setConstituentType(2);
+                        }
                     }
                 }
                 return onsaleItems;
@@ -148,6 +167,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     /**
      * 给修复宝贝提供数据
+     *
      * @param keyword
      * @param goodsId
      * @param shopId
@@ -172,7 +192,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
                 if (StringUtils.isNotEmpty(keyword))
                     criteria.andTitleLike("%" + keyword + "%");
-                if (goodsId!=null)
+                if (goodsId != null)
                     criteria.andGoodsIdEqualTo(goodsId);
                 criteria.andIsExcelImpEqualTo(0);
                 return tinyExample;
@@ -186,7 +206,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             @Override
             protected List<XiufuItem> selectByExample(SgExample example) {
                 List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByConditionList(example);
-                GoodsupLongTerms countAgg = elasticCountUtil.countItemUp(shiguGoodsTinies);
+                GoodsupLongTerms<Integer> countAgg = elasticCountUtil.countItemUp(shiguGoodsTinies);
 
                 List<XiufuItem> onsaleItems = new ArrayList<>();
                 for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
@@ -205,7 +225,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setIsShowCase(tiny.getIsShowcase());
                     item.setGoodsUpNum(0);
                     if (countAgg != null && countAgg.get(item.getItemId().toString()) != null) {
-                        item.setGoodsUpNum(countAgg.get(item.getItemId().toString()) );
+                        item.setGoodsUpNum(countAgg.get(item.getItemId().toString()));
                     }
                 }
                 return onsaleItems;
@@ -227,7 +247,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      * @param shopId   店铺ID
      * @param pageNo   当前页
      * @param pageSize 每页条数
-     *
      * @return
      */
     @Override
@@ -290,14 +309,10 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     }
 
 
-
-
-
     /**
      * 店内商品统计
      *
      * @param shopId 店铺ID
-     *
      * @return 统计结果
      */
     @Override
@@ -326,11 +341,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     /**
      * 根据店铺ID查询分站
+     *
      * @param shopId 店铺ID
      * @return 分站
      * @throws ItemException 店铺不存在
      */
-    protected  String selShopWebSite(Long shopId) throws ItemException{
+    protected String selShopWebSite(Long shopId) throws ItemException {
         ShiguShop shiguShop;
         if (shopId == null || (shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(shopId, FieldUtil.codeFields("shop_id,web_site"))) == null)
             throw new ShopsItemException(ShopsItemException.ShopsItemExceptionEnum.SHOP_DOES_NOT_EXIST);
@@ -339,6 +355,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     /**
      * 图片压缩包
+     *
      * @param goodsId
      * @return
      */
@@ -346,12 +363,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     public String itemImgzipUrl(Long goodsId) {
 
         CdnItem cdnItem = showForCdnService.selItemById(goodsId);
-        if(cdnItem == null){
+        if (cdnItem == null) {
             return null;
         }
 
         String tmpdirPath = System.getProperty("java.io.tmpdir");
-        if(StringUtils.isEmpty(tmpdirPath)){
+        if (StringUtils.isEmpty(tmpdirPath)) {
             return null;
         }
 
@@ -360,7 +377,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
         String yearMm = DateUtil.dateToString(new Date(), "yyyyMM");
 
-        if(StringUtils.isEmpty(cdnItem.getHuohao())){
+        if (StringUtils.isEmpty(cdnItem.getHuohao())) {
             cdnItem.setHuohao("");
         }
 
@@ -369,14 +386,14 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
         String savePath = tmpdirPath + "/" + yearMm + "/" + fileFolder;
 
-        String filePath = "imgzip/"+ fileFolder + ".zip";
+        String filePath = "imgzip/" + fileFolder + ".zip";
 
-        if(ossIO.fileExist(filePath)){
-            return ossIO.getDomain()+filePath;
+        if (ossIO.fileExist(filePath)) {
+            return ossIO.getDomain() + filePath;
         }
 
         File file = new File(savePath);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
 
@@ -386,16 +403,16 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
         // 商品主图
         List<String> mainImgsUrlList = cdnItem.getImgUrl();
-        for(int i = 0;i<mainImgsUrlList.size();i++){
-            FileImgsUtil.addpic(savePath + "/主图/", mainImgsUrlList.get(i),String.valueOf(i+1));
+        for (int i = 0; i < mainImgsUrlList.size(); i++) {
+            FileImgsUtil.addpic(savePath + "/主图/", mainImgsUrlList.get(i), String.valueOf(i + 1));
         }
 
         // 商品属性图
         List<SaleProp> salePropList = cdnItem.getColors();
-        for(int j = 0;j< salePropList.size();j++){
+        for (int j = 0; j < salePropList.size(); j++) {
             SaleProp saleProp = salePropList.get(j);
-            if(saleProp != null && !StringUtils.isEmpty(saleProp.getImgUrl())){
-                FileImgsUtil.addpic(savePath + "/属性图/", saleProp.getImgUrl(),saleProp.getValue());
+            if (saleProp != null && !StringUtils.isEmpty(saleProp.getImgUrl())) {
+                FileImgsUtil.addpic(savePath + "/属性图/", saleProp.getImgUrl(), saleProp.getValue());
             }
         }
 
@@ -404,7 +421,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             String zipUrl = tmpdirPath + "/" + yearMm + "/" + fileFolder + ".zip";
             FileImgsUtil.zip(savePath + "/", zipUrl);
             File zipFile = new File(zipUrl);
-            String uploadurl = ossIO.uploadFile(zipFile,filePath);
+            String uploadurl = ossIO.uploadFile(zipFile, filePath);
             // 删除文件夹
             FileUtil.deleteDir(file);
             zipFile.delete();
@@ -416,4 +433,167 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         return null;
     }
 
+    /**
+     * 获取店内未设置大图、材质、最低零售价统计
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    @Override
+    public ShopUnprocessItemCount selShopUnprocessItemCount(Long shopId, String webSite) {
+        ShopUnprocessItemCount countResult = new ShopUnprocessItemCount();
+        StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
+        countResult.setNoBigPicGoodsNum(multipleMapper.countByMultipleExample(selNoBigPic(shopId, webSite,bo)));
+        countResult.setNolowestLsjNum(multipleMapper.countByMultipleExample(selNoLowPrice(shopId, webSite,bo)));
+        countResult.setNoConstituentNum(multipleMapper.countByMultipleExample(selNoConstituent(shopId, webSite,bo)));
+        return countResult;
+    }
+
+    @Override
+    public ShiguPager<OnsaleItem> selOnsaleItems(Long shopId, String webSite, StoreGoodsListSearchBO bo, int pageNo, int pageSize) throws Main4Exception {
+        if (shopId == null || webSite == null) {
+            throw new Main4Exception("只有档口可以查看店铺出售中的商品");
+        }
+        if (bo == null) {
+            bo = new StoreGoodsListSearchBO();
+        }
+        ShiguPager<OnsaleItem> pager = new ShiguPager<>();
+        pager.setNumber(pageNo);
+        MultipleExample goodsExample;
+        if (bo.getState() == null) {
+            goodsExample = selDefaultGoods(shopId, webSite, bo);
+        } else {
+            switch (bo.getState()) {
+                case 1:
+                    goodsExample = selNoLowPrice(shopId, webSite, bo);
+                    break;
+                case 2:
+                    goodsExample = selNoBigPic(shopId, webSite, bo);
+                    break;
+                case 3:
+                    goodsExample = selNoConstituent(shopId, webSite, bo);
+                    break;
+                default:
+                    goodsExample = selDefaultGoods(shopId, webSite, bo);
+                    break;
+            }
+        }
+        goodsExample.setWebSite(webSite);
+        int totalCount = multipleMapper.countByMultipleExample(goodsExample);
+        pager.calPages(totalCount,pageSize);
+
+        goodsExample.setStartIndex((pageNo-1)*pageSize);
+        goodsExample.setEndIndex(pageSize);
+        List<GoodsInfoVO> goodsInfoVOS = multipleMapper.selectFieldsByMultipleExample(goodsExample, GoodsInfoVO.class);
+        List<OnsaleItem> onsaleItems = new ArrayList<>(goodsInfoVOS.size());
+        pager.setContent(onsaleItems);
+        if (goodsInfoVOS.size()>0) {
+            List<Long> goodsIds = goodsInfoVOS.stream().map(GoodsInfoVO::getItemId).collect(Collectors.toList());
+            GoodsupLongTerms<GoodsAggsVO> goodsOtherInfoMap = elasticCountUtil.selItemCountData(goodsIds);
+            goodsInfoVOS.forEach(o->{
+                OnsaleItem item = BeanMapper.map(o, OnsaleItem.class);
+                if (o.getIsExcelImp() != null) {
+                    item.setItemFrom(ItemFrom.values()[o.getIsExcelImp()]);
+                }
+                //一些其他表获取的信息的默认值
+                item.setGoodsUpNum(0);
+                item.setSaleCount(0);
+                item.setConstituentType(1);
+                GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
+                if (otherInfo != null) {
+                    //设置材质时必须设置面料为必填项
+                    if (StringUtils.isNotBlank(otherInfo.getFabric())) {
+                        item.setConstituentType(2);
+                    }
+                    item.setGoodsUpNum(otherInfo.getGoodsUpNum());
+                    item.setSaleCount(otherInfo.getSaleCount());
+                    item.setFabric(otherInfo.getFabric());
+                    item.setInFabric(otherInfo.getInFabric());
+                }
+                onsaleItems.add(item);
+            });
+        }
+        return pager;
+    }
+
+    /**
+     * 出售中的商品，无大图商品
+     * 所有参数非空
+     * @param shopId
+     * @param webSite
+     * @param bo
+     * @return
+     */
+    private MultipleExample selNoBigPic(Long shopId, String webSite, StoreGoodsListSearchBO bo) {
+        ShiguGoodsTinyExample noBigPicGoodsExample = shopGoodsExample(shopId, webSite,bo);
+        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
+        goodsCountForsearchExample.createCriteria().andHadBigzipEqualTo(1);
+        return MultipleExampleBuilder.from(noBigPicGoodsExample).innerJoin(goodsCountForsearchExample).on(noBigPicGoodsExample.createCriteria().equalTo(ShiguGoodsTinyExample.goodsId, GoodsCountForsearchExample.goodsId)).build();
+    }
+
+    /**
+     * 出售中的商品，无最低零售价
+     * 所有参数非空
+     * @param shopId
+     * @param webSite
+     * @param bo
+     * @return
+     */
+    private MultipleExample selNoLowPrice(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
+        ShiguGoodsTinyExample noLowPriceGoodsExample = shopGoodsExample(shopId, webSite,bo);
+        ShiguGoodsModifiedExample shiguGoodsModifiedExample = new ShiguGoodsModifiedExample();
+        shiguGoodsModifiedExample.createCriteria().andHasSetPriceEqualTo(1);
+        return MultipleExampleBuilder.from(noLowPriceGoodsExample).innerJoin(shiguGoodsModifiedExample).on(noLowPriceGoodsExample.createCriteria().andPriceIsNotNull().equalTo(ShiguGoodsTinyExample.goodsId, ShiguGoodsModifiedExample.itemId)).build();
+    }
+
+    /**
+     * 出售中的商品，无材料成分
+     * 所有参数非空
+     * @param shopId
+     * @param webSite
+     * @param bo
+     * @return
+     */
+    private MultipleExample selNoConstituent(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
+        ShiguGoodsTinyExample noConstituentGoodsExample = shopGoodsExample(shopId, webSite,bo);
+        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
+        goodsCountForsearchExample.createCriteria().andFabricIsNull();
+        return MultipleExampleBuilder.from(noConstituentGoodsExample).innerJoin(goodsCountForsearchExample).on(noConstituentGoodsExample.createCriteria().equalTo(ShiguGoodsTinyExample.goodsId, GoodsCountForsearchExample.goodsId)).build();
+    }
+
+    /**
+     * 出售中的商品，全部商品
+     * 所有参数非空
+     * @param shopId
+     * @param webSite
+     * @param bo
+     * @return
+     */
+    private MultipleExample selDefaultGoods(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
+        ShiguGoodsTinyExample example = shopGoodsExample(shopId, webSite, bo);
+        return MultipleExampleBuilder.from(example).build();
+    }
+
+    /**
+     * 档口的goodsTinyExample获取
+     * 所有参数非空
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    private ShiguGoodsTinyExample shopGoodsExample(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
+        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+        example.setWebSite(webSite);
+        ShiguGoodsTinyExample.Criteria criteria = example.createCriteria().andStoreIdEqualTo(shopId);
+        if (StringUtils.isNotBlank(bo.getKeyword())) {
+            criteria.andTitleLike('%'+bo.getKeyword()+'%');
+        }
+        if (StringUtils.isNotBlank(bo.getGoodsNo())) {
+            criteria.andTitleLike('%'+bo.getGoodsNo()+'%');
+        }
+        if (bo.getNumIid() != null) {
+            criteria.andNumIidEqualTo(bo.getNumIid());
+        }
+        return example;
+    }
 }
