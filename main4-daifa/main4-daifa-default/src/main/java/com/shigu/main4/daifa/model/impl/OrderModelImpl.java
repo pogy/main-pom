@@ -115,7 +115,19 @@ public class OrderModelImpl implements OrderModel {
             daifaTrade.setReceiverName (logisticsBO.getName ());
             daifaTrade.setReceiverPhone (logisticsBO.getTelephone ());
             daifaTrade.setReceiverState (logisticsBO.getProv ());
-            daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + logisticsBO.getAddress ());
+            /////////////////////////==============地址处理start===========///////////////////////////
+            String addrs=logisticsBO.getAddress ();
+            if(logisticsBO.getProv ()!=null&&!"".equals (logisticsBO.getProv ())&&logisticsBO.getProv ().endsWith ("省")){
+                addrs=addrs.replaceAll (logisticsBO.getProv (),"");
+            }
+            if(logisticsBO.getCity ()!=null&&!"".equals (logisticsBO.getCity ())){
+                addrs=addrs.replaceAll (logisticsBO.getCity (),"");
+            }
+            if(logisticsBO.getTown ()!=null&&!"".equals (logisticsBO.getTown ())){
+                addrs=addrs.replaceAll (logisticsBO.getTown (),"");
+            }
+            ////////////////////////===============地址处理end============/////////////////////////////
+            daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs);
             daifaTrade.setDaifaType (orderBO.getType ());
             daifaTrade.setExpressId (logisticsBO.getCompanyId ());
             daifaTrade.setExpressName (logisticsBO.getCompany ());
