@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1505784046233" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1508920161110" rel="stylesheet">
     
   </head>
 <body>
@@ -245,29 +245,21 @@ var webSite = '${webSite!}';
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
-    <div class="goods-info content shadow-box">
-        <div class="infobox">
-            <span>${goods_counts.sale!}</span>
-            <em>出售中的宝贝（件）</em>
-        </div>
-        
-        <div class="splitline"></div>
-        <div class="infobox">
-            <span>${goods_counts.store!}</span>
-            <em>仓库中宝贝（件）</em>
-        </div>
-    </div>
     <div class="content shadow-box">
         <div class="goods-tabbox clearfix">
-            <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的宝贝<em>${goods_counts.sale!}</em></a></div>
+            <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的商品<em>${goods_counts.sale!}</em></a></div>
             
         </div>
-        <div class="goods-search">
+        <div class="tabOptionsBox clearfix">
+            <ul>
+                <li <#if !query.state>class="select"</#if>><a href="storeGoodsList21init.htm">全部商品</a></li>
+                <li <#if query.state == 1>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=1">无最低零售价
+                        <freemarker-mark-begin>if nolowestLsjNum        <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
             <ul class="clearfix">
                 <li><label>宝贝名称：</label><input id="keyword" class="textinput" value="${get.keyword!}"></li>
-<li><label>宝贝货号：</label><input id="goodsNo" class="textinput" value="${get.goodsNo!}"></li>                    <li><label>淘宝宝贝ID：</label><input id="goodsId" class="textinput" value="${get.goodsId!}"></li>
-                <li><button onclick="goods_search()">查询</button></li>
+<li><label>宝贝货号：</label><input id="goodsNo" class="textinput" value="${get.goodsNo!}"></li>                <li><button onclick="goods_search()">查询</button></li>
             </ul>
         </div>
         <#if (goodslist?size) gt 0 >
@@ -276,9 +268,11 @@ var webSite = '${webSite!}';
                 <li class="name">
                     <label><input type="checkbox" class="checkbox">全选</label>
                 </li>
-                <li class="price">批发价(元)</li>
-                <li class="lowestPrice">最低零售价(元)</li>
+                <li class="price">批发价</li>
+                <li class="lowestPrice">最低零售价</li>
+                <li class="constituent">材料成分</li>
                 <li class="bigPicCorrelate">大图关联</li>
+                <li class="saleCount">总销量</li>
                 <li class="upcount">上货量</li>
                 <li class="control">操作</li>
             </ul>
@@ -316,18 +310,29 @@ var webSite = '${webSite!}';
                 <li class="lowestPrice">
                     <p class="p3"><span>${item.price3!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
                 </li>
-                <li class="bigPicCorrelate">
-                    
+                <li class="constituent">
                     <p>
-                        <#if item.setCorrelateType == 1>
+                        <#if item.setConstituentType == 1>
                         <span>未设置</span>
-                        <#elseif item.setCorrelateType == 2>
+                        <#elseif item.setConstituentType == 2>
+                        <span>已设置</span>
+                        </#if>
+                        
+                        <b class="penIcon" jbtn="setConstituentBtn" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}"></b>
+                    </p>
+                </li>
+                <li class="bigPicCorrelate">
+                    <p>
+                        <#if item.correlateType == 1>
+                        <span>未设置</span>
+                        <#elseif item.correlateType == 2>
                         <span>已设置</span>
                         </#if>
                         
                         <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
                     </p>
                 </li>
+                <li class="saleCount">${item.saleCount!}</li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
                     
@@ -381,6 +386,7 @@ var allStyleCate = '${allStyleCate!}';
         
         
         
+        
     </div>
     
 </div>
@@ -416,7 +422,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1505784046233"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1508920161110"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
