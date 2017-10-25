@@ -14,12 +14,12 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static EntityColumn clickIp;
     public static EntityColumn goodsId;
     public static EntityColumn hadBigzip;
-    public static EntityColumn inFabric;
     public static EntityColumn click;
     public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
     public static EntityColumn fabric;
+    public static EntityColumn infabric;
     public static EntityColumn hadGoat;
     public static EntityColumn upMan;
     public static EntityColumn up;
@@ -33,12 +33,12 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         clickIp = listMap.get("clickIp");
         goodsId = listMap.get("goodsId");
         hadBigzip = listMap.get("hadBigzip");
-        inFabric = listMap.get("inFabric");
         click = listMap.get("click");
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
         fabric = listMap.get("fabric");
+        infabric = listMap.get("infabric");
         hadGoat = listMap.get("hadGoat");
         upMan = listMap.get("upMan");
         up = listMap.get("up");
@@ -250,61 +250,6 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
             return notBetween(hadBigzip, value1, value2);
-        }
-        public GoodsCountForsearchExample.Criteria andInFabricIsNull() {
-            return isNull(inFabric);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricIsNotNull() {
-            return isNotNull(inFabric);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricEqualTo(String value) {
-            return equalTo(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricNotEqualTo(String value) {
-            return notEqualTo(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricGreaterThan(String value) {
-            return greaterThan(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricLessThan(String value) {
-            return lessThan(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricLike(String value) {
-            return like(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricNotLike(String value) {
-            return notLike(inFabric, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricIn(List<String> values) {
-            return in(inFabric, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricNotIn(List<String> values) {
-            return notIn(inFabric, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricBetween(String value1, String value2) {
-            return between(inFabric, value1, value2);
-        }
-
-        public GoodsCountForsearchExample.Criteria andInFabricNotBetween(String value1, String value2) {
-            return notBetween(inFabric, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andClickIsNull() {
             return isNull(click);
@@ -556,6 +501,61 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andFabricNotBetween(String value1, String value2) {
             return notBetween(fabric, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andInfabricIsNull() {
+            return isNull(infabric);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricIsNotNull() {
+            return isNotNull(infabric);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricEqualTo(String value) {
+            return equalTo(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotEqualTo(String value) {
+            return notEqualTo(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricGreaterThan(String value) {
+            return greaterThan(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricLessThan(String value) {
+            return lessThan(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricLike(String value) {
+            return like(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotLike(String value) {
+            return notLike(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricIn(List<String> values) {
+            return in(infabric, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotIn(List<String> values) {
+            return notIn(infabric, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricBetween(String value1, String value2) {
+            return between(infabric, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotBetween(String value1, String value2) {
+            return notBetween(infabric, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andHadGoatIsNull() {
             return isNull(hadGoat);

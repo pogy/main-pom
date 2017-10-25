@@ -489,6 +489,10 @@ public class ShopAction {
             search.setNumIid(bo.getGoodsNumIid());
             search.setState(bo.getState());
             ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
+            ShopUnprocessItemCount shopUnprocessItemCount = shopsItemService.selShopUnprocessItemCount(shopSession.getShopId(), shopSession.getWebSite());
+            model.addAttribute("nolowestLsjNum",shopUnprocessItemCount.getNolowestLsjNum());
+            model.addAttribute("noBigPicGoodsNum",shopUnprocessItemCount.getNoBigPicGoodsNum());
+            model.addAttribute("noConstituentNum",shopUnprocessItemCount.getNoConstituentNum());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
@@ -509,7 +513,7 @@ public class ShopAction {
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         return "seller/storeGoodsList21init";
     }
 

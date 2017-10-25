@@ -76,7 +76,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private ElasticCountUtil elasticCountUtil;
 
     @Autowired
-    private MultipleMapper multipleMapper;
+    private MultipleMapper tae_mall_multipleMapper;
 
     @Autowired
     OssIO ossIO;
@@ -443,9 +443,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     public ShopUnprocessItemCount selShopUnprocessItemCount(Long shopId, String webSite) {
         ShopUnprocessItemCount countResult = new ShopUnprocessItemCount();
         StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
-        countResult.setNoBigPicGoodsNum(multipleMapper.countByMultipleExample(selNoBigPic(shopId, webSite,bo)));
-        countResult.setNolowestLsjNum(multipleMapper.countByMultipleExample(selNoLowPrice(shopId, webSite,bo)));
-        countResult.setNoConstituentNum(multipleMapper.countByMultipleExample(selNoConstituent(shopId, webSite,bo)));
+        countResult.setNoBigPicGoodsNum(tae_mall_multipleMapper.countByMultipleExample(selNoBigPic(shopId, webSite,bo)));
+        countResult.setNolowestLsjNum(tae_mall_multipleMapper.countByMultipleExample(selNoLowPrice(shopId, webSite,bo)));
+        countResult.setNoConstituentNum(tae_mall_multipleMapper.countByMultipleExample(selNoConstituent(shopId, webSite,bo)));
         return countResult;
     }
 
@@ -479,12 +479,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             }
         }
         goodsExample.setWebSite(webSite);
-        int totalCount = multipleMapper.countByMultipleExample(goodsExample);
+        int totalCount = tae_mall_multipleMapper.countByMultipleExample(goodsExample);
         pager.calPages(totalCount,pageSize);
 
         goodsExample.setStartIndex((pageNo-1)*pageSize);
         goodsExample.setEndIndex(pageSize);
-        List<GoodsInfoVO> goodsInfoVOS = multipleMapper.selectFieldsByMultipleExample(goodsExample, GoodsInfoVO.class);
+        List<GoodsInfoVO> goodsInfoVOS = tae_mall_multipleMapper.selectFieldsByMultipleExample(goodsExample, GoodsInfoVO.class);
         List<OnsaleItem> onsaleItems = new ArrayList<>(goodsInfoVOS.size());
         pager.setContent(onsaleItems);
         if (goodsInfoVOS.size()>0) {

@@ -71,7 +71,7 @@ public class GoodsCountForsearch implements Serializable {
     /**
      * 里料
      */
-	private String inFabric;
+	private String infabric;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -169,12 +169,12 @@ public class GoodsCountForsearch implements Serializable {
 		return this.fabric;
 	}
 
-	public void setInFabric(String inFabric) {
-		this.inFabric = inFabric;
+	public void setInfabric(String infabric) {
+		this.infabric = infabric;
 	}
 
-	public String getInFabric() {
-		return this.inFabric;
+	public String getInfabric() {
+		return this.infabric;
 	}
 
 }
