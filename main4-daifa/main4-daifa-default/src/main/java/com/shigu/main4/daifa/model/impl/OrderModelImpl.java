@@ -115,7 +115,39 @@ public class OrderModelImpl implements OrderModel {
             daifaTrade.setReceiverName (logisticsBO.getName ());
             daifaTrade.setReceiverPhone (logisticsBO.getTelephone ());
             daifaTrade.setReceiverState (logisticsBO.getProv ());
-            daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + logisticsBO.getAddress ());
+            /////////////////////////==============地址处理start===========///////////////////////////
+            String addrs=logisticsBO.getAddress ();
+            if(logisticsBO.getProv ()!=null&&!"".equals (logisticsBO.getProv ())&&logisticsBO.getProv ().endsWith ("省")){
+                addrs=addrs.replaceAll (logisticsBO.getProv (),"");
+            }
+            String prov=logisticsBO.getProv ();
+            if(prov!=null&&!"".equals (prov)){
+                if(prov.endsWith ("省")||prov.endsWith ("市")||"香港".equals (prov)||"澳门".equals (prov)){
+                    addrs = addrs.replaceAll (prov, "");
+                }else{
+                    if("广西".equals (prov)){
+                        addrs = addrs.replaceAll ("广西壮族自治区", "");
+                    }else if("宁夏".equals (prov)){
+                        addrs = addrs.replaceAll ("宁夏回族自治区", "");
+                    }else if("新疆".equals (prov)){
+                        addrs = addrs.replaceAll ("新疆维吾尔自治区", "");
+                    }else if("西藏".equals (prov)){
+                        addrs = addrs.replaceAll ("西藏自治区", "");
+                    }else if("内蒙古".equals (prov)){
+                        addrs = addrs.replaceAll ("内蒙古自治区", "");
+                    }
+
+                }
+            }
+
+            if(logisticsBO.getCity ()!=null&&!"".equals (logisticsBO.getCity ())){
+                addrs=addrs.replaceAll (logisticsBO.getCity (),"");
+            }
+            if(logisticsBO.getTown ()!=null&&!"".equals (logisticsBO.getTown ())){
+                addrs=addrs.replaceAll (logisticsBO.getTown (),"");
+            }
+            ////////////////////////===============地址处理end============/////////////////////////////
+            daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs.trim ());
             daifaTrade.setDaifaType (orderBO.getType ());
             daifaTrade.setExpressId (logisticsBO.getCompanyId ());
             daifaTrade.setExpressName (logisticsBO.getCompany ());
