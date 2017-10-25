@@ -112,7 +112,7 @@ public class WapPhoneUserService {
         return basePhoneUserService.needBindTelephone(userId);
     }
 
-    public void bindTelephone(Long userId, Long telephone) throws OpenException {
-        basePhoneUserService.bindTelephone(userId,telephone);
+    public void bindTelephone(Long userId, Long telephone,Integer msgCode) throws OpenException {
+        basePhoneUserService.bindTelephone(userId,telephone,String.valueOf(msgCode));
     }
 }

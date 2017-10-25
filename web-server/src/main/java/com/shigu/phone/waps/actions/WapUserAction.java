@@ -9,32 +9,30 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
 
+import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
-import org.elasticsearch.common.Strings;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -161,7 +159,7 @@ public class WapUserAction {
     public JSONObject needBindTelephone(HttpSession session ) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+            return JsonResponseUtil.error("用户未登录").element("success", false);
         }
         boolean needBindTelephone = false;
         needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
@@ -171,13 +169,35 @@ public class WapUserAction {
 
     @RequestMapping("bindTelephone")
     @ResponseBody
-    public JSONObject bindTelephone(HttpSession session,Long telephone) {
+    public JSONObject bindTelephone(HttpSession session,Long telephone,Integer msgCode) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false);
+        }
+        if (telephone == null) {
+            return JsonResponseUtil.error("请输入手机号码").element("success",false);
+        }
+        if (msgCode == null) {
+            return JsonResponseUtil.error("请输入验证码").element("success",false);
+        }
+        try {
+            wapPhoneUserService.bindTelephone(ps.getUserId(),telephone,msgCode);
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            return JsonResponseUtil.error(e.getMessage()).element("success",false);
+        }
+
+    }
+
+    @RequestMapping("bindUser")
+    @ResponseBody
+    public JSONObject bindUser(HttpSession session,BindUserBO bo) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
         try {
-            wapPhoneUserService.bindTelephone(ps.getUserId(),telephone);
+            wapPhoneUserService.bindUser(bo);
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getMessage()).element("success",false);
@@ -262,11 +282,13 @@ public class WapUserAction {
             e.printStackTrace();
         }
         headerImg = (String)JSONObject.fromObject(sb.toString()).get("headerImg");
+//        headerImg = headerImg.replace("/","\\/");
 
         if (StringUtil.isNull(headerImg)) {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
         }
-        byte[] bytes = Base64.getDecoder().decode(headerImg);
+        byte[] bytes = Base64.decodeBase64(headerImg);
+//        byte[] bytes = Base64.getDecoder().decode(headerImg);
         InputStream inputStream = new ByteArrayInputStream(bytes);
 
         String imgType = FileUtil.getFileType(inputStream);
@@ -289,11 +311,18 @@ public class WapUserAction {
 
     @RequestMapping("getPostSignInfo")
     @ResponseBody
-    public JSONObject createPostSignInfo(HttpSession session) {
+    public JSONObject createPostSignInfo(HttpSession session, HttpServletResponse response) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
+
+         //指定允许其他域名访问
+        response.setHeader("Access-Control-Allow-Origin","*");
+        // 响应类型
+        response.setHeader("Access-Control-Allow-Methods","POST");
+        // 响应头设置
+        response.setHeader("Access-Control-Allow-Headers","x-requested-with,content-type");
         try {
             CreatePostSignInfoVO postSignInfo = wapPhoneUserService.createPostSignInfo();
             return JsonResponseUtil.success().element("success",true)

@@ -469,7 +469,12 @@ public class BasePhoneUserService {
         }
     }
 
-    public void bindTelephone(Long userId, Long telephone) throws OpenException {
+    public void bindTelephone(Long userId, Long telephone,String msgCode) throws OpenException {
+        if (!msgCode.equals(redisIO.get("phone_bind_type_msg_"+telephone))){
+            OpenException openException = new OpenException();
+            openException.setErrMsg("短信验证码错误");
+            throw openException;
+        }
         try {
             userLicenseService.bindPhone(userId,String.valueOf(telephone));
         } catch (Main4Exception e) {

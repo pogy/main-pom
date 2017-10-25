@@ -57,13 +57,17 @@ public class ScanImgTest {
                 Elements kind3 = clearfixliDoc3.select("img");  //选择器的形式
                 String href = kind3.attr("src");
                 Elements a = clearfixliDoc3.select("a");  //选择器的形式
+                boolean flag = false;
                 if (href.contains("wsy.com")){
                     System.err.println(href);
+                    flag =true;
                     for (Element aitem : a){
                         items.put("https://wsy.com"+aitem.attr("href"),href);
                     }
                 }
-                stores.put(title.text(),url);
+                if (flag) {
+                    stores.put(title.text(), url);
+                }
             }
         }
         createExcel(new FileOutputStream(new File("D:\\otherWorkSpace\\网商园wsy-com商品.xls")),items,"商品链接","图片链接");

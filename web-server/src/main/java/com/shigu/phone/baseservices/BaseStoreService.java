@@ -202,10 +202,9 @@ public class BaseStoreService {
         List<AppShopCat> appShopCats = new ArrayList<>();
 
         ShiguPager<ItemShowBlock> items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(), "time_down", 1, 30);
-        AppShopCat appShopCat = new AppShopCat();
-        appShopCat.setItemNum(new Long(items.getTotalCount()));
-        appShopCat.setCatName("全部分类");
-        appShopCats.add(appShopCat);
+        ShopCatVO vo = new ShopCatVO();
+        vo.setTotalItemNum(new Long(items.getTotalCount()));
+
         for(ShopCat cat : cats){
             items = shopForCdnService.searchItemOnsale(null, shopId, storeRelation.getWebSite(),null,cat.getCid(),"time_down",null,null, 1, 30);
             AppShopCat appShopCat1 = new AppShopCat();
@@ -219,13 +218,10 @@ public class BaseStoreService {
                 appShopCatSub.setCatName(subCat.getName());
                 catAlls.add(appShopCatSub);
             }
-            appShopCat.setSubCats(catAlls);
+            appShopCat1.setSubCats(catAlls);
             appShopCats.add(appShopCat1);
         }
-
-        ShopCatVO vo = new ShopCatVO();
         vo.setCats(appShopCats);
-        vo.setTotalItemNum(new Long(items.getTotalCount()));
         return vo;
     }
 

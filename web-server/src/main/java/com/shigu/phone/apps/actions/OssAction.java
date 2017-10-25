@@ -1,8 +1,9 @@
 //package com.shigu.phone.apps.actions;
 //
+//import com.openJar.exceptions.OpenException;
 //import com.openJar.requests.app.*;
 //import com.openJar.responses.app.BindUserResponse;
-//import com.shigu.phone.baseservices.PhoneUserService;
+//import com.shigu.phone.baseservices.BasePhoneUserService;
 //import net.sf.json.JSONObject;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@
 //public class OssAction {
 //
 //    @Autowired
-//    private PhoneUserService phoneUserService;
+//    private BasePhoneUserService phoneUserService;
 //
 //    /**
 //     * 获取 OSS 临时授权
@@ -35,7 +36,7 @@
 //     */
 //    @RequestMapping("createPostSignInfo")
 //    @ResponseBody
-//    public JSONObject createPostSignInfo(HttpServletResponse response) {
+//    public JSONObject createPostSignInfo(HttpServletResponse response) throws OpenException {
 //
 //        // 指定允许其他域名访问
 //        response.setHeader("Access-Control-Allow-Origin","*");
