@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services;
 
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
@@ -85,5 +86,16 @@ public interface ShopsItemService {
      * @throws Main4Exception
      */
     ShiguPager<OnsaleItem> selOnsaleItems(Long shopId, String webSite, StoreGoodsListSearchBO bo, int pageNo, int pageSize) throws Main4Exception;
+
+    /**
+     * 更新材质信息
+     * @param goodsId
+     * @param shopId
+     * @param webSite
+     * @param fabricStr
+     * @param inFabricStr
+     * @throws JsonErrException
+     */
+    void setConstituent(Long goodsId,Long shopId,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
 
 }

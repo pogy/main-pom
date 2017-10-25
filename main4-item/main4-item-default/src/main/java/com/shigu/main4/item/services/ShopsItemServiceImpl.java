@@ -5,15 +5,13 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsSoldout;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguMarket;
-import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -36,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,6 +64,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     @Autowired
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
     private ShowForCdnService showForCdnService;
@@ -595,5 +597,31 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             criteria.andNumIidEqualTo(bo.getNumIid());
         }
         return example;
+    }
+
+    /**
+     * 更新材质信息
+     * @param goodsId
+     * @param shopId
+     * @param webSite
+     * @param fabricStr
+     * @param inFabricStr
+     * @throws JsonErrException
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setConstituent(Long goodsId, Long shopId, String webSite, String fabricStr, String inFabricStr) throws JsonErrException {
+        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+        shiguGoodsTiny.setWebSite(webSite);
+        shiguGoodsTiny.setGoodsId(goodsId);
+        shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
+        if (shiguGoodsTiny == null || !shopId.equals(shiguGoodsTiny.getStoreId())) {
+            throw new JsonErrException("只能操作自己店内的商品");
+        }
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+        goodsCountForsearch.setFabric(fabricStr);
+        goodsCountForsearch.setInfabric(inFabricStr);
+        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
     }
 }

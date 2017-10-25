@@ -518,6 +518,25 @@ public class ShopAction {
     }
 
     /**
+     * 修改商品材质
+     * @param bo
+     * @param result
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("seller/setConstituent")
+    @ResponseBody
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        ShopSession shopSession = getShopSession(session);
+        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
+        return JsonResponseUtil.success();
+    }
+
+    /**
      * 查出售中的商品上面的统计数据
      * @param shopId
      * @return
