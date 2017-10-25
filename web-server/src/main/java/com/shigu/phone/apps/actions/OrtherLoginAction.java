@@ -24,6 +24,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -83,26 +85,27 @@ public class OrtherLoginAction {
 
             return "redirect:"+"alidao://sjxz/taobao/author?type=1&token="+uuid+"&userNick=null&tempId=null&flag=1";
         }catch (LoginAuthException e) {
-            TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-            taobaoSessionMapExample.createCriteria().andNickEqualTo(bo.getNick());
-            List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-            String userId = taobaoSessionMaps.get(0).getUserId()+"";
-            return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+userId+"&flag=1";
+            return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+bo.getKey()+"&flag=1";
         }
     }
-
+                    //otherLoginH5
     @RequestMapping("otherLoginH5")
-    public String otherLoginH5(AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception {
+    public String otherLoginH5( AppLoginBackBO bo, BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
         //shiro框架-----得到验证用户
         Subject currentUser = SecurityUtils.getSubject();
         CaptchaUsernamePasswordToken token = getToken(bo, result, request);
         try {
             //绑定过星座网
             currentUser.login(token);
-            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=1";
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
+            Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(),personalSession);
+//            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=1";
+            return "redirect:/waps/index.html#/bindTelephone?type=1";
         }catch (LoginAuthException e){
             //未绑定星座网
-            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
+//            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
+            return "redirect:/waps/index.html#/bindTelephone?type=0";
         }
     }
     //得到shiro验证的token

@@ -176,7 +176,7 @@ public class BasePhoneUserService {
                         throw openException;
                     }
                 }
-            } else {
+             } else {
                 //抛验证码错误
                 openException.setErrMsg("手机号或验证码未输入");
                 throw openException;

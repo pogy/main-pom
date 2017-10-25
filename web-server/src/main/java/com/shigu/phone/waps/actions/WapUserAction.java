@@ -160,13 +160,14 @@ public class WapUserAction {
     @ResponseBody
     public JSONObject needBindTelephone(HttpSession session ) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
-        }
-        boolean needBindTelephone = false;
-        needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
-        return JsonResponseUtil.success().element("success",true)
-                .element("type",needBindTelephone?0:1);
+        return JsonResponseUtil.success().element("sucess",true).element("ps",ps);
+//        if (ps == null || ps.getUserId() == null) {
+//            return JsonResponseUtil.error("用户未登录").element("success",false);
+//        }
+//        boolean needBindTelephone = false;
+//        needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
+//        return JsonResponseUtil.success().element("success",true)
+//                .element("type",needBindTelephone?0:1);
     }
 
     @RequestMapping("bindTelephone")

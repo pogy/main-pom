@@ -20,9 +20,9 @@
         <module>main4-tools</module>
         <module>web-server</module>
         <module>main4-order</module>
-        <module>main4-daifa</module>
-        <module>daifa-server</module>
-        <module>daifa-sdk</module>
+        <!--<module>main4-daifa</module>-->
+        <!--<module>daifa-server</module>-->
+        <!--<module>daifa-sdk</module>-->
         <module>main4-sdks</module>
     </modules>
     <packaging>pom</packaging>
