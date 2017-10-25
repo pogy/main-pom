@@ -11,6 +11,7 @@ import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.baseservices.BasePhoneUserService;
 import com.shigu.phone.basevo.AboutMeVO;
+import com.shigu.phone.basevo.BindUserVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -180,7 +181,13 @@ public class PhoneUserService {
         bo.setUserNick(request.getUserNick());
 
         try {
-            basePhoneUserService.bindUser(bo);
+            BindUserVO bindUserVO = basePhoneUserService.bindUser(bo);
+            AppUser appUser=new AppUser();
+            appUser.setImgsrc(bindUserVO.getImgsrc());
+            appUser.setUserNick(bindUserVO.getUserNick());
+            appUser.setToken(bindUserVO.getToken());
+            appUser.setImSeller(bindUserVO.getImSeller());
+            resp.setUsers(appUser);
             resp.setSuccess(true);
         } catch (OpenException e) {
             resp.setException(e);
