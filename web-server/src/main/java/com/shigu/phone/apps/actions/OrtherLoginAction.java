@@ -97,14 +97,22 @@ public class OrtherLoginAction {
         try {
             //绑定过星座网
             currentUser.login(token);
-            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(),personalSession);
 //            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=1";
             return "redirect:/waps/index.html#/bindTelephone?type=1";
         }catch (LoginAuthException e){
             //未绑定星座网
 //            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
+            //信息暂存，绑定用户时使用
+            Map<String,Object> otherPlatform = personalSession.getOtherPlatform();
+            otherPlatform.put("userNick",bo.getNick());
+            otherPlatform.put("tempId",bo.getKey());
+            otherPlatform.put("flag",bo.getFlag());
+            otherPlatform.put("type","TAOBAO");
+            personalSession.setOtherPlatform(otherPlatform);
+
+            Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(),personalSession);
             return "redirect:/waps/index.html#/bindTelephone?type=0";
         }
     }

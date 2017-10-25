@@ -53,7 +53,7 @@ public class WapUserAction {
      */
     @RequestMapping("accountLogin")
     @ResponseBody
-    public JSONObject accountLogin(HttpServletRequest request,String user ,String pwd) {
+    public JSONObject accountLogin(String user ,String pwd,HttpServletRequest request,HttpServletResponse response,HttpSession session) throws IOException {
         Subject currentUser = SecurityUtils.getSubject();
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                 user, pwd, false, request.getRemoteAddr(), "", UserType.MEMBER);
@@ -62,6 +62,13 @@ public class WapUserAction {
         token.setRememberMe(true);
         try {
             currentUser.login(token);
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if(wapPhoneUserService.needBindTelephone(ps.getUserId())){
+                String url2 = request.getScheme()+"://"+ request.getServerName();//+request.getRequestURI();
+                response.sendRedirect(url2+"/waps/index.html#/bindTelephone");
+                return null;
+            }
+
             currentUser.hasRole(RoleEnum.STORE.getValue());
             return JsonResponseUtil.success().element("success",true);
         } catch (AuthenticationException e) {
@@ -112,10 +119,22 @@ public class WapUserAction {
      */
     @RequestMapping("userRegist")
     @ResponseBody
-    public JSONObject userRegist(HttpServletRequest request, String telephone,String msgCode,String pwd){
+    public JSONObject userRegist(HttpServletRequest request, String telephone,String msgCode,String pwd) throws IOException {
         try {
             wapPhoneUserService.regist(telephone, msgCode, pwd);
-            accountLogin(request,telephone,pwd);//登录
+            Subject currentUser = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                    telephone, pwd, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //星座用户登陆
+            token.setLoginFromType(LoginFromType.XZ);
+            token.setRememberMe(true);
+            try {
+                currentUser.login(token);
+            } catch (AuthenticationException e) {
+                //登陆失败
+                token.clear();
+                return JsonResponseUtil.error("登录异常").element("success",false);
+            }
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getErrMsg())
@@ -154,19 +173,6 @@ public class WapUserAction {
         }
     }
 
-    @RequestMapping("needBindTelephone")
-    @ResponseBody
-    public JSONObject needBindTelephone(HttpSession session ) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success", false);
-        }
-        boolean needBindTelephone = false;
-        needBindTelephone = wapPhoneUserService.needBindTelephone(ps.getUserId());
-        return JsonResponseUtil.success().element("success",true)
-                .element("type",needBindTelephone?0:1);
-    }
-
     @RequestMapping("bindTelephone")
     @ResponseBody
     public JSONObject bindTelephone(HttpSession session,Long telephone,Integer msgCode) {
@@ -181,28 +187,23 @@ public class WapUserAction {
             return JsonResponseUtil.error("请输入验证码").element("success",false);
         }
         try {
-            wapPhoneUserService.bindTelephone(ps.getUserId(),telephone,msgCode);
-            return JsonResponseUtil.success().element("success",true);
-        } catch (OpenException e) {
-            return JsonResponseUtil.error(e.getMessage()).element("success",false);
-        }
-
-    }
-
-    @RequestMapping("bindUser")
-    @ResponseBody
-    public JSONObject bindUser(HttpSession session,BindUserBO bo) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
-        }
-        try {
+            Map<String,Object> otherPlatform = ps.getOtherPlatform();
+            Object userNickObj = otherPlatform.get("userNick");
+            if (userNickObj == null) {//不是第三方
+                wapPhoneUserService.bindTelephone(ps.getUserId(),telephone,msgCode);
+                return JsonResponseUtil.success().element("success",true);
+            }
+            BindUserBO bo = new BindUserBO();
+            bo.setUserNick((String)userNickObj);
+            bo.setTempId((String)otherPlatform.get("tempId"));
+            bo.setType((String)otherPlatform.get("type"));
+            bo.setTelephone(String.valueOf(telephone));
+            bo.setCode(String.valueOf(msgCode));
             wapPhoneUserService.bindUser(bo);
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             return JsonResponseUtil.error(e.getMessage()).element("success",false);
         }
-
     }
 
     @RequestMapping("getUserLoginState")
@@ -282,7 +283,6 @@ public class WapUserAction {
             e.printStackTrace();
         }
         headerImg = (String)JSONObject.fromObject(sb.toString()).get("headerImg");
-//        headerImg = headerImg.replace("/","\\/");
 
         if (StringUtil.isNull(headerImg)) {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
@@ -291,10 +291,12 @@ public class WapUserAction {
 //        byte[] bytes = Base64.getDecoder().decode(headerImg);
         InputStream inputStream = new ByteArrayInputStream(bytes);
 
-        String imgType = FileUtil.getFileType(inputStream);
-        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
-            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
-        }
+        String imgType = FileUtil.getFileType(inputStream);//TODO 获取文件类型
+
+//        String imgType = FileUtil.getFileType(inputStream);
+//        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
+//            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
+//        }
         String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
         //上传头像
         String headerImgSrc = ossIO.uploadFile(inputStream, filePath);
@@ -309,29 +311,6 @@ public class WapUserAction {
         }
     }
 
-    @RequestMapping("getPostSignInfo")
-    @ResponseBody
-    public JSONObject createPostSignInfo(HttpSession session, HttpServletResponse response) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
-        }
-
-         //指定允许其他域名访问
-        response.setHeader("Access-Control-Allow-Origin","*");
-        // 响应类型
-        response.setHeader("Access-Control-Allow-Methods","POST");
-        // 响应头设置
-        response.setHeader("Access-Control-Allow-Headers","x-requested-with,content-type");
-        try {
-            CreatePostSignInfoVO postSignInfo = wapPhoneUserService.createPostSignInfo();
-            return JsonResponseUtil.success().element("success",true)
-                    .element("postSignInfo",postSignInfo);
-        } catch (OpenException e) {
-            return JsonResponseUtil.error("获取授权失败").element("success",false);
-        }
-
-    }
 
 
 }
