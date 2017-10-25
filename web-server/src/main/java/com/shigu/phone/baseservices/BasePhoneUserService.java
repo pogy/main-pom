@@ -358,7 +358,7 @@ public class BasePhoneUserService {
             throw openException;
         }
         PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(), rds3TempUser.getLoginFromType());
-        bindUserVO.setUserId(personalSession.getUserId());
+
         bindUserVO.setUserNick(personalSession.getUserNick());
         bindUserVO.setImgsrc(personalSession.getHeadUrl());
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
