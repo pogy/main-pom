@@ -292,6 +292,9 @@
                 </#if>
             <#elseif childOrder.takeGoodsState == 2>
             <p class="fcF40">缺货</p>
+                <#if childOrder.noSaleIs == true>
+                    <p><span class="fcF40">已标记下架</span></p>
+                </#if>
             </#if>
             
             <#if childOrder.refundState == 1>
