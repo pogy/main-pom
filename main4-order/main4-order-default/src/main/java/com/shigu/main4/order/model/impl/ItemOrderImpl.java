@@ -8,6 +8,7 @@ import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
+import com.shigu.main4.order.dto.TradeCountDTO;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
@@ -21,6 +22,7 @@ import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,9 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private OrderStatusRecordMapper orderStatusRecordMapper;
+
+    @Autowired
+    private RedisIO redisIO;
 
 
     /**
@@ -399,6 +404,7 @@ public class ItemOrderImpl implements ItemOrder {
         com.opentae.data.mall.beans.ItemOrder order=itemOrderMapper.selectFieldsByPrimaryKey(oid,
                 FieldUtil.codeFields("oid,total_fee"));
         payed(order.getTotalFee());
+        countTrade();
     }
 
     @Override
@@ -460,5 +466,20 @@ public class ItemOrderImpl implements ItemOrder {
     private OrderStatus selOrderStatus(){
         com.opentae.data.mall.beans.ItemOrder order=itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("oid,order_status"));
         return OrderStatus.statusOf(order.getOrderStatus());
+    }
+
+    /**
+     * 推送商品销量增值
+     */
+    private void countTrade(){
+        ItemOrderSub itemOrderSub = new ItemOrderSub();
+        itemOrderSub.setOid(oid);
+        List<ItemOrderSub> select = itemOrderSubMapper.select(itemOrderSub);
+        for (ItemOrderSub orderSub : select) {
+            TradeCountDTO tradeCountDTO = new TradeCountDTO();
+            tradeCountDTO.setGoodsId(orderSub.getGoodsId());
+            tradeCountDTO.setNum(orderSub.getNum());
+            redisIO.rpush(TradeCountDTO.TRADE_COUNT_REDIS_QUEUE_,tradeCountDTO);
+        }
     }
 }
