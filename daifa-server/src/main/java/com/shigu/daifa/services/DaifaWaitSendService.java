@@ -113,10 +113,12 @@ public class DaifaWaitSendService {
 
                 for(DaifaWaitSendVO send:sends){
                     for(WaitSendOrderVO so:send.getChildOrders()){
+                        so.setNoSaleIs(false);
                         DaifaOrder o=map.get(so.getChildOrderId());
                         if(o!=null){
                             so.setChildServersFee(o.getSingleServicesFee());
                             so.setChildRemark(o.getOrderRemark());
+                            so.setNoSaleIs(o.getDelistIs()==1);
                         }
                         List<DaifaGgoodsTasks> t=taskMap.get(so.getChildOrderId());
                         if(t!=null&&t.size()>0){

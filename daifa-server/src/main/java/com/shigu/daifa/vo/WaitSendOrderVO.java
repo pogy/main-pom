@@ -13,6 +13,8 @@ public class WaitSendOrderVO extends ChildOrderVO{
     private Integer refundState;
     private String childServersFee;//子单服务费
     private String childRemark;//子单备注
+    private Boolean noSaleIs;
+
 
 
 
@@ -46,5 +48,13 @@ public class WaitSendOrderVO extends ChildOrderVO{
 
     public void setChildRemark(String childRemark) {
         this.childRemark = childRemark;
+    }
+
+    public Boolean getNoSaleIs() {
+        return this.noSaleIs;
+    }
+
+    public void setNoSaleIs(Boolean noSaleIs) {
+        this.noSaleIs = noSaleIs;
     }
 }
