@@ -1,15 +1,9 @@
 package com.shigu.main4.daifa.process.impl;
 
-import com.opentae.data.daifa.beans.TsysPermission;
-import com.opentae.data.daifa.beans.TsysRole;
-import com.opentae.data.daifa.beans.TsysRolePermission;
-import com.opentae.data.daifa.beans.TsysUserRole;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.TsysRolePermissionExample;
 import com.opentae.data.daifa.examples.TsysUserRoleExample;
-import com.opentae.data.daifa.interfaces.TsysPermissionMapper;
-import com.opentae.data.daifa.interfaces.TsysRoleMapper;
-import com.opentae.data.daifa.interfaces.TsysRolePermissionMapper;
-import com.opentae.data.daifa.interfaces.TsysUserRoleMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.daifa.bo.TsysRoleBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.SysDealProcess;
@@ -45,7 +39,8 @@ public class SysDealProcessImpl implements SysDealProcess{
     TsysUserRoleMapper tsysUserRoleMapper;
     @Resource(name = "tae_daifa_tsysRolePermissionMapper")
     TsysRolePermissionMapper tsysRolePermissionMapper;
-
+    @Resource(name = "tae_daifa_daifaWorkerMapper")
+    DaifaWorkerMapper daifaWorkerMapper;
 
     /**
      * ====================================================================================
@@ -191,5 +186,81 @@ public class SysDealProcessImpl implements SysDealProcess{
         }
 
         return tsysRolePermissionMapper.insertListNoId (list);
+    }
+    /**
+     * ====================================================================================
+     * @方法名： userInsert
+     * @user gzy 2017/10/26 14:17
+     * @功能：
+     * @param: daifaSellerId 代发机构ID
+     * @param: dfGroupId 代发组ID
+     * @param: daifaWorker代发人
+     * @param: password 密码
+     * @param: userName代发用户名
+     * @param: phone手机号
+     * @param: workType 类别@0管理员1拿货人2退货人3换货人4库管员
+     * @param: payBaoAccount 付宝账户
+     * @param: workerId
+     * @param: roleId角色ID
+     * @return: int
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @Override
+    public int userInsert (Long daifaSellerId, Long dfGroupId, String daifaWorker, String password, String userName, String phone, Integer workType,String payBaoAccount, Long workerId, Long roleId) {
+        DaifaWorker worker=new DaifaWorker ();
+        worker.setDaifaSellerId (daifaSellerId);
+        worker.setDfGroupId (dfGroupId);
+        worker.setDaifaWorker (daifaWorker);
+        worker.setPassword (password);
+        worker.setUserName (userName);
+        worker.setPhone (phone);
+        worker.setWorkType (workType);
+        worker.setPayBaoAccount (payBaoAccount);
+        worker.setWorkerId (workerId);
+        worker.setRoleId (roleId);
+        worker.setUseStatus (1);
+        return daifaWorkerMapper.insertSelective (worker);
+
+    }
+    /**
+     * ====================================================================================
+     * @方法名： userUpdate
+     * @user gzy 2017/10/26 14:17
+     * @功能：
+     * @param: daifaWorkerId
+     * @param: daifaSellerId 代发机构ID
+     * @param: dfGroupId 代发组ID
+     * @param: daifaWorker代发人
+     * @param: password 密码
+     * @param: userName代发用户名
+     * @param: phone手机号
+     * @param: workType 类别@0管理员1拿货人2退货人3换货人4库管员
+     * @param: payBaoAccount 付宝账户
+     * @param: workerId
+     * @param: roleId角色ID
+     * @param: useStatus状态0不可用1可用
+     * @return: int
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @Override
+    public int userUpdate (Long daifaWorkerId, Long daifaSellerId, Long dfGroupId, String daifaWorker, String password, String userName, String phone, Integer workType,String payBaoAccount, Long workerId, Long roleId,Integer useStatus) {
+        DaifaWorker worker=new DaifaWorker ();
+        worker.setDaifaWorkerId (daifaWorkerId);
+        worker.setDaifaSellerId (daifaSellerId);
+        worker.setDfGroupId (dfGroupId);
+        worker.setDaifaWorker (daifaWorker);
+        worker.setPassword (password);
+        worker.setUserName (userName);
+        worker.setPhone (phone);
+        worker.setWorkType (workType);
+        worker.setPayBaoAccount (payBaoAccount);
+        worker.setWorkerId (workerId);
+        worker.setRoleId (roleId);
+        worker.setUseStatus (useStatus);
+        return daifaWorkerMapper.updateByPrimaryKeySelective (worker);
     }
 }
