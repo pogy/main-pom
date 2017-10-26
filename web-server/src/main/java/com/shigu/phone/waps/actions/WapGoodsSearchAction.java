@@ -143,12 +143,9 @@ public class WapGoodsSearchAction {
     @ResponseBody
     public JSONObject queryGoodsData(HttpSession session, OneItemBo oneItemBo){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success", false);
-        }
         OneItemVO oneItemVO = null;
         try {
-            oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps.getUserId());
+            oneItemVO = wapPhoneGoodsSearchService.oneItem(oneItemBo.getWebSite(), oneItemBo.getItemId(), ps==null?null : ps.getUserId());
             if (oneItemVO == null) {
                 return JsonResponseUtil.error("未查询到数据").element("success",false);
             }

@@ -212,7 +212,8 @@ public class WapUserAction {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps == null || ps.getUserId() == null) {
-                return JsonResponseUtil.error("用户未登录").element("success",false);
+                return JsonResponseUtil.success().element("success",true);
+//                return JsonResponseUtil.error("用户未登录").element("success",false);
             }
             //是否是商户
             Subject subject = SecurityUtils.getSubject();
@@ -239,7 +240,7 @@ public class WapUserAction {
 
     @RequestMapping("getUserData")
     @ResponseBody
-    public JSONObject getUserData(HttpSession session,String userId) {
+    public JSONObject getUserData(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
@@ -265,7 +266,7 @@ public class WapUserAction {
      */
     @RequestMapping("postHeaderImg")
     @ResponseBody
-    public JSONObject imgUpload(HttpSession session,String headerImg,HttpServletRequest request) {
+    public JSONObject imgUpload(HttpSession session, String headerImg, HttpServletRequest request) throws FileNotFoundException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success", false);
@@ -288,18 +289,16 @@ public class WapUserAction {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
         }
         byte[] bytes = Base64.decodeBase64(headerImg);
-//        byte[] bytes = Base64.getDecoder().decode(headerImg);
-        InputStream inputStream = new ByteArrayInputStream(bytes);
+        String imgType = FileUtil.getFileType(bytes);
 
-        String imgType = FileUtil.getFileType(inputStream);//TODO 获取文件类型
-
+        //TODO base64上传的文件头信息有问题 暂时直接拼接jpg为文件扩展名
 //        String imgType = FileUtil.getFileType(inputStream);
 //        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
 //            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
 //        }
-        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
+        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+".jpg";
         //上传头像
-        String headerImgSrc = ossIO.uploadFile(inputStream, filePath);
+        String headerImgSrc = ossIO.uploadFile(bytes, filePath);
 
         //修改头像
         try {
@@ -310,7 +309,5 @@ public class WapUserAction {
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
         }
     }
-
-
 
 }

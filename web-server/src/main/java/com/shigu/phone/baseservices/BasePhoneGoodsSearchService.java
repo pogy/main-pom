@@ -31,6 +31,7 @@ import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.GoodsInSearch;
+import com.shigu.tools.HtmlImgsLazyLoad;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -190,7 +191,7 @@ public class BasePhoneGoodsSearchService {
         vo.setCreateTime(goods.getPostTime());
         vo.setImgSrcs(goods.getImgUrls());
         vo.setLiPrice(goods.getPiPrice());
-        vo.setDetails(goods.getDescHtml());
+        vo.setDetails(HtmlImgsLazyLoad.replacelazyLoadImg(goods.getDescHtml()));
         //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
         List<String> services = goods.getServices();
         List<String> list=new ArrayList<>();

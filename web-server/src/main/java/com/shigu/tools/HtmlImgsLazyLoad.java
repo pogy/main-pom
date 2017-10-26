@@ -1,6 +1,12 @@
 package com.shigu.tools;
 
+import com.shigu.main4.common.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,4 +85,46 @@ public class HtmlImgsLazyLoad {
     public static boolean checkIsLazy(String tag) {
         return tag.contains("data-original=\"") || tag.contains("class=\"lazyload");
     }
+
+    /**
+     * 过滤HTML只返回内容中的 img 标签<br>直接将真实图片地址赋值到src<br>同时返回内容的img标签只包含 src data-original title 三种属性
+     * @param source
+     * @return
+     */
+    public static String replacelazyLoadImg(String source){
+        if (StringUtil.isNull(source)){
+            return null;
+        }
+        //只接受图片
+        Whitelist whitelist = new Whitelist();
+        whitelist.addTags("img").addAttributes("img",  "src","data-original", "title").addProtocols("img", "src", "http", "https");
+        String cleanSource = Jsoup.clean(source,whitelist);
+
+        Document cleanOriginnal = Jsoup.parse(cleanSource);
+
+        Elements imgs = cleanOriginnal.select("img");
+        StringBuilder  result = new StringBuilder();
+        for (Element img : imgs){
+            String imgUrl = img.attr("data-original");
+            img.attr("src",imgUrl+"_970x970q50s150.jpg_.webp");
+            result.append(img.toString());
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        String str = "<html>\n" +
+                " <head></head>\n" +
+                " <body>\n" +
+                "  <img title=\"我是标题\" onclick=\"test()\" width=\"1000px\" class=\"lazyload\"  src=\"https://123.jpg\" data-original=\"https://img.alicdn.com/imgextra/i1/353297098/TB2sgKdbVXXXXaGXpXXXXXXXXXX-353297098.jpg\" />\n" +
+                "  <img class=\"lazyload\" src=\"https://img.alicdn.com/imgextra/i2/353297098/TB2aFChbVXXXXX6XpXXXXXXXXXX-353297098.jpg\" data-original=\"https://img.alicdn.com/imgextra/i2/353297098/TB2aFChbVXXXXX6XpXXXXXXXXXX-353297098.jpg\" />\n" +
+                "  <img class=\"lazyload\" src=\"https://img.alicdn.com/imgextra/i2/353297098/TB2nxSgbVXXXXXKXpXXXXXXXXXX-353297098.jpg\" data-original=\"https://img.alicdn.com/imgextra/i2/353297098/TB2nxSgbVXXXXXKXpXXXXXXXXXX-353297098.jpg\" />\n" +
+                "  <img class=\"lazyload\" src=\"https://img.alicdn.com/imgextra/i2/353297098/TB2jqKmbVXXXXc5XXXXXXXXXXXX-353297098.jpg\" data-original=\"https://img.alicdn.com/imgextra/i2/353297098/TB2jqKmbVXXXXc5XXXXXXXXXXXX-353297098.jpg\" />\n" +
+                "  <img class=\"lazyload\" src=\"https://img.alicdn.com/imgextra/i2/353297098/TB21uKhbVXXXXalXpXXXXXXXXXX-353297098.jpg\" data-original=\"https://img.alicdn.com/imgextra/i2/353297098/TB21uKhbVXXXXalXpXXXXXXXXXX-353297098.jpg\" /\n" +
+                " <scripts></scripts" +
+                " </body>\n" +
+                "</html>";
+        System.out.println(replacelazyLoadImg(str));
+    }
+
 }
