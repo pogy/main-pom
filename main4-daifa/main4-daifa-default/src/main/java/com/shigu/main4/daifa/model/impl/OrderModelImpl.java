@@ -148,6 +148,8 @@ public class OrderModelImpl implements OrderModel {
             }
             addrs=addrs.replaceAll ("null","");
             addrs=addrs.replaceAll (" ","");
+            addrs=addrs.replaceAll (",","");
+            addrs=addrs.replaceAll ("，","");
             ////////////////////////===============地址处理end============/////////////////////////////
             if(logisticsBO.getTown ()!=null){
                 daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs.trim ());
