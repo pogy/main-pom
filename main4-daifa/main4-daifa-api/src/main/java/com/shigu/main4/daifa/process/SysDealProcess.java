@@ -29,5 +29,9 @@ public interface SysDealProcess {
     //更新角色权限
     int updateRoleAndPermissions (Long roleId, String permissionIds) throws DaifaException;
 
+    int userInsert(Long daifaSellerId,Long dfGroupId,String daifaWorker,String password,String userName,String phone,Integer workType,String payBaoAccount,Long workerId,Long roleId);
+
+    int userUpdate(Long daifaWorkerId,Long daifaSellerId,Long dfGroupId,String daifaWorker,String password,String userName,String phone,Integer workType,String payBaoAccount,Long workerId,Long roleId,Integer useStatus);
+
 
 }
