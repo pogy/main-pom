@@ -3,6 +3,7 @@ package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.main4.daifa.vo.PrintExpressVO;
@@ -47,4 +48,6 @@ public interface PackDeliveryProcess {
      * @param dfTradeId
      */
     void queryExpressCode(Long dfTradeId) throws DaifaException;
+
+    ExpressVO dealSendTest(Long dfTradeId)throws DaifaException;
 }

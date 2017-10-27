@@ -3,6 +3,8 @@ package com.shigu.main4.daifa.process.impl;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.DaifaCallExpressExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -31,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static org.junit.Assert.assertTrue;
+
 @Service("packDeliveryProcess")
 public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private static final Logger logger = LoggerFactory.getLogger(PackDeliveryProcessImpl.class);
@@ -45,11 +49,15 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Autowired
     private DaifaSellerMapper daifaSellerMapper;
     @Autowired
-    private DaifaTradeMapper daifaTradeMapper;
+    private DaifaTradeMapper daifaTradeMapper;//
     @Autowired
-    private DaifaWaitSendMapper daifaWaitSendMapper;
+    private DaifaWaitSendMapper daifaWaitSendMapper;//
     @Autowired
     private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
+
+    @Autowired
+    private DaifaCallExpressMapper daifaCallExpressMapper;
+
     @Autowired
     private MQUtil mqUtil;
 
@@ -313,5 +321,101 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             list.add(so);
         }
         return list;
+    }
+
+    /**
+     * ====================================================================================
+     * @方法名： dealSendTest
+     * @user gzy 2017/10/27 17:31
+     * @功能：
+     * @param: [dfTradeId]
+     * @return: com.shigu.main4.daifa.vo.ExpressVO
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public ExpressVO dealSendTest(Long dfTradeId)throws DaifaException{
+
+        ExpressVO vo=null;
+        Long expressId=0L;
+        Long sellerId=0L;
+        DaifaTrade dt=daifaTradeMapper.selectByPrimaryKey (dfTradeId);
+        if(dt!=null) {
+            OrderExpressBO bo = new OrderExpressBO ();
+            bo.setExpressName (dt.getExpressName ());//圆通快递
+            bo.setReceiverName (dt.getReceiverName ());//姓名
+            bo.setReceiverPhone (dt.getReceiverPhone ());//手机号
+            bo.setReceiverAddress (dt.getReceiverAddress ());//地址
+             expressId=dt.getExpressId ();
+            sellerId=dt.getSellerId ();
+            String stradeId = "8" + dt.getDfTradeId ();
+            bo.setTid (new Long (stradeId));//修改后的交易号
+
+            DaifaOrderExample example = new DaifaOrderExample ();
+            example.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+            List<DaifaOrder> list_order = daifaOrderMapper.selectByExample (example);
+
+            //子单商品
+            List<SubOrderExpressBO> list = new ArrayList<> ();
+
+            if(list_order!=null&&list_order.size ()>0) {
+                for(int i=0;i<list_order.size ();i++) {
+                    SubOrderExpressBO bo1 = new SubOrderExpressBO ();
+                    bo1.setOrderId (list_order.get (i).getDfOrderId ());
+                    bo1.setStoreGoodsCode (list_order.get (i).getStoreGoodsCode ());
+                    bo1.setGoodsNum (1);
+                    bo1.setPropStr (list_order.get (i).getPropStr ());
+                    list.add (bo1);
+                }
+            }
+            bo.setList (list);
+            //=========================================没有快递鸟账户开始====================================
+            ExpressModel bean = SpringBeanFactory.getBean (ExpressModel.class, expressId, sellerId);
+            try {
+                bean.callExpress (bo);
+                vo = bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
+                //更新daifaCallExpress中的dfTradeId的快递单号，三段码，集包地//daifaCallExpressMapper
+                DaifaCallExpress express=new DaifaCallExpress ();
+                express.setDfTradeId (dfTradeId);
+                express.setExpressCode (vo.getExpressCode ());
+                express.setPackageName (vo.getPackageName ());
+                express.setMarkDestination (vo.getMarkDestination ());
+
+                DaifaCallExpress dce1= daifaCallExpressMapper.selectByPrimaryKey (new Long (stradeId));
+                if(dce1!=null){
+                    express.setJsonData (dce1.getJsonData ());
+
+                    DaifaCallExpressExample daifaCallExpressExample=new DaifaCallExpressExample ();
+                    daifaCallExpressExample.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+
+                    daifaCallExpressMapper.updateByExampleSelective (express,daifaCallExpressExample);
+                    //删除daifaCallExpress中的stradeId
+                    daifaCallExpressMapper.deleteByPrimaryKey (new Long (stradeId));
+                    //更新daifaTrade中dfTradeId对应的expressCode  //daifaTradeMapper
+                    DaifaTrade trade=new DaifaTrade ();
+                    trade.setDfTradeId (dfTradeId);
+                    trade.setExpressCode (vo.getExpressCode ());
+                    daifaTradeMapper.updateByPrimaryKeySelective (trade);
+                    //更新daifaWaitSend中dfTradeId对应的的expressCode//daifaWaitSendMapper
+                    DaifaWaitSend send=new DaifaWaitSend ();
+                    send.setDfTradeId (dfTradeId);
+                    send.setExpressCode (vo.getExpressCode ());
+                    send.setMarkDestination (vo.getMarkDestination ());
+                    send.setPackageName (vo.getPackageName ());
+                    DaifaWaitSendExample sendExample=new DaifaWaitSendExample ();
+                    sendExample.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+                    daifaWaitSendMapper.updateByExampleSelective (send,sendExample);
+                }
+
+
+
+
+            } catch (DaifaException e) {
+                // System.out.println("11111@@@"+e.getMessage ());
+
+                assertTrue (true);
+            }
+        }
+        return vo;
     }
 }
