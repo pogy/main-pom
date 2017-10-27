@@ -33,8 +33,6 @@ public class AppUserAction {
     @RequestMapping("aboutMe")
     @ResponseBody
     public JSONObject aboutMe(AboutMeRequest request, BindingResult bindingResult) throws Main4Exception {
-
-
         return JSONObject.fromObject(phoneUserService.aboutMe(request));
     }
 

@@ -86,6 +86,7 @@ public class PhoneUserService {
         GetPhoneMsgResponse resp=new GetPhoneMsgResponse();
         try {
             String msgCode = basePhoneUserService.getPhoneMsg(request.getTelephone(),request.getType());
+            //todo 正式上线删除msgCode的返回值
             resp.setMsgCode(msgCode);
             resp.setSuccess(true);
         } catch (OpenException e) {

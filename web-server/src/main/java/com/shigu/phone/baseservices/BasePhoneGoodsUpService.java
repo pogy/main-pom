@@ -27,6 +27,8 @@ import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.UploadedItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -152,7 +154,7 @@ public class BasePhoneGoodsUpService {
             ed.setGoodsId(vo.getId());
             ed.setSupperDown(vo.getUnShelve());
             ed.setImDown(vo.getTbUnSheLve());
-            ed.setImgsrc(vo.getImgsrc());
+            ed.setImgsrc(ImgUtils.formatImg(vo.getImgsrc(), ImgFormatEnum.GOODS_LIST));
             ed.setPiprice(vo.getPiprice());
             ed.setTitle(vo.getTitle());
             ed.setUploadId(vo.getOnekeyId());

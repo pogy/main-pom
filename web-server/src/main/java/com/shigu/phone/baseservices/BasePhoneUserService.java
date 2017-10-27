@@ -25,8 +25,10 @@ import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.phone.api.actions.PhoneMsgAction;
+import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.services.PhoneUserService;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.BindUserVO;
@@ -98,7 +100,7 @@ public class BasePhoneUserService {
         AboutMeVO aboutMeVO = new AboutMeVO();
         UserInfo userInfo = userBaseService.selUserInfo(userId);
         aboutMeVO.setUserNick(userInfo.getUserNick());
-        aboutMeVO.setHeadUrl(userInfo.getHeadUrl());
+        aboutMeVO.setHeadUrl(ImgUtils.formatImg(userInfo.getHeadUrl(), ImgFormatEnum.HEAD));
         //获取用户绑定手机
         MemberLicense memberLicense = new MemberLicense();
         memberLicense.setUserId(userId);
@@ -182,7 +184,7 @@ public class BasePhoneUserService {
                 throw openException;
             }
         }
-
+        appUser.setImgsrc(ImgUtils.formatImg(appUser.getImgsrc(), ImgFormatEnum.HEAD));
         return appUser;
     }
     //封装appUser参数
@@ -318,7 +320,7 @@ public class BasePhoneUserService {
         AppUser appUser=new AppUser();
 //        appUser.setUserId(personalSession.getUserId());
         String headUrl = personalSession.getHeadUrl();
-        appUser.setImgsrc(headUrl);
+        appUser.setImgsrc(ImgUtils.formatImg(headUrl,ImgFormatEnum.HEAD));
         appUser.setUserNick(personalSession.getUserNick());
         //token
 //        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
@@ -360,7 +362,7 @@ public class BasePhoneUserService {
         PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(), rds3TempUser.getLoginFromType());
 
         bindUserVO.setUserNick(personalSession.getUserNick());
-        bindUserVO.setImgsrc(personalSession.getHeadUrl());
+        bindUserVO.setImgsrc(ImgUtils.formatImg(personalSession.getHeadUrl(),ImgFormatEnum.HEAD));
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         bindUserVO.setImSeller(isSeller);
         //token

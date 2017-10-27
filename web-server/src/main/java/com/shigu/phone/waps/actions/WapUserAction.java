@@ -7,9 +7,9 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
-
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basebo.BindUserBO;
-import com.shigu.phone.config.ImgConfig;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -43,8 +43,6 @@ public class WapUserAction {
     private WapPhoneUserService wapPhoneUserService;
     @Autowired
     private OssIO ossIO;
-    @Autowired
-    private ImgConfig imgConfig;
 
     /**
      * 账号密码登录
@@ -251,7 +249,7 @@ public class WapUserAction {
             bingdTelephone = (String) otherPlatform.get("__bindPhone__");
         }
         return JsonResponseUtil.success().element("success",true)
-                                         .element("headUrl",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf())
+                                         .element("headUrl",ImgUtils.formatImg(ps.getHeadUrl(), ImgFormatEnum.HEAD))
                                          .element("userNick",ps.getUserNick())
                                          .element("phoneBind",bingdTelephone);
     }
@@ -289,7 +287,7 @@ public class WapUserAction {
         try {
             wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
             ps.setHeadUrl(headerImgSrc+"?time="+System.currentTimeMillis());//修改缓存头像
-            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf());
+            return JsonResponseUtil.success().element("success",true).element("headerImgSrc", ImgUtils.formatImg(ps.getHeadUrl(), ImgFormatEnum.HEAD));
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);

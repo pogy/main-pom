@@ -3,6 +3,8 @@ package com.shigu.phone.baseservices;
 import com.openJar.exceptions.OpenException;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,12 @@ public class BaseItemService {
     private UserCollectService userCollectService;
 
     public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size,String webSite) throws OpenException {
-        return basePhoneCdnService.selItemCollect(userId,index, size,webSite);
+        BaseCollectItemVO vo=basePhoneCdnService.selItemCollect(userId,index, size,webSite);
+        vo.getItems().forEach(appGoodsBlock -> {
+            appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(),ImgFormatEnum.GOODS_LIST));
+        });
+        return vo;
+
     }
 
     public Boolean delItemCollect(List<Long> collectIds,Long userId){
