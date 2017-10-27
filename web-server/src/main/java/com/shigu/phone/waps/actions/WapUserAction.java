@@ -1,7 +1,6 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.exceptions.OpenException;
-import com.shigu.component.encryption.MD5;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
@@ -11,7 +10,6 @@ import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basebo.TrademarkRegistBO;
-import com.shigu.phone.config.ImgConfig;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -290,7 +288,7 @@ public class WapUserAction {
             //修改头像
             wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
             ps.setHeadUrl(headerImgSrc.replace("tmp","mall/head"));//修改缓存头像
-            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf());
+            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",ImgUtils.formatImg(ps.getHeadUrl(), ImgFormatEnum.HEAD));
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
