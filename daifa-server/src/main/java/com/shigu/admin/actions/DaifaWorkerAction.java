@@ -53,7 +53,7 @@ public class DaifaWorkerAction{
    List<DaifaWorkerVO> list = daifaWorkerService.listByPage(bo);
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
-        model.addAttribute("list", list);
+        model.addAttribute("lists", list);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         //model.addAttribute("userName", "gzy");
@@ -75,6 +75,8 @@ public class DaifaWorkerAction{
 	@RequestMapping("admin/daifaWorkerAdd")
     @ResponseBody
     public JSONObject insert(DaifaWorkerBO bo) throws DaifaException {
+	    bo.setDfGroupId (4L);
+	    bo.setWorkerId (5L);
        int i=daifaWorkerService.insert (bo);
        if(i>0){
            return JsonResponseUtil.success();
@@ -99,7 +101,8 @@ public class DaifaWorkerAction{
     @RequestMapping("admin/daifaWorkerEdit")
     @ResponseBody
     public JSONObject update(DaifaWorkerBO bo) throws DaifaException {
-
+        bo.setDfGroupId (4L);
+        bo.setWorkerId (5L);
         int i= daifaWorkerService.update (bo);
             if(i>0){
                 return JsonResponseUtil.success();
