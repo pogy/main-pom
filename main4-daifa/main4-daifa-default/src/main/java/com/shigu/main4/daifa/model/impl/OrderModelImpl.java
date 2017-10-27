@@ -22,6 +22,7 @@ import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -76,6 +77,8 @@ public class OrderModelImpl implements OrderModel {
     private DaifaListDealUtil daifaListDealUtil;
     @Autowired
     private MQUtil mqUtil;
+    @Value("${MQ_topic}")
+    private String mqTopic;
     public OrderModelImpl(Long tid) {
         this.tid = tid;
     }
@@ -92,8 +95,11 @@ public class OrderModelImpl implements OrderModel {
     @Transactional(propagation= Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void init() {
         if (orderBO.getBuyer ().getBuyerId ().intValue () == 9968) {
-        //测试账号的单子不写进来
-        }else{
+            //测试账号的单子不写进来,如果是正式队列
+            if("SHIGU_DAIFA".equals(mqTopic)){
+                return;
+            }
+        }
         DaifaTradeExample example = new DaifaTradeExample ();
         example.createCriteria ().andTradeCodeEqualTo (orderBO.getOid ().toString ());
         int ki = daifaTradeMapper.countByExample (example);
@@ -256,7 +262,6 @@ public class OrderModelImpl implements OrderModel {
             t.setRealPayMoney (PriceConvertUtils.stringPriceToString (serviceTradeFee.Add (goodsFee).Add (new BigNumber (logisticsBO.getMoney ())).toString ()));
             daifaTradeMapper.updateByPrimaryKeySelective (t);
         }
-      }
     }
     /**
      * 订单超时
