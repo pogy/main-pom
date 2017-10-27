@@ -209,13 +209,13 @@ public class CdnAction {
 
         if(manOrWoman.equals("Woman")){
 
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"下装",webSite,
                     indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
-                    indexShowService.manJack())));
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"棉衣",webSite,
+                    indexShowService.manMianyi())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"休闲裤",webSite,
                     indexShowService.manFree())));
         }
 //        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
@@ -365,7 +365,7 @@ public class CdnAction {
 
         //猜喜欢
         List<LoveGoodsList> loves = new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,indexShowService.xie())));
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(30,"看鞋",webSite,indexShowService.xie())));
         model.addAttribute("loveGoodslist",loves);
 
         model.addAttribute("webSite", webSite);
@@ -434,13 +434,13 @@ public class CdnAction {
         //猜喜欢
         List<LoveGoodsList> loves=new ArrayList<>();
         if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"下装",webSite,
                     indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"夹克",webSite,
                     indexShowService.manJack())));
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods(5,"休闲裤",webSite,
                     indexShowService.manFree())));
         }
         model.addAttribute("loveGoodslist",loves);

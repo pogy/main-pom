@@ -37,6 +37,12 @@ public class ItemOrderSub implements Serializable {
      */
 	private Integer outOfStok;
 
+	/**
+	 * 拿到货数量
+	 */
+	private Integer inStok;
+
+
     /**
      * 应付总额
      */
@@ -358,4 +364,11 @@ public class ItemOrderSub implements Serializable {
 		return this.outOfStokReason;
 	}
 
+	public Integer getInStok() {
+		return inStok;
+	}
+
+	public void setInStok(Integer inStok) {
+		this.inStok = inStok;
+	}
 }

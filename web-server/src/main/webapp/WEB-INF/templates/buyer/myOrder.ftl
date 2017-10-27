@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017091401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017101901" rel="stylesheet">
     
 
     
@@ -38,7 +38,8 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017091401"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017101901"></script>
+    
 </head>
 <body>
 
@@ -292,7 +293,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -382,6 +383,8 @@ var webSite = '${webSite!}';
 
 
 
+
+
     <div class="orderDetail">
     <div class="listHead clearfix">
         <ul>
@@ -414,18 +417,23 @@ var webSite = '${webSite!}';
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
-    <li class="price yahei">&yen;${childOrder.price!}</li>
+    <li class="price yahei fs14">&yen;${childOrder.price!}</li>
     <li class="num">
-        <p>${childOrder.num!}</p>
+        <p class="fs14">${childOrder.num!}</p>
         <#if childOrder.stockoutNum??>
         <div class="pr stockoutNum">
-            <p class="fcF40"><i class="icon-c-warn"></i>缺货 x${childOrder.stockoutNum!}</p>
+            <p class="fcF40">
+                <#if childOrder.haveGoodsTime??><i class="icon-time"></i></#if>缺货 x${childOrder.stockoutNum!}
+            </p>
             <#if childOrder.haveGoodsTime??>
             <div class="pa haveGoodsTime">
                 ${childOrder.haveGoodsTime!} 有货
             </div>
             </#if>
         </div>
+        </#if>
+        <#if order.mainState == 2 && childOrder.haveTakeGoodsNum??>
+            <p class="fc6">已拿货 x${childOrder.haveTakeGoodsNum!}</p>
         </#if>
     </li>
     <li class="opera">
@@ -438,7 +446,7 @@ var webSite = '${webSite!}';
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
                 <!--<p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>-->
-                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 </#if>
                 
                 <#list childOrder.afterSales as afterSale>
@@ -513,7 +521,7 @@ var webSite = '${webSite!}';
                 <p><a href="javascript:;" onclick="applyRefund(${childOrder.childOrderId!})">申请退款</a></p>
                 <#elseif order.mainState == 3>
                 <!--<p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>-->
-                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 <#elseif order.mainState == 4>
                 ——
                 </#if>
