@@ -61,7 +61,7 @@ public class SoidsModelImpl implements SoidsModel {
     public void cancleOutOfStock(Long soidpid) {
         //更新拆单状态
         SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
-        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.DEFAULT_STATUS.status);
+        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.ARRIVAL.status);
         subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
         //更新子单状态
         SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
