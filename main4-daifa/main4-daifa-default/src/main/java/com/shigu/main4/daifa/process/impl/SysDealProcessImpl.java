@@ -226,6 +226,8 @@ public class SysDealProcessImpl implements SysDealProcess{
         worker.setWorkerId (workerId);
         worker.setRoleId (roleId);
         worker.setUseStatus (1);
+        worker.setRemark2 (roleId+"");
+        worker.setAccountId (-1L);
         return daifaWorkerMapper.insertSelective (worker);
 
     }
@@ -266,6 +268,8 @@ public class SysDealProcessImpl implements SysDealProcess{
         worker.setWorkerId (workerId);
         worker.setRoleId (roleId);
         worker.setUseStatus (useStatus);
+        worker.setRemark2 (roleId+"");
+        worker.setAccountId (-1L);
         return daifaWorkerMapper.updateByPrimaryKeySelective (worker);
     }
 }
