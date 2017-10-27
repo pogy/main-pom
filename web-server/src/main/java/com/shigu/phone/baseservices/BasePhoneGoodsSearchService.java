@@ -177,12 +177,6 @@ public class BasePhoneGoodsSearchService {
             }
             return null;
         }).collect(Collectors.toList());
-
-        String img =  imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
-        if(!StringUtil.isNull(img) && img.startsWith("imgSearch-")) {//headImg-xxx头像不删除  imgSearch-xxx图搜图片
-//        //搜索完毕，删除临时图片 TODO 手机端图搜只支持上传搜索，需要指定上传文件夹，搜索完毕删除临时图片
-            ossIO.deleteFile("shigu/mall/appfile/" +img );
-        }
         return appGoodsBlocks;
     }
 

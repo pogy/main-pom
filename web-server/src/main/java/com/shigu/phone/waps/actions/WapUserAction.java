@@ -9,6 +9,7 @@ import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
 
 import com.shigu.phone.basebo.BindUserBO;
+import com.shigu.phone.basebo.TrademarkRegistBO;
 import com.shigu.phone.config.ImgConfig;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -281,19 +283,36 @@ public class WapUserAction {
         if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
             return JsonResponseUtil.error("该图片不支持上传").element("success", false);
         }
-        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
-        //上传头像
-        String headerImgSrc = ossIO.uploadFile(bytes, filePath);
+        String filePath = "tmp/headImg-"+ UUID.randomUUID().toString().toUpperCase()+"."+imgType;//UUID可能会生成包含tem的
 
-        //修改头像
         try {
+            //上传头像
+            String headerImgSrc = ossIO.uploadFile(bytes, filePath);
+            //修改头像
             wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
-            ps.setHeadUrl(headerImgSrc+"?time="+System.currentTimeMillis());//修改缓存头像
+            ps.setHeadUrl(headerImgSrc.replace("tmp","mall/head"));//修改缓存头像
             return JsonResponseUtil.success().element("success",true).element("headerImgSrc",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf());
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
         }
+    }
+
+    /**
+     * 商标注册提交信息
+     * @param session
+     * @param bo
+     * @return
+     */
+    @RequestMapping("submitRegeditInfo")
+    @ResponseBody
+    public JSONObject submitRegeditInfo(HttpSession session, TrademarkRegistBO bo){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success", false);
+        }
+        //TODO 商标注册
+        return JsonResponseUtil.success().element("success",true);
     }
 
 }

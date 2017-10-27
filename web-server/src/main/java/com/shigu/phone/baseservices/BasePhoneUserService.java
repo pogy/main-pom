@@ -49,6 +49,8 @@ import redis.clients.jedis.Jedis;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 类名：PhoneUserService
@@ -371,6 +373,25 @@ public class BasePhoneUserService {
 
     public void imgUpload(UserInfoUpdate userInfoUpdate) throws OpenException {
         try {
+            //1 查出用户原头像地址
+            UserInfo userInfo = userBaseService.selUserInfo(userInfoUpdate.getUserId());
+            //2 移动新头像到正式目录
+            String newHeadUrl = userInfoUpdate.getHeadUrl();
+            if (!StringUtil.isNull(newHeadUrl)) {
+                String moveHeadUrl = getImgOssPath(newHeadUrl);
+                ossIO.moveFile(moveHeadUrl,moveHeadUrl.replace("tmp","mall/head"));
+            }
+            userInfoUpdate.setHeadUrl(newHeadUrl.replace("tmp","mall/head"));
+
+            //3 删除原文件
+            String oldHeadUrl = userInfo.getHeadUrl();
+            if (!StringUtil.isNull(oldHeadUrl)) {
+                oldHeadUrl = getImgOssPath(oldHeadUrl);
+                if ( !StringUtil.isNull(oldHeadUrl)) {
+                    ossIO.deleteFile(oldHeadUrl);
+                }
+            }
+
             userBaseService.updateUserInfo(userInfoUpdate);
         } catch (UpdateUserInfoException e) {
             OpenException openException = new OpenException();
@@ -482,5 +503,19 @@ public class BasePhoneUserService {
             openException.setErrMsg(e.getMessage());
             throw openException;
         }
+    }
+
+    public String getImgOssPath(String imgUrl){
+        String reg = "(?<=http[s]?://)[^/]*";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(imgUrl);
+        String group;
+        if (matcher.find()){
+            group = matcher.group();
+        }else{
+           return null;
+        }
+        int index = imgUrl.indexOf(group);
+        return imgUrl.substring(index+group.length()+1);
     }
 }
