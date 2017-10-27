@@ -61,9 +61,9 @@ public class UserTest extends BaseSDKClientTest {
         req.setTelephone(telephone);
         req.setCode(bindCode);
         BindUserResponse resp = client.execute(req);
-        String sessionKey = "phone_user_session_info_type_msg_" + resp.getUserId() +"_"+ resp.getToken();
-        PersonalSession session = redisIO.get(sessionKey, PersonalSession.class);
+        //String sessionKey = "phone_user_session_info_type_msg_" + resp.getUserId() +"_"+ resp.getToken();
+       // PersonalSession session = redisIO.get(sessionKey, PersonalSession.class);
         sout(resp);
-        sout(session);
+       //sout(session);
     }
 }

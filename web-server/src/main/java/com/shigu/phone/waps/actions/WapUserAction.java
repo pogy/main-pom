@@ -7,7 +7,8 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
-
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basebo.TrademarkRegistBO;
 import com.shigu.phone.config.ImgConfig;
@@ -31,7 +32,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,8 +46,6 @@ public class WapUserAction {
     private WapPhoneUserService wapPhoneUserService;
     @Autowired
     private OssIO ossIO;
-    @Autowired
-    private ImgConfig imgConfig;
 
     /**
      * 账号密码登录
@@ -253,7 +252,7 @@ public class WapUserAction {
             bingdTelephone = (String) otherPlatform.get("__bindPhone__");
         }
         return JsonResponseUtil.success().element("success",true)
-                                         .element("headUrl",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf())
+                                         .element("headUrl",ImgUtils.formatImg(ps.getHeadUrl(), ImgFormatEnum.HEAD))
                                          .element("userNick",ps.getUserNick())
                                          .element("phoneBind",bingdTelephone);
     }

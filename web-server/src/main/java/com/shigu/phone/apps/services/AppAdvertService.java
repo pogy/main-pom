@@ -4,6 +4,8 @@ import com.openJar.beans.app.AppImgBanner;
 import com.openJar.beans.app.AppItemSpread;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.baseservices.BaseAdvertService;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;

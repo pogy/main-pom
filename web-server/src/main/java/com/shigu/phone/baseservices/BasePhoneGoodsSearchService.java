@@ -2,13 +2,10 @@ package com.shigu.phone.baseservices;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.openJar.actions.OpenAction;
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.beans.app.AppItemKv;
 import com.openJar.exceptions.OpenException;
-import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguOuterMarket;
-import com.opentae.data.mall.examples.ShiguOuterMarketExample;
 import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
@@ -24,15 +21,14 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
-import com.shigu.phone.config.ImgConfig;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.GoodsInSearch;
-import com.shigu.tools.HtmlImgsLazyLoad;
 import freemarker.template.TemplateException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -78,9 +74,6 @@ public class BasePhoneGoodsSearchService {
     @Autowired
     private ShiguOuterMarketMapper shiguOuterMarketMapper;
 
-    @Autowired
-    private ImgConfig imgConfig;
-
     /**
      * 移动端商品搜索
      *
@@ -98,6 +91,7 @@ public class BasePhoneGoodsSearchService {
         vo.setItems(result.getContent().parallelStream().map(o -> {
             AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
             appGoodsBlock.setGoodsId(o.getId());
+            appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
             return appGoodsBlock;
         }).collect(Collectors.toList()));
         return vo;
@@ -144,6 +138,7 @@ public class BasePhoneGoodsSearchService {
         vo.setItems(goodsSelFromEsService.addShopInfoToGoods(p,bo.getWebSite()).getContent().parallelStream().map(o -> {
             AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
             appGoodsBlock.setGoodsId(o.getId());
+            appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
             return appGoodsBlock;
         }).collect(Collectors.toList()));
         vo.setTotal(pager.getTotalCount());
@@ -169,10 +164,11 @@ public class BasePhoneGoodsSearchService {
      */
     public List<AppGoodsBlock>  imgSearch(String imgUrl,String webSite) throws IOException {
         //图搜时传缩略图
-        List<AppGoodsBlock> appGoodsBlocks = goodsSearchService.searchByPic(imgUrl+imgConfig.getAppImgSearchSuf(),webSite).parallelStream().map(o -> {
+        List<AppGoodsBlock> appGoodsBlocks = goodsSearchService.searchByPic(ImgUtils.formatImg(imgUrl,ImgFormatEnum.GOODS_IMAGES),webSite).parallelStream().map(o -> {
             if (o != null) {
                 AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
                 vo.setGoodsId(o.getId());
+                vo.setImgsrc(ImgUtils.formatImg(vo.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
                 return vo;
             }
             return null;
@@ -193,7 +189,7 @@ public class BasePhoneGoodsSearchService {
         vo.setPrice(goods.getLiPrice());
         vo.setTitle(goods.getTitle());
         vo.setCreateTime(goods.getPostTime());
-        vo.setImgSrcs(goods.getImgUrls());
+        vo.setImgSrcs(goods.getImgUrls().stream().map(s -> ImgUtils.formatImg(s,ImgFormatEnum.GOODS_IMAGES)).collect(Collectors.toList()));
         vo.setLiPrice(goods.getPiPrice());
         vo.setDetails(replacelazyLoadImg(goods.getDescHtml()));
         //获取 商品服务类型, services权限,1(退现金)，2（保换款），可以有的服务都传进来
@@ -263,11 +259,7 @@ public class BasePhoneGoodsSearchService {
         StringBuilder  result = new StringBuilder();
         for (Element img : imgs){
             String imgUrl = img.attr("data-original");
-            if (imgUrl.toLowerCase().contains("alicdn.com") || imgUrl.toLowerCase().contains("taobaocdn.com")){
-                img.attr("src",imgUrl+imgConfig.getAppItemDetailAlicdnSuf());
-            }else{
-                img.attr("src",imgUrl+imgConfig.getAppItemDetailImgSuf());
-            }
+            img.attr("src",ImgUtils.formatImg(imgUrl, ImgFormatEnum.GOODS_DETAIL));
             result.append(img.toString());
         }
         return result.toString();

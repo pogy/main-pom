@@ -1,6 +1,8 @@
 package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppItemSpread;
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.shigu.spread.enums.SpreadEnum.WOMAN_TJDK;
 
 /**
  * Created by pc on 2017-08-29.
@@ -32,6 +36,14 @@ public class BaseAdvertService {
      */
     public List<ImgBannerVO> imgSpread(SpreadEnum spread){
         List<ImgBannerVO> imageGoat = spreadService.selImgBanners(spread).selReal();
+        switch (spread){
+            case MAN_DT:case WOMAN_DT:{
+                imageGoat.forEach(appImgBanner -> {
+                    appImgBanner.setImgsrc(ImgUtils.formatImg(appImgBanner.getImgsrc(), ImgFormatEnum.DT));
+                });
+                break;
+            }
+        }
         return imageGoat;
     }
 
@@ -44,10 +56,22 @@ public class BaseAdvertService {
     public List<AppItemSpread> itemSpread(String webSite, SpreadEnum spread){
         List<ItemSpreadVO> itemGoat = spreadService.selItemSpreads(webSite,spread).selReal();
         List<AppItemSpread> spreads=new ArrayList<>();
+        ImgFormatEnum format=null;
+        switch (spread){
+            case MAN_TJDK:case WOMAN_TJDK:{
+                format=ImgFormatEnum.SHOP_TJ;
+                break;
+            }
+            case MAN_RM:case WOMAN_RM:{
+                format=ImgFormatEnum.GOODS_LIST;
+                break;
+            }
+        }
         for(ItemSpreadVO item:itemGoat){
             AppItemSpread sp= BeanMapper.map(item,AppItemSpread.class);
             sp.setGoodsId(item.getId());
             sp.setTitle(item.getTitle());
+            sp.setImgsrc(ImgUtils.formatImg(sp.getImgsrc(), format));
             spreads.add(sp);
         }
         return spreads;

@@ -13,7 +13,7 @@ public class TestAboutMe {
     public void aboutMe(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         AboutMeRequest request=new AboutMeRequest();
-        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
+        request.setToken("9YeO1OrUJUNkcssKaUpUq78ffPIZCNr20qCNccFnZgv8xtq0L/Wxpg==");
         //request.setUserId(1000085908L);
         AboutMeResponse response=client.execute(request);
         System.out.println(response.getBody());
@@ -98,7 +98,7 @@ public class TestAboutMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         StoreCollectRequest  request=new StoreCollectRequest ();
 //        request.setUserId(1000085908L);//收藏夹为空
-        request.setToken("dWggInYV/VeFMCVM8sobxKIRaV9xiZCogQsCa2Y9BQQ1MpCThVBVCQ==");
+        request.setToken("9YeO1OrUJUNkcssKaUpUq78ffPIZCNr20qCNccFnZgv8xtq0L/Wxpg==");
         request.setWebSite("hz");
         request.setIndex(2);
         StoreCollectResponse response = client.execute(request);
@@ -203,7 +203,7 @@ public class TestAboutMe {
         request.setUserNick("胡汉三");
         BindUserResponse response = client.execute(request);
         System.out.println(response.getBody());
-        System.out.println(response.getUserNick()+response.getImgsrc()+response.getToken()+response.getImSeller()+response.getUserId());
+       // System.out.println(response.getUserNick()+response.getImgsrc()+response.getToken()+response.getImSeller()+response.getUserId());
         Assert.assertTrue(response.isSuccess());
     }
     //成功
