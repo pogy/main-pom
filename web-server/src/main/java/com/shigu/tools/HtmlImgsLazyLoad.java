@@ -106,7 +106,11 @@ public class HtmlImgsLazyLoad {
         StringBuilder  result = new StringBuilder();
         for (Element img : imgs){
             String imgUrl = img.attr("data-original");
-            img.attr("src",imgUrl+"_970x970q50s150.jpg_.webp");
+            if (imgUrl.toLowerCase().contains("alicdn.com") || imgUrl.toLowerCase().contains("taobaocdn.com")){
+                img.attr("src",imgUrl+"_970x970q50s150.jpg_.webp");
+            }else{
+                img.attr("src",imgUrl+"_970x970.jpg");
+            }
             result.append(img.toString());
         }
         return result.toString();

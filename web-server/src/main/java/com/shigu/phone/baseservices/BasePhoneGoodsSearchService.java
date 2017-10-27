@@ -27,6 +27,7 @@ import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
+import com.shigu.phone.config.ImgConfig;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
@@ -71,6 +72,9 @@ public class BasePhoneGoodsSearchService {
 
     @Autowired
     private ShiguOuterMarketMapper shiguOuterMarketMapper;
+
+    @Autowired
+    private ImgConfig imgConfig;
 
     /**
      * 移动端商品搜索
@@ -159,7 +163,8 @@ public class BasePhoneGoodsSearchService {
      * @return
      */
     public List<AppGoodsBlock>  imgSearch(String imgUrl,String webSite) throws IOException {
-        List<AppGoodsBlock> appGoodsBlocks = goodsSearchService.searchByPic(imgUrl,webSite).parallelStream().map(o -> {
+        //图搜时传缩略图
+        List<AppGoodsBlock> appGoodsBlocks = goodsSearchService.searchByPic(imgUrl+imgConfig.getAppImgSearchSuf(),webSite).parallelStream().map(o -> {
             if (o != null) {
                 AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
                 vo.setGoodsId(o.getId());

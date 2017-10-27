@@ -5,29 +5,27 @@ import com.shigu.component.encryption.MD5;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.tools.OssIO;
 
 import com.shigu.phone.basebo.BindUserBO;
-import com.shigu.phone.basevo.CreatePostSignInfoVO;
+import com.shigu.phone.config.ImgConfig;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
-
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +43,8 @@ public class WapUserAction {
     private WapPhoneUserService wapPhoneUserService;
     @Autowired
     private OssIO ossIO;
+    @Autowired
+    private ImgConfig imgConfig;
 
     /**
      * 账号密码登录
@@ -259,51 +259,36 @@ public class WapUserAction {
     /**
      * 修改用户头像
      * @param session
-     * @param headerImg base64图片
      * @return
-     *<b>request payload<b/>
-     *<a href="http://blog.csdn.net/mhmyqn/article/details/25561535"></a>
      */
     @RequestMapping("postHeaderImg")
     @ResponseBody
-    public JSONObject imgUpload(HttpSession session, String headerImg, HttpServletRequest request) throws FileNotFoundException {
+    public JSONObject imgUpload(HttpSession session, HttpServletRequest request) throws IOException, FileUploadException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success", false);
         }
 
-        //解析文件
-        StringBuilder sb = new StringBuilder();
-        try(BufferedReader reader = request.getReader();) {
-            char[]buff = new char[1024];
-            int len;
-            while((len = reader.read(buff)) != -1) {
-                sb.append(buff,0, len);
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  //转换成多部分request
+        MultipartFile item = null;
+        for(Map.Entry<String, MultipartFile> entry : multiRequest.getFileMap().entrySet()){
+            item = entry.getValue();  //取得上传文件
+            break;
         }
-        headerImg = (String)JSONObject.fromObject(sb.toString()).get("headerImg");
-
-        if (StringUtil.isNull(headerImg)) {
-            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
-        }
-        byte[] bytes = Base64.decodeBase64(headerImg);
+        byte[] bytes = item.getBytes();
         String imgType = FileUtil.getFileType(bytes);
 
-        //TODO base64上传的文件头信息有问题 暂时直接拼接jpg为文件扩展名
-//        String imgType = FileUtil.getFileType(inputStream);
-//        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
-//            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
-//        }
-        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+".jpg";
+        if (!FileUtil.imgTypes.contains(imgType.toLowerCase())) {
+            return JsonResponseUtil.error("该图片不支持上传").element("success", false);
+        }
+        String filePath = "mall/appfile/headImg-"+ MD5.encrypt(String.valueOf(ps.getUserId())).toUpperCase()+"."+imgType;
         //上传头像
         String headerImgSrc = ossIO.uploadFile(bytes, filePath);
 
         //修改头像
         try {
             wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
-            return JsonResponseUtil.success().element("sucess",true).element("headerImgSrc",headerImgSrc);
+            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",headerImgSrc+imgConfig.getAppHeadImgSuf());
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
