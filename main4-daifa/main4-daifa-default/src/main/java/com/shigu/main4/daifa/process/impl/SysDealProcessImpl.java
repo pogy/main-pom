@@ -147,6 +147,11 @@ public class SysDealProcessImpl implements SysDealProcess{
                 list.add (userRole);
             }
         }
+        DaifaWorker worker=new DaifaWorker ();
+        worker.setDaifaWorkerId (userId);
+        worker.setRoleId (new Long(roleIdss[0]));
+        worker.setRemark2 (roleIds);
+        daifaWorkerMapper.updateByPrimaryKeySelective (worker);
 
        return tsysUserRoleMapper.insertListNoId (list);
 
