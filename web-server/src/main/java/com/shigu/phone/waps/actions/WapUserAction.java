@@ -251,7 +251,7 @@ public class WapUserAction {
             bingdTelephone = (String) otherPlatform.get("__bindPhone__");
         }
         return JsonResponseUtil.success().element("success",true)
-                                         .element("headUrl",ps.getHeadUrl())
+                                         .element("headUrl",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf())
                                          .element("userNick",ps.getUserNick())
                                          .element("phoneBind",bingdTelephone);
     }
@@ -288,7 +288,8 @@ public class WapUserAction {
         //修改头像
         try {
             wapPhoneUserService.imgUpload(ps.getUserId(),headerImgSrc);
-            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",headerImgSrc+imgConfig.getAppHeadImgSuf());
+            ps.setHeadUrl(headerImgSrc+"?time="+System.currentTimeMillis());//修改缓存头像
+            return JsonResponseUtil.success().element("success",true).element("headerImgSrc",ps.getHeadUrl()+imgConfig.getAppHeadImgSuf());
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error("修改用户头像失败").element("success", false);
