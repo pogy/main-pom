@@ -7,12 +7,14 @@ public enum ImgFormatEnum {
     CAT("100"),
     GOODS_IMAGES("400"),
     HEAD("100"),
-    GOODS_DETAIL("970")
+    GOODS_DETAIL(null)
     ;
 
     ImgFormatEnum(String width){
-        this.oss="?x-oss-process=image/resize,m_lfit,w_"+width+"/format,jpg,q_50";
-        this.tb="_"+width+"x"+width+"q50.jpg";
+        String w=width==null?"":"/resize,w_"+width;
+        String w2=width==null?"q30":width+"x"+width+"q80";
+        this.oss="?x-oss-process=image"+w+"/format,jpg/quality,q_80";
+        this.tb="_"+w2+".jpg";
     }
 
     String oss;

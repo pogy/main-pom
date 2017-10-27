@@ -136,7 +136,7 @@ public class AppInterceptor implements HandlerInterceptor {
         if (time2 - time > 600000L) {
             String uuid = oldToken + "@@@@@---@@@@@" + time2;
             Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_login_token" + userId, 1800, uuid);
+            jedis.setex("phone_login_token" + userId, 604800, uuid);
         }
         return userId;
     }

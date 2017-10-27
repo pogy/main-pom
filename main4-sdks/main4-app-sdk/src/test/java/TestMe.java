@@ -31,10 +31,10 @@ public class TestMe {
     public void  ChangePasswordRequest   (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ChangePasswordRequest  request=new ChangePasswordRequest();
-        request.setToken("bDS52J8ie85+rt48xQG3prejO/JM9wkzgZdM255IvDWhLC/jk/zTlg==");
+        request.setToken("CGNOwyTOtKPL6oXZIfbqzPirJnb1XV0UaanP/ShhLFosXfwO10GOBg==");
 
-        request.setOldPwd("fei691820%");
-        request.setNewPwd("fei691820");
+        request.setOldPwd("fei691820");
+        request.setNewPwd("fei691820%");
         ChangePasswordResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
@@ -72,7 +72,7 @@ public class TestMe {
     public void  getPhoneMsgRequest  (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         GetPhoneMsgRequest request=new GetPhoneMsgRequest ();
-        request.setTelephone("17637503231");
+        request.setTelephone("17637503238");
         request.setType(4);
         GetPhoneMsgResponse response = client.execute(request);
         System.out.println(response.getBody());
@@ -82,8 +82,8 @@ public class TestMe {
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         BindUserRequest   request=new BindUserRequest  ();
         request.setTempId("680625629");
-        request.setTelephone("17637503231");
-        request.setCode("995439");
+        request.setTelephone("17637503238");
+        request.setCode("112028");
         request.setType("TAOBAO");
         request.setUserNick("tb9950563");
         BindUserResponse response = client.execute(request);
