@@ -147,6 +147,11 @@ public class SysDealProcessImpl implements SysDealProcess{
                 list.add (userRole);
             }
         }
+        DaifaWorker worker=new DaifaWorker ();
+        worker.setDaifaWorkerId (userId);
+        worker.setRoleId (new Long(roleIdss[0]));
+        worker.setRemark2 (roleIds);
+        daifaWorkerMapper.updateByPrimaryKeySelective (worker);
 
        return tsysUserRoleMapper.insertListNoId (list);
 
@@ -221,6 +226,8 @@ public class SysDealProcessImpl implements SysDealProcess{
         worker.setWorkerId (workerId);
         worker.setRoleId (roleId);
         worker.setUseStatus (1);
+        worker.setRemark2 (roleId+"");
+        worker.setAccountId (-1L);
         return daifaWorkerMapper.insertSelective (worker);
 
     }
@@ -261,6 +268,8 @@ public class SysDealProcessImpl implements SysDealProcess{
         worker.setWorkerId (workerId);
         worker.setRoleId (roleId);
         worker.setUseStatus (useStatus);
+        worker.setRemark2 (roleId+"");
+        worker.setAccountId (-1L);
         return daifaWorkerMapper.updateByPrimaryKeySelective (worker);
     }
 }

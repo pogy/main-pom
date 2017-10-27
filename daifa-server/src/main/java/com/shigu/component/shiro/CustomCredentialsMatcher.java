@@ -94,7 +94,7 @@ public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
 
 		AuthorityUser auth = new AuthorityUser();
 		auth.setUserId (worker.getDaifaWorkerId ());
-		auth.setRoleIds (worker.getRoleId () + "");
+		auth.setRoleIds (worker.getRemark2 ());
 		auth.setDaifaWorkerId (worker.getDaifaWorkerId ());
 		auth.setDaifaSellerId (worker.getDaifaSellerId ());
 		auth.setDaifaUserName (worker.getUserName ());
