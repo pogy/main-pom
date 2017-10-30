@@ -61,6 +61,11 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     }
 
     @Override
+    public void updateInStok(Long soidpid) {
+        soidsModel.updateInStok(soidpid);
+    }
+
+    @Override
     public void tbSend(Long oid) throws TbSendException {
         ItemOrder orderModel= SpringBeanFactory.getBean(ItemOrder.class,oid);
         ItemOrderVO order=orderModel.orderInfo();

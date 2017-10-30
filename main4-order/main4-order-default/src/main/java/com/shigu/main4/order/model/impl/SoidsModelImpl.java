@@ -81,4 +81,18 @@ public class SoidsModelImpl implements SoidsModel {
         }
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
+
+    @Override
+    public void updateInStok(Long soidpid) {
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
+        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.ARRIVAL.status);
+        subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
+        SubOrderSoidpsExample subOrderSoidpsExample2 = new SubOrderSoidpsExample();
+        subOrderSoidpsExample2.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.ARRIVAL.getStatus());
+        int inStock = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample2);//拿到货量
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
+        itemOrderSub.setInStok(inStock);
+        itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
+    }
+
 }
