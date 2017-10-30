@@ -26,4 +26,9 @@ public interface ItemOrderProcess {
      * @param oid
      */
     void tbSend(Long oid) throws TbSendException;
+    /**
+     * 更新已拿货数量
+     * @param soidpid
+     */
+    void  updateInStok(Long soidpid);
 }
