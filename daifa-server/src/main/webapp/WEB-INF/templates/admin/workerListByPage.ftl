@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>待发表显示处理 - 星帮后台管理 - 四季星座网</title>
+    <title>用户表 - 星帮后台管理 - 四季星座网</title>
 <#include "/common/host_config.ftl">
 
     <link href="${daifa_host}/css/table.css" rel="stylesheet">
@@ -11,14 +11,15 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/sys/common/common.js?t=201709121011"></script>
-    <script src="${daifa_host}/js/admin/sys/waitsend/waitsend.js?t=201709121011"></script>
+    <script src="${daifa_host}/js/admin/sys/worker/worker.js?t=201709121011"></script>
     <style>
         .ptitle{
             width: 100px;
             display: inline-block;
             text-align: right;
+            margin-top: 20px;
         }
-        .orderCon .tddiv{width:10%;}
+        .orderCon .tddiv{width:11%;}
     </style>
 </head>
 <body>
@@ -51,26 +52,16 @@
 
         <div class="orderSearch orderSearchBox">
             <ul>
-                <li><label>交易号：</label><input type="text" class="fmInput" name="dfTradeId" <#if query.dfTradeId??> value="${query.dfTradeId!}" </#if> ></li>
-                <li><label>收货人：</label><input type="text" class="fmInput" name="receiverName" <#if query.receiverName??> value="${query.receiverName!}" </#if>></li>
-                <li>
-                    <label>拿货人：</label><select class="fmInput" name="orderDisplay" <#if query.orderDisplay??> value="${query.orderDisplay!}" </#if>>
-                    <option value="-1">请选择</option>
-                <#if query.orderDisplay == 0>
-                    <option value="0" selected>不显示</option>
-                    <option value="1">显示</option>
-                <#elseif query.orderDisplay == 1>
-                    <option value="0">不显示</option>
-                    <option value="1" selected>显示</option>
-                <#elseif query.orderDisplay == -1>
-                    <option value="0">不显示</option>
-                    <option value="1" >显示</option>
-
-                </#if>
-
-                </select>
+                <li><label>用户名：</label><input type="text" class="fmInput" name="userName" <#if query.userName??> value="${query.userName!}" </#if> ></li>
+                <li><label>登录名：</label><input type="text" class="fmInput" name="daifaWorker" <#if query.daifaWorker??> value="${query.daifaWorker!}" </#if> ></li>
+                <li><label>手机号：</label><input type="text" class="fmInput" name="phone" <#if query.phone??> value="${query.phone!}" </#if>></li>
+                <li><label>sellerId：</label><input type="text" class="fmInput" name="daifaSellerId" <#if query.daifaSellerId??> value="${query.daifaSellerId!}" </#if>></li>
+                <li><label>可用状态：</label>
+                    <input type="text" class="fmInput" name="useStatus" <#if query.useStatus??> value="${query.useStatus!}" </#if>>
                 </li>
-
+                <li><label>用户类型：</label>
+                    <input type="text" class="fmInput" name="workType" <#if query.workType??> value="${query.workType!}" </#if>>
+                </li>
                 <li>
 
                 <#assign text>{}</#assign>
@@ -101,7 +92,7 @@
             </ul>
         </div>
 
-    <#assign text>{"fields":[{"name":"dfTradeId","value":"${query.dfTradeId!}"},{"name":"orderDisplay","value":"${query.orderDisplay!}"},{"name":"receiverName","value":"${query.receiverName!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"userName","value":"${query.userName!}"},{"name":"daifaWorker","value":"${query.daifaWorker!}"},{"name":"phone","value":"${query.phone!}"},{"name":"daifaSellerId","value":"${query.daifaSellerId!}"},{"name":"useStatus","value":"${query.useStatus!}"},{"name":"workType","value":"${query.workType!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>
@@ -122,7 +113,7 @@
     </#list>
 
         <div class="orderSearch orderSearchBox">
-
+            <input type="button" id="chanel1" name="chanel1" class="fmButton fmButton-blue" value="添加" onclick="addWorker()">
         </div>
 
 
@@ -130,59 +121,45 @@
             <div class="theadCon">
                 <ul class="">
 
-                    <li class="tddiv">订单号</li>
+                    <li class="tddiv">用户名</li>
+                    <li class="tddiv">登录名</li>
                     <li class="tddiv">代发机构ID</li>
-                    <li class="tddiv">发货状态</li>
-                    <li class="tddiv">创建时间</li>
-                    <li class="tddiv">快递名</li>
-                    <li class="tddiv">收件人手机号</li>
-                    <li class="tddiv">是否显示</li>
-                    <li class="tddiv">收件人姓名</li>
-                    <li class="tddiv">收件人详细地址</li>
-
-                    <li class="tddiv">操作</li>
+                    <li class="tddiv">手机号</li>
+                    <li class="tddiv">用户类型</li>
+                    <li class="tddiv">可用性</li>
+                    <li class="tddiv">支付宝账户</li>
+                    <li class="tddiv">角色ID</li>
+                    <li class="tddiv" style="width:12%;">操作</li>
                 </ul>
             </div>
         <#list lists as list>
             <div class="orderItem">
             <div class="childOrderItem" >
                 <ul class="clearfix">
-                    <li class="tddiv"><p>${list.dfTradeId!}|${list.tradeCode!}</p></li>
+                    <li class="tddiv"><p>${list.userName!}</p></li>
                     <li class="tddiv">
-                        <p class="title">${list.sellerId!}</p>
+                        <p class="title">${list.daifaWorker!}</p>
                     </li>
+
+                    <li class="tddiv"><p>${list.daifaSellerId!}</p></li>
+                    <li class="tddiv"><p>${list.phone!}</p></li>
+                    <li class="tddiv"><p>${list.workType!}</p></li>
                     <li class="tddiv">
-                        <#if list.sendStatus == 1>
-                            <p class="fc3">待发货</p>
-                        <#elseif list.sendStatus == 2>
-                            <p>已发货</p>
+                        <#if list.useStatus == 0>
+                            <p class="fc3">不可用</p>
+                        <#elseif list.useStatus == 1>
+                            <p>可用</p>
                         </#if>
                     </li>
-                    <li class="tddiv"><p>${list.createTime!}</p></li>
-                    <li class="tddiv"><p>${list.expressName!}</p></li>
-                    <li class="tddiv"><p>${list.receiverPhone!}</p></li>
-                    <li class="tddiv">
+                    <li class="tddiv"><p>${list.payBaoAccount!}</p></li>
 
-                        <#if list.orderDisplay == 0>
-                            <p class="fc3">不显示</p>
-                        <#elseif list.orderDisplay == 1>
-                            <p>显示</p>
-                        </#if>
+
+                    <li class="tddiv">
+                            <p class="fc3">${list.remark2!}</p>
                     </li>
 
-
                     <li class="tddiv">
-                            <p class="fc3">${list.receiverName!}</p>
-                    </li>
-                    <li class="tddiv"><p>${list.receiverAddress!}</p></li>
-
-                    <li class="tddiv">
-                        <#if list.orderDisplay == 0>
-                            <input type="button" name="refundfax1" id="refundfax1" class="fmButton fmButton-blue" value="显示" onclick="editDisplay(this,'${list.dfTradeId!}',1)">
-                        <#elseif list.orderDisplay == 1>
-                            <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="不显示" onclick="editDisplay(this,'${list.dfTradeId!}',0)">
-                        </#if>
-
+                       <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="修改" onclick="editWorker(this,'${list.roleId!}','${list.password!}')">
                     </li>
                 </ul>
             </div>

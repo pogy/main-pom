@@ -16,7 +16,7 @@ public enum DaifaSendMqEnum {
 //    daifaRemark("remark_deal","remark_deal_","代发订单备注"),
 //    getGoods("get_goods","get_goods_","拿到货"),
 //    stockout("stockout","stockout_","拿不到货"),
-//    weightSet("weight_set","weight_","重量回写"),
+    weightSet("weight_set","weight_","重量回写"),
     sendAll("send_all","send_all_","全单发货"),
 //    sendPart("send_part","send_part_","部分发货，其他退款"),
     afterSaleAccept("after_sale_accept","after_sale_","授理并返回退货信息"),

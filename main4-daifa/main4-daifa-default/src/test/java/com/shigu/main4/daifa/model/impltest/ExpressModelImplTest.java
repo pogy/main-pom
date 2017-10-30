@@ -35,25 +35,38 @@ public class ExpressModelImplTest extends BaseSpringTest {
 
 
         OrderExpressBO bo=new OrderExpressBO();
-        bo.setExpressName ("申通快递");
-        bo.setReceiverName ("郑东青");
-        bo.setReceiverPhone ("18741030920");
-        bo.setReceiverAddress ("浙江省 杭州市 萧山区 南阳镇义南横路中防控股1号");
-        bo.setTid (62017090696388L);
+        bo.setExpressName ("圆通快递");
+        bo.setReceiverName ("官鹏");
+        bo.setReceiverPhone ("13541627791");
+        bo.setReceiverAddress ("上海市 上海市 浦东新区 航头镇 上海市浦东新区航头镇航头路121－123");
+        bo.setTid (62017101808994L);//811647610862
         //子单商品
         List<SubOrderExpressBO> list=new ArrayList<> ();
 
         SubOrderExpressBO bo1=new SubOrderExpressBO ();
-        bo1.setOrderId (367357L);
-        bo1.setStoreGoodsCode ("dsjd_B260_K09");
+        bo1.setOrderId (386539L);
+        bo1.setStoreGoodsCode ("xznz_8311_M8868");
         bo1.setGoodsNum (1);
-        bo1.setPropStr ("藏青宝蓝黑紫:XL");
+        bo1.setPropStr ("橘色:L");
         list.add (bo1);
+        /*SubOrderExpressBO bo2=new SubOrderExpressBO ();
+        bo2.setOrderId (387066L);
+        bo2.setStoreGoodsCode ("dsjd_A331A_A331A-8808-p80");
+        bo2.setGoodsNum (1);
+        bo2.setPropStr ("黑色:L");
+        list.add (bo2);
+
+        SubOrderExpressBO bo3=new SubOrderExpressBO ();
+        bo3.setOrderId (387067L);
+        bo3.setStoreGoodsCode ("dsjd_A331A_A331A-8808-p80");
+        bo3.setGoodsNum (1);
+        bo3.setPropStr ("灰色:XL");
+        list.add (bo3);*/
 
         bo.setList (list);
 
         //=========================================没有快递鸟账户开始====================================
-        ExpressModel bean = SpringBeanFactory.getBean(ExpressModel.class, 68l,999999990L);
+        ExpressModel bean = SpringBeanFactory.getBean(ExpressModel.class, 66l,999999990L);
         try {
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回

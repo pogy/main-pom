@@ -53,56 +53,22 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     MQUtil mqUtil;
 
     private final static Integer EZINT = 7; //截取长度
+    @Autowired
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
-
     @Autowired
-    public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
-        this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
-    }
-
     private MultipleMapper multipleMapper;
-
     @Autowired
-    public void setMultipleMapper(MultipleMapper multipleMapper) {
-        this.multipleMapper = multipleMapper;
-    }
-
     private CountTransMapper countTransMapper;
-
     @Autowired
-    public void setCountTransMapper(CountTransMapper countTransMapper) {
-        this.countTransMapper = countTransMapper;
-    }
-
     private DaifaGgoodsMapper daifaGgoodsMapper;
-
     @Autowired
-    public void setDaifaGgoodsMapper(DaifaGgoodsMapper daifaGgoodsMapper) {
-        this.daifaGgoodsMapper = daifaGgoodsMapper;
-    }
-
     private DaifaOrderMapper daifaOrderMapper;
-
     @Autowired
-    public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
-        this.daifaOrderMapper = daifaOrderMapper;
-    }
-
-
     private DaifaWaitSendOrderMapper daifaWaitSendOrderMapper;
-
     @Autowired
-    public void setDaifaWaitSendOrderMapper(DaifaWaitSendOrderMapper daifaWaitSendOrderMapper) {
-        this.daifaWaitSendOrderMapper = daifaWaitSendOrderMapper;
-    }
-
     private DaifaSendOrderMapper daifaSendOrderMapper;
-
     @Autowired
-    public void setDaifaSendOrderMapper(DaifaSendOrderMapper daifaSendOrderMapper) {
-        this.daifaSendOrderMapper = daifaSendOrderMapper;
-    }
-
+    private DaifaWaitSendMapper daifaWaitSendMapper;
     @Override
     public String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException {
         CargoManModel cargoManModel = SpringBeanFactory.getBean(CargoManModel.class, wholeId);
@@ -378,15 +344,12 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if (o.getRefundStatus() != 0) {
             throw new DaifaException("订单已退款(已申请退款)");
         }
-        Long price = null;
+        Long price;
         if (!StringUtils.isEmpty(money)) {
             price = MoneyUtil.StringToLong(money);
             if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < price) {
                 throw new DaifaException("金额超过商品金额");
             }
-        }
-        if (price == null) {
-            price = MoneyUtil.StringToLong(o.getSinglePiPrice());
         }
         DaifaWaitSendOrder o1 = new DaifaWaitSendOrder();
         o1.setDwsoId(o.getDwsoId());
@@ -634,11 +597,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 gmap.remove(id);
             }
         }
-        List<Long> oids = BeanMapper.getFieldList(gmap.values(), "dfOrderId", Long.class);
-        DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-        daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
-        List<DaifaOrder> os = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id,take_goods_status"));
-        Map<Long, DaifaOrder> orderMap = BeanMapper.list2Map(os, "dfOrderId", Long.class);
 
         UnComleteAllVO vo = new UnComleteAllVO();
         List<Long> notTakeDfOrderIds = new ArrayList<>();
@@ -649,9 +607,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //已拿
             for (Long id : issueIds) {
                 DaifaGgoods g = gmap.get(id);
-                if (orderMap.get(g.getDfOrderId()) != null && orderMap.get(g.getDfOrderId()).getTakeGoodsStatus() == 2) {
-                    takeDfOrderIds.add(g.getDfOrderId());
-                }
+                takeDfOrderIds.add(g.getDfOrderId());
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
                 subOrderModel.haveTake();
                 gmap.remove(id);
@@ -666,9 +622,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //缺货
             for (Long id : issueIds) {
                 DaifaGgoods g = gmap.get(id);
-                if (orderMap.get(g.getDfOrderId()) != null && orderMap.get(g.getDfOrderId()).getTakeGoodsStatus() == 2) {
-                    takeDfOrderIds.add(g.getDfOrderId());
-                }
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
                 subOrderModel.noTake();
                 notTakeDfOrderIds.add(g.getDfOrderId());
@@ -677,6 +630,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             //剩下的已拿
             for (DaifaGgoods g : gmap.values()) {
                 SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
+                takeDfOrderIds.add(g.getDfOrderId());
                 subOrderModel.haveTake();
             }
         }

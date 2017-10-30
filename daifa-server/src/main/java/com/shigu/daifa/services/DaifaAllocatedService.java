@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +52,15 @@ public class DaifaAllocatedService {
     public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId,Long searchWorkerId,Integer status, String lastOrderId, String lastSubOrderId,
                                                               String startDate, String endDate, Integer page, Integer size) {
         DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
-        DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andSellerIdEqualTo(sellerId)
-                .andUseStatusEqualTo(1).andOperateIsEqualTo(0);
+        DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andSellerIdEqualTo(sellerId);
+        if(status==null||status!=3){
+            ce.andUseStatusEqualTo(1).andOperateIsEqualTo(0);
+            if(status!=null){
+                ce.andPrintBarcodeStatusEqualTo(status);
+            }
+        }else{
+            ce.andCreateDateEqualTo(DateUtil.dateToString(new Date(), DateUtil.patternB));
+        }
         daifaGgoodsExample.setOrderByClause("create_time desc");
         if (lastOrderId != null) {
             ce.andDfTradeIdLike("%" + lastOrderId);
@@ -71,9 +79,7 @@ public class DaifaAllocatedService {
         if(searchWorkerId!=null){
             ce.andDaifaWorkerIdEqualTo(searchWorkerId);
         }
-        if(status!=null){
-            ce.andPrintBarcodeStatusEqualTo(status);
-        }
+
         Integer count = daifaGgoodsMapper.countByExample(daifaGgoodsExample);
         List<DaifaAllocatedVO> vos = new ArrayList<>();
         if (count > 0) {
@@ -133,11 +139,8 @@ public class DaifaAllocatedService {
         }
         switch (takeType){
             case 1:{
-                DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(g.getDfOrderId(),FieldUtil.codeFields("take_goods_status"));
                 takeGoodsIssueProcess.complete(takeGoodsId);
-                if(o.getTakeGoodsStatus()==2){
-                    orderServerTake(g.getDfOrderId());
-                }
+                orderServerTake(g.getDfOrderId());
                 break;
             }
             case 2:{
@@ -150,7 +153,7 @@ public class DaifaAllocatedService {
     }
 
     public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids)throws DaifaException{
-        List<PrintTagVO> printTagVOS=new ArrayList<>();
+        List<PrintTagVO> printTagVOS;
         if(ids==null){
             printTagVOS=takeGoodsIssueProcess.printAllTags(sellerId);
         }else{
@@ -197,19 +200,6 @@ public class DaifaAllocatedService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-
-    public void tongbuquehuo(){
-        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
-        daifaGgoodsTasksExample.createCriteria().andTakeGoodsStatusEqualTo(2).andOperateIsEqualTo(0).andAllocatStatusEqualTo(0);
-        List<DaifaGgoodsTasks> tasks=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("tasks_id,df_order_id"));
-        Map<Long,List<DaifaGgoodsTasks>> tsMap=BeanMapper.groupBy(tasks,"dfOrderId",Long.class);
-        for(List<DaifaGgoodsTasks> ts:tsMap.values()){
-            if(ts.size()>0){
-                orderServerNotTake(ts.get(0).getDfOrderId());
-            }
         }
     }
 }

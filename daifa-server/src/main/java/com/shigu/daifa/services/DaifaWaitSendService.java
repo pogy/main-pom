@@ -1,16 +1,10 @@
 package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
-import com.opentae.data.daifa.beans.DaifaOrder;
-import com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple;
-import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
-import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
-import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.WaitSendBO;
 import com.shigu.daifa.vo.DaifaWaitSendVO;
 import com.shigu.daifa.vo.WaitSendOrderVO;
@@ -46,30 +40,14 @@ public class DaifaWaitSendService {
     TakeGoodsIssueProcess takeGoodsIssueProcess;
     @Autowired
     private AfterSaleService afterSaleService;
-    private DaifaMultipleMapper daifaMultipleMapper;
-
     @Autowired
-    public void setDaifaMultipleMapper(DaifaMultipleMapper daifaMultipleMapper) {
-        this.daifaMultipleMapper = daifaMultipleMapper;
-    }
-
     private DaifaWaitSendMapper daifaWaitSendMapper;
-
     @Autowired
-    public void setDaifaWaitSendMapper(DaifaWaitSendMapper daifaWaitSendMapper) {
-        this.daifaWaitSendMapper = daifaWaitSendMapper;
-    }
-
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
     @Autowired
-    public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
-        this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
-    }
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
-    public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
-        this.daifaOrderMapper = daifaOrderMapper;
-    }
+    private DaifaTradeMapper daifaTradeMapper;
 
 
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
@@ -135,10 +113,12 @@ public class DaifaWaitSendService {
 
                 for(DaifaWaitSendVO send:sends){
                     for(WaitSendOrderVO so:send.getChildOrders()){
+                        so.setNoSaleIs(false);
                         DaifaOrder o=map.get(so.getChildOrderId());
                         if(o!=null){
                             so.setChildServersFee(o.getSingleServicesFee());
                             so.setChildRemark(o.getOrderRemark());
+                            so.setNoSaleIs(o.getDelistIs()==1);
                         }
                         List<DaifaGgoodsTasks> t=taskMap.get(so.getChildOrderId());
                         if(t!=null&&t.size()>0){
@@ -163,6 +143,24 @@ public class DaifaWaitSendService {
         }
         Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
         DaifaOrder o=daifaOrderMapper.selectByPrimaryKey(childOrderId);
+
+        DaifaTrade t=daifaTradeMapper.selectByPrimaryKey(o.getDfTradeId());
+        if(t.getSendStatus()==2){
+            throw new DaifaException("已发货");
+        }
+        Long otherPrice=MoneyUtil.StringToLong(t.getExpressFee());
+        DaifaOrder ox = new DaifaOrder();
+        ox.setDfTradeId(o.getDfTradeId());
+        List<DaifaOrder> os = daifaOrderMapper.select(ox);
+        for(DaifaOrder o1:os){
+            if(o1.getRefundStatus() == 0){
+                otherPrice=0L;
+                break;
+            }
+        }
+        if(otherPrice!=0L){
+            refundMoney=MoneyUtil.dealPrice(MoneyUtil.StringToLong(refundMoney)+otherPrice);
+        }
         Long refundId;
         try {
             refundId =afterSaleService.refundHasItem(new Long(o.getOrderPartitionId()), MoneyUtil.StringToLong(refundMoney));
