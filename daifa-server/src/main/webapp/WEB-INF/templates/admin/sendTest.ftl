@@ -69,7 +69,7 @@
                 <li class="tddiv" ><p>重新发货</p></li>
                 <li id="liuserid" class="tddiv" >
 
-                    <p><i class="icon-user"></i>
+                    <p>
 
                         <select id='sendType' name='sendType' class='fmInput' style='width: 137px'>
                             <option value='1'>重新修改交易编号再进行发货</option><option value='0'>普通</option>
@@ -78,11 +78,15 @@
                 </li>
                 <li id="liuserid" class="tddiv" >
 
-                    <p><i class="icon-user"></i><input type="text" id="dfTradeId" name="dfTradeId" style="width: 200px">重新修改交易编号再进行发货用dfTradeId,普通用dfOrderId</p>
+                    <p><font color="red">重新修改交易编号再进行发货用dfTradeId,普通用dfOrderId</font> </p>
+                </li>
+                <li id="liuserid" class="tddiv" >
+
+                    <p>交易号：<input type="text" id="dfTradeId" name="dfTradeId" style="width: 200px"></p>
                </li>
                 <li id="liuserid" class="tddiv" >
 
-                    <p><i class="icon-user"></i><input type="button" id="subc" name="subc" class="fmButton fmButton-blue" onclick="subdeal();" value="确定"></p>
+                    <p><input type="button" id="subc" name="subc" class="fmButton fmButton-blue" onclick="subdeal();" value="确定"></p>
                 </li>
 
 
