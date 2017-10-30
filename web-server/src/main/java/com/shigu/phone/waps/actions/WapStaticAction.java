@@ -56,10 +56,10 @@ public class WapStaticAction {
     @ResponseBody
     public JSONObject cat(String webSite,Integer pid) {
         if (pid != null && pid == 30) {
-            pid = 2;
+            pid = 1;
         }
         if (pid != null && pid == 16) {
-            pid = 1;
+            pid = 2;
         }
         List<AppCatGroup> appCatGroups = wapStaticService.selCat(webSite, pid);
         if (appCatGroups == null){
@@ -76,6 +76,7 @@ public class WapStaticAction {
             list = wapStaticService.queryParentCatList(webSite);
             return JsonResponseUtil.success().element("success",true).element("catGroups",list);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
@@ -94,6 +95,7 @@ public class WapStaticAction {
             list = wapStaticService.querySubCatList(webSite,parentId);
             return JsonResponseUtil.success().element("success",true).element("subCats",list);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
 
@@ -106,6 +108,7 @@ public class WapStaticAction {
             List<MarketsVO> vos = wapStaticService.queryMarketListByPid(pid,webSite);
             return JsonResponseUtil.success().element("sucess",true).element("markets",vos);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("sucess",false);
         }
     }

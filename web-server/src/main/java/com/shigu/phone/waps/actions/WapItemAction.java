@@ -57,6 +57,7 @@ public class WapItemAction {
                     .element("total",baseCollectItemVO.getTotal())
                     .element("items",baseCollectItemVO.getItems());
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
@@ -97,6 +98,7 @@ public class WapItemAction {
                 return JsonResponseUtil.error("参数错误").element("success",false);
             }
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
@@ -123,6 +125,7 @@ public class WapItemAction {
             }
             return JsonResponseUtil.success().element("success",true).element("collectId",collectId);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }

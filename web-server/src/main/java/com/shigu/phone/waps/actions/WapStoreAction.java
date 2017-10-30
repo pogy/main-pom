@@ -53,6 +53,7 @@ public class WapStoreAction {
                         .element("starNum",oneShopVO.getStarNum())
                         .element("shopHeadUrl",oneShopVO.getShopHeadUrl());
         } catch (OpenException e) {
+            e.printStackTrace();
            return JsonResponseUtil.error(e.getErrMsg());
         }
     }
@@ -64,6 +65,7 @@ public class WapStoreAction {
             List<AppShopCat> appShopCats = wapStoreService.selShopCat(webSite, shopId);
             return JsonResponseUtil.success().element("success",true).element("cats",appShopCats);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error("查询失败").element("success",false);
         }
     }
@@ -75,6 +77,7 @@ public class WapStoreAction {
             AppMarket appMarket = wapStoreService.selMarketData(mid, webSite);
             return JsonResponseUtil.success().element("success",true).element("market",appMarket);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }

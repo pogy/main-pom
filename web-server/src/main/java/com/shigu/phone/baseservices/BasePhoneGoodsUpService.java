@@ -68,7 +68,6 @@ public class BasePhoneGoodsUpService {
     private MemberSimpleService memberSimpleService;
 
     public void upToWx(String webSite,Long goodsId,Long userId) throws OpenException {
-        UpToWxResponse resp = new UpToWxResponse();
         OpenException openException = new OpenException();
 
         ItemUpRecordVO bo = new ItemUpRecordVO();

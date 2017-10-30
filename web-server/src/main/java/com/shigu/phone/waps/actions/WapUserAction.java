@@ -71,6 +71,7 @@ public class WapUserAction {
             currentUser.hasRole(RoleEnum.STORE.getValue());
             return JsonResponseUtil.success().element("success",true);
         } catch (AuthenticationException e) {
+            e.printStackTrace();
             //登陆失败
             token.clear();
             return JsonResponseUtil.error("账号或密码错误").element("success",false);
@@ -91,6 +92,7 @@ public class WapUserAction {
             wapPhoneUserService.msgCodeLogin(telephone, msgCode, request.getRemoteAddr());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
@@ -106,6 +108,7 @@ public class WapUserAction {
             wapPhoneUserService.getPhoneMsg(String.valueOf(telephone),type);
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg())
                                     .element("success",false);
         }
@@ -130,6 +133,7 @@ public class WapUserAction {
             try {
                 currentUser.login(token);
             } catch (AuthenticationException e) {
+                e.printStackTrace();
                 //登陆失败
                 token.clear();
                 return JsonResponseUtil.error("登录异常").element("success",false);
@@ -153,6 +157,7 @@ public class WapUserAction {
             wapPhoneUserService.changePassword(oldPwd,newPwd,ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
@@ -167,6 +172,7 @@ public class WapUserAction {
             wapPhoneUserService.forgetPassword(telephone,msgCode,newPwd);
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg())
                     .element("success",false);
         }
@@ -201,6 +207,7 @@ public class WapUserAction {
             wapPhoneUserService.bindUser(bo);
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
+            e.printStackTrace();
             return JsonResponseUtil.error(e.getMessage()).element("success",false);
         }
     }
@@ -221,6 +228,7 @@ public class WapUserAction {
                                              .element("userId",ps.getUserId())
                                              .element("userType",isStore?2:1);
         } catch (Exception e) {
+            e.printStackTrace();
             return JsonResponseUtil.error("查询失败").element("success",false);
         }
     }

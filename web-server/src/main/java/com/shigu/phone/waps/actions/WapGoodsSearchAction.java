@@ -111,7 +111,8 @@ public class WapGoodsSearchAction {
                         .element("total",itemSearchVo.getTotal())
                         .element("items",itemSearchVo.getItems());
         } catch (OpenException e) {
-           return JsonResponseUtil.error(e.getMessage()).element("sucess",false);
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getMessage()).element("sucess",false);
         }
     }
 
@@ -171,6 +172,9 @@ public class WapGoodsSearchAction {
         } catch (OpenException e) {
             e.printStackTrace();
             return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
+        }catch (CdnException e){
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getMessage()).element("success",false).element("nogoods",true);
         }
     }
 

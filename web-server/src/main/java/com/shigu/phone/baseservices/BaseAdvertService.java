@@ -37,7 +37,7 @@ public class BaseAdvertService {
     public List<ImgBannerVO> imgSpread(SpreadEnum spread){
         List<ImgBannerVO> imageGoat = spreadService.selImgBanners(spread).selReal();
         switch (spread){
-            case MAN_DT:case WOMAN_DT:{
+            case HZ_APP_MAN_DT:case HZ_APP_WOMAN_DT:{
                 imageGoat.forEach(appImgBanner -> {
                     appImgBanner.setImgsrc(ImgUtils.formatImg(appImgBanner.getImgsrc(), ImgFormatEnum.DT));
                 });
@@ -58,11 +58,11 @@ public class BaseAdvertService {
         List<AppItemSpread> spreads=new ArrayList<>();
         ImgFormatEnum format=null;
         switch (spread){
-            case MAN_TJDK:case WOMAN_TJDK:{
+            case HZ_APP_MAN_TJDK:case HZ_APP_WOMAN_TJDK:{
                 format=ImgFormatEnum.SHOP_TJ;
                 break;
             }
-            case MAN_RM:case WOMAN_RM:{
+            case HZ_APP_MAN_RM:case HZ_APP_WOMAN_RM:{
                 format=ImgFormatEnum.GOODS_LIST;
                 break;
             }

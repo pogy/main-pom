@@ -75,10 +75,10 @@ public class WapPhoneGoodsSearchService {
      * app单商品信息
      * @return
      */
-    public OneItemVO oneItem(String webSite,Long itemId,Long userId) throws OpenException {
+    public OneItemVO oneItem(String webSite,Long itemId,Long userId) throws OpenException, CdnException {
         try {
             return basePhoneGoodsSearchService.oneItem(webSite, itemId, userId);
-        } catch (Exception e) {
+        } catch (IOException|TemplateException e) {
             e.printStackTrace();
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());
