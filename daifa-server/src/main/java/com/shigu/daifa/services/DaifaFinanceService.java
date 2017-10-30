@@ -2,6 +2,7 @@ package com.shigu.daifa.services;
 
 import com.opentae.data.daifa.interfaces.DaifaSelFinaceMapper;
 import com.shigu.daifa.vo.FinanceVO;
+import com.shigu.daifa.vo.WorkerTakeNumVO;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DaifaFinanceService {
@@ -61,5 +63,10 @@ public class DaifaFinanceService {
         } catch (Exception e) {
             return "0.00";
         }
+    }
+
+
+    public List<WorkerTakeNumVO> takeGoodsStatistic(String day,Long sellerId){
+        return daifaSelFinaceMapper.selectWorkerTakeNums(day,sellerId);
     }
 }

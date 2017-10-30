@@ -7,6 +7,8 @@ import com.shigu.admin.services.OrderSendErrorDealService;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.vo.ExpressVO;
+import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -147,4 +149,61 @@ public class OrderSendErrorDealAction {
         return JsonResponseUtil.success();
     }
 
+    /**
+     * ====================================================================================
+     * @方法名： sendTestinit
+     * @user gzy 2017/10/27 15:46
+     * @功能：发货测试的初始货页面
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("admin/sendTest")
+    public String sendTestinit(OrderSendErrorDealBO bo, Model model){
+
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
+
+        model.addAttribute("userName", auth);
+        return "admin/sendTest";
+    }
+    /**
+     * ====================================================================================
+     * @方法名： dealSendTestJson
+     * @user gzy 2017/10/27 16:11
+     * @功能：处理再次发货
+     * @param: [bo, model]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("admin/dealSendTestJson")
+    @ResponseBody
+    public JSONObject dealSendTestJson(OrderSendErrorDealBO bo, Model model) throws DaifaException {
+        ExpressVO vo1=new ExpressVO ();
+        if (bo.getDfTradeId () == null||bo.getSendType () == null) {
+            throw new DaifaException("缺少参数");
+        }
+        if(bo.getSendType ()==1){
+            //特别处理
+            vo1= orderSendErrorDealService.dealSendTest(new Long(bo.getDfTradeId ()));
+
+        }else{
+            if(bo.getSendType ()==0){
+                //普通调用
+
+                PackResultVO vo=  orderSendErrorDealService.dealSendordinary(new Long(bo.getDfTradeId ()));
+
+                vo1.setExpressCode (vo.getExpressCode ());
+                vo1.setTid (new Long(bo.getDfTradeId ()));
+
+            }
+        }
+
+        //orderSendErrorDealService.dealSubOrderError (dfOrderId,propStr,goodsCode,storeGoodsCode);
+        return JsonResponseUtil.success ("快递单号："+vo1.getExpressCode ()+"@@三段码："+vo1.getMarkDestination ()+"@"+vo1.getPackageName ());
+    }
 }

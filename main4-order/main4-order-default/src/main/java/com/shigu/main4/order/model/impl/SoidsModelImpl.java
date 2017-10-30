@@ -61,18 +61,14 @@ public class SoidsModelImpl implements SoidsModel {
     public void cancleOutOfStock(Long soidpid) {
         //更新拆单状态
         SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
-        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.ARRIVAL.status);
+        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.DEFAULT_STATUS.status);
         subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
         //更新子单状态
         SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
         subOrderSoidpsExample.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.OUT_OF_STOCK.getStatus());
         int stockNum = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample);//查缺货量
-        SubOrderSoidpsExample subOrderSoidpsExample2 = new SubOrderSoidpsExample();
-        subOrderSoidpsExample2.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.ARRIVAL.getStatus());
-        int inStock = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample2);//拿到货量
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
         itemOrderSub.setOutOfStok(stockNum);
-        itemOrderSub.setInStok(inStock);
         if (stockNum == 0) {
             //没有缺货时，将有货时间置为空
             itemOrderSub.setOutOfStokReason(null);
@@ -81,4 +77,18 @@ public class SoidsModelImpl implements SoidsModel {
         }
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
+
+    @Override
+    public void updateInStok(Long soidpid) {
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
+        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.ARRIVAL.status);
+        subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
+        SubOrderSoidpsExample subOrderSoidpsExample2 = new SubOrderSoidpsExample();
+        subOrderSoidpsExample2.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.ARRIVAL.getStatus());
+        int inStock = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample2);//拿到货量
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
+        itemOrderSub.setInStok(inStock);
+        itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
+    }
+
 }

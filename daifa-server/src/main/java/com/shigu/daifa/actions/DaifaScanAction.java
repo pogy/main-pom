@@ -91,4 +91,18 @@ public class DaifaScanAction {
         obj.put("printInfo",vo);
         return obj;
     }
+
+    public JSONObject setGoodsWeight(String barCode,String weight) throws DaifaException {
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Long dfOrderId;
+        try {
+            barCode = barCode.substring(0,barCode.length()-7);
+            dfOrderId = new Long(barCode);
+        } catch (Exception e) {
+            throw new DaifaException("此条码对应的订单编号不存在");
+        }
+        packDeliveryProcess.updateGoodsWeight(dfOrderId,((Double)(new Double(weight)*1000)).longValue(),daifaUser.getDaifaSellerId());
+        return JsonResponseUtil.success();
+    }
 }

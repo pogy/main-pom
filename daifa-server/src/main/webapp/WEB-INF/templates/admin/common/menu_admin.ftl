@@ -13,7 +13,9 @@
                 <li>
                     <a id="niemenu" href="orderSendErrorindex.htm"><i></i>主单错误</a>
                 </li>
-
+                <li>
+                    <a id="niemenu" href="sendTest.htm" ><i></i>测试发货修改</a>
+                </li>
                 <li>
                     <a id="niemenu" href="orderSendErrorSubindex.htm"><i></i>子单属性错误</a>
                 </li>
@@ -37,9 +39,13 @@
         <li>
             <a  href="ggoodsUnListByPage.htm" ><i class="icon-allorders"></i>拿货未完成数据</a>
         </li>
+
         <li>
             <a href="javascript:;" ><i class="icon-allocation"></i>系统管理</a>
             <ul>
+                <li>
+                    <a id="niemenu" href="workerListByPage.htm"><i></i>用户管理</a>
+                </li>
                 <li>
                     <a id="niemenu" href="roleListByPage.htm"><i></i>角色管理</a>
                 </li>

@@ -385,5 +385,15 @@
             <artifactId>create-excel</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>dh3t_sms_util</groupId>
+            <artifactId>dh3t_sms_util</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4</version>
+        </dependency>
     </dependencies>
 </project>

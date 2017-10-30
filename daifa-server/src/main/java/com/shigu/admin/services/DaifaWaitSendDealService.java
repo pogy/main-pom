@@ -57,6 +57,12 @@ public class DaifaWaitSendDealService {
         if (StringUtils.hasText(bo.getReceiverName ())) {
             exampleCriteria.andReceiverNameEqualTo (bo.getReceiverName ());
         }
+        if(bo.getOrderDisplay ()==null||bo.getOrderDisplay ().intValue ()==-1){
+
+        }else{
+            exampleCriteria.andOrderDisplayEqualTo (bo.getOrderDisplay ());
+        }
+
 
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");

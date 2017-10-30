@@ -23,4 +23,10 @@ public interface SoidsModel {
     void havaTime(Long soidpid,String day);
 
     void cancleOutOfStock(Long soidpid);
+
+    /**
+     * 更新已拿货数量
+     * @param soidpid
+     */
+     void  updateInStok(Long soidpid);
 }

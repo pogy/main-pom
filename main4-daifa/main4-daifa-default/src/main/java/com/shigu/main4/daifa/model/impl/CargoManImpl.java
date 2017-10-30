@@ -107,6 +107,15 @@ public class CargoManImpl implements CargoManModel {
         if (daifaWorker == null) {
             throw new DaifaException("系统无此拿货人");
         }
+        Date theTime=new Date();
+        String theDay=DateUtil.dateToString(theTime, DateUtil.patternB);
+
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andSellerIdEqualTo(daifaWorker.getDaifaSellerId())
+                .andAllocatStatusEqualTo(1).andTakeGoodsStatusEqualTo(0).andAllocatDateLessThan(theDay);
+        if(daifaGgoodsTasksMapper.countByExample(daifaGgoodsTasksExample)!=0){
+            throw new DaifaException("存在今天之前分配的拿货中的数据,禁止分配");
+        }
 
         try {
             takeLock.lock();
@@ -128,15 +137,15 @@ public class CargoManImpl implements CargoManModel {
                 BeanUtils.copyProperties(tasks, ggoods);
                 ggoodsList.add(ggoods);
                 tasks.setAllocatStatus(1);//已分配
-                tasks.setAllocatTime(new Date());
+                tasks.setAllocatTime(theTime);
                 tasks.setOperateIs(0);//未操作拿货完成
                 tasks.setUseStatus(0);
                 tasks.setGgoodsCode(code);
-                tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
+                tasks.setAllocatDate(theDay);
                 tasks.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
                 tasks.setDaifaWorker(daifaWorker.getDaifaWorker());
-                ggoods.setCreateTime(tasks.getAllocatTime());
-                ggoods.setCreateDate(tasks.getAllocatDate());
+                ggoods.setCreateTime(theTime);
+                ggoods.setCreateDate(theDay);
                 ggoods.setDaifaWorkerId(cargoManId);
                 ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
                 ggoods.setGgoodsCode(code);
