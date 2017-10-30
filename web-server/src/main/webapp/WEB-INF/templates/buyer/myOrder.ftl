@@ -432,6 +432,9 @@ var webSite = '${webSite!}';
             </#if>
         </div>
         </#if>
+        <#if order.mainState == 2 && childOrder.haveTakeGoodsNum??>
+            <p class="fc6">已拿货 x${childOrder.haveTakeGoodsNum!}</p>
+        </#if>
     </li>
     <li class="opera">
         <#if order.mainState == 1 || order.mainState == 5>
