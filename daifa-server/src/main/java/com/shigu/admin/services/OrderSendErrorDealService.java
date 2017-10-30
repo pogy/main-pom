@@ -9,6 +9,8 @@ import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.admin.bo.OrderSendErrorDealBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
+import com.shigu.main4.daifa.vo.ExpressVO;
+import com.shigu.main4.daifa.vo.PackResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -116,6 +118,35 @@ public class OrderSendErrorDealService {
 
         packDeliveryProcess.dealSubOrderError (dfOrderId,propStr, goodsCode, storeGoodsCode);
     }
+    /**
+     * ====================================================================================
+     * @方法名： dealSendTest
+     * @user gzy 2017/10/27 17:53
+     * @功能：
+     * @param: [dfTradeId]
+     * @return: com.shigu.main4.daifa.vo.ExpressVO
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public ExpressVO dealSendTest(Long dfTradeId)throws DaifaException{
 
+       return packDeliveryProcess.dealSendTest (dfTradeId);
+    }
+    /**
+     * ====================================================================================
+     * @方法名： dealSendordinary
+     * @user gzy 2017/10/27 18:02
+     * @功能：
+     * @param: [subOrderId]
+     * @return: com.shigu.main4.daifa.vo.PackResultVO
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public PackResultVO dealSendordinary(Long subOrderId)throws DaifaException{
+
+        return packDeliveryProcess.packSubOrder (subOrderId);
+    }
 
 }

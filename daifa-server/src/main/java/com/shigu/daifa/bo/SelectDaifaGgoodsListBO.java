@@ -11,6 +11,7 @@ public class SelectDaifaGgoodsListBO implements Serializable {
     private Integer status;
     private Integer page;
 
+
     public Long getSearchWorkerId() {
         return searchWorkerId;
     }

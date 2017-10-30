@@ -1,11 +1,12 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.core.mybatis.config.MyBatisRepository;
-import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import com.shigu.daifa.vo.WorkerTakeNumVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import java.util.List;
 
 /**
  * 
@@ -29,4 +30,6 @@ public interface DaifaSelFinaceMapper{
     String selectTodayPostFee(@Param("day")String day,@Param("sellerId")Long sellerId);
 
     String selectTodayRefundFee(@Param("day")String day,@Param("sellerId")Long sellerId);
+
+    List<WorkerTakeNumVO> selectWorkerTakeNums(@Param("day")String day, @Param("sellerId")Long sellerId);
 }

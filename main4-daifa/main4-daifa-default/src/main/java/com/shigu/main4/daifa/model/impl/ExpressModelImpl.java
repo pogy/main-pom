@@ -1,13 +1,11 @@
 package com.shigu.main4.daifa.model.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.opentae.data.daifa.beans.DaifaCallExpress;
-import com.opentae.data.daifa.beans.DaifaPostCustomer;
-import com.opentae.data.daifa.beans.DaifaSeller;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaPostCustomerExample;
-import com.opentae.data.daifa.interfaces.DaifaCallExpressMapper;
-import com.opentae.data.daifa.interfaces.DaifaPostCustomerMapper;
-import com.opentae.data.daifa.interfaces.DaifaSellerMapper;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.examples.DaifaWaitSendExample;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.beans.*;
 import com.shigu.main4.daifa.bo.OrderExpressBO;
@@ -50,6 +48,12 @@ public class ExpressModelImpl implements ExpressModel {
     @Resource(name = "tae_daifa_daifaSellerMapper")
     DaifaSellerMapper daifaSellerMapper;
 
+    @Resource(name = "tae_daifa_daifaWaitSendMapper")
+    DaifaWaitSendMapper daifaWaitSendMapper;
+
+    @Resource(name = "tae_daifa_daifaTradeMapper")
+    DaifaTradeMapper daifaTradeMapper;
+
     @Autowired
     private KdConfig kdConfig;
 
@@ -73,14 +77,12 @@ public class ExpressModelImpl implements ExpressModel {
     @Override
     public ExpressVO callExpress (OrderExpressBO bo) throws DaifaException{
 
-        ExpressVO vo=null;
+        ExpressVO vo;
         //先查询这个代发交易是否已经有快递鸟的信息了
         DaifaCallExpress dce= daifaCallExpressMapper.selectByPrimaryKey (bo.getTid ());
         if(dce!=null){
-             vo=new ExpressVO();
             vo=BeanMapper.map (dce,ExpressVO.class);
             vo.setTid (dce.getDfTradeId ());
-
         }else{
             //先用快递ID查询出快递鸟的账户信息
             DaifaPostCustomerExample example=new DaifaPostCustomerExample();
@@ -103,7 +105,7 @@ public class ExpressModelImpl implements ExpressModel {
             DaifaSeller seller= daifaSellerMapper.selectByPrimaryKey (sellerId);
             //发货信息
             SendBean send=new SendBean();
-            List goodsInfo=new ArrayList ();
+            List<String> goodsInfo=new ArrayList<>();
             for(SubOrderExpressBO sub:bo.getList ()){
                 String title = sub.getStoreGoodsCode() + "-" + sub.getPropStr() + "-" + sub.getGoodsNum();
                 goodsInfo.add (title);
@@ -124,11 +126,11 @@ public class ExpressModelImpl implements ExpressModel {
                 send.setReceiverAddress (adds[2]);
             }else {
                 send.setReceiverArea (adds[2]);
-                String readd = "";
+                StringBuilder readd = new StringBuilder();
                 for (int i = 3; i < adds.length; i++) {
-                    readd += adds[i] + " ";
+                    readd.append(adds[i]).append(" ");
                 }
-                send.setReceiverAddress (readd);
+                send.setReceiverAddress (readd.toString());
             }
 
             //发货人信息
@@ -154,6 +156,20 @@ public class ExpressModelImpl implements ExpressModel {
                     dce1.setSellerId (sellerId);
                     dce1.setJsonData (qvo.getJsonData ());
                     daifaCallExpressMapper.insertSelective (dce1);
+
+                    DaifaWaitSend send1=new DaifaWaitSend ();
+                    send1.setDfTradeId (bo.getTid ());
+                    send1.setExpressCode (qvo.getPostCode ());
+                    DaifaWaitSendExample snedExample=new DaifaWaitSendExample();
+                    snedExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
+                    daifaWaitSendMapper.updateByExampleSelective (send1,snedExample);
+
+                    DaifaTrade trade=new DaifaTrade ();
+                    trade.setDfTradeId (bo.getTid ());
+                    trade.setExpressCode (qvo.getPostCode ());
+                    DaifaTradeExample tradeExample=new DaifaTradeExample ();
+                    tradeExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
+                    daifaTradeMapper.updateByExampleSelective (trade,tradeExample);
                     //设置VO
                     vo=new ExpressVO ();
                     vo.setTid (dce1.getDfTradeId ());
@@ -246,7 +262,7 @@ public class ExpressModelImpl implements ExpressModel {
             throw new KdApiException(KdApiException.KdApiExceptionEnum.SIGN_ERROR);
         }
         String result = KdHttpUtil.sendPost(kdConfig.getEorderserviceReqURL(), params);
-        System.out.println("@@@@@@@@@@@@@@"+result);
+//System.out.println("@@@@@@@@@@@@@@"+result);
         JSONObject obj = JSONObject.fromObject(result);
 
         if (obj.containsKey("Success")) {

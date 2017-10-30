@@ -5,12 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>我的任务 - 星帮后台管理 - 四季星座网</title>
+
+    
+    
+    
+    
 <#include "/common/host_config.ftl">
+
+
+
+
+
+    
     <link href="http://style.571xz.com/v2/dfgl/css/orderHasAllocation.css" rel="stylesheet">
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+
+    
+        
+    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+    
+        
+            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+        
+    
     <script src="http://style.571xz.com/v2/dfgl/js/orderHasAllocation.js"></script>
+    
     <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
+    
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -23,13 +54,19 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
-            <input id="menus" type="hidden" value="${menu}"/>
+        <input id="menus" type="hidden" value="${menu!}"/>
     </div>
 </div>
 
+
+
+
 <div class="mainContent">
     <div class="sideBarBox">
-    <#include "/common/menu_daifa.ftl">
+        
+        <#include "/common/menu_daifa.ftl">
+        
+
     </div>
     <div class="contentBox">
         <div class="printTypeTabs">
@@ -37,9 +74,15 @@
         <li <#if !query.status>class="select"</#if> data-type="0" jbtn='searchBtn'>全部子订单</li>
         <li <#if query.status == 1>class="select"</#if> data-type='1' jbtn='searchBtn'>未打印子订单</li>
         <li <#if query.status == 2>class="select"</#if> data-type='2' jbtn='searchBtn'>已打印子订单</li>
+        <li <#if query.status == 3>class="select"</#if> data-type='3' jbtn='searchBtn'>我今日子订单</li>
     </ul>
     <input type="hidden" id="stateType" <#if query.status??>value="${query.status!}"</#if>>
 </div>
+
+
+
+
+
 
 <div class="orderSearch">
     <ul class="orderSearchBox">
@@ -98,10 +141,24 @@
     <#else>
     </b>
     </#if>
+
+
+
+
+
 </#list>
 </li>
     </ul>
 </div>
+
+
+
+
+
+
+
+
+
 
 <#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"childOrderId","value":"${query.childOrderId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
@@ -122,7 +179,17 @@
 </form>
 </#if>
 
+
+
+
+
 </#list>
+
+
+
+
+
+
 
 <div class="orderCon">
     <div class="theadCon">
@@ -257,12 +324,17 @@
         <#if $it.text??>
             ${$it.text!}
         </#if>
+    
+    
         <#if $it.html??>
             ${$it.html}
         </#if>
     
     </span>
 </label>
+
+
+
 
 </#list>
 </li>
@@ -334,6 +406,11 @@
     </ul>
 </div>
 
+
+
+
+
+
     </#list>
     </div>
     
@@ -349,10 +426,149 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
+
+
+
+
+
+
+
 </#list>
 
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
+
+
+
+

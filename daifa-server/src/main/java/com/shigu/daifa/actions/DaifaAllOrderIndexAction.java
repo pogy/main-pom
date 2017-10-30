@@ -138,7 +138,7 @@ public class DaifaAllOrderIndexAction {
     @ResponseBody
     public JSONObject setTallyJson(Long userId, @RequestParam("childOrderId") Long childOrderId) throws DaifaException {
 
-        return daifaAllOrderIndexService.setTallyJson(userId, childOrderId);
+        return daifaAllOrderIndexService.setTallyJson(childOrderId);
     }
 
 }

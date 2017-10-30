@@ -28,6 +28,10 @@ public interface SysDealProcess {
     int updateUserAndRoles (Long userId, String roleIds) throws DaifaException;
     //更新角色权限
     int updateRoleAndPermissions (Long roleId, String permissionIds) throws DaifaException;
+    //用户的插入
+    int userInsert(Long daifaSellerId,Long dfGroupId,String daifaWorker,String password,String userName,String phone,Integer workType,String payBaoAccount,Long workerId,Long roleId);
+    //用户的更新
+    int userUpdate(Long daifaWorkerId,Long daifaSellerId,Long dfGroupId,String daifaWorker,String password,String userName,String phone,Integer workType,String payBaoAccount,Long workerId,Long roleId,Integer useStatus);
 
 
 }

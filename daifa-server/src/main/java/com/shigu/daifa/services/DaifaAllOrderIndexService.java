@@ -203,15 +203,15 @@ public class DaifaAllOrderIndexService {
         AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId = user.getDaifaSellerId();
         DaifaWorkerExample daifaWorkerExample = new DaifaWorkerExample();
-        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId).andUseStatusEqualTo(1);
+        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId).andUseStatusEqualTo(1).andWorkTypeEqualTo (5);
         List<DaifaWorker> workers = daifaWorkerMapper.selectFieldsByExample(daifaWorkerExample
-                , FieldUtil.codeFields("daifa_worker_id,daifa_worker"));
+                , FieldUtil.codeFields("daifa_worker_id,daifa_worker,user_name,phone"));
 
         List<DaifaWorkerVO> workerVOS = new ArrayList<>();
         workers.forEach(worker->{
             DaifaWorkerVO vo = new DaifaWorkerVO();
             vo.setId(worker.getDaifaWorkerId());
-            vo.setName(worker.getDaifaWorker());
+            vo.setName(worker.getUserName ()+"("+worker.getPhone ()+")");
             workerVOS.add(vo);
         });
 
@@ -227,7 +227,7 @@ public class DaifaAllOrderIndexService {
         return JsonResponseUtil.success("设置成功");
     }
 
-    public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
+    public JSONObject setTallyJson(Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
         daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
