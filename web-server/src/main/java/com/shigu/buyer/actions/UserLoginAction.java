@@ -29,10 +29,8 @@ import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.RedomUtil;
-import com.shigu.tools.ResultRetUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
+import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,6 +44,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.krb5.internal.crypto.Des3;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,6 +88,12 @@ public class UserLoginAction {
 
     @Autowired
     UserAccountService userAccountService;
+
+    @RequestMapping("frameLogin")
+    public String frameLogin( HttpSession session, Model model,String backUrl){
+        model.addAttribute("backUrl", backUrl);
+        return "buyer/framelogin";
+    }
 
     /**
      * 登陆
@@ -189,12 +194,15 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("ortherLogin")
-    public String ortherLogin(int ortherLoginType,String backUrl,HttpSession session){
+    public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
         LoginLinkUtil llu = new LoginLinkUtil();
         String url="";
         switch(ortherLoginType) {
             case 1:
                 url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                if(HttpRequestUtil.checkAgentIsMobile(request)){
+                    url=url.replace("&view=web","&view=wap");
+                }
                 break;
             case 2:
                 url = llu.callAliUrl();
@@ -202,13 +210,22 @@ public class UserLoginAction {
             case 3:
                 url = llu.callQqUrl();
                 break;
-            case 4:
-                HashMap e = new HashMap();
-                e.put("state", "wx591514a902a6280d__snsapi_userinfo");
-                e.put("date", TypeConvert.formatDate(new Date()));
-                String sign = MD5Attestation.signParamString(e);
+            case 4: {
+                HashMap e = new HashMap ();
+                e.put ("state", "wx591514a902a6280d__snsapi_userinfo");
+                e.put ("date", TypeConvert.formatDate (new Date ()));
+                String sign = MD5Attestation.signParamString (e);
                 url = "http://wx.571xz.com/shigu_weixin/wxoauth2toOauth2WzPage.action?state=wx591514a902a6280d__snsapi_userinfo&date="
-                        + TypeConvert.formatDate(new Date()) + "&sign=" + sign;
+                        + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
+                break;
+            }
+            case 5:
+                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+
+                    url=url.replace("&view=web","&view=wap");
+
+
+
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
         return "redirect:"+url;
@@ -675,6 +692,39 @@ public class UserLoginAction {
             toUrl=memberFilter.getSuccessUrl();
         }
         return toUrl;
+    }
+    /**
+     * ====================================================================================
+     * @方法名： loginortherSystem
+     * @user gzy 2017/10/17 16:15
+     * @功能：其他系统登录后的跳转
+     * @param: [backUrl, model, session]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("loginortherSystem")
+    public String loginortherSystem(String backUrl,Model model,HttpSession session) throws Main4Exception {
+        /*if(!SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+
+        }*/
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(ps!=null) {
+            Long shopId=0L;
+            if(ps.getLogshop ()!=null){
+                shopId= ps.getLogshop ().getShopId ();
+            }
+
+          // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
+            String key= Opt3Des.encryptPlainData (shopId+"");
+           String back=backUrl+"?key="+key;
+          // System.out.println (back);
+            return "redirect:"+back;
+        }else{
+            return "redirect:frameLogin.htm";
+        }
+
     }
 
 }

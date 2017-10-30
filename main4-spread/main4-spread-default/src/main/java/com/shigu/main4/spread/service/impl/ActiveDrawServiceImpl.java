@@ -814,6 +814,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
         // 查询本期
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            checkTime(drawPemVo.getStartTime());//本期也要验证一下，时间是否超限
             return drawRecordUserVo;
         }
 
@@ -822,14 +823,21 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawPemVo == null){
             throw new Main4Exception("数据有误");
         }
-        int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
-        if(xcday > 14){
-            throw new Main4Exception("已过期，无法领取");
-        }
+        checkTime(drawPemVo.getStartTime());
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
             return drawRecordUserVo;
         }
         return drawRecordUserVo;
+    }
+
+    /**
+     * 验证时间是否超限
+     */
+    public void checkTime(Date time) throws Main4Exception {
+        int xcday = DateUtil.daysOfTwo(time, new Date());
+        if(xcday > 14){
+            throw new Main4Exception("已过期，无法领取");
+        }
     }
 
     /**

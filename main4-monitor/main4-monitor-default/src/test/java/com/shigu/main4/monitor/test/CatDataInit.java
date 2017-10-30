@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.enums.CidMapEnum;
+import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.RankingCateLineVO;
@@ -26,11 +27,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getWeekTimeStamp;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
 
 /**
  * 类名：CatDataInit
@@ -67,16 +68,16 @@ public class CatDataInit {
      */
     @Test
     public void initCatData() throws Main4Exception {
-        initCatData(0);
-        filledCidScore(0,16L);
-        filledCidScore(0,30L);
+        initCatData(0,RankingPeriodEnum.RANKING_BY_WEEK);
+        filledCidScore(0,16L,RankingPeriodEnum.RANKING_BY_WEEK);
+        filledCidScore(0,30L,RankingPeriodEnum.RANKING_BY_WEEK);
     }
 
     @Test
     public void getListTest(){
         try {
-            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L);
-            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L);
+            List<RankingCateLineVO> womanList = rankingSimpleService.getRankingCateLinesByCids(16L,RankingPeriodEnum.RANKING_BY_WEEK);
+            List<RankingCateLineVO> manList = rankingSimpleService.getRankingCateLinesByCids(30L,RankingPeriodEnum.RANKING_BY_WEEK);
             System.out.println(womanList);
             System.out.println(manList);
         } catch (Main4Exception e) {
@@ -89,12 +90,11 @@ public class CatDataInit {
      * @param prePemNum 往前期次
      * @param cid 顶级类目id
      */
-    @Test
-    public void filledCidScore(int prePemNum,Long cid) throws Main4Exception {
+    public void filledCidScore(int prePemNum, Long cid, RankingPeriodEnum periodEnum) throws Main4Exception {
         int pem = prePemNum;
         List<RankingCateLineVO> rankingCateLineVOS = Lists.newArrayList();
         for (ShiguTaobaocat shiguTaobaocat : cats(Lists.newArrayList(cid))) {
-            Long uploadCount = redisIO.get(getPreFix(CAT_UP_COUNT_INDEX,pem)+shiguTaobaocat.getCid(), Long.class);
+            Long uploadCount = redisIO.get(getPreFix(CAT_UP_COUNT_INDEX,pem,periodEnum)+shiguTaobaocat.getCid(), Long.class);
             RankingCateLineVO lineVO = new RankingCateLineVO();
             if (uploadCount == null) {
                 continue;
@@ -113,7 +113,7 @@ public class CatDataInit {
             ++i;
             rankingCateLineVO.setRank(i);
         }
-        redisIO.putTemp(CidMapEnum.map(cid)+getWeekTimeStamp(pem),rankingCateLineVOS,3600*24*180);
+        redisIO.putTemp(CidMapEnum.map(cid)+getPeriodTimeStamp(pem,periodEnum),rankingCateLineVOS,3600*24*180);
     }
 
     public List<ShiguTaobaocat> cats(List<Long> parentCids) {
@@ -124,14 +124,14 @@ public class CatDataInit {
 
     @Test
     public void cidDataBaseTest(){
-        String s = redisIO.get(getPreFix(WOMAN_CAT_UP_COUNT_INDEX,0));
-        String man = redisIO.get(getPreFix(MAN_CAT_UP_COUNT_INDEX,0));
+        String s = redisIO.get(getPreFix(WOMAN_CAT_UP_COUNT_INDEX,0,RankingPeriodEnum.RANKING_BY_WEEK));
+        String man = redisIO.get(getPreFix(MAN_CAT_UP_COUNT_INDEX,0,RankingPeriodEnum.RANKING_BY_WEEK));
         System.out.println(s);
         System.out.println(man);
     }
 
-    private String getPreFix(String prefixIndex,int pem){
-        String formatPrefix = prefixIndex + getWeekTimeStamp(pem) + "_";
+    private String getPreFix(String prefixIndex,int pem,RankingPeriodEnum periodEnum){
+        String formatPrefix = prefixIndex + getPeriodTimeStamp(pem,periodEnum) + "_";
         return formatPrefix;
     }
 
@@ -140,10 +140,10 @@ public class CatDataInit {
      * 往前x期类目上传量数据初始化
      * @param prePemNum
      */
-    public void initCatData(int prePemNum) {
-        String formatPrefix = getPreFix(CAT_UP_COUNT_INDEX,prePemNum);
-        String fromTime = getWeekTimeStamp(prePemNum+1) + " 00:00:00";
-        String toTime = getWeekTimeStamp(prePemNum) + " 00:00:00";
+    public void initCatData(int prePemNum,RankingPeriodEnum periodEnum) {
+        String formatPrefix = getPreFix(CAT_UP_COUNT_INDEX,prePemNum,periodEnum);
+        String fromTime = getPeriodTimeStamp(prePemNum+1,periodEnum) + " 00:00:00";
+        String toTime = getPeriodTimeStamp(prePemNum,periodEnum) + " 00:00:00";
         Client searchClient = ElasticConfiguration.searchClient;
         SearchResponse scrollResp = searchClient.prepareSearch("shigugoodsup").setTypes("hz").setSearchType(SearchType.SCAN)
                 .setSize(500).setScroll(TimeValue.timeValueMinutes(5)).setQuery(QueryBuilders.rangeQuery("daiTime").from(fromTime).to(toTime))

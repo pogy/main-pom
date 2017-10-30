@@ -12,25 +12,6 @@
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
 
-'${test!}'
-        var hreflocation=window.location.href;
-          if(hreflocation.indexOf('http://www.571xz.com')==0||hreflocation.indexOf('http://571xz.com')==0){//仅首页
-              var province = '' ;
-              var city = '' ;
-              jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
-                  province = remote_ip_info["province"];
-                  if(province=='福建'){
-                      window.location.href="http://ss.571xz.com";
-                  }else if(province == '江苏'){
-                      window.location.href="http://cs.571xz.com";
-                  }else if(province == '广东'){
-                      window.location.href="http://gz.571xz.com";
-                  }else if(province == '吉林'){
-                      window.location.href="http://wa.571xz.com";
-                  }
-              }) ;
-          }
-
 /*============ xieIndex/page#layoutHeader END ============*/
 
 
@@ -62,8 +43,8 @@ var main_host = 'http://www.kxie.com/';
                 <span>你好，</span>
                 <em>请</em>
                 <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
-                <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
-                <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
+                <a href="regedit.htm"  target="_blank">注册</a>
+                <a class="tbLogin" href="ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
                 
             </div>
         </div>
@@ -160,7 +141,7 @@ var main_host = 'http://www.kxie.com/';
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -634,7 +615,7 @@ $(".imgBox img").lazyload({
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>#-->
         <p class="jyga">
-            <span>&copy; 2017-2017 kxie.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2017-2017 kxie.com 版权所有</span> <a href="/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=17015635" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙ICP备17015635号 </a>
         </p>

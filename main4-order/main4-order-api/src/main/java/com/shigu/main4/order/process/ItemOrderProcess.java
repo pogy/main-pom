@@ -22,6 +22,12 @@ public interface ItemOrderProcess {
     void cancleOutOfStock(Long soidpid);
 
     /**
+     * 更新已拿货数量
+     * @param soidpid
+     */
+    void  updateInStok(Long soidpid);
+
+    /**
      * 回标运单号
      * @param oid
      */
