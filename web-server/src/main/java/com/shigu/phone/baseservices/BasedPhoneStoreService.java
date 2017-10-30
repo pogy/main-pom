@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,7 +151,7 @@ public class BasedPhoneStoreService {
                throw openException;
             }
         } else {
-            delShopCollection(userId,Lists.newArrayList(shopId));
+            userCollectService.delShopCollectionByShopIds(userId, Arrays.asList(shopId));
         }
     }
 
@@ -159,8 +160,8 @@ public class BasedPhoneStoreService {
      *
      * @return
      */
-    public void delShopCollection(Long userId,List<Long> shopIds) {
-        userCollectService.delShopCollectionByShopIds(userId,shopIds);
+    public void delShopCollection(Long userId,List<Long> collectIds) {
+        userCollectService.delShopCollection(userId,collectIds);
     }
 
     /**

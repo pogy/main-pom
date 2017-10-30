@@ -106,10 +106,10 @@ public class WapStaticAction {
     public JSONObject queryMarketListByPid(String pid,String webSite)  {
         try {
             List<MarketsVO> vos = wapStaticService.queryMarketListByPid(pid,webSite);
-            return JsonResponseUtil.success().element("sucess",true).element("markets",vos);
+            return JsonResponseUtil.success().element("success",true).element("markets",vos);
         } catch (OpenException e) {
             e.printStackTrace();
-            return JsonResponseUtil.error(e.getErrMsg()).element("sucess",false);
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 }

@@ -30,9 +30,11 @@ public class BaseItemService {
 
     public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size,String webSite) throws OpenException {
         BaseCollectItemVO vo=basePhoneCdnService.selItemCollect(userId,index, size,webSite);
-        vo.getItems().forEach(appGoodsBlock -> {
-            appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(),ImgFormatEnum.GOODS_LIST));
-        });
+        if (vo.getItems() != null &&  !vo.getItems().isEmpty()) {
+            vo.getItems().forEach(appGoodsBlock -> {
+                appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(),ImgFormatEnum.GOODS_LIST));
+            });
+        }
         return vo;
 
     }

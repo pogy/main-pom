@@ -112,7 +112,7 @@ public class WapGoodsSearchAction {
                         .element("items",itemSearchVo.getItems());
         } catch (OpenException e) {
             e.printStackTrace();
-            return JsonResponseUtil.error(e.getMessage()).element("sucess",false);
+            return JsonResponseUtil.error(e.getMessage()).element("success",false);
         }
     }
 
