@@ -10,6 +10,7 @@ import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basebo.TrademarkRegistBO;
+import com.shigu.phone.basevo.UserWinningInfo;
 import com.shigu.phone.waps.service.WapPhoneUserService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -318,6 +320,25 @@ public class WapUserAction {
         }
         //TODO 商标注册
         return JsonResponseUtil.success().element("success",true);
+    }
+
+    /**
+     * 中奖结果
+     * @param session
+     * @param bo
+     * @return
+     */
+    @RequestMapping("getUserWinningInfoList")
+    @ResponseBody
+    public JSONObject getUserWinningInfoList(HttpSession session, TrademarkRegistBO bo) throws OpenException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success", false);
+        }
+        List<UserWinningInfo> userWinningInfoList = wapPhoneUserService.getUserWinningInfoList(session);
+
+        //TODO 商标注册
+        return JsonResponseUtil.success().element("success",true).element("userWinningInfoList",userWinningInfoList);
     }
 
 }

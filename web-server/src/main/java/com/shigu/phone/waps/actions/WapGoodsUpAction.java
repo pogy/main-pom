@@ -50,9 +50,9 @@ public class WapGoodsUpAction {
             return JsonResponseUtil.success().element("success",true).element("hasNext",false).element("total",0);
         }
         return JsonResponseUtil.success().element("success",true)
-                                         .element("hasNext",uploadedItemVO.getHasNext())
-                                         .element("total",uploadedItemVO.getTotal())
-                                         .element("items",uploadedItemVO.getItems());
+                .element("hasNext",uploadedItemVO.getHasNext())
+                .element("total",uploadedItemVO.getTotal())
+                .element("items",uploadedItemVO.getItems());
     }
 
     /**

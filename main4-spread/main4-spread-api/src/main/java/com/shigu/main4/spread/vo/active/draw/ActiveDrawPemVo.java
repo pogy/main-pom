@@ -22,6 +22,20 @@ public class ActiveDrawPemVo implements Serializable{
     /** 创建时间 */
     private Date createTime;
 
+    /**
+     * 活动名称
+     * @return
+     */
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle( String title ) {
+        this.title = title;
+    }
+
     public Integer getTerm() {
         return term;
     }

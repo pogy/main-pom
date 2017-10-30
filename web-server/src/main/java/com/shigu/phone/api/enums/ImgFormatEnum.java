@@ -6,7 +6,7 @@ public enum ImgFormatEnum {
     GOODS_LIST("300"),
     CAT("100"),
     GOODS_IMAGES("400"),
-    HEAD("100"),
+    HEAD("300"),
     GOODS_DETAIL(null)
     ;
 
