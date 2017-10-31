@@ -3,6 +3,7 @@ package com.shigu.phone.waps.service;
 import com.openJar.beans.app.AppCatGroup;
 import com.openJar.beans.app.AppSite;
 import com.openJar.exceptions.OpenException;
+import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.phone.baseservices.BaseStaticService;
 import com.shigu.phone.basevo.MarketsVO;
 import com.shigu.phone.waps.vo.ParentCatVO;
@@ -69,17 +70,18 @@ public class WapStaticService {
     }
 
     public List<MarketsVO> queryMarketListByPid(String pid, String webSite) throws OpenException {
-        List<CateNav> cateNavs = baseStaticService.queryMarketListByPid(webSite, pid);
-        if (cateNavs == null || cateNavs.isEmpty()) {
+//        List<CateNav> cateNavs = baseStaticService.queryMarketListByPid(webSite, pid);
+        List<MarketTagVO> marketTagVOS = baseStaticService.queryMarketListByPid(webSite, pid);
+        if (marketTagVOS == null || marketTagVOS.isEmpty()) {
             OpenException openException = new OpenException();
             openException.setErrMsg("未查询到市场数据");
             throw openException;
         }
         List<MarketsVO> marketsVOS = new ArrayList<>();
-        cateNavs.stream().forEach(item->{
+        marketTagVOS.stream().forEach(item->{
             MarketsVO vo = new MarketsVO();
-            vo.setMid(item.getId());
-            vo.setName(item.getText());
+            vo.setMid(String.valueOf(item.getId()));
+            vo.setName(item.getName());
             marketsVOS.add(vo);
         });
         return marketsVOS;

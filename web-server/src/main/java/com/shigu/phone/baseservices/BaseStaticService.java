@@ -1,13 +1,13 @@
 package com.shigu.phone.baseservices;
 
 import com.google.common.collect.ImmutableSet;
-import com.openJar.beans.app.AppCat;
-import com.openJar.beans.app.AppCatGroup;
-import com.openJar.beans.app.AppSearchNav;
-import com.openJar.beans.app.AppSite;
+import com.openJar.beans.app.*;
 import com.opentae.data.mall.beans.ShiguSite;
 import com.opentae.data.mall.examples.ShiguSiteExample;
 import com.opentae.data.mall.interfaces.ShiguSiteMapper;
+import com.shigu.main4.cdn.services.MarketListService;
+import com.shigu.main4.cdn.vo.MarketTagVO;
+import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
@@ -33,6 +33,8 @@ public class BaseStaticService {
     EhCacheCacheManager ehCacheManager;
     @Autowired
     CategoryInSearchService categoryInSearchService;
+    @Autowired
+    private MarketListService marketListService;
 
     private static final Set<String> REMOVEIDS= ImmutableSet.of("50000852","50008897","1629","50001748","50005867","50011130");
 
@@ -292,7 +294,35 @@ public class BaseStaticService {
         return categoryInSearchService.selSubCates(String.valueOf(pId),SearchCategory.CATEGORY,webSite);
     }
 
-    public List<CateNav> queryMarketListByPid(String webSite, String pid) {
-        return categoryInSearchService.selSubCates(pid,SearchCategory.MARKET,webSite);
+    public List<MarketTagVO> queryMarketListByPid(String webSite, String pid) {
+//        return categoryInSearchService.selSubCates(pid,SearchCategory.MARKET,webSite);
+        Long mid  = null;
+        switch (webSite){
+            case "hz":{
+                mid = 1L;
+                break;
+            }
+            case "cs":{
+                mid = 43L;
+                break;
+            }
+            case "jx":{
+                mid = 33L;
+                break;
+            }
+            case "ss":{
+                mid = 61L;
+                break;
+            }
+            case "kx":{
+                mid = 68L;
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+        MarketVO marketVO = marketListService.selMarketData(mid, new Long(pid));
+        return marketVO == null ? null : marketVO.getMarketTags();
     }
 }

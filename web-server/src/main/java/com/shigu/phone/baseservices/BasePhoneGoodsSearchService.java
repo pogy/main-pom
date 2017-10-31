@@ -88,7 +88,7 @@ public class BasePhoneGoodsSearchService {
         ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(orderBy), false).getSearchData();
         vo.setTotal(result.getTotalCount());
         vo.setHasNext(result.getNumber() < result.getTotalPages());
-        vo.setItems(result.getContent().parallelStream().map(o -> {
+        vo.setItems(result.getContent().stream().map(o -> {
             AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
             appGoodsBlock.setGoodsId(o.getId());
             appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
