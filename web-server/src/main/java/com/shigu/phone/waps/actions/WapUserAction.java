@@ -325,11 +325,11 @@ public class WapUserAction {
     @ResponseBody
     public JSONObject submitRegeditInfo(HttpSession session, TrademarkRegistBO bo){
         Long userId;
-        if (StringUtil.isNull(bo.getToken())) {
+        if (!StringUtil.isNull(bo.getToken())) {
             try {
                 userId = TokenUtil.parseUserId(bo.getToken(),redisIO);
             } catch (SystemException e) {
-                return JsonResponseUtil.error(e.getMsg()).element("success", false);
+                return JsonResponseUtil.error(e.getErrMsg()).element("success", false);
             }
         }else{
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -351,17 +351,26 @@ public class WapUserAction {
     /**
      * 中奖结果
      * @param session
-     * @param bo
      * @return
      */
     @RequestMapping("getUserWinningInfoList")
     @ResponseBody
-    public JSONObject getUserWinningInfoList(HttpSession session, TrademarkRegistBO bo) throws OpenException {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success", false);
+    public JSONObject getUserWinningInfoList(HttpSession session,String token) throws OpenException {
+        Long userId;
+        if (!StringUtil.isNull(token)) {
+            try {
+                userId = TokenUtil.parseUserId(token,redisIO);
+            } catch (SystemException e) {
+                return JsonResponseUtil.error(e.getErrMsg()).element("success", false);
+            }
+        }else{
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if (ps == null || ps.getUserId() == null) {
+                return JsonResponseUtil.error("用户未登录").element("success", false);
+            }
+            userId = ps.getUserId();
         }
-        List<UserWinningInfo> userWinningInfoList = wapPhoneUserService.getUserWinningInfoList(ps);
+        List<UserWinningInfo> userWinningInfoList = wapPhoneUserService.getUserWinningInfoList(userId);
         return JsonResponseUtil.success().element("success",true).element("userWinningInfoList",userWinningInfoList);
     }
 

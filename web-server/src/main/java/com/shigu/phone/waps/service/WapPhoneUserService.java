@@ -131,7 +131,7 @@ public class WapPhoneUserService {
      * 中奖结果
      * @throws OpenException
      */
-    public List<UserWinningInfo> getUserWinningInfoList(PersonalSession ps) throws OpenException {
+    public List<UserWinningInfo> getUserWinningInfoList(Long userId) throws OpenException {
         List<UserWinningInfo> list=new ArrayList<>();
         UserWinningInfo userWinningInfo=new UserWinningInfo();
         List<Award> awardList=new ArrayList<>();
@@ -149,7 +149,7 @@ public class WapPhoneUserService {
         JSONArray awardLists = jsonObject.getJSONObject("awardList").getJSONArray("topAw");
 
         ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-        List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
+        List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), userId, null);
         for (int i=0;i<awardLists.size();i++){
             Award award=new Award();
             JSONObject jsonObject1 = awardLists.getJSONObject(i);

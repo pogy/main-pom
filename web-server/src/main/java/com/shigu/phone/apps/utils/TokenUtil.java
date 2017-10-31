@@ -23,13 +23,13 @@ public class TokenUtil {
     public static Long parseUserId(String token, RedisIO redisIO) throws SystemException {
         if (StringUtils.isEmpty(token)) {
             SystemException e = new SystemException();
-            e.setMsg("登录过期");
+            e.setErrMsg("登录过期");
             throw e;
         }
         String str = TokenUtil.parse(token);
         if (StringUtils.isEmpty(str)) {
             SystemException e = new SystemException();
-            e.setMsg("登录过期");
+            e.setErrMsg("登录过期");
             throw e;
         }
         Long userId;
@@ -37,20 +37,20 @@ public class TokenUtil {
             userId = new Long(str.split(",")[1]);
         } catch (Exception ignored) {
             SystemException e = new SystemException();
-            e.setMsg("登录过期");
+            e.setErrMsg("登录过期");
             throw e;
         }
         String otoken = redisIO.get("phone_login_token" + userId);
         if (otoken == null) {
             SystemException e = new SystemException();
-            e.setMsg("登录过期");
+            e.setErrMsg("登录过期");
             throw e;
         }
         String[] oldTokenStrs = otoken.split("@@@@@---@@@@@");
         String oldToken = oldTokenStrs[0];
         if (oldToken == null || !token.equals(oldToken)) {
             SystemException e = new SystemException();
-            e.setMsg("登录过期");
+            e.setErrMsg("登录过期");
             throw e;
         }
         Long time = new Long(oldTokenStrs[1]);
