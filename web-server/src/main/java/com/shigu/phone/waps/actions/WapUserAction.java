@@ -1,13 +1,19 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.exceptions.OpenException;
+import com.shigu.api.exceptions.SystemException;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
+import com.shigu.main4.spread.bo.TrademarkApplyBO;
+import com.shigu.main4.spread.service.TrademarkService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
+import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basebo.TrademarkRegistBO;
 import com.shigu.phone.basevo.UserWinningInfo;
@@ -46,6 +52,10 @@ public class WapUserAction {
     private WapPhoneUserService wapPhoneUserService;
     @Autowired
     private OssIO ossIO;
+    @Autowired
+    TrademarkService trademarkService;
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 账号密码登录
@@ -314,11 +324,27 @@ public class WapUserAction {
     @RequestMapping("submitRegeditInfo")
     @ResponseBody
     public JSONObject submitRegeditInfo(HttpSession session, TrademarkRegistBO bo){
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success", false);
+        Long userId;
+        if (StringUtil.isNull(bo.getToken())) {
+            try {
+                userId = TokenUtil.parseUserId(bo.getToken(),redisIO);
+            } catch (SystemException e) {
+                return JsonResponseUtil.error(e.getMsg()).element("success", false);
+            }
+        }else{
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if (ps == null || ps.getUserId() == null) {
+                return JsonResponseUtil.error("用户未登录").element("success", false);
+            }
+            userId = ps.getUserId();
         }
-        //TODO 商标注册
+
+        TrademarkApplyBO trademarkApplyBO = new TrademarkApplyBO();
+        trademarkApplyBO.setName(bo.getUserName());
+        trademarkApplyBO.setTelephone(bo.getUserTele());
+        trademarkApplyBO.setType(bo.getType());
+        trademarkApplyBO.setDetailText(bo.getAskFor());
+        trademarkService.giveInfoToServer(userId,trademarkApplyBO);
         return JsonResponseUtil.success().element("success",true);
     }
 

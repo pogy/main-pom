@@ -53,7 +53,7 @@ public class AppInterceptor implements HandlerInterceptor {
         if (checkedHasToken(clazz)) {
             Long userId;
             try {
-                userId = parseUserId(request.getParameter("token"));
+                userId = TokenUtil.parseUserId(request.getParameter("token"),redisIO);
             } catch (SystemException e) {
                 if (checkedTokenIsNotNull(clazz)) {
                     try {
@@ -95,50 +95,6 @@ public class AppInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
-    }
-
-
-    private Long parseUserId(String token) throws SystemException {
-        if (StringUtils.isEmpty(token)) {
-            SystemException e = new SystemException();
-            e.setErrMsg("登录过期");
-            throw e;
-        }
-        String str = TokenUtil.parse(token);
-        if (StringUtils.isEmpty(str)) {
-            SystemException e = new SystemException();
-            e.setErrMsg("登录过期");
-            throw e;
-        }
-        Long userId;
-        try {
-            userId = new Long(str.split(",")[1]);
-        } catch (Exception ignored) {
-            SystemException e = new SystemException();
-            e.setErrMsg("登录过期");
-            throw e;
-        }
-        String otoken = redisIO.get("phone_login_token" + userId);
-        if (otoken == null) {
-            SystemException e = new SystemException();
-            e.setErrMsg("登录过期");
-            throw e;
-        }
-        String[] oldTokenStrs = otoken.split("@@@@@---@@@@@");
-        String oldToken = oldTokenStrs[0];
-        if (oldToken == null || !token.equals(oldToken)) {
-            SystemException e = new SystemException();
-            e.setErrMsg("登录过期");
-            throw e;
-        }
-        Long time = new Long(oldTokenStrs[1]);
-        Long time2 = new Date().getTime();
-        if (time2 - time > 600000L) {
-            String uuid = oldToken + "@@@@@---@@@@@" + time2;
-            Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_login_token" + userId, 604800, uuid);
-        }
-        return userId;
     }
 
     private static String toUpperCase(String str) {

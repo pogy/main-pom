@@ -15,6 +15,8 @@ public class TrademarkRegistBO implements Serializable {
     private String type;
     /**要求说明*/
     private String askFor;
+    /**apptken*/
+    private String token;
 
     public String getUserName() {
         return userName;
@@ -46,5 +48,13 @@ public class TrademarkRegistBO implements Serializable {
 
     public void setAskFor(String askFor) {
         this.askFor = askFor;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
