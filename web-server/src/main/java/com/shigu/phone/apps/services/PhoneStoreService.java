@@ -98,16 +98,16 @@ public class PhoneStoreService {
         DelStoreCollectResponse response = new DelStoreCollectResponse();
 
         List<String> list = Arrays.asList(request.getStoreIds().split(","));
-        List<Long> collectIds = new ArrayList<>();
+        List<Long> storeIds = new ArrayList<>();
         list.stream().filter(item->item.trim().matches("^([0-9])+$")).forEach(item->{
-            collectIds.add(Long.parseLong(item.trim()));
+            storeIds.add(Long.parseLong(item.trim()));
         });
-        if (collectIds == null || collectIds.isEmpty()) {
+        if (storeIds == null || storeIds.isEmpty()) {
             response.setSuccess(true);
             return response;
         }
         try {
-            basedPhoneStoreService.delShopCollection(request.getUserId(),collectIds);
+            basedPhoneStoreService.delShopCollectionByStoreIds(request.getUserId(),storeIds);
             response.setSuccess(true);
             return response;
         } catch (Exception e) {

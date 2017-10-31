@@ -38,7 +38,7 @@ public class TestAboutMe {
     public void ItemSpreadRequest(){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         ItemSpreadRequest request=new ItemSpreadRequest();
-        request.setSpreadCode("MAN-TJDK");
+        request.setSpreadCode("HZ-APP-MAN-TJDK");
 //        request.setSpreadCode("QZGG");
         request.setWebSite("hz");
         ItemSpreadResponse response = client.execute(request);

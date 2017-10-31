@@ -165,6 +165,14 @@ public class BasedPhoneStoreService {
     }
 
     /**
+     * 删除店铺收藏
+     *
+     * @return
+     */
+    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
+        userCollectService.delShopCollectionByShopIds(userId,storeIds);
+    }
+    /**
      * 添加店铺收藏
      *
      * @throws ShopCollectionException

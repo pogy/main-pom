@@ -131,11 +131,12 @@ public class WapPhoneUserService {
      * 中奖结果
      * @throws OpenException
      */
-    public List<UserWinningInfo> getUserWinningInfoList(HttpSession session) throws OpenException {
+    public List<UserWinningInfo> getUserWinningInfoList(PersonalSession ps) throws OpenException {
         List<UserWinningInfo> list=new ArrayList<>();
         UserWinningInfo userWinningInfo=new UserWinningInfo();
-        List<Award> awards=new ArrayList<>();
-        Award award=new Award();
+        List<Award> awardList=new ArrayList<>();
+        
+
 
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
@@ -145,29 +146,25 @@ public class WapPhoneUserService {
         userWinningInfo.setTitle(drawPem.getTitle());
         //解析json
         JSONObject jsonObject=JSONObject.fromObject(drawPem.getInfo());
-        JSONArray awardList = jsonObject.getJSONObject("awardList").getJSONArray("topAw");
-        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(object != null){
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
+        JSONArray awardLists = jsonObject.getJSONObject("awardList").getJSONArray("topAw");
+
+        ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+        List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
+        for (int i=0;i<awardLists.size();i++){
+            Award award=new Award();
+            JSONObject jsonObject1 = awardLists.getJSONObject(i);
+            award.setIcon((String) jsonObject1.get("imgSec"));
+            award.setText(jsonObject1.get("type")+":"+jsonObject1.get("awardName"));
             for(ActiveDrawRecordUserVo activeDrawRecordUserVo:activeDrawRecordUserVos){
-                for (int i=0;i<awardList.size();i++){
-                    JSONObject jsonObject1 = awardList.getJSONObject(i);
-                    award.setIcon((String) jsonObject1.get("imgSec"));
-                    award.setText(jsonObject1.get("type")+":"+jsonObject1.get("awardName"));
-                    //查询中奖信息
-                    award.setState(activeDrawRecordUserVo.getDrawStatus());//	中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖）
-                    award.setHasReceived(activeDrawRecordUserVo.getReceivesYes());//奖品是否已领取，取值：true（已领取），false（未领取）
-                    award.setCode(activeDrawRecordUserVo.getDrawCode());//中奖领取码
-                    awards.add(award);
-                }
+                //查询中奖信息
+                award.setState(activeDrawRecordUserVo.getDrawStatus());//	中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖）
+                award.setHasReceived(activeDrawRecordUserVo.getReceivesYes());//奖品是否已领取，取值：true（已领取），false（未领取）
+                award.setCode(activeDrawRecordUserVo.getDrawCode());//中奖领取码
             }
-            userWinningInfo.setAwardList(awards);
+            awardList.add(award);
         }
+        userWinningInfo.setAwardList(awardList);
         list.add(userWinningInfo);
-
-
         return list;
     }
     /**

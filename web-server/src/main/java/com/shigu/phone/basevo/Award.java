@@ -11,19 +11,10 @@ import java.io.Serializable;
  * 描述：奖品信息
  */
 public class Award implements Serializable {
+    //奖品图片对应的url
+    private String icon;
     //奖品显示的文体，比如：一等奖：iphoneX
     private String text;
-    //奖品图片对应的url
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon( String icon ) {
-        this.icon = icon;
-    }
-
-    private String icon;
     //中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖未领取）
     private Integer state;
     //奖品是否已领取，取值：true（已领取），false（未领取）
@@ -34,12 +25,20 @@ public class Award implements Serializable {
     public Award() {
     }
 
-    public Award( String text, String icon, Integer state, boolean hasReceived, String code ) {
-        this.text = text;
+    public Award( String icon, String text, Integer state, boolean hasReceived, String code ) {
         this.icon = icon;
+        this.text = text;
         this.state = state;
         this.hasReceived = hasReceived;
         this.code = code;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon( String icon ) {
+        this.icon = icon;
     }
 
     public String getText() {
