@@ -20,12 +20,21 @@ public class DaifaAllOrder implements Serializable{
     private static final long serialVersionUID = -2685689810091540070L;
     @Column("daifa_trade.df_trade_id")
     private String orderId;//订单id
+
+    @Column("daifa_trade.trade_code")
+    private String tradeCode;//订单编号
     @Column("daifa_trade.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
-    @Column("daifa_trade.create_time")
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
     private String tradeTime;//交易时间
     @Column("daifa_trade.buyer_ww")
     private String imWw;//分销商ww
+
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+
     @Column("daifa_trade.receiver_name")
     private String receiverName;//收货人姓名
     @Column("daifa_trade.receiver_phone")
@@ -48,6 +57,8 @@ public class DaifaAllOrder implements Serializable{
     private String serversFee;//服务费用
     @Column("daifa_trade.is_old")
     private Integer isOld;//是否是老订单
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<DaifaAllSubOrder> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -174,11 +185,43 @@ public class DaifaAllOrder implements Serializable{
         this.isOld = isOld;
     }
 
+    public String getTradeCode () {
+        return tradeCode;
+    }
+
+    public void setTradeCode (String tradeCode) {
+        this.tradeCode = tradeCode;
+    }
+
     public List<DaifaAllSubOrder> getChildOrders() {
         return childOrders;
     }
 
     public void setChildOrders(List<DaifaAllSubOrder> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

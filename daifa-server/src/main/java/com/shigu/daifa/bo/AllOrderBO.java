@@ -27,6 +27,9 @@ public class AllOrderBO implements Serializable {
      * 结束时间
      */
     private String endTime;
+
+    private String buyerNick;//昵称
+    private Integer stockoutFlag;//1缺货
     /**
      * 当前页
      */
@@ -92,5 +95,21 @@ public class AllOrderBO implements Serializable {
 
     public void setPostCode(String postCode) {
         this.postCode = postCode;
+    }
+
+    public String getBuyerNick () {
+        return buyerNick;
+    }
+
+    public void setBuyerNick (String buyerNick) {
+        this.buyerNick = buyerNick;
+    }
+
+    public Integer getStockoutFlag () {
+        return stockoutFlag;
+    }
+
+    public void setStockoutFlag (Integer stockoutFlag) {
+        this.stockoutFlag = stockoutFlag;
     }
 }

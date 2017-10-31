@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -274,7 +279,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="refundDesc">
             <label>换货说明：</label>
-            <textarea ></textarea>
+            <textarea placeholder="最多16个字符" maxlength="16"></textarea>
         </li>
         <li>
 
@@ -320,7 +325,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -430,7 +434,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -578,7 +581,6 @@ var refundId = '${refundId!}';
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -621,6 +623,59 @@ var refundId = '${refundId!}';
     
     <p><span class="fc6" data-expressId="${express.id!}">${express.name!}</span><span class="yahei fs14 vm">${express.code!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
     
+    <p class="finishBtn" data-id="${refundId!}">
+
+<#assign text>{}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         finishExchange"
+    
+        jbtn="finishExchange"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        换货已完成
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+</p>
+    
+    
 </div>
 
 
@@ -661,9 +716,11 @@ var expressCreateTime = ${express.createTime!};
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    
                 </#if>
                 </p>
             </div>
@@ -704,9 +761,11 @@ var expressCreateTime = ${express.createTime!};
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    
                 </#if>
                 </p>
             </div>
@@ -753,6 +812,8 @@ var express = '${expressList!}';
 
 
 
+
+
 </div>
 
 <div class="footer">
@@ -765,7 +826,7 @@ var express = '${expressList!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

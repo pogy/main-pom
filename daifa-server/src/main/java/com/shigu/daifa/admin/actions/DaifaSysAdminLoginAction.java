@@ -18,11 +18,14 @@ public class DaifaSysAdminLoginAction {
         Session session = SecurityUtils.getSubject().getSession();
         Object object = session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         if (object != null) {
-            return "redirect:/admin/index.htm";
+            return "redirect:/admin/adminOrder.htm";
         }
         if (checkerPass.equals(pass)) {
-            session.setAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION, new Object());
-            return "redirect:/admin/index.htm";
+
+            String daifaAdmin=DaifaSessionConfig.DAIFA_SYS_DISPLAY;
+
+            session.setAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION, daifaAdmin);
+            return "redirect:/admin/adminOrder.htm";
         }
         model.addAttribute("pass", pass);
         model.addAttribute("msg",StringUtils.isEmpty(pass)?null:"密码错误");

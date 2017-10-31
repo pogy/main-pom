@@ -10,6 +10,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/orderRefund/orderRefund.js?t=201709121011"></script>
+
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -99,7 +100,7 @@
         <div class="orderCon">
             <div class="theadCon">
                 <ul class="">
-                    <li class="childOrderId">订单编号</li>
+                    <li class="childOrderId" style="width: 16%">订单编号</li>
                     <li class="goodsInfo">商品信息</li>
 
                     <li class="childOrderId">子单号</li>
@@ -107,7 +108,7 @@
 
                     <li class="orderState">状态</li>
                     <li class="orderState">是否下架</li>
-                    <li class="tradeState">操作</li>
+                    <li class="tradeState" style="width: 12%">操作</li>
                 </ul>
             </div>
         <#list orders as order>
@@ -116,7 +117,7 @@
 
             <div class="childOrderItem" >
                 <ul class="clearfix">
-                    <li class="childOrderId"><p>代发订单号：<br>${order.dfTradeId!}</p><p>订单号：${order.tradeCode!}<p></li>
+                    <li class="childOrderId" style="width: 16%"><p>代发订单号：<br>${order.dfTradeId!}</p><p>订单号：${order.tradeCode!}<p></li>
                     <li class="goodsInfo">
                         <div class="fl imgBox">
                             <img src="${order.picPath!}_80x80.jpg" alt width="54" height="54">
@@ -160,7 +161,15 @@
 
                     </li>
 
-                    <li class="tradeState"></li>
+                    <li class="tradeState">
+                            要自己判断<br>
+                                <#if order.refundId??>
+                                    <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="退款" onclick="refunddeal('${order.dfTradeId!}','${order.dfOrderId!}','${order.refundId!}')">
+                                <#else>
+
+                                </#if>
+
+                    </li>
                 </ul>
             </div>
 

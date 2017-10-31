@@ -21,6 +21,7 @@ import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.newcdn.vo.*;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -85,6 +86,8 @@ public class CdnService {
     ShiguShopLicenseMapper shiguShopLicenseMapper;
     @Autowired
     GoodsFileService goodsFileService;
+    @Autowired
+    ItemProductProcess itemProductProcess;
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
@@ -294,7 +297,7 @@ public class CdnService {
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
-        vo.setOnlineSale(canSale(cdnItem.getMarketId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
+        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getFloorId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
@@ -488,5 +491,35 @@ public class CdnService {
             content.add(vo);
         });
         return pager;
+    }
+
+    /**
+     * 根据goodsId获取对应站点信息
+     * @return
+     */
+    public String getWebsite(Long goodsId){
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if (shiguGoodsIdGenerator == null) {
+            return null;
+        }
+        return shiguGoodsIdGenerator.getWebSite();
+    }
+
+    /**
+     * 按商品ID查cid
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public Long getCid(Long goodsId,String webSite){
+        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,cid"));
+        if (tiny != null) {
+            return tiny.getCid();
+        }else{
+            return null;
+        }
     }
 }

@@ -3,37 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <title>无货号订单 - 星帮后台管理 - 四季星座网</title>
-
-    
-    
-    
-    
-<#include "/common/host_config.ftl">
-
-
-
-
-
-    
+    <#include "/common/host_config.ftl">
     <link href="http://style.571xz.com/v2/dfgl/css/noGoodsnoOrder.css" rel="stylesheet">
-    
-
-    
-
-    
-
-    
-        
-    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
-        
-            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-        
-    
+    <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/noGoodsnoOrder.js"></script>
+    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -46,57 +22,13 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
+            <input id="menus" type="hidden" value="${menu}"/>
     </div>
 </div>
 
-
-
-
 <div class="mainContent">
     <div class="sideBarBox">
-        <div class="sidebar fl yahei">
-    <ul>
-    <@shiro.hasAnyPermissions name="df:admin,df:kefu">
-        <li>
-            <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:kefu">
-        <li>
-            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:admin">
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-            <ul>
-                <li>
-                    <a href="orderAllocation.htm"><i></i>任务分配</a>
-                </li>
-                <li>
-                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
-            <ul>
-                <li>
-                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                </li>
-                <li>
-                    <a class="current" href="notYetSipped.htm"><i></i>未发货订单</a>
-                </li>
-            </ul>
-        </li>
-    </@shiro.hasAnyPermissions>
-    
-    </ul>
-</div>
-
-
-
-
+    <#include "/common/menu_daifa.ftl">
     </div>
     <div class="contentBox">
         <div class="printTypeTabs">
@@ -105,7 +37,6 @@
         <li class="select"><a href="noGoodsnoOrder.htm">无货号订单</a></li>
     </ul>
 </div>
-
 
 <div class="noGoodsnoOrderCon">
     <div class="theadCon">
@@ -137,27 +68,6 @@
     </ul>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
     </#list>
 </div>
@@ -175,40 +85,7 @@
     </#if>
 ></div>
 
-
-
-
-
-
-
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <#assign text>{}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
@@ -228,18 +105,7 @@
 </form>
 </#if>
 
-
-
-
-
 </#list>
-
-
 
     </div>
 </div>
-<!--省略end，让浏览器自动添加-->
-
-
-
-

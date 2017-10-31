@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -300,7 +305,7 @@ var webSite = '${webSite!}';
     
         
         
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >广告申请</a></li> 
         
         
     
@@ -338,7 +343,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
     
-    <input type="hidden" id="tempCode" class="tempCode" value="${tempCode!}" />
+    <input type="hidden" id="tempCode" value="${tempCode!}" />
 </div>
 
 
@@ -392,7 +397,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 

@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
@@ -24,7 +26,7 @@ import java.util.*;
 
 @Service("orderManageProcess")
 public class OrderManageProcessImpl implements OrderManageProcess {
-
+    private static final Logger logger = LoggerFactory.getLogger(OrderManageProcessImpl.class);
     private final int MAX_TIME_OUT = 3;//3天为最大超时时间
 
     @Autowired
@@ -40,6 +42,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaWaitSendOrderMapper daifaWaitSendOrderMapper;
     @Autowired
     DaifaSendOrderMapper daifaSendOrderMapper;
+    @Autowired
+    DaifaWaitSendMapper daifaWaitSendMapper;
 
     @Override
     public void newOrder(OrderBO order) {
@@ -59,7 +63,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     }
 
     /**
-     * 售后备注
+     * 客服查询备注
      * @param orderId 单号
      * @param mark 备注内容给
      */
@@ -253,6 +257,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         }else{
             ce.andReturnStatusNotEqualTo(2);
         }
+        daifaGgoodsTasksExample.setOrderByClause("delist_is desc,end_status desc,take_goods_status desc,youhuo_date desc");
         List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id,use_status,delist_is"));
         List<Long> oidps = new ArrayList<>();
         for (DaifaGgoodsTasks t : tasks) {
@@ -315,6 +320,28 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         DaifaSendOrderExample daifaSendOrderExample=new DaifaSendOrderExample();
         daifaSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaSendOrderMapper.updateByExampleSelective(so,daifaSendOrderExample);
+    }
+    /**
+     * ====================================================================================
+     * @方法名： dealWaitSendOrderDisplay
+     * @user gzy 2017/10/16 13:08
+     * @功能：修改未发订单的显示状态
+     * @param: [dfTradeId, orderDisplay]
+     * @return: void
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @Override
+    public void dealWaitSendOrderDisplay (Long dfTradeId, Integer orderDisplay) throws DaifaException {
+
+        DaifaWaitSend wso=new DaifaWaitSend();
+        wso.setDfTradeId (dfTradeId);
+        wso.setOrderDisplay (orderDisplay);
+        DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
+        daifaWaitSendExample.createCriteria ().andDfTradeIdEqualTo (dfTradeId);
+        daifaWaitSendMapper.updateByExampleSelective (wso,daifaWaitSendExample);
+
     }
 
 

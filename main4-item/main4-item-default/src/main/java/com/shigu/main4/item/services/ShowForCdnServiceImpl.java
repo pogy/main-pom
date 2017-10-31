@@ -336,6 +336,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 //                    NumberFormat instance = NumberFormat.getInstance();
 //                    instance.setMaximumFractionDigits(2);//这种方法可以得到保留两位的值,但不能得到保留两位的格式
                     cdnItem.setMarketId(tiny.getParentMarketId());
+                    cdnItem.setFloorId(tiny.getMarketId());
                     cdnItem.setListTime(DateFormatUtils.format(tiny.getCreated(), "yyyy-MM-dd"));
                     cdnItem.setOnsale(tiny.getIsClosed()!=null&&tiny.getIsClosed()==0L);
                 } else if (e instanceof ShiguGoodsSoldout) {
@@ -343,7 +344,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     Integer from = soldout.getIsExcelImp();
                     cdnItem.setItemFrom(from == null ? ItemFrom.NONE : ItemFrom.values()[from]);
                     cdnItem.setSendFrom(soldout.getProv() + soldout.getCity());
-
+                    cdnItem.setFloorId(soldout.getMarketId());
                     cdnItem.setListTime(DateFormatUtils.format(soldout.getCreated(), "yyyy-MM-dd"));
                     // 仓库中商品价格 和 批发价可能不在
                     cdnItem.setOnsale(false);

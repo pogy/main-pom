@@ -19,6 +19,7 @@ public class OrderSendErrorDealBO implements Serializable{
 
     private String phone;//手机号
 
+    private Integer sendType;//发送类型@0普通1重新修改交易编号再进行发货
     /**
      * 当前页
      */
@@ -68,5 +69,13 @@ public class OrderSendErrorDealBO implements Serializable{
 
     public void setCount (Integer count) {
         this.count = count;
+    }
+
+    public Integer getSendType () {
+        return sendType;
+    }
+
+    public void setSendType (Integer sendType) {
+        this.sendType = sendType;
     }
 }

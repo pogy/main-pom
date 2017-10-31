@@ -18,13 +18,15 @@ public class DaifaSendSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
     @Column("daifa_send.send_id")
-    private String sendId;//代发id
+    private Long sendId;//代发id
     @Column("daifa_send.df_trade_id")
-    private String orderId;//订单id
+    private Long orderId;//订单id
     @Column("daifa_send.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
-    @Column("daifa_send.create_time")
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
     private String tradeTime;//交易时间
+    @Column("DATE_FORMAT(daifa_send.create_time,'%Y-%m-%d %H:%i:%s')")
+    private String sendTime;
     @Column("daifa_send.buyer_ww")
     private String imWw;//分销商ww
     @Column("daifa_send.receiver_name")
@@ -45,18 +47,23 @@ public class DaifaSendSimple implements Serializable{
     private String discountFee;//减免费用
     @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
-
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<DaifaSendOrderSimple> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
@@ -163,11 +170,43 @@ public class DaifaSendSimple implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public String getSendId() {
+    public Long getSendId() {
         return this.sendId;
     }
 
-    public void setSendId(String sendId) {
+    public void setSendId(Long sendId) {
         this.sendId = sendId;
+    }
+
+    public String getImQq() {
+        return imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
+    }
+
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
     }
 }

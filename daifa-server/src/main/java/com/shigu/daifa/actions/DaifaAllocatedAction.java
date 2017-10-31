@@ -1,10 +1,10 @@
 package com.shigu.daifa.actions;
 
-import com.opentae.data.daifa.beans.DaifaWorker;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.PrintGoodsTagBO;
 import com.shigu.daifa.bo.SelectDaifaGgoodsListBO;
+import com.shigu.daifa.services.DaifaAllOrderIndexService;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -27,15 +27,23 @@ import java.util.List;
 public class DaifaAllocatedAction {
     @Autowired
     DaifaAllocatedService daifaAllocatedService;
+    @Autowired
+    DaifaAllOrderIndexService daifaAllOrderIndexService;
 
     /**
-     * 已分配列表
-     * @param bo
-     * @param model
-     * @return
+     * ====================================================================================
+     * @方法名： selectDaifaGgoodsList
+     * @user gzy 2017/10/13 13:04
+     * @功能： 已分配列表
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/orderHasAllocation")
     public String selectDaifaGgoodsList(SelectDaifaGgoodsListBO bo, Model model) {
+
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         if (bo.getPage() == null) {
@@ -48,16 +56,21 @@ public class DaifaAllocatedAction {
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
-        model.addAttribute("workers",daifaAllocatedService.selWorkerList(daifaUser.getDaifaSellerId()));
+        model.addAttribute("workers",daifaAllOrderIndexService.getUserList());
+        model.addAttribute("menu","orderHasAllocation.htm");//前台所要的左边菜单
         return "daifa/orderHasAllocation";
     }
 
     /**
-     * 已拿或缺货
-     * @param type
-     * @param takeGoodsId
-     * @return
-     * @throws DaifaException
+     * ====================================================================================
+     * @方法名： setIsGetGoodsJson
+     * @user gzy 2017/10/13 13:05
+     * @功能： 已拿或缺货
+     * @param: [type, takeGoodsId]
+     * @return: net.sf.json.JSONObject
+     * @exception:DaifaException
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/setIsGetGoodsJson")
     @ResponseBody
@@ -72,8 +85,15 @@ public class DaifaAllocatedAction {
     }
 
     /**
-     * 代发拿货人员列表
-     * @return
+     * ====================================================================================
+     * @方法名： workerList
+     * @user gzy 2017/10/13 13:05
+     * @功能： 代发拿货人员列表
+     * @param: []
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/getUserList")
     @ResponseBody
@@ -81,20 +101,27 @@ public class DaifaAllocatedAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
-        List<DaifaWorkerVO> vos=daifaAllocatedService.selWorkerList(sellerId);
+        List<DaifaWorkerVO> vos=daifaAllOrderIndexService.getUserList();
         JSONObject obj=JsonResponseUtil.success();
         obj.put("userList",vos);
         return obj;
     }
 
     /**
-     * 打印全部商品标签接口
-     * @param bo
-     * @return
+     * ====================================================================================
+     * @方法名： printGoodsTabJson
+     * @user gzy 2017/10/13 13:05
+     * @功能：打印全部商品标签接口
+     * @param: [bo]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
      */
     @RequestMapping("daifa/printGoodsTabJson")
     @ResponseBody
     public JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
+
         if (bo.getType() == null) {
             throw new DaifaException("缺少参数");
         }
@@ -110,6 +137,5 @@ public class DaifaAllocatedAction {
         obj.put("tabList",vos);
         return obj;
     }
-
 
 }

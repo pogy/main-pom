@@ -37,6 +37,12 @@ public class ItemOrderSub implements Serializable {
      */
 	private Integer outOfStok;
 
+	/**
+	 * 拿到货数量
+	 */
+	private Integer inStok;
+
+
     /**
      * 应付总额
      */
@@ -136,6 +142,11 @@ public class ItemOrderSub implements Serializable {
      * 颜色
      */
 	private String color;
+
+    /**
+     * 缺货原因：暂时存放有货时间
+     */
+	private String outOfStokReason;
 
 	public void setSoid(Long soid) {
 		this.soid = soid;
@@ -345,4 +356,19 @@ public class ItemOrderSub implements Serializable {
 		return this.color;
 	}
 
+	public void setOutOfStokReason(String outOfStokReason) {
+		this.outOfStokReason = outOfStokReason;
+	}
+
+	public String getOutOfStokReason() {
+		return this.outOfStokReason;
+	}
+
+	public Integer getInStok() {
+		return inStok;
+	}
+
+	public void setInStok(Integer inStok) {
+		this.inStok = inStok;
+	}
 }

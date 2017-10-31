@@ -3,37 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <title>已发货订单 - 星帮后台管理 - 四季星座网</title>
-
-    
-    
-    
-    
-<#include "/common/host_config.ftl">
-
-
-
-
-
-    
+    <#include "/common/host_config.ftl">
     <link href="http://style.571xz.com/v2/dfgl/css/hasBeenShipped.css" rel="stylesheet">
-    
-
-    
-
-    
-
-    
-        
-    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
-        
-            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-        
-    
+    <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/hasBeenShipped.js"></script>
+    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -46,56 +22,13 @@
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
+            <input id="menus" type="hidden" value="${menu}"/>
     </div>
 </div>
 
-
-
-
 <div class="mainContent">
     <div class="sideBarBox">
-        <div class="sidebar fl yahei">
-    <ul>
-        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
-        <li>
-            <a href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:kefu">
-        <li>
-            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:admin">
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-            <ul>
-                <li>
-                    <a href="orderAllocation.htm"><i></i>任务分配</a>
-                </li>
-                <li>
-                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
-            <ul>
-                <li>
-                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                </li>
-                <li>
-                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
-                </li>
-            </ul>
-        </li>
-    </@shiro.hasAnyPermissions>
-    </ul>
-</div>
-
-
-
-
+    <#include "/common/menu_daifa.ftl">
     </div>
     <div class="contentBox">
         <div class="statistics yahei fc9">
@@ -115,28 +48,10 @@
     </ul>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="orderSearch orderSearchBox">
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
-        <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
+        <li><label>收货人手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
         <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??> value="${query.postCode!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
@@ -172,38 +87,17 @@
         </#if>
     
 >
-
-    
         搜索
-    
-
-
     <#if $it.href??>
     </a>
     <#else>
     </b>
     </#if>
 
-
-
-
-
 </#list>
 </li>
     </ul>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
@@ -223,17 +117,7 @@
     </#list>
 </form>
 </#if>
-
-
-
-
-
 </#list>
-
-
-
-
-
 <div class="orderCon">
     <table>
         <thead class="theadCon">
@@ -250,13 +134,16 @@
         <#list orders as order>
         <tbody class="orderItem">
             <tr class="orderItemHead">
-                <td class="leftConBox" colspan="4">
+                <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
                     <span>时间：${order.tradeTime!}</span>
                     <#if order.oldOrder == true>
                     <i class="fcF40 icon-old oldOrder"></i>
                     </#if>
                     
+                </td>
+                <td class="buyerInfo"  colspan="2">
+                    <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
                 </td>
                 <td class="rightConBox" colspan="3">
                     <span class="fr">总费用：${order.totalFee!}（含快递：${order.expressFee!}，服务费：${order.serversFee!}，减免：${order.discountFee!}）</span>
@@ -326,23 +213,6 @@
     </#if>
 </tr>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </#list>
         </tbody>
         </#list>
@@ -362,130 +232,8 @@
     </#if>
 ></div>
 
-
-
-
-
-
-
 </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-
-
-
-

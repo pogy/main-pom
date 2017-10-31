@@ -11,7 +11,7 @@ import java.util.List;
  * @since 3.0.0-SNAPSHOT
  */
 public class DaifaSendVO {
-    private Long dwsId;
+    private Long sendId;
     private Long orderId;
     private String tradeCode;
     private String receiverName;
@@ -28,15 +28,12 @@ public class DaifaSendVO {
     private String tradeTime;
     private Boolean oldOrder;
     private Integer sendStatus;
+    private String imWw;
+    private String imQq;
+    private String imTel;
+    private Boolean isTbOrder;
     private List<SendOrderVO> childOrders;
 
-    public Long getDwsId() {
-        return dwsId;
-    }
-
-    public void setDwsId(Long dwsId) {
-        this.dwsId = dwsId;
-    }
 
     public Long getOrderId() {
         return orderId;
@@ -172,5 +169,45 @@ public class DaifaSendVO {
 
     public void setChildOrders(List<SendOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
+    }
+
+    public Long getSendId() {
+        return this.sendId;
+    }
+
+    public void setSendId(Long sendId) {
+        this.sendId = sendId;
     }
 }

@@ -17,17 +17,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=20117092901" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=20117092901"></script>
 </head>
 <body>
 
@@ -927,36 +932,13 @@ var piPrice = '${goodsInfo.piPrice!}';
 </#list>
 
 
-                <div class="shopGoodsCate">
-    <h2 class="shopStyle">宝贝分类</h2>
-    <div class="shopCateList">
-        <ul class="sxUl">
-            <li class="all fwb"><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=2"><i class="open"></i>查看所有宝贝</a></li>
-            <li class="allTime"><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=3">今日新品</a></li>
-            <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=5">7日新品</a></li>
-            <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=6">30日新品</a></li>
+                
+                <div class="itemDetailGoat">
+    <h3>推荐商品</h3>
+    <div class="goatCon">
+        <ul>
+            
         </ul>
-        
-        <#list shopCats as cat>
-            
-            <div class="shopMenu fwb" title="${cat.name!}">
-                <#if (cat.subCats?size) gt 0>
-                <i class="open"></i>
-                <#else>
-                <i></i>
-                </#if>
-                <a href="shop.htm?id=${shopInfo.shopId!}&amp;scid=${cat.cid!}&amp;timeflag=2">${cat.name!}</a>
-            </div>
-            
-            <#if (cat.subCats?size) gt 0>
-            <ul class="menuList">
-                <#list cat.subCats as subCat>
-                <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;scid=${subCat.cid!}&amp;timeflag=2">${subCat.name!}</a></li>
-                </#list>
-            </ul>
-            </#if>
-        
-        </#list>
     </div>
 </div>
 
@@ -1064,28 +1046,18 @@ var piPrice = '${goodsInfo.piPrice!}';
     </div>
 </div>
 <div class="layout">
-    <div id="item_shopnew" class="layout"></div>
+    
+    <div class="recommendShop">
+    <h3 class="fcF40">推荐档口</h3>
+    <div class="shopCon">
+        <ul class="clearfix">
+            
+        </ul>
+    </div>
+</div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-var shopId = '${shopInfo.shopId!}';
-</script>
 
 
 
@@ -1110,6 +1082,12 @@ var shopId = '${shopInfo.shopId!}';
 
 
 
+
+
+
+<script>
+var goodsId = '${goodsInfo.goodsId!}';
+</script>
 
 <script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>
 

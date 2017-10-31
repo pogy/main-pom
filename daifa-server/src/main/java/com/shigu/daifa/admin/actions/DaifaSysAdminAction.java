@@ -33,13 +33,7 @@ public class DaifaSysAdminAction {
         for(String oid:os){
             oidList.add(new Long(oid));
         }
-        takeGoodsIssueProcess.adminRefund(oidList,tid,refundId);
+        takeGoodsIssueProcess.adminRefund(oidList,tid,refundId,null);
         return JsonResponseUtil.success();
-    }
-
-    @RequestMapping("admin/tongbuquehuo")
-    @ResponseBody
-    public void tongbuquehuo(){
-        daifaAllocatedService.tongbuquehuo();
     }
 }

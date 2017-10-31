@@ -12,14 +12,13 @@ import com.openJar.responses.thirdSupport.ThirdLoinResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.beans.DaifaOrder;
+import com.opentae.data.daifa.beans.DaifaTrade;
 import com.opentae.data.daifa.beans.DaifaWorker;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.examples.DaifaWorkerExample;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
-import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.api.beans.NotCodeSets;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.main4.common.util.BeanMapper;
@@ -27,8 +26,13 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.vo.UnComleteAllVO;
+import com.shigu.sms.beans.SmsSendResult;
+import com.shigu.sms.utils.SmsJsoup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -49,6 +53,12 @@ public class ThirdSupportService {
     TakeGoodsIssueProcess takeGoodsIssueProcess;
     @Autowired
     OrderManageProcess orderManageProcess;
+    @Autowired
+    PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    DaifaTradeMapper daifaTradeMapper;
+    @Value("${ERROR_SEND_PHONE}")
+    String errorSendPhone;
 
     public ThirdLoinResponse thirdLogin(String userName, String password) throws SystemInterfaceException {
         if (userName == null || userName.trim().length() == 0 || password == null || password.trim().length() == 0) {
@@ -554,7 +564,7 @@ public class ThirdSupportService {
         List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
 
         List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
-        List<Long> notTakeDfOrderIds=takeGoodsIssueProcess.uncompleteAll(daifaWorkerId, storeId, takeIds, bostatus == 1);
+        UnComleteAllVO vo =takeGoodsIssueProcess.uncompleteAllNew(daifaWorkerId, storeId, takeIds, bostatus == 1);
         if (notCodes != null && notCodes.size() != 0) {
             for (NotCodeSets nc : notCodes) {
                 List<Long> upoids = nc.getOrderIds();
@@ -580,9 +590,48 @@ public class ThirdSupportService {
             }
         }
         //发送缺货信息到order-server
-        for(Long notTakeDfOrderId:notTakeDfOrderIds){
+        for(Long notTakeDfOrderId:vo.getNotTakeIds()){
             daifaAllocatedService.orderServerNotTake(notTakeDfOrderId);
         }
+
+        if(vo.getTakeIds()!=null&&vo.getTakeIds().size()>0){
+            for(Long takeDfOrderId:vo.getTakeIds()){
+                daifaAllocatedService.orderServerTake(takeDfOrderId);
+            }
+            //获取已拿到的主单ID集合
+            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+            daifaOrderExample.createCriteria().andDfOrderIdIn(vo.getTakeIds());
+            List<DaifaOrder> hasOrders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id,df_trade_id"));
+            if(hasOrders.size()>0){
+                Set<Long> dfTradeIds=BeanMapper.getFieldSet(hasOrders,"dfTradeId",Long.class);
+                List<Long> tids=new ArrayList<>(dfTradeIds);
+                DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+                daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
+                List<DaifaTrade> trades=daifaTradeMapper.selectFieldsByExample(daifaTradeExample,FieldUtil.codeFields("df_trade_id,express_id,express_name"));
+                Map<Long,List<DaifaTrade>> tradeMap=BeanMapper.groupBy(trades,"expressId",Long.class);
+                Set<String> expressNames=new HashSet<>();
+                for(List<DaifaTrade> ts:tradeMap.values()){
+                    for(DaifaTrade t:ts){
+                        try {
+                            packDeliveryProcess.queryExpressCode(t.getDfTradeId());
+                        } catch (DaifaException e) {
+                            expressNames.add(t.getExpressName());
+                            break;
+                        }
+                    }
+                }
+                if(expressNames.size()>0){
+                    for(String expressName:expressNames){
+                        String str=expressName+"可用单号不足,请及时联系快递补充单号.";
+                        SmsJsoup u=new SmsJsoup();
+                        String phones=errorSendPhone;//接收号码集合
+                        Date sendTime=new Date();//定时发送时间
+                        u.sendHySms(phones,str,sendTime);
+                    }
+                }
+            }
+        }
+
     }
 
 }

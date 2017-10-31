@@ -56,7 +56,13 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
 
     @Override
     public void cancleOutOfStock(Long soidpid) {
+
         soidsModel.cancleOutOfStock(soidpid);
+    }
+
+    @Override
+    public void updateInStok(Long soidpid) {
+        soidsModel.updateInStok(soidpid);
     }
 
     @Override
@@ -98,6 +104,11 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
             }
         }
         updateTbSend(oid);
+    }
+
+    @Override
+    public void updateInStok(Long soidpid) {
+
     }
 
     private void updateTbSend(Long oid){

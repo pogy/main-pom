@@ -281,15 +281,19 @@ public class MemberAction {
             nick=memberSimpleService.selNick(ps.getUserId());
         }
         ShiguPager<OnekeyRecoreVO> pager;
+        String endTime = null;
+        if (bo.getEndTime() != null) {
+            endTime = bo.getEndTime()+" 23:59:59";
+        }
         if(nick==null){
             pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
+                    DateParseUtil.parseFromString("yyyy-MM-dd",bo.getStartTime()),
+                    DateParseUtil.parseFromString("yyyy-MM-dd HH:mm:ss",endTime),
                     bo.getPage(),bo.getRows());
         }else{
             pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
+                    DateParseUtil.parseFromString("yyyy-MM-dd",bo.getStartTime()),
+                    DateParseUtil.parseFromString("yyyy-MM-dd HH:mm:ss",endTime),
                     bo.getPage(),bo.getRows());
         }
         model.addAttribute("get",bo);

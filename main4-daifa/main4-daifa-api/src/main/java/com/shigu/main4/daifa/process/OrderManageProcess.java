@@ -27,7 +27,7 @@ public interface OrderManageProcess {
     void markSubOrder(Long subOrderId,String mark) throws DaifaException;
 
     /**
-     * 售后备注
+     * 客服查询备注
      * @param orderId 单号
      * @param mark 备注
      */
@@ -70,4 +70,7 @@ public interface OrderManageProcess {
      * @param goodsNo
      */
     void putGoodsCode(Long dfOrderId,String goodsNo) throws DaifaException;
+
+
+    void dealWaitSendOrderDisplay(Long dfTradeId,Integer orderDisplay)throws DaifaException;
 }

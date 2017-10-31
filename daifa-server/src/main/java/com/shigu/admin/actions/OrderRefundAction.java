@@ -3,6 +3,9 @@ package com.shigu.admin.actions;
 import com.shigu.admin.bo.OrderRefundBO;
 import com.shigu.admin.services.OrderRefundService;
 import com.shigu.admin.vo.OrderRefundVO;
+import com.shigu.config.DaifaSessionConfig;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +32,8 @@ public class OrderRefundAction {
 
     @RequestMapping("admin/orderRefundList")
     public String orderRefundList(OrderRefundBO bo, Model model) throws InterruptedException {
+        Session session = SecurityUtils.getSubject().getSession();
+        String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<OrderRefundVO> list=null;
         if(bo.getDfTradeId ()==null&&bo.getSuborderId ()==null){
 
@@ -48,7 +53,7 @@ public class OrderRefundAction {
         model.addAttribute("orders", list);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
-
+        model.addAttribute("userName", auth);
         return "admin/orderRefundList";
 
     }

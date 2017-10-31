@@ -151,8 +151,8 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setTotalVO(totalVO);
 
         vo.setFinishTimed(itemOrderVO.getFinishTime());
-        vo.setPayTime(itemOrderVO.getCreateTime());
-        vo.setSendTime(vo.getOrderCreateTimed());
+        vo.setPayTime(itemOrderVO.getPayTime());
+        vo.setSendTime(itemOrderVO.getSendTime());
         vo.setIsTbOrder(itemOrderVO.getType().type == 2);
         return vo;
     }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper">
+
+
+    <select id="selectAfterSaleOrder" resultType="com.opentae.data.daifa.beans.DaifaAfterSale">
+        select
+          <include refid="columns"/>
+        from
+          daifa_after_sale s1
+        join
+          (select
+              t.after_sale_id,
+              max(t.last_do_time)  as last_do_time
+            from
+              daifa_after_sale_sub t
+            where
+              t.seller_id = #{sellerId}
+              <if test="status!=null">
+                and t.after_status = #{status}
+              </if>
+              <if test="backPostCode!=null">
+                and t.apply_express_code =#{backPostCode}
+              </if>
+            group by
+              t.after_sale_id
+          ) s2
+        on
+          s1.after_sale_id = s2.after_sale_id
+        where
+            s1.seller_id = #{sellerId}
+            <if test="orderId!=null">
+              and s1.df_trade_id like ("%${orderId}%")
+            </if>
+            <if test="telephone!=null">
+              and s1.receiver_mobile = #{telephone}
+            </if>
+            <if test="startTime!=null and startTime !=''">
+                <![CDATA[
+                 and s1.create_date >= #{startTime}
+                ]]>
+            </if>
+            <if test="endTime!=null and endTime !=''">
+                <![CDATA[
+                 and s1.create_date <= #{endTime}
+                ]]>
+            </if>
+
+        order by s2.last_do_time desc
+        limit #{startIndex},#{endIndex}
+    </select>
+
+    <select id="countAfterSaleSub" resultType="java.lang.Integer">
+        select
+        count(*)
+        from
+        (select
+        t.after_sale_id,
+        max(t.last_do_time)
+        from
+          daifa_after_sale_sub t
+        where
+          t.seller_id = #{sellerId}
+          <if test="status!=null">
+            and t.after_status = #{status}
+          </if>
+          <if test="backPostCode!=null">
+            and t.apply_express_code =#{backPostCode}
+          </if>
+        group by
+        t.after_sale_id
+        ) s2
+    </select>
+
+
+    <sql id="columns">
+        s1.after_sale_id as afterSaleId,
+        s1.df_trade_id as dfTradeId,
+        s1.trade_code as tradeCode,
+        s1.seller_id as sellerId,
+        s1.create_date as createDate,
+        s1.create_time as createTime,
+        s1.money as money,
+        s1.buyer_id as buyerId,
+        s1.buyer_name as buyerName,
+        s1.buyer_telephone as buyerTelephone,
+        s1.buyer_qq as buyerQq,
+        s1.buyer_ww as buyerWw,
+        s1.receiver_state as receiverState,
+        s1.receiver_address as receiverAddress,
+        s1.receiver_name as receiverName,
+        s1.receiver_zip as receiverZip,
+        s1.receiver_mobile as receiverMobile,
+        s1.buyer_remark as buyerRemark,
+        s1.receiver_qq as receiverQq,
+        s1.remark1 as remark1,
+        s1.remark2 as remark2,
+        s1.remark as remark
+    </sql>
+
+</mapper>

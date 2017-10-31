@@ -17,10 +17,15 @@ public class DaifaAllOrderVO implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
     private String orderId;//订单id
+    private String tradeCode;//订单编号
 
     private Integer tradeState;//交易状态1未发货2已发货
     private String tradeTime;//交易时间
     private String imWw;//分销商ww
+
+    private String imTel;
+    private String imQq;
+
     private String receiverName;//收货人姓名
     private String receiverPhone;//收货人电话
     private String receiverAddress;
@@ -32,6 +37,7 @@ public class DaifaAllOrderVO implements Serializable{
     private String discountFee;//减免费用
     private String serversFee;//服务费用
     private Boolean oldOrder;//是否是老代发数据
+    private Boolean isTbOrder;
     private List<AllSubOrderVO> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -164,5 +170,38 @@ public class DaifaAllOrderVO implements Serializable{
 
     public void setOldOrder(Boolean oldOrder) {
         this.oldOrder = oldOrder;
+    }
+
+    public String getTradeCode () {
+        return tradeCode;
+    }
+
+    public void setTradeCode (String tradeCode) {
+        this.tradeCode = tradeCode;
+    }
+
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

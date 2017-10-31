@@ -2,6 +2,7 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +37,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("order/")
 public class AfterSaleShowAction {
+
     @Autowired
     private AfterSaleShowService afterSaleShowService;
 
@@ -67,13 +71,15 @@ public class AfterSaleShowAction {
     public String refund(@RequestParam(value = "childOrderId",required = false)String childOrderId
             , @RequestParam(value = "refundId",required = false)String refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
-
+        List<String> stateList= Arrays.asList("1、买家申请退货退款","2、等待处理退货申请","3、买家退货","4、退货退款完成");
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refundChildOrder(childOrderId);
+            map.put("refundDesc",stateList);
             model.addAllAttributes(map);
             return "trade/refund";
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refund(refundId,express);
+            map.put("refundDesc",stateList);
             model.addAllAttributes(map);
             return "trade/refund";
         }
@@ -92,13 +98,16 @@ public class AfterSaleShowAction {
     public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
             , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
+        List<String> stateList= Arrays.asList("1、买家申请换货","2、等待处理换货申请","3、换货完成");
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
+            map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
             return "trade/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
+            map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
             return "trade/exchange";
         }
@@ -109,13 +118,13 @@ public class AfterSaleShowAction {
      * 提交快递
      *
      * @param refundId    退款id
-     * @param expressId   快递id
+     * @param expressName   快递id
      * @param expressCode 快递单号
      * @return json
      */
     @RequestMapping(value = "chooseExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject chooseExpress(String refundId, String expressId, String expressCode, HttpSession session) {
+    public JSONObject chooseExpress(String refundId, String expressName, String expressCode, HttpSession session) {
 
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
@@ -125,14 +134,14 @@ public class AfterSaleShowAction {
         if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
-        if (StringUtils.isEmpty(expressId)) {
+        if (StringUtils.isEmpty(expressName)) {
             return JsonResponseUtil.error("快递不能空");
         }
         if (StringUtils.isEmpty(expressCode)) {
             return JsonResponseUtil.error("快递单号不能空");
         }
 
-        afterSaleShowService.chooseExpress(refundId, expressId, expressCode);
+        afterSaleShowService.chooseExpress(refundId, expressName, expressCode);
         return JsonResponseUtil.success();
 
     }
@@ -140,13 +149,13 @@ public class AfterSaleShowAction {
     /**
      * 修改快递
      * @param refundId  售后id
-     * @param expressId 快递id
+     * @param expressName 快递id
      * @param expressCode 快递单号
      * @return  json
      */
     @RequestMapping(value = "modifyExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject modifyExpress(String refundId, String expressId, String expressCode,HttpSession session) {
+    public JSONObject modifyExpress(String refundId, String expressName, String expressCode,HttpSession session) {
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
         }
@@ -155,13 +164,13 @@ public class AfterSaleShowAction {
         if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
-        if (StringUtils.isEmpty(expressId)) {
+        if (StringUtils.isEmpty(expressName)) {
             return JsonResponseUtil.error("快递不能空");
         }
         if (StringUtils.isEmpty(expressCode)) {
             return JsonResponseUtil.error("快递单号不能空");
         }
-        afterSaleShowService.modifyExpress(refundId,expressId,expressCode);
+        afterSaleShowService.modifyExpress(refundId,expressName,expressCode);
 
         return JsonResponseUtil.success();
     }
@@ -231,6 +240,14 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("缺少参数同意");
         }
         afterSaleShowService.agreeRefunMoney(Long.parseLong(refundId),agreeState);
+        return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("finishExchange")
+    @ResponseBody
+    public JSONObject finishExchange(Long refundId,HttpSession session) throws OrderException, DaifaException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        afterSaleShowService.finishExchange(refundId,ps.getUserId());
         return JsonResponseUtil.success();
     }
 

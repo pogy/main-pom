@@ -42,17 +42,24 @@ public class AfterSaleData implements Serializable {
     private String serversFee;
     @Column("daifa_trade.after_remark")
     private String childRemark;
-    @Column("daifa_trade.send_time")
-    private Date sendTime;
-    @Column("daifa_trade.create_time")
-    private Date createTime;
+    @Column("DATE_FORMAT(daifa_trade.send_time,'%Y-%m-%d %H:%i:%s')")
+    private String sendTime;
+    @Column("DATE_FORMAT(daifa_trade.create_time,'%Y-%m-%d %H:%i:%s')")
+    private String tradeTime;
     @Column("daifa_trade.trade_code")
     private String tradeCode;
     @Column("daifa_trade.is_old")
     private Integer oldOrder;
     @Column("daifa_trade.send_status")
     private Integer sendStatus;
-
+    @Column("daifa_trade.buyer_ww")
+    private String imWw;
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
+    @Column("daifa_trade.daifa_type=2")
+    private Boolean isTbOrder;
     private List<AfterSaleSubData> childOrders;
 
     public String getReceiverAddress() {
@@ -147,11 +154,11 @@ public class AfterSaleData implements Serializable {
         this.childRemark = childRemark;
     }
 
-    public Date getSendTime() {
+    public String getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Date sendTime) {
+    public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
     }
 
@@ -159,12 +166,12 @@ public class AfterSaleData implements Serializable {
         return orderId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getTradeTime() {
+        return tradeTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setTradeTime(String tradeTime) {
+        this.tradeTime = tradeTime;
     }
 
     public List<AfterSaleSubData> getChildOrders() {
@@ -197,5 +204,37 @@ public class AfterSaleData implements Serializable {
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
+    }
+
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }
