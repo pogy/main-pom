@@ -193,6 +193,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return order.getOid();
     }
 
+    @Override
+    public List<Long> createOrders(List<ItemOrderBO> orderBO) throws OrderException {
+        return null;
+    }
+
     /**
      * 重算快递费
      *

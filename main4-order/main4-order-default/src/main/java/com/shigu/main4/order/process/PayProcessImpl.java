@@ -11,6 +11,8 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("payProcess")
 public class PayProcessImpl implements PayProcess{
 
@@ -20,6 +22,11 @@ public class PayProcessImpl implements PayProcess{
     @Override
     public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
         return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId).payApply(payType);
+    }
+
+    @Override
+    public PayApplyVO payApplySome(List<Long> orderIds, PayType payType) {
+        return null;
     }
 
     @Override
