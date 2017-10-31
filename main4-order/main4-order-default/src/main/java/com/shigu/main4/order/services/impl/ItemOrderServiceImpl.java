@@ -194,8 +194,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<Long> createOrders(List<ItemOrderBO> orderBO) throws OrderException {
-        return null;
+        List<Long> oids=new ArrayList<>();
+        for(ItemOrderBO bo:orderBO){
+            oids.add(createOrder(bo));
+        }
+        return oids;
     }
 
     /**

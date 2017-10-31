@@ -18,7 +18,7 @@ public class WxPayerServiceImplTest extends BaseTest {
 
     @Test
     public void payApply() throws Exception {
-        show(payerService.payApply(9968L,1L, 1L, "订单测试"));
+        show(payerService.payApply(9968L, 1L, "订单测试",1L));
     }
 
     @Test

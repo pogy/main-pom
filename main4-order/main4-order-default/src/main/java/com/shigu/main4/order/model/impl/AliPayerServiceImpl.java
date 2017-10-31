@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayApplyRelation;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.util.BeanMapper;
@@ -22,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 支付宝支付
@@ -41,14 +45,12 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
+    public PayApplyVO payApply(Long userId, Long money, String title, Long[] oids) throws PayApplyException {
 
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(oid);
-        apply.setMoney(money);
-        apply.setUserId(userId);
-        apply.setType(PayType.ALI.getValue());
-        orderPayApplyMapper.insertSelective(apply);
+        if (oids == null || oids.length==0) {
+            throw new PayApplyException("缺少订单ID");
+        }
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.ALI,oids);
 
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl(returnUrl);

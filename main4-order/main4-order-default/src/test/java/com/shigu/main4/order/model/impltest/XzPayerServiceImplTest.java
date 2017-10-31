@@ -25,7 +25,7 @@ public class XzPayerServiceImplTest extends BaseTest {
 
     @Test
     public void payApply() throws Exception {
-        show(xzPayerService.payApply(9968L,1234L, 1L, "订单测试XZy1234"));
+        show(xzPayerService.payApply(9968L, 1L, "订单测试XZy1234",1234L));
     }
 
 

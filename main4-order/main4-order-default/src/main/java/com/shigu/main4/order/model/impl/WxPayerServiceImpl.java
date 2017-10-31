@@ -5,6 +5,7 @@ import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayApplyRelation;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -27,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * 微信支付
@@ -48,13 +51,8 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(oid);
-        apply.setMoney(money);
-        apply.setUserId(userId);
-        apply.setType(PayType.WX.getValue());
-        orderPayApplyMapper.insertSelective(apply);
+    public PayApplyVO payApply(Long userId, Long money, String title,Long[] oids) throws PayApplyException {
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.WX,oids);
 
         UnifyPayResData resData;
         try {
