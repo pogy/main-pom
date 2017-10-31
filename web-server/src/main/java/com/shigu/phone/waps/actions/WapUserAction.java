@@ -361,9 +361,7 @@ public class WapUserAction {
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success", false);
         }
-        List<UserWinningInfo> userWinningInfoList = wapPhoneUserService.getUserWinningInfoList(session);
-
-        //TODO 商标注册
+        List<UserWinningInfo> userWinningInfoList = wapPhoneUserService.getUserWinningInfoList(ps);
         return JsonResponseUtil.success().element("success",true).element("userWinningInfoList",userWinningInfoList);
     }
 

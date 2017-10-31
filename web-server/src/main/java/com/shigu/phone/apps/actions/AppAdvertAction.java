@@ -65,6 +65,7 @@ public class AppAdvertAction {
         }
 
         SpreadEnum spread=null;
+
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
             if(spreadEnum.getCode().equals(request.getSpreadCode())){
                 spread=spreadEnum;
