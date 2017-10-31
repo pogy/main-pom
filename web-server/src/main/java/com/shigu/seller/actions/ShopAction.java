@@ -38,6 +38,7 @@ import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -185,6 +186,9 @@ public class ShopAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    RedisIO redisIO;
 
 
     /**
@@ -362,7 +366,12 @@ public class ShopAction {
         model.addAttribute("skuAttribute",skuAttribute);
         model.addAttribute("get",bo);
         ShopSession shopSession = getShopSession(session);//暂时都开放
-        model.addAttribute("showMoreImgBtnIs",true);
+        String openflag=redisIO.get("open_more_pic");
+        if (StringUtils.isNotEmpty(openflag)) {
+            model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
+        }else{
+            model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
+        }
         return "seller/releaseGoodsSend";
     }
 
