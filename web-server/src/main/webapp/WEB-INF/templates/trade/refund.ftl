@@ -32,7 +32,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/refund.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/refund.js?t=2017103001"></script>
 </head>
 <body>
 

@@ -10,7 +10,17 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/orderSendErrorDeal/orderSendErrorDeal.js?t=201709121011"></script>
+    <style>
+        .ptitle{
+            width: 100px;
+            display: inline-block;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .orderCon .tddiv{width:13%;}
+    </style>
 </head>
+
 <body>
 <div class="pageHeader yahei">
     <h1 class="fl">代发后台管理</h1>
@@ -117,13 +127,13 @@
         <div class="orderCon">
             <div class="theadCon">
                 <ul class="">
-                    <li class="childOrderId">代发编号</li>
-                    <li class="childOrderId">订单编号</li>
-                    <li class="remark">收货人</li>
-                    <li class="goodsInfo">收件人地址</li>
-                    <li class="otherFee">快递名</li>
-                    <li class="orderState">订单状态</li>
-                    <li class="tradeState">操作</li>
+                    <li class="tddiv" style="width: 22%">1代发编号</li>
+                    <li class="tddiv">订单编号</li>
+                    <li class="tddiv">收货人</li>
+                    <li class="tddiv">收件人地址</li>
+                    <li class="tddiv">快递名</li>
+                    <li class="tddiv">订单状态</li>
+                    <li class="tddiv">操作</li>
                 </ul>
             </div>
         <#list orders as order>
@@ -132,13 +142,13 @@
 
             <div class="childOrderItem" >
                 <ul class="clearfix">
-                    <li class="childOrderId">${order.dfTradeId!}</li>
-                    <li class="childOrderId">${order.tradeCode!}</li>
-                    <li class="remark"><input type="text" id="receiverNames" name="receiverNames" value="${order.receiverName!}" class="fmInput"/></li>
-                    <li class="goodsInfo"><input type="text" id="receiverAddrs" name="receiverAddrs" value="${order.receiverAddress!}" style="width:400px" class="fmInput"/></li>
-                    <li class="otherFee">${order.expressName!}</li>
-                    <li class="orderState">${order.tradeStatus!}</li>
-                    <li class="tradeState"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editAddr(this,'${order.dfTradeId!}')" class="fmButton fmButton-blue"/></li>
+                    <li class="tddiv">${order.dfTradeId!}</li>
+                    <li class="tddiv">${order.tradeCode!}</li>
+                    <li class="tddiv"><input type="text" id="receiverNames" name="receiverNames" value="${order.receiverName!}" class="fmInput"/></li>
+                    <li class="tddiv"><input type="text" id="receiverAddrs" name="receiverAddrs" value="${order.receiverAddress!}" style="width:400px" class="fmInput"/></li>
+                    <li class="tddiv">${order.expressName!}</li>
+                    <li class="tddiv">${order.tradeStatus!}</li>
+                    <li class="tddiv"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editAddr(this,'${order.dfTradeId!}')" class="fmButton fmButton-blue"/></li>
                 </ul>
             </div>
 

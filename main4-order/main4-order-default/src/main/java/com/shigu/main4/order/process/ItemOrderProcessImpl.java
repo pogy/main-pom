@@ -106,6 +106,11 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         updateTbSend(oid);
     }
 
+    @Override
+    public void updateInStok(Long soidpid) {
+
+    }
+
     private void updateTbSend(Long oid){
         com.opentae.data.mall.beans.ItemOrder o=new com.opentae.data.mall.beans.ItemOrder();
         o.setOid(oid);
