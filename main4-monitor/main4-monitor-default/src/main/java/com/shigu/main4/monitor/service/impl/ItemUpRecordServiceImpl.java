@@ -27,6 +27,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.*;
@@ -457,6 +458,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                     onekeyRecoreVO.setPiprice(shiguGoodsTiny.getPiPriceString());
                     onekeyRecoreVO.setUnShelve(false);
                 }else{
+                    onekeyRecoreVO.setLiprice(MoneyUtil.dealPrice(MoneyUtil.StringToLong(shiguGoodsUp.getFenPrice())));
+                    onekeyRecoreVO.setPiprice(shiguGoodsUp.getSupperPrice());
                     onekeyRecoreVO.setUnShelve(true);
                 }
                 onekeyRecoreVO.setTbUnSheLve(shiguGoodsUp.getTbSoldout()!=null&&shiguGoodsUp.getTbSoldout());

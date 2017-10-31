@@ -88,7 +88,12 @@ public class WapGoodsUpAction {
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
         }
-        wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());
-        return JsonResponseUtil.success().element("success",true);
+        try {
+            wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());
+            return JsonResponseUtil.success().element("success",true);
+        } catch (OpenException e) {
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
+        }
     }
 }
