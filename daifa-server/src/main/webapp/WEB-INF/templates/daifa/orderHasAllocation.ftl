@@ -258,7 +258,12 @@
 </#list>
 </li>
             <li class="childOrderId"></li>
-            <li class="goodsInfo"><b class="printGoodsTab" data-type="1">打印全部商品标签</b><b class="printGoodsTab" data-type="2">打印已选商品标签</b></li>
+            <li class="goodsInfo">
+                <#if query.status != 3>
+                <b class="printGoodsTab" data-type="1">打印全部商品标签</b>
+                </#if>
+                <b class="printGoodsTab" data-type="2">打印已选商品标签</b>
+            </li>
             <li class="price">价格（元）</li>
             <li class="goodsNum">数量</li>
             <li class="dffs">代发方式</li>
