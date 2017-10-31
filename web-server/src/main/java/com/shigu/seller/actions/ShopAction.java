@@ -319,7 +319,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsSend")
-    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,Model model) throws Main4Exception {
+    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -361,6 +361,8 @@ public class ShopAction {
         model.addAttribute("formAttribute",formAttribute);
         model.addAttribute("skuAttribute",skuAttribute);
         model.addAttribute("get",bo);
+        ShopSession shopSession = getShopSession(session);//暂时都开放
+        model.addAttribute("showMoreImgBtnIs",true);
         return "seller/releaseGoodsSend";
     }
 
@@ -466,6 +468,13 @@ public class ShopAction {
             throw new JsonErrException(e.getMessage());
         }
         return JsonResponseUtil.success().element("goodsId",itemId).element("webSite",shopSession.getWebSite());
+    }
+
+    @RequestMapping("seller/getAccessInfoForImgUpload")
+    @ResponseBody
+    public JSONObject getAccessInfoForImgUpload(HttpSession session) throws UnsupportedEncodingException {
+        ShopSession shopSession = getShopSession(session);
+        return JSONObject.fromObject(ossIO.createPostSignInfo("itemup/"+shopSession.getWebSite()+"/"+shopSession.getShopId()+"/")).element("result","success");
     }
     /**
      * 出售中的宝贝
