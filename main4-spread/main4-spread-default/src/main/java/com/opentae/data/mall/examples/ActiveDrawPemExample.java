@@ -10,10 +10,12 @@ import java.util.*;
 public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteria> {
     public static final Class<ActiveDrawPem> beanClass = ActiveDrawPem.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn activeType;
     public static EntityColumn createTime;
     public static EntityColumn startTime;
     public static EntityColumn term;
     public static EntityColumn id;
+    public static EntityColumn title;
     public static EntityColumn info;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -21,10 +23,12 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        activeType = listMap.get("activeType");
         createTime = listMap.get("createTime");
         startTime = listMap.get("startTime");
         term = listMap.get("term");
         id = listMap.get("id");
+        title = listMap.get("title");
         info = listMap.get("info");
         }
 
@@ -47,6 +51,53 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
             super(example);
         }
 
+        public ActiveDrawPemExample.Criteria andActiveTypeIsNull() {
+            return isNull(activeType);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeIsNotNull() {
+            return isNotNull(activeType);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeEqualTo(Integer value) {
+            return equalTo(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeNotEqualTo(Integer value) {
+            return notEqualTo(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeGreaterThan(Integer value) {
+            return greaterThan(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeLessThan(Integer value) {
+            return lessThan(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(activeType, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeIn(List<Integer> values) {
+            return in(activeType, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeNotIn(List<Integer> values) {
+            return notIn(activeType, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeBetween(Integer value1, Integer value2) {
+            return between(activeType, value1, value2);
+        }
+
+        public ActiveDrawPemExample.Criteria andActiveTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(activeType, value1, value2);
+        }
         public ActiveDrawPemExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);
         }
@@ -234,6 +285,61 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
 
         public ActiveDrawPemExample.Criteria andIdNotBetween(Long value1, Long value2) {
             return notBetween(id, value1, value2);
+        }
+        public ActiveDrawPemExample.Criteria andTitleIsNull() {
+            return isNull(title);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleIsNotNull() {
+            return isNotNull(title);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleEqualTo(String value) {
+            return equalTo(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleNotEqualTo(String value) {
+            return notEqualTo(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleGreaterThan(String value) {
+            return greaterThan(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleLessThan(String value) {
+            return lessThan(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleLike(String value) {
+            return like(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleNotLike(String value) {
+            return notLike(title, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleIn(List<String> values) {
+            return in(title, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleNotIn(List<String> values) {
+            return notIn(title, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleBetween(String value1, String value2) {
+            return between(title, value1, value2);
+        }
+
+        public ActiveDrawPemExample.Criteria andTitleNotBetween(String value1, String value2) {
+            return notBetween(title, value1, value2);
         }
         public ActiveDrawPemExample.Criteria andInfoIsNull() {
             return isNull(info);

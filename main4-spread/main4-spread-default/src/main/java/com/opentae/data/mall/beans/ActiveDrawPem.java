@@ -33,6 +33,16 @@ public class ActiveDrawPem implements Serializable {
      */
 	private Integer term;
 
+    /**
+     * 活动类别，1表示发现好货，2表示秋款上新
+     */
+	private Integer activeType;
+
+    /**
+     * 中奖信息标题
+     */
+	private String title;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -71,6 +81,22 @@ public class ActiveDrawPem implements Serializable {
 
 	public Integer getTerm() {
 		return this.term;
+	}
+
+	public void setActiveType(Integer activeType) {
+		this.activeType = activeType;
+	}
+
+	public Integer getActiveType() {
+		return this.activeType;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return this.title;
 	}
 
 }
