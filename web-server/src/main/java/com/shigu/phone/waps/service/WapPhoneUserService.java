@@ -153,7 +153,7 @@ public class WapPhoneUserService {
         for (int i=0;i<awardLists.size();i++){
             Award award=new Award();
             JSONObject jsonObject1 = awardLists.getJSONObject(i);
-            award.setIcon((String) jsonObject1.get("imgSec"));
+            award.setIcon((String) jsonObject1.get("imgSrc"));
             award.setText(jsonObject1.get("type")+":"+jsonObject1.get("awardName"));
             for(ActiveDrawRecordUserVo activeDrawRecordUserVo:activeDrawRecordUserVos){
                 //查询中奖信息
