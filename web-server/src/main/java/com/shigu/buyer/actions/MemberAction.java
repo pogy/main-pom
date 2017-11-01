@@ -225,6 +225,9 @@ public class MemberAction {
      */
     @RequestMapping("member/goodsCollectOriginal")
     public String goodsCollectOriginal(StoreCollectBO bo,Integer page,HttpSession session,Model model) {
+        if (page == null) {
+            page = 1;
+        }
         //一页12条数据
         int size = 12;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
