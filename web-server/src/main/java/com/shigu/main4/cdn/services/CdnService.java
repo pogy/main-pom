@@ -442,6 +442,9 @@ public class CdnService {
      * @return
      */
     public List<CdnCollectShopVO> colloectShop(Long userId,String webSite){
+        if (webSite == null) {
+            webSite = "hz";
+        }
         ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(userId,webSite,1,6);
         List<CdnCollectShopVO> vos=new ArrayList<>();
         for(ShopCollectVO p:pager.getContent()){
