@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class TokenUtil {
     public static String parse(String token){
-        token=token.replace(" ", "+");
         return Opt3Des.decryptPlainData(token);
     }
 
@@ -26,6 +25,7 @@ public class TokenUtil {
             e.setErrMsg("登录过期");
             throw e;
         }
+        token=token.replace(" ", "+");
         String str = TokenUtil.parse(token);
         if (StringUtils.isEmpty(str)) {
             SystemException e = new SystemException();
