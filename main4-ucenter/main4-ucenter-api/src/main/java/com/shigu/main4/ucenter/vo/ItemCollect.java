@@ -23,6 +23,14 @@ public class ItemCollect implements Serializable{
      * 分站标识
      */
     private String website;
+    /**
+     * 商品标题，搜索用
+     */
+    private String title;
+    /**
+     * 收藏类型 1.数据包，2.收藏，默认为2
+     */
+    private Integer type;
 
     public Long getUserId() {
         return userId;
@@ -54,5 +62,24 @@ public class ItemCollect implements Serializable{
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getType() {
+        if (type == null) {
+            return 2;
+        }
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

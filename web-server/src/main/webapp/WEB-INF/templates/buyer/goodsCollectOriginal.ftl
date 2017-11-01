@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>已上传的商品 - 分销商中心 - 四季星座网</title>
+    <title>收藏的商品 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/shiguOnekeyRecordinitv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/goodsCollectOriginal.css" rel="stylesheet">
     
 
     
@@ -38,7 +38,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/shiguOnekeyRecordinitv1.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/goodsCollectOriginal.js"></script>
 </head>
 <body>
 
@@ -217,7 +217,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a class="selected" href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li> 
+            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
             
         
     
@@ -229,7 +229,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
+            <li><a class="selected" href="${main_host!}member/storeCollectinit.htm">我的收藏</a></li> 
             
         
     
@@ -262,10 +262,9 @@ var webSite = '${webSite!}';
 
 
 
-        <div class="rightBox fr">
-    
+        
 
-<#assign text>{"fields":[{"name":"uploadGoodsState","value":"${query.uploadGoodsState!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"shopState","value":"${query.shopState!}"},{"name":"tbState","value":"${query.tbState!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"website","value":"${query.website!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -291,145 +290,46 @@ var webSite = '${webSite!}';
 </#list>
 
 
-
-
-
+<div class="rightBox yahei fr">
+    
+    
     <ul class="pageTabs clearfix">
-    <li <#if !query.uploadGoodsState >class="select"</#if>><a href="javascript:;" data-state="">全部</a></li>
-    <li <#if query.uploadGoodsState == 1 >class="select"</#if>><a href="javascript:;" data-state="1">档口在售</a></li>
-    <li <#if query.uploadGoodsState == 2 >class="select"</#if>>
-        <a href="javascript:;" class="pr" data-state="2">
-            档口已下架
-            <#if shopDownNum??>
-            <i class="shopDownNum pa">${shopDownNum!}</i>
-            </#if>
-        </a>
+    <li <#if $pageid == 'goodsCollectOriginal' >class="select"</#if>><a href="goodsCollectOriginal.htm">收藏的商品</a></li>
+    <li <#if $pageid == 'storeCollectinit' >class="select"</#if>><a href="storeCollectinit.htm">收藏的档口</a></li>
+    <li class="websiteBox">
+        
+
+<#assign text>{"name":"website","value":"${query.website!}"}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+<div class="fmSelect" id="selectWebsite">
+    <span class="text">数据加载中...</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+
+
+
+
+
+</#list>
+
+
+
+
     </li>
-    <li <#if query.uploadGoodsState == 3 >class="select"</#if>><a href="javascript:;" data-state="3">历史上传</a></li>
 </ul>
 
 
 
 
-    <div class="searchBar">
-    <ul class="clearfix">
-        <li>
-            <label>时间：</label>
-            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="startTime" placeholder="开始时间" <#if query.startTime??>value="${query.startTime!}"</#if>>
-            <span class="divideLine">-</span>
-            <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="endTime" placeholder="截止时间" <#if query.endTime??>value="${query.endTime!}"</#if>>
-        </li>
-        <li><label>档口状态：</label>
-
-<#assign text>{"value":"${query.shopState!}"}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
-<div class="fmSelect" id="shopState">
-    <span class="text">数据加载中...</span>
-    <i class="icon-downarrow bt_arrow"></i>
-    <ul class="options"></ul>
-    <input class="realInput" type="hidden"
-        <#if $it.name??>name="${$it.name!}"</#if>
-        <#if $it.value??>value="${$it.value!}"</#if>
-    >
-</div>
-
-
-
-
-
-</#list>
-
-
-
-</li>
-        <li><label>淘宝状态：</label>
-
-<#assign text>{"value":"${query.tbState!}"}</#assign>
+<#assign text>{}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
-<div class="fmSelect" id="tbState">
-    <span class="text">数据加载中...</span>
-    <i class="icon-downarrow bt_arrow"></i>
-    <ul class="options"></ul>
-    <input class="realInput" type="hidden"
-        <#if $it.name??>name="${$it.name!}"</#if>
-        <#if $it.value??>value="${$it.value!}"</#if>
-    >
-</div>
-
-
-
-
-
-</#list>
-
-
-
-</li>
-        
-        <li class="noMargin">
-            
-
-<#assign text>{}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-        
-         fmButton-orange
-         searchBtn"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-    
-        id="searchBtn"
-    
->
-
-    
-        搜索订单
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-</#list>
-
-        </li>
-    </ul>
-</div>
-
-
-
-
-
-
-
-
-<#assign text>{}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -456,6 +356,14 @@ var webSite = '${webSite!}';
 
 
 
+
+
+
+
+
+
+    
+    <#if (goodsList?size) gt 0>
     <div id="dataList" class="dataList">
     <ul class="head clearfix">
         <li class="name">
@@ -463,8 +371,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata6=text?eval />
-<#list [moduledata6] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -476,7 +384,7 @@ var webSite = '${webSite!}';
         type="checkbox"
         autocomplete="off"
         
-            name="allItems"
+            name="allFavoriteGoods"
         
         
         
@@ -524,23 +432,20 @@ var webSite = '${webSite!}';
 </#list>
 
             </label>
-            <button jbtn="downTbGoods">批量淘宝下架</button>
+            <button jbtn="rmvFavoriteGoods">批量删除</button>
         </li>
         <li class="piprice">批发价(元)</li>
         <li class="gysName">供应商</li>
-        <li class="upTime">上架时间</li>
         <li class="control">操作</li>
     </ul>
-    <#if (goodsList?size) gt 0 >
         <#list goodsList as goods>
-        <ul class="body clearfix" goodsid="${goods.goodsId!}">
+        <ul class="body clearfix" goodsid="${goods.goodsId!}" data-id="${goods.collId!}">
             <li class="name">
-                <#if goods.taobaoSaleState == 1>
                 
 
 <#assign text>{"value":goods.goodsId}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -570,7 +475,7 @@ var webSite = '${webSite!}';
         
         
         
-            data-selectParent="allItems"
+            data-selectParent="allFavoriteGoods"
         
         
         
@@ -599,27 +504,18 @@ var webSite = '${webSite!}';
 
 </#list>
 
-                <#elseif goods.taobaoSaleState == 2>
-                <span class="zwf fl"></span>
-                </#if>
                 <a class="piclink fl" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">
-                    <img src="${goods.imgsrc!}_80x80.jpg">
+                    <img src="${goods.imgSrc!}_80x80.jpg">
                 </a>
-                <p class="fl">
+                <p>
                     <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
-                <p class="fl"><span>货号：1111</span></p>
-                <p class="fl">
-                    <#if goods.shopSaleState == 1>
-                    <i class="shopSaleState"></i>
-                    <#elseif goods.shopSaleState == 2>
-                    <i class="shopSaleState noSale"></i>
-                    </#if>
-                    
-                    <#if goods.taobaoSaleState == 1>
-                    <i class="taobaoSaleState"></i>
-                    <#elseif goods.taobaoSaleState == 2>
-                    <i class="taobaoSaleState noSale"></i>
+                <p><span>货号：1111</span></p>
+                <p class="saleState">
+                    <#if goods.onSaleIs == true>
+                    <i class="inSale"></i>
+                    <#else>
+                    <i class="noSale"></i>
                     </#if>
                 </p>
             </li>
@@ -627,14 +523,14 @@ var webSite = '${webSite!}';
                 ${goods.piprice!}
             </li>
             <li class="gysName">
-                <p>${goods.marketName!}</p>
-                <p>${goods.shopNum!}</p>
+                <p>电商基地</p>
+                <p>A112-A444</p>
                 <p>
                     
 
 <#assign text>{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
@@ -642,8 +538,8 @@ var webSite = '${webSite!}';
                     
 
 <#assign text>{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduledata9=text?eval />
-<#list [moduledata9] as $it>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
 <#if $it.id != "">
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -652,16 +548,12 @@ var webSite = '${webSite!}';
 
                 </p>
             </li>
-            <li class="upTime">
-                <p>${goods.upTime!}</p>
-            </li>
             <li class="control">
-                <#if goods.taobaoSaleState == 1>
                 
 
-<#assign text>{}</#assign>
-<#assign moduledata10=text?eval />
-<#list [moduledata10] as $it>
+<#assign text>{"dataId":goods.goodsId}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -675,7 +567,7 @@ var webSite = '${webSite!}';
          fmButton-gray-o
         "
     
-        jbtn="downTbGoods"
+        jbtn="rmvFavoriteGoods"
     
     
         
@@ -692,7 +584,7 @@ var webSite = '${webSite!}';
 >
 
     
-        淘宝下架
+        删除
     
 
 
@@ -708,35 +600,9 @@ var webSite = '${webSite!}';
 
 </#list>
 
-                </#if>
             </li>
         </ul>
         </#list>
-        
-
-<#assign text>{}</#assign>
-<#assign moduledata11=text?eval />
-<#list [moduledata11] as $it>
-
-<div class="jqPagination " id="jqPagination0" 
-    <#if $it.pageOption??>
-        data-option="${$it.pageOption!}" 
-    <#else>
-        data-option="${pageOption!}"
-    </#if>
-></div>
-
-
-
-
-
-
-
-</#list>
-
-    <#else>
-        暂无数据
-    </#if>
 </div>
 
 
@@ -773,9 +639,34 @@ var webSite = '${webSite!}';
 
 
 
+    <#else>
+    <p class=emptylist>暂无数据</p>
+
+    </#if>
+    
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
+
+<div class="jqPagination " id="jqPagination0" 
+    <#if $it.pageOption??>
+        data-option="${$it.pageOption!}" 
+    <#else>
+        data-option="${pageOption!}"
+    </#if>
+></div>
 
 
 
+
+
+
+
+</#list>
+
+    
 </div>
 
 
