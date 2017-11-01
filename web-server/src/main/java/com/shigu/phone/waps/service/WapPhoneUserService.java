@@ -179,6 +179,7 @@ public class WapPhoneUserService {
         String thisStart = DateUtil.dateToString(cal.getTime(), dateFitment);
         cal.add(Calendar.DATE, 7);
         String thisEnd = DateUtil.dateToString(cal.getTime(), dateFitment);
-        return thisStart + " ——— " + thisEnd;
+
+        return thisStart + " —— " + thisEnd.substring(5);
     }
 }
