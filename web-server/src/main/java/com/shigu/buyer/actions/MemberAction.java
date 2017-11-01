@@ -394,7 +394,7 @@ public class MemberAction {
      * 删除收藏的店铺
      * @return
      */
-    @RequestMapping("member/rmv_fvshop")
+    @RequestMapping({"member/rmvFvshop","member/rmv_fvshop"})
     @ResponseBody
     public JSONObject rmv_fvshop(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
