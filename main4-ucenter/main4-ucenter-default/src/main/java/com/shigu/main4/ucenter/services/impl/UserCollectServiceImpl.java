@@ -716,10 +716,19 @@ public class UserCollectServiceImpl implements UserCollectService {
             pager.setContent(vos);
             Map<Long, ShopInfo> shopIdInfoMap = BeanMapper.list2Map(selShopInfoByShopIds(BeanMapper.getFieldList(shiguStoreCollects,"storeId",Long.class)),"shopId",Long.class);
             for (ShiguStoreCollect shiguStoreCollect : shiguStoreCollects) {
-                ShopCollectVO shopCollect = BeanMapper.map(shopIdInfoMap.get(shiguStoreCollect.getStoreId()),ShopCollectVO.class);
-                shopCollect.setCollId(shiguStoreCollect.getStoreCollectId());
-                shopCollect.setWebSite(shiguStoreCollect.getWebSite());
-                vos.add(shopCollect);
+                try {
+                    ShopInfo shopInfo = shopIdInfoMap.get(shiguStoreCollect.getStoreId());
+                    if (shopInfo == null) {
+                        //过滤一些遗留的测试数据（没有对应的档口）
+                        continue;
+                    }
+                    ShopCollectVO shopCollect = BeanMapper.map(shopInfo,ShopCollectVO.class);
+                    shopCollect.setCollId(shiguStoreCollect.getStoreCollectId());
+                    shopCollect.setWebSite(shiguStoreCollect.getWebSite());
+                    vos.add(shopCollect);
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
             pager.setContent(vos);
         }
