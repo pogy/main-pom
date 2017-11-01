@@ -226,7 +226,6 @@ public class UserCollectServiceImpl implements UserCollectService {
             goodsCollect.setGoodsId(collect.getItemId());
             goodsCollect.setRemark1(collect.getTitle());
             goodsCollect.setType(collect.getType());
-            goodsCollect.setUseStatus(1);
             shiguGoodsCollectMapper.insertSelective(goodsCollect);
         } else
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);
