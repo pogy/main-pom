@@ -39,6 +39,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/fxsV1/js/goodsCollectOriginal.js"></script>
+    
 </head>
 <body>
 
@@ -294,8 +295,8 @@ var webSite = '${webSite!}';
     
     
     <ul class="pageTabs clearfix">
-    <li <#if $pageid == 'goodsCollectOriginal' >class="select"</#if>><a href="goodsCollectOriginal.htm">收藏的商品</a></li>
-    <li <#if $pageid == 'storeCollectinit' >class="select"</#if>><a href="storeCollectinit.htm">收藏的档口</a></li>
+    <li class="select"><a href="goodsCollectOriginal.htm">收藏的商品</a></li>
+    <li ><a href="storeCollectinit.htm">收藏的档口</a></li>
     <li class="websiteBox">
         
 
@@ -443,7 +444,7 @@ var webSite = '${webSite!}';
             <li class="name">
                 
 
-<#assign text>{"value":goods.goodsId}</#assign>
+<#assign text>{"value":goods.collId}</#assign>
 <#assign moduledata5=text?eval />
 <#list [moduledata5] as $it>
 <label class="fmCheckbox
