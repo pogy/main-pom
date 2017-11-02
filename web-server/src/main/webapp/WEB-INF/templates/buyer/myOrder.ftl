@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -293,7 +294,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat2.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -431,6 +432,9 @@ var webSite = '${webSite!}';
             </div>
             </#if>
         </div>
+        </#if>
+        <#if order.mainState == 2 && childOrder.haveTakeGoodsNum??>
+            <p class="fc6">已拿货 x${childOrder.haveTakeGoodsNum!}</p>
         </#if>
     </li>
     <li class="opera">
