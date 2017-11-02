@@ -29,6 +29,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -224,7 +229,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
+            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
             
         
     
@@ -258,6 +263,55 @@ var webSite = '${webSite!}';
 
 
         <div class="rightBox fr yahei">
+    <#if goodsDownCount gt 0>
+<div class="topTips">
+    提示：您的所售商品中，有<em>${goodsDownCount!}</em>件已被档口下架！
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+
+    <a href="/member/shiguOnekeyRecordinit.htm"
+        
+
+
+    class="fmButton
+         fmButton-sm
+         fmButton-orange-o
+        "
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        立即查看
+    
+
+
+    </a>
+
+
+
+
+
+</#list>
+
+</div>
+</#if>
+
+
     <div class="userInfo">
     <div class="fl userBase">
         <#if session_user_redis__.headUrl??>
@@ -285,8 +339,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{"href":"${main_host!}member/iwantToRechargein5.htm"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -336,8 +390,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{"href":"${main_host!}member/withdraw5Apply.htm"}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -503,8 +557,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"

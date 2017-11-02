@@ -29,7 +29,6 @@ import com.shigu.opensearchsdk.response.Result;
 import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -791,4 +790,24 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return shiguGoodsSoldoutExample;
     }
 
+
+    @Override
+    public List<ItemShowBlock> shopGoodsNew(Long shopId) {
+        if (shopId == null) {
+            return Collections.EMPTY_LIST;
+        }
+        Cache goodsNewCache = cacheManager.getCache("shopGoodsNew");
+        List<ItemShowBlock> goodsNewList = goodsNewCache.get(shopId, List.class);
+        if (goodsNewList != null) {
+            return goodsNewList;
+        }
+        ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
+        if (shiguShop == null) {
+            return Collections.EMPTY_LIST;
+        }
+        String webSite = shiguShop.getWebSite();
+        goodsNewList = searchItemOnsale(null, shopId, webSite, "time_down", 1, 4).getContent();
+        goodsNewCache.put(shopId,goodsNewList);
+        return goodsNewList;
+    }
 }
