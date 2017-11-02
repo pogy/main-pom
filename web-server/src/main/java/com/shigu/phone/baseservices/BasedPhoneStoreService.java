@@ -173,14 +173,23 @@ public class BasedPhoneStoreService {
 //        userCollectService.delShopCollection(userId,collectIds);
 //    }
 //
-//    /**
-//     * 删除店铺收藏
-//     *
-//     * @return
-//     */
-//    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
-//        userCollectService.delShopCollection(userId,storeIds);
-//    }
+    /**
+     * 删除店铺收藏
+     *
+     * @return
+     */
+    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
+        List<Long> collectIds = new ArrayList<>();
+        ShiguStoreCollectExample collectExample = new ShiguStoreCollectExample();
+        for ( Long shopId:storeIds) {
+            collectExample.createCriteria()
+                    .andUserIdEqualTo(userId)
+                    .andStoreIdEqualTo(shopId);
+            collectIds.add(shiguStoreCollectMapper.selectByExample(collectExample).get(0).getStoreCollectId());
+        }
+
+        userCollectService.delShopCollection(userId,collectIds);
+    }
     /**
      * 添加店铺收藏
      *
