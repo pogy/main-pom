@@ -151,7 +151,7 @@ public class BasedPhoneStoreService {
                throw openException;
             }
         } else {
-            userCollectService.delShopCollectionByShopIds(userId, Arrays.asList(shopId));
+//            userCollectService.delShopCollectionByShopIds(userId, Arrays.asList(shopId));
         }
     }
 
@@ -170,7 +170,7 @@ public class BasedPhoneStoreService {
      * @return
      */
     public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
-        userCollectService.delShopCollectionByShopIds(userId,storeIds);
+//        userCollectService.delShopCollectionByShopIds(userId,storeIds);
     }
     /**
      * 添加店铺收藏

@@ -1,6 +1,10 @@
 package com.shigu.phone.baseservices;
 
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguGoodsCollect;
+import com.opentae.data.mall.examples.ShiguGoodsCollectExample;
+import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
+import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.api.enums.ImgFormatEnum;
@@ -27,6 +31,8 @@ public class BaseItemService {
     private BasePhoneCdnService basePhoneCdnService;
     @Autowired
     private UserCollectService userCollectService;
+    @Autowired
+    private ShiguGoodsCollectMapper goodsCollectMapper;
 
     public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer size,String webSite) throws OpenException {
         BaseCollectItemVO vo=basePhoneCdnService.selItemCollect(userId,index, size,webSite);
@@ -55,10 +61,13 @@ public class BaseItemService {
     }
 
     public Long hasCollected(Long goodsId, Long userId){
-        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, null);
-        if (itemCollectInfoVO == null) {
+        ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+        shiguGoodsCollect.setGoodsId(goodsId);
+        shiguGoodsCollect.setUserId(userId);
+        shiguGoodsCollect = goodsCollectMapper.selectOne(shiguGoodsCollect);
+        if (shiguGoodsCollect == null) {
           return null;
         }
-        return itemCollectInfoVO.getGoodsCollectId();
+        return shiguGoodsCollect.getGoodsCollectId();
     }
 }

@@ -2,13 +2,17 @@ package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ShiguGoodsCollectExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.SearchItem;
@@ -49,6 +53,10 @@ public class BasePhoneCdnService {
     @Autowired
     private ShiguMarketMapper shiguMarketMapper;
 
+    @Autowired
+    private ShiguGoodsCollectMapper goodsCollectMapper;
+
+
 
     /**
      * 查询收藏的商品
@@ -56,9 +64,16 @@ public class BasePhoneCdnService {
      * @return
      */
     public BaseCollectItemVO selItemCollect(Long userId, Integer index, Integer pageSize,String webSite) throws OpenException {
-        List<ItemCollectInfoVO> itemCollectInfoVOS = userCollectService.selItemCollection(userId,null,null,null,webSite);
-        Map<Long,List<ItemCollectInfoVO>> itemCollectInfoGroup = BeanMapper.groupBy(itemCollectInfoVOS,"goodsId",Long.class);
-        List<Long> goodsIds = BeanMapper.getFieldList(itemCollectInfoVOS,"goodsId",Long.class);
+        ShiguGoodsCollectExample shiguGoodsCollectExample = new ShiguGoodsCollectExample();
+        ShiguGoodsCollectExample.Criteria criteria =  shiguGoodsCollectExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        if (!StringUtil.isNull(webSite)) {
+            criteria.andWebsiteEqualTo(webSite);
+        }
+        List<ShiguGoodsCollect> shiguGoodsCollects = goodsCollectMapper.selectByExample(shiguGoodsCollectExample);
+
+        Map<Long,List<ShiguGoodsCollect>> itemCollectInfoGroup = BeanMapper.groupBy(shiguGoodsCollects,"goodsId",Long.class);
+        List<Long> goodsIds = BeanMapper.getFieldList(shiguGoodsCollects,"goodsId",Long.class);
 
         if (goodsIds == null || goodsIds.isEmpty()) {
             OpenException openException = new OpenException();
@@ -108,10 +123,10 @@ public class BasePhoneCdnService {
                     shiguMarket = shiguMarketsList.get(0);
                 }
 
-                List<ItemCollectInfoVO> itemCollectInfoVOS1 = itemCollectInfoGroup.get(item.getItemId());
-                ItemCollectInfoVO itemCollectInfoVO = null;
-                if (itemCollectInfoVOS1 != null && !itemCollectInfoVOS1.isEmpty()) {
-                    itemCollectInfoVO = itemCollectInfoVOS1.get(0);
+                List<ShiguGoodsCollect> shiguGoodsCollects1 = itemCollectInfoGroup.get(item.getItemId());
+                ShiguGoodsCollect shiguGoodsCollect = null;
+                if (shiguGoodsCollects1 != null && !shiguGoodsCollects1.isEmpty()) {
+                    shiguGoodsCollect = shiguGoodsCollects1.get(0);
                 }
 
                 AppGoodsBlock appGoodsBlock = new AppGoodsBlock();
@@ -127,8 +142,8 @@ public class BasePhoneCdnService {
                 appGoodsBlock.setStoreid(item.getStoreId());
                 appGoodsBlock.setGoodsNo(item.getGoodsNo());
                 appGoodsBlock.setHighLightGoodsNo(item.getHighLightGoodsNo());
-                if (itemCollectInfoVO != null) {
-                    appGoodsBlock.setCollectId(itemCollectInfoVO.getGoodsCollectId()+"");
+                if (shiguGoodsCollect != null) {
+                    appGoodsBlock.setCollectId(shiguGoodsCollect.getGoodsCollectId()+"");
                 }
                 appGoodsBlocks.add(appGoodsBlock);
             });
@@ -143,10 +158,17 @@ public class BasePhoneCdnService {
      */
     public boolean addItemCollect(Long userId,Long storeId,Long goodsId,String webSite){
 
+        ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+        shiguGoodsCollect.setUserId(userId);
+        shiguGoodsCollect.setGoodsId(goodsId);
+        shiguGoodsCollect.setStoreId(storeId);
+        shiguGoodsCollect.setWebsite(webSite);
+
+        ShiguGoodsCollect shiguGoodsCollect1 = goodsCollectMapper.selectOne(shiguGoodsCollect);
+
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
-        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
-        if (itemCollectInfoVO == null) {//从未收藏过，添加收藏记录
+        if (shiguGoodsCollect1 == null) {//从未收藏过，添加收藏记录
             itemCollect.setItemId(goodsId);
             itemCollect.setStoreId(storeId);
             itemCollect.setWebsite(webSite);
@@ -157,7 +179,7 @@ public class BasePhoneCdnService {
             }
         }else{//已经收藏的取消收藏
             List<Long>  collectId = new ArrayList<>();
-            collectId.add(itemCollectInfoVO.getGoodsCollectId());
+            collectId.add(shiguGoodsCollect1.getGoodsCollectId());
             delItemCollect(userId,collectId);
         }
         return true;
@@ -168,25 +190,33 @@ public class BasePhoneCdnService {
      * @param userId
      * @return
      */
-    public ItemCollectInfoVO collectItem(Long userId,Long storeId,Long goodsId,String webSite) throws OpenException {
+    public ShiguGoodsCollect collectItem(Long userId,Long storeId,Long goodsId,String webSite) throws OpenException {
 
-        ItemCollect itemCollect=new ItemCollect();
-        itemCollect.setUserId(userId);
-        ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
-        if (itemCollectInfoVO == null) {//从未收藏过，添加收藏记录
+        ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+        shiguGoodsCollect.setUserId(userId);
+        shiguGoodsCollect.setGoodsId(goodsId);
+        shiguGoodsCollect.setStoreId(storeId);
+        shiguGoodsCollect.setWebsite(webSite);
+
+        ShiguGoodsCollect shiguGoodsCollect1 = goodsCollectMapper.selectOne(shiguGoodsCollect);
+
+        if (shiguGoodsCollect1 == null) {//从未收藏过，添加收藏记录
+            ItemCollect itemCollect=new ItemCollect();
+            itemCollect.setUserId(userId);
             itemCollect.setItemId(goodsId);
             itemCollect.setStoreId(storeId);
             itemCollect.setWebsite(webSite);
             try {
                 userCollectService.addItemCollection(itemCollect);
-                return userCollectService.selItemCollectionInfo(userId, goodsId, webSite);
+                return goodsCollectMapper.selectOne(shiguGoodsCollect);
+
             } catch (ItemCollectionException e) {
                 OpenException openException = new OpenException();
                 openException.setErrMsg("查询失败 ["+e.getMessage()+"]");
                 throw openException;
             }
         }else{
-            return itemCollectInfoVO;
+            return shiguGoodsCollect1;
         }
     }
 

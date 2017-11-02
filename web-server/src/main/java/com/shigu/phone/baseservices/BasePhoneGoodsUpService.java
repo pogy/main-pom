@@ -11,7 +11,10 @@ import com.openJar.responses.app.UploadedItemResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.shigu.buyer.bo.OnekeyRecordBO;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.vo.OnekeyRecoreVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -20,7 +23,6 @@ import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.monitor.vo.SingleItemUpRecordVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
@@ -66,6 +68,9 @@ public class BasePhoneGoodsUpService {
 
     @Autowired
     private MemberSimpleService memberSimpleService;
+
+    @Autowired
+    private GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     public void upToWx(String webSite,Long goodsId,Long userId) throws OpenException {
         OpenException openException = new OpenException();
@@ -137,12 +142,24 @@ public class BasePhoneGoodsUpService {
         }
         UploadedItemVO uploadedItemVO = new UploadedItemVO();
         String nick=memberSimpleService.selNick(userId);
-        ShiguPager<OnekeyRecoreVO> pager;
-        if(nick==null){
-            pager=itemUpRecordService.uploadedItems(userId,type,index,size);
-        }else{
-            pager=itemUpRecordService.uploadedItems(userId,nick,type,index,size);
+//        ShiguPager<OnekeyRecoreVO> pager;
+//        if(nick==null){
+//            pager=itemUpRecordService.uploadedItems(userId,type,index,size);
+//        }else{
+//            pager=itemUpRecordService.uploadedItems(userId,nick,type,index,size);
+//        }
+        OnekeyRecordBO bo = new OnekeyRecordBO();
+        bo.setPage(index);
+        bo.setRows(size);
+        if(type == 2){
+            bo.setShopState(2);
+            bo.setTbState(1);
+        }else if(type == 3){
+            bo.setShopState(2);
         }
+
+        ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(userId, nick, bo);
+
         pager.calPages(pager.getTotalCount(),10);
         uploadedItemVO.setTotal(pager.getTotalCount());
         uploadedItemVO.setHasNext(index<100&&index<pager.getTotalPages());
@@ -150,9 +167,9 @@ public class BasePhoneGoodsUpService {
         List<AppItemUploaded> eds=new ArrayList<>();
         for(OnekeyRecoreVO vo:pager.getContent()){
             AppItemUploaded ed=new AppItemUploaded();
-            ed.setGoodsId(vo.getId());
-            ed.setSupperDown(vo.getUnShelve());
-            ed.setImDown(vo.getTbUnSheLve());
+            ed.setGoodsId(vo.getGoodsId());
+            ed.setSupperDown(vo.getShopSaleState());
+            ed.setImDown(vo.getTaobaoSaleState());
             ed.setImgsrc(ImgUtils.formatImg(vo.getImgsrc(), ImgFormatEnum.GOODS_LIST));
             ed.setPiprice(vo.getPiprice());
             ed.setTitle(vo.getTitle());

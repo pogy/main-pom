@@ -134,7 +134,6 @@ public class ItemUpRecordVO implements Serializable{
     /**
      * 淘宝下架
      */
-    private Boolean tbSoldout;
 
     private Boolean tbSoldout;
 
@@ -347,13 +346,7 @@ public class ItemUpRecordVO implements Serializable{
         this.fenNumiid = fenNumiid;
     }
 
-    public Boolean getTbSoldout() {
-        return this.tbSoldout;
-    }
 
-    public void setTbSoldout(Boolean tbSoldout) {
-        this.tbSoldout = tbSoldout;
-    }
 
     public Long getCid() {
         return cid;

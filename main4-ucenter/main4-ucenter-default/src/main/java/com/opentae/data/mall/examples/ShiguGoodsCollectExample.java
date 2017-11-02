@@ -20,7 +20,6 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
     public static EntityColumn remark12;
     public static EntityColumn goodsId;
     public static EntityColumn remark11;
-    public static EntityColumn type;
     public static EntityColumn remark19;
     public static EntityColumn remark20;
     public static EntityColumn website;
@@ -56,7 +55,6 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         remark12 = listMap.get("remark12");
         goodsId = listMap.get("goodsId");
         remark11 = listMap.get("remark11");
-        type = listMap.get("type");
         remark19 = listMap.get("remark19");
         remark20 = listMap.get("remark20");
         website = listMap.get("website");
@@ -639,9 +637,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
             return isNotNull(type);
         }
 
-        public ShiguGoodsCollectExample.Criteria andTypeEqualTo(Integer value) {
-            return equalTo(type, value);
-        }
+
 
         public ShiguGoodsCollectExample.Criteria andTypeNotEqualTo(Integer value) {
             return notEqualTo(type, value);

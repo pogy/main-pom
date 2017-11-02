@@ -1,6 +1,7 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
@@ -89,8 +90,8 @@ public class WapItemAction {
         }
         try {
             if ("goods".equalsIgnoreCase(type)){//收藏商品
-                ItemCollectInfoVO itemCollectInfoVO = wapPhoneCdnService.collectItem(ps.getUserId(), null, id, webSite);
-                return JsonResponseUtil.success().element("success",true).element("collectId",itemCollectInfoVO.getGoodsCollectId());
+                ShiguGoodsCollect shiguGoodsCollect = wapPhoneCdnService.collectItem(ps.getUserId(), null, id, webSite);
+                return JsonResponseUtil.success().element("success",true).element("collectId",shiguGoodsCollect.getGoodsCollectId());
             }else if("shop".equalsIgnoreCase(type)){//收藏店铺
                 ShiguStoreCollect shiguStoreCollect = wapPhoneStoreService.collectStore( ps.getUserId(),id);
                 return JsonResponseUtil.success().element("success",true).element("collectId",shiguStoreCollect.getStoreCollectId());
@@ -104,7 +105,7 @@ public class WapItemAction {
     }
 
     /**
-     * 商品收藏/取消收藏
+     * 查询收藏状态
      * @return
      */
     @RequestMapping("hasCollected")
@@ -116,9 +117,9 @@ public class WapItemAction {
         }
         try {
             Long collectId;
-            if ("goods".equalsIgnoreCase(type)){//收藏商品
+            if ("goods".equalsIgnoreCase(type)){//商品
                 collectId = wapItemService.hasCollected(id,ps.getUserId());
-            }else if("shop".equalsIgnoreCase(type)){//收藏店铺
+            }else if("shop".equalsIgnoreCase(type)){//店铺
                 collectId = wapPhoneStoreService.hasCollected(id,ps.getUserId());
             }else{
                 return JsonResponseUtil.error("参数错误").element("success",false);

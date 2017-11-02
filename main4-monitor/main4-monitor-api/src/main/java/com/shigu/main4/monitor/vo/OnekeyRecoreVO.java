@@ -24,46 +24,16 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     /** 上传到 */
     private String flag;
     /** true/false 淘宝已/未下架 */
-    private boolean tbSoldout;
+    private Boolean tbSoldout;
     /** true/false 档口已/未下架 */
-    private boolean shopSoldout;
-
-
-
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    public boolean isTbSoldout() {
-        return tbSoldout;
-    }
-
-    public void setTbSoldout(boolean tbSoldout) {
-        this.tbSoldout = tbSoldout;
-    }
-
-    public boolean isShopSoldout() {
-        return shopSoldout;
-    }
-
-    public void setShopSoldout(boolean shopSoldout) {
-        this.shopSoldout = shopSoldout;
-    }
-
-
-
+    private Boolean shopSoldout;
 
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId( Long id ) {
         this.id = id;
     }
 
@@ -71,7 +41,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return onekeyId;
     }
 
-    public void setOnekeyId(String onekeyId) {
+    public void setOnekeyId( String onekeyId ) {
         this.onekeyId = onekeyId;
     }
 
@@ -79,7 +49,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle( String title ) {
         this.title = title;
     }
 
@@ -87,7 +57,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return imgsrc;
     }
 
-    public void setImgsrc(String imgsrc) {
+    public void setImgsrc( String imgsrc ) {
         this.imgsrc = imgsrc;
     }
 
@@ -95,7 +65,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return piprice;
     }
 
-    public void setPiprice(String piprice) {
+    public void setPiprice( String piprice ) {
         this.piprice = piprice;
     }
 
@@ -103,7 +73,7 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return liprice;
     }
 
-    public void setLiprice(String liprice) {
+    public void setLiprice( String liprice ) {
         this.liprice = liprice;
     }
 
@@ -111,25 +81,47 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         return webSite;
     }
 
-    public void setWebSite(String webSite) {
+    public void setWebSite( String webSite ) {
         this.webSite = webSite;
-    }
-
-    public String getCreatetime() {
-        return createtime;
     }
 
     public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate( Date createDate ) {
         this.createDate = createDate;
     }
 
-    public void setCreatetime(String createtime) {
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime( String createtime ) {
         this.createtime = createtime;
     }
 
+    public String getFlag() {
+        return flag;
+    }
 
+    public void setFlag( String flag ) {
+        this.flag = flag;
+    }
+
+    public Boolean getTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout( Boolean tbSoldout ) {
+        this.tbSoldout = tbSoldout;
+    }
+
+    public Boolean getShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout( Boolean shopSoldout ) {
+        this.shopSoldout = shopSoldout;
+    }
 }

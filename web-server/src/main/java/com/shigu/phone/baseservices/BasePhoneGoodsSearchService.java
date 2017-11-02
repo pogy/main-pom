@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.beans.app.AppItemKv;
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguOuterMarket;
+import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
 import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
@@ -73,6 +75,9 @@ public class BasePhoneGoodsSearchService {
 
     @Autowired
     private ShiguOuterMarketMapper shiguOuterMarketMapper;
+
+    @Autowired
+    private ShiguGoodsCollectMapper goodsCollectMapper;
 
     /**
      * 移动端商品搜索
@@ -225,12 +230,17 @@ public class BasePhoneGoodsSearchService {
             vo.setType(0);
         }else {
             // 查询商品是否收藏
-            ItemCollectInfoVO itemCollectInfoVO = userCollectService.selItemCollectionInfo(userId,itemId,webSite);
+            ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+            shiguGoodsCollect.setUserId(userId);
+            shiguGoodsCollect.setGoodsId(itemId);
+            shiguGoodsCollect.setWebsite(webSite);
+            shiguGoodsCollect = goodsCollectMapper.selectOne(shiguGoodsCollect);
+
             int type = 1;
-            if (itemCollectInfoVO == null || itemCollectInfoVO.getUseStatus() == null){
+            if (shiguGoodsCollect == null || shiguGoodsCollect.getUseStatus() == null){
                type = 0;
             }else{
-                type = itemCollectInfoVO.getUseStatus();
+                type = shiguGoodsCollect.getUseStatus();
             }
             vo.setType(type);
         }

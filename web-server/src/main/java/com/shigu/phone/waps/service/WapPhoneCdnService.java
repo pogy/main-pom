@@ -1,6 +1,7 @@
 package com.shigu.phone.waps.service;
 
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.baseservices.BasePhoneCdnService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
@@ -32,7 +33,7 @@ public class WapPhoneCdnService{
      * @param userId
      * @return
      */
-    public ItemCollectInfoVO collectItem(Long userId, Long storeId, Long goodsId, String webSite) throws OpenException {
+    public ShiguGoodsCollect collectItem( Long userId, Long storeId, Long goodsId, String webSite) throws OpenException {
         return basePhoneCdnService.collectItem(userId,storeId,goodsId,webSite);
     }
 

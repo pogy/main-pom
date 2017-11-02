@@ -37,15 +37,6 @@ public class PhoneCdnService {
         return response;
     }
 
-    /**
-     * 收藏/取消收藏商品
-     * @param userId
-     * @return
-     */
-    public boolean addItemCollect(Long userId,Long storeId,Long goodsId,String webSite){
-        return basePhoneCdnService.addItemCollect( userId, storeId, goodsId, webSite);
-    }
-
     public void delItemCollect(Long userId, List<Long> collectIds){
         basePhoneCdnService.delItemCollect( userId, collectIds);
     }

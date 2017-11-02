@@ -116,7 +116,6 @@ public class UserCollectServiceImpl implements UserCollectService {
         return pager;
     }
 
-    @Override
     public ShiguPager<NewGoodsCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type) {
         ShiguPager<NewGoodsCollectVO> pager = new ShiguPager<>();
         if (pageNo < 1)
@@ -205,7 +204,6 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @param webSite 分站标识
      * @return
      */
-    @Override
     public ItemCollectInfoVO selItemCollectionInfo(Long userId, Long goodsId, String webSite) {
         if (userId == null || goodsId == null) {
             if(logger.isErrorEnabled()){
@@ -234,7 +232,6 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @param webSite
      * @return
      */
-    @Override
     public List<ItemCollectInfoVO> selItemCollection(Long userId, Long goodsId, Integer useStatus, Long storeId, String webSite) {
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         ShiguGoodsCollectExample.Criteria criteria = collectExample.createCriteria();
@@ -826,7 +823,6 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @param userId
      * @param shopIds
      */
-    @Override
     public void delShopCollectionByShopIds(Long userId, List<Long> shopIds) {
         if (userId == null || shopIds == null || shopIds.isEmpty()){
             return;

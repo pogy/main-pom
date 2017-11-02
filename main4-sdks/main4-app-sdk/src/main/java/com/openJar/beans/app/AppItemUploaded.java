@@ -21,9 +21,9 @@ public class AppItemUploaded extends OpenBean implements Serializable {
 	//批发价
 	private String piprice;
 	//档口是否已下架
-	private Boolean supperDown;
-	//本店是否已下架
-	private Boolean imDown;
+	private Integer supperDown;
+	//本店是否已下架  淘宝
+	private Integer imDown;
 	//上传记录ID
 	private String uploadId;
 	public Long getGoodsId(){
@@ -58,20 +58,20 @@ public class AppItemUploaded extends OpenBean implements Serializable {
 		this.piprice=piprice;
 	}
 
-	public Boolean getSupperDown(){
+	public Integer getSupperDown() {
 		return supperDown;
 	}
 
-	public void setSupperDown(Boolean supperDown){
-		this.supperDown=supperDown;
+	public void setSupperDown( Integer supperDown ) {
+		this.supperDown = supperDown;
 	}
 
-	public Boolean getImDown(){
+	public Integer getImDown() {
 		return imDown;
 	}
 
-	public void setImDown(Boolean imDown){
-		this.imDown=imDown;
+	public void setImDown( Integer imDown ) {
+		this.imDown = imDown;
 	}
 
 	public String getUploadId(){
