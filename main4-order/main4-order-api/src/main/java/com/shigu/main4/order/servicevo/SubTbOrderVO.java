@@ -9,7 +9,7 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 子单id
      */
-    private Long tbChildOrderId;
+    private String tbChildOrderId;
     /**
      * 淘宝商品id
      */
@@ -67,14 +67,14 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 获取 子单id
      */
-    public Long getTbChildOrderId() {
+    public String getTbChildOrderId() {
         return this.tbChildOrderId;
     }
 
     /**
      * 设置 子单id
      */
-    public void setTbChildOrderId(Long tbChildOrderId) {
+    public void setTbChildOrderId(String tbChildOrderId) {
         this.tbChildOrderId = tbChildOrderId;
     }
 
