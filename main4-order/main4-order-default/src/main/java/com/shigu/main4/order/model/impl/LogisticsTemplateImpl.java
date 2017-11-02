@@ -4,24 +4,22 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.LogisticsTemplateCompany;
 import com.opentae.data.mall.beans.LogisticsTemplateRule;
-import com.opentae.data.mall.examples.LogisticsTemplateCompanyExample;
-import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
-import com.opentae.data.mall.examples.LogisticsTemplateRuleExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.vo.BournRuleInfoVO;
-import com.shigu.main4.order.vo.RuleInfoVO;
-import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +39,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     @Autowired
     private MultipleMapper multipleMapper;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
 
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
@@ -147,7 +148,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     }
 
     @Override
-    public BournRuleInfoVO rule(Long provId, Long companyId) throws LogisticsRuleException {
+    public List<BournRuleInfoVO> rule(Long provId, Long companyId) throws LogisticsRuleException {
         if(provId==null||companyId==null){
             throw new LogisticsRuleException("省份ID与物流公司ID是必要参数");
         }
@@ -161,14 +162,19 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
                         .andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
         List<RuleInfoVO> rules=multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class);
+        List<BournRuleInfoVO> bournRuleInfoVOs = new ArrayList<>();
         if (rules.size()>0) {
-            return BeanMapper.map(rules.get(0),BournRuleInfoVO.class);
+            rules.stream().forEach(item->{
+                bournRuleInfoVOs.add(BeanMapper.map(item,BournRuleInfoVO.class));
+            });
+        }else {
+            //取不到对应的，要拿默认规则
+            BournRuleInfoVO rule = defaultRule();
+            rule.setCompanyId(companyId);
+            rule.setProvId(provId);
+            bournRuleInfoVOs.add(rule);
         }
-        //取不到对应的，要拿默认规则
-        BournRuleInfoVO rule=defaultRule();
-        rule.setCompanyId(companyId);
-        rule.setProvId(provId);
-        return rule;
+        return bournRuleInfoVOs;
     }
 
     /**
@@ -211,14 +217,85 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         }
 
         // 算钱
-        BournRuleInfoVO vo = rule(provId, companyId);
-        if (vo == null) {
+        List<BournRuleInfoVO> vos = rule(provId, companyId);
+        if (vos == null || vos.isEmpty()) {
             throw new LogisticsRuleException(String.format("无默认快递规则; provId[%d],companyId[%d]", provId, companyId));
         }
-        Long unit = vo.getType() == 1 ? goodsNumber.longValue() : vo.getType() == 2 ? weight : 0; // 计费单元
+
+        //1按件，2按重量
+        Long unit = vos.get(0).getType() == 1 ? goodsNumber.longValue() : vos.get(0).getType() == 2 ? weight : 0; // 计费单元
+        Collections.sort(vos, new Comparator<BournRuleInfoVO>() {
+            @Override
+            public int compare(BournRuleInfoVO o1, BournRuleInfoVO o2) {
+                return o1.getStartWeight() - o2.getStartWeight();
+            }
+        });
+        BournRuleInfoVO vo = vos.get(0);
+        for (BournRuleInfoVO item : vos) {
+            if (unit >= item.getStartWeight()){
+                vo = item;
+            }
+        }
         Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
                 : ((Double) (Math.ceil((unit - vo.getStartWeight()) * 1.0 / vo.getAddWeight()) * vo.getAddPrice())).longValue();
-
         return vo.getStartPrice() + (add > 0 ? add : 0);
     }
+
+    /**
+     * 获取快递公司信息
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     */
+    public List<PostVO> getPostListByProvId(Long provId, Long senderId) throws LogisticsRuleException {
+        //根据senderId查找templateId
+        //根据templateId provId找到ruleId
+        //根据ruleId找到companyId
+        //根据comanyId找到快递公司信息
+        LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
+        LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
+        LogisticsTemplateProvExample  provExample = new LogisticsTemplateProvExample();
+        ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
+        MultipleExample multipleExample= MultipleExampleBuilder.from(templateExample)
+                .innerJoin(provExample).on(templateExample.createCriteria().equalTo(LogisticsTemplateExample.templateId,LogisticsTemplateProvExample.templateId))
+                .innerJoin(companyExample)
+                    .on(provExample.createCriteria().equalTo(LogisticsTemplateProvExample.templateId,LogisticsTemplateCompanyExample.templateId),
+                        provExample.createCriteria().equalTo(LogisticsTemplateProvExample.ruleId,LogisticsTemplateCompanyExample.ruleId),
+                        provExample.createCriteria().equalTo(LogisticsTemplateProvExample.templateId,LogisticsTemplateExample.templateId))
+                .innerJoin(expressCompanyExample)
+                    .on(companyExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.companyId,ExpressCompanyExample.expressCompanyId))
+                .where(templateExample.createCriteria().andSenderIdEqualTo(senderId),
+                        provExample.createCriteria().andProvIdEqualTo(provId)).build();
+        multipleExample.setDistinct(true);
+        List<PostInfoVO> postInfoVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, PostInfoVO.class);
+        List<PostVO> postVOS = BeanMapper.mapList(postInfoVOS, PostVO.class);
+        if (postVOS == null) {
+            postVOS = new ArrayList<>();
+        }
+
+        //添加默认快递
+        //根据defaultTemplateId defaultRuleId查询
+        BournRuleInfoVO bournRuleInfoVO = defaultRule();
+        LogisticsTemplateCompanyExample example = new LogisticsTemplateCompanyExample();
+        example.createCriteria().andRuleIdEqualTo(bournRuleInfoVO.getRuleId()).andTemplateIdEqualTo(templateId);
+        List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(example);
+        if (logisticsTemplateCompanies == null || logisticsTemplateCompanies.isEmpty()) {
+            throw new LogisticsRuleException(String.format("无默认快递信息; provId[%d],senderId[%d]", provId, senderId));
+        }
+        List<Long> conpanyIds = BeanMapper.getFieldList(logisticsTemplateCompanies,"companyId",Long.class);
+        expressCompanyExample.clear();
+        expressCompanyExample.createCriteria().andExpressCompanyIdIn(conpanyIds);
+        List<ExpressCompany> expressCompanies = expressCompanyMapper.selectByExample(expressCompanyExample);
+        if (expressCompanies != null && !expressCompanies.isEmpty()) {
+           for (ExpressCompany item : expressCompanies){
+                PostVO postVO = new PostVO();
+                postVO.setName(item.getRemark2());
+                postVO.setText(item.getExpressName());
+                postVOS.add(postVO);
+            }
+        }
+
+        return postVOS;
+    }
+
 }

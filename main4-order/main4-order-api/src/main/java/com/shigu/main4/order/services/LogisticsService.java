@@ -3,6 +3,8 @@ package com.shigu.main4.order.services;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsShipVo;
+import com.shigu.main4.order.vo.OtherCostVO;
+import com.shigu.main4.order.vo.PostVO;
 
 import java.util.List;
 
@@ -30,4 +32,22 @@ public interface LogisticsService {
      * @return
      */
     List<BournRuleInfoVO> selRulesByProvId(Long senderId,Long provId) throws LogisticsRuleException;
+
+    /**
+     * 获取快递公司信息
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     */
+    List<PostVO> getPostListByProvId (Long provId, Long senderId) throws LogisticsRuleException;
+
+    /**
+     * 计费
+     * @param provId 省份ID
+     * @param goodsNumber 商品数
+     * @param weight 重量,克为单位
+     * @return
+     */
+    Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId) throws LogisticsRuleException;
+
 }

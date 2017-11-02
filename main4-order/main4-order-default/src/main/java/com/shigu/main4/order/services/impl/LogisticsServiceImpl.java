@@ -3,10 +3,7 @@ package com.shigu.main4.order.services.impl;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.services.LogisticsService;
-import com.shigu.main4.order.vo.BournRuleInfoVO;
-import com.shigu.main4.order.vo.RuleInfoVO;
-import com.shigu.main4.order.vo.LogisticsShipDetail;
-import com.shigu.main4.order.vo.LogisticsShipVo;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +48,17 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<BournRuleInfoVO> selRulesByProvId(Long senderId, Long provId) throws LogisticsRuleException {
         LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
         return logisticsTemplate.rulesByProv(provId);
+    }
+
+    @Override
+    public List<PostVO> getPostListByProvId(Long provId, Long senderId) throws LogisticsRuleException {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        return logisticsTemplate.getPostListByProvId(provId,senderId);
+    }
+
+    @Override
+    public Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId) throws LogisticsRuleException {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        return logisticsTemplate.calculate(provId,companyId,goodsNumber,weight);
     }
 }
