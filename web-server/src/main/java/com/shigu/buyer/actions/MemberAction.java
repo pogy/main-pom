@@ -1,7 +1,5 @@
 package com.shigu.buyer.actions;
 
-import com.alibaba.fastjson.JSON;
-import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
@@ -11,7 +9,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
@@ -43,13 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -404,7 +394,7 @@ public class MemberAction {
      * 删除收藏的店铺
      * @return
      */
-    @RequestMapping("member/rmv_fvshop")
+    @RequestMapping({"member/rmvFvshop","member/rmv_fvshop"})
     @ResponseBody
     public JSONObject rmv_fvshop(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
