@@ -393,7 +393,7 @@ public class ConfirmOrderService {
         postPrice = MoneyUtil.StringToLong(String.valueOf(postPrice ));
 
         OtherCostVO otherCostVO = new OtherCostVO();
-        otherCostVO.setPostPrice(postPrice);
+        otherCostVO.setPostPrice(postPrice);//元转分
         List<ServiceInfosTextVO> serviceInfosText = new ArrayList<>();
         if (isDaifa) {
             ServiceInfosTextVO infoVO = new ServiceInfosTextVO();
@@ -403,10 +403,13 @@ public class ConfirmOrderService {
                 ServiceVO serviceRuler = orderConstantService.selDfService(Long.parseLong(senderId), shopMarketMap.get(shopId));
                 totalCost += serviceRuler.getPrice() * Integer.parseInt(String.valueOf(shopSumJson.get(shopId.toString())));
             }
-            String cost = MoneyUtil.dealPrice(totalCost);
-            infoVO.setCost(cost);
+            infoVO.setCost(MoneyUtil.dealPrice(totalCost));//元
             serviceInfosText.add(infoVO);
+
+            //此处总服务费用 == 代发费
+            otherCostVO.setServicePrice(totalCost);//总服务费分
         }
+        otherCostVO.setServiceInfosText(serviceInfosText);
         return otherCostVO;
     }
 }

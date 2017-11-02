@@ -161,6 +161,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateProvExample.ruleId, LogisticsTemplateCompanyExample.ruleId))
                 .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
                         .andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
+        multipleExample.setDistinct(true);
         List<RuleInfoVO> rules=multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class);
         List<BournRuleInfoVO> bournRuleInfoVOs = new ArrayList<>();
         if (rules.size()>0) {
@@ -268,10 +269,14 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                         provExample.createCriteria().andProvIdEqualTo(provId)).build();
         multipleExample.setDistinct(true);
         List<PostInfoVO> postInfoVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, PostInfoVO.class);
-        List<PostVO> postVOS = BeanMapper.mapList(postInfoVOS, PostVO.class);
+        List<PostVO> postVOS = null;
+        if (postInfoVOS != null && !postInfoVOS.isEmpty()) {
+            postVOS = BeanMapper.mapList(postInfoVOS, PostVO.class);
+        }
         if (postVOS == null) {
             postVOS = new ArrayList<>();
         }
+        List<String> postNames = BeanMapper.getFieldList(postVOS,"name",String.class);
 
         //添加默认快递
         //根据defaultTemplateId defaultRuleId查询
@@ -288,6 +293,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         List<ExpressCompany> expressCompanies = expressCompanyMapper.selectByExample(expressCompanyExample);
         if (expressCompanies != null && !expressCompanies.isEmpty()) {
            for (ExpressCompany item : expressCompanies){
+               if(postNames.contains(item.getRemark2()))continue;
                 PostVO postVO = new PostVO();
                 postVO.setName(item.getRemark2());
                 postVO.setText(item.getExpressName());
