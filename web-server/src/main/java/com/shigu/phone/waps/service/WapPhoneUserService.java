@@ -1,6 +1,8 @@
 package com.shigu.phone.waps.service;
 
 import com.alibaba.fastjson.JSON;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
 import com.shigu.main4.common.util.DateUtil;
@@ -14,8 +16,6 @@ import com.shigu.phone.baseservices.BasePhoneUserService;
 import com.shigu.phone.basevo.*;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,7 +145,7 @@ public class WapPhoneUserService {
         //中奖信息标题
         userWinningInfo.setTitle(drawPem.getTitle());
         //解析json
-        JSONObject jsonObject=JSONObject.fromObject(drawPem.getInfo());
+        JSONObject jsonObject= JSONObject.fromObject(drawPem.getInfo());
         JSONArray awardLists = jsonObject.getJSONObject("awardList").getJSONArray("topAw");
 
         ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());

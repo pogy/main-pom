@@ -54,7 +54,7 @@ public class WapStoreAction {
                         .element("shopHeadUrl",oneShopVO.getShopHeadUrl());
         } catch (OpenException e) {
             e.printStackTrace();
-           return JsonResponseUtil.error(e.getErrMsg());
+           return JsonResponseUtil.error(e.getErrMsg()).element("success",false);
         }
     }
 

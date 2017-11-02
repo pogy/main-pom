@@ -192,11 +192,8 @@ public class WapUserAction {
 
     @RequestMapping("bindTelephone")
     @ResponseBody
-    public JSONObject bindTelephone(HttpSession session,Long telephone,Integer msgCode) {
+    public JSONObject bindTelephone(HttpSession session,Long telephone,Integer msgCode,String tempId) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
-        }
         if (telephone == null) {
             return JsonResponseUtil.error("请输入手机号码").element("success",false);
         }
@@ -204,11 +201,14 @@ public class WapUserAction {
             return JsonResponseUtil.error("请输入验证码").element("success",false);
         }
         try {
-            Map<String,Object> otherPlatform = ps.getOtherPlatform();
-            Object userNickObj = otherPlatform.get("userNick");
-            if (userNickObj == null) {//不是第三方
+            if (ps != null) {//不是第三方
                 wapPhoneUserService.bindTelephone(ps.getUserId(),telephone,msgCode);
                 return JsonResponseUtil.success().element("success",true);
+            }
+            JSONObject otherPlatform = JSONObject.fromObject(redisIO.get("otherLogin_info"+tempId));
+            Object userNickObj = otherPlatform.get("userNick");
+            if (StringUtil.isNull(tempId)) {
+                return JsonResponseUtil.error("参数错误").element("success",false);
             }
             BindUserBO bo = new BindUserBO();
             bo.setUserNick((String)userNickObj);

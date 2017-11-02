@@ -88,7 +88,7 @@ public class OrtherLoginAction {
             return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+bo.getKey()+"&flag=1";
         }
     }
-                    //otherLoginH5
+    //otherLoginH5
     @RequestMapping("otherLoginH5")
     public String otherLoginH5( AppLoginBackBO bo, BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
         //shiro框架-----得到验证用户
@@ -102,20 +102,17 @@ public class OrtherLoginAction {
         }catch (LoginAuthException e){
             //未绑定星座网
 //            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
-            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
             //信息暂存，绑定用户时使用
-            Map<String,Object> otherPlatform = personalSession.getOtherPlatform();
+            Map<String,Object> otherPlatform = new HashMap<>();
             otherPlatform.put("userNick",bo.getNick());
             otherPlatform.put("tempId",bo.getKey());
             otherPlatform.put("flag",bo.getFlag());
             otherPlatform.put("type","TAOBAO");
-            personalSession.setOtherPlatform(otherPlatform);
-
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(),personalSession);
-            return "redirect:/waps/index.html#/bindTelephone?type=0";
+            redisIO.putFixedTemp("otherLogin_info"+bo.getKey(),otherPlatform,1800);
+            return "redirect:/waps/index.html#/bindTelephone?type=0&tempId="+bo.getKey();
         }
     }
+
     //得到shiro验证的token
     public CaptchaUsernamePasswordToken getToken(@Valid AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception {
         if(result.hasErrors()){
