@@ -230,9 +230,9 @@ public class OssIO {
 
     /**
      * 下载图片到本地
-     * @param localPath
-     * @param key
-     * @return
+     * @param localPath  本地存放路径
+     * @param key 域名后面的路径，开头不要/
+     * @return 本地文件
      */
     public File downFileToLocal(String localPath,String key){
 // 创建OSSClient实例
