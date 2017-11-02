@@ -2,6 +2,7 @@ package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.*;
 import com.openJar.exceptions.OpenException;
+import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -107,12 +108,18 @@ public class BaseStoreService {
         vo.setShopHeadUrl(ImgUtils.headUrl(storeRelation.getImWw()));
         //店铺是否已收藏
         if (userId == null) {
-            vo.setIsCollect(0);
+            vo.setCollectId(-1L);
         }else {
-            ShiguStoreCollectExample example = new ShiguStoreCollectExample();
-            example.createCriteria().andUserIdEqualTo(userId).andStoreIdEqualTo(shopId);
-            int count = shiguStoreCollectMapper.countByExample(example);
-            vo.setIsCollect(count == 0 ? 0 : 1);
+            ShiguStoreCollect shiguStoreCollect = new ShiguStoreCollect();
+            shiguStoreCollect.setUserId(userId);
+            shiguStoreCollect.setStoreId(shopId);
+            shiguStoreCollect.setWebSite(webSite);
+            shiguStoreCollect = shiguStoreCollectMapper.selectOne(shiguStoreCollect);
+            if (shiguStoreCollect == null) {
+                vo.setCollectId(-1L);
+            }else{
+                vo.setCollectId(shiguStoreCollect.getStoreCollectId());
+            }
         }
         return vo;
     }

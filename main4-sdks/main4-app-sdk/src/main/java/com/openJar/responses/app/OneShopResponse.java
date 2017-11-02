@@ -24,8 +24,17 @@ public class OneShopResponse extends Response {
 	private Integer starNum;
 	//店铺头像	必须
 	private String shopHeadUrl;
-	//是否收藏&nbsp;1&nbsp;收藏&nbsp;&nbsp;0未收藏
-	private Integer isCollect;
+	//是否收藏;&nbsp;-1未收藏
+	private Long collectId;
+
+	public Long getCollectId() {
+		return collectId;
+	}
+
+	public void setCollectId(Long collectId) {
+		this.collectId = collectId;
+	}
+
 	public Long getShopId(){
 		return shopId;
 	}
@@ -90,12 +99,6 @@ public class OneShopResponse extends Response {
 		this.shopHeadUrl=shopHeadUrl;
 	}
 
-	public Integer getIsCollect(){
-		return isCollect;
-	}
 
-	public void setIsCollect(Integer isCollect){
-		this.isCollect=isCollect;
-	}
 
 }

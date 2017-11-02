@@ -5,8 +5,11 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
+<<<<<<<<< Temporary merge branch 1
 import com.shigu.main4.common.util.BeanMapper;
+=========
 import com.shigu.main4.common.tools.StringUtil;
+>>>>>>>>> Temporary merge branch 2
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.tools.OssIO;
@@ -17,12 +20,15 @@ import com.shigu.main4.ucenter.util.DataPackageUtil;
 import com.shigu.main4.ucenter.util.FileOperator;
 import com.shigu.main4.ucenter.util.FilePathConstant;
 import com.shigu.main4.ucenter.util.UtilCharacter;
+<<<<<<<<< Temporary merge branch 1
 import com.shigu.main4.ucenter.vo.*;
+=========
 import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.PackageItem;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
+>>>>>>>>> Temporary merge branch 2
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
@@ -105,12 +111,12 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (userId == null)
             return pager;
 
-        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, keyword, webSite);
+        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, keyword, webSite,1);//1表示类型为数据包
         pager.calPages(count, pageSize);
         if (count > 0) {
             List<TinyItemCollect> shiguGoodsCollects
                     = shiguGoodsCollectMapper.tinyGoodsCollect(
-                    userId, keyword, webSite, (pageNo - 1) * pageSize, pageSize);
+                    userId, keyword, webSite, (pageNo - 1) * pageSize, pageSize,1);//1表示类型为数据包
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
@@ -273,7 +279,7 @@ public class UserCollectServiceImpl implements UserCollectService {
     }
 
     /**
-     * 添加商品收藏
+     * 添加数据包
      *
      * @param collect 收藏
      */
@@ -284,16 +290,23 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         collectExample.createCriteria().andGoodsIdEqualTo(collect.getItemId())
-                .andUserIdEqualTo(collect.getUserId());
+                .andUserIdEqualTo(collect.getUserId())
+                .andTypeEqualTo(1);//1为数据包
         List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
             goodsCollect.setGoodsId(collect.getItemId());
+<<<<<<<<< Temporary merge branch 1
             goodsCollect.setRemark1(collect.getTitle());
             goodsCollect.setType(collect.getType());
+=========
+            goodsCollect.setType(1);//1为数据包
+            goodsCollect.setUseStatus(1);
+>>>>>>>>> Temporary merge branch 2
             shiguGoodsCollectMapper.insertSelective(goodsCollect);
-        } else
+        } else {
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);
+        }
     }
 
 
@@ -681,7 +694,7 @@ public class UserCollectServiceImpl implements UserCollectService {
                 if (shiguGoodsIdGenerator == null) {
                     continue;
                 }
-                ShiguGoodsTiny shiguGoodsTiny =new ShiguGoodsTiny();
+                ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
                 shiguGoodsTiny.setWebSite(shiguGoodsIdGenerator.getWebSite());
                 shiguGoodsTiny.setGoodsId(goodsId);
                 shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
