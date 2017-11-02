@@ -235,6 +235,7 @@ public class MemberAction {
      * @return
      */
     @RequestMapping("member/rmvFavoriteGoods")
+    @ResponseBody
     public JSONObject rmvFavoriteGoods(String ids,HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         userCollectSimpleService.delCollectGoods(ps.getUserId(),ids);
