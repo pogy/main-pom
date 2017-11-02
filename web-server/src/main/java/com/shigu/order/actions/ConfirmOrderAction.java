@@ -2,10 +2,13 @@ package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressItemVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
+import com.shigu.main4.order.vo.OtherCostVO;
+import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
@@ -171,4 +174,43 @@ public class ConfirmOrderAction {
 
         return JsonResponseUtil.success().element("addressId", addressId);
     }
+
+    /**
+     * 获取快递规则接口json
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     * @throws JsonErrException
+     * @throws LogisticsRuleException
+     */
+    @ResponseBody
+    @RequestMapping("getPostListByProvId")
+    public JSONObject getPostListByProvId (String provId, String senderId) throws JsonErrException, LogisticsRuleException {
+        List<PostVO> postVOS = confirmOrderService.getPostListByProvId(provId, senderId);
+        return JsonResponseUtil.success().element("postList",postVOS);
+    }
+
+    /**
+     * 获取快递与服务费信息
+     * @param postName
+     * @param provId
+     * @param eachShopNum  每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
+     * @param totalWeight
+     * @return
+     * @throws JsonErrException
+     * @throws LogisticsRuleException
+     */
+    @ResponseBody
+    @RequestMapping("getOtherCost")
+    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(postName,provId,eachShopNum,totalWeight,senderId);
+        return JsonResponseUtil
+                    .success()
+                    .element("postPrice",otherCostVO.getPostPrice())
+                    .element("servicePrice",otherCostVO.getServicePrice())
+                    .element("serviceInfosText",otherCostVO.getServiceInfosText());
+    }
+
+
+
 }
