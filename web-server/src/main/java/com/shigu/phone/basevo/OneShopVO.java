@@ -22,8 +22,8 @@ public class OneShopVO implements Serializable{
     private Integer starNum;
     //店铺头像	必须
     private String shopHeadUrl;
-    //是否收藏&nbsp;1&nbsp;收藏&nbsp;&nbsp;0未收藏
-    private Integer isCollect;
+    //收藏ID
+    private Long collectId;
 
     public Long getShopId() {
         return shopId;
@@ -89,11 +89,11 @@ public class OneShopVO implements Serializable{
         this.shopHeadUrl = shopHeadUrl;
     }
 
-    public Integer getIsCollect() {
-        return isCollect;
+    public Long getCollectId() {
+        return collectId;
     }
 
-    public void setIsCollect(Integer isCollect) {
-        this.isCollect = isCollect;
+    public void setCollectId(Long collectId) {
+        this.collectId = collectId;
     }
 }

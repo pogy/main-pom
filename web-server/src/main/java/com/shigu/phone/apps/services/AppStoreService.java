@@ -33,7 +33,7 @@ public class AppStoreService {
         OneShopResponse response = new OneShopResponse();
         try {
             OneShopVO oneShopVO = baseStoreService.selOneShopInfo(request.getShopId(), request.getWebSite(), request.getUserId());
-            response.setIsCollect(oneShopVO.getIsCollect());
+            response.setCollectId(oneShopVO.getCollectId());
             response.setTodayAdd(oneShopVO.getTodayAdd());
             response.setTelephone(oneShopVO.getTelephone());
             response.setStarNum(oneShopVO.getStarNum());

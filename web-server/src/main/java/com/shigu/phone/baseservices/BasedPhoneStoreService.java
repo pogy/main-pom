@@ -1,6 +1,7 @@
 package com.shigu.phone.baseservices;
 
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+
+import com.alibaba.druid.sql.visitor.functions.If;
 import com.openJar.beans.app.AppShopBlock;
 import com.openJar.exceptions.OpenException;
 import com.opentae.core.mybatis.example.MultipleExample;
@@ -10,6 +11,7 @@ import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
 import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
@@ -62,7 +64,7 @@ public class BasedPhoneStoreService {
     private MultipleMapper tae_mall_multipleMapper;
 
     @Autowired
-    ShiguStoreCollectMapper shiguStoreCollectMapper;
+    private ShiguStoreCollectMapper shiguStoreCollectMapper;
 
     /**
      * 移动端店铺搜索
@@ -151,27 +153,34 @@ public class BasedPhoneStoreService {
                throw openException;
             }
         } else {
-            userCollectService.delShopCollectionByShopIds(userId, Arrays.asList(shopId));
+            ShiguStoreCollectExample collectExample = new ShiguStoreCollectExample();
+            collectExample.createCriteria()
+                    .andUserIdEqualTo(userId)
+                    .andStoreIdEqualTo(shopId);
+            List<ShiguStoreCollect> shiguStoreCollects = shiguStoreCollectMapper.selectByExample(collectExample);
+            if (shiguStoreCollects.size()>0){
+                userCollectService.delShopCollection(userId, Arrays.asList(shiguStoreCollects.get(0).getStoreCollectId()));
+            }
         }
     }
 
-    /**
-     * 删除店铺收藏
-     *
-     * @return
-     */
-    public void delShopCollection(Long userId,List<Long> collectIds) {
-        userCollectService.delShopCollection(userId,collectIds);
-    }
-
-    /**
-     * 删除店铺收藏
-     *
-     * @return
-     */
-    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
-        userCollectService.delShopCollectionByShopIds(userId,storeIds);
-    }
+//    /**
+//     * 删除店铺收藏
+//     *
+//     * @return
+//     */
+//    public void delShopCollection(Long userId,List<Long> collectIds) {
+//        userCollectService.delShopCollection(userId,collectIds);
+//    }
+//
+//    /**
+//     * 删除店铺收藏
+//     *
+//     * @return
+//     */
+//    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
+//        userCollectService.delShopCollection(userId,storeIds);
+//    }
     /**
      * 添加店铺收藏
      *
