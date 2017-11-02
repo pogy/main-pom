@@ -76,6 +76,11 @@ public class UserCollectSimpleService {
             return;
         }
         List<Long> collect = Arrays.stream(splitIds).map(o -> Long.valueOf(o)).collect(Collectors.toList());
-        userCollectService.delItemCollection(userId,collect);
+        try {
+            userCollectService.delItemCollection(userId,collect);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
     }
 }

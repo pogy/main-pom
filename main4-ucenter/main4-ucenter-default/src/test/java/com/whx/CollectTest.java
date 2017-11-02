@@ -58,7 +58,11 @@ public class CollectTest {
 
     @Test
     public void delItemCollectionTest() {
-        userCollectService.delItemCollection(1000083680L,Lists.newArrayList(851499L,851501L));
+        try {
+            userCollectService.delItemCollection(1000083680L,Lists.newArrayList(851820L,851821L));
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     @Test
