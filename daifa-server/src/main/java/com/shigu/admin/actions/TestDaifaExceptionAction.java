@@ -69,7 +69,7 @@ public class TestDaifaExceptionAction {
             }
             case "default": {
                 obj.put ("msg", "default");
-                throw new DaifaException ("此条码对应的商品全部暂未拿到货default");
+                throw new DaifaException ("此条码对应的商品全部暂未拿到货default",DaifaException.DEBUG);
 
             }
             default: {

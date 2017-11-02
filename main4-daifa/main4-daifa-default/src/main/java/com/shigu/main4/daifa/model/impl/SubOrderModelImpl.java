@@ -169,7 +169,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     public void mark(String context) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
         if(order==null){
-            throw new DaifaException("子订单不存在");
+            throw new DaifaException("子订单不存在",DaifaException.DEBUG);
         }
         DaifaOrder updateOrder=new DaifaOrder();
         updateOrder.setDfOrderId(subOrderId);
@@ -214,7 +214,7 @@ public class SubOrderModelImpl implements SubOrderModel {
             goods=null;
         }
         if(goods==null){
-            throw new DaifaException("已分配表未匹配到数据,或匹配到多条");
+            throw new DaifaException("已分配表未匹配到数据,或匹配到多条",DaifaException.DEBUG);
         }
         DaifaGgoodsTasks task=new DaifaGgoodsTasks();
         task.setDfOrderId(subOrderId);
@@ -227,13 +227,13 @@ public class SubOrderModelImpl implements SubOrderModel {
             task=null;
         }
         if(task==null){
-            throw new DaifaException("待分配表未匹配到数据,或匹配到多条");
+            throw new DaifaException("待分配表未匹配到数据,或匹配到多条",DaifaException.DEBUG);
         }
         if(task.getEndStatus()==1){
-            throw new DaifaException("订单已截单");
+            throw new DaifaException("订单已截单",DaifaException.DEBUG);
         }
         if(task.getReturnStatus()==2){
-            throw new DaifaException("订单已退款");
+            throw new DaifaException("订单已退款",DaifaException.DEBUG);
         }
 
 

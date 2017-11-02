@@ -89,7 +89,7 @@ public class ExpressModelImpl implements ExpressModel {
             example.createCriteria ().andDfSellerIdEqualTo (sellerId).andExpressIdEqualTo (expressId);
             List <DaifaPostCustomer> list_dpc=daifaPostCustomerMapper.selectByExample (example);
             if(list_dpc.size ()==0){
-                throw new DaifaException ("系统无此快递鸟账户");
+                throw new DaifaException ("系统无此快递鸟账户", DaifaException.DEBUG);
             }
             //再用bo里的信息与快递鸟的账户查询快递
             ExpressBean express=new ExpressBean ();
@@ -181,11 +181,11 @@ public class ExpressModelImpl implements ExpressModel {
                     JSONObject obj1 = JSONObject.fromObject(qvo.getJsonData ());
                    // Reason
                     Object obj_reasion=obj1.get ("Reason");
-                    throw new DaifaException (obj_reasion.toString ());
+                    throw new DaifaException (obj_reasion.toString (),DaifaException.ERROR);
                 }
 
             } catch (KdApiException e) {
-                throw new DaifaException (e.getMsg());
+                throw new DaifaException (e.getMsg(),DaifaException.ERROR);
             }
 
         }
