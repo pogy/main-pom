@@ -97,9 +97,9 @@ public class OrderSendErrorDealService {
 
         DaifaOrderExample example=new DaifaOrderExample ();
         DaifaOrderExample.Criteria exampleCriteria = example.createCriteria();
-        exampleCriteria.andRefundStatusGreaterThan (0);//.andTakeGoodsStatusEqualTo (1);
+        exampleCriteria.andRefundStatusGreaterThanOrEqualTo (0);//.andTakeGoodsStatusEqualTo (1);
         if (bo.getDfTradeId() != null) {
-            exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
+            exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId());
         }else{
             exampleCriteria.andPropStrLike ("%+%");
         }

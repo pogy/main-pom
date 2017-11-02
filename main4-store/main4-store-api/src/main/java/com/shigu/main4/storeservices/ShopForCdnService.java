@@ -111,5 +111,11 @@ public interface ShopForCdnService {
      */
     ShopBaseForCdn selShopBase(Long shopId);
 
+    /**
+     * 店铺上新数据
+     * @param shopId
+     * @return
+     */
+    List<ItemShowBlock> shopGoodsNew(Long shopId);
 
 }

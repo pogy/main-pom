@@ -148,12 +148,13 @@ public class CdnService {
 
 
     /**
-     * 收藏商品
+     * 添加到收藏/数据包
      * @param userId
      * @param bo
+     * @param type 类型：1.数据包，2.收藏
      * @return
      */
-    public boolean addItemCollect(Long userId,ScGoodsBO bo){
+    public boolean addItemCollect(Long userId,ScGoodsBO bo,int type){
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
         //查出店、webSite
@@ -164,13 +165,15 @@ public class CdnService {
         ShiguGoodsTiny sgt=new ShiguGoodsTiny();
         sgt.setGoodsId(bo.getGoodsId());
         sgt.setWebSite(sgig.getWebSite());
-        sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id"));
+        sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
         if(sgt==null){
             return false;
         }
         itemCollect.setItemId(bo.getGoodsId());
         itemCollect.setStoreId(sgt.getStoreId());
         itemCollect.setWebsite(sgig.getWebSite());
+        itemCollect.setTitle(sgt.getTitle());
+        itemCollect.setType(type);
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {
@@ -438,12 +441,15 @@ public class CdnService {
      * @return
      */
     public List<CdnCollectShopVO> colloectShop(Long userId,String webSite){
+        if (webSite == null) {
+            webSite = "hz";
+        }
         ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(userId,webSite,1,6);
         List<CdnCollectShopVO> vos=new ArrayList<>();
         for(ShopCollectVO p:pager.getContent()){
             CdnCollectShopVO vo=new CdnCollectShopVO();
             vo.setId(p.getShopId());
-            vo.setName(p.getMarket()+p.getShopNum());
+            vo.setName(p.getMarketName()+p.getShopNum());
             vos.add(vo);
         }
         return vos;

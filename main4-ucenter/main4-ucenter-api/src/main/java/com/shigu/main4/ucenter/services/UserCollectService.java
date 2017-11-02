@@ -27,6 +27,13 @@ public interface UserCollectService {
      */
     ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite,int pageNo,int pageSize);
 
+    ShiguPager<NewGoodsCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type);
+    /**
+     * 按主键批量删除收藏记录
+     * @param userId 用户ID
+     * @param collectIds 主键
+     */
+    void delItemCollection(Long userId,List<Long> collectIds);
     /**
      * 查询收藏宝贝信息
      * @param userId 用户ID
@@ -46,14 +53,6 @@ public interface UserCollectService {
      * @return
      */
     List<ItemCollectInfoVO> selItemCollection(Long userId, Long goodsId,Integer useStatus,Long storeId, String webSite);
-
-    /**
-     * 按主键批量删除收藏记录
-     * @param userId 用户ID
-     * @param collectIds 主键
-     */
-    void delItemCollection(Long userId,List<Long> collectIds);
-
     /**
      * 添加商品收藏
      * @param collect
@@ -115,6 +114,7 @@ public interface UserCollectService {
      */
     void addShopCollection(ShopCollect collect) throws ShopCollectionException;
 
+    List<ShopInfo> selShopInfoByShopIds(List<Long> shopIds);
     /**
      * 按店铺id删除
      * @param userId

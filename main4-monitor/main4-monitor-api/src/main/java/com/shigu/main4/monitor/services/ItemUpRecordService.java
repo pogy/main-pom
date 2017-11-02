@@ -142,4 +142,5 @@ public interface ItemUpRecordService {
      * @return
      */
     List<DataLineVO> dailiSellerLevelLine(Long shopId);
+
 }

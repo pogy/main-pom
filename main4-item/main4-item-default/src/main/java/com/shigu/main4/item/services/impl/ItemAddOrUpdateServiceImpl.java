@@ -14,6 +14,7 @@ import com.shigu.main4.item.services.PriceCalculateService;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
 import com.shigu.main4.item.tools.ItemHelper;
 import com.shigu.main4.item.tools.OSSUtil;
+import com.shigu.main4.item.vo.GoodsShelfInfoForEs;
 import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
@@ -220,6 +221,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //8、图搜首图添加
         addImgToSearch(itemId,webSite, null ,tiny.getPicUrl(), 1);
+        GoodsShelfInfoForEs shelfInfo = new GoodsShelfInfoForEs();
+        shelfInfo.setGoodsId(itemId);
+        shelfInfo.setModified(tiny.getLoadDate());
+        shelfInfo.setOnShelfIs(true);
+        goodsAddToRedis.addGoodsOnShelfInfoToRedis(shelfInfo);
     }
 
     private void cleanItemCache(Long itemId) {
@@ -369,6 +375,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //8、图搜主图删除
         addImgToSearch(itemId,webSite,null, tiny.getPicUrl(), 0);
+        GoodsShelfInfoForEs info = new GoodsShelfInfoForEs();
+        info.setGoodsId(itemId);
+        info.setModified(soldout.getSoldoutTime());
+        info.setOnShelfIs(false);
+        goodsAddToRedis.addGoodsOnShelfInfoToRedis(info);
     }
 
     /**

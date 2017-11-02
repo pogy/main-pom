@@ -32,4 +32,6 @@
            timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
     <cache name="domainByShopIdCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
+    <cache name="shopGoodsNew" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 </ehcache>
