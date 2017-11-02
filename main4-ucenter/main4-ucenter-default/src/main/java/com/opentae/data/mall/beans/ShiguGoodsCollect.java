@@ -11,7 +11,7 @@ public class ShiguGoodsCollect implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private Long goodsCollectId;
+    private Long goodsCollectId;
 
     /**
      * 类别，1加数据包，2普通收藏
@@ -149,7 +149,7 @@ public class ShiguGoodsCollect implements Serializable {
 	private String remark20;
 
     /**
-     * 
+     *
      */
 	private Date lastTime;
 

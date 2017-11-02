@@ -6,9 +6,10 @@ import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
-import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.ShopInfo;
 
 import java.util.List;
 
@@ -34,25 +35,7 @@ public interface UserCollectService {
      * @param collectIds 主键
      */
     void delItemCollection(Long userId,List<Long> collectIds);
-    /**
-     * 查询收藏宝贝信息
-     * @param userId 用户ID
-     * @param goodsId 商品ID
-     * @param webSite 分站标识
-     * @return
-     */
-    ItemCollectInfoVO selItemCollectionInfo(Long userId, Long goodsId, String webSite);
 
-    /**
-     * 按条件查询收藏商品
-     * @param userId
-     * @param goodsId
-     * @param useStatus
-     * @param storeId
-     * @param webSite
-     * @return
-     */
-    List<ItemCollectInfoVO> selItemCollection(Long userId, Long goodsId,Integer useStatus,Long storeId, String webSite);
     /**
      * 添加商品收藏
      * @param collect
@@ -115,10 +98,4 @@ public interface UserCollectService {
     void addShopCollection(ShopCollect collect) throws ShopCollectionException;
 
     List<ShopInfo> selShopInfoByShopIds(List<Long> shopIds);
-    /**
-     * 按店铺id删除
-     * @param userId
-     * @param shopIds
-     */
-    void delShopCollectionByShopIds(Long userId,List<Long> shopIds);
 }
