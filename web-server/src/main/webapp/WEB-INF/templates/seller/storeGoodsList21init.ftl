@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1508920161110" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509676899376" rel="stylesheet">
     
   </head>
 <body>
@@ -255,7 +255,28 @@ var webSite = '${webSite!}';
                 <li <#if !query.state>class="select"</#if>><a href="storeGoodsList21init.htm">全部商品</a></li>
                 <li <#if query.state == 1>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=1">无最低零售价
-                        <freemarker-mark-begin>if nolowestLsjNum        <div class="goods-search">
+                        <#if nolowestLsjNum??>
+                        <i>${nolowestLsjNum!}</i>
+                        </#if>
+                    </a>
+                </li>
+                <li <#if query.state == 2>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=2">无大图商品
+                        <#if noBigPicGoodsNum??>
+                        <i>${noBigPicGoodsNum!}</i>
+                        </#if>
+                    </a>
+                </li>
+                <li <#if query.state == 3>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=3">无材料成分
+                        <#if noConstituentNum??>
+                        <i>${noConstituentNum!}</i>
+                        </#if>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
             <ul class="clearfix">
                 <li><label>宝贝名称：</label><input id="keyword" class="textinput" value="${get.keyword!}"></li>
@@ -422,7 +443,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1508920161110"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509676899376"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
