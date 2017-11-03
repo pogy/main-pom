@@ -100,13 +100,13 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String goodsLevel;
     private Long relationLevelId;
 
-    private ShiguGoodsExtends extendsGoods;
+    private ShiguGoodsExtendsVO extendsGoods;
 
-    public ShiguGoodsExtends getExtendsGoods () {
+    public ShiguGoodsExtendsVO getExtendsGoods () {
         return extendsGoods;
     }
 
-    public void setExtendsGoods (ShiguGoodsExtends extendsGoods) {
+    public void setExtendsGoods (ShiguGoodsExtendsVO extendsGoods) {
         this.extendsGoods = extendsGoods;
     }
 
