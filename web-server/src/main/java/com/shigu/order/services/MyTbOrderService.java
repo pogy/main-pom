@@ -275,8 +275,6 @@ public class MyTbOrderService {
         if (town != null) {
             buyerAddress.setTownId(town.getTownId());
             buyerAddress.setTown(town.getTownName());
-        }else{
-            return null;
         }
         OrderCityExample example=new OrderCityExample();
         example.createCriteria().andCityIdEqualTo(buyerAddress.getProvId()).andProvIdEqualTo(buyerAddress.getCityId());
