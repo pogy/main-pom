@@ -164,15 +164,15 @@ public class BasedPhoneStoreService {
         }
     }
 
-//    /**
-//     * 删除店铺收藏
-//     *
-//     * @return
-//     */
-//    public void delShopCollection(Long userId,List<Long> collectIds) {
-//        userCollectService.delShopCollection(userId,collectIds);
-//    }
-//
+    /**
+     * 删除店铺收藏
+     *
+     * @return
+     */
+    public void delShopCollection(Long userId,List<Long> collectIds) {
+        userCollectService.delShopCollection(userId,collectIds);
+    }
+
     /**
      * 删除店铺收藏
      *
