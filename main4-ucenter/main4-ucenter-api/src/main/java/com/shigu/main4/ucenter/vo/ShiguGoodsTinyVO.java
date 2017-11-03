@@ -11,7 +11,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     private Long goodsId;
     private Long numIid;
-    private String detailUrl;
     private String title;
     private String nick;
     private String type;
@@ -23,10 +22,10 @@ public class ShiguGoodsTinyVO implements Serializable {
     private Long validThru;
     private String outerId;
     private Long cid;
+    private String cname;//类目名
     private String cidAll;
     private String picUrl;
     private Long num;
-    private Date soldOutTime;
     private Date listTime;
     private Date delistTime;
     private String stuffStatus;
@@ -36,7 +35,6 @@ public class ShiguGoodsTinyVO implements Serializable {
     private Long price;
     private Long piPrice;
     private String piPriceString;
-    private String priceRole;
     private String postFee;
     private String expressFee;
     private String emsFee;
@@ -61,8 +59,6 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String goodsNo;
     private Long sortOrder;
     private Long inStoreSortOrder;
-    private Long numberTradableGoods;
-    private Long notNumberTradableGoods;
     private String webSite;
     private String remark10;
     private String remark9;
@@ -75,30 +71,14 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String remark1;
     private String remark2;
     private Date loadDate;
-    private String imAliww;
-    private String goodsServices;
     private Integer isShowcase;
     private Integer isStandard;
-    private String titleIndex;
-    private Integer isAdminSetPiPrice;
-    private Integer isUserSetPiPrice;
+
     private Integer isExcelImp;
     private String upDataPackageName;
     private String upDataPackageUrl;
-    private Integer isDataPackage;
-    private Integer isSetMode;
-    private Long modeTopTypeId;
-    private String modeTopType;
-    private Long modeFirstTypeId;
-    private String modeFirstType;
-    private Long modeSecondTypeId;
-    private String modeSecondType;
+
     private Date lastModifyTime;
-    private Integer isModTitle;
-    private Integer isModPrice;
-    private Integer isModGoodsno;
-    private String goodsLevel;
-    private Long relationLevelId;
 
     private ShiguGoodsExtendsVO extendsGoods;
 
@@ -132,14 +112,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setNumIid(Long numIid) {
         this.numIid = numIid;
-    }
-
-    public String getDetailUrl() {
-        return detailUrl;
-    }
-
-    public void setDetailUrl(String detailUrl) {
-        this.detailUrl = detailUrl;
     }
 
     public String getTitle() {
@@ -230,6 +202,14 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.cid = cid;
     }
 
+    public String getCname () {
+        return cname;
+    }
+
+    public void setCname (String cname) {
+        this.cname = cname;
+    }
+
     public String getCidAll() {
         return cidAll;
     }
@@ -252,14 +232,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setNum(Long num) {
         this.num = num;
-    }
-
-    public Date getSoldOutTime() {
-        return soldOutTime;
-    }
-
-    public void setSoldOutTime(Date soldOutTime) {
-        this.soldOutTime = soldOutTime;
     }
 
     public Date getListTime() {
@@ -332,14 +304,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setPiPriceString(String piPriceString) {
         this.piPriceString = piPriceString;
-    }
-
-    public String getPriceRole() {
-        return priceRole;
-    }
-
-    public void setPriceRole(String priceRole) {
-        this.priceRole = priceRole;
     }
 
     public String getPostFee() {
@@ -534,22 +498,6 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.inStoreSortOrder = inStoreSortOrder;
     }
 
-    public Long getNumberTradableGoods() {
-        return numberTradableGoods;
-    }
-
-    public void setNumberTradableGoods(Long numberTradableGoods) {
-        this.numberTradableGoods = numberTradableGoods;
-    }
-
-    public Long getNotNumberTradableGoods() {
-        return notNumberTradableGoods;
-    }
-
-    public void setNotNumberTradableGoods(Long notNumberTradableGoods) {
-        this.notNumberTradableGoods = notNumberTradableGoods;
-    }
-
     public String getWebSite() {
         return webSite;
     }
@@ -646,22 +594,6 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.loadDate = loadDate;
     }
 
-    public String getImAliww() {
-        return imAliww;
-    }
-
-    public void setImAliww(String imAliww) {
-        this.imAliww = imAliww;
-    }
-
-    public String getGoodsServices() {
-        return goodsServices;
-    }
-
-    public void setGoodsServices(String goodsServices) {
-        this.goodsServices = goodsServices;
-    }
-
     public Integer getIsShowcase() {
         return isShowcase;
     }
@@ -678,29 +610,7 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.isStandard = isStandard;
     }
 
-    public String getTitleIndex() {
-        return titleIndex;
-    }
 
-    public void setTitleIndex(String titleIndex) {
-        this.titleIndex = titleIndex;
-    }
-
-    public Integer getIsAdminSetPiPrice() {
-        return isAdminSetPiPrice;
-    }
-
-    public void setIsAdminSetPiPrice(Integer isAdminSetPiPrice) {
-        this.isAdminSetPiPrice = isAdminSetPiPrice;
-    }
-
-    public Integer getIsUserSetPiPrice() {
-        return isUserSetPiPrice;
-    }
-
-    public void setIsUserSetPiPrice(Integer isUserSetPiPrice) {
-        this.isUserSetPiPrice = isUserSetPiPrice;
-    }
 
     public Integer getIsExcelImp() {
         return isExcelImp;
@@ -726,70 +636,6 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.upDataPackageUrl = upDataPackageUrl;
     }
 
-    public Integer getIsDataPackage() {
-        return isDataPackage;
-    }
-
-    public void setIsDataPackage(Integer isDataPackage) {
-        this.isDataPackage = isDataPackage;
-    }
-
-    public Integer getIsSetMode() {
-        return isSetMode;
-    }
-
-    public void setIsSetMode(Integer isSetMode) {
-        this.isSetMode = isSetMode;
-    }
-
-    public Long getModeTopTypeId() {
-        return modeTopTypeId;
-    }
-
-    public void setModeTopTypeId(Long modeTopTypeId) {
-        this.modeTopTypeId = modeTopTypeId;
-    }
-
-    public String getModeTopType() {
-        return modeTopType;
-    }
-
-    public void setModeTopType(String modeTopType) {
-        this.modeTopType = modeTopType;
-    }
-
-    public Long getModeFirstTypeId() {
-        return modeFirstTypeId;
-    }
-
-    public void setModeFirstTypeId(Long modeFirstTypeId) {
-        this.modeFirstTypeId = modeFirstTypeId;
-    }
-
-    public String getModeFirstType() {
-        return modeFirstType;
-    }
-
-    public void setModeFirstType(String modeFirstType) {
-        this.modeFirstType = modeFirstType;
-    }
-
-    public Long getModeSecondTypeId() {
-        return modeSecondTypeId;
-    }
-
-    public void setModeSecondTypeId(Long modeSecondTypeId) {
-        this.modeSecondTypeId = modeSecondTypeId;
-    }
-
-    public String getModeSecondType() {
-        return modeSecondType;
-    }
-
-    public void setModeSecondType(String modeSecondType) {
-        this.modeSecondType = modeSecondType;
-    }
-
     public Date getLastModifyTime() {
         return lastModifyTime;
     }
@@ -798,43 +644,4 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.lastModifyTime = lastModifyTime;
     }
 
-    public Integer getIsModTitle() {
-        return isModTitle;
-    }
-
-    public void setIsModTitle(Integer isModTitle) {
-        this.isModTitle = isModTitle;
-    }
-
-    public Integer getIsModPrice() {
-        return isModPrice;
-    }
-
-    public void setIsModPrice(Integer isModPrice) {
-        this.isModPrice = isModPrice;
-    }
-
-    public Integer getIsModGoodsno() {
-        return isModGoodsno;
-    }
-
-    public void setIsModGoodsno(Integer isModGoodsno) {
-        this.isModGoodsno = isModGoodsno;
-    }
-
-    public String getGoodsLevel() {
-        return goodsLevel;
-    }
-
-    public void setGoodsLevel(String goodsLevel) {
-        this.goodsLevel = goodsLevel;
-    }
-
-    public Long getRelationLevelId() {
-        return relationLevelId;
-    }
-
-    public void setRelationLevelId(Long relationLevelId) {
-        this.relationLevelId = relationLevelId;
-    }
 }
