@@ -26,14 +26,6 @@ public interface LogisticsService {
     LogisticsShipVo logisticsInfo(Long refundId);
 
     /**
-     * 根据发件单位取物流规则
-     * @param senderId
-     * @param provId
-     * @return
-     */
-    List<BournRuleInfoVO> selRulesByProvId(Long senderId,Long provId) throws LogisticsRuleException;
-
-    /**
      * 获取快递公司信息
      * @param provId    省份id
      * @param senderId  发货方式id

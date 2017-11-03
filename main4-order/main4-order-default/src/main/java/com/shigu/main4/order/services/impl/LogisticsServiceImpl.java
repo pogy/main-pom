@@ -45,12 +45,6 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
-    public List<BournRuleInfoVO> selRulesByProvId(Long senderId, Long provId) throws LogisticsRuleException {
-        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
-        return logisticsTemplate.rulesByProv(provId);
-    }
-
-    @Override
     public List<PostVO> getPostListByProvId(Long provId, Long senderId) throws LogisticsRuleException {
         LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
         return logisticsTemplate.getPostListByProvId(provId,senderId);

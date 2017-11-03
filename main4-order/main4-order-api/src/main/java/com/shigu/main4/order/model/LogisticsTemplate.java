@@ -17,13 +17,6 @@ public interface LogisticsTemplate {
     LogisticsTemplateVO templateInfo();
 
     /**
-     * 查快递规则
-     * @param provId
-     * @return
-     */
-    List<BournRuleInfoVO> rulesByProv(Long provId) throws LogisticsRuleException;
-
-    /**
      * 取有效的物流规则
      * @param provId
      * @param companyId
