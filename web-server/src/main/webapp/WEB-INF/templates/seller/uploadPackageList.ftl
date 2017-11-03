@@ -342,7 +342,7 @@ var webSite = '${webSite!}';
     <div class="main yahei">
     <div class="fr shadowBox content minH">
         <div class="pageTab goodsTabBox clearfix">
-    <div class="tabButton selected"><a href="packetList.htm">所有商品（<em>${allGoodsCount!}</em>）</a></div>
+    <div class="tabButton selected"><a href="javascript:;">数据包上传</a></div>
     
     <!--<button class="importBtn fr" id="uploadGoodsPackage"><i class="icon-s-add"></i>导入数据包</button>-->
 </div>
