@@ -16,8 +16,7 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String type;
     private Date created;
     private String isLightningConsignment;
-    private Long isFenxiao;
-    private Long isSale;
+
     private String isXinpin;
     private Long validThru;
     private String outerId;
@@ -47,11 +46,7 @@ public class ShiguGoodsTinyVO implements Serializable {
     private Long parentMarketId;
     private String parentMarketName;
     private String storeNum;
-    private Long isTaobaoSynchronization;
-    private Long isAkeyToUpload;
-    private Long isTrade;
-    private Long isEfficacious;
-    private Long isDown;
+
     private Long storeId;
     private Long clicks;
     private Long isClosed;
@@ -60,23 +55,11 @@ public class ShiguGoodsTinyVO implements Serializable {
     private Long sortOrder;
     private Long inStoreSortOrder;
     private String webSite;
-    private String remark10;
-    private String remark9;
-    private String remark8;
-    private String remark7;
-    private String remark6;
-    private String remark5;
-    private String remark4;
-    private String remark3;
-    private String remark1;
-    private String remark2;
     private Date loadDate;
-    private Integer isShowcase;
+
     private Integer isStandard;
 
     private Integer isExcelImp;
-    private String upDataPackageName;
-    private String upDataPackageUrl;
 
     private Date lastModifyTime;
 
@@ -152,22 +135,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setIsLightningConsignment(String isLightningConsignment) {
         this.isLightningConsignment = isLightningConsignment;
-    }
-
-    public Long getIsFenxiao() {
-        return isFenxiao;
-    }
-
-    public void setIsFenxiao(Long isFenxiao) {
-        this.isFenxiao = isFenxiao;
-    }
-
-    public Long getIsSale() {
-        return isSale;
-    }
-
-    public void setIsSale(Long isSale) {
-        this.isSale = isSale;
     }
 
     public String getIsXinpin() {
@@ -402,46 +369,6 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.storeNum = storeNum;
     }
 
-    public Long getIsTaobaoSynchronization() {
-        return isTaobaoSynchronization;
-    }
-
-    public void setIsTaobaoSynchronization(Long isTaobaoSynchronization) {
-        this.isTaobaoSynchronization = isTaobaoSynchronization;
-    }
-
-    public Long getIsAkeyToUpload() {
-        return isAkeyToUpload;
-    }
-
-    public void setIsAkeyToUpload(Long isAkeyToUpload) {
-        this.isAkeyToUpload = isAkeyToUpload;
-    }
-
-    public Long getIsTrade() {
-        return isTrade;
-    }
-
-    public void setIsTrade(Long isTrade) {
-        this.isTrade = isTrade;
-    }
-
-    public Long getIsEfficacious() {
-        return isEfficacious;
-    }
-
-    public void setIsEfficacious(Long isEfficacious) {
-        this.isEfficacious = isEfficacious;
-    }
-
-    public Long getIsDown() {
-        return isDown;
-    }
-
-    public void setIsDown(Long isDown) {
-        this.isDown = isDown;
-    }
-
     public Long getStoreId() {
         return storeId;
     }
@@ -506,100 +433,12 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.webSite = webSite;
     }
 
-    public String getRemark10() {
-        return remark10;
-    }
-
-    public void setRemark10(String remark10) {
-        this.remark10 = remark10;
-    }
-
-    public String getRemark9() {
-        return remark9;
-    }
-
-    public void setRemark9(String remark9) {
-        this.remark9 = remark9;
-    }
-
-    public String getRemark8() {
-        return remark8;
-    }
-
-    public void setRemark8(String remark8) {
-        this.remark8 = remark8;
-    }
-
-    public String getRemark7() {
-        return remark7;
-    }
-
-    public void setRemark7(String remark7) {
-        this.remark7 = remark7;
-    }
-
-    public String getRemark6() {
-        return remark6;
-    }
-
-    public void setRemark6(String remark6) {
-        this.remark6 = remark6;
-    }
-
-    public String getRemark5() {
-        return remark5;
-    }
-
-    public void setRemark5(String remark5) {
-        this.remark5 = remark5;
-    }
-
-    public String getRemark4() {
-        return remark4;
-    }
-
-    public void setRemark4(String remark4) {
-        this.remark4 = remark4;
-    }
-
-    public String getRemark3() {
-        return remark3;
-    }
-
-    public void setRemark3(String remark3) {
-        this.remark3 = remark3;
-    }
-
-    public String getRemark1() {
-        return remark1;
-    }
-
-    public void setRemark1(String remark1) {
-        this.remark1 = remark1;
-    }
-
-    public String getRemark2() {
-        return remark2;
-    }
-
-    public void setRemark2(String remark2) {
-        this.remark2 = remark2;
-    }
-
     public Date getLoadDate() {
         return loadDate;
     }
 
     public void setLoadDate(Date loadDate) {
         this.loadDate = loadDate;
-    }
-
-    public Integer getIsShowcase() {
-        return isShowcase;
-    }
-
-    public void setIsShowcase(Integer isShowcase) {
-        this.isShowcase = isShowcase;
     }
 
     public Integer getIsStandard() {
@@ -610,30 +449,12 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.isStandard = isStandard;
     }
 
-
-
     public Integer getIsExcelImp() {
         return isExcelImp;
     }
 
     public void setIsExcelImp(Integer isExcelImp) {
         this.isExcelImp = isExcelImp;
-    }
-
-    public String getUpDataPackageName() {
-        return upDataPackageName;
-    }
-
-    public void setUpDataPackageName(String upDataPackageName) {
-        this.upDataPackageName = upDataPackageName;
-    }
-
-    public String getUpDataPackageUrl() {
-        return upDataPackageUrl;
-    }
-
-    public void setUpDataPackageUrl(String upDataPackageUrl) {
-        this.upDataPackageUrl = upDataPackageUrl;
     }
 
     public Date getLastModifyTime() {
