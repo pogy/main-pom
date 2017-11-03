@@ -317,32 +317,6 @@ public class ConfirmOrderService {
         return redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
     }
 
-    public List<PostRuleVO> selPostRules(Long senderId, Long provId) throws JsonErrException {
-        List<PostRuleVO> vos = new ArrayList<>();
-        Map<Long, ExpressCompany> expressCompanyMap = Collections.emptyMap();
-        try {
-            List<BournRuleInfoVO> rules = logisticsService.selRulesByProvId(senderId,provId);
-            List<Long> companyIds = BeanMapper.getFieldList(rules, "companyId", Long.class);
-            if (!companyIds.isEmpty()) {
-                ExpressCompanyExample companyExample = new ExpressCompanyExample();
-                companyExample.createCriteria().andExpressCompanyIdIn(companyIds);
-                expressCompanyMap = BeanMapper.list2Map(expressCompanyMapper.selectByExample(companyExample), "expressCompanyId", Long.class);
-            }
-            for (BournRuleInfoVO rule : rules) {
-                PostRuleVO postRuleVO = BeanMapper.map(rule, PostRuleVO.class);
-                vos.add(postRuleVO);
-                ExpressCompany expressCompany = expressCompanyMap.get(rule.getCompanyId());
-                if (expressCompany != null) {
-                    postRuleVO.setName(expressCompany.getEnName());
-                    postRuleVO.setText(expressCompany.getExpressName());
-                }
-            }
-        } catch (LogisticsRuleException e) {
-            throw new JsonErrException(e.getMessage());
-        }
-        Collections.sort(vos);
-        return vos;
-    }
 
     /**
      * 获取快递公司信息

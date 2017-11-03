@@ -118,18 +118,6 @@ public class ConfirmOrderAction {
     }
 
     @ResponseBody
-    @RequestMapping("getPostRulerByProvId")
-    public JSONObject getPostRulerByProvId(Long senderId, Long provId) throws JsonErrException {
-        if (senderId == null) {
-            return JsonResponseUtil.error("请选择代发机构");
-        }
-        if (provId == null) {
-            return JsonResponseUtil.error("填写收货地址");
-        }
-        return JsonResponseUtil.success().element("postRulers", confirmOrderService.selPostRules(senderId, provId));
-    }
-
-    @ResponseBody
     @RequestMapping("deleteCollJson")
     public JSONObject deleteCollJson(Long id, HttpSession session) {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
