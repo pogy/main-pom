@@ -277,7 +277,7 @@ public class MyTbOrderService {
             buyerAddress.setTown(town.getTownName());
         }
         OrderCityExample example=new OrderCityExample();
-        example.createCriteria().andCityIdEqualTo(buyerAddress.getProvId()).andProvIdEqualTo(buyerAddress.getCityId());
+        example.createCriteria().andCityIdEqualTo(buyerAddress.getCityId()).andProvIdEqualTo(buyerAddress.getProvId());
         if (orderCityMapper.countByExample(example)==0) {
             return null;
         }
