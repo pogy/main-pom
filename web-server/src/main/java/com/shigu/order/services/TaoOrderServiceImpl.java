@@ -262,7 +262,8 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             tbOrderVO.setReceiverPhone(t.getReceiverMobile());
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())){
-            address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "+t.getReceiverDistrict()+" "+t.getReceiverAddress();
+            address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "
+                    +(t.getReceiverDistrict()==null?"":t.getReceiverDistrict())+" "+t.getReceiverAddress();
         }
         tbOrderVO.setAddress(address);
         tbOrderVO.setSimpleAddress(t.getReceiverAddress());
@@ -277,6 +278,8 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         }
         if (!StringUtils.isEmpty(t.getReceiverDistrict())){
             tbOrderVO.setTown(t.getReceiverDistrict());
+        }else{
+            tbOrderVO.setTown("");
         }
         if (!StringUtils.isEmpty(t.getReceiverName())){
             tbOrderVO.setReceiverName(t.getReceiverName());

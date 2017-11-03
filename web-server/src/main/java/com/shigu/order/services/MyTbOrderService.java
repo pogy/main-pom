@@ -255,7 +255,7 @@ public class MyTbOrderService {
         SimilarityMap<OrderTown> townmap = similarityTownMap();
         OrderProv prov=provmap.get(provName);
         OrderCity city=citymap.get(cityName);
-        OrderTown town=townmap.get(townName);
+        OrderTown town= org.apache.commons.lang3.StringUtils.isNotEmpty(townName)?townmap.get(townName):null;
         BuyerAddressVO buyerAddress = new BuyerAddressVO();
         buyerAddress.setAddress(simpleAddress);
         if (city != null) {
@@ -275,6 +275,8 @@ public class MyTbOrderService {
         if (town != null) {
             buyerAddress.setTownId(town.getTownId());
             buyerAddress.setTown(town.getTownName());
+        }else{
+            buyerAddress.setTown("");
         }
         OrderCityExample example=new OrderCityExample();
         example.createCriteria().andCityIdEqualTo(buyerAddress.getCityId()).andProvIdEqualTo(buyerAddress.getProvId());
