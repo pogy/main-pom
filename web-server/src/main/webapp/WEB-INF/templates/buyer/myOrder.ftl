@@ -226,16 +226,16 @@ var webSite = '${webSite!}';
         
             
             <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-
-
-
-
-
+            
+        
+    
+        
+            
             <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
-
-
-
-    </ul>
+            
+        
+    
+    </ul> 
 
     <h2>供应商申请</h2>
     <ul>

@@ -34,6 +34,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -153,6 +154,38 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         List<Long> issueIds = new ArrayList<>();
         ggoods.forEach(dg -> issueIds.add(dg.getTakeGoodsId()));
 
+        return printTags(issueIds);
+    }
+
+
+    @Override
+    public List<PrintTagVO> printWorkerTodayAllTags(Long workerId) throws DaifaException {
+        String nowDate = DateUtil.dateToString(new Date(), DateUtil.patternB);
+        DaifaGgoodsExample dgex = new DaifaGgoodsExample();
+        dgex.createCriteria()
+                .andDaifaWorkerIdEqualTo(workerId)
+                .andCreateDateEqualTo(nowDate);
+        List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
+                , FieldUtil.codeFields("take_goods_id,df_order_id"));
+        if (ggoods.size() == 0) {
+            throw new DaifaException("没有可打印的数据");
+        }
+        List<Long> hasIds=new ArrayList<>();
+        List<Long> issueIds=ggoods.stream().filter(daifaGgoods -> {
+            if(!hasIds.contains(daifaGgoods.getDfOrderId())){
+                hasIds.add(daifaGgoods.getDfOrderId());
+                return true;
+            }
+            return false;
+        }).map(DaifaGgoods::getTakeGoodsId).collect(Collectors.toList());
+
+//        List<Long> issueIds=ggoods.stream().collect(Collectors.collectingAndThen(
+//                Collectors.toCollection(
+//                        () -> new TreeSet<>(
+//                                Comparator.comparingLong(DaifaGgoods::getDfOrderId)
+//                        )
+//                ),ArrayList::new)
+//        ).stream().map(DaifaGgoods::getTakeGoodsId).collect(Collectors.toList());
         return printTags(issueIds);
     }
 

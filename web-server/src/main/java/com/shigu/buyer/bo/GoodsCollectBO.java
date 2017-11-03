@@ -18,6 +18,20 @@ public class GoodsCollectBO implements Serializable{
 
     private Integer rows=12;
 
+    /**
+     *区分数据包和普通收藏
+     * @return
+     */
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getPage() {
         if(page==null||page<1){
             return 1;
