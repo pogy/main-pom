@@ -11,7 +11,6 @@ import com.shigu.main4.ucenter.util.ZipUtil;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
