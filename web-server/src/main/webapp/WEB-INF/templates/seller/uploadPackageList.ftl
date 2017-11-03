@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>发布宝贝 - 供应商后台 - 四季星座网</title>
+    <title>数据包上传 - 供应商后台 - 四季星座网</title>
 
     
     
@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/gysV1/css/createGoods21initv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/gysV1/css/uploadPackageList.css" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
             <script src="http://style.571xz.com/v2/gysV1/plupload2.1.2/plupload.full.min.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/gysV1/js/createGoods21initv1.js"></script>
+    <script src="http://style.571xz.com/v2/gysV1/js/uploadPackageList.js"></script>
     
 </head>
 <body>
@@ -192,7 +192,9 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected"  href="${main_host!}seller/createGoods21init.htm">发布商品</a></li> 
+        
+        <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li> 
+        
         
     
         
@@ -337,269 +339,174 @@ var webSite = '${webSite!}';
 
 
     
+    <div class="main yahei">
+    <div class="fr shadowBox content minH">
+        <div class="pageTab goodsTabBox clearfix">
+    <div class="tabButton selected"><a href="javascript:;">数据包上传</a></div>
     
-
-
-
-<div class="content shadowBox">
-    <div class="goods-tabbox clearfix">
-    <div class="tabbutton selected"><a href="JavaScript:;">发布宝贝</a></div>
+    <!--<button class="importBtn fr" id="uploadGoodsPackage"><i class="icon-s-add"></i>导入数据包</button>-->
 </div>
 
 
 
 
-    
 
-<ul class="goodsPostList">
-<#if goodsPostEntry.postType == '1'>
-    <li>
-        <div class="goodsPostListIntro">
-            <h3>自动同步</h3>
-            <p>在您变更淘宝店铺的商品的3-5分钟内，四季星座网系统会自动将新的商品或商品状态同步到四季星座网店铺中。</p>
-        </div>
-        <div class="clickButton beOpenStatus">
-            <#if get.feedback?? && get.feedback gt 0>
-                <#if get.feedback == 1>
-                
 
-<#assign text>{"text":"立即开通","href":"${main_host!}seller/ghTongbu.htm"}</#assign>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="packageList">
+    <table class="packageTable">
+        <thead>
+            <th class="listNum"></th>
+            <th class="goodsTitle">商品标题</th>
+            <th class="goodsPrice">价格(元)</th>
+            <th class="goodsNo">商家编码</th>
+            <th class="goodsCate">类目</th>
+            <th class="status">状态</th>
+        </thead>
+        <tbody class="packageCon">
+            <#list packageList as package>
+            <tr data-goodsId="${package.goodsId!}">
+                <td>${package_index + 1}</td>
+                <td><p class="goodsTitle">${package.title!}</p></td>
+                <td>${package.piPrice!}</td>
+                <td>${package.shopCode!}</td>
+                <td>${package.catName!}</td>
+                <td class="dyStatus">等待上传中…</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <div class="continueAddBox fr">
+        
+
+<#assign text>{}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
     <#if $it.href??>
-        <a class="gyButton" href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
+    <a href="${$it.href!}"
     <#else>
-        <button class="gyButton" jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
+    <b 
     </#if>
 
 
-
-</#list>
-
-                <#else>
-                <i class="beOpen"></i>
-                </#if>
-            <#else>
-                
-                <i class="beOpen"></i>
-            </#if>
-        </div>
-    </li>
-    <li>
-        <div class="goodsPostListIntro">
-            <h3>整店同步</h3>
-            <p>有淘宝商品没有展示在四季星座网？上下架状态不一致？整店同步一次商品可以解决您的问题！</p>
-        </div>
-        <div class="clickButton" data-id="${session_user_redis__.logshop.shopId!}">
-            <#if get.feedback?? && get.feedback gt 0>
-                <#if get.feedback == 1>
-                
-
-<#assign text>{}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
+    class="fmButton
+        
+         fmButton-blue
+        "
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="uploadGoodsPackage"
+    
+>
 
     
-        <button class="gyButton" jbtn="toSq" id="">立即同步</button>
+        继续添加数据包
     
 
-
-
-</#list>
-
-                
-
-<#assign text>{"jid":"toSq","options":[{"name":"tipConText","value":"您未授权淘宝店铺"},{"name":"href_","value":"${main_host!}seller/ghTongbu.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"立即授权"}]}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
-
-<div jid="${$it.jid!}">
-    <#list $it.options as option> 
-    <input type="hidden" name="${option.name!}" value="${option.value!}" />
-    </#list>
-</div>
-
-
-
-
-
-
-
-
-
-
-</#list>
-
-
-
-
-
-
-
-                <#elseif get.feedback == 2>
-                
-
-<#assign text>{}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
-
-    
-        <button class="gyButton" jbtn="againSq" id="">立即同步</button>
-    
-
-
-
-</#list>
-
-                
-
-<#assign text>{"jid":"againSq","options":[{"name":"tipConText","value":"您的淘宝店授权过期"},{"name":"href_","value":"${main_host!}ortherLogin.htm?ortherLoginType=1&backUrl=${main_host!}seller/createGoods21init.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"重新授权"}]}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
-
-<div jid="${$it.jid!}">
-    <#list $it.options as option> 
-    <input type="hidden" name="${option.name!}" value="${option.value!}" />
-    </#list>
-</div>
-
-
-
-
-
-
-
-
-
-
-</#list>
-
-
-
-
-
-
-
-                </#if>
-            <#else>
-                
-
-<#assign text>{}</#assign>
-<#assign moduledata6=text?eval />
-<#list [moduledata6] as $it>
-
-    
-        <button class="gyButton" jbtn="toTb" id="">立即同步</button>
-    
-
-
-
-</#list>
-
-            </#if>
-        </div>
-    </li>
-<#elseif goodsPostEntry.postType == 2>
-    <li>
-        <div class="goodsPostListIntro">
-            <h3>添加数据包</h3>
-            <p>您可以通过数据包形式上传商品到四季星座网店铺中！</p>
-            <p class="fcF40">*注：添加的数据包必须为zip或rar格式的压缩包（压缩包中必须包含对应csv格式文件和对应图片文件夹），否则系统无法解析！</p>
-        </div>
-        <div class="clickButton">
-            
-
-<#assign text>{}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
-
-    
-        <button class="gyButton" jbtn="" id="uploadGoodsPackage">添加数据包</button>
-    
-
-
-
-</#list>
-
-        </div>
-    </li>
-    <li>
-        <div class="goodsPostListIntro">
-            <h3>手动发布</h3>
-            <p>您也可以手动发布非淘宝店铺中出售的商品到四季星座网店铺中！</p>
-        </div>
-        <div class="clickButton">
-            
-
-<#assign text>{"text":"手动发布","href":"${main_host!}seller/releaseGoodsinit.htm"}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
 
     <#if $it.href??>
-        <a class="gyButton" href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
+    </a>
     <#else>
-        <button class="gyButton" jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
+    </b>
     </#if>
+
+
 
 
 
 </#list>
 
-        </div>
-    </li>
-</#if>
-</ul>
- 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
 
 </div>
 <div class="footer">

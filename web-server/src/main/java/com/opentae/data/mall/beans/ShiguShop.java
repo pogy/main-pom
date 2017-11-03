@@ -176,6 +176,11 @@ public class ShiguShop implements Serializable {
      */
 	private Long everUserId;
 
+    /**
+     * 1淘宝店铺，2普通店铺
+     */
+	private Integer type;
+
 	public void setShopId(Long shopId) {
 		this.shopId = shopId;
 	}
@@ -440,6 +445,14 @@ public class ShiguShop implements Serializable {
 		return this.everUserId;
 	}
 
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getType() {
+		return this.type;
+	}
+
 	public String getParentMarketName () {
 		return parentMarketName;
 	}
@@ -447,4 +460,5 @@ public class ShiguShop implements Serializable {
 	public void setParentMarketName (String parentMarketName) {
 		this.parentMarketName = parentMarketName;
 	}
+
 }
