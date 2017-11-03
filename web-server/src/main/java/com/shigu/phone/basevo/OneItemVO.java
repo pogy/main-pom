@@ -44,8 +44,8 @@ public class OneItemVO implements Serializable {
     private List<AppItemKv> itemKvs;
     //店铺头像
     private String shopHeadUrl;
-    //商品是否收藏状态：0:未收藏&nbsp;1:&nbsp;收藏
-    private int type;
+    //商品收藏Id  为空未收藏
+    private Long collectId;
     //商品详情
     private String details;
 
@@ -169,12 +169,12 @@ public class OneItemVO implements Serializable {
         this.shopHeadUrl = shopHeadUrl;
     }
 
-    public int getType() {
-        return type;
+    public Long getCollectId() {
+        return collectId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setCollectId( Long collectId ) {
+        this.collectId = collectId;
     }
 
     public String getLiPrice() {

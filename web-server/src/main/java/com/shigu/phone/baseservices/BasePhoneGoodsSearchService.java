@@ -226,23 +226,16 @@ public class BasePhoneGoodsSearchService {
         vo.setMarket(shop.getMarketName());
         vo.setStarNum(shop.getStarNum().intValue());
         vo.setShopHeadUrl(ImgUtils.headUrl(shop.getImWw()));
-        if (userId == null) {
-            vo.setType(0);
-        }else {
+        if (userId != null) {
             // 查询商品是否收藏
             ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
             shiguGoodsCollect.setUserId(userId);
             shiguGoodsCollect.setGoodsId(itemId);
             shiguGoodsCollect.setWebsite(webSite);
             shiguGoodsCollect = goodsCollectMapper.selectOne(shiguGoodsCollect);
-
-            int type = 1;
             if (shiguGoodsCollect == null || shiguGoodsCollect.getUseStatus() == null){
-               type = 0;
-            }else{
-                type = shiguGoodsCollect.getUseStatus();
+               vo.setCollectId(shiguGoodsCollect.getGoodsCollectId());
             }
-            vo.setType(type);
         }
 
         return vo;

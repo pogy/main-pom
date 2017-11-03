@@ -17,6 +17,7 @@ import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
@@ -27,13 +28,13 @@ import com.shigu.phone.basevo.StoreCollectVO;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.StoreSelFromEsService;
 import com.shigu.search.vo.StoreInSearch;
-import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -113,6 +114,8 @@ public class BasedPhoneStoreService {
         }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
+        Map<Long, ShopCollectVO> collectGroup = BeanMapper.list2Map(shopCollectVOS, "shopId", Long.class);
+
         if (shopIds == null || shopIds.isEmpty()) {
             return null;//不可能走到这吧
         }
@@ -131,6 +134,8 @@ public class BasedPhoneStoreService {
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
             shop.setShopHeadUrl(ImgUtils.headUrl(o.getImAliww()));
+            Long collectId = collectGroup.get(o.getShopId()).getCollId();
+            shop.setMarketCollectId(String.valueOf(collectId));
             return shop;
         }).collect(Collectors.toList()));
         storeCollectVO.setTotal(shopCollectVOShiguPager.getTotalCount());
@@ -173,23 +178,6 @@ public class BasedPhoneStoreService {
         userCollectService.delShopCollection(userId,collectIds);
     }
 
-    /**
-     * 删除店铺收藏
-     *
-     * @return
-     */
-    public void delShopCollectionByStoreIds(Long userId,List<Long> storeIds) {
-        List<Long> collectIds = new ArrayList<>();
-        ShiguStoreCollectExample collectExample = new ShiguStoreCollectExample();
-        for ( Long shopId:storeIds) {
-            collectExample.createCriteria()
-                    .andUserIdEqualTo(userId)
-                    .andStoreIdEqualTo(shopId);
-            collectIds.add(shiguStoreCollectMapper.selectByExample(collectExample).get(0).getStoreCollectId());
-        }
-
-        userCollectService.delShopCollection(userId,collectIds);
-    }
     /**
      * 添加店铺收藏
      *

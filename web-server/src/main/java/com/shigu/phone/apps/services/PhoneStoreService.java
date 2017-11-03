@@ -97,17 +97,17 @@ public class PhoneStoreService {
     public DelStoreCollectResponse delStoreCollect(DelStoreCollectRequest request) {
         DelStoreCollectResponse response = new DelStoreCollectResponse();
 
-        List<String> list = Arrays.asList(request.getStoreIds().split(","));
-        List<Long> storeIds = new ArrayList<>();
+        List<String> list = Arrays.asList(request.getCollectIds().split(","));
+        List<Long> collectIds = new ArrayList<>();
         list.stream().filter(item->item.trim().matches("^([0-9])+$")).forEach(item->{
-            storeIds.add(Long.parseLong(item.trim()));
+            collectIds.add(Long.parseLong(item.trim()));
         });
-        if (storeIds == null || storeIds.isEmpty()) {
+        if (collectIds == null || collectIds.isEmpty()) {
             response.setSuccess(true);
             return response;
         }
         try {
-            basedPhoneStoreService.delShopCollectionByStoreIds(request.getUserId(),storeIds);
+            basedPhoneStoreService.delShopCollection(request.getUserId(),collectIds);
             response.setSuccess(true);
             return response;
         } catch (Exception e) {

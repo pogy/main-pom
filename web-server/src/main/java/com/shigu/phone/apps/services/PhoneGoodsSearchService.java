@@ -144,7 +144,7 @@ public class PhoneGoodsSearchService {
             resp.setSize(oneItemVO.getSize());
             resp.setItemKvs(oneItemVO.getItemKvs());
             resp.setShopHeadUrl(oneItemVO.getShopHeadUrl());
-            resp.setType(oneItemVO.getType());
+            resp.setCollectId(oneItemVO.getCollectId());
         } catch (TemplateException|CdnException|IOException e) {
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());
