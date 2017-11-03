@@ -299,9 +299,15 @@ public class TaoOrderServiceImpl implements TaoOrderService {
                 vo.setOldTbPrice(o.getTotalFee());
                 Double tbOldPriceLong=Double.parseDouble(o.getTotalFee())*100;
                 vo.setOldTbPriceLong(tbOldPriceLong.longValue());
-                vo.setNewTbPrice(o.getPayment());
-                Double tbNewPriceLong=Double.parseDouble(o.getPayment())*100;
-                vo.setNewTbPriceLong(tbNewPriceLong.longValue());
+                if (o.getPayment() == null) {
+                    vo.setNewTbPrice(o.getTotalFee());
+                    vo.setNewTbPriceLong(vo.getOldTbPriceLong());
+                }else{
+                    vo.setNewTbPrice(o.getPayment());
+                    Double tbNewPriceLong=Double.parseDouble(o.getPayment())*100;
+                    vo.setNewTbPriceLong(tbNewPriceLong.longValue());
+                }
+
                 if(o.getSkuPropertiesName()!=null){
                     String[] propArr=o.getSkuPropertiesName().split(";");
                     if(propArr[0].contains(":")){
