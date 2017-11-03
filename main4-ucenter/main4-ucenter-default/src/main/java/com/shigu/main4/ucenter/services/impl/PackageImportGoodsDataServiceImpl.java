@@ -68,7 +68,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 }
             }
             OssIO oss=new OssIO();
-            packageUrl=packageUrl.replaceAll (oss.getDomain(),"");
+            packageUrl=packageUrl.replaceAll (oss.getDomain(),"");//不要域名
         //正式的要从oss里读取下来存储后再进行解压
 
            File file= oss.downFileToLocal(DATA_PACKAGE_ADDR+File.separator+storeId+File.separator+fileName,packageUrl);
