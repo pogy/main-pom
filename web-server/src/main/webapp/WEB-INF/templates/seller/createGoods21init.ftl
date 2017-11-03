@@ -504,7 +504,8 @@ var webSite = '${webSite!}';
     <li>
         <div class="goodsPostListIntro">
             <h3>添加数据包</h3>
-            <p>通过数据包的方式发布商品</p>
+            <p>您可以通过数据包形式上传商品到四季星座网店铺中！</p>
+            <p class="fcF40">*注：添加的数据包必须为zip或rar格式的压缩包（压缩包中必须包含对应csv格式文件和对应图片文件夹），否则系统无法解析！</p>
         </div>
         <div class="clickButton">
             
@@ -549,7 +550,7 @@ var webSite = '${webSite!}';
     </li>
 </#if>
 </ul>
-
+ 
    
 
 
