@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder1.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder1.js"></script>
+    
 </head>
 <body>
 
@@ -397,7 +404,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
                 
@@ -440,7 +446,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -784,12 +789,12 @@ var webSite = '${webSite!}';
     <i class="before"></i> 
     <span>
     
-        <#if $it.text??>
-            ${$it.text!}
+        同意
+    
+    
+        <#if $it.html??>
+            ${$it.html}
         </#if>
-    
-    
-        同意<a href="#" target="_blank">《档口退换货规则》</a><span class="fcF40">（特别提示：货物是否可退货换是根据档口规则，所以拍下时请咨询档口）</span>
     
     </span>
 </label>
@@ -798,7 +803,7 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
+<a href="571xz.com" target="_blank">《档口退换货规则》</a><span class="fcF40">（特别提示：货物是否可退货换是根据档口规则，所以拍下时请咨询档口）</span>
         </p>
         <p class="tar goodsFee">商品总金额:<em class="fcF40 goodsCostShow">0.00</em>元</p>
     </div>
@@ -880,7 +885,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         
@@ -928,7 +932,7 @@ var serviceRulers = ${serviceRulers!};
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
