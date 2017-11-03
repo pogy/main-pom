@@ -5,10 +5,8 @@ import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.BuyerAddressExample;
 import com.opentae.data.mall.examples.ItemOrderExample;
-import com.opentae.data.mall.interfaces.BuyerAddressMapper;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.examples.OrderCityExample;
+import com.opentae.data.mall.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +26,9 @@ public class OrderOptionSafeService {
 
     @Autowired
     private BuyerAddressMapper buyerAddressMapper;
+
+    @Autowired
+    private OrderCityMapper orderCityMapper;
     /**
      * 按主订单验证操作安全性
      * @return
@@ -56,6 +57,17 @@ public class OrderOptionSafeService {
         return (refund != null)&&checkByOid(userId,refund.getOid());
     }
 
+    /**
+     * 验证市安全性
+     * @param provId 省ID
+     * @param cityId 市ID
+     * @return
+     */
+    public boolean checkCitySafe(Long provId,Long cityId){
+        OrderCityExample example=new OrderCityExample();
+        example.createCriteria().andCityIdEqualTo(cityId).andProvIdEqualTo(provId);
+        return orderCityMapper.countByExample(example)>0;
+    }
     /**
      * 按地址验证
      * @param userId
