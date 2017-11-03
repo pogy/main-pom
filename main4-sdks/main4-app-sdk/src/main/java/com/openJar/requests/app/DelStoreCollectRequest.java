@@ -18,7 +18,7 @@ public class DelStoreCollectRequest extends Request<DelStoreCollectResponse> {
 	//用户token	必须
 	@NotNull(message = "token is null")
 	private String token;
-	private String storeIds;
+	private String collectIds;
 	private Long userId;
 	public String getToken(){
 		return token;
@@ -36,12 +36,12 @@ public class DelStoreCollectRequest extends Request<DelStoreCollectResponse> {
 		this.userId=userId;
 	}
 
-	public String getStoreIds() {
-		return storeIds;
+	public String getCollectIds() {
+		return collectIds;
 	}
 
-	public void setStoreIds(String storeIds) {
-		this.storeIds = storeIds;
+	public void setCollectIds( String collectIds ) {
+		this.collectIds = collectIds;
 	}
 
 	public String testApiUrl(){
