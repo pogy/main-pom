@@ -14,5 +14,4 @@ import org.springframework.context.annotation.Scope;
 @Scope("singleton")
 @Lazy(true)
 public interface ShiguShopMapper extends Mapper<ShiguShop> {
-
 }
