@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -468,8 +469,8 @@ public class ImportCsvFileService {
 
                 }
 
-
-               Long goodsId=new Long(storeId+""+i);
+               String sgoodsId= getgoodsId(storeId,i);
+               Long goodsId=new Long(sgoodsId);
                 record.setGoodsId(goodsId);
                 record.setStoreId(storeId);
                 record.setCreated(new Date());
@@ -1090,8 +1091,42 @@ public class ImportCsvFileService {
             return true;
         }
 
-
-
         return false;
+    }
+
+    public static  String getgoodsId(Long storeId,Integer pki){
+        String orderNo = "" ;
+        UUID uuid = UUID.randomUUID();
+        String trandNo = String.valueOf((Math.random() * 9 + 1) * 1000000);
+        String sdf = new SimpleDateFormat ("yyyyMMddHHMMSS").format(new Date ());
+        orderNo = uuid.toString().substring(0, 8);
+        orderNo = orderNo + sdf ;
+        String sorderNo="";
+        if(orderNo.length ()>0){
+            for(int i=0;i<orderNo.length ();i++){
+                char se= orderNo.charAt (i);
+                String sse=se+"";
+                int ise=se;
+                if(isNumeric(sse)){
+                    int pse=Integer.parseInt (sse);
+                    ise=pse;
+                }
+
+                sorderNo+=ise;
+            }
+        }
+        sorderNo=storeId+"00"+pki+"000"+sorderNo;
+        return sorderNo ;
+    }
+
+
+    public static boolean isNumeric(String str){
+        for (int i = 0; i < str.length(); i++){
+            System.out.println(str.charAt(i));
+            if (!Character.isDigit(str.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 }
