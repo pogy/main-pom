@@ -55,8 +55,12 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
     public List<ShiguGoodsTinyVO> packageImporttempGoods (String packageUrl, Long storeId,String flag) throws Main4Exception {
 
         Date date=new Date();
-        String tempPath=packageUrl;
+        DateFormat sdf = new SimpleDateFormat ("yyyyMMddHHmmss");
         String DATA_PACKAGE_ADDR = FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL;//要解压出来存放的临时数据包地址
+        String dateString= sdf.format(date);
+        String temppath=DATA_PACKAGE_ADDR + File.separator + storeId + File.separator +dateString;
+        String tempPath=packageUrl;
+
         if("rest".equals (flag)){
             String fileName="";
             if(tempPath.endsWith(".zip")){
@@ -70,7 +74,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             packageUrl=packageUrl.replaceAll (oss.getDomain(),"");//不要域名
         //正式的要从oss里读取下来存储后再进行解压
 
-           File file= oss.downFileToLocal(DATA_PACKAGE_ADDR+File.separator+storeId+File.separator+fileName,packageUrl);
+           File file= oss.downFileToLocal(temppath+File.separator+fileName,packageUrl);
 
             tempPath=file.getPath ();
         }else{
@@ -85,8 +89,14 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 }
             }
             try {
-                FileOutputStream fos = new FileOutputStream (DATA_PACKAGE_ADDR + File.separator + storeId + File.separator + fileName);
+
+                File file=new File(temppath);
+                if(!file.exists ()){
+                    file.mkdirs ();
+                }
                 FileInputStream fis = new FileInputStream (tempPath);
+                FileOutputStream fos = new FileOutputStream (temppath + File.separator + fileName);
+
                 byte[] buffer = new byte[1024];
                 int len = 0;
                 while ((len = fis.read (buffer)) > 0) {
@@ -94,6 +104,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 }
                 fis.close ();
                 fos.close ();
+                tempPath=temppath + File.separator + fileName;
             }catch (Exception e){
 
             }
@@ -101,9 +112,9 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         }
 
         //解压数据包
-        DateFormat sdf = new SimpleDateFormat ("yyyyMMddHHmmss");
-        String dateString= sdf.format(date);
-        String tempDir=DATA_PACKAGE_ADDR + File.separator + storeId + File.separator +dateString+ File.separator;
+
+
+        String tempDir=temppath+ File.separator;
         //解开
         if(tempPath.endsWith(".zip")){
             //UnzipUtil decompression=new UnzipUtil();
@@ -153,6 +164,9 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         //if(csvIntoGoodsService.convertionFile(csvFile,newcsvFile)){
                         //log.debug("@@@@@@@@@@@@@@@@@@@@@@@CSV转码完成");
                         List<ShiguGoodsTinyVO> goodsList=importCsvFileService.importCsvFileString(storeId,csvFilepath,image_save_path);
+                       /* File file = new File(temppath);
+                        file.delete ()*/
+
                         if(goodsList.size ()==0){
                             //写入错误表
                             System.out.println("商品转换失败！");
