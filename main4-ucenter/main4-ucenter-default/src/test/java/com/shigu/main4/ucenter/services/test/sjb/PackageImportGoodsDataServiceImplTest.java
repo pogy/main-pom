@@ -33,7 +33,7 @@ public class PackageImportGoodsDataServiceImplTest extends BaseTest{
 
     @Test
     public void packageImporttempGoods_test(){
-        String packageUrl="/Users/gzy/Downloads/ffpic/123.zip";
+        String packageUrl="/Users/gzy/Downloads/ffpic/a1.zip";
         Long storeId=24806L;
         String flag="test";
 
