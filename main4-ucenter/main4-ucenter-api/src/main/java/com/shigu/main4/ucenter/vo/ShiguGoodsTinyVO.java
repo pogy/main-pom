@@ -10,7 +10,7 @@ public class ShiguGoodsTinyVO implements Serializable {
 
 
     private Long goodsId;
-    private Long numIid;
+
     private String title;
     private String nick;
     private String type;
@@ -22,7 +22,7 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String outerId;
     private Long cid;
     private String cname;//类目名
-    private String cidAll;
+
     private String picUrl;
     private Long num;
     private Date listTime;
@@ -42,9 +42,9 @@ public class ShiguGoodsTinyVO implements Serializable {
     private String hasShowcase;
     private Date modified;
     private Long marketId;
-    private String market;
+
     private Long parentMarketId;
-    private String parentMarketName;
+
     private String storeNum;
 
     private Long storeId;
@@ -61,7 +61,7 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     private Integer isExcelImp;
 
-    private Date lastModifyTime;
+
 
     private ShiguGoodsExtendsVO extendsGoods;
 
@@ -87,14 +87,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setGoodsId(Long goodsId) {
         this.goodsId = goodsId;
-    }
-
-    public Long getNumIid() {
-        return numIid;
-    }
-
-    public void setNumIid(Long numIid) {
-        this.numIid = numIid;
     }
 
     public String getTitle() {
@@ -175,14 +167,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setCname (String cname) {
         this.cname = cname;
-    }
-
-    public String getCidAll() {
-        return cidAll;
-    }
-
-    public void setCidAll(String cidAll) {
-        this.cidAll = cidAll;
     }
 
     public String getPicUrl() {
@@ -337,13 +321,6 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.marketId = marketId;
     }
 
-    public String getMarket() {
-        return market;
-    }
-
-    public void setMarket(String market) {
-        this.market = market;
-    }
 
     public Long getParentMarketId() {
         return parentMarketId;
@@ -351,14 +328,6 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setParentMarketId(Long parentMarketId) {
         this.parentMarketId = parentMarketId;
-    }
-
-    public String getParentMarketName() {
-        return parentMarketName;
-    }
-
-    public void setParentMarketName(String parentMarketName) {
-        this.parentMarketName = parentMarketName;
     }
 
     public String getStoreNum() {
@@ -457,12 +426,5 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.isExcelImp = isExcelImp;
     }
 
-    public Date getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Date lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
-    }
 
 }
