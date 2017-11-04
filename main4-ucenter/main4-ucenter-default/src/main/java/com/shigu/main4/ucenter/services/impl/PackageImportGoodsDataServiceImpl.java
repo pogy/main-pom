@@ -36,6 +36,8 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
     @Autowired
     ImportCsvFileService importCsvFileService;
+    @Autowired
+    OssIO oss;
     /**
      * ====================================================================================
      * @方法名： packageImporttempGoods
@@ -70,7 +72,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                     fileName=date.getTime ()+".rar";
                 }
             }
-            OssIO oss=new OssIO();
+
             packageUrl=packageUrl.replaceAll (oss.getDomain(),"");//不要域名
         //正式的要从oss里读取下来存储后再进行解压
 

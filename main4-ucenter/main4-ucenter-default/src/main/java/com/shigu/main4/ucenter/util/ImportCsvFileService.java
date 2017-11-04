@@ -16,6 +16,8 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.vo.PriceDataGrid;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
+import com.shigu.main4.ucenter.vo.ShiguPropImg;
+import org.elasticsearch.common.PidFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,8 @@ public class ImportCsvFileService {
     private TaobaoPropValueMapper taobaoPropValueMapper;
     @Autowired
     PriceErrorService priceErrorService;
-
+    @Autowired
+    OssIO oss;
 
     public  List<ShiguGoodsTinyVO> importCsvFileString(Long storeId, String importCSVFile, String image_save_path) throws Main4Exception {
 
@@ -618,28 +621,50 @@ public class ImportCsvFileService {
                             }else{
                                 imgse+=","+imgpic;
                             }
-                        }
+                        }/*else{
+                            if("2".equals(mainpics[1])){
+                                //是颜色尺码图片
+                            }
+                        }*/
                     }
 
                 }else{
                     //没有直接的图片
                     String pics[]=img_w[0].split(":");
-                    //System.out.println(pics[0]);
-                    if(i==0){
+                    if("1".equals (pics[1])) {
+                        //System.out.println(pics[0]);
+                        if (i == 0) {
 
-                        imgse=imageurl(record.getStoreId (),image_save_path+"/"+pics[0]+".tbi");
-                        picUrl=imageurl(record.getStoreId (),image_save_path+"/"+pics[0]+".tbi");
-                        //map.put(image_save_path+"/"+pics[0]+".tbi", imgse);
-                        map.put(imgse,image_save_path+"/"+pics[0]+".tbi");
+                            imgse = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                            picUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                            //map.put(image_save_path+"/"+pics[0]+".tbi", imgse);
+                            map.put (imgse, image_save_path + "/" + pics[0] + ".tbi");
 
-                    }else{
-                        //imgse+=","+DConfig.BAIDU_YUN_BASE_URL+record.getStoreId()+"/"+pics[0]+".jpg";
-                        String imurlString=imageurl(record.getStoreId (),image_save_path+"/"+pics[0]+".tbi");
+                        } else {
+                            //imgse+=","+DConfig.BAIDU_YUN_BASE_URL+record.getStoreId()+"/"+pics[0]+".jpg";
+                            String imurlString = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
 
-                        imgse+=","+imurlString;
-                        //map.put(image_save_path+"/"+pics[0]+".tbi", imurlString);
-                        map.put(imurlString,image_save_path+"/"+pics[0]+".tbi");
+                            imgse += "," + imurlString;
+                            //map.put(image_save_path+"/"+pics[0]+".tbi", imurlString);
+                            map.put (imurlString, image_save_path + "/" + pics[0] + ".tbi");
+                        }
+                    }else{/////2
+                        if("2".equals (pics[1])) {
+                          String  propPicUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                            String spid=pics[3];
+                            String svid=pics[4];
+                            ShiguPropImg spi=new ShiguPropImg();
+                            spi.setPid (new Long(spid));
+                            spi.setVid (new Long(svid));
+                            spi.setUrl (propPicUrl);
+
+                           List<ShiguPropImg> list_spi= sge.getList_spi ();
+                            list_spi.add (spi);
+
+                        }
                     }
+
+
                 }
             }
         }
@@ -662,7 +687,7 @@ public class ImportCsvFileService {
         byte[] data=readYjImgBypath (image_save_path);
         String md5= Byte2MD5.getMD5(data);
 
-        OssIO oss=new OssIO ();
+        //OssIO oss=new OssIO ();
 
         String imgPath="itemImgs/temp/"+storeId+"/"+md5+".jpg";
 
@@ -1097,9 +1122,10 @@ public class ImportCsvFileService {
     public static  String getgoodsId(Long storeId,Integer pki){
         String orderNo = "" ;
         UUID uuid = UUID.randomUUID();
-        String trandNo = String.valueOf((Math.random() * 9 + 1) * 1000000);
+        //String trandNo = String.valueOf((Math.random() * 9 + 1) * 1000000);
         String sdf = new SimpleDateFormat ("yyyyMMddHHMMSS").format(new Date ());
-        orderNo = uuid.toString().substring(0, 8);
+        sdf="";
+        orderNo = uuid.toString().substring(0, 5);
         orderNo = orderNo + sdf ;
         String sorderNo="";
         if(orderNo.length ()>0){
@@ -1115,7 +1141,10 @@ public class ImportCsvFileService {
                 sorderNo+=ise;
             }
         }
-        sorderNo=storeId+"00"+pki+"000"+sorderNo;
+        sorderNo=storeId+"00"+pki+"0"+sorderNo;
+        if(sorderNo.length ()>=19){
+            sorderNo=sorderNo.substring (0,19);
+        }
         return sorderNo ;
     }
 
