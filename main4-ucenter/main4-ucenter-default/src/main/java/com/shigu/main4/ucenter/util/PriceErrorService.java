@@ -236,7 +236,7 @@ public class PriceErrorService {
 
                 Long flagId = goods.getGoodsId();
                 if (flagId == null) {
-                    flagId = goods.getNumIid();
+                    //flagId = goods.getNumIid();
                 }
 
 
