@@ -1,7 +1,9 @@
 package com.shigu.main4.ucenter.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wxc on 2017/2/21.
@@ -48,6 +50,9 @@ public class ShiguGoodsExtendsVO implements Serializable {
     private Date updateTime;
     private Date lastModifyTime;
     private String subtitle;
+
+    private List<ShiguPropImg> list_spi=new ArrayList<> ();
+    
 
     public Long getGoodsId() {
         return goodsId;
@@ -335,5 +340,13 @@ public class ShiguGoodsExtendsVO implements Serializable {
 
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
+    }
+
+    public List<ShiguPropImg> getList_spi () {
+        return list_spi;
+    }
+
+    public void setList_spi (List<ShiguPropImg> list_spi) {
+        this.list_spi = list_spi;
     }
 }
