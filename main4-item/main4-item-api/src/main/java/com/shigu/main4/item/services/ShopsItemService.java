@@ -1,13 +1,12 @@
 package com.shigu.main4.item.services;
 
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.exceptions.ItemException;
-import com.shigu.main4.item.exceptions.ShopsItemException;
-import com.shigu.main4.item.vo.InstockItem;
-import com.shigu.main4.item.vo.ItemCount;
-import com.shigu.main4.item.vo.OnsaleItem;
-import com.shigu.main4.item.vo.XiufuItem;
+import com.shigu.main4.item.vo.*;
 
 /**
  * 店内宝贝服务
@@ -16,17 +15,20 @@ import com.shigu.main4.item.vo.XiufuItem;
 public interface ShopsItemService {
     /**
      * 查出售中的商品
-     * @param keyword 宝贝名称
-     * @param shopId 店铺ID
-     * @param pageNo 当前页
+     *
+     * @param keyword  宝贝名称
+     * @param shopId   店铺ID
+     * @param pageNo   当前页
      * @param pageSize 每页条数
      * @return
      */
-    ShiguPager<OnsaleItem> selOnsaleItems(String keyword,String goodsNo,Long numIid, Long shopId, int pageNo, int pageSize) throws ItemException;
+    @Deprecated
+    ShiguPager<OnsaleItem> selOnsaleItems(String keyword, String goodsNo, Long numIid, Long shopId, int pageNo, int pageSize) throws ItemException;
 
     /**
      * 给修复宝贝提供数据
      * 实际是查出淘宝过来的商品
+     *
      * @param keyword
      * @param goodsId
      * @param shopId
@@ -34,21 +36,24 @@ public interface ShopsItemService {
      * @param pageSize
      * @return
      */
-    ShiguPager<XiufuItem> selXiufuItem(String keyword,Long goodsId, Long shopId, int pageNo, int pageSize) throws ItemException;
+    ShiguPager<XiufuItem> selXiufuItem(String keyword, Long goodsId, Long shopId, int pageNo, int pageSize) throws ItemException;
+
     /**
      * 查仓库中的商品
-     * @param keyword 宝贝名称
-     * @param goodsNo 货号
-     * @param numIid 淘宝宝贝ID
-     * @param shopId 店铺ID
-     * @param pageNo 当前页
+     *
+     * @param keyword  宝贝名称
+     * @param goodsNo  货号
+     * @param numIid   淘宝宝贝ID
+     * @param shopId   店铺ID
+     * @param pageNo   当前页
      * @param pageSize 每页条数
      * @return
      */
-    ShiguPager<InstockItem> selInstockItems(String keyword,String goodsNo,Long numIid,Long shopId,int pageNo,int pageSize) throws ItemException;
+    ShiguPager<InstockItem> selInstockItems(String keyword, String goodsNo, Long numIid, Long shopId, int pageNo, int pageSize) throws ItemException;
 
     /**
      * 店内商品统计
+     *
      * @param shopId
      * @return
      */
@@ -56,8 +61,41 @@ public interface ShopsItemService {
 
     /**
      * 获取商品图片下载压缩包链接
+     *
      * @param goodsId
      * @return
      */
     String itemImgzipUrl(Long goodsId);
+
+    /**
+     * 获取店内未设置大图、材质、最低零售价统计
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    ShopUnprocessItemCount selShopUnprocessItemCount(Long shopId, String webSite);
+
+    /**
+     * 出售中的商品改版
+     * @param shopId
+     * @param webSite
+     * @param bo
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws Main4Exception
+     */
+    ShiguPager<OnsaleItem> selOnsaleItems(Long shopId, String webSite, StoreGoodsListSearchBO bo, int pageNo, int pageSize) throws Main4Exception;
+
+    /**
+     * 更新材质信息
+     * @param goodsId
+     * @param shopId
+     * @param webSite
+     * @param fabricStr
+     * @param inFabricStr
+     * @throws JsonErrException
+     */
+    void setConstituent(Long goodsId,Long shopId,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
+
 }
