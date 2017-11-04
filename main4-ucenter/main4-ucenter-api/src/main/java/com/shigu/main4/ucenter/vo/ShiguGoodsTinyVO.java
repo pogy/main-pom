@@ -21,6 +21,7 @@ public class ShiguGoodsTinyVO implements Serializable {
     private Long validThru;
     private String outerId;
     private Long cid;
+    private String cidAll;
     private String cname;//类目名
 
     private String picUrl;
@@ -127,6 +128,14 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     public void setIsLightningConsignment(String isLightningConsignment) {
         this.isLightningConsignment = isLightningConsignment;
+    }
+
+    public String getCidAll () {
+        return cidAll;
+    }
+
+    public void setCidAll (String cidAll) {
+        this.cidAll = cidAll;
     }
 
     public String getIsXinpin() {

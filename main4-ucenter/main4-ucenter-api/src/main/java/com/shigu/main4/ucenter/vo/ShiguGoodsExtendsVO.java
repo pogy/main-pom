@@ -32,7 +32,7 @@ public class ShiguGoodsExtendsVO implements Serializable {
     private String hasInvoice;
     private String hasWarranty;
     private String increment;
-
+    private String approveStatus;
     private Long postageId;
     private String isVirtual;
     private String isEx;
@@ -46,7 +46,8 @@ public class ShiguGoodsExtendsVO implements Serializable {
     private String sellPromise;
     private Date loadDate;
     private Date updateTime;
-
+    private Date lastModifyTime;
+    private String subtitle;
 
     public Long getGoodsId() {
         return goodsId;
@@ -208,6 +209,14 @@ public class ShiguGoodsExtendsVO implements Serializable {
         this.increment = increment;
     }
 
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
+    }
+
     public Long getPostageId() {
         return postageId;
     }
@@ -312,4 +321,19 @@ public class ShiguGoodsExtendsVO implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Date getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    public void setLastModifyTime(Date lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
 }
