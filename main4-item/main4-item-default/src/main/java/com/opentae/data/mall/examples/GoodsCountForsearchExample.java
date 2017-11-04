@@ -11,16 +11,18 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static final Class<GoodsCountForsearch> beanClass = GoodsCountForsearch.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn flowFixedTime;
+    public static EntityColumn clickIp;
+    public static EntityColumn goodsId;
+    public static EntityColumn hadBigzip;
+    public static EntityColumn click;
     public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
-    public static EntityColumn clickIp;
-    public static EntityColumn goodsId;
+    public static EntityColumn fabric;
+    public static EntityColumn infabric;
     public static EntityColumn hadGoat;
-    public static EntityColumn hadBigzip;
     public static EntityColumn upMan;
     public static EntityColumn up;
-    public static EntityColumn click;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -28,16 +30,18 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
             listMap.put(column.getProperty(), column);
         }
         flowFixedTime = listMap.get("flowFixedTime");
+        clickIp = listMap.get("clickIp");
+        goodsId = listMap.get("goodsId");
+        hadBigzip = listMap.get("hadBigzip");
+        click = listMap.get("click");
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
-        clickIp = listMap.get("clickIp");
-        goodsId = listMap.get("goodsId");
+        fabric = listMap.get("fabric");
+        infabric = listMap.get("infabric");
         hadGoat = listMap.get("hadGoat");
-        hadBigzip = listMap.get("hadBigzip");
         upMan = listMap.get("upMan");
         up = listMap.get("up");
-        click = listMap.get("click");
         }
 
     public GoodsCountForsearchExample() {
@@ -105,6 +109,194 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
             return notBetween(flowFixedTime, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andClickIpIsNull() {
+            return isNull(clickIp);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpIsNotNull() {
+            return isNotNull(clickIp);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpEqualTo(Long value) {
+            return equalTo(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpNotEqualTo(Long value) {
+            return notEqualTo(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpGreaterThan(Long value) {
+            return greaterThan(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpLessThan(Long value) {
+            return lessThan(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(clickIp, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpIn(List<Long> values) {
+            return in(clickIp, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpNotIn(List<Long> values) {
+            return notIn(clickIp, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpBetween(Long value1, Long value2) {
+            return between(clickIp, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIpNotBetween(Long value1, Long value2) {
+            return notBetween(clickIp, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andGoodsIdIsNull() {
+            return isNull(goodsId);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdIsNotNull() {
+            return isNotNull(goodsId);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdEqualTo(Long value) {
+            return equalTo(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdNotEqualTo(Long value) {
+            return notEqualTo(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdGreaterThan(Long value) {
+            return greaterThan(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdLessThan(Long value) {
+            return lessThan(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodsId, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdIn(List<Long> values) {
+            return in(goodsId, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdNotIn(List<Long> values) {
+            return notIn(goodsId, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+            return between(goodsId, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+            return notBetween(goodsId, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNull() {
+            return isNull(hadBigzip);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNotNull() {
+            return isNotNull(hadBigzip);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipEqualTo(Integer value) {
+            return equalTo(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotEqualTo(Integer value) {
+            return notEqualTo(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThan(Integer value) {
+            return greaterThan(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThan(Integer value) {
+            return lessThan(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(hadBigzip, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipIn(List<Integer> values) {
+            return in(hadBigzip, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotIn(List<Integer> values) {
+            return notIn(hadBigzip, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipBetween(Integer value1, Integer value2) {
+            return between(hadBigzip, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
+            return notBetween(hadBigzip, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andClickIsNull() {
+            return isNull(click);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIsNotNull() {
+            return isNotNull(click);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickEqualTo(Long value) {
+            return equalTo(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotEqualTo(Long value) {
+            return notEqualTo(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickGreaterThan(Long value) {
+            return greaterThan(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickLessThan(Long value) {
+            return lessThan(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(click, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIn(List<Long> values) {
+            return in(click, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotIn(List<Long> values) {
+            return notIn(click, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickBetween(Long value1, Long value2) {
+            return between(click, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
+            return notBetween(click, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
@@ -255,99 +447,115 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         public GoodsCountForsearchExample.Criteria andSearchIdNotBetween(Long value1, Long value2) {
             return notBetween(searchId, value1, value2);
         }
-        public GoodsCountForsearchExample.Criteria andClickIpIsNull() {
-            return isNull(clickIp);
+        public GoodsCountForsearchExample.Criteria andFabricIsNull() {
+            return isNull(fabric);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpIsNotNull() {
-            return isNotNull(clickIp);
+        public GoodsCountForsearchExample.Criteria andFabricIsNotNull() {
+            return isNotNull(fabric);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpEqualTo(Long value) {
-            return equalTo(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricEqualTo(String value) {
+            return equalTo(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpNotEqualTo(Long value) {
-            return notEqualTo(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricNotEqualTo(String value) {
+            return notEqualTo(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpGreaterThan(Long value) {
-            return greaterThan(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricGreaterThan(String value) {
+            return greaterThan(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpLessThan(Long value) {
-            return lessThan(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricLessThan(String value) {
+            return lessThan(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(clickIp, value);
+        public GoodsCountForsearchExample.Criteria andFabricLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpIn(List<Long> values) {
-            return in(clickIp, values);
+        public GoodsCountForsearchExample.Criteria andFabricLike(String value) {
+            return like(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpNotIn(List<Long> values) {
-            return notIn(clickIp, values);
+        public GoodsCountForsearchExample.Criteria andFabricNotLike(String value) {
+            return notLike(fabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpBetween(Long value1, Long value2) {
-            return between(clickIp, value1, value2);
+        public GoodsCountForsearchExample.Criteria andFabricIn(List<String> values) {
+            return in(fabric, values);
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIpNotBetween(Long value1, Long value2) {
-            return notBetween(clickIp, value1, value2);
-        }
-        public GoodsCountForsearchExample.Criteria andGoodsIdIsNull() {
-            return isNull(goodsId);
+        public GoodsCountForsearchExample.Criteria andFabricNotIn(List<String> values) {
+            return notIn(fabric, values);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdIsNotNull() {
-            return isNotNull(goodsId);
+        public GoodsCountForsearchExample.Criteria andFabricBetween(String value1, String value2) {
+            return between(fabric, value1, value2);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdEqualTo(Long value) {
-            return equalTo(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andFabricNotBetween(String value1, String value2) {
+            return notBetween(fabric, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andInfabricIsNull() {
+            return isNull(infabric);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdNotEqualTo(Long value) {
-            return notEqualTo(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andInfabricIsNotNull() {
+            return isNotNull(infabric);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdGreaterThan(Long value) {
-            return greaterThan(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andInfabricEqualTo(String value) {
+            return equalTo(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andInfabricNotEqualTo(String value) {
+            return notEqualTo(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdLessThan(Long value) {
-            return lessThan(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andInfabricGreaterThan(String value) {
+            return greaterThan(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(goodsId, value);
+        public GoodsCountForsearchExample.Criteria andInfabricGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdIn(List<Long> values) {
-            return in(goodsId, values);
+        public GoodsCountForsearchExample.Criteria andInfabricLessThan(String value) {
+            return lessThan(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdNotIn(List<Long> values) {
-            return notIn(goodsId, values);
+        public GoodsCountForsearchExample.Criteria andInfabricLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
-            return between(goodsId, value1, value2);
+        public GoodsCountForsearchExample.Criteria andInfabricLike(String value) {
+            return like(infabric, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
-            return notBetween(goodsId, value1, value2);
+        public GoodsCountForsearchExample.Criteria andInfabricNotLike(String value) {
+            return notLike(infabric, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricIn(List<String> values) {
+            return in(infabric, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotIn(List<String> values) {
+            return notIn(infabric, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricBetween(String value1, String value2) {
+            return between(infabric, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andInfabricNotBetween(String value1, String value2) {
+            return notBetween(infabric, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andHadGoatIsNull() {
             return isNull(hadGoat);
@@ -395,53 +603,6 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andHadGoatNotBetween(Integer value1, Integer value2) {
             return notBetween(hadGoat, value1, value2);
-        }
-        public GoodsCountForsearchExample.Criteria andHadBigzipIsNull() {
-            return isNull(hadBigzip);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipIsNotNull() {
-            return isNotNull(hadBigzip);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipEqualTo(Integer value) {
-            return equalTo(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipNotEqualTo(Integer value) {
-            return notEqualTo(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThan(Integer value) {
-            return greaterThan(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipLessThan(Integer value) {
-            return lessThan(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(hadBigzip, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipIn(List<Integer> values) {
-            return in(hadBigzip, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipNotIn(List<Integer> values) {
-            return notIn(hadBigzip, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipBetween(Integer value1, Integer value2) {
-            return between(hadBigzip, value1, value2);
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
-            return notBetween(hadBigzip, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andUpManIsNull() {
             return isNull(upMan);
@@ -536,53 +697,6 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andUpNotBetween(Long value1, Long value2) {
             return notBetween(up, value1, value2);
-        }
-        public GoodsCountForsearchExample.Criteria andClickIsNull() {
-            return isNull(click);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickIsNotNull() {
-            return isNotNull(click);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickEqualTo(Long value) {
-            return equalTo(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickNotEqualTo(Long value) {
-            return notEqualTo(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickGreaterThan(Long value) {
-            return greaterThan(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickLessThan(Long value) {
-            return lessThan(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(click, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickIn(List<Long> values) {
-            return in(click, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickNotIn(List<Long> values) {
-            return notIn(click, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickBetween(Long value1, Long value2) {
-            return between(click, value1, value2);
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
-            return notBetween(click, value1, value2);
         }
     }
 }
