@@ -108,6 +108,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     private ItemProductMapper itemProductMapper;
 
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -737,7 +740,20 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long userAddItem(SynItem item) throws ItemModifyException {
-        return addItem(item, false);
+        if (StringUtils.isBlank(item.getFabric())) {
+            throw new ItemModifyException("手动发布商品面料为必填项");
+        }
+        if (StringUtils.isBlank(item.getGoodsNo())) {
+            throw new ItemModifyException("手动发布商品货号为必填项");
+        }
+        Long goodsId = addItem(item, false);
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(goodsId);
+        goodsCountForsearch.setWebSite(item.getWebSite());
+        goodsCountForsearch.setFabric(item.getFabric());
+        goodsCountForsearch.setInfabric(item.getInFabric());
+        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        return goodsId;
     }
 
     /**

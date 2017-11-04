@@ -443,6 +443,9 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
+        if (shopSession.getType().equals(1)) {
+            throw new JsonErrException("淘宝店铺不支持手工发布");
+        }
         Long itemId;
         //包装bo
         try {
