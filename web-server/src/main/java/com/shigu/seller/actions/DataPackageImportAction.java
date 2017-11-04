@@ -1,9 +1,5 @@
 package com.shigu.seller.actions;
 
-import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.vo.ActivityEnlistVO;
-import com.shigu.main4.activity.vo.ActivityTermVO;
-import com.shigu.main4.activity.vo.ActivityVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
@@ -19,10 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
