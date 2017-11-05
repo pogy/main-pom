@@ -93,6 +93,9 @@ public class DataPackageImportAction {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
+        if(msg==null){
+            throw new Main4Exception("参数msg不能为空！");
+        }
         List<ShiguGoodsTinyVO> list=redisIO.getList (msg,ShiguGoodsTinyVO.class);
         List<PackageVO> voList=new ArrayList<> ();
         if(list.size ()>0){
