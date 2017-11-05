@@ -210,10 +210,15 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             List<String> inpColors= new ArrayList<>();
             List<ShiguPropImg> propImgs=new ArrayList<>();
             long inpvid=-1001L;
+
+            List<Long> hasVids=new ArrayList<>();
+            Long hasPid=null;
+            Map<String,ShiguPropImg> noVmap=new HashMap<>();
             for(Element element:colorDocs){
                 String color=element.select("span").html().trim();
                 String code=element.select("a").attr("data-code");
                 Long pid=new Long(code.split(":")[0]);
+                hasPid=pid;
                 Long vid=new Long(code.split(":")[1]);
                 String img=element.attr("data-img").replace("_30x30.jpg","");
                 try {
@@ -224,8 +229,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 ShiguPropImg prop=new ShiguPropImg();
                 prop.setUrl(img);
                 prop.setPid(pid);
-                prop.setVid(vid);
-                props.add(code);
+                hasVids.add(vid);
                 TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
                 taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
                         .andPidEqualTo(pid)
@@ -233,32 +237,37 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
                 if(pvs.size()>0){
                     propName.add(code+":"+pvs.get(0).getPropName()+":"+pvs.get(0).getName());
+                    props.add(code);
                     if(!pvs.get(0).getName().equals(color)){
                         alias.add(code+":"+color);
                     }
+                    prop.setVid(vid);
+                    propImgs.add(prop);
                 }else{
-                    if(propDate==null){
-                        TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
-                        taobaoItemPropExample.createCriteria().andCidEqualTo(cid).andPidEqualTo(pid).andIsColorPropEqualTo(1);
-                        List<TaobaoItemProp> ps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
-                        propDate=ps.get(0);
-                    }
-                    propName.add(code+":"+propDate.getName()+":"+color);
-                    if(!inputPids.contains(pid)){
-                        inputPids.add(pid);
-                    }
-                    if(vid<inpvid){
-                        inpvid=vid;
-                    }
-                    inpColors.add(color);
+                    noVmap.put(color,prop);
                 }
-                propImgs.add(prop);
+            }
+            if(hasVids.size()>0){
+                TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
+                        .andPidEqualTo(hasPid)
+                        .andVidNotIn(hasVids);
+                List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                noVmap.forEach((color, shiguPropImg) -> {
+                    if(pvs.size()==0){
+                        return;
+                    }
+                    TaobaoPropValue pv=pvs.get(0);
+                    String code=pv.getPid()+":"+pv.getVid();
+                    props.add(code);
+                    propName.add(code+":"+pv.getPropName()+":"+pv.getName());
+                    alias.add(code+":"+color);
+                    shiguPropImg.setVid(pv.getVid());
+                    propImgs.add(shiguPropImg);
+                    pvs.remove(0);
+                });
             }
             synItem.setPropImgs(propImgs);
-            if(propDate!=null){
-                inputStr.add(heb(inpColors,";"+propDate.getName()+";"));
-            }
-
 
             //尺码
             Set<String> sizes=new HashSet<>();
@@ -284,7 +293,11 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                     synItem.setOuterId(vname);
                     synItem.setGoodsNo(vname);
                 }
-                inpvid=handleProp(cid,pname, new ArrayList<>(Collections.singletonList(vname)), alias,props,propName,inputPids,inputStr,false,inpvid);
+                List<String> vns=new ArrayList<>(Collections.singletonList(vname));
+                if(vname.equals("其它/other")){
+                    vns.add("other/其它");
+                }
+                inpvid=handleProp(cid,pname,vns,alias,props,propName,inputPids,inputStr,false,inpvid);
             }
             synItem.setProps(heb(props,";"));
             synItem.setPropsName(heb(propName,";"));
