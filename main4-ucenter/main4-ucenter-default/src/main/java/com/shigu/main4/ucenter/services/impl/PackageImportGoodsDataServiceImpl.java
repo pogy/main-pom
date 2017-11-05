@@ -11,6 +11,8 @@ import com.shigu.main4.ucenter.util.ZipUtil;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +36,7 @@ import java.util.List;
 @Service("packageImportGoodsDataServiceImpl")
 public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsDataService{
 
-    @Autowired
+    @Resource(name = "importCsvFileService")
     ImportCsvFileService importCsvFileService;
     @Autowired
     OssIO oss;
