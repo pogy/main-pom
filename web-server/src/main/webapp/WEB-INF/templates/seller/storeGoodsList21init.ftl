@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509676899376" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509871207386" rel="stylesheet">
     
   </head>
 <body>
@@ -299,8 +299,12 @@ var webSite = '${webSite!}';
             </ul>
             <ul class="funOpe">
                 <li>
+                    
+                    <#if session_user_redis__.logshop.type == 1> 
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
+                    </#if>
+                    
                     <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
                     
                     
@@ -333,9 +337,9 @@ var webSite = '${webSite!}';
                 </li>
                 <li class="constituent">
                     <p>
-                        <#if item.setConstituentType == 1>
+                        <#if item.constituentType == 1>
                         <span>未设置</span>
-                        <#elseif item.setConstituentType == 2>
+                        <#elseif item.constituentType == 2>
                         <span>已设置</span>
                         </#if>
                         
@@ -443,7 +447,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509676899376"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509871207386"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
