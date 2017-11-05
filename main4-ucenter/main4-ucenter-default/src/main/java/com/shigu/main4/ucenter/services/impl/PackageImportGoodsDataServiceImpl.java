@@ -33,10 +33,10 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-@Service("packageImportGoodsDataServiceImpl")
+@Service
 public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsDataService{
 
-    @Resource(name = "importCsvFileService")
+    @Resource
     ImportCsvFileService importCsvFileService;
     @Autowired
     OssIO oss;
