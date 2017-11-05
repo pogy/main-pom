@@ -514,7 +514,10 @@ public class ImportCsvFileService {
                 CatStr  cs=  getCatStrAndGoodsNo(sge.getProps(),input_custom_cpv,record.getCid(),sge.getInputPids(),sge.getInputStr(),record.getGoodsNo(),propAlias);
 
                 sge.setPropsName(cs.getPn());
-                sge.setPropertyAlias(cs.getPnc());
+
+                //sge.setPropertyAlias(cs.getPnc());
+                if(propAlias!=null&&!"".equals (propAlias))
+                sge.setPropertyAlias (propAlias);
                 if(cs.getGoodsNo()!=null&&!"".equals(cs.getGoodsNo())){
                     record.setGoodsNo(cs.getGoodsNo());
                 }
@@ -988,13 +991,13 @@ public class ImportCsvFileService {
                 PropBean pBean = entry.getValue();
                 if (ik == map_s) {
                     pn += pBean.getPid() + ":" + pBean.getVid() + ":" + pBean.getPropName() + ":" + pBean.getName();
-                    if (!pBean.getName().equals(pBean.getNameAlias())) {
+                    if (pBean.getNameAlias()!=null&&!pBean.getName().equals(pBean.getNameAlias())) {
                         pnc += pBean.getPid() + ":" + pBean.getVid() + ":" + pBean.getNameAlias();
                     }
 
                 } else {
                     pn += pBean.getPid() + ":" + pBean.getVid() + ":" + pBean.getPropName() + ":" + pBean.getName() + ";";
-                    if (!pBean.getName().equals(pBean.getNameAlias())) {
+                    if (pBean.getNameAlias()!=null&&!pBean.getName().equals(pBean.getNameAlias())) {
                         pnc += pBean.getPid() + ":" + pBean.getVid() + ":" + pBean.getNameAlias() + ";";
                     }
                 }
