@@ -17,7 +17,6 @@ import com.shigu.main4.ucenter.vo.PriceDataGrid;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.ucenter.vo.ShiguPropImg;
-import org.elasticsearch.common.PidFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
