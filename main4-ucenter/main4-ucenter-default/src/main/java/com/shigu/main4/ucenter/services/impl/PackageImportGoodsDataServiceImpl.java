@@ -235,6 +235,10 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                                 //System.out.println("商品转换失败！");
                                 throw new Main4Exception (packageUrl+",商品转换失败！");
                             }else{
+
+                               // temppath
+                                        //删除所有文件
+                                deleteFileAndFolder( temppath);
                                 return goodsList;
                             }
                             //}
@@ -258,5 +262,38 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
 
         return null;
+    }
+
+    private void deleteFileAndFolder(String temppath){
+        File file=new File(temppath);
+        File files[]= file.listFiles ();
+        for(File file1:files){
+            // file1.getParent ()
+            if(file1.isDirectory ()){
+                File files1[]=file1.listFiles ();
+                for(File file2:files1){
+                    if(file2.isDirectory ()){
+                        File files2[]=file2.listFiles ();
+                        for(File file3:files2){
+                            String filename=file3.getName ();
+                            file3.deleteOnExit ();
+                           // System.out.println (filename);
+                        }
+                        file2.delete ();
+                    }else{
+                        String filename=file2.getName ();
+                        file2.deleteOnExit ();
+                        //System.out.println (filename);
+                    }
+
+                }
+                file1.delete ();
+            }else{
+                String filename=file1.getName ();
+                file1.deleteOnExit ();
+                //System.out.println (filename);
+            }
+
+        }
     }
 }
