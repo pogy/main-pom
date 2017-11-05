@@ -1,6 +1,5 @@
 package com.shigu.main4.ucenter.services.impl;
 
-
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.PackageImportGoodsDataService;
@@ -11,7 +10,6 @@ import com.shigu.main4.ucenter.util.ZipUtil;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +31,7 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-@Service
+@Service("packageImportGoodsDataServiceImpl")
 public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsDataService{
 
     @Resource
@@ -77,7 +75,10 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
             packageUrl=packageUrl.replaceAll (oss.getDomain(),"");//不要域名
         //正式的要从oss里读取下来存储后再进行解压
-
+            File filef=new File(temppath);
+            if(!filef.exists ()){
+                filef.mkdirs ();
+            }
            File file= oss.downFileToLocal(temppath+File.separator+fileName,packageUrl);
 
             tempPath=file.getPath ();
