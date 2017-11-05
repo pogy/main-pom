@@ -153,7 +153,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             List<String> picUrls=new ArrayList<>();
             for(int i=0;i<images.size();i++){
                 String image=images.get(i).attr("href");
-                String picUrl=formatImage(image,shop.getUserId());
+                String picUrl=formatImage(image,shop.getShopId());
                 if(i==0){
                     synItem.setPicUrl(picUrl);
                 }
@@ -188,7 +188,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 }
                 String img;
                 try {
-                    img = formatImage(url,shop.getUserId());
+                    img = formatImage(url,shop.getShopId());
                 } catch (Exception e1) {
                     descImgs.remove(i);
                     i--;
@@ -206,8 +206,6 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
 
             //颜色
             Elements colorDocs=doc.getElementById("mr_color").select("li");
-            TaobaoItemProp propDate=null;
-            List<String> inpColors= new ArrayList<>();
             List<ShiguPropImg> propImgs=new ArrayList<>();
             long inpvid=-1001L;
 
@@ -222,7 +220,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 Long vid=new Long(code.split(":")[1]);
                 String img=element.attr("data-img").replace("_30x30.jpg","");
                 try {
-                    img=formatImage(img,shop.getUserId());
+                    img=formatImage(img,shop.getShopId());
                 } catch (IOException e) {
                     img=null;
                 }
@@ -282,7 +280,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             for(Element element:propDoc){
                 String[] pv=element.html().trim().split(":");
                 String pname=pv[0];
-                String vname=pv[1];
+                String vname=element.attr("title");
                 if(pname.contains("尺")&&vname.split(" ").length==sizes.size()){
                     continue;
                 }
@@ -324,11 +322,11 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
 
 
     //图片转至oss
-    private String formatImage(String url,Long userId) throws IOException {
+    private String formatImage(String url,Long shopId) throws IOException {
         if(url.contains("taobaocdn")||url.contains("alicdn")){
             return url;
         }
-        String fileStr="itemimgs/"+userId+"/goodsId/"+ MD5.encrypt(url)+".jpg";
+        String fileStr="itemImgs/"+shopId+"/goodsId/"+ MD5.encrypt(url)+".jpg";
         ossIO.uploadFile(new URL(url).openStream(),fileStr);
         return "//imgs.571xz.net/"+fileStr;
     }
@@ -359,7 +357,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         }
         vnames.removeAll(has);
         if(vnames.size()>0){
-            if(ps.get(0).getIsAllowAlias()==1){
+            if(ps.get(0).getIsAllowAlias()==1||isSaleSize){
                 TaobaoPropValueExample taobaoPropValueExample1=new TaobaoPropValueExample();
                 TaobaoPropValueExample.Criteria ce1=taobaoPropValueExample1.createCriteria().andPidEqualTo(pid).andCidEqualTo(cid);
                 if(has.size()>0){
@@ -381,17 +379,17 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             }
         }
         if(vnames.size()>0){
-            if(ps.get(0).getIsInputProp()==1){
-                if(!inputPids.contains(pid)){
-                    inputPids.add(pid);
-                }
-                for(String vname:vnames){
-                    inpVid=inpVid-1L;
-                    props.add(pid+":"+ inpVid);
-                    propNames.add(pid+":"+ inpVid+":"+pname+":"+vname);
-                }
-                inputStr.add(heb(vnames,";"+pname+";"));
+//            if(ps.get(0).getIsInputProp()==1){
+            if(!inputPids.contains(pid)){
+                inputPids.add(pid);
             }
+            for(String vname:vnames){
+                inpVid=inpVid-1L;
+                props.add(pid+":"+ inpVid);
+                propNames.add(pid+":"+ inpVid+":"+pname+":"+vname);
+            }
+            inputStr.add(heb(vnames,";"+pname+";"));
+//            }
         }
         return inpVid;
     }
