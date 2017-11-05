@@ -174,7 +174,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
                         if(goodsList.size ()==0){
                             //写入错误表
-                            System.out.println("商品转换失败！");
+                           // System.out.println("商品转换失败！");
                             throw new Main4Exception (packageUrl+",商品转换失败！");
                         }else{
                             return goodsList;
