@@ -663,16 +663,16 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         shiguPropImgs.setItemId(tiny.getGoodsId());
         shiguPropImgsMapper.insertSelective(shiguPropImgs);
 
-        //5.添加es中goods数据
-        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
-//        ElasticRepository repository = new ElasticRepository();
-        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
-        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-//        repository.insert(seb);
-        goodsAddToRedis.addToRedis(seb);
-        sameItemUtilAddRemove(tiny, true);
-        //添加首图到图搜
-        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
+//        //5.添加es中goods数据
+//        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
+////        ElasticRepository repository = new ElasticRepository();
+//        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
+//        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
+////        repository.insert(seb);
+//        goodsAddToRedis.addToRedis(seb);
+//        sameItemUtilAddRemove(tiny, true);
+//        //添加首图到图搜
+//        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
 
         return tiny.getGoodsId();
     }
