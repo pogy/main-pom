@@ -66,7 +66,7 @@ public class ImportCsvFileService {
 
         Map<String, String> map=new HashMap<String, String> ();//key为图片存储地址  //value为转化后的图片访问地址
 
-        Date t1=new Date();
+       // Date t1=new Date();
 
         ShiguGoodsTinyVO record=null;
         ShiguGoodsExtendsVO sge=null;
@@ -80,7 +80,7 @@ public class ImportCsvFileService {
             //csvReader = new CSVReader(new FileReader(myFile),'\t');//importFile为要导入的文本格式逗号分隔的csv文件，提供getXX/setXX方法
             DataInputStream in = new DataInputStream(new FileInputStream (importCSVFile));
             csvReader = new CSVReader(new InputStreamReader (in, "Unicode"), '\t');
-            Date tcsv=new Date();
+           // Date tcsv=new Date();
             if(csvReader != null){
 
                 //first row is title, so past
@@ -106,7 +106,7 @@ public class ImportCsvFileService {
 
             for(int i=2;i<vector_h.size();i++){
                 if(i==11){
-                    System.out.println(i);
+                   // System.out.println(i);
                 }
                 Vector v_title=vector_h.get(0);
                 Vector v11=vector_h.get(i);
@@ -556,10 +556,10 @@ public class ImportCsvFileService {
                 String checkres=checkRecord(record,sge);
                 record.setError (checkres);
                 record.setExtendsGoods (sge);
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                /*System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 System.out.println("PropertyAlias"+i+"===="+sge.getPropertyAlias ());
 
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
                 goodsList.add (record);
             }
 
@@ -587,9 +587,9 @@ public class ImportCsvFileService {
 
             throw new Main4Exception (e.getMessage ());
         }
-        Date t2=new Date();
+        /*Date t2=new Date();
         Long dr1=t2.getTime()-t1.getTime();
-        System.out.println ("全部执行时间为：" + dr1);
+        System.out.println ("全部执行时间为：" + dr1);*/
 
         return goodsList;
     }
