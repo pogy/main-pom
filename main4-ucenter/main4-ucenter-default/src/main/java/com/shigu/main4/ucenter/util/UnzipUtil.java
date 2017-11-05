@@ -1,7 +1,8 @@
 package com.shigu.main4.ucenter.util;
 
-import de.innosystec.unrar.Archive;
-import de.innosystec.unrar.rarfile.FileHeader;
+
+import com.github.junrar.Archive;
+import com.github.junrar.rarfile.FileHeader;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarOutputStream;
 import org.apache.tools.zip.ZipEntry;
@@ -31,7 +32,7 @@ public class UnzipUtil {
     public UnzipUtil () {
         // TODO Auto-generated constructor stub
     }
- 
+
     /**
      * 解压zip格式的压缩文件到当前文件夹
      * @param zipFileName
@@ -358,7 +359,7 @@ public class UnzipUtil {
                     BufferedInputStream bis = new BufferedInputStream(is);
                     gbkPath=zipEnt.getName();
                     strtemp = strPath + File.separator + gbkPath;
-                 
+
                     //建目录
                     String strsubdir = gbkPath;
                     for(int i = 0; i < strsubdir.length(); i++) {
@@ -397,7 +398,7 @@ public class UnzipUtil {
     public synchronized void zip(String inputFilename, String zipFilename) throws IOException {
         zip(new File(inputFilename), zipFilename);
     }
-     
+
     /**
      * 压缩zip格式的压缩文件
      * @param inputFile 需压缩文件
@@ -414,7 +415,7 @@ public class UnzipUtil {
             out.close();
         }
     }
-     
+
     /**
      * 压缩zip格式的压缩文件
      * @param inputFile 需压缩文件
@@ -453,8 +454,8 @@ public class UnzipUtil {
             }
         }
     }
- 
-     
+
+
     /**
      * 解压tar格式的压缩文件到指定目录下
      * @param tarFileName 压缩文件
@@ -462,9 +463,9 @@ public class UnzipUtil {
      * @throws Exception
      */
     public synchronized void untar(String tarFileName, String extPlace) throws Exception{
-         
+
     }
-     
+
     /**
      * 压缩tar格式的压缩文件
      * @param inputFilename 压缩文件
@@ -474,7 +475,7 @@ public class UnzipUtil {
     public synchronized void tar(String inputFilename, String tarFilename) throws IOException{
         tar(new File(inputFilename), tarFilename);
     }
-     
+
     /**
      * 压缩tar格式的压缩文件
      * @param inputFile 压缩文件
@@ -492,7 +493,7 @@ public class UnzipUtil {
             out.close();
         }
     }
-     
+
     /**
      * 压缩tar格式的压缩文件
      * @param inputFile 压缩文件
@@ -531,7 +532,7 @@ public class UnzipUtil {
             }
         }
     }
-     
+
 
     public static String unRarFile(String srcRarPath, String dstDirectoryPath) {
     	String csvName="";
@@ -550,20 +551,20 @@ public class UnzipUtil {
                // a.getMainHeader().print(); // 打印文件信息.
                 FileHeader fh = a.nextFileHeader();
                 Long t2=new Date().getTime();
-                csvName=t2+""; 
+                csvName=t2+"";
                 while (fh != null) {
-                    if (fh.isDirectory()) { // 文件夹 
+                    if (fh.isDirectory()) { // 文件夹
                        // File fol = new File(dstDirectoryPath + File.separator+ fh.getFileNameW());//.getFileNameString()
-                    	
+
                     	String pathrsString="";
                     	if(fh.getFileNameW()==null||"".equals(fh.getFileNameW())){
                     		//filenameString=fh.getFileNameString();
                     		pathrsString=dealzhongwenaddr2(fh.getFileNameString(),t2);
                     	}else{
-                    		
+
                     		pathrsString=dealzhongwenaddr2(fh.getFileNameW(),t2);
                     	}
-                    	
+
                     	//String pathrsString=dealzhongwenaddr(filenameString,t2);
                     	String paths[]=pathrsString.split(":");
                     	if(paths.length==2){
@@ -573,16 +574,16 @@ public class UnzipUtil {
                         File fol = new File(dstDirectoryPath + File.separator+paths[0]);//.getFileNameString()
                         fol.mkdirs();
                     } else { // 文件
-                    
+
                     	String pathrsString="";
                     	if(fh.getFileNameW()==null||"".equals(fh.getFileNameW())){
                     		//filenameString=fh.getFileNameString();
                     		pathrsString=dealzhongwenaddr2(fh.getFileNameString(),t2);
                     	}else{
-                    		
+
                     		pathrsString=dealzhongwenaddr2(fh.getFileNameW(),t2);
                     	}
-                    	
+
                     	//String pathrsString=dealzhongwenaddr(filenameString,t2);
                         if(pathrsString!=null&&!pathrsString.equals("")) {
                             String paths[] = pathrsString.split(":");
@@ -611,7 +612,7 @@ public class UnzipUtil {
                     }
                     fh = a.nextFileHeader();
                 }
-                
+
                 a.close();
             }
         } catch (Exception e) {
@@ -619,7 +620,7 @@ public class UnzipUtil {
         }
         return csvName;
     }
-    
+
     public static String unRarFile(String srcRarPath) {
         if (!srcRarPath.toLowerCase().endsWith(".rar")) {
             System.out.println("非rar文件！");
@@ -628,22 +629,22 @@ public class UnzipUtil {
         String dstDirectoryPath=getrarpath(srcRarPath);
        return unRarFile( srcRarPath,dstDirectoryPath);
     }
-    
+
 
     private  static String  dealzhongwenaddr2(String addr,Long t2){//有中文
     	//System.out.println("有中文");
-    	
+
     	int se=addr.lastIndexOf("\\");
     	//System.out.println(se);
     	String seeString[]=null;
-    	
+
     	if(se==-1){
 	   		 seeString=addr.split("/");
 	   	}else{
-	   		
+
 	   		 seeString=addr.split("\\\\");
 	   	}
-    	
+
     	// seeString=addr.split(File.separator+File.separator);
     	String pcsv="";
     	String path="";
@@ -663,11 +664,11 @@ public class UnzipUtil {
     			}
     		}
     	}
-    	
+
     	String result=path;
     	if(!"".equals(pcsv)){
     		result=path+":"+pcsv;
-    		
+
     	}
     	//System.out.println(result);
     	return result;
@@ -676,14 +677,14 @@ public class UnzipUtil {
     private static String getrarpath(String path){
     	String rarpath="";
     	if(path.endsWith(".rar")){
-    		
+
     		int se=path.lastIndexOf("\\");
         	//System.out.println(se);
         	String seeString[]=null;
         	if(se==-1){
 	   	   		 seeString=path.split("/");
 	   	   	}else{
-	   	   		
+
 	   	   		 seeString=path.split("\\\\");
 	   	   	}
     		for(int i=0;i<seeString.length-1;i++){
@@ -707,16 +708,16 @@ public class UnzipUtil {
         //decompression.unzip("d:/Inetpub.zip","d://Inetpub");
         //decompression.zip("c:/Inetpub", "c:/Inetpub.zip");
         //decompression.unRarFile("E:/1111/zip/BBL20150702.rar", "E:/1111/zip");
-        
+
        // decompression.unRarFile("E:/1111/zip/BBL20150702.rar");
         //System.out.println(decompression.getrarpath("E:/1111/zip/BBL20150702.rar"));
        // decompression.dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
     	UnzipUtil decompression=new UnzipUtil();
     	//String se=decompression.unzipFile("D:\\home\\sjbfolder\\4\\csml11442571987448\\1443172368175\\1443172368175.zip",true);
-    	
+
     	String se=decompression.unRarFile("/Users/gzy/testsjb/sjbfolder/266/fc0981eb78547806af01c2541e1dc21761509/1444928922894/1444928922894.rar");
     	System.out.println("%%%%%"+se);
-        
+
       /*  String pathrsString=dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
     	String paths[]=pathrsString.split(":");
     	if(paths.length==2){
@@ -724,6 +725,6 @@ public class UnzipUtil {
     	}else{
     		System.out.println(paths[0]+"!!!!!!!!!!!"+pathrsString);
     	}*/
-         
+
     }
 }

@@ -352,7 +352,7 @@ var webSite = '${webSite!}';
     
 
 <ul class="goodsPostList">
-<#if goodsPostEntry.postType == '1'>
+<#if session_user_redis__.logshop.type == '1'>
     <li>
         <div class="goodsPostListIntro">
             <h3>自动同步</h3>
@@ -500,7 +500,7 @@ var webSite = '${webSite!}';
             </#if>
         </div>
     </li>
-<#elseif goodsPostEntry.postType == 2>
+<#elseif session_user_redis__.logshop.type == 2>
     <li>
         <div class="goodsPostListIntro">
             <h3>添加数据包</h3>
