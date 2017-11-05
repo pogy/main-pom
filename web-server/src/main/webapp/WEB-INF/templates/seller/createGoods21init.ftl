@@ -352,7 +352,7 @@ var webSite = '${webSite!}';
     
 
 <ul class="goodsPostList">
-<#if session_user_redis__.logshop.type == '1'>
+<#if session_user_redis__.logshop.type == 1>
     <li>
         <div class="goodsPostListIntro">
             <h3>自动同步</h3>
@@ -505,7 +505,7 @@ var webSite = '${webSite!}';
         <div class="goodsPostListIntro">
             <h3>添加数据包</h3>
             <p>您可以通过数据包形式上传商品到四季星座网店铺中！</p>
-            <p class="fcF40">*注：添加的数据包必须为zip或rar格式的压缩包（压缩包中必须包含对应csv格式文件和对应图片文件夹），否则系统无法解析！</p>
+            <p class="fcF40">*注：添加的数据包必须为zip格式的压缩包（压缩包中必须包含对应csv格式文件和对应图片文件夹），否则系统无法解析！</p>
         </div>
         <div class="clickButton">
             
