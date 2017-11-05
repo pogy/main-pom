@@ -105,6 +105,9 @@ public class ImportCsvFileService {
             List<Long> cidList=new ArrayList<> ();
 
             for(int i=2;i<vector_h.size();i++){
+                if(i==11){
+                    System.out.println(i);
+                }
                 Vector v_title=vector_h.get(0);
                 Vector v11=vector_h.get(i);
                 record=new ShiguGoodsTinyVO();
@@ -538,12 +541,12 @@ public class ImportCsvFileService {
                 PriceDataGrid data = priceErrorService.piPriceMatcher(shop, record, 10.00, 0.2, 4, "p,f", 1);
 
                 //System.out.println(data.getpPriceString());
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+               /* System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 System.out.println("msg===="+data.getMsg());
                 System.out.println("isStandard==="+data.getGoods().getIsStandard());
                 System.out.println("PiPrice==="+data.getGoods().getPiPrice());
                 System.out.println("PiPriceString===="+data.getGoods().getPiPriceString());
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
                 record.setPiPriceString(data.getGoods().getPiPriceString());
                 record.setPiPrice(data.getGoods().getPiPrice());
                 record.setIsStandard(data.getGoods().getIsStandard());
@@ -553,6 +556,10 @@ public class ImportCsvFileService {
                 String checkres=checkRecord(record,sge);
                 record.setError (checkres);
                 record.setExtendsGoods (sge);
+                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                System.out.println("PropertyAlias"+i+"===="+sge.getPropertyAlias ());
+
+                System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 goodsList.add (record);
             }
 
@@ -948,9 +955,13 @@ public class ImportCsvFileService {
                 if (propss.length > 0) {
                     for(int i=0;i<prss.length;i++){
                         String prs=prss[i];
-                        String pidvids[]=prs.split (":");
-                        list_pid.add (new Long(pidvids[0]));
-                        list_vid.add (new Long(pidvids[1]));
+                        if(!"".equals (prs)) {
+                            String pidvids[] = prs.split (":");
+                            if(pidvids.length>0) {
+                                list_pid.add (new Long (pidvids[0]));
+                                list_vid.add (new Long (pidvids[1]));
+                            }
+                        }
                     }
                 }
 
@@ -1153,7 +1164,7 @@ public class ImportCsvFileService {
 
     public static boolean isNumeric(String str){
         for (int i = 0; i < str.length(); i++){
-            System.out.println(str.charAt(i));
+            //System.out.println(str.charAt(i));
             if (!Character.isDigit(str.charAt(i))){
                 return false;
             }
