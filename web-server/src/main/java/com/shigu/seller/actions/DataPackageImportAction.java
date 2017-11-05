@@ -62,7 +62,7 @@ public class DataPackageImportAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
 
-        List<ShiguGoodsTinyVO> list= packageImportGoodsDataService.packageImporttempGoods (goodsPackageUrl, logshop.getShopId (), "test");
+        List<ShiguGoodsTinyVO> list= packageImportGoodsDataService.packageImporttempGoods (goodsPackageUrl, logshop.getShopId (), "rest");
         redisIO.put ("packageList"+logshop.getShopId (),list);
         return JsonResponseUtil.success();
     }
