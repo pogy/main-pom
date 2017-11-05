@@ -78,7 +78,7 @@ public class DataPackageImportAction {
      * ====================================================================================
      *
      */
-    @RequestMapping("/uploadPackageList")
+    @RequestMapping("seller/uploadPackageList")
     public String uploadPackageList(HttpSession session, Model model) throws Main4Exception {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -101,7 +101,7 @@ public class DataPackageImportAction {
         model.addAttribute ("allGoodsCount",list.size ());
         redisIO.put ("packageList",list);
 
-        return "/uploadPackageList";
+        return "seller/uploadPackageList";
     }
 
 }
