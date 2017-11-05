@@ -295,6 +295,9 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 if(vname.equals("其它/other")){
                     vns.add("other/其它");
                 }
+                if(vname.equals("尖领（常规）")){
+                    vns.add("尖领");
+                }
                 inpvid=handleProp(cid,pname,vns,alias,props,propName,inputPids,inputStr,false,inpvid);
             }
             synItem.setProps(heb(props,";"));
