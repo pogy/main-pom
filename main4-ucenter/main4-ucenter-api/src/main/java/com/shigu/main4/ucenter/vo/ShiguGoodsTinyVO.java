@@ -62,7 +62,15 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     private Integer isExcelImp;
 
+    private Boolean hasAdded=false;
 
+    public Boolean getHasAdded() {
+        return hasAdded;
+    }
+
+    public void setHasAdded(Boolean hasAdded) {
+        this.hasAdded = hasAdded;
+    }
 
     private ShiguGoodsExtendsVO extendsGoods;
 

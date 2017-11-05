@@ -59,11 +59,16 @@ public class DataPackageImportAction {
         ShopSession logshop = ps.getLogshop();
         //得到商品
         ShiguGoodsTinyVO tiny=redisIO.get(KEY_FLAG+goodsId,ShiguGoodsTinyVO.class);
+        if (tiny.getHasAdded()) {
+            return JsonResponseUtil.success();
+        }
         if (tiny == null) {
             throw new JsonErrException("ID不存在");
         }
         try {
             dataPackageImportService.addToXzw(logshop.getShopId(),tiny);
+            tiny.setHasAdded(true);
+            redisIO.putFixedTemp(KEY_FLAG+goodsId,tiny,KEY_TIME);
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
