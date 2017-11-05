@@ -196,7 +196,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 }
                 e.attr("src",img);
             }
-            synItem.setGoodsDesc(descDoc.toString());
+            synItem.setGoodsDesc(descDoc.body().html());
 
             List<String> alias=new ArrayList<>();
             List<String> props=new ArrayList<>();
