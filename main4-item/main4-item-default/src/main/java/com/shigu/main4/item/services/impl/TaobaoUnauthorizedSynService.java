@@ -251,6 +251,10 @@ public class TaobaoUnauthorizedSynService extends OuterSynUtil {
                         taobaoItemProp.setName(keyStr);
                         taobaoItemProp = taobaoItemPropMapper.selectOne(taobaoItemProp);
                         if (taobaoItemProp != null) {
+                            if (taobaoItemProp.getIsSaleProp() != null && taobaoItemProp.getIsSaleProp() ==1) {
+                                //销售属性在其他地方取
+                                continue;
+                            }
                             pid = taobaoItemProp.getPid();
                             vid = inputIndex--;
                             Integer isAllowAlias = taobaoItemProp.getIsAllowAlias();
