@@ -5,11 +5,12 @@
     <parent>
         <artifactId>main4-ucenter</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.3-SNAPSHOT</version>
+        <version>4.2.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>main4-ucenter-api</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
@@ -25,6 +26,21 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
             <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.1-1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>java-unrar</artifactId>
+            <version>0.3</version>
         </dependency>
 
     </dependencies>
