@@ -277,8 +277,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 if(pname.contains("尺")&&vname.split(" ").length==sizes.size()){
                     continue;
                 }
-                if(pname.equals("颜色")||pname.equals("尺码")
-                        ||pname.equals("基础风格")||pname.equals("细分风格")){
+                if(pname.equals("颜色")||pname.equals("尺码")){
                     continue;
                 }
                 if(pname.equals("货号")){
