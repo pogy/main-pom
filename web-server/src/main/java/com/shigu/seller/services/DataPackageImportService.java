@@ -19,7 +19,7 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-@Service
+@Service("dataPackageImportService")
 public class DataPackageImportService {
     @Autowired
     PackageImportGoodsDataService packageImportGoodsDataService;
