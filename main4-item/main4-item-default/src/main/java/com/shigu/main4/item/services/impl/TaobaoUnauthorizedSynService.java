@@ -150,7 +150,7 @@ public class TaobaoUnauthorizedSynService extends OuterSynUtil {
                     int descStart = descResp.indexOf("'");
                     int descEnd = descResp.indexOf("';");
                     if (descEnd>descStart && descStart>0) {
-                        String descStr = descResp.substring(descStart + 1, descEnd).replaceAll("<img src=\"https://img.alicdn.com/imgextra/i4/1642658218/TB2f_L8cV9gSKJjSspbXXbeNXXa-1642658218.jpg\" />","").replaceAll("<img src=\"https://img.alicdn.com/imgextra/i4/1642658218/TB2f_L8cV9gSKJjSspbXXbeNXXa-1642658218.jpg\">","");
+                        String descStr = descResp.substring(descStart + 1, descEnd).replaceAll("<img src=\"https://img.alicdn.com/imgextra/i4/1642658218/TB2f_L8cV9gSKJjSspbXXbeNXXa-1642658218.jpg\" />","").replaceAll("<img src=\"https://img.alicdn.com/imgextra/i4/1642658218/TB2f_L8cV9gSKJjSspbXXbeNXXa-1642658218.jpg\">","").replaceAll("\\\\","");
                         synItem.setGoodsDesc(descStr);
                     }
                 }
@@ -251,6 +251,10 @@ public class TaobaoUnauthorizedSynService extends OuterSynUtil {
                         taobaoItemProp.setName(keyStr);
                         taobaoItemProp = taobaoItemPropMapper.selectOne(taobaoItemProp);
                         if (taobaoItemProp != null) {
+                            if (taobaoItemProp.getIsSaleProp() != null && taobaoItemProp.getIsSaleProp() ==1) {
+                                //销售属性在其他地方取
+                                continue;
+                            }
                             pid = taobaoItemProp.getPid();
                             vid = inputIndex--;
                             Integer isAllowAlias = taobaoItemProp.getIsAllowAlias();
