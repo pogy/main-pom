@@ -274,7 +274,7 @@ public class ImportCsvFileService {
                             }
                             break;
                         case "cateProps"://宝贝属性//cateProps
-                            if(v11.get(k)!=null){
+                            if(v11.get(k)!=null){//
                                 sge.setProps((String)v11.get(k));
                             }else{
                                 record.setError ("宝贝属性为空");
@@ -333,7 +333,7 @@ public class ImportCsvFileService {
                             break;
                         case "skuProps"://销售属性组合//skuProps
                             if(v11.get(k)!=null){
-                                sge.setProps ((String)v11.get(k));//原来没有
+                                //sge.setProps ((String)v11.get(k));//原来没有
                             }
                             break;
                         case "inputPids"://用户输入ID串//inputPids

@@ -33,9 +33,9 @@ public class PackageImportGoodsDataServiceImplTest extends BaseTest{
 
     @Test
     public void packageImporttempGoods_test(){
-        String packageUrl="http://imgs.571xz.net/itemup/hz/24806/j9m897eh34eoj2.zip";
+        String packageUrl="/Users/gzy/Downloads/ffpic/9999.zip";
         Long storeId=24806L;
-        String flag="rest";
+        String flag="test";
 
         try {
             List<ShiguGoodsTinyVO> list= packageImportGoodsDataServiceImpl.packageImporttempGoods ( packageUrl,  storeId, flag);

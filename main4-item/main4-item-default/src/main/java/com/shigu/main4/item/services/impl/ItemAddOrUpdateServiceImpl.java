@@ -8,6 +8,7 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
@@ -740,19 +741,15 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long userAddItem(SynItem item) throws ItemModifyException {
-        if (StringUtils.isBlank(item.getFabric())) {
-            throw new ItemModifyException("手动发布商品面料为必填项");
-        }
-        if (StringUtils.isBlank(item.getGoodsNo())) {
-            throw new ItemModifyException("手动发布商品货号为必填项");
-        }
         Long goodsId = addItem(item, false);
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(goodsId);
-        goodsCountForsearch.setWebSite(item.getWebSite());
-        goodsCountForsearch.setFabric(item.getFabric());
-        goodsCountForsearch.setInfabric(item.getInFabric());
-        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        if (ItemFrom.MEMBER.equals(item.getItemFrom())) {
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(goodsId);
+            goodsCountForsearch.setWebSite(item.getWebSite());
+            goodsCountForsearch.setFabric(item.getFabric());
+            goodsCountForsearch.setInfabric(item.getInFabric());
+            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        }
         return goodsId;
     }
 
