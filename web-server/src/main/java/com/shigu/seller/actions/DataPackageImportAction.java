@@ -2,8 +2,8 @@ package com.shigu.seller.actions;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.services.PackageImportGoodsDataService;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
-import com.shigu.seller.services.DataPackageImportService;
 import com.shigu.seller.vo.PackageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,9 @@ public class DataPackageImportAction {
 
     @Autowired
     RedisIO redisIO;
+
     @Autowired
-    DataPackageImportService dataPackageImportService;
+    PackageImportGoodsDataService packageImportGoodsDataService;
 
 
 
@@ -59,7 +62,7 @@ public class DataPackageImportAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
 
-        List<ShiguGoodsTinyVO> list= dataPackageImportService.importtempGoods (goodsPackageUrl, logshop.getShopId (), "test");
+        List<ShiguGoodsTinyVO> list= packageImportGoodsDataService.packageImporttempGoods (goodsPackageUrl, logshop.getShopId (), "test");
         redisIO.put ("packageList"+logshop.getShopId (),list);
         return JsonResponseUtil.success();
     }
