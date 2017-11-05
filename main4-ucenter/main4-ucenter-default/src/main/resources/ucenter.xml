@@ -28,5 +28,5 @@
     <dubbo:service interface="com.shigu.main4.ucenter.services.WxUserService" ref="wxUserService" retries="0" timeout="20000" />
 
 
-    <dubbo:service interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" ref="packageImportGoodsDataServiceImpl" retries="0" timeout="20000" />
 </beans>
