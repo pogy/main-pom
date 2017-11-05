@@ -6,7 +6,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.2.3-SNAPSHOT</version>
+    <version>4.2.4-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-common</module>
