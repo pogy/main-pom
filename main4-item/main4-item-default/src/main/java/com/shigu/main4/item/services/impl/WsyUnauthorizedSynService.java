@@ -329,7 +329,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         if(url.contains("taobaocdn")||url.contains("alicdn")){
             return url;
         }
-        String fileStr="itemImgs/"+shopId+"/goodsId/"+ MD5.encrypt(url)+".jpg";
+        String fileStr="itemImgs/"+shopId+"/"+ MD5.encrypt(url)+".jpg";
         ossIO.uploadFile(new URL(url).openStream(),fileStr);
         return "//imgs.571xz.net/"+fileStr;
     }
