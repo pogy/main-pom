@@ -35,7 +35,7 @@ import java.util.*;
  * @since: main-pom
  * @commonents:
  */
-@Service("importCsvFileService")
+@Service
 public class ImportCsvFileService {
 
     @Autowired
