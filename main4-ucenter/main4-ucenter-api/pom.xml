@@ -27,6 +27,21 @@
             <artifactId>shiro-core</artifactId>
             <version>${shiro.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.1-1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>java-unrar</artifactId>
+            <version>0.3</version>
+        </dependency>
 
     </dependencies>
 
