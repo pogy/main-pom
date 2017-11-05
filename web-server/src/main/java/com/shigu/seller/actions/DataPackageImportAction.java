@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @类编号
@@ -63,8 +64,17 @@ public class DataPackageImportAction {
         ShopSession logshop = ps.getLogshop();
 
         List<ShiguGoodsTinyVO> list= packageImportGoodsDataService.packageImporttempGoods (goodsPackageUrl, logshop.getShopId (), "rest");
-        redisIO.put ("packageList"+logshop.getShopId (),list);
-        return JsonResponseUtil.success();
+        String se=UUID.randomUUID ().toString ();
+        redisIO.putTemp ("packageList"+logshop.getShopId ()+se,list,1000*60*2);
+        if(list.size ()>0) {
+            for (ShiguGoodsTinyVO goodsVO : list) {
+                redisIO.putTemp(goodsVO.getGoodsId ()+"",goodsVO,1000*60*60*2);
+            }
+
+        }
+
+        String msg="packageList"+logshop.getShopId ()+se;
+        return JsonResponseUtil.success(msg);
     }
 
     /**
@@ -78,12 +88,12 @@ public class DataPackageImportAction {
      * ====================================================================================
      *
      */
-    @RequestMapping("/uploadPackageList")
-    public String uploadPackageList(HttpSession session, Model model) throws Main4Exception {
+    @RequestMapping("seller/uploadPackageList")
+    public String uploadPackageList(String msg,HttpSession session, Model model) throws Main4Exception {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
-        List<ShiguGoodsTinyVO> list=redisIO.getList ("packageList"+logshop.getShopId (),ShiguGoodsTinyVO.class);
+        List<ShiguGoodsTinyVO> list=redisIO.getList (msg,ShiguGoodsTinyVO.class);
         List<PackageVO> voList=new ArrayList<> ();
         if(list.size ()>0){
             for(ShiguGoodsTinyVO goodsVO:list){
@@ -101,7 +111,7 @@ public class DataPackageImportAction {
         model.addAttribute ("allGoodsCount",list.size ());
         redisIO.put ("packageList",list);
 
-        return "/uploadPackageList";
+        return "seller/uploadPackageList";
     }
 
 }
