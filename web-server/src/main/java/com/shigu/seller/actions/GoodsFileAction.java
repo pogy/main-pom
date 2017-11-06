@@ -2,6 +2,8 @@ package com.shigu.seller.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
+import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.bo.BigPicOuterLinkBO;
@@ -43,6 +45,9 @@ public class GoodsFileAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    ShopsItemService shopsItemService;
 
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -148,6 +153,7 @@ public class GoodsFileAction {
     public JSONObject saveGoodsFileOuter(BigPicOuterLinkBO bo,HttpSession session) throws JsonErrException {
         ShopSession shop = logshop(session);
         goodsFileService.saveOrUpdateOuterLink(bo,shop);
+        shopsItemService.clearShopCountCache(shop.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_);
         return JsonResponseUtil.success();
     }
 

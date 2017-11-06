@@ -15,8 +15,6 @@ public class StoreGoodsListSearchBO implements Serializable {
     private String keyword;
     //货号
     private String goodsNo;
-    //淘宝id
-    private Long numIid;
     //1无最低零售价 2无大图 3无材料成分 null全部商品
     private Integer state;
 
@@ -34,14 +32,6 @@ public class StoreGoodsListSearchBO implements Serializable {
 
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
-    }
-
-    public Long getNumIid() {
-        return numIid;
-    }
-
-    public void setNumIid(Long numIid) {
-        this.numIid = numIid;
     }
 
     public Integer getState() {
