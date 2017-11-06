@@ -54,7 +54,7 @@ public class OnsaleItemVO {
 
     private String sid;
 
-    private Integer setCorrelateType;
+    private Integer correlateType;
 
     private Integer bigPicType;
 
@@ -75,12 +75,12 @@ public class OnsaleItemVO {
         this.type = type;
     }
 
-    public Integer getSetCorrelateType() {
-        return setCorrelateType;
+    public Integer getCorrelateType() {
+        return correlateType;
     }
 
-    public void setSetCorrelateType(Integer setCorrelateType) {
-        this.setCorrelateType = setCorrelateType;
+    public void setCorrelateType(Integer correlateType) {
+        this.correlateType = correlateType;
     }
 
     public Integer getBigPicType() {
