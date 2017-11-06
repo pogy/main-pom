@@ -529,7 +529,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private MultipleExample selNoBigPic(Long shopId, String webSite, StoreGoodsListSearchBO bo) {
         ShiguGoodsTinyExample noBigPicGoodsExample = shopGoodsExample(shopId, webSite,bo);
         GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-        goodsCountForsearchExample.createCriteria().andHadBigzipEqualTo(1);
+        goodsCountForsearchExample.createCriteria().andHadBigzipEqualTo(0);
         return MultipleExampleBuilder.from(noBigPicGoodsExample).innerJoin(goodsCountForsearchExample).on(noBigPicGoodsExample.createCriteria().equalTo(ShiguGoodsTinyExample.goodsId, GoodsCountForsearchExample.goodsId)).build();
     }
 
@@ -544,7 +544,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private MultipleExample selNoLowPrice(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
         ShiguGoodsTinyExample noLowPriceGoodsExample = shopGoodsExample(shopId, webSite,bo);
         ShiguGoodsModifiedExample shiguGoodsModifiedExample = new ShiguGoodsModifiedExample();
-        shiguGoodsModifiedExample.createCriteria().andHasSetPriceEqualTo(1);
+        shiguGoodsModifiedExample.createCriteria().andHasSetPriceEqualTo(0);
         return MultipleExampleBuilder.from(noLowPriceGoodsExample).innerJoin(shiguGoodsModifiedExample).on(noLowPriceGoodsExample.createCriteria().andPriceIsNotNull().equalTo(ShiguGoodsTinyExample.goodsId, ShiguGoodsModifiedExample.itemId)).build();
     }
 
@@ -591,7 +591,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             criteria.andTitleLike('%'+bo.getKeyword()+'%');
         }
         if (StringUtils.isNotBlank(bo.getGoodsNo())) {
-            criteria.andTitleLike('%'+bo.getGoodsNo()+'%');
+            criteria.andGoodsNoLike('%'+bo.getGoodsNo()+'%');
         }
         if (bo.getNumIid() != null) {
             criteria.andNumIidEqualTo(bo.getNumIid());
