@@ -81,23 +81,25 @@ public class MyTbOrderService {
     private static SimilarityMap<OrderTown> similarityTownMap;
 
 
-    public ShiguPager<TbOrderVO> myTbOrders(Long userId,Long orderId, Integer page,Integer size, String startTime, String endTime) {
+    public MyTbOrderVO<TbOrderVO> myTbOrders(Long userId,Long orderId, Integer page,Integer size, String startTime, String endTime) {
         String sessionKey;
         SecurityBiz.getSeparatorCharMap();
         try {
             sessionKey = taoOrderService.myTbSessionKey(userId);
         } catch (NotFindSessionException e) {
-            return new ShiguPager<>();
+            return new MyTbOrderVO();
         }
+        int notLinkNum=0;
+        MyTbOrderVO<TbOrderVO> v=new MyTbOrderVO<>();
         if(orderId!=null){
-            ShiguPager<TbOrderVO> v=new ShiguPager<>();
             TbOrderVO vo=taoOrderService.myTbOrder(orderId,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
             List<TbOrderVO> list=new ArrayList<>();
             if(vo!=null){
                 vo.setXzUserId(userId);
-                linkGoodsNo(vo);
+                notLinkNum+=linkGoodsNo(vo);
                 list.add(vo);
             }
+            v.setNotLinkNum(notLinkNum);
             v.setContent(list);
             v.setNumber(page);
             v.calPages(list.size(),size);
@@ -121,9 +123,14 @@ public class MyTbOrderService {
         List<TbOrderVO> vos=tvo.getContent();
         for(TbOrderVO vo:vos){
             vo.setXzUserId(userId);
-            linkGoodsNo(vo);
+            notLinkNum+=linkGoodsNo(vo);
         }
-        return tvo;
+        v.setContent(tvo.getContent());
+        v.setNumber(page);
+        v.setTotalCount(tvo.getTotalCount());
+        v.setTotalPages(tvo.getTotalPages());
+        v.setNotLinkNum(notLinkNum);
+        return v;
     }
 
     public ShiguPager<GoodsVO> selectglGoods(String keyword,String webSite, Integer page, Integer size){
@@ -538,10 +545,11 @@ public class MyTbOrderService {
         return similarityTownMap;
     }
 
-    private void linkGoodsNo(TbOrderVO vo){
+    private int linkGoodsNo(TbOrderVO vo){
         vo.setCanOrder(true);
         vo.setProfits(null);
         Long lr= 0L;
+        int notLinkNum=0;
         for(SubTbOrderVO subvo:vo.getChildOrders()){
             if(StringUtils.isEmpty(subvo.getGoodsNo())){
                 try {
@@ -553,9 +561,11 @@ public class MyTbOrderService {
                         lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
                     }else {
                         vo.setCanOrder(false);
+                        notLinkNum++;
                     }
                 } catch (NotFindRelationGoodsException e) {
                     vo.setCanOrder(false);
+                    notLinkNum++;
                 }
             }
         }
@@ -563,5 +573,6 @@ public class MyTbOrderService {
             vo.setProfits(PriceConvertUtils.priceToString(lr));
         }
         redisIO.putTemp("tbOrder"+vo.getTbId(), vo, 3600);
+        return notLinkNum;
     }
 }

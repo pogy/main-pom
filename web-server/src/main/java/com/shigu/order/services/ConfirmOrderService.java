@@ -8,6 +8,7 @@ import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
@@ -73,6 +74,7 @@ public class ConfirmOrderService {
 
     @Autowired
     private ItemProductProcess itemProductProcess;
+
 
 
 
@@ -331,5 +333,42 @@ public class ConfirmOrderService {
         }
         Collections.sort(vos);
         return vos;
+    }
+
+
+    public ConfirmTbBatchOrderVO confirmTbBatchOrder(List<OrderSubmitVo> tbTrades,Long senderId){
+        int orderNum=tbTrades.size();
+        int goodsNum=0;
+        long serviceTotalPrice=0L;
+        long goodsTotalPrice=0L;
+
+
+        Map<Long,Integer> marketNumMap=new HashMap<>();
+        for(OrderSubmitVo t:tbTrades){
+            for(CartVO cart:t.getProducts()){
+                goodsTotalPrice+=cart.getPrice();
+                goodsNum+=cart.getNum();
+                Integer marketNum=marketNumMap.get(cart.getMarketId());
+                if(marketNum==null){
+                    marketNum=0;
+                }
+                marketNum+=cart.getNum();
+                marketNumMap.put(cart.getMarketId(),marketNum);
+            }
+        }
+        for(Long marketId:marketNumMap.keySet()){
+            ServiceVO serviceRuler = orderConstantService.selDfService(senderId, marketId);
+            serviceTotalPrice+=marketNumMap.get(marketId)*serviceRuler.getPrice();
+        }
+        ConfirmTbBatchOrderVO vo=new ConfirmTbBatchOrderVO();
+        vo.setGoodsNum(goodsNum);
+        vo.setGoodsTotalPrice(MoneyUtil.dealPrice(goodsTotalPrice));
+        vo.setOrderNum(orderNum);
+        vo.setServiceTotalPrice(MoneyUtil.dealPrice(serviceTotalPrice));
+        return vo;
+    }
+
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades,Long senderId){
+        return null;
     }
 }

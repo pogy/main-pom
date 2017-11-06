@@ -11,6 +11,7 @@ import com.shigu.order.bo.TaobaoOrderBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.MyTbOrderService;
 import com.shigu.order.vo.MoreErrorAddressVO;
+import com.shigu.order.vo.MyTbOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -60,10 +61,11 @@ public class MyTbOrderAction {
         if(StringUtils.isEmpty(bo.getPage())){
             bo.setPage(1);
         }
-        ShiguPager<TbOrderVO> pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
+        MyTbOrderVO pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
                 bo.getPage(),size,bo.getSt(),bo.getEt());
 
         model.addAttribute("orders",pager.getContent());
+        model.addAttribute("notLinkNum",pager.getNotLinkNum());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
         return "buyer/myTbOrder";

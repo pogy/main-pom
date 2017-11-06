@@ -171,4 +171,24 @@ public class ConfirmOrderAction {
 
         return JsonResponseUtil.success().element("addressId", addressId);
     }
+
+
+
+
+    public JSONObject confirmTbBatchOrder(ConfirmBO bo, HttpServletRequest request) throws OrderException {
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = null;
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (sessionUser != null) {
+            userId = sessionUser.getUserId();
+        }
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+        return null;
+
+    }
 }
