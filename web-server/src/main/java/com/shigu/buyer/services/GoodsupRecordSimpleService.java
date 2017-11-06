@@ -181,7 +181,7 @@ public class GoodsupRecordSimpleService {
                     onekeyRecoreVO.setShopSaleState(!shiguGoodsUp.getShopSoldout() ? 1 : 2);
                 }
                 if (shiguGoodsUp.getTbSoldout() != null) {
-                    onekeyRecoreVO.setShopSaleState(!shiguGoodsUp.getShopSoldout() ? 1 : 2);
+                    onekeyRecoreVO.setTaobaoSaleState(!shiguGoodsUp.getTbSoldout() ? 1 : 2);
                 }
                 if (shiguGoodsUp.getWebSite() == null) {
 //                    continue;//跳过
