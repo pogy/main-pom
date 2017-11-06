@@ -663,17 +663,25 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguPropImgs shiguPropImgs = container.getShiguPropImgs();
         shiguPropImgs.setItemId(tiny.getGoodsId());
         shiguPropImgsMapper.insertSelective(shiguPropImgs);
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+        goodsCountForsearch.setWebSite(item.getWebSite());
+        if (ItemFrom.MEMBER.equals(item.getItemFrom())) {
+            goodsCountForsearch.setFabric(item.getFabric());
+            goodsCountForsearch.setInfabric(item.getInFabric());
+        }
+        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
 
-//        //5.添加es中goods数据
-//        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
-////        ElasticRepository repository = new ElasticRepository();
-//        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
-//        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-////        repository.insert(seb);
-//        goodsAddToRedis.addToRedis(seb);
-//        sameItemUtilAddRemove(tiny, true);
-//        //添加首图到图搜
-//        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
+        //5.添加es中goods数据
+        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
+        //ElasticRepository repository = new ElasticRepository();
+        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
+        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
+        //repository.insert(seb);
+        goodsAddToRedis.addToRedis(seb);
+        sameItemUtilAddRemove(tiny, true);
+        //添加首图到图搜
+        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
 
         return tiny.getGoodsId();
     }
@@ -741,16 +749,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long userAddItem(SynItem item) throws ItemModifyException {
-        Long goodsId = addItem(item, false);
-        if (ItemFrom.MEMBER.equals(item.getItemFrom())) {
-            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-            goodsCountForsearch.setGoodsId(goodsId);
-            goodsCountForsearch.setWebSite(item.getWebSite());
-            goodsCountForsearch.setFabric(item.getFabric());
-            goodsCountForsearch.setInfabric(item.getInFabric());
-            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
-        }
-        return goodsId;
+        return addItem(item, false);
     }
 
     /**
