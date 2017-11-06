@@ -316,6 +316,8 @@ public class ShopAction {
      */
     @RequestMapping("seller/releaseGoodsinit")
     public String releaseGoodsinit(){
+        //historyCategory
+
         return "seller/releaseGoodsinit";
     }
 
