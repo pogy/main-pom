@@ -177,6 +177,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                            // System.out.println("商品转换失败！");
                             throw new Main4Exception (packageUrl+",商品转换失败！");
                         }else{
+                            deleteFileAndFolder( temppath);
                             return goodsList;
                         }
 
