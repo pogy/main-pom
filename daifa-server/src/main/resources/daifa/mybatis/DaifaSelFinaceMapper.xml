@@ -108,18 +108,18 @@
     <select id="selectWorkerTakeNums" resultType="com.shigu.daifa.vo.WorkerTakeNumVO">
         SELECT
             t1.user_Name `name`,
-            t2.num num
+            CONCAT(t2.num,"/",t2.total_num) num
         FROM
             daifa_worker t1,
             (
                 SELECT
                     daifa_worker_id,
-                    sum(goods_num) num
+                    sum(if(take_goods_status=1,goods_num,0)) num,
+					sum(goods_num) total_num
                 FROM
                     daifa_ggoods
                 WHERE
-                    take_goods_status = 1
-                AND take_goods_date >= ${day}
+                    take_goods_date >= ${day}
                 AND seller_id=${sellerId}
                 GROUP BY
                     daifa_worker_id
