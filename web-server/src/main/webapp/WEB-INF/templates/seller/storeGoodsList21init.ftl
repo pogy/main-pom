@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509871207386" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509953302848" rel="stylesheet">
     
   </head>
 <body>
@@ -255,23 +255,20 @@ var webSite = '${webSite!}';
                 <li <#if !query.state>class="select"</#if>><a href="storeGoodsList21init.htm">全部商品</a></li>
                 <li <#if query.state == 1>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=1">无最低零售价
-                        <#if nolowestLsjNum??>
-                        <i>${nolowestLsjNum!}</i>
-                        </#if>
+                        
+                        <i id="noPriceNum"></i>
                     </a>
                 </li>
                 <li <#if query.state == 2>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=2">无大图商品
-                        <#if noBigPicGoodsNum??>
-                        <i>${noBigPicGoodsNum!}</i>
-                        </#if>
+                        
+                        <i id="noBigpicNum"></i>
                     </a>
                 </li>
                 <li <#if query.state == 3>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=3">无材料成分
-                        <#if noConstituentNum??>
-                        <i>${noConstituentNum!}</i>
-                        </#if>
+                        
+                        <i id="noMaterialNum"></i>
                     </a>
                 </li>
             </ul>
@@ -287,7 +284,11 @@ var webSite = '${webSite!}';
         <div class="goods-list">
             <ul class="head clearfix">
                 <li class="name">
+                    <#if session_user_redis__.logshop.type == 1>
                     <label><input type="checkbox" class="checkbox">全选</label>
+                    <#else>
+                        <span style="display:block; text-align:center;">商品名称</span>
+                    </#if>
                 </li>
                 <li class="price">批发价</li>
                 <li class="lowestPrice">最低零售价</li>
@@ -304,8 +305,9 @@ var webSite = '${webSite!}';
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
                     </#if>
-                    
+                    <span>&nbsp;</span>
                     <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
+                    
                     
                     
                 </li>
@@ -313,7 +315,9 @@ var webSite = '${webSite!}';
             <#list goodslist as item>
             <ul class="body clearfix" data-id="${item.id!}">
                 <li class="name">
+                    <#if session_user_redis__.logshop.type == 1>
                     <input type="checkbox" class="checkbox" value="${item.id!},<#if item.tj == true>1<#else>0</#if>">
+                    </#if>
                     <a class="piclink" href="${item.href!}" title="查看宝贝详情" target="_blank">
                         <img src="${item.imgsrc!}_80x80.jpg">
                     </a>
@@ -361,7 +365,7 @@ var webSite = '${webSite!}';
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
                     
-                    <#if item.detailUrlnew != null>
+                    <#if session_user_redis__.logshop.type == 1>
                     <p><b class="tbGoods">同步商品</b></p>
                     <#else>
                     <p><em class="xjgoods">下架</em></p>
@@ -447,7 +451,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509871207386"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509953302848"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

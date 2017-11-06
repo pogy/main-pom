@@ -316,6 +316,8 @@ public class ShopAction {
      */
     @RequestMapping("seller/releaseGoodsinit")
     public String releaseGoodsinit(){
+        //historyCategory
+
         return "seller/releaseGoodsinit";
     }
 
@@ -522,7 +524,7 @@ public class ShopAction {
             for(OnsaleItem oi:list){
                 OnsaleItemVO vo = new OnsaleItemVO(oi);
                 GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
-                vo.setSetCorrelateType(fileInfo==null?1:2);
+                vo.setCorrelateType(fileInfo==null?1:2);
                 vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
                 if (fileInfo != null) {
                     vo.setLinkHref(fileInfo.getFileKey());
