@@ -1,5 +1,7 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
+
 /**
  * 类名：NewAutumnDrawVerifyVO
  * 类路径：com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO
@@ -8,7 +10,7 @@ package com.shigu.main4.spread.vo.active.draw;
  * 项目：main-pom
  * 描述：秋装新品发布会抽奖资格信息
  */
-public class NewAutumnDrawVerifyVO extends DrawVerifyVO {
+public class NewAutumnDrawVerifyVO extends DrawVerifyVO implements Serializable {
     /**
      * shigu_temp表记录抽奖资格信息：标记转由{@link com.shigu.main4.spread.enums.AutumnNewConstant}维护
      * key1:userId

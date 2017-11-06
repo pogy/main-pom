@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * 项目：main-pom
  * 描述：秋装新品发布会抽奖奖池
  */
-public class NewAutumnPrizePool extends DrawPrizePool {
+public class NewAutumnPrizePool extends DrawPrizePool implements Serializable {
     /**
      * 秋装新品发布会抽奖奖池数据存在shigu_temp表中
      * flag:标记转由{@link com.shigu.main4.spread.enums.AutumnNewConstant}维护
