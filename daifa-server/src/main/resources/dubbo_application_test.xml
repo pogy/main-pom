@@ -8,7 +8,9 @@
 
     <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.PackDeliveryProcess" id="packDeliveryProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000" >
+        <dubbo:method name="orderTimeout" timeout="300000"/>
+    </dubbo:reference>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" id="scanSaleAfterExpressProcess" timeout="10000"/>

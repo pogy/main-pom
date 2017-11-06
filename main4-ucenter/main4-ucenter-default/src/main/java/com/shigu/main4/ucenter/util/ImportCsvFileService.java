@@ -52,7 +52,7 @@ public class ImportCsvFileService {
     OssIO oss;
 
     public  List<ShiguGoodsTinyVO> importCsvFileString(Long storeId, String importCSVFile, String image_save_path) throws Main4Exception {
-
+    //Date t1=new Date();
         //查询店铺
         ShiguShop shop= shiguShopMapper.selectByPrimaryKey (storeId);
 
@@ -66,7 +66,7 @@ public class ImportCsvFileService {
 
         Map<String, String> map=new HashMap<String, String> ();//key为图片存储地址  //value为转化后的图片访问地址
 
-       // Date t1=new Date();
+
 
         ShiguGoodsTinyVO record=null;
         ShiguGoodsExtendsVO sge=null;
@@ -324,10 +324,12 @@ public class ImportCsvFileService {
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
-                                Date tpic=new Date();
+                               // Date tpic=new Date();
+
                                 getImgs((String)v11.get(k), record,sge,image_save_path,map);
-                                Date tpicend=new Date();
-                                long timepic=tpicend.getTime()-tpic.getTime();
+                               // Date tpicend=new Date();
+                               // long timepic=tpicend.getTime()-tpic.getTime();
+                               // System.out.println(i+"执行图片处理"+timepic);
                             }else{
                                 record.setError ("没有主图");
                             }
@@ -514,19 +516,21 @@ public class ImportCsvFileService {
                 sge.setIsVirtual("false");
                 sge.setOneStation("false");
 
-                CatStr  cs=  getCatStrAndGoodsNo(sge.getProps(),input_custom_cpv,record.getCid(),sge.getInputPids(),sge.getInputStr(),record.getGoodsNo(),propAlias);
+                //CatStr  cs=  getCatStrAndGoodsNo(sge.getProps(),input_custom_cpv,record.getCid(),sge.getInputPids(),sge.getInputStr(),record.getGoodsNo(),propAlias);
 
-                sge.setPropsName(cs.getPn());
+               // sge.setPropsName(cs.getPn());
 
-                //sge.setPropertyAlias(cs.getPnc());
+               // //sge.setPropertyAlias(cs.getPnc());
                 if(propAlias!=null&&!"".equals (propAlias))
                 sge.setPropertyAlias (propAlias);
-                if(cs.getGoodsNo()!=null&&!"".equals(cs.getGoodsNo())){
+                /*if(cs.getGoodsNo()!=null&&!"".equals(cs.getGoodsNo())){
                     record.setGoodsNo(cs.getGoodsNo());
-                }
-                if((record.getGoodsNo()==null||"".equals(record.getGoodsNo()))&&record.getOuterId ()!=null&&!"".equals (record.getOuterId ())){
+                }*/
+               String goodsNo= getgoodsNo(sge.getInputPids(),sge.getInputStr(),record.getGoodsNo());
+               record.setGoodsNo (goodsNo);
+               /* if((record.getGoodsNo()==null||"".equals(record.getGoodsNo()))&&record.getOuterId ()!=null&&!"".equals (record.getOuterId ())){
                     record.setGoodsNo(record.getOuterId());
-                }
+                }*/
 
                 sge.setUpdateTime(new Date());
                 sge.setViolation("false");
@@ -538,8 +542,12 @@ public class ImportCsvFileService {
 
                 String prices=record.getPriceString();
                 Double priced=new Double(prices);
-                PriceDataGrid data = priceErrorService.piPriceMatcher(shop, record, 10.00, 0.2, 4, "p,f", 1);
 
+                //Date datepprice1=new Date();
+                PriceDataGrid data = priceErrorService.piPriceMatcher(shop, record, 10.00, 0.2, 4, "p,f", 1);
+                //Date datepprice2=new Date();
+                //long time_piprice=datepprice2.getTime ()-datepprice1.getTime ();
+                //System.out.println(i+"执行piPriceMatcher的时间="+time_piprice);
                 //System.out.println(data.getpPriceString());
                /* System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 System.out.println("msg===="+data.getMsg());
@@ -558,13 +566,14 @@ public class ImportCsvFileService {
                 record.setExtendsGoods (sge);
                 /*System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 System.out.println("PropertyAlias"+i+"===="+sge.getPropertyAlias ());
-
                 System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
                 goodsList.add (record);
             }
 
             //=================================================================================================
             //cidList 查询cid然后最后循环放到goods的cid里//如果cid查询里没有类目名的话那么cid就是有问题的，有就是没有问题的
+            //Date dcid1=new Date();
+
             Map<Long,String> mapcid=queryCid(cidList);
             if(goodsList.size ()>0){
                 for(ShiguGoodsTinyVO goodsvo:goodsList){
@@ -581,15 +590,18 @@ public class ImportCsvFileService {
 
                 }
             }
+            //Date dcid2=new Date();
+            //Long dr1=dcid2.getTime()-dcid1.getTime();
+           // System.out.println ("类目执行时间：" + dr1);
             //=================================================================================================
 
         } catch (Exception e) {
 
             throw new Main4Exception (e.getMessage ());
         }
-        /*Date t2=new Date();
-        Long dr1=t2.getTime()-t1.getTime();
-        System.out.println ("全部执行时间为：" + dr1);*/
+        //Date t2=new Date();
+        //Long dr1=t2.getTime()-t1.getTime();
+       // System.out.println ("全部执行时间为：" + dr1);
 
         return goodsList;
     }
@@ -858,6 +870,43 @@ public class ImportCsvFileService {
 
     /**
      * ====================================================================================
+     * @方法名： getgoodsNo
+     * @user gzy 2017/11/6 17:06
+     * @功能：取得货号
+     * @param: [inputPids, inputValues, outer_id]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public String getgoodsNo(String inputPids,String inputValues,String outer_id){
+
+        //货号
+        String goodsNo = "";
+
+        if (inputPids != null && inputPids.length() > 0) {
+            if (inputPids.contains("13021751")) {//商品编码
+                //开始处理
+                String goodsnoids[] = inputPids.split(",");
+
+                String goodsnos[] = inputValues.split(",");
+                for (int i = 0; i < goodsnoids.length; i++) {
+                    if (goodsnoids[i].equals("13021751")||goodsnoids[i].equals("1647377840")||goodsnoids[i].equals("637078838")) {
+                        goodsNo = goodsnos[i];
+                    }
+                }
+            }
+
+        }
+
+        if("".equals(goodsNo)){
+            goodsNo=outer_id;
+        }
+        return goodsNo;
+    }
+
+    /**
+     * ====================================================================================
      * @方法名： getCatStrAndGoodsNo
      * @user gzy 2017/11/3 18:53
      * @功能：
@@ -938,14 +987,6 @@ public class ImportCsvFileService {
             if (pnc.length() >= 1) {
                 pnc += ";";
             }
-            /*OpenClient c = new PcOpenClient (DConfig.OPENCLIENT_APPKEY, DConfig.OPENCLIENT_SECRET, DConfig.OPENCLIENT_SERVER_TYPE);
-            ItemCatRequest req = new ItemCatRequest();
-            req.setCid(cid);
-            req.setCatStr(props);
-            ItemCatResponse res = (ItemCatResponse) c.execute(req);
-            //System.out.println(res.getBody());
-
-            OpenList<PropBean> list = res.getPropValues();*/
 
             List<Long> list_pid=new ArrayList<> ();
             List<Long> list_vid=new ArrayList<> ();
@@ -983,10 +1024,6 @@ public class ImportCsvFileService {
                     list.add (pb);
                 }
             }
-
-
-
-
 
             LinkedHashMap<String, PropBean> map_prop_order = new LinkedHashMap<String, PropBean>();//过滤重复
             String keyString = "";

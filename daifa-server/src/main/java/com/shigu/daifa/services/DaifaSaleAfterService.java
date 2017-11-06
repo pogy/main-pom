@@ -383,7 +383,7 @@ public class DaifaSaleAfterService {
         daifaAfterSaleExample.createCriteria().andDfTradeIdEqualTo(orderId);
         List<DaifaAfterSale> sales=daifaAfterSaleMapper.selectFieldsByExample(daifaAfterSaleExample,FieldUtil.codeFields("after_sale_id"));
         if(sales.size()!=1){
-            throw new DaifaException("orderId错误");
+            throw new DaifaException("orderId错误",DaifaException.ERROR);
         }
         SaleAfterRemarkerBO bo=new SaleAfterRemarkerBO();
         bo.setAfterSaleId(sales.get(0).getAfterSaleId());
@@ -419,7 +419,7 @@ public class DaifaSaleAfterService {
     public void refuseAfterSale(Long refundId, Long dealReasonId) throws DaifaException {
         DaifaRefuseReason reason=daifaRefuseReasonMapper.selectByPrimaryKey(dealReasonId);
         if(reason==null){
-            throw new DaifaException("原因类型错误");
+            throw new DaifaException("原因类型错误",DaifaException.DEBUG);
         }
         saleAfterProcess.afterApplyDeal(refundId,2,reason.getDealReason());
     }
@@ -603,7 +603,7 @@ public class DaifaSaleAfterService {
     public void addPackageRemark(Long packbagId, String remarkCon) throws DaifaException {
         DaifaAfterReceiveExpresStock daifaAfterReceiveExpresStock =  daifaAfterReceiveExpresStockMapper.selectByPrimaryKey(packbagId);
         if (daifaAfterReceiveExpresStock == null || daifaAfterReceiveExpresStock.getReceivedExpressCode() == null) {
-            throw new DaifaException("未查询到包裹信息");
+            throw new DaifaException("未查询到包裹信息",DaifaException.DEBUG);
         }
         DaifaAfterReceiveExpresStockExample example = new DaifaAfterReceiveExpresStockExample();
         example.createCriteria().andReceivedExpressCodeEqualTo(daifaAfterReceiveExpresStock.getReceivedExpressCode());
