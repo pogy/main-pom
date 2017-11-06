@@ -34,7 +34,7 @@ public class ShopItemServiceTest extends BaseSpringTest {
     @Test
     public void testNewOnsaleItem() throws Main4Exception {
         StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
-        ShopUnprocessItemCount unprocessItem = shopsItemService.selShopUnprocessItemCount(29911L, "hz");
+        ShopUnprocessItemCount unprocessItem = shopsItemService.selShopUnprocessItemCount(35992L, "hz");
         bo.setKeyword("水洗");
         ShiguPager<OnsaleItem> onSale = shopsItemService.selOnsaleItems(29911L, "hz", bo, 2, 10);
         ShiguPager<OnsaleItem> totalOnSale = shopsItemService.selOnsaleItems(29911L, "hz", new StoreGoodsListSearchBO(), 2, 10);

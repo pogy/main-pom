@@ -21,6 +21,7 @@ import com.shigu.main4.item.beans.GoodsInfoVO;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ShopsItemException;
 import com.shigu.main4.item.services.utils.ElasticCountUtil;
@@ -29,6 +30,7 @@ import com.shigu.main4.item.services.utils.OnsaleInstockReader;
 import com.shigu.main4.item.services.utils.SelIOItemsUtil;
 import com.shigu.main4.item.vo.*;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +81,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     @Autowired
     private MultipleMapper tae_mall_multipleMapper;
+
+    @Autowired
+    private RedisIO redisIO;
 
     @Autowired
     OssIO ossIO;
@@ -435,22 +440,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         return null;
     }
 
-    /**
-     * 获取店内未设置大图、材质、最低零售价统计
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    @Override
-    public ShopUnprocessItemCount selShopUnprocessItemCount(Long shopId, String webSite) {
-        ShopUnprocessItemCount countResult = new ShopUnprocessItemCount();
-        StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
-        countResult.setNoBigPicGoodsNum(tae_mall_multipleMapper.countByMultipleExample(selNoBigPic(shopId, webSite,bo)));
-        countResult.setNolowestLsjNum(tae_mall_multipleMapper.countByMultipleExample(selNoLowPrice(shopId, webSite,bo)));
-        countResult.setNoConstituentNum(tae_mall_multipleMapper.countByMultipleExample(selNoConstituent(shopId, webSite,bo)));
-        return countResult;
-    }
-
     @Override
     public ShiguPager<OnsaleItem> selOnsaleItems(Long shopId, String webSite, StoreGoodsListSearchBO bo, int pageNo, int pageSize) throws Main4Exception {
         if (shopId == null || webSite == null) {
@@ -523,7 +512,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      * 所有参数非空
      * @param shopId
      * @param webSite
-     * @param bo
      * @return
      */
     private MultipleExample selNoBigPic(Long shopId, String webSite, StoreGoodsListSearchBO bo) {
@@ -538,7 +526,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      * 所有参数非空
      * @param shopId
      * @param webSite
-     * @param bo
      * @return
      */
     private MultipleExample selNoLowPrice(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
@@ -553,7 +540,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      * 所有参数非空
      * @param shopId
      * @param webSite
-     * @param bo
      * @return
      */
     private MultipleExample selNoConstituent(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
@@ -593,9 +579,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         if (StringUtils.isNotBlank(bo.getGoodsNo())) {
             criteria.andGoodsNoLike('%'+bo.getGoodsNo()+'%');
         }
-        if (bo.getNumIid() != null) {
-            criteria.andNumIidEqualTo(bo.getNumIid());
-        }
         return example;
     }
 
@@ -623,5 +606,47 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         goodsCountForsearch.setFabric(fabricStr);
         goodsCountForsearch.setInfabric(inFabricStr);
         goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+    }
+
+    @Override
+    public int selNolowestLsjNum(Long shopId, String webSite) {
+        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_, shopId);
+        Integer noLowPriceNum = redisIO.get(cacheIndex, Integer.class);
+        if (noLowPriceNum != null) {
+            return noLowPriceNum;
+        }
+        noLowPriceNum = shiguGoodsTinyMapper.selNoLowPrice(shopId, webSite);
+        redisIO.putTemp(cacheIndex,noLowPriceNum,600);
+        return noLowPriceNum;
+    }
+
+    @Override
+    public int selNoBigPicGoodsNum(Long shopId, String webSite) {
+        String cacheIndex = String.format("%s%d",ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_,shopId);
+        Integer noBigPicNum = redisIO.get(cacheIndex, Integer.class);
+        if (noBigPicNum != null) {
+            return noBigPicNum;
+        }
+        noBigPicNum = shiguGoodsTinyMapper.selNoBigPic(shopId, webSite);
+        redisIO.putTemp(cacheIndex,noBigPicNum,600);
+        return noBigPicNum;
+    }
+
+    @Override
+    public int selNoConstituentNum(Long shopId, String webSite) {
+        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_, shopId);
+        Integer noConstituentNum = redisIO.get(cacheIndex, Integer.class);
+        if (noConstituentNum != null) {
+            return noConstituentNum;
+        }
+        noConstituentNum = shiguGoodsTinyMapper.selNoConstituent(shopId, webSite);
+        redisIO.putTemp(cacheIndex,noConstituentNum,600);
+        return noConstituentNum;
+    }
+
+    @Override
+    public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
+        String cacheIndex = String.format("%s%d", type.cacheName, shopId);
+        redisIO.del(cacheIndex);
     }
 }

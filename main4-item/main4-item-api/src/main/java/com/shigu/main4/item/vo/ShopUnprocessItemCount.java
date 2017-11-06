@@ -12,33 +12,33 @@ import java.io.Serializable;
  */
 public class ShopUnprocessItemCount implements Serializable {
     //无最低零售价商品数量
-    private Integer nolowestLsjNum;
+    private Integer noPriceNum;
     //无大图商品数量
-    private Integer noBigPicGoodsNum;
+    private Integer noBigpicNum;
     //无材料成分数量
-    private Integer noConstituentNum;
+    private Integer noMaterialNum;
 
-    public Integer getNolowestLsjNum() {
-        return nolowestLsjNum;
+    public Integer getNoPriceNum() {
+        return noPriceNum;
     }
 
-    public void setNolowestLsjNum(Integer nolowestLsjNum) {
-        this.nolowestLsjNum = nolowestLsjNum;
+    public void setNoPriceNum(Integer noPriceNum) {
+        this.noPriceNum = noPriceNum;
     }
 
-    public Integer getNoBigPicGoodsNum() {
-        return noBigPicGoodsNum;
+    public Integer getNoBigpicNum() {
+        return noBigpicNum;
     }
 
-    public void setNoBigPicGoodsNum(Integer noBigPicGoodsNum) {
-        this.noBigPicGoodsNum = noBigPicGoodsNum;
+    public void setNoBigpicNum(Integer noBigpicNum) {
+        this.noBigpicNum = noBigpicNum;
     }
 
-    public Integer getNoConstituentNum() {
-        return noConstituentNum;
+    public Integer getNoMaterialNum() {
+        return noMaterialNum;
     }
 
-    public void setNoConstituentNum(Integer noConstituentNum) {
-        this.noConstituentNum = noConstituentNum;
+    public void setNoMaterialNum(Integer noMaterialNum) {
+        this.noMaterialNum = noMaterialNum;
     }
 }

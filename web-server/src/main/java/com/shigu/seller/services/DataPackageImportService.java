@@ -11,13 +11,20 @@ import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.PackageImportGoodsDataService;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
+import com.shigu.tb.finder.exceptions.TbPropException;
+import com.shigu.tb.finder.services.TbPropsService;
+import com.shigu.tb.finder.vo.PropertyItemVO;
+import com.shigu.tb.finder.vo.PropertyValueVO;
+import com.shigu.tb.finder.vo.PropsVO;
 import com.shigu.zhb.utils.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -32,11 +39,16 @@ import java.util.List;
  */
 @Service("dataPackageImportService")
 public class DataPackageImportService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataPackageImportService.class);
     @Autowired
     PackageImportGoodsDataService packageImportGoodsDataService;
 
     @Autowired
     ItemAddOrUpdateService itemAddOrUpdateService;
+
+    @Autowired
+    TbPropsService tbPropsService;
 
     @Autowired
     OssIO ossIO;
@@ -65,7 +77,8 @@ public class DataPackageImportService {
         item.setMarketId(shop.getMarketId());
         item.setOnsale(true);
         item.setGoodsDesc(tiny.getExtendsGoods().getGoodsDesc());
-        item.setPropsName(tiny.getExtendsGoods().getPropsName());
+        item.setPropsName(parsePropName(tiny.getCid(),tiny.getExtendsGoods().getProps(),
+                tiny.getExtendsGoods().getInputPids(),tiny.getExtendsGoods().getInputStr()));
         item.setPropertyAlias(tiny.getExtendsGoods().getPropertyAlias());
         item.setProps(tiny.getExtendsGoods().getProps());
         item.setInputPids(tiny.getExtendsGoods().getInputPids());
@@ -99,4 +112,86 @@ public class DataPackageImportService {
         }
         return targetUrl;
     }
+
+    /**
+     * 查propName
+     * @param cid
+     * @param props
+     * @param inputIds
+     * @param inputStr
+     * @return
+     */
+    public String parsePropName(Long cid,String props,String inputIds,String inputStr){
+        PropsVO propsVO= null;
+        try {
+            propsVO = tbPropsService.selProps(cid);
+        } catch (Exception e) {
+            logger.error("取淘宝类目属性失败",e);
+            return "";
+        }
+        List<PropertyItemVO> allpropItems=new ArrayList<>();
+        allpropItems.addAll(propsVO.getProperties());
+        if (propsVO.getPingpai() != null) {
+            allpropItems.add(propsVO.getPingpai());
+        }
+        if (propsVO.getHuohao() != null) {
+            allpropItems.add(propsVO.getHuohao());
+        }
+        if (propsVO.getColor() != null) {
+            allpropItems.add(propsVO.getColor());
+        }
+        if (propsVO.getSaleProps() != null) {
+            allpropItems.addAll(propsVO.getSaleProps());
+        }
+        //解析自定义部分
+        Map<Long,List<String>> inputMap=new HashMap<>();
+        if (StringUtils.isNotEmpty(inputIds)) {
+            String[] ids=inputIds.split(",");
+            String[] values=inputStr.split(",");
+            for(int i=0;i<ids.length;i++){
+                Long id=Long.valueOf(ids[i]);
+                String value=values[i];
+                List<String> valueList=new ArrayList<>(Arrays.asList(value.split(";")));
+                inputMap.put(id,valueList);
+            }
+        }
+
+        //变成Map
+        Map<Long,PropertyItemVO> itemPropMap=allpropItems.stream().collect(Collectors.toMap(PropertyItemVO::getPid,propitem -> propitem));
+        String[] proparr=props.split(";");
+        StringBuilder propName=new StringBuilder();
+        for(String p:proparr){
+            Long pid=Long.valueOf(p.split(":")[0]);
+            Long vid=Long.valueOf(p.split(":")[1]);
+            PropertyItemVO propItem=itemPropMap.get(pid);
+            String value=null;
+            //得到value
+            if (propItem != null&&propItem.getValues()!=null) {
+                for(PropertyValueVO pv:propItem.getValues()){
+                    if (vid.equals(pv.getVid())) {
+                        value=pv.getName();
+                        break;
+                    }
+                }
+            }else {
+                continue;
+            }
+            if (value == null) {//查一下自定义区
+                List<String> inputValues=inputMap.get(pid);
+                if (inputValues == null||inputValues.size()==0) {
+                    continue;
+                }
+                value=inputValues.remove(0);
+            }
+            propName.append(p);
+            propName.append(":");
+            propName.append(propItem.getName());
+            propName.append(":");
+            propName.append(value);
+            propName.append(";");
+        }
+        String result=propName.toString();
+        return result.endsWith(";")?result.substring(0,result.length()-1):result;
+    }
+
 }

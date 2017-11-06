@@ -5,6 +5,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.vo.*;
 
@@ -68,14 +69,6 @@ public interface ShopsItemService {
     String itemImgzipUrl(Long goodsId);
 
     /**
-     * 获取店内未设置大图、材质、最低零售价统计
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    ShopUnprocessItemCount selShopUnprocessItemCount(Long shopId, String webSite);
-
-    /**
      * 出售中的商品改版
      * @param shopId
      * @param webSite
@@ -97,5 +90,36 @@ public interface ShopsItemService {
      * @throws JsonErrException
      */
     void setConstituent(Long goodsId,Long shopId,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
+
+    /**
+     * 清除店铺商品统计数据缓存
+     * @param shopId
+     * @param type
+     */
+    void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type);
+
+    /**
+     * 获取店铺无最低零售价商品数
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    int selNolowestLsjNum(Long shopId,String webSite);
+
+    /**
+     * 获取店铺无大图商品数
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    int selNoBigPicGoodsNum(Long shopId,String webSite);
+
+    /**
+     * 获取店铺无材质成分商品数
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    int selNoConstituentNum(Long shopId,String webSite);
 
 }

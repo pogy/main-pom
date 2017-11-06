@@ -26,6 +26,7 @@ import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.ShowCaseException;
@@ -75,6 +76,7 @@ import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -509,13 +511,8 @@ public class ShopAction {
             StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
             search.setKeyword(bo.getKeyword());
             search.setGoodsNo(bo.getGoodsNo());
-            search.setNumIid(bo.getGoodsNumIid());
             search.setState(bo.getState());
             ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
-            ShopUnprocessItemCount shopUnprocessItemCount = shopsItemService.selShopUnprocessItemCount(shopSession.getShopId(), shopSession.getWebSite());
-            model.addAttribute("nolowestLsjNum",shopUnprocessItemCount.getNolowestLsjNum());
-            model.addAttribute("noBigPicGoodsNum",shopUnprocessItemCount.getNoBigPicGoodsNum());
-            model.addAttribute("noConstituentNum",shopUnprocessItemCount.getNoConstituentNum());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
@@ -540,6 +537,19 @@ public class ShopAction {
         return "seller/storeGoodsList21init";
     }
 
+    @RequestMapping("getSaleGoodsNumByType")
+    @ResponseBody
+    public JSONObject getSaleGoodsNumByType(HttpSession session){
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        String webSite = shopSession.getWebSite();
+        ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.selNoBigPicGoodsNum(shopId,webSite));
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.selNolowestLsjNum(shopId,webSite));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.selNoConstituentNum(shopId,webSite));
+        return JSONObject.fromObject(shopUnprocessItemCount).element("success",true);
+    }
+
     /**
      * 修改商品材质
      * @param bo
@@ -556,6 +566,7 @@ public class ShopAction {
         }
         ShopSession shopSession = getShopSession(session);
         shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
         return JsonResponseUtil.success();
     }
 
@@ -655,6 +666,7 @@ public class ShopAction {
         synItem.setWebSite(shopSession.getWebSite());
         try {
             itemAddOrUpdateService.userUpdateItem(synItem);
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败",e);
             throw new JsonErrException("更新商品失败");
@@ -910,6 +922,7 @@ public class ShopAction {
         ShopSession shopSession = getShopSession(session);
         try {
             shopItemModService.moreModify(bo.parseSynItems(shopSession.getShopId(),shopSession.getWebSite()));
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
