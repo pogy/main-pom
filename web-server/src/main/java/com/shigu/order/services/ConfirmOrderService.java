@@ -2,6 +2,8 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
@@ -14,6 +16,8 @@ import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.model.LogisticsTemplate;
+import com.shigu.main4.order.model.Order;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -24,7 +28,13 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmOrderBO;
 import com.shigu.order.bo.ConfirmSubOrderBO;
+import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.*;
+import com.shigu.order.vo.ServiceInfoVO;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -308,31 +318,74 @@ public class ConfirmOrderService {
         return redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
     }
 
-    public List<PostRuleVO> selPostRules(Long senderId, Long provId) throws JsonErrException {
-        List<PostRuleVO> vos = new ArrayList<>();
-        Map<Long, ExpressCompany> expressCompanyMap = Collections.emptyMap();
-        try {
-            List<BournRuleInfoVO> rules = logisticsService.selRulesByProvId(senderId,provId);
-            List<Long> companyIds = BeanMapper.getFieldList(rules, "companyId", Long.class);
-            if (!companyIds.isEmpty()) {
-                ExpressCompanyExample companyExample = new ExpressCompanyExample();
-                companyExample.createCriteria().andExpressCompanyIdIn(companyIds);
-                expressCompanyMap = BeanMapper.list2Map(expressCompanyMapper.selectByExample(companyExample), "expressCompanyId", Long.class);
-            }
-            for (BournRuleInfoVO rule : rules) {
-                PostRuleVO postRuleVO = BeanMapper.map(rule, PostRuleVO.class);
-                vos.add(postRuleVO);
-                ExpressCompany expressCompany = expressCompanyMap.get(rule.getCompanyId());
-                if (expressCompany != null) {
-                    postRuleVO.setName(expressCompany.getEnName());
-                    postRuleVO.setText(expressCompany.getExpressName());
-                }
-            }
-        } catch (LogisticsRuleException e) {
-            throw new JsonErrException(e.getMessage());
+
+    /**
+     * 获取快递公司信息
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     */
+    public List<PostVO> getPostListByProvId(String provId, String senderId) throws LogisticsRuleException {
+        return logisticsService.getPostListByProvId(new Long(provId),new Long(senderId));
+    }
+
+    /**
+     *获取快递与服务费信息
+     * @param postName
+     * @param provId
+     * @param eachShopNum 每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
+     * @param totalWeight
+     * @return
+     */
+    public OtherCostVO getOtherCost(String postName, String provId, String eachShopNum, Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
+        ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
+        boolean isDaifa = sender.getType() == 1;
+
+        JSONObject shopSumJson = JSONObject.fromObject(eachShopNum);
+        Integer goodsNumber = shopSumJson.values()
+                .stream().mapToInt(value -> Integer.parseInt(value.toString())).sum();
+        List<Long> shopIds = new ArrayList<>();
+        Iterator iterator = shopSumJson.keys();
+        while (iterator.hasNext()){
+            shopIds.add(Long.parseLong(iterator.next().toString()));
         }
-        Collections.sort(vos);
-        return vos;
+
+        Map<Long, Long> shopMarketMap = Collections.emptyMap();
+        if (isDaifa) {
+            ShiguShopExample shopExample = new ShiguShopExample();
+            shopExample.createCriteria().andShopIdIn(shopIds);
+            shopMarketMap = shiguShopMapper.selectByExample(shopExample).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
+        }
+
+        ExpressCompany expressCompany = new ExpressCompany();
+        expressCompany.setRemark2(postName);
+        expressCompany = expressCompanyMapper.selectOne(expressCompany);
+        if (expressCompany == null) {
+            throw new JsonErrException("未查询到快递信息");
+        }
+
+        Long postPrice  = logisticsService.calculate(new Long(provId), expressCompany.getExpressCompanyId(), goodsNumber, totalWeight, new Long(senderId));
+        postPrice = MoneyUtil.StringToLong(String.valueOf(postPrice ));
+
+        OtherCostVO otherCostVO = new OtherCostVO();
+        otherCostVO.setPostPrice(postPrice);//元转分
+        List<ServiceInfosTextVO> serviceInfosText = new ArrayList<>();
+        if (isDaifa) {
+            ServiceInfosTextVO infoVO = new ServiceInfosTextVO();
+            infoVO.setText("代发费");
+            Long totalCost = 0L;
+            for(Long shopId : shopIds){
+                ServiceVO serviceRuler = orderConstantService.selDfService(Long.parseLong(senderId), shopMarketMap.get(shopId));
+                totalCost += serviceRuler.getPrice() * Integer.parseInt(String.valueOf(shopSumJson.get(shopId.toString())));
+            }
+            infoVO.setCost(MoneyUtil.dealPrice(totalCost));//元
+            serviceInfosText.add(infoVO);
+
+            //此处总服务费用 == 代发费
+            otherCostVO.setServicePrice(totalCost);//总服务费分
+        }
+        otherCostVO.setServiceInfosText(serviceInfosText);
+        return otherCostVO;
     }
 
 
