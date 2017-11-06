@@ -55,4 +55,11 @@ public class LogisticsServiceImpl implements LogisticsService {
         LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
         return logisticsTemplate.calculate(provId,companyId,goodsNumber,weight);
     }
+
+    @Override
+    public List<PostVO> defaultPost(Long senderId) throws LogisticsRuleException {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        return logisticsTemplate.defaultPost();
+    }
+
 }

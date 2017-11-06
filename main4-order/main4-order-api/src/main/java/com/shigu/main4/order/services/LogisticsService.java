@@ -42,4 +42,10 @@ public interface LogisticsService {
      */
     Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId) throws LogisticsRuleException;
 
+    /**
+     * 默认快递信息
+     * @return
+     * @throws LogisticsRuleException
+     */
+    List<PostVO> defaultPost(Long senderId) throws LogisticsRuleException;
 }

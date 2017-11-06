@@ -2,15 +2,17 @@ package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.vo.BuyerAddressItemVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.OtherCostVO;
 import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
+import com.shigu.order.bo.ConfirmMoreTbBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
@@ -57,7 +59,8 @@ public class ConfirmOrderAction {
 
     @Autowired
     private OrderOptionSafeService orderOptionSafeService;
-
+    @Autowired
+    LogisticsService logisticsService;
     /**
      * 订单确认提交
      * @param request
@@ -199,14 +202,18 @@ public class ConfirmOrderAction {
                     .element("serviceInfosText",otherCostVO.getServiceInfosText());
     }
 
-
-
-
-
-
-
-    public JSONObject confirmTbBatchOrder(ConfirmBO bo, HttpServletRequest request) throws OrderException {
-        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getCode(),OrderSubmitVo.class);
+    /**
+     * 淘宝批量下单获取整合信息
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws LogisticsRuleException
+     */
+    @RequestMapping("confirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject confirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, LogisticsRuleException {
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
         if (tbTrades == null||tbTrades.size()==0) {
             throw new OrderException("订单超时");
         }
@@ -218,7 +225,28 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        return null;
+        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades,bo.getSenderId()))
+                .element("result","success")
+                .element("postTotalPrice","0.00")
+                .element("postList",logisticsService.defaultPost(bo.getSenderId()));
 
     }
+
+    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException {
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = null;
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (sessionUser != null) {
+            userId = sessionUser.getUserId();
+        }
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+//        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId())))
+        return null;
+    }
+
 }

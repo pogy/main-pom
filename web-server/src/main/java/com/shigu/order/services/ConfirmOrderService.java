@@ -85,26 +85,23 @@ public class ConfirmOrderService {
     @Autowired
     private ItemProductProcess itemProductProcess;
 
-
-
-
-
     /**
      * 订单确认提交
+     *
      * @param bo
      */
     @Transactional(rollbackFor = Exception.class)
-    public Long confirmOrders(ConfirmBO bo,Long userId) throws JsonErrException {
+    public Long confirmOrders(ConfirmBO bo, Long userId) throws JsonErrException {
         if (bo == null || Strings.isNullOrEmpty(bo.getCode())) {
             throw new JsonErrException("传入信息不完整");
         }
         String code = bo.getCode();
-        OrderSubmitVo orderSubmitVo = redisIO.get(code,OrderSubmitVo.class);
+        OrderSubmitVo orderSubmitVo = redisIO.get(code, OrderSubmitVo.class);
         if (orderSubmitVo == null || orderSubmitVo.getProducts().size() == 0) {
             throw new JsonErrException("没有找到产品信息");
         }
-        ItemOrderBO itemOrderBO  = generateItemOrderBO(bo, orderSubmitVo);
-        if(!userId.equals(itemOrderBO.getUserId())){
+        ItemOrderBO itemOrderBO = generateItemOrderBO(bo, orderSubmitVo);
+        if (!userId.equals(itemOrderBO.getUserId())) {
             throw new JsonErrException("只能操作本用户下的订单");
         }
         Long oid;
@@ -120,6 +117,7 @@ public class ConfirmOrderService {
 
     /**
      * 将提交订单时的数据封装为ItemOrderBO对象，参数传入时数据需要在调用处预先进行过验证
+     *
      * @param bo
      * @param orderSubmitVo
      */
@@ -137,24 +135,24 @@ public class ConfirmOrderService {
 
         //订单子订单信息，将ConfirmBo中 ConfirmSubOrderBO#id与OrderSubmitVo中CartVO#cartId对应，存入ItemOrderBO#subOrders中
         List<SubItemOrderBO> subOrders = Lists.newArrayList();
-        Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(),"cartId", Long.class);
+        Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(), "cartId", Long.class);
         List<ConfirmOrderBO> confirmOrderBOS = bo.getOrders();
         String webSite = null;
-        for (ConfirmOrderBO confirmOrderBO: confirmOrderBOS) {
+        for (ConfirmOrderBO confirmOrderBO : confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             //按店分子单信息
             Long marketId = null;
             Long floorId = null;
             Long shopId = null;
             List<Long> shopGoodsIds = Lists.newArrayList();
-            for (ConfirmSubOrderBO confirmSubOrderBO: confirmSubOrderBOS) {
+            for (ConfirmSubOrderBO confirmSubOrderBO : confirmSubOrderBOS) {
                 int num = confirmSubOrderBO.getNum();
                 if (num <= 0) {
                     continue;
                 }
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
-                ItemProductVO productVO=productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
+                ItemProductVO productVO = productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
                 subOrder.setNum(num);
                 subOrder.setPid(productVO.getPid());
                 subOrder.setTitle(productVO.getTitle());
@@ -163,26 +161,26 @@ public class ConfirmOrderService {
                 subOrders.add(subOrder);
                 shopGoodsIds.add(productVO.getGoodsId());
                 if (webSite == null) {
-                    webSite=productVO.getWebSite();
+                    webSite = productVO.getWebSite();
                 }
                 if (marketId == null) {
-                    marketId=productVO.getMarketId();
+                    marketId = productVO.getMarketId();
                 }
                 if (floorId == null) {
                     floorId = productVO.getFloorId();
                 }
                 if (shopId == null) {
-                    shopId=productVO.getShopId();
+                    shopId = productVO.getShopId();
                 }
             }
-            if (shopGoodsIds.size()>0) {
-                if (!itemProductProcess.listGoodsCanSale(marketId,floorId,shopId,shopGoodsIds,webSite)) {
+            if (shopGoodsIds.size() > 0) {
+                if (!itemProductProcess.listGoodsCanSale(marketId, floorId, shopId, shopGoodsIds, webSite)) {
                     throw new JsonErrException("订单中含有不可售商品，请检查订单");
                 }
             }
         }
         itemOrderBO.setSubOrders(subOrders);
-        SubItemOrderBO  subItemOrderBO= subOrders.get(0);
+        SubItemOrderBO subItemOrderBO = subOrders.get(0);
         String title = subItemOrderBO.getTitle();
         if (subOrders.size() > 1) {
             title = title.length() > 10 ? title.substring(0, 10) : title;
@@ -197,22 +195,24 @@ public class ConfirmOrderService {
 
     /**
      * 根据订单对象信息移除购物车中的记录
+     *
      * @param itemOrderBO
      */
     private void rmCartProductByOrder(ItemOrderBO itemOrderBO) throws JsonErrException {
         //根据用户获取购物车对象
-        for (SubItemOrderBO subItemOrderBO: itemOrderBO.getSubOrders()) {
+        for (SubItemOrderBO subItemOrderBO : itemOrderBO.getSubOrders()) {
             itemCartProcess.rmProductByNum(itemOrderBO.getUserId(), subItemOrderBO.getPid(), subItemOrderBO.getSkuId(), subItemOrderBO.getNum());
         }
     }
 
     /**
      * 某用户收藏地址列表
+     *
      * @param userId 用户id
      * @return 收藏
      */
     public List<CollListVO> collListByUser(Long userId) {
-        List<BuyerAddressVO> collList =  itemOrderService.selBuyerAddress(userId);//收藏的地址数据
+        List<BuyerAddressVO> collList = itemOrderService.selBuyerAddress(userId);//收藏的地址数据
         List<CollListVO> collListVOS = new ArrayList<>(collList.size());
         for (BuyerAddressVO buyerAddressVO : collList) {
             CollListVO vo = new CollListVO();
@@ -227,7 +227,8 @@ public class ConfirmOrderService {
 
     /**
      * 服务规则包装，待完善
-     * @param orders 订单商品信息
+     *
+     * @param orders   订单商品信息
      * @param senderId 发货机构
      * @return 服务对应表
      */
@@ -288,8 +289,8 @@ public class ConfirmOrderService {
     }
 
     public String selCityById(Long cityId) {
-       OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
-       return city.getCityName();
+        OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
+        return city.getCityName();
     }
 
     public String selTownById(Long townId) {
@@ -302,42 +303,45 @@ public class ConfirmOrderService {
 
     /**
      * 临时保存地址，用于确认订单不收藏地址这种情况
+     *
      * @param buyerAddressVO
      */
     public String saveTmpBuyerAddress(BuyerAddressVO buyerAddressVO) {
-        String addressId = UUID.randomUUID().toString().replace("-","");
+        String addressId = UUID.randomUUID().toString().replace("-", "");
         redisIO.putTemp("tmp_buyer_address_" + addressId, buyerAddressVO, 200);
         return addressId;
     }
 
     /**
      * 获取临时保存地址，用于确认订单不收藏地址这种情况
+     *
      * @param addressId
      */
     public BuyerAddressVO selTmpBuyerAddress(String addressId) {
         return redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
     }
 
-
     /**
      * 获取快递公司信息
-     * @param provId    省份id
-     * @param senderId  发货方式id
+     *
+     * @param provId   省份id
+     * @param senderId 发货方式id
      * @return
      */
     public List<PostVO> getPostListByProvId(String provId, String senderId) throws LogisticsRuleException {
-        return logisticsService.getPostListByProvId(new Long(provId),new Long(senderId));
+        return logisticsService.getPostListByProvId(new Long(provId), new Long(senderId));
     }
 
     /**
-     *获取快递与服务费信息
+     * 获取快递与服务费信息
+     *
      * @param postName
      * @param provId
      * @param eachShopNum 每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
      * @param totalWeight
      * @return
      */
-    public OtherCostVO getOtherCost(String postName, String provId, String eachShopNum, Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
+    public OtherCostVO getOtherCost(String postName, String provId, String eachShopNum, Long totalWeight, String senderId) throws JsonErrException, LogisticsRuleException {
         ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
         boolean isDaifa = sender.getType() == 1;
 
@@ -346,7 +350,7 @@ public class ConfirmOrderService {
                 .stream().mapToInt(value -> Integer.parseInt(value.toString())).sum();
         List<Long> shopIds = new ArrayList<>();
         Iterator iterator = shopSumJson.keys();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             shopIds.add(Long.parseLong(iterator.next().toString()));
         }
 
@@ -364,8 +368,8 @@ public class ConfirmOrderService {
             throw new JsonErrException("未查询到快递信息");
         }
 
-        Long postPrice  = logisticsService.calculate(new Long(provId), expressCompany.getExpressCompanyId(), goodsNumber, totalWeight, new Long(senderId));
-        postPrice = MoneyUtil.StringToLong(String.valueOf(postPrice ));
+        Long postPrice = logisticsService.calculate(new Long(provId), expressCompany.getExpressCompanyId(), goodsNumber, totalWeight, new Long(senderId));
+        postPrice = MoneyUtil.StringToLong(String.valueOf(postPrice));
 
         OtherCostVO otherCostVO = new OtherCostVO();
         otherCostVO.setPostPrice(postPrice);//元转分
@@ -374,7 +378,7 @@ public class ConfirmOrderService {
             ServiceInfosTextVO infoVO = new ServiceInfosTextVO();
             infoVO.setText("代发费");
             Long totalCost = 0L;
-            for(Long shopId : shopIds){
+            for (Long shopId : shopIds) {
                 ServiceVO serviceRuler = orderConstantService.selDfService(Long.parseLong(senderId), shopMarketMap.get(shopId));
                 totalCost += serviceRuler.getPrice() * Integer.parseInt(String.valueOf(shopSumJson.get(shopId.toString())));
             }
@@ -388,32 +392,30 @@ public class ConfirmOrderService {
         return otherCostVO;
     }
 
+    public ConfirmTbBatchOrderVO confirmTbBatchOrder(List<OrderSubmitVo> tbTrades, Long senderId) {
+        int orderNum = tbTrades.size();
+        int goodsNum = 0;
+        long serviceTotalPrice = 0L;
+        long goodsTotalPrice = 0L;
 
-    public ConfirmTbBatchOrderVO confirmTbBatchOrder(List<OrderSubmitVo> tbTrades,Long senderId){
-        int orderNum=tbTrades.size();
-        int goodsNum=0;
-        long serviceTotalPrice=0L;
-        long goodsTotalPrice=0L;
-
-
-        Map<Long,Integer> marketNumMap=new HashMap<>();
-        for(OrderSubmitVo t:tbTrades){
-            for(CartVO cart:t.getProducts()){
-                goodsTotalPrice+=cart.getPrice();
-                goodsNum+=cart.getNum();
-                Integer marketNum=marketNumMap.get(cart.getMarketId());
-                if(marketNum==null){
-                    marketNum=0;
+        Map<Long, Integer> marketNumMap = new HashMap<>();
+        for (OrderSubmitVo t : tbTrades) {
+            for (CartVO cart : t.getProducts()) {
+                goodsTotalPrice += cart.getPrice();
+                goodsNum += cart.getNum();
+                Integer marketNum = marketNumMap.get(cart.getMarketId());
+                if (marketNum == null) {
+                    marketNum = 0;
                 }
-                marketNum+=cart.getNum();
-                marketNumMap.put(cart.getMarketId(),marketNum);
+                marketNum += cart.getNum();
+                marketNumMap.put(cart.getMarketId(), marketNum);
             }
         }
-        for(Long marketId:marketNumMap.keySet()){
+        for (Long marketId : marketNumMap.keySet()) {
             ServiceVO serviceRuler = orderConstantService.selDfService(senderId, marketId);
-            serviceTotalPrice+=marketNumMap.get(marketId)*serviceRuler.getPrice();
+            serviceTotalPrice += marketNumMap.get(marketId) * serviceRuler.getPrice();
         }
-        ConfirmTbBatchOrderVO vo=new ConfirmTbBatchOrderVO();
+        ConfirmTbBatchOrderVO vo = new ConfirmTbBatchOrderVO();
         vo.setGoodsNum(goodsNum);
         vo.setGoodsTotalPrice(MoneyUtil.dealPrice(goodsTotalPrice));
         vo.setOrderNum(orderNum);
@@ -421,7 +423,15 @@ public class ConfirmOrderService {
         return vo;
     }
 
-    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades,Long senderId){
-        return null;
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long companyId) throws LogisticsRuleException {
+        long postPrice=0L;
+        for (OrderSubmitVo t : tbTrades) {
+            BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
+            postPrice += logisticsService.calculate(buyerAddress.getProvId(), companyId,
+                    t.getProducts().stream().mapToInt(CartVO::getNum).sum(),
+                    null, senderId);
+
+        }
+        return postPrice;
     }
 }

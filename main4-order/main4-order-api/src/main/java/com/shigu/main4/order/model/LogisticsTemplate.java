@@ -42,4 +42,11 @@ public interface LogisticsTemplate {
      */
     List<PostVO> getPostListByProvId (Long provId, Long senderId) throws LogisticsRuleException;
 
+    /**
+     * 默认快递信息
+     * @return
+     * @throws LogisticsRuleException
+     */
+    List<PostVO> defaultPost() throws LogisticsRuleException;
+
 }

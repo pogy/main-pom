@@ -243,7 +243,14 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             postVOS = new ArrayList<>();
         }
         List<String> postNames = BeanMapper.getFieldList(postVOS,"name",String.class);
+        List<PostVO> defaultPostVOS=defaultPost();
+        defaultPostVOS.removeIf(postVO -> postNames.contains(postVO.getName()));
+        postVOS.addAll(defaultPostVOS);
+        return postVOS;
+    }
 
+    @Override
+    public List<PostVO> defaultPost() throws LogisticsRuleException {
         //添加默认快递
         //根据defaultTemplateId defaultRuleId查询
         List<BournRuleInfoVO> bournRuleInfoVOS = defaultRule();
@@ -253,23 +260,18 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         example.createCriteria().andRuleIdIn(ruleIds).andTemplateIdEqualTo(templateId);
         List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(example);
         if (logisticsTemplateCompanies == null || logisticsTemplateCompanies.isEmpty()) {
-            throw new LogisticsRuleException(String.format("无默认快递信息; provId[%d],senderId[%d]", provId, senderId));
+            throw new LogisticsRuleException(String.format("无默认快递信息; senderId[%d]", senderId));
         }
         List<Long> conpanyIds = BeanMapper.getFieldList(logisticsTemplateCompanies,"companyId",Long.class);
-        expressCompanyExample.clear();
+        ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
         expressCompanyExample.createCriteria().andExpressCompanyIdIn(conpanyIds);
-        List<ExpressCompany> expressCompanies = expressCompanyMapper.selectByExample(expressCompanyExample);
-        if (expressCompanies != null && !expressCompanies.isEmpty()) {
-           for (ExpressCompany item : expressCompanies){
-               if(postNames.contains(item.getRemark2()))continue;
-                PostVO postVO = new PostVO();
-                postVO.setName(item.getRemark2());
-                postVO.setText(item.getExpressName());
-                postVOS.add(postVO);
-            }
-        }
-
-        return postVOS;
+        return expressCompanyMapper.selectByExample(expressCompanyExample)
+                .stream().map(expressCompany -> {
+                    PostVO postVO = new PostVO();
+                    postVO.setName(expressCompany.getRemark2());
+                    postVO.setText(expressCompany.getExpressName());
+                    return postVO;
+                }).collect(Collectors.toList());
     }
 
 }
