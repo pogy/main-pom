@@ -323,10 +323,10 @@ public class OrderModelImpl implements OrderModel {
     @Transactional(propagation=Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void send(DeliveryBO delivery) throws DaifaException {
         if (delivery == null) {
-            throw new DaifaException("deliceryBo为空");
+            throw new DaifaException("deliceryBo为空",DaifaException.DEBUG);
         }
         if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
-            throw new DaifaException("主单id，三段码，快递单号都不能为空");
+            throw new DaifaException("主单id，三段码，快递单号都不能为空",DaifaException.DEBUG);
         }
         //发货校验：1.有货先发：缺货部分如果没退款就不发货
         DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
@@ -334,7 +334,7 @@ public class OrderModelImpl implements OrderModel {
         List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
         for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
             if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
-                throw new DaifaException("缺货部分未退款，不能发货。");
+                throw new DaifaException("缺货部分未退款，不能发货。",DaifaException.DEBUG);
             }
         }
         Date time=new Date();
@@ -421,7 +421,7 @@ public class OrderModelImpl implements OrderModel {
         DaifaOrderExample orderExample=new DaifaOrderExample();
         orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusIn(sts);
         if(daifaOrderMapper.countByExample(orderExample)>0){//有单子处在不可退状态
-            throw new DaifaException("有部分子单暂不可退款");
+            throw new DaifaException("有部分子单暂不可退款",DaifaException.DEBUG);
         }
         //更新子单状态为已退款
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
