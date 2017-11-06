@@ -267,6 +267,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
     private void deleteFileAndFolder(String temppath){
         File file=new File(temppath);
+        //System.out.println("@@@@@@@@@@@@@@@@@开始删除"+temppath);
         File files[]= file.listFiles ();
         for(File file1:files){
             // file1.getParent ()
@@ -278,25 +279,72 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         for(File file3:files2){
                             String filename=file3.getName ();
                             file3.deleteOnExit ();
-                            System.out.println (filename);
+                            /*try {
+                                Thread.sleep (5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace ();
+                            }
+                            System.out.println (filename);*/
                         }
                         file2.delete ();
+                        /*try {
+                            Thread.sleep (5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace ();
+                        }*/
                     }else{
                         String filename=file2.getName ();
                         file2.deleteOnExit ();
-                        System.out.println (filename);
+                       /* try {
+                            Thread.sleep (5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace ();
+                        }
+                        System.out.println (filename);*/
                     }
 
                 }
                 file1.delete ();
+                /*try {
+                    Thread.sleep (5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace ();
+                }*/
             }else{
                 String filename=file1.getName ();
                 file1.deleteOnExit ();
-                System.out.println (filename);
+                /*try {
+                    Thread.sleep (5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace ();
+                }*/
+               // System.out.println (filename);
             }
 
         }
+        /*file.getParentFile ().delete ();
+        try {
+            Thread.sleep (5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }*/
+
+       // System.out.println (file.getName ());
+        File floders[]= file.listFiles ();
+        for(File filess:floders){
+            filess.delete ();
+            /*try {
+                Thread.sleep (5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }*/
+        }
         file.delete ();
-        System.out.println ("删除完成！");
+        /*try {
+            Thread.sleep (5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }*/
+       // System.out.println ("删除完成！");
     }
 }
