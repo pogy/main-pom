@@ -52,7 +52,7 @@ public class ImportCsvFileService {
     OssIO oss;
 
     public  List<ShiguGoodsTinyVO> importCsvFileString(Long storeId, String importCSVFile, String image_save_path) throws Main4Exception {
-
+    //Date t1=new Date();
         //查询店铺
         ShiguShop shop= shiguShopMapper.selectByPrimaryKey (storeId);
 
@@ -66,7 +66,7 @@ public class ImportCsvFileService {
 
         Map<String, String> map=new HashMap<String, String> ();//key为图片存储地址  //value为转化后的图片访问地址
 
-        Date t1=new Date();
+
 
         ShiguGoodsTinyVO record=null;
         ShiguGoodsExtendsVO sge=null;
@@ -324,12 +324,12 @@ public class ImportCsvFileService {
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
-                                Date tpic=new Date();
+                               // Date tpic=new Date();
 
                                 getImgs((String)v11.get(k), record,sge,image_save_path,map);
-                                Date tpicend=new Date();
-                                long timepic=tpicend.getTime()-tpic.getTime();
-                                System.out.println(i+"执行图片处理"+timepic);
+                               // Date tpicend=new Date();
+                               // long timepic=tpicend.getTime()-tpic.getTime();
+                               // System.out.println(i+"执行图片处理"+timepic);
                             }else{
                                 record.setError ("没有主图");
                             }
@@ -515,11 +515,9 @@ public class ImportCsvFileService {
                 sge.setIsTiming("false");
                 sge.setIsVirtual("false");
                 sge.setOneStation("false");
-                //Date datecatstr1=new Date();
+
                 //CatStr  cs=  getCatStrAndGoodsNo(sge.getProps(),input_custom_cpv,record.getCid(),sge.getInputPids(),sge.getInputStr(),record.getGoodsNo(),propAlias);
-                //Date datecatstr2=new Date();
-                //long time_caStr=datecatstr2.getTime ()-datecatstr1.getTime ();
-               // System.out.println(i+"执行getCatStrAndGoodsNo的时间="+time_caStr);
+
                // sge.setPropsName(cs.getPn());
 
                // //sge.setPropertyAlias(cs.getPnc());
@@ -543,11 +541,11 @@ public class ImportCsvFileService {
                 String prices=record.getPriceString();
                 Double priced=new Double(prices);
 
-                Date datepprice1=new Date();
+                //Date datepprice1=new Date();
                 PriceDataGrid data = priceErrorService.piPriceMatcher(shop, record, 10.00, 0.2, 4, "p,f", 1);
-                Date datepprice2=new Date();
-                long time_piprice=datepprice2.getTime ()-datepprice1.getTime ();
-                System.out.println(i+"执行piPriceMatcher的时间="+time_piprice);
+                //Date datepprice2=new Date();
+                //long time_piprice=datepprice2.getTime ()-datepprice1.getTime ();
+                //System.out.println(i+"执行piPriceMatcher的时间="+time_piprice);
                 //System.out.println(data.getpPriceString());
                /* System.out.println("-------------------@@@@@@@@@@@@@-----------------");
                 System.out.println("msg===="+data.getMsg());
@@ -572,7 +570,7 @@ public class ImportCsvFileService {
 
             //=================================================================================================
             //cidList 查询cid然后最后循环放到goods的cid里//如果cid查询里没有类目名的话那么cid就是有问题的，有就是没有问题的
-            Date dcid1=new Date();
+            //Date dcid1=new Date();
 
             Map<Long,String> mapcid=queryCid(cidList);
             if(goodsList.size ()>0){
@@ -590,18 +588,18 @@ public class ImportCsvFileService {
 
                 }
             }
-            Date dcid2=new Date();
-            Long dr1=dcid2.getTime()-dcid1.getTime();
-            System.out.println ("类目执行时间：" + dr1);
+            //Date dcid2=new Date();
+            //Long dr1=dcid2.getTime()-dcid1.getTime();
+           // System.out.println ("类目执行时间：" + dr1);
             //=================================================================================================
 
         } catch (Exception e) {
 
             throw new Main4Exception (e.getMessage ());
         }
-        Date t2=new Date();
-        Long dr1=t2.getTime()-t1.getTime();
-        System.out.println ("全部执行时间为：" + dr1);
+        //Date t2=new Date();
+        //Long dr1=t2.getTime()-t1.getTime();
+       // System.out.println ("全部执行时间为：" + dr1);
 
         return goodsList;
     }
