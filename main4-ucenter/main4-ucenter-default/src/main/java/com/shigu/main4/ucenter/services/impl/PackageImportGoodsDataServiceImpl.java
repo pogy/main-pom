@@ -278,13 +278,13 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         for(File file3:files2){
                             String filename=file3.getName ();
                             file3.deleteOnExit ();
-                           // System.out.println (filename);
+                            System.out.println (filename);
                         }
                         file2.delete ();
                     }else{
                         String filename=file2.getName ();
                         file2.deleteOnExit ();
-                        //System.out.println (filename);
+                        System.out.println (filename);
                     }
 
                 }
@@ -292,9 +292,11 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             }else{
                 String filename=file1.getName ();
                 file1.deleteOnExit ();
-                //System.out.println (filename);
+                System.out.println (filename);
             }
 
         }
+        file.delete ();
+        System.out.println ("删除完成！");
     }
 }
