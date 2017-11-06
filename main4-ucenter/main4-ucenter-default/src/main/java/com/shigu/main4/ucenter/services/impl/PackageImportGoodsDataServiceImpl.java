@@ -137,10 +137,11 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                     throw new Main4Exception (packageUrl+",解压失败！");
                     ///////////////////////////////////////////////////////////
                 }
+                //判断是否有CSV
 
                 if(!"".equals(folder)){
                     String csvname="";
-
+                    boolean flags=false;
                     try {
 
                         File file = new File(tempDir);
@@ -151,7 +152,29 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                                 csvname=filelist[k];
                                 csvname= csvname.substring(0, csvname.length()-4);
                                 // System.out.println("ssss="+filelist[k]);
+                                flags=true;
                             }
+                        }
+                        if(!flags){
+                            //不是这一层的文件夹在他的下一层
+                           File[] ffiles= file.listFiles ();
+                           for(File ffile:ffiles){
+                               if(ffile.isDirectory ()){
+                                   tempDir=ffile.getAbsolutePath ();
+                                   String[] filelist0 = ffile.list();
+                                   for (int k = 0; k < filelist0.length; k++) {
+
+                                       if(filelist0[k].endsWith(".csv")&&!filelist0[k].endsWith("_new.csv")){
+                                           csvname=filelist0[k];
+                                           csvname= csvname.substring(0, csvname.length()-4);
+
+                                           flags=true;
+                                       }
+                                   }
+                               }else{
+                                   continue;
+                               }
+                           }
                         }
 
                     } catch (Exception e) {
@@ -213,10 +236,8 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                             if(filelist[k].endsWith(".csv")){
                                 csvname=filelist[k];
                                 csvname= csvname.substring(0, csvname.length()-4);
-
                             }
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -226,19 +247,13 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                     File csvFile = new File(csvFilePath);
                     File newcsvFile = new File(newcsvFilepath);
                     if(csvFile!=null&&csvFile.exists()){
-                        //////////////////////////////////////////////////////////////////////////////////////////////////
                         try {
-                            //if(csvIntoGoodsService.convertionFile(csvFile,newcsvFile)){
-                            //log.debug("@@@@@@@@@@@@@@@@@@@@@@@CSV转码完成");
                             List<ShiguGoodsTinyVO> goodsList=importCsvFileService.importCsvFileString(storeId,csvFilePath,image_save_path);
                             if(goodsList.size ()==0){
                                 //写入错误表
                                 //System.out.println("商品转换失败！");
                                 throw new Main4Exception (packageUrl+",商品转换失败！");
                             }else{
-
-                               // temppath
-                                        //删除所有文件
                                 deleteFileAndFolder( temppath);
                                 return goodsList;
                             }
@@ -249,8 +264,6 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         }
                         ///////////////////////////////////////////////////////////////////////////////////////////////////
                     }else{
-                        //不存在CSV文件
-                        //System.out.println("压缩包内没有CSV文件！");
                         throw new Main4Exception (packageUrl+",压缩包内没有CSV文件！");
                     }
                 }else{
@@ -259,11 +272,13 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 }
             }
         }
-
-
-
         return null;
     }
+
+
+
+
+
 
     private void deleteFileAndFolder(String temppath){
         File file=new File(temppath);
