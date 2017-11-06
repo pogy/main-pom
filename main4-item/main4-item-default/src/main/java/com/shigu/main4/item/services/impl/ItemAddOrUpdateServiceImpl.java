@@ -671,6 +671,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             goodsCountForsearch.setInfabric(item.getInFabric());
         }
         goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
+        shiguGoodsModified.setItemId(tiny.getGoodsId());
+        shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据
         ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
