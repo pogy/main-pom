@@ -526,9 +526,11 @@ public class ImportCsvFileService {
                 /*if(cs.getGoodsNo()!=null&&!"".equals(cs.getGoodsNo())){
                     record.setGoodsNo(cs.getGoodsNo());
                 }*/
-                if((record.getGoodsNo()==null||"".equals(record.getGoodsNo()))&&record.getOuterId ()!=null&&!"".equals (record.getOuterId ())){
+               String goodsNo= getgoodsNo(sge.getInputPids(),sge.getInputStr(),record.getGoodsNo());
+               record.setGoodsNo (goodsNo);
+               /* if((record.getGoodsNo()==null||"".equals(record.getGoodsNo()))&&record.getOuterId ()!=null&&!"".equals (record.getOuterId ())){
                     record.setGoodsNo(record.getOuterId());
-                }
+                }*/
 
                 sge.setUpdateTime(new Date());
                 sge.setViolation("false");
@@ -864,6 +866,43 @@ public class ImportCsvFileService {
 
         return result;
 
+    }
+
+    /**
+     * ====================================================================================
+     * @方法名： getgoodsNo
+     * @user gzy 2017/11/6 17:06
+     * @功能：取得货号
+     * @param: [inputPids, inputValues, outer_id]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    public String getgoodsNo(String inputPids,String inputValues,String outer_id){
+
+        //货号
+        String goodsNo = "";
+
+        if (inputPids != null && inputPids.length() > 0) {
+            if (inputPids.contains("13021751")) {//商品编码
+                //开始处理
+                String goodsnoids[] = inputPids.split(",");
+
+                String goodsnos[] = inputValues.split(",");
+                for (int i = 0; i < goodsnoids.length; i++) {
+                    if (goodsnoids[i].equals("13021751")||goodsnoids[i].equals("1647377840")||goodsnoids[i].equals("637078838")) {
+                        goodsNo = goodsnos[i];
+                    }
+                }
+            }
+
+        }
+
+        if("".equals(goodsNo)){
+            goodsNo=outer_id;
+        }
+        return goodsNo;
     }
 
     /**
