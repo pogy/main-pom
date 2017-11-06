@@ -17,6 +17,7 @@ import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.vo.OnekeyRecoreVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.services.ShowForCdnService;
@@ -151,11 +152,10 @@ public class BasePhoneGoodsUpService {
         OnekeyRecordBO bo = new OnekeyRecordBO();
         bo.setPage(index);
         bo.setRows(size);
-        if(type == 2){
-            bo.setShopState(2);
-            bo.setTbState(1);
-        }else if(type == 3){
-            bo.setShopState(2);
+        if(type != 1){
+            // 2 待处理： 应档口已下架 淘宝未下架
+            // 3 淘宝已下架
+            bo.setUploadGoodsState(type);
         }
 
         ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(userId, nick, bo);
@@ -166,6 +166,9 @@ public class BasePhoneGoodsUpService {
 
         List<AppItemUploaded> eds=new ArrayList<>();
         for(OnekeyRecoreVO vo:pager.getContent()){
+            if (vo == null || StringUtil.isNull(vo.getPiprice())) {
+                continue;
+            }
             AppItemUploaded ed=new AppItemUploaded();
             ed.setGoodsId(vo.getGoodsId());
             ed.setSupperDown(vo.getShopSaleState());

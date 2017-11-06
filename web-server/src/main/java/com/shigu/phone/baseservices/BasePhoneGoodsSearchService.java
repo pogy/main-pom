@@ -233,7 +233,7 @@ public class BasePhoneGoodsSearchService {
             shiguGoodsCollect.setGoodsId(itemId);
             shiguGoodsCollect.setWebsite(webSite);
             shiguGoodsCollect = goodsCollectMapper.selectOne(shiguGoodsCollect);
-            if (shiguGoodsCollect == null || shiguGoodsCollect.getUseStatus() == null){
+            if (shiguGoodsCollect != null){
                vo.setCollectId(shiguGoodsCollect.getGoodsCollectId());
             }
         }

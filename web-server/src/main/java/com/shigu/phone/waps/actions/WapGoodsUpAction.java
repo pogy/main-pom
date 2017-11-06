@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 类名：AppGoodsUpAction
@@ -44,6 +46,10 @@ public class WapGoodsUpAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false);
+        }
+        List<Integer> types = Arrays.asList(1,2,3);//1所有宝贝，2等待处理的，3淘宝已下架
+        if (type == null || !types.contains(type)) {
+            return JsonResponseUtil.error("参数错误").element("success",false);
         }
         UploadedItemVO uploadedItemVO = wapPhoneGoodsUpService.uploadedItem(type, index, size, ps.getUserId());
         if (uploadedItemVO == null) {
