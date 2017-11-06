@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509948464375" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509953302848" rel="stylesheet">
     
   </head>
 <body>
@@ -255,23 +255,20 @@ var webSite = '${webSite!}';
                 <li <#if !query.state>class="select"</#if>><a href="storeGoodsList21init.htm">全部商品</a></li>
                 <li <#if query.state == 1>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=1">无最低零售价
-                        <#if nolowestLsjNum??>
-                        <i>${nolowestLsjNum!}</i>
-                        </#if>
+                        
+                        <i id="noPriceNum"></i>
                     </a>
                 </li>
                 <li <#if query.state == 2>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=2">无大图商品
-                        <#if noBigPicGoodsNum??>
-                        <i>${noBigPicGoodsNum!}</i>
-                        </#if>
+                        
+                        <i id="noBigpicNum"></i>
                     </a>
                 </li>
                 <li <#if query.state == 3>class="select"</#if>>
                     <a href="storeGoodsList21init.htm?state=3">无材料成分
-                        <#if noConstituentNum??>
-                        <i>${noConstituentNum!}</i>
-                        </#if>
+                        
+                        <i id="noMaterialNum"></i>
                     </a>
                 </li>
             </ul>
@@ -454,7 +451,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509948464375"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509953302848"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
