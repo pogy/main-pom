@@ -207,7 +207,7 @@ public class UnzipUtil {
 		try {
 			se1 = new String(addr.getBytes("gbk"));
 			//if(addr.endsWith(".csv")){
-				System.out.println("addr="+se1);
+				//System.out.println("addr="+se1);
 			//}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -236,7 +236,7 @@ public class UnzipUtil {
         	if(seeString.length>=0){
         		if(addr.endsWith(".csv")){
     				repalced=t2+".csv";
-    				System.out.println(repalced);
+    				//System.out.println(repalced);
     				addr=repalced;
     				//addr=addr.replaceAll(repalced, t2);
     			}else{
@@ -537,7 +537,7 @@ public class UnzipUtil {
     public static String unRarFile(String srcRarPath, String dstDirectoryPath) {
     	String csvName="";
         if (!srcRarPath.toLowerCase().endsWith(".rar")) {
-            System.out.println("非rar文件！");
+            //System.out.println("非rar文件！");
             return "非法rar";
         }
         File dstDiretory = new File(dstDirectoryPath);
@@ -623,7 +623,7 @@ public class UnzipUtil {
 
     public static String unRarFile(String srcRarPath) {
         if (!srcRarPath.toLowerCase().endsWith(".rar")) {
-            System.out.println("非rar文件！");
+            //System.out.println("非rar文件！");
             return "非rar文件";
         }
         String dstDirectoryPath=getrarpath(srcRarPath);
@@ -716,7 +716,7 @@ public class UnzipUtil {
     	//String se=decompression.unzipFile("D:\\home\\sjbfolder\\4\\csml11442571987448\\1443172368175\\1443172368175.zip",true);
 
     	String se=decompression.unRarFile("/Users/gzy/testsjb/sjbfolder/266/fc0981eb78547806af01c2541e1dc21761509/1444928922894/1444928922894.rar");
-    	System.out.println("%%%%%"+se);
+    	//System.out.println("%%%%%"+se);
 
       /*  String pathrsString=dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
     	String paths[]=pathrsString.split(":");
