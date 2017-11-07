@@ -28,16 +28,16 @@
     <sql id="onsaleGoodsInfoSql">
         from shigu_goods_tiny_${webSite} a
         <if test="bo.state!=null">
-            ,
+
             <choose>
                 <when test="bo.state==1">
-                    shigu_goods_modified b
+                    LEFT JOIN shigu_goods_modified b ON a.goods_id = b.item_id
                 </when>
                 <when test="bo.state==2">
-                    goods_count_forsearch b
+                    , goods_count_forsearch b
                 </when>
                 <when test="bo.state==3">
-                    goods_count_forsearch b
+                    , goods_count_forsearch b
                 </when>
             </choose>
         </if>
@@ -52,7 +52,7 @@
         <if test="bo.state!=null">
             <choose>
                 <when test="bo.state==1">
-                    AND a.goods_id=b.item_id AND b.has_set_price=0
+                    and (b.has_set_price = 0 or b.has_set_price is NULL)
                 </when>
                 <when test="bo.state==2">
                     AND a.goods_id=b.goods_id AND b.had_bigzip=0
