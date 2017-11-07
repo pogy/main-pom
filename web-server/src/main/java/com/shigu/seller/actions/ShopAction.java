@@ -889,13 +889,12 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsNoListinit")
-    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws ItemException {
+    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws Main4Exception {
         ShopSession shopSession = getShopSession(session);
         //查总量
         model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(null,null,null
-                ,shopSession.getShopId(),bo.getPageNo(),bo.getPageSize());
+        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPageNo(),bo.getPageSize());
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         List<OnsaleItem> list=pager.getContent();
         List<MoreModifyItemVO> volist=new ArrayList<>();
