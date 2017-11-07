@@ -544,9 +544,9 @@ public class ShopAction {
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
         ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
-        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.selNoBigPicGoodsNum(shopId,webSite));
-        shopUnprocessItemCount.setNoPriceNum(shopsItemService.selNolowestLsjNum(shopId,webSite));
-        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.selNoConstituentNum(shopId,webSite));
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
         return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
     }
 

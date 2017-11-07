@@ -510,40 +510,21 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
     }
 
-    @Override
-    public int selNolowestLsjNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_, shopId);
-        Integer noLowPriceNum = redisIO.get(cacheIndex, Integer.class);
-        if (noLowPriceNum != null) {
-            return noLowPriceNum;
+    /**
+     * 获取出售中商品部分统计数据
+     * @return
+     */
+    public int countOnsaleGoodsAggrNum(Long shopId,String webSite,ShopCountRedisCacheEnum aggrType){
+        String cacheIndex = String.format("%s%d", aggrType.cacheName, shopId);
+        Integer aggrNum = redisIO.get(cacheIndex, Integer.class);
+        if (aggrNum != null) {
+            return aggrNum;
         }
-        noLowPriceNum = shiguGoodsTinyMapper.selNoLowPrice(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noLowPriceNum,600);
-        return noLowPriceNum;
-    }
-
-    @Override
-    public int selNoBigPicGoodsNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d",ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_,shopId);
-        Integer noBigPicNum = redisIO.get(cacheIndex, Integer.class);
-        if (noBigPicNum != null) {
-            return noBigPicNum;
-        }
-        noBigPicNum = shiguGoodsTinyMapper.selNoBigPic(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noBigPicNum,600);
-        return noBigPicNum;
-    }
-
-    @Override
-    public int selNoConstituentNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_, shopId);
-        Integer noConstituentNum = redisIO.get(cacheIndex, Integer.class);
-        if (noConstituentNum != null) {
-            return noConstituentNum;
-        }
-        noConstituentNum = shiguGoodsTinyMapper.selNoConstituent(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noConstituentNum,600);
-        return noConstituentNum;
+        StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
+        bo.setState(aggrType.state);
+        aggrNum = shiguGoodsTinyMapper.countOnsaleGoods(shopId,webSite,bo);
+        redisIO.putTemp(cacheIndex,aggrNum,600);
+        return aggrNum;
     }
 
     @Override

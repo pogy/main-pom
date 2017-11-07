@@ -24,11 +24,4 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
     //统计出售中的商品
     int countOnsaleGoods(@Param("shopId") Long shopId, @Param("webSite") String webSite, @Param("bo") StoreGoodsListSearchBO bo);
 
-    //获取档口中无大图商品数量
-    int selNoBigPic(@Param("shopId") Long shopId,@Param("webSite") String webSite);
-    //获取档口中未设置最低零售价商品数量
-    int selNoLowPrice(@Param("shopId") Long shopId,@Param("webSite") String webSite);
-    //获取未设置面料成分商品数量
-    int selNoConstituent(@Param("shopId") Long shopId,@Param("webSite") String webSite);
-
 }

@@ -63,13 +63,4 @@
             </choose>
         </if>
     </sql>
-    <select id="selNoBigPic" resultType="int">
-       select count(1) from shigu_goods_tiny_${webSite} a,goods_count_forsearch b where a.goods_id=b.goods_id and a.store_id=${shopId} and b.had_bigzip=0
-    </select>
-    <select id="selNoLowPrice" resultType="int">
-        select count(1) from shigu_goods_tiny_${webSite} a,shigu_goods_modified b where a.goods_id=b.item_id and a.store_id=${shopId} and b.has_set_price=0
-    </select>
-    <select id="selNoConstituent" resultType="int">
-        select count(1) from shigu_goods_tiny_${webSite} a,goods_count_forsearch b where a.goods_id=b.goods_id and a.store_id=${shopId} and b.fabric is null
-    </select>
 </mapper>
