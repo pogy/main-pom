@@ -537,7 +537,7 @@ public class ShopAction {
         return "seller/storeGoodsList21init";
     }
 
-    @RequestMapping("getSaleGoodsNumByType")
+    @RequestMapping("seller/getSaleGoodsNumByType")
     @ResponseBody
     public JSONObject getSaleGoodsNumByType(HttpSession session){
         ShopSession shopSession = getShopSession(session);
@@ -547,7 +547,7 @@ public class ShopAction {
         shopUnprocessItemCount.setNoBigpicNum(shopsItemService.selNoBigPicGoodsNum(shopId,webSite));
         shopUnprocessItemCount.setNoPriceNum(shopsItemService.selNolowestLsjNum(shopId,webSite));
         shopUnprocessItemCount.setNoMaterialNum(shopsItemService.selNoConstituentNum(shopId,webSite));
-        return JSONObject.fromObject(shopUnprocessItemCount).element("success",true);
+        return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
     }
 
     /**
