@@ -83,6 +83,12 @@ public class DataPackageImportService {
         item.setProps(tiny.getExtendsGoods().getProps());
         item.setInputPids(tiny.getExtendsGoods().getInputPids());
         item.setInputStr(tiny.getExtendsGoods().getInputStr());
+        String picUrl=tiny.getPicUrl();
+        String newPicUrl="";//搬家后的首图
+        if (StringUtils.isNotEmpty(picUrl)) {
+            newPicUrl=banjia(tiny.getPicUrl());
+            item.setPicUrl(newPicUrl);
+        }
         List<ShiguPropImg> propImgs=BeanMapper.mapList(tiny.getExtendsGoods().getList_spi(), ShiguPropImg.class);
         for(ShiguPropImg img:propImgs){
             img.setUrl(banjia(img.getUrl()));
@@ -95,7 +101,11 @@ public class DataPackageImportService {
         if (StringUtils.isNotEmpty(images)) {
             String[] imgarr=images.split(",");
             for(String img:imgarr){
-                imageList.add(banjia(img));
+                if (img.equals(picUrl)) {
+                    imageList.add(newPicUrl);
+                }else {
+                    imageList.add(banjia(img));
+                }
             }
         }
         item.setImageList(imageList);
