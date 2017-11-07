@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1510029631754" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1510038717507" rel="stylesheet">
     
   </head>
 <body>
@@ -338,7 +338,7 @@ var webSite = '${webSite!}';
                     <p class="p2"><span>${item.price2!}</span><b class="penIcon" jbtn="piPrice"></b></p>
                 </li>
                 <li class="lowestPrice">
-                    <p class="p3"><span>${item.price3!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
+                    <p class="p3"><span>${item.lowestLiPrice!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
                 </li>
                 <li class="constituent">
                     <p>
@@ -452,7 +452,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1510029631754"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1510038717507"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
