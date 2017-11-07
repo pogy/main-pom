@@ -100,4 +100,11 @@ public interface ShopsItemService {
 
     int countOnsaleGoodsAggrNum(Long shopId,String webSite,ShopCountRedisCacheEnum aggrType);
 
+    /**
+     * 商品详情页查看是否设置过最低零售价
+     * @param goodsId
+     * @return
+     */
+    boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception;
+
 }
