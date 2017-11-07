@@ -45,10 +45,10 @@
             <ul>
 
                 <li>
-                    <a id="niemenu" href="goodsStatisticsByMonth.htm"><i></i>每月商品统计</a>
+                    <a id="niemenu" href="statisGoodsbyGoods.htm"><i></i>按商品统计</a>
                 </li>
                 <li>
-                    <a id="niemenu" href="goodsStatisticsByQuarterly.htm"><i></i>每季度商品统计</a>
+                    <a id="niemenu" href="statisGoodsByStoreNum.htm"><i></i>按档口统计商品</a>
                 </li>
 
             </ul>
