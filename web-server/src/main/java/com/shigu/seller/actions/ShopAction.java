@@ -317,9 +317,20 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsinit")
-    public String releaseGoodsinit(){
-        //historyCategory
-
+    public String releaseGoodsinit(HttpSession session,Model model){
+        //todo:最近使用的类目
+        ShopSession shop = getShopSession(session);
+        int size = 5;
+        List<EverUsedCat> everUsedCats = itemCatService.everUsedCats(shop.getShopId(), size);
+        ArrayList<HistoryCatVO> historyCatVOS = new ArrayList<>(size);
+        for (EverUsedCat everUsedCat : everUsedCats) {
+            HistoryCatVO historyCatVO = new HistoryCatVO();
+            historyCatVO.setCid(everUsedCat.getCid());
+            historyCatVO.setValue(everUsedCat.getAllcids());
+            historyCatVO.setText(everUsedCat.getShowName());
+            historyCatVOS.add(historyCatVO);
+        }
+        model.addAttribute("historyCategory",historyCatVOS);
         return "seller/releaseGoodsinit";
     }
 
