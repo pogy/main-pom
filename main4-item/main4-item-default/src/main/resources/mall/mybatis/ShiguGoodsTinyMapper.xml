@@ -31,10 +31,10 @@
             ,
             <choose>
                 <when test="bo.state==1">
-                    goods_count_forsearch b
+                    shigu_goods_modified b
                 </when>
                 <when test="bo.state==2">
-                    shigu_goods_modified b
+                    goods_count_forsearch b
                 </when>
                 <when test="bo.state==3">
                     goods_count_forsearch b
@@ -52,10 +52,10 @@
         <if test="bo.state!=null">
             <choose>
                 <when test="bo.state==1">
-                    AND a.goods_id=b.goods_id AND b.had_bigzip=0
+                    AND a.goods_id=b.item_id AND b.has_set_price=0
                 </when>
                 <when test="bo.state==2">
-                    AND a.goods_id=b.item_id AND b.has_set_price=0
+                    AND a.goods_id=b.goods_id AND b.had_bigzip=0
                 </when>
                 <when test="bo.state==3">
                     AND a.goods_id=b.goods_id AND b.fabric is null
