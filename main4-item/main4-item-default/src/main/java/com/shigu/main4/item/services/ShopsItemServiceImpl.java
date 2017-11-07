@@ -71,6 +71,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
+    private ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
+
+    @Autowired
     private ShowForCdnService showForCdnService;
 
     @Autowired
@@ -450,32 +453,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         }
         ShiguPager<OnsaleItem> pager = new ShiguPager<>();
         pager.setNumber(pageNo);
-        MultipleExample goodsExample;
-        if (bo.getState() == null) {
-            goodsExample = selDefaultGoods(shopId, webSite, bo);
-        } else {
-            switch (bo.getState()) {
-                case 1:
-                    goodsExample = selNoLowPrice(shopId, webSite, bo);
-                    break;
-                case 2:
-                    goodsExample = selNoBigPic(shopId, webSite, bo);
-                    break;
-                case 3:
-                    goodsExample = selNoConstituent(shopId, webSite, bo);
-                    break;
-                default:
-                    goodsExample = selDefaultGoods(shopId, webSite, bo);
-                    break;
-            }
-        }
-        goodsExample.setWebSite(webSite);
-        int totalCount = tae_mall_multipleMapper.countByMultipleExample(goodsExample);
+        int totalCount = shiguGoodsTinyMapper.countOnsaleGoods(shopId, webSite, bo);
         pager.calPages(totalCount,pageSize);
-
-        goodsExample.setStartIndex((pageNo-1)*pageSize);
-        goodsExample.setEndIndex(pageSize);
-        List<GoodsInfoVO> goodsInfoVOS = tae_mall_multipleMapper.selectFieldsByMultipleExample(goodsExample, GoodsInfoVO.class);
+        List<GoodsInfoVO> goodsInfoVOS = shiguGoodsTinyMapper.selOnsaleGoodsInfo(shopId, webSite, bo, (pageNo-1)*pageSize,pageSize);
         List<OnsaleItem> onsaleItems = new ArrayList<>(goodsInfoVOS.size());
         pager.setContent(onsaleItems);
         if (goodsInfoVOS.size()>0) {
@@ -490,6 +470,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 item.setGoodsUpNum(0);
                 item.setSaleCount(0);
                 item.setConstituentType(1);
+                item.setHasRetailPriceSet(false);
                 GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
                 if (otherInfo != null) {
                     //设置材质时必须设置面料为必填项
@@ -500,86 +481,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
             });
         }
         return pager;
-    }
-
-    /**
-     * 出售中的商品，无大图商品
-     * 所有参数非空
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    private MultipleExample selNoBigPic(Long shopId, String webSite, StoreGoodsListSearchBO bo) {
-        ShiguGoodsTinyExample noBigPicGoodsExample = shopGoodsExample(shopId, webSite,bo);
-        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-        goodsCountForsearchExample.createCriteria().andHadBigzipEqualTo(0);
-        return MultipleExampleBuilder.from(noBigPicGoodsExample).innerJoin(goodsCountForsearchExample).on(noBigPicGoodsExample.createCriteria().equalTo(ShiguGoodsTinyExample.goodsId, GoodsCountForsearchExample.goodsId)).build();
-    }
-
-    /**
-     * 出售中的商品，无最低零售价
-     * 所有参数非空
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    private MultipleExample selNoLowPrice(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
-        ShiguGoodsTinyExample noLowPriceGoodsExample = shopGoodsExample(shopId, webSite,bo);
-        ShiguGoodsModifiedExample shiguGoodsModifiedExample = new ShiguGoodsModifiedExample();
-        shiguGoodsModifiedExample.createCriteria().andHasSetPriceEqualTo(0);
-        return MultipleExampleBuilder.from(noLowPriceGoodsExample).innerJoin(shiguGoodsModifiedExample).on(noLowPriceGoodsExample.createCriteria().andPriceIsNotNull().equalTo(ShiguGoodsTinyExample.goodsId, ShiguGoodsModifiedExample.itemId)).build();
-    }
-
-    /**
-     * 出售中的商品，无材料成分
-     * 所有参数非空
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    private MultipleExample selNoConstituent(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
-        ShiguGoodsTinyExample noConstituentGoodsExample = shopGoodsExample(shopId, webSite,bo);
-        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-        goodsCountForsearchExample.createCriteria().andFabricIsNull();
-        return MultipleExampleBuilder.from(noConstituentGoodsExample).innerJoin(goodsCountForsearchExample).on(noConstituentGoodsExample.createCriteria().equalTo(ShiguGoodsTinyExample.goodsId, GoodsCountForsearchExample.goodsId)).build();
-    }
-
-    /**
-     * 出售中的商品，全部商品
-     * 所有参数非空
-     * @param shopId
-     * @param webSite
-     * @param bo
-     * @return
-     */
-    private MultipleExample selDefaultGoods(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
-        ShiguGoodsTinyExample example = shopGoodsExample(shopId, webSite, bo);
-        return MultipleExampleBuilder.from(example).build();
-    }
-
-    /**
-     * 档口的goodsTinyExample获取
-     * 所有参数非空
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    private ShiguGoodsTinyExample shopGoodsExample(Long shopId, String webSite,StoreGoodsListSearchBO bo) {
-        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-        example.setWebSite(webSite);
-        ShiguGoodsTinyExample.Criteria criteria = example.createCriteria().andStoreIdEqualTo(shopId);
-        if (StringUtils.isNotBlank(bo.getKeyword())) {
-            criteria.andTitleLike('%'+bo.getKeyword()+'%');
-        }
-        if (StringUtils.isNotBlank(bo.getGoodsNo())) {
-            criteria.andGoodsNoLike('%'+bo.getGoodsNo()+'%');
-        }
-        return example;
     }
 
     /**
@@ -603,50 +510,51 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         }
         GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
         goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+        GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (searchResult != null) {
+            goodsCountForsearch = searchResult;
+        }
         goodsCountForsearch.setFabric(fabricStr);
         goodsCountForsearch.setInfabric(inFabricStr);
-        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        if (searchResult == null) {
+            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        } else {
+            goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        }
     }
 
-    @Override
-    public int selNolowestLsjNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_, shopId);
-        Integer noLowPriceNum = redisIO.get(cacheIndex, Integer.class);
-        if (noLowPriceNum != null) {
-            return noLowPriceNum;
+    /**
+     * 获取出售中商品部分统计数据
+     * @return
+     */
+    public int countOnsaleGoodsAggrNum(Long shopId,String webSite,ShopCountRedisCacheEnum aggrType){
+        String cacheIndex = String.format("%s%d", aggrType.cacheName, shopId);
+        Integer aggrNum = redisIO.get(cacheIndex, Integer.class);
+        if (aggrNum != null) {
+            return aggrNum;
         }
-        noLowPriceNum = shiguGoodsTinyMapper.selNoLowPrice(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noLowPriceNum,600);
-        return noLowPriceNum;
-    }
-
-    @Override
-    public int selNoBigPicGoodsNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d",ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_,shopId);
-        Integer noBigPicNum = redisIO.get(cacheIndex, Integer.class);
-        if (noBigPicNum != null) {
-            return noBigPicNum;
-        }
-        noBigPicNum = shiguGoodsTinyMapper.selNoBigPic(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noBigPicNum,600);
-        return noBigPicNum;
-    }
-
-    @Override
-    public int selNoConstituentNum(Long shopId, String webSite) {
-        String cacheIndex = String.format("%s%d", ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_, shopId);
-        Integer noConstituentNum = redisIO.get(cacheIndex, Integer.class);
-        if (noConstituentNum != null) {
-            return noConstituentNum;
-        }
-        noConstituentNum = shiguGoodsTinyMapper.selNoConstituent(shopId, webSite);
-        redisIO.putTemp(cacheIndex,noConstituentNum,600);
-        return noConstituentNum;
+        StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
+        bo.setState(aggrType.state);
+        aggrNum = shiguGoodsTinyMapper.countOnsaleGoods(shopId,webSite,bo);
+        redisIO.putTemp(cacheIndex,aggrNum,600);
+        return aggrNum;
     }
 
     @Override
     public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
         String cacheIndex = String.format("%s%d", type.cacheName, shopId);
         redisIO.del(cacheIndex);
+    }
+
+    @Override
+    public boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception {
+        if (goodsId == null) {
+            throw new Main4Exception("商品不存在");
+        }
+        ShiguGoodsModified hasModified = new ShiguGoodsModified();
+        hasModified.setItemId(goodsId);
+        //修改过零售价
+        hasModified.setHasSetPrice(1);
+        return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
 }

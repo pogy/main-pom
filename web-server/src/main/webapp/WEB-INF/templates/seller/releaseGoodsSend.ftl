@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/gysV1/css/releaseGoodsSendv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/gysV1/css/releaseGoodsSend.css" rel="stylesheet">
     
 
     
@@ -51,7 +51,7 @@
             <script src="http://style.571xz.com/v2/gysV1/plupload2.1.2/plupload.full.min.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/gysV1/js/releaseGoodsSendv1.js"></script>
+    <script src="http://style.571xz.com/v2/gysV1/js/releaseGoodsSend.js"></script>
     
 </head>
 <body>

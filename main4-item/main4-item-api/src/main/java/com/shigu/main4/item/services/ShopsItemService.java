@@ -98,28 +98,13 @@ public interface ShopsItemService {
      */
     void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type);
 
-    /**
-     * 获取店铺无最低零售价商品数
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    int selNolowestLsjNum(Long shopId,String webSite);
+    int countOnsaleGoodsAggrNum(Long shopId,String webSite,ShopCountRedisCacheEnum aggrType);
 
     /**
-     * 获取店铺无大图商品数
-     * @param shopId
-     * @param webSite
+     * 商品详情页查看是否设置过最低零售价
+     * @param goodsId
      * @return
      */
-    int selNoBigPicGoodsNum(Long shopId,String webSite);
-
-    /**
-     * 获取店铺无材质成分商品数
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    int selNoConstituentNum(Long shopId,String webSite);
+    boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception;
 
 }

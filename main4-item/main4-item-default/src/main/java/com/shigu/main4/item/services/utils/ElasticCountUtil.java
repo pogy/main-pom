@@ -2,11 +2,14 @@ package com.shigu.main4.item.services.utils;
 
 import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsupNoreal;
+import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsupNorealExample;
+import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsModifiedMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
 import com.shigu.main4.item.vo.GoodsAggsVO;
@@ -38,6 +41,9 @@ public class ElasticCountUtil {
 
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
+
+    @Autowired
+    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
 
 
     /**
@@ -91,6 +97,17 @@ public class ElasticCountUtil {
                     itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);
                 }
                 goodsAggsVO.addGoodsupNum(goodsupNoreal.getAddNum());
+            }
+            ShiguGoodsModifiedExample modifiedExample = new ShiguGoodsModifiedExample();
+            modifiedExample.createCriteria().andItemIdIn(goodsIds);
+            List<ShiguGoodsModified> shiguGoodsModifieds = shiguGoodsModifiedMapper.selectByExample(modifiedExample);
+            for (ShiguGoodsModified shiguGoodsModified : shiguGoodsModifieds) {
+                GoodsAggsVO goodsAggsVO = itemResult.get(shiguGoodsModified.getItemId().toString());
+                if (goodsAggsVO == null) {
+                    goodsAggsVO = new GoodsAggsVO();
+                    itemResult.put(shiguGoodsModified.getItemId().toString(),goodsAggsVO);
+                }
+                goodsAggsVO.setHasRetailPriceSet(shiguGoodsModified.getHasSetPrice());
             }
         }
         return itemResult;
