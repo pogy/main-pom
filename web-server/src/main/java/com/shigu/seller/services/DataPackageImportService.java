@@ -115,8 +115,14 @@ public class DataPackageImportService {
     public String banjia(String url){
         String targetUrl=url;
         if (url.contains(URL_FLAG)) {
-            String srcFilePath=url.substring(url.indexOf(URL_FLAG)+1,url.length());
+            String srcFilePath=url.substring(url.indexOf(URL_FLAG),url.length());
             String targetFilePath=srcFilePath.replace(URL_FLAG,URL_NORMAL);
+            if (srcFilePath.length()>0) {
+                srcFilePath=srcFilePath.substring(1,srcFilePath.length());
+            }
+            if (targetFilePath.length()>0) {
+                targetFilePath=targetFilePath.substring(1,targetFilePath.length());
+            }
             targetUrl=url.replace(URL_FLAG,URL_NORMAL);
             ossIO.moveFile(srcFilePath,targetFilePath);
         }
