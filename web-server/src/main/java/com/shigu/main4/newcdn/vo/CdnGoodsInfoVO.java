@@ -92,6 +92,10 @@ public class CdnGoodsInfoVO {
      * 里料成分
      */
     private String inFabric;
+    /**
+     * 最低零售价
+     */
+    private String lowestLiPrice;
 
 
     /**
@@ -368,5 +372,13 @@ public class CdnGoodsInfoVO {
 
     public void setInFabric(String inFabric) {
         this.inFabric = inFabric;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
     }
 }

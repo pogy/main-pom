@@ -71,6 +71,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
+    private ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
+
+    @Autowired
     private ShowForCdnService showForCdnService;
 
     @Autowired
@@ -541,5 +544,17 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
         String cacheIndex = String.format("%s%d", type.cacheName, shopId);
         redisIO.del(cacheIndex);
+    }
+
+    @Override
+    public boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception {
+        if (goodsId == null) {
+            throw new Main4Exception("商品不存在");
+        }
+        ShiguGoodsModified hasModified = new ShiguGoodsModified();
+        hasModified.setItemId(goodsId);
+        //修改过零售价
+        hasModified.setHasSetPrice(1);
+        return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
 }
