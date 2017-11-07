@@ -450,32 +450,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         }
         ShiguPager<OnsaleItem> pager = new ShiguPager<>();
         pager.setNumber(pageNo);
-        MultipleExample goodsExample;
-        if (bo.getState() == null) {
-            goodsExample = selDefaultGoods(shopId, webSite, bo);
-        } else {
-            switch (bo.getState()) {
-                case 1:
-                    goodsExample = selNoLowPrice(shopId, webSite, bo);
-                    break;
-                case 2:
-                    goodsExample = selNoBigPic(shopId, webSite, bo);
-                    break;
-                case 3:
-                    goodsExample = selNoConstituent(shopId, webSite, bo);
-                    break;
-                default:
-                    goodsExample = selDefaultGoods(shopId, webSite, bo);
-                    break;
-            }
-        }
-        goodsExample.setWebSite(webSite);
-        int totalCount = tae_mall_multipleMapper.countByMultipleExample(goodsExample);
+        int totalCount = shiguGoodsTinyMapper.countOnsaleGoods(shopId, webSite, bo);
         pager.calPages(totalCount,pageSize);
-
-        goodsExample.setStartIndex((pageNo-1)*pageSize);
-        goodsExample.setEndIndex(pageSize);
-        List<GoodsInfoVO> goodsInfoVOS = tae_mall_multipleMapper.selectFieldsByMultipleExample(goodsExample, GoodsInfoVO.class);
+        List<GoodsInfoVO> goodsInfoVOS = shiguGoodsTinyMapper.selOnsaleGoodsInfo(shopId, webSite, bo, (pageNo-1)*pageSize,pageSize);
         List<OnsaleItem> onsaleItems = new ArrayList<>(goodsInfoVOS.size());
         pager.setContent(onsaleItems);
         if (goodsInfoVOS.size()>0) {
