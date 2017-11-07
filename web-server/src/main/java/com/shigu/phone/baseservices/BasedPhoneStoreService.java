@@ -31,10 +31,7 @@ import com.shigu.search.vo.StoreInSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -110,14 +107,20 @@ public class BasedPhoneStoreService {
         StoreCollectVO storeCollectVO = new StoreCollectVO();
         ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(userId, webSite, index, size);
         if (shopCollectVOShiguPager.getTotalCount() == 0) {
-           return null;//收藏夹无商品
+            storeCollectVO.setHasNext(false);
+            storeCollectVO.setTotal(0);
+            storeCollectVO.setShops(Collections.emptyList());
+            return storeCollectVO;//收藏夹无商品
         }
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
         Map<Long, ShopCollectVO> collectGroup = BeanMapper.list2Map(shopCollectVOS, "shopId", Long.class);
 
         if (shopIds == null || shopIds.isEmpty()) {
-            return null;//不可能走到这吧
+            storeCollectVO.setHasNext(false);
+            storeCollectVO.setTotal(0);
+            storeCollectVO.setShops(Collections.emptyList());
+            return storeCollectVO;//不可能走到这吧
         }
         ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(size);
         ShiguMarketExample marketExample = new ShiguMarketExample();

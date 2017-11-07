@@ -1,14 +1,8 @@
 package com.shigu.phone.waps.actions;
 
 import com.openJar.beans.app.AppItemSpread;
-import com.openJar.requests.app.ImgSpreadRequest;
-import com.openJar.requests.app.ItemSpreadRequest;
-import com.openJar.responses.app.ImgSpreadResponse;
-import com.openJar.responses.app.ItemSpreadResponse;
-import com.shigu.phone.apps.services.AppAdvertService;
 import com.shigu.phone.waps.service.WapAdvertService;
 import com.shigu.phone.waps.vo.ImgSpreadVO;
-import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;

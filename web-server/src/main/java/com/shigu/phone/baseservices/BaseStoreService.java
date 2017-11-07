@@ -176,15 +176,6 @@ public class BaseStoreService {
 
         List<FloorVO> floorVOs = marketVO.getFloorVOs();
         List<AppFloor> appFloors = new ArrayList<>();
-        //按楼层排序
-        Collections.sort(floorVOs, new Comparator<FloorVO>() {
-            @Override
-            public int compare(FloorVO o1, FloorVO o2) {
-                Integer o1Floor = Integer.parseInt(o1.getTitle().replace("F","").replace("f",""));
-                Integer o2Floor = Integer.parseInt(o2.getTitle().replace("F","").replace("f",""));
-                return o1Floor - o2Floor;
-            }
-        });
         floorVOs.stream().filter(item->item!=null).forEach(item->{
             AppFloor appFloor = new AppFloor();
             List<AppShopInFloor> appShopInFloors = new ArrayList<>();

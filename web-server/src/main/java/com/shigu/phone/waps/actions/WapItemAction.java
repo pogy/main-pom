@@ -4,8 +4,8 @@ import com.openJar.exceptions.OpenException;
 import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.shigu.main4.common.tools.StringUtil;
-import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.basevo.BaseCollectItemVO;
+import com.shigu.phone.waps.constance.WapConstance;
 import com.shigu.phone.waps.service.WapItemService;
 import com.shigu.phone.waps.service.WapPhoneCdnService;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
@@ -18,9 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Admin on 2017/10/13.
@@ -39,8 +40,8 @@ public class WapItemAction {
     @ResponseBody
     public JSONObject itemCollect(HttpSession session,Integer size,Integer index,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         if (size == null) {
             size = 1;
@@ -67,8 +68,8 @@ public class WapItemAction {
     @ResponseBody
     public JSONObject delItemCollect (HttpSession session,String type,Long[] collectIds){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         if ("goods".equalsIgnoreCase(type)){//取消收藏商品
             wapItemService.delItemCollect(Arrays.asList(collectIds),ps.getUserId());
@@ -85,8 +86,8 @@ public class WapItemAction {
     @ResponseBody
     public JSONObject addCollect (HttpSession session,String type,Long id,String webSite){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null ||ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         try {
             if ("goods".equalsIgnoreCase(type)){//收藏商品
@@ -112,8 +113,8 @@ public class WapItemAction {
     @ResponseBody
     public JSONObject hasCollected(String userId,String type,String id,HttpSession session){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         try {
             Long collectId;

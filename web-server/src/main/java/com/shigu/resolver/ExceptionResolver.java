@@ -34,7 +34,11 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
             appResolveException(response,ex);
             return null;
         }
-        if(request.getServletPath().contains("/wap/")&&request.getServletPath().endsWith(".json")){
+        if(request.getServletPath().contains("/waps/")&&request.getServletPath().endsWith(".json")){
+            wapResolveException(response,ex);
+            return null;
+        }
+        if(request.getServletPath().contains("/datas/")&&request.getServletPath().endsWith(".json")){
             wapResolveException(response,ex);
             return null;
         }

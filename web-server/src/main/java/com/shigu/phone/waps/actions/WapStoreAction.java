@@ -7,6 +7,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
+import com.shigu.phone.waps.constance.WapConstance;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
 import com.shigu.phone.waps.service.WapStoreService;
 import com.shigu.session.main4.PersonalSession;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -117,8 +120,8 @@ public class WapStoreAction {
     @ResponseBody
     public JSONObject queryShopCollectList(HttpSession session,String webSite,Integer index,Integer size) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("参数错误").element("success",false);
+        if (ps == null && ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         if (index == null) {
             index = 1;
@@ -128,9 +131,6 @@ public class WapStoreAction {
         }
         if (StringUtil.isNull(webSite))webSite = null;
         StoreCollectVO storeCollectVO = wapPhoneStoreService.storeCollect(webSite, ps.getUserId(), index, size);
-        if (storeCollectVO == null) {
-            return JsonResponseUtil.error("未查询到数据").element("success",false);
-        }
         return JsonResponseUtil
                     .success()
                     .element("success",true)

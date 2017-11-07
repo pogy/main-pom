@@ -14,6 +14,7 @@ import com.openJar.responses.app.OneItemResponse;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
@@ -25,6 +26,7 @@ import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.baseservices.BasePhoneGoodsSearchService;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
+import com.shigu.phone.waps.bo.ItemSearchBo;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.vo.GoodsInSearch;
@@ -59,8 +61,43 @@ public class WapPhoneGoodsSearchService {
      * 移动端商品搜索
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo,String orderBy ) throws OpenException {
-        return basePhoneGoodsSearchService.itemSearch(bo, orderBy);
+    public ItemSearchVO itemSearch(ItemSearchBo bo) throws OpenException, ParseException {
+        SearchBO searchBO=new SearchBO();
+
+        searchBO.setWebSite(bo.getWebSite());
+        searchBO.setKeyword(bo.getKeyword());
+        searchBO.setMid(bo.getMarketId());
+        searchBO.setCid(bo.getCid());
+        searchBO.setShopId(bo.getStoreId());
+        if (bo.getType() != null && bo.getType() == 2) {
+            //商品库搜索顺序
+            searchBO.setFrom("goods");
+        }
+        searchBO.setSort(bo.getOrderBy());
+        final String dateFormat = "yyyy.MM.dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.patternA);
+        Date startTime = null;
+        Date endtTime = null;
+        if (!StringUtils.isEmpty(bo.getStartTime())) {
+            startTime  = sdf.parse(bo.getStartTime());
+        }
+        if (!StringUtils.isEmpty(bo.getEndTime())) {
+            endtTime  = sdf.parse(bo.getEndTime());
+        }
+
+        searchBO.setSt(startTime == null? null : DateUtil.dateToString(startTime, dateFormat));
+        searchBO.setEt(endtTime == null ? null : DateUtil.dateToString(endtTime, dateFormat));
+        searchBO.setSp(StringUtil.isNull(bo.getStartPrice()) ? null : Double.valueOf(bo.getStartPrice()));
+        searchBO.setEp(StringUtil.isNull(bo.getEndPrice()) ? null : Double.valueOf(bo.getEndPrice()));
+        searchBO.setPage(bo.getIndex());
+        searchBO.setRows(bo.getSize());
+        ItemSearchVO itemSearchVO;
+        if(bo.getStoreId()==null){
+            itemSearchVO = basePhoneGoodsSearchService.itemSearch(searchBO, bo.getOrderBy());
+        }else{
+            itemSearchVO = basePhoneGoodsSearchService.itemSearch(searchBO, bo.getOrderBy(),bo.getStoreId());
+        }
+        return itemSearchVO;
     }
 
     /**

@@ -26,10 +26,7 @@ import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * cdn服务
@@ -76,9 +73,11 @@ public class BasePhoneCdnService {
         List<Long> goodsIds = BeanMapper.getFieldList(shiguGoodsCollects,"goodsId",Long.class);
 
         if (goodsIds == null || goodsIds.isEmpty()) {
-            OpenException openException = new OpenException();
-            openException.setErrMsg("你还没有收藏商品哟");
-            throw openException;
+            BaseCollectItemVO vo  = new BaseCollectItemVO();
+            vo.setHasNext(false);
+            vo.setTotal(0);
+            vo.setItems(Collections.emptyList());
+            return  vo;
         }
         UserInfo userInfo = userBaseService.selUserInfo(userId);
         if (userInfo == null) {

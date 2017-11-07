@@ -163,7 +163,7 @@ public class WapUserAction {
     public JSONObject ChangePassword(HttpSession session,String newPwd,String oldPwd) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("参数错误").element("success",false);
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         try {
             wapPhoneUserService.changePassword(oldPwd,newPwd,ps.getUserId());
@@ -179,7 +179,11 @@ public class WapUserAction {
 
     @RequestMapping("forgetPassword")
     @ResponseBody
-    public JSONObject ForgetPassword(String msgCode,String newPwd,String telephone) {
+    public JSONObject ForgetPassword(String msgCode,String newPwd,String telephone,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
+        }
         try {
             wapPhoneUserService.forgetPassword(telephone,msgCode,newPwd);
             return JsonResponseUtil.success().element("success",true);
@@ -202,6 +206,9 @@ public class WapUserAction {
         }
         try {
             if (ps != null) {//不是第三方
+                if (ps.getUserId() == null) {
+                    return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
+                }
                 wapPhoneUserService.bindTelephone(ps.getUserId(),telephone,msgCode);
                 return JsonResponseUtil.success().element("success",true);
             }
@@ -231,7 +238,6 @@ public class WapUserAction {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps == null || ps.getUserId() == null) {
                 return JsonResponseUtil.success().element("success",true);
-//                return JsonResponseUtil.error("用户未登录").element("success",false);
             }
             //是否是商户
             Subject subject = SecurityUtils.getSubject();
@@ -250,7 +256,7 @@ public class WapUserAction {
     public JSONObject loginOut(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
@@ -262,7 +268,7 @@ public class WapUserAction {
     public JSONObject getUserData(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         Map<String, Object> otherPlatform = ps.getOtherPlatform();
         String bingdTelephone = null;
@@ -285,7 +291,7 @@ public class WapUserAction {
     public JSONObject imgUpload(HttpSession session, HttpServletRequest request) throws IOException, FileUploadException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success", false);
+            return JsonResponseUtil.error("用户未登录").element("success", false).element("stateCode",3);
         }
 
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  //转换成多部分request
@@ -334,7 +340,7 @@ public class WapUserAction {
         }else{
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps == null || ps.getUserId() == null) {
-                return JsonResponseUtil.error("用户未登录").element("success", false);
+                return JsonResponseUtil.error("用户未登录").element("success", false).element("stateCode",3);
             }
             userId = ps.getUserId();
         }
@@ -366,7 +372,7 @@ public class WapUserAction {
         }else{
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps == null || ps.getUserId() == null) {
-                return JsonResponseUtil.error("用户未登录").element("success", false);
+                return JsonResponseUtil.error("用户未登录").element("success", false).element("stateCode",3);
             }
             userId = ps.getUserId();
         }

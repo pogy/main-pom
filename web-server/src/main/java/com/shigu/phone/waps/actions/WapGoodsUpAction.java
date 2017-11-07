@@ -44,8 +44,8 @@ public class WapGoodsUpAction {
     @ResponseBody
     public JSONObject queryUploadedGoodsList(HttpSession session,Integer type, Integer index, Integer size){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         List<Integer> types = Arrays.asList(1,2,3);//1所有宝贝，2等待处理的，3淘宝已下架
         if (type == null || !types.contains(type)) {
@@ -72,8 +72,8 @@ public class WapGoodsUpAction {
     @ResponseBody
     public JSONObject upToWx(HttpSession session,String webSite,Long goodsId) throws OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         wapPhoneGoodsUpService.upToWx(webSite,goodsId,ps.getUserId());
         return JsonResponseUtil.success().element("success",true).element("upToWx","上传成功");
@@ -91,8 +91,8 @@ public class WapGoodsUpAction {
     @ResponseBody
     public JSONObject downGoodsUploaded(HttpSession session,String uploadId) throws Main4Exception, OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false);
+        if (ps == null || ps.getUserId() == null) {
+            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         try {
             wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());

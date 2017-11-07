@@ -4,9 +4,7 @@ import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.responses.app.ImgSearchResponse;
-import com.openJar.responses.app.ItemSearchResponse;
 import com.shigu.main4.cdn.exceptions.CdnException;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
@@ -14,11 +12,9 @@ import com.shigu.phone.waps.bo.ItemSearchBo;
 import com.shigu.phone.waps.bo.OneItemBo;
 import com.shigu.phone.waps.service.WapPhoneGoodsSearchService;
 import com.shigu.phone.wrapper.WrapperUtil;
-import com.shigu.search.bo.SearchBO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
-import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,8 +44,7 @@ public class WapGoodsSearchAction {
      */
     @RequestMapping("queryGoodsList")
     @ResponseBody
-    public JSONObject queryGoodsList(ItemSearchBo bo) {
-
+    public JSONObject queryGoodsList(ItemSearchBo bo) throws ParseException {
         List<Integer> types = Arrays.asList(1,2,3);
         if (!types.contains(bo.getType())){
             return JsonResponseUtil.error("参数错误").element("success",false);
@@ -77,33 +73,16 @@ public class WapGoodsSearchAction {
         if (bo.getSize() == null) {
             bo.setSize(30);
         }
-
-        SearchBO searchBO=new SearchBO();
-        searchBO.setD(bo.getD());
-//        searchBO.getBpic(bo.);
-        searchBO.setCid(bo.getCid());
-        if (!StringUtil.isNull(bo.getEndPrice())) {
-            searchBO.setEp(Double.parseDouble(bo.getEndPrice()));
+        if (bo.getType() != null && bo.getType() == 1){
+            bo.setKeyword(null);//type == 1 不需要关键词
         }
-        searchBO.setEt(bo.getEndTime());
-//        searchBO.getFrom(bo.);
-        searchBO.setKeyword(bo.getKeyword());
-        searchBO.setMid(bo.getMarketId());
-        searchBO.setPid(bo.getPid());
-        searchBO.setShopId(bo.getStoreId());
-        searchBO.setSort(bo.getOrderBy());
-        if (!StringUtil.isNull(bo.getStartPrice())) {
-            searchBO.setSp(Double.parseDouble(bo.getStartPrice()));
+        if (bo.getScid() != null) {
+            bo.setCid(bo.getScid());
         }
-        searchBO.setSt(bo.getStartTime());
-        searchBO.setWebSite(bo.getWebSite());
-        searchBO.setPage(bo.getIndex());
-        searchBO.setRows(bo.getSize());
-//        searchBO.setTotalPage();
 
         ItemSearchVO itemSearchVo = null;
         try {
-            itemSearchVo = wapPhoneGoodsSearchService.itemSearch(searchBO,bo.getOrderBy());
+            itemSearchVo = wapPhoneGoodsSearchService.itemSearch(bo);
             return JsonResponseUtil
                         .success()
                         .element("success",true)

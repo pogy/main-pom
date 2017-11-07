@@ -93,7 +93,9 @@ public class BasePhoneGoodsSearchService {
         ShiguPager<GoodsInSearch> result = goodsSearchService.search(bo, SearchOrderBy.valueIs(orderBy), false).getSearchData();
         vo.setTotal(result.getTotalCount());
         vo.setHasNext(result.getNumber() < result.getTotalPages());
-        vo.setItems(result.getContent().stream().map(o -> {
+        vo.setItems(result.getContent().stream()
+                .filter(item-> item!=null && !StringUtil.isNull(item.getPiprice()))
+                .map(o -> {
             AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
             appGoodsBlock.setGoodsId(o.getId());
             appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
@@ -120,7 +122,7 @@ public class BasePhoneGoodsSearchService {
         p.setNumber(pager.getNumber());
         p.setTotalPages(pager.getTotalPages());
         p.setTotalCount(pager.getTotalCount());
-        p.setContent(pager.getContent().parallelStream().map(itemShowBlock -> {
+        p.setContent(pager.getContent().stream().map(itemShowBlock -> {
             SearchItem item=new SearchItem();
             item.setGoodsNo(itemShowBlock.getGoodsNo());
             item.setStoreId(itemShowBlock.getShopId());
@@ -140,7 +142,9 @@ public class BasePhoneGoodsSearchService {
             return item;
         }).collect(Collectors.toList()));
         ItemSearchVO vo=new ItemSearchVO();
-        vo.setItems(goodsSelFromEsService.addShopInfoToGoods(p,bo.getWebSite()).getContent().parallelStream().map(o -> {
+        vo.setItems(goodsSelFromEsService.addShopInfoToGoods(p,bo.getWebSite()).getContent().stream()
+                .filter(item-> item!=null && !StringUtil.isNull(item.getPiprice()))
+                .map(o -> {
             AppGoodsBlock appGoodsBlock = BeanMapper.map(o, AppGoodsBlock.class);
             appGoodsBlock.setGoodsId(o.getId());
             appGoodsBlock.setImgsrc(ImgUtils.formatImg(appGoodsBlock.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));

@@ -1,31 +1,17 @@
 package com.shigu.phone.waps.actions;
 
 import com.google.common.collect.ImmutableSet;
-import com.openJar.beans.app.AppCat;
 import com.openJar.beans.app.AppCatGroup;
-import com.openJar.beans.app.AppSearchNav;
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.CatRequest;
-import com.openJar.requests.app.SearchNavRequest;
-import com.openJar.responses.app.CatResponse;
-import com.openJar.responses.app.SearchNavResponse;
-import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.enums.SearchCategory;
-import com.shigu.phone.api.enums.PhoneCategoryEnum;
-import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
 import com.shigu.phone.basevo.MarketsVO;
 import com.shigu.phone.waps.service.WapStaticService;
 import com.shigu.phone.waps.vo.ParentCatVO;
 import com.shigu.phone.waps.vo.SubCatVO;
-import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.search.services.CategoryInSearchService;
-import com.shigu.search.vo.CateNav;
 import com.shigu.tools.JsonResponseUtil;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 

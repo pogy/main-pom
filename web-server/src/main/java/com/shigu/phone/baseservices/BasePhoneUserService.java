@@ -256,7 +256,7 @@ public class BasePhoneUserService {
         OpenException openException=new OpenException();
         //用户验证不通过或原密码输入不正确
         if (!EncryptUtil.encrypt(oldPwd).equals(userBaseService.selUserPwdByUserId(userId))) {
-            openException.setErrMsg("老密码错误");
+            openException.setErrMsg("旧密码错误");
             throw openException;
         }
         try {
