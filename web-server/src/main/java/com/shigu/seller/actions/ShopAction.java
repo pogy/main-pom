@@ -318,7 +318,6 @@ public class ShopAction {
      */
     @RequestMapping("seller/releaseGoodsinit")
     public String releaseGoodsinit(HttpSession session,Model model){
-        //todo:最近使用的类目
         ShopSession shop = getShopSession(session);
         int size = 5;
         List<EverUsedCat> everUsedCats = itemCatService.everUsedCats(shop.getShopId(), size);
