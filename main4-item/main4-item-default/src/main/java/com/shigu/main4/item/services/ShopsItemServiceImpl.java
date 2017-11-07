@@ -467,6 +467,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 item.setGoodsUpNum(0);
                 item.setSaleCount(0);
                 item.setConstituentType(1);
+                item.setHasRetailPriceSet(false);
                 GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
                 if (otherInfo != null) {
                     //设置材质时必须设置面料为必填项
@@ -477,6 +478,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
             });

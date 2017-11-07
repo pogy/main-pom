@@ -1,5 +1,7 @@
 package com.shigu.main4.item.vo;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,8 @@ public class GoodsAggsVO implements Serializable {
     private String fabric;
     //里料
     private String inFabric;
+    //是否设置过最低零售价
+    private Integer hasRetailPriceSet;
 
     /**
      * 增加上传量
@@ -66,5 +70,13 @@ public class GoodsAggsVO implements Serializable {
 
     public void setInFabric(String inFabric) {
         this.inFabric = inFabric;
+    }
+
+    public Integer getHasRetailPriceSet() {
+        return hasRetailPriceSet;
+    }
+
+    public void setHasRetailPriceSet(Integer hasRetailPriceSet) {
+        this.hasRetailPriceSet = hasRetailPriceSet;
     }
 }

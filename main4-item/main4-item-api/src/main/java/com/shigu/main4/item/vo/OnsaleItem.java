@@ -73,6 +73,10 @@ public class OnsaleItem implements Serializable{
      * 是否已设置面料 1未设置 2已设置
      */
     private Integer constituentType;
+    /**
+     * 是否设置过最低零售价
+     */
+    private Boolean hasRetailPriceSet;
 
     public Long getItemId() {
         return itemId;
@@ -192,5 +196,13 @@ public class OnsaleItem implements Serializable{
 
     public void setConstituentType(Integer constituentType) {
         this.constituentType = constituentType;
+    }
+
+    public Boolean getHasRetailPriceSet() {
+        return hasRetailPriceSet;
+    }
+
+    public void setHasRetailPriceSet(Boolean hasRetailPriceSet) {
+        this.hasRetailPriceSet = hasRetailPriceSet;
     }
 }
