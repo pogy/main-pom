@@ -98,28 +98,6 @@ public interface ShopsItemService {
      */
     void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type);
 
-    /**
-     * 获取店铺无最低零售价商品数
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    int selNolowestLsjNum(Long shopId,String webSite);
-
-    /**
-     * 获取店铺无大图商品数
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    int selNoBigPicGoodsNum(Long shopId,String webSite);
-
-    /**
-     * 获取店铺无材质成分商品数
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    int selNoConstituentNum(Long shopId,String webSite);
+    int countOnsaleGoodsAggrNum(Long shopId,String webSite,ShopCountRedisCacheEnum aggrType);
 
 }

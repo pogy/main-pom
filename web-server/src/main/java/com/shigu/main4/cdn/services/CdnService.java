@@ -390,6 +390,7 @@ public class CdnService {
             vo.setOpenTime(other.getOpenTime());
             vo.setMainBus(other.getMainBus());
             vo.setTbUrl(other.getTaobaoUrl());
+            vo.setType(other.getType());
         }
         //是否实体认证
         ShiguShopLicense license = new ShiguShopLicense();

@@ -544,9 +544,9 @@ public class ShopAction {
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
         ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
-        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.selNoBigPicGoodsNum(shopId,webSite));
-        shopUnprocessItemCount.setNoPriceNum(shopsItemService.selNolowestLsjNum(shopId,webSite));
-        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.selNoConstituentNum(shopId,webSite));
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
         return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
     }
 
@@ -889,13 +889,12 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsNoListinit")
-    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws ItemException {
+    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws Main4Exception {
         ShopSession shopSession = getShopSession(session);
         //查总量
         model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(null,null,null
-                ,shopSession.getShopId(),bo.getPageNo(),bo.getPageSize());
+        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPageNo(),bo.getPageSize());
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         List<OnsaleItem> list=pager.getContent();
         List<MoreModifyItemVO> volist=new ArrayList<>();

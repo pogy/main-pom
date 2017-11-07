@@ -9,13 +9,15 @@ package com.shigu.main4.item.enums;
  * 描述：
  */
 public enum ShopCountRedisCacheEnum {
-    SHOP_NO_LOW_PRICE_INDEX_("shop_no_low_price_index_in_redis_"),
-    SHOP_NO_CONSITUTUENT_INDEX_("shop_no_consitutuent_index_in_redis_"),
-    SHOP_NO_BIG_PIC_INDEX_("shop_no_big_pic_index_in_redis_"),
+    SHOP_NO_LOW_PRICE_INDEX_(1,"shop_no_low_price_index_in_redis_"),
+    SHOP_NO_BIG_PIC_INDEX_(2,"shop_no_big_pic_index_in_redis_"),
+    SHOP_NO_CONSITUTUENT_INDEX_(3,"shop_no_consitutuent_index_in_redis_"),
     ;
+    public final int state;
     public final String cacheName;
 
-    ShopCountRedisCacheEnum(String cacheName) {
+    ShopCountRedisCacheEnum(int state, String cacheName) {
+        this.state = state;
         this.cacheName = cacheName;
     }
 }

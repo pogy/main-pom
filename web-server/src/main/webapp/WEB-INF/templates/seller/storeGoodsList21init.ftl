@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1509953302848" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1510022887566" rel="stylesheet">
     
   </head>
 <body>
@@ -275,6 +275,7 @@ var webSite = '${webSite!}';
         </div>
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
+            <input type="hidden" id="state" value="${query.state!}">
             <ul class="clearfix">
                 <li><label>宝贝名称：</label><input id="keyword" class="textinput" value="${get.keyword!}"></li>
 <li><label>宝贝货号：</label><input id="goodsNo" class="textinput" value="${get.goodsNo!}"></li>                <li><button onclick="goods_search()">查询</button></li>
@@ -451,7 +452,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1509953302848"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1510022887566"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
