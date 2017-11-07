@@ -505,9 +505,17 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         }
         GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
         goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+        GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (searchResult != null) {
+            goodsCountForsearch = searchResult;
+        }
         goodsCountForsearch.setFabric(fabricStr);
         goodsCountForsearch.setInfabric(inFabricStr);
-        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        if (searchResult == null) {
+            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        } else {
+            goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        }
     }
 
     /**
