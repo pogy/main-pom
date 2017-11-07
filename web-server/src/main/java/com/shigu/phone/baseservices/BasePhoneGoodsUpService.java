@@ -156,6 +156,7 @@ public class BasePhoneGoodsUpService {
             // 2 待处理： 应档口已下架 淘宝未下架
             // 3 淘宝已下架
             bo.setUploadGoodsState(type);
+            bo.setFlag("web-tb");
         }
 
         ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(userId, nick, bo);
