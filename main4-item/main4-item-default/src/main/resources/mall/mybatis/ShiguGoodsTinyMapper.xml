@@ -44,7 +44,7 @@
 
         WHERE a.store_id = #{shopId}
         <if test="bo.goodsNo!=null">
-            AND a.goodsNo like concat('%',#{bo.goodsNo},'%')
+            AND a.goods_no like concat('%',#{bo.goodsNo},'%')
         </if>
         <if test="bo.keyword!=null">
             AND a.title like concat('%',#{bo.keyword},'%')
