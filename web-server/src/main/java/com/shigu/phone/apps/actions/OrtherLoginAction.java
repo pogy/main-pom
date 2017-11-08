@@ -22,10 +22,11 @@ import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -54,7 +55,7 @@ import java.util.Map;
  */
 @Controller
 public class OrtherLoginAction {
-    private static final Logger logger = Logger.getLogger(OrtherLoginAction.class);
+    private static Logger logger = LoggerFactory.getLogger(OrtherLoginAction.class);
     @Autowired
     private PhoneUserService phoneUserService;
     @Autowired
@@ -66,7 +67,7 @@ public class OrtherLoginAction {
     //第三方登录,淘宝授权成功跳转
     @RequestMapping("phoneOrtherLogin")
     public String passwordLogin(AppLoginBackBO bo,BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
-
+        logger.info("phoneOrtherLogin----login");
         if(bo.getFlag()==0){
             //未定阅星座网服务
             return "redirect:"+"alidao://sjxz/taobao/author?type=null&token=null&userNick=null&tempId=null&flag=0";
@@ -82,7 +83,7 @@ public class OrtherLoginAction {
             Long userId = personalSession.getUserId();
             //token
             String uuid=phoneUserService.createToken(personalSession.getUserId(),"phone_login_token");
-
+            uuid = TokenUtil.str2HexStr(uuid);
             return "redirect:"+"alidao://sjxz/taobao/author?type=1&token="+uuid+"&userNick=null&tempId=null&flag=1";
         }catch (LoginAuthException e) {
             return "redirect:"+"alidao://sjxz/taobao/author?type=0&token=null&userNick="+bo.getNick()+"&tempId="+bo.getKey()+"&flag=1";
