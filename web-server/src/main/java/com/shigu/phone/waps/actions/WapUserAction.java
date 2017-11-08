@@ -75,9 +75,7 @@ public class WapUserAction {
             currentUser.login(token);
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if(wapPhoneUserService.needBindTelephone(ps.getUserId())){
-                String url2 = request.getScheme()+"://"+ request.getServerName();//+request.getRequestURI();
-                response.sendRedirect(url2+"/waps/index.html#/bindTelephone");
-                return null;
+                return JsonResponseUtil.success().element("success",true).element("bindTel",true);//老用户，没绑定手机
             }
 
             currentUser.hasRole(RoleEnum.STORE.getValue());
@@ -99,9 +97,13 @@ public class WapUserAction {
      */
     @RequestMapping("msgCodeLogin")
     @ResponseBody
-    public JSONObject msgCodeLogin(HttpServletRequest request,String telephone ,String msgCode) {
+    public JSONObject msgCodeLogin(HttpServletRequest request,String telephone ,String msgCode,HttpSession session) {
         try {
             wapPhoneUserService.msgCodeLogin(telephone, msgCode, request.getRemoteAddr());
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if(wapPhoneUserService.needBindTelephone(ps.getUserId())){
+                return JsonResponseUtil.success().element("success",true).element("bindTel",true);
+            }
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             e.printStackTrace();
@@ -179,11 +181,7 @@ public class WapUserAction {
 
     @RequestMapping("forgetPassword")
     @ResponseBody
-    public JSONObject ForgetPassword(String msgCode,String newPwd,String telephone,HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null || ps.getUserId() == null) {
-            return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
-        }
+    public JSONObject ForgetPassword(String msgCode,String newPwd,String telephone) {
         try {
             wapPhoneUserService.forgetPassword(telephone,msgCode,newPwd);
             return JsonResponseUtil.success().element("success",true);
