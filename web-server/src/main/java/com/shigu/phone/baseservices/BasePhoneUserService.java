@@ -29,6 +29,7 @@ import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
 import com.shigu.phone.apps.services.PhoneUserService;
 import com.shigu.phone.apps.utils.ImgUtils;
+import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.basevo.AboutMeVO;
 import com.shigu.phone.basevo.BindUserVO;
@@ -201,7 +202,9 @@ public class BasePhoneUserService {
         appUser.setImgsrc(headUrl);
         appUser.setUserNick(personalSession.getUserNick());
         //token
-        appUser.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
+        String phone_login_token = phoneUserService.createToken(personalSession.getUserId(), "phone_login_token");
+        phone_login_token = TokenUtil.str2HexStr(phone_login_token);
+        appUser.setToken(phone_login_token);
         //是否是商户
         if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
             appUser.setImSeller(true);
