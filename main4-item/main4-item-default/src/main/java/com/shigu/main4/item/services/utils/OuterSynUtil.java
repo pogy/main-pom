@@ -8,6 +8,7 @@ import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.Jobs;
 import com.shigu.main4.item.bo.SynOneShopState;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.SynException;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 import static com.shigu.main4.item.services.utils.OuterSynUtil.ModifiedStateEnum.HAS_LOCAL_DOWN;
@@ -64,7 +66,12 @@ public abstract class OuterSynUtil {
             execute(synShopBean);
         }
     }
-    public void synOneShop(Long shopId, Long otherShopId) {
+    public void synOneShop(Long shopId, Long otherShopId){
+        synOneShop(shopId,otherShopId,null);
+    }
+
+
+    public void synOneShop(Long shopId, Long otherShopId,String startDate) {
         if(queryingMap.get(otherShopId)!=null){
             return;
         }
@@ -86,12 +93,38 @@ public abstract class OuterSynUtil {
                 }
             }
             //生成本地应同步数据
-            SynShopBean synShopBean = new SynShopBean(shiguShop, otherShopId, commondIds);
+            SynShopBean synShopBean = new SynShopBean(shiguShop, otherShopId, commondIds,startDate);
             //获取并处理分页同步数据
             execute(synShopBean);
         }
         queryingMap.remove(otherShopId);
     }
+
+    public void synOneGoods(Long shopId,Long otherShopId,Long otherGoodsId){
+        queryingMap.put(otherShopId,1);
+        ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
+        if (shiguShop != null) {
+            Document shopHtml;
+            try {
+                shopHtml = JsoupUtil.getHtml(String.format("https://wsy.com/%d", otherShopId));
+            } catch (IOException e) {
+                return;
+            }
+            List<Long> commondIds=new ArrayList<>();
+            Elements tuijians=shopHtml.select(".edit-recommend");
+            if(tuijians.size()>0){
+                Elements commondItems=tuijians.get(0).select(".li-i1").select("a");
+                for(Element element:commondItems){
+                    commondIds.add(new Long(element.attr("href").trim().split("id=")[1]));
+                }
+            }
+            //生成本地应同步数据
+            SynShopBean synShopBean = new SynShopBean(shiguShop, otherShopId, commondIds,null);
+            //获取并处理分页同步数据
+            goodsExecute(synShopBean,otherGoodsId);
+        }
+    }
+
     public Map<Long, ShiguGoodsModified> getModifyMap(List<Long> goodsIds) {
         if (goodsIds == null||goodsIds.size()==0) {
             return new HashMap<>();
@@ -110,6 +143,9 @@ public abstract class OuterSynUtil {
         goodsInfo.setGoodsId(goodsId);
         itemAddOrUpdateService.systemUpdateItem(goodsInfo);
     }
+
+
+    protected abstract void goodsExecute(SynShopBean synBean,Long otherGoodsId);
 
     /**
      * 获取同步数据并进行处理
@@ -161,7 +197,7 @@ public abstract class OuterSynUtil {
         //商品修改map，key为goodsId
         private Map<Long, ShiguGoodsModified> modifiedMap;
         //商品数据map，key为外部导入商品外部主键
-        private Map<Long, ShiguGoodsTiny> tinyMap;
+        public Map<Long, ShiguGoodsTiny> tinyMap;
         //本地外部id列表
         private List<Long> localOuterIdList;
         //同步外部id列表
@@ -171,6 +207,8 @@ public abstract class OuterSynUtil {
 
         public List<Long> commonIds;
 
+        public String startDate;
+
         public SynShopBean(ShiguShop shop) {
             //同步的店铺
             this.shop = shop;
@@ -179,7 +217,7 @@ public abstract class OuterSynUtil {
             init();
         }
 
-        public SynShopBean(ShiguShop shop, Long otherShopId,List<Long> commonIds) {
+        public SynShopBean(ShiguShop shop, Long otherShopId,List<Long> commonIds,String startDate) {
             //同步的店铺
             this.shop = shop;
             //本次同步店铺信息
@@ -187,6 +225,7 @@ public abstract class OuterSynUtil {
             //外部档口ID
             this.otherShopId=otherShopId;
             this.commonIds=commonIds;
+            this.startDate=startDate;
             init();
         }
 
@@ -203,6 +242,15 @@ public abstract class OuterSynUtil {
             localOuterIdList = new ArrayList<>(tinyMap.keySet());
             //同步产生外部主键集合
             synOuterIdList = new ArrayList<>();
+        }
+    }
+
+    public class ImgUploadInfo{
+        public URL url;
+        public String file;
+        public ImgUploadInfo(URL url,String file){
+            this.file=file;
+            this.url=url;
         }
     }
 
@@ -250,8 +298,11 @@ public abstract class OuterSynUtil {
         Map<Long, ShiguGoodsTiny> tinyMap = synShopBean.tinyMap;
         Map<Long, ShiguGoodsModified> modifiedMap = synShopBean.modifiedMap;
         SynOneShopState state = synShopBean.state;
-        if (outerIds.size() > 0) {
-            for (Long outerId : outerIds) {
+
+        Jobs jobs=new Jobs(10) {
+            @Override
+            public void doWork(Object o) throws Exception {
+                Long outerId=(Long)o;
                 ShiguGoodsTiny tiny = tinyMap.get(outerId);
                 //如果本地商品数据与数据来源不同步，尝试进行更新
                 if (!checkGoodsSyn(tiny, goodsInfosMap.get(outerId))) {
@@ -266,7 +317,14 @@ public abstract class OuterSynUtil {
                     state.addUnchanged();
                 }
             }
+        };
+
+        if (outerIds.size() > 0) {
+            for (Long outerId : outerIds) {
+                jobs.addJob(outerId);
+            }
         }
+        jobs.join();
     }
 
     /**
@@ -288,35 +346,53 @@ public abstract class OuterSynUtil {
             Map<Long, ShiguGoodsModified> modifiedMap = BeanMapper.list2Map(shiguGoodsModifiedMapper.selectByExample(modifiedExample),"itemId",Long.class);
             ////有需要时可以把已下架的修改数据放入修改表中
             //synShopBean.modifiedMap.putAll(modifiedMap);
-            for (Map.Entry<Long, ShiguGoodsSoldout> soldoutEntry : synLocalSoldoutMap.entrySet()) {
-                Long outerId = soldoutEntry.getKey();
-                Long goodsId = soldoutEntry.getValue().getGoodsId();
-                outIds.remove(outerId);
-                if (!checkLocalModified(modifiedMap.get(goodsId), HAS_LOCAL_DOWN)) {
-                    try {
-                        itemAddOrUpdateService.systemUpItem(goodsId);
-                        state.addUp();
-                    } catch (ItemModifyException e) {
-                        state.addErrorReason(outerId, e.getMessage());
-                        logger.error("上架错误", e);
+
+            Jobs jobs=new Jobs(10) {
+                @Override
+                public void doWork(Object o) throws Exception {
+                    Map.Entry<Long, ShiguGoodsSoldout> soldoutEntry= (Map.Entry<Long, ShiguGoodsSoldout>) o;
+                    Long outerId = soldoutEntry.getKey();
+                    Long goodsId = soldoutEntry.getValue().getGoodsId();
+                    outIds.remove(outerId);
+                    if (!checkLocalModified(modifiedMap.get(goodsId), HAS_LOCAL_DOWN)) {
+                        try {
+                            itemAddOrUpdateService.systemUpItem(goodsId);
+                            state.addUp();
+                        } catch (ItemModifyException e) {
+                            state.addErrorReason(outerId, e.getMessage());
+                            logger.error("上架错误", e);
+                        }
+                    } else {
+                        //手动下架的不处理
+                        state.addUnprocessed(outerId);
                     }
-                } else {
-                    //手动下架的不处理
-                    state.addUnprocessed(outerId);
+                }
+            };
+            for (Map.Entry<Long, ShiguGoodsSoldout> soldoutEntry : synLocalSoldoutMap.entrySet()) {
+                jobs.addJob(soldoutEntry);
+            }
+            jobs.join();
+        }
+        Jobs jobs=new Jobs(10) {
+            @Override
+            public void doWork(Object o) throws Exception {
+                SynItem goodsInfo=null;
+                Long outId= (Long) o;
+                try {
+                    goodsInfo = getGoodsInfo(outId,synShopBean, (Long) goodsInfosMap.get(outId));
+                    itemAddOrUpdateService.systemAddItem(goodsInfo);
+                    state.addCreated();
+                } catch (SynException | ItemModifyException e) {
+                    state.addErrorReason(outId, e.getMessage());
+                    logger.error("商品发布错误", e);
                 }
             }
-        }
+        };
+
         for (Long outId : outIds) {
-            SynItem goodsInfo=null;
-            try {
-                goodsInfo = getGoodsInfo(outId,synShopBean, (Long) goodsInfosMap.get(outId));
-                itemAddOrUpdateService.systemAddItem(goodsInfo);
-                state.addCreated();
-            } catch (SynException | ItemModifyException e) {
-                state.addErrorReason(outId, e.getMessage());
-                logger.error("商品发布错误", e);
-            }
+            jobs.addJob(outId);
         }
+        jobs.join();
 
     }
 

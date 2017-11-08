@@ -58,7 +58,7 @@ public class SynOneShopState {
         return updated;
     }
 
-    public void addUpdated() {
+    public synchronized void addUpdated() {
         this.updated++;
     }
 
@@ -66,7 +66,7 @@ public class SynOneShopState {
         return unchanged;
     }
 
-    public void addUnchanged() {
+    public synchronized void addUnchanged() {
         this.unchanged++;
     }
 
