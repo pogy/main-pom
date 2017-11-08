@@ -64,7 +64,7 @@ public class OrderSendErrorDealService {
             eca.andReceiverNameLike ("%&%").or().andReceiverAddressLike ("%&%");
             daifaTradeExample.and (eca);
         }
-       return  daifaTradeMapper.selectByExample (daifaTradeExample);
+       return  daifaTradeMapper.selectByConditionList (daifaTradeExample);
 
     }
     /**
@@ -110,7 +110,7 @@ public class OrderSendErrorDealService {
         int rows = 10;
         example.setStartIndex((page - 1) * rows);
         example.setEndIndex(rows);
-        return daifaOrderMapper.selectByExample (example);
+        return daifaOrderMapper.selectByConditionList (example);
 
     }
 

@@ -55,6 +55,9 @@ public class GoodsStatisticsAction {
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("lists", list);
+        if(bo.getTakeGoodsStatus ()==null){
+            bo.setTakeGoodsStatus (0);
+        }
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("userName", auth);
@@ -81,6 +84,9 @@ public class GoodsStatisticsAction {
         List<StatisGoodsVO> list= goodsStatisticsService.statisGoodsByStoreNumByPage(bo);
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("lists", list);
+        if(bo.getTakeGoodsStatus ()==null){
+            bo.setTakeGoodsStatus (0);
+        }
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("userName", auth);
