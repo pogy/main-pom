@@ -161,7 +161,7 @@ public class BasePhoneGoodsUpService {
 
         ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(userId, nick, bo);
 
-        pager.calPages(pager.getTotalCount(),10);
+        pager.calPages(pager.getTotalCount(),size);
         uploadedItemVO.setTotal(pager.getTotalCount());
         uploadedItemVO.setHasNext(index<100&&index<pager.getTotalPages());
 
