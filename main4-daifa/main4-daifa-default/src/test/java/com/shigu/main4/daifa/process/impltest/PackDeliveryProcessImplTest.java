@@ -25,6 +25,21 @@ public class PackDeliveryProcessImplTest extends BaseSpringTest {
     private PackDeliveryProcess packDeliveryProcess;
 
     @Test
+    public void dealSubOrderError_test () {
+        Long dfOrderId=397161L;
+        String propStr="黑色:40/41（适合39-40脚穿）";
+        String goodsCode="MT01";
+        String storeGoodsCode="dsjd_C319_MT01-P15";
+        packDeliveryProcess = SpringBeanFactory.getBean(PackDeliveryProcess.class);
+        try {
+            packDeliveryProcess.dealSubOrderError ( dfOrderId,  propStr,  goodsCode,  storeGoodsCode);
+        } catch (DaifaException e) {
+            e.printStackTrace ();
+        }
+
+    }
+
+    @Test
     public void dealOrderSendError_test(){//OK  3865321809147
         Long dfTradeId=new Long(62017101909227L);
         String receiverName="唐军";
