@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -39,6 +40,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/fxsV1/js/shiguOnekeyRecordinitv1.js"></script>
+    
 </head>
 <body>
 
@@ -608,7 +610,7 @@ var webSite = '${webSite!}';
                 <p class="fl">
                     <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
-                <p class="fl"><span>货号：1111</span></p>
+                <p class="fl"><span>货号：${goods.goodsNo!}</span></p>
                 <p class="fl">
                     <#if goods.shopSaleState == 1>
                     <i class="shopSaleState"></i>
