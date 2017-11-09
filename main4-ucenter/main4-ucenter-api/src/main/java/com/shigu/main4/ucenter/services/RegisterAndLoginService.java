@@ -27,6 +27,12 @@ public interface RegisterAndLoginService {
     boolean userCanRegist(String username, LoginFromType loginFromType);
 
     /**
+     * 手机号是否允许注册
+     * @return
+     */
+    boolean userCanRegist(String username,String key, LoginFromType loginFromType);
+
+    /**
      * 按用户名,反查用户ID
      * @param username
      * @param loginFromType
