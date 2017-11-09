@@ -237,8 +237,12 @@ public class DaifaAllOrderIndexService {
         String s = DateUtil.dateToString(new Date(), DateUtil.patternB);
         if(LAST_OUT_TIME ==null|| !s.equals(LAST_OUT_TIME)) {
             new Thread(() -> {
-                orderManageProcess.orderTimeout();
                 LAST_OUT_TIME = s;
+                try {
+                    orderManageProcess.orderTimeout();
+                } catch (Exception e) {
+                    LAST_OUT_TIME = null;
+                }
             }).start();
         }
 

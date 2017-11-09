@@ -36,18 +36,18 @@ public class ExpressModelImplTest extends BaseSpringTest {
 
         OrderExpressBO bo=new OrderExpressBO();
         bo.setExpressName ("圆通快递");
-        bo.setReceiverName ("官鹏");
-        bo.setReceiverPhone ("13541627791");
-        bo.setReceiverAddress ("上海市 上海市 浦东新区 航头镇 上海市浦东新区航头镇航头路121－123");
-        bo.setTid (62017101808994L);//811647610862
+        bo.setReceiverName ("柏春义");
+        bo.setReceiverPhone ("13224290955");
+        bo.setReceiverAddress ("辽宁省 葫芦岛市 兴城市 四家路口钱柜自助烤肉");
+        bo.setTid (72017102612266L);//811647610862
         //子单商品
         List<SubOrderExpressBO> list=new ArrayList<> ();
 
         SubOrderExpressBO bo1=new SubOrderExpressBO ();
-        bo1.setOrderId (386539L);
-        bo1.setStoreGoodsCode ("xznz_8311_M8868");
+        bo1.setOrderId (390939L);
+        bo1.setStoreGoodsCode ("sjxz_1705_1705-JK55-P35");
         bo1.setGoodsNum (1);
-        bo1.setPropStr ("橘色:L");
+        bo1.setPropStr ("白色:180/92A");
         list.add (bo1);
         /*SubOrderExpressBO bo2=new SubOrderExpressBO ();
         bo2.setOrderId (387066L);

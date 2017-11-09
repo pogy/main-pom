@@ -169,6 +169,16 @@ public class SynItem implements Serializable{
      */
     private Long sortOrder;
 
+    /**
+     * 面料 用于手工发布，手工发布时必填
+     */
+    private String fabric;
+
+    /**
+     * 里料 用于手工发布
+     */
+    private String inFabric;
+
     public ItemFrom getItemFrom() {
         return itemFrom;
     }
@@ -479,5 +489,21 @@ public class SynItem implements Serializable{
 
     public void setSortOrder(Long sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
     }
 }

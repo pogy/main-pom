@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +84,20 @@ public class GoodsOfferBO implements Serializable{
      * 淘宝类目ID
      */
     private Long cid;
+    /**
+     * 面料
+     */
+    @NotNull(message = "面料成分为必填选项")
+    private String fabric;
+    /**
+     * 里料
+     */
+    private String inFabric;
+    /**
+     * 货号
+     */
+    @NotNull(message = "货号为必填选项")
+    private String goodsNo;
 
     public String getPicPath() {
         return picPath;
@@ -200,6 +215,30 @@ public class GoodsOfferBO implements Serializable{
         this.cid = cid;
     }
 
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
     /**
      * 转化成标准对象
      * @return
@@ -230,6 +269,9 @@ public class GoodsOfferBO implements Serializable{
         synItem.setGoodsDesc(this.getDeschtml());
         synItem.setCidAll(this.getSellerids());
         synItem.setCid(this.getCid());
+        synItem.setFabric(this.getFabric());
+        synItem.setInFabric(this.getInFabric());
+        synItem.setGoodsNo(this.getGoodsNo());
         return synItem;
     }
 }

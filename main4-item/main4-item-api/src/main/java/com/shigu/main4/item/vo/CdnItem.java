@@ -90,6 +90,14 @@ public class CdnItem implements Serializable{
      * 子类目Id
      */
     private Long cid;
+    /**
+     * 面料成分
+     */
+    private String fabric;
+    /**
+     * 里料成分
+     */
+    private String inFabric;
 
     public Boolean getOnsale() {
         return onsale;
@@ -249,5 +257,21 @@ public class CdnItem implements Serializable{
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
     }
 }

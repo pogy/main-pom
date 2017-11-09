@@ -216,7 +216,7 @@ public class UserCollectServiceImpl implements UserCollectService {
      */
     @Override
     public void addItemCollection(ItemCollect collect) throws ItemCollectionException {
-        if (collect == null || collect.getUserId() == null || collect.getItemId() == null) {
+        if (collect == null || collect.getUserId() == null || collect.getItemId() == null || collect.getStoreId() == null) {
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.IllegalArgumentException);
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();

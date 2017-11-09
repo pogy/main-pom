@@ -11,23 +11,23 @@ import java.util.stream.Stream;
  */
 public class BeanSetterGetterHelper {
 
-    public static void generateGetter(Class clazz) {
-        generateGetterSetter(clazz, true);
-    }
-    public static void generateSetter(Class clazz) {
-        generateGetterSetter(clazz, false);
-    }
-    public static void generateGetterSetter(Class clazz, boolean getOrSet) {
-        Stream.iterate(clazz, aClass -> {
-            if (aClass == null) {
-                return null;
-            }
-            return aClass.getSuperclass();
-        }).limit(10)
-                .filter(c -> c != null && c != Object.class)
-                .map(Class::getDeclaredFields)
-                .flatMap(Stream::of)
-                .filter(field -> field.getModifiers() == Modifier.PRIVATE)
-                .forEach(field -> System.out.println(String.format("%s.%set%s();", StringUtils.uncapitalize(clazz.getSimpleName()), getOrSet?'g':'s', StringUtils.capitalize(field.getName()))));
-    }
+//    public static void generateGetter(Class clazz) {
+//        generateGetterSetter(clazz, true);
+//    }
+//    public static void generateSetter(Class clazz) {
+//        generateGetterSetter(clazz, false);
+//    }
+//    public static void generateGetterSetter(Class clazz, boolean getOrSet) {
+//        Stream.iterate(clazz, aClass -> {
+//            if (aClass == null) {
+//                return null;
+//            }
+//            return aClass.getSuperclass();
+//        }).limit(10)
+//                .filter(c -> c != null && c != Object.class)
+//                .map(Class::getDeclaredFields)
+//                .flatMap(Stream::of)
+//                .filter(field -> field.getModifiers() == Modifier.PRIVATE)
+//                .forEach(field -> System.out.println(String.format("%s.%set%s();", StringUtils.uncapitalize(clazz.getSimpleName()), getOrSet?'g':'s', StringUtils.capitalize(field.getName()))));
+//    }
 }

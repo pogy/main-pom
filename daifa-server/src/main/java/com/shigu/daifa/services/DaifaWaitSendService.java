@@ -139,14 +139,14 @@ public class DaifaWaitSendService {
 
     public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
         if(MoneyUtil.StringToLong(refundMoney)<0){
-            throw new DaifaException("金额错误");
+            throw new DaifaException("金额错误",DaifaException.DEBUG);
         }
         Integer status=takeGoodsIssueProcess.refundHasItemApply(childOrderId,refundMoney);
         DaifaOrder o=daifaOrderMapper.selectByPrimaryKey(childOrderId);
 
         DaifaTrade t=daifaTradeMapper.selectByPrimaryKey(o.getDfTradeId());
         if(t.getSendStatus()==2){
-            throw new DaifaException("已发货");
+            throw new DaifaException("已发货",DaifaException.DEBUG);
         }
         Long otherPrice=MoneyUtil.StringToLong(t.getExpressFee());
         DaifaOrder ox = new DaifaOrder();

@@ -446,9 +446,15 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShop.setTbNick(shiguShopApply.getTbNick());
         String tbUrl = shiguShopApply.getTbUrl();
 
-        // shop表增加main_bus,email两个字段，tbshopId用于拼taobaoUrl(如果有的话) http://shop${shopId}.taobao.com
-        if (StringUtils.isEmpty(tbUrl) && StringUtils.isNotEmpty(shiguShopApply.getTbshopId()))
-            tbUrl = "http://shop${shopId}.taobao.com".replace("${shopId}", shiguShopApply.getTbshopId());
+        if (StringUtils.isNotEmpty(shiguShopApply.getTbshopId())) {
+            shiguShop.setType(1);
+            // shop表增加main_bus,email两个字段，tbshopId用于拼taobaoUrl(如果有的话) http://shop${shopId}.taobao.com
+            if (StringUtils.isEmpty(tbUrl)){
+                tbUrl = "http://shop${shopId}.taobao.com".replace("${shopId}", shiguShopApply.getTbshopId());
+            }
+        }else{
+            shiguShop.setType(2);
+        }
         shiguShop.setTaobaoUrl(tbUrl);
         shiguShop.setMainBus(shiguShopApply.getMainBus());
         shiguShop.setEmail(shiguShopApply.getEmail());

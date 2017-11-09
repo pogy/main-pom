@@ -29,6 +29,9 @@
                 <li>
                     <a id="niemenu" href="orderRefundList.htm"><i></i>订单退款</a>
                 </li>
+                <li>
+                    <a id="niemenu" href="testDaifaException.htm"><i></i>测试异常</a>
+                </li>
                 <!--
                 <li>
                     <a href="orderHasAllocation.htm"><i></i>我的任务</a>
@@ -36,6 +39,21 @@
                 -->
             </ul>
         </li>
+
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>商品统计</a>
+            <ul>
+
+                <li>
+                    <a id="niemenu" href="goodsStatisticsByMonth.htm"><i></i>每月商品统计</a>
+                </li>
+                <li>
+                    <a id="niemenu" href="goodsStatisticsByQuarterly.htm"><i></i>每季度商品统计</a>
+                </li>
+
+            </ul>
+        </li>
+
         <li>
             <a id="niemenu" href="ggoodsUnListByPage.htm" ><i class="icon-allorders"></i>拿货未完成数据</a>
         </li>

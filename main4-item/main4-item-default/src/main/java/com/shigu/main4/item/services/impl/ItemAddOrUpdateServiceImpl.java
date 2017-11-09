@@ -8,6 +8,7 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
@@ -107,6 +108,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     private ItemProductMapper itemProductMapper;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     /**
      * 系统上架一款商品
@@ -659,13 +663,24 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguPropImgs shiguPropImgs = container.getShiguPropImgs();
         shiguPropImgs.setItemId(tiny.getGoodsId());
         shiguPropImgsMapper.insertSelective(shiguPropImgs);
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+        goodsCountForsearch.setWebSite(item.getWebSite());
+        if (ItemFrom.MEMBER.equals(item.getItemFrom())) {
+            goodsCountForsearch.setFabric(item.getFabric());
+            goodsCountForsearch.setInfabric(item.getInFabric());
+        }
+        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
+        shiguGoodsModified.setItemId(tiny.getGoodsId());
+        shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据
         ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
-//        ElasticRepository repository = new ElasticRepository();
+        //ElasticRepository repository = new ElasticRepository();
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-//        repository.insert(seb);
+        //repository.insert(seb);
         goodsAddToRedis.addToRedis(seb);
         sameItemUtilAddRemove(tiny, true);
         //添加首图到图搜

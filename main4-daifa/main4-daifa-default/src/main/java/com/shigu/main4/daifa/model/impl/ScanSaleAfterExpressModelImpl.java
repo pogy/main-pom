@@ -32,7 +32,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
         List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
         List<Long> updateIds=new ArrayList<>();
         if(subs.size()==0){
-            throw new DaifaException("not find after-sale");
+            throw new DaifaException("not find after-sale",DaifaException.DEBUG);
         }else{
             DaifaAfterReceiveExpresStockExample daifaAfterReceiveExpresStockExample=new DaifaAfterReceiveExpresStockExample();
             daifaAfterReceiveExpresStockExample.createCriteria().andReceivedExpressCodeEqualTo(expressCode);
@@ -116,7 +116,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
         daifaAfterSaleSub.setDfOrderId(bo.getOrderId());
         DaifaAfterSaleSub oldSub = daifaAfterSaleSubMapper.selectOne(daifaAfterSaleSub);
         if (oldSub == null){
-            throw new DaifaException("not find after-sale");
+            throw new DaifaException("not find after-sale",DaifaException.DEBUG);
         }
         Date now = new Date();
         daifaAfterSaleSub.setAfterSaleSubId(oldSub.getAfterSaleSubId());//设置主键
@@ -137,7 +137,7 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                 daifaAfterSaleSub.setChangeExpressName(bo.getChangeExpressName());
                 break;
             default:
-                throw new DaifaException("未定义的售后类型");
+                throw new DaifaException("未定义的售后类型",DaifaException.DEBUG);
         }
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(daifaAfterSaleSub);
         return null;

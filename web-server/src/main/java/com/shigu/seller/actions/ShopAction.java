@@ -24,7 +24,9 @@ import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.ShowCaseException;
@@ -74,6 +76,7 @@ import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -315,6 +318,8 @@ public class ShopAction {
      */
     @RequestMapping("seller/releaseGoodsinit")
     public String releaseGoodsinit(){
+        //historyCategory
+
         return "seller/releaseGoodsinit";
     }
 
@@ -443,6 +448,9 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
+        if (shopSession.getType().equals(1)) {
+            throw new JsonErrException("淘宝店铺不支持手工发布");
+        }
         Long itemId;
         //包装bo
         try {
@@ -491,7 +499,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsList21init")
-    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException {
+    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
 
         model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
@@ -500,8 +508,11 @@ public class ShopAction {
         }
         //商品列表数据  String keyword,String goodsNo,Long numIid, Long shopId, int pageNo, int pageSize
         try {
-            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(bo.getKeyword(),bo.getGoodsNo(),bo.getGoodsNumIid()
-                    ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
+            StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
+            search.setKeyword(bo.getKeyword());
+            search.setGoodsNo(bo.getGoodsNo());
+            search.setState(bo.getState());
+            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
@@ -510,7 +521,7 @@ public class ShopAction {
             for(OnsaleItem oi:list){
                 OnsaleItemVO vo = new OnsaleItemVO(oi);
                 GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
-                vo.setSetCorrelateType(fileInfo==null?1:2);
+                vo.setCorrelateType(fileInfo==null?1:2);
                 vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
                 if (fileInfo != null) {
                     vo.setLinkHref(fileInfo.getFileKey());
@@ -522,8 +533,41 @@ public class ShopAction {
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         return "seller/storeGoodsList21init";
+    }
+
+    @RequestMapping("seller/getSaleGoodsNumByType")
+    @ResponseBody
+    public JSONObject getSaleGoodsNumByType(HttpSession session){
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        String webSite = shopSession.getWebSite();
+        ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
+        return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
+    }
+
+    /**
+     * 修改商品材质
+     * @param bo
+     * @param result
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("seller/setConstituent")
+    @ResponseBody
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        ShopSession shopSession = getShopSession(session);
+        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -622,6 +666,7 @@ public class ShopAction {
         synItem.setWebSite(shopSession.getWebSite());
         try {
             itemAddOrUpdateService.userUpdateItem(synItem);
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败",e);
             throw new JsonErrException("更新商品失败");
@@ -844,13 +889,12 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsNoListinit")
-    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws ItemException {
+    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws Main4Exception {
         ShopSession shopSession = getShopSession(session);
         //查总量
         model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(null,null,null
-                ,shopSession.getShopId(),bo.getPageNo(),bo.getPageSize());
+        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPageNo(),bo.getPageSize());
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         List<OnsaleItem> list=pager.getContent();
         List<MoreModifyItemVO> volist=new ArrayList<>();
@@ -877,6 +921,7 @@ public class ShopAction {
         ShopSession shopSession = getShopSession(session);
         try {
             shopItemModService.moreModify(bo.parseSynItems(shopSession.getShopId(),shopSession.getWebSite()));
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }

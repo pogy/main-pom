@@ -42,7 +42,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
                     .saleAfterApply(bo.getSubOid(), bo.getAfterType(), bo.getNum(), bo.getReason());
         } catch (DaifaException e) {
             String param= JSONObject.fromObject(bo).toString();
-            e.addSuppressed(new DaifaException("param:"+param));
+            e.addSuppressed(new DaifaException("param:"+param,DaifaException.ERROR));
             logger.error(e);
             throw e;
         }
@@ -125,7 +125,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
             SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).saleAfterExpress(bo.getExpressName(),bo.getExpressCode());
         } catch (DaifaException e) {
             String param= JSONObject.fromObject(bo).toString();
-            e.addSuppressed(new DaifaException("param:"+param));
+            e.addSuppressed(new DaifaException("param:"+param,DaifaException.ERROR));
             logger.error(e);
             throw e;
         }
@@ -156,7 +156,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
             SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).moneyConsultRefuse();
         } catch (DaifaException e) {
             String param= JSONObject.fromObject(bo).toString();
-            e.addSuppressed(new DaifaException("param:"+param));
+            e.addSuppressed(new DaifaException("param:"+param,DaifaException.ERROR));
             logger.error(e);
             throw e;
         }
