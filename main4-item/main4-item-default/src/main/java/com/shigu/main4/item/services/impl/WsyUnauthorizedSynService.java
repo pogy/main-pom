@@ -7,6 +7,7 @@ import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.Jobs;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.SynException;
@@ -26,12 +27,34 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 @Service("wsyUnauthorizedSynService")
 public class WsyUnauthorizedSynService extends OuterSynUtil {
+    @Override
+    protected void goodsExecute(SynShopBean synBean,Long otherGoodsId) {
+        try {
+            Map<Long, ?> pagedGoodsInfo = getPagedGoodsInfo(synBean, 0);
+            if(pagedGoodsInfo.get(otherGoodsId)==null){
+                return;
+            }
+            List<Long> onSales = Collections.singletonList(otherGoodsId);
+            if(synBean.tinyMap.get(otherGoodsId)!=null){
+                synUpdateItems(synBean, onSales, pagedGoodsInfo);
+            }else{
+                synNotOnSaleItems(synBean, onSales, pagedGoodsInfo);
+            }
+        } catch (SynException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected Map<Long, ShiguGoodsTiny> getLocalOuterGoodsMap(Long shopId, String webSite) {
@@ -69,17 +92,17 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         Map<Long, Long> map=new HashMap<>();
         try {
             Document cidDoc;
-            cidDoc = JsoupUtil.getHtml(String.format("https://wsy.com/store/p/%d/search.htm", synShopBean.otherShopId));
+            cidDoc = JsoupUtil.getHtml(String.format("https://wsy.com/itemlist.htm?id=%d", synShopBean.otherShopId));
             Elements cats = cidDoc.select(".type_section");
-            cats.remove(cats.size()-1);
-            cats.remove(cats.size()-1);
             for(Element cat:cats){
                 Elements lis = cat.select("li").select("a");
                 int i;
                 if(lis.get(0).attr("href").contains("pid=")){
                     i=1;
-                }else{
+                }else if(lis.get(0).attr("href").contains("cid=")){
                     i=0;
+                }else{
+                    continue;
                 }
                 for ( ; i < lis.size(); i++) {
                     Element li = lis.get(i);
@@ -87,10 +110,14 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                     int page=0;
                     while(true){
                         page++;
-                        String u=String.format("https://wsy.com/store/p/%d/search.htm?cid=%d&id=%d&alias=search&page=%d",
-                                synShopBean.otherShopId,cid,synShopBean.otherShopId, page);
+                        String u=String.format("https://wsy.com/itemlist.htm?id=%d&cid=%d&page=%d",
+                                synShopBean.otherShopId,cid, page);
+                        if(synShopBean.startDate!=null){
+                            u+="&startDate="+synShopBean.startDate;
+                        }
                         Document orignalDoc = JsoupUtil.getHtml(u);
-                        if (orignalDoc.getElementById("content").select(".item-c").size() == 0) {
+                        Element dd=orignalDoc.getElementById("content");
+                        if (dd==null||dd.select(".item-c").size() == 0) {
                             //分页数据搜索结束
                             break;
                         }
@@ -106,9 +133,55 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             throw new SynException(SynException.SynExceptionEnum.COULD_NOT_GET_SYN_INFO_EXCEPTION);
         }
     }
+    private static byte[] getImageFromNetByUrl(URL url){
+        try {
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5 * 1000);
+            InputStream inStream = conn.getInputStream();//通过输入流获取图片数据
+            byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
+            return btImg;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static byte[] readInputStream(InputStream inStream) throws Exception{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while( (len=inStream.read(buffer)) != -1 ){
+            outStream.write(buffer, 0, len);
+        }
+        inStream.close();
+        return outStream.toByteArray();
+    }
+    private static String getReUrl(String url) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) new URL(url)
+                .openConnection();
+        conn.setInstanceFollowRedirects(false);
+        conn.setConnectTimeout(5000);
+        String newUrl=conn.getHeaderField("Location");
+        if(newUrl==null||!newUrl.contains("http")){
+            return url;
+        }
+        return newUrl;
+    }
+
 
     @Override
     protected SynItem getGoodsInfo(Long outGoodsId, SynShopBean synShopBean, Long cid) throws SynException {
+        Jobs imgupload=new Jobs(10) {
+            @Override
+            public void doWork(Object o) throws Exception {
+                ImgUploadInfo u= (ImgUploadInfo) o;
+                if(!ossIO.fileExist(u.file)){
+                    byte[] b=getImageFromNetByUrl(u.url);
+                    ossIO.uploadFile(b,u.file);
+                }
+            }
+        };
+
         SynItem synItem = new SynItem();
         try {
             ShiguShop shop=synShopBean.shop;
@@ -153,7 +226,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             List<String> picUrls=new ArrayList<>();
             for(int i=0;i<images.size();i++){
                 String image=images.get(i).attr("href");
-                String picUrl=formatImage(image,shop.getShopId());
+                String picUrl=formatImage(image,shop.getShopId(),imgupload);
                 if(i==0){
                     synItem.setPicUrl(picUrl);
                 }
@@ -164,8 +237,19 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             //批发价
             String piPriceString = doc.select(".fs-item-p1").select("em").select("span").html().trim();
             String priceString=StringEscapeUtils.unescapeHtml(doc.select(".fs-item-p1").select("a").select("span").html().trim()).replace("¥","");
-            if(StringUtils.isEmpty(priceString)){
-                priceString= MoneyUtil.dealPrice(MoneyUtil.StringToLong(piPriceString)*2);
+            if(StringUtils.isEmpty(priceString)||StringUtils.isEmpty(piPriceString)){
+                try {
+                    new Double(piPriceString);
+                    priceString=piPriceString;
+                }catch (Exception e){
+                    try{
+                        new Double(priceString);
+                        piPriceString=priceString;
+                    }catch (Exception e1){
+                        priceString=null;
+                        piPriceString=null;
+                    }
+                }
             }
             synItem.setPiPriceString(piPriceString);
             synItem.setPriceString(priceString);
@@ -188,7 +272,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 }
                 String img;
                 try {
-                    img = formatImage(url,shop.getShopId());
+                    img = formatImage(url,shop.getShopId(),imgupload);
                 } catch (Exception e1) {
                     descImgs.remove(i);
                     i--;
@@ -204,66 +288,106 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             List<Long> inputPids=new ArrayList<>();
             List<String> inputStr=new ArrayList<>();
 
-            //颜色
-            Elements colorDocs=doc.getElementById("mr_color").select("li");
-            List<ShiguPropImg> propImgs=new ArrayList<>();
-            long inpvid=-1001L;
 
+            long inpvid=1000000000;
+            //颜色
+            Map<String,ShiguPropImg> noVmap=new HashMap<>();
             List<Long> hasVids=new ArrayList<>();
             Long hasPid=null;
-            Map<String,ShiguPropImg> noVmap=new HashMap<>();
-            for(Element element:colorDocs){
-                String color=element.select("span").html().trim();
-                String code=element.select("a").attr("data-code");
-                Long pid=new Long(code.split(":")[0]);
-                hasPid=pid;
-                Long vid=new Long(code.split(":")[1]);
-                String img=element.attr("data-img").replace("_30x30.jpg","");
-                try {
-                    img=formatImage(img,shop.getShopId());
-                } catch (IOException e) {
-                    img=null;
+            List<ShiguPropImg> propImgs=new ArrayList<>();
+            Element colorele=doc.getElementById("mr_color");
+            if(colorele==null){
+                TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                taobaoItemPropExample.createCriteria().andCidEqualTo(cid)
+                        .andIsColorPropEqualTo(1);
+                List<TaobaoItemProp> ps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+                if(ps.size()>0&&ps.get(0).getMust()==1){
+                    hasVids.add(-1L);
+                    ShiguPropImg prop=new ShiguPropImg();
+                    prop.setUrl(picUrls.get(0));
+                    prop.setPid(ps.get(0).getPid());
+                    noVmap.put("图片色",prop);
                 }
-                ShiguPropImg prop=new ShiguPropImg();
-                prop.setUrl(img);
-                prop.setPid(pid);
-                hasVids.add(vid);
-                TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
-                taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
-                        .andPidEqualTo(pid)
-                        .andVidEqualTo(vid);
-                List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
-                if(pvs.size()>0){
-                    propName.add(code+":"+pvs.get(0).getPropName()+":"+pvs.get(0).getName());
-                    props.add(code);
-                    if(!pvs.get(0).getName().equals(color)){
-                        alias.add(code+":"+color);
+            }else{
+                Elements colorDocs=colorele.select("li");
+                for(Element element:colorDocs){
+                    String color=element.select("span").html().trim();
+                    String code=element.select("a").attr("data-code");
+                    Long pid=new Long(code.split(":")[0]);
+                    hasPid=pid;
+                    Long vid=new Long(code.split(":")[1]);
+                    String img=element.attr("data-img").replace("_30x30.jpg","");
+                    try {
+                        img=formatImage(img,shop.getShopId(),imgupload);
+                    } catch (IOException e) {
+                        img=null;
                     }
-                    prop.setVid(vid);
-                    propImgs.add(prop);
-                }else{
-                    noVmap.put(color,prop);
+                    ShiguPropImg prop=new ShiguPropImg();
+                    prop.setUrl(img);
+                    prop.setPid(pid);
+                    hasVids.add(vid);
+                    TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                    taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
+                            .andPidEqualTo(pid)
+                            .andVidEqualTo(vid);
+                    List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                    if(pvs.size()>0){
+                        propName.add(code+":"+pvs.get(0).getPropName()+":"+pvs.get(0).getName());
+                        props.add(code);
+                        if(!pvs.get(0).getName().equals(color)){
+                            alias.add(code+":"+color);
+                        }
+                        prop.setVid(vid);
+                        if(prop.getUrl()!=null){
+                            propImgs.add(prop);
+                        }
+                    }else{
+                        noVmap.put(color,prop);
+                    }
                 }
             }
-            if(hasVids.size()>0){
-                TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
-                taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
-                        .andPidEqualTo(hasPid)
-                        .andVidNotIn(hasVids);
-                List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
-                noVmap.forEach((color, shiguPropImg) -> {
-                    if(pvs.size()==0){
-                        return;
+            if(noVmap.size()>0){
+                TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                taobaoItemPropExample.createCriteria().andCidEqualTo(cid)
+                        .andIsColorPropEqualTo(1);
+                List<TaobaoItemProp> ps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+                if(ps.get(0).getIsAllowAlias()==1){
+                    TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                    taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
+                            .andPidEqualTo(hasPid)
+                            .andVidNotIn(hasVids);
+                    List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                    noVmap.forEach((color, shiguPropImg) -> {
+                        if(pvs.size()==0){
+                            return;
+                        }
+                        TaobaoPropValue pv=pvs.get(0);
+                        String code=pv.getPid()+":"+pv.getVid();
+                        props.add(code);
+                        propName.add(code+":"+pv.getPropName()+":"+pv.getName());
+                        alias.add(code+":"+color);
+                        if(shiguPropImg.getUrl()!=null){
+                            shiguPropImg.setVid(pv.getVid());
+                            propImgs.add(shiguPropImg);
+                        }
+                        pvs.remove(0);
+                    });
+                }else if(ps.get(0).getIsInputProp()==1){
+                    if(!inputPids.contains(hasPid)){
+                        inputPids.add(hasPid);
                     }
-                    TaobaoPropValue pv=pvs.get(0);
-                    String code=pv.getPid()+":"+pv.getVid();
-                    props.add(code);
-                    propName.add(code+":"+pv.getPropName()+":"+pv.getName());
-                    alias.add(code+":"+color);
-                    shiguPropImg.setVid(pv.getVid());
-                    propImgs.add(shiguPropImg);
-                    pvs.remove(0);
-                });
+                    for(String vname:noVmap.keySet()){
+                        inpvid=inpvid+1L;
+                        props.add(hasPid+":"+ inpvid);
+                        propName.add(hasPid+":"+ inpvid+":"+ps.get(0).getName()+":"+vname);
+                        ShiguPropImg shiguPropImg=noVmap.get(vname);
+                        if(shiguPropImg.getUrl()!=null){
+                            shiguPropImg.setVid(inpvid);
+                            propImgs.add(shiguPropImg);
+                        }
+                    }
+                    inputStr.add(heb(new ArrayList<>(noVmap.keySet()),";"+ps.get(0).getName()+";"));
+                }
             }
             synItem.setPropImgs(propImgs);
 
@@ -272,8 +396,19 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             for(Element e:doc.select(".table-sku").select(".name").select("span")){
                 sizes.add(e.html());
             }
+            if(sizes.size()==0&&synItem.getPiPriceString()==null){
+                throw new SynException(SynException.SynExceptionEnum.SYN_ONE_ITEM_EXCEPTION);
+            }
             inpvid=handleProp(cid,null, new ArrayList<>(sizes), alias,props,propName,inputPids,inputStr,true,inpvid);
-
+            if(synItem.getPriceString()==null){
+                piPriceString=synItem.getPiPriceString();
+                if(piPriceString==null){
+                    piPriceString=doc.select(".table-sku .price .value").get(0).html();
+                    priceString=piPriceString;
+                }
+                synItem.setPiPriceString(piPriceString);
+                synItem.setPriceString(priceString);
+            }
 
             //销售属性
             Elements propDoc=goodsDoc.select(".item_sx").select("a");
@@ -309,7 +444,9 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             e.printStackTrace();
             throw new SynException(SynException.SynExceptionEnum.SYN_ONE_ITEM_EXCEPTION);
         }
-
+        if(imgupload.running()>0){
+            imgupload.join();
+        }
         return synItem;
     }
 
@@ -325,12 +462,13 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
 
 
     //图片转至oss
-    private String formatImage(String url,Long shopId) throws IOException {
+    private String formatImage(String url,Long shopId,Jobs imgupload) throws IOException {
         if(url.contains("taobaocdn")||url.contains("alicdn")){
             return url;
         }
-        String fileStr="itemImgs/"+shopId+"/"+ MD5.encrypt(url)+".jpg";
-        ossIO.uploadFile(new URL(url).openStream(),fileStr);
+        String uu=getReUrl(url);
+        String fileStr="itemImgs/"+shopId+"/"+ MD5.encrypt(uu)+".jpg";
+        imgupload.addJob(new ImgUploadInfo(new URL(uu),fileStr));
         return "//imgs.571xz.net/"+fileStr;
     }
     private long handleProp(Long cid,String pname,List<String> vnames,List<String> alias,List<String> props,List<String> propNames,List<Long> inputPids,List<String> inputStr,boolean isSaleSize,long inpVid){
@@ -360,7 +498,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         }
         vnames.removeAll(has);
         if(vnames.size()>0){
-            if(ps.get(0).getIsAllowAlias()==1||isSaleSize){
+            if(ps.get(0).getIsAllowAlias()==1){
                 TaobaoPropValueExample taobaoPropValueExample1=new TaobaoPropValueExample();
                 TaobaoPropValueExample.Criteria ce1=taobaoPropValueExample1.createCriteria().andPidEqualTo(pid).andCidEqualTo(cid);
                 if(has.size()>0){
@@ -382,21 +520,20 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             }
         }
         if(vnames.size()>0){
-//            if(ps.get(0).getIsInputProp()==1){
-            if(!inputPids.contains(pid)){
-                inputPids.add(pid);
+            if(ps.get(0).getIsInputProp()==1||pname.equals("货号")||isSaleSize){
+                if(!inputPids.contains(pid)){
+                    inputPids.add(pid);
+                }
+                for(String vname:vnames){
+                    inpVid=inpVid+1L;
+                    props.add(pid+":"+ inpVid);
+                    propNames.add(pid+":"+ inpVid+":"+pname+":"+vname);
+                }
+                inputStr.add(heb(vnames,";"+pname+";"));
             }
-            for(String vname:vnames){
-                inpVid=inpVid-1L;
-                props.add(pid+":"+ inpVid);
-                propNames.add(pid+":"+ inpVid+":"+pname+":"+vname);
-            }
-            inputStr.add(heb(vnames,";"+pname+";"));
-//            }
         }
         return inpVid;
     }
-
 
     private String heb(List list,String splitStr){
         StringBuilder str= new StringBuilder();
