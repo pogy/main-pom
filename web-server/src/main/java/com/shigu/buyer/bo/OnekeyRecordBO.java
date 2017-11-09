@@ -102,7 +102,7 @@ public class OnekeyRecordBO implements Serializable{
     }
 
     public void setRows(Integer rows) {
-//        this.rows = rows;
+        this.rows = rows;
     }
 
 
