@@ -10,6 +10,16 @@ import com.openJar.responses.Response;
 public class InstockMyItemResponse extends Response {
 	//失败原因，no_auth未授权或授权失败
 	private String msg;
+	private Integer type;
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType( Integer type ) {
+		this.type = type;
+	}
+
 	public String getMsg(){
 		return msg;
 	}

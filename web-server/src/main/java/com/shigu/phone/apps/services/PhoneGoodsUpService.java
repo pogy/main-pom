@@ -7,8 +7,19 @@ import com.openJar.requests.app.UploadedItemRequest;
 import com.openJar.responses.app.InstockMyItemResponse;
 import com.openJar.responses.app.UpToWxResponse;
 import com.openJar.responses.app.UploadedItemResponse;
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.examples.MemberUserSubExample;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.phone.baseservices.BasePhoneGoodsUpService;
 import com.shigu.phone.basevo.UploadedItemVO;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +36,13 @@ import org.springframework.stereotype.Service;
 public class PhoneGoodsUpService {
 
     @Autowired
+    private MemberUserSubMapper memberUserSubMapper;
+
+    @Autowired
     private BasePhoneGoodsUpService basePhoneGoodsUpService;
+
+    @Autowired
+    private GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
         UpToWxResponse resp = new UpToWxResponse();
@@ -55,11 +72,19 @@ public class PhoneGoodsUpService {
     public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
         InstockMyItemResponse res=new InstockMyItemResponse();
         try {
-            basePhoneGoodsUpService.instockMyItem(request.getUploadId(), request.getUserId());
+            Long userId = request.getUserId();
+            MemberUserSub query = new MemberUserSub();
+            query.setUserId(userId);
+            query.setAccountType(3);
+            MemberUserSub memberUserSub = memberUserSubMapper.selectOne(query);
+            goodsupRecordSimpleService.downTbGoods(userId,memberUserSub.getSubUserName(),request.getGoodsId().toString());
             res.setSuccess(true);
-        } catch (OpenException e) {
-           res.setException(e);
-           res.setSuccess(false);
+        }  catch (JsonErrException e) {
+            if (e.getMessage().contains("需要淘宝授权")) {
+                res.setType(1);
+                res.setMsg("亲,您的淘宝授权已过期,请去淘宝登录");
+                res.setSuccess(true);
+            }
         }
         return res;
     }

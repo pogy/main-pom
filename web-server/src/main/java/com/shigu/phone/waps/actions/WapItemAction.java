@@ -5,7 +5,6 @@ import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.basevo.BaseCollectItemVO;
-import com.shigu.phone.waps.constance.WapConstance;
 import com.shigu.phone.waps.service.WapItemService;
 import com.shigu.phone.waps.service.WapPhoneCdnService;
 import com.shigu.phone.waps.service.WapPhoneStoreService;

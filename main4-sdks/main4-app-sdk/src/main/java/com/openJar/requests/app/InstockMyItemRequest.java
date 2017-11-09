@@ -12,18 +12,19 @@ import javax.validation.constraints.NotNull;
  */
 public class InstockMyItemRequest extends Request<InstockMyItemResponse> {
 	//上传记录ID	必须
-	@NotNull(message = "uploadId is null")
-	private String uploadId;
+	@NotNull(message = "goodsId is null")
+	private Long goodsId;
 	//每次登陆用户的唯一码	必须
 	@NotNull(message = "token is null")
 	private String token;
 	private Long userId;
-	public String getUploadId(){
-		return uploadId;
+
+	public Long getGoodsId() {
+		return goodsId;
 	}
 
-	public void setUploadId(String uploadId){
-		this.uploadId=uploadId;
+	public void setGoodsId( Long goodsId ) {
+		this.goodsId = goodsId;
 	}
 
 	public String getToken(){

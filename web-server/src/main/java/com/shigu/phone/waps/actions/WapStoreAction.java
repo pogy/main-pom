@@ -7,7 +7,6 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopSearchVO;
 import com.shigu.phone.basevo.StoreCollectVO;
-import com.shigu.phone.waps.constance.WapConstance;
 import com.shigu.phone.waps.service.WapPhoneStoreService;
 import com.shigu.phone.waps.service.WapStoreService;
 import com.shigu.session.main4.PersonalSession;
