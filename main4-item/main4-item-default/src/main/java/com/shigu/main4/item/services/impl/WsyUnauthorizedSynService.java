@@ -289,7 +289,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             List<String> inputStr=new ArrayList<>();
 
 
-            long inpvid=-1001L;
+            long inpvid=1000000000;
             //颜色
             Map<String,ShiguPropImg> noVmap=new HashMap<>();
             List<Long> hasVids=new ArrayList<>();
@@ -347,26 +347,47 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
                 }
             }
             if(noVmap.size()>0){
-                TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
-                taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
-                        .andPidEqualTo(hasPid)
-                        .andVidNotIn(hasVids);
-                List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
-                noVmap.forEach((color, shiguPropImg) -> {
-                    if(pvs.size()==0){
-                        return;
+                TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                taobaoItemPropExample.createCriteria().andCidEqualTo(cid)
+                        .andIsColorPropEqualTo(1);
+                List<TaobaoItemProp> ps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+                if(ps.get(0).getIsAllowAlias()==1){
+                    TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                    taobaoPropValueExample.createCriteria().andCidEqualTo(cid)
+                            .andPidEqualTo(hasPid)
+                            .andVidNotIn(hasVids);
+                    List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                    noVmap.forEach((color, shiguPropImg) -> {
+                        if(pvs.size()==0){
+                            return;
+                        }
+                        TaobaoPropValue pv=pvs.get(0);
+                        String code=pv.getPid()+":"+pv.getVid();
+                        props.add(code);
+                        propName.add(code+":"+pv.getPropName()+":"+pv.getName());
+                        alias.add(code+":"+color);
+                        if(shiguPropImg.getUrl()!=null){
+                            shiguPropImg.setVid(pv.getVid());
+                            propImgs.add(shiguPropImg);
+                        }
+                        pvs.remove(0);
+                    });
+                }else if(ps.get(0).getIsInputProp()==1){
+                    if(!inputPids.contains(hasPid)){
+                        inputPids.add(hasPid);
                     }
-                    TaobaoPropValue pv=pvs.get(0);
-                    String code=pv.getPid()+":"+pv.getVid();
-                    props.add(code);
-                    propName.add(code+":"+pv.getPropName()+":"+pv.getName());
-                    alias.add(code+":"+color);
-                    shiguPropImg.setVid(pv.getVid());
-                    if(shiguPropImg.getUrl()!=null){
-                        propImgs.add(shiguPropImg);
+                    for(String vname:noVmap.keySet()){
+                        inpvid=inpvid+1L;
+                        props.add(hasPid+":"+ inpvid);
+                        propName.add(hasPid+":"+ inpvid+":"+ps.get(0).getName()+":"+vname);
+                        ShiguPropImg shiguPropImg=noVmap.get(vname);
+                        if(shiguPropImg.getUrl()!=null){
+                            shiguPropImg.setVid(inpvid);
+                            propImgs.add(shiguPropImg);
+                        }
                     }
-                    pvs.remove(0);
-                });
+                    inputStr.add(heb(new ArrayList<>(noVmap.keySet()),";"+ps.get(0).getName()+";"));
+                }
             }
             synItem.setPropImgs(propImgs);
 
@@ -477,7 +498,7 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         }
         vnames.removeAll(has);
         if(vnames.size()>0){
-            if(ps.get(0).getIsAllowAlias()==1||isSaleSize){
+            if(ps.get(0).getIsAllowAlias()==1){
                 TaobaoPropValueExample taobaoPropValueExample1=new TaobaoPropValueExample();
                 TaobaoPropValueExample.Criteria ce1=taobaoPropValueExample1.createCriteria().andPidEqualTo(pid).andCidEqualTo(cid);
                 if(has.size()>0){
@@ -499,12 +520,12 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
             }
         }
         if(vnames.size()>0){
-            if(ps.get(0).getIsInputProp()==1){
+            if(ps.get(0).getIsInputProp()==1||pname.equals("货号")||isSaleSize){
                 if(!inputPids.contains(pid)){
                     inputPids.add(pid);
                 }
                 for(String vname:vnames){
-                    inpVid=inpVid-1L;
+                    inpVid=inpVid+1L;
                     props.add(pid+":"+ inpVid);
                     propNames.add(pid+":"+ inpVid+":"+pname+":"+vname);
                 }
@@ -513,7 +534,6 @@ public class WsyUnauthorizedSynService extends OuterSynUtil {
         }
         return inpVid;
     }
-
 
     private String heb(List list,String splitStr){
         StringBuilder str= new StringBuilder();

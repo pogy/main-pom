@@ -68,7 +68,7 @@ public class TbUnauthSynTest extends BaseSpringTest {
 //        wsyUnauthorizedSynService.synOneShop(43551L,1139401L);//1712
 //        wsyUnauthorizedSynService.synOneShop(43553L,1112935L);//1713
 //        wsyUnauthorizedSynService.synOneShop(42641L,1090076L);//618A
-//        wsyUnauthorizedSynService.synOneShop(41033L,1032352L);//1101
+        wsyUnauthorizedSynService.synOneShop(41033L,1032352L);//1101
 
 
 //        wsyUnauthorizedSynService.synOneGoods(41033L,1032352L,3360524L);
