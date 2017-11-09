@@ -14,41 +14,36 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
     public static EntityColumn itemLinkId;
     public static EntityColumn shopNum;
     public static EntityColumn shopName;
+    public static EntityColumn type;
     public static EntityColumn taobaoUrl;
     public static EntityColumn tbNick;
     public static EntityColumn marketId;
     public static EntityColumn imAliww;
     public static EntityColumn floorId;
     public static EntityColumn webSite;
-    public static EntityColumn expiresIn;
     public static EntityColumn shopStatus;
     public static EntityColumn imWx;
     public static EntityColumn imQq;
-    public static EntityColumn userNick;
     public static EntityColumn shopAnnouncement;
     public static EntityColumn shopId;
     public static EntityColumn closeReason;
-    public static EntityColumn displayInMarket;
     public static EntityColumn email;
-    public static EntityColumn shopTagsContexts;
+    public static EntityColumn displayInMarket;
     public static EntityColumn createDate;
     public static EntityColumn systemRecommon;
     public static EntityColumn address;
-    public static EntityColumn freshTime;
     public static EntityColumn userManager;
     public static EntityColumn telephone;
-    public static EntityColumn userName;
-    public static EntityColumn userId;
     public static EntityColumn synTaobao;
+    public static EntityColumn userId;
     public static EntityColumn priceRule;
     public static EntityColumn zipcode;
     public static EntityColumn dataPacketUrl;
-    public static EntityColumn marketName;
     public static EntityColumn mobilePhone;
+    public static EntityColumn everUserId;
     public static EntityColumn sortOrderKey;
-    public static EntityColumn domain;
     public static EntityColumn lastModifyTime;
-    public static EntityColumn parentMarketName;
+    public static EntityColumn domain;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -59,41 +54,36 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         itemLinkId = listMap.get("itemLinkId");
         shopNum = listMap.get("shopNum");
         shopName = listMap.get("shopName");
+        type = listMap.get("type");
         taobaoUrl = listMap.get("taobaoUrl");
         tbNick = listMap.get("tbNick");
         marketId = listMap.get("marketId");
         imAliww = listMap.get("imAliww");
         floorId = listMap.get("floorId");
         webSite = listMap.get("webSite");
-        expiresIn = listMap.get("expiresIn");
         shopStatus = listMap.get("shopStatus");
         imWx = listMap.get("imWx");
         imQq = listMap.get("imQq");
-        userNick = listMap.get("userNick");
         shopAnnouncement = listMap.get("shopAnnouncement");
         shopId = listMap.get("shopId");
         closeReason = listMap.get("closeReason");
-        displayInMarket = listMap.get("displayInMarket");
         email = listMap.get("email");
-        shopTagsContexts = listMap.get("shopTagsContexts");
+        displayInMarket = listMap.get("displayInMarket");
         createDate = listMap.get("createDate");
         systemRecommon = listMap.get("systemRecommon");
         address = listMap.get("address");
-        freshTime = listMap.get("freshTime");
         userManager = listMap.get("userManager");
         telephone = listMap.get("telephone");
-        userName = listMap.get("userName");
-        userId = listMap.get("userId");
         synTaobao = listMap.get("synTaobao");
+        userId = listMap.get("userId");
         priceRule = listMap.get("priceRule");
         zipcode = listMap.get("zipcode");
         dataPacketUrl = listMap.get("dataPacketUrl");
-        marketName = listMap.get("marketName");
         mobilePhone = listMap.get("mobilePhone");
+        everUserId = listMap.get("everUserId");
         sortOrderKey = listMap.get("sortOrderKey");
-        domain = listMap.get("domain");
         lastModifyTime = listMap.get("lastModifyTime");
-        parentMarketName = listMap.get("parentMarketName");
+        domain = listMap.get("domain");
         }
 
     public ShiguShopExample() {
@@ -326,6 +316,53 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andShopNameNotBetween(String value1, String value2) {
             return notBetween(shopName, value1, value2);
+        }
+        public ShiguShopExample.Criteria andTypeIsNull() {
+            return isNull(type);
+        }
+
+        public ShiguShopExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
+        }
+
+        public ShiguShopExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
+        }
+
+        public ShiguShopExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
         public ShiguShopExample.Criteria andTaobaoUrlIsNull() {
             return isNull(taobaoUrl);
@@ -641,53 +678,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
         }
-        public ShiguShopExample.Criteria andExpiresInIsNull() {
-            return isNull(expiresIn);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInIsNotNull() {
-            return isNotNull(expiresIn);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInEqualTo(Long value) {
-            return equalTo(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInNotEqualTo(Long value) {
-            return notEqualTo(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInGreaterThan(Long value) {
-            return greaterThan(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInLessThan(Long value) {
-            return lessThan(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(expiresIn, value);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInIn(List<Long> values) {
-            return in(expiresIn, values);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInNotIn(List<Long> values) {
-            return notIn(expiresIn, values);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInBetween(Long value1, Long value2) {
-            return between(expiresIn, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andExpiresInNotBetween(Long value1, Long value2) {
-            return notBetween(expiresIn, value1, value2);
-        }
         public ShiguShopExample.Criteria andShopStatusIsNull() {
             return isNull(shopStatus);
         }
@@ -844,61 +834,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andImQqNotBetween(String value1, String value2) {
             return notBetween(imQq, value1, value2);
-        }
-        public ShiguShopExample.Criteria andUserNickIsNull() {
-            return isNull(userNick);
-        }
-
-        public ShiguShopExample.Criteria andUserNickIsNotNull() {
-            return isNotNull(userNick);
-        }
-
-        public ShiguShopExample.Criteria andUserNickEqualTo(String value) {
-            return equalTo(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickNotEqualTo(String value) {
-            return notEqualTo(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickGreaterThan(String value) {
-            return greaterThan(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickLessThan(String value) {
-            return lessThan(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickLike(String value) {
-            return like(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickNotLike(String value) {
-            return notLike(userNick, value);
-        }
-
-        public ShiguShopExample.Criteria andUserNickIn(List<String> values) {
-            return in(userNick, values);
-        }
-
-        public ShiguShopExample.Criteria andUserNickNotIn(List<String> values) {
-            return notIn(userNick, values);
-        }
-
-        public ShiguShopExample.Criteria andUserNickBetween(String value1, String value2) {
-            return between(userNick, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andUserNickNotBetween(String value1, String value2) {
-            return notBetween(userNick, value1, value2);
         }
         public ShiguShopExample.Criteria andShopAnnouncementIsNull() {
             return isNull(shopAnnouncement);
@@ -1057,53 +992,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andCloseReasonNotBetween(String value1, String value2) {
             return notBetween(closeReason, value1, value2);
         }
-        public ShiguShopExample.Criteria andDisplayInMarketIsNull() {
-            return isNull(displayInMarket);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketIsNotNull() {
-            return isNotNull(displayInMarket);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketEqualTo(Long value) {
-            return equalTo(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketNotEqualTo(Long value) {
-            return notEqualTo(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketGreaterThan(Long value) {
-            return greaterThan(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketLessThan(Long value) {
-            return lessThan(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(displayInMarket, value);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketIn(List<Long> values) {
-            return in(displayInMarket, values);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketNotIn(List<Long> values) {
-            return notIn(displayInMarket, values);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketBetween(Long value1, Long value2) {
-            return between(displayInMarket, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andDisplayInMarketNotBetween(Long value1, Long value2) {
-            return notBetween(displayInMarket, value1, value2);
-        }
         public ShiguShopExample.Criteria andEmailIsNull() {
             return isNull(email);
         }
@@ -1159,60 +1047,52 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andEmailNotBetween(String value1, String value2) {
             return notBetween(email, value1, value2);
         }
-        public ShiguShopExample.Criteria andShopTagsContextsIsNull() {
-            return isNull(shopTagsContexts);
+        public ShiguShopExample.Criteria andDisplayInMarketIsNull() {
+            return isNull(displayInMarket);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsIsNotNull() {
-            return isNotNull(shopTagsContexts);
+        public ShiguShopExample.Criteria andDisplayInMarketIsNotNull() {
+            return isNotNull(displayInMarket);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsEqualTo(String value) {
-            return equalTo(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketEqualTo(Integer value) {
+            return equalTo(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsNotEqualTo(String value) {
-            return notEqualTo(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketNotEqualTo(Integer value) {
+            return notEqualTo(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsGreaterThan(String value) {
-            return greaterThan(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketGreaterThan(Integer value) {
+            return greaterThan(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsLessThan(String value) {
-            return lessThan(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketLessThan(Integer value) {
+            return lessThan(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(displayInMarket, value);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsLike(String value) {
-            return like(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketIn(List<Integer> values) {
+            return in(displayInMarket, values);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsNotLike(String value) {
-            return notLike(shopTagsContexts, value);
+        public ShiguShopExample.Criteria andDisplayInMarketNotIn(List<Integer> values) {
+            return notIn(displayInMarket, values);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsIn(List<String> values) {
-            return in(shopTagsContexts, values);
+        public ShiguShopExample.Criteria andDisplayInMarketBetween(Integer value1, Integer value2) {
+            return between(displayInMarket, value1, value2);
         }
 
-        public ShiguShopExample.Criteria andShopTagsContextsNotIn(List<String> values) {
-            return notIn(shopTagsContexts, values);
-        }
-
-        public ShiguShopExample.Criteria andShopTagsContextsBetween(String value1, String value2) {
-            return between(shopTagsContexts, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andShopTagsContextsNotBetween(String value1, String value2) {
-            return notBetween(shopTagsContexts, value1, value2);
+        public ShiguShopExample.Criteria andDisplayInMarketNotBetween(Integer value1, Integer value2) {
+            return notBetween(displayInMarket, value1, value2);
         }
         public ShiguShopExample.Criteria andCreateDateIsNull() {
             return isNull(createDate);
@@ -1371,53 +1251,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andAddressNotBetween(String value1, String value2) {
             return notBetween(address, value1, value2);
         }
-        public ShiguShopExample.Criteria andFreshTimeIsNull() {
-            return isNull(freshTime);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeIsNotNull() {
-            return isNotNull(freshTime);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeEqualTo(Date value) {
-            return equalTo(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeNotEqualTo(Date value) {
-            return notEqualTo(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeGreaterThan(Date value) {
-            return greaterThan(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeGreaterThanOrEqualTo(Date value) {
-            return greaterThanOrEqualTo(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeLessThan(Date value) {
-            return lessThan(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeLessThanOrEqualTo(Date value) {
-            return lessThanOrEqualTo(freshTime, value);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeIn(List<Date> values) {
-            return in(freshTime, values);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeNotIn(List<Date> values) {
-            return notIn(freshTime, values);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeBetween(Date value1, Date value2) {
-            return between(freshTime, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andFreshTimeNotBetween(Date value1, Date value2) {
-            return notBetween(freshTime, value1, value2);
-        }
         public ShiguShopExample.Criteria andUserManagerIsNull() {
             return isNull(userManager);
         }
@@ -1520,60 +1353,52 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andTelephoneNotBetween(String value1, String value2) {
             return notBetween(telephone, value1, value2);
         }
-        public ShiguShopExample.Criteria andUserNameIsNull() {
-            return isNull(userName);
+        public ShiguShopExample.Criteria andSynTaobaoIsNull() {
+            return isNull(synTaobao);
         }
 
-        public ShiguShopExample.Criteria andUserNameIsNotNull() {
-            return isNotNull(userName);
+        public ShiguShopExample.Criteria andSynTaobaoIsNotNull() {
+            return isNotNull(synTaobao);
         }
 
-        public ShiguShopExample.Criteria andUserNameEqualTo(String value) {
-            return equalTo(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoEqualTo(Integer value) {
+            return equalTo(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameNotEqualTo(String value) {
-            return notEqualTo(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoNotEqualTo(Integer value) {
+            return notEqualTo(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameGreaterThan(String value) {
-            return greaterThan(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoGreaterThan(Integer value) {
+            return greaterThan(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameLessThan(String value) {
-            return lessThan(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoLessThan(Integer value) {
+            return lessThan(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(synTaobao, value);
         }
 
-        public ShiguShopExample.Criteria andUserNameLike(String value) {
-            return like(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoIn(List<Integer> values) {
+            return in(synTaobao, values);
         }
 
-        public ShiguShopExample.Criteria andUserNameNotLike(String value) {
-            return notLike(userName, value);
+        public ShiguShopExample.Criteria andSynTaobaoNotIn(List<Integer> values) {
+            return notIn(synTaobao, values);
         }
 
-        public ShiguShopExample.Criteria andUserNameIn(List<String> values) {
-            return in(userName, values);
+        public ShiguShopExample.Criteria andSynTaobaoBetween(Integer value1, Integer value2) {
+            return between(synTaobao, value1, value2);
         }
 
-        public ShiguShopExample.Criteria andUserNameNotIn(List<String> values) {
-            return notIn(userName, values);
-        }
-
-        public ShiguShopExample.Criteria andUserNameBetween(String value1, String value2) {
-            return between(userName, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andUserNameNotBetween(String value1, String value2) {
-            return notBetween(userName, value1, value2);
+        public ShiguShopExample.Criteria andSynTaobaoNotBetween(Integer value1, Integer value2) {
+            return notBetween(synTaobao, value1, value2);
         }
         public ShiguShopExample.Criteria andUserIdIsNull() {
             return isNull(userId);
@@ -1621,53 +1446,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
             return notBetween(userId, value1, value2);
-        }
-        public ShiguShopExample.Criteria andSynTaobaoIsNull() {
-            return isNull(synTaobao);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoIsNotNull() {
-            return isNotNull(synTaobao);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoEqualTo(Integer value) {
-            return equalTo(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoNotEqualTo(Integer value) {
-            return notEqualTo(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoGreaterThan(Integer value) {
-            return greaterThan(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoLessThan(Integer value) {
-            return lessThan(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(synTaobao, value);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoIn(List<Integer> values) {
-            return in(synTaobao, values);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoNotIn(List<Integer> values) {
-            return notIn(synTaobao, values);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoBetween(Integer value1, Integer value2) {
-            return between(synTaobao, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andSynTaobaoNotBetween(Integer value1, Integer value2) {
-            return notBetween(synTaobao, value1, value2);
         }
         public ShiguShopExample.Criteria andPriceRuleIsNull() {
             return isNull(priceRule);
@@ -1834,61 +1612,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andDataPacketUrlNotBetween(String value1, String value2) {
             return notBetween(dataPacketUrl, value1, value2);
         }
-        public ShiguShopExample.Criteria andMarketNameIsNull() {
-            return isNull(marketName);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameIsNotNull() {
-            return isNotNull(marketName);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameEqualTo(String value) {
-            return equalTo(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameNotEqualTo(String value) {
-            return notEqualTo(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameGreaterThan(String value) {
-            return greaterThan(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameLessThan(String value) {
-            return lessThan(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameLike(String value) {
-            return like(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameNotLike(String value) {
-            return notLike(marketName, value);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameIn(List<String> values) {
-            return in(marketName, values);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameNotIn(List<String> values) {
-            return notIn(marketName, values);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameBetween(String value1, String value2) {
-            return between(marketName, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andMarketNameNotBetween(String value1, String value2) {
-            return notBetween(marketName, value1, value2);
-        }
         public ShiguShopExample.Criteria andMobilePhoneIsNull() {
             return isNull(mobilePhone);
         }
@@ -1943,6 +1666,53 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andMobilePhoneNotBetween(String value1, String value2) {
             return notBetween(mobilePhone, value1, value2);
+        }
+        public ShiguShopExample.Criteria andEverUserIdIsNull() {
+            return isNull(everUserId);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdIsNotNull() {
+            return isNotNull(everUserId);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdEqualTo(Long value) {
+            return equalTo(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdNotEqualTo(Long value) {
+            return notEqualTo(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdGreaterThan(Long value) {
+            return greaterThan(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdLessThan(Long value) {
+            return lessThan(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(everUserId, value);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdIn(List<Long> values) {
+            return in(everUserId, values);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdNotIn(List<Long> values) {
+            return notIn(everUserId, values);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdBetween(Long value1, Long value2) {
+            return between(everUserId, value1, value2);
+        }
+
+        public ShiguShopExample.Criteria andEverUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(everUserId, value1, value2);
         }
         public ShiguShopExample.Criteria andSortOrderKeyIsNull() {
             return isNull(sortOrderKey);
@@ -1999,6 +1769,53 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         public ShiguShopExample.Criteria andSortOrderKeyNotBetween(String value1, String value2) {
             return notBetween(sortOrderKey, value1, value2);
         }
+        public ShiguShopExample.Criteria andLastModifyTimeIsNull() {
+            return isNull(lastModifyTime);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeIsNotNull() {
+            return isNotNull(lastModifyTime);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeEqualTo(Date value) {
+            return equalTo(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeNotEqualTo(Date value) {
+            return notEqualTo(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeGreaterThan(Date value) {
+            return greaterThan(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeLessThan(Date value) {
+            return lessThan(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(lastModifyTime, value);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeIn(List<Date> values) {
+            return in(lastModifyTime, values);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeNotIn(List<Date> values) {
+            return notIn(lastModifyTime, values);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeBetween(Date value1, Date value2) {
+            return between(lastModifyTime, value1, value2);
+        }
+
+        public ShiguShopExample.Criteria andLastModifyTimeNotBetween(Date value1, Date value2) {
+            return notBetween(lastModifyTime, value1, value2);
+        }
         public ShiguShopExample.Criteria andDomainIsNull() {
             return isNull(domain);
         }
@@ -2053,108 +1870,6 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andDomainNotBetween(String value1, String value2) {
             return notBetween(domain, value1, value2);
-        }
-        public ShiguShopExample.Criteria andLastModifyTimeIsNull() {
-            return isNull(lastModifyTime);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeIsNotNull() {
-            return isNotNull(lastModifyTime);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeEqualTo(Date value) {
-            return equalTo(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeNotEqualTo(Date value) {
-            return notEqualTo(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeGreaterThan(Date value) {
-            return greaterThan(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeGreaterThanOrEqualTo(Date value) {
-            return greaterThanOrEqualTo(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeLessThan(Date value) {
-            return lessThan(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeLessThanOrEqualTo(Date value) {
-            return lessThanOrEqualTo(lastModifyTime, value);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeIn(List<Date> values) {
-            return in(lastModifyTime, values);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeNotIn(List<Date> values) {
-            return notIn(lastModifyTime, values);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeBetween(Date value1, Date value2) {
-            return between(lastModifyTime, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andLastModifyTimeNotBetween(Date value1, Date value2) {
-            return notBetween(lastModifyTime, value1, value2);
-        }
-        public ShiguShopExample.Criteria andParentMarketNameIsNull() {
-            return isNull(parentMarketName);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameIsNotNull() {
-            return isNotNull(parentMarketName);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameEqualTo(String value) {
-            return equalTo(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameNotEqualTo(String value) {
-            return notEqualTo(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameGreaterThan(String value) {
-            return greaterThan(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameLessThan(String value) {
-            return lessThan(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameLike(String value) {
-            return like(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameNotLike(String value) {
-            return notLike(parentMarketName, value);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameIn(List<String> values) {
-            return in(parentMarketName, values);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameNotIn(List<String> values) {
-            return notIn(parentMarketName, values);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameBetween(String value1, String value2) {
-            return between(parentMarketName, value1, value2);
-        }
-
-        public ShiguShopExample.Criteria andParentMarketNameNotBetween(String value1, String value2) {
-            return notBetween(parentMarketName, value1, value2);
         }
     }
 }

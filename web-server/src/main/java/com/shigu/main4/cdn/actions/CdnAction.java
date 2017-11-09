@@ -878,6 +878,9 @@ public class CdnAction {
         String dzhtml=cdnService.bannerHtml(goods.getShopId(),goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
         List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+        if (shop.getType() == null || shop.getType() != 1) {
+            goods.setTbGoodsId(null);
+        }
         model.addAttribute("webSite",goods.getWebSite());
         model.addAttribute("shopInfo",shop);
         model.addAttribute("userShopHdHtml",dzhtml);

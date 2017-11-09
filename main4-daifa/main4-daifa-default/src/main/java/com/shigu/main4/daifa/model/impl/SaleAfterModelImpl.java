@@ -52,7 +52,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     public SaleAfterModelImpl(Long refundId) throws DaifaException {
         super();
         if(refundId==null){
-            throw new DaifaException("refundId is null");
+            throw new DaifaException("refundId is null",DaifaException.DEBUG);
         }
         this.refundId = refundId;
     }
@@ -84,18 +84,18 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         tmpo.setRefundId(refundId);
         Integer count=daifaOrderMapper.selectCount(tmpo);
         if(count>0){
-            throw new DaifaException("售后信息已存在");
+            throw new DaifaException("售后信息已存在",DaifaException.DEBUG);
         }
         DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
         daifaOrderExample.createCriteria().andOrderCodeEqualTo(orderCode.toString()).andRefundIdIsNull();
         List<DaifaOrder> orders = daifaOrderMapper.selectByExample(daifaOrderExample);
         if (orders.size() == 0) {
             //订单不存在
-            throw new DaifaException("订单不存在");
+            throw new DaifaException("订单不存在",DaifaException.DEBUG);
         }
         if (orders.size() < num) {
             //申请的售后的件数大于可申请售后的数量
-            throw new DaifaException("申请的售后的件数大于可申请售后的数量");
+            throw new DaifaException("申请的售后的件数大于可申请售后的数量",DaifaException.DEBUG);
         }
 
         List<Long> afterOids=BeanMapper.getFieldList(orders,"dfOrderId",Long.class);
@@ -112,7 +112,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         if (after == null) {
             if (trade.getSendStatus() != 2) {
                 //未发货,不能申请售后
-                throw new DaifaException("未发货,不能申请售后");
+                throw new DaifaException("未发货,不能申请售后",DaifaException.DEBUG);
             }
             after = BeanMapper.map(trade, DaifaAfterSale.class);
             after.setCreateTime(time);
@@ -205,11 +205,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         if (subs.size() == 0) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         if (subs.get(0).getAfterStatus() != 1) {
             //售后状态错误,不是申请中的状态
-            throw new DaifaException("售后状态错误,不是申请中的订单");
+            throw new DaifaException("售后状态错误,不是申请中的订单",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
         daifaAfterSaleSub.setAfterStatus(2);
@@ -217,7 +217,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         daifaAfterSaleSub.setApplyDealTime(new Date());
         if (status == 2) {
             if(StringUtils.isEmpty(reason)){
-                throw new DaifaException("请填写拒绝理由");
+                throw new DaifaException("请填写拒绝理由",DaifaException.DEBUG);
             }
             daifaAfterSaleSub.setApplyRefuseReason(reason);
         }
@@ -267,13 +267,13 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         if (subs.size() == 0) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         List<Integer> status = Arrays.asList(2, 3);
         if (!status.contains(subs.get(0).getAfterStatus()) ||
                 (subs.get(0).getApplyDealStatus() != null && subs.get(0).getApplyDealStatus() == 2)) {
             //售后状态错误,当前状态不能设置退回快递信息
-            throw new DaifaException("售后状态错误,当前状态不能设置退回快递信息");
+            throw new DaifaException("售后状态错误,当前状态不能设置退回快递信息",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
         daifaAfterSaleSub.setAfterStatus(3);
@@ -295,7 +295,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     public int saleAfterRemark(Long afterSaleId, String remark) throws DaifaException {
         DaifaAfterSale oldSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
         if (oldSale == null) {
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
         daifaAfterSale.setAfterSaleId(afterSaleId);
@@ -321,12 +321,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         if (subs.size() == 0) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
 
         if (subs.get(0).getAfterStatus() < 4) {
             //售后状态错误,未收到货
-            throw new DaifaException("售后状态错误,未收到货");
+            throw new DaifaException("售后状态错误,未收到货",DaifaException.DEBUG);
         }
 
         //读取退款成功的id集合
@@ -346,7 +346,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             }
         }
         if(MoneyUtil.StringToLong(money)>maxMoney){
-            throw new DaifaException("售后状态错误,超过可退总额");
+            throw new DaifaException("售后状态错误,超过可退总额",DaifaException.DEBUG);
         }
         //entIds数量为0,即所有都已经处理过,跳出
         if(entIds.size()==0){
@@ -401,11 +401,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         sub = daifaAfterSaleSubMapper.selectOne(sub);
         if (sub == null) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         if (sub.getAfterStatus() != 4) {
             //售后状态错误,未收到货
-            throw new DaifaException("售后状态错误,未收到货");
+            throw new DaifaException("售后状态错误,未收到货",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub update = new DaifaAfterSaleSub();
         update.setStoreDealStatus(2);
@@ -484,11 +484,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         tmp = daifaAfterSaleSubMapper.selectOne(tmp);
         if (tmp == null) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         if (!(tmp.getAfterStatus() == 4 || (tmp.getAfterStatus() == 5 && tmp.getStoreDealStatus() == 2))) {
             //售后状态错误,之后收到货的状态或退货失败状态时才能入库
-            throw new DaifaException("售后状态错误,之后收到货的状态或退货失败状态时才能入库");
+            throw new DaifaException("售后状态错误,之后收到货的状态或退货失败状态时才能入库",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub sub = new DaifaAfterSaleSub();
         sub.setAfterSaleSubId(tmp.getAfterSaleSubId());
@@ -497,7 +497,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(sub);
         if(inStockType==1){
             if(StringUtils.isEmpty(tmp.getApplyExpressCode())){
-                throw new DaifaException("非法请求,售后订单未设置申请的快递,无法入库");
+                throw new DaifaException("非法请求,售后订单未设置申请的快递,无法入库",DaifaException.DEBUG);
             }
             DaifaAfterReceiveExpresStock stock=new DaifaAfterReceiveExpresStock();
             stock.setRelevanceStatus(1);
@@ -529,12 +529,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         if (subs.size() == 0) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         Long refundMoney = 0L;
         for (DaifaAfterSaleSub s : subs) {
             if (!Arrays.asList(5,7).contains(s.getAfterStatus())) {
-                throw new DaifaException("当前订单状态不可议价");
+                throw new DaifaException("当前订单状态不可议价",DaifaException.DEBUG);
             }
             refundMoney += MoneyUtil.StringToLong(s.getStoreReturnMoney());
         }
@@ -551,7 +551,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         if (daifaAfterMoneyConsults.size() > 0) {
             if(daifaAfterMoneyConsults.get(0).getConsultType()==2){
                 //当前已处于"拒绝协商金额"状态
-                throw new DaifaException("当前已处于\"拒绝协商金额\"状态");
+                throw new DaifaException("当前已处于\"拒绝协商金额\"状态",DaifaException.DEBUG);
             }
             insert.setConsultMoney(daifaAfterMoneyConsults.get(0).getConsultMoney());
         } else {
@@ -598,7 +598,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterMoneyConsult> daifaAfterMoneyConsults = daifaAfterMoneyConsultMapper.selectByExample(daifaAfterMoneyConsultExample);
         if(daifaAfterMoneyConsults.size()==0){
             //议价信息错误
-            throw new DaifaException("议价信息错误");
+            throw new DaifaException("议价信息错误",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
         tmp.setRefundId(refundId);
@@ -608,7 +608,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
         }
         if(MoneyUtil.StringToLong(money)>maxMoney){
-            throw new DaifaException("售后状态错误,超过可退总额");
+            throw new DaifaException("售后状态错误,超过可退总额",DaifaException.DEBUG);
         }
 
         if(daifaAfterMoneyConsults.get(0).getConsultType()==2){
@@ -620,7 +620,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.insertSelective(insert);
         }else{
-            throw new DaifaException("每次用户拒绝议价,只能设置一次金额");
+            throw new DaifaException("每次用户拒绝议价,只能设置一次金额",DaifaException.DEBUG);
 //            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();
 //            update.setAfterConsultId(daifaAfterMoneyConsults.get(0).getAfterConsultId());
 //            update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
@@ -646,13 +646,13 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         if (subs.size() == 0) {
             //售后申请不存在
-            throw new DaifaException("售后申请不存在");
+            throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
         if(subs.get(0).getAfterType()!=2){
-            throw new DaifaException("不是换货售后");
+            throw new DaifaException("不是换货售后",DaifaException.DEBUG);
         }
         if(subs.get(0).getAfterStatus()!=4){
-            throw new DaifaException("代发未收到货");
+            throw new DaifaException("代发未收到货",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub update=new DaifaAfterSaleSub();
         update.setAfterStatus(6);

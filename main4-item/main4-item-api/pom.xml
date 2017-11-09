@@ -5,11 +5,26 @@
     <parent>
         <artifactId>main4-item</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.3-SNAPSHOT</version>
+        <version>4.2.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+
+
     <artifactId>main4-item-api</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>

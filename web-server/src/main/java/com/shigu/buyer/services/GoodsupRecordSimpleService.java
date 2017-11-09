@@ -100,7 +100,7 @@ public class GoodsupRecordSimpleService {
      * @throws TbItemSynException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void downTbOneGoods(Long fenNumIid, String tbNick) throws TbItemSynException {
+    protected void downTbOneGoods(Long fenNumIid, String tbNick) throws TbItemSynException {
         taobaoSynService.downTbGoods(fenNumIid, tbNick);
     }
 
@@ -181,7 +181,7 @@ public class GoodsupRecordSimpleService {
                     onekeyRecoreVO.setShopSaleState(!shiguGoodsUp.getShopSoldout() ? 1 : 2);
                 }
                 if (shiguGoodsUp.getTbSoldout() != null) {
-                    onekeyRecoreVO.setShopSaleState(!shiguGoodsUp.getShopSoldout() ? 1 : 2);
+                    onekeyRecoreVO.setTaobaoSaleState(!shiguGoodsUp.getTbSoldout() ? 1 : 2);
                 }
                 if (shiguGoodsUp.getWebSite() == null) {
 //                    continue;//跳过
@@ -195,6 +195,7 @@ public class GoodsupRecordSimpleService {
                 CdnItem cdnItem = showForCdnService.selItemById(shiguGoodsUp.getSupperGoodsId(), shiguGoodsUp.getWebSite());
                 if (cdnItem != null) {
                     onekeyRecoreVO.setPiprice(cdnItem.getPiPrice());
+                    onekeyRecoreVO.setGoodsNo(cdnItem.getHuohao());
                 }
                 recoreList.add(onekeyRecoreVO);
             }

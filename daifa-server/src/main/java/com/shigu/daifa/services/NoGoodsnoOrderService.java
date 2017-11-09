@@ -55,19 +55,19 @@ public class NoGoodsnoOrderService {
 
     public void updateGoodsNo(Long dfOrderId,String goodsNo) throws DaifaException {
         if(dfOrderId==null|| StringUtils.isEmpty(goodsNo)){
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId, FieldUtil.codeFields("df_order_id,goods_id"));
         if(o==null){
-            throw new DaifaException("订单不存在");
+            throw new DaifaException("订单不存在",DaifaException.DEBUG);
         }
         if(o.getGoodsId()==-1){
-            throw new DaifaException("不支持修改");
+            throw new DaifaException("不支持修改",DaifaException.DEBUG);
         }
         try {
             itemProductProcess.updateGoodsNo(o.getGoodsId(),goodsNo);
         } catch (OrderException e) {
-            throw new DaifaException("订单系统修改失败:"+e.getMessage());
+            throw new DaifaException("订单系统修改失败:"+e.getMessage(),DaifaException.ERROR);
         }
         orderManageProcess.putGoodsCode(o.getGoodsId(),goodsNo);
     }

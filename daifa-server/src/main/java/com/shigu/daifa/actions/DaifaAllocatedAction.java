@@ -76,7 +76,7 @@ public class DaifaAllocatedAction {
     @ResponseBody
     public JSONObject setIsGetGoodsJson(Integer type,Long takeGoodsId) throws DaifaException {
         if (type == null||takeGoodsId == null) {
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
@@ -123,10 +123,10 @@ public class DaifaAllocatedAction {
     public JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
 
         if (bo.getType() == null) {
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         if(bo.getType() == 2&&(bo.getIds() == null||bo.getIds().size()==0)){
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION)    ;
