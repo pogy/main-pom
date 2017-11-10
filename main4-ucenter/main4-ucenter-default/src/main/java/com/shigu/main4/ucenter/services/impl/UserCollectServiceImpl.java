@@ -669,7 +669,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             logger.error("删除数据包>>入参数据为空");
         }
         ShiguGoodsDataPackageExample packageExample = new ShiguGoodsDataPackageExample();
-        packageExample.createCriteria().andGoodsIdIn(packageIds);
+        packageExample.createCriteria().andDataPackageIdIn(packageIds);
         List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByExample(packageExample);
         if (shiguGoodsDataPackageList.size() == 0) {
             return;
