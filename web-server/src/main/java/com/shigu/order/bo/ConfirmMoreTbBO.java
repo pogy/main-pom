@@ -15,7 +15,7 @@ public class ConfirmMoreTbBO implements Serializable{
     /**
      * 快递公司单位ID
      */
-    private String courierId;
+    private String postId;
     /**
      * 结算唯一码
      */
@@ -36,20 +36,6 @@ public class ConfirmMoreTbBO implements Serializable{
     }
 
     /**
-     * 获取 快递公司单位ID
-     */
-    public String getCourierId() {
-        return this.courierId;
-    }
-
-    /**
-     * 设置 快递公司单位ID
-     */
-    public void setCourierId(String courierId) {
-        this.courierId = courierId;
-    }
-
-    /**
      * 获取 结算唯一码
      */
     public String getIdCode() {
@@ -61,5 +47,19 @@ public class ConfirmMoreTbBO implements Serializable{
      */
     public void setIdCode(String idCode) {
         this.idCode = idCode;
+    }
+
+    /**
+     * 获取 快递公司单位ID
+     */
+    public String getPostId() {
+        return this.postId;
+    }
+
+    /**
+     * 设置 快递公司单位ID
+     */
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }

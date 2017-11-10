@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
@@ -25,10 +26,7 @@ import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.order.bo.ConfirmBO;
-import com.shigu.order.bo.ConfirmOrderBO;
-import com.shigu.order.bo.ConfirmSubOrderBO;
-import com.shigu.order.bo.OrderBO;
+import com.shigu.order.bo.*;
 import com.shigu.order.vo.*;
 import com.shigu.order.vo.ServiceInfoVO;
 import net.sf.json.JSON;
@@ -392,6 +390,12 @@ public class ConfirmOrderService {
         return otherCostVO;
     }
 
+    /**
+     * 淘宝批量下单获取整合信息
+     * @param tbTrades
+     * @param senderId
+     * @return
+     */
     public ConfirmTbBatchOrderVO confirmTbBatchOrder(List<OrderSubmitVo> tbTrades, Long senderId) {
         int orderNum = tbTrades.size();
         int goodsNum = 0;
@@ -423,15 +427,71 @@ public class ConfirmOrderService {
         return vo;
     }
 
-    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long companyId) throws LogisticsRuleException {
+    /**
+     * 淘宝批量下单获取快递费
+     * @param tbTrades
+     * @param senderId
+     * @param postId
+     * @return
+     * @throws LogisticsRuleException
+     */
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, String postId) throws LogisticsRuleException {
         long postPrice=0L;
+        ExpressCompany exc=new ExpressCompany();
+        exc.setRemark2(postId);
+        exc=expressCompanyMapper.selectOne(exc);
         for (OrderSubmitVo t : tbTrades) {
             BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
-            postPrice += logisticsService.calculate(buyerAddress.getProvId(), companyId,
+            postPrice += logisticsService.calculate(buyerAddress.getProvId(), exc.getExpressCompanyId(),
                     t.getProducts().stream().mapToInt(CartVO::getNum).sum(),
                     null, senderId);
 
         }
         return postPrice;
+    }
+    /**
+     * 淘宝批量下单确认提交
+     *
+     * @param bo
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public String confirmTbBatchOrders(ConfirmMoreTbBO bo, Long userId,List<OrderSubmitVo> tbTrades) throws JsonErrException {
+        String code = bo.getIdCode();
+        List<ItemOrderBO> items=new ArrayList<>();
+        for(OrderSubmitVo orderSubmitVo:tbTrades) {
+            ConfirmBO b=new ConfirmBO();
+            b.setSenderId(bo.getSenderId());
+            b.setAddressId(orderSubmitVo.getTbOrderAddressInfo().getAddressId());
+            b.setCourierId(bo.getPostId());
+            b.setOrders(orderSubmitVo.getProducts().stream().collect(Collectors.groupingBy(CartVO::getShopId))
+                    .entrySet().stream().map(longListEntry -> {
+                        ConfirmOrderBO c=new ConfirmOrderBO();
+                        c.setOrderId(longListEntry.getKey().toString());
+                        c.setShopId(longListEntry.getKey());
+                        c.setChildOrders(longListEntry.getValue().stream().map(cartVO -> {
+                            ConfirmSubOrderBO cn=new ConfirmSubOrderBO();
+                            cn.setId(cartVO.getCartId().toString());
+                            cn.setNum(cartVO.getNum());
+                            return cn;
+                        }).collect(Collectors.toList()));
+                        return c;
+                    }).collect(Collectors.toList()));
+            ItemOrderBO itemOrderBO = generateItemOrderBO(b, orderSubmitVo);
+            if (!userId.equals(itemOrderBO.getUserId())) {
+                throw new JsonErrException("只能操作本用户下的订单");
+            }
+            items.add(itemOrderBO);
+        };
+        List<Long> oids;
+        try {
+            oids = itemOrderService.createOrders(items);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new JsonErrException(e.getMessage());
+        }
+        redisIO.del(code);
+        String uuid = UUIDGenerator.getUUID();
+        redisIO.putTemp(uuid, oids, 600);
+        return uuid;
     }
 }

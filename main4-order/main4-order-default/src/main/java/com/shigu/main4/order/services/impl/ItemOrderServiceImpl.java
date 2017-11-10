@@ -172,7 +172,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         LogisticsBO logistics = orderBO.getLogistics();
         String companyId = logistics.getCompanyId();
         ExpressCompany company = new ExpressCompany();
-        company.setEnName(companyId);
+        company.setRemark2(companyId);
         ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
 
         BuyerAddress buyerAddress;

@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderServiceExample;
 import com.opentae.data.mall.interfaces.*;
@@ -31,10 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -184,6 +182,32 @@ public class MyOrderService {
         } catch (TbSendException e) {
             throw new Main4Exception(e.getMessage());
         }
+    }
+
+    public List<Long> moreTbSend(Long userId,List<Long> oids) throws Main4Exception {
+        ItemOrderExample itemOrderExample=new ItemOrderExample();
+        itemOrderExample.createCriteria().andOidIn(oids);
+        List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
+        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> !Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
+                .map(ItemOrder::getOid).collect(Collectors.toList());
+        if(orderIds.size()!=oids.size()){
+            return orderIds;
+        }
+        StringBuilder oidStrs= new StringBuilder();
+        for(Long oid:oids){
+            try {
+                itemOrderProcess.tbSend(oid);
+            } catch (TbSendException e) {
+                if (oidStrs.length() > 0) {
+                    oidStrs.append(",");
+                }
+                oidStrs.append(oid);
+            }
+        }
+        if(oidStrs.length()>0){
+            throw new Main4Exception("部分订单发货失败:"+oidStrs.toString());
+        }
+        return null;
     }
 
 }

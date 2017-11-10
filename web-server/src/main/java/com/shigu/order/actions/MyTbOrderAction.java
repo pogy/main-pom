@@ -66,6 +66,7 @@ public class MyTbOrderAction {
 
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("notLinkNum",pager.getNotLinkNum());
+        model.addAttribute("notLinkCode",pager.getNotLinkCode());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
         return "buyer/myTbOrder";
@@ -142,24 +143,24 @@ public class MyTbOrderAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping("submitMoreTbOrders")
+    @RequestMapping("tbBatchOrder")
     @ResponseBody
-    public JSONObject submitMoreTbOrders(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
+    public JSONObject tbBatchOrder(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return myTbOrderService.submitMoreTbOrders(bo.getTids(),ps.getUserId(),bo.getRepeatIs());
     }
 
     /**
      * 未关联的商品列表
-     * @param bo
+     * @param notLinkCode
      * @param session
      * @param model
      * @return
      */
     @RequestMapping("moreTbNeedBind")
-    public String moreTbNeedBind(MoreTbOrderBO bo, HttpSession session,Model model){
+    public String moreTbNeedBind(String notLinkCode, HttpSession session,Model model){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(bo.getTids(),ps.getUserId());
+        List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
         model.addAttribute("childOrders",vos);
         return "";
     }
@@ -170,9 +171,9 @@ public class MyTbOrderAction {
      * @param session
      * @return
      */
-    @RequestMapping("moreTbNeedBind")
+    @RequestMapping("lookErrorAdress")
     @ResponseBody
-    public JSONObject moreErrorAddress(MoreTbOrderBO bo, HttpSession session){
+    public JSONObject lookErrorAdress(MoreTbOrderBO bo, HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<MoreErrorAddressVO> vos= myTbOrderService.moreErrorAddress(bo.getTids(),ps.getUserId());
         JSONObject obj=JsonResponseUtil.success();

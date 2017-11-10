@@ -49,10 +49,13 @@ public class PayProcessImpl implements PayProcess{
      */
     @Override
     public PayApplyVO payApplySome(List<Long> orderIds, PayType payType) throws PayApplyException {
-        Long[] oids= (Long[]) orderIds.toArray();
+        Long[] oids=new Long[orderIds.size()];
+        for(int i=0;i<orderIds.size();i++){
+            oids[i]=orderIds.get(i);
+        }
         canPayApply(oids);
         ItemOrderExample example=new ItemOrderExample();
-        example.createCriteria().andOidIn(Arrays.asList(oids)).andOrderStatusNotEqualTo(OrderStatus.WAIT_BUYER_PAY.status);
+        example.createCriteria().andOidIn(Arrays.asList(oids)).andOrderStatusEqualTo(OrderStatus.WAIT_BUYER_PAY.status);
         List<ItemOrder> orders=itemOrderMapper.selectByExample(example);
         //查询用户ID
         Long userId=null;

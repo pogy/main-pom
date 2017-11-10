@@ -9,8 +9,11 @@ import java.io.Serializable;
 public class PostVO implements Serializable {
 
     private static final long serialVersionUID = -8911479288781518382L;
-
-    /**快递id,例申通快递-stkd*/
+    /**
+     * id
+     */
+    private Long id;
+    /**快递缩写例申通快递-stkd*/
     private String name;
     /**快递中文名*/
     private String text;
@@ -31,4 +34,11 @@ public class PostVO implements Serializable {
         this.text = text;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

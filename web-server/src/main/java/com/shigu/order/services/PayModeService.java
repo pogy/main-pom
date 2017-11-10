@@ -1,13 +1,9 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.OrderPay;
-import com.opentae.data.mall.beans.OrderPayApply;
-import com.opentae.data.mall.beans.OrderPayRelationship;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
-import com.opentae.data.mall.interfaces.OrderPayMapper;
-import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemOrderExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -28,7 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 收款台-支付方式选择
@@ -59,6 +59,8 @@ public class PayModeService {
 
     @Autowired
     private OrderPayApplyMapper orderPayApplyMapper;
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     /**
      * 订单信息
@@ -76,6 +78,7 @@ public class PayModeService {
      * @throws PayApplyException 支付异常
      */
     public PayModePageVO selPayModePageVO(Long orderId, Long userId) throws PayApplyException {
+        checkedMyOrder(Collections.singletonList(orderId),userId);
         Long payed = checkPayed(orderId);
         if (payed != null) {
             throw new PayApplyException("该笔订单已经支付");
@@ -83,6 +86,9 @@ public class PayModeService {
         PayModePageVO payModePageVO = new PayModePageVO();
         payModePageVO.setOrderId(orderId);
         ItemOrderVO itemOrderVO = orderInfo(orderId);
+        if(!Objects.equals(userId, itemOrderVO.getUserId())){
+            throw new PayApplyException("只能支付自己的订单");
+        }
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
@@ -101,7 +107,8 @@ public class PayModeService {
      * @throws PayApplyException 支付申请异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
+    public PayApplyVO payApply(Long orderId,Long userId,PayType payType) throws PayApplyException {
+        checkedMyOrder(Collections.singletonList(orderId),userId);
         return payProcess.payApply(orderId,payType);
     }
 
@@ -182,5 +189,21 @@ public class PayModeService {
         } catch (PayerException e) {
             throw new JsonErrException("扣款异常");
         }
+    }
+
+
+    public List<Long> checkedMyOrder(List<Long> orderIds,Long userId) throws PayApplyException {
+        if(orderIds.size()==0){
+            throw new PayApplyException("操作过期");
+        }
+        ItemOrderExample itemOrderExample=new ItemOrderExample();
+        itemOrderExample.createCriteria().andOidIn(orderIds);
+        List<ItemOrder> ios=itemOrderMapper.selectFieldsByExample(itemOrderExample, FieldUtil.codeFields("oid,user_id"));
+        for(ItemOrder io:ios){
+            if(!Objects.equals(io.getUserId(), userId)){
+                throw new PayApplyException("只能支付自己的订单");
+            }
+        }
+        return ios.stream().map(ItemOrder::getOid).collect(Collectors.toList());
     }
 }

@@ -37,6 +37,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -225,14 +226,26 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
+        List<PostVO> psv=logisticsService.defaultPost(bo.getSenderId());
         return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades,bo.getSenderId()))
                 .element("result","success")
                 .element("postTotalPrice","0.00")
-                .element("postList",logisticsService.defaultPost(bo.getSenderId()));
+                .element("postList",psv.stream().map(postVO -> new JSONObject()
+                        .element("id",postVO.getName()).element("name",postVO.getText())).collect(Collectors.toList()));
 
     }
 
-    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException {
+    /**
+     * 淘宝批量下单获取快递费
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws LogisticsRuleException
+     */
+    @RequestMapping("queryPostPriceForConfirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, LogisticsRuleException {
         List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
         if (tbTrades == null||tbTrades.size()==0) {
             throw new OrderException("订单超时");
@@ -245,8 +258,34 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-//        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId())))
-        return null;
+        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId())));
+    }
+
+    /**
+     * 淘宝批量下单,订单提交
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws JsonErrException
+     */
+    @RequestMapping("submitResultForConfirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject submitResultForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, JsonErrException {
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = null;
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (sessionUser != null) {
+            userId = sessionUser.getUserId();
+        }
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+        return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode="+confirmOrderService.confirmTbBatchOrders(bo,userId,tbTrades));
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 
 public class MyTbOrderVO<T> extends ShiguPager<T> {
     private int notLinkNum;
+    private String notLinkCode;
 
     public int getNotLinkNum() {
         return this.notLinkNum;
@@ -11,5 +12,13 @@ public class MyTbOrderVO<T> extends ShiguPager<T> {
 
     public void setNotLinkNum(int notLinkNum) {
         this.notLinkNum = notLinkNum;
+    }
+
+    public String getNotLinkCode() {
+        return this.notLinkCode;
+    }
+
+    public void setNotLinkCode(String notLinkCode) {
+        this.notLinkCode = notLinkCode;
     }
 }

@@ -12,7 +12,12 @@ public class PostInfoVO implements Serializable {
 
     private static final long serialVersionUID = -8911479288781518382L;
 
-    /**快递id,例申通快递-stkd*/
+    /**
+     * 快递ID
+     */
+    @Column("express_company.express_company_id")
+    private Long id;
+    /**快递缩写,例申通快递-stkd*/
     @Column("express_company.remark2")
     private String name;
     /**快递中文名*/
@@ -35,4 +40,11 @@ public class PostInfoVO implements Serializable {
         this.text = text;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -73,6 +73,8 @@ public class MyTbOrderService {
     private MultipleMapper multipleMapper;
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
 
 
 
@@ -89,17 +91,20 @@ public class MyTbOrderService {
         } catch (NotFindSessionException e) {
             return new MyTbOrderVO();
         }
-        int notLinkNum=0;
+        List<String> notLinkIds=new ArrayList<>();
         MyTbOrderVO<TbOrderVO> v=new MyTbOrderVO<>();
         if(orderId!=null){
             TbOrderVO vo=taoOrderService.myTbOrder(orderId,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
             List<TbOrderVO> list=new ArrayList<>();
             if(vo!=null){
                 vo.setXzUserId(userId);
-                notLinkNum+=linkGoodsNo(vo);
+                notLinkIds=linkGoodsNo(vo);
                 list.add(vo);
             }
-            v.setNotLinkNum(notLinkNum);
+            v.setNotLinkNum(notLinkIds.size());
+            if(notLinkIds.size()>0){
+                v.setNotLinkCode(noGoodsNoUUID(notLinkIds));
+            }
             v.setContent(list);
             v.setNumber(page);
             v.calPages(list.size(),size);
@@ -123,13 +128,16 @@ public class MyTbOrderService {
         List<TbOrderVO> vos=tvo.getContent();
         for(TbOrderVO vo:vos){
             vo.setXzUserId(userId);
-            notLinkNum+=linkGoodsNo(vo);
+            notLinkIds=linkGoodsNo(vo);
         }
         v.setContent(tvo.getContent());
         v.setNumber(page);
         v.setTotalCount(tvo.getTotalCount());
         v.setTotalPages(tvo.getTotalPages());
-        v.setNotLinkNum(notLinkNum);
+        v.setNotLinkNum(notLinkIds.size());
+        if(notLinkIds.size()>0){
+            v.setNotLinkCode(noGoodsNoUUID(notLinkIds));
+        }
         return v;
     }
 
@@ -285,7 +293,7 @@ public class MyTbOrderService {
         List<String> noGoodsNoTids=new ArrayList<>();
         List<Long> noGoodsNoNumiids=new ArrayList<>();
 
-        List<String> errorAddressTids=new ArrayList<>();
+        Set<String> errorAddressTids=new HashSet<>();
         List<String> otherIds=new ArrayList<>();
 
         Map<String,BuyerAddressVO> addsMap=new HashMap<>();
@@ -295,6 +303,8 @@ public class MyTbOrderService {
         Map<Long,TinyVO> tinyVOMap=new HashMap<>();
         Map<String,SynItem> synItemMap=new HashMap<>();
         Map<String,ItemProductVO> itemProductVOMap =new HashMap<>();
+
+        Set<String> checkSingleWebSite=new HashSet<>();
 
         for(String tid:tids){
             TbOrderVO order=redisIO.get("tbOrder"+tid,TbOrderVO.class);
@@ -328,6 +338,10 @@ public class MyTbOrderService {
                         continue;
                     }
                     tinyVOMap.put(sub.getNumiid(),rgv);
+                }
+                checkSingleWebSite.add(rgv.getWebSite());
+                if(checkSingleWebSite.size()>1){
+                    throw new JsonErrException("存在多个站点的商品,单次下单只能是同一站点的商品");
                 }
                 //如果存在校验失败的订单,则之后的循环不再进行包装cart对象,减少操作
                 if(noGoodsNoTids.size()==0&&errorAddressTids.size()==0){
@@ -420,7 +434,7 @@ public class MyTbOrderService {
             // 存在没关联的商品
             JSONObject obj= new JSONObject();
             obj.put("result","error");
-            obj.put("noGoodsNoTids",noGoodsNoTids);
+            obj.put("notLinkCode",noGoodsNoUUID(noGoodsNoTids));
             obj.put("noGoodsNoNum",noGoodsNoNumiids.size());
             return obj;
         }
@@ -433,7 +447,8 @@ public class MyTbOrderService {
             leftIds.removeIf(errorAddressTids::contains);
             JSONObject obj= new JSONObject();
             obj.put("result","error");
-            obj.put("errorAddressTids",errorAddressTids);
+            obj.put("errorAddressTids",new ArrayList<>(errorAddressTids));
+            obj.put("errorAddressNum",errorAddressTids.size());
             obj.put("successAddressTids",leftIds);
             return obj;
         }
@@ -442,13 +457,13 @@ public class MyTbOrderService {
         itemOrderExample.createCriteria().andOuterIdIn(otherIds);
         List<ItemOrder> os= itemOrderMapper.selectFieldsByExample(itemOrderExample,FieldUtil.codeFields("oid,outer_id"));
         if(os.size()>0&&!repeatIs){
-            List<String> hasIds= os.stream().map(ItemOrder::getOuterId).collect(Collectors.toList());
+            Set<String> hasIds= os.stream().map(ItemOrder::getOuterId).collect(Collectors.toSet());
             List<String> leftIds=new ArrayList<>(otherIds);
             leftIds.removeIf(hasIds::contains);
             // 存在已下单的商品
             JSONObject obj= new JSONObject();
             obj.put("result","error");
-            obj.put("hasIds",hasIds);
+            obj.put("hasOrderNum",hasIds.size());
             obj.put("leftIds",leftIds);
             return obj;
         }
@@ -460,16 +475,26 @@ public class MyTbOrderService {
         }
         String uuid = UUIDGenerator.getUUID();
         redisIO.putTemp(uuid, orderSubmitVos, 3600);
-        return JsonResponseUtil.success(uuid);
+        ItemOrderSenderExample itemOrderSenderExample=new ItemOrderSenderExample();
+        itemOrderSenderExample.createCriteria().andWebSiteEqualTo(checkSingleWebSite.size()==0?"hz":checkSingleWebSite.iterator().next());
+
+        return JsonResponseUtil.success().element("idCode",uuid)
+                .element("senderId",itemOrderSenderMapper.selectByExample(itemOrderSenderExample).get(0).getSenderId());
     }
 
     /**
      * 未关联商品列表
-     * @param tids
+     * @param notLinkCode
      * @param userId
      * @return
      */
-    public List<SubTbOrderVO> moreTbNeedBind(List<String> tids, Long userId) {
+    public List<SubTbOrderVO> moreTbNeedBind(String notLinkCode, Long userId) {
+        List<String> tids= null;
+        try {
+            tids = redisIO.getList(notLinkCode,String.class);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
         List<Long> noGoodsNoNumiids=new ArrayList<>();
         List<SubTbOrderVO> os=new ArrayList<>();
         for(String tid:tids){
@@ -545,11 +570,11 @@ public class MyTbOrderService {
         return similarityTownMap;
     }
 
-    private int linkGoodsNo(TbOrderVO vo){
+    private List<String> linkGoodsNo(TbOrderVO vo){
         vo.setCanOrder(true);
         vo.setProfits(null);
         Long lr= 0L;
-        int notLinkNum=0;
+        List<String> notLinkIds=new ArrayList<>();
         for(SubTbOrderVO subvo:vo.getChildOrders()){
             if(StringUtils.isEmpty(subvo.getGoodsNo())){
                 try {
@@ -561,11 +586,11 @@ public class MyTbOrderService {
                         lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
                     }else {
                         vo.setCanOrder(false);
-                        notLinkNum++;
+                        notLinkIds.add(vo.getTbId());
                     }
                 } catch (NotFindRelationGoodsException e) {
                     vo.setCanOrder(false);
-                    notLinkNum++;
+                    notLinkIds.add(vo.getTbId());
                 }
             }
         }
@@ -573,6 +598,12 @@ public class MyTbOrderService {
             vo.setProfits(PriceConvertUtils.priceToString(lr));
         }
         redisIO.putTemp("tbOrder"+vo.getTbId(), vo, 3600);
-        return notLinkNum;
+        return notLinkIds;
+    }
+
+    private String noGoodsNoUUID(List<String> notLinkIds){
+        String uuid = UUIDGenerator.getUUID();
+        redisIO.putTemp(uuid, notLinkIds, 3600);
+        return uuid;
     }
 }
