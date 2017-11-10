@@ -386,10 +386,11 @@ var webSite = '${webSite!}';
 </div>
 
 
-    <div class="tbOrderTip fc3">
+    <#if notLinkNum gt 0>
+<div class="tbOrderTip fc3">
     提示：淘宝已卖出的商品中有<em class="fcF40">${notLinkNum!}</em>件商品暂未绑定四季星座网商品库中对应的商品,只有绑定后才可准确无误下单哦！<a class="fcF40" href="tbBindGoodsNo.htm?notLinkCode=${notLinkCode!}" target="_blank">立即查看</a>
 </div>
-
+</#if>
 
 
 
