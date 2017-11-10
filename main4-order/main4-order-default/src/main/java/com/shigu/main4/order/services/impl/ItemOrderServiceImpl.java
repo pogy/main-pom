@@ -174,7 +174,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 //        ExpressCompany company = new ExpressCompany();
 //        company.setRemark2(companyId);
 //        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
-        String companyIdxxx = logistics.getCompanyId();
 
         BuyerAddress buyerAddress;
         try {
