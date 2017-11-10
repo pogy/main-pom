@@ -89,13 +89,13 @@ public class WapGoodsUpAction {
      */
     @RequestMapping("instockUploadGoods")
     @ResponseBody
-    public JSONObject downGoodsUploaded(HttpSession session,String uploadId) throws Main4Exception, OpenException {
+    public JSONObject downGoodsUploaded(HttpSession session,String goodsId) throws Main4Exception, OpenException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         try {
-            wapPhoneGoodsUpService.instockMyItem(uploadId,ps.getUserId());
+            wapPhoneGoodsUpService.instockMyItem(goodsId,ps.getUserId());
             return JsonResponseUtil.success().element("success",true);
         } catch (OpenException e) {
             e.printStackTrace();

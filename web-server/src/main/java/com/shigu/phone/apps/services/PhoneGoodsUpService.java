@@ -36,13 +36,7 @@ import org.springframework.stereotype.Service;
 public class PhoneGoodsUpService {
 
     @Autowired
-    private MemberUserSubMapper memberUserSubMapper;
-
-    @Autowired
     private BasePhoneGoodsUpService basePhoneGoodsUpService;
-
-    @Autowired
-    private GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
         UpToWxResponse resp = new UpToWxResponse();
@@ -72,14 +66,9 @@ public class PhoneGoodsUpService {
     public InstockMyItemResponse instockMyItem(InstockMyItemRequest request) {
         InstockMyItemResponse res=new InstockMyItemResponse();
         try {
-            Long userId = request.getUserId();
-            MemberUserSub query = new MemberUserSub();
-            query.setUserId(userId);
-            query.setAccountType(3);
-            MemberUserSub memberUserSub = memberUserSubMapper.selectOne(query);
-            goodsupRecordSimpleService.downTbGoods(userId,memberUserSub.getSubUserName(),request.getGoodsId().toString());
+            basePhoneGoodsUpService.instockMyItem(request.getUserId(),request.getGoodsId());
             res.setSuccess(true);
-        }  catch (JsonErrException e) {
+        }  catch (OpenException e) {
             if (e.getMessage().contains("需要淘宝授权")) {
                 res.setType(1);
                 res.setMsg("亲,您的淘宝授权已过期,请去淘宝登录");

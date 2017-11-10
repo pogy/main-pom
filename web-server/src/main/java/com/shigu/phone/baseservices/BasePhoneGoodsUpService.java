@@ -10,11 +10,14 @@ import com.openJar.responses.app.UpToWxResponse;
 import com.openJar.responses.app.UploadedItemResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.buyer.bo.OnekeyRecordBO;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.vo.OnekeyRecoreVO;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
@@ -72,6 +75,9 @@ public class BasePhoneGoodsUpService {
 
     @Autowired
     private GoodsupRecordSimpleService goodsupRecordSimpleService;
+
+    @Autowired
+    private MemberUserSubMapper memberUserSubMapper;
 
     public void upToWx(String webSite,Long goodsId,Long userId) throws OpenException {
         OpenException openException = new OpenException();
@@ -184,22 +190,21 @@ public class BasePhoneGoodsUpService {
         return uploadedItemVO;
     }
 
-    public void instockMyItem(String uploadId,Long userId) throws OpenException {
-        //查询上传记录
-        SingleItemUpRecordVO singleItemUpRecordVO= itemUpRecordService.singleUploadedItem(uploadId);
-        if(singleItemUpRecordVO != null){
-            //下架淘宝
-            try {
-                itemUpRecordService.soldOutTbItem(userId,singleItemUpRecordVO.getFenNumiid());
-            } catch (Main4Exception e) {
-                OpenException openException = new OpenException();
-                openException.setErrMsg("下架淘宝失败");
+    public void instockMyItem(Long userId,Long goodsId) throws OpenException {
+        OpenException openException = new OpenException();
+        try {
+            MemberUserSub query = new MemberUserSub();
+            query.setUserId(userId);
+            query.setAccountType(3);
+            MemberUserSub memberUserSub = memberUserSubMapper.selectOne(query);
+            if (memberUserSub == null) {
+                openException.setErrMsg("需要淘宝授权");
                 throw openException;
             }
-            //再修改上传记录
-            ItemUpRecordVO itemUpRecordVO= BeanMapper.map(singleItemUpRecordVO,ItemUpRecordVO.class);
-            itemUpRecordService.updateItemUpload(itemUpRecordVO,singleItemUpRecordVO.getOneKeyId());
+            goodsupRecordSimpleService.downTbGoods(userId,memberUserSub.getSubUserName(),String.valueOf(goodsId));
+        } catch (JsonErrException e) {
+            openException.setErrMsg(e.getMessage());
+            throw openException;
         }
-
     }
 }

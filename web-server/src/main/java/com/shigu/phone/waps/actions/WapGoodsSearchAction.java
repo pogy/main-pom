@@ -138,7 +138,7 @@ public class WapGoodsSearchAction {
                         .element("goodsNo",oneItemVO.getGoodsNo())
                         .element("createTime",oneItemVO.getCreateTime())
                         .element("goodsLicenses",oneItemVO.getGoodsLicenses())
-                        .element("price",oneItemVO.getPrice())
+                        .element("price",oneItemVO.getLiPrice())
                         .element("storeId",oneItemVO.getStoreId())
                         .element("market",oneItemVO.getMarket())
                         .element("storeNum",oneItemVO.getStoreNum())

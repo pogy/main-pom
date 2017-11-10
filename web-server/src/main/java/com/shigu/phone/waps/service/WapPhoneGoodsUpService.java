@@ -30,7 +30,7 @@ public class WapPhoneGoodsUpService {
         return basePhoneGoodsUpService.uploadedItem(type, index, size, userId);
     }
 
-    public void instockMyItem(String upLoadId,Long userId) throws OpenException {
-        basePhoneGoodsUpService.instockMyItem(upLoadId, userId);
+    public void instockMyItem(String goodsId,Long userId) throws OpenException {
+        basePhoneGoodsUpService.instockMyItem(Long.valueOf(goodsId), userId);
     }
 }
