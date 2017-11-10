@@ -9,4 +9,9 @@
            timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
 
     </cache>
+
+    <cache name="test2Cache" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+
+    </cache>
 </ehcache>
