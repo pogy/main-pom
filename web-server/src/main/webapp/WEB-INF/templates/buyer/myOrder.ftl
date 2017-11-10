@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -23,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017101901" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017111001" rel="stylesheet">
     
 
     
@@ -38,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017101901"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017111001"></script>
     
 </head>
 <body>
@@ -225,16 +226,16 @@ var webSite = '${webSite!}';
         
             
             <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-
-
-
-
-
-            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
-
-
-
-    </ul>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
+            
+        
+    
+    </ul> 
 
     <h2>供应商申请</h2>
     <ul>
@@ -293,7 +294,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat2.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -396,12 +397,358 @@ var webSite = '${webSite!}';
             <li class="orderState">交易状态</li>
         </ul>
     </div>
+    <div class="batchOpe">
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
+<label class="fmCheckbox
+    
+        <#if $it.checked??>
+            checked
+        </#if>
+    
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
+">
+    <input 
+        type="checkbox"
+        autocomplete="off"
+        
+            name="orderAllCheckBox"
+        
+        
+        
+            <#if $it.value??>
+                value="${$it.value!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.statusParent??>
+                data-statusParent="${$it.statusParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.selectParent??>
+                data-selectParent="${$it.selectParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.checked??>
+                checked
+            </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
+        
+    >
+    <i class="before"></i> 
+    <span>
+    
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+    
+    
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    
+    </span>
+</label>
+
+
+
+
+</#list>
+
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-sm
+         fmButton-white-o
+        "
+    
+        jbtn="batchPay"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        批量付款
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-sm
+         fmButton-white-o
+        "
+    
+        jbtn="batchPost"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        批量标记淘宝发货
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+
+</div>
+
+
     <#if (orders?size) gt 0>
         <#list orders as order>
-        <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
+        
+        <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>" data-id="${order.orderId!}" data-mainstate="${order.mainState!}">
             <div class="orderHead fl">
-                <span class="fc6">订单编号：${order.orderId!}</span>
-                <span class="fc6">时间：${order.tradeTime!}</span>
+                <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
+                
+
+<#assign text>{}</#assign>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
+<label class="fmCheckbox
+    
+        <#if $it.checked??>
+            checked
+        </#if>
+    
+    
+    
+        disabled
+    
+">
+    <input 
+        type="checkbox"
+        autocomplete="off"
+        
+            <#if $it.name??>
+                name="${$it.name!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.value??>
+                value="${$it.value!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.statusParent??>
+                data-statusParent="${$it.statusParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.selectParent??>
+                data-selectParent="${$it.selectParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.checked??>
+                checked
+            </#if>
+        
+        
+        
+            disabled
+        
+        
+    >
+    <i class="before"></i> 
+    <span>
+    
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+    
+    
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    
+    </span>
+</label>
+
+
+
+
+</#list>
+
+                <#else>
+                
+
+<#assign text>{}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
+<label class="fmCheckbox
+    
+        <#if $it.checked??>
+            checked
+        </#if>
+    
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
+">
+    <input 
+        type="checkbox"
+        autocomplete="off"
+        
+            <#if $it.name??>
+                name="${$it.name!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.value??>
+                value="${$it.value!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.statusParent??>
+                data-statusParent="${$it.statusParent!}"
+            </#if>
+        
+        
+        
+            data-selectParent="orderAllCheckBox"
+        
+        
+        
+            <#if $it.checked??>
+                checked
+            </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
+        
+    >
+    <i class="before"></i> 
+    <span>
+    
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+    
+    
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    
+    </span>
+</label>
+
+
+
+
+</#list>
+
+                </#if>
+                <span class="fc6 mr">订单编号：${order.orderId!}</span>
+                <span class="fc6 mr">时间：${order.tradeTime!}</span>
                 <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
             </div>
             <div class="childOrderList fl">
@@ -544,8 +891,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{"href":"${main_host!}order/payMode.htm?orderId=${order.orderId!}"}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -646,8 +993,8 @@ var webSite = '${webSite!}';
     
 
 <#assign text>{}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
 
 <div class="jqPagination " id="jqPagination0" 
     <#if $it.pageOption??>
@@ -666,6 +1013,16 @@ var webSite = '${webSite!}';
 </#list>
 
 </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
