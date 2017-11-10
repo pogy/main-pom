@@ -296,13 +296,17 @@ var webSite = '${webSite!}';
             <div class="goodsInfo fl">
                 <a href="javascript:;" title="${goods.title!}">${goods.title!}</a>
                 <p class="fc9" title="颜色：${goods.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${goods.size!}">颜色：${goods.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${goods.size!}</p>
-                <p class="fcF40 fs16 yahei">&yen; ${goods.tbPrice!}</p>
+                <#if goods.newTbPrice??>
+                <p class="fcF40 fs16 yahei">&yen; ${goods.newTbPrice!}</p>
+                <#else>
+                <p class="fcF40 fs16 yahei">&yen; ${goods.oldTbPrice!}</p>
+                </#if>
             </div>
         </li>
         <li class="xzGoods yahei">
             <p class="fs12 fcF40">暂无关联四季星座网商品</p>
         </li>
-        <li class="opera borderLe" data-imgSrc="${goods.imgSrc!}" data-title="${goods.title!}" data-goodsNo="${goods.goodsNo!}" data-price="${goods.tbPrice!}" data-tbId="${goods.numiid!}">
+        <li class="opera borderLe" data-imgSrc="${goods.imgSrc!}" data-title="${goods.title!}" <#if goods.newTbPrice??>data-price="${goods.newTbPrice!}"<#else>data-price="${goods.oldTbPrice!}"</#if> data-tbId="${goods.numiid!}">
             <p class="goodsGlBtn">
 
 <#assign text>{}</#assign>
