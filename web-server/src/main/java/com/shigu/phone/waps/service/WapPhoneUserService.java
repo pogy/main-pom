@@ -155,12 +155,19 @@ public class WapPhoneUserService {
             JSONObject jsonObject1 = awardLists.getJSONObject(i);
             award.setIcon((String) jsonObject1.get("imgSrc"));
             award.setText(jsonObject1.get("type")+":"+jsonObject1.get("awardName"));
-            for(ActiveDrawRecordUserVo activeDrawRecordUserVo:activeDrawRecordUserVos){
-                //查询中奖信息
-                award.setState(activeDrawRecordUserVo.getDrawStatus());//	中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖）
-                award.setHasReceived(activeDrawRecordUserVo.getReceivesYes());//奖品是否已领取，取值：true（已领取），false（未领取）
-                award.setCode(activeDrawRecordUserVo.getDrawCode());//中奖领取码
+            if(activeDrawRecordUserVos.size()>0&&activeDrawRecordUserVos!=null){
+                for(ActiveDrawRecordUserVo activeDrawRecordUserVo:activeDrawRecordUserVos){
+                    //查询中奖信息
+                    award.setState(activeDrawRecordUserVo.getDrawStatus());//	中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖）
+                    award.setHasReceived(activeDrawRecordUserVo.getReceivesYes());//奖品是否已领取，取值：true（已领取），false（未领取）
+                    award.setCode(activeDrawRecordUserVo.getDrawCode());//中奖领取码
+                }
+            }else{
+                award.setState(2);//	中奖状态，取值：1（等待中奖），2（未中奖），3（已中奖）
+                award.setHasReceived(false);
+                award.setCode(null);
             }
+
             awardList.add(award);
         }
         userWinningInfo.setAwardList(awardList);

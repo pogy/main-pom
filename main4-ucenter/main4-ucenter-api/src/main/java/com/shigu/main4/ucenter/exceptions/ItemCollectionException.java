@@ -2,6 +2,8 @@ package com.shigu.main4.ucenter.exceptions;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 
+import java.io.Serializable;
+
 /**
  * Created by wxc on 2017/3/2.
  *
@@ -9,7 +11,11 @@ import com.shigu.main4.common.exceptions.Main4Exception;
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-public class ItemCollectionException extends Main4Exception {
+public class ItemCollectionException extends Main4Exception implements Serializable{
+
+    public ItemCollectionException( ) {
+    }
+
 
     private String code;
     public ItemCollectionException(ItemCollecExcpEnum excpEnum) {
