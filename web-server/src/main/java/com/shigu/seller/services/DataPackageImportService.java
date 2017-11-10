@@ -78,7 +78,7 @@ public class DataPackageImportService {
         item.setOnsale(true);
         item.setGoodsDesc(tiny.getExtendsGoods().getGoodsDesc());
         item.setPropsName(parsePropName(tiny.getCid(),tiny.getExtendsGoods().getProps(),
-                tiny.getExtendsGoods().getInputPids(),tiny.getExtendsGoods().getInputStr()));
+                tiny.getExtendsGoods().getInputPids(),tiny.getExtendsGoods().getInputStr(),tiny.getExtendsGoods().getInputCustomCpv()));
         item.setPropertyAlias(tiny.getExtendsGoods().getPropertyAlias());
         item.setProps(tiny.getExtendsGoods().getProps());
         item.setInputPids(tiny.getExtendsGoods().getInputPids());
@@ -121,7 +121,7 @@ public class DataPackageImportService {
      * @param inputStr
      * @return
      */
-    public String parsePropName(Long cid,String props,String inputIds,String inputStr){
+    public String parsePropName(Long cid,String props,String inputIds,String inputStr,String cpvs){
         PropsVO propsVO= null;
         try {
             propsVO = tbPropsService.selProps(cid);
@@ -155,6 +155,15 @@ public class DataPackageImportService {
                 inputMap.put(id,valueList);
             }
         }
+        //解析cpv部分
+        Map<String,String> cpvMap=new HashMap<>();
+        if (StringUtils.isNotEmpty(cpvs)) {
+            String[] cpvarr=cpvs.split(";");
+            for(String cpv:cpvarr){
+                String[] carr=cpv.split(":");
+                cpvMap.put(carr[0]+":"+carr[1],carr[2]);
+            }
+        }
 
         //变成Map
         Map<Long,PropertyItemVO> itemPropMap=allpropItems.stream().collect(Collectors.toMap(PropertyItemVO::getPid,propitem -> propitem));
@@ -182,6 +191,12 @@ public class DataPackageImportService {
                     continue;
                 }
                 value=inputValues.remove(0);
+            }
+            if (value == null){//查一下cpv
+                value=cpvMap.get(pid+":"+vid);
+                if (value == null) {
+                    continue;
+                }
             }
             propName.append(p);
             propName.append(":");
