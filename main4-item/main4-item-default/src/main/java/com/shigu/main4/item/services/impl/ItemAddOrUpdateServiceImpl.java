@@ -666,13 +666,14 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
         goodsCountForsearch.setGoodsId(tiny.getGoodsId());
         goodsCountForsearch.setWebSite(item.getWebSite());
-        if (ItemFrom.MEMBER.equals(item.getItemFrom())) {
-            goodsCountForsearch.setFabric(item.getFabric());
-            goodsCountForsearch.setInfabric(item.getInFabric());
-        }
+        goodsCountForsearch.setFabric(item.getFabric());
+        goodsCountForsearch.setInfabric(item.getInFabric());
         goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
         shiguGoodsModified.setItemId(tiny.getGoodsId());
+        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
+            shiguGoodsModified.setHasSetPrice(1);
+        }
         shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据

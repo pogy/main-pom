@@ -456,6 +456,7 @@ public class ImportCsvFileService {
                         case "input_custom_cpv"://自定义属性值//input_custom_cpv
                             if(v11.get(k)!=null){
                                 input_custom_cpv=(String)v11.get(k);
+                                sge.setInputCustomCpv (input_custom_cpv);
                             }
                             break;
                         case "qualification"://商品资质//qualification
@@ -657,7 +658,8 @@ public class ImportCsvFileService {
                         if (i == 0) {
 
                             imgse = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
-                            picUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                           // picUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                            picUrl=imgse;
                             //map.put(image_save_path+"/"+pics[0]+".tbi", imgse);
                             map.put (imgse, image_save_path + "/" + pics[0] + ".tbi");
 
@@ -689,7 +691,7 @@ public class ImportCsvFileService {
                 }
             }
         }
-        imgse=cutimage(imgse);
+       // imgse=cutimage(imgse);
         sge.setImages (imgse);
         record.setPicUrl (picUrl);
     }

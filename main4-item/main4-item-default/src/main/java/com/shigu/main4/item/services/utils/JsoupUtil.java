@@ -7,14 +7,14 @@ import java.io.IOException;
 
 public class JsoupUtil {
 
-    public static Document getHtml(String url) throws IOException {
+    public synchronized static Document getHtml(String url) throws IOException {
         System.out.println(url);
         return getHtml(url,0);
     }
     public static Document getHtml(String url,int num) throws IOException {
         try {
             try {
-                Thread.sleep(100L);
+                Thread.sleep(200L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

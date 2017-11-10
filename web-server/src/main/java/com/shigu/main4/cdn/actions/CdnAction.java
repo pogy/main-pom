@@ -8,6 +8,7 @@ import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -863,7 +864,7 @@ public class CdnAction {
      * @throws TemplateException
      */
     @RequestMapping("item")
-    public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
+    public String item(Long id, Model model) throws Main4Exception, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
         if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
             goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");

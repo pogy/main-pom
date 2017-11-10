@@ -70,6 +70,8 @@ public class OnsaleItemVO {
     private String inFabric;
     //总销量
     private Integer saleCount;
+    //已设置的最低零售价
+    private String lowestLiPrice;
 
     public void setType(String type) {
         this.type = type;
@@ -124,6 +126,9 @@ public class OnsaleItemVO {
         this.setFabric(onsaleItem.getFabric());
         this.setInFabric(onsaleItem.getInFabric());
         this.setConstituentType(onsaleItem.getConstituentType());
+        if (onsaleItem.getHasRetailPriceSet()) {
+            this.setLowestLiPrice(onsaleItem.getPrice());
+        }
     }
 
     public Integer getIsShowcase() {
@@ -368,5 +373,13 @@ public class OnsaleItemVO {
 
     public void setSaleCount(Integer saleCount) {
         this.saleCount = saleCount;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
     }
 }

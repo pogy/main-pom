@@ -40,6 +40,11 @@ public class TaobaoUnauthorizedSynService extends OuterSynUtil {
     TaobaoItemPropMapper taobaoItemPropMapper;
 
     @Override
+    protected void goodsExecute(SynShopBean synBean, Long otherGoodsId) {
+
+    }
+
+    @Override
     protected Map<Long, ShiguGoodsTiny> getLocalOuterGoodsMap(Long shopId, String webSite) {
         ShiguGoodsTinyExample tinyExample = new ShiguGoodsTinyExample();
         tinyExample.setWebSite(webSite);

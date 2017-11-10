@@ -71,6 +71,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
+    private ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
+
+    @Autowired
     private ShowForCdnService showForCdnService;
 
     @Autowired
@@ -467,6 +470,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 item.setGoodsUpNum(0);
                 item.setSaleCount(0);
                 item.setConstituentType(1);
+                item.setHasRetailPriceSet(false);
                 GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
                 if (otherInfo != null) {
                     //设置材质时必须设置面料为必填项
@@ -477,6 +481,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
             });
@@ -505,9 +510,17 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         }
         GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
         goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+        GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (searchResult != null) {
+            goodsCountForsearch = searchResult;
+        }
         goodsCountForsearch.setFabric(fabricStr);
         goodsCountForsearch.setInfabric(inFabricStr);
-        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        if (searchResult == null) {
+            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        } else {
+            goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+        }
     }
 
     /**
@@ -531,5 +544,17 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
         String cacheIndex = String.format("%s%d", type.cacheName, shopId);
         redisIO.del(cacheIndex);
+    }
+
+    @Override
+    public boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception {
+        if (goodsId == null) {
+            throw new Main4Exception("商品不存在");
+        }
+        ShiguGoodsModified hasModified = new ShiguGoodsModified();
+        hasModified.setItemId(goodsId);
+        //修改过零售价
+        hasModified.setHasSetPrice(1);
+        return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
 }
