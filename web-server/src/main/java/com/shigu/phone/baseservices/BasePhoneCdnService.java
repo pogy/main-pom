@@ -15,6 +15,8 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -52,6 +54,9 @@ public class BasePhoneCdnService {
 
     @Autowired
     private ShiguGoodsCollectMapper goodsCollectMapper;
+
+    @Autowired
+    private ShowForCdnService showForCdnService;
 
 
 
@@ -200,6 +205,16 @@ public class BasePhoneCdnService {
         ShiguGoodsCollect shiguGoodsCollect1 = goodsCollectMapper.selectOne(shiguGoodsCollect);
 
         if (shiguGoodsCollect1 == null) {//从未收藏过，添加收藏记录
+            if (storeId == null) {
+                CdnItem cdnItem = showForCdnService.selItemById(goodsId, webSite);
+                storeId = cdnItem.getShopId();
+                if (cdnItem == null) {
+                    OpenException openException = new OpenException();
+                    openException.setErrMsg("收藏失败,为查询到档口信息");
+                    throw openException;
+                }
+            }
+
             ItemCollect itemCollect=new ItemCollect();
             itemCollect.setUserId(userId);
             itemCollect.setItemId(goodsId);
@@ -211,7 +226,7 @@ public class BasePhoneCdnService {
 
             } catch (ItemCollectionException e) {
                 OpenException openException = new OpenException();
-                openException.setErrMsg("查询失败 ["+e.getMessage()+"]");
+                openException.setErrMsg("收藏失败 ["+e.getMessage()+"]");
                 throw openException;
             }
         }else{
