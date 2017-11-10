@@ -50,6 +50,7 @@ public class ShiguGoodsExtendsVO implements Serializable {
     private Date updateTime;
     private Date lastModifyTime;
     private String subtitle;
+    private String inputCustomCpv;//自定义属性值
 
     private List<ShiguPropImg> list_spi=new ArrayList<> ();
     
@@ -348,5 +349,13 @@ public class ShiguGoodsExtendsVO implements Serializable {
 
     public void setList_spi (List<ShiguPropImg> list_spi) {
         this.list_spi = list_spi;
+    }
+
+    public String getInputCustomCpv () {
+        return inputCustomCpv;
+    }
+
+    public void setInputCustomCpv (String inputCustomCpv) {
+        this.inputCustomCpv = inputCustomCpv;
     }
 }
