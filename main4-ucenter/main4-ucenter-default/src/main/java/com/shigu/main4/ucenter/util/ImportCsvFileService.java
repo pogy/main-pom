@@ -456,6 +456,7 @@ public class ImportCsvFileService {
                         case "input_custom_cpv"://自定义属性值//input_custom_cpv
                             if(v11.get(k)!=null){
                                 input_custom_cpv=(String)v11.get(k);
+                                sge.setInputCustomCpv (input_custom_cpv);
                             }
                             break;
                         case "qualification"://商品资质//qualification
