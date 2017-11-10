@@ -103,7 +103,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -367,9 +367,10 @@ var webSite = '${webSite!}';
     <div class="form-input form-title">
         <label class="form-key"><i>*</i>宝贝标题：</label>
         <div class="form-data">
-            <input id="goods-title" type="text" value="" size="30" maxlength="30" name="_fma.pu._0.ti" class="input">
-            <span class="after-text">0/30</span>
+            <input id="goods-title" type="text" value="" size="60" name="_fma.pu._0.ti" class="input">
+            <span class="after-text">0/60</span>
         </div>
+        <div class="form-data fcF40 errorWarn">不能超过60个字符</div>
     </div>
     
     
