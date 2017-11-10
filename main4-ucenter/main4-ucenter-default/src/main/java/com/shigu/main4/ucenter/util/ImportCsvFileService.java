@@ -658,7 +658,8 @@ public class ImportCsvFileService {
                         if (i == 0) {
 
                             imgse = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
-                            picUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                           // picUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                            picUrl=imgse;
                             //map.put(image_save_path+"/"+pics[0]+".tbi", imgse);
                             map.put (imgse, image_save_path + "/" + pics[0] + ".tbi");
 
@@ -690,7 +691,7 @@ public class ImportCsvFileService {
                 }
             }
         }
-        imgse=cutimage(imgse);
+       // imgse=cutimage(imgse);
         sge.setImages (imgse);
         record.setPicUrl (picUrl);
     }
