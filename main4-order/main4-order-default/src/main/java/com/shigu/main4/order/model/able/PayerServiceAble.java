@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 支付部分实现
@@ -144,10 +145,20 @@ public abstract class PayerServiceAble implements PayerService{
         orderPayMapper.insertSelective(orderPay);
 
         // 记录 oid - payid 关系
-        OrderPayRelationship relationship = new OrderPayRelationship();
-        relationship.setOid(apply.getOid());
-        relationship.setPayId(orderPay.getPayId());
-        orderPayRelationshipMapper.insertSelective(relationship);
+
+        OrderPayApplyRelationExample orderPayApplyRelationExample=new OrderPayApplyRelationExample();
+        orderPayApplyRelationExample.createCriteria().andApplyIdEqualTo(apply.getApplyId());
+        List<OrderPayApplyRelation> orderPayApplyRelations=orderPayApplyRelationMapper.selectByExample(orderPayApplyRelationExample);
+
+        List<OrderPayRelationship> relationships=orderPayApplyRelations.stream()
+                .map(orderPayApplyRelation -> {
+                    OrderPayRelationship relationship = new OrderPayRelationship();
+                    relationship.setOid(orderPayApplyRelation.getOid());
+                    relationship.setPayId(orderPayApplyRelation.getApplyId());
+                    return relationship;
+                }).collect(Collectors.toList());
+
+        orderPayRelationshipMapper.insertListNoId(relationships);
         return orderPay.getPayId();
     }
 

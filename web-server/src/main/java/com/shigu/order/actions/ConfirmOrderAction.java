@@ -80,7 +80,12 @@ public class ConfirmOrderAction {
             e.printStackTrace();
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
+        Long oid = null;
+        try {
+            oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
+        } catch (JsonErrException e) {
+            e.printStackTrace();
+        }
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
@@ -179,7 +184,8 @@ public class ConfirmOrderAction {
     @RequestMapping("getPostListByProvId")
     public JSONObject getPostListByProvId (String provId, String senderId) throws JsonErrException, LogisticsRuleException {
         List<PostVO> postVOS = confirmOrderService.getPostListByProvId(provId, senderId);
-        return JsonResponseUtil.success().element("postList",postVOS);
+        return JsonResponseUtil.success().element("postList",
+                postVOS.stream().map(postVO -> new JSONObject().element("name",postVO.getId()).element("text",postVO.getText())).collect(Collectors.toList()));
     }
 
     /**
@@ -195,7 +201,7 @@ public class ConfirmOrderAction {
     @ResponseBody
     @RequestMapping("getOtherCost")
     public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
-        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(postName,provId,eachShopNum,totalWeight,senderId);
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId);
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
@@ -231,7 +237,7 @@ public class ConfirmOrderAction {
                 .element("result","success")
                 .element("postTotalPrice","0.00")
                 .element("postList",psv.stream().map(postVO -> new JSONObject()
-                        .element("id",postVO.getName()).element("name",postVO.getText())).collect(Collectors.toList()));
+                        .element("id",postVO.getId()).element("name",postVO.getText())).collect(Collectors.toList()));
 
     }
 

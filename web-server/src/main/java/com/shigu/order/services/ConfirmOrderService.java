@@ -126,7 +126,7 @@ public class ConfirmOrderService {
 
         // 设置物流信息
         LogisticsBO logisticsBO = new LogisticsBO();
-        logisticsBO.setCompanyId(bo.getCourierId());
+        logisticsBO.setCompanyId(bo.getCourierId().toString());
         logisticsBO.setAddressId(bo.getAddressId());
         itemOrderBO.setLogistics(logisticsBO);
         itemOrderBO.setOuterId(orderSubmitVo.getOuterOrderNo());
@@ -333,13 +333,13 @@ public class ConfirmOrderService {
     /**
      * 获取快递与服务费信息
      *
-     * @param postName
+     * @param companyId
      * @param provId
      * @param eachShopNum 每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
      * @param totalWeight
      * @return
      */
-    public OtherCostVO getOtherCost(String postName, String provId, String eachShopNum, Long totalWeight, String senderId) throws JsonErrException, LogisticsRuleException {
+    public OtherCostVO getOtherCost(Long companyId, String provId, String eachShopNum, Long totalWeight, String senderId) throws JsonErrException, LogisticsRuleException {
         ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
         boolean isDaifa = sender.getType() == 1;
 
@@ -359,15 +359,14 @@ public class ConfirmOrderService {
             shopMarketMap = shiguShopMapper.selectByExample(shopExample).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
         }
 
-        ExpressCompany expressCompany = new ExpressCompany();
-        expressCompany.setRemark2(postName);
-        expressCompany = expressCompanyMapper.selectOne(expressCompany);
-        if (expressCompany == null) {
-            throw new JsonErrException("未查询到快递信息");
-        }
+//        ExpressCompany expressCompany = new ExpressCompany();
+//        expressCompany.setRemark2(postName);
+//        expressCompany = expressCompanyMapper.selectOne(expressCompany);
+//        if (expressCompany == null) {
+//            throw new JsonErrException("未查询到快递信息");
+//        }
 
-        Long postPrice = logisticsService.calculate(new Long(provId), expressCompany.getExpressCompanyId(), goodsNumber, totalWeight, new Long(senderId));
-        postPrice = MoneyUtil.StringToLong(String.valueOf(postPrice));
+        Long postPrice = logisticsService.calculate(new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId));
 
         OtherCostVO otherCostVO = new OtherCostVO();
         otherCostVO.setPostPrice(postPrice);//元转分
@@ -435,14 +434,11 @@ public class ConfirmOrderService {
      * @return
      * @throws LogisticsRuleException
      */
-    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, String postId) throws LogisticsRuleException {
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId) throws LogisticsRuleException {
         long postPrice=0L;
-        ExpressCompany exc=new ExpressCompany();
-        exc.setRemark2(postId);
-        exc=expressCompanyMapper.selectOne(exc);
         for (OrderSubmitVo t : tbTrades) {
             BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
-            postPrice += logisticsService.calculate(buyerAddress.getProvId(), exc.getExpressCompanyId(),
+            postPrice += logisticsService.calculate(buyerAddress.getProvId(), postId,
                     t.getProducts().stream().mapToInt(CartVO::getNum).sum(),
                     null, senderId);
 

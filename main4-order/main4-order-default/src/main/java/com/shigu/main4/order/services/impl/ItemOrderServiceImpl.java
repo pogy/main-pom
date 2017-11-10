@@ -170,10 +170,10 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-        String companyId = logistics.getCompanyId();
-        ExpressCompany company = new ExpressCompany();
-        company.setRemark2(companyId);
-        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
+        Long companyId = new Long(logistics.getCompanyId());
+//        ExpressCompany company = new ExpressCompany();
+//        company.setRemark2(companyId);
+//        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
 
         BuyerAddress buyerAddress;
         try {
@@ -186,9 +186,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
-        logistic.setCompanyId(expressCompany.getExpressCompanyId());
+        logistic.setCompanyId(companyId);
         logistic.setAddress(buyerAddress.getAddress());
-        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), expressCompany.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic,true);//最后一步才重怎么价格
         return order.getOid();
     }

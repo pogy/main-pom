@@ -268,6 +268,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         return expressCompanyMapper.selectByExample(expressCompanyExample)
                 .stream().map(expressCompany -> {
                     PostVO postVO = new PostVO();
+                    postVO.setId(expressCompany.getExpressCompanyId());
                     postVO.setName(expressCompany.getRemark2());
                     postVO.setText(expressCompany.getExpressName());
                     return postVO;
