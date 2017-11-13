@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -23,11 +24,17 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    
 </head>
 <body>
 
@@ -210,7 +217,11 @@ var webSite = '${webSite!}';
     <div class="paySuccess layout">
     <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
     <ul class="orderInfo fc3">
+        <#if orderNum??>
+        <li>订单数量：<span class="arail fs14">${orderNum!}单</span></li>
+        <#else>
         <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
+        </#if>
         <li>支付方式：${payType!}</li>
         <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
     </ul>
@@ -265,7 +276,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         <a href="http://www.571xz.com/">返回首页</a>
@@ -293,7 +303,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
