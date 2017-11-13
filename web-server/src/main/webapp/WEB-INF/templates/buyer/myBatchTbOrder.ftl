@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>淘宝订单 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myBatchTbOrderv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myBatchTbOrder.css" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myBatchTbOrderv1.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myBatchTbOrder.js"></script>
     
 </head>
 <body>
@@ -190,6 +190,102 @@ var webSite = '${webSite!}';
 <div class="wrapper">
     <div class="layout">
         <div class="leftSidebar yahei">
+
+    <h2>交易管理</h2>
+    <ul>
+    
+        
+        
+            
+            <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
+            
+        
+        
+    
+        
+        
+            
+            <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
+            
+        
+        
+    
+        
+        
+            
+            <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
+            
+        
+        
+    
+        
+        <#if session_user_redis__.otherPlatform.more_order>
+        
+        
+            
+            <li><a class="selected" href="${main_host!}order/myBatchTbOrder.htm">批量操作</a></li> 
+            
+        
+        
+        </#if>
+        
+    
+    </ul> 
+
+    <h2>商品管理</h2>
+    <ul>
+    
+        
+        
+            
+            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
+            
+        
+        
+    
+        
+        
+            
+            <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
+            
+        
+        
+    
+        
+        
+            
+            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
+            
+        
+        
+    
+    </ul> 
+
+    <h2>供应商申请</h2>
+    <ul>
+    
+        
+        
+            
+            <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
+            
+        
+        
+    
+    </ul> 
+
+    <h2>会员俱乐部</h2>
+    <ul>
+    
+        
+        
+            
+            <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+            
+        
+        
+    
+    </ul> 
 
 </div>
 
