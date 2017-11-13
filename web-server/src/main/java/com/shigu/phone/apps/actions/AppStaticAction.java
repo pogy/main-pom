@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.google.common.collect.ImmutableSet;
 import com.openJar.requests.app.CatRequest;
+import com.openJar.requests.app.CatSearchRequest;
 import com.openJar.requests.app.SearchNavRequest;
 import com.openJar.requests.app.SitesRequest;
 import com.openJar.responses.app.SearchNavResponse;
@@ -44,6 +45,13 @@ public class AppStaticAction {
     public JSONObject cat(@Valid CatRequest request, BindingResult bindingResult) {
 
         return JSONObject.fromObject(appStaticService.getCat(request));
+
+    }
+    @RequestMapping("app/catSearch")
+    @ResponseBody
+    public JSONObject getCatSearch(@Valid CatSearchRequest request, BindingResult bindingResult) {
+
+        return JSONObject.fromObject(appStaticService.getCatSearch(request));
 
     }
 

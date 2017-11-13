@@ -7,12 +7,15 @@ import com.openJar.beans.app.AppSearchNav;
 import com.openJar.beans.app.AppSite;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.CatRequest;
+import com.openJar.requests.app.CatSearchRequest;
 import com.openJar.requests.app.SearchNavRequest;
 import com.openJar.responses.app.CatResponse;
+import com.openJar.responses.app.CatSearchResponse;
 import com.openJar.responses.app.SearchNavResponse;
 import com.openJar.responses.app.SitesResponse;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.phone.api.enums.PhoneCatSearchEnum;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
 import com.shigu.phone.baseservices.BaseStaticService;
@@ -190,9 +193,111 @@ public class AppStaticService {
 
         return resp;
     }
+    //搜索类目
+    public CatSearchResponse getCatSearch(CatSearchRequest request) {
+        CatSearchResponse resp=new CatSearchResponse();
+        PhoneCatSearchEnum[] arr = PhoneCatSearchEnum.values();
+        List<AppCatGroup> catGroups = new ArrayList<>();
+        Map<Integer, List<PhoneCatSearchEnum>> map = BeanMapper.groupBy(Arrays.asList(arr), "index", Integer.class);
+        for (Map.Entry<Integer, List<PhoneCatSearchEnum>> entry : map.entrySet()) {
+            Integer key = entry.getKey();
+            List<PhoneCatSearchEnum> list = entry.getValue();
+            Integer type = request.getType();
+            //1男装，2女装
+            if (type == 1) {
+                //1男装
+                if (key == 1) {
+                    //男装上衣
+                    List<AppCat> cats = new ArrayList<>();
+                    AppCatGroup appCatGroup1 = new AppCatGroup();
+                    appCatGroup1.setTitle("男装");
+                    appCatGroup1.setId("30");
+                    getCatSearchTraverse(list, cats);
+                    appCatGroup1.setCats(cats);
+                    catGroups.add(appCatGroup1);
+                } else if (key == 2) {
+                    //男鞋
+                    List<AppCat> cats = new ArrayList<>();
+                    AppCatGroup appCatGroup1 = new AppCatGroup();
+                    appCatGroup1.setTitle("男鞋");
+                    appCatGroup1.setId("50011740");
+                    getCatSearchTraverse(list, cats);
+                    appCatGroup1.setCats(cats);
+                    catGroups.add(appCatGroup1);
+                }
+            } else {
+                //2女装
+                if (key == 3) {
+                    //女装上衣
+                    List<AppCat> cats = new ArrayList<>();
+                    AppCatGroup appCatGroup1 = new AppCatGroup();
+                    appCatGroup1.setTitle("女装");
+                    appCatGroup1.setId("16");
+                    getCatSearchTraverse(list, cats);
+                    appCatGroup1.setCats(cats);
+                    catGroups.add(appCatGroup1);
+                } else if (key ==4) {
+                    //女鞋
+                    List<AppCat> cats = new ArrayList<>();
+                    AppCatGroup appCatGroup1 = new AppCatGroup();
+                    appCatGroup1.setTitle("女鞋");
+                    appCatGroup1.setId("50006843");
+                    getCatSearchTraverse(list, cats);
+                    appCatGroup1.setCats(cats);
+                    catGroups.add(appCatGroup1);
+                }
+            }
+            if (key == 5) {
+                //箱包
+                List<AppCat> cats = new ArrayList<>();
+                AppCatGroup appCatGroup1 = new AppCatGroup();
+                appCatGroup1.setTitle("箱包");
+                appCatGroup1.setId("50006842");
+                //日志
+                getCatSearchTraverse(list, cats);
+                appCatGroup1.setCats(cats);
+                catGroups.add(appCatGroup1);
+            } else if (key == 6) {
+                //配饰
+                List<AppCat> cats = new ArrayList<>();
+                AppCatGroup appCatGroup1 = new AppCatGroup();
+                appCatGroup1.setTitle("配饰");
+                appCatGroup1.setId("50010404");
+                getCatSearchTraverse(list, cats);
+                appCatGroup1.setCats(cats);
+                catGroups.add(appCatGroup1);
+            }
+        }
+
+
+
+
+
+        resp.setCatGroups(catGroups);
+        resp.setSuccess(true);
+
+        return resp;
+    }
     //遍历类目枚举
     private void getTraverse( List<PhoneCategoryEnum> list, List<AppCat> cats ) {
         for (PhoneCategoryEnum categoryEnum : list) {
+            AppCat appCat = new AppCat();
+            if (categoryEnum.getType() == 1) {
+                //搜索栏搜索
+                appCat.setCid(Long.valueOf(categoryEnum.getKeyword()));
+            } else if (categoryEnum.getType() == 2) {
+                //类目搜索
+                appCat.setCid(categoryEnum.getCid());
+            }
+            appCat.setName(categoryEnum.getName());
+            appCat.setKeyword(categoryEnum.getKeyword());
+            appCat.setImgsrc(categoryEnum.getImgsrc());
+            appCat.setType(categoryEnum.getType());
+            cats.add(appCat);
+        }
+    }
+    private void getCatSearchTraverse( List<PhoneCatSearchEnum> list, List<AppCat> cats ) {
+        for (PhoneCatSearchEnum categoryEnum : list) {
             AppCat appCat = new AppCat();
             if (categoryEnum.getType() == 1) {
                 //搜索栏搜索

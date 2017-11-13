@@ -105,6 +105,8 @@ public enum PhoneCategoryEnum {
         this.type = type;
     }
 
+
+
     public void setIndex( Integer index ) {
         this.index = index;
     }
