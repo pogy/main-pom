@@ -504,6 +504,7 @@ var webSite = '${webSite!}';
 
 </#list>
 
+    <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
     
 
 <#assign text>{}</#assign>
@@ -606,7 +607,10 @@ var webSite = '${webSite!}';
 
 </#list>
 
+    </#if>
 </div>
+
+
 
 
     <#if (orders?size) gt 0>
