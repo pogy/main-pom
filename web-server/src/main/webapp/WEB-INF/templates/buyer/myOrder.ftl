@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -90,7 +91,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -230,7 +231,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
+            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
             
         
     
@@ -293,7 +294,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat1.jpg" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat2.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>

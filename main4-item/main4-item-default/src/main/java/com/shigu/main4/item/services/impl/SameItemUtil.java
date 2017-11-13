@@ -1,5 +1,6 @@
 package com.shigu.main4.item.services.impl;
 
+
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
@@ -13,10 +14,8 @@ import com.shigu.main4.item.vo.ItemKus;
 import com.shigu.main4.item.vo.NowItemInfo;
 import net.sf.json.JSONObject;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.get.MultiGetItemResponse;
-import org.elasticsearch.action.get.MultiGetRequestBuilder;
-import org.elasticsearch.action.get.MultiGetResponse;
+import org.elasticsearch.action.get.*;
+import org.elasticsearch.client.Client;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -154,9 +153,10 @@ public class SameItemUtil {
      * @param flag
      */
     public void changeEs(Long itemId,String webSite,Long relationLevelId,String flag){
-        GetResponse response = ElasticConfiguration.client.prepareGet("goods", webSite, itemId.toString())
-                .setOperationThreaded(false)
-                .get();
+        Client client = ElasticConfiguration.client;
+        GetRequestBuilder request = client.prepareGet("goods", webSite, itemId.toString())
+                .setOperationThreaded(false);
+        GetResponse response = request.get();
         Map<String,Object> record=response.getSourceAsMap();
         if(record==null)return;
         int flagint=flag.equals("a")?0:1;

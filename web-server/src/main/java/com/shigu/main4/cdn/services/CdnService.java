@@ -12,9 +12,11 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.vo.CatPolyFormatVO;
 import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
@@ -88,6 +90,8 @@ public class CdnService {
     GoodsFileService goodsFileService;
     @Autowired
     ItemProductProcess itemProductProcess;
+    @Autowired
+    ShopsItemService shopsItemService;
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
@@ -290,7 +294,7 @@ public class CdnService {
      * @return
      * @throws CdnException
      */
-    public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws CdnException {
+    public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws Main4Exception {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
         CdnItem cdnItem=showForCdnService.selItemById(goodsId);
         vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
@@ -326,6 +330,9 @@ public class CdnService {
             props.add(prop);
         }
         vo.setNormalAttrs(props);
+        if (shopsItemService.checkHasLowestLiPriceSet(goodsId)) {
+            vo.setLowestLiPrice(vo.getLiPrice());
+        }
         List<String> qys=showForCdnService.selItemLicenses(goodsId,cdnItem.getShopId());
         vo.setServices(qys);
 
@@ -355,7 +362,6 @@ public class CdnService {
         }
         vo.setSizesMeta(JSONArray.fromObject(ss).toString());
         vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
-
         return vo;
     }
 
@@ -389,6 +395,7 @@ public class CdnService {
             vo.setOpenTime(other.getOpenTime());
             vo.setMainBus(other.getMainBus());
             vo.setTbUrl(other.getTaobaoUrl());
+            vo.setType(other.getType());
         }
         //是否实体认证
         ShiguShopLicense license = new ShiguShopLicense();

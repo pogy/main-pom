@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -119,7 +120,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -627,7 +628,16 @@ ${userShopHdHtml}
                 <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
             </li>
             <li class="minprice">
-                
+                <#if goodsInfo.lowestLiPrice??>
+                <label class="fc9">电商最低零售价</label>
+                <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.lowestLiPrice!}</em>
+                    <div class="tipsbox fs12 simsun">
+                        售卖时不能低于此价格，否则会被厂家投诉
+                        <i class="i1"></i>
+                        <i class="i2"></i>
+                    </div>
+                </span>
+                </#if>
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>

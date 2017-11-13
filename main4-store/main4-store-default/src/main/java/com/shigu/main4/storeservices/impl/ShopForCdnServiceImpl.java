@@ -487,6 +487,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 shopBase.setOpenTime(DateFormatUtils.format(shiguShop.getCreateDate(), "yyyy-MM-dd"));
                 shopBase.setDataPackageUrl(shiguShop.getDataPacketUrl());
                 shopBase.setTaobaoUrl(shiguShop.getTaobaoUrl());
+                shopBase.setType(shiguShop.getType());
                 shopBaseCache.put(shopId, shopBase);
             }
         }

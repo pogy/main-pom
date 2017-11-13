@@ -54,6 +54,12 @@ public class OrderSendErrorDealAction {
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaTrade> list=null;
+        if(bo.getCount ()==null){
+            bo.setCount (1);
+        }
+        if(bo.getPage ()==null){
+            bo.setPage (1+"");
+        }
     if(bo.getDfTradeId ()==null&&bo.getPhone ()==null){
         bo.setFlo (1);
         list = orderSendErrorDealService.sendErrorDeal (bo);
@@ -61,12 +67,7 @@ public class OrderSendErrorDealAction {
          list = orderSendErrorDealService.sendErrorDeal (bo);
          bo.setCount (list.size ());
     }
-    if(bo.getCount ()==null){
-        bo.setCount (1);
-    }
-    if(bo.getPage ()==null){
-        bo.setPage (1+"");
-    }
+
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("orders", list);
         model.addAttribute("query", bo);
@@ -91,7 +92,7 @@ public class OrderSendErrorDealAction {
     public JSONObject dealOrderSendError(Long dfTradeId,String receiverName,String receiverAddr) throws DaifaException {
 
         if (dfTradeId == null||receiverName == null||receiverAddr == null) {
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         orderSendErrorDealService.dealOrderSendError (dfTradeId,receiverName,receiverAddr);
         return JsonResponseUtil.success();
@@ -143,7 +144,7 @@ public class OrderSendErrorDealAction {
     public JSONObject dealSubOrderErrorJson(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode) throws DaifaException {
 
         if (dfOrderId == null||propStr == null) {
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         orderSendErrorDealService.dealSubOrderError (dfOrderId,propStr,goodsCode,storeGoodsCode);
         return JsonResponseUtil.success();
@@ -185,7 +186,7 @@ public class OrderSendErrorDealAction {
     public JSONObject dealSendTestJson(OrderSendErrorDealBO bo, Model model) throws DaifaException {
         ExpressVO vo1=new ExpressVO ();
         if (bo.getDfTradeId () == null||bo.getSendType () == null) {
-            throw new DaifaException("缺少参数");
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         if(bo.getSendType ()==1){
             //特别处理

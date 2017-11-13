@@ -89,7 +89,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -229,7 +229,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
+            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
             
 
     

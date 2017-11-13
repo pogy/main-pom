@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -90,7 +91,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -511,7 +512,7 @@ var webSite = '${webSite!}';
                 <p>
                     <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
-                <p><span>货号：1111</span></p>
+                <p><span>货号：${goods.goodsNo!}</span></p>
                 <p class="saleState">
                     <#if goods.onSaleIs == true>
                     <i class="inSale"></i>
@@ -524,8 +525,8 @@ var webSite = '${webSite!}';
                 ${goods.piprice!}
             </li>
             <li class="gysName">
-                <p>电商基地</p>
-                <p>A112-A444</p>
+                <p>${goods.marketName!}</p>
+                <p>${goods.shopNum!}</p>
                 <p>
                     
 

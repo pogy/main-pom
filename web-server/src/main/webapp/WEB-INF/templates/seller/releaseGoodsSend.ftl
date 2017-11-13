@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -350,7 +351,6 @@ var webSite = '${webSite!}';
     
     <div class="content shadowBox pr">
     
-    
     <form id="form-postgoods" autocomplete="off">
     
     <div class="category-box">
@@ -367,9 +367,10 @@ var webSite = '${webSite!}';
     <div class="form-input form-title">
         <label class="form-key"><i>*</i>宝贝标题：</label>
         <div class="form-data">
-            <input id="goods-title" type="text" value="" size="30" maxlength="30" name="_fma.pu._0.ti" class="input">
-            <span class="after-text">0/30</span>
+            <input id="goods-title" type="text" value="" size="60" name="_fma.pu._0.ti" class="input">
+            <span class="after-text">0/60</span>
         </div>
+        <div class="form-data fcF40 errorWarn">不能超过60个字符</div>
     </div>
     
     
@@ -383,7 +384,58 @@ var webSite = '${webSite!}';
     </div>
     
     
-    
+    <div class="formPriceAndGoodsNo clearfix">
+    <label class="form-key"><i>*</i>批发价与货号：</label>
+    <div class="formPriceAGnInfoCon clearfix fl">
+        <div class="form-input form-inprice fl">
+            <label class="form-key"><i>*</i>批发价</label>
+            <div class="form-data">
+                <input id="piPrice" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+        
+        <div class="form-input form-count fl">
+            <label class="form-key"><i>*</i>数量</label>
+            <div class="form-data">
+                <input id="quantity" type="text" value="" maxlength="12" name="_fma.pu._0.q" class="input">
+            </div>
+        </div>
+        
+        <div class="form-input form-oid fl">
+            <label class="form-key"><i>*</i>商品货号</label>
+            <div class="form-data">
+                <input id="goodsNo" type="text" value="" maxlength="12" name="_fma.pu._0.o" class="input">
+            </div>
+        </div>
+        
+        <div class="form-input form-outprice fl">
+            <label class="form-key">电商最低零售价</label>
+            <div class="form-data">
+                <input id="buynow" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="goodsFabric clearfix">
+    <label class="form-key"><i>*</i>材料成分：</label>
+    <div class="goodsFabricInfoCon clearfix fl">
+        <div class="form-input formFabric fl">
+            <label class="form-key"><i>*</i>面料成分</label>
+            <div class="form-data">
+                <input id="fabric" type="text" value="" maxlength="30" placeholder="最多可输入30个字符" name="" class="input">
+            </div>
+        </div>
+        
+        <div class="form-input formInFabric fl">
+            <label class="form-key">里料成分</label>
+            <div class="form-data">
+                <input id="inFabric" type="text" value="" maxlength="30" placeholder="最多可输入30个字符" name="" class="input">
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="form-picks form-attribute">
     <label class="form-key">宝贝属性：</label>
     <div class="form-data">
@@ -449,38 +501,6 @@ var webSite = '${webSite!}';
 
 
 
-    
-    <div class="form-input form-inprice">
-        <label class="form-key"><i>*</i>进货价：</label>
-        <div class="form-data">
-            <input id="piPrice" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
-            <span class="after-text">元</span>
-        </div>
-    </div>
-
-    <div class="form-input form-outprice">
-        <label class="form-key"><i>*</i>建议零售价：</label>
-        <div class="form-data">
-            <input id="buynow" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
-            <span class="after-text">元</span>
-        </div>
-    </div>
-    
-    <div class="form-input form-count">
-        <label class="form-key"><i>*</i>宝贝数量：</label>
-        <div class="form-data">
-            <input id="quantity" type="text" value="" maxlength="12" name="_fma.pu._0.q" class="input">
-            <span class="after-text">件</span>
-        </div>
-    </div>
-    
-    <div class="form-input form-oid">
-        <label class="form-key">商家编码：</label>
-        <div class="form-data">
-            <input type="text" value="" maxlength="12" name="_fma.pu._0.o" class="input">
-            <span class="after-text">注：市场_档口_P价格_#货号</span>
-        </div>
-    </div>
     
     
     <div class="form-input form-pic">

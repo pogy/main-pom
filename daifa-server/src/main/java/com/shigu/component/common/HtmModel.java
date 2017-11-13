@@ -9,7 +9,7 @@ package com.shigu.component.common;
  */
 public class HtmModel {
     private String type = "page";
-    private String module = "daifa6.0";
+    private String module = "daifa8.0";
     private Object data;
     private String ftl;
 

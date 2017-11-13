@@ -23,6 +23,10 @@ public class ShopBaseForCdn implements Serializable{
      * 淘宝店链接
      */
     private String taobaoUrl;
+    /**
+     * 店铺类型
+     */
+    private Integer type;
 
     public String getTaobaoUrl() {
         return taobaoUrl;
@@ -54,5 +58,13 @@ public class ShopBaseForCdn implements Serializable{
 
     public void setOpenTime(String openTime) {
         this.openTime = openTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -62,7 +62,7 @@ public class DaifaScanAction {
             barCode = barCode.substring(0,barCode.length()-7);
             dfOrderId = new Long(barCode);
         } catch (Exception e) {
-            throw new DaifaException("此条码对应的订单编号不存在");
+            throw new DaifaException("此条码对应的订单编号不存在",DaifaException.DEBUG);
         }
         PackResultVO vo=packDeliveryProcess.packSubOrder(dfOrderId);
         JSONObject obj= JsonResponseUtil.success();
@@ -100,7 +100,7 @@ public class DaifaScanAction {
             barCode = barCode.substring(0,barCode.length()-7);
             dfOrderId = new Long(barCode);
         } catch (Exception e) {
-            throw new DaifaException("此条码对应的订单编号不存在");
+            throw new DaifaException("此条码对应的订单编号不存在",DaifaException.DEBUG);
         }
         packDeliveryProcess.updateGoodsWeight(dfOrderId,((Double)(new Double(weight)*1000)).longValue(),daifaUser.getDaifaSellerId());
         return JsonResponseUtil.success();

@@ -79,7 +79,7 @@ public class UserShopServiceImpl implements UserShopService{
         shopSession.setWebSite(shiguShop.getWebSite());
         shopSession.setTbNick(shiguShop.getTbNick());
         shopSession.setShopName(shiguShop.getShopName());
-
+        shopSession.setType(shiguShop.getType());
         ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
                 FieldUtil.codeFields("market_id,market_name"));
         if(shiguMarket != null){
@@ -119,6 +119,7 @@ public class UserShopServiceImpl implements UserShopService{
             shopSession.setWebSite(shiguShop.getWebSite());
             shopSession.setTbNick(shiguShop.getTbNick());
             shopSession.setShopName(shiguShop.getShopName());
+            shopSession.setType(shiguShop.getType());
 
             ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
                     FieldUtil.codeFields("market_id,market_name"));

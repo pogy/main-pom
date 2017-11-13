@@ -12,6 +12,7 @@ import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -868,7 +869,7 @@ public class CdnAction {
      * @throws TemplateException
      */
     @RequestMapping("item")
-    public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
+    public String item(Long id, Model model) throws Main4Exception, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
         if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
             goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
@@ -883,6 +884,9 @@ public class CdnAction {
         String dzhtml=cdnService.bannerHtml(goods.getShopId(),goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
         List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+        if (shop.getType() == null || shop.getType() != 1) {
+            goods.setTbGoodsId(null);
+        }
         model.addAttribute("webSite",goods.getWebSite());
         model.addAttribute("shopInfo",shop);
         model.addAttribute("userShopHdHtml",dzhtml);

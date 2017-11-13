@@ -280,7 +280,7 @@ public class UserCollectServiceImpl implements UserCollectService {
      */
     @Override
     public void addItemCollection(ItemCollect collect) throws ItemCollectionException {
-        if (collect == null || collect.getUserId() == null || collect.getItemId() == null) {
+        if (collect == null || collect.getUserId() == null || collect.getItemId() == null || collect.getStoreId() == null) {
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.IllegalArgumentException);
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
@@ -733,7 +733,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             logger.error("删除数据包>>入参数据为空");
         }
         ShiguGoodsDataPackageExample packageExample = new ShiguGoodsDataPackageExample();
-        packageExample.createCriteria().andGoodsIdIn(packageIds);
+        packageExample.createCriteria().andDataPackageIdIn(packageIds);
         List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByExample(packageExample);
         if (shiguGoodsDataPackageList.size() == 0) {
             return;

@@ -3,6 +3,7 @@ package com.shigu.resolver;
 import com.openJar.exceptions.OpenException;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -64,7 +65,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	public ModelAndView htmlJsonErrorHandle(HttpServletRequest request, HttpServletResponse response,Exception ex){
 
 		ModelAndView view=new ModelAndView();
-		logger.error("ajax错误:"+ex,ex);
+
 		JSONObject obj=new JSONObject();
 
 
@@ -72,6 +73,37 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		obj.put("msg","系统异常");
 		if(ex instanceof DaifaException){
 			obj.put("msg",ex.getMessage());
+
+			if(((DaifaException) ex).getLevel ()!=null) {
+				switch (((DaifaException) ex).getLevel ()) {
+					case "debug": {
+						logger.debug (ex.getMessage ());
+						break;
+					}
+					case "warn": {
+						logger.warn (ex.getMessage ());
+						break;
+					}
+					case "info": {
+						logger.info (ex.getMessage ());
+						break;
+					}
+					case "error": {
+						logger.error (ex.getMessage ());
+						break;
+					}
+					case "fatal": {
+						logger.fatal (ex.getMessage ());
+						break;
+					}
+
+				}
+			}else{
+				logger.error("ajax错误:"+ex,ex);
+			}
+
+		}else{
+			logger.error("ajax错误:"+ex,ex);
 		}
 		String jsonString=obj.toString();
 		if (request.getParameter("callback") != null) {
