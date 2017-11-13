@@ -220,13 +220,8 @@ public class GoodsSearchService {
         }else if(bo.getPid() !=null ){
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
         }
-        //查店,有shopId优先查shopId
-        List<SearchShopSimple> shops;
-        if (bo.getShopId() != null) {
-            shops = shopSearchService.selShopByIds(Lists.newArrayList(bo.getShopId()),bo.getWebSite());
-        } else {
-            shops=shopSearchService.selShopByShopNum(bo.getKeyword(),bo.getWebSite());
-        }
+
+        List<SearchShopSimple> shops = shopSearchService.selShopByShopNum(bo.getKeyword(), bo.getWebSite());
         List<Long> shouldShopId=new ArrayList<>();
         if(shops!=null&&shops.size()!=0){
             //按电商基地  >  钱塘大厦  >  四季星座 排序

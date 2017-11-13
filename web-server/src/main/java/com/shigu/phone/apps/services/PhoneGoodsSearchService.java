@@ -12,6 +12,7 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.phone.baseservices.BasePhoneGoodsSearchService;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
@@ -40,6 +41,9 @@ public class PhoneGoodsSearchService {
 
     @Autowired
     private BasePhoneGoodsSearchService basePhoneGoodsSearchService;
+
+    @Autowired
+    private ShopForCdnService shopForCdnService;
 
     /**
      * 移动端商品搜索
