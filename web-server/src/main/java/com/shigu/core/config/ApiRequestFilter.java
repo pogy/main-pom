@@ -63,12 +63,7 @@ public class ApiRequestFilter implements Filter {
             String key=entry.getKey();
             m.putAll(dealObject(key,entry.getValue()));
         }
-        try {
-            chain.doFilter(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        chain.doFilter(request, response);
     }
 
     /**

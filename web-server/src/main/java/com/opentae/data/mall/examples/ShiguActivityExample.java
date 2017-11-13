@@ -36,7 +36,7 @@ public class ShiguActivityExample extends SgExample<ShiguActivityExample.Criteri
         descInfo = listMap.get("descInfo");
         endApply = listMap.get("endApply");
         banner = listMap.get("banner");
-        services = listMap.get("baseservices");
+        services = listMap.get("services");
         title = listMap.get("title");
         webSite = listMap.get("webSite");
         activityId = listMap.get("activityId");

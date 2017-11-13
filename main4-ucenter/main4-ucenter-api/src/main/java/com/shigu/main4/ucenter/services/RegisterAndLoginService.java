@@ -12,21 +12,6 @@ import com.shigu.session.main4.enums.LoginFromType;
  */
 public interface RegisterAndLoginService {
     /**
-     * 产生用户token
-     * @param userId
-     * @return
-     */
-    String createToken(Long userId);
-
-    /**
-     * 验证token的准确性
-     * @param userId
-     * @param token
-     * @return
-     */
-    boolean checkToken(Long userId,String token);
-
-    /**
      * 注册用户
      * 当手机号码已经存在时，返回false
      * @param user
