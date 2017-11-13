@@ -188,7 +188,7 @@ public class MyOrderService {
         ItemOrderExample itemOrderExample=new ItemOrderExample();
         itemOrderExample.createCriteria().andOidIn(oids);
         List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
-        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> !Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
+        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
                 .map(ItemOrder::getOid).collect(Collectors.toList());
         StringBuilder oidStrs= new StringBuilder();
         for(Long oid:orderIds){

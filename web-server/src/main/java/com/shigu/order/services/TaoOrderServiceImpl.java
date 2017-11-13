@@ -282,7 +282,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             tbOrderVO.setReceiverName(t.getReceiverName());
         }
         if(t.getSellerFlag() != null){
-            tbOrderVO.setSellerFlag(t.getSellerFlag());
+            tbOrderVO.setFlagState(t.getSellerFlag());
         }
 
         ItemOrderExample itemOrderExample=new ItemOrderExample();
