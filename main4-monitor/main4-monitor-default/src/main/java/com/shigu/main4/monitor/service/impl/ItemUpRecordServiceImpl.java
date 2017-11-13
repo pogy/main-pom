@@ -170,30 +170,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         redisIO.rpush(goodslistName,bean);
     }
 
-    @Override
-    public void soldOutTbItem(Long userId, Long numIid) throws Main4Exception {
-        MemberUserSubExample memberUserSubExample=new MemberUserSubExample();
-        memberUserSubExample.createCriteria().andAccountTypeEqualTo(3).andUserIdEqualTo(userId);
-        List<MemberUserSub> subs=memberUserSubMapper.selectByExample(memberUserSubExample);
-        if(subs.size()==0){
-            throw new Main4Exception("未授权");
-        }
-        TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-        taobaoSessionMapExample.createCriteria().andAppkeyEqualTo(KeyConfig.appKey).andUserIdEqualTo(new Long(subs.get(0).getSubUserKey()));
-        List<TaobaoSessionMap> maps=taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
-        if(maps.size()==0){
-            throw new Main4Exception("未授权");
-        }
 
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", KeyConfig.appKey, KeyConfig.secret);
-        ItemUpdateDelistingRequest req = new ItemUpdateDelistingRequest();
-        req.setNumIid(numIid);
-        try {
-            client.execute(req, maps.get(0).getSession());
-        } catch (ApiException ignored) {
-
-        }
-    }
 
     /**
      * 添加消息
