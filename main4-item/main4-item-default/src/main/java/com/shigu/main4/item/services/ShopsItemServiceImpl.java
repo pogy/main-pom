@@ -536,7 +536,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
         bo.setState(aggrType.state);
         aggrNum = shiguGoodsTinyMapper.countOnsaleGoods(shopId,webSite,bo);
-        redisIO.putTemp(cacheIndex,aggrNum,600);
         return aggrNum;
     }
 
