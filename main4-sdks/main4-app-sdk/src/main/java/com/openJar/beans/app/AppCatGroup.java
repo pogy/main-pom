@@ -12,10 +12,21 @@ import java.util.List;
  * 描述:类目分组
  */
 public class AppCatGroup extends OpenBean implements Serializable {
+	/**类目Id*/
+	private String id;
 	//标题
 	private String title;
 	//分组中的类目
 	private List<AppCat> cats;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getTitle(){
 		return title;
 	}

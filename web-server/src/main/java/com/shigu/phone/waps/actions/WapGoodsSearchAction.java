@@ -52,7 +52,13 @@ public class WapGoodsSearchAction {
         if (bo.getType() == null) {
             return JsonResponseUtil.error("参数错误").element("success",false);
         }
-        if (bo.getType() == 1 && bo.getType() ==null) {//1商品库(cid不能为空)
+        if (bo.getCid() == null) {
+            bo.setCid(bo.getPid());//cid为空则取上级类目商品
+        }
+        if (bo.getScid() != null) {//有店内类目查店内类目下 商品
+            bo.setCid(bo.getScid());
+        }
+        if (bo.getType() == 1 && bo.getCid() ==null) {//1商品库(cid不能为空)
             return JsonResponseUtil.error("参数错误").element("success",false);
         }
         if (bo.getType() == 2 && StringUtils.isEmpty(bo.getKeyword())) {//2普通搜索(keywords不为空)
@@ -75,9 +81,6 @@ public class WapGoodsSearchAction {
         }
         if (bo.getType() != null && bo.getType() == 1){
             bo.setKeyword(null);//type == 1 不需要关键词
-        }
-        if (bo.getScid() != null) {
-            bo.setCid(bo.getScid());
         }
 
         ItemSearchVO itemSearchVo = null;

@@ -109,6 +109,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男装上衣");
+                    appCatGroup1.setId("30");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -117,6 +118,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男士下装");
+                    appCatGroup1.setId("30");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -125,6 +127,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("男鞋");
+                    appCatGroup1.setId("50011740");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -136,6 +139,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女装上衣");
+                    appCatGroup1.setId("16");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -144,6 +148,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女士下装");
+                    appCatGroup1.setId("16");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -152,6 +157,7 @@ public class AppStaticService {
                     List<AppCat> cats = new ArrayList<>();
                     AppCatGroup appCatGroup1 = new AppCatGroup();
                     appCatGroup1.setTitle("女鞋");
+                    appCatGroup1.setId("50006843");
                     getTraverse(list, cats);
                     appCatGroup1.setCats(cats);
                     catGroups.add(appCatGroup1);
@@ -162,6 +168,7 @@ public class AppStaticService {
                 List<AppCat> cats = new ArrayList<>();
                 AppCatGroup appCatGroup1 = new AppCatGroup();
                 appCatGroup1.setTitle("箱包");
+                appCatGroup1.setId("50006842");
                 //日志
                 getTraverse(list, cats);
                 appCatGroup1.setCats(cats);
@@ -171,6 +178,7 @@ public class AppStaticService {
                 List<AppCat> cats = new ArrayList<>();
                 AppCatGroup appCatGroup1 = new AppCatGroup();
                 appCatGroup1.setTitle("配饰");
+                appCatGroup1.setId("50010404");
                 getTraverse(list, cats);
                 appCatGroup1.setCats(cats);
                 catGroups.add(appCatGroup1);
