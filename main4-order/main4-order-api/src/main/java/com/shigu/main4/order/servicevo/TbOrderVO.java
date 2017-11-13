@@ -45,7 +45,7 @@ public class TbOrderVO implements Serializable{
     /**
      * 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
      */
-    private Long sellerFlag;
+    private Long flagState;
     /**
      * 街道+地址
      */
@@ -264,20 +264,6 @@ public class TbOrderVO implements Serializable{
     }
 
     /**
-     * 获取 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
-     */
-    public Long getSellerFlag() {
-        return this.sellerFlag;
-    }
-
-    /**
-     * 设置 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
-     */
-    public void setSellerFlag(Long sellerFlag) {
-        this.sellerFlag = sellerFlag;
-    }
-
-    /**
      * 获取 星座网用户ID
      */
     public Long getXzUserId() {
@@ -289,5 +275,19 @@ public class TbOrderVO implements Serializable{
      */
     public void setXzUserId(Long xzUserId) {
         this.xzUserId = xzUserId;
+    }
+
+    /**
+     * 获取 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
+     */
+    public Long getFlagState() {
+        return this.flagState;
+    }
+
+    /**
+     * 设置 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
+     */
+    public void setFlagState(Long flagState) {
+        this.flagState = flagState;
     }
 }
