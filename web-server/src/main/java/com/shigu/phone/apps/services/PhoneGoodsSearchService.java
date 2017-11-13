@@ -9,6 +9,7 @@ import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.openJar.responses.app.OneItemResponse;
 import com.shigu.main4.cdn.exceptions.CdnException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.phone.baseservices.BasePhoneGoodsSearchService;
@@ -150,6 +151,8 @@ public class PhoneGoodsSearchService {
             openException.setErrMsg(e.getMessage());
             resp.setSuccess(false);
             resp.setException(openException);
+        } catch (Main4Exception e) {
+            e.printStackTrace();
         }
         return resp;
     }

@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
 import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -189,7 +190,7 @@ public class BasePhoneGoodsSearchService {
      * app单商品信息
      * @return
      */
-    public OneItemVO oneItem(String webSite,Long itemId,Long userId) throws IOException, TemplateException, CdnException {
+    public OneItemVO oneItem(String webSite,Long itemId,Long userId) throws IOException, TemplateException, Main4Exception {
         OneItemVO vo = new OneItemVO();
         //商品数据填充
         CdnGoodsInfoVO goods = cdnService.cdnGoodsInfo(itemId);

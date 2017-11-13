@@ -13,6 +13,7 @@ import com.openJar.responses.app.ItemSearchResponse;
 import com.openJar.responses.app.OneItemResponse;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -120,7 +121,10 @@ public class WapPhoneGoodsSearchService {
             OpenException openException = new OpenException();
             openException.setErrMsg(e.getMessage());
             throw openException;
+        } catch (Main4Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
 }
