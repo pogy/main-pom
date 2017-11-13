@@ -203,10 +203,10 @@ public class DataPackageImportService {
             }
             if (value == null) {//查一下自定义区
                 List<String> inputValues=inputMap.get(pid);
-                if (inputValues == null||inputValues.size()==0) {
-                    continue;
+                if (inputValues != null&&inputValues.size()>0) {
+                    value=inputValues.remove(0);
                 }
-                value=inputValues.remove(0);
+
             }
             if (value == null){//查一下cpv
                 value=cpvMap.get(pid+":"+vid);
