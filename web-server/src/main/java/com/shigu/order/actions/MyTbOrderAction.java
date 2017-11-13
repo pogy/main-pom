@@ -4,8 +4,8 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
-import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.vo.GoodsVO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.order.bo.MoreTbOrderBO;
 import com.shigu.order.bo.TaobaoOrderBO;
 import com.shigu.order.exceptions.OrderException;
@@ -71,6 +71,17 @@ public class MyTbOrderAction {
         model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
         return "buyer/myTbOrder";
     }
+
+    @RequestMapping("myBatchTbOrder")
+    public String myBatchTbOrder(HttpSession session, TaobaoOrderBO bo, Model model) throws OrderException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        myTbOrder(session,bo,model);
+        return "buyer/myBatchTbOrder";
+    }
+
 
     @RequestMapping("allGlGoodsJson")
     @ResponseBody
@@ -147,6 +158,9 @@ public class MyTbOrderAction {
     @ResponseBody
     public JSONObject tbBatchOrder(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new JsonErrException("没有访问的权限");
+        }
         return myTbOrderService.submitMoreTbOrders(bo.getTids(),ps.getUserId(),bo.getRepeatIs());
     }
 
@@ -158,8 +172,11 @@ public class MyTbOrderAction {
      * @return
      */
     @RequestMapping("tbBindGoodsNo")
-    public String moreTbNeedBind(String notLinkCode, HttpSession session,Model model){
+    public String moreTbNeedBind(String notLinkCode, HttpSession session,Model model) throws OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
         List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
         model.addAttribute("goodsList",vos);
         return "buyer/tbBindGoodsNo";
@@ -173,8 +190,11 @@ public class MyTbOrderAction {
      */
     @RequestMapping("lookErrorAdress")
     @ResponseBody
-    public JSONObject lookErrorAdress(MoreTbOrderBO bo, HttpSession session){
+    public JSONObject lookErrorAdress(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new JsonErrException("没有访问的权限");
+        }
         List<MoreErrorAddressVO> vos= myTbOrderService.moreErrorAddress(bo.getTids(),ps.getUserId());
         JSONObject obj=JsonResponseUtil.success();
         obj.put("addressList",vos);
