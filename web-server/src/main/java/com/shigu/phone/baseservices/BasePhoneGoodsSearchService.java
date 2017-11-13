@@ -29,6 +29,7 @@ import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.search.bo.SearchBO;
+import com.shigu.search.bo.WapSearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.GoodsInSearch;
@@ -85,7 +86,7 @@ public class BasePhoneGoodsSearchService {
      *
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo, String orderBy) throws OpenException {
+    public ItemSearchVO itemSearch(WapSearchBO bo, String orderBy) throws OpenException {
         if (bo.getMid() != null) {
             parseMid(bo);
         }
@@ -109,7 +110,7 @@ public class BasePhoneGoodsSearchService {
      *
      * @return
      */
-    public ItemSearchVO itemSearch(SearchBO bo, String orderBy,Long shopId) throws OpenException {
+    public ItemSearchVO itemSearch(WapSearchBO bo, String orderBy,Long shopId) throws OpenException {
         if (bo.getMid() != null) {
             parseMid(bo);
         }

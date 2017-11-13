@@ -29,6 +29,7 @@ import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.phone.waps.bo.ItemSearchBo;
 import com.shigu.search.bo.SearchBO;
+import com.shigu.search.bo.WapSearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.vo.GoodsInSearch;
 import freemarker.template.TemplateException;
@@ -63,7 +64,7 @@ public class WapPhoneGoodsSearchService {
      * @return
      */
     public ItemSearchVO itemSearch(ItemSearchBo bo) throws OpenException, ParseException {
-        SearchBO searchBO=new SearchBO();
+        WapSearchBO searchBO=new WapSearchBO();
 
         searchBO.setWebSite(bo.getWebSite());
         searchBO.setKeyword(bo.getKeyword());

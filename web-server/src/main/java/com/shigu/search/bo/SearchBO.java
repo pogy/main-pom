@@ -56,10 +56,7 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      * 当值为1时，开启大图筛选
      */
     private Integer bpic;
-    /**
-     * 档口id
-     */
-    private Long shopId;
+
 
     public String getFrom() {
         return from;
@@ -165,11 +162,4 @@ public class SearchBO extends PageInSearchBO implements Serializable{
         this.bpic = bpic;
     }
 
-    public Long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
 }

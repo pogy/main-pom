@@ -16,7 +16,6 @@ import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
-import com.opentae.tbauth.configs.KeyConfig;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -29,11 +28,6 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.ItemUpdateDelistingRequest;
-import com.taobao.api.response.ItemUpdateDelistingResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -100,6 +94,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 
     //上传类目统计前缀
     String CAT_UP_COUNT_INDEX = "count_upload_for_cat_cid_index_";
+
+    final String XZ_APPKEY="21720662";
 
     /**
      * 添加上传记录到es中
@@ -685,7 +681,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 nicks.add(bucket.getKeyAsString());
             }
             TaobaoSessionMapExample sessionMapExample = new TaobaoSessionMapExample();
-            sessionMapExample.createCriteria().andAppkeyEqualTo(KeyConfig.appKey).andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
+            sessionMapExample.createCriteria().andAppkeyEqualTo(XZ_APPKEY).andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
             List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectFieldsByExample(sessionMapExample, FieldUtil.codeFields("tsm_id,nick,remark1"));
             Map<String, TaobaoSessionMap> sessionMap = BeanMapper.list2Map(taobaoSessionMaps, "nick", String.class);
 

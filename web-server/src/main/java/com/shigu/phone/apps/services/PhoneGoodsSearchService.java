@@ -17,6 +17,7 @@ import com.shigu.phone.baseservices.BasePhoneGoodsSearchService;
 import com.shigu.phone.basevo.ItemSearchVO;
 import com.shigu.phone.basevo.OneItemVO;
 import com.shigu.search.bo.SearchBO;
+import com.shigu.search.bo.WapSearchBO;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class PhoneGoodsSearchService {
     public ItemSearchResponse itemSearch(ItemSearchRequest request) {
         ItemSearchResponse resp = new ItemSearchResponse();
         try {
-            SearchBO bo = new SearchBO();
+            WapSearchBO bo = new WapSearchBO();
             bo.setWebSite(request.getWebSite());
             bo.setKeyword(request.getKeyword());
             bo.setMid(request.getMarketId());
