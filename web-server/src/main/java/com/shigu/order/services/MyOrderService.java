@@ -184,17 +184,14 @@ public class MyOrderService {
         }
     }
 
-    public List<Long> moreTbSend(Long userId,List<Long> oids) throws Main4Exception {
+    public void moreTbSend(Long userId,List<Long> oids) throws Main4Exception {
         ItemOrderExample itemOrderExample=new ItemOrderExample();
         itemOrderExample.createCriteria().andOidIn(oids);
         List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
         List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> !Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
                 .map(ItemOrder::getOid).collect(Collectors.toList());
-        if(orderIds.size()!=oids.size()){
-            return orderIds;
-        }
         StringBuilder oidStrs= new StringBuilder();
-        for(Long oid:oids){
+        for(Long oid:orderIds){
             try {
                 itemOrderProcess.tbSend(oid);
             } catch (TbSendException e) {
@@ -205,9 +202,8 @@ public class MyOrderService {
             }
         }
         if(oidStrs.length()>0){
-            throw new Main4Exception("部分订单发货失败:"+oidStrs.toString());
+            throw new Main4Exception("部分订单标记失败名,请单个订单操作");
         }
-        return null;
     }
 
 }

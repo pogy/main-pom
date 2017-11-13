@@ -91,19 +91,20 @@ public class MyTbOrderService {
         } catch (NotFindSessionException e) {
             return new MyTbOrderVO();
         }
-        List<String> notLinkIds=new ArrayList<>();
+        Set<String> notLinkIds=new HashSet<>();
         MyTbOrderVO<TbOrderVO> v=new MyTbOrderVO<>();
+        Set<Long> notLinkNumiids=new HashSet<>();
         if(orderId!=null){
             TbOrderVO vo=taoOrderService.myTbOrder(orderId,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
             List<TbOrderVO> list=new ArrayList<>();
             if(vo!=null){
                 vo.setXzUserId(userId);
-                notLinkIds=linkGoodsNo(vo);
+                notLinkIds.addAll(linkGoodsNo(vo,notLinkNumiids));
                 list.add(vo);
             }
             v.setNotLinkNum(notLinkIds.size());
             if(notLinkIds.size()>0){
-                v.setNotLinkCode(noGoodsNoUUID(notLinkIds));
+                v.setNotLinkCode(noGoodsNoUUID(new ArrayList<>(notLinkIds)));
             }
             v.setContent(list);
             v.setNumber(page);
@@ -128,15 +129,15 @@ public class MyTbOrderService {
         List<TbOrderVO> vos=tvo.getContent();
         for(TbOrderVO vo:vos){
             vo.setXzUserId(userId);
-            notLinkIds=linkGoodsNo(vo);
+            notLinkIds.addAll(linkGoodsNo(vo,notLinkNumiids));
         }
         v.setContent(tvo.getContent());
         v.setNumber(page);
         v.setTotalCount(tvo.getTotalCount());
         v.setTotalPages(tvo.getTotalPages());
-        v.setNotLinkNum(notLinkIds.size());
-        if(notLinkIds.size()>0){
-            v.setNotLinkCode(noGoodsNoUUID(notLinkIds));
+        v.setNotLinkNum(notLinkNumiids.size());
+        if(notLinkNumiids.size()>0){
+            v.setNotLinkCode(noGoodsNoUUID(new ArrayList<>(notLinkIds)));
         }
         return v;
     }
@@ -570,7 +571,7 @@ public class MyTbOrderService {
         return similarityTownMap;
     }
 
-    private List<String> linkGoodsNo(TbOrderVO vo){
+    private List<String> linkGoodsNo(TbOrderVO vo,Set<Long> notLinkNumiids){
         vo.setCanOrder(true);
         vo.setProfits(null);
         Long lr= 0L;
@@ -587,10 +588,12 @@ public class MyTbOrderService {
                     }else {
                         vo.setCanOrder(false);
                         notLinkIds.add(vo.getTbId());
+                        notLinkNumiids.add(subvo.getNumiid());
                     }
                 } catch (NotFindRelationGoodsException e) {
                     vo.setCanOrder(false);
                     notLinkIds.add(vo.getTbId());
+                    notLinkNumiids.add(subvo.getNumiid());
                 }
             }
         }

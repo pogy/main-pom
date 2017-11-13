@@ -228,14 +228,11 @@ public class MyOrderAction {
         return JsonResponseUtil.success();
     }
 
-    @RequestMapping("markingMoreTbShipments")
+    @RequestMapping("upBatchPostDataToServer")
     @ResponseBody
-    public JSONObject moreTbSend(HttpSession session,String orderIds) throws Main4Exception {
+    public JSONObject moreTbSend(HttpSession session,String leftOrderIds) throws Main4Exception {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<Long> leftOrderIds=myOrderService.moreTbSend(ps.getUserId(), Arrays.stream(orderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList()));
-        if(leftOrderIds!=null){
-            return new JSONObject().element("result","error").element("leftOrderIds",leftOrderIds);
-        }
+        myOrderService.moreTbSend(ps.getUserId(), Arrays.stream(leftOrderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList()));
         return JsonResponseUtil.success();
     }
 

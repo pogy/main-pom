@@ -404,7 +404,7 @@ public class ConfirmOrderService {
         Map<Long, Integer> marketNumMap = new HashMap<>();
         for (OrderSubmitVo t : tbTrades) {
             for (CartVO cart : t.getProducts()) {
-                goodsTotalPrice += cart.getPrice();
+                goodsTotalPrice += cart.getPrice()*cart.getNum();
                 goodsNum += cart.getNum();
                 Integer marketNum = marketNumMap.get(cart.getMarketId());
                 if (marketNum == null) {

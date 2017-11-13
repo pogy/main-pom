@@ -157,12 +157,12 @@ public class MyTbOrderAction {
      * @param model
      * @return
      */
-    @RequestMapping("moreTbNeedBind")
+    @RequestMapping("tbBindGoodsNo")
     public String moreTbNeedBind(String notLinkCode, HttpSession session,Model model){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
-        model.addAttribute("childOrders",vos);
-        return "";
+        model.addAttribute("goodsList",vos);
+        return "buyer/tbBindGoodsNo";
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.shigu.order.actions;
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -194,11 +196,13 @@ public class PayModeAction {
 
     /**
      * 获取批量支付的code
-     * @param orderIds
+     * @param leftOrderIds
      * @return
      */
-    public JSONObject moreToPay(String orderIds,HttpSession session) throws PayApplyException {
-        List<Long> oids= Arrays.stream(orderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList());
+    @RequestMapping("upBatchPayDataToServer")
+    @ResponseBody
+    public JSONObject upBatchPayDataToServer(String leftOrderIds,HttpSession session) throws PayApplyException {
+        List<Long> oids= Arrays.stream(leftOrderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList());
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         oids=payModeService.checkedMyOrder(oids,userId);
@@ -209,13 +213,13 @@ public class PayModeAction {
             return null;
         }).filter(Objects::nonNull).collect(Collectors.toList());
         if(payedOids.size()>0){
-            oids.removeIf(payedOids::contains);
-            return new JSONObject().element("result","error").element("leftOrderIds",oids);
+            return JsonResponseUtil.error("存在已支付的订单");
         }
         String uuid=redisIO.get("moreToPayCode"+session.getId());
         if(StringUtils.isEmpty(uuid)){
             uuid= UUIDGenerator.getUUID();
-            redisIO.putTemp("moreToPayCode"+session.getId(),uuid,3600);
+            Jedis jedis = redisIO.getJedis();
+            jedis.setex("moreToPayCode"+session.getId(),3600,uuid);
         }
         redisIO.putTemp(uuid, oids, 3600);
         return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode="+uuid);
