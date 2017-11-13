@@ -137,7 +137,10 @@ public class PhoneUserService {
         try {
             AppUser appUser = basePhoneUserService.regist(request.getTelephone(), request.getCode(), request.getPassword());
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getTelephone(),LoginFromType.XZ);
-            appUser.setToken(createToken(personalSession.getUserId(),"phone_login_token"));
+            String phone_login_token =createToken(personalSession.getUserId(),"phone_login_token");
+            phone_login_token = TokenUtil.str2HexStr(phone_login_token);
+            appUser.setToken(phone_login_token);
+
             resp.setUsers(appUser);
             resp.setSuccess(true);
         } catch (OpenException e) {
