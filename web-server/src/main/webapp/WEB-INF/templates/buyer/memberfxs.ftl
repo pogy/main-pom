@@ -219,7 +219,7 @@ var webSite = '${webSite!}';
         
     
         
-        <#if session_user_redis__.otherPlatform.more_order>
+        <#if session_user_redis__.otherPlatform.__moreOrder__>
         
         
             
