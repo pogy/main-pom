@@ -111,7 +111,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 fos.close ();
                 tempPath=temppath + File.separator + fileName;
             }catch (Exception e){
-
+                throw  new Main4Exception("包的下载！");
             }
 
         }
@@ -218,7 +218,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw  new Main4Exception("CSV解析失败"+e.getMessage ());
             }
 
         }else{
@@ -239,7 +239,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                             }
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        throw  new Main4Exception("新的CSV名称："+e.getMessage ());
                     }
                     String image_save_path=tempDir+"/"+csvname;
                     String csvFilePath=tempDir+"/"+csvname+".csv";
