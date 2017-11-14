@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=20117092901" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/itemv1.css?v=20117092901" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=20117092901"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/itemv1.js?v=20117092901"></script>
     
 </head>
 <body>
@@ -120,7 +120,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -536,6 +536,16 @@ ${userShopHdHtml}
             </#list>
         </ul>
         <span class="scalceIcon"></span>
+        <#if goodsVideoUrl??>
+<div id="goodsVideoBox">
+    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsVideoUrl!}" type="video/mp4"></video>
+    <i class="buttonIcon smallPlayButton"></i>
+    <i class="buttonIcon bigPlayButton"></i>
+    <i class="buttonIcon closeButton"></i>
+</div>
+</#if>
+
+
     </div>
     <div class="imageBox">
         <ul>
@@ -549,6 +559,7 @@ ${userShopHdHtml}
 
 
 
+        
     </div>
     <div class="shareBox">
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
@@ -1130,6 +1141,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 <script>
 var goodsId = '${goodsInfo.goodsId!}';
+
 </script>
 
 <script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>
