@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -556,4 +556,44 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         hasModified.setHasSetPrice(1);
         return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
+
+    @Override
+    public void setGoodsVideo(Long shopId, String webSite, Long goodsId, String goodsVideoUrl, boolean linkSameGoodsNo) {
+        ShiguGoodsTiny queryTiny = new ShiguGoodsTiny();
+        queryTiny.setGoodsId(goodsId);
+        queryTiny.setWebSite(webSite);
+        queryTiny.setStoreId(shopId);
+        ShiguGoodsTiny tiny = shiguGoodsTinyMapper.selectOne(queryTiny);
+        List<Long> goodsIds = new ArrayList<>();
+        if (tiny != null) {
+            if (linkSameGoodsNo && StringUtils.isNotBlank(queryTiny.getGoodsNo())) {
+                queryTiny.setGoodsId(null);
+                queryTiny.setGoodsNo(tiny.getGoodsNo());
+                goodsIds.addAll(shiguGoodsTinyMapper.select(queryTiny).stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
+            } else {
+                goodsIds.add(goodsId);
+            }
+        }
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setVideoUrl(goodsVideoUrl);
+        goodsCountForsearch.setHadVideo(1);
+        GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+        example.createCriteria().andGoodsIdIn(goodsIds);
+        goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch,example);
+        List<Long> existedGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
+        goodsIds.removeAll(existedGoodsIds);
+        if (goodsIds.size()>0) {
+            List<GoodsCountForsearch> insertSearch = new ArrayList<>(goodsIds.size());
+            for (Long id : goodsIds) {
+                GoodsCountForsearch copy = new GoodsCountForsearch();
+                copy.setGoodsId(id);
+                copy.setVideoUrl(goodsVideoUrl);
+                copy.setHadVideo(1);
+                copy.setWebSite(webSite);
+                insertSearch.add(copy);
+            }
+            goodsCountForsearchMapper.insertListNoId(insertSearch);
+        }
+    }
+
 }

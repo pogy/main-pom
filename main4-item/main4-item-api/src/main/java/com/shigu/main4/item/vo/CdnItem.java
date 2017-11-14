@@ -98,6 +98,10 @@ public class CdnItem implements Serializable{
      * 里料成分
      */
     private String inFabric;
+    /**
+     * 视频链接地址
+     */
+    private String goodsVideoUrl;
 
     public Boolean getOnsale() {
         return onsale;
@@ -273,5 +277,13 @@ public class CdnItem implements Serializable{
 
     public void setInFabric(String inFabric) {
         this.inFabric = inFabric;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }

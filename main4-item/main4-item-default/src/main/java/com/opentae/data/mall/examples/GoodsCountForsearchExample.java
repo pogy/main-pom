@@ -18,9 +18,11 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
+    public static EntityColumn videoUrl;
     public static EntityColumn fabric;
     public static EntityColumn infabric;
     public static EntityColumn hadGoat;
+    public static EntityColumn hadVideo;
     public static EntityColumn upMan;
     public static EntityColumn up;
     static {
@@ -37,9 +39,11 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
+        videoUrl = listMap.get("videoUrl");
         fabric = listMap.get("fabric");
         infabric = listMap.get("infabric");
         hadGoat = listMap.get("hadGoat");
+        hadVideo = listMap.get("hadVideo");
         upMan = listMap.get("upMan");
         up = listMap.get("up");
         }
@@ -447,6 +451,61 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         public GoodsCountForsearchExample.Criteria andSearchIdNotBetween(Long value1, Long value2) {
             return notBetween(searchId, value1, value2);
         }
+        public GoodsCountForsearchExample.Criteria andVideoUrlIsNull() {
+            return isNull(videoUrl);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlIsNotNull() {
+            return isNotNull(videoUrl);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlEqualTo(String value) {
+            return equalTo(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlNotEqualTo(String value) {
+            return notEqualTo(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlGreaterThan(String value) {
+            return greaterThan(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlLessThan(String value) {
+            return lessThan(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlLike(String value) {
+            return like(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlNotLike(String value) {
+            return notLike(videoUrl, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlIn(List<String> values) {
+            return in(videoUrl, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlNotIn(List<String> values) {
+            return notIn(videoUrl, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlBetween(String value1, String value2) {
+            return between(videoUrl, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andVideoUrlNotBetween(String value1, String value2) {
+            return notBetween(videoUrl, value1, value2);
+        }
         public GoodsCountForsearchExample.Criteria andFabricIsNull() {
             return isNull(fabric);
         }
@@ -603,6 +662,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andHadGoatNotBetween(Integer value1, Integer value2) {
             return notBetween(hadGoat, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andHadVideoIsNull() {
+            return isNull(hadVideo);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoIsNotNull() {
+            return isNotNull(hadVideo);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoEqualTo(Integer value) {
+            return equalTo(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoNotEqualTo(Integer value) {
+            return notEqualTo(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoGreaterThan(Integer value) {
+            return greaterThan(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoLessThan(Integer value) {
+            return lessThan(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(hadVideo, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoIn(List<Integer> values) {
+            return in(hadVideo, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoNotIn(List<Integer> values) {
+            return notIn(hadVideo, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoBetween(Integer value1, Integer value2) {
+            return between(hadVideo, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadVideoNotBetween(Integer value1, Integer value2) {
+            return notBetween(hadVideo, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andUpManIsNull() {
             return isNull(upMan);
