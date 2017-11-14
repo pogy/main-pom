@@ -487,9 +487,7 @@ var webSite = '${webSite!}';
     <i class="before"></i> 
     <span>
     
-        <#if $it.text??>
-            ${$it.text!}
-        </#if>
+        全选
     
     
         <#if $it.html??>
@@ -505,7 +503,8 @@ var webSite = '${webSite!}';
 </#list>
 
     <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
-    
+        <#if query.status == "1" || !query.status>
+        
 
 <#assign text>{}</#assign>
 <#assign moduledata4=text?eval />
@@ -556,7 +555,9 @@ var webSite = '${webSite!}';
 
 </#list>
 
-    
+        </#if>
+        <#if query.status == "3" || !query.status>
+        
 
 <#assign text>{}</#assign>
 <#assign moduledata5=text?eval />
@@ -607,6 +608,7 @@ var webSite = '${webSite!}';
 
 </#list>
 
+        </#if>
     </#if>
 </div>
 
