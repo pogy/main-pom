@@ -11,6 +11,7 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.OtherCostVO;
 import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmMoreTbBO;
 import com.shigu.order.exceptions.OrderException;
@@ -220,15 +221,15 @@ public class ConfirmOrderAction {
     @RequestMapping("confirmTbBatchOrder")
     @ResponseBody
     public JSONObject confirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, LogisticsRuleException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
         List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
         if (tbTrades == null||tbTrades.size()==0) {
             throw new OrderException("订单超时");
         }
-        Long userId = null;
-        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (sessionUser != null) {
-            userId = sessionUser.getUserId();
-        }
+        Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
@@ -252,15 +253,15 @@ public class ConfirmOrderAction {
     @RequestMapping("queryPostPriceForConfirmTbBatchOrder")
     @ResponseBody
     public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, LogisticsRuleException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
         List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
         if (tbTrades == null||tbTrades.size()==0) {
             throw new OrderException("订单超时");
         }
-        Long userId = null;
-        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (sessionUser != null) {
-            userId = sessionUser.getUserId();
-        }
+        Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
@@ -278,15 +279,15 @@ public class ConfirmOrderAction {
     @RequestMapping("submitResultForConfirmTbBatchOrder")
     @ResponseBody
     public JSONObject submitResultForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, JsonErrException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
         List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
         if (tbTrades == null||tbTrades.size()==0) {
             throw new OrderException("订单超时");
         }
-        Long userId = null;
-        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (sessionUser != null) {
-            userId = sessionUser.getUserId();
-        }
+        Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }

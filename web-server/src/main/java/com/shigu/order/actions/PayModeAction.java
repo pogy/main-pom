@@ -10,6 +10,8 @@ import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.MorePayModeService;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
@@ -68,6 +70,12 @@ public class PayModeAction {
             model.addAttribute("orderId", orderId);
             model.addAttribute("type",1);
         }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
+            if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+                throw new PayApplyException("没有访问的权限");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             model.addAttribute("orderCode", orderCode);
             model.addAttribute("orderNum",orderIds.size());
@@ -99,6 +107,12 @@ public class PayModeAction {
                     // 使用百度云盘二维码生成api
                     .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId,userId, PayType.WX).getPayLink());
         }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
+            if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+                throw new PayApplyException("没有访问的权限");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             return JsonResponseUtil.success()
                     // 使用百度云盘二维码生成api
@@ -124,6 +138,12 @@ public class PayModeAction {
         if(orderId!=null){
             v = payModeService.payApply(orderId,ps.getUserId(), PayType.XZ);
         }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
+            if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+                throw new PayApplyException("没有访问的权限");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             v=morePayModeService.payApply(orderIds,ps.getUserId(),PayType.XZ);
         }
@@ -142,6 +162,12 @@ public class PayModeAction {
         if(id!=null){
             v=payModeService.payApply(id,userId,PayType.ALI);
         }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
+            if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+                throw new PayApplyException("没有访问的权限");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             v=morePayModeService.payApply(orderIds,userId,PayType.ALI);
         }
@@ -166,8 +192,11 @@ public class PayModeAction {
      */
     @RequestMapping("payPollingJson")
     @ResponseBody
-    public JSONObject payPollingJson(Long orderId,String orderCode) {
+    public JSONObject payPollingJson(Long orderId,String orderCode) throws PayApplyException {
         if(orderId==null){
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             orderId=orderIds.get(0);
         }
@@ -183,12 +212,16 @@ public class PayModeAction {
         String totalMoney;
         if(orderId!=null){
             totalMoney=String.format("%.2f", payModeService.orderInfo(orderId).getTotalFee() * .01);
+            model.addAttribute("orderId", orderId);
         }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
             orderId=orderIds.get(0);
             totalMoney=morePayModeService.selTotalMoney(orderIds);
+            model.addAttribute("orderNum",orderIds.size());
         }
-        model.addAttribute("orderId", orderId);
         model.addAttribute("amountPay", totalMoney);
         model.addAttribute("payType", payModeService.selPayType(orderId));
         return "trade/paySuccess";
@@ -202,8 +235,14 @@ public class PayModeAction {
     @RequestMapping("upBatchPayDataToServer")
     @ResponseBody
     public JSONObject upBatchPayDataToServer(String leftOrderIds,HttpSession session) throws PayApplyException {
+        if(StringUtils.isEmpty(leftOrderIds)){
+            throw new PayApplyException("缺少参数");
+        }
         List<Long> oids= Arrays.stream(leftOrderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList());
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new PayApplyException("没有访问的权限");
+        }
         Long userId = ps.getUserId();
         oids=payModeService.checkedMyOrder(oids,userId);
         List<Long> payedOids=oids.stream().map(oid->{
