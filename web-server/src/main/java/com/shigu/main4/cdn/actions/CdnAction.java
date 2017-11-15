@@ -6,6 +6,7 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
+import com.shigu.main4.cdn.services.SimpleVideoService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -62,12 +63,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 /**
@@ -130,6 +135,9 @@ public class CdnAction {
 
     @Autowired
     ItemCatService itemCatService;
+
+    @Autowired
+    SimpleVideoService simpleVideoService;
 
     /**
      * 联系我们
@@ -762,6 +770,11 @@ public class CdnAction {
     @ResponseBody
     public JSONObject smallPic(Long id){
         return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+    }
+
+    @RequestMapping("downloadVideo")
+    public void downloadVideo(Long id,HttpServletResponse resp) throws JsonErrException {
+       simpleVideoService.downloadVideo(id, resp);
     }
 
     @RequestMapping("downloadImg")
