@@ -112,7 +112,7 @@ public class PhoneUserService {
             //登录成功
             currentUser.login(token);
             //返回需要数据
-            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(request.getNickname(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getNickname(), bo.getKey(),LoginFromType.WX);
             Long userId = personalSession.getUserId();
             //token
             String uuid=createToken(personalSession.getUserId(),"phone_login_token");
@@ -127,11 +127,14 @@ public class PhoneUserService {
             }
             appUser.setUserNick(personalSession.getUserNick());
             appUser.setImgsrc(personalSession.getHeadUrl());
+            resp.setSuccess(true);
         }catch (LoginAuthException e) {
             //还没绑定星座网用户,去绑定一下
             resp.setType(0);
-        } catch (UnsupportedEncodingException e) {
-            logger.error("用户名转义出错",e);
+            resp.setSuccess(true);
+        }catch (Exception e) {
+            //还没绑定星座网用户,去绑定一下
+            resp.setSuccess(false);
         }
         resp.setUsers(appUser);
         resp.setSuccess(true);
@@ -153,27 +156,21 @@ public class PhoneUserService {
         } catch (UnsupportedEncodingException e1) {
             logger.error("用户名转义出错",e1);
         }
-        map.put("nick", bo.getNick());
-        map.put("key", bo.getKey());
-        map.put("type", bo.getType()+"");
-        map.put("flag",bo.getFlag()+"");
-        if(MD5Attestation.signParamString(map).equals(bo.getSign())) {//去登陆
-            token = new CaptchaUsernamePasswordToken(
-                    usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
-            //选择登陆方式
-            LoginFromType loginFromType;
-            if (bo.getType() == 1) {
-                loginFromType = LoginFromType.TAOBAO;
-            } else if (bo.getType() == 2) {
-                loginFromType = LoginFromType.WX;
-            } else {
-                throw new Main4Exception("登陆方式传入有错");
-            }
-            token.setLoginFromType(loginFromType);
-            token.setRememberMe(true);
-            token.setSubKey(bo.getKey());
-            return token;
+
+        token = new CaptchaUsernamePasswordToken(
+                usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+        //选择登陆方式
+        LoginFromType loginFromType;
+        if (bo.getType() == 1) {
+            loginFromType = LoginFromType.TAOBAO;
+        } else if (bo.getType() == 2) {
+            loginFromType = LoginFromType.WX;
+        } else {
+            throw new Main4Exception("登陆方式传入有错");
         }
+        token.setLoginFromType(loginFromType);
+        token.setRememberMe(true);
+        token.setSubKey(bo.getKey());
         return token;
     }
     /**

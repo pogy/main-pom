@@ -74,7 +74,7 @@ public class OrtherLoginAction {
         }
         //shiro框架-----得到验证用户
         Subject currentUser = SecurityUtils.getSubject();
-        CaptchaUsernamePasswordToken token = phoneUserService.getToken(bo, result, request);
+        CaptchaUsernamePasswordToken token = getToken(bo, result, request);
 
         try {
             currentUser.login(token);
@@ -94,15 +94,13 @@ public class OrtherLoginAction {
     public String otherLoginH5( AppLoginBackBO bo, BindingResult result, HttpServletRequest request) throws Main4Exception, UnsupportedEncodingException {
         //shiro框架-----得到验证用户
         Subject currentUser = SecurityUtils.getSubject();
-        CaptchaUsernamePasswordToken token = phoneUserService.getToken(bo, result, request);
+        CaptchaUsernamePasswordToken token = getToken(bo, result, request);
         try {
             //绑定过星座网
             currentUser.login(token);
-//            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=1";
-            return "redirect:/waps/index.html#/bindTelephone?type=1";
+            return "redirect:/waps/index.htm#/bindTelephone?type=1";
         }catch (LoginAuthException e){
             //未绑定星座网
-//            return "redirect:http://hz.571xz.com/waps/index.html#/bindTelephone?type=0";
             //信息暂存，绑定用户时使用
             Map<String,Object> otherPlatform = new HashMap<>();
             otherPlatform.put("userNick",bo.getNick());
@@ -110,9 +108,46 @@ public class OrtherLoginAction {
             otherPlatform.put("flag",bo.getFlag());
             otherPlatform.put("type","TAOBAO");
             redisIO.putFixedTemp("otherLogin_info"+bo.getKey(),otherPlatform,1800);
-            return "redirect:/waps/index.html#/bindTelephone?type=0&tempId="+bo.getKey();
+            return "redirect:/waps/index.htm#/bindTelephone?type=0&tempId="+bo.getKey();
         }
     }
 
-
+    //得到shiro验证的token
+    public CaptchaUsernamePasswordToken getToken(@Valid AppLoginBackBO bo, BindingResult result, HttpServletRequest request) throws Main4Exception {
+        if(result.hasErrors()){
+            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        CaptchaUsernamePasswordToken token=null;
+        //这里用了老的代码
+        String usernamezhong = bo.getNick();
+        Map<String,String> map=new HashMap<String, String>();
+        try {//为什么decode来decode去,不知道,返回照做
+            usernamezhong= URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8");
+            bo.setNick(URLEncoder.encode(URLEncoder.encode(usernamezhong, "utf-8"), "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+            logger.error("用户名转义出错",e1);
+        }
+        map.put("nick", bo.getNick());
+        map.put("key", bo.getKey());
+        map.put("type", bo.getType()+"");
+        map.put("flag",bo.getFlag()+"");
+        if(MD5Attestation.signParamString(map).equals(bo.getSign())) {//去登陆
+            token = new CaptchaUsernamePasswordToken(
+                    usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //选择登陆方式
+            LoginFromType loginFromType;
+            if (bo.getType() == 1) {
+                loginFromType = LoginFromType.TAOBAO;
+            } else if (bo.getType() == 2) {
+                loginFromType = LoginFromType.WX;
+            } else {
+                throw new Main4Exception("登陆方式传入有错");
+            }
+            token.setLoginFromType(loginFromType);
+            token.setRememberMe(true);
+            token.setSubKey(bo.getKey());
+            return token;
+        }
+        return token;
+    }
 }
