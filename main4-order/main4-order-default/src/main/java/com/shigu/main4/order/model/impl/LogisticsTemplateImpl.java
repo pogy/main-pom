@@ -127,11 +127,24 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 bournRuleInfoVOS.add(BeanMapper.map(ruleInfoVO,BournRuleInfoVO.class));
             }
         }else {
-            //取不到对应的，要拿默认规则
+            //取不到对应的，要拿默认规则,只取companyId对应的规则
             bournRuleInfoVOS = defaultRule();
-            for (BournRuleInfoVO bournRuleInfoVO : bournRuleInfoVOS){
-                bournRuleInfoVO.setCompanyId(companyId);
-                bournRuleInfoVO.setProvId(provId);
+            companyExample.clear();
+            companyExample.createCriteria().andCompanyIdEqualTo(companyId);
+            List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(companyExample);
+            List<Long> ruleIds = BeanMapper.getFieldList(logisticsTemplateCompanies, "ruleId", Long.class);
+            bournRuleInfoVOS = bournRuleInfoVOS
+                    .stream()
+                    .filter(bournRuleInfoVO -> ruleIds.contains(bournRuleInfoVO.getRuleId()))
+                    .map(bournRuleInfoVO->{
+                        bournRuleInfoVO.setCompanyId(companyId);
+                        bournRuleInfoVO.setProvId(provId);
+                        return bournRuleInfoVO;
+                    })
+                    .collect(Collectors.toList());
+
+            if (bournRuleInfoVOS == null || bournRuleInfoVOS.isEmpty()) {
+                throw new LogisticsRuleException(String.format("无默认快递规则;companyId[%d]", companyId));
             }
 
         }
