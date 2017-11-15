@@ -115,6 +115,6 @@ public interface ShopsItemService {
      * @param goodsVideoUrl 视频地址链接
      * @param linkSameGoodsNo 是否关联同货号商品 false否 true是
      */
-    void setGoodsVideo(Long shopId,String webSite,Long goodsId,String goodsVideoUrl,boolean linkSameGoodsNo);
+    void setGoodsVideo(Long shopId,String webSite,Long goodsId,String goodsVideoUrl,boolean linkSameGoodsNo) throws JsonErrException;
 
 }

@@ -559,18 +559,22 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     }
 
     @Override
-    public void setGoodsVideo(Long shopId, String webSite, Long goodsId, String goodsVideoUrl, boolean linkSameGoodsNo) {
-        ShiguGoodsTiny queryTiny = new ShiguGoodsTiny();
-        queryTiny.setGoodsId(goodsId);
-        queryTiny.setWebSite(webSite);
-        queryTiny.setStoreId(shopId);
-        ShiguGoodsTiny tiny = shiguGoodsTinyMapper.selectOne(queryTiny);
+    public void setGoodsVideo(Long shopId, String webSite, Long goodsId, String goodsVideoUrl, boolean linkSameGoodsNo) throws JsonErrException {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny.setStoreId(shopId);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
         List<Long> goodsIds = new ArrayList<>();
         if (tiny != null) {
-            if (linkSameGoodsNo && StringUtils.isNotBlank(queryTiny.getGoodsNo())) {
-                queryTiny.setGoodsId(null);
-                queryTiny.setGoodsNo(tiny.getGoodsNo());
-                goodsIds.addAll(shiguGoodsTinyMapper.select(queryTiny).stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
+            if (!tiny.getStoreId().equals(shopId)) {
+                throw new JsonErrException("只能操作本店铺商品");
+            }
+            if (linkSameGoodsNo && StringUtils.isNotBlank(tiny.getGoodsNo())) {
+                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+                example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
+                example.setWebSite(webSite);
+                goodsIds.addAll(shiguGoodsTinyMapper.selectByExample(example).stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
             } else {
                 goodsIds.add(goodsId);
             }

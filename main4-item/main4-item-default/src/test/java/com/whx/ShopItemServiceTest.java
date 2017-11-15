@@ -1,6 +1,7 @@
 package com.whx;
 
 import com.item.test.BaseSpringTest;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
@@ -23,6 +24,11 @@ public class ShopItemServiceTest extends BaseSpringTest {
 
     @Autowired
     ShopsItemService shopsItemService;
+
+    @Test
+    public void setVideoUrlTest() throws JsonErrException {
+        shopsItemService.setGoodsVideo(43429L,"hz",21742997L,"https://cloud.video.taobao.com/play/u/2978147014/p/1/e/6/t/1/50018260348.mp4",true);
+    }
 
     @Test
     public void testOldOnsaleItem() throws ItemException {
