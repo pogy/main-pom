@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1510655127788" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1510725483147" rel="stylesheet">
     
   </head>
 <body>
@@ -360,7 +360,7 @@ var webSite = '${webSite!}';
                             </li>
                             <li>
                                 <b jbtn="setGoodsVideo" data-goodsVideoUrl="${item.goodsVideoUrl!}" data-linkSameGoodsNo="${item.linkSameGoodsNo!}">
-                                    <i class="icon-video" <#if item.goodsVideoType == 2>setted</#if>></i>
+                                    <i class="icon-video <#if item.goodsVideoType == 2>setted</#if>"></i>
                                     主图视频
                                 </b>
                             </li>
@@ -480,7 +480,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1510655127788"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1510725483147"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
