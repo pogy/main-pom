@@ -55,7 +55,7 @@ public class AppGoodsSearchAction {
             return WrapperUtil.wrapperOpenException("参数错误",response);
         }
         if (StringUtils.isEmpty(request.getOrderBy())) {
-            request.setOrderBy(SearchOrderBy.COMMON.getValue());
+            request.setOrderBy(SearchOrderBy.GOODS_COMMON.getValue());
         }
         if (StringUtils.isEmpty(request.getWebSite())) {
             request.setWebSite("hz");
