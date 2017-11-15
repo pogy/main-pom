@@ -34,6 +34,7 @@ import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.GoodsInSearch;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -175,16 +176,15 @@ public class BasePhoneGoodsSearchService {
      */
     public List<AppGoodsBlock>  imgSearch(String imgUrl,String webSite) throws IOException {
         //图搜时传缩略图
-        List<AppGoodsBlock> appGoodsBlocks = goodsSearchService.searchByPic(ImgUtils.formatImg(imgUrl,ImgFormatEnum.GOODS_IMAGES),webSite).parallelStream().map(o -> {
-            if (o != null) {
+        return goodsSearchService.searchByPic(imgUrl,webSite).parallelStream().map(o -> {
+            if (o != null&& StringUtils.isNotEmpty(o.getId())) {
                 AppGoodsBlock vo = BeanMapper.map(o, AppGoodsBlock.class);
                 vo.setGoodsId(o.getId());
                 vo.setImgsrc(ImgUtils.formatImg(vo.getImgsrc(), ImgFormatEnum.GOODS_IMAGES));
                 return vo;
             }
-            return null;
-        }).collect(Collectors.toList());
-        return appGoodsBlocks;
+            return new AppGoodsBlock();
+        }).filter(o -> StringUtils.isNotEmpty(o.getGoodsId())).collect(Collectors.toList());
     }
 
     /**
