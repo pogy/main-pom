@@ -77,6 +77,10 @@ public class OnsaleItem implements Serializable{
      * 是否设置过最低零售价
      */
     private Boolean hasRetailPriceSet;
+    /**
+     * 主图链接
+     */
+    private String goodsVideoUrl;
 
     public Long getItemId() {
         return itemId;
@@ -204,5 +208,13 @@ public class OnsaleItem implements Serializable{
 
     public void setHasRetailPriceSet(Boolean hasRetailPriceSet) {
         this.hasRetailPriceSet = hasRetailPriceSet;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }

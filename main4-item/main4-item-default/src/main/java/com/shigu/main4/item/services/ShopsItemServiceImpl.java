@@ -481,6 +481,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setGoodsVideoUrl(otherInfo.getVideoUrl());
                     item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
@@ -583,13 +584,18 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         List<Long> existedGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
         goodsIds.removeAll(existedGoodsIds);
         if (goodsIds.size()>0) {
+            goodsCountForsearch.setWebSite(webSite);
+            goodsCountForsearch.setClick(0L);
+            goodsCountForsearch.setClickIp(0L);
+            goodsCountForsearch.setTrade(0L);
+            goodsCountForsearch.setUp(0L);
+            goodsCountForsearch.setUpMan(0L);
+            goodsCountForsearch.setHadGoat(0);
+            goodsCountForsearch.setHadBigzip(0);
             List<GoodsCountForsearch> insertSearch = new ArrayList<>(goodsIds.size());
             for (Long id : goodsIds) {
-                GoodsCountForsearch copy = new GoodsCountForsearch();
+                GoodsCountForsearch copy = BeanMapper.map(goodsCountForsearch,GoodsCountForsearch.class);
                 copy.setGoodsId(id);
-                copy.setVideoUrl(goodsVideoUrl);
-                copy.setHadVideo(1);
-                copy.setWebSite(webSite);
                 insertSearch.add(copy);
             }
             goodsCountForsearchMapper.insertListNoId(insertSearch);
