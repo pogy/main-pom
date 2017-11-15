@@ -1,5 +1,6 @@
 package com.shigu.seller.services;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.seller.bo.GoodsVideoLinkBO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class SellerGoodsSimpleModifiedService {
     @Autowired
     ShopsItemService shopsItemService;
 
-    public void setGoodsVideo(Long shopId, String webSite, GoodsVideoLinkBO bo){
+    public void setGoodsVideo(Long shopId, String webSite, GoodsVideoLinkBO bo) throws JsonErrException {
         shopsItemService.setGoodsVideo(shopId,webSite,bo.getGoodsId(),bo.getGoodsVideoUrl(), Objects.equals(true,bo.getLinkSameGoodsNo()));
     }
 }
