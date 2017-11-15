@@ -536,9 +536,9 @@ ${userShopHdHtml}
             </#list>
         </ul>
         <span class="scalceIcon"></span>
-        <#if goodsVideoUrl??>
+        <#if shopInfo.goodsVideoUrl??>
 <div id="goodsVideoBox">
-    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsVideoUrl!}" type="video/mp4"></video>
+    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${shopInfo.goodsVideoUrl!}" type="video/mp4"></video>
     <i class="buttonIcon smallPlayButton"></i>
     <i class="buttonIcon bigPlayButton"></i>
     <i class="buttonIcon closeButton"></i>
