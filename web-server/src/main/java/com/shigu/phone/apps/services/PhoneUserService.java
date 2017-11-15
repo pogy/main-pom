@@ -1,12 +1,20 @@
 package com.shigu.phone.apps.services;
 
+import com.openJar.beans.app.AppLoginBackBO;
 import com.openJar.beans.app.AppUser;
+import com.openJar.commons.MD5Attestation;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
+import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
+import com.shigu.component.shiro.enums.RoleEnum;
+import com.shigu.component.shiro.enums.UserType;
+import com.shigu.component.shiro.exceptions.LoginAuthException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
+import com.shigu.phone.apps.actions.OrtherLoginAction;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.baseservices.BasePhoneUserService;
@@ -15,12 +23,23 @@ import com.shigu.phone.basevo.BindUserVO;
 import com.shigu.phone.basevo.CreatePostSignInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 类名：PhoneUserService
@@ -32,7 +51,7 @@ import java.util.Date;
  */
 @Service
 public class PhoneUserService {
-
+    private static Logger logger = LoggerFactory.getLogger(PhoneUserService.class);
     @Autowired
     private BasePhoneUserService basePhoneUserService;
     @Autowired
@@ -78,7 +97,85 @@ public class PhoneUserService {
         return resp;
     }
 
+    //微信登录
+    public WxLoginResponse WxLogin(WxLoginRequest request,BindingResult result,HttpServletRequest servletrequest) throws Main4Exception {
+        WxLoginResponse resp =new WxLoginResponse();
+        //shiro框架-----得到验证用户
+        Subject currentUser = SecurityUtils.getSubject();
+        AppLoginBackBO bo=new AppLoginBackBO();
+        AppUser appUser=new AppUser();
+        bo.setNick(request.getNickname());
+        bo.setKey(request.getUnionid());
+        bo.setType(2);
+        CaptchaUsernamePasswordToken token = getToken(bo, result, servletrequest);
+        try {
+            //登录成功
+            currentUser.login(token);
+            //返回需要数据
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(request.getNickname(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
+            Long userId = personalSession.getUserId();
+            //token
+            String uuid=createToken(personalSession.getUserId(),"phone_login_token");
+            uuid = TokenUtil.str2HexStr(uuid);
+            resp.setType(1);
+            appUser.setToken(uuid);
+            //是否是商户
+            if(SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+                appUser.setImSeller(true);
+            }else{
+                appUser.setImSeller(false);
+            }
+            appUser.setUserNick(personalSession.getUserNick());
+            appUser.setImgsrc(personalSession.getHeadUrl());
+        }catch (LoginAuthException e) {
+            //还没绑定星座网用户,去绑定一下
+            resp.setType(0);
+        } catch (UnsupportedEncodingException e) {
+            logger.error("用户名转义出错",e);
+        }
+        resp.setUsers(appUser);
+        resp.setSuccess(true);
+        return resp;
+    }
 
+    //得到shiro验证的token
+    public CaptchaUsernamePasswordToken getToken(@Valid AppLoginBackBO bo, BindingResult result, HttpServletRequest request) throws Main4Exception {
+        if(result.hasErrors()){
+            throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        CaptchaUsernamePasswordToken token=null;
+        //这里用了老的代码
+        String usernamezhong = bo.getNick();
+        Map<String,String> map=new HashMap<String, String>();
+        try {//为什么decode来decode去,不知道,返回照做
+            usernamezhong= URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8");
+            bo.setNick(URLEncoder.encode(URLEncoder.encode(usernamezhong, "utf-8"), "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+            logger.error("用户名转义出错",e1);
+        }
+        map.put("nick", bo.getNick());
+        map.put("key", bo.getKey());
+        map.put("type", bo.getType()+"");
+        map.put("flag",bo.getFlag()+"");
+        if(MD5Attestation.signParamString(map).equals(bo.getSign())) {//去登陆
+            token = new CaptchaUsernamePasswordToken(
+                    usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //选择登陆方式
+            LoginFromType loginFromType;
+            if (bo.getType() == 1) {
+                loginFromType = LoginFromType.TAOBAO;
+            } else if (bo.getType() == 2) {
+                loginFromType = LoginFromType.WX;
+            } else {
+                throw new Main4Exception("登陆方式传入有错");
+            }
+            token.setLoginFromType(loginFromType);
+            token.setRememberMe(true);
+            token.setSubKey(bo.getKey());
+            return token;
+        }
+        return token;
+    }
     /**
      * 得到手机验证码
      */

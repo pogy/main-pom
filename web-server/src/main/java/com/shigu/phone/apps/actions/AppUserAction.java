@@ -3,6 +3,7 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.BindUserResponse;
 import com.openJar.responses.app.OtherLoginResponse;
+import com.openJar.responses.app.WxLoginResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.PhoneUserService;
 import net.sf.json.JSONObject;
@@ -109,6 +110,16 @@ public class AppUserAction {
             throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
         return JSONObject.fromObject(phoneUserService.imgUpload(request));
+    }
+    //微信登录
+    @RequestMapping("wxLogin")
+    @ResponseBody
+    public JSONObject WxLogin(@Valid WxLoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) throws Main4Exception {
+        if(bindingResult.hasErrors()){
+            throw new Main4Exception(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        WxLoginResponse wxLoginResponse = phoneUserService.WxLogin(request,bindingResult,servletRequest);
+        return JSONObject.fromObject(wxLoginResponse);
     }
 
     /**

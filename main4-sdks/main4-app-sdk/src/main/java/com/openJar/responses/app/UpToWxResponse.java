@@ -8,4 +8,5 @@ import com.openJar.responses.Response;
  * 描述:上传微信
  */
 public class UpToWxResponse extends Response {
+
 }
