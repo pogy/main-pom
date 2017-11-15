@@ -25,6 +25,11 @@ public class ShopItemServiceTest extends BaseSpringTest {
     ShopsItemService shopsItemService;
 
     @Test
+    public void setVideoUrlTest(){
+        shopsItemService.setGoodsVideo(43429L,"hz",21742997L,"https://cloud.video.taobao.com/play/u/2978147014/p/1/e/6/t/1/50018260348.mp4",true);
+    }
+
+    @Test
     public void testOldOnsaleItem() throws ItemException {
         ShiguPager<OnsaleItem> oldPager1 = shopsItemService.selOnsaleItems(null, null, null, 29911L, 1, 10);
         ShiguPager<OnsaleItem> oldPager2 = shopsItemService.selOnsaleItems("秋冬", null, null, 29911L, 1, 10);
