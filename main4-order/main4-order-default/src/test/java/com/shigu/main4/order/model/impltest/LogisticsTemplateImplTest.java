@@ -3,6 +3,7 @@ package com.shigu.main4.order.model.impltest;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.LogisticsCompanyVO;
+import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import net.sf.json.JSONObject;
 import org.junit.Test;
@@ -45,16 +46,21 @@ public class LogisticsTemplateImplTest extends BaseTest{
 
     @Test
     public void calculate() throws Exception {
-        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 4L);
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 6L);
 //        show(template.calculate(5L, 3L, 5, 1000L));
-        System.err.println((template.calculate(13L, 68L, 3, 1000L)));
+        System.err.println((template.calculate(13L, 68L, 12, 1000L)));
     }
 
     @Test
     public void getPostListByProvId() throws Exception {
         LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 4L);
 //        show(template.calculate(5L, 3L, 5, 1000L));
-        System.err.println(template.getPostListByProvId(13L, 68L));
+//        List<PostVO> postListByProvId = template.getPostListByProvId(13L, -1L);
+        List<PostVO> postListByProvId = template.getPostListByProvId(13L, 999999990L);
+        postListByProvId.stream().forEach(item->{
+            System.err.println(item.getName());
+            System.err.println(item.getText());
+        });
     }
 
 }
