@@ -57,6 +57,7 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      */
     private Integer bpic;
 
+
     public String getFrom() {
         return from;
     }
@@ -160,4 +161,5 @@ public class SearchBO extends PageInSearchBO implements Serializable{
     public void setBpic(Integer bpic) {
         this.bpic = bpic;
     }
+
 }

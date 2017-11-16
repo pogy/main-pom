@@ -96,6 +96,7 @@ public class CategoryInSearchService {
      */
     public List<CateNav> selSubCates(String cateValue,SearchCategory category, String webSite){
         Cache cache=cacheManager.getCache("searchSubCatesCache");
+
         String key=webSite + cateValue+" is "+category.getValue();
         List<CateNav> cateNavs=cache.get(key,List.class);
         if(cateNavs!=null){

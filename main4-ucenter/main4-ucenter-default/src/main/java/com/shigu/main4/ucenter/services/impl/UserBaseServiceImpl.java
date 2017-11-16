@@ -64,9 +64,19 @@ public class UserBaseServiceImpl implements UserBaseService {
      * @return
      */
     public PersonalSession selUserForSessionByUserName(String userName, LoginFromType type) {
+        return selUserForSessionByUserName(userName,null,type);
+    }
+
+    @Override
+    public PersonalSession selUserForSessionByUserName(String userName, String key, LoginFromType type) {
         //查用户子表,如果有,再查出用户主表包装PersonalSession
         MemberUserSubExample subExample=new MemberUserSubExample();
-        subExample.createCriteria().andAccountTypeEqualTo(type.getAccountType()).andSubUserNameEqualTo(userName);
+        MemberUserSubExample.Criteria cri=subExample.createCriteria().andAccountTypeEqualTo(type.getAccountType());
+        if (type.equals(LoginFromType.WX)) {
+            cri.andSubUserKeyEqualTo(key==null?"123321":key);
+        }else{
+            cri.andSubUserNameEqualTo(userName);
+        }
         subExample.setStartIndex(0);
         subExample.setEndIndex(1);
         List<MemberUserSub> subs=memberUserSubMapper.selectFieldsByConditionList(subExample,

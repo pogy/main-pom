@@ -3,26 +3,26 @@ package com.shigu.main4.monitor.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.OnExceptionContext;
-import com.aliyun.openservices.ons.api.SendCallback;
-import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.TaobaoSessionMap;
+import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
-import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
@@ -51,10 +51,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
+
+import static com.opentae.data.mall.examples.TaobaoSessionMapExample.appkey;
+import static com.opentae.data.mall.examples.TaobaoSessionMapExample.secret;
 
 /**
  * 商品上传服务实现类
@@ -78,6 +83,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     private StarCaculateService starCaculateService;
 
     @Autowired
+    private MemberUserSubMapper memberUserSubMapper;
+
+    @Autowired
     RedisIO redisIO;
     private String goodslistName="bulk_up_to_es";
 
@@ -86,6 +94,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 
     //上传类目统计前缀
     String CAT_UP_COUNT_INDEX = "count_upload_for_cat_cid_index_";
+
+    final String XZ_APPKEY="21720662";
 
     /**
      * 添加上传记录到es中
@@ -134,6 +144,29 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             }
         }
     }
+
+    @Override
+    public void updateItemUpload(ItemUpRecordVO itemUpRecordVO,String oneKeyId) {
+        if(itemUpRecordVO == null || StringUtils.isEmpty(oneKeyId)){
+            return;
+        }
+        itemUpRecordVO.setStatus(0L);
+        itemUpRecordVO.setTbSoldout(true);
+        JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
+        Object supperPiPrice = goodsUp.get("supperPiPrice");
+        if (supperPiPrice != null) {
+            Double piPrice = Double.valueOf(supperPiPrice.toString()) * 100;
+            goodsUp.put("supperPiPrice", piPrice.longValue());
+        }
+        SimpleElaBean bean = new SimpleElaBean();
+        bean.setIndex("shigugoodsup");
+        bean.setType(itemUpRecordVO.getWebSite());
+        bean.setSource(goodsUp.toJSONString());
+        bean.setPk(oneKeyId);
+        redisIO.rpush(goodslistName,bean);
+    }
+
+
 
     /**
      * 添加消息
@@ -253,6 +286,88 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         return uploadedItemsCommon(boleanQueryBuilder,fromDate,toDate,pageNo,pageSize);
     }
 
+    @Override
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, int type, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+        boleanQueryBuilder.must(query);
+
+        if(type==2){
+            QueryBuilder queryType11=QueryBuilders.termQuery("shopSoldout",true);
+            QueryBuilder queryType22 = QueryBuilders.termQuery("tbSoldout", false);
+
+            boleanQueryBuilder.must(queryType11);
+            boleanQueryBuilder.must(queryType22);
+        }else if(type==3){
+            QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
+            boleanQueryBuilder.must(queryType);
+        }
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,null,null,pageNo,pageSize);
+    }
+
+    @Override
+    public ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String tbNick, int type, int pageNo, int pageSize) {
+        if(userId == null){
+            return new ShiguPager<OnekeyRecoreVO>();
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        // 条件组合
+        if(tbNick!=null){
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.should(query);
+            QueryBuilder nickQuery=QueryBuilders.termQuery("fenUserNick", tbNick);
+            boleanQueryBuilder.should(nickQuery);
+            boleanQueryBuilder.minimumNumberShouldMatch(1);
+        }else{
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+        }
+        if(type==2){
+            QueryBuilder queryType11=QueryBuilders.termQuery("shopSoldout",true);
+            QueryBuilder queryType22 = QueryBuilders.termQuery("tbSoldout", false);
+
+            boleanQueryBuilder.must(queryType11);
+            boleanQueryBuilder.must(queryType22);
+        }else if(type==3){
+            QueryBuilder queryType = QueryBuilders.termQuery("tbSoldout", true);
+            boleanQueryBuilder.must(queryType);
+        }
+        QueryBuilder queryStatus = QueryBuilders.termQuery("status", 0);
+        boleanQueryBuilder.must(queryStatus);
+        return uploadedItemsCommon(boleanQueryBuilder,null,null,pageNo,pageSize);
+    }
+
+    @Override
+    public SingleItemUpRecordVO singleUploadedItem(String uploadId) {
+        if(StringUtils.isEmpty(uploadId)){
+            return null;
+        }
+        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        QueryBuilder queryId = QueryBuilders.termQuery("_id", uploadId);
+        boleanQueryBuilder.must(queryId);
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+        srb.setSize(1);
+        srb.setFrom(0);
+
+        srb.setQuery(boleanQueryBuilder);
+        // 默认条件
+        SearchResponse response = srb.execute().actionGet();
+        SearchHit[] hits = response.getHits().getHits();
+        if (hits != null && hits.length > 0) {
+            SingleItemUpRecordVO shiguGoodsUp = JSON.parseObject(hits[0].getSourceAsString(), SingleItemUpRecordVO.class);
+            shiguGoodsUp.setOneKeyId(hits[0].getId());
+            return shiguGoodsUp;
+        }else{
+            return null;
+        }
+    }
+
     /**
      * 公共查,已上传
      * @param boleanQueryBuilder
@@ -310,7 +425,6 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 onekeyRecoreVO.setCreateDate(DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD));
                 onekeyRecoreVO.setId(shiguGoodsUp.getSupperGoodsId());
                 onekeyRecoreVO.setImgsrc(shiguGoodsUp.getSupperImage());
-                onekeyRecoreVO.setTarget(shiguGoodsUp.getFlag());
                 onekeyRecoreVO.setTitle(shiguGoodsUp.getSupperGoodsName());
                 onekeyRecoreVO.setWebSite(shiguGoodsUp.getWebSite());
                 onekeyRecoreVO.setOnekeyId(hit.getId());
@@ -328,9 +442,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 if(shiguGoodsTiny != null){
                     onekeyRecoreVO.setLiprice(shiguGoodsTiny.getPriceString());
                     onekeyRecoreVO.setPiprice(shiguGoodsTiny.getPiPriceString());
-                    onekeyRecoreVO.setUnShelve(false);
                 }else{
-                    onekeyRecoreVO.setUnShelve(true);
+                    onekeyRecoreVO.setLiprice(MoneyUtil.dealPrice(MoneyUtil.StringToLong(shiguGoodsUp.getFenPrice())));
+                    onekeyRecoreVO.setPiprice(shiguGoodsUp.getSupperPrice());
                 }
                 onekeyRecoreVOList.add(onekeyRecoreVO);
             }
@@ -567,7 +681,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 nicks.add(bucket.getKeyAsString());
             }
             TaobaoSessionMapExample sessionMapExample = new TaobaoSessionMapExample();
-            sessionMapExample.createCriteria().andAppkeyEqualTo("21720662").andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
+            sessionMapExample.createCriteria().andAppkeyEqualTo(XZ_APPKEY).andNickIn(nicks);//TODO: appkey 可能需要个常量保存。
             List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectFieldsByExample(sessionMapExample, FieldUtil.codeFields("tsm_id,nick,remark1"));
             Map<String, TaobaoSessionMap> sessionMap = BeanMapper.list2Map(taobaoSessionMaps, "nick", String.class);
 

@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1505784046233" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1510038717507" rel="stylesheet">
     
   </head>
 <body>
@@ -77,7 +77,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -110,7 +110,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -245,48 +245,70 @@ var webSite = '${webSite!}';
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
-    <div class="goods-info content shadow-box">
-        <div class="infobox">
-            <span>${goods_counts.sale!}</span>
-            <em>出售中的宝贝（件）</em>
-        </div>
-        
-        <div class="splitline"></div>
-        <div class="infobox">
-            <span>${goods_counts.store!}</span>
-            <em>仓库中宝贝（件）</em>
-        </div>
-    </div>
     <div class="content shadow-box">
         <div class="goods-tabbox clearfix">
-            <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的宝贝<em>${goods_counts.sale!}</em></a></div>
+            <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的商品<em>${goods_counts.sale!}</em></a></div>
             
+        </div>
+        <div class="tabOptionsBox clearfix">
+            <ul>
+                <li <#if !query.state>class="select"</#if>><a href="storeGoodsList21init.htm">全部商品</a></li>
+                <li <#if query.state == 1>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=1">无最低零售价
+                        
+                        <i id="noPriceNum"></i>
+                    </a>
+                </li>
+                <li <#if query.state == 2>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=2">无大图商品
+                        
+                        <i id="noBigpicNum"></i>
+                    </a>
+                </li>
+                <li <#if query.state == 3>class="select"</#if>>
+                    <a href="storeGoodsList21init.htm?state=3">无材料成分
+                        
+                        <i id="noMaterialNum"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
+            <input type="hidden" id="state" value="${query.state!}">
             <ul class="clearfix">
-                <li><label>宝贝名称：</label><input id="keyword" class="textinput" value="${get.keyword!}"></li>
-<li><label>宝贝货号：</label><input id="goodsNo" class="textinput" value="${get.goodsNo!}"></li>                    <li><label>淘宝宝贝ID：</label><input id="goodsId" class="textinput" value="${get.goodsId!}"></li>
-                <li><button onclick="goods_search()">查询</button></li>
+                <li><label>宝贝名称：</label><input id="keyword" class="textinput" value="${query.keyword!}"></li>
+<li><label>宝贝货号：</label><input id="goodsNo" class="textinput" value="${query.goodsNo!}"></li>                <li><button onclick="goods_search()">查询</button></li>
             </ul>
         </div>
         <#if (goodslist?size) gt 0 >
         <div class="goods-list">
             <ul class="head clearfix">
                 <li class="name">
+                    <#if session_user_redis__.logshop.type == 1>
                     <label><input type="checkbox" class="checkbox">全选</label>
+                    <#else>
+                        <span style="display:block; text-align:center;">商品名称</span>
+                    </#if>
                 </li>
-                <li class="price">批发价(元)</li>
-                <li class="lowestPrice">最低零售价(元)</li>
+                <li class="price">批发价</li>
+                <li class="lowestPrice">最低零售价</li>
+                <li class="constituent">材料成分</li>
                 <li class="bigPicCorrelate">大图关联</li>
+                <li class="saleCount">总销量</li>
                 <li class="upcount">上货量</li>
                 <li class="control">操作</li>
             </ul>
             <ul class="funOpe">
                 <li>
+                    
+                    <#if session_user_redis__.logshop.type == 1> 
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
+                    </#if>
+                    <span>&nbsp;</span>
                     <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
+                    
                     
                     
                 </li>
@@ -294,7 +316,9 @@ var webSite = '${webSite!}';
             <#list goodslist as item>
             <ul class="body clearfix" data-id="${item.id!}">
                 <li class="name">
+                    <#if session_user_redis__.logshop.type == 1>
                     <input type="checkbox" class="checkbox" value="${item.id!},<#if item.tj == true>1<#else>0</#if>">
+                    </#if>
                     <a class="piclink" href="${item.href!}" title="查看宝贝详情" target="_blank">
                         <img src="${item.imgsrc!}_80x80.jpg">
                     </a>
@@ -314,24 +338,35 @@ var webSite = '${webSite!}';
                     <p class="p2"><span>${item.price2!}</span><b class="penIcon" jbtn="piPrice"></b></p>
                 </li>
                 <li class="lowestPrice">
-                    <p class="p3"><span>${item.price3!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
+                    <p class="p3"><span>${item.lowestLiPrice!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
+                </li>
+                <li class="constituent">
+                    <p>
+                        <#if item.constituentType == 1>
+                        <span>未设置</span>
+                        <#elseif item.constituentType == 2>
+                        <span>已设置</span>
+                        </#if>
+                        
+                        <b class="penIcon" jbtn="setConstituentBtn" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}"></b>
+                    </p>
                 </li>
                 <li class="bigPicCorrelate">
-                    
                     <p>
-                        <#if item.setCorrelateType == 1>
+                        <#if item.correlateType == 1>
                         <span>未设置</span>
-                        <#elseif item.setCorrelateType == 2>
+                        <#elseif item.correlateType == 2>
                         <span>已设置</span>
                         </#if>
                         
                         <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
                     </p>
                 </li>
+                <li class="saleCount">${item.saleCount!}</li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
                     
-                    <#if item.detailUrlnew != null>
+                    <#if session_user_redis__.logshop.type == 1>
                     <p><b class="tbGoods">同步商品</b></p>
                     <#else>
                     <p><em class="xjgoods">下架</em></p>
@@ -381,6 +416,7 @@ var allStyleCate = '${allStyleCate!}';
         
         
         
+        
     </div>
     
 </div>
@@ -416,7 +452,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1505784046233"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1510038717507"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

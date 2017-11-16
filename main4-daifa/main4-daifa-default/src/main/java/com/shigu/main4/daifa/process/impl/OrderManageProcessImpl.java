@@ -72,7 +72,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         DaifaTrade trade = daifaTradeMapper.selectFieldsByPrimaryKey(orderId,
                 FieldUtil.codeFields("df_trade_id,after_remark"));
         if(trade == null){
-            throw new DaifaException("不存在此订单");
+            throw new DaifaException("不存在此订单",DaifaException.DEBUG);
         }
         if(StringUtils.isEmpty(trade.getAfterRemark())){
             trade.setAfterRemark(mark);
@@ -98,13 +98,13 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         daifaGgoodsTasksExample.setEndIndex(1);
         List<DaifaGgoodsTasks> ts = daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
         if (ts.size() == 0) {
-            throw new DaifaException("订单不存在");
+            throw new DaifaException("订单不存在",DaifaException.DEBUG);
         }
         if(ts.get(0).getEndStatus()==1){
-            throw new DaifaException("订单已截单");
+            throw new DaifaException("订单已截单",DaifaException.DEBUG);
         }
         if(ts.get(0).getReturnStatus()==2){
-            throw new DaifaException("订单已退款");
+            throw new DaifaException("订单已退款",DaifaException.DEBUG);
         }
         if (ts.get(0).getAllocatStatus() == 1) {
             subOrderModel.noTake();
@@ -127,13 +127,13 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         daifaGgoodsTasksExample.setEndIndex(1);
         List<DaifaGgoodsTasks> ts = daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
         if (ts.size() == 0) {
-            throw new DaifaException("订单不存在");
+            throw new DaifaException("订单不存在",DaifaException.DEBUG);
         }
         if(ts.get(0).getEndStatus()==1){
-            throw new DaifaException("订单已截单");
+            throw new DaifaException("订单已截单",DaifaException.DEBUG);
         }
         if(ts.get(0).getReturnStatus()==2){
-            throw new DaifaException("订单已退款");
+            throw new DaifaException("订单已退款",DaifaException.DEBUG);
         }
         if (ts.get(0).getAllocatStatus() == 1) {
             subOrderModel.noTake();
@@ -173,28 +173,28 @@ public class OrderManageProcessImpl implements OrderManageProcess {
                 refundableIds.addAll(tmps);
                 if(bo.getSoidps()!=null&&bo.getSoidps().size()>0){
                     if(soidpsNum.size()>0){
-                        throw new DaifaException("退款失败,soidps和num只能存在一个");
+                        throw new DaifaException("退款失败,soidps和num只能存在一个",DaifaException.ERROR);
                     }
                     soidps.addAll(bo.getSoidps());
                 }else{
                     if(soidps.size()>0){
-                        throw new DaifaException("退款失败,soidps和num只能存在一个");
+                        throw new DaifaException("退款失败,soidps和num只能存在一个",DaifaException.ERROR);
                     }
                     if(bo.getNum()==null){
-                        throw new DaifaException("退款失败,soidps和num至少存在一个");
+                        throw new DaifaException("退款失败,soidps和num至少存在一个",DaifaException.ERROR);
                     }
                     if(bo.getNum()<1){
-                        throw new DaifaException("退款失败,数量不能小于1");
+                        throw new DaifaException("退款失败,数量不能小于1",DaifaException.ERROR);
                     }
                     if(bo.getNum()>tmps.size()){
-                        throw new DaifaException("退款失败,申请数量大于可退数量");
+                        throw new DaifaException("退款失败,申请数量大于可退数量",DaifaException.ERROR);
                     }
                     for(int i=0;i<bo.getNum();i++){
                         soidpsNum.add(tmps.get(i).toString());
                     }
                 }
             } catch (OrderNotFindException e) {
-                throw new DaifaException("退款失败,存在错误的单号");
+                throw new DaifaException("退款失败,存在错误的单号",DaifaException.ERROR);
             }
         }
         if(soidps.size()>0){
@@ -205,7 +205,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
                         continue checked;
                     }
                 }
-                throw new DaifaException("退款失败,可退款数量校验失败");
+                throw new DaifaException("退款失败,可退款数量校验失败",DaifaException.ERROR);
             }
         }else{
             soidps=soidpsNum;
@@ -272,7 +272,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void putGoodsCode(Long goodsId, String goodsNo) throws DaifaException {
         if(goodsId==-1){
-            throw new DaifaException("不支持修改");
+            throw new DaifaException("不支持修改",DaifaException.DEBUG);
         }
         DaifaOrderExample searchDaifaOrderExample=new DaifaOrderExample();
         searchDaifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);

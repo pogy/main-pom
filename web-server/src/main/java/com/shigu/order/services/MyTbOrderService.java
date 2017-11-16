@@ -66,6 +66,7 @@ public class MyTbOrderService {
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
     @Autowired
     private RedisIO redisIO;
 
@@ -75,6 +76,9 @@ public class MyTbOrderService {
     private ItemOrderMapper itemOrderMapper;
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
+
+    @Autowired
+    private OrderCityMapper orderCityMapper;
 
 
 
@@ -246,36 +250,70 @@ public class MyTbOrderService {
         addressVO.setId(tid);
         addressVO.setProv(order.getProv());
         addressVO.setName(order.getReceiverName());
-        SimilarityMap<OrderProv> provmap = similarityProvMap();
-        SimilarityMap<OrderCity> citymap = similarityCityMap();
-        SimilarityMap<OrderTown> townmap = similarityTownMap();
-        OrderProv prov=provmap.get(order.getProv());
-        OrderCity city=citymap.get(order.getCity());
-        OrderTown town=townmap.get(order.getTown());
-        BuyerAddressVO buyerAddress = new BuyerAddressVO();
-        if (prov != null) {
-            buyerAddress.setProvId(prov.getProvId());
-            buyerAddress.setProvince(prov.getProvName());
-        }
-        if (city != null) {
-            buyerAddress.setCityId(city.getCityId());
-            buyerAddress.setCity(city.getCityName());
-        }
-        if (town != null) {
-            buyerAddress.setTownId(town.getTownId());
-            buyerAddress.setTown(town.getTownName());
-        }
-        buyerAddress.setName(order.getReceiverName());
-        buyerAddress.setTelephone(order.getReceiverPhone());
-        buyerAddress.setAddress(order.getSimpleAddress());
-        buyerAddress.setUserId(userId);
-        String addressId = confirmOrderService.saveTmpBuyerAddress(buyerAddress);
-        addressVO.setAddressId(addressId);
+
+
+        addressVO.setAddressId(saveAddress(order.getProv(),order.getCity(),order.getTown(),order.getSimpleAddress(),
+                order.getReceiverName(),order.getReceiverPhone(),userId));
 
         submitVo.setTbOrderAddressInfo(addressVO);
         redisIO.putTemp(uuid, submitVo, 600);
         return uuid;
     }
+
+    /**
+     * 保存地址
+     * @param provName
+     * @param cityName
+     * @param townName
+     * @param simpleAddress
+     * @param receiveName
+     * @param receivePhone
+     * @param userId
+     * @return
+     */
+    private String saveAddress(String provName,String cityName,String townName,String simpleAddress,String receiveName,String receivePhone,Long userId){
+        SimilarityMap<OrderProv> provmap = similarityProvMap();
+        SimilarityMap<OrderCity> citymap = similarityCityMap();
+        SimilarityMap<OrderTown> townmap = similarityTownMap();
+        OrderProv prov=provmap.get(provName);
+        OrderCity city=citymap.get(cityName);
+        OrderTown town= org.apache.commons.lang3.StringUtils.isNotEmpty(townName)?townmap.get(townName):null;
+        BuyerAddressVO buyerAddress = new BuyerAddressVO();
+        buyerAddress.setAddress(simpleAddress);
+        if (city != null) {
+            buyerAddress.setCityId(city.getCityId());
+            buyerAddress.setCity(city.getCityName());
+        }else {
+            return null;
+        }
+        buyerAddress.setName(receiveName);
+        if (prov != null) {
+            buyerAddress.setProvId(prov.getProvId());
+            buyerAddress.setProvince(prov.getProvName());
+        }else{
+            return null;
+        }
+        if (city != null) {
+            buyerAddress.setCityId(city.getCityId());
+            buyerAddress.setCity(city.getCityName());
+        }
+        buyerAddress.setTelephone(receivePhone);
+        if (town != null) {
+            buyerAddress.setTownId(town.getTownId());
+            buyerAddress.setTown(town.getTownName());
+        }else{
+            buyerAddress.setTown("");
+        }
+        OrderCityExample example=new OrderCityExample();
+        example.createCriteria().andCityIdEqualTo(buyerAddress.getCityId()).andProvIdEqualTo(buyerAddress.getProvId());
+        if (orderCityMapper.countByExample(example)==0) {
+            return null;
+        }
+        buyerAddress.setUserId(userId);
+        return confirmOrderService.saveTmpBuyerAddress(buyerAddress);
+    }
+
+
 
     /**
      * 淘宝批量下单,包含校验

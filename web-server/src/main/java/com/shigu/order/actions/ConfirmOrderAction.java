@@ -150,7 +150,9 @@ public class ConfirmOrderAction {
         if (sessionUser != null) {
             userId = sessionUser.getUserId();
         }
-
+        if (!orderOptionSafeService.checkCitySafe(buyerAddressItem.getProvId(),buyerAddressItem.getCityId())) {
+            throw new JsonErrException("省市无法对应");
+        }
         BuyerAddressVO buyerAddress = new BuyerAddressVO();
         buyerAddress.setAddress(buyerAddressItem.getAddress());
         buyerAddress.setCityId(buyerAddressItem.getCityId());

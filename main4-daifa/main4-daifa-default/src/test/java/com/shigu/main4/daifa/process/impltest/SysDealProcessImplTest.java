@@ -28,8 +28,8 @@ public class SysDealProcessImplTest extends BaseSpringTest {
     @Test
     public void updateUserAndRoles_test(){//OK
 
-        Long userId=new Long(3L);
-        String roleIds="2,3";
+        Long userId=new Long(4L);
+        String roleIds="13";
 
 
         sysDealProcess = SpringBeanFactory.getBean(SysDealProcess.class);

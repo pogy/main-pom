@@ -19,6 +19,15 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguGoodsCollectMapper extends Mapper<ShiguGoodsCollect> {
 
+    /**
+     * 数据包搜索
+     * @param userId
+     * @param keyword
+     * @param webSite
+     * @param start
+     * @param size
+     * @return
+     */
     List<TinyItemCollect> tinyGoodsCollect(
             @Param("userId")Long userId,
             @Param("keyword") String keyword,
@@ -26,6 +35,14 @@ public interface ShiguGoodsCollectMapper extends Mapper<ShiguGoodsCollect> {
             @Param("start")int start,
             @Param("size")int size
     );
+
+    /**
+     * 数据包计数
+     * @param userId
+     * @param keyword
+     * @param webSite
+     * @return
+     */
     int countTinyGoodsCollect(@Param("userId")Long userId,@Param("keyword") String keyword,
                               @Param("webSite")String webSite);
 }

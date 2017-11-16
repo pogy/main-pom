@@ -2,12 +2,7 @@ package com.shigu.main4.monitor.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.monitor.vo.DataLineVO;
-import com.shigu.main4.monitor.vo.HotUpItem;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.LastUploadedVO;
-import com.shigu.main4.monitor.vo.NoUpItem;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.monitor.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +17,16 @@ public interface ItemUpRecordService {
      * @param itemUpRecordVO
      */
     void addItemUpRecord(ItemUpRecordVO itemUpRecordVO);
+
+    /**
+     * 修改上传记录
+     * PS:原纪录通过"singleUploadedItem"接口查询
+     * @param itemUpRecordVO
+     * @param oneKeyId
+     */
+    void updateItemUpload(ItemUpRecordVO itemUpRecordVO,String oneKeyId);
+
+
 
     /**
      * 查最后一次上传的时间
@@ -46,6 +51,27 @@ public interface ItemUpRecordService {
      */
     ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick, String target, String keyword, Date fromDate, Date toDate,
                                              int pageNo, int pageSize);
+
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,int type,int pageNo, int pageSize);
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick,int type,int pageNo, int pageSize);
+
+    /**
+     * 根据ID查询已上传的宝贝
+     * @return 已上传的宝贝信息
+     */
+    SingleItemUpRecordVO singleUploadedItem(String uploadId);
 
     /**
      * 删除一键上传记录
@@ -111,4 +137,5 @@ public interface ItemUpRecordService {
      * @return
      */
     List<DataLineVO> dailiSellerLevelLine(Long shopId);
+
 }

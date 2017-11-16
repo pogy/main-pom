@@ -14,6 +14,7 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
     public static EntityColumn itemLinkId;
     public static EntityColumn shopNum;
     public static EntityColumn shopName;
+    public static EntityColumn type;
     public static EntityColumn taobaoUrl;
     public static EntityColumn tbNick;
     public static EntityColumn marketId;
@@ -53,6 +54,7 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
         itemLinkId = listMap.get("itemLinkId");
         shopNum = listMap.get("shopNum");
         shopName = listMap.get("shopName");
+        type = listMap.get("type");
         taobaoUrl = listMap.get("taobaoUrl");
         tbNick = listMap.get("tbNick");
         marketId = listMap.get("marketId");
@@ -314,6 +316,53 @@ public class ShiguShopExample extends SgExample<ShiguShopExample.Criteria> {
 
         public ShiguShopExample.Criteria andShopNameNotBetween(String value1, String value2) {
             return notBetween(shopName, value1, value2);
+        }
+        public ShiguShopExample.Criteria andTypeIsNull() {
+            return isNull(type);
+        }
+
+        public ShiguShopExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
+        }
+
+        public ShiguShopExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
+        }
+
+        public ShiguShopExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
+        }
+
+        public ShiguShopExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
+        }
+
+        public ShiguShopExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
         public ShiguShopExample.Criteria andTaobaoUrlIsNull() {
             return isNull(taobaoUrl);

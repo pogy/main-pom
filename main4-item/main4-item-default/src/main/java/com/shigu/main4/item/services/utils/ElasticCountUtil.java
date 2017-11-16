@@ -2,13 +2,17 @@ package com.shigu.main4.item.services.utils;
 
 import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsupNoreal;
+import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsupNorealExample;
+import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsModifiedMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
+import com.shigu.main4.item.vo.GoodsAggsVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +42,17 @@ public class ElasticCountUtil {
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
 
+    @Autowired
+    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
+
 
     /**
      * 统计 架上商品的一键上传数量
      * @param tinies 商品集合
      * @return
      */
-    public GoodsupLongTerms countItemUp(List<ShiguGoodsTiny> tinies) {
-        GoodsupLongTerms goodsupLongTerms = new GoodsupLongTerms();
+    public GoodsupLongTerms<Integer> countItemUp(List<ShiguGoodsTiny> tinies) {
+        GoodsupLongTerms<Integer> goodsupLongTerms = new GoodsupLongTerms<Integer>();
 
         List<Long> goodsIds = new ArrayList<>(BeanMapper.getFieldSet(tinies, "goodsId", Long.class));
         if (!CollectionUtils.isEmpty(goodsIds)) {
@@ -66,5 +73,43 @@ public class ElasticCountUtil {
             }
         }
         return goodsupLongTerms;
+    }
+
+    public GoodsupLongTerms<GoodsAggsVO> selItemCountData(List<Long> goodsIds){
+        GoodsupLongTerms<GoodsAggsVO> itemResult = new GoodsupLongTerms<>();
+        if (!CollectionUtils.isEmpty(goodsIds)) {
+            GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+            example.createCriteria().andGoodsIdIn(goodsIds);
+            for (GoodsCountForsearch goodsCountForsearch : goodsCountForsearchMapper.selectByExample(example)) {
+                GoodsAggsVO goodsAggsVO = new GoodsAggsVO();
+                goodsAggsVO.addGoodsupNum(goodsCountForsearch.getUp().intValue());
+                goodsAggsVO.addSaleCount(goodsCountForsearch.getTrade().intValue());
+                goodsAggsVO.setFabric(goodsCountForsearch.getFabric());
+                goodsAggsVO.setInFabric(goodsCountForsearch.getInfabric());
+                itemResult.put(goodsCountForsearch.getGoodsId().toString(),goodsAggsVO);
+            }
+            GoodsupNorealExample norealExample = new GoodsupNorealExample();
+            norealExample.createCriteria().andItemIdIn(goodsIds);
+            for (GoodsupNoreal goodsupNoreal : goodsupNorealMapper.selectByExample(norealExample)) {
+                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.toString());
+                if (goodsAggsVO == null) {
+                    goodsAggsVO = new GoodsAggsVO();
+                    itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);
+                }
+                goodsAggsVO.addGoodsupNum(goodsupNoreal.getAddNum());
+            }
+            ShiguGoodsModifiedExample modifiedExample = new ShiguGoodsModifiedExample();
+            modifiedExample.createCriteria().andItemIdIn(goodsIds);
+            List<ShiguGoodsModified> shiguGoodsModifieds = shiguGoodsModifiedMapper.selectByExample(modifiedExample);
+            for (ShiguGoodsModified shiguGoodsModified : shiguGoodsModifieds) {
+                GoodsAggsVO goodsAggsVO = itemResult.get(shiguGoodsModified.getItemId().toString());
+                if (goodsAggsVO == null) {
+                    goodsAggsVO = new GoodsAggsVO();
+                    itemResult.put(shiguGoodsModified.getItemId().toString(),goodsAggsVO);
+                }
+                goodsAggsVO.setHasRetailPriceSet(shiguGoodsModified.getHasSetPrice());
+            }
+        }
+        return itemResult;
     }
 }

@@ -128,14 +128,14 @@ public class DaifaAllocatedService {
 
     public void takeGoods(Long workerId,Long takeGoodsId,Integer takeType) throws DaifaException {
         if (takeType == null) {
-            throw new DaifaException("类型为空");
+            throw new DaifaException("类型为空",DaifaException.DEBUG);
         }
         DaifaGgoods g=new DaifaGgoods();
         g.setDaifaWorkerId(workerId);
         g.setTakeGoodsId(takeGoodsId);
         g=daifaGgoodsMapper.selectOne(g);
         if (g == null) {
-            throw new DaifaException("不是分配给该拿货员的商品");
+            throw new DaifaException("不是分配给该拿货员的商品",DaifaException.DEBUG);
         }
         switch (takeType){
             case 1:{

@@ -64,7 +64,13 @@ public class OrderSendErrorDealService {
             eca.andReceiverNameLike ("%&%").or().andReceiverAddressLike ("%&%");
             daifaTradeExample.and (eca);
         }
-       return  daifaTradeMapper.selectByExample (daifaTradeExample);
+        int count= daifaTradeMapper.countByExample (daifaTradeExample);
+        bo.setCount (count);
+        int page = Integer.parseInt(bo.getPage());
+        int rows = 10;
+        daifaTradeExample.setStartIndex((page - 1) * rows);
+        daifaTradeExample.setEndIndex(rows);
+       return  daifaTradeMapper.selectByConditionList (daifaTradeExample);
 
     }
     /**
@@ -97,9 +103,9 @@ public class OrderSendErrorDealService {
 
         DaifaOrderExample example=new DaifaOrderExample ();
         DaifaOrderExample.Criteria exampleCriteria = example.createCriteria();
-        exampleCriteria.andRefundStatusGreaterThan (0);//.andTakeGoodsStatusEqualTo (1);
+        exampleCriteria.andRefundStatusGreaterThanOrEqualTo (0);//.andTakeGoodsStatusEqualTo (1);
         if (bo.getDfTradeId() != null) {
-            exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
+            exampleCriteria.andDfTradeIdLike("%" + bo.getDfTradeId());
         }else{
             exampleCriteria.andPropStrLike ("%+%");
         }
@@ -110,7 +116,7 @@ public class OrderSendErrorDealService {
         int rows = 10;
         example.setStartIndex((page - 1) * rows);
         example.setEndIndex(rows);
-        return daifaOrderMapper.selectByExample (example);
+        return daifaOrderMapper.selectByConditionList (example);
 
     }
 

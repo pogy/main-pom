@@ -99,13 +99,13 @@ public class CargoManImpl implements CargoManModel {
     public String takeToMe(List<Long> waitIssueIds) throws DaifaException {
         //查询出待分配任务
         if (waitIssueIds == null || waitIssueIds.isEmpty()) {
-            throw new DaifaException("待分配Id为空");
+            throw new DaifaException("待分配Id为空",DaifaException.DEBUG);
         }
         //查询拿货人
         DaifaWorker daifaWorker = daifaWorkerMapper.selectFieldsByPrimaryKey(this.cargoManId
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker,daifa_seller_id"));
         if (daifaWorker == null) {
-            throw new DaifaException("系统无此拿货人");
+            throw new DaifaException("系统无此拿货人",DaifaException.DEBUG);
         }
         Date theTime=new Date();
         String theDay=DateUtil.dateToString(theTime, DateUtil.patternB);
@@ -114,7 +114,7 @@ public class CargoManImpl implements CargoManModel {
         daifaGgoodsTasksExample.createCriteria().andSellerIdEqualTo(daifaWorker.getDaifaSellerId())
                 .andAllocatStatusEqualTo(1).andTakeGoodsStatusEqualTo(0).andAllocatDateLessThan(theDay);
         if(daifaGgoodsTasksMapper.countByExample(daifaGgoodsTasksExample)!=0){
-            throw new DaifaException("存在今天之前分配的拿货中的数据,禁止分配");
+            throw new DaifaException("存在今天之前分配的拿货中的数据,禁止分配",DaifaException.DEBUG);
         }
 
         try {
@@ -186,7 +186,7 @@ public class CargoManImpl implements CargoManModel {
         DaifaWorker daifaWorker = daifaWorkerMapper.selectFieldsByPrimaryKey(this.cargoManId
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker,daifa_seller_id"));
         if (daifaWorker == null) {
-            throw new DaifaException("系统无此拿货人");
+            throw new DaifaException("系统无此拿货人",DaifaException.DEBUG);
         }
         DaifaGgoodsExample dggex = new DaifaGgoodsExample();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

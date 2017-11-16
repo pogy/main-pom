@@ -99,6 +99,14 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!--app访问拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/app/**"/>
+            <bean class="com.shigu.core.config.AppInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <bean id="freemarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
         <property name="prefix" value=""/>

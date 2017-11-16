@@ -168,7 +168,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             filters.and(FilterBuilder.number("created").lte(timeTo.getTime()));
         }
 
-        if (webSite.equals("hz")&&checkds!=null) {//只有杭州的有checkeds
+        if ("hz".equalsIgnoreCase(webSite)&&checkds!=null) {//只有杭州的有checkeds
             for(SearchCheckd sc:checkds){
                 switch (sc){
                     case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));

@@ -30,10 +30,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import sun.security.ssl.Debug;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -148,11 +150,43 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
                 , FieldUtil.codeFields("take_goods_id"));
         if (ggoods.size() == 0) {
-            throw new DaifaException("没有可打印的数据");
+            throw new DaifaException("没有可打印的数据", "debug");
         }
         List<Long> issueIds = new ArrayList<>();
         ggoods.forEach(dg -> issueIds.add(dg.getTakeGoodsId()));
 
+        return printTags(issueIds);
+    }
+
+
+    @Override
+    public List<PrintTagVO> printWorkerTodayAllTags(Long workerId) throws DaifaException {
+        String nowDate = DateUtil.dateToString(new Date(), DateUtil.patternB);
+        DaifaGgoodsExample dgex = new DaifaGgoodsExample();
+        dgex.createCriteria()
+                .andDaifaWorkerIdEqualTo(workerId)
+                .andCreateDateEqualTo(nowDate);
+        List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
+                , FieldUtil.codeFields("take_goods_id,df_order_id"));
+        if (ggoods.size() == 0) {
+            throw new DaifaException("没有可打印的数据",DaifaException.DEBUG);
+        }
+        List<Long> hasIds=new ArrayList<>();
+        List<Long> issueIds=ggoods.stream().filter(daifaGgoods -> {
+            if(!hasIds.contains(daifaGgoods.getDfOrderId())){
+                hasIds.add(daifaGgoods.getDfOrderId());
+                return true;
+            }
+            return false;
+        }).map(DaifaGgoods::getTakeGoodsId).collect(Collectors.toList());
+
+//        List<Long> issueIds=ggoods.stream().collect(Collectors.collectingAndThen(
+//                Collectors.toCollection(
+//                        () -> new TreeSet<>(
+//                                Comparator.comparingLong(DaifaGgoods::getDfOrderId)
+//                        )
+//                ),ArrayList::new)
+//        ).stream().map(DaifaGgoods::getTakeGoodsId).collect(Collectors.toList());
         return printTags(issueIds);
     }
 
@@ -250,14 +284,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     public void complete(Long issueId) throws DaifaException {
         DaifaGgoods g = daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         if (g == null) {
-            throw new DaifaException("未找到分配信息");
+            throw new DaifaException("未找到分配信息",DaifaException.DEBUG);
         }
         if (g.getUseStatus() != 1 || g.getOperateIs() == 1) {
-            throw new DaifaException("无效的数据,该ID已操作过拿货完成");
+            throw new DaifaException("无效的数据,该ID已操作过拿货完成",DaifaException.DEBUG);
         }
         String date = DateUtil.dateToString(new Date(), DateUtil.patternB);
         if (!g.getCreateDate().equals(date)) {
-            throw new DaifaException("不是今天的分配数据");
+            throw new DaifaException("不是今天的分配数据",DaifaException.DEBUG);
         }
         SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
         subOrderModel.haveTake();
@@ -267,14 +301,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     public void uncomplete(Long issueId) throws DaifaException {
         DaifaGgoods g = daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         if (g == null) {
-            throw new DaifaException("未找到分配信息");
+            throw new DaifaException("未找到分配信息",DaifaException.DEBUG);
         }
         if (g.getUseStatus() != 1 || g.getOperateIs() == 1) {
-            throw new DaifaException("无效的数据,该ID已操作过拿货完成");
+            throw new DaifaException("无效的数据,该ID已操作过拿货完成",DaifaException.DEBUG);
         }
         String date = DateUtil.dateToString(new Date(), DateUtil.patternB);
         if (!g.getCreateDate().equals(date)) {
-            throw new DaifaException("不是今天的分配数据");
+            throw new DaifaException("不是今天的分配数据",DaifaException.DEBUG);
         }
         SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
         subOrderModel.noTake();
@@ -333,22 +367,22 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         o.setDfOrderId(dfOrderId);
         o = daifaWaitSendOrderMapper.selectOne(o);
         if (o == null) {
-            throw new DaifaException("不是待发货订单");
+            throw new DaifaException("不是待发货订单",DaifaException.DEBUG);
         }
         if (o.getTakeGoodsStatus() != 1) {
-            throw new DaifaException("不是已拿货订单");
+            throw new DaifaException("不是已拿货订单",DaifaException.DEBUG);
         }
         if (o.getSendStatus() == 2) {
-            throw new DaifaException("订单已发货");
+            throw new DaifaException("订单已发货",DaifaException.DEBUG);
         }
         if (o.getRefundStatus() != 0) {
-            throw new DaifaException("订单已退款(已申请退款)");
+            throw new DaifaException("订单已退款(已申请退款)",DaifaException.DEBUG);
         }
         Long price;
         if (!StringUtils.isEmpty(money)) {
             price = MoneyUtil.StringToLong(money);
             if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < price) {
-                throw new DaifaException("金额超过商品金额");
+                throw new DaifaException("金额超过商品金额",DaifaException.DEBUG);
             }
         }
         DaifaWaitSendOrder o1 = new DaifaWaitSendOrder();
@@ -383,25 +417,25 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         daifaOrderExample.createCriteria().andOrderPartitionIdEqualTo(psoid.toString());
         List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id"));
         if (orders.size() != 1) {
-            throw new DaifaException("订单不存在");
+            throw new DaifaException("订单不存在",DaifaException.DEBUG);
         }
         DaifaWaitSendOrder o = new DaifaWaitSendOrder();
         o.setDfOrderId(orders.get(0).getDfOrderId());
         o = daifaWaitSendOrderMapper.selectOne(o);
         if (o == null) {
-            throw new DaifaException("不是待发货订单");
+            throw new DaifaException("不是待发货订单",DaifaException.DEBUG);
         }
         if (o.getTakeGoodsStatus() != 1) {
-            throw new DaifaException("不是已拿货订单");
+            throw new DaifaException("不是已拿货订单",DaifaException.DEBUG);
         }
         if (o.getSendStatus() == 2) {
-            throw new DaifaException("订单已发货");
+            throw new DaifaException("订单已发货",DaifaException.DEBUG);
         }
         if (o.getRefundStatus() == 2) {
-            throw new DaifaException("订单已退款");
+            throw new DaifaException("订单已退款",DaifaException.DEBUG);
         }
         if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < refundPrice) {
-            throw new DaifaException("金额超过商品金额");
+            throw new DaifaException("金额超过商品金额",DaifaException.DEBUG);
         }
 
         adminRefund(Collections.singletonList(o.getDfOrderId()), o.getDfTradeId(), refundId, refundPrice);
@@ -425,12 +459,12 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         List<DaifaOrder> cheakedOrders = daifaOrderMapper.selectByExample(searchDaifaOrderExample);
         if (cheakedOrders.size() < dfOrderIds.size()) {
             //存在未查到数据的子单号
-            throw new DaifaException("存在未查到数据的子单号");
+            throw new DaifaException("存在未查到数据的子单号",DaifaException.DEBUG);
         }
         for (DaifaOrder o : cheakedOrders) {
             if (o.getDfTradeId().longValue() != tid) {
                 //部分子单号和传递的主单号不匹配
-                throw new DaifaException("部分子单号和传递的主单号不匹配");
+                throw new DaifaException("部分子单号和传递的主单号不匹配",DaifaException.DEBUG);
             }
         }
         searchDaifaOrderExample = new DaifaOrderExample();
@@ -439,7 +473,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if (cheakedOrders.size() > 0) {
             for (DaifaOrder o : cheakedOrders) {
                 if (o.getDfTradeId().longValue() != tid) {
-                    throw new DaifaException("退款ID已存在");
+                    throw new DaifaException("退款ID已存在",DaifaException.DEBUG);
                 }
             }
         }
@@ -577,16 +611,16 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         for (Long id : issueIds) {
             DaifaGgoods g = gmap.get(id);
             if (g == null) {
-                throw new DaifaException("存在非该拿货员的分配数据");
+                throw new DaifaException("存在非该拿货员的分配数据",DaifaException.DEBUG);
             }
             if (g.getOperateIs() == 1) {
-                throw new DaifaException("存在已拿货完成的分配数据");
+                throw new DaifaException("存在已拿货完成的分配数据",DaifaException.DEBUG);
             }
             if (g.getUseStatus() == 0) {
-                throw new DaifaException("存在无效的分配数据");
+                throw new DaifaException("存在无效的分配数据",DaifaException.DEBUG);
             }
             if (!g.getCreateDate().equals(date)) {
-                throw new DaifaException("存在不是今天的分配数据");
+                throw new DaifaException("存在不是今天的分配数据",DaifaException.DEBUG);
             }
         }
         //清理不可操作的数据

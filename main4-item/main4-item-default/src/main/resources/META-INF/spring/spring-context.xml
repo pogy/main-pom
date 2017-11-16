@@ -34,7 +34,7 @@
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper,com.opentae.core.mybatis.mapper.MultipleMapper"/>
             </map>
         </property>
     </bean>
@@ -87,6 +87,12 @@
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage"
                   value= "com/opentae/data/mall/interfaces" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
+
+    <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name= "basePackage" value= "com/opentae/core/mybatis/mapper" />
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>

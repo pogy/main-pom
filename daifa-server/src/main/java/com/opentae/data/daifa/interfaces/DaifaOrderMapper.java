@@ -1,10 +1,14 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.data.daifa.beans.DaifaOrder;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+
+import java.util.List;
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -24,4 +28,11 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Lazy(true)
 public interface DaifaOrderMapper extends Mapper<DaifaOrder>{
 
+
+    List<DaifaOrder> statisGoodsbyGoods (DaifaOrderExample example);
+
+    List<DaifaOrder> statisGoodsByStoreNum (DaifaOrderExample example);
+
+    int countStatisGoodsbyGoods(DaifaOrderExample example);
+    int countStatisGoodsByStoreNum(DaifaOrderExample example);
 }

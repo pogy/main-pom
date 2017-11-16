@@ -1,3 +1,4 @@
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.tools.RedisIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -104,4 +105,23 @@ public class RedisIOTest {
         redisIO.hset("imkey","456",11);
 //        System.out.println(redisIO.getJedis().hgetAll());
     }
+    @Test
+    public void getAllKey(){
+
+       // Jedis jedis = redisIO.getJedis();
+       // String ping = jedis.ping();
+        //System.out.println("ping="+ping);
+        //String s = jedis.get("phone_login_token");
+        //System.out.println("key="+s);
+        //删除
+       // String uuid = UUIDGenerator.getUUID();
+       // redisIO.putFixedTemp("phone_login_token",uuid,60);
+        String phone_login_token = redisIO.get("phone_login_token"+"1000085908");
+
+        System.out.println("**********************************"+"phone_login_token=***"+phone_login_token);
+       /* redisIO.del("phone_login_token");
+        String phone_login_token = redisIO.get("phone_login_token");
+        System.out.println("**********************************"+"phone_login_token"+phone_login_token);*/
+    }
+
 }

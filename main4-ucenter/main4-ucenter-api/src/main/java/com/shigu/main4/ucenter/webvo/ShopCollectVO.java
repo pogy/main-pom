@@ -7,38 +7,30 @@ import java.io.Serializable;
  * Created by zhaohongbo on 17/3/2.
  */
 public class ShopCollectVO implements Serializable{
-    /**
-     * 店铺ID
-     */
+    //收藏id
+    private Long collId;
+    //店铺id
     private Long shopId;
-    /**
-     * 店名
-     */
-    private String shopName;
-    /**
-     * 市场名
-     */
-    private String market;
-    /**
-     * 主营类目
-     */
-    private String mainBus;
-    /**
-     * 档口号
-     */
+    //分站
+    private String webSite;
+    //市场
+    private String marketName;
+    //档口号
     private String shopNum;
-    /**
-     * 实地位置
-     */
-    private String address;
-    /**
-     * 分站
-     */
-    private String website;
-    /**
-     * 收藏主键
-     */
-    private Long id;
+    //店铺图片
+    private String  shopImgSrc;
+    //店铺旺旺
+    private String imWw;
+    //店铺QQ
+    private String imQq;
+
+    public Long getCollId() {
+        return collId;
+    }
+
+    public void setCollId(Long collId) {
+        this.collId = collId;
+    }
 
     public Long getShopId() {
         return shopId;
@@ -48,28 +40,20 @@ public class ShopCollectVO implements Serializable{
         this.shopId = shopId;
     }
 
-    public String getShopName() {
-        return shopName;
+    public String getWebSite() {
+        return webSite;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 
-    public String getMarket() {
-        return market;
+    public String getMarketName() {
+        return marketName;
     }
 
-    public void setMarket(String market) {
-        this.market = market;
-    }
-
-    public String getMainBus() {
-        return mainBus;
-    }
-
-    public void setMainBus(String mainBus) {
-        this.mainBus = mainBus;
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
     }
 
     public String getShopNum() {
@@ -80,27 +64,27 @@ public class ShopCollectVO implements Serializable{
         this.shopNum = shopNum;
     }
 
-    public String getAddress() {
-        return address;
+    public String getShopImgSrc() {
+        return shopImgSrc;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setShopImgSrc(String shopImgSrc) {
+        this.shopImgSrc = shopImgSrc;
     }
 
-    public Long getId() {
-        return id;
+    public String getImWw() {
+        return imWw;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getImQq() {
+        return imQq;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
     }
 }

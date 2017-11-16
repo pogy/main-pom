@@ -65,4 +65,6 @@
 
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
 </beans>

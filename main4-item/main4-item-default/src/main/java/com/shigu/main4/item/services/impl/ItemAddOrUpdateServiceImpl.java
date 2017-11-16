@@ -8,12 +8,14 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
 import com.shigu.main4.item.tools.ItemHelper;
 import com.shigu.main4.item.tools.OSSUtil;
+import com.shigu.main4.item.vo.GoodsShelfInfoForEs;
 import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
@@ -106,6 +108,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     private ItemProductMapper itemProductMapper;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     /**
      * 系统上架一款商品
@@ -220,6 +225,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //8、图搜首图添加
         addImgToSearch(itemId,webSite, null ,tiny.getPicUrl(), 1);
+        GoodsShelfInfoForEs shelfInfo = new GoodsShelfInfoForEs();
+        shelfInfo.setGoodsId(itemId);
+        shelfInfo.setModified(tiny.getLoadDate());
+        shelfInfo.setOnShelfIs(true);
+        goodsAddToRedis.addGoodsOnShelfInfoToRedis(shelfInfo);
     }
 
     private void cleanItemCache(Long itemId) {
@@ -369,6 +379,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //8、图搜主图删除
         addImgToSearch(itemId,webSite,null, tiny.getPicUrl(), 0);
+        GoodsShelfInfoForEs info = new GoodsShelfInfoForEs();
+        info.setGoodsId(itemId);
+        info.setModified(soldout.getSoldoutTime());
+        info.setOnShelfIs(false);
+        goodsAddToRedis.addGoodsOnShelfInfoToRedis(info);
     }
 
     /**
@@ -648,13 +663,25 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguPropImgs shiguPropImgs = container.getShiguPropImgs();
         shiguPropImgs.setItemId(tiny.getGoodsId());
         shiguPropImgsMapper.insertSelective(shiguPropImgs);
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+        goodsCountForsearch.setWebSite(item.getWebSite());
+        goodsCountForsearch.setFabric(item.getFabric());
+        goodsCountForsearch.setInfabric(item.getInFabric());
+        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
+        shiguGoodsModified.setItemId(tiny.getGoodsId());
+        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
+            shiguGoodsModified.setHasSetPrice(1);
+        }
+        shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据
         ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
-//        ElasticRepository repository = new ElasticRepository();
+        //ElasticRepository repository = new ElasticRepository();
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-//        repository.insert(seb);
+        //repository.insert(seb);
         goodsAddToRedis.addToRedis(seb);
         sameItemUtilAddRemove(tiny, true);
         //添加首图到图搜

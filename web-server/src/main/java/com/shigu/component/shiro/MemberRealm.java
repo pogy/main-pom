@@ -60,7 +60,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //        PersonalSession ufs= (PersonalSession) getCacheObject(CacheEnum.MEMBERUSER_CACHE,tokens.getUsername()+"_"
 //                +tokens.getLoginFromType().getAccountType());
 //        if(ufs==null){//缓存不存在
-            PersonalSession ufs=userBaseService.selUserForSessionByUserName(tokens.getUsername(), tokens.getLoginFromType());
+            PersonalSession ufs=userBaseService.selUserForSessionByUserName(tokens.getUsername(),tokens.getSubKey(), tokens.getLoginFromType());
             if(ufs==null){
 //                throw new AuthenticationException("账号不存在");
                 //如果是星座类登陆,无法查出就扔异常

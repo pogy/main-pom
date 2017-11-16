@@ -127,6 +127,15 @@ public class ItemUpRecordVO implements Serializable{
      * 淘宝子类目id
      */
     private Long cid;
+    /**
+     * 档口下架
+     */
+    private Boolean shopSoldout;
+    /**
+     * 淘宝下架
+     */
+
+    private Boolean tbSoldout;
 
 
     public String getSupperImww() {
@@ -337,11 +346,29 @@ public class ItemUpRecordVO implements Serializable{
         this.fenNumiid = fenNumiid;
     }
 
+
+
     public Long getCid() {
         return cid;
     }
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public Boolean getShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout(Boolean shopSoldout) {
+        this.shopSoldout = shopSoldout;
+    }
+
+    public Boolean getTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout(Boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
     }
 }

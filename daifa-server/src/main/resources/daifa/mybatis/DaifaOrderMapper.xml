@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaOrderMapper" >
+    <resultMap id="BaseResultMap" type="com.opentae.data.daifa.beans.DaifaOrder" >
+        <id column="df_order_id" property="dfOrderId" jdbcType="DECIMAL" />
+        <result column="df_trade_id" property="dfTradeId" jdbcType="DECIMAL" />
+        <result column="market_id" property="marketId" jdbcType="DECIMAL" />
+        <result column="market_name" property="marketName" jdbcType="VARCHAR" />
+        <result column="floor_id" property="floorId" jdbcType="DECIMAL" />
+        <result column="floor_name" property="floorName" jdbcType="VARCHAR" />
+        <result column="store_id" property="storeId" jdbcType="DECIMAL" />
+        <result column="store_num" property="storeNum" jdbcType="VARCHAR" />
+        <result column="goods_id" property="goodsId" jdbcType="DECIMAL" />
+        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR" />
+        <result column="store_goods_code" property="storeGoodsCode" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+        <result column="prop_str" property="propStr" jdbcType="VARCHAR" />
+        <result column="goods_num" property="goodsNum" jdbcType="DECIMAL" />
+        <result column="goods_weight" property="goodsWeight" jdbcType="VARCHAR" />
+        <result column="cid" property="cid" jdbcType="DECIMAL" />
+        <result column="single_pi_price" property="singlePiPrice" jdbcType="VARCHAR" />
+        <result column="single_pay" property="singlePay" jdbcType="VARCHAR" />
+        <result column="single_price" property="singlePrice" jdbcType="VARCHAR" />
+        <result column="order_discount_fee" property="orderDiscountFee" jdbcType="VARCHAR" />
+        <result column="single_services_fee" property="singleServicesFee" jdbcType="VARCHAR" />
+        <result column="total_service_fee" property="totalServiceFee" jdbcType="VARCHAR" />
+        <result column="total_fee" property="totalFee" jdbcType="VARCHAR" />
+        <result column="order_status" property="orderStatus" jdbcType="DECIMAL" />
+        <result column="allocat_status" property="allocatStatus" jdbcType="DECIMAL" />
+        <result column="aggrement" property="aggrement" jdbcType="DECIMAL" />
+        <result column="print_barcode_status" property="printBarcodeStatus" jdbcType="DECIMAL" />
+        <result column="take_goods_status" property="takeGoodsStatus" jdbcType="DECIMAL" />
+        <result column="take_goods_date" property="takeGoodsDate" jdbcType="TIMESTAMP" />
+        <result column="cdkey" property="cdkey" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="last_do_time" property="lastDoTime" jdbcType="TIMESTAMP" />
+        <result column="bar_code_key_num" property="barCodeKeyNum" jdbcType="VARCHAR" />
+        <result column="trade_code" property="tradeCode" jdbcType="VARCHAR" />
+        <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+        <result column="order_partition_id" property="orderPartitionId" jdbcType="VARCHAR" />
+        <result column="stock_status" property="stockStatus" jdbcType="DECIMAL" />
+        <result column="stockout_cycle_status" property="stockoutCycleStatus" jdbcType="DECIMAL" />
+        <result column="order_remark" property="orderRemark" jdbcType="VARCHAR" />
+        <result column="gift_code" property="giftCode" jdbcType="VARCHAR" />
+        <result column="have_goods_date" property="haveGoodsDate" jdbcType="TIMESTAMP" />
+        <result column="delist_is" property="delistIs" jdbcType="DECIMAL" />
+        <result column="refund_id" property="refundId" jdbcType="DECIMAL" />
+        <result column="refund_status" property="refundStatus" jdbcType="DECIMAL" />
+        <result column="refund_apply_time" property="refundApplyTime" jdbcType="TIMESTAMP" />
+        <result column="re_cause" property="reCause" jdbcType="VARCHAR" />
+        <result column="refund_finish_time" property="refundFinishTime" jdbcType="TIMESTAMP" />
+        <result column="return_goods_status" property="returnGoodsStatus" jdbcType="DECIMAL" />
+        <result column="return_goods_fee" property="returnGoodsFee" jdbcType="VARCHAR" />
+        <result column="return_goods_apply_time" property="returnGoodsApplyTime" jdbcType="TIMESTAMP" />
+        <result column="return_goods_finish_time" property="returnGoodsFinishTime" jdbcType="TIMESTAMP" />
+        <result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
+        <result column="change_status" property="changeStatus" jdbcType="DECIMAL" />
+        <result column="change_reason" property="changeReason" jdbcType="VARCHAR" />
+        <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+        <result column="remark2" property="remark2" jdbcType="VARCHAR" />
+        <result column="refund_money_has_item" property="refundMoneyHasItem" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="statisGoodsbyGoods" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.examples.DaifaOrderExample">
+        select DISTINCT count(goods_num) as goodsNum, market_id,market_name,floor_name,store_id,store_num,goods_id,goods_code,
+        store_goods_code,title,single_pi_price
+        from daifa_order  where 1=1
+        <if test="takegoodstatus!=null">
+            AND take_goods_status=#{takegoodstatus}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND create_time >=#{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND create_time &lt;=#{endTime}
+        </if>
+        group by goods_id
+        order by goodsNum desc,market_id asc,floor_name asc,store_num asc ,goods_id asc
+        LIMIT #{startIndex},#{endIndex}
+    </select>
+
+    <select id="countStatisGoodsbyGoods" resultType="java.lang.Integer" parameterType="com.opentae.data.daifa.examples.DaifaOrderExample">
+        select count(a1.market_id) from
+        (
+        select DISTINCT count(goods_num) as goodsNum, market_id,market_name,floor_name,store_id,store_num,goods_id,goods_code,
+        store_goods_code,title,single_pi_price
+        from daifa_order  where 1=1
+        <if test="takegoodstatus!=null">
+            AND take_goods_status=#{takegoodstatus}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND create_time >=#{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND create_time &lt;=#{endTime}
+        </if>
+        group by goods_id
+        ) a1
+    </select>
+
+
+    <select id="statisGoodsByStoreNum" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.examples.DaifaOrderExample">
+        select DISTINCT count(goods_num) as goodsNum, market_id,market_name,floor_name,store_id,store_num
+        from daifa_order  where 1=1
+
+        <if test="takegoodstatus!=null">
+            AND take_goods_status=#{takegoodstatus}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND create_time >=#{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND create_time &lt;=#{endTime}
+        </if>
+
+        group by store_num
+        order by goodsNum desc,market_id asc,floor_name asc,store_num asc
+        LIMIT #{startIndex},#{endIndex}
+    </select>
+
+
+    <select id="countStatisGoodsByStoreNum" resultType="java.lang.Integer" parameterType="com.opentae.data.daifa.examples.DaifaOrderExample">
+        select count(a1.market_id) from
+        (
+        select DISTINCT count(goods_num) as goodsNum, market_id,market_name,floor_name,store_id,store_num
+        from daifa_order  where 1=1
+        <if test="takegoodstatus!=null">
+            AND take_goods_status=#{takegoodstatus}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND create_time >=#{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND create_time &lt;=#{endTime}
+        </if>
+        group by store_num
+        ) a1
+    </select>
+</mapper>

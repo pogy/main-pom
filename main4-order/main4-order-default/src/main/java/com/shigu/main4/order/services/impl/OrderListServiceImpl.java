@@ -13,6 +13,7 @@ import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -83,6 +84,7 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     @Override
+    @Cacheable(value = "expressLogCache",key = "#orderId")
     public OrderDetailExpressVO selectExpress (Long orderId) throws Main4Exception, ParseException {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
         ExpressInfoVO expressInfoVO = itemOrderService.expressInfo(orderId);
