@@ -57,6 +57,11 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     public void init() throws LogisticsRuleException {
         if (this.templateId != null) {
             this.senderId = templateInfo().getSenderId();
+            com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
+            logisticsTemplate.setSenderId(-1L);
+            logisticsTemplate.setEnabled(true);
+            logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
+            defaultTemplateId = logisticsTemplate.getTemplateId();
         } else if (senderId != null){
             com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
             logisticsTemplate.setSenderId(senderId);
@@ -159,7 +164,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     private List<BournRuleInfoVO> defaultRule() throws LogisticsRuleException {
         //默认模板为可以为梯度模板
         LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
-        ruleExample.createCriteria().andTemplateIdEqualTo(templateId).andImDefaultEqualTo(true);
+        ruleExample.createCriteria().andTemplateIdEqualTo(defaultTemplateId).andImDefaultEqualTo(true);
         List<LogisticsTemplateRule> defaultRules=logisticsTemplateRuleMapper.selectByExample(ruleExample);
         if (defaultRules == null || defaultRules.isEmpty()) {
             throw new LogisticsRuleException("物流规则出错");
@@ -263,7 +268,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         List<Long> ruleIds = BeanMapper.getFieldList(bournRuleInfoVOS,"ruleId",Long.class);
 
         LogisticsTemplateCompanyExample example = new LogisticsTemplateCompanyExample();
-        example.createCriteria().andRuleIdIn(ruleIds).andTemplateIdEqualTo(templateId);
+        example.createCriteria().andRuleIdIn(ruleIds).andTemplateIdEqualTo(defaultTemplateId);
         List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(example);
         if (logisticsTemplateCompanies == null || logisticsTemplateCompanies.isEmpty()) {
             throw new LogisticsRuleException(String.format("无默认快递信息; provId[%d],senderId[%d]", provId, senderId));
