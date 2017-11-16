@@ -40,9 +40,31 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     @Autowired
     private MultipleMapper multipleMapper;
 
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
+
+    @Autowired
+    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
     }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+
 
     /**
      * 根据发货机构id构造
@@ -55,54 +77,35 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     @PostConstruct
     public void init() throws LogisticsRuleException {
-        if (this.templateId != null) {
-            this.senderId = templateInfo().getSenderId();
+        if(this.templateId==null&&this.senderId==null){
+            throw new LogisticsRuleException("处始化失败，入参 templateId,senderId 为Null");
+        }
+
+        if (defaultTemplateId == null) {
             com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
             logisticsTemplate.setSenderId(-1L);
-            logisticsTemplate.setEnabled(true);
             logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
             defaultTemplateId = logisticsTemplate.getTemplateId();
-        } else if (senderId != null){
+        }
+        if (this.templateId != null) {
+            this.senderId = templateInfo().getSenderId();
+        } else{
             com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
             logisticsTemplate.setSenderId(senderId);
             logisticsTemplate.setEnabled(true);
             List<com.opentae.data.mall.beans.LogisticsTemplate> logisticsTemplates = logisticsTemplateMapper.select(logisticsTemplate);
             if (logisticsTemplates.isEmpty()) { // 没有所选发货机构则采用 系统默认运费模板
-                if (defaultTemplateId == null) {
-                    logisticsTemplate.setSenderId(-1L);
-                    logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
-                    defaultTemplateId = logisticsTemplate.getTemplateId();
-                }
                 templateId = defaultTemplateId;
                 senderId = -1L;
             } else {
                 logisticsTemplate = logisticsTemplates.get(0);
                 templateId = logisticsTemplate.getTemplateId();
             }
-        } else {
-            throw new LogisticsRuleException("处始化失败，入参 templateId,senderId 为Null");
         }
     }
 
-    public Long getTemplateId() {
-        return templateId;
-    }
 
-    public Long getSenderId() {
-        return senderId;
-    }
 
-    @Autowired
-    private LogisticsTemplateMapper logisticsTemplateMapper;
-
-    @Autowired
-    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
-
-    @Autowired
-    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
-
-    @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
 
 
     @Override
