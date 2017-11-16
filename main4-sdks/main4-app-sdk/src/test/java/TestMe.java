@@ -25,6 +25,17 @@ public class TestMe {
 //        System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
         System.out.println(response.getBody());
     }
+    @Test
+    public void  WxLoginRequest (){
+        OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
+        WxLoginRequest request=new WxLoginRequest ();
+        request.setNickname("卐逍遥情羽卍");
+        request.setUnionid("1_oGXmPt-FFvooaQmz5EUu20Ijdu-g");
+        WxLoginResponse response = client.execute(request);
+        // System.out.println(response.getUsers().getUserId());//1000085908
+//        System.out.println(response.getUsers().getToken());//865c7c17a0374c11950f1946926d48b0
+        System.out.println(response.getBody());
+    }
 
     //修改密码
     @Test
@@ -81,11 +92,11 @@ public class TestMe {
     public void  BindUserRequest (){
         OpenClient client=new PcOpenClient("3838438","37456A6A5CA10F9A988F12BFECD88575","test");
         BindUserRequest   request=new BindUserRequest  ();
-        request.setTempId("680625629");
+        request.setTempId("1_oGXmPt-FFvooaQmz5EUu20Ijdu-g");
         request.setTelephone("17637503238");
-        request.setCode("112028");
-        request.setType("TAOBAO");
-        request.setUserNick("tb9950563");
+        request.setCode("856093");
+        request.setType("WX");
+        request.setUserNick("卐逍遥情羽卍");
         BindUserResponse response = client.execute(request);
         System.out.println(response.getBody());
     }
