@@ -364,14 +364,15 @@ public class BasePhoneUserService {
             openException.setErrMsg(e.getMessage());
             throw openException;
         }
-        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(), rds3TempUser.getLoginFromType());
+        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(),rds3TempUser.getSubUserKey(), rds3TempUser.getLoginFromType());
 
         bindUserVO.setUserNick(personalSession.getUserNick());
         bindUserVO.setImgsrc(ImgUtils.formatImg(personalSession.getHeadUrl(),ImgFormatEnum.HEAD));
         boolean isSeller = personalSession.getLogshop() != null || (personalSession.getOtherShops() != null && personalSession.getOtherShops().size() > 0);
         bindUserVO.setImSeller(isSeller);
         //token
-        bindUserVO.setToken(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token"));
+
+        bindUserVO.setToken(TokenUtil.str2HexStr(phoneUserService.createToken(personalSession.getUserId(),"phone_login_token")));
         return bindUserVO;
     }
 
