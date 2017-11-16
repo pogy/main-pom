@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrderv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
     
 
     
@@ -32,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrderv1.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js"></script>
     
 </head>
 <body>
@@ -755,6 +756,12 @@ var webSite = '${webSite!}';
     
         checked
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -785,6 +792,13 @@ var webSite = '${webSite!}';
         
         
             checked
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 

@@ -40,9 +40,31 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     @Autowired
     private MultipleMapper multipleMapper;
 
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
+
+    @Autowired
+    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
     }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+
 
     /**
      * 根据发货机构id构造
@@ -55,49 +77,35 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     @PostConstruct
     public void init() throws LogisticsRuleException {
+        if(this.templateId==null&&this.senderId==null){
+            throw new LogisticsRuleException("处始化失败，入参 templateId,senderId 为Null");
+        }
+
+        if (defaultTemplateId == null) {
+            com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
+            logisticsTemplate.setSenderId(-1L);
+            logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
+            defaultTemplateId = logisticsTemplate.getTemplateId();
+        }
         if (this.templateId != null) {
             this.senderId = templateInfo().getSenderId();
-        } else if (senderId != null){
+        } else{
             com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
             logisticsTemplate.setSenderId(senderId);
             logisticsTemplate.setEnabled(true);
             List<com.opentae.data.mall.beans.LogisticsTemplate> logisticsTemplates = logisticsTemplateMapper.select(logisticsTemplate);
             if (logisticsTemplates.isEmpty()) { // 没有所选发货机构则采用 系统默认运费模板
-                if (defaultTemplateId == null) {
-                    logisticsTemplate.setSenderId(-1L);
-                    logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
-                    defaultTemplateId = logisticsTemplate.getTemplateId();
-                }
                 templateId = defaultTemplateId;
                 senderId = -1L;
             } else {
                 logisticsTemplate = logisticsTemplates.get(0);
                 templateId = logisticsTemplate.getTemplateId();
             }
-        } else {
-            throw new LogisticsRuleException("处始化失败，入参 templateId,senderId 为Null");
         }
     }
 
-    public Long getTemplateId() {
-        return templateId;
-    }
 
-    public Long getSenderId() {
-        return senderId;
-    }
 
-    @Autowired
-    private LogisticsTemplateMapper logisticsTemplateMapper;
-
-    @Autowired
-    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
-
-    @Autowired
-    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
-
-    @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
 
 
     @Override
@@ -127,11 +135,24 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 bournRuleInfoVOS.add(BeanMapper.map(ruleInfoVO,BournRuleInfoVO.class));
             }
         }else {
-            //取不到对应的，要拿默认规则
+            //取不到对应的，要拿默认规则,只取companyId对应的规则
             bournRuleInfoVOS = defaultRule();
-            for (BournRuleInfoVO bournRuleInfoVO : bournRuleInfoVOS){
-                bournRuleInfoVO.setCompanyId(companyId);
-                bournRuleInfoVO.setProvId(provId);
+            companyExample.clear();
+            companyExample.createCriteria().andCompanyIdEqualTo(companyId);
+            List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(companyExample);
+            List<Long> ruleIds = BeanMapper.getFieldList(logisticsTemplateCompanies, "ruleId", Long.class);
+            bournRuleInfoVOS = bournRuleInfoVOS
+                    .stream()
+                    .filter(bournRuleInfoVO -> ruleIds.contains(bournRuleInfoVO.getRuleId()))
+                    .map(bournRuleInfoVO->{
+                        bournRuleInfoVO.setCompanyId(companyId);
+                        bournRuleInfoVO.setProvId(provId);
+                        return bournRuleInfoVO;
+                    })
+                    .collect(Collectors.toList());
+
+            if (bournRuleInfoVOS == null || bournRuleInfoVOS.isEmpty()) {
+                throw new LogisticsRuleException(String.format("无默认快递规则;companyId[%d]", companyId));
             }
 
         }
@@ -146,7 +167,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     private List<BournRuleInfoVO> defaultRule() throws LogisticsRuleException {
         //默认模板为可以为梯度模板
         LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
-        ruleExample.createCriteria().andTemplateIdEqualTo(templateId).andImDefaultEqualTo(true);
+        ruleExample.createCriteria().andTemplateIdEqualTo(defaultTemplateId).andImDefaultEqualTo(true);
         List<LogisticsTemplateRule> defaultRules=logisticsTemplateRuleMapper.selectByExample(ruleExample);
         if (defaultRules == null || defaultRules.isEmpty()) {
             throw new LogisticsRuleException("物流规则出错");
@@ -257,7 +278,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         List<Long> ruleIds = BeanMapper.getFieldList(bournRuleInfoVOS,"ruleId",Long.class);
 
         LogisticsTemplateCompanyExample example = new LogisticsTemplateCompanyExample();
-        example.createCriteria().andRuleIdIn(ruleIds).andTemplateIdEqualTo(templateId);
+        example.createCriteria().andRuleIdIn(ruleIds).andTemplateIdEqualTo(defaultTemplateId);
         List<LogisticsTemplateCompany> logisticsTemplateCompanies = logisticsTemplateCompanyMapper.selectByExample(example);
         if (logisticsTemplateCompanies == null || logisticsTemplateCompanies.isEmpty()) {
             throw new LogisticsRuleException(String.format("无默认快递信息; senderId[%d]", senderId));
