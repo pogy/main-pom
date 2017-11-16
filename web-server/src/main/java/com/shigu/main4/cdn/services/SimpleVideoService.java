@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 /**
  * 类名：SimpleVideoService
@@ -42,7 +43,7 @@ public class SimpleVideoService {
             urlConnection.connect();
             BufferedInputStream bufIn = new BufferedInputStream(urlConnection.getInputStream());
             ServletOutputStream out = resp.getOutputStream();
-            resp.addHeader("Content-Disposition",String.format("attachment;filename=%s-%s-%s-%d%s",shopInfoVO.getMarketName(),shopInfoVO.getShopNo(),cdnItem.getHuohao(),goodsId,fileFormat));
+            resp.addHeader("Content-Disposition","attachment;filename="+ URLEncoder.encode(String.format("%s-%s-%s-%d%s",shopInfoVO.getMarketName(),shopInfoVO.getShopNo(),cdnItem.getHuohao(),goodsId,fileFormat),"UTF-8"));
             byte[] bytes = new byte[8096];
             int readLen = -1;
             while ((readLen = bufIn.read(bytes))>-1){
