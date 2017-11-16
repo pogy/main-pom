@@ -738,7 +738,7 @@ var hasYt = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图下载
         <b class="btn btn-lg oneKeyUp hover" data-goodsid="${goodsInfo.goodsId!}">一键上传</b>
         
         <#if goodsInfo.goodsVideoUrl??>
-        <b class="btn btn-lg hover videoDownload" id="downloadGoodsVideo" data-videourl="downloadVideo?id=${goodsInfo.goodsId!}" data-goodsid="${goodsInfo.goodsId!}">视频下载</b>
+        <b class="btn btn-lg hover videoDownload" id="downloadGoodsVideo" data-videourl="downloadVideo.json?id=${goodsInfo.goodsId!}" data-goodsid="${goodsInfo.goodsId!}">视频下载</b>
         </#if>
         
         
