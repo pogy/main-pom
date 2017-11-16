@@ -28,10 +28,6 @@ public class PayProcessImpl implements PayProcess{
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
-
-
-
-
     @Override
     public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
         canPayApply(orderId);
