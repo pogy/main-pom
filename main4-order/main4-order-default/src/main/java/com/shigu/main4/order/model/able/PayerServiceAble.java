@@ -6,11 +6,11 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.OrderPayApplyRelationExample;
 import com.opentae.data.mall.examples.OrderPayExample;
 import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +58,9 @@ public abstract class PayerServiceAble implements PayerService{
 
     @Autowired
     protected OrderPayApplyRelationMapper orderPayApplyRelationMapper;
+
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     @Override
     public Long payedLeft(Long payId) {
@@ -169,7 +173,20 @@ public abstract class PayerServiceAble implements PayerService{
      * @param oids
      * @return
      */
-    protected OrderPayApply payApplyPrepare(Long userId,Long money,PayType type,Long[] oids){
+    protected OrderPayApply payApplyPrepare(Long userId,Long money,PayType type,Long[] oids) throws PayApplyException {
+        List<Long> oidsList = Arrays.asList(oids);
+        //先确定是否已经有支付完成订单
+        OrderPayRelationshipExample payedExample = new OrderPayRelationshipExample();
+        payedExample.createCriteria().andOidIn(oidsList);
+        List<OrderPayRelationship> alreadPayed = orderPayRelationshipMapper.selectByExample(payedExample);
+        if (alreadPayed.size()>0) {
+            throw new PayApplyException("订单:"+StringUtils.join(alreadPayed.stream().map(OrderPayRelationship::getOid).collect(Collectors.toList()), ",")+"已支付");
+        }
+        ItemOrderExample itemOrderExample = new ItemOrderExample();
+        itemOrderExample.createCriteria().andOidIn(oidsList).andOrderStatusEqualTo(5);
+        if (itemOrderMapper.countByExample(itemOrderExample)>0) {
+            throw new PayApplyException("有已经关闭订单");
+        }
         OrderPayApply apply = new OrderPayApply();
 //        apply.setOid(oid);
         apply.setMoney(money);
@@ -192,4 +209,26 @@ public abstract class PayerServiceAble implements PayerService{
     public PayApplyVO selApply(Long applyId) {
         return BeanMapper.map(orderPayApplyMapper.selectByPrimaryKey(applyId), PayApplyVO.class);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void refund(Long payId, Long money) throws PayerException {
+        OrderPay orderPay;
+        if (payId == null || (orderPay = orderPayMapper.selectByPrimaryKey(payId)) == null) {
+            throw new PayerException(String.format("支付记录不存在。 payId[%d]", payId));
+        }
+        if (money <= 0 || payedLeft(payId) < money) {
+            throw new PayerException(String.format("可退金额不足.payId[%d], money[%d]", payId, money));
+        }
+        if (System.currentTimeMillis() - orderPay.getCreateTime().getTime() > 365 * 24 * 3600 * 1000L) {
+            throw new PayerException("支付完成超过一年的订单无法退款");
+        }
+        realRefund(orderPay,money);
+        OrderPay pay = new OrderPay();
+        pay.setPayId(orderPay.getPayId());
+        pay.setRefundMoney(orderPay.getRefundMoney() + money);
+        orderPayMapper.updateByPrimaryKeySelective(pay);
+    }
+
+    protected abstract void realRefund(OrderPay orderPay, Long money) throws PayerException;
 }

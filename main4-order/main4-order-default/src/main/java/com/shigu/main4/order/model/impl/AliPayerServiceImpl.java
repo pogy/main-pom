@@ -7,25 +7,17 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
-import com.opentae.data.mall.beans.OrderPayApplyRelation;
-import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
-import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.able.PayerServiceAble;
 import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 支付宝支付
@@ -78,26 +70,8 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void refund(Long payId, Long money) throws PayerException  {
-        OrderPay orderPay;
-        if (payId == null || (orderPay = orderPayMapper.selectByPrimaryKey(payId)) == null) {
-            throw new PayerException(String.format("支付记录不存在。 payId[%d]", payId));
-        }
-        if (money <= 0 || payedLeft(payId) < money) {
-            throw new PayerException(String.format("可退金额不足.payId[%d], money[%d]", payId, money));
-        }
-        if (System.currentTimeMillis() - orderPay.getCreateTime().getTime() > 365 * 24 * 3600 * 1000L) {
-            throw new PayerException("支付完成超过一年的订单无法退款");
-        }
-
-        //TODO: call alipay refund
+    protected void realRefund(OrderPay orderPay, Long money) throws PayerException {
         alipayRefund(orderPay, money);
-
-        OrderPay pay = new OrderPay();
-        pay.setPayId(orderPay.getPayId());
-        pay.setRefundMoney(orderPay.getRefundMoney() + money);
-        orderPayMapper.updateByPrimaryKeySelective(pay);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.shigu.main4.order.model.impl;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
 import com.opentae.data.mall.beans.SubOrderSoidps;
-import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.*;
@@ -11,7 +10,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundSubInfo;
-import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -385,6 +383,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
         // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
         Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
+        if (!checkOrderLeftMoneyEnough(refundinfo.getOid(),money)) {
+            throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
+        }
         ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
         List<PayedVO> payedVOS = itemOrder.payedInfo();
         for (PayedVO payedVO : payedVOS) {
@@ -461,6 +462,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         if (subOrderSoidps.getAlreadyRefund() != null && subOrderSoidps.getAlreadyRefund()) {
             throw new RefundException(String.format("子单%d已经进行过退款", psoid));
         }
+        if (!checkOrderLeftMoneyEnough(refundinfo.getOid(),money)) {
+            throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
+        }
         subOrderSoidps.setAlreadyRefund(true);
         subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
         for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
@@ -483,6 +487,18 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             }
         }
     }
+
+    /**
+     * 检测订单目前可退金额是否足够
+     * @param oid
+     * @param hopeRefundMoney
+     * @return
+     */
+    private boolean checkOrderLeftMoneyEnough(Long oid,Long hopeRefundMoney){
+        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectByPrimaryKey(oid);
+        return itemOrder.getPayedFee() - itemOrder.getRefundFee()>=hopeRefundMoney;
+    }
+
 
     @Override
     public void finishExchange() {
