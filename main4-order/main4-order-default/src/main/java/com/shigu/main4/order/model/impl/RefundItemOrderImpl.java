@@ -1,8 +1,7 @@
 package com.shigu.main4.order.model.impl;
 
-import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.beans.ItemRefundLog;
-import com.opentae.data.mall.beans.SubOrderSoidps;
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.*;
@@ -67,6 +66,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private SubOrderSoidpsMapper subOrderSoidpsMapper;
+
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -454,6 +456,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Override
     public void refundHasItem(Long psoid, Long money) throws PayerException, RefundException {
+        Long refundMoney = money;
         RefundVO refundinfo = refundinfo();
         if (refundinfo.getType() != 5) {
             throw new RefundException("一般退款不经过系统退款流程");
@@ -467,22 +470,44 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         }
         subOrderSoidps.setAlreadyRefund(true);
         subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+        boolean refundLogistics = false;
+        ItemOrderSub itemOrderSub = new ItemOrderSub();
+        itemOrderSub.setOid(refundinfo.getOid());
+        List<ItemOrderSub> subOrders = itemOrderSubMapper.select(itemOrderSub);
+        //订单总商品数
+        int totalGoodsNum = subOrders.stream().mapToInt(ItemOrderSub::getNum).sum();
+        //订单发出前已退商品数
+        int refundedGoodsNum = 0;
+        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+        itemOrderRefundExample.createCriteria().andOidEqualTo(refundinfo.getOid()).andStatusEqualTo(2).andTypeIn(Lists.newArrayList(1,4));
+        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+        if (itemOrderRefunds.size()>0) {
+            refundedGoodsNum+=itemOrderRefunds.stream().mapToInt(o-> o.getNumber() - o.getFailNumber()).sum();
+        }
+        refundedGoodsNum+=itemOrderRefundMapper.selectByPrimaryKey(refundId).getNumber();
+        if (totalGoodsNum == refundedGoodsNum + 1) {
+            refundLogistics = true;
+            ItemOrderLogistics itemOrderLogistics = new ItemOrderLogistics();
+            itemOrderLogistics.setOid(refundinfo.getOid());
+            itemOrderLogistics = itemOrderLogisticsMapper.selectOne(itemOrderLogistics);
+            refundMoney += itemOrderLogistics.getMoney();
+        }
         for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
-            if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
-                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(), money);
-                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, String.format("拆单%d退款成功，退款金额%.2f元", psoid, money * 0.01));
+            if (payedVO.getMoney() - payedVO.getRefundMoney() >= refundMoney) {
+                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(), refundMoney);
+                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, String.format("拆单%d退款成功，退款金额%.2f元", psoid, refundMoney * 0.01)+(refundLogistics?String.format("含快递费%.2f",(refundMoney-money)*0.01):""));
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundinfo.getRefundId());
                 //退钱数
-                itemOrderRefund.setRefundMoney(refundinfo.getRefundMoney() + money);
+                itemOrderRefund.setRefundMoney(refundinfo.getRefundMoney() + refundMoney);
                 //本种类型特殊处理，退成功数量用number记录，总申请数用failNum记录
                 itemOrderRefund.setNumber(refundinfo.getNumber() + 1);
                 //退成功时减少申请总数
                 //itemOrderRefund.setFailNumber(refundinfo.getFailNumber()-1);
                 itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
-                itemOrderMapper.addRefundMoney(refundinfo.getOid(), money);
+                itemOrderMapper.addRefundMoney(refundinfo.getOid(), refundMoney);
                 if (refundinfo.getSoid() != null) {
-                    itemOrderSubMapper.addRefundMoney(refundinfo.getSoid(), money);
+                    itemOrderSubMapper.addRefundMoney(refundinfo.getSoid(), refundMoney);
                 }
             }
         }
