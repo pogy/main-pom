@@ -390,8 +390,13 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         List<PayedVO> payedVOS = itemOrder.payedInfo();
         for (PayedVO payedVO : payedVOS) {
             if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
-                SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
-                        .refund(payedVO.getPayId(), money);
+                try {
+                    SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
+                            .refund(payedVO.getPayId(), money);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                }
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundId);

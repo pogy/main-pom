@@ -153,16 +153,19 @@ public abstract class PayerServiceAble implements PayerService{
         OrderPayApplyRelationExample orderPayApplyRelationExample=new OrderPayApplyRelationExample();
         orderPayApplyRelationExample.createCriteria().andApplyIdEqualTo(apply.getApplyId());
         List<OrderPayApplyRelation> orderPayApplyRelations=orderPayApplyRelationMapper.selectByExample(orderPayApplyRelationExample);
-
+        Long payId=orderPay.getPayId();
         List<OrderPayRelationship> relationships=orderPayApplyRelations.stream()
                 .map(orderPayApplyRelation -> {
                     OrderPayRelationship relationship = new OrderPayRelationship();
                     relationship.setOid(orderPayApplyRelation.getOid());
-                    relationship.setPayId(orderPayApplyRelation.getApplyId());
+                    relationship.setPayId(payId);
                     return relationship;
                 }).collect(Collectors.toList());
-
-        orderPayRelationshipMapper.insertListNoId(relationships);
+        for(OrderPayRelationship r:relationships){
+            orderPayRelationshipMapper.insertSelective(r);
+        }
+        System.out.println(relationships.get(0).getRid());
+//        orderPayRelationshipMapper.insertListNoId(relationships);
         return orderPay.getPayId();
     }
 
