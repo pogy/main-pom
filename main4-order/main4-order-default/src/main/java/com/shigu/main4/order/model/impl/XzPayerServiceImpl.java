@@ -4,6 +4,10 @@ import com.openJar.requests.sgpay.RefundRequest;
 import com.openJar.responses.sgpay.RefundResponse;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayRelationship;
+import com.opentae.data.mall.examples.OrderPayExample;
+import com.opentae.data.mall.examples.OrderPayRelationshipExample;
+import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
@@ -33,6 +37,8 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
     @Autowired
     private XzSdkClient xzSdkClient;
+    @Autowired
+    OrderPayRelationshipMapper orderPayRelationshipMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,8 +66,13 @@ public class XzPayerServiceImpl extends PayerServiceAble {
     }
 
     private void XzRefund(OrderPay orderPay, int refundFee) throws PayerException {
-        OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
-        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
+        OrderPayExample orderPayExample=new OrderPayExample();
+        orderPayExample.createCriteria().andApplyIdEqualTo(orderPay.getApplyId());
+        List<OrderPay> orderPays=orderPayMapper.selectByExample(orderPayExample);
+        OrderPayRelationshipExample orderPayRelationshipExample=new OrderPayRelationshipExample();
+        orderPayRelationshipExample.createCriteria().andPayIdEqualTo(orderPays.get(0).getPayId());
+        List<OrderPayRelationship> oprs= orderPayRelationshipMapper.selectByExample(orderPayRelationshipExample);
+        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, oprs.get(0).getOid());
         if (itemOrder == null || itemOrder.selSender() == null) {
             throw new PayerException("星座支付退款失败， 无法获取对应代发资金分组：payId=" + orderPay.getPayId());
         }
