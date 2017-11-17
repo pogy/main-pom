@@ -141,6 +141,22 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         return null;
     }
+
+    /**
+     * 查询是否是分销商vip
+     * @param userId
+     * @return
+     */
+    private boolean isMemberVip(Long userId){
+        if (userId == null) {
+            return false;
+        }
+        MemberLicense condition = new MemberLicense();
+        condition.setUserId(userId);
+        condition.setLicenseType(MemberLicenseType.MEMBER_VIP.getValue());
+        condition.setLicenseFailure(1);
+        return memberLicenseMapper.selectCount(condition)>0;
+    }
     /**
      * 包装personalSession
      * @param memberUser
@@ -170,6 +186,7 @@ public class UserBaseServiceImpl implements UserBaseService {
         } catch (Exception ignored) {
         }
         ps.getOtherPlatform().put(OtherPlatformEnum.MORE_ORDER.getValue(),isMoreOrder);
+        ps.getOtherPlatform().put(OtherPlatformEnum.MEMBER_VIP.getValue(),isMemberVip(memberUserSub.getUserId()));
         return ps;
     }
     /**
