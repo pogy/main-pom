@@ -244,10 +244,12 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
-        List<SearchCheckd> checkds=null;
+        List<SearchCheckd> checkds=new ArrayList<>();
         if(bo.getBpic()!=null&&bo.getBpic()==1){
-            checkds=new ArrayList<>();
             checkds.add(SearchCheckd.BIGZIP);
+        }
+        if (Objects.equals(1,bo.getGoodsVideo())) {
+            checkds.add(SearchCheckd.VIDEO);
         }
         ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 checkds,//大图

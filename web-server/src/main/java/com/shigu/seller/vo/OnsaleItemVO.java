@@ -72,6 +72,10 @@ public class OnsaleItemVO {
     private Integer saleCount;
     //已设置的最低零售价
     private String lowestLiPrice;
+    //主图视频
+    private String goodsVideoUrl;
+    //是否已设置主图视频 2已设置
+    private Integer goodsVideoType;
 
     public void setType(String type) {
         this.type = type;
@@ -126,6 +130,8 @@ public class OnsaleItemVO {
         this.setFabric(onsaleItem.getFabric());
         this.setInFabric(onsaleItem.getInFabric());
         this.setConstituentType(onsaleItem.getConstituentType());
+        this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
+        this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }
@@ -381,5 +387,21 @@ public class OnsaleItemVO {
 
     public void setLowestLiPrice(String lowestLiPrice) {
         this.lowestLiPrice = lowestLiPrice;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
+    }
+
+    public Integer getGoodsVideoType() {
+        return goodsVideoType;
+    }
+
+    public void setGoodsVideoType(Integer goodsVideoType) {
+        this.goodsVideoType = goodsVideoType;
     }
 }

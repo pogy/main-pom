@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -481,6 +481,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setGoodsVideoUrl(otherInfo.getVideoUrl());
                     item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
@@ -556,4 +557,53 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         hasModified.setHasSetPrice(1);
         return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
+
+    @Override
+    public void setGoodsVideo(Long shopId, String webSite, Long goodsId, String goodsVideoUrl, boolean linkSameGoodsNo) throws JsonErrException {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny.setStoreId(shopId);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        List<Long> goodsIds = new ArrayList<>();
+        if (tiny != null) {
+            if (!tiny.getStoreId().equals(shopId)) {
+                throw new JsonErrException("只能操作本店铺商品");
+            }
+            if (linkSameGoodsNo && StringUtils.isNotBlank(tiny.getGoodsNo())) {
+                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+                example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
+                example.setWebSite(webSite);
+                goodsIds.addAll(shiguGoodsTinyMapper.selectByExample(example).stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
+            } else {
+                goodsIds.add(goodsId);
+            }
+        }
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setVideoUrl(goodsVideoUrl);
+        goodsCountForsearch.setHadVideo(1);
+        GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+        example.createCriteria().andGoodsIdIn(goodsIds);
+        goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch,example);
+        List<Long> existedGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
+        goodsIds.removeAll(existedGoodsIds);
+        if (goodsIds.size()>0) {
+            goodsCountForsearch.setWebSite(webSite);
+            goodsCountForsearch.setClick(0L);
+            goodsCountForsearch.setClickIp(0L);
+            goodsCountForsearch.setTrade(0L);
+            goodsCountForsearch.setUp(0L);
+            goodsCountForsearch.setUpMan(0L);
+            goodsCountForsearch.setHadGoat(0);
+            goodsCountForsearch.setHadBigzip(0);
+            List<GoodsCountForsearch> insertSearch = new ArrayList<>(goodsIds.size());
+            for (Long id : goodsIds) {
+                GoodsCountForsearch copy = BeanMapper.map(goodsCountForsearch,GoodsCountForsearch.class);
+                copy.setGoodsId(id);
+                insertSearch.add(copy);
+            }
+            goodsCountForsearchMapper.insertListNoId(insertSearch);
+        }
+    }
+
 }

@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init1.css?t=1510038717507" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1510725483147" rel="stylesheet">
     
   </head>
 <body>
@@ -77,7 +77,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -110,7 +110,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -273,6 +273,8 @@ var webSite = '${webSite!}';
                 </li>
             </ul>
         </div>
+        
+        
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
             <input type="hidden" id="state" value="${query.state!}">
@@ -293,8 +295,9 @@ var webSite = '${webSite!}';
                 </li>
                 <li class="price">批发价</li>
                 <li class="lowestPrice">最低零售价</li>
-                <li class="constituent">材料成分</li>
-                <li class="bigPicCorrelate">大图关联</li>
+                <li class="setAttr">属性设置</li>
+                <!--<li class="constituent">材料成分</li>
+                <li class="bigPicCorrelate">大图关联</li>-->
                 <li class="saleCount">总销量</li>
                 <li class="upcount">上货量</li>
                 <li class="control">操作</li>
@@ -340,7 +343,31 @@ var webSite = '${webSite!}';
                 <li class="lowestPrice">
                     <p class="p3"><span>${item.lowestLiPrice!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
                 </li>
-                <li class="constituent">
+                <li class="setAttr">
+                    <div class="">
+                        <ul class="clearfix">
+                            <li>
+                                <b jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}">
+                                    <i class="icon-lgImg <#if item.correlateType == 2>setted</#if>"></i>
+                                    大图商品
+                                </b>
+                            </li>
+                            <li>
+                                <b jbtn="setConstituentBtn" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}">
+                                    <i class="icon-materials <#if item.constituentType == 2>setted</#if>"></i>
+                                    材料成分
+                                </b>
+                            </li>
+                            <li>
+                                <b jbtn="setGoodsVideo" data-goodsVideoUrl="${item.goodsVideoUrl!}" data-linkSameGoodsNo="${item.linkSameGoodsNo!}">
+                                    <i class="icon-video <#if item.goodsVideoType == 2>setted</#if>"></i>
+                                    主图视频
+                                </b>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!--<li class="constituent">
                     <p>
                         <#if item.constituentType == 1>
                         <span>未设置</span>
@@ -361,7 +388,7 @@ var webSite = '${webSite!}';
                         
                         <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
                     </p>
-                </li>
+                </li>-->
                 <li class="saleCount">${item.saleCount!}</li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
@@ -417,6 +444,7 @@ var allStyleCate = '${allStyleCate!}';
         
         
         
+        
     </div>
     
 </div>
@@ -452,7 +480,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init1.js?t=1510038717507"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1510725483147"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

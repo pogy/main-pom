@@ -315,6 +315,7 @@ public class CdnService {
         vo.setPostTime(cdnItem.getListTime());
         vo.setTitle(cdnItem.getTitle());
         vo.setTbGoodsId(cdnItem.getTbNumIid());
+        vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
         if(cdnItem.getDescription()!=null){
             vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")

@@ -96,7 +96,10 @@ public class CdnGoodsInfoVO {
      * 最低零售价
      */
     private String lowestLiPrice;
-
+    /**
+     * 主图视频地址
+     */
+    private String goodsVideoUrl;
 
     /**
      * 获取 商品ID
@@ -380,5 +383,13 @@ public class CdnGoodsInfoVO {
 
     public void setLowestLiPrice(String lowestLiPrice) {
         this.lowestLiPrice = lowestLiPrice;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }
