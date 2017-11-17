@@ -86,7 +86,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         for (RefundTypeEnum type : RefundTypeEnum.values()) {
             RefundVO refundVO = subItemOrder.refundInfos(type);
             if (refundVO != null) {
-                vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
+                vo.setRefundNum(vo.getRefundNum() + (type.type==5?refundVO.getFailNumber():refundVO.getNumber()));
             }
         }
         vo.setOtherRefundPrice(0L);
@@ -197,11 +197,22 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         if (hasReturnGoodsOrExchange(subOrderId)) {
             throw new OrderException("已经进行过退货/换货");
         }
-        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
-        // TODO: 换货消息推送，换货数量,暂时用全换，代发先走通
-        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum(), 0L, refundReason + "," + refundDesc, 2);
+        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+        itemOrderRefundExample.createCriteria().andSoidEqualTo(subOrderId);
+        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+        int alreadyRefundNumber = 0;
+        for (ItemOrderRefund itemOrderRefund : itemOrderRefunds) {
+            if (itemOrderRefund.getType() == 5) {
+                alreadyRefundNumber+=itemOrderRefund.getFailNumber();
+                continue;
+            }
+            alreadyRefundNumber+=itemOrderRefund.getNumber();
+        }
+        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+                .refundApply(3, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc);
+        // TODO: 换货消息推送，换货数量,暂时用剩余所有未进行过退款和售后的数量
+        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, itemOrderSub.getNum()-alreadyRefundNumber, 0L, refundReason + "," + refundDesc, 2);
         return refundId;
     }
 
@@ -252,7 +263,8 @@ public class AfterSaleServiceImpl implements AfterSaleService {
                 break;
             case NOT_REFUND:
                 //TODO: 该状态没有对应
-                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
+                afterSaleStatus = ReturnGoodsStatusEnum.REFUND_FAIL;
+                break;
             case BUYER_SEND:
                 afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
                 break;
@@ -311,6 +323,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             vo.setUserType(o.getImBuyer() ? UserTypeEnum.BUYER : UserTypeEnum.CUSTOM_SERVICE);
             vo.setHeadImgUrl(o.getImBuyer() ? "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/buyer_42px.jpg" : "http://shigu.oss-cn-hangzhou.aliyuncs.com/mall/seller_42px.jpg");
             vo.setUserNick(o.getImBuyer() ? "你" : "卖家");
+            vo.setToStatus(o.getToStatus());
             return vo;
         }).collect(Collectors.toList());
     }
@@ -475,6 +488,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
     /**
      * 已拿到货未发退款
+     *
      * @param psoid
      * @param money
      * @return
@@ -483,18 +497,26 @@ public class AfterSaleServiceImpl implements AfterSaleService {
      * @throws PayerException
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Long refundHasItem(Long psoid, Long money) throws OrderException, RefundException, PayerException {
-        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(psoid);
-        if (subOrderSoidps.getAlreadyRefund()) {
-            throw new OrderException(String.format("子单%d已经进行过退款", psoid));
-        }
-        Long soid = subOrderSoidps.getSoid();
+        Long soid = soidsCreater.selSoidBySoidp(psoid);
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, soid);
-        Long refundId = subItemOrder.refundApply(4, 1, money, "已拿到货退款");
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).success();
-        subOrderSoidps.setAlreadyRefund(true);
-        subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
+        Long refundId = subItemOrder.refundApply(5, 1, money, "已拿到货退款");
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundHasItem(psoid, money);
         return refundId;
+    }
+
+    /**
+     * 换货完成接口
+     * @param refundId
+     * @param userId
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void finishExchange(Long refundId, Long userId) throws OrderException {
+        RefundItemOrder refundModel = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+        if (!userId.equals(SpringBeanFactory.getBean(ItemOrder.class,refundModel.refundinfo().getOid()).orderInfo().getUserId())) {
+            throw new OrderException("不能操作他人订单");
+        }
+        refundModel.finishExchange();
     }
 }

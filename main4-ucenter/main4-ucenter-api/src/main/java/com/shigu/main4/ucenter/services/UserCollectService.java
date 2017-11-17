@@ -7,7 +7,9 @@ import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.ShopInfo;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public interface UserCollectService {
      */
     ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite,int pageNo,int pageSize);
 
+    ShiguPager<NewGoodsCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type);
     /**
      * 按主键批量删除收藏记录
      * @param userId 用户ID
@@ -93,4 +96,6 @@ public interface UserCollectService {
      * @param collect
      */
     void addShopCollection(ShopCollect collect) throws ShopCollectionException;
+
+    List<ShopInfo> selShopInfoByShopIds(List<Long> shopIds);
 }

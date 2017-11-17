@@ -11,15 +11,15 @@
         <!--<property name="taobaoTmcService" ref="taobaoTmcService"/>-->
     </bean>
     <!-- 要引用的服务 -->
-    <!--<dubbo:reference interface="com.shigu.spread.services.SelSpreadService" id="selSpreadService"/>-->
+     <dubbo:reference interface="com.shigu.spread.services.SelSpreadService" id="selSpreadService"/>
 
-    <!--<dubbo:reference interface="com.shigu.tb.finder.services.MainTbOnsaleService" id="mainTbOnsaleService"/>-->
+     <dubbo:reference interface="com.shigu.tb.finder.services.MainTbOnsaleService" id="mainTbOnsaleService"/>
 
-    <!--<dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="1000000"/>-->
+    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="1000000"/>
 
-    <!--<dubbo:reference interface="com.shigu.tb.finder.services.TbPropsService" id="tbPropsService" timeout="10000"/>-->
+    <dubbo:reference interface="com.shigu.tb.finder.services.TbPropsService" id="tbPropsService" timeout="10000"/>
 
-    <!--<dubbo:reference interface="com.shigu.tb.finder.services.TaobaoTmcService" id="taobaoTmcService" cluster="failfast" timeout="60000"/>-->
+    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoTmcService" id="taobaoTmcService" cluster="failfast" timeout="60000"/>
 
     <!-- 服务系列 cluster="failfast"-->
     <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService"  timeout="300000"/>

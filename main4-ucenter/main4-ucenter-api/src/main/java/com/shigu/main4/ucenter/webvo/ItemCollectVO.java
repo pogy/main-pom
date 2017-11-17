@@ -33,6 +33,12 @@ public class ItemCollectVO implements Serializable{
     /** 数据包ID */
     private Long goodsCollectId;
 
+    /** 货号 */
+    private String goodsNo;
+
+    /** 档口ID */
+    private Long shopId;
+
 
     public Long getId() {
         return id;
@@ -88,5 +94,21 @@ public class ItemCollectVO implements Serializable{
 
     public void setGoodsCollectId(Long goodsCollectId) {
         this.goodsCollectId = goodsCollectId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 }

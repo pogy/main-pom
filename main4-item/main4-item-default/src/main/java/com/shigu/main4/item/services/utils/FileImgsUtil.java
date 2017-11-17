@@ -117,7 +117,7 @@ public class FileImgsUtil {
             if ("http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif".equals(linkUrl)) {
                 linkUrl = doc1_IMG.get(i).attr("data-original");
             }
-            if (linkUrl != null && (linkUrl.endsWith(".jpg") || linkUrl.endsWith(".png") || linkUrl.endsWith(".jpeg") || linkUrl.endsWith(".JPG") || linkUrl.endsWith(".PNG") || linkUrl.endsWith(".JPEG"))) {
+            if (linkUrl != null && (linkUrl.endsWith(".jpg") || linkUrl.endsWith(".png") || linkUrl.endsWith(".jpeg") || linkUrl.endsWith(".gif") || linkUrl.endsWith(".JPG") || linkUrl.endsWith(".PNG") || linkUrl.endsWith(".JPEG")||linkUrl.endsWith(".GIF"))) {
                 savedescPic(savepicPath, linkUrl, picnum);
                 picnum++;
             }

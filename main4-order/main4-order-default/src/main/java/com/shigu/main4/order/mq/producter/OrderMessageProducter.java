@@ -170,7 +170,7 @@ public class OrderMessageProducter {
         ArrayList<SubOrderMessage> soids = new ArrayList<>();
         SubOrderMessage subOrder = new SubOrderMessage();
         subOrder.setSoid(subOrderId);
-        subOrder.setSoidps(refundSoidps);
+        subOrder.setNum(refundSoidps.size());
         soids.add(subOrder);
         refund.setSuborders(soids);
 

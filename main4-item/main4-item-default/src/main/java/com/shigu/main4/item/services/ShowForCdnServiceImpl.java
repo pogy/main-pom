@@ -49,6 +49,9 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
     private ShiguGoodsUnlicenseMapper shiguGoodsUnlicenseMapper;
 
     @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
+
+    @Autowired
     private ShiguPropImgsMapper shiguPropImgsMapper;
 
     private TinyItemSelector tinyItemSelector = new TinyItemSelector();
@@ -437,7 +440,13 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                         } // 属性处理循环 end
                     } //可用属性处理 end
                 } // 商品扩展信息处理 end
-
+                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(id);
+                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                if (goodsCountForsearch != null) {
+                    cdnItem.setFabric(goodsCountForsearch.getFabric());
+                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
+                }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end

@@ -4,3 +4,4 @@
 pom.xml.versionsBackup
 target/
 logs/
+readme/cp_dubbo.sh

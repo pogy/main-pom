@@ -14,12 +14,12 @@ public class GoodsCountForsearch implements Serializable {
 	private Long searchId;
 
     /**
-     * 
+     * 0
      */
 	private Long goodsId;
 
     /**
-     * 
+     * 0
      */
 	private Long click;
 
@@ -54,14 +54,24 @@ public class GoodsCountForsearch implements Serializable {
 	private String webSite;
 
     /**
-     * 浏览量最后固化时间
+     * 
      */
 	private Date flowFixedTime;
 
     /**
-     * 有大图
+     * 是否有大图，0没有，1有
      */
 	private Integer hadBigzip;
+
+    /**
+     * 面料
+     */
+	private String fabric;
+
+    /**
+     * 里料
+     */
+	private String infabric;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -149,6 +159,22 @@ public class GoodsCountForsearch implements Serializable {
 
 	public Integer getHadBigzip() {
 		return this.hadBigzip;
+	}
+
+	public void setFabric(String fabric) {
+		this.fabric = fabric;
+	}
+
+	public String getFabric() {
+		return this.fabric;
+	}
+
+	public void setInfabric(String infabric) {
+		this.infabric = infabric;
+	}
+
+	public String getInfabric() {
+		return this.infabric;
 	}
 
 }

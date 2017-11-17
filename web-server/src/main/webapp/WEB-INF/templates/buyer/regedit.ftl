@@ -38,7 +38,7 @@
                 <div class="formGroup">
                     <label><i>*</i>数字验证码：</label>
                     <input type="text" name="imgValidate"  class="imgValidate form-input" maxlength="4" placeholder="右侧验证码"  >
-                    <img id="checkCode" src="http://www.571xz.com/IMG.htm" />
+                    <img id="checkCode" src="IMG.htm" />
                 </div>
             </div>
             <div class="regeditItem">

@@ -15,7 +15,7 @@ public class AfterSaleVO {
     private Integer afterSaleNum;
     @Column("item_order_refund.type")
     private Integer type;
-    @Column("IF(ISNULL(item_order_refund.status),NULL,IF(item_order_refund.status=2,2,IF(item_order_refund.status=4,3,1)))")
+    @Column("IF(ISNULL(item_order_refund.status),NULL,IF(item_order_refund.status=2,2,IF(item_order_refund.status=3,3,IF(item_order_refund.status=4,4,1))))")
     private Integer state;
 
     private Boolean newAfterSaleInfoIs;

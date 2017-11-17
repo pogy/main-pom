@@ -21,7 +21,7 @@
     </select>
     <sql id="tiny_goods_where">
         FROM shigu_goods_tiny_${webSite} a, shigu_goods_collect b
-        WHERE b.goods_id=a.goods_id AND b.website=#{webSite} AND b.user_id=#{userId}
+        WHERE b.goods_id=a.goods_id AND b.website=#{webSite} AND b.user_id=#{userId} AND b.type = 1
         <if test="keyword!=null and keyword!=''">
             AND a.title like CONCAT('%','${keyword}','%' )
         </if>

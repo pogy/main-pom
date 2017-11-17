@@ -17,6 +17,10 @@ public class SubOrderMessage implements Serializable {
     private List<Long> soidps;
 
     /**
+     * 退货数量
+     */
+    private Integer num;
+    /**
      * 单价，单件 退款，仅在退货中使用
      */
     private Long singleMoney;
@@ -43,5 +47,13 @@ public class SubOrderMessage implements Serializable {
 
     public void setSoidps(List<Long> soidps) {
         this.soidps = soidps;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

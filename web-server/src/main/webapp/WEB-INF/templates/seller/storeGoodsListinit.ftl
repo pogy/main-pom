@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsListinit.css?t=1505784054563" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsListinit.css?t=1509871206560" rel="stylesheet">
     
   </head>
 <body>
@@ -260,7 +260,9 @@ var webSite = '${webSite!}';
             <ul class="head clearfix">
                 <li class="name">
                     <label><input class="checkbox" type="checkbox" autocomplete="off">全选</label>
+                    <#if session_user_redis__.logshop.type == 2>
                     <button class="sjgoods">上架</button>
+                    </#if>
                     <button class="scgoods">删除</button>
                 </li>
                 <li class="price">批发价(元)</li>
@@ -284,7 +286,7 @@ var webSite = '${webSite!}';
                 <li class="posttype">${item.type!}</li>
                 <li class="downshelftime"><#if item.delistTime??>${item.delistTime!}<#else>--</#if></li>
                 <li class="control">
-                    <#if item.type != '淘宝同步'>
+                    <#if session_user_redis__.logshop.type == 2>
                     <button class="sjgoods">上架</button>
                     </#if>
                     <button class="scgoods">删除</button>
@@ -335,7 +337,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsListinit.js?t=1505784054563"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsListinit.js?t=1509871206560"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

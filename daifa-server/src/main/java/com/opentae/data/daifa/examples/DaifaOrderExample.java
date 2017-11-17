@@ -8,6 +8,12 @@ import com.opentae.data.daifa.beans.DaifaOrder;
 
 import java.util.*;
 public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
+
+
+    private Integer takegoodstatus;//
+    private String startTime;//createTime
+    private String endTime;//lastDoTime
+
     public static final Class<DaifaOrder> beanClass = DaifaOrder.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn dfOrderId;
@@ -3138,4 +3144,29 @@ public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
             return notBetween(goodsWeight, value1, value2);
         }
     }
+
+    public Integer getTakegoodstatus () {
+        return takegoodstatus;
+    }
+
+    public void setTakegoodstatus (Integer takegoodstatus) {
+        this.takegoodstatus = takegoodstatus;
+    }
+
+    public String getStartTime () {
+        return startTime;
+    }
+
+    public void setStartTime (String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime () {
+        return endTime;
+    }
+
+    public void setEndTime (String endTime) {
+        this.endTime = endTime;
+    }
+
 }

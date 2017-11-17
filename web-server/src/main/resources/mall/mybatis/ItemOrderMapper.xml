@@ -2,7 +2,57 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.mall.interfaces.ItemOrderMapper" >
 
-    <!--订单分页数据-->
+
+
+    <select id="selectShOrderList" resultMap="MyOrderVO">
+        SELECT
+        item_order.oid as orderId,
+        item_order.create_time as tradeTime,
+        CONVERT (item_order.total_fee * 0.01,DECIMAL (10, 2)) as tradePay,
+        CONVERT (item_order_logistics.money * 0.01,DECIMAL (10, 2)) as postPay,
+        item_order.ORDER_STATUS as mainState,
+        item_order.TYPE = 2 as isTbOrder,
+        item_order.tb_send as isTbShipments,
+        item_order.WEB_SITE as webSite,
+        item_order_sub.soid as childOrderId,
+        item_order_sub.goods_id as goodsId,
+        item_order_sub.title as title,
+        item_order_sub.pic_url as imgsrc,
+        item_order_sub.color as color,
+        item_order_sub.size as size,
+        item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
+        CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
+        item_order_sub.num as num,
+        item_order_sub.out_of_stok as stockoutNum,
+        item_order_sub.in_stok as haveTakeGoodsNum,
+        item_order_refund.refund_id as refundId,
+        if(item_order_refund.type!=5,item_order_refund.number-item_order_refund.fail_number,item_order_refund.fail_number) as afterSaleNum,
+        item_order_refund.type as type,
+        IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 3, 3,IF(item_order_refund. STATUS = 4,4,1)))) as state
+        FROM (SELECT DISTINCT
+	        item_order.*
+        FROM
+            item_order item_order
+        INNER JOIN item_order_refund item_order_refund ON item_order.user_id = #{userId}
+        AND item_order.disenable = 0
+        AND item_order.oid = item_order_refund.oid
+        <if test="typeList!=null">
+            AND item_order_refund.type IN
+            <foreach collection="typeList" index="index" item="type" open="("
+                     separator="," close=")">
+                #{type}
+            </foreach>
+        </if>
+        ORDER BY
+            item_order.create_time DESC
+            LIMIT #{startIndex},#{endIndex}) item_order
+        INNER JOIN item_order_logistics ON item_order.oid=item_order_logistics.oid
+        INNER JOIN item_order_sub ON  item_order.oid=item_order_sub.oid
+        LEFT JOIN item_order_refund ON item_order_sub.soid=item_order_refund.soid
+
+    </select>
+
     <select id="selectMyOrderList" resultMap="MyOrderVO">
         SELECT
         item_order.oid as orderId,
@@ -20,13 +70,15 @@
         item_order_sub.color as color,
         item_order_sub.size as size,
         item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
         CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
         item_order_sub.num as num,
         item_order_sub.out_of_stok as stockoutNum,
+        item_order_sub.in_stok as haveTakeGoodsNum,
         item_order_refund.refund_id as refundId,
-        item_order_refund.number as afterSaleNum,
+        if(item_order_refund.type!=5,item_order_refund.number-item_order_refund.fail_number,item_order_refund.fail_number) as afterSaleNum,
         item_order_refund.type as type,
-        IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 4, 3, 1))) as state
+        IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 3, 3,IF(item_order_refund. STATUS = 4,4,1)))) as state
         FROM
         (
         SELECT
@@ -41,9 +93,7 @@
         FROM
         `item_order` item_order
         INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
-        <if test="userId!=null">
-            AND item_order.USER_ID = #{userId}
-        </if>
+        AND item_order.USER_ID = #{userId}
         AND item_order.DISENABLE = 0
         <if test="bo.orderId!=null">
             AND item_order.OID = #{bo.orderId}
@@ -56,9 +106,6 @@
         </if>
         <if test="bo.status!=null">
             AND item_order.order_status = #{bo.status}
-        </if>
-        <if test="onlyRefund==true">
-            AND (item_order.order_status = 3 OR item_order.order_status = 4)
         </if>
         <if test="bo.receiver!=null and bo.receiver!=''">
             AND item_order_logistics.NAME = #{bo.receiver}
@@ -75,27 +122,13 @@
         ORDER BY item_order.create_time DESC
         LIMIT #{startIndex},#{endIndex}
         ) item_order
-        INNER JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
+        LEFT JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
         <if test="bo.goodsNo!=null and bo.goodsNo!=''">
             AND item_order_sub.goods_no LIKE CONCAT('%', #{bo.goodsNo}, '%')
         </if>
-        <choose>
-            <when test="onlyRefund==false">
-                LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
-            </when>
-            <otherwise>
-                INNER JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
-                <choose>
-                    <when test="shStatus!=null">
-                        AND item_order_refund.type = (#{shStatus}+1)
-                    </when>
-                    <otherwise>
-                        AND (item_order_refund.type = 2 OR item_order_refund.type = 3)
-                    </otherwise>
-                </choose>
-            </otherwise>
-        </choose>
+        LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
     </select>
+
 
     <resultMap id="MyOrderVO" type="com.shigu.order.vo.MyOrderVO">
         <id column="orderId" property="orderId" />
@@ -120,6 +153,7 @@
         <result column="price" property="price"/>
         <result column="num" property="num"/>
         <result column="stockoutNum" property="stockoutNum"/>
+        <result column="haveGoodsTime" property="haveGoodsTime"/>
         <collection property="afterSales" resultMap="AfterSaleVO"/>
     </resultMap>
 
@@ -130,55 +164,8 @@
         <result column="state" property="state"/>
     </resultMap>
 
-    <select id="countMyOrderList" resultType="int">
-        SELECT count(DISTINCT item_order.OID)
-        FROM `item_order` item_order
-        INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
-        <if test="userId!=null">
-            AND item_order.USER_ID = #{userId}
-        </if>
-        AND item_order.DISENABLE = 0
-        <if test="bo.orderId!=null">
-            AND item_order.OID = #{bo.orderId}
-        </if>
-        <if test="bo.st!=null">
-            AND item_order.CREATE_TIME &gt;= #{bo.st}
-        </if>
-        <if test="bo.et!=null">
-            AND item_order.CREATE_TIME &lt;= #{bo.et}
-        </if>
-        <if test="bo.status!=null">
-            AND item_order.order_status = #{bo.status}
-        </if>
-        <if test="onlyRefund==true">
-            AND (item_order.order_status = 3 OR item_order.order_status = 4)
-        </if>
-        <if test="bo.receiver!=null and bo.receiver!=''">
-            AND item_order_logistics.NAME = #{bo.receiver}
-        </if>
-        <if test="bo.telePhone!=null and bo.telePhone!=''">
-            AND item_order_logistics.telephone = #{bo.telePhone}
-        </if>
-        INNER JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
-        <if test="bo.goodsNo!=null and bo.goodsNo!=''">
-            AND item_order_sub.goods_no LIKE CONCAT('%', #{bo.goodsNo}, '%')
-        </if>
-        <choose>
-            <when test="onlyRefund==false">
-                LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
-            </when>
-            <otherwise>
-                INNER JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
-                <choose>
-                    <when test="shStatus!=null">
-                        AND item_order_refund.type = (#{shStatus}+1)
-                    </when>
-                    <otherwise>
-                        AND (item_order_refund.type = 2 OR item_order_refund.type = 3)
-                    </otherwise>
-                </choose>
-            </otherwise>
-        </choose>
-    </select>
+
+
+
 
 </mapper>

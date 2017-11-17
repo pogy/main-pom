@@ -14,6 +14,8 @@ public class ApplyUserLog {
     private String userHeadimg;
     private String recordTime;
     private String recordContent;
+    private Integer afterSaleType;
+    private Boolean afterSaleInfoShowIs;
 
     public Integer getUserType() {
         return userType;
@@ -53,5 +55,21 @@ public class ApplyUserLog {
 
     public void setRecordContent(String recordContent) {
         this.recordContent = recordContent;
+    }
+
+    public Boolean getAfterSaleInfoShowIs() {
+        return afterSaleInfoShowIs;
+    }
+
+    public void setAfterSaleInfoShowIs(Boolean afterSaleInfoShowIs) {
+        this.afterSaleInfoShowIs = afterSaleInfoShowIs;
+    }
+
+    public Integer getAfterSaleType() {
+        return afterSaleType;
+    }
+
+    public void setAfterSaleType(Integer afterSaleType) {
+        this.afterSaleType = afterSaleType;
     }
 }

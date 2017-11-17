@@ -67,7 +67,7 @@
                         <div class="loginItem">
                             <label class="iconfont icon-password"></label>
                             <input type="text" class="form-input imgValidate" name="imgValidate" maxlength="4"  placeholder="右侧验证码" >
-                            <img id="checkCode" src="http://www.571xz.com/IMG.htm" />
+                            <img id="checkCode" src="IMG.htm" />
                         </div>
                         <div class="loginItem">
                             <label class="iconfont icon-password"></label>

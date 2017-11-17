@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -24,6 +25,8 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by zhaohongbo on 17/7/19.
@@ -92,6 +95,24 @@ public class SubItemOrderImpl implements SubItemOrder{
      */
     @Override
     public Long refundApply(Integer type, Integer number, Long money, String reason) throws OrderException {
+
+        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+        itemOrderRefundExample.createCriteria().andSoidEqualTo(subOrderId);
+        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+        int alreadyRefundNum = 0;
+        for (ItemOrderRefund itemOrderRefund : itemOrderRefunds) {
+            if (itemOrderRefund.getType() != 5) {
+                alreadyRefundNum+=itemOrderRefund.getNumber();
+            } else {
+                alreadyRefundNum+=itemOrderRefund.getFailNumber();
+            }
+        }
+        if (alreadyRefundNum>0) {
+            if (subOrderInfo().getNum() - alreadyRefundNum<number) {
+                throw new OrderException(String.format("可退数量不足，已退%d件",alreadyRefundNum));
+            }
+        }
+
         //限制一下,如果退过了,不能再退
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();

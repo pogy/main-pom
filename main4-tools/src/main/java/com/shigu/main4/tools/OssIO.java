@@ -228,6 +228,22 @@ public class OssIO {
         return ret;
     }
 
+    /**
+     * 下载图片到本地
+     * @param localPath  本地存放路径
+     * @param key 域名后面的路径，开头不要/
+     * @return 本地文件
+     */
+    public File downFileToLocal(String localPath,String key){
+// 创建OSSClient实例
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+// 下载object到文件
+        ossClient.getObject(new GetObjectRequest(bucketName, key), new File(localPath));
+// 关闭client
+        ossClient.shutdown();
+        return new File(localPath);
+    }
+
 
     /**
      * 重命名文件

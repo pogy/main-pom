@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -160,7 +161,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"childOrderId","value":"${query.childOrderId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"childOrderId","value":"${query.childOrderId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"searchWorkerId","value":"${query.searchWorkerId!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -205,6 +206,12 @@
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -237,6 +244,13 @@
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -287,6 +301,12 @@
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -321,6 +341,13 @@
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 

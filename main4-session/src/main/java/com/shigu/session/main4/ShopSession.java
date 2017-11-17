@@ -44,6 +44,11 @@ public class ShopSession implements Serializable{
      */
     private String tbNick;
 
+    /**
+     * 1淘宝店铺，2普通店铺
+     */
+    private Integer type;
+
     public String getShopName() {
         return shopName;
     }
@@ -114,5 +119,13 @@ public class ShopSession implements Serializable{
 
     public void setShopNum(String shopNum) {
         this.shopNum = shopNum;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

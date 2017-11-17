@@ -6,7 +6,7 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    <link href="http://style.571xz.com/indexV6/css/hzMan.css?t=1506067449281" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV6/css/hzMan.css?t=1507859561980" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV6/js/jquery.cookie.js"></script>
 <script>/*============ indexV6/page#layoutHeader BEGIN ============*/
@@ -34,10 +34,11 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV6/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV6/js/hzMan.js?t=1506067449281"></script>
+    <script src="http://style.571xz.com/indexV6/js/hzMan.js?t=1507859561980"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
+<#include "/common/zhuge.ftl">
 
 <div class="topbar">
     <div class="layout">
@@ -398,7 +399,7 @@ var webSite = '${webSite!}';
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025883" target="_blank">毛呢大衣</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011161" target="_blank">皮衣</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=套装" target="_blank">套装</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011129" target="_blank">西装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010160" target="_blank">西装</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011130" target="_blank">西装套装</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动套装" target="_blank">运动套装</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=情侣装" target="_blank">情侣装</a></li>
@@ -529,8 +530,8 @@ var webSite = '${webSite!}';
 今日新品                    </a>
                 </li>
                 <li>
-                    <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-发现好货<i class="hot"></i>                    </a>
+                    <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+排行榜<i class="hot"></i>                    </a>
                 </li>
                 <li>
                     <a href="/daifaIndex.htm" target="_blank">

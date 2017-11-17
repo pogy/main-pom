@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=20117092901" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=20117092901"></script>
+    
 </head>
 <body>
 
@@ -545,13 +552,29 @@ ${userShopHdHtml}
     </div>
     <div class="shareBox">
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
-            <a xzclick="addGoodsDataCannot" href="javascript:;" class="store">收藏此商品</a>
+            <a xzclick="addCollGoodsDataCannot" href="javascript:;" class="store">收藏此商品</a>
         <#else>
-            <a xzclick="addGoodsData" href="javascript:;" class="store" data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
+            <a xzclick="addCollGoodsData" href="javascript:;" class="store" data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
         </#if>
         <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
         
     </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
@@ -580,6 +603,22 @@ ${userShopHdHtml}
     </div>
     <div class="goodsNumber">
         <span class="text-666">货号：<em class="fcF40 fs14 arail">${goodsInfo.goodsNo!}</em></span><span class="fc3 online arail"><em>${goodsInfo.postTime!}</em>上架</span>
+        <#if goodsInfo.fabric??>
+        <div class="pr fs12 fcBlue fabricWindow">
+            <span class="showFabric">面料成分</span>
+            <div class="pa fabricCon">
+                <i class="icon-close closeTip fc6"></i>
+                <i class="leftArrow pa"></i>
+                <p class="fc3 fs14">面料成分</p>
+                <p class="fc9 fs14">${goodsInfo.fabric!}</p>
+                <#if goodsInfo.inFabric??>
+                <p class="fc3 fs14">里料成分</p>
+                <p class="fc9 fs14">${goodsInfo.inFabric!}</p>
+                </#if>
+            </div>
+        </div>
+        </#if>
+        
         
     </div>
     <div class="goodsPrice clearfix">
@@ -589,7 +628,16 @@ ${userShopHdHtml}
                 <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
             </li>
             <li class="minprice">
-                
+                <#if goodsInfo.lowestLiPrice??>
+                <label class="fc9">电商最低零售价</label>
+                <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.lowestLiPrice!}</em>
+                    <div class="tipsbox fs12 simsun">
+                        售卖时不能低于此价格，否则会被厂家投诉
+                        <i class="i1"></i>
+                        <i class="i2"></i>
+                    </div>
+                </span>
+                </#if>
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>
@@ -1057,6 +1105,8 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 
 </div>
+
+
 
 
 
