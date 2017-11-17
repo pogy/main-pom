@@ -145,7 +145,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"startTime","value":"${query.startTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"startTime","value":"${query.startTime!}"},{"name":"searchWorkerId","value":"${query.searchWorkerId!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
