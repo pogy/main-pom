@@ -86,6 +86,18 @@ public class CdnItem implements Serializable{
      * 在售状态,true为在售
      */
     private Boolean onsale;
+    /**
+     * 子类目Id
+     */
+    private Long cid;
+    /**
+     * 面料成分
+     */
+    private String fabric;
+    /**
+     * 里料成分
+     */
+    private String inFabric;
 
     public Boolean getOnsale() {
         return onsale;
@@ -237,5 +249,29 @@ public class CdnItem implements Serializable{
 
     public void setFloorId(Long floorId) {
         this.floorId = floorId;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
     }
 }

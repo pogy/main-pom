@@ -57,11 +57,23 @@ public class SubMyOrderVO {
     @Column("item_order_sub.out_of_stok")
     private Integer stockoutNum;
 
+
+    /**
+     * 已拿货数量
+     */
+    private Integer haveTakeGoodsNum;
+
+    /**
+     * 有货时间
+     */
+    @Column("item_order_sub.out_of_stok_reason")
+    private String haveGoodsTime;
+
     private List<AfterSaleVO> afterSales;
 
-    private boolean hasAfter;
+    private Boolean hasAfter;
 
-    private int refundCount;
+    private Integer refundCount;
 
     /**
      * 获取 子单id
@@ -197,21 +209,6 @@ public class SubMyOrderVO {
         this.afterSales = afterSales;
     }
 
-    public boolean isHasAfter() {
-        return hasAfter;
-    }
-
-    public void setHasAfter(boolean hasAfter) {
-        this.hasAfter = hasAfter;
-    }
-
-    public int getRefundCount() {
-        return refundCount;
-    }
-
-    public void setRefundCount(int refundCount) {
-        this.refundCount = refundCount;
-    }
 
     public Integer getStockoutNum() {
         return stockoutNum;
@@ -219,5 +216,36 @@ public class SubMyOrderVO {
 
     public void setStockoutNum(Integer stockoutNum) {
         this.stockoutNum = stockoutNum;
+    }
+
+    public Boolean getHasAfter() {
+        return this.hasAfter;
+    }
+
+    public void setHasAfter(Boolean hasAfter) {
+        this.hasAfter = hasAfter;
+    }
+
+    public Integer getRefundCount() {
+        return this.refundCount;
+    }
+
+    public void setRefundCount(Integer refundCount) {
+        this.refundCount = refundCount;
+    }
+
+    public String getHaveGoodsTime() {
+        return haveGoodsTime;
+    }
+
+    public void setHaveGoodsTime(String haveGoodsTime) {
+        this.haveGoodsTime = haveGoodsTime;
+    }
+    public Integer getHaveTakeGoodsNum() {
+        return haveTakeGoodsNum;
+    }
+
+    public void setHaveTakeGoodsNum(Integer haveTakeGoodsNum) {
+        this.haveTakeGoodsNum = haveTakeGoodsNum;
     }
 }

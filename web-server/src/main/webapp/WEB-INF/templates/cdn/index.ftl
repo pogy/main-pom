@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1504256300092" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1507859528487" rel="stylesheet">
     
   </head>
 <body>
@@ -246,7 +246,7 @@ var webSite = '${webSite!}';
                 <#if webSite =="hz" || webSite == 'cs'>
                 <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == 'hz'>
-                <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                <li><a href="http://www.571xz.com/shopRanking.htm" target="_blank">排行榜<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="/daifaIndex.htm" target="_blank">一件代发</a></li>
                 <#if webSite == 'hz'>
@@ -414,7 +414,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1504256300092"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1507859528487"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( value="/main4/spring/apache-shiro.xml" )
+@ContextConfiguration( value="/main4/spring/spring.xml" )
 public class RegisterAndLoginServiceTest {
 
     @Autowired
@@ -72,10 +72,10 @@ public class RegisterAndLoginServiceTest {
     @Test
     @Transactional(rollbackFor = Exception.class)
     public void banding3User() throws Exception{
-        String phone = "18888971970";
+        String phone = "18258259333";
         Rds3TempUser rds3TempUser = new Rds3TempUser();
-        rds3TempUser.setSubUserName("赵洪波666");
-        rds3TempUser.setSubUserKey("740971896");
+        rds3TempUser.setSubUserName("aj欧美专柜代购");
+        rds3TempUser.setSubUserKey("2224501970");
         rds3TempUser.setLoginFromType(LoginFromType.TAOBAO);
 
         // 已存在该主用户 不存在该子账户 正常返回true并创建QQ子账户

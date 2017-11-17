@@ -16,17 +16,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css?v=2017090401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css?v=20170102301" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js?v=2017090401"></script>
+    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js?v=20170102301"></script>
+    
 </head>
 <body>
 
@@ -272,8 +278,8 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
@@ -321,9 +327,10 @@ var webSite = '${webSite!}';
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
         
-        <li class="tel"><i class="icon-s-phone"></i><span>0571-86070380</span></li>
+        <li class="last"><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后慧慧&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺3</span></a></li>
     </ul>
     <p class="serviceTime">服务时间 :  9:00-18:00  （周六，周日不休息）</p>
+    <p class="tac tel"><i class="icon-s-phone"></i><span>0571-86070380</span></p>
     
 
 <#assign text>{}</#assign>
@@ -467,7 +474,7 @@ var webSite = '${webSite!}';
                     <ul>
                         <li>
                             <p class="question">1、星座代发什么时候截单？</p>
-                            <p class="answer">每天 16:00 截单，此后订单不保时效，为了保证您的发货时效，请尽量提早下单。</p>
+                            <p class="answer">每天16:00截单，如有特殊情况会提前截单。为了保证您的发货时效，请尽早下单。</p>
                         </li>
                         <li>
                             <p class="question">2、星座代发什么时候拿货？</p>

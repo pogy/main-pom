@@ -209,7 +209,17 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         vo.setSuccess ("OK");
         return vo;
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： dealSubOrderError
+     * @user gzy 2017/11/9 11:14
+     * @功能：修改子单的商品属性，商品货号，商家编码
+     * @param: [dfOrderId, propStr, goodsCode, storeGoodsCode]
+     * @return: int
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @Override
     public int dealSubOrderError(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode)throws DaifaException{
         DaifaOrder order=new DaifaOrder ();
@@ -225,27 +235,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         worder.setStoreGoodsCode (storeGoodsCode);
         DaifaWaitSendOrderExample example=new DaifaWaitSendOrderExample ();
         example.createCriteria ().andDfOrderIdEqualTo (dfOrderId);
-        daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
-        //按商品ID更新所有订单的商品货号与商家编码
-        order =daifaOrderMapper.selectByPrimaryKey (dfOrderId);
-
-        DaifaOrder order1=new DaifaOrder ();
-        order1.setGoodsCode (goodsCode);
-        order1.setStoreGoodsCode (storeGoodsCode);
-
-        DaifaOrderExample example1=new DaifaOrderExample ();
-        example1.createCriteria ().andGoodsIdEqualTo (order.getGoodsId ());
-
-
-        daifaOrderMapper.updateByExampleSelective (order1,example1);
-
-        DaifaWaitSendOrder worder1=new DaifaWaitSendOrder();
-        worder1.setGoodsId (order.getGoodsId ());
-        worder1.setGgoodsCode (goodsCode);
-        worder1.setStoreGoodsCode (storeGoodsCode);
-        DaifaWaitSendOrderExample example2=new DaifaWaitSendOrderExample ();
-        example2.createCriteria ().andGoodsIdEqualTo (order.getGoodsId ());
-        return daifaWaitSendOrderMapper.updateByExampleSelective (worder1,example2);
+      return  daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
     }
 
     public void updateGoodsWeight(Long subOrderId,Long weight,Long sellerId){

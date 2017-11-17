@@ -118,7 +118,7 @@ public class ItemShowCaseServiceImpl implements ItemShowCaseService{
             @Override
             protected List<ShowCaseItem> selectByExample(SgExample example) {
                 List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByConditionList(example);
-                GoodsupLongTerms countAgg = elasticCountUtil.countItemUp(shiguGoodsTinies);
+                GoodsupLongTerms<Integer> countAgg = elasticCountUtil.countItemUp(shiguGoodsTinies);
                 List<ShowCaseItem> onsaleItems = new ArrayList<>();
                 for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
                     ShowCaseItem item = new ShowCaseItem();

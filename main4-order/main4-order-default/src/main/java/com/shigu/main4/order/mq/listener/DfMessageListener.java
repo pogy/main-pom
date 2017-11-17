@@ -14,10 +14,7 @@ import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
-import com.shigu.main4.order.model.ItemOrder;
-import com.shigu.main4.order.model.RefundItemOrder;
-import com.shigu.main4.order.model.SoidsCreater;
-import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.model.*;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
@@ -53,6 +50,9 @@ public class DfMessageListener implements MessageListener {
     private SoidsCreater soidsCreater;
 
     @Autowired
+    private SoidsModel soidsModel;
+
+    @Autowired
     private AfterSaleService afterSaleService;
 
     @Autowired
@@ -73,6 +73,7 @@ public class DfMessageListener implements MessageListener {
 
         after_sale_accept(AfterSaleAcceptMessage.class),
 
+        have_time(HaveTimeMessage.class),
         ;
         public final Class<?> clazz;
 
@@ -122,6 +123,9 @@ public class DfMessageListener implements MessageListener {
                 break;
             case after_sale_accept:
                 afterSaleAccept(baseMessage);
+                break;
+            case have_time:
+                haveTime(baseMessage);
                 break;
         }
         return Action.CommitMessage;
@@ -179,7 +183,7 @@ public class DfMessageListener implements MessageListener {
 
     public void shopRefuse(BaseMessage<ShopRefuseMessage> msg) {
         ShopRefuseMessage data = msg.getData();
-        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum());
+        SpringBeanFactory.getBean(RefundItemOrder.class, data.getRefundId()).shopRefuse(data.getNum(),msg.getMsg());
     }
 
     public void repriceApply(BaseMessage<RepriceApplyMessage> msg) {
@@ -199,4 +203,12 @@ public class DfMessageListener implements MessageListener {
         }
     }
 
+    /**
+     * 有货时间消息
+     * @param msg
+     */
+    public void haveTime(BaseMessage<HaveTimeMessage> msg) {
+        HaveTimeMessage data = msg.getData();
+        soidsModel.havaTime(data.getPsoid(),data.getDay());
+    }
 }

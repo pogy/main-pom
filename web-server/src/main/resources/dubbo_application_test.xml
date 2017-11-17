@@ -12,51 +12,59 @@
 
     <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoTmcService" id="taobaoTmcService" timeout="10000"/>
 
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserBaseService" id="userBaseService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.activity.model.ActivityFactory" id="activityFactory" timeout="10000"/><!--???-->
+    <dubbo:reference interface="com.shigu.main4.activity.service.ActivityDubboService" id="activityDubboService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.active.process.ShiguActivityProcess" id="shiguActivityProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.processes.HitDrawChooser" id="hitDrawChooser" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.service.ActiveDrawService" id="activeDrawService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.TrademarkService" id="trademarkService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.goat.service.GoatDubboService" id="goatDubboService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserBaseService" id="userBaseService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.monitor.services.ItemUpRecordService" id="itemUpRecordService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
+
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopRegistService" id="shopRegistService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopBaseService" id="shopBaseService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.StoreRelationService" id="storeRelationService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopLicenseService" id="shopLicenseService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopFitmentService" id="shopFitmentService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopDiscusService" id="shopDiscusService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.item.services.ShopsItemService" id="shopsItemService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopSearchService" id="shopSearchService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.monitor.services.ItemBrowerService" id="itemBrowerService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.item.services.ItemPicRelationService" id="itemPicRelationService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.MarketShopService" id="marketShopService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.monitor.services.BrowerMonitorService" id="browerMonitorService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.activity.model.ActivityFactory" id="activityFactory" timeout="10000"/><!--???-->
+    <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.item.services.ShopsItemService" id="shopsItemService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.item.services.ItemPicRelationService" id="itemPicRelationService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemShowCaseService" id="itemShowCaseService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemCatService" id="itemCatService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemAddOrUpdateService" id="itemAddOrUpdateService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.activity.service.ActivityDubboService" id="activityDubboService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.spread.processes.HitDrawChooser" id="hitDrawChooser" timeout="10000"/>
-    <!-- 17/08/12 拆服务 -->
-    <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
+
     <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.ItemOrderService" id="itemOrderService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.OrderConstantService" id="orderConstantService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.OrderListService" id="orderListService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.services.LogisticsService" id="logisticsService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="wxPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="xzPayerService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.order.services.LogisticsService" id="logisticsService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.PayProcess" id="payProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
 
+    <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.monitor.services.BrowerMonitorService" id="browerMonitorService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.monitor.services.ItemBrowerService" id="itemBrowerService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.monitor.services.ItemUpRecordService" id="itemUpRecordService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.monitor.services.RankingSimpleService" id="rankingSimpleService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
 </beans>

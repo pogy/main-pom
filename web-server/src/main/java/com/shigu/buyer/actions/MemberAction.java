@@ -1,9 +1,7 @@
 package com.shigu.buyer.actions;
 
 import com.shigu.buyer.bo.*;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.services.UserAccountService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -11,7 +9,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
@@ -24,7 +21,7 @@ import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
-import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
 import com.shigu.services.SendMsgService;
@@ -110,6 +107,12 @@ public class MemberAction {
     @Autowired
     SendMsgService sendMsgService;
 
+    @Autowired
+    UserCollectSimpleService userCollectSimpleService;
+
+    @Autowired
+    GoodsupRecordSimpleService goodsupRecordSimpleService;
+
     /**
      * 分销商首页
      * @return
@@ -191,7 +194,7 @@ public class MemberAction {
     }
 
     /**
-     * 删除收藏
+     * 从数据包移除
      * @return
      */
     @RequestMapping("member/rmv_mydp")
@@ -199,6 +202,43 @@ public class MemberAction {
     public JSONObject rmv_mydp(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         userCollectService.delItemCollection(ps.getUserId(),parseIds(ids));
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 新版个人中心,我的收藏
+     * @param bo
+     * @param page
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("member/goodsCollectOriginal")
+    public String goodsCollectOriginal(StoreCollectBO bo,Integer page,HttpSession session,Model model) {
+        if (page == null) {
+            page = 1;
+        }
+        //一页12条数据
+        int size = 12;
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
+        model.addAttribute("goodsList",pager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",pager.selPageOption(size));
+        return "buyer/goodsCollectOriginal";
+    }
+
+    /**
+     * 删除收藏的商品
+     * @param ids
+     * @param session
+     * @return
+     */
+    @RequestMapping("member/rmvFavoriteGoods")
+    @ResponseBody
+    public JSONObject rmvFavoriteGoods(String ids,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        userCollectSimpleService.delCollectGoods(ps.getUserId(),ids);
         return JsonResponseUtil.success();
     }
 
@@ -267,36 +307,43 @@ public class MemberAction {
     }
 
     /**
-     * 一键上传记录
+     * 展示淘宝一键上传的商品
      * @return
      */
     @RequestMapping("member/shiguOnekeyRecordinit")
     public String shiguOnekeyRecordinit(OnekeyRecordBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String nick;
-        //查出用户nick
-        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
-            nick=ps.getLoginName();
-        }else{
+        if (ps.getLoginFromType().equals(LoginFromType.TAOBAO)) {
+            nick = ps.getLoginName();
+        } else {
             nick=memberSimpleService.selNick(ps.getUserId());
         }
-        ShiguPager<OnekeyRecoreVO> pager;
-        if(nick==null){
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }else{
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }
-        model.addAttribute("get",bo);
-        model.addAttribute("page",bo.getPage());
+        ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(ps.getUserId(), nick, bo);
+        model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
+        model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodslist",pager.getContent());
+        model.addAttribute("goodsList",pager.getContent());
         return "buyer/shiguOnekeyRecordinit";
+    }
+
+    @RequestMapping("member/downTbGoods")
+    @ResponseBody
+    public JSONObject downTbGoods(String ids,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        try {
+            boolean taobaoAuth = ps.getLoginFromType().equals(LoginFromType.TAOBAO);
+            if (!taobaoAuth) {
+                throw new JsonErrException("需要淘宝授权");
+            }
+            goodsupRecordSimpleService.downTbGoods(userId,ps.getLoginName(),ids);
+        } catch (JsonErrException e) {
+            if (e.getMessage().contains("需要淘宝授权")) {
+                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://www.571xz.net/redirect_auth.jsp&state=login&view=web");
+            }
+        }
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -337,12 +384,10 @@ public class MemberAction {
     @RequestMapping("member/storeCollectinit")
     public String storeCollectinit(StoreCollectBO bo, HttpSession session, Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getRows());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("page",bo.getPage());
-        model.addAttribute("get",bo);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("goodslist",pager.getContent());
+        ShiguPager<NewStoreCollectVO> pager=userCollectSimpleService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getSize());
+        model.addAttribute("pageOption",pager.selPageOption(bo.getSize()));
+        model.addAttribute("query",bo);
+        model.addAttribute("shopList",pager.getContent());
         return "buyer/storeCollectinit";
     }
 
@@ -350,7 +395,7 @@ public class MemberAction {
      * 删除收藏的店铺
      * @return
      */
-    @RequestMapping("member/rmv_fvshop")
+    @RequestMapping({"member/rmvFvshop","member/rmv_fvshop"})
     @ResponseBody
     public JSONObject rmv_fvshop(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -963,5 +1008,7 @@ public class MemberAction {
         PayApplyVO applyVO=userAccountService.rechargeApply(ps.getUserId(),moneyfen.longValue());
         return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
     }
+
+
 
 }

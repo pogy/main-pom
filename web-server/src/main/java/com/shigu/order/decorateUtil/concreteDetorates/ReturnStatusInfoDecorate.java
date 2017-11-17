@@ -35,7 +35,12 @@ public class ReturnStatusInfoDecorate extends RefundVoDecorate {
         int waitState = 0;
         int returnState = 0;
         switch (afterSaleStatusVO.getAfterSaleStatus()){
-
+            case REFUND_FAIL:{
+                refundStateNum = 3;
+                //todo:上方显示信息
+                //returnState=4;
+                break;
+            }
             case RETURN_ENT:{
                 refundStateNum = 4;
                 break;

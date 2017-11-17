@@ -8,6 +8,7 @@ public enum  RefundTypeEnum {
     SYSTEM_REFUND(4),//系统自动退款
     GOODS_REFUND(2),//退货
     GOODS_CHANGE(3),//换货
+    SYS_REFUND(5)//系统退款
     ;
     public final int type;
     RefundTypeEnum(int type){

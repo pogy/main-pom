@@ -12,6 +12,13 @@ import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderLogVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.TradeFullinfoGetRequest;
+import com.taobao.api.request.TradeGetRequest;
+import com.taobao.api.response.TradeFullinfoGetResponse;
+import com.taobao.api.response.TradeGetResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +36,18 @@ public class ItemOrderServiceImplTest extends BaseTest {
 
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
+
+
+    @Test
+    public void tbTradeTest() throws ApiException {
+        //68696519672056301
+        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21720662", "dc0130db87142f81cb85374baeb2f285");
+        TradeFullinfoGetRequest req = new TradeFullinfoGetRequest();
+        req.setFields("tid,type,status,payment,receiver_name,receiver_state,receiver_city,receiver_address");
+        req.setTid(68696519672056301L);
+        TradeFullinfoGetResponse rsp = client.execute(req, "62012233596b8ddc8dbc2fb689616acegd5d088dbf899df774940274");
+        System.out.println(rsp.getBody());
+    }
 
     @Test
     public void testOrder() {

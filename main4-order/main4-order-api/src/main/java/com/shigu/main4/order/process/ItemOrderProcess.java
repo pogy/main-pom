@@ -22,13 +22,14 @@ public interface ItemOrderProcess {
     void cancleOutOfStock(Long soidpid);
 
     /**
-     * 回标运单号
-     * @param oid
-     */
-    void tbSend(Long oid) throws TbSendException;
-    /**
      * 更新已拿货数量
      * @param soidpid
      */
     void  updateInStok(Long soidpid);
+
+    /**
+     * 回标运单号
+     * @param oid
+     */
+    void tbSend(Long oid) throws TbSendException;
 }

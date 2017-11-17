@@ -1,6 +1,5 @@
 package com.shigu.seller.bo;
 
-import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.tools.EncodeParamter;
 
 /**
@@ -14,6 +13,9 @@ public class OnsaleItemBO extends GhsGet{
     private Long goodsNumIid;
 
     private String goodsNo;
+
+    //1无最低零售价 2无大图 3无材料成分 null所有
+    private Integer state;
 
     private Integer page;
 
@@ -53,6 +55,14 @@ public class OnsaleItemBO extends GhsGet{
 
     public void setGoodsNumIid(Long goodsNumIid) {
         this.goodsNumIid = goodsNumIid;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     @Override

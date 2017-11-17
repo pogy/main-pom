@@ -66,6 +66,10 @@ public class CdnShopInfoVO {
      * 店铺二级域名
      */
     private String domain;
+    /**
+     * 店铺类型
+     */
+    private Integer type;
 
     /**
      * 获取 档口ID
@@ -269,5 +273,13 @@ public class CdnShopInfoVO {
 
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

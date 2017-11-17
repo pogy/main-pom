@@ -23,17 +23,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/storeCollectinit.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/storeCollectinitv1.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/storeCollectinit.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/storeCollectinitv1.js"></script>
+    
 </head>
 <body>
 
@@ -224,7 +230,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a class="selected" href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li> 
+            <li><a class="selected" href="${main_host!}member/storeCollectinit.htm">我的收藏</a></li> 
             
         
     
@@ -259,7 +265,7 @@ var webSite = '${webSite!}';
 
         
 
-<#assign text>{"fields":[{"name":"website","value":"${website!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"website","value":"${query.website!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -287,15 +293,17 @@ var webSite = '${webSite!}';
 
 <div class="rightBox yahei fr">
     
-    <div class="tabBox clearfix">
-    <div class="tabbutton selected"><a>收藏的店铺</a></div>
-    <div class="cityselect">
+    
+    <ul class="pageTabs clearfix">
+    <li ><a href="goodsCollectOriginal.htm">收藏的商品</a></li>
+    <li class="select"><a href="storeCollectinit.htm">收藏的档口</a></li>
+    <li class="websiteBox">
         
 
-<#assign text>{"name":"website","value":"${website!}"}</#assign>
+<#assign text>{"name":"website","value":"${query.website!}"}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
-<div class="fmSelect" id="storeWeb">
+<div class="fmSelect" id="selectWebsite">
     <span class="text">数据加载中...</span>
     <i class="icon-downarrow bt_arrow"></i>
     <ul class="options"></ul>
@@ -314,40 +322,324 @@ var webSite = '${webSite!}';
 
 
 
-    </div>
-</div>
+    </li>
+</ul>
+
+
+
+
+<#assign text>{}</#assign>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
+    </#list>
+</form>
+</#if>
+
+
+
+
+
+</#list>
+
+
+
+
+
+
+
 
 
 
 
     
-    <#if (goodslist?size) gt 0>
-    <div class="goodslist">
+    <#if (shopList?size) gt 0>
+    <div class="dataList">
     <ul class="head clearfix">
-        <li class="sid">店铺ID</li>
-        <li class="name">店铺名</li>
-        <li class="cate">经营类目</li>
-        <li class="market">市场</li>
-        <li class="storenum">档口号</li>
-        <li class="address">店铺地址</li>
-        <li class="control">操作</li>
-    </ul>
+        <li class="name">
+            <label>
+                
+
+<#assign text>{}</#assign>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
+<label class="fmCheckbox
     
-    <#list goodslist as goods>
-    <ul class="body clearfix">
-       
-       <li class="sid">${goods.shopId!}</li>
-       <li class="name">${goods.shopName!}</li>
-       <li class="cate">${goods.mainBus!}</li>
-       <li class="market">${goods.market!}</li>
-       <li class="storenum">${goods.shopNum!}</li>
-       <li class="address">${goods.address!}</li>
-        <li class="control">
-            <a href="${main_host!}shop.htm?id=${goods.shopId!}" target="_blank">查看</a>
-            <button jbtn="rmvFvshop" goodsid=${goods.id!}>删除</button>
+        <#if $it.checked??>
+            checked
+        </#if>
+    
+">
+    <input 
+        type="checkbox"
+        autocomplete="off"
+        
+            name="allItems"
+        
+        
+        
+            <#if $it.value??>
+                value="${$it.value!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.statusParent??>
+                data-statusParent="${$it.statusParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.selectParent??>
+                data-selectParent="${$it.selectParent!}"
+            </#if>
+        
+        
+        
+            <#if $it.checked??>
+                checked
+            </#if>
+        
+    >
+    <i class="before"></i> 
+    <span>
+    
+        全选
+    
+    
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    
+    </span>
+</label>
+
+
+
+
+</#list>
+
+            </label>
+            <button jbtn="deleteShops">批量删除</button>
         </li>
     </ul>
-    </#list>
+        <#list shopList as shop>
+        <ul class="body clearfix" data-id="${shop.collId!}">
+            <li class="name">
+               
+
+<#assign text>{"value":shop.collId}</#assign>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
+<label class="fmCheckbox
+    
+        <#if $it.checked??>
+            checked
+        </#if>
+    
+">
+    <input 
+        type="checkbox"
+        autocomplete="off"
+        
+            name="favoriteGoods"
+        
+        
+        
+            <#if $it.value??>
+                value="${$it.value!}"
+            <#else>
+                
+            </#if>
+        
+        
+        
+            <#if $it.statusParent??>
+                data-statusParent="${$it.statusParent!}"
+            </#if>
+        
+        
+        
+            data-selectParent="allItems"
+        
+        
+        
+            <#if $it.checked??>
+                checked
+            </#if>
+        
+    >
+    <i class="before"></i> 
+    <span>
+    
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+    
+    
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    
+    </span>
+</label>
+
+
+
+
+</#list>
+
+               <div class="fl">
+                   <a class="imgBox fl" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank"><img src="${shop.shopImgSrc!}_80x80.jpg" alt width=80 height=80></a>
+                   <div class="fl shopInfo">
+                       <p>
+                           <a class="marketAndShop" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank" title="${shop.marketName!}${shop.shopNum!}">${shop.marketName!}${shop.shopNum!}</a>
+                           
+
+<#assign text>{"num":shop.starNum}</#assign>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
+
+<em class="shopLevel">
+<#if $it.num lt 11>
+    <i class="star1"></i>
+<#elseif $it.num lt 41>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 91>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 151>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 251>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 501>
+    <i class="star2"></i>
+<#elseif $it.num lt 1001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 2001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 5001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 10001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 20001>
+    <i class="star3"></i>
+<#elseif $it.num lt 50001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 100001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 200001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 500001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 1000001>
+    <i class="star4"></i>
+<#elseif $it.num lt 2000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num lt 5000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num lt 10000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num gt 10000000>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+</#if>
+</em>
+
+
+</#list>
+
+                       </p>
+                       <p>
+
+<#assign text>{"id":"${(shop.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
+<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+
+</#list>
+
+
+<#assign text>{"id":"${(shop.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
+<#if $it.id != "">
+<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+</#if>
+
+</#list>
+</p>
+                   </div>
+               </div>
+            </li>
+            <li class="shopGoodsImg">
+                <ul class="clearfix">
+                    <#if (shop.goodsList?size) gt 0>
+                        <#list shop.goodsList as goods>
+                        <li>
+                            <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgSrc!}_180x180.jpg" alt width=150 height=150></a>
+                        </li>
+                        </#list>
+                    <#else>
+                        <p class="fc6 notNewGoodsUp">暂时没有店铺的上新！去店铺看看吧～</p>
+                    </#if>
+                </ul>
+                <p><a href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">查看更多></a></p>
+            </li>
+            
+        </ul>
+        </#list>
 </div>
 
 
@@ -391,8 +683,8 @@ var webSite = '${webSite!}';
     
 
 <#assign text>{}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
 
 <div class="jqPagination " id="jqPagination0" 
     <#if $it.pageOption??>

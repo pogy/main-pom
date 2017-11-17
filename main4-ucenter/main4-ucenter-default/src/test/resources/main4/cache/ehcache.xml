@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+    <diskStore path="java.io.tmpdir" />
+
+    <!--<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"-->
+                                     <!--properties="connect=TCP(bind_addr=114.55.15.212;bind_port=30003):-->
+<!--TCPPING(initial_hosts=114.55.15.212[30002],114.55.15.212[30003],115.236.23.213[30100],115.236.23.213[30101];port_range=1;timeout=5000;num_initial_members=4):-->
+                            <!--MERGE2(min_interval=3000;max_interval=5000):-->
+                            <!--FD_ALL(interval=5000;timeout=20000):-->
+                            <!--FD(timeout=5000;max_tries=48;):-->
+                            <!--VERIFY_SUSPECT(timeout=1500):-->
+                            <!--pbcast.NAKACK(retransmit_timeout=100,200,300,600,1200,2400,4800;discard_delivered_msgs=true):-->
+                            <!--pbcast.STABLE(stability_delay=1000;desired_avg_gossip=20000;max_bytes=0):-->
+                            <!--pbcast.GMS(print_local_addr=true;join_timeout=5000)"-->
+                                     <!--propertySeparator="::" />-->
+
+    <defaultCache maxElementsInMemory="1000" eternal="false"
+                  timeToIdleSeconds="1" timeToLiveSeconds="1" overflowToDisk="true" />
+
+    <cache name="spreadShowCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" />
+    <cache name="cdnItemCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopCatCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true">
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopStarCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true">
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="catPolymerizationCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shoprelationCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopFitmentCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+
+    <cache name="marketNavCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+
+    </cache>
+
+    <cache name="floorCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="userStoreListCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="webSitesCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="marketsInSiteCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopDomainCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopBaseCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="domainByShopIdCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="shopRecommentsCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="3" timeToLiveSeconds="10" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <cache name="sellerIndexDataCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+        <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
+                                   <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
+<!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
+    </cache>
+    <!--主类目对应子类目-->
+    <cache name="cidSubCache" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="864000" timeToLiveSeconds="864000" overflowToDisk="true" >
+    </cache>
+    <!--搜索中主类目栏目-->
+    <cache name="searchCatesCache" maxElementsInMemory="100" eternal="false"
+           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
+    </cache>
+    <!--搜索中子类目栏目-->
+    <cache name="searchSubCatesCache" maxElementsInMemory="100" eternal="false"
+           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
+    </cache>
+
+    <!--首页长缓存-->
+    <cache name="indexLongCache" maxElementsInMemory="100" eternal="false"
+           timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" >
+    </cache>
+
+    <!--首页短缓存-->
+    <cache name="indexShortCache" maxElementsInMemory="100" eternal="false"
+           timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="true" >
+    </cache>
+
+    <!-- 页面全部缓存 -->
+    <cache name="SimplePageCachingFilter"
+           maxElementsInMemory="100"
+           maxElementsOnDisk="2000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="20"
+           timeToLiveSeconds="10"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+</ehcache>

@@ -50,7 +50,7 @@
             </list>
         </property>
         <property name="dataSource" ref="daifa_dataSource"></property>
-        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <property name="mapperLocations" value="classpath*:/daifa/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
     </bean>

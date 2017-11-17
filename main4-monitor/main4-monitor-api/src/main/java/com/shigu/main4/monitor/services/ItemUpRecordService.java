@@ -2,12 +2,7 @@ package com.shigu.main4.monitor.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.monitor.vo.DataLineVO;
-import com.shigu.main4.monitor.vo.HotUpItem;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.LastUploadedVO;
-import com.shigu.main4.monitor.vo.NoUpItem;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.monitor.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -111,4 +106,5 @@ public interface ItemUpRecordService {
      * @return
      */
     List<DataLineVO> dailiSellerLevelLine(Long shopId);
+
 }

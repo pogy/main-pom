@@ -107,5 +107,17 @@ public interface RefundItemOrder {
      * 退货失败
      * @param num 退失败数量
      */
-    void shopRefuse(Integer num);
+    void shopRefuse(Integer num, String reason);
+
+    /**
+     * 已拿未发退款
+     * @param psoid
+     * @param money
+     */
+    void refundHasItem(Long psoid,Long money) throws PayerException, RefundException;
+
+    /**
+     * 换货完成，不进行款项操作
+     */
+    void finishExchange();
 }

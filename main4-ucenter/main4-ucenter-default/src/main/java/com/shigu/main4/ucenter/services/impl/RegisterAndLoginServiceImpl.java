@@ -202,10 +202,13 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                }
             }
              */
-            ShiguShop shop = new ShiguShop();
-            shop.setTbNick(tempUser.getSubUserName());
-            shop.setShopStatus(0);
-            shop = shiguShopMapper.selectOne(shop);
+            ShiguShopExample shopExample=new ShiguShopExample();
+            shopExample.createCriteria().andTbNickEqualTo(tempUser.getSubUserName()).andShopStatusEqualTo(0);
+            List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
+            ShiguShop shop=null;
+            if (shops.size()>0) {
+                shop=shops.get(0);
+            }
             if (shop != null) {
                 MemberLicense license = new MemberLicense();
                 license.setLicenseType(4);
@@ -213,7 +216,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 license.setLicenseFailure(1);
                 license = memberLicenseMapper.selectOne(license);
                 if (license != null) {
-                    ShiguShopExample shopExample=new ShiguShopExample();
+                    shopExample.clear();
                     shopExample.createCriteria().andUserIdEqualTo(license.getUserId()).andShopStatusEqualTo(0)
                             .andTbNickNotEqualTo(tempUser.getSubUserName());
                     //需要查出非本昵称下的店铺，如果手机有非本昵称下的店铺，且本昵称有店，不准入

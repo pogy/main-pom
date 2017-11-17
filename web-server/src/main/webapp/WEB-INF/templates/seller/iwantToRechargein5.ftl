@@ -23,6 +23,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -338,7 +343,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
     
-    <input type="hidden" class="tempCode" value="${tempCode!}" />
+    <input type="hidden" id="tempCode" value="${tempCode!}" />
 </div>
 
 

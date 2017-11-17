@@ -21,9 +21,43 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     private String webSite;
     private Date createDate;
     private String createtime;
-    private String target;
-    /** true/false 已/未下架 */
-    private boolean unShelve;
+    /** 上传到 */
+    private String flag;
+    /** true/false 淘宝已/未下架 */
+    private boolean tbSoldout;
+    /** true/false 档口已/未下架 */
+    private boolean shopSoldout;
+
+
+
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public boolean isTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout(boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
+    }
+
+    public boolean isShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout(boolean shopSoldout) {
+        this.shopSoldout = shopSoldout;
+    }
+
+
+
+
 
     public Long getId() {
         return id;
@@ -97,19 +131,5 @@ public class OnekeyRecoreVO implements java.io.Serializable {
         this.createtime = createtime;
     }
 
-    public String getTarget() {
-        return target;
-    }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public boolean getUnShelve() {
-        return unShelve;
-    }
-
-    public void setUnShelve(boolean unShelve) {
-        this.unShelve = unShelve;
-    }
 }
