@@ -127,7 +127,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         order.setPayedFee(0L);
         order.setRefundFee(0L);
         order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
-        order.setOid(idGenerator(OrderType.XZ));
         itemOrderMapper.insertSelective(order);
 
         // 获取订单操作接口
