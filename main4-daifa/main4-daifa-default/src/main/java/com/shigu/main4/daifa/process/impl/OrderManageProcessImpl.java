@@ -164,6 +164,11 @@ public class OrderManageProcessImpl implements OrderManageProcess {
 
     @Override
     public void autoRefund(Long refundId, List<AutoRefundBo> bos) throws DaifaException {
+        DaifaOrderExample daifaOrderExamplex=new DaifaOrderExample();
+        daifaOrderExamplex.createCriteria().andRefundIdEqualTo(refundId);
+        if(daifaOrderMapper.countByExample(daifaOrderExamplex)>0){
+            throw new DaifaException("退款申请已存在");
+        }
         List<Long> refundableIds=new ArrayList<>();
         List<String> soidps=new ArrayList<>();
         List<String> soidpsNum=new ArrayList<>();
