@@ -2,7 +2,7 @@ package com.shigu.daifa.vo;
 
 public class WorkerTakeNumVO {
     private String name;
-    private Integer num;
+    private String num;
 
     public String getName() {
         return this.name;
@@ -12,11 +12,11 @@ public class WorkerTakeNumVO {
         this.name = name;
     }
 
-    public Integer getNum() {
+    public String getNum() {
         return this.num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(String num) {
         this.num = num;
     }
 }
