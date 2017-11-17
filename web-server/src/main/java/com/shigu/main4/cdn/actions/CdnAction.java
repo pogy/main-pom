@@ -6,6 +6,7 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
+import com.shigu.main4.cdn.services.SimpleVideoService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -52,7 +53,6 @@ import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,10 +67,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 
 /**
