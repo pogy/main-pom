@@ -24,6 +24,11 @@ public class ActiveDrawPem implements Serializable {
 	private Date startTime;
 
     /**
+     * 截止时间
+     */
+	private Date endTime;
+
+    /**
      * 创建时间
      */
 	private Date createTime;
@@ -42,6 +47,11 @@ public class ActiveDrawPem implements Serializable {
      * 中奖信息标题
      */
 	private String title;
+
+    /**
+     * 活动类型标记 代金券活动voucher
+     */
+	private String flag;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -65,6 +75,14 @@ public class ActiveDrawPem implements Serializable {
 
 	public Date getStartTime() {
 		return this.startTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public Date getEndTime() {
+		return this.endTime;
 	}
 
 	public void setCreateTime(Date createTime) {
@@ -97,6 +115,14 @@ public class ActiveDrawPem implements Serializable {
 
 	public String getTitle() {
 		return this.title;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+	public String getFlag() {
+		return this.flag;
 	}
 
 }
