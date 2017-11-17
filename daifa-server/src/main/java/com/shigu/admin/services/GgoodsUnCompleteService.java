@@ -3,9 +3,16 @@ package com.shigu.admin.services;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
+import com.opentae.data.daifa.examples.DaifaSellerExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
+import com.opentae.data.daifa.interfaces.DaifaSellerMapper;
+import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
 import com.shigu.admin.bo.GgoodsUmCompleteBO;
 import com.shigu.admin.vo.GgoodsUmCompleteVO;
+import com.shigu.daifa.services.DaifaAllocatedService;
+import com.shigu.daifa.vo.DaifaAllocatedVO;
+import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -33,6 +41,12 @@ public class GgoodsUnCompleteService {
     TakeGoodsIssueProcess takeGoodsIssueProcess;
     @Autowired
     DaifaGgoodsMapper daifaGgoodsMapper;
+    @Autowired
+    DaifaAllocatedService daifaAllocatedService;
+    @Autowired
+    DaifaSellerMapper daifaSellerMapper;
+    @Autowired
+    DaifaWorkerMapper daifaWorkerMapper;
 
     /**
      * ====================================================================================
@@ -83,6 +97,23 @@ public class GgoodsUnCompleteService {
     public List<Long> update(GgoodsUmCompleteBO bo) throws DaifaException {
 
         return takeGoodsIssueProcess.completeWithDate (bo.getCreateDate (),bo.getSellerId ());
+    }
+
+
+    public  List<DaifaWorkerVO> getSellers(){
+        return daifaSellerMapper.selectByExample(new DaifaSellerExample()).stream()
+                .map(daifaSeller -> {
+                    DaifaWorkerVO w=new DaifaWorkerVO();
+                    w.setName(daifaSeller.getName());
+                    w.setId(daifaSeller.getDfSellerId());
+                    return w;
+                }).collect(Collectors.toList());
+    }
+
+    public ShiguPager<DaifaAllocatedVO> workerTakeGoods(Long workerId,String day,Integer page){
+        return daifaAllocatedService.selectDaifaGgoodsList(daifaWorkerMapper.selectByPrimaryKey(workerId).getDaifaSellerId(),workerId,workerId,3, null,null,
+                day, day, page, 10);
+
     }
 
 }

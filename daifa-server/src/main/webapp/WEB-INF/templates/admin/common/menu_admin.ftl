@@ -37,7 +37,15 @@
             </ul>
         </li>
         <li>
-            <a id="niemenu" href="ggoodsUnListByPage.htm" ><i class="icon-allorders"></i>拿货未完成数据</a>
+            <a href="javascript:;" ><i class="icon-allocation"></i>拿货相关</a>
+            <ul>
+                <li>
+                    <a id="niemenu" href="ggoodsUnListByPage.htm"><i></i>拿货未完成数据</a>
+                </li>
+                <li>
+                    <a id="niemenu" href="workerTakeGoods.htm"><i></i>分配的任务</a>
+                </li>
+            </ul>
         </li>
 
         <li>

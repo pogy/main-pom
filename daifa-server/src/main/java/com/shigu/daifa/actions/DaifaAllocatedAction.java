@@ -56,7 +56,7 @@ public class DaifaAllocatedAction {
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
-        model.addAttribute("workers",daifaAllOrderIndexService.getUserList());
+        model.addAttribute("workers",daifaAllOrderIndexService.getUserList(null));
         model.addAttribute("menu","orderHasAllocation.htm");//前台所要的左边菜单
         return "daifa/orderHasAllocation";
     }
@@ -101,7 +101,7 @@ public class DaifaAllocatedAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
-        List<DaifaWorkerVO> vos=daifaAllOrderIndexService.getUserList();
+        List<DaifaWorkerVO> vos=daifaAllOrderIndexService.getUserList(null);
         JSONObject obj=JsonResponseUtil.success();
         obj.put("userList",vos);
         return obj;
