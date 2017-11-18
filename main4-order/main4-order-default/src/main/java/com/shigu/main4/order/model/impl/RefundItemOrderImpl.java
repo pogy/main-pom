@@ -393,7 +393,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         for (PayedVO payedVO : payedVOS) {
             if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
                 SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
-                        .refund(payedVO.getPayId(), money);
+                        .refund(payedVO.getPayId(),"RF_"+refundId, money);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundId);
@@ -494,7 +494,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         }
         for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
             if (payedVO.getMoney() - payedVO.getRefundMoney() >= refundMoney) {
-                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(), refundMoney);
+                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(),"RF_"+refundId, refundMoney);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, String.format("拆单%d退款成功，退款金额%.2f元", psoid, refundMoney * 0.01)+(refundLogistics?String.format("含快递费%.2f",(refundMoney-money)*0.01):""));
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundinfo.getRefundId());

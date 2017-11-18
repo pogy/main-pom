@@ -70,8 +70,8 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     }
 
     @Override
-    protected void realRefund(OrderPay orderPay, Long money) throws PayerException {
-        alipayRefund(orderPay, money);
+    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+        alipayRefund(refundNo,orderPay, money);
     }
 
     @Override
@@ -82,11 +82,11 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         orderPay.setOuterPuser(outerPuser);
         orderPay.setMoney(payMoney);
         orderPay.setRefundMoney(0L);
-        alipayRefund(orderPay,money);
+        alipayRefund("ROLL_"+applyId,orderPay,money);
     }
 
 
-    private void alipayRefund(OrderPay orderPay, Long money) throws PayerException {
+    private void alipayRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
 //        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
 //        if (itemOrder == null || itemOrder.selSender() == null) {
@@ -98,7 +98,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
                 "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
-                "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
+                "    \"out_request_no\":\"" + refundNo + "\"" +
                 "  }");
         try {
             AlipayResponse response = alipayClient.execute(request);
