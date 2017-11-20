@@ -5,16 +5,22 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
-import com.opentae.data.mall.examples.ShiguTempExample;
-import com.opentae.data.mall.interfaces.ShiguTempMapper;
-import com.shigu.main4.spread.enums.AutumnNewConstant;
-import com.shigu.main4.spread.processes.HitDrawChooser;
+import com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.ActiveDrawPem;
+import com.opentae.data.mall.beans.MemberLicense;
+import com.opentae.data.mall.examples.ActiveDrawPemExample;
+import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.model.GoatFactory;
+import com.shigu.main4.goat.vo.ItemGoatVO;
+import com.shigu.main4.spread.enums.ActiveEnum;
+import com.shigu.main4.spread.service.VoucherService;
 import com.shigu.main4.spread.vo.active.draw.ItemUpRecordVOForSpread;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -28,117 +34,123 @@ public class ActiveDrawListener implements MessageListener {
     RedisIO redisIO;
 
     @Autowired
-    private HitDrawChooser hitDrawChooser;
-
-    List<DrawRule> FAGOODS_RULE;
-    List<DrawRule> DAILYFIND_RULE;
-
-    @PostConstruct
-    public void init() {
-        if (FAGOODS_RULE == null) {
-            FAGOODS_RULE = new ArrayList<>();
-            FAGOODS_RULE.add(new DrawRule(10, "A4", false));
-            FAGOODS_RULE.add(new DrawRule(8, "A3", false));
-            FAGOODS_RULE.add(new DrawRule(5, "A2", false));
-            FAGOODS_RULE.add(new DrawRule(3, "A1", true));
-        }
-        if (DAILYFIND_RULE == null) {
-            DAILYFIND_RULE = new ArrayList<>();
-            DAILYFIND_RULE.add(new DrawRule(5, "B2", false));
-            DAILYFIND_RULE.add(new DrawRule(3, "B1", true));
-        }
-    }
+    GoatFactory goatFactory;
 
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
         ItemUpRecordVOForSpread itemUpRecordVO = JSON.parseObject(message.getBody(), ItemUpRecordVOForSpread.class);
-        //验证是秋装新品
-        Date now = new Date();
-        if (now.after(AutumnNewConstant.STARTTIME) && now.before(AutumnNewConstant.DEADLINE) && newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
-            //只从淘宝电脑端上款
-            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
-                doChangeNewAutumn(itemUpRecordVO.getFenUserId(), itemUpRecordVO.getSupperGoodsId(), AutumnNewConstant.DRAW_RECORD_FLAG);
-            }
+        for (ActiveDrawPem activeDrawPem : selCurrentDrawPem()) {
+            doUpdateQualification(itemUpRecordVO,ActiveEnum.valueOf(activeDrawPem.getFlag()),activeDrawPem.getId());
         }
         return Action.CommitMessage;
-
     }
 
-
-    public void doChangeNewAutumn(Long userId, Long goodsId, String findFlag) {
-        final String KEY_IN_REDIS = "ONEKEY_FOR_FINDGOODS_";
-        String key = KEY_IN_REDIS + findFlag + "_" + userId;
-        //上了新款
-        boolean goodsIdAdded = false;
-        Set goodsIdSet = redisIO.get(key, Set.class);
-        if (goodsIdSet == null) {
-            goodsIdSet = new HashSet();
-            goodsIdSet.add(goodsId);
-            goodsIdAdded = true;
-            redisIO.putFixedTemp(key, goodsIdSet, 3600 * 24 * 7);
-        } else if (!goodsIdSet.contains(goodsId)) {
-            goodsIdSet.add(goodsId);
-            goodsIdAdded = true;
-            redisIO.putFixedTemp(key, goodsIdSet, 3600 * 24 * 7);
+    protected void doUpdateQualification(ItemUpRecordVOForSpread uploadRecord,ActiveEnum activeEnum,Long pemId){
+        switch (activeEnum){
+            //代金券活动，只有vip用户可以参与
+            case VIP_VOUCHER:
+                doUpdateVipVoucher(uploadRecord,pemId);
+                return;
         }
-        int upNum = goodsIdSet.size();
-        if (goodsIdAdded == true && upNum >= 3) {
-            hitDrawChooser.updateQualification(userId, upNum, AutumnNewConstant.CURRENT_ACTIVE);
-        }
-    }
-
-    /**
-     * 中奖规则
-     */
-    class DrawRule {
-        private Integer minUp;
-        private String tag;//中奖类别
-        private Boolean defaultDraw;
-
-        public DrawRule() {
-        }
-
-        public DrawRule(Integer minUp, String tag, Boolean defaultDraw) {
-            this.minUp = minUp;
-            this.tag = tag;
-            this.defaultDraw = defaultDraw;
-        }
-
-        public Integer getMinUp() {
-            return minUp;
-        }
-
-        public void setMinUp(Integer minUp) {
-            this.minUp = minUp;
-        }
-
-        public String getTag() {
-            return tag;
-        }
-
-        public void setTag(String tag) {
-            this.tag = tag;
-        }
-
-        public Boolean getDefaultDraw() {
-            return defaultDraw;
-        }
-
-        public void setDefaultDraw(Boolean defaultDraw) {
-            this.defaultDraw = defaultDraw;
-        }
-    }
-
-    public Boolean newAutumn(Long goodsId, List<String> pemFlag) {
-        if (goodsId == null) {
-            return false;
-        }
-        ShiguTempExample example = new ShiguTempExample();
-        example.createCriteria().andFlagIn(pemFlag).andKey1EqualTo(goodsId.toString());
-        return shiguTempMapper.countByExample(example) > 0;
     }
 
     @Autowired
-    private ShiguTempMapper shiguTempMapper;
+    MemberLicenseMapper memberLicenseMapper;
+
+    @Autowired
+    VoucherService vipVoucherService;
+
+    protected void doUpdateVipVoucher(ItemUpRecordVOForSpread uploadRecord,Long pemId){
+        Long userId = uploadRecord.getFenUserId();
+        Long goodsId = uploadRecord.getSupperGoodsId();
+        //杭州首页广告商品上传到淘宝
+        if ("web-tb".equals(uploadRecord.getFlag())&&currentHzGoatGoodsIds().contains(goodsId)) {
+            //vip分销商验证
+            MemberLicense queryLicense = new MemberLicense();
+            queryLicense.setUserId(userId);
+            queryLicense.setLicenseType(7);
+            queryLicense.setLicenseFailure(1);
+            //有效vip用户
+            if (memberLicenseMapper.selectOne(queryLicense) != null) {
+                String userUploadSetKey = getUserUploadSetKey(userId, pemId, ActiveEnum.VIP_VOUCHER.name());
+                if (checkAndUpdateRedisSet(userUploadSetKey,goodsId)) {
+                    int upNum = redisIO.get(userUploadSetKey, Set.class).size();
+                    vipVoucherService.obtainVoucher(userId,upNum,pemId);
+                }
+            }
+        }
+    }
+
+    protected boolean checkAndUpdateRedisSet(String key,Long goodsId){
+        boolean added = false;
+        Set set = redisIO.get(key, Set.class);
+        if (set == null) {
+            set = new HashSet();
+        }
+        if (!set.contains(goodsId)) {
+            set.add(goodsId);
+            added = true;
+        }
+        if (added) {
+            redisIO.putFixedTemp(key,set,60*60*24*7);
+        }
+        return added;
+    }
+
+    /**
+     * 获取redis中存放用户上传记录的键
+     * @param userId
+     * @param pemId
+     * @param identifyStr
+     * @return
+     */
+    public String getUserUploadSetKey(Long userId,Long pemId,String identifyStr){
+        return String.format("ACTIVE_KEY_IN_REDIS_%s%d_%d",identifyStr,pemId,userId);
+    }
+
+
+
+    /**
+     * 获取当前正在进行的活动
+     */
+    protected List<ActiveDrawPem> selCurrentDrawPem(){
+        Date now = new Date();
+        ActiveDrawPemExample example = new ActiveDrawPemExample();
+        example.createCriteria().andStartTimeLessThan(now).andEndTimeGreaterThan(now);
+        return activeDrawPemMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取当前杭州站首页广告商品id，用作首页上传商品抽奖
+     * @return
+     */
+    protected List<Long> currentHzGoatGoodsIds(){
+        String cacheIndex = "HZ_INDEX_GOAT_GOODS_ID_FOR_ACTIVE_DRAW_";
+        List<Long> list = redisIO.getList(cacheIndex, Long.class);
+        if (list != null) {
+            return list;
+        }
+        //杭州首页商品广告
+        ArrayList<String> locationCodes = Lists.newArrayList("MAN-RM", "MAN-FG", "MAN-YS", "MAN-TJDK");
+        HashSet<Long> goatGoodsIdSet = new HashSet<>();
+        for (String locationCode : locationCodes) {
+            try {
+                List<ItemGoatVO> goatVOS = goatFactory.getALocation(locationCode).selGoats();
+                for (ItemGoatVO goatVO : goatVOS) {
+                    goatGoodsIdSet.add(goatVO.getItemId());
+                }
+
+            } catch (GoatException e) {
+                e.printStackTrace();
+            }
+        }
+        list = new ArrayList<>(goatGoodsIdSet);
+        //缓存三小时
+        redisIO.putTemp(cacheIndex,list,60*60*3);
+        return list;
+    }
+
+    @Autowired
+    private ActiveDrawPemMapper activeDrawPemMapper;
 
 }

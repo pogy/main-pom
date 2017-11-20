@@ -9,11 +9,11 @@ package com.shigu.main4.spread.enums;
  * 描述：
  */
 public enum ActiveEnum {
-    NOMAL_NO_AWARD("常规非奖励活动"),
-    SYN_DRAW("即时抽奖活动"),
-    ASYN_DRAW("非即时抽奖活动"),
+    NORMAL_ACTIVE("。。。"),
+    FIND_GOODS("发现好货"),
+    NEW_ACTIVITY("秋款上新"),
+    VIP_VOUCHER("vip代金券"),
     ;
-
     //活动类型描述
     public final String desc;
 

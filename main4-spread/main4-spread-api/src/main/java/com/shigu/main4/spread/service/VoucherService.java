@@ -16,7 +16,7 @@ public interface VoucherService {
 
     String flag = "voucher";
 
-    void obtainVoucher(Long userId,Long uploadNum,Long pemId);
+    void obtainVoucher(Long userId,Integer uploadNum,Long pemId);
 
     List<VoucherVO> selVoucherList(Long userId,List<Long> pemIds);
 

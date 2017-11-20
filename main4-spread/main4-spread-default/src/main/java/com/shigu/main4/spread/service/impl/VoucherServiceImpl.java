@@ -1,7 +1,6 @@
 package com.shigu.main4.spread.service.impl;
 
 import com.opentae.data.mall.beans.ActiveDrawPem;
-import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ActiveDrawPemExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
@@ -10,6 +9,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.spread.service.VoucherService;
 import com.shigu.main4.spread.vo.VoucherVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ import java.util.List;
  * 项目：main-pom
  * 描述：
  */
+@Service("vipVoucherService")
 public class VoucherServiceImpl implements VoucherService {
 
     @Autowired
@@ -33,7 +34,7 @@ public class VoucherServiceImpl implements VoucherService {
     private ShiguTempMapper shiguTempMapper;
 
     @Override
-    public void obtainVoucher(Long userId, Long uploadNum, Long pemId) {
+    public void obtainVoucher(Long userId, Integer uploadNum, Long pemId) {
         ActiveDrawPem pem = activeDrawPemMapper.selectByPrimaryKey(pemId);
         Date now = new Date();
         if (now.after(pem.getStartTime())&&now.before(pem.getEndTime())) {
