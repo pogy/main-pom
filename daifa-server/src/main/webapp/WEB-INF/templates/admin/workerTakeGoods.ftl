@@ -38,7 +38,7 @@
             <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderHasAllocation.js"></script>
+    <script src="${daifa_host}js/admin/sys/ggoodsUnComplete/workerTakeGoods.js"></script>
     
     <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
     
