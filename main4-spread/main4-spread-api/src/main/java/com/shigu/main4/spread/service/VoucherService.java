@@ -1,9 +1,5 @@
 package com.shigu.main4.spread.service;
 
-import com.shigu.main4.spread.vo.VoucherVO;
-
-import java.util.List;
-
 /**
  * 类名：VoucherService
  * 类路径：com.shigu.main4.spread.service.VoucherService
@@ -14,11 +10,6 @@ import java.util.List;
  */
 public interface VoucherService {
 
-    String flag = "voucher";
-
     void obtainVoucher(Long userId,Integer uploadNum,Long pemId);
 
-    List<VoucherVO> selVoucherList(Long userId,List<Long> pemIds);
-
-    List<Long> selCurrentAvailableVoucherPems();
 }

@@ -1,20 +1,18 @@
 package com.shigu.main4.spread.service.impl;
 
-import com.opentae.data.mall.beans.ActiveDrawPem;
-import com.opentae.data.mall.examples.ActiveDrawPemExample;
-import com.opentae.data.mall.examples.ShiguTempExample;
-import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
-import com.opentae.data.mall.interfaces.ShiguTempMapper;
-import com.shigu.main4.common.util.BeanMapper;
+import com.opentae.data.mall.beans.ActiveDrawRecord;
+import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.spread.service.VoucherService;
-import com.shigu.main4.spread.vo.VoucherVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 类名：VoucherServiceImpl
@@ -27,86 +25,109 @@ import java.util.List;
 @Service("vipVoucherService")
 public class VoucherServiceImpl implements VoucherService {
 
-    @Autowired
-    private ActiveDrawPemMapper activeDrawPemMapper;
+    private Set<ProvideRule> provideRules;
+
+    private Set<Long> userIds = new HashSet<>();
 
     @Autowired
-    private ShiguTempMapper shiguTempMapper;
+    private ActiveDrawRecordMapper activeDrawRecordMapper;
 
     @Override
     public void obtainVoucher(Long userId, Integer uploadNum, Long pemId) {
-        ActiveDrawPem pem = activeDrawPemMapper.selectByPrimaryKey(pemId);
-        Date now = new Date();
-        if (now.after(pem.getStartTime())&&now.before(pem.getEndTime())) {
-            if (uploadNum>5) {
-                generateVoucher(userId,pemId,FirstVoucherGen.UPLOAD_FIVE);
-            }
-            if (uploadNum>10) {
-                generateVoucher(userId,pemId,FirstVoucherGen.UPLOAD_TEN);
-            }
-            if (uploadNum>15) {
-                generateVoucher(userId,pemId,FirstVoucherGen.UPLOAD_FIFTEN);
+        if (provideRules == null) {
+            initProvideRules();
+        }
+        synchronized (userIds){
+            boolean inProcess = false;
+            do {
+                inProcess = userIds.contains(userId);
+                if (!inProcess) {
+                    userIds.add(userId);
+                } else {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    } catch (InterruptedException ignore) {
+                    }
+                }
+            }while (inProcess);
+        }
+        for (ProvideRule provideRule : provideRules) {
+            provideVoucher(userId,pemId,uploadNum,provideRule);
+        }
+        synchronized (userIds){
+            userIds.remove(userId);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    protected void provideVoucher(Long userId,Long pemId,Integer upNum,ProvideRule rule){
+        if (upNum > rule.getShouldUpNum()) {
+            ActiveDrawRecord record = new ActiveDrawRecord();
+            record.setUserId(userId);
+            record.setPemId(pemId);
+            record.setWard(rule.getWardRank().toString());
+            if (activeDrawRecordMapper.selectOne(record) == null) {
+                //达到发放条件并且还未发放代金券，进行代金券发放
+                record.setReceivesYes(false);
+                record.setDrawStatus(3);
+                record.setDrawCode(StringUtil.str10To37Str());
+                activeDrawRecordMapper.insertSelective(record);
             }
         }
     }
 
-    protected synchronized void generateVoucher(Long userId,Long pemId,FirstVoucherGen gen){
-
-    }
-
-    @Override
-    public List<VoucherVO> selVoucherList(Long userId,List<Long> pemIds) {
-        List<String> flags = new ArrayList<>(pemIds.size());
-        for (Long pemId : pemIds) {
-            flags.add(getVoucherFlag(pemId));
-        }
-        ShiguTempExample example = new ShiguTempExample();
-        example.createCriteria().andKey1EqualTo(userId.toString()).andFlagIn(flags);
-        shiguTempMapper.selectByExample(example);
-        // TODO: 2017/11/17 0017 封装返回
-        return null;
-    }
-
-    @Override
-    public List<Long> selCurrentAvailableVoucherPems() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE,-7);
-        Date time = calendar.getTime();
-        ActiveDrawPemExample example = new ActiveDrawPemExample();
-        example.createCriteria().andFlagEqualTo(flag).andEndTimeGreaterThan(time);
-        return BeanMapper.getFieldList(activeDrawPemMapper.selectByExample(example), "id", Long.class);
+    private void initProvideRules(){
+        LinkedHashSet<ProvideRule> rules = new LinkedHashSet<>();
+        rules.add(new ProvideRule(5,1,"上传5件商品，发放三张代金券"));
+        rules.add(new ProvideRule(10,2,"上传10件商品，发放一张代金券"));
+        rules.add(new ProvideRule(15,3,"上传15件商品，发放一张代金券"));
+        provideRules = Collections.unmodifiableSet(rules);
     }
 
     /**
-     * 获取本期代金券标记
-     * @param pemId
-     * @return
+     * 达到一定上传量直接发放代金券
      */
-    protected String getVoucherFlag(Long pemId){
-        return flag + pemId;
-    }
+    class ProvideRule{
+        //需要上传的商品数
+        private final Integer shouldUpNum;
+        //奖品等级
+        private final Integer wardRank;
+        //说明
+        private String desc;
 
-
-    enum FirstVoucherGen{
-        // TODO: 2017/11/17 0017 区分标志
-        UPLOAD_FIVE("","30"),
-        UPLOAD_TEN("","10"),
-        UPLOAD_FIFTEN("","10"),
-        ;
-        //区分标志
-        private final String identifyStr;
-        //值字符串
-        private final String valueStr;
-
-        FirstVoucherGen(String identifyStr, String valueStr) {
-            this.identifyStr = identifyStr;
-            this.valueStr = valueStr;
+        public ProvideRule(Integer shouldUpNum, Integer wardRank, String desc) {
+            this.shouldUpNum = shouldUpNum;
+            this.wardRank = wardRank;
+            this.desc = desc;
         }
 
-        VoucherVO simpleVoucherGen(){
-            // TODO: 2017/11/17 0017 设置代金券区分标志  5次 10次 15次。。。注册vip送代金券需要进行区分
-            // TODO: 2017/11/17 0017 设置代金券面值
-            return null;
+        public Integer getShouldUpNum() {
+            return shouldUpNum;
+        }
+
+        public Integer getWardRank() {
+            return wardRank;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ProvideRule that = (ProvideRule) o;
+
+            if (shouldUpNum != null ? !shouldUpNum.equals(that.shouldUpNum) : that.shouldUpNum != null) return false;
+            if (wardRank != null ? !wardRank.equals(that.wardRank) : that.wardRank != null) return false;
+            return desc != null ? desc.equals(that.desc) : that.desc == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = shouldUpNum != null ? shouldUpNum.hashCode() : 0;
+            result = 31 * result + (wardRank != null ? wardRank.hashCode() : 0);
+            result = 31 * result + (desc != null ? desc.hashCode() : 0);
+            return result;
         }
     }
+
 }
