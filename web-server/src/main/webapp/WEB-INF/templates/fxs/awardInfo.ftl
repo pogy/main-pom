@@ -42,7 +42,11 @@
                 <span class="actTime fs14 yahei fc6">活动日期：${phase.phaseTime!} </span>
                 <div class="actRule yahei fr">
                     <span class="ruleBtn fcF40"><i class="icon-doubt"></i>活动规则</span>
-                    <div class="rules">${phase.ruleList!}</div>
+                    <div class="rules">
+                        <#list phase.ruleList as rule>
+                            <p>${rule!}</p>
+                        </#list>
+                    </div>
                 </div>
             </div>
             <div class="awardList clearfix">
