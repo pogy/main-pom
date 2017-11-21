@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Service("vipVoucherService")
 public class VoucherServiceImpl implements VoucherService {
 
-    private Set<ProvideRule> provideRules;
+    private List<ProvideRule> provideRules;
 
     private Set<Long> userIds = new HashSet<>();
 
@@ -77,11 +74,11 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     private void initProvideRules(){
-        LinkedHashSet<ProvideRule> rules = new LinkedHashSet<>();
+        List<ProvideRule> rules = new ArrayList<>();
         rules.add(new ProvideRule(5,1,"上传5件商品，发放三张代金券"));
         rules.add(new ProvideRule(10,2,"上传10件商品，发放一张代金券"));
         rules.add(new ProvideRule(15,3,"上传15件商品，发放一张代金券"));
-        provideRules = Collections.unmodifiableSet(rules);
+        this.provideRules = Collections.unmodifiableList(rules);
     }
 
     /**
@@ -107,26 +104,6 @@ public class VoucherServiceImpl implements VoucherService {
 
         public Integer getWardRank() {
             return wardRank;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ProvideRule that = (ProvideRule) o;
-
-            if (shouldUpNum != null ? !shouldUpNum.equals(that.shouldUpNum) : that.shouldUpNum != null) return false;
-            if (wardRank != null ? !wardRank.equals(that.wardRank) : that.wardRank != null) return false;
-            return desc != null ? desc.equals(that.desc) : that.desc == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = shouldUpNum != null ? shouldUpNum.hashCode() : 0;
-            result = 31 * result + (wardRank != null ? wardRank.hashCode() : 0);
-            result = 31 * result + (desc != null ? desc.hashCode() : 0);
-            return result;
         }
     }
 
