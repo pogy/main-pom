@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -33,6 +34,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/order/js/orderDetail.js"></script>
+    
 </head>
 <body>
 
@@ -434,9 +436,9 @@ $(function(){
         <#list childOrders as childOrder>
         <ul>
             <li class="goodsDesc">
-                <a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
+                <a href="http://www.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
                 <div class="goodsTitle pr fl">
-                    <h4><a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank">${childOrder.title!}</a></h4>
+                    <h4><a href="http://www.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank">${childOrder.title!}</a></h4>
                     <p class="marketCode fwb pa">商品货号：${childOrder.goodsNo!}</p>
                 </div>
             </li>
