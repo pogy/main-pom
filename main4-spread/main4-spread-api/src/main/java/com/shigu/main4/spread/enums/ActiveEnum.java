@@ -9,15 +9,35 @@ package com.shigu.main4.spread.enums;
  * 描述：
  */
 public enum ActiveEnum {
-    NORMAL_ACTIVE("。。。"),
-    FIND_GOODS("发现好货"),
-    NEW_ACTIVITY("秋款上新"),
-    VIP_VOUCHER("vip代金券"),
+    NORMAL_ACTIVE("。。。","旧版活动"),
+    FIND_GOODS("发现好货","发现好货"),
+    NEW_ACTIVITY("秋款上新","秋装新品发布会"),
+    VIP_VOUCHER("vip代金券","代金券"),
     ;
     //活动类型描述
     public final String desc;
+    //活动类型标记，对应数据库中active_draw_pem中的flag字段
+    public final String flag;
 
-    ActiveEnum(String desc) {
+    ActiveEnum(String desc, String flag) {
         this.desc = desc;
+        this.flag = flag;
+    }
+
+    public static ActiveEnum flagOf(String flag){
+        for (ActiveEnum activeEnum : values()) {
+            if (activeEnum.flag.equals(flag)) {
+                return activeEnum;
+            }
+        }
+        throw new RuntimeException("no such flag");
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getFlag() {
+        return flag;
     }
 }

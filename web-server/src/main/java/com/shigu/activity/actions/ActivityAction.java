@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
@@ -15,8 +16,10 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
+import com.shigu.main4.spread.vo.ActiveForShowVO;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -48,6 +51,9 @@ public class ActivityAction {
 
     @Autowired
     private ShiguActivityMapper shiguActivityMapper;
+
+    @Autowired
+    private ActivityWebService activityWebService;
 
     @Autowired
     private RedisIO redisIO;
@@ -133,29 +139,10 @@ public class ActivityAction {
      */
     @RequestMapping("member/awardInfo")
     public String awardInfo(HttpSession session, Model model) {
-        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
-        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
-        model.addAttribute("allInfo", drawPem.getInfo());
-
-        model.addAttribute("thisHdTime", parseToStartEnd(drawPem.getStartTime()));
-        List<ActiveDrawRecordUserVo> userVoList = Collections.emptyList();
-        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (object != null) {
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if (drawLastPem != null) {
-                model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
-                // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
-                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
-                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
-                    if (anUserVoList.getDrawStatus() != 3) {
-                        iterator.remove();
-                    }
-                }
-                model.addAttribute("lastUserAward",JSON.toJSONString(userVoList));
-            }
-        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
+        List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs);
+        model.addAttribute("actList",actList);
         return "buyer/awardInfo";
     }
 

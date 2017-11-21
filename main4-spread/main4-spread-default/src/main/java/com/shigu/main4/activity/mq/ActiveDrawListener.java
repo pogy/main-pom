@@ -40,7 +40,7 @@ public class ActiveDrawListener implements MessageListener {
     public Action consume(Message message, ConsumeContext consumeContext) {
         ItemUpRecordVOForSpread itemUpRecordVO = JSON.parseObject(message.getBody(), ItemUpRecordVOForSpread.class);
         for (ActiveDrawPem activeDrawPem : selCurrentDrawPem()) {
-            doUpdateQualification(itemUpRecordVO,ActiveEnum.valueOf(activeDrawPem.getFlag()),activeDrawPem.getId());
+            doUpdateQualification(itemUpRecordVO,ActiveEnum.flagOf(activeDrawPem.getFlag()),activeDrawPem.getId());
         }
         return Action.CommitMessage;
     }

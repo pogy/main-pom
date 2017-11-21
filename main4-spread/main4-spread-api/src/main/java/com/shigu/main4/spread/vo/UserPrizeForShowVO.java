@@ -11,18 +11,31 @@ import java.io.Serializable;
  * 描述：前端显示我的奖品需要信息
  */
 public class UserPrizeForShowVO implements Serializable {
+    //奖品级别
+    private Integer rank;
     //中奖名称，比如一等奖，二等奖
     private String name;
     //奖品名称
     private String prize;
     //奖品图片地址
     private String img;
-    //中奖状态，1等待抽奖 2未中奖 3已中奖
+
+    //与用户相关字段  state takedIs takeCode
+
+    //中奖状态，1等待抽奖 2未中奖 3已中奖  前端要求不能为空
     private Integer state;
-    //是否已领取
+    //是否已领取 前端要求不能为空
     private Boolean takedIs;
     //领取码,不存在则为null
     private String takeCode;
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
 
     public String getName() {
         return name;
@@ -57,6 +70,9 @@ public class UserPrizeForShowVO implements Serializable {
     }
 
     public Boolean getTakedIs() {
+        if (takedIs == null) {
+            return false;
+        }
         return takedIs;
     }
 
