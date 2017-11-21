@@ -1,9 +1,5 @@
 package com.shigu.main4.spread.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
-import com.opentae.data.mall.beans.ActiveDrawPem;
-import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
 import com.shigu.main4.spread.vo.ActiveDrawRecordVO;
 import com.shigu.main4.spread.vo.ActiveForShowVO;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
@@ -13,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

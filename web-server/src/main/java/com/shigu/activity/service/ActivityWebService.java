@@ -31,11 +31,13 @@ public class ActivityWebService {
     public List<ActiveForShowVO> getAwardInfo(Long userId,boolean vipIs){
         List<ActiveForShowVO> activeForShowVOS = activeShowService.selCurrentAwardInfoWithoutUser();
         if (!vipIs) {
+            ArrayList<ActiveForShowVO> ignorePemList = new ArrayList<>();
             for (ActiveForShowVO activeForShowVO : activeForShowVOS) {
                 if (ActiveEnum.VIP_VOUCHER.getFlag().equals(activeForShowVO.getActName())) {
-                    activeForShowVOS.remove(activeForShowVO);
+                    ignorePemList.add(activeForShowVO);
                 }
             }
+            activeForShowVOS.removeAll(ignorePemList);
         }
         Map<Long, ActivePhaseForShowVO> longActivePhaseForShowVOHashMap = new HashMap<>();
         List<ActivePhaseForShowVO> phaseList = new ArrayList<>();
