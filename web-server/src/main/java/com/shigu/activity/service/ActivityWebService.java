@@ -1,11 +1,9 @@
 package com.shigu.activity.service;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.spread.enums.ActiveEnum;
 import com.shigu.main4.spread.service.ActiveShowService;
-import com.shigu.main4.spread.vo.ActiveDrawRecordVO;
-import com.shigu.main4.spread.vo.ActiveForShowVO;
-import com.shigu.main4.spread.vo.ActivePhaseForShowVO;
-import com.shigu.main4.spread.vo.UserPrizeForShowVO;
+import com.shigu.main4.spread.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,4 +70,12 @@ public class ActivityWebService {
         }
         return activeForShowVOS;
     }
+
+    public String queryByCode(String tqcode) throws Main4Exception {
+        PrizePoolVO prizePoolVO = activeShowService.selUserDrawList(tqcode);
+        return String.format("第%d期可领%s", prizePoolVO.getPemId(), prizePoolVO.getPrizeName());
+    }
+
+
+
 }

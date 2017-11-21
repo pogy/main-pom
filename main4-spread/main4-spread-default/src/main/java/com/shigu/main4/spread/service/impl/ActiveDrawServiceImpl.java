@@ -37,6 +37,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.service.ActiveDrawService;
+import com.shigu.main4.spread.service.ActiveShowService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -57,14 +58,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 活动抽奖SERVICE
@@ -102,6 +96,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
     @Autowired
     private ShiguTempMapper shiguTempMapper;
+
+    @Autowired
+    private ActiveShowService activeShowService;
 
     /**
      * 查询当前期次
@@ -978,4 +975,37 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     }
 
 
+    @Override
+    public void receUserWard(String tqcode) throws Main4Exception {
+        ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setDrawCode(tqcode);
+        activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        if (activeDrawRecord == null) {
+            throw new Main4Exception("错误的领取码");
+        }
+        if (activeDrawRecord.getReceivesYes()) {
+            throw new Main4Exception("已使用过的领取码");
+        }
+        ActiveDrawPem activeDrawPem = activeDrawPemMapper.selectByPrimaryKey(activeDrawRecord.getPemId());
+        checkValidity(activeDrawPem.getEndTime());
+        activeDrawRecord.setReceivesYes(true);
+        int result = activeDrawRecordMapper.updateByPrimaryKeySelective(activeDrawRecord);
+        if(result == 0){
+            throw new Main4Exception("领取发生错误");
+        }
+    }
+
+    /**
+     * 检验领取码是否过期
+     * @param date 活动截止日期
+     * @throws Main4Exception
+     */
+    public void checkValidity(Date date) throws Main4Exception {
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.DATE,-7);
+        Date verifiedTime = instance.getTime();
+        if (date.before(verifiedTime)) {
+            throw new Main4Exception("领取码以过期");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.shigu.main4.spread.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.opentae.data.mall.beans.ActiveDrawRecord;
 import com.opentae.data.mall.beans.ActivityDrawPrizePool;
 import com.opentae.data.mall.examples.ActiveDrawPemExample;
 import com.opentae.data.mall.examples.ActiveDrawRecordExample;
@@ -8,12 +9,10 @@ import com.opentae.data.mall.examples.ActivityDrawPrizePoolExample;
 import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ActivityDrawPrizePoolMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.spread.service.ActiveShowService;
-import com.shigu.main4.spread.vo.ActiveDrawRecordVO;
-import com.shigu.main4.spread.vo.ActiveForShowVO;
-import com.shigu.main4.spread.vo.ActivePhaseForShowVO;
-import com.shigu.main4.spread.vo.UserPrizeForShowVO;
+import com.shigu.main4.spread.vo.*;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,6 +127,36 @@ public class ActiveShowServiceImpl implements ActiveShowService {
         ActiveDrawRecordExample example = new ActiveDrawRecordExample();
         example.createCriteria().andUserIdEqualTo(userId).andPemIdIn(pemIds);
         return BeanMapper.mapList(activeDrawRecordMapper.selectByExample(example), ActiveDrawRecordVO.class);
+    }
+
+
+    public PrizePoolVO selUserDrawList(String drawCode) throws Main4Exception {
+        ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setDrawCode(drawCode);
+        activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        if(activeDrawRecord == null){
+            throw new Main4Exception("提货码错误");
+        }
+        if(activeDrawRecord.getDrawStatus() != 3){
+            throw new Main4Exception("未中奖");
+        }
+        if(activeDrawRecord.getReceivesYes()){
+            throw new Main4Exception("已经领取，不能重复领取");
+        }
+        List<ActiveDrawPemVo> activeDrawPemVos = selShowAwardPems();
+        if(activeDrawPemVos.size() == 0){
+            throw new Main4Exception("数据有误，活动从未开始");
+        }
+        for (ActiveDrawPemVo activeDrawPemVo : activeDrawPemVos) {
+            if (activeDrawPemVo.getId().equals(activeDrawRecord.getPemId())) {
+                ActivityDrawPrizePool activityDrawPrizePool = new ActivityDrawPrizePool();
+                activityDrawPrizePool.setPemId(activeDrawRecord.getPemId());
+                activityDrawPrizePool.setRank(Integer.valueOf(activeDrawRecord.getWard()));
+                activityDrawPrizePool = activityDrawPrizePoolMapper.selectOne(activityDrawPrizePool);
+                return BeanMapper.map(activityDrawPrizePool, PrizePoolVO.class);
+            }
+        }
+        throw new Main4Exception("已超过领奖时间");
     }
 
 }

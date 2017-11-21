@@ -1,7 +1,9 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.spread.vo.ActiveDrawRecordVO;
 import com.shigu.main4.spread.vo.ActiveForShowVO;
+import com.shigu.main4.spread.vo.PrizePoolVO;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 
 import java.util.List;
@@ -32,4 +34,12 @@ public interface ActiveShowService {
      * @return
      */
     List<ActiveDrawRecordVO> selUserAwardInfo(Long userId, List<Long> pemIds);
+
+    /**
+     * 通过领取码查询中奖信息
+     * @param drawCode
+     * @return
+     * @throws Main4Exception
+     */
+    PrizePoolVO selUserDrawList(String drawCode) throws Main4Exception;
 }

@@ -165,4 +165,6 @@ public interface ActiveDrawService {
 
     String shiguTempSigup(String flag, Long userId, Long shopId);
 
+    void receUserWard(String tqcode) throws Main4Exception;
+
 }

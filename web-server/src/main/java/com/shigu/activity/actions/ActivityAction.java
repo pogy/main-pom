@@ -235,19 +235,8 @@ public class ActivityAction {
             return rspJsonObject;
         }
 
-        rspJsonObject.put("status", 1);
-
         try {
-            ActiveDrawRecordUserVo activeDrawRecordUserVo = activeDrawServiceImpl.selUserDrawList(tqcode);
-            if (activeDrawRecordUserVo == null) {
-                rspJsonObject.put("desc", "数据有误");
-                return rspJsonObject;
-            }
-            rspJsonObject.put("type", activeDrawRecordUserVo.getWard());
-            rspJsonObject.put("q", activeDrawRecordUserVo.getPemId());
-            rspJsonObject.put("userId", activeDrawRecordUserVo.getUserId());
-            rspJsonObject.put("tqcode", tqcode);
-            rspJsonObject.put("status", 0);
+            rspJsonObject.put("awardInfo", activityWebService.queryByCode(tqcode));
         } catch (Main4Exception me) {
             me.printStackTrace();
             rspJsonObject.put("desc", me.getMessage());
@@ -260,22 +249,20 @@ public class ActivityAction {
      * 领取奖品
      *
      * @param tqcode
-     * @param userId
      * @return
      */
     @RequestMapping(value = "activity/qzhongjinag", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qzhongjinag(String tqcode, Long userId) {
+    public JSONObject qzhongjinag(String tqcode) {
         JSONObject rspJsonObject = new JSONObject();
         rspJsonObject.put("status", 1);
 
-        if (StringUtils.isEmpty(tqcode) || userId == null) {
+        if (StringUtils.isEmpty(tqcode)) {
             rspJsonObject.put("desc", "请输入有效领取码和用户");
             return rspJsonObject;
         }
-
         try {
-            activeDrawServiceImpl.receUserWard(tqcode, userId);
+            activeDrawServiceImpl.receUserWard(tqcode);
             rspJsonObject.put("status", 0);
         } catch (Main4Exception e) {
             e.printStackTrace();
