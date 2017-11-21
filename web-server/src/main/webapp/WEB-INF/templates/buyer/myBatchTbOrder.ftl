@@ -1496,7 +1496,7 @@ var webSite = '${webSite!}';
         <span class="fc6 mr">订单编号：<em class="fs14">${order.tbId!}</em></span>
         <span class="fc6 mr">成交时间：<em class="fs14">${order.time!}</em></span>
         <b class="fcBlue fr detailBtn" jbtn="detailBtn">详情<i class="icon-downarrow"></i></b>
-        <#if order.flagState??>
+        <#if order.flagState != 0>
         <i class="flag${order.flagState!} icon-s-flag fr flag"></i>
         </#if>
         <#if order.lastTime??>

@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/itemv1.css?v=20117092901" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=2017112101" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/itemv1.js?v=20117092901"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=2017112101"></script>
     
 </head>
 <body>
@@ -120,7 +120,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -535,11 +535,12 @@ ${userShopHdHtml}
                 </#if>
             </#list>
         </ul>
+        <#if goodsInfo.goodsVideoUrl??><i class="buttonIcon smallPlayButton"></i></#if>
         <span class="scalceIcon"></span>
         <#if goodsInfo.goodsVideoUrl??>
 <div id="goodsVideoBox">
-    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
-    <i class="buttonIcon smallPlayButton"></i>
+    <video class="video" controls="controls" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
+    
     <i class="buttonIcon bigPlayButton"></i>
     <i class="buttonIcon closeButton"></i>
 </div>
@@ -551,7 +552,7 @@ ${userShopHdHtml}
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if img_index lt 6>
-                <li class="" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                <li class="<#if img_index == 0>select</#if>" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
                 </#if>
             </#list>
         </ul>

@@ -116,8 +116,8 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
     }
 
     @Override
-    protected void realRefund(OrderPay orderPay, Long money) throws PayerException {
-        weixinRefund(orderPay, money.intValue());
+    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+        weixinRefund(refundNo,orderPay, money.intValue());
     }
 
     @Override
@@ -128,15 +128,15 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         orderPay.setOuterPuser(outerPuser);
         orderPay.setMoney(payMoney);
         orderPay.setRefundMoney(0L);
-        weixinRefund(orderPay,money.intValue());
+        weixinRefund("ROLL_"+applyId,orderPay,money.intValue());
     }
 
-    private void weixinRefund(OrderPay orderPay, int refundFee) throws PayerException {
+    private void weixinRefund(String refundNo,OrderPay orderPay, int refundFee) throws PayerException {
         RefundReqData reqData = new RefundReqData(
                 orderPay.getOuterPid(),
                 wxOutTradeNo(orderPay.getApplyId()),
                 null,
-                "RF" + orderPay.getOuterPid() + orderPay.getRefundMoney(),
+                refundNo,
                 orderPay.getMoney().intValue(),
                 refundFee,
                 orderPay.getOuterPuser(),
