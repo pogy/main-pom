@@ -2,6 +2,7 @@ package com.shigu.main4.spread.service.impl;
 
 import com.opentae.data.mall.beans.ActiveDrawRecord;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.opentae.data.mall.interfaces.ActivityDrawPrizePoolMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.spread.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Autowired
     private ActiveDrawRecordMapper activeDrawRecordMapper;
+
+    @Autowired
+    private ActivityDrawPrizePoolMapper activityDrawPrizePoolMapper;
 
     @Override
     public void obtainVoucher(Long userId, Integer uploadNum, Long pemId) {
@@ -70,6 +74,7 @@ public class VoucherServiceImpl implements VoucherService {
                 record.setDrawCode(StringUtil.str10To37Str());
                 record.setModifyTime(new Date());
                 activeDrawRecordMapper.insertSelective(record);
+                activityDrawPrizePoolMapper.addProvide(pemId,rule.getWardRank());
             }
         }
     }
