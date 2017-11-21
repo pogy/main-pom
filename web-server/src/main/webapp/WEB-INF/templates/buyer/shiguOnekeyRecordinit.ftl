@@ -195,21 +195,39 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
             
+        
+        
+    
+        
+        <#if session_user_redis__.otherPlatform.__moreOrder__>
+        
+        
+            
+            <li><a href="${main_host!}order/myBatchTbOrder.htm" target="_blank">批量操作</a></li>
+            
+        
+        
+        </#if>
         
     
     </ul> 
@@ -218,21 +236,27 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a class="selected" href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li> 
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
             
+        
         
     
     </ul> 
@@ -241,9 +265,11 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
             
+        
         
     
     </ul> 
@@ -252,9 +278,11 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
             
+        
         
     
     </ul> 
@@ -473,6 +501,12 @@ var webSite = '${webSite!}';
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -505,6 +539,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -549,6 +590,12 @@ var webSite = '${webSite!}';
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -579,6 +626,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 

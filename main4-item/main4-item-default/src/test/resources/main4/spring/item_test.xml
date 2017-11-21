@@ -19,7 +19,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.*" >
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.searchtool.configs" >
     </context:component-scan>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -29,6 +29,7 @@
                 <value>classpath:oss.properties</value>
                 <value>classpath:redis.properties</value>
                 <value>classpath:opensearch.properties</value>
+                <value>classpath:elastic.properties</value>
             </list>
         </property>
     </bean>
@@ -85,7 +86,7 @@
             </list>
         </property>
         <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+        <!--<property name="configLocation" value="classpath:/mybatis-config.xml"></property>-->
         <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
     </bean>

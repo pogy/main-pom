@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderServiceExample;
 import com.opentae.data.mall.interfaces.*;
@@ -31,10 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -183,6 +181,28 @@ public class MyOrderService {
             itemOrderProcess.tbSend(oid);
         } catch (TbSendException e) {
             throw new Main4Exception(e.getMessage());
+        }
+    }
+
+    public void moreTbSend(Long userId,List<Long> oids) throws Main4Exception {
+        ItemOrderExample itemOrderExample=new ItemOrderExample();
+        itemOrderExample.createCriteria().andOidIn(oids);
+        List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
+        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
+                .map(ItemOrder::getOid).collect(Collectors.toList());
+        StringBuilder oidStrs= new StringBuilder();
+        for(Long oid:orderIds){
+            try {
+                itemOrderProcess.tbSend(oid);
+            } catch (TbSendException e) {
+                if (oidStrs.length() > 0) {
+                    oidStrs.append(",");
+                }
+                oidStrs.append(oid);
+            }
+        }
+        if(oidStrs.length()>0){
+            throw new Main4Exception("部分订单标记失败名,请单个订单操作");
         }
     }
 

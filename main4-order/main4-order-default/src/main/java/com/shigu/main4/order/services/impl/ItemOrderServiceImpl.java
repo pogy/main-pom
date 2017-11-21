@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,7 +126,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         order.setPayedFee(0L);
         order.setRefundFee(0L);
         order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
-        order.setOid(idGenerator(OrderType.XZ));
         itemOrderMapper.insertSelective(order);
 
         // 获取订单操作接口
@@ -171,10 +169,10 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-        String companyId = logistics.getCompanyId();
-        ExpressCompany company = new ExpressCompany();
-        company.setEnName(companyId);
-        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
+        Long companyId = new Long(logistics.getCompanyId());
+//        ExpressCompany company = new ExpressCompany();
+//        company.setRemark2(companyId);
+//        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
 
         BuyerAddress buyerAddress;
         try {
@@ -187,11 +185,21 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
-        logistic.setCompanyId(expressCompany.getExpressCompanyId());
+        logistic.setCompanyId(companyId);
         logistic.setAddress(buyerAddress.getAddress());
-        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), expressCompany.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic,true);//最后一步才重怎么价格
         return order.getOid();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<Long> createOrders(List<ItemOrderBO> orderBO) throws OrderException {
+        List<Long> oids=new ArrayList<>();
+        for(ItemOrderBO bo:orderBO){
+            oids.add(createOrder(bo));
+        }
+        return oids;
     }
 
     /**

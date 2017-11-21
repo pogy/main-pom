@@ -21,7 +21,11 @@ public class TbOrderVO implements Serializable{
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    private Long tbId;
+    private String tbId;
+    /**
+     * 星座网用户ID
+     */
+    private Long xzUserId;
     /**
      * 支付时间
      */
@@ -38,6 +42,10 @@ public class TbOrderVO implements Serializable{
      * 详细地址,包含省市区街道收货人信息
      */
     private String address;
+    /**
+     * 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
+     */
+    private Long flagState;
     /**
      * 街道+地址
      */
@@ -75,7 +83,7 @@ public class TbOrderVO implements Serializable{
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    public Long getTbId() {
+    public String getTbId() {
         return this.tbId;
     }
 
@@ -83,7 +91,7 @@ public class TbOrderVO implements Serializable{
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    public void setTbId(Long tbId) {
+    public void setTbId(String tbId) {
         this.tbId = tbId;
     }
 
@@ -253,5 +261,33 @@ public class TbOrderVO implements Serializable{
      */
     public void setSimpleAddress(String simpleAddress) {
         this.simpleAddress = simpleAddress;
+    }
+
+    /**
+     * 获取 星座网用户ID
+     */
+    public Long getXzUserId() {
+        return this.xzUserId;
+    }
+
+    /**
+     * 设置 星座网用户ID
+     */
+    public void setXzUserId(Long xzUserId) {
+        this.xzUserId = xzUserId;
+    }
+
+    /**
+     * 获取 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
+     */
+    public Long getFlagState() {
+        return this.flagState;
+    }
+
+    /**
+     * 设置 卖家备注旗帜（与淘宝网上订单的卖家备注旗帜对应，只有卖家才能查看该字段）红、黄、绿、蓝、紫 分别对应 1、2、3、4、5
+     */
+    public void setFlagState(Long flagState) {
+        this.flagState = flagState;
     }
 }

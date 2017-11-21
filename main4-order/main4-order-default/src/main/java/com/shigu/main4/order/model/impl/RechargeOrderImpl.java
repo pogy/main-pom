@@ -46,7 +46,7 @@ public class RechargeOrderImpl implements RechargeOrder {
 
     @Override
     public PayApplyVO payApply(PayType payType) throws PayApplyException {
-        return SpringBeanFactory.getBean(payType.getService(), PayerService.class).payApply(userId,oid, money, "充值");
+        return SpringBeanFactory.getBean(payType.getService(), PayerService.class).payApply(userId, money, "充值",oid);
     }
 
     @Override

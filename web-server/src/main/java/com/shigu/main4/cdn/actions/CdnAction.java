@@ -1,15 +1,12 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.main4.cdn.bo.ItemBO;
-import com.shigu.main4.cdn.bo.ScGoodsBO;
-import com.shigu.main4.cdn.bo.ScStoreBO;
-import com.shigu.main4.cdn.bo.ShopCdnBO;
-import com.shigu.main4.cdn.bo.ShopCommentBO;
+import com.shigu.main4.cdn.bo.*;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
+import com.shigu.main4.cdn.services.SimpleVideoService;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -30,11 +27,7 @@ import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
-import com.shigu.main4.storeservices.ShopBaseService;
-import com.shigu.main4.storeservices.ShopDiscusService;
-import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.main4.storeservices.ShopLicenseService;
-import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.storeservices.*;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
@@ -60,7 +53,6 @@ import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +62,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
@@ -135,6 +130,9 @@ public class CdnAction {
 
     @Autowired
     ItemCatService itemCatService;
+
+    @Autowired
+    SimpleVideoService simpleVideoService;
 
     /**
      * 联系我们
@@ -767,6 +765,11 @@ public class CdnAction {
     @ResponseBody
     public JSONObject smallPic(Long id){
         return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+    }
+
+    @RequestMapping("downloadVideo")
+    public void downloadVideo(Long id,HttpServletResponse resp) throws JsonErrException {
+       simpleVideoService.downloadVideo(id, resp);
     }
 
     @RequestMapping("downloadImg")

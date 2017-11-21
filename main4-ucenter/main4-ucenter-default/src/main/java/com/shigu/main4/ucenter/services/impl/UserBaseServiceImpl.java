@@ -1,24 +1,30 @@
 package com.shigu.main4.ucenter.services.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.MemberLicense;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.examples.MemberUserExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.OuterUser;
+import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.SysUserSession;
 import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.session.main4.tool.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,6 +55,8 @@ public class UserBaseServiceImpl implements UserBaseService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+    @Autowired
+    UserLicenseService userLicenseService;
 
     /**
      * 按用户名查用户基准信息
@@ -151,8 +159,17 @@ public class UserBaseServiceImpl implements UserBaseService {
         ps.setHeadUrl(url);
         String bindPhone=selBindPhone(memberUser.getUserId());
         if(bindPhone!=null){
-            ps.getOtherPlatform().put("__bindPhone__",bindPhone);
+            ps.getOtherPlatform().put(OtherPlatformEnum.BIND_PHONE.getValue(),bindPhone);
         }
+        boolean isMoreOrder=false;
+        SafeAbout sa=userLicenseService.selUserLicenses(memberUser.getUserId());
+        try {
+            if(BeanMapper.getFieldList(sa.getLicenses(),"type",MemberLicenseType.class).contains(MemberLicenseType.MORE_ORDER)){
+                isMoreOrder=true;
+            }
+        } catch (Exception ignored) {
+        }
+        ps.getOtherPlatform().put(OtherPlatformEnum.MORE_ORDER.getValue(),isMoreOrder);
         return ps;
     }
     /**

@@ -121,7 +121,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         ShiguPager<TbOrderVO> pager = new ShiguPager<>();
         TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", key, secretKey);
         TradesSoldGetRequest req = new TradesSoldGetRequest();
-        req.setFields("seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
+        req.setFields("seller_flag,seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
         int size;
         int page;
         if (bo.getStartTime() != null) {
@@ -175,7 +175,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     public TbOrderVO myTbOrder(Long tid, TbOrderStatusEnum status, String sessionKey) {
         TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", key, secretKey);
         TradeFullinfoGetRequest req = new TradeFullinfoGetRequest();
-        req.setFields("seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
+        req.setFields("seller_flag,seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
 
         req.setTid(tid);
         TbOrderVO tbOrderVO = null;
@@ -250,7 +250,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     public  TbOrderVO packing(Trade t,String session) throws SecretException {
         decrypt(t, session);
         TbOrderVO tbOrderVO = new TbOrderVO();
-        tbOrderVO.setTbId(t.getTid());
+        tbOrderVO.setTbId(t.getTid().toString());
         String address="";
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             address+=t.getReceiverName();
@@ -284,6 +284,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (!StringUtils.isEmpty(t.getReceiverName())){
             tbOrderVO.setReceiverName(t.getReceiverName());
         }
+        if(t.getSellerFlag() != null){
+            tbOrderVO.setFlagState(t.getSellerFlag());
+        }
 
         ItemOrderExample itemOrderExample=new ItemOrderExample();
         itemOrderExample.createCriteria().andOuterIdEqualTo(t.getTid().toString());
@@ -295,7 +298,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (t.getOrders().size() > 0) {
             for (Order o : t.getOrders()) {
                 SubTbOrderVO vo=new SubTbOrderVO();
-                vo.setTbChildOrderId(o.getOid());
+                vo.setTbChildOrderId(o.getOid().toString());
                 vo.setImgSrc(o.getPicPath());
                 vo.setNum(o.getNum().intValue());
                 vo.setNumiid(o.getNumIid());

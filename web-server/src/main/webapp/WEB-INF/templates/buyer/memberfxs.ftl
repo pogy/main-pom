@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -39,6 +40,7 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
     <script src="http://style.571xz.com/v2/fxsV1/js/memberfxs.js?v=2017091301"></script>
+    
 </head>
 <body>
 
@@ -193,21 +195,39 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
             
+        
+        
+    
+        
+        <#if session_user_redis__.otherPlatform.__moreOrder__>
+        
+        
+            
+            <li><a href="${main_host!}order/myBatchTbOrder.htm" target="_blank">批量操作</a></li>
+            
+        
+        
+        </#if>
         
     
     </ul> 
@@ -216,21 +236,27 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
             
+        
         
     
     </ul> 
@@ -239,9 +265,11 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
             
+        
         
     
     </ul> 
@@ -250,9 +278,11 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
             
+        
         
     
     </ul> 

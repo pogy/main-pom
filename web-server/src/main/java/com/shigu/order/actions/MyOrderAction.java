@@ -16,6 +16,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -221,6 +225,14 @@ public class MyOrderAction {
     public JSONObject tbSend(HttpSession session,Long orderId) throws Main4Exception {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         myOrderService.tbSend(ps.getUserId(),orderId);
+        return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("upBatchPostDataToServer")
+    @ResponseBody
+    public JSONObject moreTbSend(HttpSession session,String leftOrderIds) throws Main4Exception {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        myOrderService.moreTbSend(ps.getUserId(), Arrays.stream(leftOrderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList()));
         return JsonResponseUtil.success();
     }
 

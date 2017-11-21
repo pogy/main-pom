@@ -172,6 +172,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             for(SearchCheckd sc:checkds){
                 switch (sc){
                     case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));
+                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));
                 }
 
             }

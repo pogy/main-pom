@@ -2,13 +2,16 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
-import com.shigu.main4.order.exceptions.NotFindSessionException;
-import com.shigu.main4.order.servicevo.TbOrderVO;
+import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.vo.GoodsVO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
+import com.shigu.order.bo.MoreTbOrderBO;
 import com.shigu.order.bo.TaobaoOrderBO;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.MyTbOrderService;
+import com.shigu.order.vo.MoreErrorAddressVO;
+import com.shigu.order.vo.MyTbOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,14 +61,27 @@ public class MyTbOrderAction {
         if(StringUtils.isEmpty(bo.getPage())){
             bo.setPage(1);
         }
-        ShiguPager<TbOrderVO> pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
+        MyTbOrderVO pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
                 bo.getPage(),size,bo.getSt(),bo.getEt());
 
         model.addAttribute("orders",pager.getContent());
+        model.addAttribute("notLinkNum",pager.getNotLinkNum());
+        model.addAttribute("notLinkCode",pager.getNotLinkCode());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
         return "buyer/myTbOrder";
     }
+
+    @RequestMapping("myBatchTbOrder")
+    public String myBatchTbOrder(HttpSession session, TaobaoOrderBO bo, Model model) throws OrderException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        myTbOrder(session,bo,model);
+        return "buyer/myBatchTbOrder";
+    }
+
 
     @RequestMapping("allGlGoodsJson")
     @ResponseBody
@@ -100,20 +115,20 @@ public class MyTbOrderAction {
         return obj;
     }
 
-    @RequestMapping("ttttt")
-    @ResponseBody
-    public JSONObject ttttt(){
-//        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        JSONObject obj=new JSONObject();
-        try {
-            myTbOrderService.glGoodsJson(556613638156L,21195361L,1000074682L);
-            obj.put("result","success");
-        } catch (NotFindRelationGoodsException e) {
-            obj.put("result","error");
-            obj.put("msg","未找到可关联的商品");
-        }
-        return obj;
-    }
+//    @RequestMapping("ttttt")
+//    @ResponseBody
+//    public JSONObject ttttt(){
+////        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        JSONObject obj=new JSONObject();
+//        try {
+//            myTbOrderService.glGoodsJson(556613638156L,21195361L,1000074682L);
+//            obj.put("result","success");
+//        } catch (NotFindRelationGoodsException e) {
+//            obj.put("result","error");
+//            obj.put("msg","未找到可关联的商品");
+//        }
+//        return obj;
+//    }
 
 
     /**
@@ -122,16 +137,69 @@ public class MyTbOrderAction {
      */
     @RequestMapping("submitTbOrders")
     @ResponseBody
-    public JSONObject submitTbOrders(Long tbId, HttpSession session) throws JsonErrException {
+    public JSONObject submitTbOrders(Long tbId, HttpSession session) throws JsonErrException, OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         try {
             String code = myTbOrderService.submitTbOrders(tbId,ps.getUserId());
             return JsonResponseUtil.success().element("code", code);
-        } catch (NotFindSessionException e) {
-            throw new JsonErrException("淘宝授权过期");
         } catch (NotFindRelationGoodsException e) {
             throw new JsonErrException("存在未关联的商品");
         }
     }
+
+    /**
+     * 批量解析淘宝订单,尝试返回code
+     * @param bo
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("tbBatchOrder")
+    @ResponseBody
+    public JSONObject tbBatchOrder(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new JsonErrException("没有访问的权限");
+        }
+        return myTbOrderService.submitMoreTbOrders(bo.getTids(),ps.getUserId(),bo.getRepeatIs());
+    }
+
+    /**
+     * 未关联的商品列表
+     * @param notLinkCode
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("tbBindGoodsNo")
+    public String moreTbNeedBind(String notLinkCode, HttpSession session,Model model) throws OrderException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
+        model.addAttribute("goodsList",vos);
+        return "buyer/tbBindGoodsNo";
+    }
+
+    /**
+     * 错误地址列表
+     * @param bo
+     * @param session
+     * @return
+     */
+    @RequestMapping("lookErrorAdress")
+    @ResponseBody
+    public JSONObject lookErrorAdress(MoreTbOrderBO bo, HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new JsonErrException("没有访问的权限");
+        }
+        List<MoreErrorAddressVO> vos= myTbOrderService.moreErrorAddress(bo.getTids(),ps.getUserId());
+        JSONObject obj=JsonResponseUtil.success();
+        obj.put("addressList",vos);
+        return  obj;
+    }
+
 
 }
