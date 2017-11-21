@@ -535,7 +535,7 @@ ${userShopHdHtml}
                 </#if>
             </#list>
         </ul>
-        <i class="buttonIcon smallPlayButton"></i>
+        <#if goodsInfo.goodsVideoUrl??><i class="buttonIcon smallPlayButton"></i></#if>
         <span class="scalceIcon"></span>
         <#if goodsInfo.goodsVideoUrl??>
 <div id="goodsVideoBox">
