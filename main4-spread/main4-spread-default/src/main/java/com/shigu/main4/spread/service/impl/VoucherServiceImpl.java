@@ -68,6 +68,7 @@ public class VoucherServiceImpl implements VoucherService {
                 record.setReceivesYes(false);
                 record.setDrawStatus(3);
                 record.setDrawCode(StringUtil.str10To37Str());
+                record.setModifyTime(new Date());
                 activeDrawRecordMapper.insertSelective(record);
             }
         }
