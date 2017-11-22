@@ -171,8 +171,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         if ("hz".equalsIgnoreCase(webSite)&&checkds!=null) {//只有杭州的有checkeds
             for(SearchCheckd sc:checkds){
                 switch (sc){
-                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));
-                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));
+                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));break;
+                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));break;
                 }
 
             }
