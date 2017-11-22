@@ -144,13 +144,13 @@ public class ActivityAction {
      *
      * @return
      */
-    @RequestMapping("member/awardInfo")
+    @RequestMapping({"member/awardInfo","fxs/awardInfo"})
     public String awardInfo(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
         List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs);
         model.addAttribute("actList",actList);
-        return "buyer/awardInfo";
+        return "fxs/awardInfo";
     }
 
     /**
