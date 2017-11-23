@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=1300px">
     <title>专业知识产权服务平台 - 四季星座网</title>
 <#include "/common/base__config.ftl">
-<#assign $pageid>bqsqIndex</#assign>
-<#assign webSite>hz</#assign>
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">

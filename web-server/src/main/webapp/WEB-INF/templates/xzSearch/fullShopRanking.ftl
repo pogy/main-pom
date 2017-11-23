@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=1300px">
     <title>${shopRanking.rankingTitle!} - 四季星座网</title>
 <#include "/common/base__config.ftl">
-<#assign $pageid>fullShopRanking</#assign>
-<#assign webSite>hz</#assign>
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
