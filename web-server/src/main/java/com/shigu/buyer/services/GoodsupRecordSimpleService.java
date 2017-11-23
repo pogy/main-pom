@@ -177,6 +177,7 @@ public class GoodsupRecordSimpleService {
                 onekeyRecoreVO.setTitle(shiguGoodsUp.getSupperGoodsName());
                 onekeyRecoreVO.setOnekeyId(hit.getId());
                 onekeyRecoreVO.setUpTime(shiguGoodsUp.getDaiTime());
+                onekeyRecoreVO.setPiprice(shiguGoodsUp.getSupperPrice());
                 if (shiguGoodsUp.getShopSoldout() != null) {
                     onekeyRecoreVO.setShopSaleState(!shiguGoodsUp.getShopSoldout() ? 1 : 2);
                 }
@@ -219,7 +220,9 @@ public class GoodsupRecordSimpleService {
             userQuery.must(QueryBuilders.termQuery("fenUserId", userId));
         }
         BoolQueryBuilder otherQuery = QueryBuilders.boolQuery();
-        otherQuery.must(QueryBuilders.termQuery("flag", bo.getFlag()));
+        if (bo.getFlag() != null) {
+            otherQuery.must(QueryBuilders.termQuery("flag", bo.getFlag()));
+        }
         if (bo.getShopState() != null) {
             boolean shopOnsale = bo.getShopState() == 1;
             otherQuery.must(QueryBuilders.termQuery(shopSoldout, !shopOnsale));

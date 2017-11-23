@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/payMode.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/payModev1.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/payMode.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/payModev1.js"></script>
+    
 </head>
 <body>
 
@@ -211,9 +218,15 @@ var webSite = '${webSite!}';
     <span class="successIcon fl"></span>
     <div class="fl">
         <h3 class="fs18 yahei fwb fc3">订单提交成功，请尽快付款！</h3>
-        <p><span class="orderNumber">订单编号：<em class="arail fs14" id="orderId">${orderId!}</em></span>请在<span class="fcF40 validTime"><em class="arail fs14">72</em>小时</span>之内完成付款，否则订单将会被取消！</p>
+        <#if orderId??>
+        <p><span class="orderNumber">订单编号：<em class="arail fs14">${orderId!}</em></span>请在<span class="fcF40 validTime"><em class="arail fs14">72</em>小时</span>之内完成付款，否则订单将会被取消！</p>
+        <#else>
+        <p>您已选择<span class="fcF40">${orderNum!}单</span>订单，请在<span class="fcF40 validTime"><em class="arail fs14">72</em>小时</span>之内完成付款，否则订单将会被取消！</p>
+        </#if>
     </div>
     <div class="fr totalPrice">应付金额：<span class="fwb fcF40 arail">${amountPay!}</span>元</div>
+    <input type=hidden id="orderCode" value="${orderCode!}">
+    <input type=hidden id="orderId" value="${orderId!}">
 </div>
 
 
@@ -267,7 +280,11 @@ var webSite = '${webSite!}';
 </#list>
 
                 <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
+                <#if orderId??>
                 <input type=hidden name="alipayUrl" value="/order/alipay.htm?id=${orderId!}&tempCode=${tempCode!}"></li>
+                <#else>
+                <input type=hidden name="alipayUrl" value="/order/alipay.htm?orderCode=${orderCode!}&tempCode=${tempCode!}"></li>
+                </#if>
             <li>
                 
 
@@ -445,7 +462,7 @@ var amountPay = '${amountPay!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

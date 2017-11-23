@@ -60,7 +60,14 @@ public class ActivityAction {
 
     @Autowired
     private DrawQualification newAutumnDrawQualification;
-
+    /**
+     * 任性送现金活动
+     */
+    @RequestMapping("activity/cash")
+    public String cash(Model model){
+        model.addAttribute("webSite", "hz");
+        return "activity/cash";
+    }
     /**
      * 发现好货
      *

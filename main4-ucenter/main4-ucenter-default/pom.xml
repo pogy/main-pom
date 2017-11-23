@@ -290,6 +290,12 @@
             <version>0.1</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-ucenter-api</artifactId>
+            <version>4.2.4-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

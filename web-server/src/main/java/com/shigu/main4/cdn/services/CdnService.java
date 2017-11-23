@@ -226,7 +226,6 @@ public class CdnService {
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
         shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
-
         Long starNum=shopForCdnService.selShopStarById(shopId);
         starNum=starNum==null?0:starNum;
         shopShowVO.setStarNum(starNum);
@@ -316,6 +315,7 @@ public class CdnService {
         vo.setPostTime(cdnItem.getListTime());
         vo.setTitle(cdnItem.getTitle());
         vo.setTbGoodsId(cdnItem.getTbNumIid());
+        vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
         if(cdnItem.getDescription()!=null){
             vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")

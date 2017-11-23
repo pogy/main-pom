@@ -2,12 +2,18 @@ package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.vo.BuyerAddressItemVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
+import com.shigu.main4.order.vo.OtherCostVO;
+import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.order.bo.ConfirmBO;
+import com.shigu.order.bo.ConfirmMoreTbBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
@@ -32,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -54,7 +61,8 @@ public class ConfirmOrderAction {
 
     @Autowired
     private OrderOptionSafeService orderOptionSafeService;
-
+    @Autowired
+    LogisticsService logisticsService;
     /**
      * 订单确认提交
      * @param request
@@ -73,7 +81,12 @@ public class ConfirmOrderAction {
             e.printStackTrace();
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
+        Long oid = null;
+        try {
+            oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
+        } catch (JsonErrException e) {
+            e.printStackTrace();
+        }
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
@@ -112,18 +125,6 @@ public class ConfirmOrderAction {
         model.addAttribute("code", bo.getCode());
         model.addAttribute("tbOrderAddressInfo",orderSubmitVo.getTbOrderAddressInfo());
         return "trade/confirmOrder";
-    }
-
-    @ResponseBody
-    @RequestMapping("getPostRulerByProvId")
-    public JSONObject getPostRulerByProvId(Long senderId, Long provId) throws JsonErrException {
-        if (senderId == null) {
-            return JsonResponseUtil.error("请选择代发机构");
-        }
-        if (provId == null) {
-            return JsonResponseUtil.error("填写收货地址");
-        }
-        return JsonResponseUtil.success().element("postRulers", confirmOrderService.selPostRules(senderId, provId));
     }
 
     @ResponseBody
@@ -173,4 +174,127 @@ public class ConfirmOrderAction {
 
         return JsonResponseUtil.success().element("addressId", addressId);
     }
+
+    /**
+     * 获取快递规则接口json
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     * @throws JsonErrException
+     * @throws LogisticsRuleException
+     */
+    @ResponseBody
+    @RequestMapping("getPostListByProvId")
+    public JSONObject getPostListByProvId (String provId, String senderId) throws JsonErrException, LogisticsRuleException {
+        List<PostVO> postVOS = confirmOrderService.getPostListByProvId(provId, senderId);
+        return JsonResponseUtil.success().element("postList",
+                postVOS.stream().map(postVO -> new JSONObject().element("name",postVO.getId()).element("text",postVO.getText())).collect(Collectors.toList()));
+    }
+
+    /**
+     * 获取快递与服务费信息
+     * @param postName
+     * @param provId
+     * @param eachShopNum  每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
+     * @param totalWeight
+     * @return
+     * @throws JsonErrException
+     * @throws LogisticsRuleException
+     */
+    @ResponseBody
+    @RequestMapping("getOtherCost")
+    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId);
+        return JsonResponseUtil
+                    .success()
+                    .element("postPrice",otherCostVO.getPostPrice())
+                    .element("servicePrice",otherCostVO.getServicePrice())
+                    .element("serviceInfosText",otherCostVO.getServiceInfosText());
+    }
+
+    /**
+     * 淘宝批量下单获取整合信息
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws LogisticsRuleException
+     */
+    @RequestMapping("confirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject confirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, LogisticsRuleException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = sessionUser.getUserId();
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+        List<PostVO> psv=logisticsService.defaultPost(bo.getSenderId());
+        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades,bo.getSenderId()))
+                .element("result","success")
+                .element("postTotalPrice","0.00")
+                .element("postList",psv.stream().map(postVO -> new JSONObject()
+                        .element("id",postVO.getId()).element("name",postVO.getText())).collect(Collectors.toList()));
+
+    }
+
+    /**
+     * 淘宝批量下单获取快递费
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws LogisticsRuleException
+     */
+    @RequestMapping("queryPostPriceForConfirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, LogisticsRuleException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = sessionUser.getUserId();
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId())));
+    }
+
+    /**
+     * 淘宝批量下单,订单提交
+     * @param bo
+     * @param request
+     * @return
+     * @throws OrderException
+     * @throws JsonErrException
+     */
+    @RequestMapping("submitResultForConfirmTbBatchOrder")
+    @ResponseBody
+    public JSONObject submitResultForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, JsonErrException {
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+            throw new OrderException("没有访问的权限");
+        }
+        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
+        if (tbTrades == null||tbTrades.size()==0) {
+            throw new OrderException("订单超时");
+        }
+        Long userId = sessionUser.getUserId();
+        if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
+            throw new OrderException("订单信息错误");
+        }
+        return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode="+confirmOrderService.confirmTbBatchOrders(bo,userId,tbTrades));
+
+    }
+
 }

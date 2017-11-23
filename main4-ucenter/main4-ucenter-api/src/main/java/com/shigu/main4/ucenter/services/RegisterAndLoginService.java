@@ -11,7 +11,6 @@ import com.shigu.session.main4.enums.LoginFromType;
  * Created by Licca on 17/2/20.
  */
 public interface RegisterAndLoginService {
-
     /**
      * 注册用户
      * 当手机号码已经存在时，返回false

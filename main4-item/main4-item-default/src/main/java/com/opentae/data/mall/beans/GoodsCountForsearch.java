@@ -73,6 +73,16 @@ public class GoodsCountForsearch implements Serializable {
      */
 	private String infabric;
 
+    /**
+     * 视频链接地址
+     */
+	private String videoUrl;
+
+    /**
+     * 是否设置了视频链接
+     */
+	private Integer hadVideo;
+
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
 	}
@@ -175,6 +185,22 @@ public class GoodsCountForsearch implements Serializable {
 
 	public String getInfabric() {
 		return this.infabric;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	public String getVideoUrl() {
+		return this.videoUrl;
+	}
+
+	public void setHadVideo(Integer hadVideo) {
+		this.hadVideo = hadVideo;
+	}
+
+	public Integer getHadVideo() {
+		return this.hadVideo;
 	}
 
 }

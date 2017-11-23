@@ -48,13 +48,8 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(oid);
-        apply.setMoney(money);
-        apply.setUserId(userId);
-        apply.setType(PayType.WX.getValue());
-        orderPayApplyMapper.insertSelective(apply);
+    public PayApplyVO payApply(Long userId, Long money, String title,Long[] oids) throws PayApplyException {
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.WX,oids);
 
         UnifyPayResData resData;
         try {
@@ -121,26 +116,8 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void refund(Long payId, Long money) throws PayerException {
-        OrderPay orderPay;
-        if (payId == null || (orderPay = orderPayMapper.selectByPrimaryKey(payId)) == null) {
-            throw new PayerException(String.format("支付记录不存在。 payId[%d]", payId));
-        }
-        if (money <= 0 || payedLeft(payId) < money) {
-            throw new PayerException(String.format("可退金额不足.payId[%d], money[%d]", payId, money));
-        }
-        if (System.currentTimeMillis() - orderPay.getCreateTime().getTime() > 365 * 24 * 3600 * 1000L) {
-            throw new PayerException("支付完成超过一年的订单无法退款");
-        }
-
-        //TODO: call weixin refund
-        weixinRefund(orderPay, money.intValue());
-
-        OrderPay pay = new OrderPay();
-        pay.setPayId(orderPay.getPayId());
-        pay.setRefundMoney(orderPay.getRefundMoney() + money);
-        orderPayMapper.updateByPrimaryKeySelective(pay);
+    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+        weixinRefund(refundNo,orderPay, money.intValue());
     }
 
     @Override
@@ -151,15 +128,15 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         orderPay.setOuterPuser(outerPuser);
         orderPay.setMoney(payMoney);
         orderPay.setRefundMoney(0L);
-        weixinRefund(orderPay,money.intValue());
+        weixinRefund("ROLL_"+applyId,orderPay,money.intValue());
     }
 
-    private void weixinRefund(OrderPay orderPay, int refundFee) throws PayerException {
+    private void weixinRefund(String refundNo,OrderPay orderPay, int refundFee) throws PayerException {
         RefundReqData reqData = new RefundReqData(
                 orderPay.getOuterPid(),
                 wxOutTradeNo(orderPay.getApplyId()),
                 null,
-                "RF" + orderPay.getOuterPid() + orderPay.getRefundMoney(),
+                refundNo,
                 orderPay.getMoney().intValue(),
                 refundFee,
                 orderPay.getOuterPuser(),

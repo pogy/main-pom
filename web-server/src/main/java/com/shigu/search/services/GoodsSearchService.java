@@ -1,5 +1,6 @@
 package com.shigu.search.services;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -219,8 +220,8 @@ public class GoodsSearchService {
         }else if(bo.getPid() !=null ){
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
         }
-        //查店
-        List<SearchShopSimple> shops=shopSearchService.selShopByShopNum(bo.getKeyword(),bo.getWebSite());
+
+        List<SearchShopSimple> shops = shopSearchService.selShopByShopNum(bo.getKeyword(), bo.getWebSite());
         List<Long> shouldShopId=new ArrayList<>();
         if(shops!=null&&shops.size()!=0){
             //按电商基地  >  钱塘大厦  >  四季星座 排序
@@ -243,10 +244,12 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
-        List<SearchCheckd> checkds=null;
+        List<SearchCheckd> checkds=new ArrayList<>();
         if(bo.getBpic()!=null&&bo.getBpic()==1){
-            checkds=new ArrayList<>();
             checkds.add(SearchCheckd.BIGZIP);
+        }
+        if (Objects.equals(1,bo.getGoodsVideo())) {
+            checkds.add(SearchCheckd.VIDEO);
         }
         ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 checkds,//大图

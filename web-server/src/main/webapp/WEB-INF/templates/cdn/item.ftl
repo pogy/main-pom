@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=20117092901" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=2017112101" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=20117092901"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=2017112101"></script>
     
 </head>
 <body>
@@ -535,13 +535,24 @@ ${userShopHdHtml}
                 </#if>
             </#list>
         </ul>
+        <#if goodsInfo.goodsVideoUrl??><i class="buttonIcon smallPlayButton"></i></#if>
         <span class="scalceIcon"></span>
+        <#if goodsInfo.goodsVideoUrl??>
+<div id="goodsVideoBox">
+    <video class="video" controls="controls" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
+    
+    <i class="buttonIcon bigPlayButton"></i>
+    <i class="buttonIcon closeButton"></i>
+</div>
+</#if>
+
+
     </div>
     <div class="imageBox">
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if img_index lt 6>
-                <li class="" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                <li class="<#if img_index == 0>select</#if>" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
                 </#if>
             </#list>
         </ul>
@@ -549,6 +560,7 @@ ${userShopHdHtml}
 
 
 
+        
     </div>
     <div class="shareBox">
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
@@ -725,6 +737,13 @@ var hasYt = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图下载
 
 
         <b class="btn btn-lg oneKeyUp hover" data-goodsid="${goodsInfo.goodsId!}">一键上传</b>
+        
+        <#if goodsInfo.goodsVideoUrl??>
+        <b class="btn btn-lg hover videoDownload" id="downloadGoodsVideo" data-videourl="downloadVideo.json?id=${goodsInfo.goodsId!}" data-goodsid="${goodsInfo.goodsId!}">视频下载</b>
+        </#if>
+        
+        
+        
         
         
     </div>
@@ -1130,6 +1149,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 <script>
 var goodsId = '${goodsInfo.goodsId!}';
+
 </script>
 
 <script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>

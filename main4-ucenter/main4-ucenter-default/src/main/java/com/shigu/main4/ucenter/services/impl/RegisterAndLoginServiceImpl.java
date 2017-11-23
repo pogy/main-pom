@@ -63,6 +63,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
 
+
     /**
      * 注册新用户
      * @param user

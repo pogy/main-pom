@@ -19,7 +19,7 @@ public class ConfirmBO implements Serializable{
     /**
      * 快递公司单位ID
      */
-    private String courierId;
+    private Long courierId;
     /**
      * 按店分组的订单
      */
@@ -53,11 +53,11 @@ public class ConfirmBO implements Serializable{
         this.addressId = addressId;
     }
 
-    public String getCourierId() {
+    public Long getCourierId() {
         return courierId;
     }
 
-    public void setCourierId(String courierId) {
+    public void setCourierId(Long courierId) {
         this.courierId = courierId;
     }
 

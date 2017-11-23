@@ -270,7 +270,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
 </div>
-<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"},        {"name":'st', "value":"${query.st!}"},        {"name":'et', "value":"${query.et!}"},        {"name":'bpic', "value":"${query.bpic!}"}    ]}</#assign>
+<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"},        {"name":'st', "value":"${query.st!}"},        {"name":'et', "value":"${query.et!}"},        {"name":'bpic', "value":"${query.bpic!}"},        {"name":'goodsVideo', "value":"${query.goodsVideo!}"}    ]}</#assign>
 <#assign $it=text?eval />
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -479,9 +479,11 @@ var webSite = '${webSite!}';
         
         
         <#if webSite == 'hz'>
-        <div class="bpicFilterBox">
+        <div class="otherFilterBox">
             <label><input id="toggleBpicFilter" type="checkbox" <#if query.bpic?? && query.bpic == "1">checked</#if>> 大图下载</label>
+             <label><input id="toggleGoodsVideoFilter" type="checkbox" <#if query.goodsVideo?? && query.goodsVideo == "1">checked</#if>> 视频商品</label>
         </div>
+        
         </#if>
         
         <#if (goodslist?size) gt 0>

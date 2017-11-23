@@ -70,6 +70,7 @@ public class UserAccountService {
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                 rds3TempUser.getSubUserName(), null, false, remoteAddr, "", UserType.MEMBER);
         token.setLoginFromType(rds3TempUser.getLoginFromType());
+        token.setSubKey(rds3TempUser.getSubUserKey());
         //星座用户登陆
         token.setRememberMe(true);
         try {

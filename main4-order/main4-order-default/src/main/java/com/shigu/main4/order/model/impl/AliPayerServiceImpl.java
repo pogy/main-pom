@@ -7,17 +7,13 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
-import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
-import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.able.PayerServiceAble;
 import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,14 +37,12 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
+    public PayApplyVO payApply(Long userId, Long money, String title, Long[] oids) throws PayApplyException {
 
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(oid);
-        apply.setMoney(money);
-        apply.setUserId(userId);
-        apply.setType(PayType.ALI.getValue());
-        orderPayApplyMapper.insertSelective(apply);
+        if (oids == null || oids.length==0) {
+            throw new PayApplyException("缺少订单ID");
+        }
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.ALI,oids);
 
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl(returnUrl);
@@ -76,26 +70,8 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void refund(Long payId, Long money) throws PayerException  {
-        OrderPay orderPay;
-        if (payId == null || (orderPay = orderPayMapper.selectByPrimaryKey(payId)) == null) {
-            throw new PayerException(String.format("支付记录不存在。 payId[%d]", payId));
-        }
-        if (money <= 0 || payedLeft(payId) < money) {
-            throw new PayerException(String.format("可退金额不足.payId[%d], money[%d]", payId, money));
-        }
-        if (System.currentTimeMillis() - orderPay.getCreateTime().getTime() > 365 * 24 * 3600 * 1000L) {
-            throw new PayerException("支付完成超过一年的订单无法退款");
-        }
-
-        //TODO: call alipay refund
-        alipayRefund(orderPay, money);
-
-        OrderPay pay = new OrderPay();
-        pay.setPayId(orderPay.getPayId());
-        pay.setRefundMoney(orderPay.getRefundMoney() + money);
-        orderPayMapper.updateByPrimaryKeySelective(pay);
+    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+        alipayRefund(refundNo,orderPay, money);
     }
 
     @Override
@@ -106,11 +82,11 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         orderPay.setOuterPuser(outerPuser);
         orderPay.setMoney(payMoney);
         orderPay.setRefundMoney(0L);
-        alipayRefund(orderPay,money);
+        alipayRefund("ROLL_"+applyId,orderPay,money);
     }
 
 
-    private void alipayRefund(OrderPay orderPay, Long money) throws PayerException {
+    private void alipayRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
 //        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
 //        if (itemOrder == null || itemOrder.selSender() == null) {
@@ -122,7 +98,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
                 "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
-                "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
+                "    \"out_request_no\":\"" + refundNo + "\"" +
                 "  }");
         try {
             AlipayResponse response = alipayClient.execute(request);

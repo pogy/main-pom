@@ -1,6 +1,12 @@
 package com.shigu.tools;
 
+import com.shigu.main4.common.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,4 +85,5 @@ public class HtmlImgsLazyLoad {
     public static boolean checkIsLazy(String tag) {
         return tag.contains("data-original=\"") || tag.contains("class=\"lazyload");
     }
+
 }

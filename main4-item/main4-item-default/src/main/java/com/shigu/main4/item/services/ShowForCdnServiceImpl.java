@@ -446,6 +446,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                 if (goodsCountForsearch != null) {
                     cdnItem.setFabric(goodsCountForsearch.getFabric());
                     cdnItem.setInFabric(goodsCountForsearch.getInfabric());
+                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
                 }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);

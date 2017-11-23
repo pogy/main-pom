@@ -1,9 +1,7 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
-import com.shigu.main4.order.vo.BournRuleInfoVO;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
-import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import com.shigu.main4.order.vo.*;
 
 import java.util.List;
 
@@ -19,20 +17,13 @@ public interface LogisticsTemplate {
     LogisticsTemplateVO templateInfo();
 
     /**
-     * 查快递规则
-     * @param provId
-     * @return
-     */
-    List<BournRuleInfoVO> rulesByProv(Long provId) throws LogisticsRuleException;
-
-    /**
      * 取有效的物流规则
      * @param provId
      * @param companyId
      * @return
      * @throws LogisticsRuleException
      */
-    BournRuleInfoVO rule(Long provId,Long companyId) throws LogisticsRuleException;
+    List<BournRuleInfoVO> rule(Long provId,Long companyId) throws LogisticsRuleException;
 
     /**
      * 计费
@@ -42,4 +33,20 @@ public interface LogisticsTemplate {
      * @return
      */
     Long calculate(Long provId,Long companyId,Integer goodsNumber,Long weight) throws LogisticsRuleException;
+
+    /**
+     * 获取快递公司信息
+     * @param provId    省份id
+     * @param senderId  发货方式id
+     * @return
+     */
+    List<PostVO> getPostListByProvId (Long provId, Long senderId) throws LogisticsRuleException;
+
+    /**
+     * 默认快递信息
+     * @return
+     * @throws LogisticsRuleException
+     */
+    List<PostVO> defaultPost() throws LogisticsRuleException;
+
 }
