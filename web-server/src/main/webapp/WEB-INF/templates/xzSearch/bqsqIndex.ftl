@@ -1,4 +1,4 @@
-
+<#assign $pageid>bqsqIndex</#assign>
 <!doctype html>
 <html>
 <head>
@@ -7,18 +7,16 @@
     <meta name="viewport" content="width=1300px">
     <title>专业知识产权服务平台 - 四季星座网</title>
 <#include "/common/base__config.ftl">
-    <#assign $pageid>bqsqIndex</#assign>
-<#assign $pageid>bqsqIndex</#assign>
-<#assign webSite>hz</#assign>
-    <#include "/__private_torrent__/common__base_css.ftl">
-<#include "/__private_torrent__/common__xz_css.ftl">
-<#include "/__private_torrent__/common__form_css.ftl">
-<#include "/__private_torrent__/xzSearch__common_css.ftl">
-<#include "/__private_torrent__/xzSearch__bqsqIndex_css.ftl">
-    <script src="http://style.571xz.com/v4/common/js/jquery.js"></script>
-    <#include "/__private_torrent__/common__base_js.ftl">
-<#include "/__private_torrent__/common__xz_js.ftl">
-<#include "/__private_torrent__/xzSearch__bqsqIndex_js.ftl">
+    <#include "/__style_torrent__/common__base_css.ftl">
+<#include "/__style_torrent__/common__xz_css.ftl">
+<#include "/__style_torrent__/common__form_css.ftl">
+<#include "/__style_torrent__/xzSearch__common_css.ftl">
+<#include "/__style_torrent__/xzSearch__bqsqIndex_css.ftl">
+    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <#include "/__style_torrent__/common__base_js.ftl">
+<#include "/__style_torrent__/common__xz_js.ftl">
+<#include "/__style_torrent__/common__form_js.ftl">
+<#include "/__style_torrent__/xzSearch__bqsqIndex_js.ftl">
 </head>
 <body>
 <#assign text>{}</#assign>
@@ -26,8 +24,8 @@
 <#list [moduleJsonStr] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#include "/__private_template__/xzSearch__common__header.ftl">
-<#include "/__private_template__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__header.ftl">
+<#include "/__ftl_links__/xzSearch__common__nav.ftl">
 <div class="banner yahei">
     <div class="layout pr">
         <h2></h2>
@@ -38,7 +36,7 @@
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <div class="fmSelect" id="registType">
-    <span class="text">&nbsp;</span>
+    <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
     <ul class="options"></ul>
     <input class="realInput" type="hidden"
@@ -56,11 +54,12 @@
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
-    <b
+    <button type="button"
     </#if>
     class="fmButton
          fmButton-orange
          submitBtn"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
@@ -75,7 +74,7 @@
     <#if $it.href??>
     </a>
     <#else>
-    </b>
+    </button>
     </#if>
 </#list>
         <div class="errorTip typeError pa">注册类型为必选项！</div>
@@ -100,7 +99,7 @@
     <div class="registList">
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v4/xzSearch/css/img/trademark1.jpg">
+                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark1.jpg">
                     <h3>普通注册</h3>
                     <p class="fs16 fc9">1288元/件</p>
                 </div>
@@ -113,7 +112,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v4/xzSearch/css/img/trademark2.jpg">
+                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark2.jpg">
                     <h3>加急注册</h3>
                     <p class="fs16 fc9">1398元/件</p>
                 </div>
@@ -126,7 +125,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v4/xzSearch/css/img/trademark3.jpg">
+                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark3.jpg">
                     <h3>担保注册</h3>
                     <p class="fs16 fc9">1680元/件</p>
                 </div>
@@ -139,7 +138,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v4/xzSearch/css/img/trademark4.jpg">
+                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark4.jpg">
                     <h3>双享注册</h3>
                     <p class="fs16 fc9">1600元/件</p>
                 </div>
@@ -161,53 +160,53 @@
         <div class="registList">
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v4/xzSearch/css/img/copyright1.jpg">
+                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright1.jpg">
                         <h3>普通登记</h3>
                         <p class="fs16 fc9">800元/件</p>
                     </div>
                     <div class="registHover">
                         <h2>普通登记</h2>
                         <p>版权登记，保护你的作品创意。</p>
-                        <div class="price"><em>￥</em>800</div>
+                        <div class="price"><em>&yen;</em>800</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.12.6403c6c4dAGPor&amp;id=559975012669" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v4/xzSearch/css/img/copyright2.jpg">
+                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright2.jpg">
                         <h3>加急登记</h3>
                         <p class="fs16 fc9">1000元/件</p>
                     </div>
                     <div class="registHover">
                         <h2>加急登记</h2>
                         <p>专业顾问分析，最快流程办理。</p>
-                        <div class="price"><em>￥</em>1000</div>
+                        <div class="price"><em>&yen;</em>1000</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.30.6403c6c4dAGPor&amp;id=560129154701" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v4/xzSearch/css/img/copyright3.jpg">
+                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright3.jpg">
                         <h3>外观专利</h3>
                         <p class="fs16 fc9">1300元/件</p>
                     </div>
                     <div class="registHover">
                         <h2>外观专利</h2>
                         <p>从有想法到完成申报最晚8个工作日。</p>
-                        <div class="price"><em>￥</em>1300</div>
+                        <div class="price"><em>&yen;</em>1300</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.21.6403c6c4dAGPor&amp;id=560068845596" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v4/xzSearch/css/img/copyright4.jpg">
+                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright4.jpg">
                         <h3>设计稿作品</h3>
                         <p class="fs16 fc9">898元/件</p>
                     </div>
                     <div class="registHover">
                         <h2>设计稿作品</h2>
                         <p>办理流程简单，专业客服全程服务。</p>
-                        <div class="price"><em>￥</em>898</div>
+                        <div class="price"><em>&yen;</em>898</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.18.6403c6c4dAGPor&amp;id=560068557887" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
@@ -221,12 +220,12 @@
     </div>
     <div class="caseList">
         <ul>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case1.jpg"></li>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case2.jpg"></li>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case3.jpg"></li>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case4.jpg"></li>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case5.jpg"></li>
-               <li><img src="http://style.571xz.com/v4/xzSearch/css/img/case6.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case1.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case2.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case3.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case4.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case5.jpg"></li>
+               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case6.jpg"></li>
         </ul>
     </div>
 </div>
