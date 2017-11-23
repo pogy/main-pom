@@ -16,6 +16,7 @@ import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.services.SendMsgService;
@@ -494,6 +495,7 @@ public class UserLoginAction {
             obj.element("userName",ps.getLoginName());
             obj.element("loginName",ps.getLoginName());
             obj.element("userId",ps.getUserId());
+            obj.element("memberVipIs",ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
             if (ps.getLogshop() != null) {
                 obj.element("userType","gys");
             }else{

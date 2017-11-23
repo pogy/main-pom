@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1510725483147" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1511239506408" rel="stylesheet">
     
   </head>
 <body>
@@ -77,7 +77,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -110,7 +110,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -273,8 +273,8 @@ var webSite = '${webSite!}';
                 </li>
             </ul>
         </div>
-        
-        
+
+
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
             <input type="hidden" id="state" value="${query.state!}">
@@ -311,7 +311,8 @@ var webSite = '${webSite!}';
                     </#if>
                     <span>&nbsp;</span>
                     <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
-                    
+                    <a href="http://zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
+
                     
                     
                 </li>
@@ -444,7 +445,7 @@ var allStyleCate = '${allStyleCate!}';
         
         
         
-        
+
     </div>
     
 </div>
@@ -480,7 +481,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1510725483147"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1511239506408"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

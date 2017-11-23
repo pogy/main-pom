@@ -145,8 +145,8 @@ public class ActiveDrawListener implements MessageListener {
             }
         }
         list = new ArrayList<>(goatGoodsIdSet);
-        //缓存三小时
-        redisIO.putTemp(cacheIndex,list,60*60*3);
+        //缓存十分钟
+        redisIO.putTemp(cacheIndex,list,60*10);
         return list;
     }
 

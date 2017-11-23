@@ -50,8 +50,8 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
 
     @Override
-    protected void realRefund(OrderPay orderPay, Long money) throws PayerException {
-        XzRefund(orderPay, money.intValue());
+    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+        XzRefund(refundNo,orderPay, money.intValue());
     }
 
     @Override
@@ -62,10 +62,10 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         orderPay.setOuterPuser(outerPuser);
         orderPay.setMoney(payMoney);
         orderPay.setRefundMoney(0L);
-        XzRefund(orderPay,money.intValue());
+        XzRefund("ROLL_"+applyId,orderPay,money.intValue());
     }
 
-    private void XzRefund(OrderPay orderPay, int refundFee) throws PayerException {
+    private void XzRefund(String refundNo,OrderPay orderPay, int refundFee) throws PayerException {
         OrderPayExample orderPayExample=new OrderPayExample();
         orderPayExample.createCriteria().andApplyIdEqualTo(orderPay.getApplyId());
         List<OrderPay> orderPays=orderPayMapper.selectByExample(orderPayExample);
@@ -82,7 +82,7 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         req.setOutTradeId(orderPay.getOuterPid());
 
         List<String> subTradeIdList = new ArrayList<String>();
-        subTradeIdList.add(UUIDGenerator.getUUID());
+        subTradeIdList.add(refundNo);
         req.setSubOutTradeId(subTradeIdList);
         req.setDfGroupId(itemOrder.selSender().getSenderId());
 

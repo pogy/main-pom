@@ -62,7 +62,7 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Transactional(rollbackFor = Exception.class)
     protected void provideVoucher(Long userId,Long pemId,Integer upNum,ProvideRule rule){
-        if (upNum > rule.getShouldUpNum()) {
+        if (upNum >= rule.getShouldUpNum()) {
             ActiveDrawRecord record = new ActiveDrawRecord();
             record.setUserId(userId);
             record.setPemId(pemId);

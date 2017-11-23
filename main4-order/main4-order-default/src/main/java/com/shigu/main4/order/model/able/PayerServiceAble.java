@@ -216,6 +216,11 @@ public abstract class PayerServiceAble implements PayerService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void refund(Long payId, Long money) throws PayerException {
+        refund(payId,null,money);
+    }
+
+    @Override
+    public void refund(Long payId, String refundNo, Long money) throws PayerException {
         OrderPay orderPay;
         if (payId == null || (orderPay = orderPayMapper.selectByPrimaryKey(payId)) == null) {
             throw new PayerException(String.format("支付记录不存在。 payId[%d]", payId));
@@ -226,12 +231,15 @@ public abstract class PayerServiceAble implements PayerService{
         if (System.currentTimeMillis() - orderPay.getCreateTime().getTime() > 365 * 24 * 3600 * 1000L) {
             throw new PayerException("支付完成超过一年的订单无法退款");
         }
-        realRefund(orderPay,money);
+        if (refundNo == null) {
+            refundNo="RF" + orderPay.getOuterPid() + orderPay.getRefundMoney();
+        }
+        realRefund(refundNo,orderPay,money);
         OrderPay pay = new OrderPay();
         pay.setPayId(orderPay.getPayId());
         pay.setRefundMoney(orderPay.getRefundMoney() + money);
         orderPayMapper.updateByPrimaryKeySelective(pay);
     }
 
-    protected abstract void realRefund(OrderPay orderPay, Long money) throws PayerException;
+    protected abstract void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException;
 }
