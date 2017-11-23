@@ -32,6 +32,9 @@
                 <#if 'myBatchTbOrder' == $pageid >
                     class="selected"
                 </#if>
+                        <#if 'tbBindGoodsNo' == $pageid >
+                            class="selected"
+                        </#if>
                     href="/order/myBatchTbOrder.htm"
                     target="_blank"
             >批量操作</a>
