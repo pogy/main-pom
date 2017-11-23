@@ -1,6 +1,7 @@
 <div class="sidebar yahei">
     <#if $it.type == 'index'>
     <h2>交易管理</h2>
+    <ul>
         <li>
             <a
                 <#if 'myOrder' == $pageid >
@@ -42,6 +43,7 @@
         </#if>
     </ul>
     <h2>商品管理</h2>
+    <ul>
         <li>
             <a
                 <#if 'shiguOnekeyRecordinit' == $pageid >
@@ -74,6 +76,7 @@
         </li>
     </ul>
     <h2>供应商申请</h2>
+    <ul>
         <li>
             <a
                 <#if 'storeIn' == $pageid >
@@ -90,6 +93,7 @@
         </li>
     </ul>
     <h2>会员俱乐部</h2>
+    <ul>
         <li>
             <a
                 <#if 'awardInfo' == $pageid >
@@ -101,6 +105,7 @@
     </ul>
     <#elseif $it.type == 'mybag'>
     <h2>我的钱包</h2>
+    <ul>
         <li>
             <a
                 <#if 'userBalance' == $pageid >
@@ -126,6 +131,7 @@
     </ul>
     <#elseif $it.type == 'safecenter'>
     <h2>安全中心</h2>
+    <ul>
         <li>
             <a
                 <#if 'safeindex' == $pageid >
