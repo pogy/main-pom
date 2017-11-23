@@ -72,7 +72,7 @@ public class ActivityAction {
     @RequestMapping("activity/cash")
     public String cash(Model model){
         model.addAttribute("webSite", "hz");
-        return "activity/cash";
+        return "xzSearch/cash";
     }
     /**
      * 发现好货
@@ -244,6 +244,7 @@ public class ActivityAction {
 
         try {
             rspJsonObject.put("awardInfo", activityWebService.queryByCode(tqcode));
+            rspJsonObject.put("result","success");
         } catch (Main4Exception me) {
             me.printStackTrace();
             rspJsonObject.put("desc", me.getMessage());
@@ -286,7 +287,7 @@ public class ActivityAction {
      */
     @RequestMapping(value = "activity/receWards", method = RequestMethod.GET)
     public String receWards() {
-        return "activity/fdGdsLqzjb";
+        return "webApp/pickUpVouchers";
     }
 
     @RequestMapping("activity/popular")
@@ -299,7 +300,7 @@ public class ActivityAction {
         model.addAttribute("bgColor", activity.getBkcolor());
         model.addAttribute("goodsStyle", activityService.gfShow(id));
         model.addAttribute("webSite", "hz");
-        return "activity/popular";
+        return "xzSearch/popular";
     }
 
     @RequestMapping("activity/apply")
