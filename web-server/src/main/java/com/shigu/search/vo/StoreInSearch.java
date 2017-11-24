@@ -74,6 +74,9 @@ public class StoreInSearch implements Serializable{
     }
 
     public String getImgsrc() {
+        if (imgsrc == null) {
+            return "http://gw.alicdn.com/tps/i3/TB1yeWeIFXXXXX5XFXXuAZJYXXX-210-210.png_80x80.jpg";
+        }
         return imgsrc;
     }
 
