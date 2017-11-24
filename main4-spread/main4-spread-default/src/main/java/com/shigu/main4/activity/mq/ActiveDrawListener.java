@@ -61,6 +61,9 @@ public class ActiveDrawListener implements MessageListener {
     VoucherService vipVoucherService;
 
     protected void doUpdateVipVoucher(ItemUpRecordVOForSpread uploadRecord,Long pemId){
+        if ("instock".equals(uploadRecord.getApproveStatus())) {
+            return;
+        }
         Long userId = uploadRecord.getFenUserId();
         Long goodsId = uploadRecord.getSupperGoodsId();
         //杭州首页广告商品上传到淘宝

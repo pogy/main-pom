@@ -122,7 +122,22 @@ public class ItemUpRecordVOForSpread implements Serializable {
      * 下游numIid
      */
     private Long fenNumiid;
-
+    /**
+     * 淘宝子类目id
+     */
+    private Long cid;
+    /**
+     * 档口下架
+     */
+    private Boolean shopSoldout;
+    /**
+     * 淘宝下架
+     */
+    private Boolean tbSoldout;
+    /**
+     * 淘宝上架状态
+     */
+    private String approveStatus;
 
     public String getSupperImww() {
         return supperImww;
@@ -330,5 +345,39 @@ public class ItemUpRecordVOForSpread implements Serializable {
 
     public void setFenNumiid(Long fenNumiid) {
         this.fenNumiid = fenNumiid;
+    }
+
+
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
+    }
+
+    public Boolean getShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout(Boolean shopSoldout) {
+        this.shopSoldout = shopSoldout;
+    }
+
+    public Boolean getTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout(Boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
+    }
+
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
     }
 }
