@@ -4,7 +4,7 @@
             <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
             </a>
-            <em></em>
+            <em>${headerTitle!}</em>
         </div>
 <div class="searchBar fr">
     <div class="tabList clearfix">

@@ -22,7 +22,9 @@
 <#list [moduleJsonStr] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#include "/__ftl_links__/xzSearch__common__header.ftl">
+<#assign headerTitle></#assign>
+<#assign searchType>goods</#assign>
+<#include "/common/xz__searchHeader.ftl">
 <#assign text>{"fields":[{"name":"id","value":""+rankingId}]}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
