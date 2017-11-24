@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/memberfxs.css?v=2017112301" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/memberfxs.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/memberfxs.js?v=2017112301"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/memberfxs.js?v=2017112401"></script>
     
 </head>
 <body>
@@ -350,7 +350,7 @@ var webSite = '${webSite!}';
         <img src="${$stylepath!}${$projectid!}/css/img/DefaultImg.jpg" class="headImg fl">
         </#if>
         <div class="myinfo">
-            <p class="welcome"><em></em>您好！</p>
+            <p class="welcome"><em></em><#if session_user_redis__.menberVipIs??><i class="vip"></i></#if> 您好</p>
             <ul class="clearfix">
                 <li class="disabled" id="icon_taobao">淘宝</li>
                 <li class="disabled" id="icon_aliww">阿里</li>
