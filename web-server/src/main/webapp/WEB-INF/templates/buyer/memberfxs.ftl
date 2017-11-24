@@ -350,7 +350,7 @@ var webSite = '${webSite!}';
         <img src="${$stylepath!}${$projectid!}/css/img/DefaultImg.jpg" class="headImg fl">
         </#if>
         <div class="myinfo">
-            <p class="welcome"><em></em><#if session_user_redis__.menberVipIs??><i class="vip"></i></#if> 您好</p>
+            <p class="welcome"><em></em><#if session_user_redis__.menberVipIs == true><i class="vip"></i></#if> 您好</p>
             <ul class="clearfix">
                 <li class="disabled" id="icon_taobao">淘宝</li>
                 <li class="disabled" id="icon_aliww">阿里</li>
