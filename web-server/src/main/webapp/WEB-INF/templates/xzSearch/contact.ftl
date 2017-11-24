@@ -43,7 +43,7 @@
             <div class="linkBox linkQQ">
                 <h3 class="title">官方QQ</h3>
                 <p class="desc">${qiye_qq!}</p>
-                <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=${qiye_qq!}" class="linkBtn">
+                <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116" class="linkBtn">
                     <i class="icon-s-qq"></i>
                     在线咨询
                 </a>
@@ -51,7 +51,7 @@
             <div class="linkBox linkAlWW1">
                 <h3 class="title">官方旺旺1</h3>
                 <p class="desc">${qiye_wwFir!}</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwFir!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
+                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司星座网咨询1号&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
@@ -59,7 +59,7 @@
             <div class="linkBox linkAlWW2">
                 <h3 class="title">官方旺旺2</h3>
                 <p class="desc">${qiye_wwSec!}</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwSec!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
+                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司星座网咨询2号&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="desc">
                     <h3 class="title">邮箱</h3>
-                    <p>${qiyeEmail!}</p>
+                    <p>admin@571xz.com</p>
                 </div>
             </div>
             <div class="dfPhone contactBy">
@@ -90,7 +90,7 @@
                 </div>
                 <div class="desc">
                     <h3 class="title">电话</h3>
-                    <p>${qiyePhone!}</p>
+                    <p>400-076-1116</p>
                 </div>
             </div>
         </div>
