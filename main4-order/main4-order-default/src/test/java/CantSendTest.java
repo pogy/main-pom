@@ -24,10 +24,10 @@ public class CantSendTest {
         vos.add(vo);
         String jsonarr=JSONArray.fromObject(vos).toString();
         System.out.println(jsonarr);
-        List<CantSendVO> vos2=JSON.parseArray(jsonarr,CantSendVO.class);
-        System.out.println(test(vos2,66L,9L));
-        System.out.println(test(vos2,66L,20L));
-        System.out.println(test(vos2,67L,9L));
+//        List<CantSendVO> vos2=JSON.parseArray(jsonarr,CantSendVO.class);
+//        System.out.println(test(vos2,66L,9L));
+//        System.out.println(test(vos2,66L,20L));
+//        System.out.println(test(vos2,67L,9L));
     }
 
     public static boolean test(List<CantSendVO> cantSendVOS,Long companyId,Long townId){
