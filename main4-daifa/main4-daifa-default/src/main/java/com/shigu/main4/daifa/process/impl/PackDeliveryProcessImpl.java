@@ -135,6 +135,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setExpressName(send.getExpressName());
         print.setExpressCode(send.getExpressCode());
 
+        print.setPackageCode(exvo.getPackageCode ());
         return print;
     }
 
