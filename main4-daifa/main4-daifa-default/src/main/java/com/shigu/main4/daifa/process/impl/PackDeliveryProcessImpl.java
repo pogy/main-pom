@@ -182,7 +182,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setPostName(send.getExpressName());
         print.setMarkDestination(send.getMarkDestination());
         print.setPackageName(send.getPackageName());
-        print.setPackageCode (trade.getRemark2 ());
+        print.setPackageCode (send.getPackageCode ());
         print.setSendNum(orderSize>=1?goodsnum:null);
 
         DaifaSend senduex=new DaifaSend();
