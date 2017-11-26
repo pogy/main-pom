@@ -155,11 +155,13 @@ public class ExpressModelImpl implements ExpressModel {
                     dce1.setPackageName (qvo.getPackageName ());
                     dce1.setSellerId (sellerId);
                     dce1.setJsonData (qvo.getJsonData ());
+                    //dce1.setPackageCode (qvo.getPackageCode ());
                     daifaCallExpressMapper.insertSelective (dce1);
 
                     DaifaWaitSend send1=new DaifaWaitSend ();
                     send1.setDfTradeId (bo.getTid ());
                     send1.setExpressCode (qvo.getPostCode ());
+                    send1.setRemark2 (qvo.getPackageCode ());//集包码
                     DaifaWaitSendExample snedExample=new DaifaWaitSendExample();
                     snedExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
                     daifaWaitSendMapper.updateByExampleSelective (send1,snedExample);
@@ -167,6 +169,7 @@ public class ExpressModelImpl implements ExpressModel {
                     DaifaTrade trade=new DaifaTrade ();
                     trade.setDfTradeId (bo.getTid ());
                     trade.setExpressCode (qvo.getPostCode ());
+                    trade.setRemark2 (qvo.getPackageCode ());
                     DaifaTradeExample tradeExample=new DaifaTradeExample ();
                     tradeExample.createCriteria ().andDfTradeIdEqualTo (bo.getTid ());
                     daifaTradeMapper.updateByExampleSelective (trade,tradeExample);
@@ -177,6 +180,7 @@ public class ExpressModelImpl implements ExpressModel {
                     vo.setMarkDestination (dce1.getMarkDestination ());
                     vo.setExpressId (dce1.getExpressId ());
                     vo.setExpressCode (dce1.getExpressCode ());
+                    vo.setPackageCode (qvo.getPackageCode ());
                 }else{
                     JSONObject obj1 = JSONObject.fromObject(qvo.getJsonData ());
                    // Reason
