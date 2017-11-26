@@ -146,17 +146,17 @@ public class QueryPostCodeVO implements Serializable {
     /**
      * 获取 集包编码
      */
-    public String getPackageCode() {
+  /*  public String getPackageCode() {
         return this.packageCode;
     }
 
-    /**
+    *//**
      * 设置 集包编码
-     */
+     *//*
     public void setPackageCode(String packageCode) {
         this.packageCode = packageCode;
     }
-
+*/
     /**
      * 获取 集包地
      */
@@ -177,5 +177,13 @@ public class QueryPostCodeVO implements Serializable {
 
     public void setJsonData (String jsonData) {
         this.jsonData = jsonData;
+    }
+
+    public String getPackageCode () {
+        return packageCode;
+    }
+
+    public void setPackageCode (String packageCode) {
+        this.packageCode = packageCode;
     }
 }
