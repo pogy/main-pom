@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -125,6 +126,7 @@
             <li class="price">价格（元）</li>
             <li class="goodsNum">数量</li>
             <li class="otherFee">其他费用</li>
+            <li class="orderState">订单状态</li>
             <li class="tradeState">交易状态</li>
             <li class="remark">备注</li>
         </ul>
@@ -180,9 +182,21 @@
             <p>实价：——</p>
             </#if>
         </li>
-        <li class="goodsNum">${childOrder.num!}</li>
+        <li class="goodsNum">
+            ${childOrder.num!}
+        </li>
         <li class="otherFee">
             <p>服务费：${childOrder.childServersFee!}</p>
+        </li>
+        <li class="orderState">
+            <#if childOrder.takeGoodsState == 0>
+            <p>拿货中</p>
+            <#elseif childOrder.takeGoodsState == 1 && order.sendStatus == 1>
+            <p>已拿货</p>
+            <p class="fcF40"><b jbtn="realyStock">实际缺货</b></p>
+            <#elseif childOrder.takeGoodsState == 2>
+            <p>缺货</p>
+            </#if>
         </li>
         <li class="tradeState">
             <#if childOrder_index == 0>
