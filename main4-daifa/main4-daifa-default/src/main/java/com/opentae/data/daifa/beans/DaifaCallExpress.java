@@ -34,6 +34,8 @@ public class DaifaCallExpress implements Serializable{
 	/**集包地*/
 	private String packageName;
 
+	private String packageCode;//集包码
+
 	//private String packageCode;//集包编码
 	/**调用快递鸟回来的所有数据的json格式*/
 	private String jsonData;
@@ -194,5 +196,11 @@ public class DaifaCallExpress implements Serializable{
         this.createTime = createTime;
     }
 
+	public String getPackageCode () {
+		return packageCode;
+	}
 
+	public void setPackageCode (String packageCode) {
+		this.packageCode = packageCode;
+	}
 }
