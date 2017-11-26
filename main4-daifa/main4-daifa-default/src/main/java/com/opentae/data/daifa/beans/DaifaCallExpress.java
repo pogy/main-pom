@@ -36,7 +36,7 @@ public class DaifaCallExpress implements Serializable{
 
 	private String packageCode;//集包码
 
-	//private String packageCode;//集包编码
+
 	/**调用快递鸟回来的所有数据的json格式*/
 	private String jsonData;
 	/**创建时间*/
