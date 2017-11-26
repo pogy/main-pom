@@ -159,6 +159,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setSenderName(seller.getName());
         print.setSenderPhone(seller.getTelephone());
         print.setSenderAddress(seller.getAddress());
+
         int orderSize=0;
         for (DaifaSendOrder sendOrder : sendOrders) {
             if (sendOrder.getTakeGoodsStatus()!=null&&sendOrder.getTakeGoodsStatus()==1) {
@@ -181,6 +182,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setPostName(send.getExpressName());
         print.setMarkDestination(send.getMarkDestination());
         print.setPackageName(send.getPackageName());
+        print.setPackageCode (trade.getRemark2 ());
         print.setSendNum(orderSize>=1?goodsnum:null);
 
         DaifaSend senduex=new DaifaSend();
@@ -390,6 +392,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
                 express.setDfTradeId (dfTradeId);
                 express.setExpressCode (vo.getExpressCode ());
                 express.setPackageName (vo.getPackageName ());
+                express.setPackageCode (vo.getPackageCode ());
                 express.setMarkDestination (vo.getMarkDestination ());
 
                 DaifaCallExpress dce1= daifaCallExpressMapper.selectByPrimaryKey (new Long (stradeId));
