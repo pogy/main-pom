@@ -426,7 +426,8 @@ var webSite = '${webSite!}';
         </ul>
     </div>
     <div class="batchOpe">
-    
+    <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
+        
 
 <#assign text>{}</#assign>
 <#assign moduledata3=text?eval />
@@ -502,7 +503,6 @@ var webSite = '${webSite!}';
 
 </#list>
 
-    <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
         <#if query.status == "1" || !query.status>
         
 
