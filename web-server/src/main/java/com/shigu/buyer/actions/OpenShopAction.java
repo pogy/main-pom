@@ -62,7 +62,7 @@ public class OpenShopAction {
      * 入驻页面
      * @return
      */
-    @RequestMapping("ruzhu")
+    @RequestMapping({"ruzhu","member/ruzhu"})
     public String ruzhu(HttpSession session, HttpServletRequest request) throws Main4Exception {
         //如果已经有店,不能重复申请
         Subject currentUser = SecurityUtils.getSubject();
@@ -85,7 +85,7 @@ public class OpenShopAction {
      * 分站点请求
      * @return
      */
-    @RequestMapping("jsonWbSite")
+    @RequestMapping({"jsonWbSite","member/jsonWbSite"})
     @ResponseBody
     public JSONObject jsonWbSite(){
         List<SiteForRegist> sites=shopRegistService.selSites();
@@ -100,7 +100,7 @@ public class OpenShopAction {
      * 站点对应的市场
      * @return
      */
-    @RequestMapping("jsonMarket")
+    @RequestMapping({"jsonMarket","member/jsonMarket"})
     @ResponseBody
     public JSONObject jsonMarket(String cityId){
         List<MarketForRegist> markets=shopRegistService.selMarkets(cityId);
@@ -117,7 +117,7 @@ public class OpenShopAction {
      * @param marketId
      * @return
      */
-    @RequestMapping("jsonFloor")
+    @RequestMapping({"jsonFloor","member/jsonFloor"})
     @ResponseBody
     public JSONObject jsonFloor(Long marketId){
         List<FloorForRegist> floors=shopRegistService.selFloors(marketId);
@@ -132,7 +132,7 @@ public class OpenShopAction {
      * 入驻提交
      * @return
      */
-    @RequestMapping("submitRuzhu")
+    @RequestMapping({"submitRuzhu","member/submitRuzhu"})
     @ResponseBody
     public JSONObject submitRuzhu(@Valid SubmitRuzhuBO bo, BindingResult result,
                                   HttpServletRequest request, HttpSession session) throws JsonErrException {
@@ -173,7 +173,7 @@ public class OpenShopAction {
      * 入驻申请
      * @return
      */
-    @RequestMapping("ruzhu_sq")
+    @RequestMapping({"ruzhu_sq","member/ruzhu_sq"})
     public String ruzhu_sq(String userCode,HttpSession session) throws RuzhuException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
