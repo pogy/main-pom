@@ -67,7 +67,7 @@ public class GoodsFileAction {
 
     @RequestMapping("seller/pictureSpace")
     public String pictureSpace(OnsaleItemBO bo, Model model) {
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         return "gys/pictureSpace";
     }
 

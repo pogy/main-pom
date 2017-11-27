@@ -187,7 +187,7 @@ public class MemberAction {
         if(pager.getContent()!=null)
         model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("keyword", bo.getKeyword());
         return "fxs/goodsCollectinit";
@@ -265,7 +265,7 @@ public class MemberAction {
         ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("page",bo.getPage());
         List<PackageVO> goodslist=new ArrayList<>();
         for(DataPackage dp:pager.getContent()){

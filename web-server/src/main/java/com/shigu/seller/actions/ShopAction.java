@@ -289,7 +289,7 @@ public class ShopAction {
             logger.error("调用淘宝接口异常",e);
             get.setFeedback(2);
         }
-        model.addAttribute("get",get);
+        model.addAttribute("query",get);
         return "gys/createGoods21init";
     }
 
@@ -379,7 +379,7 @@ public class ShopAction {
         //店内类目暂时不要
         model.addAttribute("formAttribute",formAttribute);
         model.addAttribute("skuAttribute",skuAttribute);
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         ShopSession shopSession = getShopSession(session);//暂时都开放
         String openflag=redisIO.get("open_more_pic");
         if (StringUtils.isNotEmpty(openflag)) {
@@ -741,7 +741,7 @@ public class ShopAction {
         }
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         return "gys/storeGoodsListinit";
     }
 
