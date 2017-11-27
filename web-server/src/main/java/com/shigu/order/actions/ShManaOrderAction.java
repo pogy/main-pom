@@ -33,7 +33,7 @@ public class ShManaOrderAction {
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+bo.getSize()+","+pager.getNumber());
-        return "buyer/shManaOrder";
+        return "fxs/shManaOrder";
     }
 
 }

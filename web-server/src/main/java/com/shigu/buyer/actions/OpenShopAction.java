@@ -78,7 +78,7 @@ public class OpenShopAction {
             }
         }
         request.setAttribute("mainbusList",xzSdkClient.getXzMainBus().split(","));
-        return "ruzhu/ruzhu";
+        return "fxs/ruzhu";
     }
 
     /**
@@ -181,7 +181,7 @@ public class OpenShopAction {
             return "redirect:https://oauth.taobao.com/authorize?response_type=code&client_id=21720662" +
                     "&redirect_uri="+xzSdkClient.getYjHost()+"openStoreAuth.htm&state="+userCode+"&view=web";
         }
-        return "ruzhu/ruzhu_sq";
+        return "fxs/ruzhu_sq";
     }
 
 }

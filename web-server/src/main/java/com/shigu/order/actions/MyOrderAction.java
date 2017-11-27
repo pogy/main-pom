@@ -74,7 +74,7 @@ public class MyOrderAction {
         model.addAttribute("query", bo);//返回查询条件
         model.addAttribute("orders", pager.getContent());
         model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
-        return "buyer/myOrder";
+        return "fxs/myOrder";
 
     }
 

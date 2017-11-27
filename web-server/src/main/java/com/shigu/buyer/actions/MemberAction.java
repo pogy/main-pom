@@ -134,7 +134,7 @@ public class MemberAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
-        return "buyer/memberfxs";
+        return "fxs/index";
     }
 
 
@@ -150,7 +150,7 @@ public class MemberAction {
             OuterUserVO vo = new OuterUserVO(ou);
             model.addAttribute("outer_" + vo.getFrom(), vo);
         }
-        return "buyer/fenxiaoZhanghao";
+        return "fxs/fenxiaoZhanghao";
     }
 
     /**
@@ -190,7 +190,7 @@ public class MemberAction {
         model.addAttribute("get",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("keyword", bo.getKeyword());
-        return "buyer/goodsCollectinit";
+        return "fxs/goodsCollectinit";
     }
 
     /**
@@ -225,7 +225,7 @@ public class MemberAction {
         model.addAttribute("goodsList",pager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(size));
-        return "buyer/goodsCollectOriginal";
+        return "fxs/goodsCollectOriginal";
     }
 
     /**
@@ -273,7 +273,7 @@ public class MemberAction {
                 goodslist.add(new PackageVO(dp));
         }
         model.addAttribute("goodslist",goodslist);
-        return "buyer/goodsDataPackageinit";
+        return "fxs/goodsDataPackageinit";
     }
 
     /**
@@ -324,7 +324,7 @@ public class MemberAction {
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("goodsList",pager.getContent());
-        return "buyer/shiguOnekeyRecordinit";
+        return "fxs/shiguOnekeyRecordinit";
     }
 
     @RequestMapping("member/downTbGoods")
@@ -388,7 +388,7 @@ public class MemberAction {
         model.addAttribute("pageOption",pager.selPageOption(bo.getSize()));
         model.addAttribute("query",bo);
         model.addAttribute("shopList",pager.getContent());
-        return "buyer/storeCollectinit";
+        return "fxs/storeCollectinit";
     }
 
     /**
@@ -439,7 +439,7 @@ public class MemberAction {
         }else{
             model.addAttribute("safe_level",0);
         }
-        return "buyer/safeindex";
+        return "fxs/safeindex";
     }
 
     /**
@@ -536,7 +536,7 @@ public class MemberAction {
         UserInfoVO userInfoVO=BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return "buyer/sysSetsindex";
+        return "fxs/sysSetsindex";
     }
 
     /**
@@ -599,7 +599,7 @@ public class MemberAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return "buyer/safexgmm";
+        return "fxs/safexgmm";
     }
 
     /**
@@ -637,7 +637,7 @@ public class MemberAction {
     @RequestMapping("member/safeXgPaymm")
     public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
         model.addAttribute("forPayPswType",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()) ? 2 : 1);
-        return "buyer/safeXgPaymm";
+        return "fxs/safeXgPaymm";
     }
 
     /**
@@ -833,7 +833,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/iwantToRechargein5";
+        return "fxs/iwantToRechargein5";
     }
 
     /**
@@ -860,7 +860,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/withdraw5Apply";
+        return "fxs/withdraw5Apply";
     }
 
     /**
@@ -893,7 +893,7 @@ public class MemberAction {
             }
         }
         model.addAttribute("storelist",storelist);
-        return "buyer/storeIn";
+        return "fxs/storeIn";
     }
 
     /**
@@ -908,7 +908,7 @@ public class MemberAction {
         }
         ShopApplyDetail detail=shopRegistService.selDetailById(ps.getUserId(),userCode);
         model.addAttribute("applyInfo",new ApplyInfoVO(detail));
-        return "buyer/storeInRead";
+        return "fxs/storeInRead";
     }
 
     /**
@@ -981,7 +981,7 @@ public class MemberAction {
         model.addAttribute("tempCode", tempCode);
         model.addAttribute("webSite", "hz");
         model.addAttribute("excelUrl", "");
-        return "buyer/userBalance";
+        return "fxs/userBalance";
     }
 
     /**
@@ -993,7 +993,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempCode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempCode);
-        return "buyer/capStatistic";
+        return "fxs/capStatistic";
     }
 
     /**
