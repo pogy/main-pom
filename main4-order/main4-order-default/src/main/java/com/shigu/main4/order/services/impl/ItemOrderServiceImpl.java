@@ -109,6 +109,35 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     }
 
     /**
+     * 判定是否禁止发快递
+     * @param companyId
+     * @param townId
+     * @return
+     */
+    public boolean someAreaCantSend(Long companyId,Long townId){
+         List<CantSendVO> cantSendVOS=redisIO.getList("CANT_SEND_AREAS",CantSendVO.class);
+        if (cantSendVOS == null) {
+            return false;
+        }
+         CantSendVO vo=null;
+         for(CantSendVO c:cantSendVOS){
+             if (c.getCompanyId().equals(companyId)) {
+                 vo=c;
+                 break;
+             }
+         }
+        if (vo == null) {
+            return false;
+        }
+        //得到地区ID
+        for(Long twid:vo.getAreaIds()){
+            if (twid.equals(townId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
      * 创建订单
      *
      * @param orderBO
@@ -183,6 +212,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
+        }
+        if (buyerAddress.getTownId()!=null&&someAreaCantSend(companyId,buyerAddress.getTownId())) {
+            throw new OrderException("下单失败，该地区快递暂时无法送达");
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(companyId);
