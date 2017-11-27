@@ -33,6 +33,7 @@ public class DaifaCallExpress implements Serializable{
 	private String markDestination;
 	/**集包地*/
 	private String packageName;
+	private String packageCode;
 	/**调用快递鸟回来的所有数据的json格式*/
 	private String jsonData;
 	/**创建时间*/
@@ -191,4 +192,12 @@ public class DaifaCallExpress implements Serializable{
     public void setCreateTime(java.util.Date createTime) {
         this.createTime = createTime;
     }
+
+	public String getPackageCode () {
+		return packageCode;
+	}
+
+	public void setPackageCode (String packageCode) {
+		this.packageCode = packageCode;
+	}
 }
