@@ -57,6 +57,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 会员中心
@@ -632,11 +633,19 @@ public class MemberAction {
 
     /**
      * 修改支付密码页面
+     * @param session
+     * @param model
+     * @param type 修改密码类型 1.立即设置 2.修改密码 3.找回密码
      * @return
+     * @throws Main4Exception
      */
     @RequestMapping("member/safeXgPaymm")
-    public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
-        model.addAttribute("forPayPswType",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()) ? 2 : 1);
+    public String safeXgPaymm(HttpSession session, Model model,Integer type) throws Main4Exception {
+        //是否设置过支付密码
+        Boolean hasPayPwdSet = memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId());
+        model.addAttribute("info_payPwd", hasPayPwdSet);
+        //没设置过密码，设置密码  设置过密码，找回密码，找回密码，否则修改密码
+        model.addAttribute("forPayPswType", hasPayPwdSet ? Objects.equals(3, type) ? 3 : 2 : 1);
         return "fxs/safeXgPaymm";
     }
 
