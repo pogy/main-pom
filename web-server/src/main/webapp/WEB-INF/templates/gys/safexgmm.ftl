@@ -1,23 +1,22 @@
-<#assign $pageid>iwantToRechargein5</#assign>
+<#assign $pageid>safexgmm</#assign>
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300px">
-    <title>充值 - 供应商中心 - 四季星座网</title>
+    <title>修改密码 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_css.ftl">
+<#include "/__style_torrent__/gys__safexgmm_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
-<#include "/__style_torrent__/gys__common_js.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_js.ftl">
+<#include "/__style_torrent__/gys__safexgmm_js.ftl">
 </head>
 <body>
 <#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
@@ -35,31 +34,28 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<div class="remainSum">
-    <div class="remainSumTop">
-        <div class="myRemain">
-            <h3>我的余额（元）</h3>
-            <p id="yuerBalance">加载中…</p>
-        </div>
-        <div class="amountFrozen">
-            <h3>冻结金额（元）</h3>
-            <p id="yuerBlockMoney">加载中…</p>
-        </div>
-    </div>
-    <input type="hidden" id="tempCode" value="${tempCode!}">
-</div>
-<hr class="splitLine">
+<ul class="pageTabs clearfix">
+    <li class="tabbutton selected"><a href="javascript:;">修改密码</a></li>
+</ul>
 <div class="validateForm">
-    <div class="validateItem">
-        <div class="formGroup">
-            <label>充值金额：</label>
-            <input type="text" class="fmInput" name="money" placeholder="请输入充值金额"> 元</p>
+    <div class="validateForm">
+        <div class="validateItem">
+            <div class="formGroup">
+                <label>原密码：</label>
+                <input type="password" class="fmInput" name="oldPwd" placeholder="请输入原密码">
+            </div>
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
-            <label>充值方式：</label>
-            <input type="text" class="fmInput" value="支付宝" readonly="readonly">
+            <label>新密码：</label>
+            <input type="password" class="fmInput" name="newPwd" placeholder="请输入新密码">
+        </div>
+    </div>
+    <div class="validateItem">
+        <div class="formGroup">
+            <label>确认密码：</label>
+            <input type="password" class="fmInput" name="surePwd" placeholder="请输入确认密码">
         </div>
     </div>
     <div class="validateItem">
@@ -74,9 +70,8 @@
     <button type="button"
     </#if>
     class="fmButton
-         fmButton-lg
          fmButton-blue
-         czBtn"
+         savePwdBtn"
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
@@ -84,11 +79,9 @@
         <#if $it.title??>
             title=""
         </#if>
-        <#if $it.id??>
-            id=""
-        </#if>
+        id="savePwdBtn"
 >
-        确认充值
+        保存
     <#if $it.href??>
     </a>
     <#else>

@@ -1,23 +1,21 @@
-<#assign $pageid>iwantToRechargein5</#assign>
+<#assign $pageid>shiguStoreerjiyuming</#assign>
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300px">
-    <title>充值 - 供应商中心 - 四季星座网</title>
+    <title>设置二级域名 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_css.ftl">
+<#include "/__style_torrent__/gys__shiguStoreerjiyuming_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
-<#include "/__style_torrent__/common__form_js.ftl">
-<#include "/__style_torrent__/gys__common_js.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_js.ftl">
+<#include "/__style_torrent__/gys__shiguStoreerjiyuming_js.ftl">
 </head>
 <body>
 <#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
@@ -35,36 +33,11 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<div class="remainSum">
-    <div class="remainSumTop">
-        <div class="myRemain">
-            <h3>我的余额（元）</h3>
-            <p id="yuerBalance">加载中…</p>
-        </div>
-        <div class="amountFrozen">
-            <h3>冻结金额（元）</h3>
-            <p id="yuerBlockMoney">加载中…</p>
-        </div>
-    </div>
-    <input type="hidden" id="tempCode" value="${tempCode!}">
-</div>
-<hr class="splitLine">
-<div class="validateForm">
-    <div class="validateItem">
-        <div class="formGroup">
-            <label>充值金额：</label>
-            <input type="text" class="fmInput" name="money" placeholder="请输入充值金额"> 元</p>
-        </div>
-    </div>
-    <div class="validateItem">
-        <div class="formGroup">
-            <label>充值方式：</label>
-            <input type="text" class="fmInput" value="支付宝" readonly="readonly">
-        </div>
-    </div>
-    <div class="validateItem">
-        <div class="formGroup">
-            <label></label>
+<div class="domainSetForm">
+    <form action="shiguStoreerjiyuming.htm" id="registerForm" method="post">
+    <h3>输入您的店铺二级域名：</h3>
+    <p class="inputbox">
+        http:// <input class="textInput" name="domain" id="domain" value="${domain!}" type="text"> .571xz.com
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -74,9 +47,8 @@
     <button type="button"
     </#if>
     class="fmButton
-         fmButton-lg
          fmButton-blue
-         czBtn"
+        "
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
@@ -84,19 +56,19 @@
         <#if $it.title??>
             title=""
         </#if>
-        <#if $it.id??>
-            id=""
-        </#if>
+        id="dosubmit"
 >
-        确认充值
+        确认
     <#if $it.href??>
     </a>
     <#else>
     </button>
     </#if>
 </#list>
-        </div>
-    </div>
+        <span class="tips">${msg!}</span>
+    </p>
+    <p class="note">注意：二级域名只允许字母和数字的组合，建议长度3-8位</p>
+    </form>
 </div>
             </div>
     </div>
