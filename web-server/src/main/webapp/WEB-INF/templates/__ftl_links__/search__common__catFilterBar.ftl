@@ -65,7 +65,7 @@
             </ul>
         </div>
     </#if>
-    <#if styles??>
+    <#if styles?? && $pageid == 'goods'>
         <div class="styles clearfix innerbox">
             <label>按风格：</label>
             <ul>
@@ -80,7 +80,7 @@
             </ul>
         </div>
     </#if>
-    <#if elements??>
+    <#if elements?? && $pageid == 'goods'>
         <div class="elements clearfix innerbox">
             <label>按元素：</label>
             <ul>

@@ -27,7 +27,7 @@
     </div>
     <div class="filterPriceBox">
         <div class="innerbox">
-            <input placeholder="&yen;" name="sp" value="${query.sp!}">-<input placeholder="&yen;" name="ep" value="${query.ep!}">
+            <input placeholder="&yen;" name="sp" id="sp" value="${query.sp!}">-<input placeholder="&yen;" id="ep" name="ep" value="${query.ep!}">
             <b id="searchPriceSE">确定</b>
         </div>
     </div>
