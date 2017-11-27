@@ -49,7 +49,7 @@ public class ActiveDrawPem implements Serializable {
 	private String title;
 
     /**
-     * 活动类型标记 代金券活动voucher
+     * 活动类型标记   旧版活动，发现好货，秋装新品发布会，代金券。。。
      */
 	private String flag;
 
