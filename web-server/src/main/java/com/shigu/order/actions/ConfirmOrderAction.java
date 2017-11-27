@@ -81,12 +81,7 @@ public class ConfirmOrderAction {
             e.printStackTrace();
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long oid = null;
-        try {
-            oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
-        } catch (JsonErrException e) {
-            e.printStackTrace();
-        }
+        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
