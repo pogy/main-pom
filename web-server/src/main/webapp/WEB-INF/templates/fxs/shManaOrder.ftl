@@ -78,7 +78,7 @@
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </div>
         <div class="goodsCon">
-            <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
@@ -196,9 +196,9 @@
             <#elseif order.mainState == 4>
             <p>交易完成</p>
             </#if>
-            <p><a href="${main_host!}order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 3>
-            <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>

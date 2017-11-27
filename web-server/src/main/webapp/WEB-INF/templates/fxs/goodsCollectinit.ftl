@@ -154,9 +154,9 @@
     </ul>
     <#if (goodslist?size) gt 0>
         <#list goodslist as goods>
-            <ul class="body clearfix" goodsid="${goods.id!}">
+            <ul class="body clearfix" goodsid="${goods.goodsCollectId!}">
                 <li class="name">
-<#assign text>{"value":goods.id}</#assign>
+<#assign text>{"value":goods.goodsCollectId}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <label class="fmCheckbox

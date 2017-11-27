@@ -61,7 +61,7 @@
     <ul>
         <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
         <li>
-            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st?string('yyyy-MM-dd')}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et?string('yyyy-MM-dd')}"</#if>>
+            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
         </li>
         <li>
             <label>订单类型：</label>
@@ -231,7 +231,7 @@
 </div>
     <#if (orders?size) gt 0>
         <#list orders as order>
-        <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
+        <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>" data-id="${order.orderId!}" data-mainstate="${order.mainState!}">
             <div class="orderHead fl">
                 <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
 <#assign text>{}</#assign>

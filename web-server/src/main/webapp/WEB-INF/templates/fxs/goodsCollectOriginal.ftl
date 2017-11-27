@@ -121,7 +121,7 @@
     </ul>
     <#if (goodsList?size) gt 0>
         <#list goodsList as goods>
-            <ul class="body clearfix" goodsid="${goods.goodsId!}" data-id="${goods.collId!}">
+            <ul class="body clearfix" data-id="${goods.collId!}">
                 <li class="name">
 <#assign text>{"value":goods.collId}</#assign>
 <#assign moduleJsonStr=text?eval />
@@ -203,7 +203,7 @@
                     </p>
                 </li>
                 <li class="control">
-<#assign text>{"dataId":goods.goodsId}</#assign>
+<#assign text>{"dataId":goods.collId}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
     <#if $it.href??>

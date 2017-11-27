@@ -84,7 +84,7 @@
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>档口号：</label>
-            <input class="fmInput" name="storeNum" value="B5421">
+            <input class="fmInput" name="storeNum" value="">
         </div>
     </div>
     <div class="validateItem">
@@ -103,31 +103,31 @@
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>联系电话：</label>
-            <input type="text" class="fmInput" name="tel" value="15247875741">
+            <input type="text" class="fmInput" name="tel" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>微信号：</label>
-            <input type="text" class="fmInput" name="wx" value="asdf">
+            <input type="text" class="fmInput" name="wx" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>旺旺号：</label>
-            <input type="text" class="fmInput" name="aliWw" value="wqerqw">
+            <input type="text" class="fmInput" name="aliWw" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>QQ：</label>
-            <input type="text" class="fmInput" name="qq" value="4578412">
+            <input type="text" class="fmInput" name="qq" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label>电子邮箱：</label>
-            <input type="text" class="fmInput" name="email" value="231@asd.com">
+            <input type="text" class="fmInput" name="email" value="">
         </div>
     </div>
     <div class="validateItem">
