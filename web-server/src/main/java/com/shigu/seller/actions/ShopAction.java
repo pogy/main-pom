@@ -290,7 +290,7 @@ public class ShopAction {
             get.setFeedback(2);
         }
         model.addAttribute("get",get);
-        return "seller/createGoods21init";
+        return "gys/createGoods21init";
     }
 
     /**
@@ -330,7 +330,7 @@ public class ShopAction {
             historyCatVOS.add(historyCatVO);
         }
         model.addAttribute("historyCategory",historyCatVOS);
-        return "seller/releaseGoodsinit";
+        return "gys/releaseGoodsinit";
     }
 
     /**
@@ -387,7 +387,7 @@ public class ShopAction {
         }else{
             model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
         }
-        return "seller/releaseGoodsSend";
+        return "gys/releaseGoodsSend";
     }
 
     /**
@@ -544,7 +544,7 @@ public class ShopAction {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
         model.addAttribute("query",bo);
-        return "seller/storeGoodsList21init";
+        return "gys/storeGoodsList21init";
     }
 
     @RequestMapping("seller/getSaleGoodsNumByType")
@@ -742,7 +742,7 @@ public class ShopAction {
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
-        return "seller/storeGoodsListinit";
+        return "gys/storeGoodsListinit";
     }
 
     /**
@@ -915,7 +915,7 @@ public class ShopAction {
         }
         model.addAttribute("dataList", volist);
         model.addAttribute("webSite",shopSession.getWebSite());
-        return "seller/storeGoodsNoListinit";
+        return "gys/storeGoodsNoListinit";
     }
 
     /**
@@ -976,7 +976,7 @@ public class ShopAction {
             }
             model.addAttribute("domain",domain);
         }
-        return "seller/shiguStoreerjiyuming";
+        return "gys/shiguStoreerjiyuming";
     }
 
     /**
@@ -986,7 +986,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/ghTongbu")
     public String ghTongbu() {
-        return "seller/ghTongbu";
+        return "gys/ghTongbu";
     }
 
     /**
@@ -1032,7 +1032,7 @@ public class ShopAction {
         shopTypeSetVO.setServers(servers);
         shopTypeSetVO.setBusiness_type(xzSdkClient.getXzMainBus().split(","));
         model.addAttribute("typeset",shopTypeSetVO);
-        return "seller/shiguStorebasicStore";
+        return "gys/shiguStorebasicStore";
     }
 
     /**
@@ -1063,7 +1063,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return "seller/iwantToRechargein5";
+        return "gys/iwantToRechargein5";
     }
 
     /**
@@ -1075,7 +1075,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return "seller/withdraw5Apply";
+        return "gys/withdraw5Apply";
     }
 
     /**
@@ -1107,7 +1107,7 @@ public class ShopAction {
         } else {
             model.addAttribute("safe_level", 0);
         }
-        return "seller/safeindex";
+        return "gys/safeindex";
     }
 
     /**
@@ -1121,7 +1121,7 @@ public class ShopAction {
         UserInfoVO userInfoVO= com.shigu.session.main4.tool.BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return "seller/sysSetsindex";
+        return "gys/sysSetsindex";
     }
 
     /**
@@ -1180,7 +1180,7 @@ public class ShopAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return "seller/safexgmm";
+        return "gys/safexgmm";
     }
     /**
      * 验证是否忘记密码来的
@@ -1290,7 +1290,7 @@ public class ShopAction {
         }
         model.addAttribute("inForceList", inForceList);
         model.addAttribute("willInForceList",willInForceList);
-        return "seller/promotion";
+        return "gys/promotion";
     }
 
     /**
