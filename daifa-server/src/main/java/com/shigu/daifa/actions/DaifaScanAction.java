@@ -92,13 +92,16 @@ public class DaifaScanAction {
         PrintPostVO vo= BeanMapper.map(packDeliveryProcess.printExpress(sendId),PrintPostVO.class);
         if(vo.getPackageCode ()==null||"".equals(vo.getPackageCode ())){
             //查询快递
-            daifaScanService.queryPackageCode (vo.getDfTradeId ());
+           String packageCode= daifaScanService.queryPackageCode (vo.getDfTradeId ());
+           vo.setPackageCode (packageCode);
         }
 
         JSONObject obj= JsonResponseUtil.success();
         obj.put("printInfo",vo);
         return obj;
     }
+
+
 
     public JSONObject setGoodsWeight(String barCode,String weight) throws DaifaException {
         Session session = SecurityUtils.getSubject().getSession();
