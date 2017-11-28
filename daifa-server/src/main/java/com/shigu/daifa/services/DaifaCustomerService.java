@@ -4,10 +4,12 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.data.daifa.beans.AfterSaleData;
 import com.opentae.data.daifa.beans.AfterSaleSubData;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.daifa.bo.AfterSaleBO;
 import com.shigu.daifa.vo.DaifaCustomerDataSubVO;
@@ -16,6 +18,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -36,8 +39,14 @@ import java.util.List;
  */
 @Service
 public class DaifaCustomerService {
-
+    @Autowired
+    private TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    private DaifaOrderMapper daifaOrderMapper;
+    @Autowired
+    DaifaAllocatedService daifaAllocatedService;
     private DaifaMultipleMapper daifaMultipleMapper;
+
 
     @Autowired
     public void setMultipleMapper(DaifaMultipleMapper multipleMapper) {
@@ -145,4 +154,20 @@ public class DaifaCustomerService {
         return JsonResponseUtil.success("修改成功");
     }
 
+    public JSONObject toNotTake(Long orderId) {
+        DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(orderId);
+        if(order==null){
+            return JsonResponseUtil.error("未匹配到记录");
+        }
+        if(order.getOrderStatus()==3){
+            return JsonResponseUtil.error("已发货,不可操作");
+        }
+        Long takesId=takeGoodsIssueProcess.toNotTake(orderId);
+        if(takesId==-1L){
+            return JsonResponseUtil.error("未匹配到记录");
+        }
+        daifaAllocatedService.orderServerNotTake(orderId);
+        takeGoodsIssueProcess.addMistake(takesId);
+        return JsonResponseUtil.success("已转为缺货");
+    }
 }

@@ -238,7 +238,27 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         worder.setStoreGoodsCode (storeGoodsCode);
         DaifaWaitSendOrderExample example=new DaifaWaitSendOrderExample ();
         example.createCriteria ().andDfOrderIdEqualTo (dfOrderId);
-      return  daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
+        daifaWaitSendOrderMapper.updateByExampleSelective (worder,example);
+        //按商品ID更新所有订单的商品货号与商家编码
+        order =daifaOrderMapper.selectByPrimaryKey (dfOrderId);
+
+        DaifaOrder order1=new DaifaOrder ();
+        order1.setGoodsCode (goodsCode);
+        order1.setStoreGoodsCode (storeGoodsCode);
+
+        DaifaOrderExample example1=new DaifaOrderExample ();
+        example1.createCriteria ().andGoodsIdEqualTo (order.getGoodsId ());
+
+
+        daifaOrderMapper.updateByExampleSelective (order1,example1);
+
+        DaifaWaitSendOrder worder1=new DaifaWaitSendOrder();
+        worder1.setGoodsId (order.getGoodsId ());
+        worder1.setGgoodsCode (goodsCode);
+        worder1.setStoreGoodsCode (storeGoodsCode);
+        DaifaWaitSendOrderExample example2=new DaifaWaitSendOrderExample ();
+        example2.createCriteria ().andGoodsIdEqualTo (order.getGoodsId ());
+        return daifaWaitSendOrderMapper.updateByExampleSelective (worder1,example2);
     }
 
     public void updateGoodsWeight(Long subOrderId,Long weight,Long sellerId){

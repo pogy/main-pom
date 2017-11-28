@@ -1,7 +1,10 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.core.mybatis.config.MyBatisRepository;
-import com.shigu.daifa.vo.WorkerTakeNumVO;
+import com.opentae.data.daifa.custom.beans.RefundedFee;
+import com.opentae.data.daifa.custom.beans.StockGoods;
+import com.opentae.data.daifa.custom.beans.TodayPostDetail;
+import com.opentae.data.daifa.custom.beans.WorkerTakeNum;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -31,5 +34,21 @@ public interface DaifaSelFinaceMapper{
 
     String selectTodayRefundFee(@Param("day")String day,@Param("sellerId")Long sellerId);
 
-    List<WorkerTakeNumVO> selectWorkerTakeNums(@Param("day")String day, @Param("sellerId")Long sellerId);
+    String selectTodayGoodsFee(@Param("day")String day,@Param("sellerId")Long sellerId);
+
+    String selectTodayStockGoodsFee(@Param("day")String day,@Param("sellerId")Long sellerId);
+
+    List<WorkerTakeNum> selectWorkerTakeNums(@Param("day")String day, @Param("endDay")String endDay, @Param("sellerId")Long sellerId);
+
+    List<TodayPostDetail> selectTodayPostDetail(@Param("day")String day, @Param("sellerId")Long sellerId,@Param("start")Integer start, @Param("end")Integer end);
+
+    Integer selectTodayPostDetailCount(@Param("day")String day, @Param("sellerId")Long sellerId);
+
+    List<StockGoods> selectStockGoods(@Param("day")String day, @Param("sellerId")Long sellerId, @Param("start")Integer start, @Param("end")Integer end);
+
+    Integer selectStockGoodsCount(@Param("day")String day, @Param("sellerId")Long sellerId);
+
+    List<RefundedFee> selectTodayRefund(@Param("day")String day, @Param("sellerId")Long sellerId,@Param("start")Integer start, @Param("end")Integer end);
+
+    Integer selectTodayRefundCount(@Param("day")String day, @Param("sellerId")Long sellerId);
 }
