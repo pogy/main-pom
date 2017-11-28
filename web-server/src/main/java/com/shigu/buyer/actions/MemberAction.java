@@ -641,11 +641,13 @@ public class MemberAction {
      */
     @RequestMapping("member/safeXgPaymm")
     public String safeXgPaymm(HttpSession session, Model model,Integer type) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //是否设置过支付密码
         Boolean hasPayPwdSet = memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId());
         model.addAttribute("info_payPwd", hasPayPwdSet);
         //没设置过密码，设置密码  设置过密码，找回密码，找回密码，否则修改密码
         model.addAttribute("forPayPswType", hasPayPwdSet ? Objects.equals(3, type) ? 3 : 2 : 1);
+        model.addAttribute("telphone",userLicenseService.findPhoneByUserId(ps.getUserId()));
         return "fxs/safeXgPaymm";
     }
 
