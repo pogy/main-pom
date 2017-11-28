@@ -38,10 +38,10 @@ public class DaifaFinanceService {
         String serverFee=toDouble(daifaSelFinaceMapper.selectTodayServerFee(day,sellerId));
 
         //快递费
-        String postFee=stockFee(day,sellerId);
+        String postFee=toDouble(daifaSelFinaceMapper.selectTodayPostFee(day,sellerId));
 
         //仓库中商品费用(以关联)
-        String stockGoodsFee=toDouble(daifaSelFinaceMapper.selectTodayStockGoodsFee(day,sellerId));
+        String stockGoodsFee=stockFee(day,sellerId);
 
         //要退款的费用
         String needRefundFee="0.00";

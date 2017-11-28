@@ -1,5 +1,7 @@
 package com.shigu.daifa.actions;
 
+import com.opentae.data.daifa.beans.DaifaWorker;
+import com.shigu.admin.services.DaifaWorkerService;
 import com.shigu.admin.services.GgoodsUnCompleteService;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
@@ -32,6 +34,8 @@ public class DaifaFinanceAction {
     GgoodsUnCompleteService ggoodsUnCompleteService;
     @Autowired
     TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    DaifaWorkerService DaifaWorkerService;
     /**
      * ====================================================================================
      * @方法名： financialStatistic
@@ -112,17 +116,15 @@ public class DaifaFinanceAction {
         }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        Map<String,Object> map= new HashMap<>();
-        map.put("time",bo.getTime());
-        map.put("userId",bo.getUserId());
-        map.put("page",bo.getPage());
-        model.addAttribute("query",map);
+        model.addAttribute("query",bo);
         model.addAttribute("userName",auth.getDaifaUserName ());
         model.addAttribute("pageOption",0+","+10+","+1);
         model.addAttribute("childOrders",new ArrayList<>());
         if(bo.getUserId()==null){
             return "daifa/userTakeGoodsDetail";
         }
+        DaifaWorker w=DaifaWorkerService.selectById(bo.getUserId());
+        model.addAttribute("takeGoodsUserName",w==null?"":w.getUserName());
         ShiguPager<DaifaAllocatedVO> pager=ggoodsUnCompleteService.workerTakeGoods(bo.getUserId(),bo.getTime(),bo.getPage());
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("pageOption",pager.getTotalCount()+","+10+","+bo.getPage());
