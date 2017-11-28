@@ -65,7 +65,7 @@
     </div>
     <div class="contentBox">
         <div class="userTimeShow fs20">
-    日期：${query.time!} ${userName!}的拿货商品列表
+    日期：${query.time!} ${takeGoodsUserName!}的拿货商品列表
 </div>
 
 
