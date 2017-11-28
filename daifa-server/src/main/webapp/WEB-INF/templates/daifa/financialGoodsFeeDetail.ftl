@@ -79,14 +79,121 @@
             <p class="fc6">今日应拿金额${item.allotmentFee!}元</p>
             <p class="fc6">今日已拿金额${item.haveToTakeFee!}元</p>
             <#if item.userRefundedFee??>
-            <p class="fs20 <#if item.userRefundedIsWrong == true>fcF40</#if>">退回的费用：${item.userRefundedFee!}</p>
+            <div class="showRefundedFee">
+                <p class="fs20 <#if item.userRefundedIsWrong == true>fcF40</#if>">退回的费用：${item.userRefundedFee!}</p>
+                <p>
+
+<#assign text>{}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+        "
+    
+        jbtn="modifyRefundedFee"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        修改
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+</p>
+            </div>
+            <div class="editRefundedFee">
+                <p><span class="fs14">退回的费用：</span><input type="text" class="userRefundedFee" value="${item.userRefundedFee!}"></p>
+                <p>
+
+<#assign text>{}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+        "
+    
+        jbtn="sbmitRefundedFee"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        提交
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+</p>
+            </div>
             <#else>
             <p><span class="fs14">退回的费用：</span><input type="text" class="userRefundedFee"></p>
             <p>
 
 <#assign text>{}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
