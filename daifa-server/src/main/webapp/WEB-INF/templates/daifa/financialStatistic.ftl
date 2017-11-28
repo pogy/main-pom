@@ -175,14 +175,14 @@
             <p class="fc6">今日订单产生的服务费${orderStatistics.daifaServerFee!}</p>
         </li>
         <li>
-            <h4 class="fs20"><a href="postFeeDetail.htm?time=${query.time!}" target="_blank">快递费</a></h4>
+            <h4 class="fs20"><a href="postFeeDetail.htm?time=${query.time!}">快递费</a></h4>
             <p class="fc6">今日快递费用${orderStatistics.shipmentsFee!}</p>
         </li>
     </ul>
     <h3 class="fs20 fc3">售后</h3>
     <ul>
         <li>
-            <h4 class="fs20"><a href="afterSaleStockFee.htm?time=${query.time!}" target="_blank">库存中的商品费用</a></h4>
+            <h4 class="fs20"><a href="afterSaleStockFee.htm?time=${query.time!}">库存中的商品费用</a></h4>
             <p class="fc6">仓库中的商品费用${orderStatistics.inventoryGoodsFee!}元</p>
         </li>
         <li>
@@ -190,7 +190,7 @@
             <p class="fc6">今天要退回的商品费用${orderStatistics.inTheBackGoodsFee!}元</p>
         </li>
         <li>
-            <h4 class="fs20"><a href="afterSaleRefundedFee.htm?time=${query.time!}" target="_blank">已经退款商品费用</a></h4>
+            <h4 class="fs20"><a href="afterSaleRefundedFee.htm?time=${query.time!}">已经退款商品费用</a></h4>
             <p class="fc6">今日已退费用${orderStatistics.refundedGoodsFee!}元</p>
         </li>
     </ul>
