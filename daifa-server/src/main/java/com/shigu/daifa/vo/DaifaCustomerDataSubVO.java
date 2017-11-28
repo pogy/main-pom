@@ -10,6 +10,7 @@ package com.shigu.daifa.vo;
  */
 public class DaifaCustomerDataSubVO extends ChildOrderVO{
     private String childServersFee;
+    private Integer takeGoodsState;
 
     public String getChildServersFee() {
         return this.childServersFee;
@@ -17,5 +18,13 @@ public class DaifaCustomerDataSubVO extends ChildOrderVO{
 
     public void setChildServersFee(String childServersFee) {
         this.childServersFee = childServersFee;
+    }
+
+    public Integer getTakeGoodsState() {
+        return this.takeGoodsState;
+    }
+
+    public void setTakeGoodsState(Integer takeGoodsState) {
+        this.takeGoodsState = takeGoodsState;
     }
 }
