@@ -29,6 +29,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -174,9 +175,14 @@ public class OpenShopAction {
      * @return
      */
     @RequestMapping({"ruzhu_sq","member/ruzhu_sq"})
-    public String ruzhu_sq(String userCode,HttpSession session) throws RuzhuException {
+    public String ruzhu_sq(String userCode, HttpSession session, Model model) throws RuzhuException {
+        //微信公众号二维码地址
+        String wxCode = "http://shigu.oss-cn-hangzhou.aliyuncs.com/wxbind/5_1000047134.jpg";
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
+        model.addAttribute("wxpic", wxCode);
+        model.addAttribute("storeName",shopRegistService.selDetailById(ps.getUserId(),Long.valueOf(userCode)).getShopNum());
+        model.addAttribute("userCode",userCode);
         if(!result){//信息不全
             return "redirect:https://oauth.taobao.com/authorize?response_type=code&client_id=21720662" +
                     "&redirect_uri="+xzSdkClient.getYjHost()+"openStoreAuth.htm&state="+userCode+"&view=web";
