@@ -137,6 +137,7 @@
         </li>
         </#list>
     </ul>
+    <input type=hidden id="time" value="${query.time!}">
 </div>
 
 
