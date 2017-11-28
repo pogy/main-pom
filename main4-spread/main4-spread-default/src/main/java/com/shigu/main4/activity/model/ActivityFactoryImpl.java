@@ -59,7 +59,10 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
         //如果是未来期,数据中已经存在未来期的情况下,异常
         if(vo.getStartTime().getTime()>System.currentTimeMillis()){
             SpreadTermExample example=new SpreadTermExample();
-            example.createCriteria().andStartTimeGreaterThan(new Date()).andTypeEqualTo(vo.getActivityType().ordinal());
+            SpreadTermExample.Criteria criteria = example.createCriteria().andStartTimeGreaterThan(new Date()).andTypeEqualTo(vo.getActivityType().ordinal());
+            if (ActivityType.GOAT_SELL.equals(vo.getActivityType())) {
+                criteria.andManOrWomanEqualTo(vo.getManOrWoman());
+            }
             if(spreadTermMapper.countByExample(example)>0){
                 throw new ActivityException("同一类活动,排期最多只能有一期");
             }
@@ -67,6 +70,7 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime());
         SpreadTerm term = BeanMapper.map(vo, SpreadTerm.class);
+        term.setManOrWoman(vo.getManOrWoman());
         term.setType(vo.getActivityType().ordinal());
         spreadTermMapper.insertSelective(term);
         ActivityTerm at = selTermWithFunc();
