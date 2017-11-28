@@ -234,23 +234,16 @@ public class ActivityAction {
     @RequestMapping(value = "activity/qtiqucode", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject qtiqucode(String tqcode) {
-        JSONObject rspJsonObject = new JSONObject();
-
         if (StringUtils.isEmpty(tqcode)) {
-            rspJsonObject.put("status", 1);
-            rspJsonObject.put("desc", "请输入有效领取码");
-            return rspJsonObject;
+            return JsonResponseUtil.error("请输入有效领取码");
         }
 
         try {
-            rspJsonObject.put("awardInfo", activityWebService.queryByCode(tqcode));
-            rspJsonObject.put("result","success");
+            return JsonResponseUtil.success().element("awardInfo", activityWebService.queryByCode(tqcode));
         } catch (Main4Exception me) {
             me.printStackTrace();
-            rspJsonObject.put("desc", me.getMessage());
+            return JsonResponseUtil.error(me.getMessage());
         }
-
-        return rspJsonObject;
     }
 
     /**
@@ -262,22 +255,16 @@ public class ActivityAction {
     @RequestMapping(value = "activity/qzhongjinag", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject qzhongjinag(String tqcode) {
-        JSONObject rspJsonObject = new JSONObject();
-        rspJsonObject.put("status", 1);
-
         if (StringUtils.isEmpty(tqcode)) {
-            rspJsonObject.put("desc", "请输入有效领取码和用户");
-            return rspJsonObject;
+            return JsonResponseUtil.error("请输入有效领取码和用户");
         }
         try {
             activeDrawServiceImpl.receUserWard(tqcode);
-            rspJsonObject.put("status", 0);
+            return JsonResponseUtil.success();
         } catch (Main4Exception e) {
             e.printStackTrace();
-            rspJsonObject.put("desc", e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
-
-        return rspJsonObject;
     }
 
     /**

@@ -6,7 +6,6 @@
             </a>
             <em></em>
         </div>
-<#assign searchType>goods</#assign>
 <div class="searchBar fr">
     <div class="tabList clearfix">
         <ul>

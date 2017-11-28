@@ -620,8 +620,9 @@ var webSite = '${webSite!}';
         
         <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>" data-id="${order.orderId!}" data-mainstate="${order.mainState!}">
             <div class="orderHead fl">
-                <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
-                
+                <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
+                    <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
+                    
 
 <#assign text>{}</#assign>
 <#assign moduledata6=text?eval />
@@ -699,8 +700,8 @@ var webSite = '${webSite!}';
 
 </#list>
 
-                <#else>
-                
+                    <#else>
+                    
 
 <#assign text>{}</#assign>
 <#assign moduledata7=text?eval />
@@ -780,6 +781,7 @@ var webSite = '${webSite!}';
 
 </#list>
 
+                    </#if>
                 </#if>
                 <span class="fc6 mr">订单编号：${order.orderId!}</span>
                 <span class="fc6 mr">时间：${order.tradeTime!}</span>

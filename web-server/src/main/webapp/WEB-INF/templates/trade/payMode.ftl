@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/payModev1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/payMode.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/payModev1.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/payMode.js?v=2017112401"></script>
     
 </head>
 <body>
