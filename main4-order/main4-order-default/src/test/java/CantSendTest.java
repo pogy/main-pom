@@ -20,6 +20,9 @@ public class CantSendTest {
         list.add(12L);
         list.add(14L);
         vo.setAreaIds(list);
+        List<Long> provList=new ArrayList<>();
+        provList.add(10L);
+        vo.setProvIds(provList);
         List<CantSendVO> vos=new ArrayList<>();
         vos.add(vo);
         String jsonarr=JSONArray.fromObject(vos).toString();
