@@ -130,21 +130,21 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             return false;
         }
         //得到地区ID
-        if (townId != null) {
+        if (townId != null&&vo.getAreaIds() != null) {
             for(Long twid:vo.getAreaIds()){
                 if (twid.equals(townId)) {
                     return true;
                 }
             }
         }
-        if (cityId != null) {
+        if (cityId != null&&vo.getCityIds() != null) {
             for(Long tcid:vo.getCityIds()){
                 if (tcid.equals(cityId)) {
                     return true;
                 }
             }
         }
-        if (provId != null) {
+        if (provId != null&&vo.getProvIds() != null) {
             for(Long tpid:vo.getProvIds()){
                 if (tpid.equals(provId)) {
                     return true;
