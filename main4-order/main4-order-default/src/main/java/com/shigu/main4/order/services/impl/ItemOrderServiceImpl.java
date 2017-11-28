@@ -114,7 +114,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @param townId
      * @return
      */
-    public boolean someAreaCantSend(Long companyId,Long townId){
+    public boolean someAreaCantSend(Long companyId,Long townId,Long cityId,Long provId){
          List<CantSendVO> cantSendVOS=redisIO.getList("CANT_SEND_AREAS",CantSendVO.class);
         if (cantSendVOS == null) {
             return false;
@@ -130,9 +130,25 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             return false;
         }
         //得到地区ID
-        for(Long twid:vo.getAreaIds()){
-            if (twid.equals(townId)) {
-                return true;
+        if (townId != null) {
+            for(Long twid:vo.getAreaIds()){
+                if (twid.equals(townId)) {
+                    return true;
+                }
+            }
+        }
+        if (cityId != null) {
+            for(Long tcid:vo.getCityIds()){
+                if (tcid.equals(cityId)) {
+                    return true;
+                }
+            }
+        }
+        if (provId != null) {
+            for(Long tpid:vo.getProvIds()){
+                if (tpid.equals(provId)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -213,7 +229,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
-        if (buyerAddress.getTownId()!=null&&someAreaCantSend(companyId,buyerAddress.getTownId())) {
+        if (buyerAddress.getTownId()!=null&&someAreaCantSend(companyId,buyerAddress.getTownId(),
+                buyerAddress.getCityId(),buyerAddress.getProvId())) {
             throw new OrderException("下单失败，该地区快递暂时无法送达");
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
