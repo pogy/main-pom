@@ -61,7 +61,7 @@
     <ul>
         <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
         <li>
-            <label>时间：</label><input type=text class="jqDatepicker slInput" name="startTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+            <label>时间：</label><input type=text class="jqDatepicker slInput" name="startTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if> data-format="%Y-%M-%D"><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if> data-format="%Y-%M-%D">
         </li>
         <li>
             <label>订单类型：</label>
