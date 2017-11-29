@@ -55,7 +55,7 @@ public class ActiveDrawPemVo implements Serializable{
     public ActiveDrawPemVo() {
     }
 
-    public ActiveDrawPemVo( Long id, String info, Integer term, Date startTime, Date createTime, String title ) {
+    public ActiveDrawPemVo(Long id, String info, Integer term, Date startTime, Date createTime, String title ) {
         this.id = id;
         this.info = info;
         this.term = term;

@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrderv1.css?v=2017111001" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrderv1.js?v=2017111001"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017112301"></script>
     
 </head>
 <body>

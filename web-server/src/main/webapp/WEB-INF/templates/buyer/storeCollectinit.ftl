@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/storeCollectinitv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/storeCollectinit.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/storeCollectinitv1.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/storeCollectinit.js?v=2017112301"></script>
     
 </head>
 <body>
@@ -759,6 +759,7 @@ var webSite = '${webSite!}';
 
     
 </div>
+
 
 
 

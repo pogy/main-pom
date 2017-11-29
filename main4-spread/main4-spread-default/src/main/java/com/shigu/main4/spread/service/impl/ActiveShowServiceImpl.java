@@ -120,7 +120,7 @@ public class ActiveShowServiceImpl implements ActiveShowService {
      * @return
      */
     @Override
-    public List<ActiveDrawRecordVO> selUserAwardInfo(Long userId,List<Long> pemIds) {
+    public List<ActiveDrawRecordVO> selUserAwardInfo(Long userId, List<Long> pemIds) {
         if (pemIds.size()==0) {
             return new ArrayList<>();
         }
