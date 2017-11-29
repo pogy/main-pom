@@ -268,7 +268,7 @@
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
             <p>商家编码：${childOrder.storeGoodsCode!}</p>
-            <p class="cdkey">cd-key:${childOrder.cdkey!}</p>
+            <p class="cdkey">库存编码：${childOrder.barCodeKey!}</p>
         </li>
         <li class="price">
             <p>批价：${childOrder.piPrice!}</p>
