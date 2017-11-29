@@ -4,7 +4,6 @@ import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
@@ -27,18 +26,27 @@ public interface ActivityFactory {
      * 获得某一类别活动中,某一时间有效的一期
      * @param type 活动类别
      * @param time 时间
+     * @param manOrWoman 男装广告：man  女装广告：woman  全站广告放在男装广告中
      * @return 期次对象
      */
-    ActivityTerm selTermByTime(ActivityType type, Date time);
+    ActivityTerm selTermByTime(ActivityType type, Date time, String manOrWoman);
 
-    ActivityTerm selNowFinishedTerm(ActivityType type, Date time);
+    /**
+     * 获得某一类别活动中,某一时间前结束的最后一期
+     * @param type
+     * @param time
+     * @param manOrWoman 男装广告：man  女装广告：woman  全站广告放在男装广告中
+     * @return
+     */
+    ActivityTerm selNowFinishedTerm(ActivityType type, Date time, String manOrWoman);
 
     /**
      * 某一期后面一期
      * @param termId
+     * @param manOrWoman 男装广告：man  女装广告：woman  全站广告放在男装广告中
      * @return
      */
-    ActivityTerm selafterTermId(ActivityType type,Long termId);
+    ActivityTerm selafterTermId(ActivityType type,Long termId, String manOrWoman);
 
     /**
      * 查排期中的

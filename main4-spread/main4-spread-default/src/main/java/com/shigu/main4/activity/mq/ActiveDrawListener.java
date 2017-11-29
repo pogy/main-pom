@@ -40,12 +40,12 @@ public class ActiveDrawListener implements MessageListener {
     public Action consume(Message message, ConsumeContext consumeContext) {
         ItemUpRecordVOForSpread itemUpRecordVO = JSON.parseObject(message.getBody(), ItemUpRecordVOForSpread.class);
         for (ActiveDrawPem activeDrawPem : selCurrentDrawPem()) {
-            doUpdateQualification(itemUpRecordVO,ActiveEnum.flagOf(activeDrawPem.getFlag()),activeDrawPem.getId());
+            doUpdateQualification(itemUpRecordVO, ActiveEnum.flagOf(activeDrawPem.getFlag()),activeDrawPem.getId());
         }
         return Action.CommitMessage;
     }
 
-    protected void doUpdateQualification(ItemUpRecordVOForSpread uploadRecord,ActiveEnum activeEnum,Long pemId){
+    protected void doUpdateQualification(ItemUpRecordVOForSpread uploadRecord, ActiveEnum activeEnum, Long pemId){
         switch (activeEnum){
             //代金券活动，只有vip用户可以参与
             case VIP_VOUCHER:
@@ -60,7 +60,7 @@ public class ActiveDrawListener implements MessageListener {
     @Autowired
     VoucherService vipVoucherService;
 
-    protected void doUpdateVipVoucher(ItemUpRecordVOForSpread uploadRecord,Long pemId){
+    protected void doUpdateVipVoucher(ItemUpRecordVOForSpread uploadRecord, Long pemId){
         if ("instock".equals(uploadRecord.getApproveStatus())) {
             return;
         }

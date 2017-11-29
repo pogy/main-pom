@@ -140,6 +140,7 @@ public class ItemUpRecordVO implements Serializable{
      */
     private String approveStatus;
 
+
     public String getSupperImww() {
         return supperImww;
     }
