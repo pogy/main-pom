@@ -18,7 +18,6 @@ import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.order.vo.PayModePageVO;
-import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

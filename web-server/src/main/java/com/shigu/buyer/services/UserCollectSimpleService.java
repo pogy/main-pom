@@ -6,13 +6,13 @@ import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.buyer.vo.NewStoreCollectVO;
 import com.shigu.buyer.vo.SimpleGoodsInfoVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.order.services.CartService;
-import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
