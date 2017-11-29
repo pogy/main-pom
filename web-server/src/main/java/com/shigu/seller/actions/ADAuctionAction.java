@@ -64,7 +64,7 @@ public class ADAuctionAction {
         }
         model.addAttribute("adsBoxList", adAuctionService.selSellGoats(ps.getUserId(), bo.getType()));
         model.addAttribute("query",bo);
-        return ftlDir + "/indexgglist";
+        return "gys/indexgglist";
     }
 
     /**
@@ -181,7 +181,7 @@ public class ADAuctionAction {
     @RequestMapping("/dtgglistFinish")
     public String dtgglistFinish(GoatApplyTypeBO bo,Model model){
 //        model.addAttribute("indexggList",auctionService.auctionResults());
-        if (StringUtils.isNotBlank(bo.getType())) {
+        if (StringUtils.isBlank(bo.getType())) {
             bo.setType("man");
         }
         ActivityTermVO term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date(),bo.getType());
