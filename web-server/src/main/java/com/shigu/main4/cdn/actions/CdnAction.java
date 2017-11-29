@@ -476,10 +476,10 @@ public class CdnAction {
             return "index_test";
         }
         url=url.substring(7,url.indexOf(".571xz.com"));
-        Long shopId=shopBaseService.selShopIdByDomain(url);
         if("www".equals(url)||"hz".equals(url)||"testwww".equals(url)){
             return hzindex4show(request,model);
         }
+        Long shopId=shopBaseService.selShopIdByDomain(url);
         if(shopId==null){
             return "redirect:"+xzSdkClient.getMainHost();
         }
