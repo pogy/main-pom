@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/dfgl/css/notYetSipped.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/dfgl/css/notYetSipped.css?v=2017112901" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
             <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/dfgl/js/notYetSipped.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/notYetSipped.js?v=2017112901"></script>
     
     <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
     
@@ -268,6 +268,7 @@
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
             <p>商家编码：${childOrder.storeGoodsCode!}</p>
+            <p class="cdkey">cd-key:${childOrder.cdkey!}</p>
         </li>
         <li class="price">
             <p>批价：${childOrder.piPrice!}</p>
