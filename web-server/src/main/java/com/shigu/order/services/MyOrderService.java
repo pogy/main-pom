@@ -208,7 +208,7 @@ public class MyOrderService {
             }
         }
         if(oidStrs.length()>0){
-            throw new Main4Exception("部分订单标记失败名,请单个订单操作");
+            throw new Main4Exception("部分订单标记失败,请单个订单操作");
         }
     }
 
