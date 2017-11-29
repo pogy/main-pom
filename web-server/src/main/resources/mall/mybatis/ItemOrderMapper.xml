@@ -102,7 +102,7 @@
             AND item_order.CREATE_TIME &gt;= #{bo.st}
         </if>
         <if test="bo.et!=null">
-            AND item_order.CREATE_TIME &lt;= #{bo.et}
+            AND item_order.CREATE_TIME &lt;= CONCAT(#{bo.et},' 23:59:59')
         </if>
         <if test="bo.status!=null">
             AND item_order.order_status = #{bo.status}
