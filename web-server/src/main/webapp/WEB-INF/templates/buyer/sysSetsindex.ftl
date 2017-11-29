@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -23,17 +24,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/sysSetsindex.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/sysSetsindex.css?v=2017112301" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/sysSetsindex.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/sysSetsindex.js?v=2017112301"></script>
+    
 </head>
 <body>
 
@@ -188,21 +195,27 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/safeindex.htm" >安全设置</a></li>
             
         
+        
     
+        
         
             
             <li><a class="selected" href="${main_host!}member/sysSetsindex.htm">个人设置</a></li> 
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/fenxiaoZhanghao.htm" >应用绑定</a></li>
             
+        
         
     
     </ul> 
@@ -321,7 +334,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         </li>
@@ -349,6 +361,7 @@ var webSite = '${webSite!}';
 
 
 </div>
+
 
 
 

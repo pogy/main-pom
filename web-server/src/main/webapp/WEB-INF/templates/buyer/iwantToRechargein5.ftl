@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -23,17 +24,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/iwantToRechargein5.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/iwantToRechargein5.css?v=2017112301" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/iwantToRechargein5.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/iwantToRechargein5.js?v=2017112301"></script>
+    
 </head>
 <body>
 
@@ -188,15 +195,19 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
             
         
+        
     
+        
         
             
             <li><a href="${main_host!}member/capStatistic.htm" >资金明细</a></li>
             
+        
         
     
     </ul> 
@@ -279,7 +290,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 </p>
 </div>
@@ -315,6 +325,7 @@ var webSite = '${webSite!}';
 
 
 </div>
+
 
 
     </div>

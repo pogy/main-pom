@@ -70,7 +70,7 @@ public class ItemUpRecordVOForSpread implements Serializable {
      */
     private String fenPrice;
     /**
-     *  0:show 1:unshow
+     * 0:show 1:unshow
      */
     private Long status;
     /**
@@ -94,7 +94,6 @@ public class ItemUpRecordVOForSpread implements Serializable {
      * wx是微信
      * tb是手机上传淘宝
      * ali是阿里
-     *
      */
     private String flag;
     /**
@@ -138,6 +137,7 @@ public class ItemUpRecordVOForSpread implements Serializable {
      * 淘宝上架状态
      */
     private String approveStatus;
+
 
     public String getSupperImww() {
         return supperImww;
@@ -346,8 +346,6 @@ public class ItemUpRecordVOForSpread implements Serializable {
     public void setFenNumiid(Long fenNumiid) {
         this.fenNumiid = fenNumiid;
     }
-
-
 
     public Long getCid() {
         return cid;

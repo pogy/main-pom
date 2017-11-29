@@ -26,7 +26,7 @@ public class ActivityWebService {
     @Autowired
     ActiveShowService activeShowService;
 
-    public List<ActiveForShowVO> getAwardInfo(Long userId,boolean vipIs){
+    public List<ActiveForShowVO> getAwardInfo(Long userId, boolean vipIs){
         List<ActiveForShowVO> activeForShowVOS = activeShowService.selCurrentAwardInfoWithoutUser();
         if (!vipIs) {
             ArrayList<ActiveForShowVO> ignorePemList = new ArrayList<>();

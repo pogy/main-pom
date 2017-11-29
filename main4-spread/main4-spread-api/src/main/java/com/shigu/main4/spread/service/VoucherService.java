@@ -10,6 +10,6 @@ package com.shigu.main4.spread.service;
  */
 public interface VoucherService {
 
-    void obtainVoucher(Long userId,Integer uploadNum,Long pemId);
+    void obtainVoucher(Long userId, Integer uploadNum, Long pemId);
 
 }

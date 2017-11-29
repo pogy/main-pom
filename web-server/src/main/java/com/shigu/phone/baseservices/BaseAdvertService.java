@@ -1,20 +1,19 @@
 package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppItemSpread;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shigu.spread.enums.SpreadEnum.WOMAN_TJDK;
 
 /**
  * Created by pc on 2017-08-29.

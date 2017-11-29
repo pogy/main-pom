@@ -28,6 +28,11 @@ public class SpreadTerm implements Serializable {
      */
 	private Integer type;
 
+    /**
+     * 男装广告：man  女装广告：woman  全站广告放在男装广告中
+     */
+	private String manOrWoman;
+
 	public void setTermId(Long termId) {
 		this.termId = termId;
 	}
@@ -58,6 +63,14 @@ public class SpreadTerm implements Serializable {
 
 	public Integer getType() {
 		return this.type;
+	}
+
+	public void setManOrWoman(String manOrWoman) {
+		this.manOrWoman = manOrWoman;
+	}
+
+	public String getManOrWoman() {
+		return this.manOrWoman;
 	}
 
 }

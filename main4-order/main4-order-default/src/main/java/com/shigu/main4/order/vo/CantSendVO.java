@@ -8,6 +8,8 @@ import java.util.List;
 public class CantSendVO {
     private Long companyId;//快递公司ID
     private List<Long> areaIds;//区ID
+    private List<Long> provIds;//省ID
+    private List<Long> cityIds;;//省
 
     public Long getCompanyId() {
         return companyId;
@@ -23,5 +25,21 @@ public class CantSendVO {
 
     public void setAreaIds(List<Long> areaIds) {
         this.areaIds = areaIds;
+    }
+
+    public List<Long> getProvIds() {
+        return provIds;
+    }
+
+    public void setProvIds(List<Long> provIds) {
+        this.provIds = provIds;
+    }
+
+    public List<Long> getCityIds() {
+        return cityIds;
+    }
+
+    public void setCityIds(List<Long> cityIds) {
+        this.cityIds = cityIds;
     }
 }
