@@ -36,6 +36,7 @@
         <result column="take_goods_status" property="takeGoodsState" jdbcType="DECIMAL"/>
         <result column="refund_status" property="refundStatus" jdbcType="DECIMAL"/>
         <result column="store_goods_code" property="storeGoodsCode" jdbcType="VARCHAR"/>
+        <result column="cdkey" property="cdkey" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectWaitSends" resultMap="waitSendMap">
@@ -58,6 +59,7 @@
 			f.services_fee,
 			f.receiver_address,
             f.daifa_type=2 is_tb_order,
+            d.cdkey,
 			d.df_order_id,
 			d.pic_path,
 			d.title,
