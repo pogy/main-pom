@@ -36,7 +36,7 @@
         <result column="take_goods_status" property="takeGoodsState" jdbcType="DECIMAL"/>
         <result column="refund_status" property="refundStatus" jdbcType="DECIMAL"/>
         <result column="store_goods_code" property="storeGoodsCode" jdbcType="VARCHAR"/>
-        <result column="cdkey" property="cdkey" jdbcType="VARCHAR"/>
+        <result column="bar_code_key" property="barCodeKey" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectWaitSends" resultMap="waitSendMap">
@@ -59,7 +59,7 @@
 			f.services_fee,
 			f.receiver_address,
             f.daifa_type=2 is_tb_order,
-            d.cdkey,
+            f.bar_code_key,
 			d.df_order_id,
 			d.pic_path,
 			d.title,
@@ -74,7 +74,7 @@
 		FROM
 			(
 				SELECT
-					e.*,c.trade_discount_fee,c.services_fee,c.daifa_type
+					e.*,c.trade_discount_fee,c.services_fee,c.daifa_type,c.bar_code_key
 				FROM
 					daifa_wait_send e,
 					(
@@ -83,7 +83,8 @@
 							v.df_trade_id,
 							t.trade_discount_fee,
 							t.services_fee,
-                            t.daifa_type
+                            t.daifa_type,
+                            t.bar_code_key
 						FROM
                           (select t1.df_trade_id,t1.dws_id FROM
 							daifa_wait_send t1

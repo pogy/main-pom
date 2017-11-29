@@ -27,7 +27,7 @@ public class DaifaWaitSendOrderSimple implements Serializable{
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
     private Integer refundStatus;
     private String storeGoodsCode; //商家编码
-    private String cdkey;
+    private String barCodeKey;
 
 
     public static long getSerialVersionUID() {
@@ -178,11 +178,11 @@ public class DaifaWaitSendOrderSimple implements Serializable{
         this.storeGoodsCode = storeGoodsCode;
     }
 
-    public String getCdkey() {
-        return this.cdkey;
+    public String getBarCodeKey() {
+        return this.barCodeKey;
     }
 
-    public void setCdkey(String cdkey) {
-        this.cdkey = cdkey;
+    public void setBarCodeKey(String barCodeKey) {
+        this.barCodeKey = barCodeKey;
     }
 }

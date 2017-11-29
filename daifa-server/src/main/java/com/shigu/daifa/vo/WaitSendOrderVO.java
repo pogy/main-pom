@@ -14,7 +14,7 @@ public class WaitSendOrderVO extends ChildOrderVO{
     private String childServersFee;//子单服务费
     private String childRemark;//子单备注
     private Boolean noSaleIs;
-    private String cdkey;
+    private String barCodeKey;
 
 
 
@@ -59,11 +59,11 @@ public class WaitSendOrderVO extends ChildOrderVO{
         this.noSaleIs = noSaleIs;
     }
 
-    public String getCdkey() {
-        return this.cdkey;
+    public String getBarCodeKey() {
+        return this.barCodeKey;
     }
 
-    public void setCdkey(String cdkey) {
-        this.cdkey = cdkey;
+    public void setBarCodeKey(String barCodeKey) {
+        this.barCodeKey = barCodeKey;
     }
 }
