@@ -46,7 +46,7 @@
 <ul class="pageTabs clearfix">
     <li class="tabbutton <#if query.type == 'man'> selected </#if>"><a  href="indexgglist.htm?type=man">男装广告</a></li>
     <li class="tabbutton <#if query.type == 'woman'> selected </#if>"><a href="indexgglist.htm?type=woman">女装广告</a></li>
-    <li class="viewLastResult fr"><a href="dtgglistFinish.htm">查看上一期结果 &gt;</a></li>
+    <li class="viewLastResult fr"><a href="dtgglistFinish.htm?type=${query.type!}">查看上一期结果 &gt;</a></li>
 </ul>
 <div class="goatList">
 <#if (adsBoxList?size) gt 0>

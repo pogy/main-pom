@@ -11,6 +11,7 @@ public class SpreadTermExample extends SgExample<SpreadTermExample.Criteria> {
     public static final Class<SpreadTerm> beanClass = SpreadTerm.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn termId;
+    public static EntityColumn manOrWoman;
     public static EntityColumn startTime;
     public static EntityColumn endTime;
     public static EntityColumn type;
@@ -21,6 +22,7 @@ public class SpreadTermExample extends SgExample<SpreadTermExample.Criteria> {
             listMap.put(column.getProperty(), column);
         }
         termId = listMap.get("termId");
+        manOrWoman = listMap.get("manOrWoman");
         startTime = listMap.get("startTime");
         endTime = listMap.get("endTime");
         type = listMap.get("type");
@@ -91,6 +93,61 @@ public class SpreadTermExample extends SgExample<SpreadTermExample.Criteria> {
 
         public SpreadTermExample.Criteria andTermIdNotBetween(Long value1, Long value2) {
             return notBetween(termId, value1, value2);
+        }
+        public SpreadTermExample.Criteria andManOrWomanIsNull() {
+            return isNull(manOrWoman);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanIsNotNull() {
+            return isNotNull(manOrWoman);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanEqualTo(String value) {
+            return equalTo(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanNotEqualTo(String value) {
+            return notEqualTo(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanGreaterThan(String value) {
+            return greaterThan(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanLessThan(String value) {
+            return lessThan(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanLike(String value) {
+            return like(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanNotLike(String value) {
+            return notLike(manOrWoman, value);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanIn(List<String> values) {
+            return in(manOrWoman, values);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanNotIn(List<String> values) {
+            return notIn(manOrWoman, values);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanBetween(String value1, String value2) {
+            return between(manOrWoman, value1, value2);
+        }
+
+        public SpreadTermExample.Criteria andManOrWomanNotBetween(String value1, String value2) {
+            return notBetween(manOrWoman, value1, value2);
         }
         public SpreadTermExample.Criteria andStartTimeIsNull() {
             return isNull(startTime);
