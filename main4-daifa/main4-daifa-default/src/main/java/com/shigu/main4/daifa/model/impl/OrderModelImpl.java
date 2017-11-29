@@ -231,6 +231,9 @@ public class OrderModelImpl implements OrderModel {
 
                         subOrderModelBO.setPicPath (bo.getPicUrl ());
                         subOrderModelBO.setStoreGoodsCode (Pingyin.getPinYinHeadChar (bo.getMarketName ()) + "_" + bo.getShopNum () + "_" + bo.getGoodsNo ());
+                        String StoreGoodsCode=subOrderModelBO.getStoreGoodsCode().replaceAll ("\\+","加");
+                        subOrderModelBO.setStoreGoodsCode (StoreGoodsCode);
+
                         subOrderModelBO.setOrderDiscountFee ("0.00");
                         subOrderModelBO.setPropStr (bo.getColor () + ":" + bo.getSize ());
                         String prop=subOrderModelBO.getPropStr ().replaceAll ("\\+","加");
