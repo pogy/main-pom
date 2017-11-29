@@ -1,4 +1,4 @@
-<div class="header">
+<div class="searchHeader">
     <div class="layout">
         <div class="logoLeft">
             <a href="http://${webSite!}.571xz.com">

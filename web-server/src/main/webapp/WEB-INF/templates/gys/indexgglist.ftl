@@ -69,10 +69,10 @@
             </li>
         </ul>
         <div class="signBtn">
-            <#if item.hdFinish??>
-            <a href="dtgglist.htm?id=${item.id!}">查看结果</a>
+            <#if item.hdFinish == true>
+                <a href="dtgglist.htm?id=${item.id!}">查看结果</a>
             <#else>
-            <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
+                <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
             </#if>
         </div>
     </div>
