@@ -149,6 +149,7 @@
             </#if>
             <span>&nbsp;</span>
             <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
+            <a href="http://zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
         </li>
     </ul>
     <#list goodslist as item>
@@ -214,7 +215,7 @@
             <p class="p2"><span>${item.price2!}</span><b class="penIcon" jhand="openEditPiPrice"></b></p>
         </li>
         <li class="lowestPrice">
-            <p class="p3"><span>${item.lowestLiPrice!}</span><b class="penIcon" jhand="editlowPrice"></b></p>
+            <p class="p3"><span>${item.lowestLiPrice!}</span><b class="penIcon" jhand="openEditLowPrice"></b></p>
         </li>
         <li class="setAttr">
             <div class="">
@@ -232,8 +233,8 @@
                         </b>
                     </li>
                     <li>
-                        <b>
-                            <i class="icon-video"></i>
+                        <b jhand="openEditGoodsVideoWindow" data-goodsVideoUrl="${item.goodsVideoUrl!}" data-linkSameGoodsNo="${item.linkSameGoodsNo!}">
+                            <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>
                             主图视频
                         </b>
                     </li>
@@ -275,7 +276,7 @@
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-<div class="jqPagination " id="jqPagination0"
+<div class="jqPagination blue" id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
     <#else>

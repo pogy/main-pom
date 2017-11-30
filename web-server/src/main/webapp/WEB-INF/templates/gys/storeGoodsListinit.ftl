@@ -179,7 +179,7 @@
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-<div class="jqPagination " id="jqPagination0"
+<div class="jqPagination blue" id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
     <#else>
