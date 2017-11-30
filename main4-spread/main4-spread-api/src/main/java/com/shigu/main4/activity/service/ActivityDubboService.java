@@ -22,6 +22,8 @@ public interface ActivityDubboService {
     <T extends ActivityVO> List<T> selActivityInTerm(Long termId);
 
     void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException;
+    void modifyTerm(Long termId,ActivityType type, Date start, Date end, String manOrWoman) throws ActivityException;
+
 
     <T extends ActivityVO> Long throwActivity(Long termId,T activity);
 
