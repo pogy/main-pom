@@ -77,7 +77,7 @@ public class MyOrderService {
     private MultipleMapper multipleMapper;
 
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) {
         //return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
         OrderQuery orderQuery = SpringBeanFactory.getBean(QueryByOrder.class,userId, bo);
         return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());

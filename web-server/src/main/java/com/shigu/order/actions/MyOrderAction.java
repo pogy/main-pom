@@ -5,6 +5,7 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.OrderBO;
@@ -14,6 +15,7 @@ import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,7 +64,7 @@ public class MyOrderAction {
      * @exception: ====================================================================================
      */
     @RequestMapping("myOrder")
-    public String myOrder(HttpSession session, Model model, OrderBO bo) throws ParseException {
+    public String myOrder(HttpSession session, Model model, OrderBO bo) throws Main4Exception {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (bo.getPageSize() == null) {
@@ -69,6 +72,19 @@ public class MyOrderAction {
         }
         if (bo.getPage() == null) {
             bo.setPage(1);
+        }
+        String dateFormat = "yyyy-MM-dd";
+        if (bo.getSt() != null) {
+            Date st = DateParseUtil.parseFromString(dateFormat, bo.getSt());
+            if (st == null) {
+                throw new Main4Exception("查询开始日期错误");
+            }
+        }
+        if (bo.getEt() != null) {
+            Date et = DateParseUtil.parseFromString(dateFormat, bo.getEt());
+            if (et == null) {
+                throw new Main4Exception("查询结束日期错误");
+            }
         }
         ShiguPager<MyOrderVO> pager = myOrderService.selectMyOrderPager(bo, ps.getUserId());
         model.addAttribute("query", bo);//返回查询条件
