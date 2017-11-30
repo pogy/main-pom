@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css?v=2017091901" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myTbOrder.js?v=2017091901"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myTbOrder.js?v=2017112301"></script>
     
 </head>
 <body>
@@ -294,7 +294,7 @@ var webSite = '${webSite!}';
 
         
 
-<#assign text>{"fields":[{"name":"st","value":"${query.st!}"},{"name":"et","value":"${query.et!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"st","value":"${query.st!}"},{"name":"et","value":"${query.et!}"},{"name":"orderId","value":"${query.orderId!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -318,7 +318,6 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
 
 <div class="rightBox fr">
     <h3 class="yahei fs16 webH3">淘宝已卖出商品</h3>
@@ -749,32 +748,6 @@ var webSite = '${webSite!}';
 
 
 
-
-
-<#assign text>{}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
-<#if $it.fields??>
-<form id="wgt_search">
-    <#list $it.fields as field>
-        <#if field.timeFormat??>
-            <#if field.value??>
-            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
-            <#else>
-            <input type=hidden name="${field.name!}" value="${field.value!}">
-            </#if>
-        <#else>
-            <input type=hidden name="${field.name!}" value="${field.value!}">
-        </#if>
-    </#list>
-</form>
-</#if>
-
-
-
-
-
-</#list>
 
 
 

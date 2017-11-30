@@ -2,33 +2,9 @@ package com.shigu.main4.spread.service.impl;
 
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ActiveDrawGoods;
-import com.opentae.data.mall.beans.ActiveDrawPem;
-import com.opentae.data.mall.beans.ActiveDrawPit;
-import com.opentae.data.mall.beans.ActiveDrawRecord;
-import com.opentae.data.mall.beans.ActiveDrawShop;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguMarket;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShiguTemp;
-import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
-import com.opentae.data.mall.examples.ActiveDrawPemExample;
-import com.opentae.data.mall.examples.ActiveDrawPitExample;
-import com.opentae.data.mall.examples.ActiveDrawRecordExample;
-import com.opentae.data.mall.examples.ActiveDrawShopExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.ShiguTempExample;
-import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawPitMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawShopMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguMarketMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.opentae.data.mall.interfaces.ShiguTempMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -49,14 +25,12 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -68,7 +42,7 @@ import java.util.*;
  *
  */
 @Service("activeDrawService")
-public class ActiveDrawServiceImpl implements ActiveDrawService{
+public class ActiveDrawServiceImpl implements ActiveDrawService {
 
     @Autowired
     private ActiveDrawPemMapper activeDrawPemMapper;
@@ -123,7 +97,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * 查询当前期次商品数据
      * @param pemId
      */
-    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back){
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled, boolean back){
 
         // 取当前坑位
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
@@ -608,7 +582,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     @Override
-    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId,String userNick, int pageNum, int pageSize) {
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, Long userId, String userNick, int pageNum, int pageSize) {
         ShiguPager<ActiveDrawRecordUserVo> drawRecordUserVoShiguPager = new ShiguPager<ActiveDrawRecordUserVo>();
         if(pemId == null || StringUtils.isEmpty(ward)){
             return drawRecordUserVoShiguPager;
@@ -651,7 +625,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param drawRecordList
      * @return
      */
-    public List<ActiveDrawRecordUserVo> poUserGoodsUp(Long pemId, String type,List<ActiveDrawRecord> drawRecordList){
+    public List<ActiveDrawRecordUserVo> poUserGoodsUp(Long pemId, String type, List<ActiveDrawRecord> drawRecordList){
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
         // 查询发现好货活动的数据
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
@@ -730,7 +704,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param pemId
      * @return
      */
-    public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
+    public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId, Long userId, String type){
         ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
         activeDrawRecordExample.createCriteria().andPemIdEqualTo(pemId).andUserIdEqualTo(userId);
         List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);

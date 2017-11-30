@@ -11,7 +11,6 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

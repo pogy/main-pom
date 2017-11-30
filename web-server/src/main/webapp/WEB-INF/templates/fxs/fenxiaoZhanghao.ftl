@@ -33,7 +33,7 @@
 </#list>
             <div class="rightBox">
 <ul class="pageTabs clearfix">
-    <li class="select"><a href="javascript:;">账号绑定管理</a></li>
+    <li class="select"><a>账号绑定管理</a></li>
 </ul>
 <div class="accountList">
     <div class="tips">绑定手机号或者第三方账号即可通过该账号登录四季星座网</div>

@@ -53,35 +53,35 @@ public class MackProvcityTest extends BaseTest {
      */
     @Test
     public void test(){
-//        List<ProvinceVO> ps=orderConstantService.selProvinces();
-//        List<Prov> pvs=new ArrayList<>();
-//        for(ProvinceVO p:ps){
-//            Prov pr=new Prov();
-//            pr.setProvinceId(p.getProvinceId().toString());
-//            pr.setText(p.getProvince());
-//            pr.setCitys(new ArrayList<City>());
-//            pvs.add(pr);
-//            List<CityVO> cityVOs=orderConstantService.selCitysByPid(p.getProvinceId());
-//            if(cityVOs!=null){
-//                for(CityVO cv:cityVOs){
-//                    City c=new City();
-//                    c.setText(cv.getCity());
-//                    c.setCityId(cv.getCityId().toString());
-//                    c.setCountys(new ArrayList<Country>());
-//                    pr.getCitys().add(c);
-//                    List<TownVO> townVOs=orderConstantService.selTownByCid(cv.getCityId());
-//                    if(townVOs!=null){
-//                        for(TownVO tv:townVOs){
-//                            Country country=new Country();
-//                            country.setText(tv.getTown());
-//                            country.setCountyId(tv.getTownId().toString());
-//                            c.getCountys().add(country);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println(JSON.toJSONString(pvs));
+        List<ProvinceVO> ps=orderConstantService.selProvinces();
+        List<Prov> pvs=new ArrayList<>();
+        for(ProvinceVO p:ps){
+            Prov pr=new Prov();
+            pr.setProvinceId(p.getProvinceId().toString());
+            pr.setText(p.getProvince());
+            pr.setCitys(new ArrayList<City>());
+            pvs.add(pr);
+            List<CityVO> cityVOs=orderConstantService.selCitysByPid(p.getProvinceId());
+            if(cityVOs!=null){
+                for(CityVO cv:cityVOs){
+                    City c=new City();
+                    c.setText(cv.getCity());
+                    c.setCityId(cv.getCityId().toString());
+                    c.setCountys(new ArrayList<Country>());
+                    pr.getCitys().add(c);
+                    List<TownVO> townVOs=orderConstantService.selTownByCid(cv.getCityId());
+                    if(townVOs!=null){
+                        for(TownVO tv:townVOs){
+                            Country country=new Country();
+                            country.setText(tv.getTown());
+                            country.setCountyId(tv.getTownId().toString());
+                            c.getCountys().add(country);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(JSON.toJSONString(pvs));
     }
 
     @Test

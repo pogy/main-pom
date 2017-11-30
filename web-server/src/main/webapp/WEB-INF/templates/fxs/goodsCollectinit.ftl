@@ -207,8 +207,8 @@
                 <li class="price">${goods.piprice!}</li>
                 <li class="source">${goods.marketname!}</li>
                 <li class="control">
-                    <button jbtn="createPacket" goodsid=${goods.goodsCollectId!}>生成数据包</button>
-                    <button class="del" jbtn="removePacket" goodsid=${goods.goodsCollectId!}>删除</button>
+                    <b jbtn="createPacket" goodsid=${goods.goodsCollectId!}>生成数据包</b>
+                    <b class="del" jbtn="removePacket" goodsid=${goods.goodsCollectId!}>删除</b>
                 </li>
             </ul>
         </#list>

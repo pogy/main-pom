@@ -25,6 +25,7 @@ import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 import com.shigu.main4.common.util.BeanMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,10 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
         //如果是未来期,数据中已经存在未来期的情况下,异常
         if(vo.getStartTime().getTime()>System.currentTimeMillis()){
             SpreadTermExample example=new SpreadTermExample();
-            example.createCriteria().andStartTimeGreaterThan(new Date()).andTypeEqualTo(vo.getActivityType().ordinal());
+            SpreadTermExample.Criteria criteria = example.createCriteria().andStartTimeGreaterThan(new Date()).andTypeEqualTo(vo.getActivityType().ordinal());
+            if (ActivityType.GOAT_SELL.equals(vo.getActivityType())) {
+                criteria.andManOrWomanEqualTo(vo.getManOrWoman());
+            }
             if(spreadTermMapper.countByExample(example)>0){
                 throw new ActivityException("同一类活动,排期最多只能有一期");
             }
@@ -66,6 +70,7 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime());
         SpreadTerm term = BeanMapper.map(vo, SpreadTerm.class);
+        term.setManOrWoman(vo.getManOrWoman());
         term.setType(vo.getActivityType().ordinal());
         spreadTermMapper.insertSelective(term);
         ActivityTerm at = selTermWithFunc();
@@ -101,11 +106,14 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
     }
 
     @Override
-    public ActivityTerm selTermByTime(ActivityType type, Date time) {
+    public ActivityTerm selTermByTime(ActivityType type, Date time, String manOrWoman) {
         //查出当前一期的ID
         SpreadTermExample example = new SpreadTermExample();
-        example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeLessThanOrEqualTo(time)
+        SpreadTermExample.Criteria criteria = example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeLessThanOrEqualTo(time)
                 .andEndTimeGreaterThanOrEqualTo(time);
+        if (StringUtils.isNotBlank(manOrWoman)) {
+            criteria.andManOrWomanEqualTo(manOrWoman);
+        }
         example.setStartIndex(0);
         example.setEndIndex(1);
         List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
@@ -116,12 +124,15 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
     }
 
     @Override
-    public ActivityTerm selNowFinishedTerm(ActivityType type, Date time) {
+    public ActivityTerm selNowFinishedTerm(ActivityType type, Date time, String manOrWoman) {
         SpreadTermExample example = new SpreadTermExample();
-        example.createCriteria().andTypeEqualTo(type.ordinal()).andEndTimeLessThan(time);
+        SpreadTermExample.Criteria criteria = example.createCriteria().andTypeEqualTo(type.ordinal()).andEndTimeLessThan(time);
         example.setStartIndex(0);
         example.setEndIndex(1);
         example.setOrderByClause("end_time desc");
+        if (StringUtils.isNotBlank(manOrWoman)) {
+            criteria.andManOrWomanEqualTo(manOrWoman);
+        }
         List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
         if (terms.size() > 0) {
             return selTermById(terms.get(0).getTermId());
@@ -130,12 +141,15 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
     }
 
     @Override
-    public ActivityTerm selafterTermId(ActivityType type,Long termId) {
+    public ActivityTerm selafterTermId(ActivityType type,Long termId, String manOrWoman) {
         SpreadTermExample example = new SpreadTermExample();
-        example.createCriteria().andTypeEqualTo(type.ordinal()).andTermIdGreaterThan(termId);
+        SpreadTermExample.Criteria cri = example.createCriteria().andTypeEqualTo(type.ordinal()).andTermIdGreaterThan(termId);
         example.setStartIndex(0);
         example.setEndIndex(1);
         example.setOrderByClause("term_id asc");
+        if (StringUtils.isNotBlank(manOrWoman)) {
+            cri.andManOrWomanEqualTo(manOrWoman);
+        }
         List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
         if (terms.size() > 0) {
             return selTermById(terms.get(0).getTermId());

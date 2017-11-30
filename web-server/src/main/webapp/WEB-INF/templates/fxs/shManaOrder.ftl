@@ -46,9 +46,7 @@
 </#list>
 <div class="pageTabs clearfix yahei">
     <ul>
-        <li <#if !query.shStatus>class="select"</#if>><a href="shManaOrder.htm">所有订单</a></li>
-        <li <#if query.shStatus == "1">class="select"</#if>><a href="shManaOrder.htm?shStatus=1">退款</a></li>
-        <li <#if query.shStatus == "2">class="select"</#if>><a href="shManaOrder.htm?shStatus=2">换货</a></li>
+        <li class="select"><a>售后订单</a></li>
     </ul>
 </div>
 <div id="orderList" class="orderList orderDetail">

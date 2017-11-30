@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrderv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrder.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/shManaOrderv1.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/shManaOrder.js?v=2017112301"></script>
     
 </head>
 <body>
@@ -563,6 +563,7 @@ var webSite = '${webSite!}';
 
 
 </div>
+
 
 
 

@@ -163,7 +163,7 @@ public class UserBaseServiceImpl implements UserBaseService {
      * @param memberUserSub
      * @return
      */
-    private PersonalSession parseToPersonal(MemberUser memberUser,MemberUserSub memberUserSub){
+    private PersonalSession parseToPersonal(MemberUser memberUser, MemberUserSub memberUserSub){
         PersonalSession ps=new PersonalSession();
         ps.setSubUserId(memberUserSub.getSubUserId());
         ps.setUserId(memberUserSub.getUserId());

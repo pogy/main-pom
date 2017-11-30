@@ -32,10 +32,22 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<div class="headTitle clearfix">
-    <h3 class="title">广告区域</h3>
-    <a href="dtgglistFinish.htm" target="_blank" class="searAllRe">查看上一期结果 &gt;</a>
-</div>
+<#assign text>{"fields":[{"name":"type","value":""+query.type}]}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
+<ul class="pageTabs clearfix">
+    <li class="tabbutton <#if query.type == 'man'> selected </#if>"><a  href="indexgglist.htm?type=man">男装广告</a></li>
+    <li class="tabbutton <#if query.type == 'woman'> selected </#if>"><a href="indexgglist.htm?type=woman">女装广告</a></li>
+    <li class="viewLastResult fr"><a href="dtgglistFinish.htm?type=${query.type!}">查看上一期结果 &gt;</a></li>
+</ul>
 <div class="goatList">
 <#if (adsBoxList?size) gt 0>
     <#list adsBoxList as item>
@@ -57,10 +69,10 @@
             </li>
         </ul>
         <div class="signBtn">
-            <#if item.hdFinish??>
-            <a href="dtgglist.htm?id=${item.id!}">查看结果</a>
+            <#if item.hdFinish == true>
+                <a href="dtgglist.htm?id=${item.id!}">查看结果</a>
             <#else>
-            <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
+                <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
             </#if>
         </div>
     </div>

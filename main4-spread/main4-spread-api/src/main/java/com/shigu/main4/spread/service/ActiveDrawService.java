@@ -11,7 +11,6 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 活动抽奖发现好货SERVICE
@@ -56,7 +55,7 @@ public interface ActiveDrawService {
      * @param enabled
      * @return
      */
-    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back);
+    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled, boolean back);
 
     /**
      * 排序交换
@@ -92,7 +91,7 @@ public interface ActiveDrawService {
      */
     List<ActiveDrawShopVo> selShopList(Long pemId, boolean back);
 
-    List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type);
+    List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId, Long userId, String type);
 
     /**
      * 修改店铺
@@ -105,7 +104,7 @@ public interface ActiveDrawService {
      * @param type
      * @param drawShopId
      */
-    void changeShopSort(int type,Long drawShopId);
+    void changeShopSort(int type, Long drawShopId);
 
     /**
      * 新增好店
@@ -125,7 +124,7 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId, String userNick,int pageNum, int pageSize);
+    ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, Long userId, String userNick, int pageNum, int pageSize);
 
     /**
      * 查询当前中奖用户

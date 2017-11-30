@@ -38,6 +38,11 @@ public class CollectTest {
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Test
+    public void createDataPackageByCoolectIdsTest(){
+        userCollectService.createDataPackageByCoolectIds(1000083680L,Lists.newArrayList(852209L));
+    }
+
+    @Test
     public void selShopCollectionsTest(){
         ShiguPager<ShopCollectVO> hz = userCollectService.selShopCollections(1000083680L, "hz", 1, 12);
         System.out.println(JSON.toJSONString(hz));

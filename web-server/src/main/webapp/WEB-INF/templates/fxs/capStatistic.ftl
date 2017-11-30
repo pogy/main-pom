@@ -35,7 +35,7 @@
 </#list>
             <div class="rightBox">
 <ul class="pageTabs clearfix">
-    <li class="select"><a href="javascript:;">资金明细</a></li>
+    <li class="select"><a>资金明细</a></li>
 </ul>
 <div class="filterBar">
     <div class="timer">

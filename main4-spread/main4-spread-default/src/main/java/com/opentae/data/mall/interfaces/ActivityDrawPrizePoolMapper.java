@@ -16,5 +16,5 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ActivityDrawPrizePoolMapper extends Mapper<ActivityDrawPrizePool> {
 
-    void addProvide(@Param("pemId") Long pemId,@Param("rank") Integer rank);
+    void addProvide(@Param("pemId") Long pemId, @Param("rank") Integer rank);
 }
