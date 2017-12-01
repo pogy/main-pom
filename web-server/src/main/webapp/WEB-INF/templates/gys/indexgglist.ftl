@@ -48,7 +48,7 @@
     <li class="tabbutton <#if query.type == 'woman'> selected </#if>"><a href="indexgglist.htm?type=woman">女装广告</a></li>
     <li class="viewLastResult fr"><a href="dtgglistFinish.htm?type=${query.type!}">查看上一期结果 &gt;</a></li>
 </ul>
-<div class="goatList">
+<div class="goatList clearfix">
 <#if (adsBoxList?size) gt 0>
     <#list adsBoxList as item>
     <div class="goatItem">
