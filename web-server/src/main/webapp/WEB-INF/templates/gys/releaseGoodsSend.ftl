@@ -46,7 +46,7 @@
 <div class="categoryBox">
     <em class="fc6">类目：${category_text!}</em>
     <a href="releaseGoodsinit.htm">重选类目</a>
-    <input type="hidden" value="${get.cid!}" id="cat_id">
+    <input type="hidden" value="${query.cid!}" id="cat_id">
 </div>
 <div class="formInput formTitle">
     <label class="formKey"><i>*</i>宝贝标题：</label>

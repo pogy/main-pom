@@ -47,8 +47,8 @@
             <p>在您变更淘宝店铺的商品的3-5分钟内，四季星座网系统会自动将新的商品或商品状态同步到四季星座网店铺中。</p>
         </div>
         <div class="clickButton beOpenStatus">
-            <#if get.feedback?? && get.feedback gt 0>
-                <#if get.feedback == 1>
+            <#if query.feedback?? && query.feedback gt 0>
+                <#if query.feedback == 1>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -84,8 +84,8 @@
             <p>有淘宝商品没有展示在四季星座网？上下架状态不一致？整店同步一次商品可以解决您的问题！</p>
         </div>
         <div class="clickButton" data-id="${session_user_redis__.logshop.shopId!}">
-            <#if get.feedback?? && get.feedback gt 0>
-                <#if get.feedback == 1>
+            <#if query.feedback?? && query.feedback gt 0>
+                <#if query.feedback == 1>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -125,7 +125,7 @@
     </#list>
 </div>
 </#list>
-                <#elseif get.feedback == 2>
+                <#elseif query.feedback == 2>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
