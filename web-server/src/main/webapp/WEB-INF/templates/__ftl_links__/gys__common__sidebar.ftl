@@ -78,15 +78,15 @@
         </#if>
     </ul>
     <h2>店铺管理</h2>
-        <#if 'http://www.571xz.com/shop.htm?id={!session_user_redis__.logshop.shopId}' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if 'http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'http://www.571xz.com/shop.htm?id={!session_user_redis__.logshop.shopId}' == $pageid >
+                    <#if 'http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' == $pageid >
                             selected
                     </#if>
                 "
-                    href="http://www.571xz.com/shop.htm?id={!session_user_redis__.logshop.shopId}"
+                    href="http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"
                     target="_blank"
             >查看我的店铺</a>
         </li>
