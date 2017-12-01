@@ -96,6 +96,10 @@
     <div id="j_echart_2" class="c_echart_2"><p class='c_no_data'>暂无数据~</p></div>
     </div>
 </div>
+<script modulepath="common/xz#openImgtips">
+var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
+</script>
             </div>
     </div>
 </div>

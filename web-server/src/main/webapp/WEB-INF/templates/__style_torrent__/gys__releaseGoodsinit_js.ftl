@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/releaseGoodsinit_v20171123_140048.js"></script>
+<script src="http://style.571xz.com/v6/gys/js/releaseGoodsinit_v20171201_142410.js"></script>

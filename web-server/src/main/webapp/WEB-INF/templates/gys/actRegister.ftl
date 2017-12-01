@@ -50,7 +50,7 @@
             <span class="actTitle">${actItem.actTitle!}</span>
             <span class="applyTime">报名时间：${actItem.applyTime!}</span>
         </p>
-        <p class="lineHei32">
+        <p class="actRange">
             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
         </p>
         <p class="lineHei32">
@@ -179,7 +179,7 @@
             <span class="actTitle">${actItem.actTitle!}</span>
             <span class="applyTime">报名时间：${actItem.applyTime!}</span>
         </p>
-        <p class="lineHei32">
+        <p class="actRange">
             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
         </p>
         <p class="lineHei32">
@@ -309,7 +309,7 @@
             <span class="actTitle">${actItem.actTitle!}</span>
             <span class="applyTime">报名时间：${actItem.applyTime!}</span>
         </p>
-        <p class="lineHei32">
+        <p class="actRange">
             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
         </p>
         <p class="lineHei32">

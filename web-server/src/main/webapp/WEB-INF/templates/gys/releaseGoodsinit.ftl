@@ -45,15 +45,15 @@
 <div class="categoryList clearfix">
     <div class="categoryContainer" data-level="0">
 <ul>
-    <li data-cid="30" data-child="1">男装<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50011740" data-child="1">流行男鞋<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="16" data-child="1">女装/女士精品<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50006843" data-child="1">女鞋<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50006842" data-child="1">箱包皮具/热销女包/男包<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="1625" data-child="1">女士内衣/男士内衣/家居服<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50010404" data-child="1">服饰配件/皮带/帽子/围巾<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50008165" data-child="1">童装/童鞋/亲子装<i class="iconfont icon-rightarrow"></i></li>
-    <li data-cid="50013886" data-child="1">户外/登山/野营/旅行用品<i class="iconfont icon-rightarrow"></i></li>
+    <li data-cid="30" data-child="1">男装<i class="icon-rightarrow"></i></li>
+    <li data-cid="50011740" data-child="1">流行男鞋<i class="icon-rightarrow"></i></li>
+    <li data-cid="16" data-child="1">女装/女士精品<i class="icon-rightarrow"></i></li>
+    <li data-cid="50006843" data-child="1">女鞋<i class="icon-rightarrow"></i></li>
+    <li data-cid="50006842" data-child="1">箱包皮具/热销女包/男包<i class="icon-rightarrow"></i></li>
+    <li data-cid="1625" data-child="1">女士内衣/男士内衣/家居服<i class="icon-rightarrow"></i></li>
+    <li data-cid="50010404" data-child="1">服饰配件/皮带/帽子/围巾<i class="icon-rightarrow"></i></li>
+    <li data-cid="50008165" data-child="1">童装/童鞋/亲子装<i class="icon-rightarrow"></i></li>
+    <li data-cid="50013886" data-child="1">户外/登山/野营/旅行用品<i class="icon-rightarrow"></i></li>
 </ul>
     </div>
     <div class="categoryContainer" data-level="1">
@@ -80,7 +80,7 @@
     <li data-cid="50025883" data-child="0">毛呢大衣</li>
     <li data-cid="50025884" data-child="0">羽绒裤</li>
     <li data-cid="50025885" data-child="0">棉裤</li>
-    <li data-cid="124730001" data-child="1">套装<i class="iconfont icon-rightarrow"></i></li>
+    <li data-cid="124730001" data-child="1">套装<i class="icon-rightarrow"></i></li>
 </ul>
     </div>
     <div class="categoryContainer" data-level="2"></div>

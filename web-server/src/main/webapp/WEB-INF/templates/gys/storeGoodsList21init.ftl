@@ -227,7 +227,7 @@
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditConstituentWindow" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}">
+                        <b jhand="openEditConstituentWindow" data-fabric="${item.fabric!}" data-infabric="${item.inFabric!}">
                             <i class="icon-materials <#if item.constituentType == 2>setted</#if>"></i>
                             材料成分
                         </b>
