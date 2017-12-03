@@ -8,7 +8,6 @@ import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
-import com.opentae.tbauth.configs.KeyConfig;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.exceptions.TbSendException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -16,6 +15,7 @@ import com.shigu.main4.order.model.SoidsModel;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.tools.XzSdkClient;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
@@ -42,6 +42,9 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     private TaobaoSessionMapMapper taobaoSessionMapMapper;
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private XzSdkClient xzSdkClient;
 
     @Override
     public void finish(Long oid) {
@@ -81,7 +84,8 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         Long userId=order.getUserId();
         String session=myTbSessionKey(userId);
 
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", KeyConfig.appKey, KeyConfig.secret);
+        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", xzSdkClient.getAppkey(),
+                xzSdkClient.getSecret());
         LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
         req.setTid(new Long(order.getOuterId()));
         req.setIsSplit(0L);//这边没有拆单的
@@ -119,7 +123,7 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         example.createCriteria().andUserIdEqualTo(userId).andAccountTypeEqualTo(3);
         List<MemberUserSub> session = memberUserSubMapper.selectByExample(example);
         TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-        taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(KeyConfig.appKey);
+        taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(xzSdkClient.getAppkey());
         List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
         return taobaoSessionMaps.get(0).getSession();
     }
