@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -166,7 +167,10 @@ public class DfMessageListener implements MessageListener {
                 SubAfterSaleSimpleOrderVO subSimple = afterSaleService.subAfterSaleSimpleOrder(k);
                 Long price = v.size() * subSimple.getPrice();
                 if (subSimple.getOtherRefundPrice() != null) {
-                    price += subSimple.getOtherRefundPrice();
+                    //最后一单全退，才退快递费
+                    if (Objects.equals(v.size(),subSimple.getNum())) {
+                        price += subSimple.getOtherRefundPrice();
+                    }
                 }
                 Long refundId = subItemOrder.refundApply(4, v.size(), price, msg.getMsg());
                 SubOrderSoidps soidps = new SubOrderSoidps();
