@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=1507859788149" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=2017112301" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=1507859788149"></script>
+    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=2017112301"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -334,12 +334,10 @@ var webSite = '${webSite!}';
                         <i class="i1"></i>
                     </div>
                 </div>
-                
             </div>
             <p class="title"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
             <div class="p3">
                 <span class="storeName"><a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
-                
     <#assign text>{"id":"${goods.aliww!}"}</#assign>
 <#assign $it=text?eval />
             <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>

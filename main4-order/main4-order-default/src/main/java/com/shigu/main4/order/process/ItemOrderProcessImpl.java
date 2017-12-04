@@ -8,6 +8,7 @@ import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.opentae.tbauth.configs.KeyConfig;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.exceptions.TbSendException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -118,10 +119,13 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         itemOrderMapper.updateByPrimaryKeySelective(o);
     }
 
-    private String myTbSessionKey(Long userId){
+    private String myTbSessionKey(Long userId) throws TbSendException {
         MemberUserSubExample example=new MemberUserSubExample();
         example.createCriteria().andUserIdEqualTo(userId).andAccountTypeEqualTo(3);
         List<MemberUserSub> session = memberUserSubMapper.selectByExample(example);
+        if(session.size()==0){
+            throw new TbSendException("授权过期");
+        }
         TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
         taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(xzSdkClient.getAppkey());
         List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);

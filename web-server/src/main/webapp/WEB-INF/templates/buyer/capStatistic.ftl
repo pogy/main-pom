@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -23,17 +24,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/capStatistic.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/capStatistic.css?v=2017112301" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/capStatistic.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/capStatistic.js?v=2017112301"></script>
+    
 </head>
 <body>
 
@@ -188,15 +195,19 @@ var webSite = '${webSite!}';
     <ul>
     
         
+        
             
             <li><a href="${main_host!}member/userBalance.htm" >我的资金</a></li>
             
         
+        
     
+        
         
             
             <li><a class="selected" href="${main_host!}member/capStatistic.htm">资金明细</a></li> 
             
+        
         
     
     </ul> 
@@ -280,6 +291,7 @@ var webSite = '${webSite!}';
 
 
 </div>
+
 
 
 

@@ -18,6 +18,7 @@ import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,8 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+    @Autowired
+    private RedisIO redisIO;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -378,35 +381,42 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Transactional(rollbackFor = Exception.class)
     public void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
-        RefundVO refundinfo = refundinfo();
-        if (refundinfo.getType() == 5) {
-            throw new RefundException("系统退款不走一般退款流程");
+        if(redisIO.get("doRefundMoney_zf_20171130_"+refundId)!=null){
+            throw new RefundException("退款执行中,请勿重复操作");
         }
-
-        // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
-        Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
-        if (!checkOrderLeftMoneyEnough(refundinfo.getOid(),money)) {
-            throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
-        }
-        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
-        List<PayedVO> payedVOS = itemOrder.payedInfo();
-        for (PayedVO payedVO : payedVOS) {
-            if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
-                SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
-                        .refund(payedVO.getPayId(),"RF_"+refundId, money);
-                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
-                ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
-                itemOrderRefund.setRefundId(refundId);
-                itemOrderRefund.setRefundMoney(money);
-                itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
-                return;
+        redisIO.putTemp("doRefundMoney_zf_20171130_"+refundId,1,360);
+        try {
+            RefundVO refundinfo = refundinfo();
+            if (refundinfo.getType() == 5) {
+                throw new RefundException("系统退款不走一般退款流程");
             }
+            // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
+            Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
+            if (!checkOrderLeftMoneyEnough(refundinfo.getOid(),money)) {
+                throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
+            }
+            ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
+            List<PayedVO> payedVOS = itemOrder.payedInfo();
+            for (PayedVO payedVO : payedVOS) {
+                if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
+                    SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
+                            .refund(payedVO.getPayId(),"RF_"+refundId, money);
+                    refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
+                    ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+                    itemOrderRefund.setRefundId(refundId);
+                    itemOrderRefund.setRefundMoney(money);
+                    itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
+                    return;
+                }
+            }
+            throw new RefundException(String.format(
+                    "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d],退单号[%d]",
+                    StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
+                    money, refundId
+            ));
+        } finally {
+            redisIO.del("doRefundMoney_zf_20171130_"+refundId);
         }
-        throw new RefundException(String.format(
-                "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d],退单号[%d]",
-                StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
-                money, refundId
-        ));
     }
 
     /**

@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>绑定手机-四季星座网</title>
+    <title>绑定手机 - 四季星座网</title>
   
     
-    <link href="http://style.571xz.com/loginV2/css/bindTelephone.css" rel="stylesheet">
+    <link href="http://style.571xz.com/loginV2/css/bindTelephone.css?v=2017112301" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/loginV2/js/bindTelephone.js"></script>
+    <script src="http://style.571xz.com/loginV2/js/bindTelephone.js?v=2017112301"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -63,9 +63,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -96,9 +96,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -120,7 +120,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -138,7 +138,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -198,7 +198,7 @@ var webSite = '${webSite!}';
             <div class="formGroup">
                 <label><i>*</i>数字验证码：</label>
                 <input type="text" name="imgValidate"  class="form-input" maxlength="4" placeholder="右侧验证码" >
-                <img id="checkCode" class="codeImg" src="IMG.htm" />
+                <img id="checkCode" class="codeImg" src="http://www.571xz.com/IMG.htm" />
             </div>
         </div>
         <div class="bindFormItem">

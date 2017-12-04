@@ -24,7 +24,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/goodsCollectinit.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/goodsCollectinit.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -39,7 +39,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/goodsCollectinit.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/goodsCollectinit.js?v=2017112301"></script>
     
 </head>
 <body>
@@ -469,6 +469,7 @@ var webSite = '${webSite!}';
 
     
 </div>
+
 
 
 

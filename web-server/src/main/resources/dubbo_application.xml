@@ -18,6 +18,8 @@
     <dubbo:reference interface="com.shigu.main4.spread.processes.HitDrawChooser" id="hitDrawChooser" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.service.ActiveDrawService" id="activeDrawService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.service.TrademarkService" id="trademarkService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.VoucherService" id="vipVoucherService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.ActiveShowService" id="activeShowService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.goat.service.GoatDubboService" id="goatDubboService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
