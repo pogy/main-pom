@@ -235,7 +235,7 @@
 </#list>
 </#list>
     <#else>
-         <p class="noData">暂无数据</p>
+         <p class="noData tac fs20 fc6">暂无数据</p>
     </#if>
 </div>
 <#assign text>{}</#assign>
