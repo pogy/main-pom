@@ -59,8 +59,10 @@
             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
         </p>
         <p class="lineHei32">
-            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+            报名资质：
+            <#list actItem.qualif as qua>
+                <span class="applyQualify <#if qua.status == false>noApply</#if>">${qua.content!}</span>
+            </#list>
         </p>
     </div>
     <div class="applyStatus">
@@ -188,8 +190,10 @@
             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
         </p>
         <p class="lineHei32">
-            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+            报名资质：
+            <#list actItem.qualif as qua>
+                <span class="applyQualify <#if qua.status == false>noApply</#if>">${qua.content!}</span>
+            </#list>
         </p>
     </div>
     <div class="applyStatus">
@@ -318,8 +322,10 @@
             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
         </p>
         <p class="lineHei32">
-            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+            报名资质：
+            <#list actItem.qualif as qua>
+                <span class="applyQualify <#if qua.status == false>noApply</#if>">${qua.content!}</span>
+            </#list>
         </p>
     </div>
     <div class="applyStatus">
