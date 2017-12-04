@@ -33,7 +33,7 @@
 </#list>
             <div class="rightBox">
 <ul class="pageTabs clearfix">
-    <li class="select"><a href="javascript:;">店铺申请</a></li>
+    <li class="select"><a>店铺申请</a></li>
     <li class="addStore">
         <div class="addStore"><a href="ruzhu.htm" target="_blank">添加店铺</a></div>
     </li>

@@ -36,7 +36,7 @@
 </#list>
             <div class="rightBox">
 <ul class="pageTabs clearfix">
-    <li class="select"><a href="javascript:;">我的资金 &gt; 充值</a></li>
+    <li class="select"><a>我的资金 &gt; 充值</a></li>
 </ul>
 <div class="remainSum">
     <div class="remainSumTop">

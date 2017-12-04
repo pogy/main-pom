@@ -56,8 +56,13 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException {
+        modifyTerm(termId, type, start, end,null);
+    }
+
+    @Override
+    public void modifyTerm(Long termId, ActivityType type, Date start, Date end, String manOrWoman) throws ActivityException {
         ActivityTerm term=activityFactory.selTermById(termId);
-        term.modify(type,start,end);
+        term.modify(type,start,end,manOrWoman);
     }
 
     @Override

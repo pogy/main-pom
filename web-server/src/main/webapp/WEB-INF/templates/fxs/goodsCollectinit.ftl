@@ -154,9 +154,9 @@
     </ul>
     <#if (goodslist?size) gt 0>
         <#list goodslist as goods>
-            <ul class="body clearfix" goodsid="${goods.id!}">
+            <ul class="body clearfix" goodsid="${goods.goodsCollectId!}">
                 <li class="name">
-<#assign text>{"value":goods.id}</#assign>
+<#assign text>{"value":goods.goodsCollectId}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <label class="fmCheckbox
@@ -207,8 +207,8 @@
                 <li class="price">${goods.piprice!}</li>
                 <li class="source">${goods.marketname!}</li>
                 <li class="control">
-                    <button jbtn="createPacket" goodsid=${goods.goodsCollectId!}>生成数据包</button>
-                    <button class="del" jbtn="removePacket" goodsid=${goods.goodsCollectId!}>删除</button>
+                    <b jbtn="createPacket" goodsid=${goods.goodsCollectId!}>生成数据包</b>
+                    <b class="del" jbtn="removePacket" goodsid=${goods.goodsCollectId!}>删除</b>
                 </li>
             </ul>
         </#list>
@@ -235,7 +235,7 @@
 </#list>
 </#list>
     <#else>
-         <p class="noData">暂无数据</p>
+         <p class="noData tac fs20 fc6">暂无数据</p>
     </#if>
 </div>
 <#assign text>{}</#assign>
