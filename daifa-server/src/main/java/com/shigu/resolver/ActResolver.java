@@ -6,6 +6,7 @@ import com.shigu.main4.daifa.process.DaifaActProcess;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -25,11 +26,15 @@ public class ActResolver implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        String url=httpServletRequest.getServletPath();
-        JSONObject param=JSONObject.fromObject(httpServletRequest.getParameterMap());
-        Session session = SecurityUtils.getSubject().getSession();
-        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        daifaActProcess.addAct(daifaUser.getDaifaWorkerId(),param.toString(),url);
+        try {
+            String url=httpServletRequest.getServletPath();
+            JSONObject param=JSONObject.fromObject(httpServletRequest.getParameterMap());
+            Session session = SecurityUtils.getSubject().getSession();
+            AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+            daifaActProcess.addAct(daifaUser.getDaifaWorkerId(),param.toString(),url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
