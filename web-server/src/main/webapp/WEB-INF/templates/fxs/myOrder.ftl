@@ -35,7 +35,7 @@
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"status","value":""+query.status},{"name":"goodsNo","value":""+query.goodsNo},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":""+query.orderId},{"name":"receiver","value":""+query.receiver},{"name":"telePhone","value":""+query.telePhone},{"name":"orderType","value":""+query.orderType},{"name":"page","value":""+query.page}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":""+query.status},{"name":"goodsNo","value":""+query.goodsNo},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":""+query.orderId},{"name":"receiver","value":""+query.receiver},{"name":"telePhone","value":""+query.telePhone},{"name":"orderType","value":""+query.orderType}]}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <#if $it.fields??>
@@ -46,7 +46,7 @@
 </form>
 </#if>
 </#list>
-<div class="topTips fcF40">重要通知：即日起，韵达、圆通快递公司运费上涨，平台代发快递费用首件增加到5元/件，续件1元。</div>
+<div class="myOrderTopTips fcF40" id="myOrderTopTips"></div>
 <div class="pageTabs clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
