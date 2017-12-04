@@ -36,6 +36,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by wxc on 2017/2/25.
@@ -157,11 +159,15 @@ public class UserCollectServiceImpl implements UserCollectService {
                     newGoodsCollectVO.setCollId(shiguGoodsCollect.getGoodsCollectId());
                     CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
                     newGoodsCollectVO.setGoodsId(shiguGoodsCollect.getGoodsId());
-                    newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
-                    newGoodsCollectVO.setTitle(goodsInfo.getTitle());
-                    newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
-                    newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
-                    newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    if (goodsInfo != null) {
+                        newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
+                        newGoodsCollectVO.setTitle(goodsInfo.getTitle());
+                        newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
+                        newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
+                        newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    } else {
+                        newGoodsCollectVO.setGoodsNo("此商品已被删除");
+                    }
                     ShopInfo shopInfo = shopIdInfoMap.get(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setShopId(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setMarketName(shopInfo.getMarketName());
@@ -297,7 +303,6 @@ public class UserCollectServiceImpl implements UserCollectService {
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);
     }
 
-
     /**
      * 单个数据包str组成
      *
@@ -383,39 +388,24 @@ public class UserCollectServiceImpl implements UserCollectService {
         String input_custom_cpv = "";//自定义属性
 
         if (list_ts.size() > 0) {
-
             for (int i = 0; i < list_ts.size(); i++) {
-                skuProps.append(list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";");
+                skuProps.append(list_ts.get(i).getPrice()).append(':').append(list_ts.get(i).getQuantity()).append(':').append(':').append(list_ts.get(i).getProperties()).append(';');
             }
         } else {
             String props = sge.getProps();
             if (!props.contains("20509") || !props.contains("1627207")) {
                 return null;
             }
-            String substring = props.substring(props.indexOf("1627207"));
-            String colorStr = substring.substring(0, substring.indexOf("20509:"));
-            String sizeStr = substring.substring(substring.indexOf("20509:"), substring.lastIndexOf("20509:"));
-            String s = substring.replace(colorStr, "").replace(sizeStr, "");
-            String s1 = null;
-            if (s.endsWith(";")) {
-                s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
-            } else {
-                if (s.split(":").length > 2) {
-                    s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
-                } else {
-                    s1 = s.substring(s.indexOf("20509:")) + ";";
-                }
-            }
-            sizeStr += s1;
-
-            String[] sizes = sizeStr.split("20509:");
-            String[] colors = colorStr.split("1627207:");
-
+            //获取尺码属性
+            List<String> sizePropList = matchHelp("20509:\\d+",props);
+            List<String> colorPropList = matchHelp("1627207:\\d+",props);
+            String[] sizes = sizePropList.toArray(new String[0]);
+            String[] colors = colorPropList.toArray(new String[0]);
             for (int i = 1; i < colors.length; i++) {
                 for (int j = 1; j < sizes.length; j++) {
-                    skuProps.append(goods.getPriceString() + ":" + "100" + ":" + "" + ":");
-                    skuProps.append("1627207:" + colors[i]);
-                    skuProps.append("20509:" + sizes[j]);
+                    skuProps.append(goods.getPriceString()).append(':').append("100").append(':').append(':');
+                    skuProps.append(colors[i]).append(';');
+                    skuProps.append(sizes[j]).append(';');
                 }
             }
         }
@@ -460,21 +450,21 @@ public class UserCollectServiceImpl implements UserCollectService {
         if ("second".equals(goods.getStuffStatus())) {
             stuff_status = "3";
         }
-
-        String contentsString = "";
-        contentsString += goods.getTitle() + '\t' + goods.getCid() + '\t' + goods.getCidAll() + '\t' + stuff_status + '\t' + goods.getProv() + '\t' + goods.getCity() + '\t' + item_type + '\t' + goods.getPriceString() + '\t' + auction_increment + '\t';
-        contentsString += goods.getNum() + "" + '\t' + valid_thru + '\t' + freight_payer + '\t' + "0" + '\t' + "0" + '\t' + "0" + '\t' + has_invoice + '\t' + has_warranty + '\t' + approve_status + '\t' + has_showcase + '\t';
-        contentsString += list_time + '\t' + "\"" + goodsdesc + "\"" + '\t' + sge.getProps() + '\t' + postage_id + '\t' + has_discount + '\t' + modified + '\t' + upload_fail_msg + '\t' + picture_status + '\t' + auction_point + '\t';
-        contentsString += picture + '\t' + video + '\t' + skuProps.toString() + '\t' + inputPids + '\t' + inputValues + '\t' + goods.getOuterId() + '\t' + sge.getPropertyAlias() + '\t' + auto_fill + '\t' + num_id + '\t' + local_cid + '\t' + navigation_type + '\t';
-        contentsString += user_name + '\t' + syncStatus + '\t' + is_lighting_consigment + '\t' + is_xinpin + '\t' + foodparame + '\t' + features + '\t' + buyareatype + '\t' + global_stock_type + '\t' + global_stock_country + '\t' + sub_stock_type + '\t' + item_size + '\t';
-        contentsString += item_weight + '\t' + sell_promise + '\t' + custom_design_flag + '\t' + wireless_desc + '\t' + barcode + '\t' + sku_barcode + '\t' + newprepay + '\t' + subtitle + '\t' + cpv_memo + '\t' + input_custom_cpv + '\t' + qualification + '\t';
-        contentsString += add_qualification + '\t' + o2o_bind_service + '\t' + tmall_extend + '\t' + product_combine + '\t' + tmall_item_prop_combine + '\t' + taoschema_extend + '\r' + '\n';
+        StringBuffer contentsString = new StringBuffer();
+        contentsString.append(goods.getTitle()).append('\t').append(goods.getCid()).append('\t').append(goods.getCidAll()).append('\t').append(stuff_status).append('\t').append(goods.getProv()).append('\t').append(goods.getCity()).append('\t').append(item_type).append('\t').append(goods.getPriceString()).append('\t').append(auction_increment).append('\t');
+        contentsString.append(goods.getNum()).append('\t').append(valid_thru).append('\t').append(freight_payer).append('\t').append('0').append('\t').append('0').append('\t').append('0').append('\t').append(has_invoice).append('\t').append(has_warranty).append('\t').append(approve_status).append('\t').append(has_showcase).append('\t');
+        contentsString.append(list_time).append('\t').append("\"").append(goodsdesc).append("\"").append('\t').append(sge.getProps()).append('\t').append(postage_id).append('\t').append(has_discount).append('\t').append(modified).append('\t').append(upload_fail_msg).append('\t').append(picture_status).append('\t').append(auction_point).append('\t');
+        contentsString.append(picture).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goods.getOuterId()).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
+        contentsString.append(user_name).append('\t').append(syncStatus).append('\t').append(is_lighting_consigment).append('\t').append(is_xinpin).append('\t').append(foodparame).append('\t').append(features).append('\t').append(buyareatype).append('\t').append(global_stock_type).append('\t').append(global_stock_country).append('\t').append(sub_stock_type).append('\t').append(item_size).append('\t');
+        contentsString.append(item_weight).append('\t').append(sell_promise).append('\t').append(custom_design_flag).append('\t').append(wireless_desc).append('\t').append(barcode).append('\t').append(sku_barcode).append('\t').append(newprepay).append('\t').append(subtitle).append('\t').append(cpv_memo).append('\t').append(input_custom_cpv).append('\t').append(qualification).append('\t');
+        contentsString.append(add_qualification).append('\t').append(o2o_bind_service).append('\t').append(tmall_extend).append('\t').append(product_combine).append('\t').append(tmall_item_prop_combine).append('\t').append(taoschema_extend).append('\r').append('\n');
 
         Map<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("contents", contentsString);
+        hashMap.put("contents", contentsString.toString());
         hashMap.put("shopId", shopId.toString());
         return hashMap;
     }
+
 
     /**
      * 数据包生成
@@ -540,7 +530,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             contentBuffer.append(hashMap.get("contents"));
             shopBuffer.append(hashMap.get("shopId"));
             if (i != itemIds.size() && i != 0) {
-                shopBuffer.append(",");
+                shopBuffer.append(',');
             }
             if (i == 0) {
                 shopId = Long.valueOf(hashMap.get("shopId"));
@@ -884,5 +874,21 @@ public class UserCollectServiceImpl implements UserCollectService {
             }
         }
         return shopInfoList;
+    }
+
+    /**
+     * 获取字符串中所有符合规则的子串
+     * @param regex 正则表达式
+     * @param source 源字符串
+     * @return
+     */
+    private List<String> matchHelp(String regex,String source){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        List<String> resultList = new ArrayList<>();
+        while (matcher.find()) {
+            resultList.add(matcher.group());
+        }
+        return resultList;
     }
 }

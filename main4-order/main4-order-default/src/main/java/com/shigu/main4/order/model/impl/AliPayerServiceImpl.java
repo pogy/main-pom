@@ -8,7 +8,6 @@ import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -47,7 +46,10 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
-
+        if (title != null) {
+            String regex = "[^\\u4e00-\\u9fa5A-Za-z\\d\\.]+";
+            title = title.replaceAll(regex,"");
+        }
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
