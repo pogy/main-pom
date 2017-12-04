@@ -46,9 +46,7 @@
 </#list>
 <div class="pageTabs clearfix yahei">
     <ul>
-        <li <#if !query.shStatus>class="select"</#if>><a href="shManaOrder.htm">所有订单</a></li>
-        <li <#if query.shStatus == "1">class="select"</#if>><a href="shManaOrder.htm?shStatus=1">退款</a></li>
-        <li <#if query.shStatus == "2">class="select"</#if>><a href="shManaOrder.htm?shStatus=2">换货</a></li>
+        <li class="select"><a>售后订单</a></li>
     </ul>
 </div>
 <div id="orderList" class="orderList orderDetail">
@@ -78,7 +76,7 @@
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </div>
         <div class="goodsCon">
-            <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
@@ -196,9 +194,9 @@
             <#elseif order.mainState == 4>
             <p>交易完成</p>
             </#if>
-            <p><a href="${main_host!}order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 3>
-            <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>

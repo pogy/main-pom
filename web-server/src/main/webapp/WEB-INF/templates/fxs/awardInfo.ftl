@@ -82,7 +82,7 @@
     </div>
     </#list>
 <#else>
-<p>暂无开奖信息</p>
+<p class="fs20 tac fc6">暂无开奖信息</p>
 </#if>
             </div>
     </div>

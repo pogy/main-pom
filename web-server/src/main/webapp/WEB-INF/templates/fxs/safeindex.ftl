@@ -77,10 +77,10 @@
         </li>
         <li class="d3">
             <#if info_payPwd == true>
-            <a href="safeXgPaymm.htm">找回密码</a>
-            <a href="safeXgPaymm.htm">修改密码</a>
+            <a href="safeXgPaymm.htm?type=3">找回密码</a>
+            <a href="safeXgPaymm.htm?type=2">修改密码</a>
             <#else>
-            <a href="safeXgPaymm.htm">立即设置</a>
+            <a href="safeXgPaymm.htm?type=1">立即设置</a>
             </#if>
         </li>
     </ul>

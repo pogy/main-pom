@@ -336,7 +336,7 @@
 </#list>
 </#list>
     <#else>
-        暂无数据
+        <p class="fs20 fc6 tac">暂无数据</p>
     </#if>
 </div>
             </div>

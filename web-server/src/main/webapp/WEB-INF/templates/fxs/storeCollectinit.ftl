@@ -161,9 +161,15 @@
     </span>
 </label>
 </#list>
-                   <div class="fl">
-                       <a class="imgBox fl" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank"><img src="${shop.shopImgSrc!}_80x80.jpg"></a>
-                       <div class="fl shopInfo">
+                    <div class="fl">
+                        <a class="imgBox fl" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">
+                            <#if shop.shopImgSrc??>
+                                <img src="${shop.shopImgSrc!}_80x80.jpg">
+                            <#else>
+                                <img src="${$stylepath!}${$projectid!}/css/img/shopDefault.jpg">
+                            </#if>
+                        </a>
+                        <div class="fl shopInfo">
                            <p>
                                <a class="marketAndShop" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank" title="${shop.marketName!}${shop.shopNum!}">${shop.marketName!}${shop.shopNum!}</a>
 <#assign text>{"num":shop.starNum}</#assign>
@@ -187,8 +193,8 @@
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list></p>
-                       </div>
-                   </div>
+                        </div>
+                    </div>
                 </li>
                 <li class="shopGoodsImg">
                     <ul class="clearfix">
