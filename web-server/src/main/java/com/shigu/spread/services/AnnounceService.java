@@ -19,7 +19,7 @@ public class AnnounceService {
     private ShiguTempMapper shiguTempMapper;
 
     //在temp表中用来获取公告类型数据的标记
-    private final String ANNOUNCE_IDENTITY_FLAG = "ANNOUNCE_IDENTITY_FLAG";
+    private static final String ANNOUNCE_IDENTITY_FLAG = "ANNOUNCE_IDENTITY_FLAG";
 
     /**
      * 获取公告信息,没有找到匹配的，返回null

@@ -22,7 +22,7 @@ public class AnnounceAction {
      * 获取公告数据
      *
      * @param announceId 公告识别标志
-     * @return
+     * @return 公告信息
      */
     public JSONObject acquireAnnounceInfo(String announceId) {
         String announceInfo = announceService.acquireAnnounceInfo(announceId);
