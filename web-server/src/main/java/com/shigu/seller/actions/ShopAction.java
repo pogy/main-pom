@@ -775,7 +775,7 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopItemModService.delInstockItems(shopSession.getShopId(),bo.getIds(),shopSession.getWebSite());
+        shopItemModService.delInstockItems(shopSession.getShopId(),bo.getGoodsIds(),shopSession.getWebSite());
         return JsonResponseUtil.success().element("ok","删除成功").element("success",true);
     }
     /**
