@@ -1,13 +1,8 @@
 package com.shigu.seller.actions;
 
-import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.GoatLicense;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.GoatLicenseExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.GoatLicenseMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
@@ -76,7 +71,6 @@ import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -97,11 +91,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 店铺的控制中心
@@ -904,7 +894,7 @@ public class ShopAction {
         //查总量
         model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPageNo(),bo.getPageSize());
+        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPage(),bo.getPageSize());
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         List<OnsaleItem> list=pager.getContent();
         List<MoreModifyItemVO> volist=new ArrayList<>();
