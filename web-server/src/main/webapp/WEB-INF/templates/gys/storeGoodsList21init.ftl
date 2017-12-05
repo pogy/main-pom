@@ -233,7 +233,7 @@
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditGoodsVideoWindow" data-goodsVideoUrl="${item.goodsVideoUrl!}" data-linkSameGoodsNo="${item.linkSameGoodsNo!}">
+                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}" data-linksamegoodsno="${item.linkSameGoodsNo!}">
                             <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>
                             主图视频
                         </b>
