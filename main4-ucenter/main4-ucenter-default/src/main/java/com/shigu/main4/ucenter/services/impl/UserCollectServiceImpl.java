@@ -139,6 +139,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             //新收藏，存收藏时title
             shiguGoodsCollectExample.createCriteria().andRemark1Like(keyword);
         }
+        shiguGoodsCollectExample.setOrderByClause("goods_collect_id DESC");
         int count = shiguGoodsCollectMapper.countByExample(shiguGoodsCollectExample);
         pager.calPages(count, pageSize);
         if (count > 0) {
