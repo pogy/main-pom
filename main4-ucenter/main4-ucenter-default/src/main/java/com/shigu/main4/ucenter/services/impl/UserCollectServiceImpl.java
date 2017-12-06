@@ -157,13 +157,17 @@ public class UserCollectServiceImpl implements UserCollectService {
                 for (ShiguGoodsCollect shiguGoodsCollect : shiguGoodsCollects) {
                     NewGoodsCollectVO newGoodsCollectVO = new NewGoodsCollectVO();
                     newGoodsCollectVO.setCollId(shiguGoodsCollect.getGoodsCollectId());
-                    CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
                     newGoodsCollectVO.setGoodsId(shiguGoodsCollect.getGoodsId());
-                    newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
-                    newGoodsCollectVO.setTitle(goodsInfo.getTitle());
-                    newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
-                    newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
-                    newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    try {
+                        CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
+                        newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
+                        newGoodsCollectVO.setTitle(goodsInfo.getTitle());
+                        newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
+                        newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
+                        newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    } catch (Exception e) {
+                        newGoodsCollectVO.setGoodsNo("此商品已被删除");
+                    }
                     ShopInfo shopInfo = shopIdInfoMap.get(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setShopId(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setMarketName(shopInfo.getMarketName());

@@ -68,7 +68,7 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
             }
         }
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
-        termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime());
+        termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime(),vo.getManOrWoman());
         SpreadTerm term = BeanMapper.map(vo, SpreadTerm.class);
         term.setManOrWoman(vo.getManOrWoman());
         term.setType(vo.getActivityType().ordinal());
@@ -89,9 +89,10 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
      * @param endTime
      * @throws ActivityException
      */
-    private void termTimeCheck(Long termId,ActivityType type,Date startTime,Date endTime) throws ActivityException {
+    private void termTimeCheck(Long termId,ActivityType type,Date startTime,Date endTime, String manOrWoman) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         SpreadTermExample termExample = new SpreadTermExample();
+
         SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThan(startTime)
                 .andStartTimeLessThanOrEqualTo(startTime).andTypeEqualTo(type.ordinal());
         SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThan(endTime)
@@ -99,6 +100,10 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
         if (termId != null) {
             cri1.andTermIdNotEqualTo(termId);
             cri2.andTermIdNotEqualTo(termId);
+        }
+        if (StringUtils.isNotBlank(manOrWoman)) {
+            cri1.andManOrWomanEqualTo(manOrWoman);
+            cri2.andManOrWomanEqualTo(manOrWoman);
         }
         if (spreadTermMapper.countByExample(termExample) > 0) {
             throw new ActivityException("本类活动,与上一期时间上有重叠");
@@ -224,7 +229,12 @@ public class ActivityFactoryImpl implements ActivityFactory,Serializable {
 
             @Override
             public void modify(ActivityType type, Date start, Date end) throws ActivityException {
-                termTimeCheck(this.getTermId(),type,start,end);
+                modify(type, start, end,null);
+            }
+
+            @Override
+            public void modify(ActivityType type, Date start, Date end, String manOrWoman) throws ActivityException {
+                termTimeCheck(this.getTermId(),type,start,end,manOrWoman);
                 SpreadTerm term=new SpreadTerm();
                 term.setTermId(this.getTermId());
                 term.setType(type.ordinal());
