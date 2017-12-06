@@ -14,6 +14,7 @@ import com.shigu.main4.order.model.SoidsModel;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.tools.TbClient;
 import com.shigu.tools.XzSdkClient;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -43,7 +44,7 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     private ItemOrderMapper itemOrderMapper;
 
     @Autowired
-    private XzSdkClient xzSdkClient;
+    private TbClient tbClient;
 
     @Override
     public void finish(Long oid) {
@@ -83,8 +84,8 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         Long userId=order.getUserId();
         String session=myTbSessionKey(userId);
 
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", xzSdkClient.getAppkey(),
-                xzSdkClient.getSecret());
+        TaobaoClient client = new DefaultTaobaoClient(tbClient.getUrl(), tbClient.getAppkey(),
+                tbClient.getSecret());
         LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
         req.setTid(new Long(order.getOuterId()));
         req.setIsSplit(0L);//这边没有拆单的
@@ -125,7 +126,7 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
             throw new TbSendException("授权过期");
         }
         TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-        taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(xzSdkClient.getAppkey());
+        taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(tbClient.getAppkey());
         List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
         return taobaoSessionMaps.get(0).getSession();
     }
