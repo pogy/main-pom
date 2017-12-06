@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrderv1.css?v=2017120101" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017120601" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrderv1.js?v=2017120101"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017120601"></script>
     
 </head>
 <body>
@@ -518,7 +518,7 @@ var webSite = '${webSite!}';
     </div>
     
     <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
-    <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
+    <input id="addressId" name="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
