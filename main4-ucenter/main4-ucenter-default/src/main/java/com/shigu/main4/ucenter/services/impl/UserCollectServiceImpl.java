@@ -157,15 +157,15 @@ public class UserCollectServiceImpl implements UserCollectService {
                 for (ShiguGoodsCollect shiguGoodsCollect : shiguGoodsCollects) {
                     NewGoodsCollectVO newGoodsCollectVO = new NewGoodsCollectVO();
                     newGoodsCollectVO.setCollId(shiguGoodsCollect.getGoodsCollectId());
-                    CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
                     newGoodsCollectVO.setGoodsId(shiguGoodsCollect.getGoodsId());
-                    if (goodsInfo != null) {
+                    try {
+                        CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
                         newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
                         newGoodsCollectVO.setTitle(goodsInfo.getTitle());
                         newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
                         newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
                         newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
-                    } else {
+                    } catch (Exception e) {
                         newGoodsCollectVO.setGoodsNo("此商品已被删除");
                     }
                     ShopInfo shopInfo = shopIdInfoMap.get(shiguGoodsCollect.getStoreId());
