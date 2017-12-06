@@ -50,16 +50,16 @@
             </div>
             <div class="linkBox linkAlWW1">
                 <h3 class="title">官方旺旺1</h3>
-                <p class="desc">杭州石谷网络科技有限公司星座网咨询1号</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司星座网咨询1号&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
+                <p class="desc">杭州石谷网络科技有限公司</p>
+                <a class="linkBtn" href="https://amos.alicdn.com/getcid.aw?v=3&amp;uid=杭州石谷网络科技有限公司&amp;site=cntaobao&amp;groupid=0&amp;s=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
             </div>
             <div class="linkBox linkAlWW2">
                 <h3 class="title">官方旺旺2</h3>
-                <p class="desc">杭州石谷网络科技有限公司星座网咨询2号</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司星座网咨询2号&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
+                <p class="desc">杭州石谷网络科技有限公司</p>
+                <a class="linkBtn" href="https://amos.alicdn.com/getcid.aw?v=3&amp;uid=杭州石谷网络科技有限公司&amp;site=cntaobao&amp;groupid=0&amp;s=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
