@@ -41,9 +41,9 @@
     <div class="timer">
         <div class="import_time">
             <label>时间：</label>
-            <input autocomplete="off" class="jqDatepicker begintime" data-format="%Y-%M-%D" placeholder="请选择开始日期" readonly>
+            <input autocomplete="off" class="jqDatepicker begintime" data-format="%Y-%M-%D" placeholder="请选择开始日期">
             <span>—</span>
-            <input autocomplete="off" class="jqDatepicker endtime" data-format="%Y-%M-%D" placeholder="请选择结束日期" readonly>
+            <input autocomplete="off" class="jqDatepicker endtime" data-format="%Y-%M-%D" placeholder="请选择结束日期">
         </div>
         <div class="click_time">
             <span jbtn="time_btn" data-id="0">今天</span>
