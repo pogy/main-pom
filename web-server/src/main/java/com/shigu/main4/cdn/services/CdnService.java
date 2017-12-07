@@ -46,6 +46,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * cdn服务
@@ -317,6 +318,7 @@ public class CdnService {
         vo.setTbGoodsId(cdnItem.getTbNumIid());
         vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+
         if(cdnItem.getDescription()!=null){
             vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
                     .replace("<script>","")
@@ -429,17 +431,14 @@ public class CdnService {
      * @return
      */
     public List<CdnSimpleGoodsVO> cdnSimpleGoods(Long shopId, String webSite){
-        ShiguPager<ItemShowBlock> pager= shopForCdnService.searchItemOnsale(null,shopId,webSite,"common",1,3);
-        List<CdnSimpleGoodsVO> list=new ArrayList<>();
-        for(ItemShowBlock item:pager.getContent()){
+        return shiguGoodsTinyMapper.selForSee(webSite,shopId).stream().map(o -> {
             CdnSimpleGoodsVO v=new CdnSimpleGoodsVO();
-            v.setGoodsId(item.getItemId());
-            v.setImgSrc(item.getImgUrl());
-            v.setPrice(item.getPrice());
-            v.setTitle(item.getTitle());
-            list.add(v);
-        }
-        return list;
+            v.setGoodsId(o.getGoodsId());
+            v.setImgSrc(o.getPicUrl());
+            v.setPrice(o.getPiPriceString());
+            v.setTitle(o.getTitle());
+            return v;
+        }).collect(Collectors.toList());
     }
 
     /**

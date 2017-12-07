@@ -388,4 +388,13 @@ public class ActivityAction {
         return JsonResponseUtil.success().element("awards", awards);
     }
 
+
+    /**
+     * 批量下单活动宣传页
+     * @return
+     */
+    @RequestMapping("batchOrders")
+    public String batchOrders() {
+        return "xzPage/batchOrders";
+    }
 }
