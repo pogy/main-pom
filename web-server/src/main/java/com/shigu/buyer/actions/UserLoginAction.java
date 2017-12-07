@@ -1,7 +1,6 @@
 package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
-import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.UserAccountService;
@@ -194,20 +193,20 @@ public class UserLoginAction {
      */
     @RequestMapping("ortherLogin")
     public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
-        LoginLinkUtil llu = new LoginLinkUtil();
         String url="";
         switch(ortherLoginType) {
             case 1:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
                 if(HttpRequestUtil.checkAgentIsMobile(request)){
                     url=url.replace("&view=web","&view=wap");
                 }
                 break;
             case 2:
-                url = llu.callAliUrl();
+                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=8E3A8CB1174177B346BEA3F67FABDF2678E07D71&redirect_uri=http://1688.571xz.com/offer/ali_redirect_auth.jsp&state=login&client_id=5684643";
                 break;
             case 3:
-                url = llu.callQqUrl();
+                url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
                 break;
             case 4: {
                 HashMap e = new HashMap ();
@@ -219,7 +218,8 @@ public class UserLoginAction {
                 break;
             }
             case 5:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
 
                     url=url.replace("&view=web","&view=wap");
 

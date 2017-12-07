@@ -341,7 +341,7 @@ public class MemberAction {
             goodsupRecordSimpleService.downTbGoods(userId,ps.getLoginName(),ids);
         } catch (JsonErrException e) {
             if (e.getMessage().contains("需要淘宝授权")) {
-                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://www.571xz.net/redirect_auth.jsp&state=login&view=web");
+                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://upload.571xz.com/redirect_auth.jsp&state=login&view=web");
             }
         }
         return JsonResponseUtil.success();
