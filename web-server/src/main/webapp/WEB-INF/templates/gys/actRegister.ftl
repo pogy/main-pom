@@ -66,7 +66,7 @@
         </p>
     </div>
     <div class="applyStatus">
-        <#if actItem.hdStatus == true>
+        <#if actItem.hdStatus == 1>
             <#if actItem.sqStatus == 0>
             <a href='actDetails.htm?actid=${actItem.actid!}' class="fmButton goRegister">立即报名</a>
             <#elseif actItem.sqStatus == 1>
@@ -197,7 +197,7 @@
         </p>
     </div>
     <div class="applyStatus">
-        <#if actItem.hdStatus == true>
+        <#if actItem.hdStatus == 1>
             <#if actItem.sqStatus == 0>
             <a href='actDetails.htm?actid=${actItem.actid!}' class="fmButton goRegister">立即报名</a>
             <#elseif actItem.sqStatus == 1>
@@ -329,7 +329,7 @@
         </p>
     </div>
     <div class="applyStatus">
-        <#if actItem.hdStatus == true>
+        <#if actItem.hdStatus == 1>
             <#if actItem.sqStatus == 0>
             <a href='actDetails.htm?actid=${actItem.actid!}' class="fmButton goRegister">立即报名</a>
             <#elseif actItem.sqStatus == 1>
