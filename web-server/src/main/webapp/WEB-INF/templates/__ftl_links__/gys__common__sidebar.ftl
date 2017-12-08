@@ -1,6 +1,7 @@
 <div class="sidebar shadowBox yahei">
     <#if $it.type == 'index'>
     <h2>商品管理</h2>
+    <ul>
         <#if 'createGoods21init' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -78,6 +79,7 @@
         </#if>
     </ul>
     <h2>店铺管理</h2>
+    <ul>
         <#if 'http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -154,6 +156,7 @@
         </#if>
     </ul>
     <h2>财务信息</h2>
+    <ul>
         <#if 'iwantToRechargein5' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -181,6 +184,7 @@
         </#if>
     </ul>
     <h2>账号管理</h2>
+    <ul>
         <#if 'safeindex' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -210,6 +214,7 @@
         </#if>
     </ul>
     <h2>营销管理</h2>
+    <ul>
         <#if 'dtggapply' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a

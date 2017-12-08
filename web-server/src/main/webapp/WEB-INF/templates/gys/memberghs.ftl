@@ -53,11 +53,11 @@
                 <strong class="fl">${session_user_redis__.userNick!}</strong>
                 <p class="fr">
                     <#if session_user_redis__.logshop.tbNick??>
-                    <span class="iconfont c_ff7112" title="店铺授权" alt="店铺授权" >&#xe619;</span>
+                    <span class="iconfont c_ff7112 icon-c-shop" title="店铺授权" alt="店铺授权" ></span>
                     <#else>
-                    <span class="iconfont" title="店铺未授权" alt="店铺未授权">&#xe619;</span>
+                    <span class="iconfont icon-c-shop" title="店铺未授权" alt="店铺未授权"></span>
                     </#if>
-                    <span class="iconfont c_22ca75" title="实名认证" alt="实名认证">&#xe618;</span>
+                    <span class="iconfont c_22ca75 icon-c-user" title="实名认证" alt="实名认证"></span>
                 </p>
                 <p class="fr">店铺名称:<i>${session_user_redis__.logshop.shopName!}</i></p>
             </div>
