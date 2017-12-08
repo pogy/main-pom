@@ -93,6 +93,7 @@
     </button>
     </#if>
 </#list>
+        </div>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -124,7 +125,6 @@
     </button>
     </#if>
 </#list>
-        </div>
     </div>
 </div>
 <div class="inventoryOrderCon">
