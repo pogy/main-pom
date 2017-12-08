@@ -41,7 +41,7 @@ import java.util.List;
 public class ADAuctionAction {
 
 
-    String ftlDir="seller";
+    String ftlDir="gys";
 
     @Autowired
     ActivityDubboService activityDubboService;
