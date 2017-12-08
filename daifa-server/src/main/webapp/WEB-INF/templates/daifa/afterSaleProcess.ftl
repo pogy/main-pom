@@ -188,7 +188,7 @@
     </td>
     <#if childOrder_index == 0>
     <td class="refundOpe" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.allNotPutInIs == true>
+        <#if afterSale.allNotPutInIs == false>
         <b jbtn="storeRefund" data-id="${afterSale.refundId!}">档口已退款</b>
         </#if>
     </td>
