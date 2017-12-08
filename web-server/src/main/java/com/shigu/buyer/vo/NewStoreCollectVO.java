@@ -74,6 +74,9 @@ public class NewStoreCollectVO implements Serializable {
     }
 
     public String getShopImgSrc() {
+        if (shopImgSrc == null) {
+            return "http://gw.alicdn.com/tps/i3/TB1yeWeIFXXXXX5XFXXuAZJYXXX-210-210.png_80x80.jpg";
+        }
         return shopImgSrc;
     }
 
