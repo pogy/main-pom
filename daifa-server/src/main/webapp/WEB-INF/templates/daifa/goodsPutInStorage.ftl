@@ -24,7 +24,7 @@
     <div class="contentBox">
 <script modulepath="daifa/goodsPutInStorage#config">
 var userPermissions = '${isAfterSale!}';
-var outBoundAllNum = '${outBoundAllNum!}';
+var outBoundAllNum = ${outBoundAllNum!};
 var outBoundAllMoney = '${outBoundAllMoney!}';
 </script>
 <div class="scanBarCode">
@@ -100,7 +100,7 @@ var outBoundAllMoney = '${outBoundAllMoney!}';
         </div>
     </div>
 </div>
-<div class="orderCon">
+<div class="inventoryOrderCon">
     <table>
         <thead class="theadCon">
             <tr class="">

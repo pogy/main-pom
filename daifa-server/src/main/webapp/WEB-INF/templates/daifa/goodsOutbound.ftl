@@ -127,7 +127,7 @@
         </div>
     </div>
 </div>
-<div class="orderCon">
+<div class="inventoryOrderCon">
     <table>
         <thead class="theadCon">
             <tr class="">
