@@ -42,6 +42,7 @@
    <b class="save">保存</b>
 </div>
 <div class="gntable">
+    <#if (dataList?size) gt 0>
     <table>
         <thead>
             <tr>
@@ -53,7 +54,6 @@
             </tr>
         </thead>
         <tbody>
-            <#if (dataList?size) gt 0>
                 <#list dataList as goods>
                 <tr>
                     <td class="goodsImg"><input type="hidden" class="goodsId" value="${goods.itemId!}"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.itemId!}" target="_blank"><img src="${goods.picUrl!}_80x80.jpg" width=80 height=80 /></a></td>
@@ -63,11 +63,11 @@
                     <td class="sxsj">${goods.created!}</td>
                 </tr>
                </#list>
-           <#else>
-<p class="goodsListIsEmpty">找不到结果</p>
-           </#if>
         </tbody>
     </table>
+    <#else>
+<p class="goodsListIsEmpty">找不到结果</p>
+   </#if>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>

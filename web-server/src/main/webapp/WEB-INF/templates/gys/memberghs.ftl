@@ -12,10 +12,10 @@
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__memberghs_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/js/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/js/html5sup.js"></script>
-<script src="http://style.571xz.com/v6/gys/js/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/js/html5sup.js"></script>
+    <script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
+<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
+<script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
+<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__memberghs_js.ftl">
