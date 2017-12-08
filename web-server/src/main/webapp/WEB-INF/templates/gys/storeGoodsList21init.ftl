@@ -67,11 +67,6 @@
                 <i id="noMaterialNum"></i>
             </a>
         </li>
-        <li <#if query.state == 4>class="select"</#if>>
-            <a href="storeGoodsList21init.htm?state=4">无主图视频
-                <i id="noVideoNum"></i>
-            </a>
-        </li>
     </ul>
 </div>
 <div class="goodsFilterBar">
