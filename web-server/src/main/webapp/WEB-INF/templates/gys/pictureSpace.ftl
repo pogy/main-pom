@@ -122,8 +122,8 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
     </div>
 </div>
 </div>
-<div class="successTip pa"><i></i><span>文件上传成功！</span></div>
-<div class="errorTips pa"><i></i><span>上传失败！单个文件大于150M！</span></div>
+<div class="successTip"><i></i><span>文件上传成功！</span></div>
+<div class="errorTips"><i></i><span>上传失败！单个文件大于150M！</span></div>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
