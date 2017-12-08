@@ -787,7 +787,7 @@ public class ShopAction {
         model.addAttribute("goodslist",goodsList);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
-        return "seller/xiufuGoods21init";
+        return "gys/xiufuGoods21init";
     }
 
     /**
@@ -815,15 +815,15 @@ public class ShopAction {
         }
         return JsonResponseUtil.success();
     }
-    /**
-     * 修复店内类目
-     *
-     * @return
-     */
-    @RequestMapping("seller/xiufuStorecat21init")
-    public String xiufuStorecat21init() {
-        return "seller/xiufuStorecat21init";
-    }
+    ///**
+    // * 修复店内类目
+    // *
+    // * @return
+    // */
+    //@RequestMapping("seller/xiufuStorecat21init")
+    //public String xiufuStorecat21init() {
+    //    return "seller/xiufuStorecat21init";
+    //}
 
     /**
      * 同步店内类目
@@ -841,14 +841,14 @@ public class ShopAction {
         return JsonResponseUtil.success();
     }
 
-    /**
-     * 修复宝贝类目
-     * @return
-     */
-    @RequestMapping("seller/xiufuGoodscat21init")
-    public String xiufuGoodscat21init(){
-        return "seller/xiufuGoodscat21init";
-    }
+    ///**
+    // * 修复宝贝类目
+    // * @return
+    // */
+    //@RequestMapping("seller/xiufuGoodscat21init")
+    //public String xiufuGoodscat21init(){
+    //    return "seller/xiufuGoodscat21init";
+    //}
 
     /**
      * 修复宝贝类目
@@ -1114,48 +1114,48 @@ public class ShopAction {
         return "gys/sysSetsindex";
     }
 
-    /**
-     * 上传实名认证
-     * @return
-     */
-    @RequestMapping("seller/saferz")
-    public String saferz(HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        //查出权益
-        SafeRzVO safeRzVO=new SafeRzVO();
-        SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
-        if(safeAbout!=null){
-            List<UserLicense> licenses=safeAbout.getLicenses();
-            if(licenses!=null){
-                for(UserLicense ul:licenses){
-                    if(ul.getType().equals(MemberLicenseType.REAL_NAME)){
-                        String context=ul.getContext();
-                        String[] contextarr=context.split(";");
-                        if(contextarr.length<2){
-                            break;
-                        }
-                        safeRzVO.setCardnum(contextarr[0]);
-                        safeRzVO.setImgurl1(contextarr[1]);
-                    }
-                }
-            }
-        }
-        //查一下最后一次实名认证的情况
-        RealNameApplyInfo info=userLicenseService.lastRealNameApply(ps.getUserId());
-        if(info!=null){
-            String msg="您在"+ DateParseUtil.parseDate("yyyy-MM-dd",info.getApplyTime())+"的申请 ";
-            if(info.getApplyStatus()==0){
-                msg+="还在审核中";
-            }else if(info.getApplyStatus()==-1){
-                msg+="不通过 原因:"+info.getReason();
-            }else{
-                msg+="已通过";
-            }
-            safeRzVO.setMsg(msg);
-        }
-        model.addAttribute("identity",safeRzVO);
-        return "seller/saferz";
-    }
+    ///**
+    // * 上传实名认证
+    // * @return
+    // */
+    //@RequestMapping("seller/saferz")
+    //public String saferz(HttpSession session,Model model){
+    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    //查出权益
+    //    SafeRzVO safeRzVO=new SafeRzVO();
+    //    SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
+    //    if(safeAbout!=null){
+    //        List<UserLicense> licenses=safeAbout.getLicenses();
+    //        if(licenses!=null){
+    //            for(UserLicense ul:licenses){
+    //                if(ul.getType().equals(MemberLicenseType.REAL_NAME)){
+    //                    String context=ul.getContext();
+    //                    String[] contextarr=context.split(";");
+    //                    if(contextarr.length<2){
+    //                        break;
+    //                    }
+    //                    safeRzVO.setCardnum(contextarr[0]);
+    //                    safeRzVO.setImgurl1(contextarr[1]);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    //查一下最后一次实名认证的情况
+    //    RealNameApplyInfo info=userLicenseService.lastRealNameApply(ps.getUserId());
+    //    if(info!=null){
+    //        String msg="您在"+ DateParseUtil.parseDate("yyyy-MM-dd",info.getApplyTime())+"的申请 ";
+    //        if(info.getApplyStatus()==0){
+    //            msg+="还在审核中";
+    //        }else if(info.getApplyStatus()==-1){
+    //            msg+="不通过 原因:"+info.getReason();
+    //        }else{
+    //            msg+="已通过";
+    //        }
+    //        safeRzVO.setMsg(msg);
+    //    }
+    //    model.addAttribute("identity",safeRzVO);
+    //    return "seller/saferz";
+    //}
 
 
     /**
