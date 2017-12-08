@@ -285,59 +285,13 @@ var webSite = '${webSite!}';
                 <#else>
                 <input type=hidden name="alipayUrl" value="/order/alipay.htm?orderCode=${orderCode!}&tempCode=${tempCode!}"></li>
                 </#if>
+            
             <li>
                 
 
 <#assign text>{}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
-<label class="fmRadio clearfix
-    
-        <#if $it.checked??>
-            checked
-        </#if>
-    
-    
-        buttonRadio
-    
-">
-    <input 
-        type="radio"
-        autocomplete="off"
-        
-            name="pay"
-        
-        
-        
-            value="wxpay"
-        
-        
-        
-            <#if $it.checked??>
-                checked
-            </#if>
-        
-    >
-    <i class="before"></i>
-    <span>
-    
-        微信
-    
-    </span>
-</label>
-
-
-
-
-</#list>
-
-                <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span></li>
-            <li>
-                
-
-<#assign text>{}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
 <label class="fmRadio clearfix
     
         <#if $it.checked??>
