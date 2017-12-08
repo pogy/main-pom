@@ -257,19 +257,15 @@
                 <p>${goods.marketName!}</p>
                 <p>${goods.shopNum!}</p>
                 <p>
-<#assign text>{"id":goods.imWw}</#assign>
+<#assign text>{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-</#if>
+<#include "/common/xz__imAliww.ftl">
 </#list>
-<#assign text>{"id":goods.imQq}</#assign>
+<#assign text>{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
+<#include "/common/xz__imQQ.ftl">
 </#list>
                 </p>
             </li>

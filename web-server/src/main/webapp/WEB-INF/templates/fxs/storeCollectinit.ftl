@@ -183,7 +183,7 @@
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list>
 <#assign text>{"id":shop.imQq}</#assign>
