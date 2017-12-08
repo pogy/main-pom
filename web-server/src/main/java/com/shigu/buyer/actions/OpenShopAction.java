@@ -177,7 +177,7 @@ public class OpenShopAction {
     @RequestMapping({"ruzhu_sq","member/ruzhu_sq"})
     public String ruzhu_sq(String userCode, HttpSession session, Model model) throws RuzhuException {
         //微信公众号二维码地址
-        String wxCode = "http://shigu.oss-cn-hangzhou.aliyuncs.com/wxbind/5_1000047134.jpg";
+        String wxCode = "http://style.571xz.com/v6/common/img/qrcode.jpg";
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
         model.addAttribute("wxpic", wxCode);
