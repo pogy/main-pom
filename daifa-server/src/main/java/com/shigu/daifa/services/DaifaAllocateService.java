@@ -74,8 +74,8 @@ public class DaifaAllocateService {
         if (StringUtils.hasText(bo.getStartTime())) {
             criteria.andCreateTimeGreaterThanOrEqualTo(DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")));
         }
-        if (StringUtils.hasText(bo.getEndTiem())) {
-            criteria.andCreateTimeLessThanOrEqualTo(DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTiem(),"yyyy-MM-dd")));
+        if (StringUtils.hasText(bo.getEndTime())) {
+            criteria.andCreateTimeLessThanOrEqualTo(DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd")));
         }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");

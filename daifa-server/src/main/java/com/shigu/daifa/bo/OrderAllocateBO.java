@@ -14,7 +14,7 @@ public class OrderAllocateBO implements Serializable {
     private Long orderId;//订单id
     private Long childOrderId;//子弹id
     private String startTime;//开始时间
-    private String endTiem;//结束时间
+    private String endTime;//结束时间
     private String page;//当前页
     private Integer count;//总数
 
@@ -42,13 +42,6 @@ public class OrderAllocateBO implements Serializable {
         this.startTime = startTime;
     }
 
-    public String getEndTiem() {
-        return endTiem;
-    }
-
-    public void setEndTiem(String endTiem) {
-        this.endTiem = endTiem;
-    }
 
     public String getPage() {
         return page;
@@ -64,5 +57,13 @@ public class OrderAllocateBO implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getEndTime() {
+        return this.endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

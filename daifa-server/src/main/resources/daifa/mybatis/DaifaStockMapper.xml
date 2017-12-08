@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaStockMapper">
+
+
+    <select id="selectWorkerOutStock" resultType="com.opentae.data.daifa.custom.beans.WorkerStock">
+        SELECT
+        v.stock_id stockId,
+        v.df_order_id dfOrderId
+        FROM
+        (
+        SELECT
+        t.*
+        FROM
+        (
+        SELECT
+        t1.stock_id,
+        t1.df_order_id,
+        t1.start_in_time,
+        t2.stock_record_id,
+        t2.in_out_type,
+        t2.in_time,
+        t2.out_time,
+        t2.return_time
+        FROM
+        daifa_stock t1
+        LEFT JOIN daifa_stock_record t2 ON t1.stock_id = t2.stock_id
+        <if test="workerId!=null">
+            WHERE
+            t2.daifa_worker_id = #{workerId}
+        </if>
+        ORDER BY
+        t1.stock_id DESC,
+        t2.stock_record_id DESC
+        ) t
+        GROUP BY
+        t.stock_id
+        ) v
+        WHERE
+        v.in_out_type = ${inOutType}
+    </select>
+
+    <select id="selectTodayStockCount" resultType="java.lang.Integer">
+        select count(*) from daifa_stock t1
+        LEFT JOIN daifa_stock_record t2
+        on t1.stock_id=t2.stock_id
+        where t1.seller_id=${sellerId}
+        and t2.in_out_type=${inOutType}
+        <if test="inOutType==1">
+            and DATE_FORMAT(t2.in_time,"%Y%m%d")=${day}
+        </if>
+        <if test="inOutType==2">
+            and DATE_FORMAT(t2.out_time,"%Y%m%d")=${day}
+        </if>
+        <if test="inOutType==3">
+            and DATE_FORMAT(t2.return_time,"%Y%m%d")=${day}
+        </if>
+    </select>
+
+    <select id="selectTheDayStockRecordIds" resultType="java.lang.Long">
+        select t2.stock_record_id from daifa_stock t1
+        LEFT JOIN daifa_stock_record t2
+        on t1.stock_id=t2.stock_id
+        where t1.seller_id=${sellerId}
+        and t2.in_out_type=${inOutType}
+        <if test="inOutType==1">
+            <if test="startDay!=null">
+              and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+        <if test="inOutType==2">
+            <if test="startDay!=null">
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+        <if test="inOutType==3">
+            <if test="startDay!=null">
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+        limit #{start},#{end}
+    </select>
+    <select id="selectTheDayStockRecordIdsCount" resultType="java.lang.Integer">
+        select count(*) from daifa_stock t1
+        LEFT JOIN daifa_stock_record t2
+        on t1.stock_id=t2.stock_id
+        where t1.seller_id=${sellerId}
+        and t2.in_out_type=${inOutType}
+        <if test="inOutType==1">
+            <if test="startDay!=null">
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+        <if test="inOutType==2">
+            <if test="startDay!=null">
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+        <if test="inOutType==3">
+            <if test="startDay!=null">
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${startDay}
+            </if>
+            <if test="endDay!=null">
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${endDay}
+            </if>
+        </if>
+    </select>
+</mapper>

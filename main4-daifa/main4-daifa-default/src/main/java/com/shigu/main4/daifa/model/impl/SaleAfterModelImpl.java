@@ -1,15 +1,13 @@
 package com.shigu.main4.daifa.model.impl;
 
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.examples.DaifaAfterMoneyConsultExample;
-import com.opentae.data.daifa.examples.DaifaAfterReceiveExpresStockExample;
-import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
+import com.shigu.main4.daifa.exceptions.IsOldException;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.SaleAfterModel;
 import com.shigu.main4.daifa.model.ScanSaleAfterExpressModel;
@@ -20,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +40,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
+    @Autowired
+    private DaifaStockMapper daifaStockMapper;
+    @Autowired
+    private DaifaStockRecordMapper daifaStockRecordMapper;
+    @Autowired
+    private DaifaWorkerMapper daifaWorkerMapper;
     @Autowired
     private MQUtil mqUtil;
 
@@ -342,6 +345,13 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 continue;
             }
             if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
+                try {
+                    int intOutType=selNowStockStatus(sub1.getDfOrderId());
+                    if(intOutType!=3){
+                        throw new DaifaException("设置失败,存在未处理完的商品");
+                    }
+                } catch (IsOldException ignored) {
+                }
                 entIds.add(sub1.getAfterSaleSubId());
             }
         }
@@ -511,6 +521,56 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     }
 
     /**
+     * 写入库存
+     * @param afterSubId
+     * @param workerId
+     */
+    @Override
+    public void insertDaifaStock(Long afterSubId,Long workerId){
+        DaifaAfterSaleSub sub=daifaAfterSaleSubMapper.selectByPrimaryKey(afterSubId);
+        DaifaStock stock=new DaifaStock();
+        stock.setDfOrderId(sub.getDfOrderId());
+        stock.setDfTradeId(sub.getDfTradeId());
+        stock.setSellerId(sub.getSellerId());
+        daifaStockMapper.insertSelective(stock);
+        insertDaifaStockRecord(1,stock.getStockId(),workerId,null);
+    }
+
+    /**
+     * 写入出入库
+     * @param stockStatus
+     * @param stockId
+     * @param workerId
+     */
+    @Override
+    public void insertDaifaStockRecord(int stockStatus,Long stockId,Long workerId,String piCode){
+        DaifaWorker worker=daifaWorkerMapper.selectByPrimaryKey(workerId);
+        DaifaStockRecord daifaStockRecord=new DaifaStockRecord();
+        daifaStockRecord.setDaifaWorker(worker.getDaifaWorker());
+        daifaStockRecord.setDaifaWorkerId(workerId);
+        daifaStockRecord.setInOutType(stockStatus);
+        daifaStockRecord.setStockId(stockId);
+        switch (stockStatus){
+            case 1:{
+                daifaStockRecord.setInTime(new Date());
+                break;
+            }
+            case 2:{
+                daifaStockRecord.setOutTime(new Date());
+                daifaStockRecord.setPiCode(piCode);
+                break;
+            }
+            case 3:{
+                daifaStockRecord.setReturnTime(new Date());
+                break;
+            }
+        }
+        daifaStockRecordMapper.insertSelective(daifaStockRecord);
+    }
+
+
+
+    /**
      * ====================================================================================
      *
      * @方法名： moneyConsultRefuse
@@ -664,5 +724,26 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
         daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId);
         daifaAfterSaleSubMapper.updateByExampleSelective(sub, daifaAfterSaleSubExample);
+    }
+
+    @Override
+    public int selNowStockStatus(Long dfOrderId) throws IsOldException {
+        DaifaStock stock=new DaifaStock();
+        stock.setDfOrderId(dfOrderId);
+        stock=daifaStockMapper.selectOne(stock);
+        if(stock==null){
+            throw new IsOldException();
+        }
+        return selNowStockStatusByStockId(stock.getStockId());
+
+    }
+
+    @Override
+    public int selNowStockStatusByStockId(Long stockId){
+        DaifaStockRecordExample daifaStockRecordExample=new DaifaStockRecordExample();
+        daifaStockRecordExample.createCriteria().andStockIdEqualTo(stockId);
+        daifaStockRecordExample.setOrderByClause("stock_record_id desc");
+        List<DaifaStockRecord> rs=daifaStockRecordMapper.selectByExample(daifaStockRecordExample);
+        return rs.get(0).getInOutType();
     }
 }
