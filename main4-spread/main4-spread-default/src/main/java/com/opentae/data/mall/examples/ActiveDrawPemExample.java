@@ -10,10 +10,12 @@ import java.util.*;
 public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteria> {
     public static final Class<ActiveDrawPem> beanClass = ActiveDrawPem.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn flag;
     public static EntityColumn activeType;
     public static EntityColumn createTime;
     public static EntityColumn startTime;
     public static EntityColumn term;
+    public static EntityColumn endTime;
     public static EntityColumn id;
     public static EntityColumn title;
     public static EntityColumn info;
@@ -23,10 +25,12 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        flag = listMap.get("flag");
         activeType = listMap.get("activeType");
         createTime = listMap.get("createTime");
         startTime = listMap.get("startTime");
         term = listMap.get("term");
+        endTime = listMap.get("endTime");
         id = listMap.get("id");
         title = listMap.get("title");
         info = listMap.get("info");
@@ -51,6 +55,61 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
             super(example);
         }
 
+        public ActiveDrawPemExample.Criteria andFlagIsNull() {
+            return isNull(flag);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagIsNotNull() {
+            return isNotNull(flag);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagEqualTo(String value) {
+            return equalTo(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagNotEqualTo(String value) {
+            return notEqualTo(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagGreaterThan(String value) {
+            return greaterThan(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagLessThan(String value) {
+            return lessThan(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagLike(String value) {
+            return like(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagNotLike(String value) {
+            return notLike(flag, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagIn(List<String> values) {
+            return in(flag, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagNotIn(List<String> values) {
+            return notIn(flag, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagBetween(String value1, String value2) {
+            return between(flag, value1, value2);
+        }
+
+        public ActiveDrawPemExample.Criteria andFlagNotBetween(String value1, String value2) {
+            return notBetween(flag, value1, value2);
+        }
         public ActiveDrawPemExample.Criteria andActiveTypeIsNull() {
             return isNull(activeType);
         }
@@ -238,6 +297,53 @@ public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteri
 
         public ActiveDrawPemExample.Criteria andTermNotBetween(Integer value1, Integer value2) {
             return notBetween(term, value1, value2);
+        }
+        public ActiveDrawPemExample.Criteria andEndTimeIsNull() {
+            return isNull(endTime);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeIsNotNull() {
+            return isNotNull(endTime);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeEqualTo(Date value) {
+            return equalTo(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeNotEqualTo(Date value) {
+            return notEqualTo(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeGreaterThan(Date value) {
+            return greaterThan(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeLessThan(Date value) {
+            return lessThan(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(endTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeIn(List<Date> values) {
+            return in(endTime, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeNotIn(List<Date> values) {
+            return notIn(endTime, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeBetween(Date value1, Date value2) {
+            return between(endTime, value1, value2);
+        }
+
+        public ActiveDrawPemExample.Criteria andEndTimeNotBetween(Date value1, Date value2) {
+            return notBetween(endTime, value1, value2);
         }
         public ActiveDrawPemExample.Criteria andIdIsNull() {
             return isNull(id);

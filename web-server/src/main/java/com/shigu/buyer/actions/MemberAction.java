@@ -57,6 +57,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 会员中心
@@ -134,7 +135,7 @@ public class MemberAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
-        return "buyer/memberfxs";
+        return "fxs/index";
     }
 
 
@@ -150,7 +151,7 @@ public class MemberAction {
             OuterUserVO vo = new OuterUserVO(ou);
             model.addAttribute("outer_" + vo.getFrom(), vo);
         }
-        return "buyer/fenxiaoZhanghao";
+        return "fxs/fenxiaoZhanghao";
     }
 
     /**
@@ -187,10 +188,10 @@ public class MemberAction {
         if(pager.getContent()!=null)
         model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("keyword", bo.getKeyword());
-        return "buyer/goodsCollectinit";
+        return "fxs/goodsCollectinit";
     }
 
     /**
@@ -225,7 +226,7 @@ public class MemberAction {
         model.addAttribute("goodsList",pager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(size));
-        return "buyer/goodsCollectOriginal";
+        return "fxs/goodsCollectOriginal";
     }
 
     /**
@@ -265,7 +266,7 @@ public class MemberAction {
         ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("page",bo.getPage());
         List<PackageVO> goodslist=new ArrayList<>();
         for(DataPackage dp:pager.getContent()){
@@ -273,7 +274,7 @@ public class MemberAction {
                 goodslist.add(new PackageVO(dp));
         }
         model.addAttribute("goodslist",goodslist);
-        return "buyer/goodsDataPackageinit";
+        return "fxs/goodsDataPackageinit";
     }
 
     /**
@@ -324,7 +325,7 @@ public class MemberAction {
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("goodsList",pager.getContent());
-        return "buyer/shiguOnekeyRecordinit";
+        return "fxs/shiguOnekeyRecordinit";
     }
 
     @RequestMapping("member/downTbGoods")
@@ -340,7 +341,7 @@ public class MemberAction {
             goodsupRecordSimpleService.downTbGoods(userId,ps.getLoginName(),ids);
         } catch (JsonErrException e) {
             if (e.getMessage().contains("需要淘宝授权")) {
-                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://www.571xz.net/redirect_auth.jsp&state=login&view=web");
+                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://upload.571xz.com/redirect_auth.jsp&state=login&view=web");
             }
         }
         return JsonResponseUtil.success();
@@ -388,7 +389,7 @@ public class MemberAction {
         model.addAttribute("pageOption",pager.selPageOption(bo.getSize()));
         model.addAttribute("query",bo);
         model.addAttribute("shopList",pager.getContent());
-        return "buyer/storeCollectinit";
+        return "fxs/storeCollectinit";
     }
 
     /**
@@ -439,7 +440,7 @@ public class MemberAction {
         }else{
             model.addAttribute("safe_level",0);
         }
-        return "buyer/safeindex";
+        return "fxs/safeindex";
     }
 
     /**
@@ -536,7 +537,7 @@ public class MemberAction {
         UserInfoVO userInfoVO=BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return "buyer/sysSetsindex";
+        return "fxs/sysSetsindex";
     }
 
     /**
@@ -599,7 +600,7 @@ public class MemberAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return "buyer/safexgmm";
+        return "fxs/safexgmm";
     }
 
     /**
@@ -632,12 +633,22 @@ public class MemberAction {
 
     /**
      * 修改支付密码页面
+     * @param session
+     * @param model
+     * @param type 修改密码类型 1.立即设置 2.修改密码 3.找回密码
      * @return
+     * @throws Main4Exception
      */
     @RequestMapping("member/safeXgPaymm")
-    public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
-        model.addAttribute("forPayPswType",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()) ? 2 : 1);
-        return "buyer/safeXgPaymm";
+    public String safeXgPaymm(HttpSession session, Model model,Integer type) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        //是否设置过支付密码
+        Boolean hasPayPwdSet = memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId());
+        model.addAttribute("info_payPwd", hasPayPwdSet);
+        //没设置过密码，设置密码  设置过密码，找回密码，找回密码，否则修改密码
+        model.addAttribute("forPayPswType", hasPayPwdSet ? Objects.equals(3, type) ? 3 : 2 : 1);
+        model.addAttribute("telphone",userLicenseService.findPhoneByUserId(ps.getUserId()));
+        return "fxs/safeXgPaymm";
     }
 
     /**
@@ -833,7 +844,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/iwantToRechargein5";
+        return "fxs/iwantToRechargein5";
     }
 
     /**
@@ -860,7 +871,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/withdraw5Apply";
+        return "fxs/withdraw5Apply";
     }
 
     /**
@@ -893,7 +904,7 @@ public class MemberAction {
             }
         }
         model.addAttribute("storelist",storelist);
-        return "buyer/storeIn";
+        return "fxs/storeIn";
     }
 
     /**
@@ -908,7 +919,7 @@ public class MemberAction {
         }
         ShopApplyDetail detail=shopRegistService.selDetailById(ps.getUserId(),userCode);
         model.addAttribute("applyInfo",new ApplyInfoVO(detail));
-        return "buyer/storeInRead";
+        return "fxs/storeInRead";
     }
 
     /**
@@ -981,7 +992,7 @@ public class MemberAction {
         model.addAttribute("tempCode", tempCode);
         model.addAttribute("webSite", "hz");
         model.addAttribute("excelUrl", "");
-        return "buyer/userBalance";
+        return "fxs/userBalance";
     }
 
     /**
@@ -993,7 +1004,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempCode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempCode);
-        return "buyer/capStatistic";
+        return "fxs/capStatistic";
     }
 
     /**

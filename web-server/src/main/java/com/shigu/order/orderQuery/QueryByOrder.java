@@ -9,6 +9,7 @@ import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.MyOrderVO;
 import org.apache.commons.lang3.StringUtils;
@@ -46,16 +47,6 @@ public class QueryByOrder extends OrderQuery {
     QueryByOrder(Long userId, OrderBO bo) {
         this.userId = userId;
         this.bo = bo;
-        if (bo.getEt() != null) {
-            Date et = bo.getEt();
-            Calendar instance = Calendar.getInstance();
-            instance.setTime(et);
-            instance.set(Calendar.HOUR_OF_DAY,23);
-            instance.set(Calendar.MINUTE,59);
-            instance.set(Calendar.SECOND,59);
-            et = instance.getTime();
-            bo.setEt(et);
-        }
     }
 
     @Override
@@ -79,10 +70,12 @@ public class QueryByOrder extends OrderQuery {
             orderCriteria.andOrderStatusEqualTo(bo.getStatus());
         }
         if (bo.getSt() != null) {
-            orderCriteria.andCreateTimeGreaterThanOrEqualTo(bo.getSt());
+            Date st = DateUtil.stringToDate(bo.getSt(), DateUtil.patternA);
+            orderCriteria.andCreateTimeGreaterThanOrEqualTo(st);
         }
         if (bo.getEt() != null) {
-            orderCriteria.andCreateTimeLessThan(bo.getEt());
+            Date et = DateUtil.stringToDate(String.format("%s 23:59:59", bo.getEt()), DateUtil.patternD);
+            orderCriteria.andCreateTimeLessThan(et);
         }
         if (bo.getOrderId() != null) {
             orderCriteria.andOidEqualTo(bo.getOrderId());

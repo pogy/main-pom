@@ -141,7 +141,7 @@ public class CdnAction {
     @RequestMapping("contact")
     public String contact(Model model){
         model.addAttribute("webSite","hz");
-        return "contact/contact";
+        return "xzSearch/contact";
     }
     /**
      * 杭州首页动态页面
@@ -476,10 +476,10 @@ public class CdnAction {
             return "index_test";
         }
         url=url.substring(7,url.indexOf(".571xz.com"));
-        Long shopId=shopBaseService.selShopIdByDomain(url);
         if("www".equals(url)||"hz".equals(url)||"testwww".equals(url)){
             return hzindex4show(request,model);
         }
+        Long shopId=shopBaseService.selShopIdByDomain(url);
         if(shopId==null){
             return "redirect:"+xzSdkClient.getMainHost();
         }
@@ -848,7 +848,7 @@ public class CdnAction {
         ShiguPager<ShopIconCopyrightVO> pager=cdnService.shopCopyrights(page,100);
         model.addAttribute("pageOption",pager.selPageOption(100));
         model.addAttribute("copyrightList",pager.getContent());
-        return "activity/shopIconCopyright";
+        return "xzSearch/shopIconCopyright";
     }
 
     /**
@@ -857,7 +857,7 @@ public class CdnAction {
      */
     @RequestMapping("bigPicExplain")
     public String bigPicExplain(){
-        return "static/bigPicExplain";
+        return "xzPage/bigPicExplain";
     }
 
     //===================================================20170527张峰=======================================================
@@ -1026,6 +1026,6 @@ public class CdnAction {
     @RequestMapping("daifaIndex")
     public String daifaIndex(Model model){
         model.addAttribute("webSite","hz");
-        return "trade/daifaIndex";
+        return "xzSearch/daifaIndex";
     }
 }

@@ -31,6 +31,10 @@ public class ActivityTermVO implements Serializable{
      * 简单要内容,用于描述期内有什么
      */
     private String content;
+    /**
+     * 男装广告：man  女装广告：woman  全站广告放在男装广告中
+     */
+    private String manOrWoman;
 
     public Date getStartTime() {
         return startTime;
@@ -70,5 +74,13 @@ public class ActivityTermVO implements Serializable{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getManOrWoman() {
+        return manOrWoman;
+    }
+
+    public void setManOrWoman(String manOrWoman) {
+        this.manOrWoman = manOrWoman;
     }
 }

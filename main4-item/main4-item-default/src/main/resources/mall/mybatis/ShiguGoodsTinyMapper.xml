@@ -42,7 +42,7 @@
             </choose>
         </if>
 
-        WHERE a.store_id = #{shopId}
+        WHERE a.store_id = #{shopId} AND a.is_closed = 0
         <if test="bo.goodsNo!=null">
             AND a.goods_no like concat('%',#{bo.goodsNo},'%')
         </if>

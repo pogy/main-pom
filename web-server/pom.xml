@@ -425,11 +425,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.opentae.tae</groupId>
-            <artifactId>opentae_utils_authlogin</artifactId>
-            <version>1.0.2_releases</version>
-        </dependency>
-        <dependency>
             <groupId>com.openJar</groupId>
             <artifactId>open_base_pc</artifactId>
             <version>2.0.8</version>
