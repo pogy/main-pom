@@ -28,7 +28,7 @@
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
+            <#assign sidebarType>mybag</#assign>
 <#assign text>{"type":sidebarType}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -72,7 +72,13 @@
         <div class="validateItem">
             <div class="formGroup">
                 <label>金额：</label>
-                <input type="text" name="paynum" class="fmInput" placeholder="请输入提现金额">元
+                <input type="text" name="paynum" id="paynum" class="fmInput" placeholder="请输入提现金额">元
+            </div>
+        </div>
+        <div class="validateItem">
+            <div class="formGroup">
+                <label>实际到账金额：</label>
+                <input type="text" name="realWithdrawMoney" class="fmInput" placeholder="0.00" readonly>元
             </div>
         </div>
         <div class="validateItem">
@@ -89,7 +95,7 @@
     class="fmButton
          fmButton-blue
          applyCashBtn"
-        <#if $it.disabled == true>disabled="disabled"</#if>
+        disabled="disabled"
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
@@ -111,7 +117,7 @@
     <div class="wxTip fc6">
         <em></em>
         <h2>温馨提示：</h2>
-        <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br><span class="fcF40">3.请正确输入实名，如实名有误将不予提现！</span></p>
+        <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br><span class="fcF40">3.请正确输入实名，如实名有误将不予提现！</span><br><span class="fcF40">4.账户余额提现收取0.6%的手续费！</span></p>
     </div>
     <div class="ewmWk">
         <div class="imgewm">

@@ -28,7 +28,7 @@
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
+            <#assign sidebarType>mybag</#assign>
 <#assign text>{"type":sidebarType}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -54,6 +54,12 @@
         <div class="formGroup">
             <label>充值金额：</label>
             <input type="text" class="fmInput" name="money" placeholder="请输入充值金额"> 元</p>
+        </div>
+    </div>
+    <div class="validateItem">
+        <div class="formGroup">
+            <label></label>
+            <span class="fcF40">温馨提示：账户余额提现收取0.6%的手续费!</span>
         </div>
     </div>
     <div class="validateItem">

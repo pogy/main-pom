@@ -25,7 +25,7 @@
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
+            <#assign sidebarType>safecenter</#assign>
 <#assign text>{"type":sidebarType}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
