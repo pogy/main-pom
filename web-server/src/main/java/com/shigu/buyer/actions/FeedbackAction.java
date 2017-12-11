@@ -5,6 +5,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,10 @@ public class FeedbackAction {
        if (ps == null || ps.getUserId() == null){
            return JsonResponseUtil.error("请先登陆");
         }else{
-           if(content.length()==0||content.length()>=500){
+           if(StringUtils.isEmpty(content)||content.trim().length()>=500){
                return JsonResponseUtil.error("提交失败");
            }
-           feedbackService.addFeedback(ps.getUserId(),content);
+           feedbackService.addFeedback(ps.getUserId(),content.trim());
            return  JsonResponseUtil.success("提交成功");
         }
     }
