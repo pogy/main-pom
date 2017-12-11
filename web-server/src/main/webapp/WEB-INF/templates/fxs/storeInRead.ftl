@@ -41,11 +41,11 @@
     </#if>
     <div class="formDataItem">
         <label><span class="fcF40">*</span> 档口号：</label>
-        <div class="formData">${applyInfo.mainCate!}</div>
+        <div class="formData">${applyInfo.storeNum!}</div>
     </div>
     <div class="formDataItem">
         <label><span class="fcF40">*</span> 主营商品：</label>
-        <div class="formData">${applyInfo.storeNum!}</div>
+        <div class="formData">${applyInfo.mainCate!}</div>
     </div>
     <#if applyInfo.hasTaobaoStore == "1">
         <div class="formDataItem">
