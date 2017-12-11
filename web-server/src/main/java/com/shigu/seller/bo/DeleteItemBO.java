@@ -10,16 +10,16 @@ import java.io.Serializable;
  */
 public class DeleteItemBO implements Serializable{
     @NotEmpty(message = "ids参数异常")
-    private String ids;
+    private String goodsIds;
 
     private String webSite;
 
-    public String getIds() {
-        return ids;
+    public String getGoodsIds() {
+        return goodsIds;
     }
 
-    public void setIds(String ids) {
-        this.ids = ids;
+    public void setGoodsIds(String goodsIds) {
+        this.goodsIds = goodsIds;
     }
 
     public String getWebSite() {

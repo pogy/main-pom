@@ -69,7 +69,7 @@ public class MyTbOrderAction {
         model.addAttribute("notLinkCode",pager.getNotLinkCode());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
-        return "buyer/myTbOrder";
+        return "fxs/myTbOrder";
     }
 
     @RequestMapping("myBatchTbOrder")
@@ -79,7 +79,7 @@ public class MyTbOrderAction {
             throw new OrderException("没有访问的权限");
         }
         myTbOrder(session,bo,model);
-        return "buyer/myBatchTbOrder";
+        return "fxs/myBatchTbOrder";
     }
 
 
@@ -179,7 +179,7 @@ public class MyTbOrderAction {
         }
         List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
         model.addAttribute("goodsList",vos);
-        return "buyer/tbBindGoodsNo";
+        return "fxs/tbBindGoodsNo";
     }
 
     /**

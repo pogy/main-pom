@@ -29,4 +29,11 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
      */
     List<ItemForList> selSoldItemsForList(@Param("website") String website, @Param("goodsIds") List<Long> goodsIds);
 
+    /**
+     * 看了又看
+     * @param website
+     * @param storeId
+     * @return
+     */
+    List<ItemForList> selForSee(@Param("website") String website,@Param("storeId") Long storeId);
 }

@@ -92,7 +92,7 @@ public class ElasticCountUtil {
             GoodsupNorealExample norealExample = new GoodsupNorealExample();
             norealExample.createCriteria().andItemIdIn(goodsIds);
             for (GoodsupNoreal goodsupNoreal : goodsupNorealMapper.selectByExample(norealExample)) {
-                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.toString());
+                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.getItemId().toString());
                 if (goodsAggsVO == null) {
                     goodsAggsVO = new GoodsAggsVO();
                     itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);
