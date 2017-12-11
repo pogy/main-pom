@@ -875,6 +875,22 @@ public class MemberAction {
     }
 
     /**
+     * 获取提现金额实际值
+     * @param userWirteMoney 用户填写金额
+     * @return
+     */
+    public JSONObject getRealWithdrawMoney(Double userWirteMoney) throws JsonErrException {
+        if (userWirteMoney == null || userWirteMoney <= 0) {
+            throw new JsonErrException("请输入正确的金额");
+        }
+        //手续费*100的long型值
+        long serviceLongValue = ((long) (userWirteMoney * 600)) / 1000;
+        //手续费实际值
+        double serviceMoney = serviceLongValue * 0.01;
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", userWirteMoney - serviceMoney);
+    }
+
+    /**
      * 提现保存
      * @return
      */
