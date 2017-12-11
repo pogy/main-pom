@@ -79,9 +79,14 @@ public class GoodsCountForsearch implements Serializable {
 	private String videoUrl;
 
     /**
-     * 是否设置了视频链接
+     * 是否设置了视频链接，给opensearch提供搜索项
      */
 	private Integer hadVideo;
+
+    /**
+     * 0是没有 1是有
+     */
+	private Integer hadStyle;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -201,6 +206,14 @@ public class GoodsCountForsearch implements Serializable {
 
 	public Integer getHadVideo() {
 		return this.hadVideo;
+	}
+
+	public void setHadStyle(Integer hadStyle) {
+		this.hadStyle = hadStyle;
+	}
+
+	public Integer getHadStyle() {
+		return this.hadStyle;
 	}
 
 }

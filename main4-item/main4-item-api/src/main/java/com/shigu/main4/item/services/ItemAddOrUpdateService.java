@@ -115,4 +115,9 @@ public interface ItemAddOrUpdateService {
      * @param sids 风格ID
      */
     void addGoodsStyle(Long goodsId, String webSite, String sids) throws ItemUpdateException;
+    /**
+     * 修改商品风格
+     * @param goodsId 商品ID
+     */
+   void setCustomStyle(Long goodsId, Long sid);
 }

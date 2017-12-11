@@ -11,6 +11,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static final Class<GoodsCountForsearch> beanClass = GoodsCountForsearch.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn flowFixedTime;
+    public static EntityColumn hadStyle;
     public static EntityColumn clickIp;
     public static EntityColumn goodsId;
     public static EntityColumn hadBigzip;
@@ -32,6 +33,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
             listMap.put(column.getProperty(), column);
         }
         flowFixedTime = listMap.get("flowFixedTime");
+        hadStyle = listMap.get("hadStyle");
         clickIp = listMap.get("clickIp");
         goodsId = listMap.get("goodsId");
         hadBigzip = listMap.get("hadBigzip");
@@ -113,6 +115,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
             return notBetween(flowFixedTime, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andHadStyleIsNull() {
+            return isNull(hadStyle);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleIsNotNull() {
+            return isNotNull(hadStyle);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleEqualTo(Integer value) {
+            return equalTo(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleNotEqualTo(Integer value) {
+            return notEqualTo(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleGreaterThan(Integer value) {
+            return greaterThan(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleLessThan(Integer value) {
+            return lessThan(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(hadStyle, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleIn(List<Integer> values) {
+            return in(hadStyle, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleNotIn(List<Integer> values) {
+            return notIn(hadStyle, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleBetween(Integer value1, Integer value2) {
+            return between(hadStyle, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadStyleNotBetween(Integer value1, Integer value2) {
+            return notBetween(hadStyle, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andClickIpIsNull() {
             return isNull(clickIp);

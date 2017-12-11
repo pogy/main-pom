@@ -1150,4 +1150,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
         new ElasticRepository().insert(seb);
     }
+
+    @Override
+    public void setCustomStyle(Long goodsId, Long sid) {
+
+    }
 }

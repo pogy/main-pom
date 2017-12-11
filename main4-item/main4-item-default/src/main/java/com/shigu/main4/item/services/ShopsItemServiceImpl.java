@@ -1,13 +1,10 @@
 package com.shigu.main4.item.services;
 
 import com.opentae.core.mybatis.SgExample;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
-import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.*;
