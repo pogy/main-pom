@@ -31,12 +31,12 @@ public class ShiguFeedbackVO implements Serializable {
 	private Integer status;
 
     /**
-     * 
+     *
      */
 	private Date updateTime;
 
     /**
-     * 
+     *
      */
 	private Date createTime;
 

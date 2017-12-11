@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=2017112101" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=2017112101"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=2017112301"></script>
     
 </head>
 <body>

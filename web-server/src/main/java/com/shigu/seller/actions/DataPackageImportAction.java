@@ -144,7 +144,7 @@ public class DataPackageImportAction {
         model.addAttribute ("allGoodsCount",list.size ());
         redisIO.put ("packageList",list);
 
-        return "seller/uploadPackageList";
+        return "gys/uploadPackageList";
     }
 
 }

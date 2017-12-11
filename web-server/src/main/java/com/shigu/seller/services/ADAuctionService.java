@@ -70,12 +70,12 @@ public class ADAuctionService {
      * 得到广告列表
      * @return
      */
-    public List<SpreadTypeViewVo> selSellGoats(Long userId){
+    public List<SpreadTypeViewVo> selSellGoats(Long userId,String manOrWoman){
         //如果当前有在售,拿当前期,如果当前没在售,拿最后一期
-        ActivityTermVO term=activityDubboService.selTermByTime(ActivityType.GOAT_SELL,new Date());
+        ActivityTermVO term=activityDubboService.selTermByTime(ActivityType.GOAT_SELL,new Date(),manOrWoman);
         boolean hdFinish=false;
         if(term == null){
-            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date());
+            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date(),manOrWoman);
             if(term == null){
                 return new ArrayList<>();
             }

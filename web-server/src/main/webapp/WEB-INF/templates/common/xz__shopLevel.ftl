@@ -1,5 +1,3 @@
-
-
 <em class="shopLevel">
 <#if $it.num lt 11>
     <i class="star1"></i>
@@ -83,4 +81,3 @@
     <i class="star4"></i>
 </#if>
 </em>
-

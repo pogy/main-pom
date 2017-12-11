@@ -31,7 +31,7 @@ public class ActivitysAction {
     public String actRegister(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         model.addAttribute("activities", activityService.selAllActivities(ps.getUserId(), ps.getLogshop().getWebSite()));
-        return "seller/actRegister";
+        return "gys/actRegister";
     }
 
     @RequestMapping("actDetails")
@@ -41,7 +41,7 @@ public class ActivitysAction {
         }
 
         model.addAttribute("actDetails", activityService.selActivityDetails(actid));
-        return "seller/actDetails";
+        return "gys/actDetails";
     }
 
     @RequestMapping("applyGoodsLists")

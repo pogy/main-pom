@@ -28,6 +28,7 @@ import com.shigu.order.orderQuery.OrderQuery;
 import com.shigu.order.orderQuery.QueryByOrder;
 import com.shigu.order.vo.*;
 import com.shigu.tools.DateParseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class MyOrderService {
     private MultipleMapper multipleMapper;
 
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) {
         //return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
         OrderQuery orderQuery = SpringBeanFactory.getBean(QueryByOrder.class,userId, bo);
         return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
@@ -188,8 +189,13 @@ public class MyOrderService {
         ItemOrderExample itemOrderExample=new ItemOrderExample();
         itemOrderExample.createCriteria().andOidIn(oids);
         List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
-        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend())
+        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend()
+            && !StringUtils.isEmpty(itemOrder.getOuterId())
+        )
                 .map(ItemOrder::getOid).collect(Collectors.toList());
+        if(orderIds.size()==0){
+            throw new Main4Exception("选择的订单中未找到可发货的淘宝订单");
+        }
         StringBuilder oidStrs= new StringBuilder();
         for(Long oid:orderIds){
             try {
@@ -202,7 +208,7 @@ public class MyOrderService {
             }
         }
         if(oidStrs.length()>0){
-            throw new Main4Exception("部分订单标记失败名,请单个订单操作");
+            throw new Main4Exception("部分订单标记失败,请单个订单操作");
         }
     }
 
