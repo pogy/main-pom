@@ -1319,16 +1319,6 @@ public class ShopAction {
 
 
 
-    /**
-     * 风格管理页
-     *
-     * @return
-     */
-    @RequestMapping("seller/goodsStyleManager")
-    public String goodsStyleManager(Model model) {
-
-        return "seller/goodsStyleManager";
-    }
 
     /**
      * 设置自定义商品风格update
