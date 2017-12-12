@@ -122,6 +122,11 @@ public class DaifaStockService {
     public WorkerOutCountVO goodsPutInStorageCount(Long workerId){
         List<WorkerStock> workerOutStock=daifaStockMapper.selectWorkerOutStock(workerId,2);
         List<Long> workerOutOrderIds=workerOutStock.stream().map(WorkerStock::getDfOrderId).collect(Collectors.toList());
+        List<StockRedisBean> os=redisIO.getList("daifa_worker_instock_temp_"+workerId,StockRedisBean.class);
+        if(os!=null&&os.size()>0){
+            List<Long> ids=os.stream().map(StockRedisBean::getOrderId).collect(Collectors.toList());
+            workerOutOrderIds.removeIf(ids::contains);
+        }
         return workerOutCount(workerOutOrderIds);
     }
 
@@ -407,6 +412,7 @@ public class DaifaStockService {
         if (count > 0) {
             daifaStockExample.setStartIndex((bo.getPage() - 1) * 10);
             daifaStockExample.setEndIndex(10);
+            daifaStockExample.setOrderByClause("stock_id desc");
             List<DaifaStock> stocks = daifaStockMapper.selectByExample(daifaStockExample);
             List<Long> oids = stocks.stream().map(DaifaStock::getDfOrderId).collect(Collectors.toList());
             DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
