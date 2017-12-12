@@ -7,7 +7,6 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.monitor.bo.ShiguFeedbackBO;
 import com.shigu.main4.monitor.services.ShiguFeedbackService;
 import com.shigu.main4.monitor.vo.ShiguFeedbackVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
