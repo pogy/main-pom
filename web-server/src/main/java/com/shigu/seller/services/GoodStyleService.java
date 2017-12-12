@@ -1,10 +1,17 @@
 package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.SearchCategory;
+import com.opentae.data.mall.beans.ShiguCustomerStyle;
 import com.opentae.data.mall.examples.SearchCategoryExample;
+import com.opentae.data.mall.examples.ShiguCustomerStyleExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
+import com.opentae.data.mall.interfaces.ShiguCustomerStyleMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.seller.vo.CategoryTabsVo;
 import com.shigu.seller.vo.CategoryVo;
+import com.shigu.seller.vo.UserGoodsStyleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +24,35 @@ public class GoodStyleService {
     private  SearchCategoryMapper SearchCategoryMapper;
     @Autowired
     private ItemAddOrUpdateService ItemAddOrUpdateService;
+    @Autowired
+    private ShiguCustomerStyleMapper shiguCustomerStyleMapper;
+
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     /**
      * 获取自定义风格列表
      */
-    public List getStyle(){
-        return null;
+    public List<UserGoodsStyleVo> getUserStyle( Long pid, Long userId,Long shopId){
+        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+        List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+        ArrayList<UserGoodsStyleVo> list = new ArrayList<>();
+        for (ShiguCustomerStyle customerStyle:shiguCustomerStyles) {
+            UserGoodsStyleVo userGoodsStyleVo = new UserGoodsStyleVo();
+            userGoodsStyleVo.setGoodsStyleName(customerStyle.getStyleName());
+            userGoodsStyleVo.setGoodsStyleId(customerStyle.getStyleId());
+            userGoodsStyleVo.setCategoryId(customerStyle.getCId());
+            userGoodsStyleVo.setGoodsStyleName( SearchCategoryMapper.selectByPrimaryKey(customerStyle.getCId()).getCateName());
+            //查店里当前风格的商品数
+            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+            example.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(customerStyle.getStyleId()+"");
+            example.setWebSite("hz");
+            userGoodsStyleVo.setGoodsNum((long)(shiguGoodsTinyMapper.countByExample(example)));
+            list.add(userGoodsStyleVo);
+        }
+
+
+        return list;
     }
 
     /**
@@ -29,7 +60,7 @@ public class GoodStyleService {
      */
     public List<CategoryVo> getCategory(String website){
         SearchCategoryExample example = new SearchCategoryExample();
-        example.createCriteria().andTypeEqualTo(1);
+        example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(website);
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
         List<CategoryVo> categoryVos = new ArrayList();
         for (SearchCategory searchCategory:list) {
@@ -79,5 +110,32 @@ public class GoodStyleService {
      */
     public void sortCustomerStyle(Long goodsStyleId, Integer sortType) {
         ItemAddOrUpdateService.moveSortCustomerStyle(goodsStyleId,sortType);
+    }
+
+    /**
+     * 查类目选项卡数据
+     * @param webSite
+     * @param shopId
+     */
+    public List<CategoryTabsVo> selCategoryTabVos(String webSite,Long shopId) {
+        SearchCategoryExample example = new SearchCategoryExample();
+        example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
+        List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
+        List<CategoryTabsVo> categoryTabsVos = new ArrayList();
+        for (SearchCategory searchCategory:list) {
+            CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
+            categoryTabsVo.setCateId(searchCategory.getCategoryId()+"");
+            categoryTabsVo.setCateName(searchCategory.getCateName());
+
+            //查店里当前类目的商品数
+            ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+            shiguGoodsTinyExample.createCriteria().andStoreIdEqualTo(shopId).andCidEqualTo(searchCategory.getCategoryId());
+            shiguGoodsTinyExample.setWebSite("hz");
+            categoryTabsVo.setGoodsNum((long)(shiguGoodsTinyMapper.countByExample(example)));
+            categoryTabsVos.add(categoryTabsVo);
+
+
+        }
+        return categoryTabsVos;
     }
 }
