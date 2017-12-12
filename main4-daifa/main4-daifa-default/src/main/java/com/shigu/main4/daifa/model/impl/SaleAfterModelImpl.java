@@ -498,7 +498,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         if (!(tmp.getAfterStatus() == 4 || (tmp.getAfterStatus() == 5 && tmp.getStoreDealStatus() == 2))) {
             //售后状态错误,之后收到货的状态或退货失败状态时才能入库
-            throw new DaifaException("售后状态错误,之后收到货的状态或退货失败状态时才能入库",DaifaException.DEBUG);
+            throw new DaifaException("售后状态错误,只有收到货的状态或退货失败状态时才能入库",DaifaException.DEBUG);
         }
         DaifaAfterSaleSub sub = new DaifaAfterSaleSub();
         sub.setAfterSaleSubId(tmp.getAfterSaleSubId());

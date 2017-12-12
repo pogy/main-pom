@@ -39,10 +39,9 @@ public class DaifaStockAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         List<InOutDaifaStockVO> list = daifaStockService.goodsStorage(auth.getDaifaWorkerId(),false);
-        String money=MoneyUtil.dealPrice(list.stream().mapToLong(vo -> MoneyUtil.StringToLong(vo.getPiPrice())).sum());
         model.addAttribute("childOrders",list);
-        model.addAttribute("putInStorageNum",money);
-        WorkerOutCountVO v=daifaStockService.workerOutCount(auth.getDaifaWorkerId(),false);
+        model.addAttribute("putInStorageNum",list.size());
+        WorkerOutCountVO v=daifaStockService.goodsPutInStorageCount(auth.getDaifaWorkerId());
         model.addAttribute("outBoundAllNum",v.getNum());
         model.addAttribute("outBoundAllMoney",v.getPrice());
         model.addAttribute("userName",auth.getDaifaUserName ());
@@ -127,7 +126,7 @@ public class DaifaStockAction {
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         List<InOutDaifaStockVO> list = daifaStockService.goodsStorage(auth.getDaifaWorkerId(),true);
         model.addAttribute("childOrders",list);
-        WorkerOutCountVO v=daifaStockService.workerOutCount(auth.getDaifaWorkerId(),true);
+        WorkerOutCountVO v=daifaStockService.goodsOutboundCount(auth.getDaifaWorkerId());
         model.addAttribute("outBoundChildOrderNum",v.getNum());
         model.addAttribute("outBoundChildOrderGoodsMoney",v.getPrice());
         model.addAttribute("userName",auth.getDaifaUserName ());
@@ -147,7 +146,7 @@ public class DaifaStockAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         InOutDaifaStockVO vo=daifaStockService.barCodeForChildOrderData(barCode,auth.getDaifaWorkerId(),true);
-        WorkerOutCountVO v=daifaStockService.workerOutCount(auth.getDaifaWorkerId(),true);
+        WorkerOutCountVO v=daifaStockService.goodsOutboundCount(auth.getDaifaWorkerId());
         return JsonResponseUtil.success().element("childOrderItem",vo)
                 .element("outBoundChildOrderNum",v.getNum())
                 .element("outBoundChildOrderGoodsMoney",v.getPrice());

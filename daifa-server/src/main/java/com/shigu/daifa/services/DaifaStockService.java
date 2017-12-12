@@ -73,6 +73,9 @@ public class DaifaStockService {
         if(os==null){
             os=new ArrayList<>();
         }
+        if(os.stream().map(StockRedisBean::getOrderId).collect(Collectors.toList()).contains(orderId)){
+            return null;
+        }
         try {
             int inout=saleAfterProcess.selNowStockStatus(orderId);
             if(isOut&&inout!=1){
@@ -93,7 +96,7 @@ public class DaifaStockService {
             throw new DaifaException("未匹配到订单");
         }else{
             redisIO.put(key+workerId,os);
-            return vos.get(0);
+            return vos.stream().filter(inOutDaifaStockVO -> Objects.equals(inOutDaifaStockVO.getChildOrderId(), orderId)).findFirst().get();
         }
     }
 
@@ -116,26 +119,20 @@ public class DaifaStockService {
         }).collect(Collectors.toList());
     }
 
-    public WorkerOutCountVO workerOutCount(Long workerId,boolean isOut){
+    public WorkerOutCountVO goodsPutInStorageCount(Long workerId){
         List<WorkerStock> workerOutStock=daifaStockMapper.selectWorkerOutStock(workerId,2);
         List<Long> workerOutOrderIds=workerOutStock.stream().map(WorkerStock::getDfOrderId).collect(Collectors.toList());
-        if(isOut){
-            List<StockRedisBean> os=redisIO.getList("daifa_worker_outstock_temp_"+workerId,StockRedisBean.class);
-            if(os!=null&&os.size()>0){
-                Set<Long> ids=new HashSet<>(workerOutOrderIds);
-                ids.addAll(os.stream().map(StockRedisBean::getOrderId).collect(Collectors.toList()));
-                workerOutOrderIds=new ArrayList<>(ids);
-            }
-        }
+        return workerOutCount(workerOutOrderIds);
+    }
+
+    public WorkerOutCountVO workerOutCount(List<Long> workerOutOrderIds){
         List<DaifaAfterSaleSub> subs=new ArrayList<>();
         if(workerOutOrderIds.size()>0){
             DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
             daifaAfterSaleSubExample.createCriteria().andDfOrderIdIn(workerOutOrderIds);
             subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
-            if(!isOut){
-                List<Long> eoids=selAfterErrorOids(workerOutOrderIds);
-                subs.removeIf(daifaAfterSaleSub -> eoids.contains(daifaAfterSaleSub.getDfOrderId()));
-            }
+            List<Long> eoids=selAfterErrorOids(workerOutOrderIds);
+            subs.removeIf(daifaAfterSaleSub -> eoids.contains(daifaAfterSaleSub.getDfOrderId()));
         }
         WorkerOutCountVO vo=new WorkerOutCountVO();
         vo.setNum(subs.size());
@@ -320,6 +317,15 @@ public class DaifaStockService {
         List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper
                 .selectFieldsByExample(daifaAfterSaleSubExample, FieldUtil.codeFields("after_sale_sub_id,df_order_id"));
         return subs.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+    }
+
+    public WorkerOutCountVO goodsOutboundCount(Long workerId){
+        List<StockRedisBean> os=redisIO.getList("daifa_worker_outstock_temp_"+workerId,StockRedisBean.class);
+        List<Long> ids=new ArrayList<>();
+        if(os!=null&&os.size()>0){
+            ids=os.stream().map(StockRedisBean::getOrderId).collect(Collectors.toList());
+        }
+        return workerOutCount(ids);
     }
 
 
