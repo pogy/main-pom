@@ -349,43 +349,43 @@ public class ShiguCustomerStyleExample extends SgExample<ShiguCustomerStyleExamp
             return isNotNull(cId);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdEqualTo(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdEqualTo(Long value) {
             return equalTo(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdNotEqualTo(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdNotEqualTo(Long value) {
             return notEqualTo(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdGreaterThan(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdGreaterThan(Long value) {
             return greaterThan(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdGreaterThanOrEqualTo(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdLessThan(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdLessThan(Long value) {
             return lessThan(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdLessThanOrEqualTo(Integer value) {
+        public ShiguCustomerStyleExample.Criteria andCIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(cId, value);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdIn(List<Integer> values) {
+        public ShiguCustomerStyleExample.Criteria andCIdIn(List<Long> values) {
             return in(cId, values);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdNotIn(List<Integer> values) {
+        public ShiguCustomerStyleExample.Criteria andCIdNotIn(List<Long> values) {
             return notIn(cId, values);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdBetween(Integer value1, Integer value2) {
+        public ShiguCustomerStyleExample.Criteria andCIdBetween(Long value1, Long value2) {
             return between(cId, value1, value2);
         }
 
-        public ShiguCustomerStyleExample.Criteria andCIdNotBetween(Integer value1, Integer value2) {
+        public ShiguCustomerStyleExample.Criteria andCIdNotBetween(Long value1, Long value2) {
             return notBetween(cId, value1, value2);
         }
     }

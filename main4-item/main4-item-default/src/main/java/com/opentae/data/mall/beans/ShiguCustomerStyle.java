@@ -40,7 +40,7 @@ public class ShiguCustomerStyle implements Serializable {
     /**
      * 类目id
      */
-	private Integer cId;
+	private Long cId;
 
 	public void setStyleId(Long styleId) {
 		this.styleId = styleId;
@@ -90,11 +90,11 @@ public class ShiguCustomerStyle implements Serializable {
 		return this.sort;
 	}
 
-	public void setCId(Integer cId) {
+	public void setCId(Long cId) {
 		this.cId = cId;
 	}
 
-	public Integer getCId() {
+	public Long getCId() {
 		return this.cId;
 	}
 

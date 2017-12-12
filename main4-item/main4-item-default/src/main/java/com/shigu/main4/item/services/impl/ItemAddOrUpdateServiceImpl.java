@@ -8,7 +8,6 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
@@ -111,6 +110,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
+
+    @Autowired
+    private ShiguCustomerStyleMapper shiguCustomerStyleMapper;
 
     /**
      * 系统上架一款商品
@@ -1152,7 +1154,76 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void setCustomStyle(Long goodsId, Long sid) {
+    public void setCustomStyle(Long goodsId, Long sid ) {
+        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+        shiguGoodsTinyExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        shiguGoodsTinyExample.setWebSite("hz");
+        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
+        //在goods表里Remark9设置自定义风格id
+        if (shiguGoodsTinies.size()>0&&shiguGoodsTinies!=null){
+            shiguGoodsTinies.get(0).setRemark9(sid+"");
+        }
+    }
 
+    @Override
+    public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
+        ShiguCustomerStyle shiguCustomerStyle = new ShiguCustomerStyle();
+        shiguCustomerStyle.setCId(categoryId);
+        shiguCustomerStyle.setStyleName(goodsStyleName);
+        shiguCustomerStyle.setUserId(userId);
+        shiguCustomerStyleMapper.insert(shiguCustomerStyle);
+        //设置排序数值为
+        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+        int i = shiguCustomerStyleMapper.countByExample(shiguCustomerStyleExample);
+        shiguCustomerStyle.setSort(i);
+        shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+        return shiguCustomerStyle.getStyleId();
+    }
+
+    @Override
+    public void updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName) {
+        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)){
+            shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+            List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+            if(list.size()>0&&list!=null){
+                ShiguCustomerStyle shiguCustomerStyle =list.get(0);
+                shiguCustomerStyle.setCId(categoryId);
+                shiguCustomerStyle.setStyleName(goodsStyleName);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+            }
+        }
+    }
+
+    @Override
+    public void deleteCustomerStyle(Long goodsStyleId) {
+        if (goodsStyleId!=null){
+            ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+            int i = shiguCustomerStyleMapper.deleteByExample(shiguCustomerStyleExample);
+        }
+    }
+
+    @Override
+    public void moveSortCustomerStyle(Long goodsStyleId, Integer sortType) {
+        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+        List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+        if (shiguCustomerStyles.size()>0&&shiguCustomerStyles!=null){
+            ShiguCustomerStyle shiguCustomerStyle =shiguCustomerStyles.get(0);
+            int sort1=shiguCustomerStyle.getSort();//调整前的序号
+            int sort=shiguCustomerStyle.getSort()+sortType;//调整后的序号
+            ShiguCustomerStyleExample shiguCustomerStyleExample1 = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample1.createCriteria().andSortEqualTo(sort);
+            List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample1);
+            //调换序号
+            if(shiguCustomerStyles1.size()>0&&shiguCustomerStyles1!=null){
+                shiguCustomerStyle.setSort(sort);
+                shiguCustomerStyles1.get(0).setSort(sort1);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyles1.get(0));
+            }
+        }
     }
 }
