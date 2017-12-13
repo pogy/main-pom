@@ -255,7 +255,7 @@
             <#if childOrder.noSaleIs == true>
                 <p><span class="fcF40">已标记下架</span></p>
             <#else>
-                <#if childOrder.takeGoodsState != 1>
+                <#if childOrder.takeGoodsState != 1 && childOrder.isMyTask == true>
                 <p><b class="fcBlue" jbtn='setHasGoodsTime'>设置有货时间</b></p>
                 <p><b class="fcBlue" jbtn="setNoSale">标记下架</b></p>
                 </#if>
