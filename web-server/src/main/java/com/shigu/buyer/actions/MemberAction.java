@@ -879,15 +879,14 @@ public class MemberAction {
      * @param userWirteMoney 用户填写金额，单位：元
      * @return
      */
+    @RequestMapping("/member/getRealWithdrawMoney")
+    @ResponseBody
     public JSONObject getRealWithdrawMoney(Long userWirteMoney) throws JsonErrException {
         if (userWirteMoney == null || userWirteMoney <= 0) {
             throw new JsonErrException("请输入正确的金额");
         }
-        //单位 元->分，然后计算出手续费
-        long serviceLongValue = userWirteMoney * 100 * 6 / 1000;
-        //手续费实际值
-        double serviceMoney = serviceLongValue * 0.01;
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", userWirteMoney - serviceMoney);
+        //单位 元->分，然后计算出手续费 目前为6%，不足1分部分由用户补齐
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f",(userWirteMoney * 100 * 994 / 1000) * 0.01));
     }
 
     /**
