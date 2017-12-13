@@ -33,14 +33,18 @@ public class GoodStyleAction {
     @RequestMapping("goodsStyleManager")
     public String goodsStyleManager(PidBo bo, HttpSession session, Model model) {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(bo==null){
-           bo.setPid(1L);
-        }
+        Long shopId=personalSession.getLogshop().getShopId();
+        Long userId=personalSession.getUserId();
+        String webSite=personalSession.getLogshop().getWebSite();
         //类目选项卡数据
-        model.addAttribute("categoryTabs", goodStyleService.selCategoryTabVos(personalSession.getLogshop().getWebSite(),personalSession.getLogshop().getShopId()));
-//        //自定义商品风格列表数据
-//        model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(bo.getPid(),personalSession.getUserId(),personalSession.getLogshop().getShopId()));
-//        model.addAttribute("query",bo);
+       model.addAttribute("categoryTabs", goodStyleService.selCategoryTabVos(webSite,shopId,userId));
+        //自定义商品风格列表数据
+
+//            model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(null,userId,shopId));
+
+            model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(bo.getPid(),userId,shopId,webSite));
+
+        model.addAttribute("query",bo);
         return "gys/goodsStyleManager";
     }
     /**

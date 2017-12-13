@@ -32,9 +32,13 @@ public class GoodStyleService {
     /**
      * 获取自定义风格列表
      */
-    public List<UserGoodsStyleVo> getUserStyle( Long pid, Long userId,Long shopId){
+    public List<UserGoodsStyleVo> getUserStyle(Long pid, Long userId, Long shopId, String webSite){
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
-        shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+        if(pid!=null){
+            shiguCustomerStyleExample.createCriteria().andCIdEqualTo(pid);
+        }else{
+            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+        }
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
         ArrayList<UserGoodsStyleVo> list = new ArrayList<>();
         for (ShiguCustomerStyle customerStyle:shiguCustomerStyles) {
@@ -42,11 +46,11 @@ public class GoodStyleService {
             userGoodsStyleVo.setGoodsStyleName(customerStyle.getStyleName());
             userGoodsStyleVo.setGoodsStyleId(customerStyle.getStyleId());
             userGoodsStyleVo.setCategoryId(customerStyle.getCId());
-            userGoodsStyleVo.setGoodsStyleName( SearchCategoryMapper.selectByPrimaryKey(customerStyle.getCId()).getCateName());
+            userGoodsStyleVo.setCategoryName(SearchCategoryMapper.selectByPrimaryKey(customerStyle.getCId()).getCateName());
             //查店里当前风格的商品数
             ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
             example.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(customerStyle.getStyleId()+"");
-            example.setWebSite("hz");
+            example.setWebSite(webSite);
             userGoodsStyleVo.setGoodsNum((long)(shiguGoodsTinyMapper.countByExample(example)));
             list.add(userGoodsStyleVo);
         }
@@ -116,22 +120,34 @@ public class GoodStyleService {
      * 查类目选项卡数据
      * @param webSite
      * @param shopId
+     * @param userId
      */
-    public List<CategoryTabsVo> selCategoryTabVos(String webSite,Long shopId) {
+    public List<CategoryTabsVo> selCategoryTabVos(String webSite, Long shopId, Long userId) {
         SearchCategoryExample example = new SearchCategoryExample();
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
         List<CategoryTabsVo> categoryTabsVos = new ArrayList();
+        ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
+        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+        Long num=0L;
         for (SearchCategory searchCategory:list) {
             CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
             categoryTabsVo.setCateId(searchCategory.getCategoryId()+"");
             categoryTabsVo.setCateName(searchCategory.getCateName());
+            example1.createCriteria().andUserIdEqualTo(userId).andCIdEqualTo(searchCategory.getCategoryId());
+            List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example1);
+            if (shiguCustomerStyles.size()>0){
+                for (ShiguCustomerStyle shiguCustomerStyle: shiguCustomerStyles) {
+                    shiguGoodsTinyExample.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(String.valueOf(shiguCustomerStyle.getStyleId()));
+                    shiguGoodsTinyExample.setWebSite(webSite);
+                    int i = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample).size();
+                    num=num+Long.valueOf(i);
+                }
+            }else{
+                num=0L;
+            }
 
-            //查店里当前类目的商品数
-            ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-            shiguGoodsTinyExample.createCriteria().andStoreIdEqualTo(shopId).andCidEqualTo(searchCategory.getCategoryId());
-            shiguGoodsTinyExample.setWebSite("hz");
-            categoryTabsVo.setGoodsNum((long)(shiguGoodsTinyMapper.countByExample(example)));
+            categoryTabsVo.setGoodsNum(num);
             categoryTabsVos.add(categoryTabsVo);
 
 
