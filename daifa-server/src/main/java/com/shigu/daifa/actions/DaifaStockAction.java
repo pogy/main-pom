@@ -61,7 +61,7 @@ public class DaifaStockAction {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         InOutDaifaStockVO vo=daifaStockService.barCodeForChildOrderData(barCode,auth.getDaifaWorkerId(),false);
-        return JsonResponseUtil.success().element("childOrderItem",vo);
+        return JsonResponseUtil.success().element("childOrderItem",vo).element("putInStorageNum",daifaStockService.goodsStorage(auth.getDaifaWorkerId(),false).size());
     }
 
     /**
