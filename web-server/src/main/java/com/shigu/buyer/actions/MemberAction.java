@@ -886,7 +886,7 @@ public class MemberAction {
             throw new JsonErrException("请输入正确的金额");
         }
         //单位 元->分，然后计算出手续费 目前为6%，不足1分部分由用户补齐
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f",(userWirteMoney * 100 * 994 / 1000) * 0.01));
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f",(userWirteMoney  * 994 / 10) * 0.01));
     }
 
     /**
