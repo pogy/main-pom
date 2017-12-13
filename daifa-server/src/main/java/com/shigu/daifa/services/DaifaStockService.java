@@ -366,7 +366,7 @@ public class DaifaStockService {
         afreshPutInInventory(daifaWorkerId,true);
 
         ExcelUrlVO vo=new ExcelUrlVO();
-        vo.setBatches(pi);
+        vo.setBatches(worker+"_"+pi);
         vo.setHref("downWorkerOutStockExcel/"+daifaWorkerId+"_"+pi+".htm");
         return Collections.singletonList(vo);
     }
@@ -374,7 +374,7 @@ public class DaifaStockService {
     public List<ExcelUrlVO> outboundBatches(Long workerId,String worker){
         DaifaStockRecordExample e=new DaifaStockRecordExample();
         e.createCriteria().andDaifaWorkerIdEqualTo(workerId).andInOutTypeEqualTo(2).andPiCodeIsNotNull();
-        e.setOrderByClause("stock_record_id asc");
+        e.setOrderByClause("stock_record_id desc");
         List<DaifaStockRecord> rs=daifaStockRecordMapper.selectFieldsByExample(e,FieldUtil.codeFields("stock_record_id,pi_code"));
         Set<String> keys=new HashSet<>();
         List<String> piCodes=rs.stream().filter(daifaStockRecord -> {
@@ -387,7 +387,7 @@ public class DaifaStockService {
         List<ExcelUrlVO> vos=new ArrayList<>();
         for(String piCode:piCodes){
             ExcelUrlVO vo=new ExcelUrlVO();
-            vo.setBatches(piCode);
+            vo.setBatches(worker+"_"+piCode);
             vo.setHref("downWorkerOutStockExcel/"+workerId+"_"+piCode+".htm");
             vos.add(vo);
         }
