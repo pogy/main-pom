@@ -11,11 +11,12 @@
     <link href="${daifa_host}css/login.css" rel="stylesheet" />
 
 
-    <script type="text/javascript" src="http://hz.571xz.com/jquery2015/js2015index/jquery.min.js"></script>
+    <script type="text/javascript" src="${daifa_host}js/jquery.min.js"></script>
 </head>
 <body>
+<input type="hidden" id="daifa_host" value="${daifa_host}">
 <div class="qjbg">
-    <form action="${daifa_host}init/login.htm" method="post">
+    <form  method="post" id="login_form">
     <div class="login_wk">
         <div class="login_nk">
             <div class="logoTop c_hidden">
@@ -23,17 +24,14 @@
                 <h1 class="fl">代发管理系统</h1>
             </div>
             <div class="login_con">
+                <p class="j_passError c_none" id="err_msg_div">您输入的密码有误！</p>
                 <div class="userName">
                     <input type="text" placeholder="请输入账号" id="username_inp" name="username" class="j_jd j_userN" />
                     <span class="j_user_img iconfont">&#xe6da;</span>
-                <#if msg ??>
-                    <p class="j_userError c_none">${msg}</p>
-                </#if>
                 </div>
                 <div class="passWord">
-                    <input type="password" placeholder="表输入密码" name="password" id="password_inp" class="j_jd j_passW" />
+                    <input type="password" placeholder="请输入密码" name="password" id="password_inp" class="j_jd j_passW" />
                     <span class="j_pass_img iconfont">&#xe6db;</span>
-                    <p class="j_passError c_none">您输入的密码有误！</p>
                 </div>
                 <div class="forgetP fr">
                     <a href="${daifa_host}admin/index.htm" >系统后台</a>
@@ -41,7 +39,7 @@
             </div>
             <div class="loginBtn c_cb">
 
-                <button type="submit" class="lnBtn j_loginBtn">登录</button>
+                <button type="button" class="lnBtn j_loginBtn">登录</button>
             </div>
         </div>
     </div>

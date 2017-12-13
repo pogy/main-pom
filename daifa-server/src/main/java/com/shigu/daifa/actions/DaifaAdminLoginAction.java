@@ -3,6 +3,8 @@ package com.shigu.daifa.actions;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.daifa.bo.LoginBO;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -62,33 +66,43 @@ public class DaifaAdminLoginAction {
      * ====================================================================================
      *
      */
-    @RequestMapping(value = "init/login",method = {RequestMethod.POST,RequestMethod.GET})
-    public String login(LoginBO bo, HttpServletRequest request, Model model, HttpSession session){
-
+    @RequestMapping(value = "init/login",method = RequestMethod.GET)
+    public String loginPage(){
         Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.isAuthenticated()){//如果已经登陆，去登陆页面
+        if (currentUser.isAuthenticated()) {//如果已经登陆，去登陆页面
             return "redirect:/daifa/orderAll.htm";
-        }else if(bo.getUsername()!=null&&bo.getPassword()!=null){
-            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                    bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "");
-            token.setRememberMe(true);
-            try {
-                currentUser.login(token);
-                /*if("kf".equals (bo.getUsername())){
-                    return "redirect:/daifa/orderForServer.htm";//客服售后
-                }*/
-                //登陆成功
-                return "redirect:/daifa/orderAll.htm";
-            } catch (AuthenticationException e) {
-                //登陆失败
-                token.clear();
-                String msg="账号或密码错误";
-                model.addAttribute("msg",msg);
-            }
         }
-
         return "daifa/login/login";
     }
+
+    @RequestMapping(value = "init/daifa/login",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject login(LoginBO bo, HttpServletRequest request, HttpSession session){
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(bo.getUsername())) {
+            return result.element("success",false).element("msg","请输入账号");
+        }
+        if(StringUtils.isEmpty(bo.getPassword())) {
+            return result.element("success",false).element("msg","请输入密码");
+        }
+        Subject currentUser = SecurityUtils.getSubject();
+        CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "");
+        token.setRememberMe(true);
+        try {
+            currentUser.login(token);
+            /*if("kf".equals (bo.getUsername())){
+                return "redirect:/daifa/orderForServer.htm";//客服售后
+            }*/
+            return result.element("success",true);
+        } catch (AuthenticationException e) {
+            //登陆失败
+            token.clear();
+            return result.element("success",false).element("msg","账号或密码错误");
+        }
+    }
+
+
 
     /**
      * ====================================================================================
