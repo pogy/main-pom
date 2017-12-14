@@ -65,59 +65,62 @@
         and t2.in_out_type=${inOutType}
         <if test="inOutType==1">
             <if test="startDay!=null">
-              and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
         <if test="inOutType==2">
             <if test="startDay!=null">
-                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
         <if test="inOutType==3">
             <if test="startDay!=null">
-                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
         limit #{start},#{end}
     </select>
-    <select id="selectTheDayStockRecordIdsCount" resultType="java.lang.Integer">
-        select count(*) from daifa_stock t1
+    <select id="selectTheDayStockRecordIdsCount" resultType="com.opentae.data.daifa.custom.beans.SelectTheDayStockRecordIdsCount">
+        select count(*) num,sum(t2.single_pi_price)price from (
+        select t2.stock_record_id,t1.df_order_id from daifa_stock t1
         LEFT JOIN daifa_stock_record t2
         on t1.stock_id=t2.stock_id
         where t1.seller_id=${sellerId}
         and t2.in_out_type=${inOutType}
         <if test="inOutType==1">
             <if test="startDay!=null">
-                and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.in_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.in_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
         <if test="inOutType==2">
             <if test="startDay!=null">
-                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.out_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.out_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
         <if test="inOutType==3">
             <if test="startDay!=null">
-                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${startDay}
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${startDay}
             </if>
             <if test="endDay!=null">
-                and DATE_FORMAT(t2.return_time,"%Y%m%d") &gt;= ${endDay}
+                and DATE_FORMAT(t2.return_time,"%Y%m%d") &lt;= ${endDay}
             </if>
         </if>
+        )t1 INNER JOIN daifa_after_sale_sub t2
+        on t1.df_order_id=t2.df_order_id
     </select>
 </mapper>

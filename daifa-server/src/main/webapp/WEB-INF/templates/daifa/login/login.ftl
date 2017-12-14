@@ -11,7 +11,7 @@
     <link href="${daifa_host}css/login.css" rel="stylesheet" />
 
 
-    <script type="text/javascript" src="${daifa_host}js/jquery.min.js"></script>
+    <script type="text/javascript" src="${daifa_host}js/jquery.min.js?t=20171214"></script>
 </head>
 <body>
 <input type="hidden" id="daifa_host" value="${daifa_host}">
@@ -45,7 +45,7 @@
     </div>
     </form>
 </div>
-<script type="text/javascript" src="${daifa_host}js/login.js"></script>
+<script type="text/javascript" src="${daifa_host}js/login.js?t=20171214"></script>
 
 <script>
     var username_key='admin_user_name';

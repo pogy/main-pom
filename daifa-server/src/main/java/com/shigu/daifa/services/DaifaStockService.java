@@ -11,6 +11,7 @@ import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaStock;
 import com.opentae.data.daifa.beans.DaifaStockRecord;
+import com.opentae.data.daifa.custom.beans.SelectTheDayStockRecordIdsCount;
 import com.opentae.data.daifa.custom.beans.WorkerStock;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
@@ -469,10 +470,10 @@ public class DaifaStockService {
     public StorageSearchVO storageSearch(DaifaStockBO bo,Long sellerId,int type){
         String startDay=DateUtil.dateToString(DateUtil.stringToDate(bo.getStartTime(), DateUtil.patternA),DateUtil.patternB);
         String endDay=DateUtil.dateToString(DateUtil.stringToDate(bo.getEndTime(), DateUtil.patternA),DateUtil.patternB);
-        Integer count=daifaStockMapper.selectTheDayStockRecordIdsCount(sellerId,type,startDay,endDay);
+        SelectTheDayStockRecordIdsCount count=daifaStockMapper.selectTheDayStockRecordIdsCount(sellerId,type,startDay,endDay);
         List<DaifaStockRecordVO> rvos = new ArrayList<>();
         Long price=0L;
-        if(count>0){
+        if(count.getNum()>0){
             List<Long> rids=daifaStockMapper.selectTheDayStockRecordIds(sellerId,type,startDay,endDay,(bo.getPage()-1)*10,10);
             DaifaStockRecordExample daifaStockRecordExample = new DaifaStockRecordExample();
             daifaStockRecordExample.createCriteria().andStockRecordIdIn(rids);
@@ -505,11 +506,11 @@ public class DaifaStockService {
         }
 
         StorageSearchVO v=new StorageSearchVO();
-        v.setNum(rvos.size());
-        v.setPrice(MoneyUtil.dealPrice(price));
+        v.setNum(count.getNum());
+        v.setPrice(MoneyUtil.dealPrice(MoneyUtil.StringToLong(count.getPrice())));
         ShiguPager<DaifaStockRecordVO> pager = new ShiguPager<>();
         pager.setContent(rvos);
-        pager.setTotalCount(count);
+        pager.setTotalCount(count.getNum());
         pager.setNumber(bo.getPage());
         v.setPager(pager);
         return v;
