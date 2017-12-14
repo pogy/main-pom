@@ -3,6 +3,7 @@ package com.shigu.buyer.services;
 import com.opentae.data.mall.beans.MemberAlipayBind;
 import com.opentae.data.mall.examples.MemberAlipayBindExample;
 import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
+import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -10,7 +11,6 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.process.PayProcess;
@@ -19,6 +19,7 @@ import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
+import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,5 +113,10 @@ public class UserAccountService {
             alipayBindVOList.add(vo);
         }
         return alipayBindVOList;
+    }
+
+    public JSONObject applyAliUserBind(MemberAlipayBindBO bo, Long userId) {
+        // TODO: 17-12-14 具体绑定接口调用
+        return null;
     }
 }
