@@ -1170,30 +1170,30 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
 
-        if(goodsStyleName!=null&&StringUtils.isNotEmpty(goodsStyleName)&&goodsStyleName.length()<45){
+        if (goodsStyleName != null && StringUtils.isNotEmpty(goodsStyleName) && goodsStyleName.length() < 45) {
             ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
             example.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example);
             //判断是否已存在
-            if(shiguCustomerStyles!=null){
-                return 0L;
+            if (shiguCustomerStyles == null||shiguCustomerStyles.isEmpty()) {
+                ShiguCustomerStyle shiguCustomerStyle = new ShiguCustomerStyle();
+                shiguCustomerStyle.setCId(categoryId);
+                shiguCustomerStyle.setStyleName(goodsStyleName);
+                shiguCustomerStyle.setUserId(userId);
+                shiguCustomerStyleMapper.insert(shiguCustomerStyle);
+                //设置排序数值为
+                ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+                shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+                int i = shiguCustomerStyleMapper.countByExample(shiguCustomerStyleExample);
+                shiguCustomerStyle.setSort(i);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+                return shiguCustomerStyle.getStyleId();
             }
-            ShiguCustomerStyle shiguCustomerStyle = new ShiguCustomerStyle();
-            shiguCustomerStyle.setCId(categoryId);
-            shiguCustomerStyle.setStyleName(goodsStyleName);
-            shiguCustomerStyle.setUserId(userId);
-            shiguCustomerStyleMapper.insert(shiguCustomerStyle);
-            //设置排序数值为
-            ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
-            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
-            int i = shiguCustomerStyleMapper.countByExample(shiguCustomerStyleExample);
-            shiguCustomerStyle.setSort(i);
-            shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
-            return shiguCustomerStyle.getStyleId();
         }
-        return 0L;
-
+            return 0L;
     }
+
+
 
     @Override
     public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
