@@ -90,8 +90,8 @@ public class DaifaCustomerService {
         if (StringUtils.hasText(bo.getReceiver())) {
             salece.andReceiverNameEqualTo(bo.getReceiver());
         }
-        if(bo.getBuyerId()!= null){
-            salece.andBuyerIdEqualTo(bo.getBuyerId());
+        if(StringUtils.hasText(bo.getBuyerPhone())){
+            salece.andBuyerTelephoneEqualTo(bo.getBuyerPhone());
         }
 
         int count = daifaTradeMapper.countByExample(daifaTradeExample);

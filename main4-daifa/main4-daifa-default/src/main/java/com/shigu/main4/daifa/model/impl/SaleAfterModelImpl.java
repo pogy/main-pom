@@ -14,6 +14,7 @@ import com.shigu.main4.daifa.model.ScanSaleAfterExpressModel;
 import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.tools.SpringBeanFactory;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -265,6 +266,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public String saleAfterExpress(String expressName, String expressCode) throws DaifaException {
+        expressName= StringEscapeUtils.escapeHtml4(expressName.replace(" ",""));
+        expressCode= StringEscapeUtils.escapeHtml4(expressCode.replace(" ",""));
         DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
         tmp.setRefundId(refundId);
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
