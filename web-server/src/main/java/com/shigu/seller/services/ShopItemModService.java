@@ -283,18 +283,22 @@ public class ShopItemModService {
         example1.createCriteria().andGoodsIdEqualTo(goodsId);
         List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example1);
         String goodsNo =  shiguGoodsTinies.get(0).getGoodsNo();
-        //店里的商品
-        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-        example.createCriteria().andStoreIdEqualTo(shopId);
-        example.setWebSite(webSite);
-        List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
-        //设置风格
         if (goodsNo!=null&&StringUtils.isNotEmpty(goodsNo)){
+            //店里的商品
+            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+            example.createCriteria().andStoreIdEqualTo(shopId);
+            example.setWebSite(webSite);
+            List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
+            //设置风格
             for (ShiguGoodsTiny goods:list) {
-                if (goods.getGoodsNo().equals(goodsNo)){
-                    setStyle(goods.getGoodsId(),styleId,webSite);
+                if(goods.getGoodsNo()!=null){
+                    if (goods.getGoodsNo().equals(goodsNo)){
+                        setStyle(goods.getGoodsId(),styleId,webSite);
+                    }
                 }
             }
+
         }
+
     }
 }
