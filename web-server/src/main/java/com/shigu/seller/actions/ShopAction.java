@@ -548,7 +548,7 @@ public class ShopAction {
         shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
         shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
         shopUnprocessItemCount.setNoVideoNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_VIDEO_INDEX_));
-        shopUnprocessItemCount.setNoStyleNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_));
+        shopUnprocessItemCount.setNoGoodsStyleNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_));
         return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
     }
 
