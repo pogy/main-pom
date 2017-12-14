@@ -1,11 +1,16 @@
 package com.shigu.buyer.services;
 
+import com.opentae.data.mall.beans.MemberAlipayBind;
+import com.opentae.data.mall.examples.MemberAlipayBindExample;
+import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
+import com.shigu.buyer.vo.UserAlipayBindVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.process.PayProcess;
@@ -19,6 +24,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户账户功能
@@ -35,6 +43,9 @@ public class UserAccountService {
 
     @Autowired
     private PayProcess payProcess;
+
+    @Autowired
+    private MemberAlipayBindMapper memberAlipayBindMapper;
 
     /**
      * 充值申请
@@ -79,5 +90,27 @@ public class UserAccountService {
         } catch (LoginAuthException e) {
             throw new JsonErrException(e.getMessage()).addErrMap("ele", "telephone");
         }
+    }
+
+
+    /**
+     * 用户绑定支付宝列表
+     * @param userId
+     * @return
+     */
+    public List<UserAlipayBindVO> userAlipayBindList(Long userId) {
+        MemberAlipayBindExample example = new MemberAlipayBindExample();
+        example.createCriteria().andUserIdEqualTo(userId).andIsFailureEqualTo(false);
+        List<MemberAlipayBind> alipayBinds = memberAlipayBindMapper.selectByExample(example);
+        List<UserAlipayBindVO> alipayBindVOList = new ArrayList<>(alipayBinds.size());
+        UserAlipayBindVO vo = null;
+        for (MemberAlipayBind alipayBind : alipayBinds) {
+            vo = new UserAlipayBindVO();
+            vo.setAliAccountId(alipayBind.getId());
+            vo.setAliAccount(alipayBind.getAlipayId());
+            vo.setUserRealName(alipayBind.getAlipayName());
+            alipayBindVOList.add(vo);
+        }
+        return alipayBindVOList;
     }
 }

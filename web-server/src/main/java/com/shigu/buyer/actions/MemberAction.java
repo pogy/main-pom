@@ -114,6 +114,9 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
+    @Autowired
+    UserLicenseService userLicenseService;
+
     /**
      * 分销商首页
      * @return
@@ -1020,6 +1023,35 @@ public class MemberAction {
         return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
     }
 
+    /**
+     * 用户绑定支付宝列表页面
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("member/bindAlipayUser")
+    public String bindAlipayUser(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        //在shiro中配置过拦截,能进入member/下的请求都是已经登陆的
+        Long userId = ps.getUserId();
+        List<UserAlipayBindVO> alipayUserList = userAccountService.userAlipayBindList(userId);
+        model.addAttribute("alipayUserList", alipayUserList);
+        return "fxs/bindAlipayUser";
+    }
+
+    @RequestMapping("member/bindAlipayUserOpe")
+    public String bindAlipayUserOpe(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        String phoneByUserId = userLicenseService.findPhoneByUserId(userId);
+        if (StringUtils.isEmpty(phoneByUserId)) {
+            if (11 == phoneByUserId.length()) {
+// TODO: 17-12-14  
+            }
+        }
+
+        return "fxs/bindAlipayUserOpe";
+    }
 
 
 }
