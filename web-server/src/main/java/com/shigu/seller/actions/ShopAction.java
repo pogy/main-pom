@@ -1322,6 +1322,7 @@ public class ShopAction {
     @ResponseBody
     public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativeIs,HttpSession session) {
         ShopSession shopSession = getShopSession(session);
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
         if (relativeIs){
             shopItemModService.setSameNumStyle(goodsId,styleId , shopSession.getShopId(),shopSession.getWebSite());
         }
