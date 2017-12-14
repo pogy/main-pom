@@ -2,6 +2,7 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.SearchCategory;
 import com.opentae.data.mall.beans.ShiguCustomerStyle;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.ShiguCustomerStyleExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
@@ -12,6 +13,7 @@ import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.seller.vo.CategoryTabsVo;
 import com.shigu.seller.vo.CategoryVo;
 import com.shigu.seller.vo.UserGoodsStyleVo;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,27 +37,31 @@ public class GoodStyleService {
     public List<UserGoodsStyleVo> getUserStyle(Long pid, Long userId, Long shopId, String webSite){
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
         if(pid!=null){
-            shiguCustomerStyleExample.createCriteria().andCIdEqualTo(pid);
+            shiguCustomerStyleExample.createCriteria().andCIdEqualTo(pid).andUserIdEqualTo(userId);
         }else{
             shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
         }
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
         ArrayList<UserGoodsStyleVo> list = new ArrayList<>();
-        for (ShiguCustomerStyle customerStyle:shiguCustomerStyles) {
-            UserGoodsStyleVo userGoodsStyleVo = new UserGoodsStyleVo();
-            userGoodsStyleVo.setGoodsStyleName(customerStyle.getStyleName());
-            userGoodsStyleVo.setGoodsStyleId(customerStyle.getStyleId());
-            userGoodsStyleVo.setCategoryId(customerStyle.getCId());
-            userGoodsStyleVo.setCategoryName(SearchCategoryMapper.selectByPrimaryKey(customerStyle.getCId()).getCateName());
-            //查店里当前风格的商品数
-            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-            example.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(customerStyle.getStyleId()+"");
-            example.setWebSite(webSite);
-            userGoodsStyleVo.setGoodsNum((long)(shiguGoodsTinyMapper.countByExample(example)));
-            list.add(userGoodsStyleVo);
+        if(shiguCustomerStyles!=null&&shiguCustomerStyles.size()>0){
+            SearchCategoryExample searchCategoryExample = new SearchCategoryExample();
+            for (ShiguCustomerStyle customerStyle:shiguCustomerStyles) {
+                UserGoodsStyleVo userGoodsStyleVo = new UserGoodsStyleVo();
+                userGoodsStyleVo.setGoodsStyleName(customerStyle.getStyleName());
+                userGoodsStyleVo.setGoodsStyleId(customerStyle.getStyleId());
+                userGoodsStyleVo.setCategoryId(customerStyle.getCId());
+                searchCategoryExample.clear();
+                searchCategoryExample.createCriteria().andCateValueEqualTo(String.valueOf(customerStyle.getCId()));
+                userGoodsStyleVo.setCategoryName(SearchCategoryMapper.selectByExample(searchCategoryExample).get(0).getCateName());
+                //查店里当前风格的商品数
+                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+                example.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(customerStyle.getStyleId()+"");
+                example.setWebSite(webSite);
+                long num= shiguGoodsTinyMapper.countByExample(example);
+                userGoodsStyleVo.setGoodsNum(num);
+                list.add(userGoodsStyleVo);
+            }
         }
-
-
         return list;
     }
 
@@ -69,7 +75,7 @@ public class GoodStyleService {
         List<CategoryVo> categoryVos = new ArrayList();
         for (SearchCategory searchCategory:list) {
             CategoryVo categoryVo = new CategoryVo();
-            categoryVo.setCategoryId(searchCategory.getCategoryId());
+            categoryVo.setCategoryId(Long.valueOf(searchCategory.getCateValue()));
             categoryVo.setCategoryName(searchCategory.getCateName());
             categoryVos.add(categoryVo);
         }
@@ -83,8 +89,9 @@ public class GoodStyleService {
      * @param
      * @param userId
      */
-    public void addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
-        ItemAddOrUpdateService.addCustomerStyle(categoryId,goodsStyleName,userId);
+    public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
+        Long aLong = ItemAddOrUpdateService.addCustomerStyle(categoryId, goodsStyleName, userId);
+        return aLong;
     }
 
     /**
@@ -103,8 +110,9 @@ public class GoodStyleService {
      * @param goodsStyleId
      */
     public void delCustomerStyle(Long goodsStyleId) {
-
-        ItemAddOrUpdateService.deleteCustomerStyle( goodsStyleId);
+        if(goodsStyleId!=null){
+            ItemAddOrUpdateService.deleteCustomerStyle( goodsStyleId);
+        }
     }
 
     /**
@@ -127,30 +135,27 @@ public class GoodStyleService {
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
         List<CategoryTabsVo> categoryTabsVos = new ArrayList();
-        ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
-        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-        Long num=0L;
         for (SearchCategory searchCategory:list) {
             CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
-            categoryTabsVo.setCateId(searchCategory.getCategoryId()+"");
+            categoryTabsVo.setCateId(searchCategory.getCateValue());
             categoryTabsVo.setCateName(searchCategory.getCateName());
-            example1.createCriteria().andUserIdEqualTo(userId).andCIdEqualTo(searchCategory.getCategoryId());
+            ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
+            example1.createCriteria().andUserIdEqualTo(userId).andCIdEqualTo(Long.valueOf(searchCategory.getCateValue()));
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example1);
-            if (shiguCustomerStyles.size()>0){
+            if (shiguCustomerStyles != null && shiguCustomerStyles.size()>0){
+                Long num=0L;
                 for (ShiguCustomerStyle shiguCustomerStyle: shiguCustomerStyles) {
+                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
                     shiguGoodsTinyExample.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(String.valueOf(shiguCustomerStyle.getStyleId()));
                     shiguGoodsTinyExample.setWebSite(webSite);
-                    int i = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample).size();
-                    num=num+Long.valueOf(i);
+                    List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
+                    num=num+Long.valueOf(shiguGoodsTinies.size());
                 }
+                categoryTabsVo.setGoodsNum(num);
             }else{
-                num=0L;
+                categoryTabsVo.setGoodsNum(0L);
             }
-
-            categoryTabsVo.setGoodsNum(num);
             categoryTabsVos.add(categoryTabsVo);
-
-
         }
         return categoryTabsVos;
     }

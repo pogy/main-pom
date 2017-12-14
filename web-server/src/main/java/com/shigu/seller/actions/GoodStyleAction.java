@@ -39,11 +39,7 @@ public class GoodStyleAction {
         //类目选项卡数据
        model.addAttribute("categoryTabs", goodStyleService.selCategoryTabVos(webSite,shopId,userId));
         //自定义商品风格列表数据
-
-//            model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(null,userId,shopId));
-
-            model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(bo.getPid(),userId,shopId,webSite));
-
+        model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(bo.getPid(),userId,shopId,webSite));
         model.addAttribute("query",bo);
         return "gys/goodsStyleManager";
     }
@@ -66,8 +62,11 @@ public class GoodStyleAction {
     public JSONObject addGoodsStyle(Long categoryId,String goodsStyleName,HttpSession session){
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 //        ShopSession shopSession = personalSession.getLogshop();
-        goodStyleService.addCustomerStyle(categoryId,goodsStyleName,personalSession.getUserId());
-        return JSONObject.fromObject(JsonResponseUtil.success());
+        Long aLong = goodStyleService.addCustomerStyle(categoryId, goodsStyleName, personalSession.getUserId());
+        if(aLong!=0){
+            return JSONObject.fromObject(JsonResponseUtil.success().element("goodsStyleId",aLong));
+        }
+            return JsonResponseUtil.error("添加失败");
     }
 
     /**
