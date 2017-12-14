@@ -26,7 +26,7 @@
 <#include "/__ftl_links__/daifa__common__sidebar.ftl">
     </div>
     <div class="contentBox">
-<#assign text>{"fields":[{"name":"orderId","value":""+query.orderId},{"name":"buyerId","value":""+query.buyerId},{"name":"receiver","value":""+query.receiver},{"name":"telphone","value":""+query.telphone}]}</#assign>
+<#assign text>{"fields":[{"name":"orderId","value":""+query.orderId},{"name":"buyerId","value":""+query.buyerId},{"name":"buyerPhone","value":""+query.buyerPhone},{"name":"receiver","value":""+query.receiver},{"name":"telphone","value":""+query.telphone}]}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
 <#if $it.fields??>
@@ -40,7 +40,7 @@
 <div class="orderSearch">
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
-        <li><label>下单人ID：</label><input type="text" class="fmInput" name="buyerId" <#if query.buyerId??> value="${query.buyerId!}" </#if>></li>
+        <li><label>下单人手机号码：</label><input type="text" class="fmInput" name="buyerPhone" <#if query.buyerPhone??> value="${query.buyerPhone!}" </#if>></li>
         <li><label>收件人姓名：</label><input type="text" class="fmInput" name="receiver" <#if query.receiver??> value="${query.receiver!}" </#if>></li>
         <li><label>收件人手机号码：</label><input type="text" class="fmInput" name="telphone" <#if query.telphone??> value="${query.telphone!}" </#if>></li>
         <li>

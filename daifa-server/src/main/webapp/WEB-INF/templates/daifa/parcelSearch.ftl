@@ -261,7 +261,7 @@
     <td class="tradeState" valign="top" rowspan="${order.childOrderNum!}">
         <div class="childOrderRemark pr">
             <p class="childRemark">${order.allChildRemark}</p>
-            <p><b class="addOrderRemark" jbtn="addCustomerServiceRemark" data-orderid="${order.orderId!}">添加备注</b></p>
+            <p><b class="addOrderRemark" jbtn="addOrderRemark" data-orderid="${order.orderId!}">添加备注</b></p>
         </div>
     </td>
     </#if>

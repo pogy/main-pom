@@ -30,7 +30,7 @@
     <div class="fr">
         <div class="opeBtnBox <#if (childOrders?size) gt 0>hasData</#if>">
             <span class="goodsNum fc6">共计商品：<em class="fs20 fc3 outBoundChildOrderNum">${outBoundChildOrderNum!}</em> 件</span>
-            <span class="goodsMoney fc6">共计金额：<em class="fs20 fc3 outBoundChildOrderGoodsMoney">${outBoundChildOrderGoodsMoney!}</em> 件</span>
+            <span class="goodsMoney fc6">共计金额：<em class="fs20 fc3 outBoundChildOrderGoodsMoney">${outBoundChildOrderGoodsMoney!}</em> 元</span>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
