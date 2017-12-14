@@ -27,7 +27,9 @@
     <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.monitor.services.ShopBrowerService" ref="shopBrowerService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.monitor.services.StarCaculateService" ref="starCaculateService" retries="0" timeout="20000" />
-    <!--todo 原本一个dubbo被删掉了-->
+        <!--gtx 2017/11/28 bug-->
+    <dubbo:service interface="com.shigu.main4.monitor.services.BugFeedbackService" ref="bugFeedbackService" retries="0" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.monitor.services.ShiguFeedbackService" ref="shiguFeedbackService" retries="0" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.monitor.services.RankingSimpleService" ref="rankingSimpleService" retries="0" timeout="20000"/>
+
 </beans>
