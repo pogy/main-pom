@@ -154,6 +154,18 @@
             >授权管理</a>
         </li>
         </#if>
+        <#if 'goodsStyleManager' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'goodsStyleManager' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="goodsStyleManager.htm"
+            >风格管理</a>
+        </li>
+        </#if>
     </ul>
     <h2>营销管理</h2>
     <ul>
