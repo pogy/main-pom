@@ -75,10 +75,12 @@ public class GoodStyleAction {
     @RequestMapping("editGoodsStyle")
     @ResponseBody
     public JSONObject editGoodsStyle(Long categoryId,Long goodsStyleId,String goodsStyleName,HttpSession session){
-//        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        ShopSession shopSession = personalSession.getLogshop();
-        goodStyleService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName);
-        return JSONObject.fromObject(JsonResponseUtil.success());
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = personalSession.getUserId();
+        if (  goodStyleService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName,userId)!=0){
+            return JSONObject.fromObject(JsonResponseUtil.success());
+        }
+        return JSONObject.fromObject(JsonResponseUtil.error("更改失败"));
     }
     /**
      * 移动商品风格排序

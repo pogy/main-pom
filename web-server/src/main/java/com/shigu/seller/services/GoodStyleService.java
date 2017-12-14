@@ -96,13 +96,15 @@ public class GoodStyleService {
 
     /**
      * 修改自定义风格
+     * @param
      * @param categoryId
      * @param goodsStyleId
      * @param goodsStyleName
-     * @param
+     * @param userId
      */
-    public void updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName) {
-        ItemAddOrUpdateService.updateCustomerStyle(categoryId,goodsStyleId,goodsStyleName);
+    public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
+        Long aLong = ItemAddOrUpdateService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName, userId);
+        return aLong;
     }
 
     /**

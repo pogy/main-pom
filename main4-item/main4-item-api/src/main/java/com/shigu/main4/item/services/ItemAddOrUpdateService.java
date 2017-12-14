@@ -134,9 +134,10 @@ public interface ItemAddOrUpdateService {
      * 修改自定义风格
      * @param categoryId
      * @param goodsStyleName
+     * @param userId
      *
      */
-   void updateCustomerStyle(Long categoryId,Long goodsStyleId,String goodsStyleName);
+   Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId);
 
     /**
      * 删除自定义风格

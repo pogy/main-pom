@@ -1194,18 +1194,25 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName) {
-        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+    public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
         if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)){
+            ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
+            List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+            //判断是否已存在
+            if(shiguCustomerStyles!=null){
+                return 0L;
+            }
             shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
             List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
             if(list.size()>0&&list!=null){
                 ShiguCustomerStyle shiguCustomerStyle =list.get(0);
                 shiguCustomerStyle.setCId(categoryId);
                 shiguCustomerStyle.setStyleName(goodsStyleName);
-                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+                return  Long.valueOf(shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle));
             }
         }
+        return 0L;
     }
 
     @Override
