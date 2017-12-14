@@ -4,7 +4,6 @@
 <#include "/common/host_config.ftl">
 <head>
     <meta charset="utf-8" />
-
     <title>代发管理系统登录</title>
 
     <link href="http://static.571xz.com:86/hhh2016/??global.css" rel="stylesheet" />
