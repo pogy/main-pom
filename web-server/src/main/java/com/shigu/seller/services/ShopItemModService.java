@@ -4,11 +4,9 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
-import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.seller.vo.ShiguStyleVo;
@@ -242,18 +240,19 @@ public class ShopItemModService {
     /**
      * 获取固定风格
      * @return
+     * @param webSite
      */
-    public List<ShiguStyleVo> getFixedStyle(){
+    public List<ShiguStyleVo> getFixedStyle(String webSite){
         SearchCategorySubExample example = new SearchCategorySubExample();
-        example.createCriteria().andTypeEqualTo(3).andWebSiteEqualTo("hz").andParentCateValueEqualTo("30");
+        example.createCriteria().andTypeEqualTo(3).andWebSiteEqualTo(webSite).andParentCateValueEqualTo("30");
         List<SearchCategorySub> list = searchCategorySubMapper.selectByExample(example);
-        ArrayList<Object> list1 = new ArrayList<>();
+        ArrayList<ShiguStyleVo> styleVos = new ArrayList<>();
         for (SearchCategorySub searchCategorySub:list) {
             ShiguStyleVo shiguStyleVo = new ShiguStyleVo();
             shiguStyleVo.setStyleName(searchCategorySub.getCateName());
-            list1.add(shiguStyleVo);
+            shiguStyleVo.setStyleId(searchCategorySub.getSubId());
+            styleVos.add(shiguStyleVo);
         }
-        List<ShiguStyleVo> styleVos = BeanMapper.mapList(list, ShiguStyleVo.class);
         return styleVos;
     }
     /**
@@ -262,36 +261,40 @@ public class ShopItemModService {
      */
     public List<ShiguStyleVo> getCustomStyle(Long userId){
         ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
-        example.createCriteria().andStyleTypeEqualTo(1).andUserIdEqualTo(userId);
+        example.createCriteria().andUserIdEqualTo(userId);
         List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(example);
         List<ShiguStyleVo> styleVos = BeanMapper.mapList(list, ShiguStyleVo.class);
         return styleVos;
     }
 
     /**
-     * 设置自定义商品风格
+     * 设置商品风格
      */
-    public void setStyle(Long goodsId,Long styleId){
-        itemAddOrUpdateService.setCustomStyle(goodsId,styleId);
+    public void setStyle(Long goodsId, Long styleId, String webSite){
+        itemAddOrUpdateService.setCustomStyle(goodsId,styleId,webSite);
     }
     /**
      *   关联同货号设置风格
      */
-    public void setSameNumStyle(Long goodsId,Long styleId,Long shopId){
+    public void setSameNumStyle(Long goodsId, Long styleId, Long shopId, String webSite){
         //查找该商品货号
-        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(goodsId);
-        String goodsNo = shiguGoodsTiny.getGoodsNo();
+        ShiguGoodsTinyExample example1 = new ShiguGoodsTinyExample();
+        example1.setWebSite(webSite);
+        example1.createCriteria().andGoodsIdEqualTo(goodsId);
+        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example1);
+        String goodsNo =  shiguGoodsTinies.get(0).getGoodsNo();
         //店里的商品
         ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
         example.createCriteria().andStoreIdEqualTo(shopId);
-        example.setWebSite("hz");
+        example.setWebSite(webSite);
         List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
         //设置风格
-        for (ShiguGoodsTiny goods:list) {
-            if (StringUtils.isNotEmpty(goodsNo)&&goods.getGoodsNo().equals(goodsNo)){
-                setStyle(goods.getGoodsId(),styleId);
+        if (goodsNo!=null&&StringUtils.isNotEmpty(goodsNo)){
+            for (ShiguGoodsTiny goods:list) {
+                if (goods.getGoodsNo().equals(goodsNo)){
+                    setStyle(goods.getGoodsId(),styleId,webSite);
+                }
             }
         }
-
     }
 }

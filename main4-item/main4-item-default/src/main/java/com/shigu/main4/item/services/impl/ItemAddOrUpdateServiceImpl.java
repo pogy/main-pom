@@ -1154,21 +1154,23 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void setCustomStyle(Long goodsId, Long sid ) {
+    public void setCustomStyle(Long goodsId, Long sid, String webSite) {
         ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
         shiguGoodsTinyExample.createCriteria().andGoodsIdEqualTo(goodsId);
-        shiguGoodsTinyExample.setWebSite("hz");
+        shiguGoodsTinyExample.setWebSite(webSite);
         List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
         //在goods表里Remark9设置自定义风格id
-        if (shiguGoodsTinies.size()>0&&shiguGoodsTinies!=null){
-            shiguGoodsTinies.get(0).setRemark9(sid+"");
+        if (shiguGoodsTinies != null && !shiguGoodsTinies.isEmpty()){
+            ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinies.get(0);
+            shiguGoodsTiny.setRemark9(sid+"");
+            shiguGoodsTinyMapper.updateByPrimaryKeySelective(shiguGoodsTiny);
         }
     }
 
     @Override
     public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
 
-        if(goodsStyleName!=null&&StringUtils.isNotEmpty(goodsStyleName)){
+        if(goodsStyleName!=null&&StringUtils.isNotEmpty(goodsStyleName)&&goodsStyleName.length()<45){
             ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
             example.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example);
@@ -1195,7 +1197,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Override
     public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
-        if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)){
+        if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)&&goodsStyleName.length()<45){
             ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
             shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);

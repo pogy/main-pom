@@ -118,8 +118,11 @@ public interface ItemAddOrUpdateService {
     /**
      * 设置自定义商品风格
      * @param goodsId 商品ID
+     * @param webSite
      */
-   void setCustomStyle(Long goodsId, Long sid);
+   void setCustomStyle(Long goodsId, Long sid, String webSite);
+
+
 
     /**
      * 添加自定义风格

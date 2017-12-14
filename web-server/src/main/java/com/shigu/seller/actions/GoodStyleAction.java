@@ -1,5 +1,6 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.seller.bo.PidBo;
 import com.shigu.seller.services.GoodStyleService;
 import com.shigu.session.main4.PersonalSession;
@@ -31,7 +32,7 @@ public class GoodStyleAction {
      * @return
      */
     @RequestMapping("goodsStyleManager")
-    public String goodsStyleManager(PidBo bo, HttpSession session, Model model) {
+    public String goodsStyleManager(PidBo bo, HttpSession session, Model model) throws JsonErrException{
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long shopId=personalSession.getLogshop().getShopId();
         Long userId=personalSession.getUserId();
@@ -48,7 +49,7 @@ public class GoodStyleAction {
      */
     @RequestMapping("getCategoryList")
     @ResponseBody
-    public JSONObject getCategoryList(HttpSession session){
+    public JSONObject getCategoryList(HttpSession session) throws JsonErrException{
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         return JsonResponseUtil.success().element("categoryList",goodStyleService.getCategory(shopSession.getWebSite()));
@@ -59,7 +60,7 @@ public class GoodStyleAction {
      */
     @RequestMapping("addGoodsStyle")
     @ResponseBody
-    public JSONObject addGoodsStyle(Long categoryId,String goodsStyleName,HttpSession session){
+    public JSONObject addGoodsStyle(Long categoryId,String goodsStyleName,HttpSession session) throws JsonErrException{
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 //        ShopSession shopSession = personalSession.getLogshop();
         Long aLong = goodStyleService.addCustomerStyle(categoryId, goodsStyleName, personalSession.getUserId());
@@ -74,7 +75,7 @@ public class GoodStyleAction {
      */
     @RequestMapping("editGoodsStyle")
     @ResponseBody
-    public JSONObject editGoodsStyle(Long categoryId,Long goodsStyleId,String goodsStyleName,HttpSession session){
+    public JSONObject editGoodsStyle(Long categoryId,Long goodsStyleId,String goodsStyleName,HttpSession session) throws JsonErrException{
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = personalSession.getUserId();
         if (  goodStyleService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName,userId)!=0){
@@ -87,7 +88,7 @@ public class GoodStyleAction {
      */
     @RequestMapping("sortGoodsStyle")
     @ResponseBody
-    public JSONObject sortGoodsStyle(Long goodsStyleId,Integer sortType){
+    public JSONObject sortGoodsStyle(Long goodsStyleId,Integer sortType) throws JsonErrException{
 
         goodStyleService.sortCustomerStyle( goodsStyleId, sortType);
         return JSONObject.fromObject(JsonResponseUtil.success());
@@ -99,7 +100,7 @@ public class GoodStyleAction {
      */
     @RequestMapping("deleteGoodsStyle")
     @ResponseBody
-    public JSONObject deleteGoodsStyle(Long goodsStyleId){
+    public JSONObject deleteGoodsStyle(Long goodsStyleId) throws JsonErrException {
         goodStyleService.delCustomerStyle(goodsStyleId);
         return JSONObject.fromObject(JsonResponseUtil.success());
     }

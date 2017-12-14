@@ -5,7 +5,6 @@ import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
-import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
@@ -39,7 +38,6 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
 import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserLicense;
@@ -67,7 +65,6 @@ import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
 import com.shigu.tb.finder.vo.TbOnsale;
-import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
@@ -505,7 +502,6 @@ public class ShopAction {
     @RequestMapping("seller/storeGoodsList21init")
     public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
-
         model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
         if(bo.getKeyword()!=null){
             bo.setKeyword(URLDecoder.decode(bo.getKeyword(),"utf-8"));
@@ -1317,23 +1313,20 @@ public class ShopAction {
 
     }
 
-
-
-
     /**
      * 设置自定义商品风格update
      * @param
      * @return
      */
     @RequestMapping("seller/setGoodsStyle")
-    public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativels,HttpSession session) {
+    @ResponseBody
+    public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativeIs,HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        if (relativels){
-
-            shopItemModService.setSameNumStyle(goodsId,styleId , shopSession.getShopId());
+        if (relativeIs){
+            shopItemModService.setSameNumStyle(goodsId,styleId , shopSession.getShopId(),shopSession.getWebSite());
         }
-        shopItemModService.setStyle( goodsId,styleId );
-        return JSONObject.fromObject(JsonResponseUtil.success());
+        shopItemModService.setStyle( goodsId,styleId, shopSession.getWebSite());
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -1345,15 +1338,16 @@ public class ShopAction {
     @ResponseBody
     public JSONObject getUserGoodsStyleList(HttpSession session){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JSONObject.fromObject(shopItemModService.getCustomStyle(ps.getUserId()));
+        return JsonResponseUtil.success().element("styleList",shopItemModService.getCustomStyle(ps.getUserId()));
     }
     /**
      * 获取默认商品风格列表
      */
     @RequestMapping("seller/getDefaultGoodsStyleList")
     @ResponseBody
-    public JSONObject getDefaultGoodsStyleList(){
-        return JSONObject.fromObject(shopItemModService.getFixedStyle());
+    public JSONObject getDefaultGoodsStyleList(HttpSession session){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return JsonResponseUtil.success().element("styleList",shopItemModService.getFixedStyle(ps.getLogshop().getWebSite()));
     }
 
 }
