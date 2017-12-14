@@ -77,6 +77,58 @@ public class OnsaleItemVO {
     //是否已设置主图视频 2已设置
     private Integer goodsVideoType;
 
+    //大图是否关联同货号商品 true是 false否
+    private Boolean picLindGoodsNo;
+    //商品风格类型，1未设置，2已设置
+    private Integer goodsStyleType;
+    //已设置的商品风格名称
+    private Integer goodsStyleId;
+    //风格是否关联同货号商品 true是 false否
+    private Boolean styleLinkGoodsNo;
+    //视频是否关联同货号商品 true是 false否
+    private Boolean videoLinkGoodsNo;
+
+
+    public Boolean getPicLindGoodsNo() {
+        return picLindGoodsNo;
+    }
+
+    public void setPicLindGoodsNo(Boolean picLindGoodsNo) {
+        this.picLindGoodsNo = picLindGoodsNo;
+    }
+
+    public Integer getGoodsStyleType() {
+        return goodsStyleType;
+    }
+
+    public void setGoodsStyleType(Integer goodsStyleType) {
+        this.goodsStyleType = goodsStyleType;
+    }
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
+
+    public Boolean getStyleLinkGoodsNo() {
+        return styleLinkGoodsNo;
+    }
+
+    public void setStyleLinkGoodsNo(Boolean styleLinkGoodsNo) {
+        this.styleLinkGoodsNo = styleLinkGoodsNo;
+    }
+
+    public Boolean getVideoLinkGoodsNo() {
+        return videoLinkGoodsNo;
+    }
+
+    public void setVideoLinkGoodsNo(Boolean videoLinkGoodsNo) {
+        this.videoLinkGoodsNo = videoLinkGoodsNo;
+    }
+
     public void setType(String type) {
         this.type = type;
     }

@@ -18,12 +18,12 @@ public class ShiguCustomerStyle implements Serializable {
 	private String styleName;
 
     /**
-     * 风格类型 1为自定义0为固定风格
+     * 风格类型 1为自定义0为固定风格，暂时用不到
      */
 	private Integer styleType;
 
     /**
-     * 产品id
+     * 产品id 貌似不需要，再goods表的remark9，设置自定义风格
      */
 	private Long goodsId;
 
