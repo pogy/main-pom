@@ -68,8 +68,13 @@ public class DaifaStockService {
         if (barCode.length() <= SystemConstant.EZINT) {
             throw new DaifaException("条码错误");
         }
+        Long orderId;
+        try {
+            orderId = Long.parseLong(barCode.substring(0, barCode.length() - SystemConstant.EZINT));
+        } catch (NumberFormatException e) {
+            throw new DaifaException("条码错误");
+        }
         String key=isOut?"daifa_worker_outstock_temp_":"daifa_worker_instock_temp_";
-        Long orderId = Long.parseLong(barCode.substring(0, barCode.length() - SystemConstant.EZINT));
         List<StockRedisBean> os=redisIO.getList(key+workerId,StockRedisBean.class);
         if(os==null){
             os=new ArrayList<>();
