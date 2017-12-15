@@ -90,7 +90,7 @@
         limit #{start},#{end}
     </select>
     <select id="selectTheDayStockRecordIdsCount" resultType="com.opentae.data.daifa.custom.beans.SelectTheDayStockRecordIdsCount">
-        select count(*) num,sum(t2.single_pi_price)price from (
+        select count(*) num,ifnull(sum(t2.single_pi_price),0)price from (
         select t2.stock_record_id,t1.df_order_id from daifa_stock t1
         LEFT JOIN daifa_stock_record t2
         on t1.stock_id=t2.stock_id
