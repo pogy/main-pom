@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -114,8 +115,6 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
-    @Autowired
-    UserLicenseService userLicenseService;
 
     /**
      * 分销商首页
@@ -906,12 +905,22 @@ public class MemberAction {
      *
      * @return
      */
-    @RequestMapping("member/withdraw5Apply")
-    public String withdraw5Apply(HttpSession session, Model model) {
+    @RequestMapping("{identity}/withdraw5Apply")
+    public String withdraw5Apply(HttpSession session, Model model,@PathVariable String identity) throws Main4Exception {
+        if (!"seller".equals(identity) && !"member".equals(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempcode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempcode);
-        return "fxs/withdraw5Apply";
+        // 手续费率
+        model.addAttribute("handlingCharge","0.6%");
+        model.addAttribute("alipayUserList",userAccountService.userAlipayBindList(ps.getUserId()));
+        model.addAttribute("payPasswordIs",memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
+        if ("seller".equals(identity)) {
+            return "gys/withdraw5Apply";
+        }
+        else {
+            return "fxs/withdraw5Apply";
+        }
     }
 
     /**
@@ -1135,6 +1144,13 @@ public class MemberAction {
         return JsonResponseUtil.success();
     }
 
+    /**
+     * 用户支付宝绑定请求
+     * @param bo
+     * @param session
+     * @param result
+     * @return
+     */
     @RequestMapping("member/applyAliUserBind")
     @ResponseBody
     public JSONObject applyAliUserBind(@Valid MemberAlipayBindBO bo, HttpSession session, BindingResult result) {
@@ -1154,4 +1170,15 @@ public class MemberAction {
         return userAccountService.applyAliUserBind(bo,userId);
     }
 
+    /**
+     * 删除绑定支付宝帐号
+     * @param aliAccountId 用户支付宝绑定记录id
+     * @return
+     */
+    @RequestMapping("member/deleteAliUser")
+    @ResponseBody
+    public JSONObject deleteAliUser(Long aliAccountId, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return userAccountService.deleteAliUser(ps.getUserId(),aliAccountId);
+    }
 }

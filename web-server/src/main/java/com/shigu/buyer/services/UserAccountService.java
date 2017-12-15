@@ -19,6 +19,7 @@ import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -35,10 +36,10 @@ import java.util.List;
  */
 @Service
 public class UserAccountService {
-    
+
     @Autowired
     private UserLicenseService userLicenseService;
-    
+
     @Autowired
     private RegisterAndLoginService registerAndLoginService;
 
@@ -50,20 +51,21 @@ public class UserAccountService {
 
     /**
      * 充值申请
+     *
      * @param userId
      * @param money
      * @return
      * @throws PayApplyException
      */
-    public PayApplyVO rechargeApply(Long userId,Long money) throws PayApplyException {
-        return payProcess.rechargeApply(userId, PayType.ALI,money);
+    public PayApplyVO rechargeApply(Long userId, Long money) throws PayApplyException {
+        return payProcess.rechargeApply(userId, PayType.ALI, money);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void bindAccount(Rds3TempUser rds3TempUser, String telephone, String remoteAddr) throws JsonErrException {
         /*
-             * 如果是手机来的,就是星座号绑定手机
-             */
+         * 如果是手机来的,就是星座号绑定手机
+         */
         try {
             if (rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)) {
                 if (registerAndLoginService.userCanRegist(telephone, LoginFromType.PHONE)) {
@@ -96,6 +98,7 @@ public class UserAccountService {
 
     /**
      * 用户绑定支付宝列表
+     *
      * @param userId
      * @return
      */
@@ -115,8 +118,32 @@ public class UserAccountService {
         return alipayBindVOList;
     }
 
+    /**
+     * 用户绑定支付宝帐号
+     * @param bo
+     * @param userId
+     * @return
+     */
     public JSONObject applyAliUserBind(MemberAlipayBindBO bo, Long userId) {
-        // TODO: 17-12-14 具体绑定接口调用
-        return null;
+        if (userLicenseService.saveOrUpdateUserAlipayBind(userId, bo.getAliAccount(), bo.getUserRealName())) {
+            return JsonResponseUtil.success();
+        }
+        return JsonResponseUtil.error("绑定支付宝失败");
+    }
+
+    /**
+     * 删除绑定支付宝帐号
+     * @param userId
+     * @param memberAlipayBindId 用户支付宝绑定记录id
+     */
+    public JSONObject deleteAliUser(Long userId, Long memberAlipayBindId) {
+        //从正常流程进入的请求userId一定非空，memberAlipayBindId直接由前端传入
+        if (memberAlipayBindId == null || userId == null) {
+            return JsonResponseUtil.error("数据错误");
+        }
+        if (userLicenseService.cancelMemberAlipayBind(userId,memberAlipayBindId)) {
+            return JsonResponseUtil.success();
+        }
+        return JsonResponseUtil.error("取消支付宝帐号绑定失败");
     }
 }
