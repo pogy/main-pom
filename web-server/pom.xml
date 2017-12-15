@@ -27,6 +27,12 @@
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
+            <artifactId>main4-jd-api</artifactId>
+            <version>${main4-jd-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
             <artifactId>main4-order-api</artifactId>
             <version>${main4-order-api.version}</version>
         </dependency>
@@ -590,4 +596,5 @@
             <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
 </project>
