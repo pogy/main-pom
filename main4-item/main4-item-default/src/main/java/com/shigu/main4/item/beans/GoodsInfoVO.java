@@ -66,6 +66,20 @@ public class GoodsInfoVO implements Serializable {
      */
     @Column("shigu_goods_tiny_{webSite}.is_excel_imp")
     private Integer isExcelImp;
+    /**
+     * 风格id
+     * @return
+     */
+    @Column("shigu_goods_tiny_{webSite}.remark9")
+    private String goodsStyleId;
+
+    public String getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(String goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
 
     public Long getItemId() {
         return itemId;
