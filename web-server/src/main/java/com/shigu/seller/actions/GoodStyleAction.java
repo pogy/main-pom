@@ -100,8 +100,12 @@ public class GoodStyleAction {
      */
     @RequestMapping("deleteGoodsStyle")
     @ResponseBody
-    public JSONObject deleteGoodsStyle(Long goodsStyleId) throws JsonErrException {
-        goodStyleService.delCustomerStyle(goodsStyleId);
+    public JSONObject deleteGoodsStyle(Long goodsStyleId,HttpSession session) throws JsonErrException {
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId=personalSession.getUserId();
+        String website=personalSession.getLogshop().getWebSite();
+        Long shopId=personalSession.getLogshop().getShopId();
+        goodStyleService.delCustomerStyle(goodsStyleId,userId,website,shopId);
         return JSONObject.fromObject(JsonResponseUtil.success());
     }
 }

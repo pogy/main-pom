@@ -145,8 +145,11 @@ public interface ItemAddOrUpdateService {
     /**
      * 删除自定义风格
      * @param goodsStyleId
+     * @param userId
+     * @param website
+     * @param shopId
      */
-    void deleteCustomerStyle(Long goodsStyleId);
+    void deleteCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId);
 
     /**
      * 移动商品风格排序

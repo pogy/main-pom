@@ -109,11 +109,14 @@ public class GoodStyleService {
 
     /**
      * 删除自定义风格
+     * @param styleId
+     * @param userId
+     * @param website
      * @param goodsStyleId
      */
-    public void delCustomerStyle(Long goodsStyleId) {
+    public void delCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId) {
         if(goodsStyleId!=null){
-            ItemAddOrUpdateService.deleteCustomerStyle( goodsStyleId);
+            ItemAddOrUpdateService.deleteCustomerStyle(goodsStyleId,userId,website,shopId);
         }
     }
 

@@ -19,11 +19,13 @@ import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
+import org.omg.CosNaming.NamingContextPackage.NotFoundReasonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1227,12 +1229,31 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void deleteCustomerStyle(Long goodsStyleId) {
+    public void deleteCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId) {
         if (goodsStyleId!=null){
             ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
             shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
-            int i = shiguCustomerStyleMapper.deleteByExample(shiguCustomerStyleExample);
+            shiguCustomerStyleMapper.deleteByExample(shiguCustomerStyleExample);
+            //查当前风格的goods，并设置
+            ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+            shiguGoodsTinyExample.createCriteria().andRemark9EqualTo(String.valueOf(goodsStyleId)).andStoreIdEqualTo(shopId);
+            shiguGoodsTinyExample.setWebSite(website);
+            List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
+            if(shiguGoodsTinies!=null&&shiguGoodsTinies.size()>0){
+                for (ShiguGoodsTiny shiguGoodsTiny  :shiguGoodsTinies) {
+                    shiguGoodsTiny.setRemark9(null);
+                    GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                    goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+                    goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                    //设置为无风格
+                    if(goodsCountForsearch!=null){
+                        goodsCountForsearch.setHadStyle(0);
+                    }
+
+                }
+            }
         }
+
     }
 
     @Override
