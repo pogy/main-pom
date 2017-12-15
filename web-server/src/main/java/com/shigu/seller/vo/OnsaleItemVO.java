@@ -184,6 +184,8 @@ public class OnsaleItemVO {
         this.setConstituentType(onsaleItem.getConstituentType());
         this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
         this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
+
+        this.setGoodsStyleType(this.getGoodsStyleId()==null||"".equals(this.getGoodsStyleId())?1:2);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }

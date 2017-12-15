@@ -1164,6 +1164,15 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinies.get(0);
             shiguGoodsTiny.setRemark9(sid+"");
             shiguGoodsTinyMapper.updateByPrimaryKeySelective(shiguGoodsTiny);
+//            GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
+//            goodsCountForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(goodsId);
+            goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+            if(goodsCountForsearch != null) {
+                goodsCountForsearch.setHadStyle(1);
+                goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+            }
         }
     }
 
