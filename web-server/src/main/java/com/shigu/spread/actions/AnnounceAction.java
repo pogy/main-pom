@@ -5,6 +5,8 @@ import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 描述：公告信息
@@ -24,6 +26,8 @@ public class AnnounceAction {
      * @param announceId 公告识别标志
      * @return 公告信息
      */
+    @RequestMapping("acquireAnnounceInfo")
+    @ResponseBody
     public JSONObject acquireAnnounceInfo(String announceId) {
         String announceInfo = announceService.acquireAnnounceInfo(announceId);
         JSONObject result = JsonResponseUtil.success();
