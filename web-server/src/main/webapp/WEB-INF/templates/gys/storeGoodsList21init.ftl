@@ -226,7 +226,7 @@
             <div class="">
                 <ul class="clearfix">
                     <li>
-                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}" data-piclinkgoodsno="${item.picLindGoodsNo!}">
+                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}" >
                             <i class="icon-lgImg <#if item.correlateType == 2>setted</#if>"></i>
                             大图商品
                         </b>
@@ -238,13 +238,13 @@
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}" data-stylelinkgoodsno="${item.styleLinkGoodsNo!}">
+                        <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
                             <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
                             风格标签
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}" data-videolinkgoodsno="${item.videoLinkGoodsNo!}">
+                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}">
                             <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>
                             主图视频
                         </b>
