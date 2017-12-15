@@ -44,7 +44,7 @@ public class CartAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         model.addAttribute("cart", cartService.selMyCart(ps.getUserId()));
         model.addAttribute("webSite", "hz");
-        return "trade/cart";
+        return "order/cart";
     }
 
 

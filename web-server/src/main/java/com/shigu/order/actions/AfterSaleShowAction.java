@@ -51,7 +51,7 @@ public class AfterSaleShowAction {
      * @param childOrderId 子弹id
      * @return ftl
      */
-    @RequestMapping(value = "returnOrChange", method = RequestMethod.GET)
+//    @RequestMapping(value = "returnOrChange", method = RequestMethod.GET)
     public String returnOrChange(@RequestParam(value = "childOrderId") String childOrderId, Model model) {
         Map<String, Object> map = afterSaleShowService.returnOrChange(childOrderId);
 
@@ -76,15 +76,15 @@ public class AfterSaleShowAction {
             Map<String, Object> map = afterSaleShowService.refundChildOrder(childOrderId);
             map.put("refundDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/refund";
+            return "order/refund";
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refund(refundId,express);
             map.put("refundDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/refund";
+            return "order/refund";
         }
 
-        return "trade/refund";
+        return "order/refund";
     }
 
     /**
@@ -94,7 +94,7 @@ public class AfterSaleShowAction {
      * @param model model
      * @return  返回页面
      */
-    @RequestMapping(value = "exchange", method = RequestMethod.GET)
+//    @RequestMapping(value = "exchange", method = RequestMethod.GET)
     public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
             , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
