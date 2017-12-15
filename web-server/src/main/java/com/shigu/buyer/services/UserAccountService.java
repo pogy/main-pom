@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.MemberAlipayBind;
 import com.opentae.data.mall.examples.MemberAlipayBindExample;
 import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
+import com.shigu.buyer.bo.TixianBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -21,6 +22,7 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +120,20 @@ public class UserAccountService {
         return alipayBindVOList;
     }
 
+
+    public TixianBO selTixianAccountInfoByBindId(Long userId,Long bindId) {
+        if (userId == null || bindId == null) {
+            return null;
+        }
+        MemberAlipayBind bind = memberAlipayBindMapper.selectByPrimaryKey(bindId);
+        if (bind == null || !userId.equals(bind.getUserId()) || StringUtils.isBlank(bind.getAlipayId()) || StringUtils.isBlank(bind.getAlipayName())) {
+            return null;
+        }
+        TixianBO accountInfo = new TixianBO();
+        accountInfo.setAlipay(bind.getAlipayId());
+        accountInfo.setPayname(bind.getAlipayName());
+        return accountInfo;
+    }
     /**
      * 用户绑定支付宝帐号
      * @param bo
@@ -146,4 +162,6 @@ public class UserAccountService {
         }
         return JsonResponseUtil.error("取消支付宝帐号绑定失败");
     }
+
+
 }

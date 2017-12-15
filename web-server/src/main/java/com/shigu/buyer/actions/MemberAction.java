@@ -930,12 +930,21 @@ public class MemberAction {
      */
     @RequestMapping("member/saveTixian")
     @ResponseBody
-    public JSONObject saveTixian(@Valid TixianBO bo, BindingResult result, HttpSession session) {
+    public JSONObject saveTixian(@Valid NewCashApplyBO bo, BindingResult result, HttpSession session) {
         if (result.hasErrors()) {
-            return JSONObject.fromObject("{'result':'error','msg':'" + result.getAllErrors().get(0).getDefaultMessage() + "'}");
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return paySdkClientService.tixian(bo, ps.getUserId());
+        Long userId = ps.getUserId();
+        if (memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
+            return JsonResponseUtil.error("请检查支付密码");
+        }
+        TixianBO tixianBO = userAccountService.selTixianAccountInfoByBindId(userId, bo.getAlipayId());
+        if (tixianBO == null) {
+            return JsonResponseUtil.error("帐号信息错误");
+        }
+        tixianBO.setPaynum(bo.getPaynum());
+        return paySdkClientService.tixian(tixianBO, userId);
     }
 
     /**
