@@ -216,7 +216,7 @@
             <div class="">
                 <ul class="clearfix">
                     <li>
-                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}">
+                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}" >
                             <i class="icon-lgImg <#if item.correlateType == 2>setted</#if>"></i>
                             大图商品
                         </b>
@@ -236,26 +236,6 @@
                 </ul>
             </div>
         </li>
-        <!--<li class="constituent">
-            <p>
-                <#if item.constituentType == 1>
-                <span>未设置</span>
-                <#elseif item.constituentType == 2>
-                <span>已设置</span>
-                </#if>
-                <b class="penIcon" jhand="openEditConstituentWindow" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}"></b>
-            </p>
-        </li>
-        <li class="bigPicCorrelate">
-            <p>
-                <#if item.correlateType == 1>
-                <span>未设置</span>
-                <#elseif item.correlateType == 2>
-                <span>已设置</span>
-                </#if>
-                <b class="penIcon" jhand="openEditBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
-            </p>
-        </li>-->
         <li class="saleCount">${item.saleCount!}</li>
         <li class="upcount">${item.count!}</li>
         <li class="control">

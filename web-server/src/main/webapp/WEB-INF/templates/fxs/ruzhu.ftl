@@ -74,6 +74,9 @@
         <#if $it.text??>
             ${$it.text!}
         </#if>
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
     </span>
 </label>
 </#list>

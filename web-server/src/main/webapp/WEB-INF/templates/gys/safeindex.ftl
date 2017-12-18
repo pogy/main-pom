@@ -25,7 +25,7 @@
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
+            <#assign sidebarType>safecenter</#assign>
 <#assign text>{"type":sidebarType}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -60,6 +60,28 @@
         </li>
         <li class="d3">
             <a href="safexgmm.htm">修改密码</a>
+        </li>
+    </ul>
+    <ul class="clearfix">
+        <li class="d1"><i class="icon-paypwd paypwd"></i></li>
+        <li class="d2">
+            <p>
+                支付密码
+                <#if info_payPwd == true>
+                <em class="yes"><i class="icon-c-checked"></i>已设置</em>
+                <#else>
+                <em class="no"><i class="icon-c-warn"></i>未设置</em>
+                </#if>
+            </p>
+            <p class="desc">使用余额支付时需要输入的密码。</p>
+        </li>
+        <li class="d3">
+            <#if info_payPwd == true>
+            <a href="safeXgPaymm.htm?type=3">找回密码</a>
+            <a href="safeXgPaymm.htm?type=2">修改密码</a>
+            <#else>
+            <a href="safeXgPaymm.htm?type=1">立即设置</a>
+            </#if>
         </li>
     </ul>
     <ul class="clearfix">

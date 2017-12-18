@@ -1,23 +1,22 @@
-<#assign $pageid>iwantToRechargein5</#assign>
+<#assign $pageid>userBalance</#assign>
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300px">
-    <title>充值 - 供应商中心 - 四季星座网</title>
+    <title>我的资金 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_css.ftl">
+<#include "/__style_torrent__/gys__userBalance_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
-<#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
-<#include "/__style_torrent__/gys__iwantToRechargein5_js.ftl">
+<#include "/__style_torrent__/gys__userBalance_js.ftl">
 </head>
 <body>
 <#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
@@ -36,7 +35,7 @@
 </#list>
             <div class="rightBox shadowBox">
 <ul class="pageTabs clearfix">
-    <li class="tabbutton selected"><a>我的资金 &gt; 充值</a></li>
+    <li class="tabbutton selected"><a>我的资金</a></li>
 </ul>
 <div class="remainSum">
     <div class="remainSumTop">
@@ -49,63 +48,15 @@
             <p id="yuerBlockMoney">加载中…</p>
         </div>
     </div>
-    <input type="hidden" id="tempCode" value="${tempCode!}">
-</div>
-<hr class="splitLine">
-<div class="validateForm rechargeForm">
-    <div class="validateItem">
-        <div class="formGroup">
-            <label>充值金额：</label>
-            <input type="text" name="money" class="fmInput" placeholder="请输入充值金额">元
-        </div>
-    </div>
-    <div class="validateItem">
-        <div class="formGroup">
-            <label></label>
-            <span class="fcF40">温馨提示：账户余额提现收取0.6%的手续费!</span>
-        </div>
-    </div>
-    <div class="validateItem">
-        <div class="formGroup payType clearfix">
-            <label>充值方式：</label>
+    <div class="remainSumBtom">
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-<label class="fmRadio clearfix
-        checked
-">
-    <input
-        type="radio"
-        autocomplete="off"
-            name="payMode"
-            value="1"
-            checked
-    >
-    <i class="before"></i>
-    <span>
-        <#if $it.text??>
-            ${$it.text!}
-        </#if>
-        <i class="icon-s-alipay alipay"></i>支付宝
-    </span>
-</label>
-</#list>
-        </div>
-    </div>
-    <div class="validateItem">
-        <div class="formGroup">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <button type="button"
-    </#if>
+    <a href="iwantToRechargein5.htm"
+        target="_blank"
     class="fmButton
-         fmButton-lg
          fmButton-blue
-         czBtn"
+        "
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
@@ -113,17 +64,45 @@
         <#if $it.title??>
             title=""
         </#if>
-        id="czBtn"
+        id="recharge"
 >
-        确认充值
-    <#if $it.href??>
+        充值
     </a>
-    <#else>
-    </button>
-    </#if>
 </#list>
-        </div>
+<#assign text>{}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+    <a href="withdraw5Apply.htm"
+    class="fmButton
+         fmButton-lighter-b
+        "
+        <#if $it.disabled == true>disabled="disabled"</#if>
+        <#if $it.dataId??>
+            data-id="${$it.dataId!}"
+        </#if>
+        <#if $it.title??>
+            title=""
+        </#if>
+        id="withdrawal"
+>
+        提现
+    </a>
+</#list>
     </div>
+    <input type="hidden" id="tempCode" value="${tempCode!}">
+</div>
+<div class="capSub">
+    <table>
+        <thead>
+            <tr class="thTr">
+                <th class="orderno">订单编号</th>
+                <th class="time">时间</th>
+                <th class="money">金额</th>
+                <th class="type">类型</th>
+            </tr>
+        </thead>
+        <tbody class="yahei"></tbody>
+    </table>
 </div>
             </div>
     </div>

@@ -53,7 +53,6 @@
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
     <a href="iwantToRechargein5.htm"
-        target="_blank"
     class="fmButton
          fmButton-orange
         "

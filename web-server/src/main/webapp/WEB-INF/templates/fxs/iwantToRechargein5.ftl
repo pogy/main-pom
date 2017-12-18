@@ -60,9 +60,36 @@
         </div>
     </div>
     <div class="validateItem">
-        <div class="formGroup payType">
+        <div class="formGroup">
+            <label></label>
+            <span class="fcF40">温馨提示：账户余额提现收取0.6%的手续费!</span>
+        </div>
+    </div>
+    <div class="validateItem">
+        <div class="formGroup payType clearfix">
             <label>充值方式：</label>
-            <span class="fc3">支付宝</span>
+<#assign text>{}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<label class="fmRadio clearfix
+        checked
+">
+    <input
+        type="radio"
+        autocomplete="off"
+            name="payMode"
+            value="1"
+            checked
+    >
+    <i class="before"></i>
+    <span>
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+        <i class="icon-s-alipay alipay"></i>支付宝
+    </span>
+</label>
+</#list>
         </div>
     </div>
     <div class="validateItem">
