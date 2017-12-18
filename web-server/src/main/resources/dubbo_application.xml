@@ -67,4 +67,11 @@
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
+
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdAgingtemplService" id="jdAgingtemplService"  timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdAuthService" id="jdAuthService"  timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdCategoryService" id="jdCategoryService"  timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdGoodsService" id="jdGoodsService"  timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdServiceMarketService" id="jdServiceMarketService" timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.jd.service.JdShopService" id="jdShopService"  timeout="20000" />
 </beans>
