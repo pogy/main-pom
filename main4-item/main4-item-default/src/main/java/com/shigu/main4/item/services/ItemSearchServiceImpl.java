@@ -3,13 +3,16 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
+import com.opentae.data.mall.beans.GoodsCountForsearch;
+import com.opentae.data.mall.beans.ShiguGoodsExtends;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguTaobaocat;
+import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.SearchCategoryMapper;
-import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -70,6 +73,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+    @Autowired
+    private ShiguTaobaocatMapper shiguTaobaocatMapper;
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
+    @Autowired
+    private  ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
 
     @Override
     public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
@@ -421,7 +430,69 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         return categoryValues;
     }
 
+    /**
+     * 查已发布商品的详情
+     * @param goodId
+     * @param webSite
+     * @return
+     */
+    @Override
+    public GoodsOfferVO selGoodsOffer(Long goodId, String webSite) {
+        GoodsOfferVO vo = new GoodsOfferVO();
+        //查商品表
+        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+        shiguGoodsTiny.setGoodsId(goodId);
+        shiguGoodsTiny.setWebSite(webSite);
+        shiguGoodsTiny=shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
+        //查goodsCountForsearch表
+        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
+        goodsCountForsearchExample.createCriteria().andGoodsIdEqualTo(goodId).andWebSiteEqualTo(webSite);
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(goodId);
+        goodsCountForsearch.setWebSite(webSite);
+        goodsCountForsearch= goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        //查shiguGoodsExtends表
+        ShiguGoodsExtends shiguGoodsExtends = new ShiguGoodsExtends();
+        shiguGoodsExtends.setGoodsId(goodId);
+        shiguGoodsExtends=shiguGoodsExtendsMapper.selectOne(shiguGoodsExtends);
 
+        try {
+            vo.setSellerids(selCatIds(shiguGoodsTiny.getCid()));//类目id串
+        } catch (Main4Exception e) {
+            logger.error("得到类目串失败",e);
+        }
+        vo.setCid(shiguGoodsTiny.getCid());
+        vo.setPiPrice(String.valueOf(shiguGoodsTiny.getPiPrice()));
+        vo.setBuynow(String.valueOf(shiguGoodsTiny.getPrice()));
+        vo.setGoodsNo(shiguGoodsTiny.getGoodsNo());
+        vo.setTitle(shiguGoodsTiny.getTitle());
+        vo.setPicPath(shiguGoodsTiny.getPicUrl());
+        vo.setQuantity(shiguGoodsTiny.getNum());
+
+        vo.setInFabric(goodsCountForsearch.getInfabric());
+        vo.setFabric(goodsCountForsearch.getFabric());
+
+        vo.setAllimg(shiguGoodsExtends.getImages());
+        vo.setDeschtml(shiguGoodsExtends.getGoodsDesc());
+        vo.setInputPids(shiguGoodsExtends.getInputPids());
+        vo.setInputStr(shiguGoodsExtends.getInputStr());
+        vo.setParamstr(shiguGoodsExtends.getProps());
+        vo.setPropertyAlias(shiguGoodsExtends.getPropertyAlias());
+        vo.setSellPoint(shiguGoodsExtends.getSubtitle());
+        return vo;
+    }
+    public String selCatIds(Long cid) throws Main4Exception {
+        ShiguTaobaocat cat=shiguTaobaocatMapper.selectByPrimaryKey(cid);
+        if(cat==null){
+            throw new Main4Exception("cid对应的类目不存在");
+        }
+        Long parentCid=cat.getParentCid();
+        if(parentCid==0){
+            return cat.getCid().toString();
+        }else{
+            return selCatIds(parentCid)+","+cat.getCid();
+        }
+    }
 
     /**
      * 按ID查询

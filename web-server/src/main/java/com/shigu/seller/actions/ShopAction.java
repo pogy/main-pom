@@ -29,6 +29,7 @@ import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ItemShowCaseService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.*;
+import com.shigu.main4.item.vo.GoodsOfferVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -439,7 +440,7 @@ public class ShopAction {
         return JsonResponseUtil.success().element("rows", JSONArray.fromObject(cats));
     }
     /**
-     * 发页商品
+     * 发布商品
      * @return
      */
     @RequestMapping("seller/jsongoods_send")
@@ -486,6 +487,74 @@ public class ShopAction {
             throw new JsonErrException(e.getMessage());
         }
         return JsonResponseUtil.success().element("goodsId",itemId).element("webSite",shopSession.getWebSite());
+    }
+
+    /**
+     * 编辑商品
+     * @param goodId
+     * @param session
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("seller/goodsEdite")
+    @ResponseBody
+    public String goodsEdite(Long goodId,HttpSession session,Model model)throws Exception{
+        ShopSession shopSession = getShopSession(session);
+        model.addAttribute("good",shopItemModService.getGoodsOffer(goodId, shopSession));
+        return "gys/releaseGoodsSend";
+    }
+
+    /**
+     * 更新编辑好的商品
+     * @param session
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("seller/goodsUpdate")
+    @ResponseBody
+    public JSONObject goodsUpdate(@Valid GoodsInfoBO bo,BindingResult result, HttpSession session) throws JsonErrException {
+        if(result.hasErrors()){
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        ShopSession shopSession = getShopSession(session);
+        if (shopSession.getType().equals(1)) {
+            throw new JsonErrException("淘宝店铺不支持手工发布");
+        }
+        Long itemId;
+        //包装bo
+        try {
+            SynItem synItem=bo.getOffer().parseToSynItem();
+            synItem.setShopId(shopSession.getShopId());
+            synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
+                    synItem.getInputPids(),synItem.getPropertyAlias()));
+            synItem.setMarketId(shopSession.getMarketId());
+            synItem.setFloorId(shopSession.getFloorId());
+            synItem.setWebSite(shopSession.getWebSite());
+            synItem.setItemFrom(ItemFrom.MEMBER);
+            Date created = new Date();
+            synItem.setCreated(created);
+            synItem.setModified(created);
+            //淘宝上架时间，手动发布商品默认为现在
+            synItem.setListTime(created);
+            //淘宝下架时间，手动发布商品默认为七天后
+            synItem.setDelistTime(DateUtil.addDay(created,7));
+            itemAddOrUpdateService.userUpdateItem(synItem);
+            //保存上传记录
+            EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
+            usedCat.setCid(synItem.getCid());
+            try {
+                usedCat.setShowName(goodsSendService.selCatPath(synItem.getCid()));
+                usedCat.setAllcids(goodsSendService.selCatIds(synItem.getCid()));
+                usedCat.setCname(goodsSendService.selCnameById(synItem.getCid()));
+                itemCatService.saveEverUsedCat(shopSession.getShopId(),usedCat);
+            } catch (Main4Exception e) {
+                logger.error("得到类目串失败",e);
+            }
+        } catch (ItemModifyException e) {
+            throw new JsonErrException(e.getMessage());
+        }
+
+        return JsonResponseUtil.success();
     }
 
     @RequestMapping("seller/getAccessInfoForImgUpload")

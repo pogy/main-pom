@@ -4,13 +4,21 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.vo.EverUsedCatForAdd;
+import com.shigu.main4.item.vo.GoodsOfferVO;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.bo.GoodsOfferBO;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
+import com.shigu.session.main4.ShopSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +53,13 @@ public class ShopItemModService {
 
     @Autowired
     ShiguCustomerStyleMapper shiguCustomerStyleMapper;
+
+    @Autowired
+    GoodsSendService goodsSendService;
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
+    @Autowired
+    ItemSearchService itemSearchService;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -301,4 +316,13 @@ public class ShopItemModService {
         }
 
     }
+    /**
+     * 查店内需要编辑的商品的具体内容
+     */
+    public GoodsOfferVO getGoodsOffer(Long goodId, ShopSession shopSession){
+        GoodsOfferVO goodsOfferVO = itemSearchService.selGoodsOffer(goodId, shopSession.getWebSite());
+
+        return goodsOfferVO;
+    }
+
 }
