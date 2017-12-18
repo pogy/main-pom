@@ -879,7 +879,7 @@ public class MemberAction {
      * @param userWirteMoney 用户填写金额，单位：元
      * @return
      */
-    @RequestMapping("/member/getRealWithdrawMoney")
+    @RequestMapping({"member/getRealWithdrawMoney","seller/getRealWithdrawMoney"})
     @ResponseBody
     public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
         if (userWirteMoney == null || userWirteMoney <= 0) {
