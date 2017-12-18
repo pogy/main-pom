@@ -430,69 +430,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         return categoryValues;
     }
 
-    /**
-     * 查已发布商品的详情
-     * @param goodId
-     * @param webSite
-     * @return
-     */
-    @Override
-    public GoodsOfferVO selGoodsOffer(Long goodId, String webSite) {
-        GoodsOfferVO vo = new GoodsOfferVO();
-        //查商品表
-        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
-        shiguGoodsTiny.setGoodsId(goodId);
-        shiguGoodsTiny.setWebSite(webSite);
-        shiguGoodsTiny=shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
-        //查goodsCountForsearch表
-        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-        goodsCountForsearchExample.createCriteria().andGoodsIdEqualTo(goodId).andWebSiteEqualTo(webSite);
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(goodId);
-        goodsCountForsearch.setWebSite(webSite);
-        goodsCountForsearch= goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-        //查shiguGoodsExtends表
-        ShiguGoodsExtends shiguGoodsExtends = new ShiguGoodsExtends();
-        shiguGoodsExtends.setGoodsId(goodId);
-        shiguGoodsExtends=shiguGoodsExtendsMapper.selectOne(shiguGoodsExtends);
 
-        try {
-            vo.setSellerids(selCatIds(shiguGoodsTiny.getCid()));//类目id串
-        } catch (Main4Exception e) {
-            logger.error("得到类目串失败",e);
-        }
-        vo.setCid(shiguGoodsTiny.getCid());
-        vo.setPiPrice(String.valueOf(shiguGoodsTiny.getPiPrice()));
-        vo.setBuynow(String.valueOf(shiguGoodsTiny.getPrice()));
-        vo.setGoodsNo(shiguGoodsTiny.getGoodsNo());
-        vo.setTitle(shiguGoodsTiny.getTitle());
-        vo.setPicPath(shiguGoodsTiny.getPicUrl());
-        vo.setQuantity(shiguGoodsTiny.getNum());
-
-        vo.setInFabric(goodsCountForsearch.getInfabric());
-        vo.setFabric(goodsCountForsearch.getFabric());
-
-        vo.setAllimg(shiguGoodsExtends.getImages());
-        vo.setDeschtml(shiguGoodsExtends.getGoodsDesc());
-        vo.setInputPids(shiguGoodsExtends.getInputPids());
-        vo.setInputStr(shiguGoodsExtends.getInputStr());
-        vo.setParamstr(shiguGoodsExtends.getProps());
-        vo.setPropertyAlias(shiguGoodsExtends.getPropertyAlias());
-        vo.setSellPoint(shiguGoodsExtends.getSubtitle());
-        return vo;
-    }
-    public String selCatIds(Long cid) throws Main4Exception {
-        ShiguTaobaocat cat=shiguTaobaocatMapper.selectByPrimaryKey(cid);
-        if(cat==null){
-            throw new Main4Exception("cid对应的类目不存在");
-        }
-        Long parentCid=cat.getParentCid();
-        if(parentCid==0){
-            return cat.getCid().toString();
-        }else{
-            return selCatIds(parentCid)+","+cat.getCid();
-        }
-    }
 
     /**
      * 按ID查询

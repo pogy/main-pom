@@ -320,9 +320,28 @@ public class ShopItemModService {
      * 查店内需要编辑的商品的具体内容
      */
     public GoodsOfferVO getGoodsOffer(Long goodId, ShopSession shopSession){
-        GoodsOfferVO goodsOfferVO = itemSearchService.selGoodsOffer(goodId, shopSession.getWebSite());
-
+        GoodsOfferVO goodsOfferVO =new GoodsOfferVO();
+//        GoodsOfferVO goodsOfferVO = itemSearchService.selGoodsOffer(goodId, shopSession.getWebSite());
+        SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
+        if(synItem != null){
+            goodsOfferVO.setGoodsNo(synItem.getGoodsNo());
+            goodsOfferVO.setInFabric(synItem.getInFabric());
+            goodsOfferVO.setFabric(synItem.getFabric());
+            goodsOfferVO.setCid(synItem.getCid());
+            goodsOfferVO.setSellerids(synItem.getCidAll());
+            goodsOfferVO.setDeschtml(synItem.getGoodsDesc());
+            goodsOfferVO.setTitle(synItem.getTitle());
+            goodsOfferVO.setQuantity(synItem.getNum());
+            goodsOfferVO.setSellPoint(synItem.getSellPoint());
+            goodsOfferVO.setPiPrice(synItem.getPiPriceString());
+            goodsOfferVO.setBuynow(synItem.getPriceString());
+            goodsOfferVO.setPropertyAlias(synItem.getPropertyAlias());
+            goodsOfferVO.setParamstr(synItem.getProps());
+            goodsOfferVO.setInputStr(synItem.getInputStr());
+            goodsOfferVO.setInputPids(synItem.getInputPids());
+            goodsOfferVO.setPicPath(synItem.getPicUrl());
+            goodsOfferVO.setAllimg(StringUtils.join(synItem.getImageList().toArray(), ","));
+        }
         return goodsOfferVO;
     }
-
 }

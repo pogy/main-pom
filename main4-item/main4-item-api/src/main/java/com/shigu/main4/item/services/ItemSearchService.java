@@ -99,12 +99,4 @@ public interface ItemSearchService {
      * @return
      */
     List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category, String website);
-
-    /**
-     * 查已发布商品的详情
-     * @param goodId
-     * @param webSite
-     * @return
-     */
-    GoodsOfferVO selGoodsOffer(Long goodId, String webSite);
 }

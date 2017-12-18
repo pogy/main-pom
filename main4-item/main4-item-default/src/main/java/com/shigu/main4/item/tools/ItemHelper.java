@@ -1,5 +1,6 @@
 package com.shigu.main4.item.tools;
 
+import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.ShiguGoodsExtends;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguPropImgs;
@@ -30,9 +31,10 @@ public class ItemHelper {
      * @param tiny 商品基础数据
      * @param goodsExtends 商品扩展数据
      * @param propImgs 商品属性图片
+     * @param goodsCountForsearch
      * @return 同步商品对象
      */
-    public static SynItem toSynItem(ShiguGoodsTiny tiny, ShiguGoodsExtends goodsExtends, ShiguPropImgs propImgs) {
+    public static SynItem toSynItem(ShiguGoodsTiny tiny, ShiguGoodsExtends goodsExtends, ShiguPropImgs propImgs, GoodsCountForsearch goodsCountForsearch) {
         // 验证入参
         // id 都不一样 怎么能有爱情呢。
         Class<SynItem> clazz = SynItem.class;
@@ -103,6 +105,10 @@ public class ItemHelper {
                     }
                 }
             }
+        }
+        if(goodsCountForsearch!=null){
+            synItem.setFabric(goodsCountForsearch.getFabric());
+            synItem.setInFabric(goodsCountForsearch.getInfabric());
         }
         return synItem;
     }

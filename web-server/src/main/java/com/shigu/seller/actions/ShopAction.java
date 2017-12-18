@@ -553,8 +553,7 @@ public class ShopAction {
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
-
-        return JsonResponseUtil.success();
+        return JsonResponseUtil.success().element("webSite",shopSession.getWebSite());
     }
 
     @RequestMapping("seller/getAccessInfoForImgUpload")
