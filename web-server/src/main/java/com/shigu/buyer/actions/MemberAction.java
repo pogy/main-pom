@@ -430,11 +430,13 @@ public class MemberAction {
      *
      * @return
      */
-    @RequestMapping("member/safeindex")
-    public String safeindex(HttpSession session, Model model) {
+    @RequestMapping("{identity}/safeindex")
+    public String safeindex(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         SafeAbout safeAbout = userLicenseService.selUserLicenses(ps.getUserId());
-
         try {
             Boolean info_payPwd = memberSimpleService.selIsPayPwdByUserId(ps.getUserId());
             model.addAttribute("info_payPwd", info_payPwd);
@@ -462,6 +464,9 @@ public class MemberAction {
             }
         } else {
             model.addAttribute("safe_level", 0);
+        }
+        if (SELLER_PATH.equals(identity)) {
+            return "gys/safeindex";
         }
         return "fxs/safeindex";
     }
@@ -671,8 +676,11 @@ public class MemberAction {
      * @return
      * @throws Main4Exception
      */
-    @RequestMapping("member/safeXgPaymm")
-    public String safeXgPaymm(HttpSession session, Model model, Integer type) throws Main4Exception {
+    @RequestMapping("{identity}/safeXgPaymm")
+    public String safeXgPaymm(@PathVariable String identity, HttpSession session, Model model, Integer type) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //是否设置过支付密码
         Boolean hasPayPwdSet = memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId());
@@ -680,6 +688,9 @@ public class MemberAction {
         //没设置过密码，设置密码  设置过密码，找回密码，找回密码，否则修改密码
         model.addAttribute("forPayPswType", hasPayPwdSet ? Objects.equals(3, type) ? 3 : 2 : 1);
         model.addAttribute("telphone", userLicenseService.findPhoneByUserId(ps.getUserId()));
+        if (SELLER_PATH.equals(identity)) {
+            return "gys/safeXgPaymm";
+        }
         return "fxs/safeXgPaymm";
     }
 
@@ -691,7 +702,7 @@ public class MemberAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping("member/setPayPassword")
+    @RequestMapping({"member/setPayPassword","seller/setPayPassword"})
     @ResponseBody
     public JSONObject setPayPassword(String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -708,7 +719,7 @@ public class MemberAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping("member/savePayPassword")
+    @RequestMapping({"member/savePayPassword","seller/savePayPassword"})
     @ResponseBody
     public JSONObject savePayPassword(String oldPwd, String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -730,7 +741,7 @@ public class MemberAction {
         return "buyer/safeXgPaymm";
     }
 
-    @RequestMapping("member/saveBackPayPassword")
+    @RequestMapping({"member/saveBackPayPassword","seller/saveBackPayPassword"})
     @ResponseBody
     public JSONObject changePayPassword(String code, String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -747,7 +758,7 @@ public class MemberAction {
     }
 
     @ResponseBody
-    @RequestMapping("member/getVerCode")
+    @RequestMapping({"member/getVerCode","seller/getVerCode"})
     public JSONObject getVerCode(HttpSession session) throws JsonErrException {
 
         String code = RedomUtil.redomNumber(6);

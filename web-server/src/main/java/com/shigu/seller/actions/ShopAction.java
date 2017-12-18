@@ -1069,37 +1069,37 @@ public class ShopAction {
     //    return "gys/withdraw5Apply";
     //}
 
-    /**
-     * 安全设置首页
-     * @return
-     */
-    @RequestMapping("seller/safeindex")
-    public String safeindex(HttpSession session,Model model){
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        SafeAbout safeAbout = userLicenseService.selUserLicenses(ps.getUserId());
-        if (safeAbout != null) {
-            model.addAttribute("safe_level", safeAbout.getScore());
-            List<UserLicense> licenses = safeAbout.getLicenses();
-            if (licenses != null) {
-                for (UserLicense ul : licenses) {
-                    if (ul.getType().equals(MemberLicenseType.PHONE_BIND)) {
-                        model.addAttribute("info_mobile", true);
-                        model.addAttribute("text_mobile", ul.getContext());
-                    } else if (ul.getType().equals(MemberLicenseType.PASSWORD_SAFE)) {
-                        Integer pwdScore = Integer.valueOf(ul.getContext());
-                        model.addAttribute("info_pwd", pwdScore >= 75 ? "high" : pwdScore >= 50 ? "middle" : "low");
-                    } else if (ul.getType().equals(MemberLicenseType.EMAIL)) {
-                        model.addAttribute("info_email", true);
-                    } else if (ul.getType().equals(MemberLicenseType.REAL_NAME)) {
-                        model.addAttribute("info_card", true);
-                    }
-                }
-            }
-        } else {
-            model.addAttribute("safe_level", 0);
-        }
-        return "gys/safeindex";
-    }
+    ///**
+    // * 安全设置首页
+    // * @return
+    // */
+    //@RequestMapping("seller/safeindex")
+    //public String safeindex(HttpSession session,Model model){
+    //    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    SafeAbout safeAbout = userLicenseService.selUserLicenses(ps.getUserId());
+    //    if (safeAbout != null) {
+    //        model.addAttribute("safe_level", safeAbout.getScore());
+    //        List<UserLicense> licenses = safeAbout.getLicenses();
+    //        if (licenses != null) {
+    //            for (UserLicense ul : licenses) {
+    //                if (ul.getType().equals(MemberLicenseType.PHONE_BIND)) {
+    //                    model.addAttribute("info_mobile", true);
+    //                    model.addAttribute("text_mobile", ul.getContext());
+    //                } else if (ul.getType().equals(MemberLicenseType.PASSWORD_SAFE)) {
+    //                    Integer pwdScore = Integer.valueOf(ul.getContext());
+    //                    model.addAttribute("info_pwd", pwdScore >= 75 ? "high" : pwdScore >= 50 ? "middle" : "low");
+    //                } else if (ul.getType().equals(MemberLicenseType.EMAIL)) {
+    //                    model.addAttribute("info_email", true);
+    //                } else if (ul.getType().equals(MemberLicenseType.REAL_NAME)) {
+    //                    model.addAttribute("info_card", true);
+    //                }
+    //            }
+    //        }
+    //    } else {
+    //        model.addAttribute("safe_level", 0);
+    //    }
+    //    return "gys/safeindex";
+    //}
 
     /**
      * 个人设置
