@@ -1,8 +1,14 @@
 package com.shigu.buyer.services;
 
 import com.opentae.data.mall.beans.MemberAlipayBind;
+import com.opentae.data.mall.beans.OrderPay;
+import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayRelationship;
 import com.opentae.data.mall.examples.MemberAlipayBindExample;
 import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
+import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
+import com.opentae.data.mall.interfaces.OrderPayMapper;
+import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.bo.TixianBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
@@ -50,6 +56,15 @@ public class UserAccountService {
 
     @Autowired
     private MemberAlipayBindMapper memberAlipayBindMapper;
+
+    @Autowired
+    private OrderPayApplyMapper orderPayApplyMapper;
+
+    @Autowired
+    private OrderPayMapper orderPayMapper;
+
+    @Autowired
+    private OrderPayRelationshipMapper orderPayRelationshipMapper;
 
     /**
      * 充值申请
@@ -163,5 +178,30 @@ public class UserAccountService {
         return JsonResponseUtil.error("取消支付宝帐号绑定失败");
     }
 
+
+    /**
+     * 是否充值成功查询
+     * @param userId
+     * @param applyId 支付申请记录id
+     * @return 该笔支付是否已经完成
+     */
+    public boolean alreadyCharged(Long userId, Long applyId) {
+        if (userId == null || applyId == null) {
+            return false;
+        }
+        OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(applyId);
+        if (orderPayApply == null || !userId.equals(orderPayApply.getUserId())) {
+            return false;
+        }
+        OrderPay payQuery = new OrderPay();
+        payQuery.setApplyId(applyId);
+        payQuery = orderPayMapper.selectOne(payQuery);
+        if (payQuery == null) {
+            return false;
+        }
+        OrderPayRelationship resultQuery = new OrderPayRelationship();
+        resultQuery.setPayId(payQuery.getPayId());
+        return orderPayRelationshipMapper.selectCount(resultQuery) > 0;
+    }
 
 }

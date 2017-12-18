@@ -923,29 +923,7 @@ public class MemberAction {
         }
     }
 
-    /**
-     * 提现保存
-     *
-     * @return
-     */
-    @RequestMapping("member/saveTixian")
-    @ResponseBody
-    public JSONObject saveTixian(@Valid NewCashApplyBO bo, BindingResult result, HttpSession session) {
-        if (result.hasErrors()) {
-            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
-        }
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long userId = ps.getUserId();
-        if (memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
-            return JsonResponseUtil.error("请检查支付密码");
-        }
-        TixianBO tixianBO = userAccountService.selTixianAccountInfoByBindId(userId, bo.getAlipayId());
-        if (tixianBO == null) {
-            return JsonResponseUtil.error("帐号信息错误");
-        }
-        tixianBO.setPaynum(bo.getPaynum());
-        return paySdkClientService.tixian(tixianBO, userId);
-    }
+
 
     /**
      * 店铺入驻申请
@@ -1135,7 +1113,7 @@ public class MemberAction {
      * @param session
      * @return
      */
-    @RequestMapping("member/getTeleValidateCode")
+    @RequestMapping({"member/getTeleValidateCode","seller/getTeleValidateCode"})
     @ResponseBody
     public JSONObject getTeleValidateCode(String imgValidate, HttpSession session) {
         //校验手机验证码
@@ -1160,7 +1138,7 @@ public class MemberAction {
      * @param result
      * @return
      */
-    @RequestMapping("member/applyAliUserBind")
+    @RequestMapping({"member/applyAliUserBind","seller/applyAliUserBind"})
     @ResponseBody
     public JSONObject applyAliUserBind(@Valid MemberAlipayBindBO bo, HttpSession session, BindingResult result) {
         if (result.hasErrors()) {
@@ -1184,10 +1162,74 @@ public class MemberAction {
      * @param aliAccountId 用户支付宝绑定记录id
      * @return
      */
-    @RequestMapping("member/deleteAliUser")
+    @RequestMapping({"member/deleteAliUser","seller/deleteAliUser"})
     @ResponseBody
     public JSONObject deleteAliUser(Long aliAccountId, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return userAccountService.deleteAliUser(ps.getUserId(),aliAccountId);
+    }
+
+    /**
+     * 新充值接口
+     * @param money 充值金额 元
+     * @param type 充值类型 1支付宝 2微信  （目前只开放支付宝充值）
+     * @param session
+     * @return 支付宝支付连接跳转地址
+     */
+    @RequestMapping({"member/userRecharge","seller/userRecharge"})
+    @ResponseBody
+    public JSONObject userRecharge(Double money, Integer type, HttpSession session) throws PayApplyException {
+        if (money == null || money <= 0) {
+            return JsonResponseUtil.error("请输入正确的金额");
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        PayApplyVO payApplyVO = userAccountService.rechargeApply(ps.getUserId(), (long) (money * 100));
+        return JsonResponseUtil.success().element("href", "/order/alipayByApplyId.htm?applyId=" + payApplyVO.getApplyId()).element("applyId", payApplyVO.getApplyId());
+    }
+
+    /**
+     * 提现保存
+     *
+     * @return
+     */
+    @RequestMapping({"member/saveTixian","seller/saveTixian"})
+    @ResponseBody
+    public JSONObject saveTixian(@Valid NewCashApplyBO bo, BindingResult result, HttpSession session) {
+        if (result.hasErrors()) {
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        if (memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
+            return JsonResponseUtil.error("请检查支付密码");
+        }
+        TixianBO tixianBO = userAccountService.selTixianAccountInfoByBindId(userId, bo.getAlipayId());
+        if (tixianBO == null) {
+            return JsonResponseUtil.error("帐号信息错误");
+        }
+        tixianBO.setPaynum(bo.getPaynum());
+        return paySdkClientService.tixian(tixianBO, userId);
+    }
+
+
+    /**
+     * 是否充值完成轮询
+     * @param identity 供应商/分销商
+     * @param applyId 支付申请id
+     * @param session
+     * @return 支付完成，返回success与跳转地址
+     */
+    @RequestMapping("{identity}/userPayPolling")
+    @ResponseBody
+    public JSONObject userPayPolling(@PathVariable String identity,Long applyId, HttpSession session) {
+        if (!"member".equals(identity) && !"seller".equals(identity)) {
+            return JsonResponseUtil.error("非法的路径");
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (userAccountService.alreadyCharged(ps.getUserId(), applyId)) {
+            //供应商|分销商 充值完成跳转地址
+            return JsonResponseUtil.success().element("redirectUrl", identity + "/userBalance");
+        }
+        return JsonResponseUtil.error("支付未完成");
     }
 }
