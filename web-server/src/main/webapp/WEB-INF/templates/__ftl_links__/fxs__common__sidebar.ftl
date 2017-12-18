@@ -128,6 +128,20 @@
                     href="/member/capStatistic.htm"
             >资金明细</a>
         </li>
+        <li>
+            <a
+                <#if 'bindAlipayUser' == $pageid >
+                    class="selected"
+                </#if>
+                        <#if 'bindAlipayUserOpe' == $pageid >
+                            class="selected"
+                        </#if>
+                        <#if 'bindAlipaySuccess' == $pageid >
+                            class="selected"
+                        </#if>
+                    href="/member/bindAlipayUser.htm"
+            >绑定设置</a>
+        </li>
     </ul>
     <#elseif $it.type == 'safecenter'>
     <h2>安全中心</h2>
