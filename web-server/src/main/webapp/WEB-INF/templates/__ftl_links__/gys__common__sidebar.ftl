@@ -154,62 +154,16 @@
             >授权管理</a>
         </li>
         </#if>
-    </ul>
-    <h2>财务信息</h2>
-    <ul>
-        <#if 'iwantToRechargein5' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if 'goodsStyleManager' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'iwantToRechargein5' == $pageid >
+                    <#if 'goodsStyleManager' == $pageid >
                             selected
                     </#if>
                 "
-                    href="iwantToRechargein5.htm"
-                    target="_blank"
-            >充值</a>
-        </li>
-        </#if>
-        <#if 'withdraw5Apply' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
-        <li>
-            <a
-                class="
-                    <#if 'withdraw5Apply' == $pageid >
-                            selected
-                    </#if>
-                "
-                    href="withdraw5Apply.htm"
-            >提现</a>
-        </li>
-        </#if>
-    </ul>
-    <h2>账号管理</h2>
-    <ul>
-        <#if 'safeindex' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
-        <li>
-            <a
-                class="
-                    <#if 'safeindex' == $pageid >
-                            selected
-                    </#if>
-                            <#if 'safexgmm' == $pageid >
-                                    selected
-                            </#if>
-                "
-                    href="safeindex.htm"
-            >安全设置</a>
-        </li>
-        </#if>
-        <#if 'sysSetsindex' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
-        <li>
-            <a
-                class="
-                    <#if 'sysSetsindex' == $pageid >
-                            selected
-                    </#if>
-                "
-                    href="sysSetsindex.htm"
-            >个人信息</a>
+                    href="goodsStyleManager.htm"
+            >风格管理</a>
         </li>
         </#if>
     </ul>
@@ -325,6 +279,78 @@
         </#if>
     </ul>
     <#elseif $it.type == 'mybag'>
+    <h2>我的钱包</h2>
+    <ul>
+        <#if 'userBalance' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'userBalance' == $pageid >
+                            selected
+                    </#if>
+                            <#if 'withdraw5Apply' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'iwantToRechargein5' == $pageid >
+                                    selected
+                            </#if>
+                "
+                    href="userBalance.htm"
+            >我的资金</a>
+        </li>
+        </#if>
+        <#if 'bindAlipayUser' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'bindAlipayUser' == $pageid >
+                            selected
+                    </#if>
+                            <#if 'bindAlipayUserOpe' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'bindAlipaySuccess' == $pageid >
+                                    selected
+                            </#if>
+                "
+                    href="bindAlipayUser.htm"
+            >绑定设置</a>
+        </li>
+        </#if>
+    </ul>
     <#elseif $it.type == 'safecenter'>
+    <h2>安全中心</h2>
+    <ul>
+        <#if 'safeindex' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'safeindex' == $pageid >
+                            selected
+                    </#if>
+                            <#if 'safexgmm' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'safeXgPaymm' == $pageid >
+                                    selected
+                            </#if>
+                "
+                    href="safeindex.htm"
+            >安全设置</a>
+        </li>
+        </#if>
+        <#if 'sysSetsindex' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'sysSetsindex' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="sysSetsindex.htm"
+            >个人信息</a>
+        </li>
+        </#if>
+    </ul>
     </#if>
 </div>

@@ -52,7 +52,7 @@
                     <option value="${item.aliAccountId!}">${item.aliAccount!}</option>
                     </#list>
                 </select>
-                <#if !(alipayUserList?size)>
+                <#if (alipayUserList?size) == 0>
                 <span class="fc6">提示：暂无已绑定支付宝，马上去<a href="bindAlipayUserOpe.htm" class="fcF40">绑定</a></span>
                 </#if>
             </div>
