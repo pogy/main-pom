@@ -25,8 +25,8 @@
 <#include "/__ftl_links__/order__common__header.ftl">
 <div class="currentPage layout">
     <label class="fc9">当前位置：</label>
-    <a href="http://www.571xz.com">首页</a> &gt;
-    <a href="member/index.htm">我的星座网</a> &gt;
+    <a href="/">首页</a> &gt;
+    <a href="/member/index.htm">我的星座网</a> &gt;
     <a href="myOrder.htm">我的订单</a> &gt;
     <span class="fcF40">退款申请</span>
 </div>
