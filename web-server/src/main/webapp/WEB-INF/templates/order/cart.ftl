@@ -27,7 +27,7 @@
 <#assign headerTitle="进货车">
 <#assign headerTitle="进货车">
 <div class="titleBar layout">
-    <h3 class="fcF40 yahei fs16">全部商品 <span>${cart.goodsCount!}</span></h3>
+    <h3 class="fcF40 yahei fs16">全部商品 <span id="allOrderGoodsNum">${cart.goodsCount!}</span></h3>
     <#if (cart.orders?size) gt 0>
     <div class="accoutnInfo fr">
         已选商品 <span class="orderTotalNumValue fcF40 fs14 fwb">0</span> 件（不含运费）<span class="yahei fcF40">&yen;</span> <span class="fcF40 fs14 fwb orderTotalPriceValue">0.00</span>
