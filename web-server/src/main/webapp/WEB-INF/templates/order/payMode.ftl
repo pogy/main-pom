@@ -1,4 +1,4 @@
-<#assign $pageid>payMode</#assign>
+<#assign $pageid="payMode">
 <!doctype html>
 <html>
 <head>
@@ -19,11 +19,10 @@
 <#include "/__style_torrent__/order__payMode_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+    <#assign statusNum=3>
 <#include "/__ftl_links__/order__common__whiteHeader.ftl">
 <div class="layout">
 <div class="orderInfo">
@@ -45,9 +44,7 @@
     <div class="payTypeList">
         <ul>
             <li class="selected">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmRadio clearfix
         checked
         buttonRadio
@@ -76,39 +73,7 @@
                 </#if>
             </li>
             <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<label class="fmRadio clearfix
-        <#if $it.checked??>
-            checked
-        </#if>
-        buttonRadio
-">
-    <input
-        type="radio"
-        autocomplete="off"
-            name="pay"
-            value="wxpay"
-            <#if $it.checked??>
-                checked
-            </#if>
-    >
-    <i class="before"></i>
-    <span>
-        微信
-        <#if $it.html??>
-            ${$it.html}
-        </#if>
-    </span>
-</label>
-</#list>
-                <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
-            </li>
-            <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>
             checked
@@ -148,9 +113,7 @@
             </#if>
         </div>
         <div class="payBtn">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

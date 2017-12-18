@@ -1,4 +1,4 @@
-<#assign $pageid>noOrderInfo</#assign>
+<#assign $pageid="noOrderInfo">
 <!doctype html>
 <html>
 <head>
@@ -17,9 +17,7 @@
 <#include "/__style_torrent__/order__noOrderInfo_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/order__common__header.ftl">

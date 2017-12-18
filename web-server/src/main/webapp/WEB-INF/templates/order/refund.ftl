@@ -1,4 +1,4 @@
-<#assign $pageid>refund</#assign>
+<#assign $pageid="refund">
 <!doctype html>
 <html>
 <head>
@@ -20,12 +20,15 @@
 <#include "/__style_torrent__/order__refund_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/order__common__header.ftl">
+<script modulepath="order/refund#config">
+var orderId = '${orderId!}';
+var childOrderId = '${childOrderId!}';
+var express = '${expressList!}';
+</script>
 <script modulepath="order/refund#config">
 var orderId = '${orderId!}';
 var childOrderId = '${childOrderId!}';
@@ -35,7 +38,7 @@ var express = '${expressList!}';
     <label class="fc9">当前位置：</label>
     <a href="http://www.571xz.com">首页</a> &gt;
     <a href="member/index.htm">我的星座网</a> &gt;
-    <a href="order/myOrder.htm">我的订单</a> &gt;
+    <a href="myOrder.htm">我的订单</a> &gt;
     <span class="fcF40">退款申请</span>
 </div>
 <div class="refundStep layout">
@@ -65,9 +68,7 @@ var refundNum = '${refundNumber!}'
     <ul>
         <li>
             <label><em class="fcF40 vm">*</em> 服务类型：</label>
-<#assign text>{"name":"service","value":"refund"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"service","value":"refund"}] as $it>
 <div class="fmSelect" id="serviceType">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -81,9 +82,7 @@ var refundNum = '${refundNumber!}'
         </li>
         <li>
             <label>退款原因：</label>
-<#assign text>{"name":"reason","value":3}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"reason","value":3}] as $it>
 <div class="fmSelect" id="refundReason">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -97,9 +96,7 @@ var refundNum = '${refundNumber!}'
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 退货件数：</label>
-<#assign text>{"name":"count","value":""}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"count","value":""}] as $it>
 <div class="fmSelect" id="refundCount">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -120,9 +117,7 @@ var refundNum = '${refundNumber!}'
             <textarea maxlength="16" placeholder="最多填写16个字符"></textarea>
         </li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -215,9 +210,7 @@ var refundId = '${refundId!}';
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 选择快递：</label>
-<#assign text>{"name":"expressList","value":""}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"expressList","value":""}] as $it>
 <div class="fmSelect" id="expressList">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -235,9 +228,7 @@ var refundId = '${refundId!}';
             <div class="errorTip">物流单号格式不正确！</div>
         </li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -284,9 +275,7 @@ var refundId = '${refundId!}';
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 选择快递：</label>
-<#assign text>{"name":"expressList","value":""}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"expressList","value":""}] as $it>
 <div class="fmSelect" id="expressList">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -304,9 +293,7 @@ var refundId = '${refundId!}';
             <div class="errorTip">物流单号格式不正确！</div>
         </li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -356,9 +343,7 @@ var refundId = '${refundId!}';
     <h4 class="fwb yahei fc3">退款金额已修改！</h4>
     <p class="fc6">退款金额已修改为：<span class="fcF40 yahei">&yen; <em class="fs14">${modifyRefundMoney!}</em></span></p>
     <div class="agreeBtns yahei">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -387,9 +372,7 @@ var refundId = '${refundId!}';
     </button>
     </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

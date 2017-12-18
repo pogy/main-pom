@@ -1,4 +1,4 @@
-<#assign $pageid>expressDetail</#assign>
+<#assign $pageid="expressDetail">
 <!doctype html>
 <html>
 <head>
@@ -17,9 +17,7 @@
 <#include "/__style_torrent__/order__expressDetail_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/order__common__header.ftl">
@@ -27,7 +25,7 @@
     <label class="fc9">当前位置：</label>
     <a href="http://www.571xz.com">首页</a> &gt;
     <a href="member/index.htm">我的星座网</a> &gt;
-    <a href="order/myOrder.htm">我的订单</a> &gt;
+    <a href="myOrder.htm">我的订单</a> &gt;
     <span class="fcF40">物流详情</span>
 </div>
 <div class="expressInfo layout">

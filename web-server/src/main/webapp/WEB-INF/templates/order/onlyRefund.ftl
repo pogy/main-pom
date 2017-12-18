@@ -1,4 +1,4 @@
-<#assign $pageid>onlyRefund</#assign>
+<#assign $pageid="onlyRefund">
 <!doctype html>
 <html>
 <head>
@@ -19,9 +19,7 @@
 <#include "/__style_torrent__/order__onlyRefund_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/order__common__header.ftl">
@@ -29,7 +27,7 @@
     <label class="fc9">当前位置：</label>
     <a href="http://www.571xz.com">首页</a> &gt;
     <a href="member/index.htm">我的星座网</a> &gt;
-    <a href="order/myOrder.htm">我的订单</a> &gt;
+    <a href="myOrder.htm">我的订单</a> &gt;
     <span class="fcF40">退款申请</span>
 </div>
 <div class="returnBox layout">
@@ -53,9 +51,7 @@ var otherRefundPrice = ${otherRefundPrice!};
 <div class="refundApply refundBox">
     <li>
         <label><em class="fcF40 vm">*</em> 退货件数：</label>
-<#assign text>{"name":"count","value":""}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"count","value":""}] as $it>
 <div class="fmSelect" id="refundCount">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -71,9 +67,7 @@ var otherRefundPrice = ${otherRefundPrice!};
         <label><em class="fcF40 vm">*</em> 退款金额：</label>
         <span class="refundCountNum fcF40 fs14 yahei"><em class="yahei">&yen;</em><em class="fwb" id="refundMoney">${refundGoodsPrice!}</em></span>
     </li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

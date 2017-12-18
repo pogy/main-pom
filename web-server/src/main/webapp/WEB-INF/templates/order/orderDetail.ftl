@@ -1,4 +1,4 @@
-<#assign $pageid>orderDetail</#assign>
+<#assign $pageid="orderDetail">
 <!doctype html>
 <html>
 <head>
@@ -18,9 +18,7 @@
 <#include "/__style_torrent__/order__orderDetail_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/order__common__header.ftl">
@@ -84,18 +82,14 @@
         <div class="orderCurrentStatus yahei fwb fs14"><span></span>订单当前状态：订单已提交，等待买家付款！</div>
         <p><i></i>您还有
         <span class="fcF40">
-<#assign text>{"endTime":orderCreateTime+72*60*60*1000}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"endTime":orderCreateTime+72*60*60*1000}] as $it>
 <span id="countdown1" class="xzCountdown" data-format="%dd天%hh小时%mm分%ss秒" data-nowTime="${$it.nowTime!}" data-endTime="${$it.endTime!}"></span>
 </#list>
         </span>
         未支付，72小时候自动取消订单</p>
         <div class="goto">
             您可以
-<#assign text>{"href":"payMode.htm?orderId="+orderId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"href":"payMode.htm?orderId="+orderId}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

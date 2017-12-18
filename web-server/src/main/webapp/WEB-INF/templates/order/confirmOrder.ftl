@@ -1,4 +1,4 @@
-<#assign $pageid>confirmOrder</#assign>
+<#assign $pageid="confirmOrder">
 <!doctype html>
 <html>
 <head>
@@ -19,19 +19,16 @@
 <#include "/__style_torrent__/order__confirmOrder_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+    <#assign statusNum=2>
 <#include "/__ftl_links__/order__common__whiteHeader.ftl">
 <div class="mainBox layout">
     <h3 class="infoTitle fs16 yahei">填写并核对订单信息</h3>
     <div class="orderInfoEdit">
 <div id="serviceList">
-<#assign text>{"choiceCon":sender}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"choiceCon":sender}] as $it>
 <div class="radioList marBottom deliMethod">
     <h3 class="fs14 yahei">
         发货方式
@@ -40,9 +37,7 @@
     <div class="choiceBox clearfix">
         <ul>
             <#list $it.choiceCon as option>
-<#assign text>{"value":""+option.id,"text":""+option.text,"checked":option.checked}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":""+option.id,"text":""+option.text,"checked":option.checked}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>
             checked
@@ -94,9 +89,7 @@ var code = '${code!}'
             <li class="framBox">
                 <div class="provAndCity congineeBox">
                     <label><span class="fcF40 required">*</span>所在地区：</label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div data-id="myArea"
     class="fmCitypick" data-value="${$it.value!}">
 </div>
@@ -123,16 +116,16 @@ var code = '${code!}'
                     </div>
                     <div class="telePhone fl">
                         <label>电话号码：</label>
-                        <input type="text" name="telePhone" placeholder="手机号码、电话号码必须填写一项">
+                        <input type="text" name="areaCode" class="areaCode" placeholder="区号">
+                        <span>-</span>
+                        <input type="text" name="telePhone" placeholder="电话号码">
                     </div>
                 </div>
             </li>
         </ul>
     </div>
     <div class="qrAndColBtn">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -157,9 +150,7 @@ var code = '${code!}'
     </button>
     </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -195,9 +186,7 @@ var code = '${code!}'
     <ul id="addressListBox">
         <#list collList as addressInfo>
         <li class="pr" data-fulladdresstext="${addressInfo.name!},${addressInfo.phone!},${addressInfo.address!}" data-addressid="${addressInfo.id!}">
-<#assign text>{"text":""+addressInfo.name+","+addressInfo.phone+","+addressInfo.address}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"text":""+addressInfo.name+","+addressInfo.phone+","+addressInfo.address}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>
             checked
@@ -275,16 +264,12 @@ var code = '${code!}'
         <div class="orderItemInfo fl" data-shopid="${order.shopId!}">
             <div class="orderInfo clearfix">
                 <span class="orderStore">档口：${order.marketName!}  ${order.storeNum!}</span>
-<#assign text>{"id":order.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imQq}] as $it>
 <#if $it.id != ''>
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list>
-<#assign text>{"id":order.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imWw}] as $it>
 <#if $it.id != ''>
 <a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
@@ -311,9 +296,7 @@ var code = '${code!}'
         </div>
     </li>
     <li class="goodsCount tac">
-<#assign text>{"name":childOrder.childOrderId,"value":childOrder.num}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":childOrder.childOrderId,"value":childOrder.num}] as $it>
 <span class="fmNumberInput">
     <i jbtn="reduce">-</i>
     <input class="textInput" type="text" autocomplete=off
@@ -371,9 +354,7 @@ var code = '${code!}'
 </div>
     <div class="orderLastBox">
         <p>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         checked
         <#if $it.disabled??>
@@ -445,9 +426,7 @@ var code = '${code!}'
         <p class="msgTip fcF40"></p>
     </div>
     <div class="settleBtn clearfix">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

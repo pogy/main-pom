@@ -1,4 +1,4 @@
-<#assign $pageid>cart</#assign>
+<#assign $pageid="cart">
 <!doctype html>
 <html>
 <head>
@@ -19,22 +19,20 @@
 <#include "/__style_torrent__/order__cart_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+    <#assign statusNum=1>
 <#include "/__ftl_links__/order__common__whiteHeader.ftl">
-<#assign headerTitle>进货车</#assign>
+<#assign headerTitle="进货车">
+<#assign headerTitle="进货车">
 <div class="titleBar layout">
     <h3 class="fcF40 yahei fs16">全部商品 <span>${cart.goodsCount!}</span></h3>
     <#if (cart.orders?size) gt 0>
     <div class="accoutnInfo fr">
         已选商品 <span class="orderTotalNumValue fcF40 fs14 fwb">0</span> 件（不含运费）<span class="yahei fcF40">&yen;</span> <span class="fcF40 fs14 fwb orderTotalPriceValue">0.00</span>
         <span class="accountBtn pr">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -72,9 +70,7 @@
 <#if (cart.orders?size) gt 0>
     <ul class="listHeader clearfix">
         <li class="checkBox">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -124,9 +120,7 @@
     <div class="orderItem" data-id="${order.orderId!}" data-website="${order.webSite!}">
         <div class="shopInfo clearfix">
             <div class="fl">
-<#assign text>{"name":order.orderId,"text":order.marketName+order.storeNum}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":order.orderId,"text":order.marketName+order.storeNum}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -168,16 +162,12 @@
     </span>
 </label>
 </#list>
-<#assign text>{"id":order.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imQq}] as $it>
 <#if $it.id != ''>
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list>
-<#assign text>{"id":order.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imWw}] as $it>
 <#if $it.id != ''>
 <a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
@@ -211,9 +201,7 @@
 >
     <li class="checkBox">
         <#if childOrder.disabled == false>
-<#assign text>{"name":childOrder.childOrderId,"selectParent":order.orderId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":childOrder.childOrderId,"selectParent":order.orderId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -302,9 +290,7 @@
                 </ul>
             </div>
             <div class="btnsBox clearfix">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -332,9 +318,7 @@
     </button>
     </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -370,9 +354,7 @@
         <#if childOrder.disabled == true>
             <span>商品已失效</span>
         <#else>
-<#assign text>{"name":childOrder.childOrderId,"value":childOrder.num}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":childOrder.childOrderId,"value":childOrder.num}] as $it>
 <span class="fmNumberInput">
     <i jbtn="reduce">-</i>
     <input class="textInput" type="text" autocomplete=off
@@ -429,9 +411,7 @@
 <div class="settlementInfoBar layout" id="settlementInfoBar">
     <div class="totalWrap layout">
         <div class="fl operateBox">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -473,9 +453,7 @@
             <b id="deleteSelectedOrders">删除</b>
         </div>
         <div class="accountBtnBox fr pr yahei">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

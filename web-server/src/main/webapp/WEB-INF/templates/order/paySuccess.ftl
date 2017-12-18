@@ -1,4 +1,4 @@
-<#assign $pageid>paySuccess</#assign>
+<#assign $pageid="paySuccess">
 <!doctype html>
 <html>
 <head>
@@ -18,11 +18,10 @@
 <#include "/__style_torrent__/order__paySuccess_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+    <#assign statusNum=4>
 <#include "/__ftl_links__/order__common__whiteHeader.ftl">
 <div class="mainBox">
 <div class="paySuccess layout">
@@ -38,9 +37,7 @@
     </ul>
     <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em id="timedownBox">5</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
     <div class="gotoBox">
-<#assign text>{"href":"/order/myOrder.htm"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"href":"/order/myOrder.htm"}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
