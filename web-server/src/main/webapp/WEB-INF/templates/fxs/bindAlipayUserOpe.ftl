@@ -42,19 +42,19 @@
         <div class="validateItem">
             <div class="formGroup">
                 <label>支付宝账号：</label>
-                <input type="text" name="alipay" class="fmInput" value="13511111111" placeholder="支付宝账户邮箱号或手机号">
+                <input type="text" name="alipay" class="fmInput"  placeholder="支付宝账户邮箱号或手机号">
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label>真实姓名：</label>
-                <input type="text" name="payname" class="fmInput" value="赵三" placeholder="正确输入支付宝账户实名，防止打错账">
+                <input type="text" name="payname" class="fmInput"  placeholder="正确输入支付宝账户实名，防止打错账">
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label>图形验证码：</label>
-                <input type="text" name="imgValidate" class="fmInput imgValidate" value="6666" placeholder="请填写图形验证码">
+                <input type="text" name="imgValidate" class="fmInput imgValidate"  placeholder="请填写图形验证码">
                 <img src="/IMG.htm" id="imgValidatePic">
             </div>
         </div>
