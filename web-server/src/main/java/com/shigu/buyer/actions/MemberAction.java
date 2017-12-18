@@ -1200,7 +1200,7 @@ public class MemberAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        if (memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
+        if (!memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
             return JsonResponseUtil.error("请检查支付密码");
         }
         TixianBO tixianBO = userAccountService.selTixianAccountInfoByBindId(userId, bo.getAlipayId());
@@ -1231,5 +1231,10 @@ public class MemberAction {
             return JsonResponseUtil.success().element("redirectUrl", identity + "/userBalance");
         }
         return JsonResponseUtil.error("支付未完成");
+    }
+
+    @RequestMapping("member/bindAlipaySuccess")
+    public String bindAlipaySuccess() {
+        return "fxs/bindAlipaySuccess";
     }
 }

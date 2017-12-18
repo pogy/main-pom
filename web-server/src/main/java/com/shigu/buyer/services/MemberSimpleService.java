@@ -141,6 +141,6 @@ public class MemberSimpleService {
         if (memberUser == null || StringUtils.isBlank(memberUser.getPayPassword())) {
             return false;
         }
-        return memberUser.getPassword().equals(payPwd);
+        return memberUser.getPayPassword().equals(EncryptUtil.encrypt(payPwd));
     }
 }

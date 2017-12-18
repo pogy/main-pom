@@ -209,7 +209,7 @@ public class ShopAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
-        return "gys/memberghs";
+        return "gys/index";
     }
 
     /**
