@@ -115,6 +115,10 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
+    private final String MEMBER_PATH = "member";
+
+    private final String SELLER_PATH = "seller";
+
 
     /**
      * 分销商首页
@@ -876,11 +880,17 @@ public class MemberAction {
      *
      * @return
      */
-    @RequestMapping("member/iwantToRechargein5")
-    public String iwantToRechargein5(HttpSession session, Model model) {
+    @RequestMapping("{identity}/iwantToRechargein5")
+    public String iwantToRechargein5(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("路径非法");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
+        if (SELLER_PATH.equals(identity)) {
+            return "gys/iwantToRechargein5";
+        }
         return "fxs/iwantToRechargein5";
     }
 
@@ -915,7 +925,7 @@ public class MemberAction {
         model.addAttribute("handlingCharge","0.6%");
         model.addAttribute("alipayUserList",userAccountService.userAlipayBindList(ps.getUserId()));
         model.addAttribute("payPasswordIs",memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
-        if ("seller".equals(identity)) {
+        if (SELLER_PATH.equals(identity)) {
             return "gys/withdraw5Apply";
         }
         else {
@@ -1030,13 +1040,19 @@ public class MemberAction {
         return JsonResponseUtil.success();
     }
 
-    @RequestMapping("member/userBalance")
-    public String userBalance(HttpSession session, Model model) {
+    @RequestMapping("{identity}/userBalance")
+    public String userBalance(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempCode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempCode);
         model.addAttribute("webSite", "hz");
         model.addAttribute("excelUrl", "");
+        if (SELLER_PATH.equals(identity)) {
+            return "gys/userBalance";
+        }
         return "fxs/userBalance";
     }
 
@@ -1084,7 +1100,7 @@ public class MemberAction {
         Long userId = ps.getUserId();
         List<UserAlipayBindVO> alipayUserList = userAccountService.userAlipayBindList(userId);
         model.addAttribute("alipayUserList", alipayUserList);
-        if ("seller".equals(identity)) {
+        if (SELLER_PATH.equals(identity)) {
             return "gys/bindAlipayUser";
         }
         return "fxs/bindAlipayUser";
@@ -1112,7 +1128,7 @@ public class MemberAction {
         }
         String userTelephone = phoneByUserId.substring(0, 3).concat("****").concat(phoneByUserId.substring(8));
         model.addAttribute("userTelephone", userTelephone);
-        if ("seller".equals(identity)) {
+        if (SELLER_PATH.equals(identity)) {
             return "gys/bindAlipayUserOpe";
         }
         return "fxs/bindAlipayUserOpe";
@@ -1234,7 +1250,7 @@ public class MemberAction {
     @RequestMapping("{identity}/userPayPolling")
     @ResponseBody
     public JSONObject userPayPolling(@PathVariable String identity,Long applyId, HttpSession session) {
-        if (!"member".equals(identity) && !"seller".equals(identity)) {
+        if (!isMemberOrSeller(identity)) {
             return JsonResponseUtil.error("非法的路径");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -1247,16 +1263,16 @@ public class MemberAction {
 
     @RequestMapping("{identity}/bindAlipaySuccess")
     public String bindAlipaySuccess(@PathVariable String identity) throws Main4Exception {
-        if (isMemberOrSeller(identity)) {
+        if (!isMemberOrSeller(identity)) {
             throw new Main4Exception("非法的路径");
         }
-        if ("seller".equals(identity)) {
+        if (SELLER_PATH.equals(identity)) {
             return "gys/bindAlipaySuccess";
         }
         return "fxs/bindAlipaySuccess";
     }
 
     private boolean isMemberOrSeller(String identityPath) {
-        return "member".equals(identityPath) || "seller".equals(identityPath);
+        return MEMBER_PATH.equals(identityPath) || SELLER_PATH.equals(identityPath);
     }
 }

@@ -1044,17 +1044,17 @@ public class ShopAction {
         return JSONObject.fromObject("{'result':'error','msg':'系统错误'}");
     }
 
-    /**
-     * 充值
-     * @return
-     */
-    @RequestMapping("seller/iwantToRechargein5")
-    public String iwantToRechargein5(HttpSession session,Model model){
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempcode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempcode);
-        return "gys/iwantToRechargein5";
-    }
+    ///**
+    // * 充值
+    // * @return
+    // */
+    //@RequestMapping("seller/iwantToRechargein5")
+    //public String iwantToRechargein5(HttpSession session,Model model){
+    //    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    String tempcode = paySdkClientService.tempcode(ps.getUserId());
+    //    model.addAttribute("tempCode", tempcode);
+    //    return "gys/iwantToRechargein5";
+    //}
 
     // 因业务逻辑完全相同，合并至com.shigu.buyer.actions.MemberAction#withdraw5Apply
     ///**
