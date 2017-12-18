@@ -907,7 +907,7 @@ public class MemberAction {
      */
     @RequestMapping("{identity}/withdraw5Apply")
     public String withdraw5Apply(HttpSession session, Model model,@PathVariable String identity) throws Main4Exception {
-        if (!"seller".equals(identity) && !"member".equals(identity)) {
+        if (!isMemberOrSeller(identity)) {
             throw new Main4Exception("非法的路径");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -1074,13 +1074,19 @@ public class MemberAction {
      * @param model
      * @return
      */
-    @RequestMapping("member/bindAlipayUser")
-    public String bindAlipayUser(HttpSession session, Model model) {
+    @RequestMapping("{identity}/bindAlipayUser")
+    public String bindAlipayUser(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //在shiro中配置过拦截,能进入member/下的请求都是已经登陆的
         Long userId = ps.getUserId();
         List<UserAlipayBindVO> alipayUserList = userAccountService.userAlipayBindList(userId);
         model.addAttribute("alipayUserList", alipayUserList);
+        if ("seller".equals(identity)) {
+            return "gys/bindAlipayUser";
+        }
         return "fxs/bindAlipayUser";
     }
 
@@ -1092,8 +1098,11 @@ public class MemberAction {
      * @return
      * @throws Main4Exception
      */
-    @RequestMapping("member/bindAlipayUserOpe")
-    public String bindAlipayUserOpe(HttpSession session, Model model) throws Main4Exception {
+    @RequestMapping("{identity}/bindAlipayUserOpe")
+    public String bindAlipayUserOpe(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法路径");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         String phoneByUserId = userLicenseService.findPhoneByUserId(userId);
@@ -1103,6 +1112,9 @@ public class MemberAction {
         }
         String userTelephone = phoneByUserId.substring(0, 3).concat("****").concat(phoneByUserId.substring(8));
         model.addAttribute("userTelephone", userTelephone);
+        if ("seller".equals(identity)) {
+            return "gys/bindAlipayUserOpe";
+        }
         return "fxs/bindAlipayUserOpe";
     }
 
@@ -1233,8 +1245,18 @@ public class MemberAction {
         return JsonResponseUtil.error("支付未完成");
     }
 
-    @RequestMapping("member/bindAlipaySuccess")
-    public String bindAlipaySuccess() {
+    @RequestMapping("{identity}/bindAlipaySuccess")
+    public String bindAlipaySuccess(@PathVariable String identity) throws Main4Exception {
+        if (isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
+        if ("seller".equals(identity)) {
+            return "gys/bindAlipaySuccess";
+        }
         return "fxs/bindAlipaySuccess";
+    }
+
+    private boolean isMemberOrSeller(String identityPath) {
+        return "member".equals(identityPath) || "seller".equals(identityPath);
     }
 }
