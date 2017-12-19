@@ -727,19 +727,20 @@ public class MemberAction {
         return JsonResponseUtil.success();
     }
 
-    /**
-     * 忘记支付密码页面
-     *
-     * @return
-     */
-    @RequestMapping("member/safeXgPaymmForget")
-    public String safeXgPaymmForget(HttpSession session, Model model) throws Main4Exception {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
-        model.addAttribute("telphone", telephone);
-        model.addAttribute("forPayPswType", 3);
-        return "buyer/safeXgPaymm";
-    }
+    //并入safeXgPaymm
+    ///**
+    // * 忘记支付密码页面
+    // *
+    // * @return
+    // */
+    //@RequestMapping("member/safeXgPaymmForget")
+    //public String safeXgPaymmForget(HttpSession session, Model model) throws Main4Exception {
+    //    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+    //    model.addAttribute("telphone", telephone);
+    //    model.addAttribute("forPayPswType", 3);
+    //    return "buyer/safeXgPaymm";
+    //}
 
     @RequestMapping({"member/saveBackPayPassword","seller/saveBackPayPassword"})
     @ResponseBody
