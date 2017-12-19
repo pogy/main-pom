@@ -6,6 +6,7 @@ import com.jd.open.api.sdk.response.market.VasSubscribeGetResponse;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdServiceMarketService;
 import com.shigu.main4.jd.util.JdUtil;
+import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +27,15 @@ public class JdServiceMarketServiceImpl implements JdServiceMarketService {
      * @param accessToken
      */
     @Override
-    public VasSubscribeGetResponse subscribe(String userName, String itemCode, String accessToken) throws JdUpException {
+    public JdVasSubscribeVO subscribe(String userName, String itemCode, String accessToken) throws JdUpException {
         VasSubscribeGetRequest request=new VasSubscribeGetRequest();
         request.setUserName(userName);
         request.setItemCode(itemCode);
-        VasSubscribeGetResponse response;
-        response = jdUtil.execute(request,accessToken);
-        return response;
+        VasSubscribeGetResponse response = jdUtil.execute(request,accessToken);
+        JdVasSubscribeVO vo = new JdVasSubscribeVO();
+        vo.setItemCode(response.getItemCode());
+        vo.setEndDate(response.getEndDate());
+        return vo;
     }
 
 }

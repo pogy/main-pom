@@ -8,7 +8,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAgingtemplService;
 import com.shigu.main4.jd.util.JdUtil;
-import com.shigu.main4.jd.vo.AgingTemplateVO;
+import com.shigu.main4.jd.vo.JdAgingTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +31,11 @@ public class JdAgingtemplServiceImpl implements JdAgingtemplService {
      * @throws JdException
      */
     @Override
-    public List<AgingTemplateVO> getAgingtempl(String accessToken) throws JdUpException {
+    public List<JdAgingTemplateVO> getAgingtempl(String accessToken) throws JdUpException {
         AgingtemplGetRequest request = new AgingtemplGetRequest();
-        AgingtemplGetResponse response;
-        response = jdUtil.execute(request,accessToken);
+        AgingtemplGetResponse response = jdUtil.execute(request,accessToken);
         List<AgingTemplate> agingTemplateList = response.getAgingTemplateResponse().getAgingTemplateList();
-        return BeanMapper.mapList(agingTemplateList,AgingTemplateVO.class);
+        return BeanMapper.mapList(agingTemplateList,JdAgingTemplateVO.class);
     }
 
 }

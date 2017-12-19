@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Created By admin on 2017/12/12/17:39
  */
-public class SubscribeVO implements Serializable{
+public class JdSubscribeVO implements Serializable{
 
     private static final long serialVersionUID = 1329826928743772122L;
 
@@ -17,7 +17,7 @@ public class SubscribeVO implements Serializable{
 
     private String endDate;
 
-    public SubscribeVO() {
+    public JdSubscribeVO() {
     }
 
     public String getItemCode() {

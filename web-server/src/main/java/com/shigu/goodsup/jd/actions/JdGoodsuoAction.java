@@ -1,7 +1,6 @@
 package com.shigu.goodsup.jd.actions;
 
 import com.openJar.commons.MD5Attestation;
-import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -9,6 +8,7 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.vo.JdPageItem;
+import com.shigu.goodsup.jd.vo.JdSessionVO;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAgingtemplService;
@@ -21,13 +21,13 @@ import com.shigu.main4.jd.vo.JdShopInfoVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tb.common.exceptions.TbException;
 import com.shigu.tools.HttpRequestUtil;
+import jdk.nashorn.internal.scripts.JD;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -62,23 +62,24 @@ public class JdGoodsuoAction {
     private JdShopService jdShopService;
 
     @Autowired
+    private UserBaseService userBaseService;
+
+    @Autowired
     private JdCategoryService jdCategoryService;
 
     @Autowired
     private JdAgingtemplService jdAgingtemplService;
 
-
     @Autowired
     private MemberFilter memberFilter;
-
-    @Autowired
-    private MemberSimpleService memberSimpleService;
 
     @Autowired
     private ItemUpRecordService itemUpRecordService;
 
     @Autowired
     private RedisIO redisIO;
+
+    public static final String JD_REDIS_KEY = "JD_AUTHED_INFO_";
 
 
     /**
@@ -105,30 +106,56 @@ public class JdGoodsuoAction {
 
         /************获取用户登陆信息**********/
         JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
-        JdShopInfoVO jdShopInfo = jdShopService.getJdShopInfo(jdAuthedInfoVO.getAccessToken());
+        //每次登陆刷新Token
+        jdAuthedInfoVO = jdAuthService.refreshToken(jdAuthedInfoVO.getRefreshToken());
 
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
+        String strJdUid = String.valueOf(jdAuthedInfoVO.getUid());
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                String.valueOf(jdAuthedInfoVO.getUid()), null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+                strJdUid, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
         token.setLoginFromType(LoginFromType.JD);
         token.setRememberMe(true);
-        token.setSubKey(String.valueOf(jdAuthedInfoVO.getUid()));
+        token.setSubKey(strJdUid);
         try {
             currentUser.login(token);
-            if(currentUser.hasRole(RoleEnum.STORE.getValue())){//有店铺
-                PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-                if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
-//                    memberSimpleService.updateJdShopNike(ps.getLogshop().getShopId(),jdAuthedInfoVO.getUserNick());
-                }
+            //京东暂时只支持一键上传
+//            if(currentUser.hasRole(RoleEnum.STORE.getValue())){//有店铺
+//                PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//                if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
+////                    memberSimpleService.updateJdShopNike(ps.getLogshop().getShopId(),jdAuthedInfoVO.getUserNick());
+//                }
+//            }
+            //登陆成功，更新redis缓存信息
+            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(strJdUid,strJdUid, LoginFromType.JD);
+            if (personalSession == null || personalSession.getUserId() == null) {
+                //还是检查一遍避免 字符串+null 出现
+                throw new JdUpException("授权失败");
             }
+            //获取店铺信息
+            JdShopInfoVO jdShopInfo = jdShopService.getJdShopInfo(jdAuthedInfoVO.getAccessToken());
+
+            JdSessionVO jdSessionVO = new JdSessionVO();
+            jdSessionVO.setUid(jdAuthedInfoVO.getUid());
+            jdSessionVO.setUserNick(jdAuthedInfoVO.getUserNick());
+            jdSessionVO.setAuthTime(jdAuthedInfoVO.getAuthTime());
+            jdSessionVO.setExpiresIn(jdAuthedInfoVO.getExpiresIn());
+            jdSessionVO.setAccessToken(jdAuthedInfoVO.getAccessToken());
+            jdSessionVO.setRefreshToken(jdAuthedInfoVO.getRefreshToken());
+            jdSessionVO.setShopId(jdShopInfo.getShopId());
+            jdSessionVO.setShopName(jdShopInfo.getShopName());
+            jdSessionVO.setVenderId(jdShopInfo.getVenderId());
+            jdSessionVO.setLogoUrl(jdShopInfo.getLogoUrl());
+
+            redisIO.put(JD_REDIS_KEY+personalSession.getUserId(),jdSessionVO);
+
             //得到回调用地址
             String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             return "redirect:"+loginSuccessUrl(backUrl);
         } catch (LoginAuthException e) {
             if(e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//还没绑定星座网用户,去绑定一下
-                return "forward:userPhoneBind.htm";
+                return "redirect:/userPhoneBind.htm";
             }else{
                 throw e;
             }
@@ -255,7 +282,6 @@ public class JdGoodsuoAction {
     @RequestMapping("jd-shop-cat-update")
     public String shopCatUpdate(HttpSession httpsession,HttpServletRequest request,Model model)  {
         PersonalSession ps = (PersonalSession) httpsession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
         return "taobao/parts/storecat";
     }
 

@@ -27,7 +27,6 @@
             <list>
                 <value>classpath:mall_config.properties</value>
                 <value>classpath:third_part.properties</value>
-                <value>classpath:redis.properties</value>
             </list>
         </property>
     </bean>

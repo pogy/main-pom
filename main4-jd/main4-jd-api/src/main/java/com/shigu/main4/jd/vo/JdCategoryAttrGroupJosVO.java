@@ -1,22 +1,24 @@
 package com.shigu.main4.jd.vo;
 
 
+import jdk.nashorn.internal.scripts.JD;
+
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created By admin on 2017/12/14/16:18
  */
-public class CategoryAttrGroupJosVO implements Serializable {
+public class JdCategoryAttrGroupJosVO implements Serializable {
 
     private static final long serialVersionUID = 8190845150192673657L;
 
     private Long groupId;
     private String groupName;
     private Integer attrGroupIndexId;
-    private Set<FeatureCateAttrGroupJosVO> attrGroupfeatures;
+    private Set<JdFeatureCateAttrGroupJosVO> attrGroupfeatures;
 
-    public CategoryAttrGroupJosVO() {
+    public JdCategoryAttrGroupJosVO() {
     }
 
     public Long getGroupId() {
@@ -43,11 +45,11 @@ public class CategoryAttrGroupJosVO implements Serializable {
         this.attrGroupIndexId = attrGroupIndexId;
     }
 
-    public Set<FeatureCateAttrGroupJosVO> getAttrGroupfeatures() {
+    public Set<JdFeatureCateAttrGroupJosVO> getAttrGroupfeatures() {
         return attrGroupfeatures;
     }
 
-    public void setAttrGroupfeatures(Set<FeatureCateAttrGroupJosVO> attrGroupfeatures) {
+    public void setAttrGroupfeatures(Set<JdFeatureCateAttrGroupJosVO> attrGroupfeatures) {
         this.attrGroupfeatures = attrGroupfeatures;
     }
 }

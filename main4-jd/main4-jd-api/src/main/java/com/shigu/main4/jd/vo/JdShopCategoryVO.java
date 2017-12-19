@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created By admin on 2017/12/14/15:58
  */
-public class ShopCategoryVO implements Serializable {
+public class JdShopCategoryVO implements Serializable {
 
     private static final long serialVersionUID = 1068022458103649657L;
 
@@ -18,7 +18,7 @@ public class ShopCategoryVO implements Serializable {
     private long shopId;
     private int orderNo;
 
-    public ShopCategoryVO() {
+    public JdShopCategoryVO() {
     }
 
     public long getCid() {

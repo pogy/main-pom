@@ -1,8 +1,7 @@
 package com.shigu.main4.jd.service;
 
-import com.jd.open.api.sdk.JdException;
-import com.jd.open.api.sdk.response.market.VasSubscribeGetResponse;
 import com.shigu.main4.jd.exceptions.JdUpException;
+import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 
 /**
  * Created By admin on 2017/12/14/16:51
@@ -16,6 +15,6 @@ public interface JdServiceMarketService {
      * @param itemCode
      * @param accessToken
      */
-    VasSubscribeGetResponse subscribe(String userName, String itemCode, String accessToken) throws  JdUpException;
+    JdVasSubscribeVO subscribe(String userName, String itemCode, String accessToken) throws  JdUpException;
 
 }

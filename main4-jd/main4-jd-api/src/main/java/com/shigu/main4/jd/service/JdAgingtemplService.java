@@ -3,7 +3,7 @@ package com.shigu.main4.jd.service;
 
 import com.jd.open.api.sdk.JdException;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.vo.AgingTemplateVO;
+import com.shigu.main4.jd.vo.JdAgingTemplateVO;
 
 import java.util.List;
 
@@ -18,6 +18,6 @@ public interface JdAgingtemplService {
      * @return
      * @throws JdException
      */
-    List<AgingTemplateVO> getAgingtempl(String accessToken) throws  JdUpException;
+    List<JdAgingTemplateVO> getAgingtempl(String accessToken) throws  JdUpException;
 
 }

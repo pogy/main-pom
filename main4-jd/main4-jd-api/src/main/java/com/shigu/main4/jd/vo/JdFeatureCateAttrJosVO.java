@@ -5,14 +5,14 @@ import java.io.Serializable;
 /**
  * Created By admin on 2017/12/14/16:17
  */
-public class FeatureCateAttrJosVO implements Serializable {
+public class JdFeatureCateAttrJosVO implements Serializable {
 
     private static final long serialVersionUID = -4247890569956261091L;
     private String attrFeatureCn;
     private String attrFeatureKey;
     private String attrFeatureValue;
 
-    public FeatureCateAttrJosVO() {
+    public JdFeatureCateAttrJosVO() {
     }
 
     public String getAttrFeatureCn() {

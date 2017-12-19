@@ -28,7 +28,7 @@ public interface JdAuthService {
 
     /**
      * 刷新token
-     * @param userId
+     * @param refreshToken
      */
-    void refreshToken(String userId);
+    JdAuthedInfoVO refreshToken(String refreshToken) throws IOException, JdUpException;
 }

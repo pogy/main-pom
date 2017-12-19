@@ -33,8 +33,7 @@ public class JdShopServiceImpl implements JdShopService {
     @Override
     public JdShopInfoVO getJdShopInfo(String accessToken) throws JdUpException {
         VenderShopQueryRequest request = new VenderShopQueryRequest();
-        VenderShopQueryResponse response;
-        response = jdUtil.execute(request,accessToken);
+        VenderShopQueryResponse response = jdUtil.execute(request,accessToken);
         ShopJosResult shopJosResult = response.getShopJosResult();
         return BeanMapper.map(shopJosResult, JdShopInfoVO.class);
     }

@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Created By admin on 2017/12/14/16:15
  */
-public class CategoryAttrJosVO implements Serializable {
+public class JdCategoryAttrJosVO implements Serializable {
 
     private static final long serialVersionUID = -3179694262609983760L;
 
@@ -17,11 +17,11 @@ public class CategoryAttrJosVO implements Serializable {
     private Integer attrIndexId;
     private Integer inputType;
     private Integer attributeType;
-    private Set<FeatureCateAttrJosVO> attrFeatures;
-    private CategoryAttrGroupJosVO categoryAttrGroup;
-    private List<CategoryAttrValueJosVO> attrValueList;
+    private Set<JdFeatureCateAttrJosVO> attrFeatures;
+    private JdCategoryAttrGroupJosVO categoryAttrGroup;
+    private List<JdCategoryAttrValueJosVO> attrValueList;
 
-    public CategoryAttrJosVO() {
+    public JdCategoryAttrJosVO() {
     }
 
     public Long getCategoryAttrId() {
@@ -72,27 +72,27 @@ public class CategoryAttrJosVO implements Serializable {
         this.attributeType = attributeType;
     }
 
-    public Set<FeatureCateAttrJosVO> getAttrFeatures() {
+    public Set<JdFeatureCateAttrJosVO> getAttrFeatures() {
         return attrFeatures;
     }
 
-    public void setAttrFeatures(Set<FeatureCateAttrJosVO> attrFeatures) {
+    public void setAttrFeatures(Set<JdFeatureCateAttrJosVO> attrFeatures) {
         this.attrFeatures = attrFeatures;
     }
 
-    public CategoryAttrGroupJosVO getCategoryAttrGroup() {
+    public JdCategoryAttrGroupJosVO getCategoryAttrGroup() {
         return categoryAttrGroup;
     }
 
-    public void setCategoryAttrGroup(CategoryAttrGroupJosVO categoryAttrGroup) {
+    public void setCategoryAttrGroup(JdCategoryAttrGroupJosVO categoryAttrGroup) {
         this.categoryAttrGroup = categoryAttrGroup;
     }
 
-    public List<CategoryAttrValueJosVO> getAttrValueList() {
+    public List<JdCategoryAttrValueJosVO> getAttrValueList() {
         return attrValueList;
     }
 
-    public void setAttrValueList(List<CategoryAttrValueJosVO> attrValueList) {
+    public void setAttrValueList(List<JdCategoryAttrValueJosVO> attrValueList) {
         this.attrValueList = attrValueList;
     }
 }

@@ -5,14 +5,14 @@ import java.io.Serializable;
 /**
  * Created By admin on 2017/12/14/17:17
  */
-public class AgingTemplateVO implements Serializable {
+public class JdAgingTemplateVO implements Serializable {
 
     private static final long serialVersionUID = -6882396635046474340L;
 
     private Long templateId;
     private String templateName;
 
-    public AgingTemplateVO() {
+    public JdAgingTemplateVO() {
     }
 
     public Long getTemplateId() {

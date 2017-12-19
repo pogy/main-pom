@@ -8,13 +8,33 @@ import java.io.Serializable;
 public class JdCategoryVO implements Serializable {
 
     private static final long serialVersionUID = -2590897270448542021L;
-
+    /**
+     * 类目ID
+     */
     private Integer id;
+    /**
+     * 父类目ID
+     */
     private Integer fid;
+    /**
+     * 类目名称
+     */
     private String name;
+    /**
+     *
+     */
     private Integer indexId;
+    /**
+     * 类目状态
+     */
     private String status;
+    /**
+     * 类目级别 0：一级类目 1：二级类目 2：三级类目
+     */
     private Integer lev;
+    /**
+     * 是否是父级类目
+     */
     private Boolean parent;
 
     public Integer getId() {

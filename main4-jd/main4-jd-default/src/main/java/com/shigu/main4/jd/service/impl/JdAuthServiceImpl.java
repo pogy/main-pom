@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.shigu.main4.jd.constant.JdUrlConstant;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
+import com.shigu.main4.jd.util.HttpClientUtil;
 import com.shigu.main4.jd.util.JdUtil;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import org.apache.http.HttpEntity;
@@ -65,12 +66,27 @@ public class JdAuthServiceImpl implements JdAuthService{
                         .replace("JD_REDIRECT_URI",jdUtil.getJdRedirectUri())
                         .replace("CODE",code)
                         .replace("JD_STATE",jdUtil.getJdState());
-        HttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setHeader("Accept-Charset","utf-8");
-        HttpResponse httpResponse = client.execute(httpPost);
-        HttpEntity entity = httpResponse.getEntity();
+        HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
         String entityString = EntityUtils.toString(entity);
+        return getJdAithedInfo(entityString);
+    }
+
+    /**
+     * 刷新token
+     * @param refreshToken
+     */
+    @Override
+    public JdAuthedInfoVO refreshToken(String refreshToken) throws IOException, JdUpException {
+        String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
+                .replace("JD_APPKEY",jdUtil.getJdAppkey())
+                .replace("JD_SECRET",jdUtil.getJdSecret())
+                .replace("REFRESH_TOKEN",refreshToken);
+        HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
+        String entityString = EntityUtils.toString(entity);
+        return getJdAithedInfo(entityString);
+    }
+
+    private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException {
         //注释：
         //uid：授权用户对应的京东ID
         //user_nick：授权用户对应的京东昵称
@@ -102,18 +118,6 @@ public class JdAuthServiceImpl implements JdAuthService{
         jdAuthedInfoVO.setAuthTime(authTime);
         jdAuthedInfoVO.setExpiresIn(expiresIn);
 
-
         return jdAuthedInfoVO;
     }
-
-    /**
-     * 刷新token
-     * @param userId
-     */
-    @Override
-    public void refreshToken(String userId) {
-
-
-    }
-
 }

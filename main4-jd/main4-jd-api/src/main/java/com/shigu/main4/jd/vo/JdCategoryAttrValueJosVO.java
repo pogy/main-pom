@@ -7,14 +7,14 @@ import java.util.Set;
 /**
  * Created By admin on 2017/12/14/16:20
  */
-public class CategoryAttrValueJosVO implements Serializable{
+public class JdCategoryAttrValueJosVO implements Serializable{
 
     private static final long serialVersionUID = 7592311776160000561L;
 
     private Long attrValueId;
     private Integer attrValueIndexId;
     private String attrValue;
-    private Set<FeatureCateAttrValueJosVO> attrValueFeatures;
+    private Set<JdFeatureCateAttrValueJosVO> attrValueFeatures;
 
     public Long getAttrValueId() {
         return attrValueId;
@@ -40,11 +40,11 @@ public class CategoryAttrValueJosVO implements Serializable{
         this.attrValue = attrValue;
     }
 
-    public Set<FeatureCateAttrValueJosVO> getAttrValueFeatures() {
+    public Set<JdFeatureCateAttrValueJosVO> getAttrValueFeatures() {
         return attrValueFeatures;
     }
 
-    public void setAttrValueFeatures(Set<FeatureCateAttrValueJosVO> attrValueFeatures) {
+    public void setAttrValueFeatures(Set<JdFeatureCateAttrValueJosVO> attrValueFeatures) {
         this.attrValueFeatures = attrValueFeatures;
     }
 }

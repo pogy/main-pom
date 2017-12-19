@@ -2,9 +2,10 @@ package com.shigu.main4.jd.service;
 
 import com.jd.open.api.sdk.JdException;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.vo.CategoryAttrJosVO;
+import com.shigu.main4.jd.vo.JdCategoryAttrJosVO;
+import com.shigu.main4.jd.vo.JdCategoryReadVO;
 import com.shigu.main4.jd.vo.JdCategoryVO;
-import com.shigu.main4.jd.vo.ShopCategoryVO;
+import com.shigu.main4.jd.vo.JdShopCategoryVO;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,15 +21,16 @@ public interface JdCategoryService {
      * @throws JdException
      * @throws IOException
      */
-    List<ShopCategoryVO> getJdSellercats(String accessToken) throws  JdUpException;
+    List<JdShopCategoryVO> getJdSellercats(String accessToken) throws  JdUpException;
 
     /**
      * 京东 获取类目属性列表
+     * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
      * @param accessToken
      * @throws JdException
      * @throws IOException
      */
-    List<CategoryAttrJosVO> getJdCategoryAttrJos(String accessToken) throws  JdUpException;
+    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(String accessToken) throws  JdUpException;
 
     /**
      * 京东 商家类目信息
@@ -37,5 +39,14 @@ public interface JdCategoryService {
      * @throws IOException
      */
     List<JdCategoryVO> getJdWarecats(String accessToken) throws  JdUpException;
+
+    /**
+     * 根据父级类目Id获取子集类目信息
+     * @param accessToken
+     * @param pid 父类目id
+     * @return
+     * @throws JdUpException
+     */
+    List<JdCategoryReadVO> getJdCategoryByPid(String accessToken,Long pid) throws JdUpException ;
 
 }
