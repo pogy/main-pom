@@ -527,10 +527,10 @@ public class ShopAction {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
                 }
-                if(oi.getGoodsStyleId()!=null && StringUtils.isNotEmpty(oi.getGoodsStyleId())){
-                    vo.setGoodsStyleType(1);
-                }else{
+                if(vo.getGoodsStyleId()!=null && StringUtils.isNotEmpty(oi.getGoodsStyleId())){
                     vo.setGoodsStyleType(2);
+                }else{
+                    vo.setGoodsStyleType(1);
                 }
                 goodsList.add(vo);
             }

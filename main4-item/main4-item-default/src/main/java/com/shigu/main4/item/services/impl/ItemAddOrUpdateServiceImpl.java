@@ -1259,6 +1259,8 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguGoodsTinyExample.setWebSite(website);
             List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
             if(shiguGoodsTinies!=null&&shiguGoodsTinies.size()>0){
+                shiguGoodsTinies.get(0).setRemark9(null);
+                shiguGoodsTinyMapper.updateByPrimaryKeySelective( shiguGoodsTinies.get(0));
                 for (ShiguGoodsTiny shiguGoodsTiny  :shiguGoodsTinies) {
                     shiguGoodsTiny.setRemark9(null);
                     GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
@@ -1267,7 +1269,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                     //设置为无风格
                     if(goodsCountForsearch!=null){
                         goodsCountForsearch.setHadStyle(0);
-                        goodsCountForsearch.setStyleName("");
+                        goodsCountForsearch.setStyleName(null);
                         goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
                     }
                 }
