@@ -1258,8 +1258,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                     //设置为无风格
                     if(goodsCountForsearch!=null){
                         goodsCountForsearch.setHadStyle(0);
+                        goodsCountForsearch.setStyleName(null);
+                        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
                     }
-
                 }
             }
         }
