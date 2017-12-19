@@ -1183,6 +1183,15 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                     goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
                 }
                 goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+            }else{
+                goodsCountForsearch.setHadStyle(1);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(sid);
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                }
+                goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
             }
         }
     }
@@ -1258,7 +1267,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                     //设置为无风格
                     if(goodsCountForsearch!=null){
                         goodsCountForsearch.setHadStyle(0);
-                        goodsCountForsearch.setStyleName(null);
+                        goodsCountForsearch.setStyleName("");
                         goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
                     }
                 }
