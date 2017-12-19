@@ -509,7 +509,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
 </#list>
 </p></#if>
             <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
-<#list [{"id":"${shopInfo.imQQ!}"}] as $it>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>
 </p></#if>
