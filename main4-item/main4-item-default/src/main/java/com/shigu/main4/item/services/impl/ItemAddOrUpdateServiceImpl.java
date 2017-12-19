@@ -116,6 +116,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     private ShiguCustomerStyleMapper shiguCustomerStyleMapper;
 
+    @Autowired
+    private SearchCategorySubMapper searchCategorySubMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -1173,6 +1176,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
             if(goodsCountForsearch != null) {
                 goodsCountForsearch.setHadStyle(1);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(sid);
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                }
                 goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
             }
         }
