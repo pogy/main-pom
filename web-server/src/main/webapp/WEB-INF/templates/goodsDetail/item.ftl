@@ -214,7 +214,7 @@ ${userShopHdHtml}
             </a>
             </#if>
         </#list>
-        <i class="smallPlayButton"></i>
+        <#if goodsInfo.goodsVideoUrl??><i class="buttonIcon smallPlayButton"></i></#if>
 <#if goodsInfo.goodsVideoUrl??>
 <div id="goodsVideo" class="goodsVideo">
     <video class="video" controls="controls" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
@@ -232,7 +232,7 @@ ${userShopHdHtml}
     </div>
     <div class="shareBox">
         <a class="store" xzclick="collectGoods" href="javascript:;"  data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
-        <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
+        <a class="find_error" href="/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
     </div>
 </div>
     </div>
@@ -504,17 +504,15 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <div class="contactbox">
             <h3>联系档口</h3>
             <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
-<#list [{"id":""+shopInfo.imWw}] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
-</#if>
-</#list></p></#if>
+<#list [{"id":"${shopInfo.imWw!}"}] as $it>
+<#include "/common/xz__imAliww.ftl">
+</#list>
+</p></#if>
             <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
-<#list [{"id":""+shopInfo.imQQ}] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
-</#list></p></#if>
+<#list [{"id":"${shopInfo.imQQ!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
+</#list>
+</p></#if>
         </div>
     </div>
 </div>
