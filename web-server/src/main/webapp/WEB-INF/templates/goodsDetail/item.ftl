@@ -378,7 +378,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
             <div class="shopName" >
                 <a class="nameDetails" href='http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
                 <span>
-<#list [{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}] as $it>
+<#list [{"id":"${shopInfo.imWw!}"}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
 </span>
