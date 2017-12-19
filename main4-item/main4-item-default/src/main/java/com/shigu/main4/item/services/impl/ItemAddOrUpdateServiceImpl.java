@@ -1222,12 +1222,13 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
             //判断是否已存在
-            if(shiguCustomerStyles!=null){
+            if(shiguCustomerStyles!=null&& shiguCustomerStyles.size()>0){
                 return 0L;
             }
+            shiguCustomerStyleExample.clear();
             shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
             List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
-            if(list.size()>0&&list!=null){
+            if(list!=null && list.size()>0){
                 ShiguCustomerStyle shiguCustomerStyle =list.get(0);
                 shiguCustomerStyle.setCId(categoryId);
                 shiguCustomerStyle.setStyleName(goodsStyleName);
