@@ -378,17 +378,15 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
             <div class="shopName" >
                 <a class="nameDetails" href='http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
                 <span>
-<#list [{"id":""+shopInfo.imWw}] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
-</#if>
-</#list></span>
+<#list [{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}] as $it>
+<#include "/common/xz__imAliww.ftl">
+</#list>
+</span>
                 <span>
-<#list [{"id":""+shopInfo.imQq}] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
-</#list></span>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
+</#list>
+</span>
                 <i class="ti icon-downarrow"></i>
 <div class="storeDetailInfobox">
     <div class="p1 clearfix">
@@ -503,16 +501,20 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <div class="grewLine"></div>
         <div class="contactbox">
             <h3>联系档口</h3>
-            <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
+            <#if shopInfo.imWw??>
+                <p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
 <#list [{"id":"${shopInfo.imWw!}"}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
-</p></#if>
-            <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
+</p>
+            </#if>
+            <#if shopInfo.imQq?? && shopInfo.imQq != "">
+                <p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
 <#list [{"id":"${shopInfo.imQq!}"}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>
-</p></#if>
+</p>
+            </#if>
         </div>
     </div>
 </div>
