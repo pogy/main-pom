@@ -527,6 +527,11 @@ public class ShopAction {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
                 }
+                if(oi.getGoodsStyleId()!=null && StringUtils.isNotEmpty(oi.getGoodsStyleId())){
+                    vo.setGoodsStyleType(1);
+                }else{
+                    vo.setGoodsStyleType(2);
+                }
                 goodsList.add(vo);
             }
             model.addAttribute("goodslist",goodsList);
