@@ -397,4 +397,12 @@ public class ActivityAction {
     public String batchOrders() {
         return "xzPage/batchOrders";
     }
+
+    /**
+     *
+     */
+    @RequestMapping("qualityControl")
+    public String qualityControl() {
+        return "xzPage/qualityControl";
+    }
 }

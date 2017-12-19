@@ -375,7 +375,7 @@ public class MemberAction {
     public JSONObject rmv_arddp(String ids, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ids == null) {
-            throw new JsonErrException("ids参数异常");
+            return JsonResponseUtil.error("ids参数异常");
         }
         List<String> idslist = new ArrayList<>();
         String[] idsarr = ids.split(",");
@@ -392,7 +392,7 @@ public class MemberAction {
         try {
             itemUpRecordService.deleteUploadedItems(ps.getUserId(), nick, idslist);
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
@@ -546,13 +546,13 @@ public class MemberAction {
     @ResponseBody
     public JSONObject saveCard(@Valid SafeRzBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         try {
             userLicenseService.realNameApply(ps.getUserId(), bo.getCardid() + ";" + bo.getCardimg1());
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
@@ -581,7 +581,7 @@ public class MemberAction {
     @ResponseBody
     public JSONObject saveUserinfo(@Valid SaveUserInfoBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         UserInfoUpdate userInfoUpdate = bo.parseToUserInfo();
@@ -589,7 +589,7 @@ public class MemberAction {
         try {
             userBaseService.updateUserInfo(userInfoUpdate);
         } catch (UpdateUserInfoException e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JSONObject.fromObject("{'result':'success'}");
     }
@@ -603,7 +603,7 @@ public class MemberAction {
     @ResponseBody
     public JSONObject uploadicon(@RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) throws JsonErrException {
         if (file == null) {
-            throw new JsonErrException("文件数据不存在");
+            return JsonResponseUtil.error("文件数据不存在");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String url = "";
@@ -615,9 +615,9 @@ public class MemberAction {
             userInfoUpdate.setHeadUrl(url);
             memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
-            throw new JsonErrException("图片数据读取失败");
+            return JsonResponseUtil.error("图片数据读取失败");
         } catch (UpdateUserInfoException e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success().element("imgurl", url + "?x-oss-process=image/resize,m_fixed,h_100,w_100");
     }
@@ -647,7 +647,7 @@ public class MemberAction {
     @ResponseBody
     public JSONObject savePassword(@Valid SavePasswordBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //旧的密码查出来,与oldPwd比对
@@ -657,12 +657,12 @@ public class MemberAction {
         if (bo.getCode() != null && checkFromForget(ps.getUserId(), bo.getCode(), phoneCode)) {//如果是验证密码过来的
             //忘记密码过来的不需要验证密码
         } else if (!EncryptUtil.encrypt(bo.getOldPwd()).equals(pwd)) {
-            throw new JsonErrException("原密码输入有误");
+            return JsonResponseUtil.error("原密码输入有误");
         }
         try {
             userLicenseService.changePassword(ps.getUserId(), bo.getNewPwd());
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
@@ -751,7 +751,7 @@ public class MemberAction {
         PhoneVerify phoneCode = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
         if (phoneCode == null || !phoneCode.getVerify().equals(code)
                 || !phoneCode.getPhone().equals(telephone)) {//验证不通过
-            throw new JsonErrException("验证码错误");
+            return JsonResponseUtil.error("验证码错误");
         } else {
             userBaseService.setNewPayPwd(ps.getUserId(), newPwd);
         }
@@ -913,9 +913,9 @@ public class MemberAction {
      */
     @RequestMapping("member/saveCzinfo")
     @ResponseBody
-    public JSONObject saveCzinfo(@Valid RechangeBO bo, BindingResult result, HttpSession session) throws JsonErrException {
-        if (result.hasErrors()) {
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+    public JSONObject saveCzinfo(@Valid RechangeBO bo,BindingResult result,HttpSession session) throws JsonErrException {
+        if(result.hasErrors()){
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String money = paySdkClientService.rechange(ps.getUserId(), bo.getPaynum(), bo.getAlipay());
@@ -944,8 +944,76 @@ public class MemberAction {
             return "fxs/withdraw5Apply";
         }
     }
+    ///**
+    // * 提现
+    // *
+    // * @return
+    // */
+    //@RequestMapping("member/withdraw5Apply")
+    //public String withdraw5Apply(HttpSession session,Model model){
+    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    String tempcode=paySdkClientService.tempcode(ps.getUserId());
+    //    model.addAttribute("tempCode",tempcode);
+    //    return "fxs/withdraw5Apply";
+    //}
+    //
+    ///**
+    // * 提现保存
+    // * @return
+    // */
+    //@RequestMapping("member/saveTixian")
+    //@ResponseBody
+    //public JSONObject saveTixian(@Valid TixianBO bo,BindingResult result,HttpSession session){
+    //    if(result.hasErrors()){
+    //        return JSONObject.fromObject("{'result':'error','msg':'"+result.getAllErrors().get(0).getDefaultMessage()+"'}");
+    //    }
+    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    return paySdkClientService.tixian(bo, ps.getUserId());
+    //}
 
+    /**
+     * 提现
+     *
+     * @return
+     */
+    @RequestMapping("member/withdraw5Apply")
+    public String withdraw5Apply(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempcode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode", tempcode);
+        return "fxs/withdraw5Apply";
+    }
 
+    /**
+     * 获取提现金额实际值
+     *
+     * @param userWirteMoney 用户填写金额，单位：元
+     * @return
+     */
+    @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
+    @ResponseBody
+    public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
+        if (userWirteMoney == null || userWirteMoney <= 0) {
+            return JsonResponseUtil.error("请输入正确的金额");
+        }
+        //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
+    }
+
+    /**
+     * 提现保存
+     *
+     * @return
+     */
+    @RequestMapping("member/saveTixian")
+    @ResponseBody
+    public JSONObject saveTixian(@Valid TixianBO bo, BindingResult result, HttpSession session) {
+        if (result.hasErrors()) {
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return paySdkClientService.tixian(bo, ps.getUserId());
+    }
 
     /**
      * 店铺入驻申请
@@ -1006,15 +1074,15 @@ public class MemberAction {
      */
     @RequestMapping("member/removeStoreAdd")
     @ResponseBody
-    public JSONObject removeStoreAdd(Long userCode, HttpSession session) throws JsonErrException {
-        if (userCode == null) {
-            throw new JsonErrException("userCode参数异常");
+    public JSONObject removeStoreAdd(Long userCode,HttpSession session) throws JsonErrException {
+        if(userCode==null){
+            return JsonResponseUtil.error("userCode参数异常");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         try {
             shopRegistService.delApply(ps.getUserId(), userCode);
         } catch (ShopRegistException e) {
-            throw new JsonErrException(e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
