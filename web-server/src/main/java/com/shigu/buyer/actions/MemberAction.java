@@ -702,7 +702,7 @@ public class MemberAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping({"member/setPayPassword","seller/setPayPassword"})
+    @RequestMapping({"member/setPayPassword", "seller/setPayPassword"})
     @ResponseBody
     public JSONObject setPayPassword(String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -719,7 +719,7 @@ public class MemberAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping({"member/savePayPassword","seller/savePayPassword"})
+    @RequestMapping({"member/savePayPassword", "seller/savePayPassword"})
     @ResponseBody
     public JSONObject savePayPassword(String oldPwd, String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -742,7 +742,7 @@ public class MemberAction {
     //    return "buyer/safeXgPaymm";
     //}
 
-    @RequestMapping({"member/saveBackPayPassword","seller/saveBackPayPassword"})
+    @RequestMapping({"member/saveBackPayPassword", "seller/saveBackPayPassword"})
     @ResponseBody
     public JSONObject changePayPassword(String code, String newPwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -759,7 +759,7 @@ public class MemberAction {
     }
 
     @ResponseBody
-    @RequestMapping({"member/getVerCode","seller/getVerCode"})
+    @RequestMapping({"member/getVerCode", "seller/getVerCode"})
     public JSONObject getVerCode(HttpSession session) throws JsonErrException {
 
         String code = RedomUtil.redomNumber(6);
@@ -913,8 +913,8 @@ public class MemberAction {
      */
     @RequestMapping("member/saveCzinfo")
     @ResponseBody
-    public JSONObject saveCzinfo(@Valid RechangeBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject saveCzinfo(@Valid RechangeBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -928,92 +928,22 @@ public class MemberAction {
      * @return
      */
     @RequestMapping("{identity}/withdraw5Apply")
-    public String withdraw5Apply(HttpSession session, Model model,@PathVariable String identity) throws Main4Exception {
+    public String withdraw5Apply(HttpSession session, Model model, @PathVariable String identity) throws Main4Exception {
         if (!isMemberOrSeller(identity)) {
             throw new Main4Exception("非法的路径");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 手续费率
-        model.addAttribute("handlingCharge","0.6%");
-        model.addAttribute("alipayUserList",userAccountService.userAlipayBindList(ps.getUserId()));
-        model.addAttribute("payPasswordIs",memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
+        model.addAttribute("handlingCharge", "0.6%");
+        model.addAttribute("alipayUserList", userAccountService.userAlipayBindList(ps.getUserId()));
+        model.addAttribute("payPasswordIs", memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
         if (SELLER_PATH.equals(identity)) {
             return "gys/withdraw5Apply";
-        }
-        else {
+        } else {
             return "fxs/withdraw5Apply";
         }
     }
-    ///**
-    // * 提现
-    // *
-    // * @return
-    // */
-    //@RequestMapping("member/withdraw5Apply")
-    //public String withdraw5Apply(HttpSession session,Model model){
-    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-    //    String tempcode=paySdkClientService.tempcode(ps.getUserId());
-    //    model.addAttribute("tempCode",tempcode);
-    //    return "fxs/withdraw5Apply";
-    //}
-    //
-    ///**
-    // * 提现保存
-    // * @return
-    // */
-    //@RequestMapping("member/saveTixian")
-    //@ResponseBody
-    //public JSONObject saveTixian(@Valid TixianBO bo,BindingResult result,HttpSession session){
-    //    if(result.hasErrors()){
-    //        return JSONObject.fromObject("{'result':'error','msg':'"+result.getAllErrors().get(0).getDefaultMessage()+"'}");
-    //    }
-    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-    //    return paySdkClientService.tixian(bo, ps.getUserId());
-    //}
 
-    /**
-     * 提现
-     *
-     * @return
-     */
-    @RequestMapping("member/withdraw5Apply")
-    public String withdraw5Apply(HttpSession session, Model model) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempcode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempcode);
-        return "fxs/withdraw5Apply";
-    }
-
-    /**
-     * 获取提现金额实际值
-     *
-     * @param userWirteMoney 用户填写金额，单位：元
-     * @return
-     */
-    @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
-    @ResponseBody
-    public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
-        if (userWirteMoney == null || userWirteMoney <= 0) {
-            return JsonResponseUtil.error("请输入正确的金额");
-        }
-        //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
-    }
-
-    /**
-     * 提现保存
-     *
-     * @return
-     */
-    @RequestMapping("member/saveTixian")
-    @ResponseBody
-    public JSONObject saveTixian(@Valid TixianBO bo, BindingResult result, HttpSession session) {
-        if (result.hasErrors()) {
-            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
-        }
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return paySdkClientService.tixian(bo, ps.getUserId());
-    }
 
     /**
      * 店铺入驻申请
@@ -1074,8 +1004,8 @@ public class MemberAction {
      */
     @RequestMapping("member/removeStoreAdd")
     @ResponseBody
-    public JSONObject removeStoreAdd(Long userCode,HttpSession session) throws JsonErrException {
-        if(userCode==null){
+    public JSONObject removeStoreAdd(Long userCode, HttpSession session) throws JsonErrException {
+        if (userCode == null) {
             return JsonResponseUtil.error("userCode参数异常");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -1221,7 +1151,7 @@ public class MemberAction {
      * @param session
      * @return
      */
-    @RequestMapping({"member/getTeleValidateCode","seller/getTeleValidateCode"})
+    @RequestMapping({"member/getTeleValidateCode", "seller/getTeleValidateCode"})
     @ResponseBody
     public JSONObject getTeleValidateCode(String imgValidate, HttpSession session) {
         //校验手机验证码
@@ -1241,12 +1171,13 @@ public class MemberAction {
 
     /**
      * 用户支付宝绑定请求
+     *
      * @param bo
      * @param session
      * @param result
      * @return
      */
-    @RequestMapping({"member/applyAliUserBind","seller/applyAliUserBind"})
+    @RequestMapping({"member/applyAliUserBind", "seller/applyAliUserBind"})
     @ResponseBody
     public JSONObject applyAliUserBind(@Valid MemberAlipayBindBO bo, HttpSession session, BindingResult result) {
         if (result.hasErrors()) {
@@ -1262,29 +1193,31 @@ public class MemberAction {
         if (phone == null) {
             return JsonResponseUtil.error("请先绑定手机号");
         }
-        return userAccountService.applyAliUserBind(bo,userId);
+        return userAccountService.applyAliUserBind(bo, userId);
     }
 
     /**
      * 删除绑定支付宝帐号
+     *
      * @param aliAccountId 用户支付宝绑定记录id
      * @return
      */
-    @RequestMapping({"member/deleteAliUser","seller/deleteAliUser"})
+    @RequestMapping({"member/deleteAliUser", "seller/deleteAliUser"})
     @ResponseBody
     public JSONObject deleteAliUser(Long aliAccountId, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return userAccountService.deleteAliUser(ps.getUserId(),aliAccountId);
+        return userAccountService.deleteAliUser(ps.getUserId(), aliAccountId);
     }
 
     /**
      * 新充值接口
-     * @param money 充值金额 元
-     * @param type 充值类型 1支付宝 2微信  （目前只开放支付宝充值）
+     *
+     * @param money   充值金额 元
+     * @param type    充值类型 1支付宝 2微信  （目前只开放支付宝充值）
      * @param session
      * @return 支付宝支付连接跳转地址
      */
-    @RequestMapping({"member/userRecharge","seller/userRecharge"})
+    @RequestMapping({"member/userRecharge", "seller/userRecharge"})
     @ResponseBody
     public JSONObject userRecharge(Double money, Integer type, HttpSession session) throws PayApplyException {
         if (money == null || money <= 0) {
@@ -1300,7 +1233,7 @@ public class MemberAction {
      *
      * @return
      */
-    @RequestMapping({"member/saveTixian","seller/saveTixian"})
+    @RequestMapping({"member/saveTixian", "seller/saveTixian"})
     @ResponseBody
     public JSONObject saveTixian(@Valid NewCashApplyBO bo, BindingResult result, HttpSession session) {
         if (result.hasErrors()) {
@@ -1308,7 +1241,7 @@ public class MemberAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        if (!memberSimpleService.isPayPwdMatch(userId,bo.getPayPassword())) {
+        if (!memberSimpleService.isPayPwdMatch(userId, bo.getPayPassword())) {
             return JsonResponseUtil.error("请检查支付密码");
         }
         TixianBO tixianBO = userAccountService.selTixianAccountInfoByBindId(userId, bo.getAlipayId());
@@ -1322,14 +1255,15 @@ public class MemberAction {
 
     /**
      * 是否充值完成轮询
+     *
      * @param identity 供应商/分销商
-     * @param applyId 支付申请id
+     * @param applyId  支付申请id
      * @param session
      * @return 支付完成，返回success与跳转地址
      */
     @RequestMapping("{identity}/userPayPolling")
     @ResponseBody
-    public JSONObject userPayPolling(@PathVariable String identity,Long applyId, HttpSession session) {
+    public JSONObject userPayPolling(@PathVariable String identity, Long applyId, HttpSession session) {
         if (!isMemberOrSeller(identity)) {
             return JsonResponseUtil.error("非法的路径");
         }
@@ -1350,6 +1284,22 @@ public class MemberAction {
             return "gys/bindAlipaySuccess";
         }
         return "fxs/bindAlipaySuccess";
+    }
+
+    /**
+     * 获取提现金额实际值
+     *
+     * @param userWirteMoney 用户填写金额，单位：元
+     * @return
+     */
+    @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
+    @ResponseBody
+    public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
+        if (userWirteMoney == null || userWirteMoney <= 0) {
+            return JsonResponseUtil.error("请输入正确的金额");
+        }
+        //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
     }
 
     private boolean isMemberOrSeller(String identityPath) {
