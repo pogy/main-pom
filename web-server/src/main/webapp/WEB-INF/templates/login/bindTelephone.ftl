@@ -1,4 +1,4 @@
-<#assign $pageid>bindTelephone</#assign>
+<#assign $pageid="bindTelephone">
 <!doctype html>
 <html>
 <head>
@@ -19,9 +19,7 @@
 <#include "/__style_torrent__/login__bindTelephone_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -156,9 +154,7 @@
         <div class="bindFormItem">
             <div class="formGroup">
                 <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

@@ -1020,7 +1020,7 @@ public class CdnAction {
     }
     @RequestMapping("loginWindow")
     public String loginWindow(){
-        return "cdn/loginWindow";
+        return "login/loginWindow";
     }
 
     @RequestMapping("daifaIndex")

@@ -90,7 +90,7 @@ public class UserLoginAction {
     @RequestMapping("frameLogin")
     public String frameLogin( HttpSession session, Model model,String backUrl){
         model.addAttribute("backUrl", backUrl);
-        return "buyer/framelogin";
+        return "login/loginWindow";
     }
 
     /**
@@ -120,7 +120,7 @@ public class UserLoginAction {
 //                spreadService.createBySync(listObjFromCache);
             model.addAttribute("index_goat", vos.get(0));
         }
-        return "buyer/login";
+        return "login/login";
     }
 
     @ResponseBody
@@ -340,7 +340,7 @@ public class UserLoginAction {
      */
     @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
     public String forgetPassword() throws Main4Exception {
-        return "buyer/forgetPassword";
+        return "login/forgetPassword";
     }
 
     @ResponseBody
@@ -722,7 +722,7 @@ public class UserLoginAction {
           // System.out.println (back);
             return "redirect:"+back;
         }else{
-            return "redirect:frameLogin.htm";
+            return "redirect:loginWindow.htm";
         }
 
     }
