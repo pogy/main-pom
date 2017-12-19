@@ -14,6 +14,7 @@
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
+<#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/login__loginWindow_js.ftl">
 </head>
 <body>

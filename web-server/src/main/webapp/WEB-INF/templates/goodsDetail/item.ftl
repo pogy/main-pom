@@ -1,4 +1,4 @@
-<#assign $pageid>item</#assign>
+<#assign $pageid="item">
 <!doctype html>
 <html>
 <head>
@@ -23,9 +23,7 @@
 <#include "/__style_torrent__/goodsDetail__item_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="headeV1">
@@ -46,16 +44,12 @@
                     onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
-<#assign text>{"id":shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":shopInfo.imWw}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list>
-<#assign text>{"id":""+shopInfo.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":""+shopInfo.imQq}] as $it>
 <#if $it.id != ''>
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -115,9 +109,7 @@
     </div>
 </div>
             <div class="storeXybox">
-<#assign text>{"num":shopInfo.starNum}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"num":shopInfo.starNum}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
             </div>
@@ -189,9 +181,11 @@
 var shopId = '${shopInfo.shopId!}';
 var goodsId = '${goodsInfo.goodsId!}';
 </script>
-<#assign text>{"fields":[]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<script modulepath="goodsDetail/item#config">
+var shopId = '${shopInfo.shopId!}';
+var goodsId = '${goodsInfo.goodsId!}';
+</script>
+<#list [{"fields":[]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -220,10 +214,10 @@ ${userShopHdHtml}
             </a>
             </#if>
         </#list>
+        <i class="smallPlayButton"></i>
 <#if goodsInfo.goodsVideoUrl??>
 <div id="goodsVideo" class="goodsVideo">
-    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
-    <i class="buttonIcon smallPlayButton"></i>
+    <video class="video" controls="controls" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
     <i class="buttonIcon bigPlayButton"></i>
     <i class="buttonIcon closeButton"></i>
 </div>
@@ -332,9 +326,7 @@ var colorsMeta = ${goodsInfo.colorsMeta!};
 var sizesMeta = ${goodsInfo.sizesMeta!};
 var piPrice = '${goodsInfo.piPrice!}';
 </script>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 </#list>
 <div class="goodsOperateButtons clearfix">
     <b class="btn btn-lg pr btn-orange <#if goodsInfo.onlineSale == true>addGwc<#else>notAddGwc</#if>" id="addGoodsToCart">加入进货车
@@ -386,17 +378,13 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
             <div class="shopName" >
                 <a class="nameDetails" href='http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
                 <span>
-<#assign text>{"id":""+shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":""+shopInfo.imWw}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list></span>
                 <span>
-<#assign text>{"id":""+shopInfo.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":""+shopInfo.imQq}] as $it>
 <#if $it.id != ''>
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -516,17 +504,13 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <div class="contactbox">
             <h3>联系档口</h3>
             <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
-<#assign text>{"id":""+shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":""+shopInfo.imWw}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list></p></#if>
             <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
-<#assign text>{"id":""+shopInfo.imQQ}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":""+shopInfo.imQQ}] as $it>
 <#if $it.id != ''>
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
