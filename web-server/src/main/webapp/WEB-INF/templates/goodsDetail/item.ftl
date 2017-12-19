@@ -29,7 +29,7 @@
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://${webSite!}.571xz.com">
+            <a href="/">
                 <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
@@ -41,18 +41,14 @@
                 <#if shopInfo.domain??>
                     onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
                 <#else>
-                    onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
+                    onclick="jumpShopLink('/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
 <#list [{"id":shopInfo.imWw}] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
-</#if>
+<#include "/common/xz__imAliww.ftl">
 </#list>
-<#list [{"id":""+shopInfo.imQq}] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
 </#list>
                 <i class="ti icon-downarrow"></i>
             </div>
