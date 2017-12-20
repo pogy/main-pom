@@ -86,13 +86,13 @@ public class OnsaleItem implements Serializable{
      * 风格id
      * @return
      */
-    private Long goodsStyleId;
+    private Integer goodsStyleId;
 
-    public Long getGoodsStyleId() {
+    public Integer getGoodsStyleId() {
         return goodsStyleId;
     }
 
-    public void setGoodsStyleId(Long goodsStyleId) {
+    public void setGoodsStyleId(Integer goodsStyleId) {
         this.goodsStyleId = goodsStyleId;
     }
 

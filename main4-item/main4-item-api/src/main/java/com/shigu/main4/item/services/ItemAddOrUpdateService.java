@@ -120,7 +120,7 @@ public interface ItemAddOrUpdateService {
      * @param goodsId 商品ID
      * @param webSite
      */
-   void setCustomStyle(Long goodsId, Long sid, String webSite);
+   void setCustomStyle(Long goodsId, Integer sid, String webSite);
 
 
 

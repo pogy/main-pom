@@ -1160,7 +1160,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void setCustomStyle(Long goodsId, Long sid, String webSite) {
+    public void setCustomStyle(Long goodsId, Integer sid, String webSite) {
             GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
             goodsCountForsearch.setGoodsId(goodsId);
             goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
@@ -1168,7 +1168,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             goodsCountForsearch.setSid(sid);
             if(sid<=2000){
             SearchCategorySub searchCategorySub = new SearchCategorySub();
-            searchCategorySub.setSubId(sid);
+            searchCategorySub.setSubId(Long.valueOf(sid));
             searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
             goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
             }
@@ -1244,9 +1244,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             if(goodsCountForsearches != null && goodsCountForsearches.size()>0){
                 for (GoodsCountForsearch goodsCountForsearch: goodsCountForsearches){
                     goodsCountForsearch.setHadStyle(0);
-                    goodsCountForsearch.setGoodsId(null);
+                    goodsCountForsearch.setSid(null);
                     goodsCountForsearch.setStyleName(null);
-                    goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                    goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
                 }
             }
         }

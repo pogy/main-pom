@@ -1329,11 +1329,12 @@ public class ShopAction {
     @ResponseBody
     public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativeIs,HttpSession session) {
         ShopSession shopSession = getShopSession(session);
+        int sid=styleId.intValue();
         shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
         if (relativeIs){
-            shopItemModService.setSameNumStyle(goodsId,styleId , shopSession.getShopId(),shopSession.getWebSite());
+            shopItemModService.setSameNumStyle(goodsId,sid , shopSession.getShopId(),shopSession.getWebSite());
         }
-        shopItemModService.setStyle( goodsId,styleId, shopSession.getWebSite());
+        shopItemModService.setStyle( goodsId,sid, shopSession.getWebSite());
         return JsonResponseUtil.success();
     }
 
