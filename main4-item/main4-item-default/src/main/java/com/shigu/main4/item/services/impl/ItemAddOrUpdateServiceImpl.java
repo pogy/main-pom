@@ -1195,10 +1195,10 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 goodsCountForsearch1.setUpMan(0L);
                 goodsCountForsearch1.setClick(0L);
                 goodsCountForsearch1.setClickIp(0L);
-                goodsCountForsearch1.setHadGoat();
+                goodsCountForsearch1.setHadGoat(0);
                 goodsCountForsearch1.setTrade(0L);
-                goodsCountForsearch1.setFlowFixedTime();
-                goodsCountForsearch1.setHadBigzip();
+                goodsCountForsearch1.setHadBigzip(0);
+                goodsCountForsearch1.setHadVideo(0);
 
                 goodsCountForsearchMapper.insert(goodsCountForsearch1);
             }
