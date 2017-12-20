@@ -1,20 +1,12 @@
 package com.shigu.seller.actions;
 
-import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.GoatLicense;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.GoatLicenseExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.GoatLicenseMapper;
-import com.opentae.data.mall.interfaces.GoodsFileMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
-import com.shigu.component.common.globality.constant.SystemConStant;
-import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.filters.MemberFilter;
@@ -27,11 +19,9 @@ import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.service.Goat;
-import com.shigu.main4.goat.service.GoatDubboService;
-import com.shigu.main4.goat.vo.GoatVO;
-import com.shigu.main4.goat.vo.ItemGoatVO;
+import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.ShowCaseException;
@@ -45,6 +35,7 @@ import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -59,7 +50,6 @@ import com.shigu.seller.exceptions.IndexGoatException;
 import com.shigu.seller.exceptions.SendGoodsException;
 import com.shigu.seller.services.*;
 import com.shigu.seller.vo.*;
-import com.shigu.services.DubboAllService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.ShopSession;
@@ -70,6 +60,9 @@ import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.tb.finder.exceptions.TbItemSynException;
 import com.shigu.tb.finder.exceptions.TbOnsaleException;
 import com.shigu.tb.finder.services.MainTbOnsaleService;
+import com.shigu.tb.finder.services.TaobaoSynService;
+import com.shigu.tb.finder.services.TaobaoTmcService;
+import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
@@ -98,11 +91,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 店铺的控制中心
@@ -121,8 +110,6 @@ public class ShopAction {
     @Autowired
     ShopBaseService shopBaseService;
 
-    @Autowired
-    DubboAllService dubboAllService;
 
     @Autowired
     ShopsItemService shopsItemService;
@@ -170,6 +157,18 @@ public class ShopAction {
     UserBaseService userBaseService;
 
     @Autowired
+    MainTbOnsaleService tbOnsaleService;
+
+    @Autowired
+    TaobaoSynService taobaoSynService;
+
+    @Autowired
+    TbPropsService tbPropsService;
+
+    @Autowired
+    TaobaoTmcService taobaoTmcService;
+
+    @Autowired
     OssIO ossIO;
 
     @Autowired
@@ -180,6 +179,9 @@ public class ShopAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    RedisIO redisIO;
 
 
     /**
@@ -207,7 +209,7 @@ public class ShopAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
-        return "seller/memberghs";
+        return "gys/memberghs";
     }
 
     /**
@@ -248,7 +250,6 @@ public class ShopAction {
                 get.setFeedback(1);
             } else if (authstatu == 1) {//授权正常的情况
                 get.setFeedback(-1);
-                MainTbOnsaleService tbOnsaleService=dubboAllService.getMaintbOnsaleService();
                 if(tbOnsaleService==null){
                     throw new TbOnsaleException("dubbo 注入失败");
                 }
@@ -278,8 +279,8 @@ public class ShopAction {
             logger.error("调用淘宝接口异常",e);
             get.setFeedback(2);
         }
-        model.addAttribute("get",get);
-        return "seller/createGoods21init";
+        model.addAttribute("query",get);
+        return "gys/createGoods21init";
     }
 
     /**
@@ -294,7 +295,7 @@ public class ShopAction {
             throw new JsonErrException("参数异常");
         }
         try {
-            dubboAllService.getTaobaoSynService().synOneItem(shopSession.getShopId(),numIid,shopSession.getTbNick());
+            taobaoSynService.synOneItem(shopSession.getShopId(),numIid,shopSession.getTbNick());
         } catch (TbItemSynException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -306,8 +307,20 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsinit")
-    public String releaseGoodsinit(){
-        return "seller/releaseGoodsinit";
+    public String releaseGoodsinit(HttpSession session,Model model){
+        ShopSession shop = getShopSession(session);
+        int size = 5;
+        List<EverUsedCat> everUsedCats = itemCatService.everUsedCats(shop.getShopId(), size);
+        ArrayList<HistoryCatVO> historyCatVOS = new ArrayList<>(size);
+        for (EverUsedCat everUsedCat : everUsedCats) {
+            HistoryCatVO historyCatVO = new HistoryCatVO();
+            historyCatVO.setCid(everUsedCat.getCid());
+            historyCatVO.setValue(everUsedCat.getAllcids());
+            historyCatVO.setText(everUsedCat.getShowName());
+            historyCatVOS.add(historyCatVO);
+        }
+        model.addAttribute("historyCategory",historyCatVOS);
+        return "gys/releaseGoodsinit";
     }
 
     /**
@@ -315,12 +328,12 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsSend")
-    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,Model model) throws Main4Exception {
+    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
         model.addAttribute("category_text",goodsSendService.selCatPath(bo.getCid()));
-        PropsVO propsVO=dubboAllService.getTbPropsService().selProps(bo.getCid());
+        PropsVO propsVO=tbPropsService.selProps(bo.getCid());
         //转化成老的pageProps
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();
@@ -356,8 +369,15 @@ public class ShopAction {
         //店内类目暂时不要
         model.addAttribute("formAttribute",formAttribute);
         model.addAttribute("skuAttribute",skuAttribute);
-        model.addAttribute("get",bo);
-        return "seller/releaseGoodsSend";
+        model.addAttribute("query",bo);
+        ShopSession shopSession = getShopSession(session);//暂时都开放
+        String openflag=redisIO.get("open_more_pic");
+        if (StringUtils.isNotEmpty(openflag)) {
+            model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
+        }else{
+            model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
+        }
+        return "gys/releaseGoodsSend";
     }
 
     /**
@@ -428,6 +448,9 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
+        if (shopSession.getType().equals(1)) {
+            throw new JsonErrException("淘宝店铺不支持手工发布");
+        }
         Long itemId;
         //包装bo
         try {
@@ -463,13 +486,20 @@ public class ShopAction {
         }
         return JsonResponseUtil.success().element("goodsId",itemId).element("webSite",shopSession.getWebSite());
     }
+
+    @RequestMapping("seller/getAccessInfoForImgUpload")
+    @ResponseBody
+    public JSONObject getAccessInfoForImgUpload(HttpSession session) throws UnsupportedEncodingException {
+        ShopSession shopSession = getShopSession(session);
+        return JSONObject.fromObject(ossIO.createPostSignInfo("itemup/"+shopSession.getWebSite()+"/"+shopSession.getShopId()+"/")).element("result","success");
+    }
     /**
      * 出售中的宝贝
      *
      * @return
      */
     @RequestMapping("seller/storeGoodsList21init")
-    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException {
+    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
 
         model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
@@ -478,8 +508,11 @@ public class ShopAction {
         }
         //商品列表数据  String keyword,String goodsNo,Long numIid, Long shopId, int pageNo, int pageSize
         try {
-            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(bo.getKeyword(),bo.getGoodsNo(),bo.getGoodsNumIid()
-                    ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
+            StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
+            search.setKeyword(bo.getKeyword());
+            search.setGoodsNo(bo.getGoodsNo());
+            search.setState(bo.getState());
+            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
@@ -488,7 +521,7 @@ public class ShopAction {
             for(OnsaleItem oi:list){
                 OnsaleItemVO vo = new OnsaleItemVO(oi);
                 GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
-                vo.setSetCorrelateType(fileInfo==null?1:2);
+                vo.setCorrelateType(fileInfo==null?1:2);
                 vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
                 if (fileInfo != null) {
                     vo.setLinkHref(fileInfo.getFileKey());
@@ -500,8 +533,41 @@ public class ShopAction {
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
-        model.addAttribute("get",bo);
-        return "seller/storeGoodsList21init";
+        model.addAttribute("query",bo);
+        return "gys/storeGoodsList21init";
+    }
+
+    @RequestMapping("seller/getSaleGoodsNumByType")
+    @ResponseBody
+    public JSONObject getSaleGoodsNumByType(HttpSession session){
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        String webSite = shopSession.getWebSite();
+        ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
+        return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
+    }
+
+    /**
+     * 修改商品材质
+     * @param bo
+     * @param result
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("seller/setConstituent")
+    @ResponseBody
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        ShopSession shopSession = getShopSession(session);
+        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -600,6 +666,7 @@ public class ShopAction {
         synItem.setWebSite(shopSession.getWebSite());
         try {
             itemAddOrUpdateService.userUpdateItem(synItem);
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败",e);
             throw new JsonErrException("更新商品失败");
@@ -664,8 +731,8 @@ public class ShopAction {
         }
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-        model.addAttribute("get",bo);
-        return "seller/storeGoodsListinit";
+        model.addAttribute("query",bo);
+        return "gys/storeGoodsListinit";
     }
 
     /**
@@ -698,7 +765,7 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopItemModService.delInstockItems(shopSession.getShopId(),bo.getIds(),shopSession.getWebSite());
+        shopItemModService.delInstockItems(shopSession.getShopId(),bo.getGoodsIds(),shopSession.getWebSite());
         return JsonResponseUtil.success().element("ok","删除成功").element("success",true);
     }
     /**
@@ -720,7 +787,7 @@ public class ShopAction {
         model.addAttribute("goodslist",goodsList);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
-        return "seller/xiufuGoods21init";
+        return "gys/xiufuGoods21init";
     }
 
     /**
@@ -741,22 +808,22 @@ public class ShopAction {
                 throw new JsonErrException("商品不存在numIid,可能不是淘宝商品");
             }
             try {
-                dubboAllService.getTaobaoSynService().synOneItem(shopSession.getShopId(), numIid, shopSession.getTbNick());
+                taobaoSynService.synOneItem(shopSession.getShopId(), numIid, shopSession.getTbNick());
             } catch (TbItemSynException e) {
                 throw new JsonErrException(e.getMessage());
             }
         }
         return JsonResponseUtil.success();
     }
-    /**
-     * 修复店内类目
-     *
-     * @return
-     */
-    @RequestMapping("seller/xiufuStorecat21init")
-    public String xiufuStorecat21init() {
-        return "seller/xiufuStorecat21init";
-    }
+    ///**
+    // * 修复店内类目
+    // *
+    // * @return
+    // */
+    //@RequestMapping("seller/xiufuStorecat21init")
+    //public String xiufuStorecat21init() {
+    //    return "seller/xiufuStorecat21init";
+    //}
 
     /**
      * 同步店内类目
@@ -767,21 +834,21 @@ public class ShopAction {
     public JSONObject jsonsynstorecat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
 
-    /**
-     * 修复宝贝类目
-     * @return
-     */
-    @RequestMapping("seller/xiufuGoodscat21init")
-    public String xiufuGoodscat21init(){
-        return "seller/xiufuGoodscat21init";
-    }
+    ///**
+    // * 修复宝贝类目
+    // * @return
+    // */
+    //@RequestMapping("seller/xiufuGoodscat21init")
+    //public String xiufuGoodscat21init(){
+    //    return "seller/xiufuGoodscat21init";
+    //}
 
     /**
      * 修复宝贝类目
@@ -792,7 +859,7 @@ public class ShopAction {
     public JSONObject jsonsyngoodscat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -808,8 +875,8 @@ public class ShopAction {
     public JSONObject jsonsynAlltbgoods(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
-            dubboAllService.getTaobaoSynService().repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -822,13 +889,12 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsNoListinit")
-    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws ItemException {
+    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws Main4Exception {
         ShopSession shopSession = getShopSession(session);
         //查总量
         model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(null,null,null
-                ,shopSession.getShopId(),bo.getPageNo(),bo.getPageSize());
+        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPage(),bo.getPageSize());
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         List<OnsaleItem> list=pager.getContent();
         List<MoreModifyItemVO> volist=new ArrayList<>();
@@ -839,7 +905,7 @@ public class ShopAction {
         }
         model.addAttribute("dataList", volist);
         model.addAttribute("webSite",shopSession.getWebSite());
-        return "seller/storeGoodsNoListinit";
+        return "gys/storeGoodsNoListinit";
     }
 
     /**
@@ -855,6 +921,7 @@ public class ShopAction {
         ShopSession shopSession = getShopSession(session);
         try {
             shopItemModService.moreModify(bo.parseSynItems(shopSession.getShopId(),shopSession.getWebSite()));
+            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -899,7 +966,7 @@ public class ShopAction {
             }
             model.addAttribute("domain",domain);
         }
-        return "seller/shiguStoreerjiyuming";
+        return "gys/shiguStoreerjiyuming";
     }
 
     /**
@@ -909,7 +976,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/ghTongbu")
     public String ghTongbu() {
-        return "seller/ghTongbu";
+        return "gys/ghTongbu";
     }
 
     /**
@@ -955,7 +1022,7 @@ public class ShopAction {
         shopTypeSetVO.setServers(servers);
         shopTypeSetVO.setBusiness_type(xzSdkClient.getXzMainBus().split(","));
         model.addAttribute("typeset",shopTypeSetVO);
-        return "seller/shiguStorebasicStore";
+        return "gys/shiguStorebasicStore";
     }
 
     /**
@@ -968,8 +1035,8 @@ public class ShopAction {
     public JSONObject synWholeShop(Long shopId, HttpSession session){
         ShopSession shopSession = getShopSession(session);
         try{
-            dubboAllService.getTaobaoSynService().synOneShop(shopId,shopSession.getTbNick());
-            dubboAllService.getTaobaoTmcService().addToTmc(shopSession.getTbNick());
+            taobaoSynService.synOneShop(shopId,shopSession.getTbNick());
+            taobaoTmcService.addToTmc(shopSession.getTbNick());
             return JSONObject.fromObject(JsonResponseUtil.success());
         }catch (Exception e){
             e.printStackTrace();
@@ -986,7 +1053,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return "seller/iwantToRechargein5";
+        return "gys/iwantToRechargein5";
     }
 
     /**
@@ -998,7 +1065,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return "seller/withdraw5Apply";
+        return "gys/withdraw5Apply";
     }
 
     /**
@@ -1030,7 +1097,7 @@ public class ShopAction {
         } else {
             model.addAttribute("safe_level", 0);
         }
-        return "seller/safeindex";
+        return "gys/safeindex";
     }
 
     /**
@@ -1044,51 +1111,51 @@ public class ShopAction {
         UserInfoVO userInfoVO= com.shigu.session.main4.tool.BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return "seller/sysSetsindex";
+        return "gys/sysSetsindex";
     }
 
-    /**
-     * 上传实名认证
-     * @return
-     */
-    @RequestMapping("seller/saferz")
-    public String saferz(HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        //查出权益
-        SafeRzVO safeRzVO=new SafeRzVO();
-        SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
-        if(safeAbout!=null){
-            List<UserLicense> licenses=safeAbout.getLicenses();
-            if(licenses!=null){
-                for(UserLicense ul:licenses){
-                    if(ul.getType().equals(MemberLicenseType.REAL_NAME)){
-                        String context=ul.getContext();
-                        String[] contextarr=context.split(";");
-                        if(contextarr.length<2){
-                            break;
-                        }
-                        safeRzVO.setCardnum(contextarr[0]);
-                        safeRzVO.setImgurl1(contextarr[1]);
-                    }
-                }
-            }
-        }
-        //查一下最后一次实名认证的情况
-        RealNameApplyInfo info=userLicenseService.lastRealNameApply(ps.getUserId());
-        if(info!=null){
-            String msg="您在"+ DateParseUtil.parseDate("yyyy-MM-dd",info.getApplyTime())+"的申请 ";
-            if(info.getApplyStatus()==0){
-                msg+="还在审核中";
-            }else if(info.getApplyStatus()==-1){
-                msg+="不通过 原因:"+info.getReason();
-            }else{
-                msg+="已通过";
-            }
-            safeRzVO.setMsg(msg);
-        }
-        model.addAttribute("identity",safeRzVO);
-        return "seller/saferz";
-    }
+    ///**
+    // * 上传实名认证
+    // * @return
+    // */
+    //@RequestMapping("seller/saferz")
+    //public String saferz(HttpSession session,Model model){
+    //    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    //查出权益
+    //    SafeRzVO safeRzVO=new SafeRzVO();
+    //    SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
+    //    if(safeAbout!=null){
+    //        List<UserLicense> licenses=safeAbout.getLicenses();
+    //        if(licenses!=null){
+    //            for(UserLicense ul:licenses){
+    //                if(ul.getType().equals(MemberLicenseType.REAL_NAME)){
+    //                    String context=ul.getContext();
+    //                    String[] contextarr=context.split(";");
+    //                    if(contextarr.length<2){
+    //                        break;
+    //                    }
+    //                    safeRzVO.setCardnum(contextarr[0]);
+    //                    safeRzVO.setImgurl1(contextarr[1]);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    //查一下最后一次实名认证的情况
+    //    RealNameApplyInfo info=userLicenseService.lastRealNameApply(ps.getUserId());
+    //    if(info!=null){
+    //        String msg="您在"+ DateParseUtil.parseDate("yyyy-MM-dd",info.getApplyTime())+"的申请 ";
+    //        if(info.getApplyStatus()==0){
+    //            msg+="还在审核中";
+    //        }else if(info.getApplyStatus()==-1){
+    //            msg+="不通过 原因:"+info.getReason();
+    //        }else{
+    //            msg+="已通过";
+    //        }
+    //        safeRzVO.setMsg(msg);
+    //    }
+    //    model.addAttribute("identity",safeRzVO);
+    //    return "seller/saferz";
+    //}
 
 
     /**
@@ -1103,7 +1170,7 @@ public class ShopAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return "seller/safexgmm";
+        return "gys/safexgmm";
     }
     /**
      * 验证是否忘记密码来的
@@ -1213,7 +1280,7 @@ public class ShopAction {
         }
         model.addAttribute("inForceList", inForceList);
         model.addAttribute("willInForceList",willInForceList);
-        return "seller/promotion";
+        return "gys/promotion";
     }
 
     /**

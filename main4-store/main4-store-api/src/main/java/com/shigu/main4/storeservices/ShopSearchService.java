@@ -35,5 +35,5 @@ public interface ShopSearchService {
      * @param shopNum
      * @return
      */
-    List<SearchShopSimple> selShopByShopNum(String shopNum,String webSite);
+    List<SearchShopSimple>  selShopByShopNum(String shopNum,String webSite);
 }

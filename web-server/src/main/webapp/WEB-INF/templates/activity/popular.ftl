@@ -22,6 +22,11 @@
     
 
     
+    
+    
+    
+    
+    
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
@@ -87,7 +92,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -112,7 +117,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -250,7 +255,7 @@ var webSite = '${webSite!}';
 <div class="topNav">
     <ul class="clearfix">
     
-        <li>
+        <li >
             <a href="http://hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
@@ -258,7 +263,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
@@ -266,7 +271,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
@@ -274,23 +279,23 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+        <li >
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
         </li>
     
-        <li>
-            <a href="http://daifa.571xz.com/" target="_blank">
+        <li >
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
@@ -298,7 +303,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -396,7 +401,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

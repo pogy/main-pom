@@ -1,5 +1,7 @@
 package com.shigu.main4.item.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by wxc on 2017/4/6.
  *
@@ -7,7 +9,7 @@ package com.shigu.main4.item.vo;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-public class AggsCount {
+public class AggsCount implements Serializable {
 
     private long value;
     private long count;

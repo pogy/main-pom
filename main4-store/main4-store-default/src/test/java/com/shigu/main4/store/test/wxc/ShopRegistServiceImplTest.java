@@ -51,6 +51,15 @@ public class ShopRegistServiceImplTest{
         // 新注册
         ShopRegister shop = new ShopRegister();
         shop.setShopNum("B517999");
+        shop.setImQq("18888971970");
+        shop.setImWx("18888971970");
+        shop.setCanExamine(false);
+        shop.setFloorId(622L);
+        shop.setImAliww("18888971970");
+        shop.setMainBus("女装");
+        shop.setMarketId(621L);
+        shop.setTbNick("赵洪波5");
+
         long l = shopRegistService.registShop(shop);
         ShiguShopApply apply = shiguShopApplyMapper.selectByPrimaryKey(l);
         assertTrue("创建新纪录失败", l > 0 && apply != null);

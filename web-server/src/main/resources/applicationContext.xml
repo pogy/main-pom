@@ -43,10 +43,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
     </bean>
 
+
+    <bean id="alipayClient"
+          class="com.alipay.api.DefaultAlipayClient">
+        <constructor-arg index="0" value="${serverUrl}"/>
+        <constructor-arg index="1" value="${appId}"/>
+        <constructor-arg index="2" value="${privateKey}"/>
+        <constructor-arg index="3" value="${format}"/>
+        <constructor-arg index="4" value="${charset}"/>
+        <constructor-arg index="5" value="${alipayPulicKey}"/>
+        <constructor-arg index="6" value="${signType}"/>
+    </bean>
+
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper,com.opentae.core.mybatis.mapper.MultipleMapper"/>
             </map>
         </property>
     </bean>
@@ -65,4 +77,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <import resource="mvc.xml"/>
     <!--<import resource="message_queue.xml"/>-->
     <import resource="message_queue_test.xml"/>
+
 </beans>
+

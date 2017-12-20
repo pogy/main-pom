@@ -22,7 +22,7 @@ import java.util.List;
  * 店铺权益服务
  * Created by zhaohongbo on 17/3/13.
  */
-@Service
+@Service("shopLicenseService")
 public class ShopLicenseServiceImpl implements ShopLicenseService{
 
     @Resource(name = "tae_mall_shiguShopLicenseMapper")

@@ -16,17 +16,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply3.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply5.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply3.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply5.js"></script>
 </head>
 <body>
 
@@ -112,7 +117,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -275,15 +280,15 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
         </li>
     
         <li >
-            <a href="http://daifa.571xz.com/" target="_blank">
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
@@ -370,8 +375,8 @@ var webSite = '${webSite!}';
     <div class="actIntroduce yahei layout actBox">
     <h2 class="tac">活动介绍</h2>
     <ul class="actText fs14 fc3">
-        <li>1. 报名时间：2017.08.30--2017.09.03</li>
-        <li>2. 活动时间：2017.09.04--2017.09.11</li>
+        <li>1. 报名时间：2017.09.15--2017.09.18</li>
+        <li>2. 活动时间：2017.09.18--2017.09.25</li>
         <li>3. 报名商品：有大图下载的秋装，须为7日内新款</li>
         <li>4. 收费类型：免费</li>
         <li>5. 报名资质：支持退换货</li>
@@ -393,6 +398,8 @@ var webSite = '${webSite!}';
 
 
 </div>
+
+
 
 
 

@@ -3,6 +3,7 @@ package com.shigu.main4.item.vo;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.shigu.opensearchsdk.anno.FetchApp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * Created by bugzy on 2017/6/19 0019.
  */
 @FetchApp("goods_search_hz")
-public class SearchGoodsVo {
+public class SearchGoodsVo  implements Serializable {
 
     @JSONField(name = "goods_id")
     private Long goodsId;

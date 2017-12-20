@@ -1,11 +1,13 @@
 package com.shigu.main4.goat.service;
 
 import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.vo.GoatIntermVO;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemUpVO;
+import com.shigu.main4.goat.vo.TextGoatVO;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by zhaohongbo on 17/5/9.
  */
 public interface GoatDubboService {
+
     <T extends GoatVO> T selGoatById(Long goatId,GoatType type) throws GoatException;
 
     <T extends GoatVO> T selGoatPrepareById(Long goatId,GoatType type) throws GoatException;
@@ -28,6 +31,8 @@ public interface GoatDubboService {
      * @throws GoatException
      */
     List<GoatIntermVO> selGoatByLocalId(Long localId, GoatType type) throws GoatException, ActivityException;
+
+    <T extends GoatVO> List<T> selGoatsFromLocalCode(String localCode) throws GoatException;
 
     /**
      * 查询真实上款量与虚假上款量

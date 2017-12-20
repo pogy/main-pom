@@ -5,7 +5,6 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -87,22 +86,23 @@ public class BeanMapper {
      * @param <T> 集合泛型
      * @return 转换后的Map
      */
-    public static <F, T> Map<F, T> list2Map(List<T> list, String field, Class<F> fieldType) {
+    @SuppressWarnings("unchecked")
+    public static <F, T> Map<F, T> list2Map(Iterable<T> list, String field, Class<F> fieldType) {
         if (list == null || field == null || fieldType == null) return null;
-        Map<F, T> map = new LinkedHashMap<F, T>();
-        for (T t : list) {
-            Class<?> tClass = t.getClass();
-            Method method = null;
-            Object ko = null;
-            try {
-                method = tClass.getMethod("get" + field.substring(0, 1).toUpperCase() + field.substring(1));
-                ko = method.invoke(t);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
+        Field classField = null;
+        Map<F, T> map = new LinkedHashMap<>();
+        try {
+            for (T t : list) {
+                if (classField == null) {
+                    classField = checkField(t.getClass(), field);
+                }
+                Object ko = classField.get(t);
+                if (ko == null)
+                    continue;
+                map.put((F) ko, t);
             }
-            if (ko == null) continue;
-            F key = (F) ko;
-            map.put(key, t);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
         }
         return map;
     }
@@ -115,9 +115,8 @@ public class BeanMapper {
      * @param <E> 字段泛型
      * @param <T> 传入集合泛型
      * @return 结果集合
-     * @throws Exception
      */
-    public static <E, T> List<E> getFieldList(List<T> list, String field, Class<E> fieldType){
+    public static <E, T> List<E> getFieldList(Iterable<T> list, String field, Class<E> fieldType){
         return (List<E>) getFieldCollection(list, field, fieldType, new ArrayList<E>());
     }
 
@@ -129,28 +128,82 @@ public class BeanMapper {
      * @param <E> 字段泛型
      * @param <T> 传入集合泛型
      * @return 结果集合
-     * @throws Exception
      */
-    public static <E, T> Set<E> getFieldSet(List<T> list, String field, Class<E> fieldType){
+    public static <E, T> Set<E> getFieldSet(Iterable<T> list, String field, Class<E> fieldType){
         return (Set<E>) getFieldCollection(list, field, fieldType, new HashSet<E>());
     }
 
-    public static <E, T> Collection<E> getFieldCollection(List<T> list, String field, Class<E> fieldType, Collection<E> collection) {
-        if (list == null || field == null || fieldType == null) return null;
-        for (T t : list) {
-            Class<?> tClass = t.getClass();
-            Method method;
-            Object o = null;
-            try {
-                method = tClass.getMethod("get" + field.substring(0, 1).toUpperCase() + field.substring(1));
-                o = method.invoke(t);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
+    @SuppressWarnings("unchecked")
+    public static <E, T> Collection<E> getFieldCollection(Iterable<T> list, String field, Class<E> fieldType, Collection<E> collection) {
+        if (list == null || field == null || fieldType == null)
+            return null;
+        Field classField = null;
+        try {
+            for (T t : list) {
+                if (classField == null) {
+                    classField = checkField(t.getClass(), field);
+                }
+                Object o = classField.get(t);
+                if (o == null)
+                    continue;
+                collection.add((E) o);
             }
-            if (o == null) continue;
-            E key = (E) o;
-            collection.add(key);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
         }
         return collection;
+    }
+
+    /**
+     *  根据传入集合，提取指定字段值做为返回Map的Key，此方法与 list2Map 不同之处在于 后者的key应当是集合中的主键概念，即集合中所有
+     *  对象的该字段值都不同，所以后者的应用受到该约束，如果有两个或以上的该字段相同的key，那么后来者会替换掉之前的value。
+     *
+     *  本方法使用场景是提取集合中的某字段，同时集合中可能有多个值在此字段一致，调用此方法后，该字段做返回 Map 的Key，Map的value为
+     *  原list在此字段聚合的结果集
+    *
+     * @param list 需要聚合的数据
+     * @param field 指定聚合字段
+     * @param fieldType 该字段类型
+     * @param <E> K泛型
+     * @param <T> 元数据范型
+     * @return 聚合结果，结构为 Map<E, List<T>>
+     */
+    @SuppressWarnings("all")
+    public static <E, T> Map<E, List<T>> groupBy(Iterable<T> list, String field, Class<E> fieldType) {
+        if (list == null || field == null || fieldType == null)
+            return null;
+        Field classField = null;
+        Set<E> fieldSet = getFieldSet(list, field, fieldType);
+        Map<E, List<T>> group = new HashMap<>();
+        for (E e : fieldSet) {
+            group.put(e, new ArrayList<T>());
+        }
+        try {
+            for (T t : list) {
+                if (classField == null) {
+                    classField = checkField(t.getClass(), field);
+                }
+                group.get((classField.get(t))).add(t);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return group;
+    }
+
+    private static Field checkField(Class<?> tClass, String field) throws NoSuchFieldException {
+        Field classField = null;
+        while (classField == null) {
+            if (tClass == Object.class) {
+                throw new NoSuchFieldException(field);
+            }
+            try {
+                classField = tClass.getDeclaredField(field);
+                classField.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                tClass = tClass.getSuperclass();
+            }
+        }
+        return classField;
     }
 }

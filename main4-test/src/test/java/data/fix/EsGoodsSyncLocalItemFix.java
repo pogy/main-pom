@@ -16,7 +16,6 @@
 //import com.searchtool.domain.SimpleElaBean;
 //import com.searchtool.mappers.ElasticRepository;
 //import com.shigu.main4.common.util.BeanMapper;
-//import com.shigu.main4.item.services.impl.EsGoodsService;
 //import org.elasticsearch.action.search.SearchResponse;
 //import org.elasticsearch.index.query.QueryBuilders;
 //import org.elasticsearch.search.SearchHit;

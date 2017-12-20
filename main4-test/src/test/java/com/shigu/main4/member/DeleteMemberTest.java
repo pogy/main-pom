@@ -321,8 +321,8 @@ public class DeleteMemberTest {
                 userSub.setUserId(user.getUserId());
 //            userSub.setSubUserKey(tempUser.getSubUserKey());
                 userSub.setAccountType(7);
-                userSub.setLogins(0L);
-                userSub.setUseStatus(1L);
+                userSub.setLogins(0);
+                userSub.setUseStatus(1);
                 memberUserSubMapper.insertSelective(userSub);
             }
         }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaTradeMapper">
+
+    <select id="selectTodayCount" resultType="com.opentae.data.daifa.beans.TodayCount">
+        select count(*) totalNumber,ROUND(SUM(real_pay_money),2) totalMoney from daifa_trade where create_time &gt;=#{startTime} and create_time &lt;=#{endTime} and seller_id=${sellerId}
+    </select>
+    <!--<select id="selectSendCount" resultType="com.opentae.data.daifa.beans.TodayCount">-->
+    <!--SELECT-->
+	<!--ROUND(-->
+		<!--sum(-->
+			<!--t3.express_fee + t3.order_fee-->
+		<!--),-->
+		<!--2-->
+	<!--) sendMoney,-->
+	<!--sum(t3.goods_num) sendNumber-->
+<!--FROM-->
+	<!--(-->
+		<!--SELECT-->
+			<!--t1.express_fee,-->
+			<!--sum(-->
+				<!--t2.single_pi_price + t2.total_service_fee-->
+			<!--) order_fee,-->
+			<!--sum(t2.goods_num) goods_num-->
+		<!--FROM-->
+			<!--(-->
+				<!--SELECT-->
+					<!--df_trade_id,-->
+					<!--express_fee-->
+				<!--FROM-->
+					<!--daifa_trade-->
+				<!--WHERE-->
+					<!--send_time &gt;=#{startTime} and send_time &lt;=#{endTime}-->
+			<!--) t1-->
+		<!--LEFT JOIN (-->
+			<!--SELECT-->
+				<!--df_trade_id,-->
+				<!--goods_num,-->
+				<!--single_pi_price,-->
+				<!--total_service_fee-->
+			<!--FROM-->
+				<!--daifa_order-->
+			<!--WHERE-->
+				<!--take_goods_status = 1-->
+			<!--AND refund_status = 0-->
+			<!--AND order_status = 3-->
+		<!--) t2 ON t1.df_trade_id = t2.df_trade_id-->
+		<!--GROUP BY-->
+			<!--t1.df_trade_id-->
+	<!--) t3-->
+
+    <!--</select>-->
+
+</mapper>

@@ -1,7 +1,6 @@
 package com.shigu.main4.ucenter.services.test.zjb;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.component.config.FilePathConstant;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.DataPackage;
@@ -37,7 +36,7 @@ public class UserCollectServiceTest {
         itemIds.add(165843L);*/
         itemIds.add(169944L);
 
-        System.out.println(FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL);
+//        System.out.println(FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL);
         userCollectService.createDataPackage(1000000808L, itemIds);
     }
 

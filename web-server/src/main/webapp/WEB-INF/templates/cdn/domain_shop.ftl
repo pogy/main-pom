@@ -276,7 +276,7 @@ ${vo.shopFitment.description}
                 <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
                 <a href="item.htm?id=${goods.itemId!}&amp;numId=39528" target="_blank" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
                 <p class="c_btnbox j_btnbox">
-                    <a href="http://www.571xz.net/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
+                    <a href="http://upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
                     <a href="http://1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
                     <a href="javascript:;" alt="传微信" title="传微信" class="iconfont cor3"></a>
                     
@@ -590,7 +590,7 @@ ${vo.shopFitment.description}
                             <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
                             <a href="item.htm?id=${goods.itemId!}&amp;numId=39528" target="_blank" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
                             <p class="c_btnbox j_btnbox">
-                                <a href="http://www.571xz.net/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
+                                <a href="http://upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
                                 <a href="http://1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
                                 <a href="javascript:;" alt="传微信" title="传微信" class="iconfont cor3"></a>
                                 

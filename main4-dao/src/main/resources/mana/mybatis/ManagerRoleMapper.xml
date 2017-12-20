@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.opentae.data.mana.interfaces.ManagerRoleMapper">
-
-    <select id="selRoleNamesByuserIds" resultType="com.opentae.data.mana.beans.UserRole">
-        SELECT b.user_id as userId,a.role_id as roleId,a.role_name as roleName,a.role_tag as roleTag,a.status as roleStatus,a.role_comment as roleComment from manager_role a,manager_user_role b where b.user_id IN (${userIds}) and a.role_id=b.role_id and a.status=1
-    </select>
-
-</mapper>

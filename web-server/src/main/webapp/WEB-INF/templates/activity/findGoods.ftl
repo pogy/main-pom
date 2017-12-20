@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1502166471753" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1504256331245" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1502166471753"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1504256331245"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -71,9 +71,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -95,7 +95,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -104,9 +104,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -128,7 +128,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -251,7 +251,7 @@ var webSite = '${webSite!}';
                     <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                     <li><a href="http://so.571xz.com/${webSite!}goods.htm">商品库</a></li>
                     <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}">今日新品</a></li>
-                    <li><a href="http://daifa.571xz.com/">一件代发</a></li>
+                    <li><a href="/daifaIndex.htm">一件代发</a></li>
                     <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
                     <li><a href="http://zixun.571xz.com/index">资讯</a></li>
                 </ul>

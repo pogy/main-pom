@@ -1,0 +1,27 @@
+body{background:#fff url(../img/bg.png) no-repeat center center; background-size:cover; background-attachment:fixed;}
+
+.login_wk {position:absolute; width:440px; height:458px; left:50%; top:50%; margin-left:-220px; margin-top:-229px; background:url(../img/login_wk.png) no-repeat;}
+.login_nk{width:320px; height:399px; margin:10px; background:#ecf0f1; border-radius:6px; padding:20px 50px;}
+.login_nk  .logoTop{margin-top:10px;}
+.login_nk  .logoTop h1{font-size:26px; font-weight:normal; margin-top:22px;}
+.login_nk .logoIcon{width:155px;}
+.login_nk .logoIcon  i{font-size:51px; color:#207cd1;}
+
+
+.login_con{width:100%; overflow:hidden;}
+.login_con input{width:294px; height:40px; border:2px solid #fff; border-radius:3px; padding-left:15px; font-size:16px; outline:none;}
+.login_con span{display:block; position:absolute; color:#bfc5ca; top:11px; right:24px;}
+.login_con p{background:url(../img/error.png) no-repeat left center; padding-left:17px; color:#ff4400; font-size:12px; margin-top:5px;}
+.login_con .userName{margin-top:30px; position:relative;}
+
+
+.login_con .passWord{margin-top:20px; position:relative;}
+
+.login_con .forgetP{float:right; margin:20px 3px 0 0 ;}
+.login_con .forgetP a{color:#777; text-decoration:underline;}
+
+.loginBtn {margin-top:20px;}
+.loginBtn .lnBtn{display:block; font-size:16px; width:309px; height:44px; line-height:44px; background:#207cd1; color:#fff; border-radius:3px; text-align:center;}
+
+
+

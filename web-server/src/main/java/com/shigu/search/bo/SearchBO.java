@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Created by zhaohongbo on 17/4/6.
  */
 public class SearchBO extends PageInSearchBO implements Serializable{
+    private String from;
     /**
      * 站点
      */
@@ -55,6 +56,18 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      * 当值为1时，开启大图筛选
      */
     private Integer bpic;
+    /**
+     * 值为1时，筛选带视频的商品
+     */
+    private Integer goodsVideo;
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
     public String getWebSite() {
         return webSite;
@@ -150,5 +163,13 @@ public class SearchBO extends PageInSearchBO implements Serializable{
 
     public void setBpic(Integer bpic) {
         this.bpic = bpic;
+    }
+
+    public Integer getGoodsVideo() {
+        return goodsVideo;
+    }
+
+    public void setGoodsVideo(Integer goodsVideo) {
+        this.goodsVideo = goodsVideo;
     }
 }

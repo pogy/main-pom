@@ -1,12 +1,13 @@
 package com.shigu.main4.ucenter.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 实名认证简单信息查询
  * Created by zhaohongbo on 17/3/14.
  */
-public class RealNameApplyInfo {
+public class RealNameApplyInfo  implements Serializable {
     /**
      * 申请时间
      */

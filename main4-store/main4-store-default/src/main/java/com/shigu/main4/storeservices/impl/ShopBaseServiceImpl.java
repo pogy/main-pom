@@ -77,9 +77,6 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
     @Autowired
     ShopToEsService shopToEsService;
 
-    @Autowired
-    RedisIO redisIO;
-
 
     /**
      * 更新店铺二级域名

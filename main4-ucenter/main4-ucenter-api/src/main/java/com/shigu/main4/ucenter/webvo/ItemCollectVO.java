@@ -1,6 +1,8 @@
 package com.shigu.main4.ucenter.webvo;
 
 
+import java.io.Serializable;
+
 /**
  * 新版我的数据VO
  *
@@ -8,7 +10,7 @@ package com.shigu.main4.ucenter.webvo;
  * @date 2017/01/13 10:32
  *
  */
-public class ItemCollectVO {
+public class ItemCollectVO implements Serializable{
 
     /** 商品ID */
     private Long id;
@@ -30,6 +32,12 @@ public class ItemCollectVO {
 
     /** 数据包ID */
     private Long goodsCollectId;
+
+    /** 货号 */
+    private String goodsNo;
+
+    /** 档口ID */
+    private Long shopId;
 
 
     public Long getId() {
@@ -86,5 +94,21 @@ public class ItemCollectVO {
 
     public void setGoodsCollectId(Long goodsCollectId) {
         this.goodsCollectId = goodsCollectId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 }

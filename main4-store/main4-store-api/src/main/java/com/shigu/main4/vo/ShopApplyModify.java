@@ -2,13 +2,14 @@ package com.shigu.main4.vo;
 
 import com.shigu.main4.common.vo.ShiguTags;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 开店申请,要修改的
  * Created by zhaohongbo on 17/3/14.
  */
-public class ShopApplyModify {
+public class ShopApplyModify implements Serializable {
 
     private String mainBus;
 

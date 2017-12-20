@@ -28,7 +28,7 @@ public class AutumnNewConstant {
     /**
      * 当前期秋装活动
      */
-    public static final ActivityDrawEnum CURRENT_ACTIVE = ActivityDrawEnum.NEW_AUTUMN_3;
+    public static final ActivityDrawEnum CURRENT_ACTIVE = ActivityDrawEnum.NEW_AUTUMN_5;
     /**
      * 秋装活动标志，秋装活动使用对应活动AcitivityDrawEnum#name作为标志
      */

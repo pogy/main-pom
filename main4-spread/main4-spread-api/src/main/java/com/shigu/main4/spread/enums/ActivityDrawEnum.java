@@ -12,6 +12,8 @@ public enum ActivityDrawEnum {
     NEW_AUTUMN("秋装上新抽奖",20,15,2,"new_autumn_0811","hitDrawModelNewAutumn","2017-08-15 23:55:00","2017-08-26 23:59:59"),
     NEW_AUTUMN_2("秋装活动第二期抽奖",21,16,2,"NEW_AUTUMN_2","hitDrawModelNewAutumn","2017-08-27 00:00:00","2017-09-03 23:59:59"),
     NEW_AUTUMN_3("秋装活动第三期抽奖",22,17,2,"NEW_AUTUMN_3","hitDrawModelNewAutumn","2017-09-04 00:00:01","2017-09-11 23:59:59"),
+    NEW_AUTUMN_4("秋装活动第四期抽奖",23,18,2,"NEW_AUTUMN_4","hitDrawModelNewAutumn","2017-09-11 11:00:00","2017-09-18 11:00:00"),
+    NEW_AUTUMN_5("秋装活动第五期抽奖",24,19,2,"NEW_AUTUMN_5","hitDrawModelNewAutumn","2017-09-18 11:00:00","2017-09-25 11:00:00"),
     ;
     public final long pemId;
     /**

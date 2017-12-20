@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper">
+
+    <select id="selOnsaleGoodsInfo" resultType="com.shigu.main4.item.beans.GoodsInfoVO">
+        select
+        a.goods_id as itemId,
+        a.title as title,
+        a.pic_url as picUrl,
+        a.goods_no as goodsNo,
+        a.pi_price_string as piPrice,
+        a.price_string as price,
+        a.is_Showcase as isShowCase,
+        a.created as created,
+        a.web_site as webSite,
+        a.is_excel_imp as isExcelImp
+        <include refid="onsaleGoodsInfoSql"/>
+        ORDER BY a.created DESC
+        LIMIT #{start},#{size}
+    </select>
+
+    <select id="countOnsaleGoods" resultType="int">
+        SELECT count(1)
+        <include refid="onsaleGoodsInfoSql"/>
+    </select>
+
+
+    <sql id="onsaleGoodsInfoSql">
+        from shigu_goods_tiny_${webSite} a
+        <if test="bo.state!=null">
+
+            <choose>
+                <when test="bo.state==1">
+                    LEFT JOIN shigu_goods_modified b ON a.goods_id = b.item_id
+                </when>
+                <when test="bo.state==2">
+                    LEFT JOIN goods_count_forsearch b ON  a.goods_id=b.goods_id
+                </when>
+                <when test="bo.state==3">
+                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
+                </when>
+            </choose>
+        </if>
+
+        WHERE a.store_id = #{shopId} AND a.is_closed = 0
+        <if test="bo.goodsNo!=null">
+            AND a.goods_no like concat('%',#{bo.goodsNo},'%')
+        </if>
+        <if test="bo.keyword!=null">
+            AND a.title like concat('%',#{bo.keyword},'%')
+        </if>
+        <if test="bo.state!=null">
+            <choose>
+                <when test="bo.state==1">
+                    AND (b.has_set_price = 0 or b.has_set_price is null)
+                </when>
+                <when test="bo.state==2">
+                    AND (b.had_bigzip=0 or b.had_bigzip is null)
+                </when>
+                <when test="bo.state==3">
+                    AND b.fabric is null
+                </when>
+            </choose>
+        </if>
+    </sql>
+</mapper>

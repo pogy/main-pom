@@ -16,17 +16,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css?v=20170102301" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js"></script>
+    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js?v=20170102301"></script>
+    
 </head>
 <body>
 
@@ -111,7 +117,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -272,15 +278,15 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
         </li>
     
         <li class="select">
-            <a href="http://daifa.571xz.com/" target="_blank">
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
@@ -316,13 +322,15 @@ var webSite = '${webSite!}';
     <h2 class="fs18">【公告】</h2>
     <h3 class="fs16 fc3">四季星座网一件代发功能，您身边的服务</h3>
     <p>四季星座网致力于为您提供高效、优质的服务。在使用过程中有任何问题、意见与建议，请与客服联系。我们会及时跟进解决。</p>
-    <p>目前代发开通的市场：杭州男装市场，电商基地，四季星座，钱塘大厦，精品男装，潮鞋基地。</p>
+    <p>目前代发开通的市场：电商基地，四季星座，钱塘大厦。</p>
     <ul>
-        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>旺旺联系</span</a></li>
-        <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=712099800&site=qq&menu=yes"><i class="icon-s-qq"></i><span>QQ联系</span></a></li>
-        <li class="tel"><i class="icon-s-phone"></i><span>15558016957</span></li>
+        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
+        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
+        
+        <li class="last"><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后慧慧&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺3</span></a></li>
     </ul>
     <p class="serviceTime">服务时间 :  9:00-18:00  （周六，周日不休息）</p>
+    <p class="tac tel"><i class="icon-s-phone"></i><span>0571-86070380</span></p>
     
 
 <#assign text>{}</#assign>
@@ -370,7 +378,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
 </div>
@@ -404,12 +411,14 @@ var webSite = '${webSite!}';
                     <h3>方便快捷</h3>
                     <p>支持手动下单与淘宝同步一键下单<br>两种方式可根据需要任意选择</p>
                 </li>
+                <li class="icon-step"></li>
                 
                 <li>
                     <span class="icon-jsfh"></span>
                     <h3>发货及时</h3>
                     <p>一般每日16点前下的不缺货订单<br>保证当天发货</p>
                 </li>
+                <li class="icon-step"></li>
                 <li>
                     <span class="icon-fwbz"></span>
                     <h3>服务保障</h3>
@@ -465,7 +474,7 @@ var webSite = '${webSite!}';
                     <ul>
                         <li>
                             <p class="question">1、星座代发什么时候截单？</p>
-                            <p class="answer">每天 16:00 截单，此后订单不保时效，为了保证您的发货时效，请尽量提早下单。</p>
+                            <p class="answer">每天16:00截单，如有特殊情况会提前截单。为了保证您的发货时效，请尽早下单。</p>
                         </li>
                         <li>
                             <p class="question">2、星座代发什么时候拿货？</p>
@@ -524,7 +533,7 @@ var webSite = '${webSite!}';
                     </ul>
                 </div>
                 <div class="none">
-                    <p>目前开通市场： 电商基地 四季星座 钱塘大厦 精品男装 潮鞋基地</p>
+                    <p>目前开通市场： 电商基地，四季星座，钱塘大厦</p>
                 </div>
             </div>
             
@@ -537,6 +546,8 @@ var webSite = '${webSite!}';
 
 
 </div>
+
+
 
 
 

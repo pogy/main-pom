@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper">
+
+    <!-- 更新旺旺信息 -->
+    <update id="updateImAliwwByStoreId">
+        UPDATE shigu_goods_tiny_${website}
+          SET
+        <if test="imAliww!=null and imAliww!=''">
+            im_aliww = #{imAliww},
+        </if>
+        <if test="storeNum!=null and storeNum!=''">
+            store_num = #{storeNum},
+        </if>
+            last_modify_time = now()
+        WHERE
+            store_id = #{storeId}
+    </update>
+
+
+    <!-- 更新close -->
+    <update id="updateGoodsTinyByClose">
+        UPDATE
+          shigu_goods_tiny_${website}
+        SET
+          is_closed = #{newClosed}
+        WHERE
+          is_closed = #{oldClosed} AND store_id = #{shopId}
+    </update>
+
+    <!-- 修改floorId marketId -->
+    <update id="updateFloorMarketByShopId">
+        UPDATE
+          shigu_goods_tiny_${website}
+        SET
+          parent_market_id = #{marketId},
+          market_id = #{floorId}
+        WHERE
+          store_id = #{storeId}
+    </update>
+
+
+</mapper>

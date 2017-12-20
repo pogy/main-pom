@@ -16,17 +16,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/lottery2.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/lottery5.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/lottery2.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/lottery5.js"></script>
 </head>
 <body>
 
@@ -112,7 +117,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -250,7 +255,7 @@ var webSite = '${webSite!}';
 <div class="topNav">
     <ul class="clearfix">
     
-        <li>
+        <li >
             <a href="http://hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
@@ -258,7 +263,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
@@ -266,7 +271,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
@@ -274,23 +279,23 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+        <li >
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
         </li>
     
-        <li>
-            <a href="http://daifa.571xz.com/" target="_blank">
+        <li >
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
@@ -298,7 +303,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -387,8 +392,8 @@ var webSite = '${webSite!}';
     <div class="layout awardsBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动大揭秘</span></h2>
         <ol>
-            <li>1、一等奖：Apple Watch Sport Series 1智能手表；</li>
-            <li>2、二等奖：小米手环2；</li>
+            <li>1、一等奖：Apple iPad mini4；</li>
+            <li>2、二等奖：AC4000夜鹰X6S千兆游戏无线路由器；</li>
             <li>3、三等奖：耳机，键盘，电子称等电子生活用品随机领取；</li>
             <li>4、参与奖：小茗同学，红牛等健康饮品随机领取。</li>
         </ol>
@@ -396,7 +401,7 @@ var webSite = '${webSite!}';
     <div class="layout rulesBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动规则</span></h2>
         <ol>
-            <li>1、活动时间：上新及抽奖时间：2017.08.27--2017.09.03日。</li>
+            <li>1、活动时间：上新及抽奖时间：2017.09.18--2017.09.25日。</li>
             <li>2、活动商品：仅限“活动页商品”。</li>
             <li>3、抽奖次数：每个ID最多5次，即上新商品个数分别为3、5、9、13、20。</li>
             <li>4、上新商品：须为不同新品，不可同一新品重复上架，否则不计入上新数量。</li>
@@ -424,7 +429,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

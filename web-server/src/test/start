@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ ! -d "/acs/user/dubbo/conf" ]; then
+    mkdir -p /acs/user/dubbo/conf
+fi
+
+rm /acs/user/dubbo/conf/dubbo.conf
+cp /acs/conf/dubbo.conf /acs/user/dubbo/conf/
+
+if [ ! "/acs/user/dubbo/bin/server.sh" ]; then
+    /acs/user/dubbo/bin/server.sh start
+fi
+
+exit 0

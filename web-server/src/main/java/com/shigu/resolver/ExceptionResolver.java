@@ -1,6 +1,8 @@
 package com.shigu.resolver;
 
+import com.openJar.exceptions.OpenException;
 import com.opentae.common.beans.LogUtil;
+import com.shigu.api.responses.SystemResponse;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import net.sf.json.JSONObject;
@@ -27,8 +29,24 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request,
 			HttpServletResponse response, Object arg2, Exception ex) {
-		if(ex instanceof JsonErrException){//json类型的问题
-			Map<String,Object> otherFields=((JsonErrException) ex).getErrorMap();
+
+	    if(request.getServletPath().contains("/app/")&&request.getServletPath().endsWith(".json")){
+            appResolveException(response,ex);
+            return null;
+        }
+        if(request.getServletPath().contains("/waps/")&&request.getServletPath().endsWith(".json")){
+            wapResolveException(response,ex);
+            return null;
+        }
+        if(request.getServletPath().contains("/datas/")&&request.getServletPath().endsWith(".json")){
+            wapResolveException(response,ex);
+            return null;
+        }
+		if(request.getServletPath().endsWith(".json")){//json类型的问题
+			Map<String,Object> otherFields = null;
+			if (ex instanceof JsonErrException) {
+				otherFields = ((JsonErrException) ex).getErrorMap();
+			}
 			JSONObject jsonObj=JSONObject.fromObject("{'result':'error'}");
 			if(otherFields!=null){
 				if(!otherFields.containsKey("msg")){
@@ -46,14 +64,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			} else {
 				response.setContentType("application/json");//修复post异常信息未被解析为json
 			}
-			try {
-				PrintWriter writer = response.getWriter();
-				writer.print(jsonString);
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            writer(response,jsonString);
 			return null;
 		}else if(ex instanceof Main4Exception){//页面已知的错误
 			request.setAttribute("errMsg",ex.getMessage());
@@ -64,4 +75,36 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		//记录异常日志...
 		return getModelAndView("500", ex, request);
 	}
+
+	private void appResolveException(HttpServletResponse response,Exception ex){
+        OpenException exception=new OpenException();
+        exception.setErrMsg(ex.getMessage());
+        SystemResponse systemResponse=new SystemResponse();
+        systemResponse.setSuccess(false);
+        systemResponse.setException(exception);
+        String jsonString = JSONObject.fromObject(systemResponse).toString();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        writer(response,jsonString);
+    }
+    private void wapResolveException(HttpServletResponse response,Exception ex){
+        SystemResponse systemResponse=new SystemResponse();
+        systemResponse.setSuccess(false);
+        JSONObject errJson=JSONObject.fromObject(systemResponse);
+        errJson.put("msg",ex.getMessage());
+        String jsonString = errJson.toString();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        writer(response,jsonString);
+    }
+
+    private void writer(HttpServletResponse response,String jsonString){
+        try {
+            PrintWriter writer = response.getWriter();
+            writer.print(jsonString);
+            writer.flush();
+            writer.close();
+        } catch (IOException ignored) {
+        }
+    }
 }

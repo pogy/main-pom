@@ -16,17 +16,22 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyright.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyright1.css" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyright.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyright1.js"></script>
 </head>
 <body>
 
@@ -112,7 +117,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -275,15 +280,15 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-                发现好货
+            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+                排行榜
                 <i class="hot"></i>
                 
             </a>
         </li>
     
         <li >
-            <a href="http://daifa.571xz.com/" target="_blank">
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
@@ -311,7 +316,11 @@ var webSite = '${webSite!}';
 
 
 
-<div class="banner"></div>
+<div class="banner">
+    <div class="layout pr applyBox">
+        <a class="pa applyBtn" href="bqsqIndex.htm"></a>
+    </div>
+</div>
 
 <div class="copyrightList">
     <div class="layout">
@@ -408,7 +417,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

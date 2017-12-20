@@ -65,6 +65,10 @@ public class CdnItem implements Serializable{
      */
     private Long marketId;
     /**
+     * 楼层ID
+     */
+    private Long floorId;
+    /**
      * 价格
      */
     private String price;
@@ -82,6 +86,22 @@ public class CdnItem implements Serializable{
      * 在售状态,true为在售
      */
     private Boolean onsale;
+    /**
+     * 子类目Id
+     */
+    private Long cid;
+    /**
+     * 面料成分
+     */
+    private String fabric;
+    /**
+     * 里料成分
+     */
+    private String inFabric;
+    /**
+     * 视频链接地址
+     */
+    private String goodsVideoUrl;
 
     public Boolean getOnsale() {
         return onsale;
@@ -225,5 +245,45 @@ public class CdnItem implements Serializable{
 
     public void setNum(Long num) {
         this.num = num;
+    }
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }

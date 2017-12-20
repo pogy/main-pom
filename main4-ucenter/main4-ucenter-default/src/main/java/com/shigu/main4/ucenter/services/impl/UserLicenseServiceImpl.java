@@ -12,11 +12,11 @@ import com.opentae.data.mall.interfaces.MemberLicenseApplyMapper;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.MemberLicenseException;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
 import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserLicense;
@@ -431,6 +431,27 @@ public class UserLicenseServiceImpl implements UserLicenseService {
             return null;
         }
         return memberLicense.getUserId();
+    }
+
+    /**
+     * 根据userId查询权益手机号
+     * @param userId
+     * @return
+     */
+    @Override
+    public String findPhoneByUserId(Long userId) {
+        if(userId == null){
+            return null;
+        }
+        MemberLicense memberLicense = new MemberLicense();
+        memberLicense.setUserId(userId);
+        memberLicense.setLicenseType(MemberLicenseType.PHONE_BIND.getValue());
+        memberLicense.setLicenseFailure(1);
+        memberLicense = memberLicenseMapper.selectOne(memberLicense);
+        if(memberLicense == null){
+            return null;
+        }
+        return memberLicense.getContext();
     }
 
 

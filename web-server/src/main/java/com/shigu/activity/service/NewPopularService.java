@@ -85,6 +85,10 @@ public class NewPopularService {
         Map<String,List<PopularGoodsVO>> lineMap=new HashMap<>();
         shiguTemps.forEach(o ->{
             ShiguGoodsTiny tiny=tinyMap.get(Long.valueOf(o.getKey1()));
+            if (tiny == null) {
+                //处理已下架商品数据
+                return;
+            }
             ShopNumAndMarket store=marketMap.get(Long.valueOf(o.getKey2()));
             PopularGoodsVO vo = new PopularGoodsVO();
             vo.setGoodsId(tiny.getGoodsId());
@@ -110,5 +114,19 @@ public class NewPopularService {
             results.addAll(lineMap.get(shopId));
         });
         return results;
+    }
+
+    /**
+     * 检测是否已经报过名
+     * @param flag
+     * @param userId
+     * @param shopId
+     * @return
+     */
+    public boolean checkTempSignUp(String flag, Long userId, Long shopId) {
+        ShiguTempExample shiguTempExample =new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        return temps.size()>0;
     }
 }

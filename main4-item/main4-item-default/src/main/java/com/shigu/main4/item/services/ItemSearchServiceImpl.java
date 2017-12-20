@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-@Service
+@Service("itemSearchService")
 public class ItemSearchServiceImpl implements ItemSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);
@@ -93,7 +93,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid,List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setCats(Collections.<AggsCount>emptyList());
         pager.setMarkets(Collections.<AggsCount>emptyList());
@@ -168,10 +168,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             filters.and(FilterBuilder.number("created").lte(timeTo.getTime()));
         }
 
-        if (webSite.equals("hz")&&checkds!=null) {//只有杭州的有checkeds
+        if ("hz".equalsIgnoreCase(webSite)&&checkds!=null) {//只有杭州的有checkeds
             for(SearchCheckd sc:checkds){
                 switch (sc){
-                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));
+                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));break;
+                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));break;
                 }
 
             }
@@ -247,6 +248,122 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         return pager;
     }
+
+    @Override
+    public ShiguAggsPager searchForTbItem(String keyword, String webSite, List<Long> mids, SearchOrderBy orderCase, Integer page, Integer pageSize) {
+        ShiguAggsPager pager = new ShiguAggsPager();
+        pager.setCats(Collections.<AggsCount>emptyList());
+        pager.setMarkets(Collections.<AggsCount>emptyList());
+        pager.setParentCats(Collections.<AggsCount>emptyList());
+        pager.setNumber(page);
+        // 最大5000
+        int start = (page - 1) * pageSize;
+        int realSize = pageSize;
+        if (start > 5000) {
+            return pager;
+        } else if (start + pageSize > 5000) {
+            realSize = 5000 - start;
+        }
+
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
+                = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
+                .setRank("rough_project_c", "project_c", 2000);
+
+        SearchQuery searchQuery = null;
+        if (StringUtils.isNotEmpty(keyword)) {
+            String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
+            searchQuery = QueryBuilder.search("title", keyword);
+            requestBuilder.addSummary(SummaryBuild.field("title").length(120));
+//            }
+            if (StringUtils.isNotEmpty(keywordNum)&&keywordNum.equals(keyword)) {//非中文的才匹配货号
+                SearchQuery goodsNoQuery = QueryBuilder.search("goods_no", keyword);
+                if (searchQuery == null) {
+                    searchQuery = goodsNoQuery;
+                } else {
+                    searchQuery.or(goodsNoQuery);
+                }
+                requestBuilder.addSummary(SummaryBuild.field("goods_no").length(50));
+            }
+        }
+
+        if (searchQuery != null) {
+            requestBuilder.setQuery(searchQuery);
+        }
+
+        NumberFilter filters = FilterBuilder.number("is_closed", 0).and(FilterBuilder.number("pi_price").gt(0));
+
+        if (mids != null) {
+            filters.and(FilterBuilder.termsIn("parent_market_id", mids.toArray(new Long[mids.size()])));
+        }
+
+        requestBuilder.addFilter(filters);
+
+        // 6. 排序规则
+        switch (orderCase) {
+            case NEW:
+                requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                break;
+            case COMMON:
+                requestBuilder.setRank("search_project", "search_jp", 2000);
+                break;
+            case GOODS_COMMON:
+//                requestBuilder.addSort(new SortField("sort_order", Order.DECREASE));
+//                requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                break;
+            case SALE:
+                break;
+            case CLICK:
+                break;
+            case PRICEUP:
+                requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
+                break;
+            case PRICEDOWN:
+                requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
+                break;
+            case POPULAR:
+                requestBuilder.setRank("goods_search_default", "goods_search_popular", 2000);
+                break;
+            case GOODSUP:
+                break;
+            case USER_LOVE:
+                requestBuilder.setRank("rough_user_love", "user_love", 2000);
+                break;
+
+        }
+
+        SearchResponse<OpenItemVo> response = requestBuilder.execute();
+        if (response.isSuccess()) {
+            Result<OpenItemVo> result = response.getResult();
+            pager.calPages(result.getTotal(), pageSize);
+            pager.setContent(new ArrayList<SearchItem>(result.getItems().size()));
+
+            for (OpenItemVo vo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
+                SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
+                searchItem.setPrice(String.format("%.2f", vo.getPiPrice() * .01));
+                searchItem.setItemId(vo.getGoodsId());
+                if (vo.getGoodsNo().contains("<em>")) {
+                    searchItem.setHighLightGoodsNo(vo.getGoodsNo());
+                    searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
+                } else {
+                    searchItem.setGoodsNo(null);
+                    searchItem.setHighLightTitle(vo.getTitle());
+                    searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
+                }
+                pager.getContent().add(searchItem);
+            }
+
+            for (Facet facet : result.getFacet()) {
+                if ("cid".equals(facet.getKey())) {
+                    pager.setCats(JSON.parseArray(JSON.toJSONString(facet.getItems()), AggsCount.class));
+                } else if ("parent_market_id".equals(facet.getKey())) {
+                    pager.setMarkets(JSON.parseArray(JSON.toJSONString(facet.getItems()), AggsCount.class));
+                }
+            }
+        }
+        return pager;
+    }
+
+
     /**
      * 半权查询。，在此的查询条件享受权重减半的待遇
      * 补邮费

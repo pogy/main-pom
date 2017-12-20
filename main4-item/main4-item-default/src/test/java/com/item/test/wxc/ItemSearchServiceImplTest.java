@@ -35,7 +35,7 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     @Test
     public void search() throws Exception {
         Long[] stores = {35749L, 32861L, 16573L, 41603L, 35782L, 41836L, 29858L, 39959L, 40721L, 15908L, 40097L, 42538L, 39055L};
-        show(itemSearchService.searchItem("实拍 大货主推】2017年新款蕾丝连衣裙 Q015F65", "hz", null, null, Arrays.asList(stores), null,null, null, null, null, SearchOrderBy.GOODS_COMMON, 1, 40, true));
+        show(itemSearchService.searchItem("实拍 大货主推】2017年新款蕾丝连衣裙 Q015F65", "hz",null, null, null, Arrays.asList(stores), null,null, null, null, null, SearchOrderBy.GOODS_COMMON, 1, 40, true));
     }
 
     @Test

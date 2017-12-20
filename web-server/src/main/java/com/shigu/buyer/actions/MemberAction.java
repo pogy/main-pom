@@ -1,17 +1,16 @@
 package com.shigu.buyer.actions;
 
 import com.shigu.buyer.bo.*;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
@@ -19,11 +18,13 @@ import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
-import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
+import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -32,10 +33,7 @@ import com.shigu.session.main4.tool.BeanMapper;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.DateParseUtil;
-import com.shigu.tools.EmailUtil;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -59,6 +57,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 会员中心
@@ -102,6 +101,19 @@ public class MemberAction {
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    UserAccountService userAccountService;
+
+    @Autowired
+    SendMsgService sendMsgService;
+
+    @Autowired
+    UserCollectSimpleService userCollectSimpleService;
+
+    @Autowired
+    GoodsupRecordSimpleService goodsupRecordSimpleService;
+
     /**
      * 分销商首页
      * @return
@@ -123,7 +135,7 @@ public class MemberAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
-        return "buyer/memberfxs";
+        return "fxs/index";
     }
 
 
@@ -139,7 +151,7 @@ public class MemberAction {
             OuterUserVO vo = new OuterUserVO(ou);
             model.addAttribute("outer_" + vo.getFrom(), vo);
         }
-        return "buyer/fenxiaoZhanghao";
+        return "fxs/fenxiaoZhanghao";
     }
 
     /**
@@ -176,14 +188,14 @@ public class MemberAction {
         if(pager.getContent()!=null)
         model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("keyword", bo.getKeyword());
-        return "buyer/goodsCollectinit";
+        return "fxs/goodsCollectinit";
     }
 
     /**
-     * 删除收藏
+     * 从数据包移除
      * @return
      */
     @RequestMapping("member/rmv_mydp")
@@ -191,6 +203,43 @@ public class MemberAction {
     public JSONObject rmv_mydp(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         userCollectService.delItemCollection(ps.getUserId(),parseIds(ids));
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 新版个人中心,我的收藏
+     * @param bo
+     * @param page
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("member/goodsCollectOriginal")
+    public String goodsCollectOriginal(StoreCollectBO bo,Integer page,HttpSession session,Model model) {
+        if (page == null) {
+            page = 1;
+        }
+        //一页12条数据
+        int size = 12;
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
+        model.addAttribute("goodsList",pager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",pager.selPageOption(size));
+        return "fxs/goodsCollectOriginal";
+    }
+
+    /**
+     * 删除收藏的商品
+     * @param ids
+     * @param session
+     * @return
+     */
+    @RequestMapping("member/rmvFavoriteGoods")
+    @ResponseBody
+    public JSONObject rmvFavoriteGoods(String ids,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        userCollectSimpleService.delCollectGoods(ps.getUserId(),ids);
         return JsonResponseUtil.success();
     }
 
@@ -217,7 +266,7 @@ public class MemberAction {
         ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("get",bo);
+        model.addAttribute("query",bo);
         model.addAttribute("page",bo.getPage());
         List<PackageVO> goodslist=new ArrayList<>();
         for(DataPackage dp:pager.getContent()){
@@ -225,7 +274,7 @@ public class MemberAction {
                 goodslist.add(new PackageVO(dp));
         }
         model.addAttribute("goodslist",goodslist);
-        return "buyer/goodsDataPackageinit";
+        return "fxs/goodsDataPackageinit";
     }
 
     /**
@@ -259,36 +308,43 @@ public class MemberAction {
     }
 
     /**
-     * 一键上传记录
+     * 展示淘宝一键上传的商品
      * @return
      */
     @RequestMapping("member/shiguOnekeyRecordinit")
     public String shiguOnekeyRecordinit(OnekeyRecordBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String nick;
-        //查出用户nick
-        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
-            nick=ps.getLoginName();
-        }else{
+        if (ps.getLoginFromType().equals(LoginFromType.TAOBAO)) {
+            nick = ps.getLoginName();
+        } else {
             nick=memberSimpleService.selNick(ps.getUserId());
         }
-        ShiguPager<OnekeyRecoreVO> pager;
-        if(nick==null){
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }else{
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }
-        model.addAttribute("get",bo);
-        model.addAttribute("page",bo.getPage());
+        ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(ps.getUserId(), nick, bo);
+        model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
+        model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodslist",pager.getContent());
-        return "buyer/shiguOnekeyRecordinit";
+        model.addAttribute("goodsList",pager.getContent());
+        return "fxs/shiguOnekeyRecordinit";
+    }
+
+    @RequestMapping("member/downTbGoods")
+    @ResponseBody
+    public JSONObject downTbGoods(String ids,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        try {
+            boolean taobaoAuth = ps.getLoginFromType().equals(LoginFromType.TAOBAO);
+            if (!taobaoAuth) {
+                throw new JsonErrException("需要淘宝授权");
+            }
+            goodsupRecordSimpleService.downTbGoods(userId,ps.getLoginName(),ids);
+        } catch (JsonErrException e) {
+            if (e.getMessage().contains("需要淘宝授权")) {
+                return JsonResponseUtil.error(e.getMessage()).element("redirectUrl","https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=http://upload.571xz.com/redirect_auth.jsp&state=login&view=web");
+            }
+        }
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -329,20 +385,18 @@ public class MemberAction {
     @RequestMapping("member/storeCollectinit")
     public String storeCollectinit(StoreCollectBO bo, HttpSession session, Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getRows());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("page",bo.getPage());
-        model.addAttribute("get",bo);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("goodslist",pager.getContent());
-        return "buyer/storeCollectinit";
+        ShiguPager<NewStoreCollectVO> pager=userCollectSimpleService.selShopCollections(ps.getUserId(),bo.getWebsite(),bo.getPage(),bo.getSize());
+        model.addAttribute("pageOption",pager.selPageOption(bo.getSize()));
+        model.addAttribute("query",bo);
+        model.addAttribute("shopList",pager.getContent());
+        return "fxs/storeCollectinit";
     }
 
     /**
      * 删除收藏的店铺
      * @return
      */
-    @RequestMapping("member/rmv_fvshop")
+    @RequestMapping({"member/rmvFvshop","member/rmv_fvshop"})
     @ResponseBody
     public JSONObject rmv_fvshop(String ids,HttpSession session) throws JsonErrException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -357,6 +411,14 @@ public class MemberAction {
     public String safeindex(HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
+
+        try {
+            Boolean info_payPwd = memberSimpleService.selIsPayPwdByUserId(ps.getUserId());
+            model.addAttribute("info_payPwd",info_payPwd);
+        } catch (Main4Exception e) {
+            e.printStackTrace();
+
+        }
         if(safeAbout!=null){
             model.addAttribute("safe_level",safeAbout.getScore());
             List<UserLicense> licenses=safeAbout.getLicenses();
@@ -378,7 +440,7 @@ public class MemberAction {
         }else{
             model.addAttribute("safe_level",0);
         }
-        return "buyer/safeindex";
+        return "fxs/safeindex";
     }
 
     /**
@@ -475,7 +537,7 @@ public class MemberAction {
         UserInfoVO userInfoVO=BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return "buyer/sysSetsindex";
+        return "fxs/sysSetsindex";
     }
 
     /**
@@ -517,7 +579,7 @@ public class MemberAction {
             UserInfoUpdate userInfoUpdate=new UserInfoUpdate();
             userInfoUpdate.setUserId(ps.getUserId());
             userInfoUpdate.setHeadUrl(url);
-            userBaseService.updateUserInfo(userInfoUpdate);
+            memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
             throw new JsonErrException("图片数据读取失败");
         } catch (UpdateUserInfoException e) {
@@ -538,7 +600,7 @@ public class MemberAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return "buyer/safexgmm";
+        return "fxs/safexgmm";
     }
 
     /**
@@ -566,6 +628,100 @@ public class MemberAction {
         } catch (Main4Exception e) {
             throw new JsonErrException(e.getMessage());
         }
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 修改支付密码页面
+     * @param session
+     * @param model
+     * @param type 修改密码类型 1.立即设置 2.修改密码 3.找回密码
+     * @return
+     * @throws Main4Exception
+     */
+    @RequestMapping("member/safeXgPaymm")
+    public String safeXgPaymm(HttpSession session, Model model,Integer type) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        //是否设置过支付密码
+        Boolean hasPayPwdSet = memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId());
+        model.addAttribute("info_payPwd", hasPayPwdSet);
+        //没设置过密码，设置密码  设置过密码，找回密码，找回密码，否则修改密码
+        model.addAttribute("forPayPswType", hasPayPwdSet ? Objects.equals(3, type) ? 3 : 2 : 1);
+        model.addAttribute("telphone",userLicenseService.findPhoneByUserId(ps.getUserId()));
+        return "fxs/safeXgPaymm";
+    }
+
+    /**
+     * 设置支付密码
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("member/setPayPassword")
+    @ResponseBody
+    public JSONObject setPayPassword(String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        memberSimpleService.setPayPassword(ps.getUserId(),newPwd);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 修改支付密码
+     * @param oldPwd
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("member/savePayPassword")
+    @ResponseBody
+    public JSONObject savePayPassword(String oldPwd,String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        memberSimpleService.savePayPassword(ps.getUserId(),oldPwd,newPwd);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 忘记支付密码页面
+     * @return
+     */
+    @RequestMapping("member/safeXgPaymmForget")
+    public String safeXgPaymmForget(HttpSession session, Model model) throws Main4Exception {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+        model.addAttribute("telphone",telephone);
+        model.addAttribute("forPayPswType",3);
+        return "buyer/safeXgPaymm";
+    }
+
+    @RequestMapping("member/saveBackPayPassword")
+    @ResponseBody
+    public JSONObject changePayPassword(String code,String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+
+        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        if(phoneCode==null||!phoneCode.getVerify().equals(code)
+                ||!phoneCode.getPhone().equals(telephone)){//验证不通过
+            throw new JsonErrException("验证码错误");
+        }else {
+            userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        }
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping("member/getVerCode")
+    public JSONObject getVerCode(HttpSession session) throws JsonErrException {
+
+        String code= RedomUtil.redomNumber(6);
+        //直接获取用户手机信息，发送验证码
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String telephone = userLicenseService.findPhoneByUserId(ps.getUserId());
+
+        session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
         return JsonResponseUtil.success();
     }
 
@@ -688,7 +844,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/iwantToRechargein5";
+        return "fxs/iwantToRechargein5";
     }
 
     /**
@@ -715,7 +871,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return "buyer/withdraw5Apply";
+        return "fxs/withdraw5Apply";
     }
 
     /**
@@ -748,7 +904,7 @@ public class MemberAction {
             }
         }
         model.addAttribute("storelist",storelist);
-        return "buyer/storeIn";
+        return "fxs/storeIn";
     }
 
     /**
@@ -763,7 +919,7 @@ public class MemberAction {
         }
         ShopApplyDetail detail=shopRegistService.selDetailById(ps.getUserId(),userCode);
         model.addAttribute("applyInfo",new ApplyInfoVO(detail));
-        return "buyer/storeInRead";
+        return "fxs/storeInRead";
     }
 
     /**
@@ -828,4 +984,42 @@ public class MemberAction {
     public JSONObject jsonUserCentergetUpStore(){
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("member/userBalance")
+    public String userBalance(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode", tempCode);
+        model.addAttribute("webSite", "hz");
+        model.addAttribute("excelUrl", "");
+        return "fxs/userBalance";
+    }
+
+    /**
+     * 资金流水
+     * @return
+     */
+    @RequestMapping("member/capStatistic")
+    public String capStatistic(HttpSession session, Model model){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode",tempCode);
+        return "fxs/capStatistic";
+    }
+
+    /**
+     * 申请提现链接
+     * @return
+     */
+    @RequestMapping({"member/rechargeJson","seller/rechargeJson"})
+    @ResponseBody
+    public JSONObject rechargeJson(HttpSession session,Double money) throws PayApplyException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Double moneyfen=money*100;
+        PayApplyVO applyVO=userAccountService.rechargeApply(ps.getUserId(),moneyfen.longValue());
+        return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
+    }
+
+
+
 }

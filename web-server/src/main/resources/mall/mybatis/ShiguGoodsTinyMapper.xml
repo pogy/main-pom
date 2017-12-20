@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper">
+
+    <select id="selItemsForList" resultType="com.opentae.data.mall.beans.ItemForList">
+        SELECT a.goods_id as goodsId,a.pic_url as picUrl,a.title,a.store_id as storeId,
+        a.pi_price_string as piPriceString,b.shop_num as storeNum,c.market_name as market
+        FROM shigu_goods_tiny_${website} a,shigu_shop b,shigu_market c
+        where a.store_id=b.shop_id AND a.parent_market_id=c.market_id AND
+        a.goods_id IN
+        <foreach collection="goodsIds" index="index" item="item" open="("
+                 separator="," close=")">
+        #{item}
+        </foreach>
+
+    </select>
+
+    <select id="selSoldItemsForList" resultType="com.opentae.data.mall.beans.ItemForList">
+        SELECT a.goods_id as goodsId,a.pic_url as picUrl,a.title,a.store_id as storeId,
+        a.pi_price_string as piPriceString,b.shop_num as storeNum,c.market_name as market
+        FROM shigu_goods_soldout_${website} a,shigu_shop b,shigu_market c
+        where a.store_id=b.shop_id AND a.parent_market_id=c.market_id AND
+        a.goods_id IN
+        <foreach collection="goodsIds" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selForSee" resultType="com.opentae.data.mall.beans.ItemForList">
+        select a.goods_id as goodsId,a.pic_url as picUrl,a.title,a.store_id as storeId,
+        a.pi_price_string as piPriceString,d.shop_num as storeNum,c.market_name as market
+        from shigu_goods_tiny_${website} a,goods_count_forsearch b,shigu_market c,shigu_shop d
+        where a.goods_id=b.goods_id and a.store_id=#{storeId} and a.parent_market_id=c.market_id and a.store_id=d.shop_id
+        ORDER BY b.up_man desc limit 0,3
+    </select>
+
+
+</mapper>

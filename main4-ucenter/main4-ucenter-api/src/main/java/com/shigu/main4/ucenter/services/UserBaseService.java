@@ -1,5 +1,7 @@
 package com.shigu.main4.ucenter.services;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.vo.OuterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
@@ -21,6 +23,15 @@ public interface UserBaseService {
      * @return
      */
     PersonalSession selUserForSessionByUserName(String userName, LoginFromType type);
+
+    /**
+     * 按用户名查用户基准信息
+     * @param userName 用户名
+     * @param key 唯一码
+     * @param type 类别
+     * @return
+     */
+    PersonalSession selUserForSessionByUserName(String userName,String key, LoginFromType type);
 
     /**
      * 按用户Id查询密码密文
@@ -78,4 +89,14 @@ public interface UserBaseService {
      * @return
      */
     Long selTbOuterUser(String tbNick);
+
+    void setNewPayPwd(Long userId,String pwd) throws JsonErrException;
+
+    /**
+     * 修改支付密码
+     * @param userId
+     * @param oldPwd
+     * @param newPwd
+     */
+    void changePayPwd(Long userId,String oldPwd,String newPwd);
 }

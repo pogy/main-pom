@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ - Copyright 1999-2011 Alibaba Group.
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License");
+ - you may not use this file except in compliance with the License.
+ - You may obtain a copy of the License at
+ -
+ -      http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <bean id="shopehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/cache/shop-cache.xml"/>
+    </bean>
+
+    <bean id="shopcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="shopehcacheManager"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
+    <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
+        <constructor-arg index="0" value="${accesskey}"/>
+        <constructor-arg index="1" value="${secret}"/>
+        <constructor-arg index="2" value="${host}"/>
+    </bean>
+
+    <bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+        <constructor-arg index="0" value="${taobao.app.server.url}"/>
+        <constructor-arg index="1" value="${taobao.app.key}"/>
+        <constructor-arg index="2" value="${taobao.app.secret}"/>
+    </bean>
+
+    <dubbo:service interface="com.shigu.main4.storeservices.MarketShopService" ref="marketShopService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopBaseService" ref="shopBaseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopDiscusService" ref="shopDiscusService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopFitmentService" ref="shopFitmentService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopForCdnService" ref="shopForCdnService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopLicenseService" ref="shopLicenseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopSearchService" ref="shopSearchService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopToEsService" ref="shopToEsService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.StoreRelationService" ref="storeRelationService" retries="0" timeout="20000" />
+</beans>

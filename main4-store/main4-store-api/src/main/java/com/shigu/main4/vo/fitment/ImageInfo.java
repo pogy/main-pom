@@ -1,10 +1,12 @@
 package com.shigu.main4.vo.fitment;
 
+import java.io.Serializable;
+
 /**
  * 图片链接 + 跳转地址
  * Created by Administrator on 2017/4/18 0018.
  */
-public class ImageInfo {
+public class ImageInfo implements Serializable {
 
     private String picUrl;
     private String targetUrl;

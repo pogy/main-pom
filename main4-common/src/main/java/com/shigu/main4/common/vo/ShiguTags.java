@@ -1,12 +1,13 @@
 package com.shigu.main4.common.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 系统标签
  * Created by Licca on 17/2/20.
  */
-public enum ShiguTags {
+public enum ShiguTags implements Serializable {
     CAN_RETREAT("可退","1"),
     CAN_CHANGE("可换","2");
 

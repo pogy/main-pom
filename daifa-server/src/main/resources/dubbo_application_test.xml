@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.PackDeliveryProcess" id="packDeliveryProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000" >
+        <dubbo:method name="orderTimeout" timeout="300000"/>
+    </dubbo:reference>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" id="scanSaleAfterExpressProcess" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
+
+</beans>

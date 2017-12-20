@@ -12,6 +12,9 @@ import java.io.Serializable;
  */
 public class DrawResult implements Serializable {
 
+    public DrawResult() {
+    }
+
     public DrawResult(Integer hitResult, Integer rank, String prizeName) {
         this.hitResult = hitResult;
         this.rank = rank;

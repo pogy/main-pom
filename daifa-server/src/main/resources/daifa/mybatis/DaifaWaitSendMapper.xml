@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaWaitSendMapper">
+
+    <resultMap id="waitSendMap" type="com.opentae.data.daifa.beans.DaifaWaitSendSimple">
+        <id column="dws_id" property="dwsId" jdbcType="DECIMAL"/>
+        <result column="df_trade_id" property="orderId" jdbcType="DECIMAL"/>
+        <result column="send_status" property="tradeState" jdbcType="DECIMAL"/>
+        <result column="create_time" property="tradeTime" jdbcType="VARCHAR"/>
+        <result column="buyer_ww" property="imWw" jdbcType="VARCHAR"/>
+        <result column="buyer_qq" property="imQq" jdbcType="VARCHAR"/>
+        <result column="buyer_telephone" property="imTel" jdbcType="VARCHAR"/>
+        <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
+        <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR"/>
+        <result column="buyer_remark" property="buyerRemark" jdbcType="VARCHAR"/>
+        <result column="money" property="totalFee" jdbcType="VARCHAR"/>
+        <result column="express_fee" property="expressFee" jdbcType="VARCHAR"/>
+        <result column="express_name" property="expressName" jdbcType="VARCHAR"/>
+        <result column="express_code" property="expressCode" jdbcType="VARCHAR"/>
+        <result column="trade_discount_fee" property="discountFee" jdbcType="VARCHAR"/>
+        <result column="is_tb_order" property="isTbOrder" jdbcType="BOOLEAN"/>
+        <result column="services_fee" property="serversFee" jdbcType="VARCHAR"/>
+        <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR"/>
+        <collection property="childOrders" ofType="com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple"
+                    javaType="ArrayList" resultMap="waitSendOrderMap"/>
+    </resultMap>
+    <resultMap id="waitSendOrderMap" type="com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple">
+        <result column="df_order_id" property="childOrderId" jdbcType="DECIMAL"/>
+        <result column="pic_path" property="imgSrc" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="prop_str" property="goodsProperty" jdbcType="VARCHAR"/>
+        <result column="goods_code" property="goodsNo" jdbcType="VARCHAR"/>
+        <result column="single_price" property="piPrice" jdbcType="VARCHAR"/>
+        <result column="single_pi_price" property="payPrice" jdbcType="VARCHAR"/>
+        <result column="goods_num" property="num" jdbcType="VARCHAR"/>
+        <result column="take_goods_status" property="takeGoodsState" jdbcType="DECIMAL"/>
+        <result column="refund_status" property="refundStatus" jdbcType="DECIMAL"/>
+        <result column="store_goods_code" property="storeGoodsCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectWaitSends" resultMap="waitSendMap">
+        SELECT
+			f.dws_id,
+			f.df_trade_id,
+			f.send_status,
+            DATE_FORMAT(f.create_time,'%Y-%m-%d %H:%i:%s')create_time,
+			f.buyer_ww,
+            f.buyer_qq,
+            f.buyer_telephone,
+			f.receiver_name,
+			f.receiver_phone,
+			f.buyer_remark,
+			f.money,
+			f.express_fee,
+			f.express_name,
+			f.express_code,
+			f.trade_discount_fee,
+			f.services_fee,
+			f.receiver_address,
+            f.daifa_type=2 is_tb_order,
+			d.df_order_id,
+			d.pic_path,
+			d.title,
+			d.prop_str,
+			d.goods_code,
+			d.single_price,
+			d.single_pi_price,
+			d.goods_num,
+			d.take_goods_status,
+			d.refund_status,
+			d.store_goods_code
+		FROM
+			(
+				SELECT
+					e.*,c.trade_discount_fee,c.services_fee,c.daifa_type
+				FROM
+					daifa_wait_send e,
+					(
+						SELECT
+							v.DWS_ID,
+							v.df_trade_id,
+							t.trade_discount_fee,
+							t.services_fee,
+                            t.daifa_type
+						FROM
+                          (select t1.df_trade_id,t1.dws_id FROM
+							daifa_wait_send t1
+                            JOIN
+                            (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+                            ON t1.dws_id=t3.dws_id
+							LEFT JOIN (
+								SELECT
+									a.df_trade_id,
+									a.dws_id
+								FROM
+									daifa_wait_send a,
+									daifa_wait_send_order b
+								WHERE
+									a.SELLER_ID = ${dfSellerId}
+								AND a.SEND_STATUS = 1
+                                AND a.order_display = 1
+								AND a.DWS_ID = b.DWS_ID
+								AND b.take_goods_status != 1
+								AND b.refund_status = 0
+								GROUP BY
+									df_trade_id
+							) t2 ON t1.dws_id = t2.dws_id
+							WHERE
+								SEND_STATUS = 1
+							AND SELLER_ID = ${dfSellerId}
+                            AND t1.order_display = 1
+							<if test="status==1">
+								AND t2.df_trade_id IS NULL
+							</if>
+							<if test="status==2">
+								AND t2.df_trade_id IS NOT NULL
+							</if>
+							<if test="lastTradeId!=null">
+								AND t1.df_trade_id like("%${lastTradeId}")
+							</if>
+							<if test="phone!=null">
+								AND t1.receiver_phone = #{phone}
+							</if>
+							<if test="buyerId!=null">
+								AND t1.buyer_id = ${buyerId}
+							</if>
+						) v
+                        JOIN daifa_trade t
+                        ON v.df_trade_id=t.df_trade_id
+						WHERE t.df_trade_id>0
+						<if test="startTime!=null">
+                            AND t.create_time &gt; #{startTime}
+                        </if>
+                        <if test="endTime!=null">
+                            AND t.create_time &lt; #{endTime}
+                        </if>
+						ORDER BY
+							v.dws_id DESC
+						limit ${start},${end}
+					) c
+				WHERE
+					c.DWS_ID = e.DWS_ID
+			) as f
+		LEFT JOIN daifa_wait_send_order as d ON f.DWS_ID = d.DWS_ID
+
+
+    </select>
+
+    <select id="selectWaitSendsCount" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM
+        daifa_wait_send e,
+        (
+        SELECT
+        v.DWS_ID,
+        v.df_trade_id,
+        t.trade_discount_fee,
+        t.services_fee
+        FROM
+        (select t1.df_trade_id,t1.dws_id from
+        daifa_wait_send t1
+        JOIN
+        (select dws_id from daifa_wait_send_order where refund_status=0 GROUP BY df_trade_id) t3
+        ON t1.dws_id=t3.dws_id
+        LEFT JOIN (
+        SELECT
+        a.df_trade_id,
+        a.dws_id
+        FROM
+        daifa_wait_send a,
+        daifa_wait_send_order b
+        WHERE
+        a.SELLER_ID = ${dfSellerId}
+        AND a.SEND_STATUS = 1
+        AND a.order_display = 1
+        AND a.DWS_ID = b.DWS_ID
+        AND b.take_goods_status != 1
+        AND b.refund_status = 0
+        GROUP BY
+        df_trade_id
+        ) t2 ON t1.dws_id = t2.dws_id
+        WHERE
+        SEND_STATUS = 1
+        AND SELLER_ID = ${dfSellerId}
+        AND t1.order_display = 1
+        <if test="status==1">
+            AND t2.df_trade_id IS NULL
+        </if>
+        <if test="status==2">
+            AND t2.df_trade_id IS NOT NULL
+        </if>
+        <if test="lastTradeId!=null">
+            AND t1.df_trade_id like("%${lastTradeId}")
+        </if>
+        <if test="phone!=null">
+            AND t1.receiver_phone = #{phone}
+        </if>
+        <if test="buyerId!=null">
+            AND t1.buyer_id = ${buyerId}
+        </if>
+        ) v
+        JOIN daifa_trade t
+        ON v.df_trade_id=t.df_trade_id
+        WHERE t.df_trade_id>0
+        <if test="startTime!=null">
+            AND t.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime!=null">
+            AND t.create_time &lt; #{endTime}
+        </if>
+        ORDER BY
+        v.dws_id DESC
+        ) c
+        WHERE
+        c.DWS_ID = e.DWS_ID
+    </select>
+</mapper>

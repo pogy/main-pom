@@ -1,11 +1,14 @@
 package com.shigu.buyer.services;
 
+import com.openJar.beans.sgpay.XzbPayTrade;
 import com.openJar.requests.sgpay.AlipayMoneyTradeSearch4OldRequest;
 import com.openJar.requests.sgpay.AlipayToCashEd4OldRequest;
 import com.openJar.requests.sgpay.UserTempSecret4OldRequest;
+import com.openJar.requests.sgpay.XzbPayRequest;
 import com.openJar.responses.sgpay.AlipayMoneyTradeSearch4OldResponse;
 import com.openJar.responses.sgpay.AlipayToCashEd4OldResponse;
 import com.openJar.responses.sgpay.UserTempSecret4OldResponse;
+import com.openJar.responses.sgpay.XzbPayResponse;
 import com.shigu.buyer.bo.TixianBO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.tools.XzSdkClient;
@@ -89,5 +92,19 @@ public class PaySdkClientService {
         Double d = payAmount / 100d;
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(d);
+    }
+
+    public Long xzpay(Long userId, Long money, String outerId) throws JsonErrException {
+        XzbPayRequest request = new XzbPayRequest();
+        request.setXzUserId(userId);
+        XzbPayTrade trade = new XzbPayTrade();
+        trade.setTotalFee(money);
+        trade.setOuterId(outerId);
+        request.setTrade(trade);
+        XzbPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            throw new JsonErrException(response.getBody());
+        }
+        return response.getPayId();
     }
 }

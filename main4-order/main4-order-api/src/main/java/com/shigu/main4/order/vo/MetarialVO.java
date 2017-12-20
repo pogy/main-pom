@@ -6,11 +6,7 @@ import java.io.Serializable;
  * 包材
  * Created by zhaohongbo on 17/5/31.
  */
-public class MetarialVO implements Serializable{
-    /**
-     * id
-     */
-    private Long id;
+public class MetarialVO extends OrderConstantVo implements Serializable{
     /**
      * 包材名
      */
@@ -23,14 +19,6 @@ public class MetarialVO implements Serializable{
      * 尺码
      */
     private String size;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -19,7 +19,7 @@ public interface SubOrder{
      * 退款
      * @param money
      */
-    void refund(Long money);
+    Long refund(Long money);
 
     /**
      * 添加备注

@@ -40,6 +40,7 @@
             </bean>
         </mvc:interceptor>
 
+
         <!-- 手机密度拦截器 - 发送短信-->
         <mvc:interceptor>
             <mvc:mapping path="/loginPhoneVerification.*"/>
@@ -95,6 +96,14 @@
                 <!--记录存活时间-->
                 <property name="refuseSecond" value="600"/>
             </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--app访问拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/app/**"/>
+            <bean class="com.shigu.core.config.AppInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 

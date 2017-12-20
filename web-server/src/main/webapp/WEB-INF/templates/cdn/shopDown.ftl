@@ -15,12 +15,12 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1496988599611" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1504256450648" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
             <script src="http://style.571xz.com/shopItemCopy/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1496988599611"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1504256450648"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -72,9 +72,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -96,7 +96,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -105,9 +105,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -129,7 +129,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -206,7 +206,7 @@ var webSite = '${webSite!}';
             <div class="storeLogo iconfont"></div>
             
             <div class="storeNamebox">
-                <h3>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
+                <h3 onclick="openShop()">${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
 <#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
 <#assign $it=text?eval />
                 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
@@ -218,6 +218,18 @@ var webSite = '${webSite!}';
                 <i class="ti iconfont">&#xe60b;</i>
             </div>
             
+<script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
+
+function openShop(){
+                var shopId = '${vo.storeRelation.storeId!}';
+                var webSite = '${webSite!}';
+                window.open('http://'+ webSite +'.571xz.com/shop.htm?id=' + shopId);
+            }
+
+/*============ shopItemCopy/page#headeV1 END ============*/
+
+
+</script>            
             <div class="storeXybox">
 <#assign text>{"num":${vo.starNum!}}</#assign>
 <#assign $it=text?eval />
@@ -383,7 +395,7 @@ ${navCon}
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -391,6 +403,7 @@ ${navCon}
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

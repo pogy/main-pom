@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaGgoodsMapper">
+
+    <resultMap id="workGoodsMarketMap" type="com.openJar.beans.WorkUserGgoodsTasksMarket">
+        <result column="market_name" property="parentMarketName" jdbcType="VARCHAR"/>
+        <collection property="stores" ofType="com.openJar.beans.WorkUserGgoodsTasksStore"
+                    javaType="ArrayList" resultMap="workGoodsStoresMap"/>
+    </resultMap>
+    <resultMap id="workGoodsStoresMap" type="com.openJar.beans.WorkUserGgoodsTasksStore">
+        <result column="store_num" property="storeNum" jdbcType="VARCHAR"/>
+        <result column="store_id" property="storeId" jdbcType="DECIMAL"/>
+        <result column="num" property="num" jdbcType="DECIMAL"/>
+        <result column="has_num" property="hasNum" jdbcType="DECIMAL"/>
+        <result column="not_num" property="notNum" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectWorkGgoodsStores" resultMap="workGoodsMarketMap">
+        select market_name,store_id,store_num,sum(goods_num)num,ifnull(sum(if(take_goods_status=1,goods_num,0)),0)has_num,0 not_num
+        from (
+        select * from(
+        select * from daifa_ggoods
+        where daifa_worker_id=#{daifaWorkerId}
+        and create_date=DATE_FORMAT(now(),"%Y%m%d")
+        and take_goods_status=${status}
+        ORDER BY create_time desc
+        )t
+        GROUP BY t.df_order_id
+        )v
+        GROUP BY market_id,store_num,store_id
+    </select>
+    <select id="selectTodayWorkGgoodsStoresCount" resultType="com.openJar.beans.WorkUserGgoodsTasksCounts">
+        select
+        ifnull(sum(if(take_goods_status=0,goods_num,0)),0)totalNum,
+        ifnull(sum(if(take_goods_status=1,goods_num,0)),0)totalHasNum ,
+        ifnull(sum(if(take_goods_status=0,goods_num*single_price,0)),0)totalFee,
+        ifnull(sum(if(take_goods_status=1,goods_num*single_price,0)),0)totalHasFee
+        from (
+        select * from(
+        select * from daifa_ggoods
+        where daifa_worker_id=#{daifaWorkerId}
+        and create_date=DATE_FORMAT(now(),"%Y%m%d")
+        ORDER BY create_time desc
+        )t
+        GROUP BY t.df_order_id
+        )v
+    </select>
+</mapper>

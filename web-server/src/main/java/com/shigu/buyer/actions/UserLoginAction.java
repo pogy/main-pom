@@ -1,7 +1,6 @@
 package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
-import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.UserAccountService;
@@ -16,6 +15,7 @@ import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.services.SendMsgService;
@@ -25,14 +25,11 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.RedomUtil;
-import com.shigu.tools.ResultRetUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
+import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -90,6 +87,12 @@ public class UserLoginAction {
     @Autowired
     UserAccountService userAccountService;
 
+    @RequestMapping("frameLogin")
+    public String frameLogin( HttpSession session, Model model,String backUrl){
+        model.addAttribute("backUrl", backUrl);
+        return "buyer/framelogin";
+    }
+
     /**
      * 登陆
      * @param bo 登陆参数
@@ -146,8 +149,8 @@ public class UserLoginAction {
      */
     @RequestMapping("jsonplogin")
     @ResponseBody
-    public void jsonplogin(@Valid JsonpLoginBO bo,BindingResult result,HttpServletRequest request
-            ,HttpServletResponse response) throws IOException {
+    public void jsonplogin(@Valid JsonpLoginBO bo, BindingResult result, HttpServletRequest request
+            , HttpServletResponse response) throws IOException {
         //验证数据
         if(result.hasErrors()){
 //            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'"+result.getAllErrors().get(0).getDefaultMessage()+"'}",response);
@@ -189,26 +192,39 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("ortherLogin")
-    public String ortherLogin(int ortherLoginType,String backUrl,HttpSession session){
-        LoginLinkUtil llu = new LoginLinkUtil();
+    public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
         String url="";
         switch(ortherLoginType) {
             case 1:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
+                if(HttpRequestUtil.checkAgentIsMobile(request)){
+                    url=url.replace("&view=web","&view=wap");
+                }
                 break;
             case 2:
-                url = llu.callAliUrl();
+                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=8E3A8CB1174177B346BEA3F67FABDF2678E07D71&redirect_uri=http://1688.571xz.com/offer/ali_redirect_auth.jsp&state=login&client_id=5684643";
                 break;
             case 3:
-                url = llu.callQqUrl();
+                url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
                 break;
-            case 4:
-                HashMap e = new HashMap();
-                e.put("state", "wx591514a902a6280d__snsapi_userinfo");
-                e.put("date", TypeConvert.formatDate(new Date()));
-                String sign = MD5Attestation.signParamString(e);
+            case 4: {
+                HashMap e = new HashMap ();
+                e.put ("state", "wx591514a902a6280d__snsapi_userinfo");
+                e.put ("date", TypeConvert.formatDate (new Date ()));
+                String sign = MD5Attestation.signParamString (e);
                 url = "http://wx.571xz.com/shigu_weixin/wxoauth2toOauth2WzPage.action?state=wx591514a902a6280d__snsapi_userinfo&date="
-                        + TypeConvert.formatDate(new Date()) + "&sign=" + sign;
+                        + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
+                break;
+            }
+            case 5:
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
+
+                    url=url.replace("&view=web","&view=wap");
+
+
+
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
         return "redirect:"+url;
@@ -220,7 +236,7 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("loginback")
-    public String loginback(@Valid LoginBackBO bo, BindingResult result,HttpServletRequest request,
+    public String loginback(@Valid LoginBackBO bo, BindingResult result, HttpServletRequest request,
                             HttpSession session) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
@@ -244,13 +260,13 @@ public class UserLoginAction {
             //选择登陆方式
             LoginFromType loginFromType;
             if(bo.getType().equals("ali")){
-                loginFromType=LoginFromType.ALI;
+                loginFromType= LoginFromType.ALI;
             }else if(bo.getType().equals("tb")){
-                loginFromType=LoginFromType.TAOBAO;
+                loginFromType= LoginFromType.TAOBAO;
             }else if(bo.getType().equals("qq")){
-                loginFromType=LoginFromType.QQ;
+                loginFromType= LoginFromType.QQ;
             }else if(bo.getType().equals("wx")){
-                loginFromType=LoginFromType.WX;
+                loginFromType= LoginFromType.WX;
             }else{
                 throw new Main4Exception("登陆方式传入有错");
             }
@@ -259,7 +275,7 @@ public class UserLoginAction {
             token.setSubKey(bo.getKey());
             try {
                 currentUser.login(token);
-                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType==LoginFromType.TAOBAO){//有店铺
+                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType== LoginFromType.TAOBAO){//有店铺
                     PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                     if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
                         memberSimpleService.updateShopNick(ps.getLogshop().getShopId(),usernamezhong);
@@ -477,6 +493,7 @@ public class UserLoginAction {
             obj.element("userName",ps.getLoginName());
             obj.element("loginName",ps.getLoginName());
             obj.element("userId",ps.getUserId());
+            obj.element("memberVipIs",ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
             if (ps.getLogshop() != null) {
                 obj.element("userType","gys");
             }else{
@@ -528,6 +545,9 @@ public class UserLoginAction {
             vo.setTbNick(ps.getLoginName());
         }else{
             vo.setFromTaobao(false);
+        }
+        if (ps.getLogshop()!=null) {
+            vo.setImSeller(true);
         }
         return JSONObject.fromObject(vo).element("result","success");
     }
@@ -672,6 +692,39 @@ public class UserLoginAction {
             toUrl=memberFilter.getSuccessUrl();
         }
         return toUrl;
+    }
+    /**
+     * ====================================================================================
+     * @方法名： loginortherSystem
+     * @user gzy 2017/10/17 16:15
+     * @功能：其他系统登录后的跳转
+     * @param: [backUrl, model, session]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("loginortherSystem")
+    public String loginortherSystem(String backUrl,Model model,HttpSession session) throws Main4Exception {
+        /*if(!SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
+
+        }*/
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(ps!=null) {
+            Long shopId=0L;
+            if(ps.getLogshop ()!=null){
+                shopId= ps.getLogshop ().getShopId ();
+            }
+
+          // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
+            String key= Opt3Des.encryptPlainData (shopId+"");
+           String back=backUrl+"?key="+key;
+          // System.out.println (back);
+            return "redirect:"+back;
+        }else{
+            return "redirect:frameLogin.htm";
+        }
+
     }
 
 }

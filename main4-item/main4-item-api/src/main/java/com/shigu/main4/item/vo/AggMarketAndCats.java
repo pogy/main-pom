@@ -1,5 +1,6 @@
 package com.shigu.main4.item.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-public class AggMarketAndCats {
+public class AggMarketAndCats implements Serializable{
 
     private List<AggsCount> cats;
 

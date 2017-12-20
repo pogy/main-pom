@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaAfterReceiveExpresStockMapper" >
+
+    <select id="selectExpressPackageCount" resultType="java.lang.Integer">
+        select
+          count(*)
+        from
+          (
+            select DISTINCT received_express_code from daifa_after_receive_expres_stock where 1=1
+          <if test="postCode!=null">
+              and received_express_code=#{postCode}
+          </if>
+          <if test="sendPhone!=null">
+              and send_phone=#{sendPhone}
+          </if>
+          <if test="status!=null">
+              and relevance_status=#{status}
+          </if>
+          )t
+    </select>
+
+    <select id="selectExpressPackage" resultType="com.opentae.data.daifa.beans.DaifaAfterReceiveExpresStock">
+        select
+          received_express_id as receivedExpressId,
+          received_express_name as receivedExpressName,
+          received_express_code as receivedExpressCode,
+          create_time as createTime,
+          send_phone as sendPhone,
+          relevance_status as relevanceStatus,
+          refund_id as refundId,
+          stock_location as stockLocation,
+          package_remark as packageRemark
+
+        from daifa_after_receive_expres_stock where 1=1
+        <if test="postCode!=null">
+            and received_express_code=#{postCode}
+        </if>
+        <if test="sendPhone!=null">
+            and send_phone=#{sendPhone}
+        </if>
+        <if test="status!=null">
+            and relevance_status=#{status}
+        </if>
+        group by received_express_code
+        order by received_express_id desc
+        limit #{start},#{end}
+    </select>
+</mapper>

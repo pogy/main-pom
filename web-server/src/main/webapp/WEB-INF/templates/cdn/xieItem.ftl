@@ -90,7 +90,7 @@ var main_host = 'http://www.kxie.com/';
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -123,7 +123,7 @@ var main_host = 'http://www.kxie.com/';
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -485,7 +485,7 @@ var goodsId = '${vo.itemId!}';
                   <tr class="j_upload_item">
                     <td colspan="2">
                         <div class="boxBtn">
-                            <a  class="first" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blankt"  alt="上传淘宝"  title="点击按钮，可将本商品直接上传至您的淘宝店" >传淘宝</a>
+                            <a  class="first" href="http://upload.571xz.com/publish.htm?id=${vo.itemId!}" target="_blankt"  alt="上传淘宝"  title="点击按钮，可将本商品直接上传至您的淘宝店" >传淘宝</a>
                             <a href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blankt" alt="上传阿里"  title="点击按钮，可将本商品直接上传至您的阿里巴巴">传阿里</a>
                              
                             <a href="javascript:;" onclick="sc_goods(${vo.itemId!})" title="点击按钮，可将本商品在线生成数据包"  data-hhh="20160307test4" >加数据包</a>
@@ -766,7 +766,7 @@ $.post(
         <div id="onkeyupFixbar" class="onkeyupFixbar">
             <div class="innerbox">
                 <ul class="keybox">
-                    <li><a class="btn" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                    <li><a class="btn" href="http://upload.571xz.com/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
                     <li><a class="btn" href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
                     <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${vo.itemId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
                     <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>加入数据包</span></b></li>

@@ -92,6 +92,16 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         initPublish(shopId);
     }
 
+    @Override
+    public int updatePageBackground(Long shopId,Long pageId, Integer type, String picUrl) {
+        ShopFitmentPage page = new ShopFitmentPage();
+        page.setBackgroundPic(picUrl);
+        page.setBackgroundType(type);
+        ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
+        pageExample.createCriteria().andPageIdEqualTo(pageId).andShopIdEqualTo(shopId);
+        return shopFitmentPageMapper.updateByExampleSelective(page, pageExample);
+    }
+
     private void fitmentReset(Long shopId) {
         ShopFitmentPageExample shopFitmentPageExample = new ShopFitmentPageExample();
         shopFitmentPageExample.createCriteria().andShopIdEqualTo(shopId);

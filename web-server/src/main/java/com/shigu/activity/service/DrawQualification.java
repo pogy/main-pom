@@ -33,7 +33,7 @@ public abstract class DrawQualification {
     public abstract ActivityDrawEnum getActiveIdentity();
 
     /**
-     * 用户上款时更新抽奖资格
+     * 用户上款时更新抽奖资格 秋装活动在触发上传时进行更新
      * @param userId 用户id
      * @param upNum 上款量
      */

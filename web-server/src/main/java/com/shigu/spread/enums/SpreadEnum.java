@@ -38,8 +38,18 @@ public enum SpreadEnum {
     CS_WOMAN_TJDK("推荐档口", "CS-WOMAN-TJDK"), CS_WOMAN_XHTX("喜欢T恤", "CS-WOMAN-XHTX"), CS_WOMAN_XHNZ("喜欢牛仔", "CS-WOMAN-XHNZ"),
     CS_WOMAN_XHXZ("喜欢鞋子", "CS-WOMAN-XHXZ"),
 
-    KX_MAN_DT("男鞋大图", "KX-MAN-DT"),  KX_MAN_XT("看鞋首页大图轮播下方", "KX-MAN-XT"),  KX_GOODS_RIGHT("看鞋商品库右侧", "KX-GOODS-RIGHT"), KX_MAN_RM("热卖广告", "KX-MAN-RM"), KX_MAN_XH("看鞋猜你喜欢", "KX-MAN-XH");
+    KX_MAN_DT("男鞋大图", "KX-MAN-DT"),  KX_MAN_XT("看鞋首页大图轮播下方", "KX-MAN-XT"),  KX_GOODS_RIGHT("看鞋商品库右侧", "KX-GOODS-RIGHT"), KX_MAN_RM("热卖广告", "KX-MAN-RM"), KX_MAN_XH("看鞋猜你喜欢", "KX-MAN-XH"),
 
+    //新增app端广告位
+    HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP男装热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP男装推荐档口", "HZ-APP-MAN-TJDK"),
+    HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP女装热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP女装推荐档口", "HZ-APP-WOMAN-TJDK"),
+
+
+    ITEM_GOAT_MAN("商品详情页左侧男装广告","ITEM_GOAT_MAN"),
+    ITEM_GOAT_WOMAN("商品详情页左侧女装广告","ITEM_GOAT_WOMAN"),
+    ITEM_BOTTOM_GOAT_MAN("商品详情页底部男装广告","ITEM_BOTTOM_GOAT_MAN"),
+    ITEM_BOTTOM_GOAT_WOMAN("商品详情页底部女装广告","ITEM_BOTTOM_GOAT_WOMAN");
+    ;
     SpreadEnum(String title, String code) {
         this.title = title;
         this.code = code;

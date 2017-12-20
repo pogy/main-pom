@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ActiveDrawRecord;
 import com.opentae.data.mall.examples.ActiveDrawRecordExample;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  * Created by zhaohongbo on 17/6/6.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/store_test.xml")
+@ContextConfiguration(locations = "classpath:store_test.xml")
 public class ActiveDrawServiceTest {
 
     @Autowired
@@ -52,5 +53,10 @@ public class ActiveDrawServiceTest {
         List<ActiveDrawRecord> records=activeDrawRecordMapper.selectFieldsByExample(example, FieldUtil.codeFields(""));
         List<Long> users= BeanMapper.getFieldList(records,"user_id",Long.class);
         System.out.println(users.size());
+    }
+
+    @Test
+    public void receUserWardTest() throws Main4Exception {
+        activeDrawService.receUserWard("8rywjqu");
     }
 }

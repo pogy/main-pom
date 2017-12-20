@@ -23,7 +23,7 @@ import java.util.List;
  * 项目：main-pom
  * 描述：
  */
-@Component
+@Component("hitDrawChooser")
 public class HitDrawChooserImpl implements HitDrawChooser{
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

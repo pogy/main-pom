@@ -2,10 +2,12 @@ package com.shigu.seller.services;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShopFitmentArea;
+import com.opentae.data.mall.beans.ShopFitmentModule;
 import com.opentae.data.mall.beans.ShopFitmentPage;
 import com.opentae.data.mall.examples.ShopFitmentAreaExample;
 import com.opentae.data.mall.examples.ShopFitmentPageExample;
 import com.opentae.data.mall.interfaces.ShopFitmentAreaMapper;
+import com.opentae.data.mall.interfaces.ShopFitmentModuleMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentPageMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -60,6 +62,9 @@ public class ShopDesignService {
 
     @Autowired
     ShopFitmentAreaMapper shopFitmentAreaMapper;
+
+    @Autowired
+    ShopFitmentModuleMapper shopFitmentModuleMapper;
 
     @Autowired
     ShopBaseService shopBaseService;
@@ -540,12 +545,7 @@ public class ShopDesignService {
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);
         vo.setMessage("应用成功");
-        ShopFitmentPage page = new ShopFitmentPage();
-        page.setBackgroundPic(bo.getPic());
-        page.setBackgroundType(bo.getType());
-        ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
-        pageExample.createCriteria().andPageIdEqualTo(bo.getPage()).andShopIdEqualTo(shopId);
-        if (shopFitmentPageMapper.updateByExampleSelective(page, pageExample) == 0) {
+        if (shopFitmentService.updatePageBackground(shopId,bo.getPage(),bo.getType(),bo.getPic()) == 0) {
             vo.setStatus(1);
             vo.setMessage("更新失败");
         }
@@ -567,4 +567,13 @@ public class ShopDesignService {
         return vo;
     }
 
+    public boolean defaultModuleValueIs(Long moduleId){
+        ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
+        if (shopFitmentModule != null) {
+            if ("{}".equals(shopFitmentModule.getModuleValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

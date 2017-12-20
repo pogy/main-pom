@@ -1,27 +1,29 @@
 package com.shigu.main4.order.bo;
 
+import java.io.Serializable;
+
 /**
  * 物流信息参数
  * Created by zhaohongbo on 17/6/1.
  */
-public class LogisticsBO {
+public class LogisticsBO implements Serializable{
 
-    private Long companyId;
-    private Long addressId;
+    private String companyId;
+    private String addressId;
 
-    public Long getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Long companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
-    public Long getAddressId() {
+    public String getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(Long addressId) {
+    public void setAddressId(String addressId) {
         this.addressId = addressId;
     }
 }

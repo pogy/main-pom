@@ -6,7 +6,7 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    <link href="http://style.571xz.com/indexV6/css/hzMan.css?t=1502341547894" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV6/css/hzMan.css?t=1511422214764" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV6/js/jquery.cookie.js"></script>
 <script>/*============ indexV6/page#layoutHeader BEGIN ============*/
@@ -34,10 +34,11 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV6/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV6/js/hzMan.js?t=1502341547894"></script>
+    <script src="http://style.571xz.com/indexV6/js/hzMan.js?t=1511422214764"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
+<#include "/common/zhuge.ftl">
 
 <div class="topbar">
     <div class="layout">
@@ -83,9 +84,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -107,7 +108,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -116,9 +117,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -318,11 +319,11 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>男装上衣</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000436">T恤</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011123">衬衫</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000557">针织衫/毛衣</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010158">夹克</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010159">卫衣</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010402">Polo衫</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011153">背心/马甲</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011165">棉衣</a></li>
                         </ul>
                     </div>
                 </div>
@@ -342,7 +343,7 @@ var webSite = '${webSite!}';
                         <ul class="clearfix">
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=休闲鞋">休闲鞋</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋">皮鞋</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906">低帮鞋</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011743">靴子</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;cid=122654005">箱包</a></li>
                         </ul>
                     </div>
@@ -351,10 +352,10 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>时尚风格</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=店主">店主</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=休闲">休闲</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动">运动</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=情侣">情侣</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=港风">港风</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=日系">日系</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=英伦">英伦</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=国潮">国潮</a></li>
                         </ul>
                     </div>
                 </div>
@@ -379,7 +380,7 @@ var webSite = '${webSite!}';
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=76" target="_blank">优品基地</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=16" target="_blank">原创男装</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=11" target="_blank">九天国际</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=9" target="_blank">九星服饰</a></li>
+                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=9" target="_blank">潮牌基地</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=19" target="_blank">周边市场</a></li>
                             </ul>
                         </div>
@@ -389,20 +390,20 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">男装上衣</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000436" target="_blank">T恤</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011123" target="_blank">衬衫</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010402" target="_blank">Polo衫</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011153" target="_blank">背心/马甲</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010159" target="_blank">卫衣</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000557" target="_blank">针织衫/毛衣</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=外套" target="_blank">外套</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011159" target="_blank">风衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011161" target="_blank">皮衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010158" target="_blank">夹克</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011129" target="_blank">西装</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011130" target="_blank">西装套装</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025883" target="_blank">毛呢大衣</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011165" target="_blank">棉衣</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011167" target="_blank">羽绒服</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025883" target="_blank">毛呢大衣</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011161" target="_blank">皮衣</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=套装" target="_blank">套装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010160" target="_blank">西装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011130" target="_blank">西装套装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动套装" target="_blank">运动套装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=情侣装" target="_blank">情侣装</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011153" target="_blank">背心/马甲</a></li>
                             </ul>
                         </div>
                     
@@ -411,13 +412,18 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">男装裤子</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=短裤" target="_blank">短裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=西装裤" target="_blank">西装裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010167" target="_blank">牛仔裤</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=3035" target="_blank">休闲裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010167" target="_blank">牛仔裤</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动裤" target="_blank">运动裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011127" target="_blank">皮裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025885" target="_blank">棉裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=西装裤" target="_blank">西装裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=工装裤" target="_blank">工装裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=阔腿裤" target="_blank">阔腿裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=哈伦裤" target="_blank">哈伦裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=小脚裤" target="_blank">小脚裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=卫裤" target="_blank">卫裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=长裤" target="_blank">长裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=九分裤" target="_blank">九分裤</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=七分裤" target="_blank">七分裤</a></li>
                             </ul>
                         </div>
                     
@@ -428,15 +434,19 @@ var webSite = '${webSite!}';
                         <div class="itemsbox">
                             <h4>男鞋</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740" target="_blank">男鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=小白鞋" target="_blank">小白鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011745" target="_blank">凉鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011746" target="_blank">拖鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011744" target="_blank">帆布鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋" target="_blank">皮鞋</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=运动鞋" target="_blank">运动鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=休闲鞋" target="_blank">休闲鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=雪地靴" target="_blank">雪地靴</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=棉鞋" target="_blank">棉鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=工装靴" target="_blank">工装靴</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=马丁靴" target="_blank">马丁靴</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012907" target="_blank">高帮鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋" target="_blank">皮鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906" target="_blank">低帮鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=平底板鞋" target="_blank">平底板鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011744" target="_blank">帆布鞋</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=豆豆鞋" target="_blank">豆豆鞋</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011746" target="_blank">拖鞋</a></li>
                             </ul>
                         </div>
                         <div class="itemsbox">
@@ -465,7 +475,7 @@ var webSite = '${webSite!}';
                         </div>
                         
                     </div>
-                    <div class="innerbox w240c2 styleCate" data-width="w240c2">
+                    <div class="innerbox w320c0 styleCate" data-width="w320c0">
                         <div class="itemConTop">
                             <h4 class="itemTitle">时尚风格</h4>
                             <ul class="itemlist clearfix">
@@ -491,6 +501,7 @@ var webSite = '${webSite!}';
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=超市风" target="_blank">超市风</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=咖啡店风" target="_blank">咖啡店风</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=中国风" target="_blank">中国风</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=国潮" target="_blank">国潮</a></li>
                             </ul>
                         </div>
                     
@@ -519,11 +530,11 @@ var webSite = '${webSite!}';
 今日新品                    </a>
                 </li>
                 <li>
-                    <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-发现好货<i class="hot"></i>                    </a>
+                    <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+排行榜<i class="hot"></i>                    </a>
                 </li>
                 <li>
-                    <a href="http://daifa.571xz.com/" target="_blank">
+                    <a href="/daifaIndex.htm" target="_blank">
 一件代发                    </a>
                 </li>
                 <li>

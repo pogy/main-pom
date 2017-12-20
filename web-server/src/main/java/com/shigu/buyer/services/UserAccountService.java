@@ -6,6 +6,10 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.process.PayProcess;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.Rds3TempUser;
@@ -28,6 +32,20 @@ public class UserAccountService {
     
     @Autowired
     private RegisterAndLoginService registerAndLoginService;
+
+    @Autowired
+    private PayProcess payProcess;
+
+    /**
+     * 充值申请
+     * @param userId
+     * @param money
+     * @return
+     * @throws PayApplyException
+     */
+    public PayApplyVO rechargeApply(Long userId,Long money) throws PayApplyException {
+        return payProcess.rechargeApply(userId, PayType.ALI,money);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public void bindAccount(Rds3TempUser rds3TempUser, String telephone, String remoteAddr) throws JsonErrException {
@@ -52,6 +70,7 @@ public class UserAccountService {
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                 rds3TempUser.getSubUserName(), null, false, remoteAddr, "", UserType.MEMBER);
         token.setLoginFromType(rds3TempUser.getLoginFromType());
+        token.setSubKey(rds3TempUser.getSubUserKey());
         //星座用户登陆
         token.setRememberMe(true);
         try {

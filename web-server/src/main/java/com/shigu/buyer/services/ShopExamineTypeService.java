@@ -1,23 +1,10 @@
 package com.shigu.buyer.services;
 
 import com.opentae.data.mall.beans.ShiguShopApply;
-import com.opentae.data.mall.beans.TaobaoSessionMap;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.ShiguShopApplyMapper;
-import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
-import com.shigu.component.common.taobao.TaobaoConfig;
-import com.shigu.component.common.taobao.TaobaoOpenClient;
 import com.shigu.exceptions.RuzhuException;
-import com.taobao.api.ApiException;
-import com.taobao.api.request.ShopGetRequest;
-import com.taobao.api.response.ShopGetResponse;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 店铺审核状态查询
@@ -25,13 +12,8 @@ import java.util.List;
  */
 @Service
 public class ShopExamineTypeService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ShopExamineTypeService.class);
     @Autowired
     ShiguShopApplyMapper shiguShopApplyMapper;
-
-    @Autowired
-    TaobaoSessionMapMapper taobaoSessionMapMapper;
     /**
      * 审核资料是否齐全,true齐全,false不齐全
      * @return
@@ -42,35 +24,5 @@ public class ShopExamineTypeService {
             throw new RuzhuException("入驻信息不存在");
         }
         return shiguShopApply.getCanExamine()==1;
-    }
-
-    public void examineInfoComplement(Long applyId) {
-        ShiguShopApply shiguShopApply = shiguShopApplyMapper.selectByPrimaryKey(applyId);
-        if (shiguShopApply != null && StringUtils.isNotEmpty(shiguShopApply.getTbNick())) {
-            TaobaoSessionMapExample map = new TaobaoSessionMapExample();
-            map.setStartIndex(0);
-            map.setEndIndex(1);
-            map.createCriteria().andNickEqualTo(shiguShopApply.getTbNick()).andAppkeyEqualTo(TaobaoConfig.appKey);
-            List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByConditionList(map);
-            if (!taobaoSessionMaps.isEmpty()) {
-                TaobaoSessionMap taobaoSessionMap = taobaoSessionMaps.get(0);
-                if (taobaoSessionMap.getUserId() != null) {
-                    shiguShopApply.setTbuserId(taobaoSessionMap.getUserId().toString());
-                }
-            }
-
-            ShopGetRequest req = new ShopGetRequest();
-            req.setFields("sid");
-            req.setNick(shiguShopApply.getTbNick());
-            try {
-                ShopGetResponse response = TaobaoOpenClient.getTaobaoClient().execute(req);
-                Long taobaoShopId = response.getShop().getSid();
-                shiguShopApply.setTbshopId(taobaoShopId.toString());
-                shiguShopApply.setTbUrl("http://shop" + taobaoShopId +".taobao.com");
-            } catch (Exception e) {
-                logger.error("淘宝接口失败", e);
-            }
-            shiguShopApplyMapper.updateByPrimaryKeySelective(shiguShopApply);
-        }
     }
 }

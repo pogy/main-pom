@@ -4,7 +4,7 @@ package com.shigu.main4.monitor.vo;
  * 客户端信息
  * Created by zhaohongbo on 17/2/16.
  */
-public class ClientMsg {
+public class ClientMsg implements java.io.Serializable {
     /**
      * 客户端IP
      */

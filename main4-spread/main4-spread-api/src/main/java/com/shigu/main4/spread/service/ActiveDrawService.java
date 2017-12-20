@@ -1,6 +1,8 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -9,7 +11,6 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 活动抽奖发现好货SERVICE
@@ -38,6 +39,14 @@ public interface ActiveDrawService {
      */
     List<ActiveDrawPemVo> selDrawPemList();
 
+    ActiveDrawPemVo selNowDrawPem(Date startTime);
+
+    List<ActiveDrawRecordUserVo> selDrawNowUserRecord(Long userId);
+
+    ActiveDrawRecordUserVo selUserDrawList(String drawCode) throws Main4Exception;
+
+    void receUserWard(String tqcode, Long userId) throws Main4Exception;
+
     /**
      * 活动抽奖商品数据
      * @param pemId
@@ -46,7 +55,7 @@ public interface ActiveDrawService {
      * @param enabled
      * @return
      */
-    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back);
+    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled, boolean back);
 
     /**
      * 排序交换
@@ -82,6 +91,8 @@ public interface ActiveDrawService {
      */
     List<ActiveDrawShopVo> selShopList(Long pemId, boolean back);
 
+    List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId, Long userId, String type);
+
     /**
      * 修改店铺
      * @param drawShopVo
@@ -93,7 +104,7 @@ public interface ActiveDrawService {
      * @param type
      * @param drawShopId
      */
-    void changeShopSort(int type,Long drawShopId);
+    void changeShopSort(int type, Long drawShopId);
 
     /**
      * 新增好店
@@ -113,7 +124,7 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId, String userNick,int pageNum, int pageSize);
+    ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, Long userId, String userNick, int pageNum, int pageSize);
 
     /**
      * 查询当前中奖用户
@@ -148,5 +159,11 @@ public interface ActiveDrawService {
      * @return
      */
     Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
+
+    void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord);
+
+    String shiguTempSigup(String flag, Long userId, Long shopId);
+
+    void receUserWard(String tqcode) throws Main4Exception;
 
 }

@@ -15,12 +15,12 @@ import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.Bind3RdsException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.LoginRecord;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.session.main4.Rds3TempUser;
@@ -62,6 +62,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
 
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
+
 
     /**
      * 注册新用户
@@ -122,6 +123,17 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      */
     @Override
     public boolean userCanRegist(String username, LoginFromType loginFromType) {
+        return userCanRegist(username,null,loginFromType);
+    }
+
+
+    /**
+     * 手机号是否允许注册
+     *
+     * @return
+     */
+    @Override
+    public boolean userCanRegist(String username,String key, LoginFromType loginFromType) {
         if (StringUtils.isEmpty(username) || loginFromType == null) {
             return false;
         }
@@ -140,7 +152,16 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             if (count > 0) {
                 return false;
             }
-        } else {
+        } else if(loginFromType.getAccountType() == LoginFromType.WX.getAccountType()){//微信
+            // 第三方
+            MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
+            memberUserSubExample.createCriteria().andSubUserKeyEqualTo(key==null?"123321":key).
+                    andAccountTypeEqualTo(loginFromType.getAccountType());
+            int count = memberUserSubMapper.countByExample(memberUserSubExample);
+            if (count > 0) {
+                return false;
+            }
+        }else{
             // 第三方
             MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
             memberUserSubExample.createCriteria().andSubUserNameEqualTo(username).
@@ -190,7 +211,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 || tempUser.getLoginFromType() == null){
             return false;
         }
-        boolean pans = userCanRegist(tempUser.getSubUserName(), tempUser.getLoginFromType());
+        boolean pans = userCanRegist(tempUser.getSubUserName(),tempUser.getSubUserKey(), tempUser.getLoginFromType());
         if (!pans) {
             throw new Main4Exception("该第三方账号已经绑定，不能重复绑定");
         } else if (tempUser.getLoginFromType() == LoginFromType.TAOBAO){
@@ -202,10 +223,13 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                }
             }
              */
-            ShiguShop shop = new ShiguShop();
-            shop.setTbNick(tempUser.getSubUserName());
-            shop.setShopStatus(0);
-            shop = shiguShopMapper.selectOne(shop);
+            ShiguShopExample shopExample=new ShiguShopExample();
+            shopExample.createCriteria().andTbNickEqualTo(tempUser.getSubUserName()).andShopStatusEqualTo(0);
+            List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
+            ShiguShop shop=null;
+            if (shops.size()>0) {
+                shop=shops.get(0);
+            }
             if (shop != null) {
                 MemberLicense license = new MemberLicense();
                 license.setLicenseType(4);
@@ -213,7 +237,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 license.setLicenseFailure(1);
                 license = memberLicenseMapper.selectOne(license);
                 if (license != null) {
-                    ShiguShopExample shopExample=new ShiguShopExample();
+                    shopExample.clear();
                     shopExample.createCriteria().andUserIdEqualTo(license.getUserId()).andShopStatusEqualTo(0)
                             .andTbNickNotEqualTo(tempUser.getSubUserName());
                     //需要查出非本昵称下的店铺，如果手机有非本昵称下的店铺，且本昵称有店，不准入

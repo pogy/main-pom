@@ -25,7 +25,7 @@ import java.util.*;
  * 分站点显示用服务
  * Created by zhaohongbo on 17/2/16.
  */
-@Service
+@Service("showForCdnService")
 public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdnService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowForCdnServiceImpl.class);
@@ -47,6 +47,9 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 
     @Resource(name = "tae_mall_shiguGoodsUnlicenseMapper")
     private ShiguGoodsUnlicenseMapper shiguGoodsUnlicenseMapper;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
     private ShiguPropImgsMapper shiguPropImgsMapper;
@@ -336,6 +339,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 //                    NumberFormat instance = NumberFormat.getInstance();
 //                    instance.setMaximumFractionDigits(2);//这种方法可以得到保留两位的值,但不能得到保留两位的格式
                     cdnItem.setMarketId(tiny.getParentMarketId());
+                    cdnItem.setFloorId(tiny.getMarketId());
                     cdnItem.setListTime(DateFormatUtils.format(tiny.getCreated(), "yyyy-MM-dd"));
                     cdnItem.setOnsale(tiny.getIsClosed()!=null&&tiny.getIsClosed()==0L);
                 } else if (e instanceof ShiguGoodsSoldout) {
@@ -343,7 +347,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     Integer from = soldout.getIsExcelImp();
                     cdnItem.setItemFrom(from == null ? ItemFrom.NONE : ItemFrom.values()[from]);
                     cdnItem.setSendFrom(soldout.getProv() + soldout.getCity());
-
+                    cdnItem.setFloorId(soldout.getMarketId());
                     cdnItem.setListTime(DateFormatUtils.format(soldout.getCreated(), "yyyy-MM-dd"));
                     // 仓库中商品价格 和 批发价可能不在
                     cdnItem.setOnsale(false);
@@ -436,7 +440,14 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                         } // 属性处理循环 end
                     } //可用属性处理 end
                 } // 商品扩展信息处理 end
-
+                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(id);
+                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                if (goodsCountForsearch != null) {
+                    cdnItem.setFabric(goodsCountForsearch.getFabric());
+                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
+                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
+                }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end

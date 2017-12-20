@@ -13,13 +13,13 @@
 <#include "/common/host_config.ftl">
 
 
+
+
     
     <link href="http://style.571xz.com/v2/contactV1/css/contact.css?v=2017060901" rel="stylesheet">
     
 
     
-
-
 
     
 
@@ -32,6 +32,11 @@
 
 
 
+
+
+<#assign text>{}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -82,12 +87,11 @@
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
                 
-                
-                <#if !session_user_redis__ ||  !session_user_redis__.logshop > 
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -110,14 +114,14 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
                 </li>
                 </#if>
                 
-                <#if !session_user_redis__ || session_user_redis__.logshop?? > 
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -133,6 +137,7 @@
                 <li class="noDown">
                     <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                 </li>
+                <#if webSite?? && webSite != ''>
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -164,6 +169,7 @@
                         </div>
                     </div>    
                 </li>
+                </#if>
             </ul>
         </div>
     </div>
@@ -178,14 +184,12 @@
 
 
 
+</#list>
+
 
 <script>
 var webSite = '${webSite!}';
 </script>
-
-
-
-
 
 
 
@@ -295,6 +299,15 @@ var webSite = '${webSite!}';
                     <p>${qiyeEmail!}</p>
                 </div>
             </div>
+            <div class="dfPhone contactBy">
+                <div class="phoneFont">
+                    <i class="icon-phone"></i>
+                </div>
+                <div class="desc">
+                    <h3 class="title">代发电话</h3>
+                    <p>0571-86070380</p>
+                </div>
+            </div>
             <div class="byPhone contactBy">
                 <div class="phoneFont">
                     <i class="icon-phone"></i>
@@ -345,6 +358,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -373,4 +387,8 @@ var webSite = '${webSite!}';
 </div>
 
 
+
+
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">

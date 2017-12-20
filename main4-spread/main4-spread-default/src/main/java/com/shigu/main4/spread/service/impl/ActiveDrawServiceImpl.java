@@ -2,37 +2,18 @@ package com.shigu.main4.spread.service.impl;
 
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ActiveDrawGoods;
-import com.opentae.data.mall.beans.ActiveDrawPem;
-import com.opentae.data.mall.beans.ActiveDrawPit;
-import com.opentae.data.mall.beans.ActiveDrawRecord;
-import com.opentae.data.mall.beans.ActiveDrawShop;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguMarket;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
-import com.opentae.data.mall.examples.ActiveDrawPemExample;
-import com.opentae.data.mall.examples.ActiveDrawPitExample;
-import com.opentae.data.mall.examples.ActiveDrawRecordExample;
-import com.opentae.data.mall.examples.ActiveDrawShopExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawPitMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
-import com.opentae.data.mall.interfaces.ActiveDrawShopMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguMarketMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.service.ActiveDrawService;
+import com.shigu.main4.spread.service.ActiveShowService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -44,22 +25,14 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 活动抽奖SERVICE
@@ -69,7 +42,7 @@ import java.util.Set;
  *
  */
 @Service("activeDrawService")
-public class ActiveDrawServiceImpl implements ActiveDrawService{
+public class ActiveDrawServiceImpl implements ActiveDrawService {
 
     @Autowired
     private ActiveDrawPemMapper activeDrawPemMapper;
@@ -95,6 +68,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+    @Autowired
+    private ShiguTempMapper shiguTempMapper;
+
+    @Autowired
+    private ActiveShowService activeShowService;
+
     /**
      * 查询当前期次
      * @return
@@ -118,7 +97,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * 查询当前期次商品数据
      * @param pemId
      */
-    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back){
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled, boolean back){
 
         // 取当前坑位
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
@@ -603,7 +582,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     @Override
-    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId,String userNick, int pageNum, int pageSize) {
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, Long userId, String userNick, int pageNum, int pageSize) {
         ShiguPager<ActiveDrawRecordUserVo> drawRecordUserVoShiguPager = new ShiguPager<ActiveDrawRecordUserVo>();
         if(pemId == null || StringUtils.isEmpty(ward)){
             return drawRecordUserVoShiguPager;
@@ -646,7 +625,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param drawRecordList
      * @return
      */
-    public List<ActiveDrawRecordUserVo> poUserGoodsUp(Long pemId, String type,List<ActiveDrawRecord> drawRecordList){
+    public List<ActiveDrawRecordUserVo> poUserGoodsUp(Long pemId, String type, List<ActiveDrawRecord> drawRecordList){
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
         // 查询发现好货活动的数据
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
@@ -725,7 +704,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param pemId
      * @return
      */
-    public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
+    public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId, Long userId, String type){
         ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
         activeDrawRecordExample.createCriteria().andPemIdEqualTo(pemId).andUserIdEqualTo(userId);
         List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);
@@ -806,6 +785,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
         // 查询本期
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            checkTime(drawPemVo.getStartTime());//本期也要验证一下，时间是否超限
             return drawRecordUserVo;
         }
 
@@ -814,14 +794,21 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawPemVo == null){
             throw new Main4Exception("数据有误");
         }
-        int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
-        if(xcday > 14){
-            throw new Main4Exception("已过期，无法领取");
-        }
+        checkTime(drawPemVo.getStartTime());
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
             return drawRecordUserVo;
         }
         return drawRecordUserVo;
+    }
+
+    /**
+     * 验证时间是否超限
+     */
+    public void checkTime(Date time) throws Main4Exception {
+        int xcday = DateUtil.daysOfTwo(time, new Date());
+        if(xcday > 14){
+            throw new Main4Exception("已过期，无法领取");
+        }
     }
 
     /**
@@ -918,5 +905,81 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         return numIidMaps;
     }
 
+    @Override
+    public void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord) {
+        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
+                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
+            return;
+        }
+        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
+        drawRecord.setPemId(activeDrawRecord.getPemId());
+        drawRecord.setUserId(activeDrawRecord.getUserId());
+        drawRecord.setEnabled(false);
+        drawRecord.setReceivesYes(false);
+        drawRecord.setCreateTime(new Date());
+        drawRecord.setModifyTime(new Date());
+        drawRecord.setWard(activeDrawRecord.getWard());
+        int count = activeDrawRecordMapper.selectCount(drawRecord);
+        if(count > 0){
+            // 已经新增数据
+            return;
+        }
+        activeDrawRecordMapper.insertSelective(drawRecord);
+    }
 
+    @Override
+    public String shiguTempSigup(String flag, Long userId, Long shopId) {
+        if (userId==null||shopId==null){
+            return "您还没有店铺";
+        }
+        ShiguTempExample shiguTempExample =new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        if (temps.size()>0){
+            return "您已经报过名了";
+        }
+        ShiguTemp shiguTemp=new ShiguTemp();
+        shiguTemp.setFlag(flag);
+        shiguTemp.setKey1(userId.toString());
+        shiguTemp.setKey2(shopId.toString());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        shiguTemp.setKey3(dateFormat.format(new Date()));
+        shiguTempMapper.insertSelective(shiguTemp);
+        return "true";
+    }
+
+
+    @Override
+    public void receUserWard(String tqcode) throws Main4Exception {
+        ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setDrawCode(tqcode);
+        activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        if (activeDrawRecord == null) {
+            throw new Main4Exception("错误的领取码");
+        }
+        if (activeDrawRecord.getReceivesYes()) {
+            throw new Main4Exception("已使用过的领取码");
+        }
+        ActiveDrawPem activeDrawPem = activeDrawPemMapper.selectByPrimaryKey(activeDrawRecord.getPemId());
+        checkValidity(activeDrawPem.getEndTime());
+        activeDrawRecord.setReceivesYes(true);
+        int result = activeDrawRecordMapper.updateByPrimaryKeySelective(activeDrawRecord);
+        if(result == 0){
+            throw new Main4Exception("领取发生错误");
+        }
+    }
+
+    /**
+     * 检验领取码是否过期
+     * @param date 活动截止日期
+     * @throws Main4Exception
+     */
+    public void checkValidity(Date date) throws Main4Exception {
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.DATE,-7);
+        Date verifiedTime = instance.getTime();
+        if (date.before(verifiedTime)) {
+            throw new Main4Exception("领取码以过期");
+        }
+    }
 }

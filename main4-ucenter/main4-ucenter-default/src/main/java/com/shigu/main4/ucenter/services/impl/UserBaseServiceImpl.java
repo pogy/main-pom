@@ -1,29 +1,32 @@
 package com.shigu.main4.ucenter.services.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.MemberLicense;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.examples.MemberUserExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.*;
-import com.shigu.component.shiro.enums.CacheEnum;
-import com.shigu.component.shiro.enums.UserType;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.OuterUser;
+import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.SysUserSession;
 import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.session.main4.tool.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +51,12 @@ public class UserBaseServiceImpl implements UserBaseService {
     @Resource(name = "tae_mall_memberUserSubMapper")
     MemberUserSubMapper memberUserSubMapper;
     @Autowired
-    EhCacheManager ehCacheManager;
-    @Autowired
     MemberLicenseMapper memberLicenseMapper;
-    @Autowired
-    private SysUserMapper sysUserMapper;
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+    @Autowired
+    UserLicenseService userLicenseService;
 
     /**
      * 按用户名查用户基准信息
@@ -63,9 +64,19 @@ public class UserBaseServiceImpl implements UserBaseService {
      * @return
      */
     public PersonalSession selUserForSessionByUserName(String userName, LoginFromType type) {
+        return selUserForSessionByUserName(userName,null,type);
+    }
+
+    @Override
+    public PersonalSession selUserForSessionByUserName(String userName, String key, LoginFromType type) {
         //查用户子表,如果有,再查出用户主表包装PersonalSession
         MemberUserSubExample subExample=new MemberUserSubExample();
-        subExample.createCriteria().andAccountTypeEqualTo(type.getAccountType()).andSubUserNameEqualTo(userName);
+        MemberUserSubExample.Criteria cri=subExample.createCriteria().andAccountTypeEqualTo(type.getAccountType());
+        if (type.equals(LoginFromType.WX)) {
+            cri.andSubUserKeyEqualTo(key==null?"123321":key);
+        }else{
+            cri.andSubUserNameEqualTo(userName);
+        }
         subExample.setStartIndex(0);
         subExample.setEndIndex(1);
         List<MemberUserSub> subs=memberUserSubMapper.selectFieldsByConditionList(subExample,
@@ -130,13 +141,29 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         return null;
     }
+
+    /**
+     * 查询是否是分销商vip
+     * @param userId
+     * @return
+     */
+    private boolean isMemberVip(Long userId){
+        if (userId == null) {
+            return false;
+        }
+        MemberLicense condition = new MemberLicense();
+        condition.setUserId(userId);
+        condition.setLicenseType(MemberLicenseType.MEMBER_VIP.getValue());
+        condition.setLicenseFailure(1);
+        return memberLicenseMapper.selectCount(condition)>0;
+    }
     /**
      * 包装personalSession
      * @param memberUser
      * @param memberUserSub
      * @return
      */
-    private PersonalSession parseToPersonal(MemberUser memberUser,MemberUserSub memberUserSub){
+    private PersonalSession parseToPersonal(MemberUser memberUser, MemberUserSub memberUserSub){
         PersonalSession ps=new PersonalSession();
         ps.setSubUserId(memberUserSub.getSubUserId());
         ps.setUserId(memberUserSub.getUserId());
@@ -148,8 +175,18 @@ public class UserBaseServiceImpl implements UserBaseService {
         ps.setHeadUrl(url);
         String bindPhone=selBindPhone(memberUser.getUserId());
         if(bindPhone!=null){
-            ps.getOtherPlatform().put("__bindPhone__",bindPhone);
+            ps.getOtherPlatform().put(OtherPlatformEnum.BIND_PHONE.getValue(),bindPhone);
         }
+        boolean isMoreOrder=false;
+        SafeAbout sa=userLicenseService.selUserLicenses(memberUser.getUserId());
+        try {
+            if(BeanMapper.getFieldList(sa.getLicenses(),"type",MemberLicenseType.class).contains(MemberLicenseType.MORE_ORDER)){
+                isMoreOrder=true;
+            }
+        } catch (Exception ignored) {
+        }
+        ps.getOtherPlatform().put(OtherPlatformEnum.MORE_ORDER.getValue(),isMoreOrder);
+        ps.getOtherPlatform().put(OtherPlatformEnum.MEMBER_VIP.getValue(),isMemberVip(memberUserSub.getUserId()));
         return ps;
     }
     /**
@@ -171,11 +208,7 @@ public class UserBaseServiceImpl implements UserBaseService {
     }
 
     public SysUserSession selSysForSessionByUserName(String userName) {
-        SysUser sysUser = new SysUser();
-        sysUser.setLoginName(userName);
-        sysUser = sysUserMapper.selectOne(sysUser);
-        SysUserSession sysUserSession = BeanMapper.map(sysUser,SysUserSession.class);
-        return sysUserSession;
+        return null;
     }
 
     public String selSysPwdByUserId(Long userId) {
@@ -203,6 +236,7 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         info.setRealName(memberUser.getRealName());
         info.setUserNick(memberUser.getUserNick());
+        info.setUserName(memberUser.getUserName());
         info.setEmail(memberUser.getEmail());
         info.setTelephone(memberUser.getPhoneMob());
         info.setSex(memberUser.getSex());
@@ -225,17 +259,6 @@ public class UserBaseServiceImpl implements UserBaseService {
         // 1、增量更新表member_user
         int i = memberUserMapper.updateByPrimaryKeySelective(user);
 
-        //2、重取本用户登陆缓存
-        //      a.清除cache名memberuserCache，其中memberuserCache的key为userName_登陆方式标志
-        Session session = SecurityUtils.getSubject().getSession();
-        PersonalSession sessionUser = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        Cache<Object, Object> cache = ehCacheManager.getCache(CacheEnum.MEMBERUSER_CACHE.getValue());
-        cache.remove(sessionUser.getLoginName() + "_" + sessionUser.getLoginFromType().getValue());
-
-        //      b.重取登陆对象，更新session中的session_user对象，
-        PersonalSession ps = selUserForSessionByUserName(sessionUser.getLoginName(), sessionUser.getLoginFromType());
-        session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
         return i;
     }
 
@@ -288,7 +311,9 @@ public class UserBaseServiceImpl implements UserBaseService {
                 shiguShopMapper.updateByPrimaryKey(shop);
             }
         }
-        memberUserSubMapper.delSubUserById(subUserId, userId);
+        MemberUserSubExample subExample=new MemberUserSubExample();
+        subExample.createCriteria().andSubUserIdEqualTo(subUserId).andUserIdEqualTo(userId);
+        memberUserSubMapper.deleteByExample(subExample);
     }
 
     /**
@@ -310,5 +335,25 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         MemberUserSub memberUserSubdata = userSubList.get(0);
         return memberUserSubdata.getUserId();
+    }
+
+    @Override
+    public void setNewPayPwd(Long userId, String pwd) throws JsonErrException {
+        if (StringUtils.isEmpty(pwd)) {
+            throw new JsonErrException("支付密码不能为空");
+        }
+        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(userId, FieldUtil.codeFields("user_id"));
+        if (memberUser == null) {
+            throw new JsonErrException("没有用户信息");
+        }
+        memberUser.setUserId(userId);
+        memberUser.setPayPassword(EncryptUtil.encrypt(pwd));
+        memberUser.setIsPayPassword(1);
+        memberUserMapper.updateByPrimaryKeySelective(memberUser);
+    }
+
+    @Override
+    public void changePayPwd(Long userId, String oldPwd, String newPwd) {
+
     }
 }

@@ -1,10 +1,12 @@
 package com.shigu.main4.vo.fitment;
 
+import java.io.Serializable;
+
 /**
  * 店招选项设置
  * Created by Administrator on 2017/4/20 0020.
  */
-public class BannerOption {
+public class BannerOption implements Serializable {
 
     /**
      * 是否显示电铺招牌

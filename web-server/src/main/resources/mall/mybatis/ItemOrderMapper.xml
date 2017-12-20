@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemOrderMapper" >
+
+
+
+    <select id="selectShOrderList" resultMap="MyOrderVO">
+        SELECT
+        item_order.oid as orderId,
+        item_order.create_time as tradeTime,
+        CONVERT (item_order.total_fee * 0.01,DECIMAL (10, 2)) as tradePay,
+        CONVERT (item_order_logistics.money * 0.01,DECIMAL (10, 2)) as postPay,
+        item_order.ORDER_STATUS as mainState,
+        item_order.TYPE = 2 as isTbOrder,
+        item_order.tb_send as isTbShipments,
+        item_order.WEB_SITE as webSite,
+        item_order_sub.soid as childOrderId,
+        item_order_sub.goods_id as goodsId,
+        item_order_sub.title as title,
+        item_order_sub.pic_url as imgsrc,
+        item_order_sub.color as color,
+        item_order_sub.size as size,
+        item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
+        CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
+        item_order_sub.num as num,
+        item_order_sub.out_of_stok as stockoutNum,
+        item_order_sub.in_stok as haveTakeGoodsNum,
+        item_order_refund.refund_id as refundId,
+        if(item_order_refund.type!=5,item_order_refund.number-item_order_refund.fail_number,item_order_refund.fail_number) as afterSaleNum,
+        item_order_refund.type as type,
+        IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 3, 3,IF(item_order_refund. STATUS = 4,4,1)))) as state
+        FROM (SELECT DISTINCT
+	        item_order.*
+        FROM
+            item_order item_order
+        INNER JOIN item_order_refund item_order_refund ON item_order.user_id = #{userId}
+        AND item_order.disenable = 0
+        AND item_order.oid = item_order_refund.oid
+        <if test="typeList!=null">
+            AND item_order_refund.type IN
+            <foreach collection="typeList" index="index" item="type" open="("
+                     separator="," close=")">
+                #{type}
+            </foreach>
+        </if>
+        ORDER BY
+            item_order.create_time DESC
+            LIMIT #{startIndex},#{endIndex}) item_order
+        INNER JOIN item_order_logistics ON item_order.oid=item_order_logistics.oid
+        INNER JOIN item_order_sub ON  item_order.oid=item_order_sub.oid
+        LEFT JOIN item_order_refund ON item_order_sub.soid=item_order_refund.soid
+
+    </select>
+
+    <select id="selectMyOrderList" resultMap="MyOrderVO">
+        SELECT
+        item_order.oid as orderId,
+        item_order.tradeTime as tradeTime,
+        item_order.tradePay as tradePay,
+        item_order.postPay as postPay,
+        item_order.mainState as mainState,
+        item_order.isTbOrder as isTbOrder,
+        item_order.isTbShipments as isTbShipments,
+        item_order.webSite as webSite,
+        item_order_sub.soid as childOrderId,
+        item_order_sub.goods_id as goodsId,
+        item_order_sub.title as title,
+        item_order_sub.pic_url as imgsrc,
+        item_order_sub.color as color,
+        item_order_sub.size as size,
+        item_order_sub.goods_no as goodsNo,
+        item_order_sub.out_of_stok_reason as haveGoodsTime,
+        CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
+        item_order_sub.num as num,
+        item_order_sub.out_of_stok as stockoutNum,
+        item_order_sub.in_stok as haveTakeGoodsNum,
+        item_order_refund.refund_id as refundId,
+        if(item_order_refund.type!=5,item_order_refund.number-item_order_refund.fail_number,item_order_refund.fail_number) as afterSaleNum,
+        item_order_refund.type as type,
+        IF (ISNULL(item_order_refund. STATUS),NULL,IF (item_order_refund. STATUS = 2,2,IF (item_order_refund. STATUS = 3, 3,IF(item_order_refund. STATUS = 4,4,1)))) as state
+        FROM
+        (
+        SELECT
+        item_order.oid oid,
+        item_order.create_time tradeTime,
+        CONVERT (item_order.total_fee * 0.01,DECIMAL (10, 2)) tradePay,
+        CONVERT (item_order_logistics.money * 0.01,DECIMAL (10, 2)) postPay,
+        item_order.ORDER_STATUS mainState,
+        item_order.TYPE = 2 isTbOrder,
+        item_order.tb_send isTbShipments,
+        item_order.WEB_SITE webSite
+        FROM
+        `item_order` item_order
+        INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
+        AND item_order.USER_ID = #{userId}
+        AND item_order.DISENABLE = 0
+        <if test="bo.orderId!=null">
+            AND item_order.OID = #{bo.orderId}
+        </if>
+        <if test="bo.st!=null">
+            AND item_order.CREATE_TIME &gt;= #{bo.st}
+        </if>
+        <if test="bo.et!=null">
+            AND item_order.CREATE_TIME &lt;= CONCAT(#{bo.et},' 23:59:59')
+        </if>
+        <if test="bo.status!=null">
+            AND item_order.order_status = #{bo.status}
+        </if>
+        <if test="bo.receiver!=null and bo.receiver!=''">
+            AND item_order_logistics.NAME = #{bo.receiver}
+        </if>
+        <if test="bo.telePhone!=null and bo.telePhone!=''">
+            AND item_order_logistics.telephone = #{bo.telePhone}
+        </if>
+        <if test="bo.orderType!=null and bo.orderType==1">
+            AND item_order.type=2
+        </if>
+        <if test="bo.orderType!=null and bo.orderType==2">
+            AND item_order.type!=2
+        </if>
+        ORDER BY item_order.create_time DESC
+        LIMIT #{startIndex},#{endIndex}
+        ) item_order
+        LEFT JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
+        <if test="bo.goodsNo!=null and bo.goodsNo!=''">
+            AND item_order_sub.goods_no LIKE CONCAT('%', #{bo.goodsNo}, '%')
+        </if>
+        LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+    </select>
+
+
+    <resultMap id="MyOrderVO" type="com.shigu.order.vo.MyOrderVO">
+        <id column="orderId" property="orderId" />
+        <result column="tradeTime" property="tradeTime"/>
+        <result column="tradePay" property="tradePay"/>
+        <result column="postPay" property="postPay"/>
+        <result column="mainState" property="mainState"/>
+        <result column="isTbOrder" property="isTbOrder"/>
+        <result column="webSite" property="webSite"/>
+        <result column="isTbShipments" property="isTbShipments"/>
+        <collection property="childOrders" resultMap="SubMyOrderVO"/>
+    </resultMap>
+
+    <resultMap id="SubMyOrderVO" type="com.shigu.order.vo.SubMyOrderVO">
+        <id column="childOrderId" property="childOrderId"/>
+        <result column="goodsId" property="goodsId"/>
+        <result column="title" property="title"/>
+        <result column="imgsrc" property="imgsrc"/>
+        <result column="color" property="color"/>
+        <result column="size" property="size"/>
+        <result column="goodsNo" property="goodsNo"/>
+        <result column="price" property="price"/>
+        <result column="num" property="num"/>
+        <result column="stockoutNum" property="stockoutNum"/>
+        <result column="haveGoodsTime" property="haveGoodsTime"/>
+        <collection property="afterSales" resultMap="AfterSaleVO"/>
+    </resultMap>
+
+    <resultMap id="AfterSaleVO" type="com.shigu.order.vo.AfterSaleVO">
+        <id column="refundId" property="refundId"/>
+        <result column="afterSaleNum" property="afterSaleNum"/>
+        <result column="type" property="type"/>
+        <result column="state" property="state"/>
+    </resultMap>
+
+
+
+
+
+</mapper>

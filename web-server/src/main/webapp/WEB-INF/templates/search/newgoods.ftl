@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    
+
+
         <title>今日新品 - 四季星座网</title>
-    
+
     <meta name="keywords" content="四季星座，四季星座网，男装货源，女装货源，男鞋货源，女鞋货源，杭州服装批发，四季青服饰，淘宝货源，网店货源，服饰批发，代发平台！">
-    
+
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
-    
-    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=1502167936252" rel="stylesheet">
-    
-    
+
+    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=2017112301" rel="stylesheet">
+
+
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=1502167936252"></script>
+    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=2017112301"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -43,10 +43,10 @@
                 <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
                 <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
                 <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
-                
+
             </div>
         </div>
-        
+
         <div class="rightbox">
             <ul>
                 <li class="noIndex">
@@ -63,13 +63,13 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -91,18 +91,18 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     </#if>
-                    
+
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -124,10 +124,10 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <li>
                         <div class="cnBox">
@@ -138,12 +138,12 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                 </#if>
                 <li class="noDown">
                     <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
-                    
+
                 </li>
                 <li>
                     <div class="cnBox">
@@ -151,7 +151,7 @@
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
-                                
+
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -174,9 +174,9 @@
                                 <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
-                    
+
             </ul>
         </div>
     </div>
@@ -200,24 +200,24 @@ var webSite = '${webSite!}';
         <div class="search">
             <div class="tabList clearfix">
                 <ul>
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                     <li type="goods" class="select">商品</li>
                     <li type="store" >档口</li>
-                    
+
                 </ul>
                 <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
                 <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
                 </#if>
             </div>
             <div class="searchBox">
-                
+
                 <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                    
-                    
+
+
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
                     <input type="hidden" name="sort" value="xp">
                     <button class="searchBtn">搜索</button>
@@ -258,9 +258,9 @@ var webSite = '${webSite!}';
                 <#if webSite =="hz" || webSite == 'cs'>
                 <li class="select"><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == "hz">
-                <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                <li><a href="http://www.571xz.com/shopRanking.htm" target="_blank">排行榜<i class="hot"></i></a></li>
                 </#if>
-                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <li><a href="/daifaIndex.htm" target="_blank">一件代发</a></li>
                 <#if webSite == "hz">
                 <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
                 </#if>
@@ -295,7 +295,7 @@ var webSite = '${webSite!}';
     <div id="styleCateNav" class="styleCateNav clearfix">
         <em class="label">风格</em>
         <ul>
-            
+
             <#list styleCateNavs as cate>
             <li><a href="?webSite=${webSite!}&keyword=${cate.keyword!}<#if query.cid??>&cid=${query.cid!}</#if>" <#if query.keyword == cate.keyword>class="selected"</#if>>${cate.text!}</a></li>
             </#list>
@@ -304,21 +304,21 @@ var webSite = '${webSite!}';
     </div>
     </#if>
     <#if (goodslist?size) gt 0>
-    
+
     <div class="goodslistWindow clearfix">
          <#list goodslist as goods>
          <div class="goodsitem" data-goodsid="${goods.id!}">
             <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">
-                
-                <#if goods_index lt 20> 
+
+                <#if goods_index lt 20>
                     <img class="img" src="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}_300x300.jpg">
                 <#else>
                     <img class="lazyload img" src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${goods.imgsrc!}_300x300.jpg">
                 </#if>
-                
-            </a> 
-            
-            
+
+            </a>
+
+
             <div class="p1">
                 <span class="pricebox">&yen; ${goods.piprice!}</span>
                 <div class="upload">
@@ -334,12 +334,10 @@ var webSite = '${webSite!}';
                         <i class="i1"></i>
                     </div>
                 </div>
-                
             </div>
             <p class="title"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
             <div class="p3">
                 <span class="storeName"><a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
-                
     <#assign text>{"id":"${goods.aliww!}"}</#assign>
 <#assign $it=text?eval />
             <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
@@ -367,13 +365,13 @@ $(function(){
     <div class="goodslistEmptyCon">
         <p>Sorry, 未查询到相应商品~</p>
     </div>
-    
+
     </#if>
 </div>
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:656px;"> 
+        <p class="sitemap" style="width:656px;">
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -383,10 +381,10 @@ $(function(){
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
+
+
             <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
@@ -397,8 +395,8 @@ $(function(){
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
-            <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <br>
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a>
         </p>
     </div>
 </div>

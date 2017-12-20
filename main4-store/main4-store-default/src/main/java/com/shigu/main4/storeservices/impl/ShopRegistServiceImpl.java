@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopApplyExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.ShiguSiteExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -18,21 +15,27 @@ import com.shigu.main4.exceptions.ShopExamineException;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.exceptions.TaobaoNickBindException;
-import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.vo.*;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.ShopGetRequest;
+import com.taobao.api.response.ShopGetResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wxc on 2017/2/21.
@@ -70,6 +73,15 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
     @Autowired
     private ShopToEsService shopToEsService;
 
+    @Autowired
+    private TaobaoSessionMapMapper taobaoSessionMapMapper;
+
+    @Value("${taobao.app.key}")
+    private String appKey;
+
+    @Autowired
+    private TaobaoClient taobaoClient;
+
     /**
      * 注册用户
      * 1、档口已经被注册的，不能重复注册
@@ -88,14 +100,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
             throw new ShopRegistException("市场或档口号不能为空");
         List<ShiguShopApply> shopApplies = shiguShopApplyMapper.select(apply);
 
-//        ShiguShopExample shopExample = new ShiguShopExample();
-//        shopExample.createCriteria().andShopStatusEqualTo(0).andMarketIdEqualTo(shop.getMarketId()).andShopNumEqualTo(shop.getShopNum());
-//        int count = shiguShopMapper.countByExample(shopExample);
-//        if (count > 0)
-//            throw new ShopRegistException(shop.getShopNum() + "档口已注册");
-
         Long updateApplyId = null;
-
         loop: for (ShiguShopApply shopApply : shopApplies) {
             //1表示可审核，0表示信息不齐不可审核，2表示审核完毕，不能再审核
             switch (shopApply.getCanExamine()) {
@@ -118,14 +123,37 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         apply.setMarketId(shop.getMarketId());
         apply.setTags(shop.getTags());
         apply.setTbNick(shop.getTbNick());
-        apply.setTbshopId(shop.getTbshopId());
-        apply.setTbUrl(shop.getTbUrl());
-        apply.setTbuserId(shop.getTbUserId());
         apply.setTelephone(shop.getTelephone());
         apply.setUserId(shop.getUserId());
         apply.setWebSite(shop.getWebSite());
         apply.setApplyTime(new Date());
         apply.setImAliww(shop.getImAliww());
+        if (StringUtils.isNotEmpty(apply.getTbNick())) {
+            TaobaoSessionMapExample map = new TaobaoSessionMapExample();
+            map.setStartIndex(0);
+            map.setEndIndex(1);
+            map.createCriteria().andNickEqualTo(apply.getTbNick()).andAppkeyEqualTo(appKey);
+            List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByConditionList(map);
+            if (!taobaoSessionMaps.isEmpty()) {
+                TaobaoSessionMap taobaoSessionMap = taobaoSessionMaps.get(0);
+                if (taobaoSessionMap.getUserId() != null) {
+                    apply.setTbuserId(taobaoSessionMap.getUserId().toString());
+                }
+            }
+
+            ShopGetRequest req = new ShopGetRequest();
+            req.setFields("sid");
+            req.setNick(apply.getTbNick());
+            try {
+                ShopGetResponse response = taobaoClient.execute(req);
+                Long taobaoShopId = response.getShop().getSid();
+                apply.setTbshopId(taobaoShopId.toString());
+                apply.setTbUrl("http://shop" + taobaoShopId +".taobao.com");
+            } catch (Exception e) {
+                logger.error("淘宝接口失败", e);
+            }
+        }
+        
         if (apply.getRuzhuId() == null)
             shiguShopApplyMapper.insertSelective(apply);
         else
@@ -418,9 +446,15 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShop.setTbNick(shiguShopApply.getTbNick());
         String tbUrl = shiguShopApply.getTbUrl();
 
-        // shop表增加main_bus,email两个字段，tbshopId用于拼taobaoUrl(如果有的话) http://shop${shopId}.taobao.com
-        if (StringUtils.isEmpty(tbUrl) && StringUtils.isNotEmpty(shiguShopApply.getTbshopId()))
-            tbUrl = "http://shop${shopId}.taobao.com".replace("${shopId}", shiguShopApply.getTbshopId());
+        if (StringUtils.isNotEmpty(shiguShopApply.getTbshopId())) {
+            shiguShop.setType(1);
+            // shop表增加main_bus,email两个字段，tbshopId用于拼taobaoUrl(如果有的话) http://shop${shopId}.taobao.com
+            if (StringUtils.isEmpty(tbUrl)){
+                tbUrl = "http://shop${shopId}.taobao.com".replace("${shopId}", shiguShopApply.getTbshopId());
+            }
+        }else{
+            shiguShop.setType(2);
+        }
         shiguShop.setTaobaoUrl(tbUrl);
         shiguShop.setMainBus(shiguShopApply.getMainBus());
         shiguShop.setEmail(shiguShopApply.getEmail());
@@ -562,7 +596,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
 
     @Override
     public List<FloorForRegist> selFloors(Long marketId) {
-        if (marketId == null) return Collections.EMPTY_LIST;
+        if (marketId == null) return Collections.emptyList();
         ShiguMarketExample marketExample = new ShiguMarketExample();
         marketExample.setOrderByClause("sort_order");
         marketExample.createCriteria()

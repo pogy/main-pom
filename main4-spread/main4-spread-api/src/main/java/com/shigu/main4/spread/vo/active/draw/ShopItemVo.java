@@ -12,6 +12,9 @@ public class ShopItemVo implements Serializable {
     private String imgsrc;
     private String title;
 
+    public ShopItemVo() {
+    }
+
     public ShopItemVo(Long id, String imgsrc, String title) {
         this.id = id;
         this.imgsrc = imgsrc;

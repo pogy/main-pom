@@ -6,14 +6,10 @@ import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.CategoryValue;
-import com.shigu.search.bo.SearchBO;
 import com.shigu.search.vo.CateNav;
-import com.shigu.search.vo.MarketNav;
-import com.shigu.search.vo.SearchNav;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +96,7 @@ public class CategoryInSearchService {
      */
     public List<CateNav> selSubCates(String cateValue,SearchCategory category, String webSite){
         Cache cache=cacheManager.getCache("searchSubCatesCache");
+
         String key=webSite + cateValue+" is "+category.getValue();
         List<CateNav> cateNavs=cache.get(key,List.class);
         if(cateNavs!=null){

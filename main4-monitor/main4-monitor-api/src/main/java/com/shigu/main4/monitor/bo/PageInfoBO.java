@@ -1,10 +1,12 @@
 package com.shigu.main4.monitor.bo;
 
+import java.io.Serializable;
+
 /**
  * 页面信息
  * Created by zhaohongbo on 17/3/8.
  */
-public class PageInfoBO {
+public class PageInfoBO implements Serializable{
     /**
      * 原始链接
      */

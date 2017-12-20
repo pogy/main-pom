@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaSelFinaceMapper">
+
+    <select id="selectTodayTakeFee" resultType="java.lang.String">
+        select ifnull(sum(t.single_pi_price),0) from(
+            select
+              t1.df_order_id,
+              t1.single_pi_price
+            from
+              daifa_wait_send_order t1,
+              daifa_ggoods t2 ,
+              daifa_order t3
+            where
+              t1.take_goods_status=1
+              and t1.df_order_id=t2.df_order_id
+              and t1.df_order_id=t3.df_order_id
+              and t1.seller_id=${sellerId}
+              and t2.take_goods_date=${day}
+              and (
+                (
+                  t3.refund_status=0
+                  and t3.return_goods_status =0
+                )
+                or (
+                  t3.return_goods_status !=0
+                  and (
+                    t3.return_goods_finish_time is null
+                    or date_format(t3.return_goods_finish_time,"%Y%m%d")!=${day}
+                  )
+                )
+              )
+            GROUP BY t1.df_order_id
+        )t
+    </select>
+
+    <select id="selectTodayNotTakeFee" resultType="java.lang.String">
+        SELECT
+          ifnull(sum(t.single_pi_price),0)
+        FROM
+        (
+            SELECT
+              *, MIN(take_goods_status) minStatus
+            FROM
+              daifa_ggoods_tasks
+            WHERE
+              create_date = ${day}
+              and seller_id=${sellerId}
+            GROUP BY
+              df_order_id
+        ) t
+        WHERE
+        t.minStatus =2
+    </select>
+
+    <select id="selectTodayServerFee" resultType="java.lang.String">
+        SELECT
+            sum(ifnull(services_fee,0))
+                FROM
+                    daifa_trade
+                WHERE
+                    seller_id =${sellerId}
+                AND date_format(create_time, "%Y%m%d") =${day}
+
+    </select>
+
+    <select id="selectTodayPostFee" resultType="java.lang.String">
+        SELECT
+            ifnull(sum(express_fee),0)
+        FROM
+            daifa_send
+        WHERE
+            create_date = ${day}
+        AND seller_id = ${sellerId}
+    </select>
+
+    <select id="selectTodayRefundFee" resultType="java.lang.String">
+        SELECT
+            IFNULL(sum(t.rf), 0)
+        FROM
+            (
+                SELECT
+                    t1.*,
+                IF (
+                    t1.return_goods_finish_time IS NOT NULL,
+                    return_goods_fee,
+                    single_pi_price
+                ) rf,
+                IFNULL(
+                    t1.return_goods_finish_time,
+                    t1.refund_finish_time
+                ) rt
+                FROM
+                    daifa_order t1,
+                    daifa_trade t2
+                WHERE
+                    t1.df_trade_id = t2.df_trade_id
+                AND t2.seller_id = ${sellerId}
+                AND (
+                    t1.return_goods_finish_time IS NOT NULL
+                    OR t1.refund_finish_time IS NOT NULL
+                )
+            ) t
+        WHERE
+            date_format(t.rt, "%Y%m%d") = ${day}
+    </select>
+
+    <select id="selectWorkerTakeNums" resultType="com.shigu.daifa.vo.WorkerTakeNumVO">
+        SELECT
+            t1.user_Name `name`,
+            t2.num num
+        FROM
+            daifa_worker t1,
+            (
+                SELECT
+                    daifa_worker_id,
+                    sum(goods_num) num
+                FROM
+                    daifa_ggoods
+                WHERE
+                    take_goods_status = 1
+                AND take_goods_date >= ${day}
+                AND seller_id=${sellerId}
+                GROUP BY
+                    daifa_worker_id
+            ) t2
+        WHERE
+            t1.daifa_worker_id = t2.daifa_worker_id
+    </select>
+</mapper>

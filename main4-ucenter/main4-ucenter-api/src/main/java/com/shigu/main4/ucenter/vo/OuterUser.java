@@ -2,13 +2,14 @@ package com.shigu.main4.ucenter.vo;
 
 import com.shigu.session.main4.enums.LoginFromType;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 第三方绑定账号
  * Created by zhaohongbo on 17/2/23.
  */
-public class OuterUser {
+public class OuterUser implements Serializable{
     /**
      * 子账号ID
      */

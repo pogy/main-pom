@@ -12,10 +12,8 @@ import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.tb.finder.services.TbItemTradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +28,6 @@ public class ActiveUpGoodsCountService {
 
     @Autowired
     private ActiveDrawService activeDrawService;
-
-    @Autowired
-    private TbItemTradeService tbItemTradeService;
 
     @Autowired
     private ActiveDrawRecordMapper activeDrawRecordMapper;

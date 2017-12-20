@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.opentae.data.mana.interfaces.ManagerRolePermissionMapper">
-
-    <select id="selLastModifyByRoleTag" resultType="java.lang.Long">
-        SELECT unix_timestamp(MAX(a.last_modify_time)) from manager_role_permission a,manager_role b where a.role_id=b.role_id and b.role_tag=#{roleTag}
-    </select>
-</mapper>

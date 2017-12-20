@@ -54,7 +54,7 @@ public class OnsaleItemVO {
 
     private String sid;
 
-    private Integer setCorrelateType;
+    private Integer correlateType;
 
     private Integer bigPicType;
 
@@ -62,16 +62,31 @@ public class OnsaleItemVO {
 
     private String linkHrefPassword;
 
+    //是否已设置面料 1未设置 2已设置
+    private Integer constituentType;
+    //面料成分
+    private String fabric;
+    //里料成分
+    private String inFabric;
+    //总销量
+    private Integer saleCount;
+    //已设置的最低零售价
+    private String lowestLiPrice;
+    //主图视频
+    private String goodsVideoUrl;
+    //是否已设置主图视频 2已设置
+    private Integer goodsVideoType;
+
     public void setType(String type) {
         this.type = type;
     }
 
-    public Integer getSetCorrelateType() {
-        return setCorrelateType;
+    public Integer getCorrelateType() {
+        return correlateType;
     }
 
-    public void setSetCorrelateType(Integer setCorrelateType) {
-        this.setCorrelateType = setCorrelateType;
+    public void setCorrelateType(Integer correlateType) {
+        this.correlateType = correlateType;
     }
 
     public Integer getBigPicType() {
@@ -111,6 +126,15 @@ public class OnsaleItemVO {
         this.setPrice3(onsaleItem.getPrice());
         this.setLoadDate(onsaleItem.getCreated());
         this.setIsShowcase(onsaleItem.getIsShowCase());
+        this.setSaleCount(onsaleItem.getSaleCount());
+        this.setFabric(onsaleItem.getFabric());
+        this.setInFabric(onsaleItem.getInFabric());
+        this.setConstituentType(onsaleItem.getConstituentType());
+        this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
+        this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
+        if (onsaleItem.getHasRetailPriceSet()) {
+            this.setLowestLiPrice(onsaleItem.getPrice());
+        }
     }
 
     public Integer getIsShowcase() {
@@ -323,5 +347,61 @@ public class OnsaleItemVO {
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    public Integer getConstituentType() {
+        return constituentType;
+    }
+
+    public void setConstituentType(Integer constituentType) {
+        this.constituentType = constituentType;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
+    }
+
+    public Integer getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(Integer saleCount) {
+        this.saleCount = saleCount;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
+    }
+
+    public Integer getGoodsVideoType() {
+        return goodsVideoType;
+    }
+
+    public void setGoodsVideoType(Integer goodsVideoType) {
+        this.goodsVideoType = goodsVideoType;
     }
 }

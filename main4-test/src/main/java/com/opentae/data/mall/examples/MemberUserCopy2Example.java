@@ -1,4447 +1,3431 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.MemberUserCopy2;
 
-public class MemberUserCopy2Example {
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<MemberUserCopy2Example.Criteria> oredCriteria = new ArrayList<>();
-
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<MemberUserCopy2Example.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(MemberUserCopy2Example.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public MemberUserCopy2Example.Criteria or() {
-        MemberUserCopy2Example.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public MemberUserCopy2Example.Criteria createCriteria() {
-        MemberUserCopy2Example.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
+import java.util.*;
+public class MemberUserCopy2Example extends SgExample<MemberUserCopy2Example.Criteria> {
+    public static final Class<MemberUserCopy2> beanClass = MemberUserCopy2.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn phoneMob;
+    public static EntityColumn lastTime;
+    public static EntityColumn remark18;
+    public static EntityColumn remark17;
+    public static EntityColumn remark16;
+    public static EntityColumn remark15;
+    public static EntityColumn portraitSavepath;
+    public static EntityColumn remark14;
+    public static EntityColumn lastIp;
+    public static EntityColumn remark13;
+    public static EntityColumn idCard;
+    public static EntityColumn remark12;
+    public static EntityColumn remark11;
+    public static EntityColumn imAliww;
+    public static EntityColumn remark19;
+    public static EntityColumn isNameValidate;
+    public static EntityColumn registerSource;
+    public static EntityColumn password;
+    public static EntityColumn isOpenStore;
+    public static EntityColumn zfbAccount;
+    public static EntityColumn isPhoneMob;
+    public static EntityColumn sellerGrade;
+    public static EntityColumn remark20;
+    public static EntityColumn imSkype;
+    public static EntityColumn portraitUrl;
+    public static EntityColumn accountType;
+    public static EntityColumn imYahooWeibo;
+    public static EntityColumn buyerGrade;
+    public static EntityColumn useStatus;
+    public static EntityColumn accountId;
+    public static EntityColumn regTime;
+    public static EntityColumn remark9;
+    public static EntityColumn remark8;
+    public static EntityColumn remark5;
+    public static EntityColumn remark10;
+    public static EntityColumn remark4;
+    public static EntityColumn remark7;
+    public static EntityColumn remark6;
+    public static EntityColumn idCardImg;
+    public static EntityColumn remark1;
+    public static EntityColumn isMailValidate;
+    public static EntityColumn logins;
+    public static EntityColumn remark3;
+    public static EntityColumn imWeixin;
+    public static EntityColumn remark2;
+    public static EntityColumn birthday;
+    public static EntityColumn passwordStrength;
+    public static EntityColumn accountName;
+    public static EntityColumn isPayPassword;
+    public static EntityColumn loginEmail;
+    public static EntityColumn userNick;
+    public static EntityColumn imQq;
+    public static EntityColumn sellerVipGrade;
+    public static EntityColumn email;
+    public static EntityColumn birthdayMonthDay;
+    public static EntityColumn sex;
+    public static EntityColumn userName;
+    public static EntityColumn userId;
+    public static EntityColumn realName;
+    public static EntityColumn imQqWeibo;
+    public static EntityColumn loginPhone;
+    public static EntityColumn phoneTel;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
         }
-        return criteria;
+        phoneMob = listMap.get("phoneMob");
+        lastTime = listMap.get("lastTime");
+        remark18 = listMap.get("remark18");
+        remark17 = listMap.get("remark17");
+        remark16 = listMap.get("remark16");
+        remark15 = listMap.get("remark15");
+        portraitSavepath = listMap.get("portraitSavepath");
+        remark14 = listMap.get("remark14");
+        lastIp = listMap.get("lastIp");
+        remark13 = listMap.get("remark13");
+        idCard = listMap.get("idCard");
+        remark12 = listMap.get("remark12");
+        remark11 = listMap.get("remark11");
+        imAliww = listMap.get("imAliww");
+        remark19 = listMap.get("remark19");
+        isNameValidate = listMap.get("isNameValidate");
+        registerSource = listMap.get("registerSource");
+        password = listMap.get("password");
+        isOpenStore = listMap.get("isOpenStore");
+        zfbAccount = listMap.get("zfbAccount");
+        isPhoneMob = listMap.get("isPhoneMob");
+        sellerGrade = listMap.get("sellerGrade");
+        remark20 = listMap.get("remark20");
+        imSkype = listMap.get("imSkype");
+        portraitUrl = listMap.get("portraitUrl");
+        accountType = listMap.get("accountType");
+        imYahooWeibo = listMap.get("imYahooWeibo");
+        buyerGrade = listMap.get("buyerGrade");
+        useStatus = listMap.get("useStatus");
+        accountId = listMap.get("accountId");
+        regTime = listMap.get("regTime");
+        remark9 = listMap.get("remark9");
+        remark8 = listMap.get("remark8");
+        remark5 = listMap.get("remark5");
+        remark10 = listMap.get("remark10");
+        remark4 = listMap.get("remark4");
+        remark7 = listMap.get("remark7");
+        remark6 = listMap.get("remark6");
+        idCardImg = listMap.get("idCardImg");
+        remark1 = listMap.get("remark1");
+        isMailValidate = listMap.get("isMailValidate");
+        logins = listMap.get("logins");
+        remark3 = listMap.get("remark3");
+        imWeixin = listMap.get("imWeixin");
+        remark2 = listMap.get("remark2");
+        birthday = listMap.get("birthday");
+        passwordStrength = listMap.get("passwordStrength");
+        accountName = listMap.get("accountName");
+        isPayPassword = listMap.get("isPayPassword");
+        loginEmail = listMap.get("loginEmail");
+        userNick = listMap.get("userNick");
+        imQq = listMap.get("imQq");
+        sellerVipGrade = listMap.get("sellerVipGrade");
+        email = listMap.get("email");
+        birthdayMonthDay = listMap.get("birthdayMonthDay");
+        sex = listMap.get("sex");
+        userName = listMap.get("userName");
+        userId = listMap.get("userId");
+        realName = listMap.get("realName");
+        imQqWeibo = listMap.get("imQqWeibo");
+        loginPhone = listMap.get("loginPhone");
+        phoneTel = listMap.get("phoneTel");
+        }
+
+    public MemberUserCopy2Example() {
+        this.setTableAlias(entityTable.getName());
     }
 
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
+    }
+
+    @Override
     protected MemberUserCopy2Example.Criteria createCriteriaInternal() {
-        MemberUserCopy2Example.Criteria criteria = new MemberUserCopy2Example.Criteria();
-        return criteria;
+        return new MemberUserCopy2Example.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends MemberUserCopy2Example.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<MemberUserCopy2Example.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<MemberUserCopy2Example.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<MemberUserCopy2Example.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new MemberUserCopy2Example.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new MemberUserCopy2Example.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new MemberUserCopy2Example.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameIsNull() {
-            this.addCriterion("user_name is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameIsNotNull() {
-            this.addCriterion("user_name is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameEqualTo(String value) {
-            this.addCriterion("user_name =", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameNotEqualTo(String value) {
-            this.addCriterion("user_name <>", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameGreaterThan(String value) {
-            this.addCriterion("user_name >", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("user_name >=", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameLessThan(String value) {
-            this.addCriterion("user_name <", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameLessThanOrEqualTo(String value) {
-            this.addCriterion("user_name <=", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameLike(String value) {
-            this.addCriterion("user_name like", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameNotLike(String value) {
-            this.addCriterion("user_name not like", value, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andUserNameIn(List<String> values) {
-            this.addCriterion("user_name in", values, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameNotIn(List<String> values) {
-            this.addCriterion("user_name not in", values, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameBetween(String value1, String value2) {
-            this.addCriterion("user_name between", value1, value2, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNameNotBetween(String value1, String value2) {
-            this.addCriterion("user_name not between", value1, value2, "userName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickIsNull() {
-            this.addCriterion("user_nick is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickIsNotNull() {
-            this.addCriterion("user_nick is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickEqualTo(String value) {
-            this.addCriterion("user_nick =", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickNotEqualTo(String value) {
-            this.addCriterion("user_nick <>", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickGreaterThan(String value) {
-            this.addCriterion("user_nick >", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickGreaterThanOrEqualTo(String value) {
-            this.addCriterion("user_nick >=", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickLessThan(String value) {
-            this.addCriterion("user_nick <", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickLessThanOrEqualTo(String value) {
-            this.addCriterion("user_nick <=", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickLike(String value) {
-            this.addCriterion("user_nick like", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickNotLike(String value) {
-            this.addCriterion("user_nick not like", value, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andUserNickIn(List<String> values) {
-            this.addCriterion("user_nick in", values, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickNotIn(List<String> values) {
-            this.addCriterion("user_nick not in", values, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickBetween(String value1, String value2) {
-            this.addCriterion("user_nick between", value1, value2, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUserNickNotBetween(String value1, String value2) {
-            this.addCriterion("user_nick not between", value1, value2, "userNick");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailIsNull() {
-            this.addCriterion("login_email is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailIsNotNull() {
-            this.addCriterion("login_email is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailEqualTo(String value) {
-            this.addCriterion("login_email =", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailNotEqualTo(String value) {
-            this.addCriterion("login_email <>", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailGreaterThan(String value) {
-            this.addCriterion("login_email >", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailGreaterThanOrEqualTo(String value) {
-            this.addCriterion("login_email >=", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailLessThan(String value) {
-            this.addCriterion("login_email <", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailLessThanOrEqualTo(String value) {
-            this.addCriterion("login_email <=", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailLike(String value) {
-            this.addCriterion("login_email like", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailNotLike(String value) {
-            this.addCriterion("login_email not like", value, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andLoginEmailIn(List<String> values) {
-            this.addCriterion("login_email in", values, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailNotIn(List<String> values) {
-            this.addCriterion("login_email not in", values, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailBetween(String value1, String value2) {
-            this.addCriterion("login_email between", value1, value2, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginEmailNotBetween(String value1, String value2) {
-            this.addCriterion("login_email not between", value1, value2, "loginEmail");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneIsNull() {
-            this.addCriterion("login_phone is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneIsNotNull() {
-            this.addCriterion("login_phone is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneEqualTo(String value) {
-            this.addCriterion("login_phone =", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneNotEqualTo(String value) {
-            this.addCriterion("login_phone <>", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneGreaterThan(String value) {
-            this.addCriterion("login_phone >", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneGreaterThanOrEqualTo(String value) {
-            this.addCriterion("login_phone >=", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneLessThan(String value) {
-            this.addCriterion("login_phone <", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneLessThanOrEqualTo(String value) {
-            this.addCriterion("login_phone <=", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneLike(String value) {
-            this.addCriterion("login_phone like", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneNotLike(String value) {
-            this.addCriterion("login_phone not like", value, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andLoginPhoneIn(List<String> values) {
-            this.addCriterion("login_phone in", values, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneNotIn(List<String> values) {
-            this.addCriterion("login_phone not in", values, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneBetween(String value1, String value2) {
-            this.addCriterion("login_phone between", value1, value2, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginPhoneNotBetween(String value1, String value2) {
-            this.addCriterion("login_phone not between", value1, value2, "loginPhone");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailIsNull() {
-            this.addCriterion("email is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailIsNotNull() {
-            this.addCriterion("email is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailEqualTo(String value) {
-            this.addCriterion("email =", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailNotEqualTo(String value) {
-            this.addCriterion("email <>", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailGreaterThan(String value) {
-            this.addCriterion("email >", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailGreaterThanOrEqualTo(String value) {
-            this.addCriterion("email >=", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailLessThan(String value) {
-            this.addCriterion("email <", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailLessThanOrEqualTo(String value) {
-            this.addCriterion("email <=", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailLike(String value) {
-            this.addCriterion("email like", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailNotLike(String value) {
-            this.addCriterion("email not like", value, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andEmailIn(List<String> values) {
-            this.addCriterion("email in", values, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailNotIn(List<String> values) {
-            this.addCriterion("email not in", values, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailBetween(String value1, String value2) {
-            this.addCriterion("email between", value1, value2, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andEmailNotBetween(String value1, String value2) {
-            this.addCriterion("email not between", value1, value2, "email");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordIsNull() {
-            this.addCriterion("password is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordIsNotNull() {
-            this.addCriterion("password is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordEqualTo(String value) {
-            this.addCriterion("password =", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordNotEqualTo(String value) {
-            this.addCriterion("password <>", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordGreaterThan(String value) {
-            this.addCriterion("password >", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordGreaterThanOrEqualTo(String value) {
-            this.addCriterion("password >=", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordLessThan(String value) {
-            this.addCriterion("password <", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordLessThanOrEqualTo(String value) {
-            this.addCriterion("password <=", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordLike(String value) {
-            this.addCriterion("password like", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordNotLike(String value) {
-            this.addCriterion("password not like", value, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPasswordIn(List<String> values) {
-            this.addCriterion("password in", values, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordNotIn(List<String> values) {
-            this.addCriterion("password not in", values, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordBetween(String value1, String value2) {
-            this.addCriterion("password between", value1, value2, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordNotBetween(String value1, String value2) {
-            this.addCriterion("password not between", value1, value2, "password");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameIsNull() {
-            this.addCriterion("real_name is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameIsNotNull() {
-            this.addCriterion("real_name is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameEqualTo(String value) {
-            this.addCriterion("real_name =", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameNotEqualTo(String value) {
-            this.addCriterion("real_name <>", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameGreaterThan(String value) {
-            this.addCriterion("real_name >", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("real_name >=", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameLessThan(String value) {
-            this.addCriterion("real_name <", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameLessThanOrEqualTo(String value) {
-            this.addCriterion("real_name <=", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameLike(String value) {
-            this.addCriterion("real_name like", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameNotLike(String value) {
-            this.addCriterion("real_name not like", value, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRealNameIn(List<String> values) {
-            this.addCriterion("real_name in", values, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameNotIn(List<String> values) {
-            this.addCriterion("real_name not in", values, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameBetween(String value1, String value2) {
-            this.addCriterion("real_name between", value1, value2, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRealNameNotBetween(String value1, String value2) {
-            this.addCriterion("real_name not between", value1, value2, "realName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeIsNull() {
-            this.addCriterion("buyer_grade is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeIsNotNull() {
-            this.addCriterion("buyer_grade is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeEqualTo(Long value) {
-            this.addCriterion("buyer_grade =", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeNotEqualTo(Long value) {
-            this.addCriterion("buyer_grade <>", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeGreaterThan(Long value) {
-            this.addCriterion("buyer_grade >", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("buyer_grade >=", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeLessThan(Long value) {
-            this.addCriterion("buyer_grade <", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeLessThanOrEqualTo(Long value) {
-            this.addCriterion("buyer_grade <=", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeLike(String value) {
-            this.addCriterion("buyer_grade like", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeNotLike(String value) {
-            this.addCriterion("buyer_grade not like", value, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andBuyerGradeIn(List<Long> values) {
-            this.addCriterion("buyer_grade in", values, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeNotIn(List<Long> values) {
-            this.addCriterion("buyer_grade not in", values, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeBetween(Long value1, Long value2) {
-            this.addCriterion("buyer_grade between", value1, value2, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBuyerGradeNotBetween(Long value1, Long value2) {
-            this.addCriterion("buyer_grade not between", value1, value2, "buyerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeIsNull() {
-            this.addCriterion("seller_grade is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeIsNotNull() {
-            this.addCriterion("seller_grade is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeEqualTo(Long value) {
-            this.addCriterion("seller_grade =", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeNotEqualTo(Long value) {
-            this.addCriterion("seller_grade <>", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeGreaterThan(Long value) {
-            this.addCriterion("seller_grade >", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("seller_grade >=", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeLessThan(Long value) {
-            this.addCriterion("seller_grade <", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeLessThanOrEqualTo(Long value) {
-            this.addCriterion("seller_grade <=", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeLike(String value) {
-            this.addCriterion("seller_grade like", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeNotLike(String value) {
-            this.addCriterion("seller_grade not like", value, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andSellerGradeIn(List<Long> values) {
-            this.addCriterion("seller_grade in", values, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeNotIn(List<Long> values) {
-            this.addCriterion("seller_grade not in", values, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeBetween(Long value1, Long value2) {
-            this.addCriterion("seller_grade between", value1, value2, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerGradeNotBetween(Long value1, Long value2) {
-            this.addCriterion("seller_grade not between", value1, value2, "sellerGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeIsNull() {
-            this.addCriterion("seller_vip_grade is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeIsNotNull() {
-            this.addCriterion("seller_vip_grade is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeEqualTo(Long value) {
-            this.addCriterion("seller_vip_grade =", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeNotEqualTo(Long value) {
-            this.addCriterion("seller_vip_grade <>", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeGreaterThan(Long value) {
-            this.addCriterion("seller_vip_grade >", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("seller_vip_grade >=", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeLessThan(Long value) {
-            this.addCriterion("seller_vip_grade <", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeLessThanOrEqualTo(Long value) {
-            this.addCriterion("seller_vip_grade <=", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeLike(String value) {
-            this.addCriterion("seller_vip_grade like", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeNotLike(String value) {
-            this.addCriterion("seller_vip_grade not like", value, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andSellerVipGradeIn(List<Long> values) {
-            this.addCriterion("seller_vip_grade in", values, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeNotIn(List<Long> values) {
-            this.addCriterion("seller_vip_grade not in", values, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeBetween(Long value1, Long value2) {
-            this.addCriterion("seller_vip_grade between", value1, value2, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSellerVipGradeNotBetween(Long value1, Long value2) {
-            this.addCriterion("seller_vip_grade not between", value1, value2, "sellerVipGrade");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayIsNull() {
-            this.addCriterion("birthday is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayIsNotNull() {
-            this.addCriterion("birthday is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayEqualTo(Date value) {
-            this.addCriterion("birthday =", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayNotEqualTo(Date value) {
-            this.addCriterion("birthday <>", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayGreaterThan(Date value) {
-            this.addCriterion("birthday >", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("birthday >=", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayLessThan(Date value) {
-            this.addCriterion("birthday <", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayLessThanOrEqualTo(Date value) {
-            this.addCriterion("birthday <=", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayLike(String value) {
-            this.addCriterion("birthday like", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayNotLike(String value) {
-            this.addCriterion("birthday not like", value, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andBirthdayIn(List<Date> values) {
-            this.addCriterion("birthday in", values, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayNotIn(List<Date> values) {
-            this.addCriterion("birthday not in", values, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayBetween(Date value1, Date value2) {
-            this.addCriterion("birthday between", value1, value2, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayNotBetween(Date value1, Date value2) {
-            this.addCriterion("birthday not between", value1, value2, "birthday");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIsNull() {
-            this.addCriterion("birthday_month_day is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIsNotNull() {
-            this.addCriterion("birthday_month_day is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayEqualTo(String value) {
-            this.addCriterion("birthday_month_day =", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotEqualTo(String value) {
-            this.addCriterion("birthday_month_day <>", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayGreaterThan(String value) {
-            this.addCriterion("birthday_month_day >", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayGreaterThanOrEqualTo(String value) {
-            this.addCriterion("birthday_month_day >=", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLessThan(String value) {
-            this.addCriterion("birthday_month_day <", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLessThanOrEqualTo(String value) {
-            this.addCriterion("birthday_month_day <=", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLike(String value) {
-            this.addCriterion("birthday_month_day like", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotLike(String value) {
-            this.addCriterion("birthday_month_day not like", value, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIn(List<String> values) {
-            this.addCriterion("birthday_month_day in", values, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotIn(List<String> values) {
-            this.addCriterion("birthday_month_day not in", values, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayBetween(String value1, String value2) {
-            this.addCriterion("birthday_month_day between", value1, value2, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotBetween(String value1, String value2) {
-            this.addCriterion("birthday_month_day not between", value1, value2, "birthdayMonthDay");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardIsNull() {
-            this.addCriterion("id_card is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardIsNotNull() {
-            this.addCriterion("id_card is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardEqualTo(String value) {
-            this.addCriterion("id_card =", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardNotEqualTo(String value) {
-            this.addCriterion("id_card <>", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardGreaterThan(String value) {
-            this.addCriterion("id_card >", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardGreaterThanOrEqualTo(String value) {
-            this.addCriterion("id_card >=", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardLessThan(String value) {
-            this.addCriterion("id_card <", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardLessThanOrEqualTo(String value) {
-            this.addCriterion("id_card <=", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardLike(String value) {
-            this.addCriterion("id_card like", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardNotLike(String value) {
-            this.addCriterion("id_card not like", value, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIdCardIn(List<String> values) {
-            this.addCriterion("id_card in", values, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardNotIn(List<String> values) {
-            this.addCriterion("id_card not in", values, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardBetween(String value1, String value2) {
-            this.addCriterion("id_card between", value1, value2, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardNotBetween(String value1, String value2) {
-            this.addCriterion("id_card not between", value1, value2, "idCard");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelIsNull() {
-            this.addCriterion("phone_tel is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelIsNotNull() {
-            this.addCriterion("phone_tel is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelEqualTo(String value) {
-            this.addCriterion("phone_tel =", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelNotEqualTo(String value) {
-            this.addCriterion("phone_tel <>", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelGreaterThan(String value) {
-            this.addCriterion("phone_tel >", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelGreaterThanOrEqualTo(String value) {
-            this.addCriterion("phone_tel >=", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelLessThan(String value) {
-            this.addCriterion("phone_tel <", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelLessThanOrEqualTo(String value) {
-            this.addCriterion("phone_tel <=", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelLike(String value) {
-            this.addCriterion("phone_tel like", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelNotLike(String value) {
-            this.addCriterion("phone_tel not like", value, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPhoneTelIn(List<String> values) {
-            this.addCriterion("phone_tel in", values, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelNotIn(List<String> values) {
-            this.addCriterion("phone_tel not in", values, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelBetween(String value1, String value2) {
-            this.addCriterion("phone_tel between", value1, value2, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPhoneTelNotBetween(String value1, String value2) {
-            this.addCriterion("phone_tel not between", value1, value2, "phoneTel");
-            return (MemberUserCopy2Example.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobIsNull() {
-            this.addCriterion("phone_mob is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(phoneMob);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobIsNotNull() {
-            this.addCriterion("phone_mob is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(phoneMob);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobEqualTo(String value) {
-            this.addCriterion("phone_mob =", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobNotEqualTo(String value) {
-            this.addCriterion("phone_mob <>", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobGreaterThan(String value) {
-            this.addCriterion("phone_mob >", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobGreaterThanOrEqualTo(String value) {
-            this.addCriterion("phone_mob >=", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobLessThan(String value) {
-            this.addCriterion("phone_mob <", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobLessThanOrEqualTo(String value) {
-            this.addCriterion("phone_mob <=", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobLike(String value) {
-            this.addCriterion("phone_mob like", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return like(phoneMob, value);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobNotLike(String value) {
-            this.addCriterion("phone_mob not like", value, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPhoneMobIn(List<String> values) {
-            this.addCriterion("phone_mob in", values, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notLike(phoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneMobIn(List<String> values) {
+            return in(phoneMob, values);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobNotIn(List<String> values) {
-            this.addCriterion("phone_mob not in", values, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(phoneMob, values);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobBetween(String value1, String value2) {
-            this.addCriterion("phone_mob between", value1, value2, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(phoneMob, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andPhoneMobNotBetween(String value1, String value2) {
-            this.addCriterion("phone_mob not between", value1, value2, "phoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(phoneMob, value1, value2);
         }
-
-        public MemberUserCopy2Example.Criteria andImQqIsNull() {
-            this.addCriterion("im_qq is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqIsNotNull() {
-            this.addCriterion("im_qq is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqEqualTo(String value) {
-            this.addCriterion("im_qq =", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqNotEqualTo(String value) {
-            this.addCriterion("im_qq <>", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqGreaterThan(String value) {
-            this.addCriterion("im_qq >", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_qq >=", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqLessThan(String value) {
-            this.addCriterion("im_qq <", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqLessThanOrEqualTo(String value) {
-            this.addCriterion("im_qq <=", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqLike(String value) {
-            this.addCriterion("im_qq like", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqNotLike(String value) {
-            this.addCriterion("im_qq not like", value, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImQqIn(List<String> values) {
-            this.addCriterion("im_qq in", values, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqNotIn(List<String> values) {
-            this.addCriterion("im_qq not in", values, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqBetween(String value1, String value2) {
-            this.addCriterion("im_qq between", value1, value2, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqNotBetween(String value1, String value2) {
-            this.addCriterion("im_qq not between", value1, value2, "imQq");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeIsNull() {
-            this.addCriterion("im_skype is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeIsNotNull() {
-            this.addCriterion("im_skype is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeEqualTo(String value) {
-            this.addCriterion("im_skype =", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeNotEqualTo(String value) {
-            this.addCriterion("im_skype <>", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeGreaterThan(String value) {
-            this.addCriterion("im_skype >", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_skype >=", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeLessThan(String value) {
-            this.addCriterion("im_skype <", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeLessThanOrEqualTo(String value) {
-            this.addCriterion("im_skype <=", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeLike(String value) {
-            this.addCriterion("im_skype like", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeNotLike(String value) {
-            this.addCriterion("im_skype not like", value, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImSkypeIn(List<String> values) {
-            this.addCriterion("im_skype in", values, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeNotIn(List<String> values) {
-            this.addCriterion("im_skype not in", values, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeBetween(String value1, String value2) {
-            this.addCriterion("im_skype between", value1, value2, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImSkypeNotBetween(String value1, String value2) {
-            this.addCriterion("im_skype not between", value1, value2, "imSkype");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinIsNull() {
-            this.addCriterion("im_weixin is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinIsNotNull() {
-            this.addCriterion("im_weixin is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinEqualTo(String value) {
-            this.addCriterion("im_weixin =", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinNotEqualTo(String value) {
-            this.addCriterion("im_weixin <>", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinGreaterThan(String value) {
-            this.addCriterion("im_weixin >", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_weixin >=", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinLessThan(String value) {
-            this.addCriterion("im_weixin <", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinLessThanOrEqualTo(String value) {
-            this.addCriterion("im_weixin <=", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinLike(String value) {
-            this.addCriterion("im_weixin like", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinNotLike(String value) {
-            this.addCriterion("im_weixin not like", value, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImWeixinIn(List<String> values) {
-            this.addCriterion("im_weixin in", values, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinNotIn(List<String> values) {
-            this.addCriterion("im_weixin not in", values, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinBetween(String value1, String value2) {
-            this.addCriterion("im_weixin between", value1, value2, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImWeixinNotBetween(String value1, String value2) {
-            this.addCriterion("im_weixin not between", value1, value2, "imWeixin");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwIsNull() {
-            this.addCriterion("im_aliww is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwIsNotNull() {
-            this.addCriterion("im_aliww is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwEqualTo(String value) {
-            this.addCriterion("im_aliww =", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwNotEqualTo(String value) {
-            this.addCriterion("im_aliww <>", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwGreaterThan(String value) {
-            this.addCriterion("im_aliww >", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_aliww >=", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwLessThan(String value) {
-            this.addCriterion("im_aliww <", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwLessThanOrEqualTo(String value) {
-            this.addCriterion("im_aliww <=", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwLike(String value) {
-            this.addCriterion("im_aliww like", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwNotLike(String value) {
-            this.addCriterion("im_aliww not like", value, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImAliwwIn(List<String> values) {
-            this.addCriterion("im_aliww in", values, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwNotIn(List<String> values) {
-            this.addCriterion("im_aliww not in", values, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwBetween(String value1, String value2) {
-            this.addCriterion("im_aliww between", value1, value2, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImAliwwNotBetween(String value1, String value2) {
-            this.addCriterion("im_aliww not between", value1, value2, "imAliww");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboIsNull() {
-            this.addCriterion("im_yahoo_weibo is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboIsNotNull() {
-            this.addCriterion("im_yahoo_weibo is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboEqualTo(String value) {
-            this.addCriterion("im_yahoo_weibo =", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboNotEqualTo(String value) {
-            this.addCriterion("im_yahoo_weibo <>", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboGreaterThan(String value) {
-            this.addCriterion("im_yahoo_weibo >", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_yahoo_weibo >=", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboLessThan(String value) {
-            this.addCriterion("im_yahoo_weibo <", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboLessThanOrEqualTo(String value) {
-            this.addCriterion("im_yahoo_weibo <=", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboLike(String value) {
-            this.addCriterion("im_yahoo_weibo like", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboNotLike(String value) {
-            this.addCriterion("im_yahoo_weibo not like", value, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImYahooWeiboIn(List<String> values) {
-            this.addCriterion("im_yahoo_weibo in", values, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboNotIn(List<String> values) {
-            this.addCriterion("im_yahoo_weibo not in", values, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboBetween(String value1, String value2) {
-            this.addCriterion("im_yahoo_weibo between", value1, value2, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImYahooWeiboNotBetween(String value1, String value2) {
-            this.addCriterion("im_yahoo_weibo not between", value1, value2, "imYahooWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboIsNull() {
-            this.addCriterion("im_qq_weibo is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboIsNotNull() {
-            this.addCriterion("im_qq_weibo is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboEqualTo(String value) {
-            this.addCriterion("im_qq_weibo =", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboNotEqualTo(String value) {
-            this.addCriterion("im_qq_weibo <>", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboGreaterThan(String value) {
-            this.addCriterion("im_qq_weibo >", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_qq_weibo >=", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboLessThan(String value) {
-            this.addCriterion("im_qq_weibo <", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboLessThanOrEqualTo(String value) {
-            this.addCriterion("im_qq_weibo <=", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboLike(String value) {
-            this.addCriterion("im_qq_weibo like", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboNotLike(String value) {
-            this.addCriterion("im_qq_weibo not like", value, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andImQqWeiboIn(List<String> values) {
-            this.addCriterion("im_qq_weibo in", values, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboNotIn(List<String> values) {
-            this.addCriterion("im_qq_weibo not in", values, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboBetween(String value1, String value2) {
-            this.addCriterion("im_qq_weibo between", value1, value2, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andImQqWeiboNotBetween(String value1, String value2) {
-            this.addCriterion("im_qq_weibo not between", value1, value2, "imQqWeibo");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeIsNull() {
-            this.addCriterion("reg_time is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeIsNotNull() {
-            this.addCriterion("reg_time is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeEqualTo(Date value) {
-            this.addCriterion("reg_time =", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeNotEqualTo(Date value) {
-            this.addCriterion("reg_time <>", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeGreaterThan(Date value) {
-            this.addCriterion("reg_time >", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("reg_time >=", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeLessThan(Date value) {
-            this.addCriterion("reg_time <", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("reg_time <=", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeLike(String value) {
-            this.addCriterion("reg_time like", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeNotLike(String value) {
-            this.addCriterion("reg_time not like", value, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRegTimeIn(List<Date> values) {
-            this.addCriterion("reg_time in", values, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeNotIn(List<Date> values) {
-            this.addCriterion("reg_time not in", values, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeBetween(Date value1, Date value2) {
-            this.addCriterion("reg_time between", value1, value2, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("reg_time not between", value1, value2, "regTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
         public MemberUserCopy2Example.Criteria andLastTimeIsNull() {
-            this.addCriterion("last_time is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(lastTime);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeIsNotNull() {
-            this.addCriterion("last_time is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(lastTime);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeEqualTo(Date value) {
-            this.addCriterion("last_time =", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(lastTime, value);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeNotEqualTo(Date value) {
-            this.addCriterion("last_time <>", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(lastTime, value);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeGreaterThan(Date value) {
-            this.addCriterion("last_time >", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(lastTime, value);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("last_time >=", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(lastTime, value);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeLessThan(Date value) {
-            this.addCriterion("last_time <", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(lastTime, value);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("last_time <=", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(lastTime, value);
         }
 
-        public MemberUserCopy2Example.Criteria andLastTimeLike(String value) {
-            this.addCriterion("last_time like", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastTimeNotLike(String value) {
-            this.addCriterion("last_time not like", value, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andLastTimeIn(List<Date> values) {
-            this.addCriterion("last_time in", values, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+        public MemberUserCopy2Example.Criteria andLastTimeIn(List<Date> values) {
+            return in(lastTime, values);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeNotIn(List<Date> values) {
-            this.addCriterion("last_time not in", values, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(lastTime, values);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeBetween(Date value1, Date value2) {
-            this.addCriterion("last_time between", value1, value2, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(lastTime, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andLastTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("last_time not between", value1, value2, "lastTime");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(lastTime, value1, value2);
         }
-
-        public MemberUserCopy2Example.Criteria andLastIpIsNull() {
-            this.addCriterion("last_ip is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpIsNotNull() {
-            this.addCriterion("last_ip is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpEqualTo(String value) {
-            this.addCriterion("last_ip =", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpNotEqualTo(String value) {
-            this.addCriterion("last_ip <>", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpGreaterThan(String value) {
-            this.addCriterion("last_ip >", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpGreaterThanOrEqualTo(String value) {
-            this.addCriterion("last_ip >=", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpLessThan(String value) {
-            this.addCriterion("last_ip <", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpLessThanOrEqualTo(String value) {
-            this.addCriterion("last_ip <=", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpLike(String value) {
-            this.addCriterion("last_ip like", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpNotLike(String value) {
-            this.addCriterion("last_ip not like", value, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andLastIpIn(List<String> values) {
-            this.addCriterion("last_ip in", values, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpNotIn(List<String> values) {
-            this.addCriterion("last_ip not in", values, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpBetween(String value1, String value2) {
-            this.addCriterion("last_ip between", value1, value2, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLastIpNotBetween(String value1, String value2) {
-            this.addCriterion("last_ip not between", value1, value2, "lastIp");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsIsNull() {
-            this.addCriterion("logins is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsIsNotNull() {
-            this.addCriterion("logins is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsEqualTo(Long value) {
-            this.addCriterion("logins =", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsNotEqualTo(Long value) {
-            this.addCriterion("logins <>", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsGreaterThan(Long value) {
-            this.addCriterion("logins >", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("logins >=", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsLessThan(Long value) {
-            this.addCriterion("logins <", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsLessThanOrEqualTo(Long value) {
-            this.addCriterion("logins <=", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsLike(String value) {
-            this.addCriterion("logins like", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsNotLike(String value) {
-            this.addCriterion("logins not like", value, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andLoginsIn(List<Long> values) {
-            this.addCriterion("logins in", values, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsNotIn(List<Long> values) {
-            this.addCriterion("logins not in", values, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsBetween(Long value1, Long value2) {
-            this.addCriterion("logins between", value1, value2, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andLoginsNotBetween(Long value1, Long value2) {
-            this.addCriterion("logins not between", value1, value2, "logins");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeIsNull() {
-            this.addCriterion("account_type is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeIsNotNull() {
-            this.addCriterion("account_type is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeEqualTo(Integer value) {
-            this.addCriterion("account_type =", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeNotEqualTo(Integer value) {
-            this.addCriterion("account_type <>", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeGreaterThan(Integer value) {
-            this.addCriterion("account_type >", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("account_type >=", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeLessThan(Integer value) {
-            this.addCriterion("account_type <", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("account_type <=", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeLike(String value) {
-            this.addCriterion("account_type like", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeNotLike(String value) {
-            this.addCriterion("account_type not like", value, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andAccountTypeIn(List<Integer> values) {
-            this.addCriterion("account_type in", values, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeNotIn(List<Integer> values) {
-            this.addCriterion("account_type not in", values, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("account_type between", value1, value2, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("account_type not between", value1, value2, "accountType");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameIsNull() {
-            this.addCriterion("account_name is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameIsNotNull() {
-            this.addCriterion("account_name is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameEqualTo(String value) {
-            this.addCriterion("account_name =", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameNotEqualTo(String value) {
-            this.addCriterion("account_name <>", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameGreaterThan(String value) {
-            this.addCriterion("account_name >", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("account_name >=", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameLessThan(String value) {
-            this.addCriterion("account_name <", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameLessThanOrEqualTo(String value) {
-            this.addCriterion("account_name <=", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameLike(String value) {
-            this.addCriterion("account_name like", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameNotLike(String value) {
-            this.addCriterion("account_name not like", value, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andAccountNameIn(List<String> values) {
-            this.addCriterion("account_name in", values, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameNotIn(List<String> values) {
-            this.addCriterion("account_name not in", values, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameBetween(String value1, String value2) {
-            this.addCriterion("account_name between", value1, value2, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountNameNotBetween(String value1, String value2) {
-            this.addCriterion("account_name not between", value1, value2, "accountName");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdIsNull() {
-            this.addCriterion("account_id is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdIsNotNull() {
-            this.addCriterion("account_id is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdEqualTo(Long value) {
-            this.addCriterion("account_id =", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdNotEqualTo(Long value) {
-            this.addCriterion("account_id <>", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdGreaterThan(Long value) {
-            this.addCriterion("account_id >", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("account_id >=", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdLessThan(Long value) {
-            this.addCriterion("account_id <", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("account_id <=", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdLike(String value) {
-            this.addCriterion("account_id like", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdNotLike(String value) {
-            this.addCriterion("account_id not like", value, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andAccountIdIn(List<Long> values) {
-            this.addCriterion("account_id in", values, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdNotIn(List<Long> values) {
-            this.addCriterion("account_id not in", values, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdBetween(Long value1, Long value2) {
-            this.addCriterion("account_id between", value1, value2, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andAccountIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("account_id not between", value1, value2, "accountId");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathIsNull() {
-            this.addCriterion("portrait_savepath is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathIsNotNull() {
-            this.addCriterion("portrait_savepath is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathEqualTo(String value) {
-            this.addCriterion("portrait_savepath =", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathNotEqualTo(String value) {
-            this.addCriterion("portrait_savepath <>", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathGreaterThan(String value) {
-            this.addCriterion("portrait_savepath >", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathGreaterThanOrEqualTo(String value) {
-            this.addCriterion("portrait_savepath >=", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathLessThan(String value) {
-            this.addCriterion("portrait_savepath <", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathLessThanOrEqualTo(String value) {
-            this.addCriterion("portrait_savepath <=", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathLike(String value) {
-            this.addCriterion("portrait_savepath like", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathNotLike(String value) {
-            this.addCriterion("portrait_savepath not like", value, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPortraitSavepathIn(List<String> values) {
-            this.addCriterion("portrait_savepath in", values, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathNotIn(List<String> values) {
-            this.addCriterion("portrait_savepath not in", values, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathBetween(String value1, String value2) {
-            this.addCriterion("portrait_savepath between", value1, value2, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitSavepathNotBetween(String value1, String value2) {
-            this.addCriterion("portrait_savepath not between", value1, value2, "portraitSavepath");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlIsNull() {
-            this.addCriterion("portrait_url is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlIsNotNull() {
-            this.addCriterion("portrait_url is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlEqualTo(String value) {
-            this.addCriterion("portrait_url =", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlNotEqualTo(String value) {
-            this.addCriterion("portrait_url <>", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlGreaterThan(String value) {
-            this.addCriterion("portrait_url >", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlGreaterThanOrEqualTo(String value) {
-            this.addCriterion("portrait_url >=", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlLessThan(String value) {
-            this.addCriterion("portrait_url <", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlLessThanOrEqualTo(String value) {
-            this.addCriterion("portrait_url <=", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlLike(String value) {
-            this.addCriterion("portrait_url like", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlNotLike(String value) {
-            this.addCriterion("portrait_url not like", value, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPortraitUrlIn(List<String> values) {
-            this.addCriterion("portrait_url in", values, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlNotIn(List<String> values) {
-            this.addCriterion("portrait_url not in", values, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlBetween(String value1, String value2) {
-            this.addCriterion("portrait_url between", value1, value2, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPortraitUrlNotBetween(String value1, String value2) {
-            this.addCriterion("portrait_url not between", value1, value2, "portraitUrl");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusIsNull() {
-            this.addCriterion("use_status is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusIsNotNull() {
-            this.addCriterion("use_status is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusEqualTo(Long value) {
-            this.addCriterion("use_status =", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusNotEqualTo(Long value) {
-            this.addCriterion("use_status <>", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusGreaterThan(Long value) {
-            this.addCriterion("use_status >", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("use_status >=", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusLessThan(Long value) {
-            this.addCriterion("use_status <", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusLessThanOrEqualTo(Long value) {
-            this.addCriterion("use_status <=", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusLike(String value) {
-            this.addCriterion("use_status like", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusNotLike(String value) {
-            this.addCriterion("use_status not like", value, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andUseStatusIn(List<Long> values) {
-            this.addCriterion("use_status in", values, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusNotIn(List<Long> values) {
-            this.addCriterion("use_status not in", values, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusBetween(Long value1, Long value2) {
-            this.addCriterion("use_status between", value1, value2, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andUseStatusNotBetween(Long value1, Long value2) {
-            this.addCriterion("use_status not between", value1, value2, "useStatus");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreIsNull() {
-            this.addCriterion("is_open_store is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreIsNotNull() {
-            this.addCriterion("is_open_store is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreEqualTo(Integer value) {
-            this.addCriterion("is_open_store =", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreNotEqualTo(Integer value) {
-            this.addCriterion("is_open_store <>", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreGreaterThan(Integer value) {
-            this.addCriterion("is_open_store >", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_open_store >=", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreLessThan(Integer value) {
-            this.addCriterion("is_open_store <", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_open_store <=", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreLike(String value) {
-            this.addCriterion("is_open_store like", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreNotLike(String value) {
-            this.addCriterion("is_open_store not like", value, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIsOpenStoreIn(List<Integer> values) {
-            this.addCriterion("is_open_store in", values, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreNotIn(List<Integer> values) {
-            this.addCriterion("is_open_store not in", values, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_open_store between", value1, value2, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsOpenStoreNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_open_store not between", value1, value2, "isOpenStore");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1IsNull() {
-            this.addCriterion("remark1 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1IsNotNull() {
-            this.addCriterion("remark1 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1EqualTo(String value) {
-            this.addCriterion("remark1 =", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1NotEqualTo(String value) {
-            this.addCriterion("remark1 <>", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1GreaterThan(String value) {
-            this.addCriterion("remark1 >", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark1 >=", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1LessThan(String value) {
-            this.addCriterion("remark1 <", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1LessThanOrEqualTo(String value) {
-            this.addCriterion("remark1 <=", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1Like(String value) {
-            this.addCriterion("remark1 like", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1NotLike(String value) {
-            this.addCriterion("remark1 not like", value, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark1In(List<String> values) {
-            this.addCriterion("remark1 in", values, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1NotIn(List<String> values) {
-            this.addCriterion("remark1 not in", values, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1Between(String value1, String value2) {
-            this.addCriterion("remark1 between", value1, value2, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark1NotBetween(String value1, String value2) {
-            this.addCriterion("remark1 not between", value1, value2, "remark1");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2IsNull() {
-            this.addCriterion("remark2 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2IsNotNull() {
-            this.addCriterion("remark2 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2EqualTo(String value) {
-            this.addCriterion("remark2 =", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2NotEqualTo(String value) {
-            this.addCriterion("remark2 <>", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2GreaterThan(String value) {
-            this.addCriterion("remark2 >", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark2 >=", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2LessThan(String value) {
-            this.addCriterion("remark2 <", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2LessThanOrEqualTo(String value) {
-            this.addCriterion("remark2 <=", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2Like(String value) {
-            this.addCriterion("remark2 like", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2NotLike(String value) {
-            this.addCriterion("remark2 not like", value, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark2In(List<String> values) {
-            this.addCriterion("remark2 in", values, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2NotIn(List<String> values) {
-            this.addCriterion("remark2 not in", values, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2Between(String value1, String value2) {
-            this.addCriterion("remark2 between", value1, value2, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark2NotBetween(String value1, String value2) {
-            this.addCriterion("remark2 not between", value1, value2, "remark2");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3IsNull() {
-            this.addCriterion("remark3 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3IsNotNull() {
-            this.addCriterion("remark3 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3EqualTo(String value) {
-            this.addCriterion("remark3 =", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3NotEqualTo(String value) {
-            this.addCriterion("remark3 <>", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3GreaterThan(String value) {
-            this.addCriterion("remark3 >", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark3 >=", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3LessThan(String value) {
-            this.addCriterion("remark3 <", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3LessThanOrEqualTo(String value) {
-            this.addCriterion("remark3 <=", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3Like(String value) {
-            this.addCriterion("remark3 like", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3NotLike(String value) {
-            this.addCriterion("remark3 not like", value, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark3In(List<String> values) {
-            this.addCriterion("remark3 in", values, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3NotIn(List<String> values) {
-            this.addCriterion("remark3 not in", values, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3Between(String value1, String value2) {
-            this.addCriterion("remark3 between", value1, value2, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark3NotBetween(String value1, String value2) {
-            this.addCriterion("remark3 not between", value1, value2, "remark3");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4IsNull() {
-            this.addCriterion("remark4 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4IsNotNull() {
-            this.addCriterion("remark4 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4EqualTo(String value) {
-            this.addCriterion("remark4 =", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4NotEqualTo(String value) {
-            this.addCriterion("remark4 <>", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4GreaterThan(String value) {
-            this.addCriterion("remark4 >", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark4 >=", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4LessThan(String value) {
-            this.addCriterion("remark4 <", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4LessThanOrEqualTo(String value) {
-            this.addCriterion("remark4 <=", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4Like(String value) {
-            this.addCriterion("remark4 like", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4NotLike(String value) {
-            this.addCriterion("remark4 not like", value, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark4In(List<String> values) {
-            this.addCriterion("remark4 in", values, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4NotIn(List<String> values) {
-            this.addCriterion("remark4 not in", values, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4Between(String value1, String value2) {
-            this.addCriterion("remark4 between", value1, value2, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark4NotBetween(String value1, String value2) {
-            this.addCriterion("remark4 not between", value1, value2, "remark4");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5IsNull() {
-            this.addCriterion("remark5 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5IsNotNull() {
-            this.addCriterion("remark5 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5EqualTo(String value) {
-            this.addCriterion("remark5 =", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5NotEqualTo(String value) {
-            this.addCriterion("remark5 <>", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5GreaterThan(String value) {
-            this.addCriterion("remark5 >", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark5 >=", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5LessThan(String value) {
-            this.addCriterion("remark5 <", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5LessThanOrEqualTo(String value) {
-            this.addCriterion("remark5 <=", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5Like(String value) {
-            this.addCriterion("remark5 like", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5NotLike(String value) {
-            this.addCriterion("remark5 not like", value, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark5In(List<String> values) {
-            this.addCriterion("remark5 in", values, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5NotIn(List<String> values) {
-            this.addCriterion("remark5 not in", values, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5Between(String value1, String value2) {
-            this.addCriterion("remark5 between", value1, value2, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark5NotBetween(String value1, String value2) {
-            this.addCriterion("remark5 not between", value1, value2, "remark5");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6IsNull() {
-            this.addCriterion("remark6 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6IsNotNull() {
-            this.addCriterion("remark6 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6EqualTo(String value) {
-            this.addCriterion("remark6 =", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6NotEqualTo(String value) {
-            this.addCriterion("remark6 <>", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6GreaterThan(String value) {
-            this.addCriterion("remark6 >", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark6 >=", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6LessThan(String value) {
-            this.addCriterion("remark6 <", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6LessThanOrEqualTo(String value) {
-            this.addCriterion("remark6 <=", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6Like(String value) {
-            this.addCriterion("remark6 like", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6NotLike(String value) {
-            this.addCriterion("remark6 not like", value, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark6In(List<String> values) {
-            this.addCriterion("remark6 in", values, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6NotIn(List<String> values) {
-            this.addCriterion("remark6 not in", values, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6Between(String value1, String value2) {
-            this.addCriterion("remark6 between", value1, value2, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark6NotBetween(String value1, String value2) {
-            this.addCriterion("remark6 not between", value1, value2, "remark6");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7IsNull() {
-            this.addCriterion("remark7 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7IsNotNull() {
-            this.addCriterion("remark7 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7EqualTo(String value) {
-            this.addCriterion("remark7 =", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7NotEqualTo(String value) {
-            this.addCriterion("remark7 <>", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7GreaterThan(String value) {
-            this.addCriterion("remark7 >", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark7 >=", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7LessThan(String value) {
-            this.addCriterion("remark7 <", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7LessThanOrEqualTo(String value) {
-            this.addCriterion("remark7 <=", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7Like(String value) {
-            this.addCriterion("remark7 like", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7NotLike(String value) {
-            this.addCriterion("remark7 not like", value, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark7In(List<String> values) {
-            this.addCriterion("remark7 in", values, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7NotIn(List<String> values) {
-            this.addCriterion("remark7 not in", values, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7Between(String value1, String value2) {
-            this.addCriterion("remark7 between", value1, value2, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark7NotBetween(String value1, String value2) {
-            this.addCriterion("remark7 not between", value1, value2, "remark7");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8IsNull() {
-            this.addCriterion("remark8 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8IsNotNull() {
-            this.addCriterion("remark8 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8EqualTo(String value) {
-            this.addCriterion("remark8 =", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8NotEqualTo(String value) {
-            this.addCriterion("remark8 <>", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8GreaterThan(String value) {
-            this.addCriterion("remark8 >", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark8 >=", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8LessThan(String value) {
-            this.addCriterion("remark8 <", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8LessThanOrEqualTo(String value) {
-            this.addCriterion("remark8 <=", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8Like(String value) {
-            this.addCriterion("remark8 like", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8NotLike(String value) {
-            this.addCriterion("remark8 not like", value, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark8In(List<String> values) {
-            this.addCriterion("remark8 in", values, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8NotIn(List<String> values) {
-            this.addCriterion("remark8 not in", values, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8Between(String value1, String value2) {
-            this.addCriterion("remark8 between", value1, value2, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark8NotBetween(String value1, String value2) {
-            this.addCriterion("remark8 not between", value1, value2, "remark8");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9IsNull() {
-            this.addCriterion("remark9 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9IsNotNull() {
-            this.addCriterion("remark9 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9EqualTo(String value) {
-            this.addCriterion("remark9 =", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9NotEqualTo(String value) {
-            this.addCriterion("remark9 <>", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9GreaterThan(String value) {
-            this.addCriterion("remark9 >", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark9 >=", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9LessThan(String value) {
-            this.addCriterion("remark9 <", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9LessThanOrEqualTo(String value) {
-            this.addCriterion("remark9 <=", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9Like(String value) {
-            this.addCriterion("remark9 like", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9NotLike(String value) {
-            this.addCriterion("remark9 not like", value, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark9In(List<String> values) {
-            this.addCriterion("remark9 in", values, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9NotIn(List<String> values) {
-            this.addCriterion("remark9 not in", values, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9Between(String value1, String value2) {
-            this.addCriterion("remark9 between", value1, value2, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark9NotBetween(String value1, String value2) {
-            this.addCriterion("remark9 not between", value1, value2, "remark9");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10IsNull() {
-            this.addCriterion("remark10 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10IsNotNull() {
-            this.addCriterion("remark10 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10EqualTo(String value) {
-            this.addCriterion("remark10 =", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10NotEqualTo(String value) {
-            this.addCriterion("remark10 <>", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10GreaterThan(String value) {
-            this.addCriterion("remark10 >", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark10 >=", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10LessThan(String value) {
-            this.addCriterion("remark10 <", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10LessThanOrEqualTo(String value) {
-            this.addCriterion("remark10 <=", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10Like(String value) {
-            this.addCriterion("remark10 like", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10NotLike(String value) {
-            this.addCriterion("remark10 not like", value, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark10In(List<String> values) {
-            this.addCriterion("remark10 in", values, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10NotIn(List<String> values) {
-            this.addCriterion("remark10 not in", values, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10Between(String value1, String value2) {
-            this.addCriterion("remark10 between", value1, value2, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark10NotBetween(String value1, String value2) {
-            this.addCriterion("remark10 not between", value1, value2, "remark10");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11IsNull() {
-            this.addCriterion("remark11 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11IsNotNull() {
-            this.addCriterion("remark11 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11EqualTo(String value) {
-            this.addCriterion("remark11 =", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11NotEqualTo(String value) {
-            this.addCriterion("remark11 <>", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11GreaterThan(String value) {
-            this.addCriterion("remark11 >", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark11 >=", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11LessThan(String value) {
-            this.addCriterion("remark11 <", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11LessThanOrEqualTo(String value) {
-            this.addCriterion("remark11 <=", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11Like(String value) {
-            this.addCriterion("remark11 like", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11NotLike(String value) {
-            this.addCriterion("remark11 not like", value, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark11In(List<String> values) {
-            this.addCriterion("remark11 in", values, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11NotIn(List<String> values) {
-            this.addCriterion("remark11 not in", values, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11Between(String value1, String value2) {
-            this.addCriterion("remark11 between", value1, value2, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark11NotBetween(String value1, String value2) {
-            this.addCriterion("remark11 not between", value1, value2, "remark11");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12IsNull() {
-            this.addCriterion("remark12 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12IsNotNull() {
-            this.addCriterion("remark12 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12EqualTo(String value) {
-            this.addCriterion("remark12 =", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12NotEqualTo(String value) {
-            this.addCriterion("remark12 <>", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12GreaterThan(String value) {
-            this.addCriterion("remark12 >", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark12 >=", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12LessThan(String value) {
-            this.addCriterion("remark12 <", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12LessThanOrEqualTo(String value) {
-            this.addCriterion("remark12 <=", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12Like(String value) {
-            this.addCriterion("remark12 like", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12NotLike(String value) {
-            this.addCriterion("remark12 not like", value, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark12In(List<String> values) {
-            this.addCriterion("remark12 in", values, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12NotIn(List<String> values) {
-            this.addCriterion("remark12 not in", values, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12Between(String value1, String value2) {
-            this.addCriterion("remark12 between", value1, value2, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark12NotBetween(String value1, String value2) {
-            this.addCriterion("remark12 not between", value1, value2, "remark12");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13IsNull() {
-            this.addCriterion("remark13 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13IsNotNull() {
-            this.addCriterion("remark13 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13EqualTo(String value) {
-            this.addCriterion("remark13 =", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13NotEqualTo(String value) {
-            this.addCriterion("remark13 <>", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13GreaterThan(String value) {
-            this.addCriterion("remark13 >", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark13 >=", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13LessThan(String value) {
-            this.addCriterion("remark13 <", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13LessThanOrEqualTo(String value) {
-            this.addCriterion("remark13 <=", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13Like(String value) {
-            this.addCriterion("remark13 like", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13NotLike(String value) {
-            this.addCriterion("remark13 not like", value, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark13In(List<String> values) {
-            this.addCriterion("remark13 in", values, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13NotIn(List<String> values) {
-            this.addCriterion("remark13 not in", values, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13Between(String value1, String value2) {
-            this.addCriterion("remark13 between", value1, value2, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark13NotBetween(String value1, String value2) {
-            this.addCriterion("remark13 not between", value1, value2, "remark13");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14IsNull() {
-            this.addCriterion("remark14 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14IsNotNull() {
-            this.addCriterion("remark14 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14EqualTo(String value) {
-            this.addCriterion("remark14 =", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14NotEqualTo(String value) {
-            this.addCriterion("remark14 <>", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14GreaterThan(String value) {
-            this.addCriterion("remark14 >", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark14 >=", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14LessThan(String value) {
-            this.addCriterion("remark14 <", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14LessThanOrEqualTo(String value) {
-            this.addCriterion("remark14 <=", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14Like(String value) {
-            this.addCriterion("remark14 like", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14NotLike(String value) {
-            this.addCriterion("remark14 not like", value, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark14In(List<String> values) {
-            this.addCriterion("remark14 in", values, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14NotIn(List<String> values) {
-            this.addCriterion("remark14 not in", values, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14Between(String value1, String value2) {
-            this.addCriterion("remark14 between", value1, value2, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark14NotBetween(String value1, String value2) {
-            this.addCriterion("remark14 not between", value1, value2, "remark14");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15IsNull() {
-            this.addCriterion("remark15 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15IsNotNull() {
-            this.addCriterion("remark15 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15EqualTo(String value) {
-            this.addCriterion("remark15 =", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15NotEqualTo(String value) {
-            this.addCriterion("remark15 <>", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15GreaterThan(String value) {
-            this.addCriterion("remark15 >", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark15 >=", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15LessThan(String value) {
-            this.addCriterion("remark15 <", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15LessThanOrEqualTo(String value) {
-            this.addCriterion("remark15 <=", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15Like(String value) {
-            this.addCriterion("remark15 like", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15NotLike(String value) {
-            this.addCriterion("remark15 not like", value, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark15In(List<String> values) {
-            this.addCriterion("remark15 in", values, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15NotIn(List<String> values) {
-            this.addCriterion("remark15 not in", values, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15Between(String value1, String value2) {
-            this.addCriterion("remark15 between", value1, value2, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark15NotBetween(String value1, String value2) {
-            this.addCriterion("remark15 not between", value1, value2, "remark15");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16IsNull() {
-            this.addCriterion("remark16 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16IsNotNull() {
-            this.addCriterion("remark16 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16EqualTo(String value) {
-            this.addCriterion("remark16 =", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16NotEqualTo(String value) {
-            this.addCriterion("remark16 <>", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16GreaterThan(String value) {
-            this.addCriterion("remark16 >", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark16 >=", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16LessThan(String value) {
-            this.addCriterion("remark16 <", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16LessThanOrEqualTo(String value) {
-            this.addCriterion("remark16 <=", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16Like(String value) {
-            this.addCriterion("remark16 like", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16NotLike(String value) {
-            this.addCriterion("remark16 not like", value, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark16In(List<String> values) {
-            this.addCriterion("remark16 in", values, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16NotIn(List<String> values) {
-            this.addCriterion("remark16 not in", values, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16Between(String value1, String value2) {
-            this.addCriterion("remark16 between", value1, value2, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark16NotBetween(String value1, String value2) {
-            this.addCriterion("remark16 not between", value1, value2, "remark16");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17IsNull() {
-            this.addCriterion("remark17 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17IsNotNull() {
-            this.addCriterion("remark17 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17EqualTo(String value) {
-            this.addCriterion("remark17 =", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17NotEqualTo(String value) {
-            this.addCriterion("remark17 <>", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17GreaterThan(String value) {
-            this.addCriterion("remark17 >", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark17 >=", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17LessThan(String value) {
-            this.addCriterion("remark17 <", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17LessThanOrEqualTo(String value) {
-            this.addCriterion("remark17 <=", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17Like(String value) {
-            this.addCriterion("remark17 like", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17NotLike(String value) {
-            this.addCriterion("remark17 not like", value, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark17In(List<String> values) {
-            this.addCriterion("remark17 in", values, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17NotIn(List<String> values) {
-            this.addCriterion("remark17 not in", values, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17Between(String value1, String value2) {
-            this.addCriterion("remark17 between", value1, value2, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark17NotBetween(String value1, String value2) {
-            this.addCriterion("remark17 not between", value1, value2, "remark17");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
         public MemberUserCopy2Example.Criteria andRemark18IsNull() {
-            this.addCriterion("remark18 is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(remark18);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18IsNotNull() {
-            this.addCriterion("remark18 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(remark18);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18EqualTo(String value) {
-            this.addCriterion("remark18 =", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18NotEqualTo(String value) {
-            this.addCriterion("remark18 <>", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18GreaterThan(String value) {
-            this.addCriterion("remark18 >", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark18 >=", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18LessThan(String value) {
-            this.addCriterion("remark18 <", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18LessThanOrEqualTo(String value) {
-            this.addCriterion("remark18 <=", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18Like(String value) {
-            this.addCriterion("remark18 like", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return like(remark18, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18NotLike(String value) {
-            this.addCriterion("remark18 not like", value, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark18In(List<String> values) {
-            this.addCriterion("remark18 in", values, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notLike(remark18, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark18In(List<String> values) {
+            return in(remark18, values);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18NotIn(List<String> values) {
-            this.addCriterion("remark18 not in", values, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(remark18, values);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18Between(String value1, String value2) {
-            this.addCriterion("remark18 between", value1, value2, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(remark18, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andRemark18NotBetween(String value1, String value2) {
-            this.addCriterion("remark18 not between", value1, value2, "remark18");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(remark18, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark17IsNull() {
+            return isNull(remark17);
         }
 
+        public MemberUserCopy2Example.Criteria andRemark17IsNotNull() {
+            return isNotNull(remark17);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17EqualTo(String value) {
+            return equalTo(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17NotEqualTo(String value) {
+            return notEqualTo(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17GreaterThan(String value) {
+            return greaterThan(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17LessThan(String value) {
+            return lessThan(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17Like(String value) {
+            return like(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17NotLike(String value) {
+            return notLike(remark17, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17In(List<String> values) {
+            return in(remark17, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17NotIn(List<String> values) {
+            return notIn(remark17, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17Between(String value1, String value2) {
+            return between(remark17, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark17NotBetween(String value1, String value2) {
+            return notBetween(remark17, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark16IsNull() {
+            return isNull(remark16);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16IsNotNull() {
+            return isNotNull(remark16);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16EqualTo(String value) {
+            return equalTo(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16NotEqualTo(String value) {
+            return notEqualTo(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16GreaterThan(String value) {
+            return greaterThan(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16LessThan(String value) {
+            return lessThan(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16Like(String value) {
+            return like(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16NotLike(String value) {
+            return notLike(remark16, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16In(List<String> values) {
+            return in(remark16, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16NotIn(List<String> values) {
+            return notIn(remark16, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16Between(String value1, String value2) {
+            return between(remark16, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark16NotBetween(String value1, String value2) {
+            return notBetween(remark16, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark15IsNull() {
+            return isNull(remark15);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15IsNotNull() {
+            return isNotNull(remark15);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15EqualTo(String value) {
+            return equalTo(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15NotEqualTo(String value) {
+            return notEqualTo(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15GreaterThan(String value) {
+            return greaterThan(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15LessThan(String value) {
+            return lessThan(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15Like(String value) {
+            return like(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15NotLike(String value) {
+            return notLike(remark15, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15In(List<String> values) {
+            return in(remark15, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15NotIn(List<String> values) {
+            return notIn(remark15, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15Between(String value1, String value2) {
+            return between(remark15, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark15NotBetween(String value1, String value2) {
+            return notBetween(remark15, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andPortraitSavepathIsNull() {
+            return isNull(portraitSavepath);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathIsNotNull() {
+            return isNotNull(portraitSavepath);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathEqualTo(String value) {
+            return equalTo(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathNotEqualTo(String value) {
+            return notEqualTo(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathGreaterThan(String value) {
+            return greaterThan(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathLessThan(String value) {
+            return lessThan(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathLike(String value) {
+            return like(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathNotLike(String value) {
+            return notLike(portraitSavepath, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathIn(List<String> values) {
+            return in(portraitSavepath, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathNotIn(List<String> values) {
+            return notIn(portraitSavepath, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathBetween(String value1, String value2) {
+            return between(portraitSavepath, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitSavepathNotBetween(String value1, String value2) {
+            return notBetween(portraitSavepath, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark14IsNull() {
+            return isNull(remark14);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14IsNotNull() {
+            return isNotNull(remark14);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14EqualTo(String value) {
+            return equalTo(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14NotEqualTo(String value) {
+            return notEqualTo(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14GreaterThan(String value) {
+            return greaterThan(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14LessThan(String value) {
+            return lessThan(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14Like(String value) {
+            return like(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14NotLike(String value) {
+            return notLike(remark14, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14In(List<String> values) {
+            return in(remark14, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14NotIn(List<String> values) {
+            return notIn(remark14, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14Between(String value1, String value2) {
+            return between(remark14, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark14NotBetween(String value1, String value2) {
+            return notBetween(remark14, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andLastIpIsNull() {
+            return isNull(lastIp);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpIsNotNull() {
+            return isNotNull(lastIp);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpEqualTo(String value) {
+            return equalTo(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpNotEqualTo(String value) {
+            return notEqualTo(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpGreaterThan(String value) {
+            return greaterThan(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpLessThan(String value) {
+            return lessThan(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpLike(String value) {
+            return like(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpNotLike(String value) {
+            return notLike(lastIp, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpIn(List<String> values) {
+            return in(lastIp, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpNotIn(List<String> values) {
+            return notIn(lastIp, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpBetween(String value1, String value2) {
+            return between(lastIp, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andLastIpNotBetween(String value1, String value2) {
+            return notBetween(lastIp, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark13IsNull() {
+            return isNull(remark13);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13IsNotNull() {
+            return isNotNull(remark13);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13EqualTo(String value) {
+            return equalTo(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13NotEqualTo(String value) {
+            return notEqualTo(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13GreaterThan(String value) {
+            return greaterThan(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13LessThan(String value) {
+            return lessThan(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13Like(String value) {
+            return like(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13NotLike(String value) {
+            return notLike(remark13, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13In(List<String> values) {
+            return in(remark13, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13NotIn(List<String> values) {
+            return notIn(remark13, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13Between(String value1, String value2) {
+            return between(remark13, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark13NotBetween(String value1, String value2) {
+            return notBetween(remark13, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIdCardIsNull() {
+            return isNull(idCard);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardIsNotNull() {
+            return isNotNull(idCard);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardEqualTo(String value) {
+            return equalTo(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardNotEqualTo(String value) {
+            return notEqualTo(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardGreaterThan(String value) {
+            return greaterThan(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardLessThan(String value) {
+            return lessThan(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardLike(String value) {
+            return like(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardNotLike(String value) {
+            return notLike(idCard, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardIn(List<String> values) {
+            return in(idCard, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardNotIn(List<String> values) {
+            return notIn(idCard, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardBetween(String value1, String value2) {
+            return between(idCard, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardNotBetween(String value1, String value2) {
+            return notBetween(idCard, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark12IsNull() {
+            return isNull(remark12);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12IsNotNull() {
+            return isNotNull(remark12);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12EqualTo(String value) {
+            return equalTo(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12NotEqualTo(String value) {
+            return notEqualTo(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12GreaterThan(String value) {
+            return greaterThan(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12LessThan(String value) {
+            return lessThan(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12Like(String value) {
+            return like(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12NotLike(String value) {
+            return notLike(remark12, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12In(List<String> values) {
+            return in(remark12, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12NotIn(List<String> values) {
+            return notIn(remark12, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12Between(String value1, String value2) {
+            return between(remark12, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark12NotBetween(String value1, String value2) {
+            return notBetween(remark12, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark11IsNull() {
+            return isNull(remark11);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11IsNotNull() {
+            return isNotNull(remark11);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11EqualTo(String value) {
+            return equalTo(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11NotEqualTo(String value) {
+            return notEqualTo(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11GreaterThan(String value) {
+            return greaterThan(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11LessThan(String value) {
+            return lessThan(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11Like(String value) {
+            return like(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11NotLike(String value) {
+            return notLike(remark11, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11In(List<String> values) {
+            return in(remark11, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11NotIn(List<String> values) {
+            return notIn(remark11, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11Between(String value1, String value2) {
+            return between(remark11, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark11NotBetween(String value1, String value2) {
+            return notBetween(remark11, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImAliwwIsNull() {
+            return isNull(imAliww);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwIsNotNull() {
+            return isNotNull(imAliww);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwEqualTo(String value) {
+            return equalTo(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwNotEqualTo(String value) {
+            return notEqualTo(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwGreaterThan(String value) {
+            return greaterThan(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwLessThan(String value) {
+            return lessThan(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwLike(String value) {
+            return like(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwNotLike(String value) {
+            return notLike(imAliww, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwIn(List<String> values) {
+            return in(imAliww, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwNotIn(List<String> values) {
+            return notIn(imAliww, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwBetween(String value1, String value2) {
+            return between(imAliww, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImAliwwNotBetween(String value1, String value2) {
+            return notBetween(imAliww, value1, value2);
+        }
         public MemberUserCopy2Example.Criteria andRemark19IsNull() {
-            this.addCriterion("remark19 is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(remark19);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19IsNotNull() {
-            this.addCriterion("remark19 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(remark19);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19EqualTo(String value) {
-            this.addCriterion("remark19 =", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19NotEqualTo(String value) {
-            this.addCriterion("remark19 <>", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19GreaterThan(String value) {
-            this.addCriterion("remark19 >", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark19 >=", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19LessThan(String value) {
-            this.addCriterion("remark19 <", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19LessThanOrEqualTo(String value) {
-            this.addCriterion("remark19 <=", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19Like(String value) {
-            this.addCriterion("remark19 like", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return like(remark19, value);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19NotLike(String value) {
-            this.addCriterion("remark19 not like", value, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark19In(List<String> values) {
-            this.addCriterion("remark19 in", values, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notLike(remark19, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark19In(List<String> values) {
+            return in(remark19, values);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19NotIn(List<String> values) {
-            this.addCriterion("remark19 not in", values, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(remark19, values);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19Between(String value1, String value2) {
-            this.addCriterion("remark19 between", value1, value2, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(remark19, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andRemark19NotBetween(String value1, String value2) {
-            this.addCriterion("remark19 not between", value1, value2, "remark19");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(remark19, value1, value2);
         }
-
-        public MemberUserCopy2Example.Criteria andRemark20IsNull() {
-            this.addCriterion("remark20 is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20IsNotNull() {
-            this.addCriterion("remark20 is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20EqualTo(String value) {
-            this.addCriterion("remark20 =", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20NotEqualTo(String value) {
-            this.addCriterion("remark20 <>", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20GreaterThan(String value) {
-            this.addCriterion("remark20 >", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark20 >=", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20LessThan(String value) {
-            this.addCriterion("remark20 <", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20LessThanOrEqualTo(String value) {
-            this.addCriterion("remark20 <=", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20Like(String value) {
-            this.addCriterion("remark20 like", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20NotLike(String value) {
-            this.addCriterion("remark20 not like", value, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRemark20In(List<String> values) {
-            this.addCriterion("remark20 in", values, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20NotIn(List<String> values) {
-            this.addCriterion("remark20 not in", values, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20Between(String value1, String value2) {
-            this.addCriterion("remark20 between", value1, value2, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRemark20NotBetween(String value1, String value2) {
-            this.addCriterion("remark20 not between", value1, value2, "remark20");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexIsNull() {
-            this.addCriterion("sex is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexIsNotNull() {
-            this.addCriterion("sex is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexEqualTo(String value) {
-            this.addCriterion("sex =", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexNotEqualTo(String value) {
-            this.addCriterion("sex <>", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexGreaterThan(String value) {
-            this.addCriterion("sex >", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexGreaterThanOrEqualTo(String value) {
-            this.addCriterion("sex >=", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexLessThan(String value) {
-            this.addCriterion("sex <", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexLessThanOrEqualTo(String value) {
-            this.addCriterion("sex <=", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexLike(String value) {
-            this.addCriterion("sex like", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexNotLike(String value) {
-            this.addCriterion("sex not like", value, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andSexIn(List<String> values) {
-            this.addCriterion("sex in", values, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexNotIn(List<String> values) {
-            this.addCriterion("sex not in", values, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexBetween(String value1, String value2) {
-            this.addCriterion("sex between", value1, value2, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andSexNotBetween(String value1, String value2) {
-            this.addCriterion("sex not between", value1, value2, "sex");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
         public MemberUserCopy2Example.Criteria andIsNameValidateIsNull() {
-            this.addCriterion("is_name_validate is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(isNameValidate);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateIsNotNull() {
-            this.addCriterion("is_name_validate is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(isNameValidate);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateEqualTo(Integer value) {
-            this.addCriterion("is_name_validate =", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(isNameValidate, value);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateNotEqualTo(Integer value) {
-            this.addCriterion("is_name_validate <>", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(isNameValidate, value);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateGreaterThan(Integer value) {
-            this.addCriterion("is_name_validate >", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(isNameValidate, value);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_name_validate >=", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(isNameValidate, value);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateLessThan(Integer value) {
-            this.addCriterion("is_name_validate <", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(isNameValidate, value);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_name_validate <=", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(isNameValidate, value);
         }
 
-        public MemberUserCopy2Example.Criteria andIsNameValidateLike(String value) {
-            this.addCriterion("is_name_validate like", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsNameValidateNotLike(String value) {
-            this.addCriterion("is_name_validate not like", value, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIsNameValidateIn(List<Integer> values) {
-            this.addCriterion("is_name_validate in", values, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+        public MemberUserCopy2Example.Criteria andIsNameValidateIn(List<Integer> values) {
+            return in(isNameValidate, values);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateNotIn(List<Integer> values) {
-            this.addCriterion("is_name_validate not in", values, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(isNameValidate, values);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_name_validate between", value1, value2, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(isNameValidate, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andIsNameValidateNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_name_validate not between", value1, value2, "isNameValidate");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(isNameValidate, value1, value2);
         }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthIsNull() {
-            this.addCriterion("password_strength is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthIsNotNull() {
-            this.addCriterion("password_strength is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthEqualTo(Integer value) {
-            this.addCriterion("password_strength =", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthNotEqualTo(Integer value) {
-            this.addCriterion("password_strength <>", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthGreaterThan(Integer value) {
-            this.addCriterion("password_strength >", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("password_strength >=", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthLessThan(Integer value) {
-            this.addCriterion("password_strength <", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthLessThanOrEqualTo(Integer value) {
-            this.addCriterion("password_strength <=", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthLike(String value) {
-            this.addCriterion("password_strength like", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthNotLike(String value) {
-            this.addCriterion("password_strength not like", value, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andPasswordStrengthIn(List<Integer> values) {
-            this.addCriterion("password_strength in", values, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthNotIn(List<Integer> values) {
-            this.addCriterion("password_strength not in", values, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthBetween(Integer value1, Integer value2) {
-            this.addCriterion("password_strength between", value1, value2, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andPasswordStrengthNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("password_strength not between", value1, value2, "passwordStrength");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateIsNull() {
-            this.addCriterion("is_mail_validate is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateIsNotNull() {
-            this.addCriterion("is_mail_validate is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateEqualTo(Integer value) {
-            this.addCriterion("is_mail_validate =", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateNotEqualTo(Integer value) {
-            this.addCriterion("is_mail_validate <>", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateGreaterThan(Integer value) {
-            this.addCriterion("is_mail_validate >", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mail_validate >=", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateLessThan(Integer value) {
-            this.addCriterion("is_mail_validate <", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mail_validate <=", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateLike(String value) {
-            this.addCriterion("is_mail_validate like", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateNotLike(String value) {
-            this.addCriterion("is_mail_validate not like", value, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIsMailValidateIn(List<Integer> values) {
-            this.addCriterion("is_mail_validate in", values, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateNotIn(List<Integer> values) {
-            this.addCriterion("is_mail_validate not in", values, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mail_validate between", value1, value2, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsMailValidateNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mail_validate not between", value1, value2, "isMailValidate");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobIsNull() {
-            this.addCriterion("is_phone_mob is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobIsNotNull() {
-            this.addCriterion("is_phone_mob is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobEqualTo(Integer value) {
-            this.addCriterion("is_phone_mob =", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobNotEqualTo(Integer value) {
-            this.addCriterion("is_phone_mob <>", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobGreaterThan(Integer value) {
-            this.addCriterion("is_phone_mob >", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_phone_mob >=", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobLessThan(Integer value) {
-            this.addCriterion("is_phone_mob <", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_phone_mob <=", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobLike(String value) {
-            this.addCriterion("is_phone_mob like", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobNotLike(String value) {
-            this.addCriterion("is_phone_mob not like", value, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIsPhoneMobIn(List<Integer> values) {
-            this.addCriterion("is_phone_mob in", values, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobNotIn(List<Integer> values) {
-            this.addCriterion("is_phone_mob not in", values, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_phone_mob between", value1, value2, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPhoneMobNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_phone_mob not between", value1, value2, "isPhoneMob");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordIsNull() {
-            this.addCriterion("is_pay_password is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordIsNotNull() {
-            this.addCriterion("is_pay_password is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordEqualTo(Integer value) {
-            this.addCriterion("is_pay_password =", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordNotEqualTo(Integer value) {
-            this.addCriterion("is_pay_password <>", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordGreaterThan(Integer value) {
-            this.addCriterion("is_pay_password >", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_pay_password >=", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordLessThan(Integer value) {
-            this.addCriterion("is_pay_password <", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_pay_password <=", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordLike(String value) {
-            this.addCriterion("is_pay_password like", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordNotLike(String value) {
-            this.addCriterion("is_pay_password not like", value, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIsPayPasswordIn(List<Integer> values) {
-            this.addCriterion("is_pay_password in", values, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordNotIn(List<Integer> values) {
-            this.addCriterion("is_pay_password not in", values, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_pay_password between", value1, value2, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIsPayPasswordNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_pay_password not between", value1, value2, "isPayPassword");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgIsNull() {
-            this.addCriterion("id_card_img is null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgIsNotNull() {
-            this.addCriterion("id_card_img is not null");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgEqualTo(String value) {
-            this.addCriterion("id_card_img =", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgNotEqualTo(String value) {
-            this.addCriterion("id_card_img <>", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgGreaterThan(String value) {
-            this.addCriterion("id_card_img >", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgGreaterThanOrEqualTo(String value) {
-            this.addCriterion("id_card_img >=", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgLessThan(String value) {
-            this.addCriterion("id_card_img <", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgLessThanOrEqualTo(String value) {
-            this.addCriterion("id_card_img <=", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgLike(String value) {
-            this.addCriterion("id_card_img like", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgNotLike(String value) {
-            this.addCriterion("id_card_img not like", value, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andIdCardImgIn(List<String> values) {
-            this.addCriterion("id_card_img in", values, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgNotIn(List<String> values) {
-            this.addCriterion("id_card_img not in", values, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgBetween(String value1, String value2) {
-            this.addCriterion("id_card_img between", value1, value2, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andIdCardImgNotBetween(String value1, String value2) {
-            this.addCriterion("id_card_img not between", value1, value2, "idCardImg");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
         public MemberUserCopy2Example.Criteria andRegisterSourceIsNull() {
-            this.addCriterion("register_source is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(registerSource);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceIsNotNull() {
-            this.addCriterion("register_source is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(registerSource);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceEqualTo(Long value) {
-            this.addCriterion("register_source =", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(registerSource, value);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceNotEqualTo(Long value) {
-            this.addCriterion("register_source <>", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(registerSource, value);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceGreaterThan(Long value) {
-            this.addCriterion("register_source >", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(registerSource, value);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("register_source >=", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(registerSource, value);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceLessThan(Long value) {
-            this.addCriterion("register_source <", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(registerSource, value);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceLessThanOrEqualTo(Long value) {
-            this.addCriterion("register_source <=", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(registerSource, value);
         }
 
-        public MemberUserCopy2Example.Criteria andRegisterSourceLike(String value) {
-            this.addCriterion("register_source like", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
-        }
-
-        public MemberUserCopy2Example.Criteria andRegisterSourceNotLike(String value) {
-            this.addCriterion("register_source not like", value, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andRegisterSourceIn(List<Long> values) {
-            this.addCriterion("register_source in", values, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+        public MemberUserCopy2Example.Criteria andRegisterSourceIn(List<Long> values) {
+            return in(registerSource, values);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceNotIn(List<Long> values) {
-            this.addCriterion("register_source not in", values, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(registerSource, values);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceBetween(Long value1, Long value2) {
-            this.addCriterion("register_source between", value1, value2, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(registerSource, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andRegisterSourceNotBetween(Long value1, Long value2) {
-            this.addCriterion("register_source not between", value1, value2, "registerSource");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(registerSource, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andPasswordIsNull() {
+            return isNull(password);
         }
 
+        public MemberUserCopy2Example.Criteria andPasswordIsNotNull() {
+            return isNotNull(password);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordEqualTo(String value) {
+            return equalTo(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordNotEqualTo(String value) {
+            return notEqualTo(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordGreaterThan(String value) {
+            return greaterThan(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordLessThan(String value) {
+            return lessThan(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordLike(String value) {
+            return like(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordNotLike(String value) {
+            return notLike(password, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordIn(List<String> values) {
+            return in(password, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordNotIn(List<String> values) {
+            return notIn(password, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordBetween(String value1, String value2) {
+            return between(password, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordNotBetween(String value1, String value2) {
+            return notBetween(password, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIsOpenStoreIsNull() {
+            return isNull(isOpenStore);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreIsNotNull() {
+            return isNotNull(isOpenStore);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreEqualTo(Integer value) {
+            return equalTo(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreNotEqualTo(Integer value) {
+            return notEqualTo(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreGreaterThan(Integer value) {
+            return greaterThan(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreLessThan(Integer value) {
+            return lessThan(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isOpenStore, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreIn(List<Integer> values) {
+            return in(isOpenStore, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreNotIn(List<Integer> values) {
+            return notIn(isOpenStore, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreBetween(Integer value1, Integer value2) {
+            return between(isOpenStore, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsOpenStoreNotBetween(Integer value1, Integer value2) {
+            return notBetween(isOpenStore, value1, value2);
+        }
         public MemberUserCopy2Example.Criteria andZfbAccountIsNull() {
-            this.addCriterion("zfb_account is null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNull(zfbAccount);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountIsNotNull() {
-            this.addCriterion("zfb_account is not null");
-            return (MemberUserCopy2Example.Criteria)this;
+            return isNotNull(zfbAccount);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountEqualTo(String value) {
-            this.addCriterion("zfb_account =", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return equalTo(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountNotEqualTo(String value) {
-            this.addCriterion("zfb_account <>", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notEqualTo(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountGreaterThan(String value) {
-            this.addCriterion("zfb_account >", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThan(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountGreaterThanOrEqualTo(String value) {
-            this.addCriterion("zfb_account >=", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return greaterThanOrEqualTo(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountLessThan(String value) {
-            this.addCriterion("zfb_account <", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThan(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountLessThanOrEqualTo(String value) {
-            this.addCriterion("zfb_account <=", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return lessThanOrEqualTo(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountLike(String value) {
-            this.addCriterion("zfb_account like", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return like(zfbAccount, value);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountNotLike(String value) {
-            this.addCriterion("zfb_account not like", value, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
-        }        public MemberUserCopy2Example.Criteria andZfbAccountIn(List<String> values) {
-            this.addCriterion("zfb_account in", values, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notLike(zfbAccount, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andZfbAccountIn(List<String> values) {
+            return in(zfbAccount, values);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountNotIn(List<String> values) {
-            this.addCriterion("zfb_account not in", values, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notIn(zfbAccount, values);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountBetween(String value1, String value2) {
-            this.addCriterion("zfb_account between", value1, value2, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return between(zfbAccount, value1, value2);
         }
 
         public MemberUserCopy2Example.Criteria andZfbAccountNotBetween(String value1, String value2) {
-            this.addCriterion("zfb_account not between", value1, value2, "zfbAccount");
-            return (MemberUserCopy2Example.Criteria)this;
+            return notBetween(zfbAccount, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIsPhoneMobIsNull() {
+            return isNull(isPhoneMob);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobIsNotNull() {
+            return isNotNull(isPhoneMob);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobEqualTo(Integer value) {
+            return equalTo(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobNotEqualTo(Integer value) {
+            return notEqualTo(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobGreaterThan(Integer value) {
+            return greaterThan(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobLessThan(Integer value) {
+            return lessThan(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isPhoneMob, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobIn(List<Integer> values) {
+            return in(isPhoneMob, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobNotIn(List<Integer> values) {
+            return notIn(isPhoneMob, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobBetween(Integer value1, Integer value2) {
+            return between(isPhoneMob, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPhoneMobNotBetween(Integer value1, Integer value2) {
+            return notBetween(isPhoneMob, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andSellerGradeIsNull() {
+            return isNull(sellerGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeIsNotNull() {
+            return isNotNull(sellerGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeEqualTo(Long value) {
+            return equalTo(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeNotEqualTo(Long value) {
+            return notEqualTo(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeGreaterThan(Long value) {
+            return greaterThan(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeLessThan(Long value) {
+            return lessThan(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(sellerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeIn(List<Long> values) {
+            return in(sellerGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeNotIn(List<Long> values) {
+            return notIn(sellerGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeBetween(Long value1, Long value2) {
+            return between(sellerGrade, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerGradeNotBetween(Long value1, Long value2) {
+            return notBetween(sellerGrade, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark20IsNull() {
+            return isNull(remark20);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20IsNotNull() {
+            return isNotNull(remark20);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20EqualTo(String value) {
+            return equalTo(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20NotEqualTo(String value) {
+            return notEqualTo(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20GreaterThan(String value) {
+            return greaterThan(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20LessThan(String value) {
+            return lessThan(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20Like(String value) {
+            return like(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20NotLike(String value) {
+            return notLike(remark20, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20In(List<String> values) {
+            return in(remark20, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20NotIn(List<String> values) {
+            return notIn(remark20, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20Between(String value1, String value2) {
+            return between(remark20, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark20NotBetween(String value1, String value2) {
+            return notBetween(remark20, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImSkypeIsNull() {
+            return isNull(imSkype);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeIsNotNull() {
+            return isNotNull(imSkype);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeEqualTo(String value) {
+            return equalTo(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeNotEqualTo(String value) {
+            return notEqualTo(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeGreaterThan(String value) {
+            return greaterThan(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeLessThan(String value) {
+            return lessThan(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeLike(String value) {
+            return like(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeNotLike(String value) {
+            return notLike(imSkype, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeIn(List<String> values) {
+            return in(imSkype, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeNotIn(List<String> values) {
+            return notIn(imSkype, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeBetween(String value1, String value2) {
+            return between(imSkype, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImSkypeNotBetween(String value1, String value2) {
+            return notBetween(imSkype, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andPortraitUrlIsNull() {
+            return isNull(portraitUrl);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlIsNotNull() {
+            return isNotNull(portraitUrl);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlEqualTo(String value) {
+            return equalTo(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlNotEqualTo(String value) {
+            return notEqualTo(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlGreaterThan(String value) {
+            return greaterThan(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlLessThan(String value) {
+            return lessThan(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlLike(String value) {
+            return like(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlNotLike(String value) {
+            return notLike(portraitUrl, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlIn(List<String> values) {
+            return in(portraitUrl, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlNotIn(List<String> values) {
+            return notIn(portraitUrl, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlBetween(String value1, String value2) {
+            return between(portraitUrl, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andPortraitUrlNotBetween(String value1, String value2) {
+            return notBetween(portraitUrl, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andAccountTypeIsNull() {
+            return isNull(accountType);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeIsNotNull() {
+            return isNotNull(accountType);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeEqualTo(Integer value) {
+            return equalTo(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeNotEqualTo(Integer value) {
+            return notEqualTo(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeGreaterThan(Integer value) {
+            return greaterThan(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeLessThan(Integer value) {
+            return lessThan(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(accountType, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeIn(List<Integer> values) {
+            return in(accountType, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeNotIn(List<Integer> values) {
+            return notIn(accountType, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeBetween(Integer value1, Integer value2) {
+            return between(accountType, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(accountType, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImYahooWeiboIsNull() {
+            return isNull(imYahooWeibo);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboIsNotNull() {
+            return isNotNull(imYahooWeibo);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboEqualTo(String value) {
+            return equalTo(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboNotEqualTo(String value) {
+            return notEqualTo(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboGreaterThan(String value) {
+            return greaterThan(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboLessThan(String value) {
+            return lessThan(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboLike(String value) {
+            return like(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboNotLike(String value) {
+            return notLike(imYahooWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboIn(List<String> values) {
+            return in(imYahooWeibo, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboNotIn(List<String> values) {
+            return notIn(imYahooWeibo, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboBetween(String value1, String value2) {
+            return between(imYahooWeibo, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImYahooWeiboNotBetween(String value1, String value2) {
+            return notBetween(imYahooWeibo, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andBuyerGradeIsNull() {
+            return isNull(buyerGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeIsNotNull() {
+            return isNotNull(buyerGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeEqualTo(Long value) {
+            return equalTo(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeNotEqualTo(Long value) {
+            return notEqualTo(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeGreaterThan(Long value) {
+            return greaterThan(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeLessThan(Long value) {
+            return lessThan(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(buyerGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeIn(List<Long> values) {
+            return in(buyerGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeNotIn(List<Long> values) {
+            return notIn(buyerGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeBetween(Long value1, Long value2) {
+            return between(buyerGrade, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andBuyerGradeNotBetween(Long value1, Long value2) {
+            return notBetween(buyerGrade, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andUseStatusIsNull() {
+            return isNull(useStatus);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusIsNotNull() {
+            return isNotNull(useStatus);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusEqualTo(Long value) {
+            return equalTo(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusNotEqualTo(Long value) {
+            return notEqualTo(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusGreaterThan(Long value) {
+            return greaterThan(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusLessThan(Long value) {
+            return lessThan(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(useStatus, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusIn(List<Long> values) {
+            return in(useStatus, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusNotIn(List<Long> values) {
+            return notIn(useStatus, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusBetween(Long value1, Long value2) {
+            return between(useStatus, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andUseStatusNotBetween(Long value1, Long value2) {
+            return notBetween(useStatus, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andAccountIdIsNull() {
+            return isNull(accountId);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdIsNotNull() {
+            return isNotNull(accountId);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdEqualTo(Long value) {
+            return equalTo(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdNotEqualTo(Long value) {
+            return notEqualTo(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdGreaterThan(Long value) {
+            return greaterThan(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdLessThan(Long value) {
+            return lessThan(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(accountId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdIn(List<Long> values) {
+            return in(accountId, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdNotIn(List<Long> values) {
+            return notIn(accountId, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdBetween(Long value1, Long value2) {
+            return between(accountId, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountIdNotBetween(Long value1, Long value2) {
+            return notBetween(accountId, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRegTimeIsNull() {
+            return isNull(regTime);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeIsNotNull() {
+            return isNotNull(regTime);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeEqualTo(Date value) {
+            return equalTo(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeNotEqualTo(Date value) {
+            return notEqualTo(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeGreaterThan(Date value) {
+            return greaterThan(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeLessThan(Date value) {
+            return lessThan(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(regTime, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeIn(List<Date> values) {
+            return in(regTime, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeNotIn(List<Date> values) {
+            return notIn(regTime, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeBetween(Date value1, Date value2) {
+            return between(regTime, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRegTimeNotBetween(Date value1, Date value2) {
+            return notBetween(regTime, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark9IsNull() {
+            return isNull(remark9);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9IsNotNull() {
+            return isNotNull(remark9);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9EqualTo(String value) {
+            return equalTo(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9NotEqualTo(String value) {
+            return notEqualTo(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9GreaterThan(String value) {
+            return greaterThan(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9LessThan(String value) {
+            return lessThan(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9Like(String value) {
+            return like(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9NotLike(String value) {
+            return notLike(remark9, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9In(List<String> values) {
+            return in(remark9, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9NotIn(List<String> values) {
+            return notIn(remark9, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9Between(String value1, String value2) {
+            return between(remark9, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark9NotBetween(String value1, String value2) {
+            return notBetween(remark9, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark8IsNull() {
+            return isNull(remark8);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8IsNotNull() {
+            return isNotNull(remark8);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8EqualTo(String value) {
+            return equalTo(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8NotEqualTo(String value) {
+            return notEqualTo(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8GreaterThan(String value) {
+            return greaterThan(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8LessThan(String value) {
+            return lessThan(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8Like(String value) {
+            return like(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8NotLike(String value) {
+            return notLike(remark8, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8In(List<String> values) {
+            return in(remark8, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8NotIn(List<String> values) {
+            return notIn(remark8, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8Between(String value1, String value2) {
+            return between(remark8, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark8NotBetween(String value1, String value2) {
+            return notBetween(remark8, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark5IsNull() {
+            return isNull(remark5);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5IsNotNull() {
+            return isNotNull(remark5);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5EqualTo(String value) {
+            return equalTo(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5NotEqualTo(String value) {
+            return notEqualTo(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5GreaterThan(String value) {
+            return greaterThan(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5LessThan(String value) {
+            return lessThan(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5Like(String value) {
+            return like(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5NotLike(String value) {
+            return notLike(remark5, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5In(List<String> values) {
+            return in(remark5, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5NotIn(List<String> values) {
+            return notIn(remark5, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5Between(String value1, String value2) {
+            return between(remark5, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark5NotBetween(String value1, String value2) {
+            return notBetween(remark5, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark10IsNull() {
+            return isNull(remark10);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10IsNotNull() {
+            return isNotNull(remark10);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10EqualTo(String value) {
+            return equalTo(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10NotEqualTo(String value) {
+            return notEqualTo(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10GreaterThan(String value) {
+            return greaterThan(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10LessThan(String value) {
+            return lessThan(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10Like(String value) {
+            return like(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10NotLike(String value) {
+            return notLike(remark10, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10In(List<String> values) {
+            return in(remark10, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10NotIn(List<String> values) {
+            return notIn(remark10, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10Between(String value1, String value2) {
+            return between(remark10, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark10NotBetween(String value1, String value2) {
+            return notBetween(remark10, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark4IsNull() {
+            return isNull(remark4);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4IsNotNull() {
+            return isNotNull(remark4);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4EqualTo(String value) {
+            return equalTo(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4NotEqualTo(String value) {
+            return notEqualTo(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4GreaterThan(String value) {
+            return greaterThan(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4LessThan(String value) {
+            return lessThan(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4Like(String value) {
+            return like(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4NotLike(String value) {
+            return notLike(remark4, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4In(List<String> values) {
+            return in(remark4, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4NotIn(List<String> values) {
+            return notIn(remark4, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4Between(String value1, String value2) {
+            return between(remark4, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark4NotBetween(String value1, String value2) {
+            return notBetween(remark4, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark7IsNull() {
+            return isNull(remark7);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7IsNotNull() {
+            return isNotNull(remark7);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7EqualTo(String value) {
+            return equalTo(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7NotEqualTo(String value) {
+            return notEqualTo(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7GreaterThan(String value) {
+            return greaterThan(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7LessThan(String value) {
+            return lessThan(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7Like(String value) {
+            return like(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7NotLike(String value) {
+            return notLike(remark7, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7In(List<String> values) {
+            return in(remark7, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7NotIn(List<String> values) {
+            return notIn(remark7, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7Between(String value1, String value2) {
+            return between(remark7, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark7NotBetween(String value1, String value2) {
+            return notBetween(remark7, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark6IsNull() {
+            return isNull(remark6);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6IsNotNull() {
+            return isNotNull(remark6);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6EqualTo(String value) {
+            return equalTo(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6NotEqualTo(String value) {
+            return notEqualTo(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6GreaterThan(String value) {
+            return greaterThan(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6LessThan(String value) {
+            return lessThan(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6Like(String value) {
+            return like(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6NotLike(String value) {
+            return notLike(remark6, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6In(List<String> values) {
+            return in(remark6, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6NotIn(List<String> values) {
+            return notIn(remark6, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6Between(String value1, String value2) {
+            return between(remark6, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark6NotBetween(String value1, String value2) {
+            return notBetween(remark6, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIdCardImgIsNull() {
+            return isNull(idCardImg);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgIsNotNull() {
+            return isNotNull(idCardImg);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgEqualTo(String value) {
+            return equalTo(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgNotEqualTo(String value) {
+            return notEqualTo(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgGreaterThan(String value) {
+            return greaterThan(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgLessThan(String value) {
+            return lessThan(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgLike(String value) {
+            return like(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgNotLike(String value) {
+            return notLike(idCardImg, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgIn(List<String> values) {
+            return in(idCardImg, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgNotIn(List<String> values) {
+            return notIn(idCardImg, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgBetween(String value1, String value2) {
+            return between(idCardImg, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIdCardImgNotBetween(String value1, String value2) {
+            return notBetween(idCardImg, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark1IsNull() {
+            return isNull(remark1);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1IsNotNull() {
+            return isNotNull(remark1);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1EqualTo(String value) {
+            return equalTo(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1NotEqualTo(String value) {
+            return notEqualTo(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1GreaterThan(String value) {
+            return greaterThan(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1LessThan(String value) {
+            return lessThan(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1Like(String value) {
+            return like(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1NotLike(String value) {
+            return notLike(remark1, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1In(List<String> values) {
+            return in(remark1, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1NotIn(List<String> values) {
+            return notIn(remark1, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1Between(String value1, String value2) {
+            return between(remark1, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark1NotBetween(String value1, String value2) {
+            return notBetween(remark1, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIsMailValidateIsNull() {
+            return isNull(isMailValidate);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateIsNotNull() {
+            return isNotNull(isMailValidate);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateEqualTo(Integer value) {
+            return equalTo(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateNotEqualTo(Integer value) {
+            return notEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateGreaterThan(Integer value) {
+            return greaterThan(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateLessThan(Integer value) {
+            return lessThan(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateIn(List<Integer> values) {
+            return in(isMailValidate, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateNotIn(List<Integer> values) {
+            return notIn(isMailValidate, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateBetween(Integer value1, Integer value2) {
+            return between(isMailValidate, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsMailValidateNotBetween(Integer value1, Integer value2) {
+            return notBetween(isMailValidate, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andLoginsIsNull() {
+            return isNull(logins);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsIsNotNull() {
+            return isNotNull(logins);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsEqualTo(Long value) {
+            return equalTo(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsNotEqualTo(Long value) {
+            return notEqualTo(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsGreaterThan(Long value) {
+            return greaterThan(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsLessThan(Long value) {
+            return lessThan(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(logins, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsIn(List<Long> values) {
+            return in(logins, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsNotIn(List<Long> values) {
+            return notIn(logins, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsBetween(Long value1, Long value2) {
+            return between(logins, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginsNotBetween(Long value1, Long value2) {
+            return notBetween(logins, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark3IsNull() {
+            return isNull(remark3);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3IsNotNull() {
+            return isNotNull(remark3);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3EqualTo(String value) {
+            return equalTo(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3NotEqualTo(String value) {
+            return notEqualTo(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3GreaterThan(String value) {
+            return greaterThan(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3LessThan(String value) {
+            return lessThan(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3Like(String value) {
+            return like(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3NotLike(String value) {
+            return notLike(remark3, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3In(List<String> values) {
+            return in(remark3, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3NotIn(List<String> values) {
+            return notIn(remark3, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3Between(String value1, String value2) {
+            return between(remark3, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark3NotBetween(String value1, String value2) {
+            return notBetween(remark3, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImWeixinIsNull() {
+            return isNull(imWeixin);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinIsNotNull() {
+            return isNotNull(imWeixin);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinEqualTo(String value) {
+            return equalTo(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinNotEqualTo(String value) {
+            return notEqualTo(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinGreaterThan(String value) {
+            return greaterThan(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinLessThan(String value) {
+            return lessThan(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinLike(String value) {
+            return like(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinNotLike(String value) {
+            return notLike(imWeixin, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinIn(List<String> values) {
+            return in(imWeixin, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinNotIn(List<String> values) {
+            return notIn(imWeixin, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinBetween(String value1, String value2) {
+            return between(imWeixin, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImWeixinNotBetween(String value1, String value2) {
+            return notBetween(imWeixin, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRemark2IsNull() {
+            return isNull(remark2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2IsNotNull() {
+            return isNotNull(remark2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2EqualTo(String value) {
+            return equalTo(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2NotEqualTo(String value) {
+            return notEqualTo(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2GreaterThan(String value) {
+            return greaterThan(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2LessThan(String value) {
+            return lessThan(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2Like(String value) {
+            return like(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2NotLike(String value) {
+            return notLike(remark2, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2In(List<String> values) {
+            return in(remark2, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2NotIn(List<String> values) {
+            return notIn(remark2, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2Between(String value1, String value2) {
+            return between(remark2, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRemark2NotBetween(String value1, String value2) {
+            return notBetween(remark2, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andBirthdayIsNull() {
+            return isNull(birthday);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayIsNotNull() {
+            return isNotNull(birthday);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayEqualTo(Date value) {
+            return equalTo(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayNotEqualTo(Date value) {
+            return notEqualTo(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayGreaterThan(Date value) {
+            return greaterThan(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayLessThan(Date value) {
+            return lessThan(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(birthday, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayIn(List<Date> values) {
+            return in(birthday, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayNotIn(List<Date> values) {
+            return notIn(birthday, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayBetween(Date value1, Date value2) {
+            return between(birthday, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayNotBetween(Date value1, Date value2) {
+            return notBetween(birthday, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andPasswordStrengthIsNull() {
+            return isNull(passwordStrength);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthIsNotNull() {
+            return isNotNull(passwordStrength);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthEqualTo(Integer value) {
+            return equalTo(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthNotEqualTo(Integer value) {
+            return notEqualTo(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthGreaterThan(Integer value) {
+            return greaterThan(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthLessThan(Integer value) {
+            return lessThan(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(passwordStrength, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthIn(List<Integer> values) {
+            return in(passwordStrength, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthNotIn(List<Integer> values) {
+            return notIn(passwordStrength, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthBetween(Integer value1, Integer value2) {
+            return between(passwordStrength, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andPasswordStrengthNotBetween(Integer value1, Integer value2) {
+            return notBetween(passwordStrength, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andAccountNameIsNull() {
+            return isNull(accountName);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameIsNotNull() {
+            return isNotNull(accountName);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameEqualTo(String value) {
+            return equalTo(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameNotEqualTo(String value) {
+            return notEqualTo(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameGreaterThan(String value) {
+            return greaterThan(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameLessThan(String value) {
+            return lessThan(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameLike(String value) {
+            return like(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameNotLike(String value) {
+            return notLike(accountName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameIn(List<String> values) {
+            return in(accountName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameNotIn(List<String> values) {
+            return notIn(accountName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameBetween(String value1, String value2) {
+            return between(accountName, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andAccountNameNotBetween(String value1, String value2) {
+            return notBetween(accountName, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andIsPayPasswordIsNull() {
+            return isNull(isPayPassword);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordIsNotNull() {
+            return isNotNull(isPayPassword);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordEqualTo(Integer value) {
+            return equalTo(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordNotEqualTo(Integer value) {
+            return notEqualTo(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordGreaterThan(Integer value) {
+            return greaterThan(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordLessThan(Integer value) {
+            return lessThan(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isPayPassword, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordIn(List<Integer> values) {
+            return in(isPayPassword, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordNotIn(List<Integer> values) {
+            return notIn(isPayPassword, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordBetween(Integer value1, Integer value2) {
+            return between(isPayPassword, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andIsPayPasswordNotBetween(Integer value1, Integer value2) {
+            return notBetween(isPayPassword, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andLoginEmailIsNull() {
+            return isNull(loginEmail);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailIsNotNull() {
+            return isNotNull(loginEmail);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailEqualTo(String value) {
+            return equalTo(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailNotEqualTo(String value) {
+            return notEqualTo(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailGreaterThan(String value) {
+            return greaterThan(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailLessThan(String value) {
+            return lessThan(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailLike(String value) {
+            return like(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailNotLike(String value) {
+            return notLike(loginEmail, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailIn(List<String> values) {
+            return in(loginEmail, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailNotIn(List<String> values) {
+            return notIn(loginEmail, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailBetween(String value1, String value2) {
+            return between(loginEmail, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginEmailNotBetween(String value1, String value2) {
+            return notBetween(loginEmail, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andUserNickIsNull() {
+            return isNull(userNick);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickIsNotNull() {
+            return isNotNull(userNick);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickEqualTo(String value) {
+            return equalTo(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickNotEqualTo(String value) {
+            return notEqualTo(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickGreaterThan(String value) {
+            return greaterThan(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickLessThan(String value) {
+            return lessThan(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickLike(String value) {
+            return like(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickNotLike(String value) {
+            return notLike(userNick, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickIn(List<String> values) {
+            return in(userNick, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickNotIn(List<String> values) {
+            return notIn(userNick, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickBetween(String value1, String value2) {
+            return between(userNick, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNickNotBetween(String value1, String value2) {
+            return notBetween(userNick, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImQqIsNull() {
+            return isNull(imQq);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqIsNotNull() {
+            return isNotNull(imQq);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqEqualTo(String value) {
+            return equalTo(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqNotEqualTo(String value) {
+            return notEqualTo(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqGreaterThan(String value) {
+            return greaterThan(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqLessThan(String value) {
+            return lessThan(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqLike(String value) {
+            return like(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqNotLike(String value) {
+            return notLike(imQq, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqIn(List<String> values) {
+            return in(imQq, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqNotIn(List<String> values) {
+            return notIn(imQq, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqBetween(String value1, String value2) {
+            return between(imQq, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqNotBetween(String value1, String value2) {
+            return notBetween(imQq, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andSellerVipGradeIsNull() {
+            return isNull(sellerVipGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeIsNotNull() {
+            return isNotNull(sellerVipGrade);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeEqualTo(Long value) {
+            return equalTo(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeNotEqualTo(Long value) {
+            return notEqualTo(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeGreaterThan(Long value) {
+            return greaterThan(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeLessThan(Long value) {
+            return lessThan(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(sellerVipGrade, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeIn(List<Long> values) {
+            return in(sellerVipGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeNotIn(List<Long> values) {
+            return notIn(sellerVipGrade, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeBetween(Long value1, Long value2) {
+            return between(sellerVipGrade, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andSellerVipGradeNotBetween(Long value1, Long value2) {
+            return notBetween(sellerVipGrade, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andEmailIsNull() {
+            return isNull(email);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailIsNotNull() {
+            return isNotNull(email);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailEqualTo(String value) {
+            return equalTo(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailNotEqualTo(String value) {
+            return notEqualTo(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailGreaterThan(String value) {
+            return greaterThan(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailLessThan(String value) {
+            return lessThan(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailLike(String value) {
+            return like(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailNotLike(String value) {
+            return notLike(email, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailIn(List<String> values) {
+            return in(email, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailNotIn(List<String> values) {
+            return notIn(email, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailBetween(String value1, String value2) {
+            return between(email, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andEmailNotBetween(String value1, String value2) {
+            return notBetween(email, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIsNull() {
+            return isNull(birthdayMonthDay);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIsNotNull() {
+            return isNotNull(birthdayMonthDay);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayEqualTo(String value) {
+            return equalTo(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotEqualTo(String value) {
+            return notEqualTo(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayGreaterThan(String value) {
+            return greaterThan(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLessThan(String value) {
+            return lessThan(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayLike(String value) {
+            return like(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotLike(String value) {
+            return notLike(birthdayMonthDay, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayIn(List<String> values) {
+            return in(birthdayMonthDay, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotIn(List<String> values) {
+            return notIn(birthdayMonthDay, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayBetween(String value1, String value2) {
+            return between(birthdayMonthDay, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andBirthdayMonthDayNotBetween(String value1, String value2) {
+            return notBetween(birthdayMonthDay, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andSexIsNull() {
+            return isNull(sex);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexIsNotNull() {
+            return isNotNull(sex);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexEqualTo(String value) {
+            return equalTo(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexNotEqualTo(String value) {
+            return notEqualTo(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexGreaterThan(String value) {
+            return greaterThan(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexLessThan(String value) {
+            return lessThan(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexLike(String value) {
+            return like(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexNotLike(String value) {
+            return notLike(sex, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexIn(List<String> values) {
+            return in(sex, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexNotIn(List<String> values) {
+            return notIn(sex, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexBetween(String value1, String value2) {
+            return between(sex, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andSexNotBetween(String value1, String value2) {
+            return notBetween(sex, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andUserNameIsNull() {
+            return isNull(userName);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameIsNotNull() {
+            return isNotNull(userName);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameEqualTo(String value) {
+            return equalTo(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameNotEqualTo(String value) {
+            return notEqualTo(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameGreaterThan(String value) {
+            return greaterThan(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameLessThan(String value) {
+            return lessThan(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameLike(String value) {
+            return like(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameNotLike(String value) {
+            return notLike(userName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameIn(List<String> values) {
+            return in(userName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameNotIn(List<String> values) {
+            return notIn(userName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameBetween(String value1, String value2) {
+            return between(userName, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserNameNotBetween(String value1, String value2) {
+            return notBetween(userName, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andUserIdIsNull() {
+            return isNull(userId);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andRealNameIsNull() {
+            return isNull(realName);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameIsNotNull() {
+            return isNotNull(realName);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameEqualTo(String value) {
+            return equalTo(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameNotEqualTo(String value) {
+            return notEqualTo(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameGreaterThan(String value) {
+            return greaterThan(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameLessThan(String value) {
+            return lessThan(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameLike(String value) {
+            return like(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameNotLike(String value) {
+            return notLike(realName, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameIn(List<String> values) {
+            return in(realName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameNotIn(List<String> values) {
+            return notIn(realName, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameBetween(String value1, String value2) {
+            return between(realName, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andRealNameNotBetween(String value1, String value2) {
+            return notBetween(realName, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andImQqWeiboIsNull() {
+            return isNull(imQqWeibo);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboIsNotNull() {
+            return isNotNull(imQqWeibo);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboEqualTo(String value) {
+            return equalTo(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboNotEqualTo(String value) {
+            return notEqualTo(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboGreaterThan(String value) {
+            return greaterThan(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboLessThan(String value) {
+            return lessThan(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboLike(String value) {
+            return like(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboNotLike(String value) {
+            return notLike(imQqWeibo, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboIn(List<String> values) {
+            return in(imQqWeibo, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboNotIn(List<String> values) {
+            return notIn(imQqWeibo, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboBetween(String value1, String value2) {
+            return between(imQqWeibo, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andImQqWeiboNotBetween(String value1, String value2) {
+            return notBetween(imQqWeibo, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andLoginPhoneIsNull() {
+            return isNull(loginPhone);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneIsNotNull() {
+            return isNotNull(loginPhone);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneEqualTo(String value) {
+            return equalTo(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneNotEqualTo(String value) {
+            return notEqualTo(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneGreaterThan(String value) {
+            return greaterThan(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneLessThan(String value) {
+            return lessThan(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneLike(String value) {
+            return like(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneNotLike(String value) {
+            return notLike(loginPhone, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneIn(List<String> values) {
+            return in(loginPhone, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneNotIn(List<String> values) {
+            return notIn(loginPhone, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneBetween(String value1, String value2) {
+            return between(loginPhone, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andLoginPhoneNotBetween(String value1, String value2) {
+            return notBetween(loginPhone, value1, value2);
+        }
+        public MemberUserCopy2Example.Criteria andPhoneTelIsNull() {
+            return isNull(phoneTel);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelIsNotNull() {
+            return isNotNull(phoneTel);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelEqualTo(String value) {
+            return equalTo(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelNotEqualTo(String value) {
+            return notEqualTo(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelGreaterThan(String value) {
+            return greaterThan(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelLessThan(String value) {
+            return lessThan(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelLike(String value) {
+            return like(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelNotLike(String value) {
+            return notLike(phoneTel, value);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelIn(List<String> values) {
+            return in(phoneTel, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelNotIn(List<String> values) {
+            return notIn(phoneTel, values);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelBetween(String value1, String value2) {
+            return between(phoneTel, value1, value2);
+        }
+
+        public MemberUserCopy2Example.Criteria andPhoneTelNotBetween(String value1, String value2) {
+            return notBetween(phoneTel, value1, value2);
         }
     }
 }

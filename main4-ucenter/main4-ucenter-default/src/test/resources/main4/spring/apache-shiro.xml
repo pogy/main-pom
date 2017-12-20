@@ -14,12 +14,6 @@
 		<property name="loginUrl" value="/login.htm" />
 		<property name="successUrl" value="/mainindex.htm"/>
 		<property name="unauthorizedUrl" value="/login.htm"/>
-		<property name="filters">
-			<map>
-				<entry key="member" value-ref="memberFilter"/>
-				<entry key="shop" value-ref="shopFilter"/>
-			</map>
-		</property>
 		<property name="filterChainDefinitions">
 			<value>
 				/member/** = member
@@ -32,19 +26,7 @@
 			</value>
 		</property>
 	</bean>
-	<!--普通用户的登陆认证-->
-	<bean id="memberRealm" class="com.shigu.component.shiro.MemberRealm">
-		<property name="cacheManager" ref="cacheManagers"/>
-		<property name="credentialsMatcher">
-			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-				<property name="hashAlgorithmName" value="MD5"/>
-				<property name="storedCredentialsHexEncoded" value="true"/>
-				<property name="hashIterations" value="2" />
-			</bean>
-		</property>
-		<!--<property name="userBaseService" ref="userBaseService" />-->
-		<!--<property name="userShopService" ref="userShopService"/>-->
-	</bean>
+
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- 基于ehCache来缓存用户认证信息和授权信息的实现 -->
@@ -52,8 +34,7 @@
 		<!--<property name="sessionManager" ref="sessionManager"/>-->
 		<!-- sessionMode参数设置为native时，那么shrio就将用户的基本认证信息保存到缺省名称为shiro-activeSessionCache 的Cache中 -->
 		<!--<property name="sessionMode" value="native" />-->
-		<!--设置自定义realm -->
-		<property name="realm" ref="memberRealm"/>
+
 	</bean>
 
 	<!--<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
@@ -100,17 +81,6 @@
 			class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager" />
 	</bean>
-	<!--用户登陆过滤器-->
-	<bean class="com.shigu.component.shiro.filters.MemberFilter" id="memberFilter">
-		<property name="loginUrl" value="/login.htm"/>
-		<property name="successUrl" value="/member/index.htm"/>
-	</bean>
 
-	<!--店铺登陆过滤器-->
-	<bean class="com.shigu.component.shiro.filters.ShopFilter" id="shopFilter">
-		<property name="unauthorizedUrl" value="/member/index.htm"/>
-		<property name="loginUrl" value="/login.htm"/>
-		<property name="successUrl" value="/member/index.htm"/>
-	</bean>
 
 </beans>

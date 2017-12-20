@@ -2,9 +2,15 @@ package com.shigu.services;
 
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.shigu.sms.beans.SmsSendResult;
+import com.shigu.sms.utils.SmsJsoup;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -26,11 +32,9 @@ public class SendMsgService {
      * @param code 验证码
      */
     public void sendVerificationCode(String phone, String code){
-        String content = "【四季星座网】您正在进行手机验证，验证码" + code + "，请在10分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
+        String content = "您正在进行手机验证，验证码" + code + "，请在10分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
         sendSms_quick(phone,content);
     }
-
-
 
     /**
      * 直接发短信
@@ -40,12 +44,15 @@ public class SendMsgService {
      */
     private String sendSms_quick(String mobile, String content) {
         String result = "";
-        String memo = content.length() < 70?content.trim():content.trim().substring(0, 70);
-        try {
-            Document document = Jsoup.connect("http://www.jianzhou.sh.cn/JianzhouSMSWSServer/http/sendBatchMessage").data("account", account_quick).data("password", pwd_quick).data("destmobile", mobile).data("msgText", memo).timeout(1000000).post();
-            result = document.text();
-        } catch (Exception e) {
-            logger.error("发送短信网络通信问题",e);
+
+        SmsJsoup u=new SmsJsoup();
+        Date sendTime=new Date();//定时发送时间
+        List<SmsSendResult> reList = u.sendHySms(mobile, content, sendTime);
+
+        for (SmsSendResult item : reList) {
+            if (!StringUtils.isEmpty(item.getFailPhones())) {
+                result = result + item.getFailPhones() + ",";
+            }
         }
         return result;
     }

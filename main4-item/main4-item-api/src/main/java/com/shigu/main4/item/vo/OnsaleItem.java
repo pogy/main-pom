@@ -57,6 +57,30 @@ public class OnsaleItem implements Serializable{
      * 分站标识
      */
     private String webSite;
+    /**
+     * 总销量
+     */
+    private Integer saleCount;
+    /**
+     * 面料成分
+     */
+    private String fabric;
+    /**
+     * 里料成分
+     */
+    private String inFabric;
+    /**
+     * 是否已设置面料 1未设置 2已设置
+     */
+    private Integer constituentType;
+    /**
+     * 是否设置过最低零售价
+     */
+    private Boolean hasRetailPriceSet;
+    /**
+     * 主图链接
+     */
+    private String goodsVideoUrl;
 
     public Long getItemId() {
         return itemId;
@@ -144,5 +168,53 @@ public class OnsaleItem implements Serializable{
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public Integer getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(Integer saleCount) {
+        this.saleCount = saleCount;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getInFabric() {
+        return inFabric;
+    }
+
+    public void setInFabric(String inFabric) {
+        this.inFabric = inFabric;
+    }
+
+    public Integer getConstituentType() {
+        return constituentType;
+    }
+
+    public void setConstituentType(Integer constituentType) {
+        this.constituentType = constituentType;
+    }
+
+    public Boolean getHasRetailPriceSet() {
+        return hasRetailPriceSet;
+    }
+
+    public void setHasRetailPriceSet(Boolean hasRetailPriceSet) {
+        this.hasRetailPriceSet = hasRetailPriceSet;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }

@@ -748,4 +748,90 @@ public static ArrayList getWeekListByMonth(int year, int month) {
         return day2 - day1;
 
     }
+    /**
+     * 当天0点
+     *
+     * @return
+     */
+    public static Date getStartTime() {
+        Calendar todayStart = Calendar.getInstance();
+        todayStart.set(Calendar.HOUR_OF_DAY, 0);
+        todayStart.set(Calendar.MINUTE, 0);
+        todayStart.set(Calendar.SECOND, 0);
+        todayStart.set(Calendar.MILLISECOND, 0);
+        return todayStart.getTime();
+    }
+
+    /**
+     * 指定日期0点
+     *
+     * @param theDay
+     * @return
+     */
+    public static Date getIsStartTime(Date theDay) {
+        Calendar todayStart = Calendar.getInstance();
+        todayStart.setTime(theDay);
+        todayStart.set(Calendar.HOUR_OF_DAY, 0);
+        todayStart.set(Calendar.MINUTE, 0);
+        todayStart.set(Calendar.SECOND, 0);
+        todayStart.set(Calendar.MILLISECOND, 0);
+        return todayStart.getTime();
+    }
+
+    /**
+     * 当天23:59:59
+     *
+     * @return
+     */
+    public static Date getEndTime() {
+        Calendar todayEnd = Calendar.getInstance();
+        todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+        todayEnd.set(Calendar.MINUTE, 59);
+        todayEnd.set(Calendar.SECOND, 59);
+        todayEnd.set(Calendar.MILLISECOND, 999);
+        return todayEnd.getTime();
+    }
+
+    /**
+     * 指定日期23:59:59
+     *
+     * @param theDay
+     * @return
+     */
+    public static Date getIsEndTime(Date theDay) {
+        Calendar todayEnd = Calendar.getInstance();
+        todayEnd.setTime(theDay);
+        todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+        todayEnd.set(Calendar.MINUTE, 59);
+        todayEnd.set(Calendar.SECOND, 59);
+        todayEnd.set(Calendar.MILLISECOND, 999);
+        return todayEnd.getTime();
+    }
+    /**
+     * 获取距离今天i天的时间
+     * @param i
+     * @return
+     */
+    public static Date getdate(int i){
+        Calendar cd = Calendar.getInstance();
+        cd.add(Calendar.DATE, i);
+        return cd.getTime();
+    }
+    public static Date getdate(Date d,int i){
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(d);
+        cd.add(Calendar.DATE, i);
+        return cd.getTime();
+    }
+
+    /**
+     * 获取当前月的第一天
+     * @return
+     */
+    public static Date getStartMouth(){
+        Calendar cale = Calendar.getInstance();
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        return cale.getTime();
+    }
 }

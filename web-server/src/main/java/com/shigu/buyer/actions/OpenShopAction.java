@@ -6,7 +6,6 @@ import com.shigu.buyer.vo.FloorVO;
 import com.shigu.buyer.vo.MarketVO;
 import com.shigu.buyer.vo.SiteVO;
 import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.component.shiro.enums.UserType;
 import com.shigu.exceptions.RuzhuException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -30,6 +29,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,7 +63,7 @@ public class OpenShopAction {
      * 入驻页面
      * @return
      */
-    @RequestMapping("ruzhu")
+    @RequestMapping({"ruzhu","member/ruzhu"})
     public String ruzhu(HttpSession session, HttpServletRequest request) throws Main4Exception {
         //如果已经有店,不能重复申请
         Subject currentUser = SecurityUtils.getSubject();
@@ -79,14 +79,14 @@ public class OpenShopAction {
             }
         }
         request.setAttribute("mainbusList",xzSdkClient.getXzMainBus().split(","));
-        return "ruzhu/ruzhu";
+        return "fxs/ruzhu";
     }
 
     /**
      * 分站点请求
      * @return
      */
-    @RequestMapping("jsonWbSite")
+    @RequestMapping({"jsonWbSite","member/jsonWbSite"})
     @ResponseBody
     public JSONObject jsonWbSite(){
         List<SiteForRegist> sites=shopRegistService.selSites();
@@ -101,7 +101,7 @@ public class OpenShopAction {
      * 站点对应的市场
      * @return
      */
-    @RequestMapping("jsonMarket")
+    @RequestMapping({"jsonMarket","member/jsonMarket"})
     @ResponseBody
     public JSONObject jsonMarket(String cityId){
         List<MarketForRegist> markets=shopRegistService.selMarkets(cityId);
@@ -118,7 +118,7 @@ public class OpenShopAction {
      * @param marketId
      * @return
      */
-    @RequestMapping("jsonFloor")
+    @RequestMapping({"jsonFloor","member/jsonFloor"})
     @ResponseBody
     public JSONObject jsonFloor(Long marketId){
         List<FloorForRegist> floors=shopRegistService.selFloors(marketId);
@@ -133,7 +133,7 @@ public class OpenShopAction {
      * 入驻提交
      * @return
      */
-    @RequestMapping("submitRuzhu")
+    @RequestMapping({"submitRuzhu","member/submitRuzhu"})
     @ResponseBody
     public JSONObject submitRuzhu(@Valid SubmitRuzhuBO bo, BindingResult result,
                                   HttpServletRequest request, HttpSession session) throws JsonErrException {
@@ -164,7 +164,6 @@ public class OpenShopAction {
         Long applyId;
         try {
             applyId=shopRegistService.registShop(shopRegister);
-            shopExamineTypeService.examineInfoComplement(applyId);
         } catch (ShopRegistException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -175,15 +174,20 @@ public class OpenShopAction {
      * 入驻申请
      * @return
      */
-    @RequestMapping("ruzhu_sq")
-    public String ruzhu_sq(String userCode,HttpSession session) throws RuzhuException {
+    @RequestMapping({"ruzhu_sq","member/ruzhu_sq"})
+    public String ruzhu_sq(String userCode, HttpSession session, Model model) throws RuzhuException {
+        //微信公众号二维码地址
+        String wxCode = "http://style.571xz.com/v6/common/img/qrcode.jpg";
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
+        model.addAttribute("wxpic", wxCode);
+        model.addAttribute("storeName",shopRegistService.selDetailById(ps.getUserId(),Long.valueOf(userCode)).getShopNum());
+        model.addAttribute("userCode",userCode);
         if(!result){//信息不全
             return "redirect:https://oauth.taobao.com/authorize?response_type=code&client_id=21720662" +
                     "&redirect_uri="+xzSdkClient.getYjHost()+"openStoreAuth.htm&state="+userCode+"&view=web";
         }
-        return "ruzhu/ruzhu_sq";
+        return "fxs/ruzhu_sq";
     }
 
 }
