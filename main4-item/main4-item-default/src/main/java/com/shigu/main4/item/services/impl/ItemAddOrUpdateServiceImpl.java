@@ -1178,18 +1178,29 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 }
                 goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
             }else{
-                goodsCountForsearch.setGoodsId(goodsId);
-                goodsCountForsearch.setHadStyle(1);
-                goodsCountForsearch.setSid(sid);
+                GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
+                goodsCountForsearch1.setGoodsId(goodsId);
+                goodsCountForsearch1.setHadStyle(1);
+                goodsCountForsearch1.setSid(sid);
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
                     searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
-                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                    goodsCountForsearch1.setStyleName(searchCategorySub.getCateName());
                 }else{
-                    goodsCountForsearch.setStyleName(null);
+                    goodsCountForsearch1.setStyleName(null);
                 }
-                goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+                goodsCountForsearch1.setWebSite(webSite);
+                goodsCountForsearch1.setUp(0L);
+                goodsCountForsearch1.setUpMan(0L);
+                goodsCountForsearch1.setClick(0L);
+                goodsCountForsearch1.setClickIp(0L);
+                goodsCountForsearch1.setHadGoat();
+                goodsCountForsearch1.setTrade(0L);
+                goodsCountForsearch1.setFlowFixedTime();
+                goodsCountForsearch1.setHadBigzip();
+
+                goodsCountForsearchMapper.insert(goodsCountForsearch1);
             }
 
     }
