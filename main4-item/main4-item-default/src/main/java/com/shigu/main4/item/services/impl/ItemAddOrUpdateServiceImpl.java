@@ -1165,6 +1165,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             goodsCountForsearch.setGoodsId(goodsId);
             goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
             if(goodsCountForsearch != null) {
+                goodsCountForsearch.setGoodsId(goodsId);
                 goodsCountForsearch.setHadStyle(1);
                 goodsCountForsearch.setSid(sid);
                 if(sid<=2000){
@@ -1177,6 +1178,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 }
                 goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
             }else{
+                goodsCountForsearch.setGoodsId(goodsId);
                 goodsCountForsearch.setHadStyle(1);
                 goodsCountForsearch.setSid(sid);
                 if(sid<=2000){
