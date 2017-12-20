@@ -88,6 +88,8 @@ public class OnsaleItem implements Serializable{
      */
     private String goodsStyleId;
 
+
+
     public String getGoodsStyleId() {
         return goodsStyleId;
     }

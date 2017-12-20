@@ -17,6 +17,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static EntityColumn hadBigzip;
     public static EntityColumn styleName;
     public static EntityColumn click;
+    public static EntityColumn sid;
     public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
@@ -40,6 +41,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         hadBigzip = listMap.get("hadBigzip");
         styleName = listMap.get("styleName");
         click = listMap.get("click");
+        sid = listMap.get("sid");
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
@@ -407,6 +409,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
             return notBetween(click, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andSidIsNull() {
+            return isNull(sid);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidIsNotNull() {
+            return isNotNull(sid);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidEqualTo(Long value) {
+            return equalTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotEqualTo(Long value) {
+            return notEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidGreaterThan(Long value) {
+            return greaterThan(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidLessThan(Long value) {
+            return lessThan(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidIn(List<Long> values) {
+            return in(sid, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotIn(List<Long> values) {
+            return notIn(sid, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidBetween(Long value1, Long value2) {
+            return between(sid, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotBetween(Long value1, Long value2) {
+            return notBetween(sid, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);

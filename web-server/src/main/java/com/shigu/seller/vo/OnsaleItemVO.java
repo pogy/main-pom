@@ -173,6 +173,12 @@ public class OnsaleItemVO {
         this.setConstituentType(onsaleItem.getConstituentType());
         this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
         this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
+//        if (onsaleItem.getGoodsStyleId() == null||StringUtils.isEmpty(onsaleItem.getGoodsStyleId())){
+//            this.setGoodsStyleId(0);
+//        }else{
+//            this.setGoodsStyleId(Integer.valueOf(onsaleItem.getGoodsStyleId()));
+//        }
+//        this.setGoodsStyleType(this.getGoodsStyleId() == 0 ? 1:2);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }

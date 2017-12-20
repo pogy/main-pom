@@ -89,9 +89,14 @@ public class GoodsCountForsearch implements Serializable {
 	private Integer hadStyle;
 
     /**
-     * 风格名称
+     * 风格名称  应对商品库风格查询
      */
 	private String styleName;
+
+    /**
+     * 风格id 
+     */
+	private Long sid;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -227,6 +232,14 @@ public class GoodsCountForsearch implements Serializable {
 
 	public String getStyleName() {
 		return this.styleName;
+	}
+
+	public void setSid(Long sid) {
+		this.sid = sid;
+	}
+
+	public Long getSid() {
+		return this.sid;
 	}
 
 }

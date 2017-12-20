@@ -7,6 +7,6 @@ import java.net.URL;
 public class CreateTest {
     public static void main(String[] args) throws IOException {
         DDL2Bean.main(args);
-        new URL("javascript;");
+//        new URL("javascript;");
     }
 }
