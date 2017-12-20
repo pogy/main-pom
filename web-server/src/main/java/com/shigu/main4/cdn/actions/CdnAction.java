@@ -896,7 +896,7 @@ public class CdnAction {
         model.addAttribute("goodsInfo",goods);
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
-        return "cdn/item";
+        return "goodsDetail/item";
     }
 
     /**

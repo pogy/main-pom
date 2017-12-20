@@ -378,6 +378,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
 <#include "/common/xz__imAliww.ftl">
 </#list>
 </span>
+
                 <span>
 <#list [{"id":"${shopInfo.imQq!}"}] as $it>
 <#include "/common/xz__imQQ.ftl">
