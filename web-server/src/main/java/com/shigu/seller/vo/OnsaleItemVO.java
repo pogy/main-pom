@@ -83,8 +83,13 @@ public class OnsaleItemVO {
     //已设置的商品风格名称
     private Integer goodsStyleId;
 
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
 
-
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
 
     public Integer getGoodsStyleType() {
         return goodsStyleType;
@@ -94,13 +99,8 @@ public class OnsaleItemVO {
         this.goodsStyleType = goodsStyleType;
     }
 
-    public Integer getGoodsStyleId() {
-        return goodsStyleId;
-    }
 
-    public void setGoodsStyleId(Integer goodsStyleId) {
-        this.goodsStyleId = goodsStyleId;
-    }
+
 
 //    public Boolean getStyleLinkGoodsNo() {
 //        return styleLinkGoodsNo;

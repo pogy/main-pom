@@ -471,6 +471,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     if (StringUtils.isNotBlank(otherInfo.getFabric())) {
                         item.setConstituentType(2);
                     }
+                    item.setGoodsStyleId(otherInfo.getGoodsStyleId());
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());

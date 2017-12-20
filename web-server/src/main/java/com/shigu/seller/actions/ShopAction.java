@@ -527,9 +527,8 @@ public class ShopAction {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
                 }
-
-                if(oi.getGoodsStyleId()!=null && StringUtils.isNotEmpty(oi.getGoodsStyleId())){
-                    vo.setGoodsStyleId(Integer.valueOf(oi.getGoodsStyleId()));
+                if(oi.getGoodsStyleId()!=null){
+                    vo.setGoodsStyleId(oi.getGoodsStyleId());
                     vo.setGoodsStyleType(2);
                 }else{
                     vo.setGoodsStyleId(null);
