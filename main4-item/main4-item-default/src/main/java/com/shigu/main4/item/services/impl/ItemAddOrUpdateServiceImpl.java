@@ -1164,17 +1164,29 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
             goodsCountForsearch.setGoodsId(goodsId);
             goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-             goodsCountForsearch.setHadStyle(1);
-            goodsCountForsearch.setSid(sid);
-            if(sid<=2000){
-            SearchCategorySub searchCategorySub = new SearchCategorySub();
-            searchCategorySub.setSubId(Long.valueOf(sid));
-            searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
-            goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
-            }
             if(goodsCountForsearch != null) {
-                goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                goodsCountForsearch.setHadStyle(1);
+                goodsCountForsearch.setSid(sid);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(Long.valueOf(sid));
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                }else{
+                    goodsCountForsearch.setStyleName(null);
+                }
+                goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
             }else{
+                goodsCountForsearch.setHadStyle(1);
+                goodsCountForsearch.setSid(sid);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(Long.valueOf(sid));
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                }else{
+                    goodsCountForsearch.setStyleName(null);
+                }
                 goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
             }
 
