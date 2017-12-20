@@ -1,7 +1,6 @@
 package com.shigu.main4.jd.vo;
 
 
-import jdk.nashorn.internal.scripts.JD;
 
 import java.io.Serializable;
 import java.util.Set;
