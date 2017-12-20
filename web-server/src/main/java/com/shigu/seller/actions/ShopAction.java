@@ -491,7 +491,6 @@ public class ShopAction {
 
     /**
      * 编辑商品
-     * @param goodId
      * @param session
      * @return
      * @throws Exception
@@ -502,7 +501,7 @@ public class ShopAction {
         ShopSession shopSession = getShopSession(session);
 
 
-        model.addAttribute("goodsInfo",shopItemModService.getGoodsOffer(Long.valueOf(goodId), shopSession));
+        model.addAttribute("goodsInfo",shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession));
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
     }

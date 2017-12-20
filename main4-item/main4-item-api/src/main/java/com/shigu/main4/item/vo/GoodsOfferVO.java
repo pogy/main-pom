@@ -50,6 +50,13 @@ public class GoodsOfferVO implements Serializable {
      */
     private List allimg;
 
+    /**
+      * 商品详情
+      */
+     private String deschtml;
+
+
+     
 
     /**
      * 自定义的pid
@@ -81,10 +88,7 @@ public class GoodsOfferVO implements Serializable {
      */
     private Long quantity;
 
-    /**
-     * 商品详情
-     */
-    private String deschtml;
+
     /**
      * 店内类目ID串
      */
