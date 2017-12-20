@@ -1237,7 +1237,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
         if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)&&goodsStyleName.length()<45){
             ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
-            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
+            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName).andCIdEqualTo(categoryId);
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
             //判断是否已存在
             if(shiguCustomerStyles!=null&& shiguCustomerStyles.size()>0){
