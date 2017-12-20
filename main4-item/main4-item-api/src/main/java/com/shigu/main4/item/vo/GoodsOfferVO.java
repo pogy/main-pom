@@ -34,12 +34,12 @@ public class GoodsOfferVO implements Serializable {
     /**
      * 商品属性数据
      */
-    private FormAttributeVO formAttribute;
+    private FormAttribute formAttribute;
 
     /**
      *SKU列表
      */
-    private SkuAttributeVO skuAttribute;
+    private SkuAttribute skuAttribute;
 
     /**
      * 首图
@@ -54,6 +54,8 @@ public class GoodsOfferVO implements Serializable {
       * 商品详情
       */
      private String deschtml;
+
+
 
 
      
