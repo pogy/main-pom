@@ -496,12 +496,15 @@ public class ShopAction {
      * @return
      * @throws Exception
      */
-    @RequestMapping("seller/goodsEdite")
+    @RequestMapping("seller/editGoodsInfo")
     @ResponseBody
-    public String goodsEdite(Long goodId,HttpSession session,Model model)throws Exception{
+    public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
-        model.addAttribute("good",shopItemModService.getGoodsOffer(goodId, shopSession));
-        return "gys/releaseGoodsSend";
+
+
+        model.addAttribute("goodsInfo",shopItemModService.getGoodsOffer(Long.valueOf(goodId), shopSession));
+        model.addAttribute("query",bo);
+        return "gys/editGoodsInfo";
     }
 
     /**
