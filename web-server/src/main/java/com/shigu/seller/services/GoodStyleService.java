@@ -1,11 +1,14 @@
 package com.shigu.seller.services;
 
+import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.SearchCategory;
 import com.opentae.data.mall.beans.ShiguCustomerStyle;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.ShiguCustomerStyleExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.ShiguCustomerStyleMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -31,11 +34,14 @@ public class GoodStyleService {
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
     /**
      * 获取自定义风格列表
      */
     public List<UserGoodsStyleVo> getUserStyle(Long pid, Long userId, Long shopId, String webSite){
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
         if(pid!=null){
             shiguCustomerStyleExample.createCriteria().andCIdEqualTo(pid).andUserIdEqualTo(userId);
         }else{
@@ -54,10 +60,10 @@ public class GoodStyleService {
                 searchCategoryExample.createCriteria().andCateValueEqualTo(String.valueOf(customerStyle.getCId()));
                 userGoodsStyleVo.setCategoryName(SearchCategoryMapper.selectByExample(searchCategoryExample).get(0).getCateName());
                 //查店里当前风格的商品数
-                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-                example.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(customerStyle.getStyleId()+"");
-                example.setWebSite(webSite);
-                long num= shiguGoodsTinyMapper.countByExample(example);
+                goodsCountForsearchExample.clear();
+                goodsCountForsearchExample.createCriteria().andWebSiteEqualTo(webSite).andSidEqualTo(customerStyle.getStyleId().intValue());
+                int i = goodsCountForsearchMapper.countByExample(goodsCountForsearchExample);
+                long num=(long) i;
                 userGoodsStyleVo.setGoodsNum(num);
                 list.add(userGoodsStyleVo);
             }
@@ -140,21 +146,22 @@ public class GoodStyleService {
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
         List<CategoryTabsVo> categoryTabsVos = new ArrayList();
+        ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
         for (SearchCategory searchCategory:list) {
             CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
             categoryTabsVo.setCateId(searchCategory.getCateValue());
             categoryTabsVo.setCateName(searchCategory.getCateName());
-            ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
+            example1.clear();
             example1.createCriteria().andUserIdEqualTo(userId).andCIdEqualTo(Long.valueOf(searchCategory.getCateValue()));
             List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example1);
             if (shiguCustomerStyles != null && shiguCustomerStyles.size()>0){
                 Long num=0L;
+                GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
                 for (ShiguCustomerStyle shiguCustomerStyle: shiguCustomerStyles) {
-                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-                    shiguGoodsTinyExample.createCriteria().andStoreIdEqualTo(shopId).andRemark9EqualTo(String.valueOf(shiguCustomerStyle.getStyleId()));
-                    shiguGoodsTinyExample.setWebSite(webSite);
-                    List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
-                    num=num+Long.valueOf(shiguGoodsTinies.size());
+                    goodsCountForsearchExample.clear();
+                    goodsCountForsearchExample.createCriteria().andWebSiteEqualTo(webSite).andSidEqualTo(shiguCustomerStyle.getStyleId().intValue());
+                    int i = goodsCountForsearchMapper.countByExample(goodsCountForsearchExample);
+                    num=num+Long.valueOf(i);
                 }
                 categoryTabsVo.setGoodsNum(num);
             }else{
