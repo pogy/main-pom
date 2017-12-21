@@ -23,6 +23,7 @@ public interface UserCollectService {
      * @param pageSize 每页条数
      * @return
      */
+    @Deprecated
     ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite,int pageNo,int pageSize);
 
     ShiguPager<NewGoodsCollectVO> selItemCollectionsByType(Long userId, String keyword, String webSite, int pageNo, int pageSize, int type);

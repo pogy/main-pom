@@ -1,21 +1,20 @@
-
+<#assign $pageid>fullShopRanking</#assign>
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=1300px">
     <title>${shopRanking.rankingTitle!} - 四季星座网</title>
 <#include "/common/base__config.ftl">
-<#assign $pageid>fullShopRanking</#assign>
-<#assign webSite>hz</#assign>
-    <#include "/__private_torrent__/common__base_css.ftl">
-<#include "/__private_torrent__/common__xz_css.ftl">
-<#include "/__private_torrent__/xzSearch__common_css.ftl">
-<#include "/__private_torrent__/xzSearch__fullShopRanking_css.ftl">
-    <script src="http://style.571xz.com/v4/common/js/jquery.js"></script>
-    <#include "/__private_torrent__/common__base_js.ftl">
-<#include "/__private_torrent__/common__xz_js.ftl">
-<#include "/__private_torrent__/xzSearch__fullShopRanking_js.ftl">
+    <#include "/__style_torrent__/common__base_css.ftl">
+<#include "/__style_torrent__/common__xz_css.ftl">
+<#include "/__style_torrent__/xzSearch__common_css.ftl">
+<#include "/__style_torrent__/xzSearch__fullShopRanking_css.ftl">
+    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <#include "/__style_torrent__/common__base_js.ftl">
+<#include "/__style_torrent__/common__xz_js.ftl">
+<#include "/__style_torrent__/xzSearch__fullShopRanking_js.ftl">
 </head>
 <body>
 <#assign text>{}</#assign>
@@ -23,7 +22,9 @@
 <#list [moduleJsonStr] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#include "/__private_template__/xzSearch__common__header.ftl">
+<#assign headerTitle></#assign>
+<#assign searchType>goods</#assign>
+<#include "/common/xz__searchHeader.ftl">
 <#assign text>{"fields":[{"name":"id","value":""+rankingId}]}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
@@ -35,7 +36,7 @@
 </form>
 </#if>
 </#list>
-<#include "/__private_template__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__nav.ftl">
 <div class="layout shopRanking">
     <h3 class="title">${shopRanking.rankingTitle!}</h3>
     <div class="tableBox">
@@ -76,11 +77,11 @@
                                 </#if>
                             </span>
                             <#if shopItem.changeNum gt 0>
-                            <img src="http://style.571xz.com/v4/xzSearch/css/img/rank1.png" alt="" />
+                            <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank1.png" alt="" />
                             <#elseif shopItem.changeNum lt 0>
-                            <img src="http://style.571xz.com/v4/xzSearch/css/img/rank2.png" alt="" />
+                            <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank2.png" alt="" />
                             <#else>
-                            <img src="http://style.571xz.com/v4/xzSearch/css/img/rank3.png" alt="" />
+                            <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank3.png" alt="" />
                             </#if>
                         </div>
                     </td>
@@ -99,6 +100,17 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
+<#assign text>{}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
 </#list>
 </div>
 <#include "/common/xz__footer.ftl">

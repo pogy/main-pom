@@ -3,23 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    
+
+
         <title>商品库 - 四季星座网</title>
-    
+
     <meta name="keywords" content="四季星座，四季星座网，男装货源，女装货源，男鞋货源，女鞋货源，杭州服装批发，四季青服饰，淘宝货源，网店货源，服饰批发，代发平台！">
-    
+
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
-    
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=v1" rel="stylesheet">
-    
-    
+
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=2017112301" rel="stylesheet">
+
+
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=v1"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=2017112301"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
-<#include "/common/zhuge.ftl">
 
 <div class="topbar">
     <div class="layout">
@@ -44,10 +43,10 @@
                 <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
                 <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
                 <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
-                
+
             </div>
         </div>
-        
+
         <div class="rightbox">
             <ul>
                 <li class="noIndex">
@@ -64,7 +63,7 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <#else>
                     <li class="noDown">
@@ -95,10 +94,10 @@
                                     <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     </#if>
-                    
+
                 <#else>
                     <li class="noDown">
                         <a href="${main_host!}order/cart.htm">
@@ -128,7 +127,7 @@
                                     <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <li>
                         <div class="cnBox">
@@ -139,12 +138,12 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                 </#if>
                 <li class="noDown">
                     <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
-                    
+
                 </li>
                 <li>
                     <div class="cnBox">
@@ -152,7 +151,7 @@
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
-                                
+
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -175,9 +174,9 @@
                                 <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
-                    
+
             </ul>
         </div>
     </div>
@@ -201,24 +200,24 @@ var webSite = '${webSite!}';
         <div class="search">
             <div class="tabList clearfix">
                 <ul>
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                     <li type="goods" class="select">商品</li>
                     <li type="store" >档口</li>
-                    
+
                 </ul>
                 <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
                 <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
                 </#if>
             </div>
             <div class="searchBox">
-                
+
                 <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                    
-                    
+
+
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
                     <button class="searchBtn">搜索</button>
                 </form>
@@ -280,16 +279,16 @@ var webSite = '${webSite!}';
 <div class="content layout">
     <div class="cttlfbox">
         <div class="categoryFilterBar">
-            
-            
-            
-            
+
+
+
+
             <div class="navCate innerbox clearfix">
                 <div class="layout navCon">
                     <div class="navList">
                         <label>总类：</label>
                         <ul>
-                            
+
                             <#list navCate as cate>
                             <li <#if query.pid?? && query.pid == cate.id>class="select"</#if>><a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if cate.id??>&pid=${cate.id!}</#if><#if cate.keyword??>&keyword=${cate.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">${cate.text!}</a></li>
                             </#list>
@@ -297,8 +296,8 @@ var webSite = '${webSite!}';
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <#if cates??>
             <div class="cates clearfix innerbox">
                 <label>分类：</label>
@@ -306,80 +305,80 @@ var webSite = '${webSite!}';
                     <li <#if query.cid??><#else>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">全部</a></li>
                     <#list cates as cate>
                     <li <#if query.pid?? && query.pid == cate.id || query.cid?? && query.cid == cate.id >class="selected"</#if>>
-                        
-                        
+
+
                         <a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}&cid=${cate.id!}<#else>&pid=${cate.id!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">${cate.text!}</a>
-                        
-                    
+
+
                     </li>
                     </#list>
                 </ul>
             </div>
             </#if>
-            
+
             <#if markets??>
             <div class="markets clearfix innerbox">
                 <label>按市场：</label>
                 <ul>
-                    
+
                     <li <#if query.mid??><#else>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">全部</a></li>
-                    
+
                     <#list markets as market>
                     <li <#if query.mid?? && query.mid == market.id>class="selected"</#if>><a href="?webSite=${query.webSite!}&mid=${market.id!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">${market.text!}</a></li>
                     </#list>
                 </ul>
             </div>
             </#if>
-            
+
             <#if styles??>
             <div class="styles clearfix innerbox">
                 <label>按风格：</label>
                 <ul>
-                    
+
                     <li <#if query.keyword??><#else>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">全部</a></li>
-                    
+
                     <#list styles as style>
                     <li <#if query.keyword?? && query.keyword == style.keyword>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if>&keyword=${style.keyword!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">${style.text!}</a></li>
                     </#list>
                 </ul>
             </div>
             </#if>
-            
+
             <#if elements??>
             <div class="elements clearfix innerbox">
                 <label>按元素：</label>
                 <ul>
-                    
+
                     <li <#if query.keyword??><#else>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">全部</a></li>
-                    
+
                     <#list elements as element>
                     <li <#if query.keyword?? && query.keyword == element.keyword>class="selected"</#if>><a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if>&keyword=${element.keyword!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if>">${element.text!}</a></li>
                     </#list>
                 </ul>
             </div>
             </#if>
-            
+
         </div>
-        
+
         <#if query.pid??>
         <div class="cateName clearfix">
             <h3 class=""><#if query.pid == '30'>男装<#elseif query.pid == '16'>女装<#elseif query.pid == '50011740'>男鞋<#elseif query.pid == '50010404'>配饰<#elseif query.pid == '50006843'>女鞋<#elseif query.pid == '50006842'>箱包</#if></h3>
             <span>为您提供${goodsCount!}件宝贝</span>
         </div>
         </#if>
-        
+
         <div class="formFilterBar clearfix" id="formFilterBar">
             <div class="sortTypeBox">
                 <b jbtn="sortByZh" <#if query.sort?? && query.sort == 'comp'>class="selected"</#if>>综合</b>
                 <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
                 <b jbtn="sortByRq" <#if query.sort?? && query.sort == 'popular'>class="selected"</#if>>人气</b>
-                
-                
-                
+
+
+
             </div>
             <div class="sortPriceBox<#if query.sort == 'price-asc' || query.sort == 'price-desc'> actived</#if>">
-                
-                <#if query.sort == 'price-desc'> 
+
+                <#if query.sort == 'price-desc'>
                 <b class="initial">批发价从高到低<i class="imgicon16"></i></b>
                 <div class="hoverBox">
                     <b class="selected">批发价从高到低</b>
@@ -399,14 +398,14 @@ var webSite = '${webSite!}';
                 </div>
                 </#if>
             </div>
-            
+
             <div class="filterPriceBox">
                 <div class="innerbox">
                     <input placeholder="&yen;" name="sp" value="${query.sp!}">-<input placeholder="&yen;" name="ep" value="${query.ep!}">
                     <b jbtn="searchPriceSE">确定</b>
                 </div>
             </div>
-            
+
             <div class="rtbox">
                 <div class="dateClassify">
                     <div class="inner">
@@ -419,9 +418,9 @@ var webSite = '${webSite!}';
                 <div class="sortTimeBox">
                     <div class="bg1"></div>
                     <b class="initial" <#if query.d gt 3 || query.st??> id="selected" </#if>>
-                        
+
                         <#if query.d??>
-                            
+
                             <#if query.d == '7'>
                             1周内
                             <#elseif query.d == '30'>
@@ -435,7 +434,7 @@ var webSite = '${webSite!}';
                             <#elseif query.d == '1' || query.d == '2' || query.d == '3'>
                             其他
                             </#if>
-                            
+
                         <#else>
                             <#if query.et?? || query.st??>
                             自定义时间
@@ -453,54 +452,54 @@ var webSite = '${webSite!}';
                             <b jbtn="searchTime" <#if query.d =="365"> class="selected"</#if> d="365">1年内</b>
                             <b jbtn="selfDefine" id="selfDefine" <#if query.st?? && query.et??> class="selected"</#if>>自定义</b>
                         </div>
-                        
+
                     </div>
-                   
+
                 </div>
                  <div class="defineTime">
-        
+
                                 <i class="cal"></i>
                                 <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请选择日期" readonly>
                                 <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请选择日期" readonly>
                                 <button id="searchByUserTime">确定</button>
                     </div>
-                
-                    
+
+
                 <div class="paginationBox">
-        
+
                     <i jbtn="prevPage" class="iconfont prev<#if query.page == 1> disabled</#if>">&#xe61a;</i>
                     <span><em class="curPage">${query.page!}</em>/<em class="totalPage">${totalPage!}</em></span>
                     <i jbtn="nextPage" class="iconfont next<#if query.page == totalPage> disabled</#if>">&#xe61a;</i>
                 </div>
-                
+
             </div>
-            
+
         </div>
-        
-        
+
+
         <#if webSite == 'hz'>
         <div class="otherFilterBox">
             <label><input id="toggleBpicFilter" type="checkbox" <#if query.bpic?? && query.bpic == "1">checked</#if>> 大图下载</label>
              <label><input id="toggleGoodsVideoFilter" type="checkbox" <#if query.goodsVideo?? && query.goodsVideo == "1">checked</#if>> 视频商品</label>
         </div>
-        
+
         </#if>
-        
+
         <#if (goodslist?size) gt 0>
         <div class="goodslistWindow clearfix">
              <#list goodslist as goods>
              <div class="goodsitem" data-goodsid="${goods.id!}">
                 <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">
-                    
-                    <#if goods_index lt 20> 
+
+                    <#if goods_index lt 20>
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
                     <#else>
                         <img class="lazyload img" src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
                     </#if>
-                    
-                </a> 
-                
-                
+
+                </a>
+
+
                 <p class="p1">
                     <span class="pricebox">&yen; ${goods.piprice!}</span>
                     <span class="viewCountBox"></span>
@@ -508,7 +507,7 @@ var webSite = '${webSite!}';
                 <p class="title"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
                 <div class="p3">
                     <span class="storeName"><a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
-                    
+
         <#assign text>{"id":"${goods.aliww!}"}</#assign>
 <#assign $it=text?eval />
             <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
@@ -521,9 +520,9 @@ var webSite = '${webSite!}';
                                 <li><a href="#" jbtn="showGoodsWx"><em class="iconUp"></em>分享朋友圈</a></li>
                                 <li><a href="javascript:;" xzclick="addGoodsData" data-goodsid="${goods.id!}"><em class="iconAdd"></em>加入数据包</a></li>
                             </ul>
-        
-        
-        
+
+
+
                             <i class="i2"></i>
                             <i class="i1"></i>
                         </div>
@@ -532,7 +531,7 @@ var webSite = '${webSite!}';
             </div>
              </#list>
         </div>
-        
+
         <script>/*============ searchV5/page#goodslistWindow BEGIN ============*/
 
 '${hacker!}';
@@ -552,9 +551,9 @@ $(function(){
         <div class="goodslistEmptyCon">
             <p>Sorry, 未查询到相应商品~</p>
         </div>
-        
+
         </#if>
-        
+
     </div>
     <div class="cttrtbox">
        <div class="tjGoodsBox">
@@ -564,7 +563,7 @@ $(function(){
                <#list tjGoodsList as goods>
                <li>
                    <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">
-                       
+
                        <img src="${goods.imgsrc!}_240x240.jpg"></a>
                    <p>
                        <em class="money">&yen;${goods.piprice!}</em>
@@ -578,7 +577,7 @@ $(function(){
            </#if>
        </div>
     </div>
-    
+
     <#if goodsGoats?? && (goodsGoats?size) gt 0>
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
@@ -598,7 +597,7 @@ $(function(){
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:656px;"> 
+        <p class="sitemap" style="width:656px;">
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -608,10 +607,10 @@ $(function(){
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
+
+
             <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
@@ -622,8 +621,8 @@ $(function(){
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
-            <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <br>
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a>
         </p>
     </div>
 </div>

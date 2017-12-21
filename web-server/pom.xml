@@ -22,9 +22,30 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.8.v20171121</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.20</version>
+        </dependency>
+
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-order-api</artifactId>
@@ -424,11 +445,6 @@
             <version>0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.opentae.tae</groupId>
-            <artifactId>opentae_utils_authlogin</artifactId>
-            <version>1.0.2_releases</version>
-        </dependency>
         <dependency>
             <groupId>com.openJar</groupId>
             <artifactId>open_base_pc</artifactId>
