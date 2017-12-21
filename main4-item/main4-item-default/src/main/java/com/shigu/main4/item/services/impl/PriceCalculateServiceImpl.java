@@ -147,7 +147,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
 
     private String findMatcher(Pattern pattern, String str) {
         Matcher matcher = pattern.matcher(str);
-        if (matcher.find()) {
+        while (matcher.find()) {
             String group = matcher.group();
             if (!matcher.find())
                 return group;
