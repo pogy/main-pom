@@ -41,7 +41,6 @@ public class GoodStyleService {
      */
     public List<UserGoodsStyleVo> getUserStyle(Long pid, Long userId, Long shopId, String webSite){
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
-        GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
         if(pid!=null){
             shiguCustomerStyleExample.createCriteria().andCIdEqualTo(pid).andUserIdEqualTo(userId);
         }else{
@@ -50,21 +49,17 @@ public class GoodStyleService {
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
         ArrayList<UserGoodsStyleVo> list = new ArrayList<>();
         if(shiguCustomerStyles!=null&&shiguCustomerStyles.size()>0){
-            SearchCategoryExample searchCategoryExample = new SearchCategoryExample();
             for (ShiguCustomerStyle customerStyle:shiguCustomerStyles) {
                 UserGoodsStyleVo userGoodsStyleVo = new UserGoodsStyleVo();
                 userGoodsStyleVo.setGoodsStyleName(customerStyle.getStyleName());
                 userGoodsStyleVo.setGoodsStyleId(customerStyle.getStyleId());
                 userGoodsStyleVo.setCategoryId(customerStyle.getCId());
-                searchCategoryExample.clear();
+                SearchCategoryExample searchCategoryExample = new SearchCategoryExample();
                 searchCategoryExample.createCriteria().andCateValueEqualTo(String.valueOf(customerStyle.getCId()));
                 userGoodsStyleVo.setCategoryName(SearchCategoryMapper.selectByExample(searchCategoryExample).get(0).getCateName());
                 //查店里当前风格的商品数
-                goodsCountForsearchExample.clear();
-                goodsCountForsearchExample.createCriteria().andWebSiteEqualTo(webSite).andSidEqualTo(customerStyle.getStyleId().intValue());
-                int i = goodsCountForsearchMapper.countByExample(goodsCountForsearchExample);
-                long num=(long) i;
-                userGoodsStyleVo.setGoodsNum(num);
+                int i = goodsCountForsearchMapper.countGoodsByStyle(userId, customerStyle.getStyleId().intValue(), webSite);
+                userGoodsStyleVo.setGoodsNum((long)i);
                 list.add(userGoodsStyleVo);
             }
         }
@@ -146,27 +141,12 @@ public class GoodStyleService {
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
         List<CategoryTabsVo> categoryTabsVos = new ArrayList();
-        ShiguCustomerStyleExample example1 = new ShiguCustomerStyleExample();
         for (SearchCategory searchCategory:list) {
             CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
             categoryTabsVo.setCateId(searchCategory.getCateValue());
             categoryTabsVo.setCateName(searchCategory.getCateName());
-            example1.clear();
-            example1.createCriteria().andUserIdEqualTo(userId).andCIdEqualTo(Long.valueOf(searchCategory.getCateValue()));
-            List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example1);
-            if (shiguCustomerStyles != null && shiguCustomerStyles.size()>0){
-                Long num=0L;
-                GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-                for (ShiguCustomerStyle shiguCustomerStyle: shiguCustomerStyles) {
-                    goodsCountForsearchExample.clear();
-                    goodsCountForsearchExample.createCriteria().andWebSiteEqualTo(webSite).andSidEqualTo(shiguCustomerStyle.getStyleId().intValue());
-                    int i = goodsCountForsearchMapper.countByExample(goodsCountForsearchExample);
-                    num=num+Long.valueOf(i);
-                }
-                categoryTabsVo.setGoodsNum(num);
-            }else{
-                categoryTabsVo.setGoodsNum(0L);
-            }
+            int i = goodsCountForsearchMapper.countGoodsByStyles(userId, searchCategory.getCateValue(), webSite);
+            categoryTabsVo.setGoodsNum((long)i);
             categoryTabsVos.add(categoryTabsVo);
         }
         return categoryTabsVos;

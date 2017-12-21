@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoodsCountForsearchMapper">
+
+
+    <select id="countGoodsByStyles" resultType="int">
+SELECT COUNT(1) from goods_count_forsearch a
+LEFT JOIN shigu_customer_style b ON a.sid=b.style_id
+WHERE b.user_id = #{userId} AND b.c_id=#{cId} and a.web_site=#{webSite};
+    </select>
+    <select id="countGoodsByStyle" resultType="int">
+        SELECT COUNT(1) from goods_count_forsearch a
+        LEFT JOIN shigu_customer_style b ON a.sid=b.style_id
+        WHERE b.user_id = #{userId} AND a.sid=#{sid} and a.web_site=#{webSite};
+    </select>
+
+</mapper>
