@@ -1,6 +1,8 @@
 package com.shigu.main4.item.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.enums.ItemFrom;
@@ -20,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 分站点显示用服务
@@ -47,6 +50,8 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 
     @Resource(name = "tae_mall_shiguGoodsUnlicenseMapper")
     private ShiguGoodsUnlicenseMapper shiguGoodsUnlicenseMapper;
+    @Autowired
+    private TaobaoItemPropMapper taobaoItemPropMapper;
 
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
@@ -246,6 +251,16 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem = selectItemById(id, shiguGoodsIdGenerator.getWebSite());
                 }
             }
+            if(cdnItem!=null){
+                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(id);
+                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                if (goodsCountForsearch != null) {
+                    cdnItem.setFabric(goodsCountForsearch.getFabric());
+                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
+                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
+                }
+            }
             return cdnItem;
         }
 
@@ -400,7 +415,14 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                                 }
                             }
                         }
-
+                        List<String> salePids=new ArrayList<>();
+                        try {
+                            TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                            taobaoItemPropExample.createCriteria().andCidEqualTo(cdnItem.getCid()).andIsSalePropEqualTo(1);
+                            salePids= taobaoItemPropMapper.selectFieldsByExample(taobaoItemPropExample, FieldUtil.codeFields("tipid,pid"))
+                                    .stream().map(taobaoItemProp -> taobaoItemProp.getPid().toString()).collect(Collectors.toList());
+                        } catch (Exception ignored) {
+                        }
                         // 解构 prop
                         for (String prop : propsName.split(";")) {
                             String[] pv = prop.split(":");
@@ -413,11 +435,17 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                                 String pvid = pid + ":" + vid;
                                 // 处理属性别名
                                 String s = alias.get(pvid);
-                                if (!StringUtils.isEmpty(s))
+                                if (!StringUtils.isEmpty(s)){
                                     value = s;
+                                }
+                                boolean isSale=false;
+                                //如果salePids长度为0,意味着数据查询失败,暂定用原来的读取方式
+                                if(salePids.size()==0 || salePids.contains(pid)){
+                                    isSale=true;
+                                }
 
                                 // color & size or normal prop dispatcher
-                                if (isColorProp(pid, pname) || isSizeProp(pid, pname)) {
+                                if (isSale&&(isColorProp(pid, pname) || isSizeProp(pid, pname))) {
                                     SaleProp saleProp = new SaleProp();
                                     saleProp.setPid(Long.valueOf(pid));
                                     saleProp.setVid(Long.valueOf(vid));
@@ -440,14 +468,6 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                         } // 属性处理循环 end
                     } //可用属性处理 end
                 } // 商品扩展信息处理 end
-                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-                goodsCountForsearch.setGoodsId(id);
-                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-                if (goodsCountForsearch != null) {
-                    cdnItem.setFabric(goodsCountForsearch.getFabric());
-                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
-                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
-                }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end

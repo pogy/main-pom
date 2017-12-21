@@ -782,7 +782,7 @@ public class CdnAction {
         }
         String upflag="imgzip";
         DatuVO bigVo=goodsFileService.datuUrl(goodsId);
-        String url = "smallpic.htm?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
+        String url = "smallpic.json?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
 //        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {

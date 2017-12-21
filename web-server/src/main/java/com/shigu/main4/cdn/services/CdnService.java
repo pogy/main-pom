@@ -318,6 +318,8 @@ public class CdnService {
         vo.setTbGoodsId(cdnItem.getTbNumIid());
         vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+        vo.setFabric(cdnItem.getFabric());
+        vo.setInFabric(cdnItem.getInFabric());
 
         if(cdnItem.getDescription()!=null){
             vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
