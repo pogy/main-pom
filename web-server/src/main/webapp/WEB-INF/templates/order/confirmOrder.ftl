@@ -353,7 +353,7 @@ var code = '${code!}'
     </div>
 </div>
     <div class="orderLastBox">
-        <p>
+        <p class="none">
 <#list [{}] as $it>
 <label class="fmCheckbox
         checked
