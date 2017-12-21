@@ -13,6 +13,7 @@ import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
+import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.tools.ItemHelper;
 import com.shigu.main4.item.tools.OSSUtil;
 import com.shigu.main4.item.vo.GoodsShelfInfoForEs;
@@ -92,7 +93,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     private EsGoodsServiceImpl esGoodsServiceImpl;
 
     @Autowired
-    private EhCacheCacheManager ehCacheCacheManager;
+    private ItemCache itemCache;
 
     @Autowired
     GoodsAddToRedis goodsAddToRedis;
@@ -233,10 +234,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     private void cleanItemCache(Long itemId) {
-        Cache cdnItemCache = ehCacheCacheManager.getCache("cdnItemCache");
-        if (cdnItemCache != null) {
-            cdnItemCache.evict(itemId);
-        }
+        itemCache.cleanItemCache(itemId);
     }
 
     /**

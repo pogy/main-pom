@@ -251,16 +251,6 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem = selectItemById(id, shiguGoodsIdGenerator.getWebSite());
                 }
             }
-            if(cdnItem!=null){
-                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-                goodsCountForsearch.setGoodsId(id);
-                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-                if (goodsCountForsearch != null) {
-                    cdnItem.setFabric(goodsCountForsearch.getFabric());
-                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
-                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
-                }
-            }
             return cdnItem;
         }
 
@@ -468,6 +458,14 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                         } // 属性处理循环 end
                     } //可用属性处理 end
                 } // 商品扩展信息处理 end
+                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(id);
+                goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                if (goodsCountForsearch != null) {
+                    cdnItem.setFabric(goodsCountForsearch.getFabric());
+                    cdnItem.setInFabric(goodsCountForsearch.getInfabric());
+                    cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
+                }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end
