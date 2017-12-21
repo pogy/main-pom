@@ -5,7 +5,6 @@ import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.CategoryValue;
-import com.shigu.main4.item.vo.GoodsOfferVO;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 

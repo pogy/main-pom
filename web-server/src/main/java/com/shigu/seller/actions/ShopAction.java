@@ -29,7 +29,6 @@ import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ItemShowCaseService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.*;
-import com.shigu.main4.item.vo.GoodsOfferVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -499,9 +498,13 @@ public class ShopAction {
     @ResponseBody
     public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
+        SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
+        GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
+        goodsInfoVO.setAllimg();
 
 
-        model.addAttribute("goodsInfo",shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession));
+
+        model.addAttribute("goodsInfo",goodsInfoVO);
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
     }

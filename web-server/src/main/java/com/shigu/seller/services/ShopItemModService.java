@@ -4,18 +4,12 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
-import com.shigu.main4.item.vo.EverUsedCatForAdd;
-import com.shigu.main4.item.vo.GoodsOfferVO;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
-import com.shigu.seller.bo.GoodsOfferBO;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
 import com.shigu.session.main4.ShopSession;
@@ -319,29 +313,27 @@ public class ShopItemModService {
     /**
      * 查店内需要编辑的商品的具体内容
      */
-    public GoodsOfferVO getGoodsOffer(Long goodId, ShopSession shopSession){
-        GoodsOfferVO goodsOfferVO =new GoodsOfferVO();
-//        GoodsOfferVO goodsOfferVO = itemSearchService.selGoodsOffer(goodId, shopSession.getWebSite());
+    public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
         SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
-        if(synItem != null){
-            goodsOfferVO.setGoodsNo(synItem.getGoodsNo());
-            goodsOfferVO.setInFabric(synItem.getInFabric());
-            goodsOfferVO.setFabric(synItem.getFabric());
-            goodsOfferVO.setCid(synItem.getCid());
-            goodsOfferVO.setSellerids(synItem.getCidAll());
-            goodsOfferVO.setDeschtml(synItem.getGoodsDesc());
-            goodsOfferVO.setTitle(synItem.getTitle());
-            goodsOfferVO.setQuantity(synItem.getNum());
-            goodsOfferVO.setSellPoint(synItem.getSellPoint());
-            goodsOfferVO.setPiPrice(synItem.getPiPriceString());
-            goodsOfferVO.setBuynow(synItem.getPriceString());
-            goodsOfferVO.setPropertyAlias(synItem.getPropertyAlias());
-            goodsOfferVO.setParamstr(synItem.getProps());
-            goodsOfferVO.setInputStr(synItem.getInputStr());
-            goodsOfferVO.setInputPids(synItem.getInputPids());
-            goodsOfferVO.setPicPath(synItem.getPicUrl());
-            goodsOfferVO.setAllimg(StringUtils.join(synItem.getImageList().toArray(), ","));
-        }
-        return goodsOfferVO;
+//        if(synItem != null){
+//            goodsOfferVO.setGoodsNo(synItem.getGoodsNo());
+//            goodsOfferVO.setInFabric(synItem.getInFabric());
+//            goodsOfferVO.setFabric(synItem.getFabric());
+//            goodsOfferVO.setCid(synItem.getCid());
+//            goodsOfferVO.setSellerids(synItem.getCidAll());
+//            goodsOfferVO.setDeschtml(synItem.getGoodsDesc());
+//            goodsOfferVO.setTitle(synItem.getTitle());
+//            goodsOfferVO.setQuantity(synItem.getNum());
+//            goodsOfferVO.setSellPoint(synItem.getSellPoint());
+//            goodsOfferVO.setPiPrice(synItem.getPiPriceString());
+//            goodsOfferVO.setBuynow(synItem.getPriceString());
+//            goodsOfferVO.setPropertyAlias(synItem.getPropertyAlias());
+//            goodsOfferVO.setParamstr(synItem.getProps());
+//            goodsOfferVO.setInputStr(synItem.getInputStr());
+//            goodsOfferVO.setInputPids(synItem.getInputPids());
+//            goodsOfferVO.setPicPath(synItem.getPicUrl());
+//            goodsOfferVO.setAllimg(StringUtils.join(synItem.getImageList().toArray(), ","));
+//        }
+        return synItem;
     }
 }
