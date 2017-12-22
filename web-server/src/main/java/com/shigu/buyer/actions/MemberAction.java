@@ -919,9 +919,12 @@ public class MemberAction {
      */
     @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
     @ResponseBody
-    public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
+    public JSONObject getRealWithdrawMoney(Long userWirteMoney, Integer freeWithdrawNum) {
         if (userWirteMoney == null || userWirteMoney <= 0) {
             return JsonResponseUtil.error("请输入正确的金额");
+        }
+        if (freeWithdrawNum != null && freeWithdrawNum > 0) {
+            JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
         return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
