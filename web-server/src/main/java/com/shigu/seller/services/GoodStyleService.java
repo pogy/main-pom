@@ -89,6 +89,8 @@ public class GoodStyleService {
                     }
                 }
             }
+        }else {
+            return null;
         }
         return list;
     }
@@ -177,12 +179,15 @@ public class GoodStyleService {
         shiguCustomerStyleExample.createCriteria().andCIdIn(collect).andUserIdEqualTo(userId);
         //风格集合
         List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
-        //风格id集合
-        List<Long> sids = shiguCustomerStyles1.stream().map(ShiguCustomerStyle::getStyleId).collect(Collectors.toList());
-        //
-        List<Map<String, Long>> maps = goodsCountForsearchMapper.countGoodsByStyles(userId, sids, webSite);
-
+        
         if(shiguCustomerStyles1!=null && shiguCustomerStyles1.size()>0 ) {
+
+            //风格id集合
+            List<Long> sids = shiguCustomerStyles1.stream().map(ShiguCustomerStyle::getStyleId).collect(Collectors.toList());
+            //
+            List<Map<String, Long>> maps =new ArrayList<>();
+
+            maps = goodsCountForsearchMapper.countGoodsByStyles(userId, sids, webSite);
             for (SearchCategory searchCategory:list) {
                 CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
                 categoryTabsVo.setCateId(searchCategory.getCateValue());
