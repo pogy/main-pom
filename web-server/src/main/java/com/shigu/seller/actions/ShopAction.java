@@ -564,7 +564,7 @@ public class ShopAction {
         if(synItem.getPropImgs() != null){
             propImgs= JSON.toJSONString(synItem.getPropImgs());
         }
-
+        skuAttribute.get(0).getFormitems().get(0).getKey().equals()
 
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
@@ -574,7 +574,9 @@ public class ShopAction {
         }
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
-                
+                if(){
+
+                }
 
             }
             if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
