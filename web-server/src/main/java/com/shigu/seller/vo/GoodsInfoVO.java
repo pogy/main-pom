@@ -38,7 +38,8 @@ public class GoodsInfoVO {
     /**
      *SKU列表
      */
-    private SkuAttribute skuAttribute;
+    private List<SkuAttribute>  skuAttribute;
+
 
     /**
      * 首图
@@ -110,13 +111,6 @@ public class GoodsInfoVO {
         this.formAttribute = formAttribute;
     }
 
-    public SkuAttribute getSkuAttribute() {
-        return skuAttribute;
-    }
-
-    public void setSkuAttribute(SkuAttribute skuAttribute) {
-        this.skuAttribute = skuAttribute;
-    }
 
     public String getPicPath() {
         return picPath;
@@ -141,4 +135,12 @@ public class GoodsInfoVO {
     public void setDeschtml(String deschtml) {
         this.deschtml = deschtml;
     }
+    public List<SkuAttribute> getSkuAttribute() {
+        return skuAttribute;
+    }
+
+    public void setSkuAttribute(List<SkuAttribute> skuAttribute) {
+        this.skuAttribute = skuAttribute;
+    }
+
 }

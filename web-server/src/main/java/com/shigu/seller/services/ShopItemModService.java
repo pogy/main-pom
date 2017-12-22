@@ -1,5 +1,6 @@
 package com.shigu.seller.services;
 
+import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
@@ -9,11 +10,9 @@ import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.OnsaleItem;
+import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
-import com.shigu.seller.vo.GoodsInfoVO;
-import com.shigu.seller.vo.GoodsOfferVO;
-import com.shigu.seller.vo.ShiguStyleVo;
-import com.shigu.seller.vo.StyleVo;
+import com.shigu.seller.vo.*;
 import com.shigu.session.main4.ShopSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -56,6 +55,8 @@ public class ShopItemModService {
     GoodsCountForsearchMapper goodsCountForsearchMapper;
     @Autowired
     ItemSearchService itemSearchService;
+    @Autowired
+    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -330,23 +331,102 @@ public class ShopItemModService {
         goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
         goodsInfoVO.setAllimg(synItem.getImageList());//五张图
         //需要判断是否设置
-        goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
+        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
+        shiguGoodsModified.setItemId(goodId);
+        shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
+        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
+            goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
+        }else{
+            goodsInfoVO.setLowestLiPrice(null);//最低零售价
+        }
+
+        
+
+        ArrayList<SkuAttribute> skus = new ArrayList<>();
+
+        goodsInfoVO.setSkuAttribute(skus);//SKU列表
 
 
-        goodsInfoVO.setSkuAttribute();//SKU列表
+
 
         goodsInfoVO.setFormAttribute();//商品属性数据
 
-        synItem.getPropertyAlias();//商品属性别名
+
+        String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
+        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
+        String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
+        String propImgs = null;//商品prop,带图部分
+        if(synItem.getPropImgs() != null){
+            propImgs= JSON.toJSONString(synItem.getPropImgs());
+        }
+
+
+        List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
+        if(props != null){
+            for (String p : props.split(";")) {
+                pCollect.add(p);
+            }
+        }
+//        List<String> paCollect = new ArrayList<>();//propertyAlias 里pid1:vid1:pid_name1:vid_name1 的集合
+//        if(paCollect != null) {
+//            for (String pa : propertyAlias.split(";")) {
+//                paCollect.add(pa);
+//            }
+//        }
+//        List<String> pnCollect = new ArrayList<>();//propsName 里pid1:vid1:pid_name1:vid_name1; 的集合
+//        if(pnCollect != null) {
+//            for (String pa : propsName.split(";")) {
+//                pnCollect.add(pa);
+//            }
+//        }
+        for (String pidvid:pCollect) {
+            if(props.indexOf(pidvid) != -1){//判断是否包含
+
+            }
+
+
+        }
+
+
+
+
+        String propimgs = propImgs.getPropimgs();
+        if (propimgs != null) {
+            for (String s : propimgs.split(";")) {
+                String[] pvu = s.split("##");
+                if (pvu.length == 2) {
+                    String[] pv = pvu[0].split(":");
+                    try {
+                        Long p = Long.valueOf(pv[0]);
+                        Long v = Long.valueOf(pv[1]);
+                        ShiguPropImg img = new ShiguPropImg();
+                        img.setPid(p);
+                        img.setVid(v);
+                        img.setUrl(pvu[1]);
+                        synItem.getPropImgs().add(img);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+        synItem.getInputStr();// 自定义值串   '用户自行输入的子属性名和属性值@所有属性别名加起来不能超过 3999字节。',
+        synItem.getInputPids();//自定义pid串  '用户自行输入的类目属性ID串',
+
         synItem.getSellPoint();//卖点
         synItem.getNum();//总量
+
         synItem.getCid();//淘宝叶子类目ID
         synItem.getCidAll();//商家编号
-        synItem.getProps();//商品属性ID串
-        synItem.getInputStr();// 自定义值串
-        synItem.getInputPids();//自定义pid串
-        synItem.getPicUrl();//商品主图
-        
+
         return synItem;
     }
 }
