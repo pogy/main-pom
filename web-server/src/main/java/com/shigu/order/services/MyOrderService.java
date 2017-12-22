@@ -1,10 +1,7 @@
 package com.shigu.order.services;
 
 import com.opentae.core.mybatis.mapper.MultipleMapper;
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.ItemOrderLogistics;
-import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderServiceExample;
@@ -75,6 +72,12 @@ public class MyOrderService {
     private ItemOrderProcess itemOrderProcess;
     @Autowired
     private MultipleMapper multipleMapper;
+    @Autowired
+    OrderProvMapper orderProvMapper;
+    @Autowired
+    OrderCityMapper orderCityMapper;
+    @Autowired
+    OrderTownMapper orderTownMapper;
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) {
@@ -106,9 +109,20 @@ public class MyOrderService {
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(t);
         if (!select.isEmpty()) {
             ItemOrderLogistics logistics = select.get(0);
+            String address="";
+            OrderProv prov=orderProvMapper.selectByPrimaryKey(logistics.getProvId());
+            OrderCity city=orderCityMapper.selectByPrimaryKey(logistics.getCityId());
+            address+=prov.getProvName()+" "+city.getCityName()+" ";
+            if(logistics.getTownId()!=null){
+                OrderTown town=orderTownMapper.selectByPrimaryKey(logistics.getTownId());
+                if(town!=null){
+                    address+=town.getTownName()+" ";
+                }
+            }
+            address+=logistics.getAddress();
             OrderAddrInfoVO vo = new OrderAddrInfoVO();
             vo.setOrderId(orderId);
-            vo.setAddress(logistics.getAddress());
+            vo.setAddress(address);
             vo.setName(logistics.getName());
             vo.setPhone(logistics.getTelephone());
             return vo;

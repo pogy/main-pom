@@ -1,5 +1,7 @@
 package com.shigu.main4.order.utils;
 
+import com.shigu.main4.tools.RedisIO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,24 +22,29 @@ public class KdniaoUtil {
     private String EBusinessID;
     @Value("${AppKey}")
     private String AppKey;
+    @Autowired
+    private RedisIO redisIO;
     public String getOrderTracesByJson(String expCode, String expNo) throws Exception{
-        String ReqURL="http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
-        String requestData= "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
+        String result=redisIO.get("orderTracesByJson_"+expCode+"_"+expNo);
+        if(result==null){
+            String ReqURL="http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
+            String requestData= "{\"OrderCode\":\"\",\"ShipperCode\":\"" + expCode + "\",\"LogisticCode\":\"" + expNo + "\"}";
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("RequestData", urlEncoder(requestData, "UTF-8"));
-        params.put("EBusinessID", EBusinessID);
-        params.put("RequestType", "1002");
-        String dataSign=encrypt(requestData, AppKey, "UTF-8");
-        params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
-        params.put("DataType", "2");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+            params.put("EBusinessID", EBusinessID);
+            params.put("RequestType", "1002");
+            String dataSign=encrypt(requestData, AppKey, "UTF-8");
+            params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+            params.put("DataType", "2");
 
-        String result=sendPost(ReqURL, params);
-
+            result=sendPost(ReqURL, params);
+            redisIO.putStringTemp("orderTracesByJson_"+expCode+"_"+expNo,result,300);
+        }
         //根据公司业务处理返回的信息......
-
         return result;
     }
+
 
     /**
      * MD5加密

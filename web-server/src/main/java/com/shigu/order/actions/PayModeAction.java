@@ -87,7 +87,7 @@ public class PayModeAction {
         model.addAttribute("notSetPassword", payModePageVO.getNotSetPassword());
         model.addAttribute("tempCode", payModePageVO.getTempCode());
         model.addAttribute("alipayUrl", payModePageVO.getAlipayUrl());
-        return "/trade/payMode";
+        return "/order/payMode";
     }
 
     /**
@@ -224,7 +224,7 @@ public class PayModeAction {
         }
         model.addAttribute("amountPay", totalMoney);
         model.addAttribute("payType", payModeService.selPayType(orderId));
-        return "trade/paySuccess";
+        return "order/paySuccess";
     }
 
     /**
