@@ -10,6 +10,8 @@ import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.vo.GoodsInfoVO;
+import com.shigu.seller.vo.GoodsOfferVO;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
 import com.shigu.session.main4.ShopSession;
@@ -315,25 +317,36 @@ public class ShopItemModService {
      */
     public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
         SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
-//        if(synItem != null){
-//            goodsOfferVO.setGoodsNo(synItem.getGoodsNo());
-//            goodsOfferVO.setInFabric(synItem.getInFabric());
-//            goodsOfferVO.setFabric(synItem.getFabric());
-//            goodsOfferVO.setCid(synItem.getCid());
-//            goodsOfferVO.setSellerids(synItem.getCidAll());
-//            goodsOfferVO.setDeschtml(synItem.getGoodsDesc());
-//            goodsOfferVO.setTitle(synItem.getTitle());
-//            goodsOfferVO.setQuantity(synItem.getNum());
-//            goodsOfferVO.setSellPoint(synItem.getSellPoint());
-//            goodsOfferVO.setPiPrice(synItem.getPiPriceString());
-//            goodsOfferVO.setBuynow(synItem.getPriceString());
-//            goodsOfferVO.setPropertyAlias(synItem.getPropertyAlias());
-//            goodsOfferVO.setParamstr(synItem.getProps());
-//            goodsOfferVO.setInputStr(synItem.getInputStr());
-//            goodsOfferVO.setInputPids(synItem.getInputPids());
-//            goodsOfferVO.setPicPath(synItem.getPicUrl());
-//            goodsOfferVO.setAllimg(StringUtils.join(synItem.getImageList().toArray(), ","));
-//        }
+        GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
+        goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
+
+        goodsInfoVO.setPiPrice(synItem.getPiPriceString());//批发价
+        goodsInfoVO.setPicPath(synItem.getPicUrl());//首图
+
+        goodsInfoVO.setInFabric(synItem.getInFabric());//里料
+        goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
+
+        goodsInfoVO.setFabric(synItem.getFabric());//面料
+        goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
+        goodsInfoVO.setAllimg(synItem.getImageList());//五张图
+        //需要判断是否设置
+        goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
+
+
+        goodsInfoVO.setSkuAttribute();//SKU列表
+
+        goodsInfoVO.setFormAttribute();//商品属性数据
+
+        synItem.getPropertyAlias();//商品属性别名
+        synItem.getSellPoint();//卖点
+        synItem.getNum();//总量
+        synItem.getCid();//淘宝叶子类目ID
+        synItem.getCidAll();//商家编号
+        synItem.getProps();//商品属性ID串
+        synItem.getInputStr();// 自定义值串
+        synItem.getInputPids();//自定义pid串
+        synItem.getPicUrl();//商品主图
+        
         return synItem;
     }
 }

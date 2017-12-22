@@ -499,12 +499,12 @@ public class ShopAction {
     public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
-        GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
-        goodsInfoVO.setAllimg();
+        GoodsInfoVO goodsInfoVO = new GoodsInfoVO()
 
 
 
-        model.addAttribute("goodsInfo",goodsInfoVO);
+
+        model.addAttribute("goodsInfo",);
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
     }
