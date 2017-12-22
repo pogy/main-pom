@@ -1,7 +1,9 @@
 package com.shigu.seller.actions;
 
+import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.GoatLicense;
 import com.opentae.data.mall.beans.GoodsFile;
+import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
@@ -72,6 +74,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.elasticsearch.action.fieldstats.FieldStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -183,6 +186,7 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+
 
 
     /**
@@ -329,7 +333,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsSend")
-//    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
+    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -497,18 +501,104 @@ public class ShopAction {
     @RequestMapping("seller/editGoodsInfo")
     @ResponseBody
     public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
-
-
         ShopSession shopSession = getShopSession(session);
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
         model.addAttribute("category_text",goodsSendService.selCatPath(synItem.getCid()));
 
-        GoodsInfoVO goodsInfoVO = new GoodsInfoVO()
+        GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
+        goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
+        goodsInfoVO.setPiPrice(synItem.getPiPriceString());//批发价
+        goodsInfoVO.setPicPath(synItem.getPicUrl());//首图
+        goodsInfoVO.setInFabric(synItem.getInFabric());//里料
+        goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
+        goodsInfoVO.setFabric(synItem.getFabric());//面料
+        goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
+        goodsInfoVO.setAllimg(synItem.getImageList());//五张图
+        //需要判断是否设置
+        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
+        shiguGoodsModified.setItemId(Long.valueOf(bo.getGooodsId()));
+        shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
+        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
+            goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
+        }else{
+            goodsInfoVO.setLowestLiPrice(null);//最低零售价
+        }
+        List<FormAttrVO> formAttribute=new ArrayList<>();
+        List<SKUVO> skuAttribute=new ArrayList<>();
+
+        PropsVO propsVO=tbPropsService.selProps(synItem.getCid());
+        //转化成老的pageProps
+        if(propsVO!=null){
+            List<PropertyItemVO> saleProps=propsVO.getSaleProps();
+            PropertyItemVO colorProps=propsVO.getColor();
+            if(colorProps!=null){
+                skuAttribute.add(goodsSendService.parseTaobaoSaleVO(colorProps,1));
+            }
+            if(saleProps!=null){
+                for(PropertyItemVO piv:saleProps){
+                    skuAttribute.add(goodsSendService.parseTaobaoSaleVO(piv,0));
+                }
+            }
+            List<PropertyItemVO> simpleProps=propsVO.getProperties();
+            if(propsVO.getPingpai()!=null){
+                PropertyValueVO pvv=new PropertyValueVO();
+                pvv.setVid(-2L);
+                pvv.setName("其它/other");
+                propsVO.getPingpai().getValues().add(0,pvv);
+                simpleProps.add(0,propsVO.getPingpai());
+            }
+            if(propsVO.getHuohao()!=null){
+                simpleProps.add(0,propsVO.getHuohao());
+            }
+            if(simpleProps!=null){
+                for(PropertyItemVO piv:simpleProps){
+                    formAttribute.add(goodsSendService.parseTaobaoItemPropVO(piv));
+                }
+            }
+        }
+
+        String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
+        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
+        String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
+        String propImgs = null;//商品prop,带图部分
+        if(synItem.getPropImgs() != null){
+            propImgs= JSON.toJSONString(synItem.getPropImgs());
+        }
 
 
+        List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
+        if(props != null){
+            for (String p : props.split(";")) {
+                pCollect.add(p);
+            }
+        }
+        for (String pidvid:pCollect) {
+            if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+                
 
+            }
+            if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
-        model.addAttribute("goodsInfo",);
+            }
+            if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+
+            }
+
+        }
+
+        String openflag=redisIO.get("open_more_pic");
+        if (StringUtils.isNotEmpty(openflag)) {
+            model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
+        }else{
+            model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
+        }
+        goodsInfoVO.setSkuAttribute(skuAttribute);//SKU列表
+        goodsInfoVO.setFormAttribute(formAttribute);//商品属性数据
+
+//店内类目暂时不要
+        model.addAttribute("formAttribute",formAttribute);
+        model.addAttribute("skuAttribute",skuAttribute);
+        model.addAttribute("goodsInfo",goodsInfoVO);
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
     }

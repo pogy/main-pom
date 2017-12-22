@@ -318,55 +318,18 @@ public class ShopItemModService {
      */
     public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
         SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
-        GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
-        goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
 
-        goodsInfoVO.setPiPrice(synItem.getPiPriceString());//批发价
-        goodsInfoVO.setPicPath(synItem.getPicUrl());//首图
-
-        goodsInfoVO.setInFabric(synItem.getInFabric());//里料
-        goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
-
-        goodsInfoVO.setFabric(synItem.getFabric());//面料
-        goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
-        goodsInfoVO.setAllimg(synItem.getImageList());//五张图
-        //需要判断是否设置
-        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
-        shiguGoodsModified.setItemId(goodId);
-        shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
-        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
-            goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
-        }else{
-            goodsInfoVO.setLowestLiPrice(null);//最低零售价
-        }
 
         
 
         ArrayList<SkuAttribute> skus = new ArrayList<>();
 
-        goodsInfoVO.setSkuAttribute(skus);//SKU列表
 
 
 
 
-        goodsInfoVO.setFormAttribute();//商品属性数据
 
 
-        String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
-        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
-        String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
-        String propImgs = null;//商品prop,带图部分
-        if(synItem.getPropImgs() != null){
-            propImgs= JSON.toJSONString(synItem.getPropImgs());
-        }
-
-
-        List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
-        if(props != null){
-            for (String p : props.split(";")) {
-                pCollect.add(p);
-            }
-        }
 //        List<String> paCollect = new ArrayList<>();//propertyAlias 里pid1:vid1:pid_name1:vid_name1 的集合
 //        if(paCollect != null) {
 //            for (String pa : propertyAlias.split(";")) {
@@ -379,13 +342,7 @@ public class ShopItemModService {
 //                pnCollect.add(pa);
 //            }
 //        }
-        for (String pidvid:pCollect) {
-            if(props.indexOf(pidvid) != -1){//判断是否包含
 
-            }
-
-
-        }
 
 
 

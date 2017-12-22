@@ -12,6 +12,15 @@ public class KVO {
     private String value;
     private Long pid;
     private Long vid;
+    private  Boolean checked;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
 
     public String getText() {
         return text;

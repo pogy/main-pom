@@ -14,7 +14,26 @@ public class FormItemVO {
     private Long pid;
     private String name;
     private String type;
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     private List<KVO> options;
+    private List<Checkboxs> checkboxs;
+
+    public List<Checkboxs> getCheckboxs() {
+        return checkboxs;
+    }
+
+    public void setCheckboxs(List<Checkboxs> checkboxs) {
+        this.checkboxs = checkboxs;
+    }
 
     public int getIsInputProp() {
         return isInputProp;

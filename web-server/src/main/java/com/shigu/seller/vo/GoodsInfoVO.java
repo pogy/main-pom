@@ -33,13 +33,29 @@ public class GoodsInfoVO {
     /**
      * 商品属性数据
      */
-    private FormAttribute formAttribute;
+    private  List<FormAttrVO> formAttribute;
+
+
+    public List<FormAttrVO> getFormAttribute() {
+        return formAttribute;
+    }
+
+    public void setFormAttribute(List<FormAttrVO> formAttribute) {
+        this.formAttribute = formAttribute;
+    }
 
     /**
      *SKU列表
      */
-    private List<SkuAttribute>  skuAttribute;
+    private List<SKUVO>  skuAttribute;
 
+    public void setSkuAttribute(List<SKUVO> skuAttribute) {
+        this.skuAttribute = skuAttribute;
+    }
+
+    public List<SKUVO> getSkuAttribute() {
+        return skuAttribute;
+    }
 
     /**
      * 首图
@@ -103,13 +119,7 @@ public class GoodsInfoVO {
         this.inFabric = inFabric;
     }
 
-    public FormAttribute getFormAttribute() {
-        return formAttribute;
-    }
 
-    public void setFormAttribute(FormAttribute formAttribute) {
-        this.formAttribute = formAttribute;
-    }
 
 
     public String getPicPath() {
@@ -135,12 +145,6 @@ public class GoodsInfoVO {
     public void setDeschtml(String deschtml) {
         this.deschtml = deschtml;
     }
-    public List<SkuAttribute> getSkuAttribute() {
-        return skuAttribute;
-    }
 
-    public void setSkuAttribute(List<SkuAttribute> skuAttribute) {
-        this.skuAttribute = skuAttribute;
-    }
 
 }
