@@ -329,7 +329,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/releaseGoodsSend")
-    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
+//    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -497,8 +497,12 @@ public class ShopAction {
     @RequestMapping("seller/editGoodsInfo")
     @ResponseBody
     public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
+
+
         ShopSession shopSession = getShopSession(session);
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
+        model.addAttribute("category_text",goodsSendService.selCatPath(synItem.getCid()));
+
         GoodsInfoVO goodsInfoVO = new GoodsInfoVO()
 
 
