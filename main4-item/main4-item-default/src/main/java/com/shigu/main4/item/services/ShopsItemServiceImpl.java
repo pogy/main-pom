@@ -28,6 +28,7 @@ import com.shigu.main4.item.services.utils.ElasticCountUtil;
 import com.shigu.main4.item.services.utils.FileImgsUtil;
 import com.shigu.main4.item.services.utils.OnsaleInstockReader;
 import com.shigu.main4.item.services.utils.SelIOItemsUtil;
+import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.vo.*;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
@@ -35,6 +36,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,8 +86,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private ElasticCountUtil elasticCountUtil;
 
     @Autowired
-    private MultipleMapper tae_mall_multipleMapper;
-
+    private ItemCache itemCache;
     @Autowired
     private RedisIO redisIO;
 
@@ -522,6 +524,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         } else {
             goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
         }
+        itemCache.cleanItemCache(goodsId);
     }
 
     /**
@@ -539,7 +542,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         aggrNum = shiguGoodsTinyMapper.countOnsaleGoods(shopId,webSite,bo);
         return aggrNum;
     }
-
     @Override
     public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
         String cacheIndex = String.format("%s%d", type.cacheName, shopId);
@@ -604,6 +606,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             }
             goodsCountForsearchMapper.insertListNoId(insertSearch);
         }
+        itemCache.cleanItemCache(goodsId);
     }
 
 }
