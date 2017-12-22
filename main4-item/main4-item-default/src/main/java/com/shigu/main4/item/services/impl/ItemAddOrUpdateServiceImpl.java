@@ -1207,7 +1207,6 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Override
     public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
-
         if (goodsStyleName != null && StringUtils.isNotEmpty(goodsStyleName) && goodsStyleName.length() < 45) {
             ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
             example.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
