@@ -191,14 +191,14 @@ public class MyOrderAction {
         if (orderId == null) {
             //订单出错
             model.addAttribute("msg", "订单号不能为空！");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean flag = myOrderService.orderBelongTo(orderId, ps.getUserId());
         if (!flag) {
             //没有这个订单
             model.addAttribute("msg", "非法访问！");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         } else {
 
             MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId,ps.getUserId());
@@ -215,7 +215,7 @@ public class MyOrderAction {
             model.addAttribute("orderStateTime", detailVo.getOrderStateTime());
         }
 
-        return "trade/orderDetail";
+        return "order/orderDetail";
     }
 
 
@@ -223,7 +223,7 @@ public class MyOrderAction {
     public String expressDetail(HttpSession session, Long orderId, Model model) throws Main4Exception, ParseException {
         if (orderId == null) {
             model.addAttribute("msg","订单不能为空");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         }
         ExpressInfoVO expressInfoVO = myOrderService.expressInfo(orderId);
         model.addAttribute("expressStateDesc", Stream.of("1待揽件","2运输", "3派送", "4签收"));
@@ -232,7 +232,7 @@ public class MyOrderAction {
         model.addAttribute("expressDetail",myOrderService.expressDetail(orderId).getDetail());
         model.addAttribute("expressName",expressInfoVO.getExpressName());
         model.addAttribute("expressCode",expressInfoVO.getExpressId());
-        return "trade/expressDetail";
+        return "order/expressDetail";
     }
 
 
