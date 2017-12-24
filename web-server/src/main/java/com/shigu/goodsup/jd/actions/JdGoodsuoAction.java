@@ -1,23 +1,26 @@
 package com.shigu.goodsup.jd.actions;
 
+import com.openJar.beans.JdImgInfo;
 import com.openJar.commons.MD5Attestation;
+import com.openJar.exceptions.imgs.JdUpImgException;
+import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
+import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdSessionVO;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
+import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.service.JdAgingtemplService;
-import com.shigu.main4.jd.service.JdAuthService;
-import com.shigu.main4.jd.service.JdCategoryService;
-import com.shigu.main4.jd.service.JdShopService;
+import com.shigu.main4.jd.service.*;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import com.shigu.main4.jd.vo.JdCategoryVO;
 import com.shigu.main4.jd.vo.JdShopInfoVO;
+import com.shigu.main4.jd.vo.JdWareAddVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.RedisIO;
@@ -70,6 +73,9 @@ public class JdGoodsuoAction {
     private JdAgingtemplService jdAgingtemplService;
 
     @Autowired
+    private JdGoodsService jdGoodsService;
+
+    @Autowired
     private MemberFilter memberFilter;
 
     @Autowired
@@ -77,6 +83,9 @@ public class JdGoodsuoAction {
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private JdImgService jdImgService;
 
     public static final String JD_REDIS_KEY = "JD_AUTHED_INFO_";
 
@@ -271,6 +280,64 @@ public class JdGoodsuoAction {
 
         //测试用
         return "taobao/tb2";
+    }
+
+    @RequestMapping("jdYjUpload")
+    @ResponseBody
+    public JSONObject jdYjUpload(Long goodsId,String skuColorIds) throws JdUpException {
+        Long userId = 1L;
+
+
+        //上传商品
+        JdWareAddVO jdWareAddVO = jdGoodsService.upToJd(null, null);
+
+
+        //绑定图片
+        //颜色ID集合
+        List<String> colorIds = new ArrayList<>();
+        for(String skuColorId : colorIds){
+            //根据skuColorId 获取图片地址集合
+            List<String> imgUrls = new ArrayList<>();
+            //图片搬家
+            List<String> subMsgs=new ArrayList<>();
+            JdUpImgResponse response = null;
+            try {
+                response = jdImgService.addImgs(userId, imgUrls);
+                //1，操作成功；0，操作失败
+                if ("0".equals(response.getReturnCode())) {
+                    return JSONObject.fromObject("{'status':'0'}");
+                }
+            } catch (JdUpImgException e) {
+                e.printStackTrace();
+                subMsgs.add(e.getErrMsg());
+            }
+            List<JdImgInfo> jdImgInfos = response.getJdImgInfos();
+            StringBuffer imgIds = new StringBuffer();
+            StringBuffer skuImgUrls = new StringBuffer();
+            StringBuffer imgIndex = new StringBuffer();
+            int index = 1;//index值：1-N
+            for(JdImgInfo imgInfo : jdImgInfos){
+                imgIds.append(",").append(imgInfo.getPictureId());
+                String pictureUrl = imgInfo.getPictureUrl();
+                String skuImgUrl= pictureUrl.substring(pictureUrl.indexOf("jfs/"));
+                skuImgUrls.append(",").append(skuImgUrl);
+                imgIndex.append(",").append(index);
+                index++;
+            }
+            //遍历颜色，设置图片
+            JdImageUpdateBO jdImageUpdateBO = new JdImageUpdateBO();
+            jdImageUpdateBO.setGoodsId(goodsId);
+            jdImageUpdateBO.setColorId(skuColorId);
+            jdImageUpdateBO.setImgId(imgIds.toString());
+            jdImageUpdateBO.setImgUrl(skuImgUrls.toString());
+            jdImageUpdateBO.setImgIndex(imgIndex.toString());
+//            jdImageUpdateBO.setImgZoneId(null);
+
+            jdImgService.bindGoodsImgs(jdImageUpdateBO,null);
+
+        }
+
+        return null;
     }
 
 

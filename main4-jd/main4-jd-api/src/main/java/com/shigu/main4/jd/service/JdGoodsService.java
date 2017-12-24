@@ -1,8 +1,10 @@
 package com.shigu.main4.jd.service;
 
 import com.jd.open.api.sdk.JdException;
+import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
+import com.shigu.main4.jd.vo.JdWareAddVO;
 
 import java.io.IOException;
 
@@ -19,5 +21,10 @@ public interface JdGoodsService {
      * @throws JdException
      * @throws IOException
      */
-     void upToJd(JdUpBO bo, String accessToken) throws JdUpException;
+     JdWareAddVO upToJd(JdUpBO bo, String accessToken) throws JdUpException;
+
+    /**
+     * 新增和修改商品图片
+     */
+    Boolean jdImageUpdate(JdImageUpdateBO bo, String accessToken) throws JdUpException;
 }

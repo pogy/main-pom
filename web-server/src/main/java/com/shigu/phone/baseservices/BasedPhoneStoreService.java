@@ -1,7 +1,6 @@
 package com.shigu.phone.baseservices;
 
 
-import com.alibaba.druid.sql.visitor.functions.If;
 import com.openJar.beans.app.AppShopBlock;
 import com.openJar.exceptions.OpenException;
 import com.opentae.core.mybatis.example.MultipleExample;
@@ -13,7 +12,7 @@ import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
-import com.opentae.data.mall.multibeans.AppShopBlockBean;
+import com.opentae.data.mall.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
