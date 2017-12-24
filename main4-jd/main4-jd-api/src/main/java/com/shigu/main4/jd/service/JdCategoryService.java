@@ -2,10 +2,8 @@ package com.shigu.main4.jd.service;
 
 import com.jd.open.api.sdk.JdException;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.vo.JdCategoryAttrJosVO;
-import com.shigu.main4.jd.vo.JdCategoryReadVO;
-import com.shigu.main4.jd.vo.JdCategoryVO;
-import com.shigu.main4.jd.vo.JdShopCategoryVO;
+import com.shigu.main4.jd.vo.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public interface JdCategoryService {
      * @throws JdException
      * @throws IOException
      */
-    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(String accessToken) throws  JdUpException;
+    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(String accessToken,Long cid,Integer type) throws  JdUpException;
 
     /**
      * 京东 商家类目信息
@@ -48,5 +46,14 @@ public interface JdCategoryService {
      * @throws JdUpException
      */
     List<JdCategoryReadVO> getJdCategoryByPid(String accessToken,Long pid) throws JdUpException ;
+
+    /**
+     * 获取类目属性值
+     * @param token
+     * @param pid
+     * @return
+     * @throws JdUpException
+     */
+    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(String token, Long pid) throws JdUpException;
 
 }
