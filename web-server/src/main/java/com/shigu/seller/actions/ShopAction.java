@@ -573,14 +573,32 @@ public class ShopAction {
                 pCollect.add(p);
             }
         }
+        Map<String , String> map = new HashMap<>();//<pidvid ,pid_name1>的map
+        if(propsName != null){
+            for (String pn : propsName.split(";")) {
+                String[] pnu = pn.split(":");
+                map.put(pnu[0]+pnu[1],pnu[2]);
+            }
+        }
 
-//        Map<String , SKUAttrVO> map = new HashMap<>();
-//                for (SKUVO sku:skuAttribute){
-//                    List<SKUAttrVO> formitems = sku.getFormitems();
-//                    for (SKUAttrVO skuvo : formitems){
-//                        map.put(skuvo.getKey(), skuvo);
+//        if (propimgs != null) {
+//            for (String s : propimgs.split(";")) {
+//                String[] pvu = s.split("##");
+//                if (pvu.length == 2) {
+//                    String[] pv = pvu[0].split(":");
+//                    try {
+//                        Long p = Long.valueOf(pv[0]);
+//                        Long v = Long.valueOf(pv[1]);
+//                        ShiguPropImg img = new ShiguPropImg();
+//                        img.setPid(p);
+//                        img.setVid(v);
+//                        img.setUrl(pvu[1]);
+//                        synItem.getPropImgs().add(img);
+//                    } catch (Exception ignore) {
 //                    }
 //                }
+//            }
+//        }
 
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
@@ -593,12 +611,13 @@ public class ShopAction {
                     }
                 }
                 //补充商品数据formAttribute
-
+                if(map.get(pidvid) != null){
+                    formAttribute.get(0).getFormitem().setValue(map.get(pidvid));
+                }
                 if (formAttribute.get(0).getFormitem().getOptions() !=null &&formAttribute.get(0).getFormitem().getOptions().size()>0){
                     for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
                         if( pvo.getValue().equals(pidvid)){
                             pvo.setSelected(true);
-                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
                         }
                     }
                 }
@@ -606,11 +625,10 @@ public class ShopAction {
                     for ( KVO pvo   :    formAttribute.get(0).getFormitem().getCheckboxs()){
                         if( pvo.getValue().equals(pidvid)){
                             pvo.setSelected(true);
-                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
+//                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
                         }
                     }
                 }
-
             }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
             }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
