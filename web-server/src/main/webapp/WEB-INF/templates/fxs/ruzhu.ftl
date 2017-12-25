@@ -1,4 +1,4 @@
-<#assign $pageid>ruzhu</#assign>
+<#assign $pageid="ruzhu">
 <!doctype html>
 <html>
 <head>
@@ -19,9 +19,7 @@
 <#include "/__style_torrent__/fxs__ruzhu_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
@@ -50,9 +48,7 @@
             <label><i>*</i>主营商品：</label>
             <ul class="mainbusList">
                 <#list mainbusList as mainbus>
-<#assign text>{"text":mainbus,"value":mainbus}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"text":mainbus,"value":mainbus}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>
             checked
@@ -74,6 +70,9 @@
         <#if $it.text??>
             ${$it.text!}
         </#if>
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
     </span>
 </label>
 </#list>
@@ -84,7 +83,7 @@
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>档口号：</label>
-            <input class="fmInput" name="storeNum" value="">
+            <input class="fmInput" name="storeNum" maxlength="20" value="">
         </div>
     </div>
     <div class="validateItem">
@@ -103,39 +102,37 @@
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>联系电话：</label>
-            <input type="text" class="fmInput" name="tel" value="">
+            <input type="text" class="fmInput" name="tel" maxlength="11" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>微信号：</label>
-            <input type="text" class="fmInput" name="wx" value="">
+            <input type="text" class="fmInput" name="wx" maxlength="20" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>旺旺号：</label>
-            <input type="text" class="fmInput" name="aliWw" value="">
+            <input type="text" class="fmInput" name="aliWw" maxlength="60" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>QQ：</label>
-            <input type="text" class="fmInput" name="qq" value="">
+            <input type="text" class="fmInput" name="qq" maxlength="13" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label>电子邮箱：</label>
-            <input type="text" class="fmInput" name="email" value="">
+            <input type="text" class="fmInput" name="email" maxlength="30" value="">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>所属市场：</label>
-<#assign text>{"name":"cityId"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"cityId"}] as $it>
 <div class="fmSelect" id="cityId">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -146,9 +143,7 @@
     >
 </div>
 </#list>
-<#assign text>{"name":"marketId"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"marketId"}] as $it>
 <div class="fmSelect" id="marketId">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -159,9 +154,7 @@
     >
 </div>
 </#list>
-<#assign text>{"name":"marketFloor"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"marketFloor"}] as $it>
 <div class="fmSelect" id="marketFloor">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -177,9 +170,7 @@
     <div class="validateItem">
         <div class="formGroup serverType">
             <label><i>*</i>售后服务：</label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -218,9 +209,7 @@
     </span>
 </label>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -264,9 +253,7 @@
     </div>
     <div class="validateItem">
         <div class="formGroup subBox">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         checked
         <#if $it.disabled??>
@@ -306,9 +293,7 @@
     </div>
     <div class="validateItem">
         <div class="formGroup">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
