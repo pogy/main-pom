@@ -15,6 +15,8 @@ public class FormItemVO {
     private String name;
     private String type;
     private String value;
+    private List<KVO> options;
+    private List<Checkboxs> checkboxs;
 
     public String getValue() {
         return value;
@@ -23,9 +25,6 @@ public class FormItemVO {
     public void setValue(String value) {
         this.value = value;
     }
-
-    private List<KVO> options;
-    private List<Checkboxs> checkboxs;
 
     public List<Checkboxs> getCheckboxs() {
         return checkboxs;

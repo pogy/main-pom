@@ -564,7 +564,6 @@ public class ShopAction {
         if(synItem.getPropImgs() != null){
             propImgs= JSON.toJSONString(synItem.getPropImgs());
         }
-        skuAttribute.get(0).getFormitems().get(0).getKey().equals()
 
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
@@ -572,17 +571,37 @@ public class ShopAction {
                 pCollect.add(p);
             }
         }
+
+//        Map<String , SKUAttrVO> map = new HashMap<>();
+//                for (SKUVO sku:skuAttribute){
+//                    List<SKUAttrVO> formitems = sku.getFormitems();
+//                    for (SKUAttrVO skuvo : formitems){
+//                        map.put(skuvo.getKey(), skuvo);
+//                    }
+//                }
+
+
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
-                if(){
+                for (SKUVO sku:skuAttribute){
+                    for (SKUAttrVO skuvo : sku.getFormitems()){
+                        if(skuvo.getKey().equals(pidvid)){
+                            skuvo.setChecked(true);
+                        }
+                    }
+                }
+                formAttribute.get(0).getFormitem().setValue();
+
+                for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
+                    if( pvo.getValue().equals(pidvid)){
+                        pvo.set;
+                    }
 
                 }
 
-            }
-            if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+            }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
-            }
-            if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
             }
 
