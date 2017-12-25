@@ -39,6 +39,12 @@
                 <when test="bo.state==3">
                     LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
                 </when>
+                <when test="bo.state==4">
+                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
+                </when>
+                <when test="bo.state==5">
+                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
+                </when>
             </choose>
         </if>
 
@@ -59,6 +65,12 @@
                 </when>
                 <when test="bo.state==3">
                     AND b.fabric is null
+                </when>
+                <when test="bo.state==4">
+                    AND( b.had_video is null or b.had_video=0 )
+                </when>
+                <when test="bo.state==5">
+                    AND ( b.had_style is null or b.had_style=0 )
                 </when>
             </choose>
         </if>
