@@ -318,71 +318,14 @@ public class ShopItemModService {
      */
     public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
         SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
-
-
-        
-
-        ArrayList<SkuAttribute> skus = new ArrayList<>();
-
-
-
-
-
-
-
-//        List<String> paCollect = new ArrayList<>();//propertyAlias 里pid1:vid1:pid_name1:vid_name1 的集合
-//        if(paCollect != null) {
-//            for (String pa : propertyAlias.split(";")) {
-//                paCollect.add(pa);
-//            }
-//        }
-//        List<String> pnCollect = new ArrayList<>();//propsName 里pid1:vid1:pid_name1:vid_name1; 的集合
-//        if(pnCollect != null) {
-//            for (String pa : propsName.split(";")) {
-//                pnCollect.add(pa);
-//            }
-//        }
-
-
-
-
-
-        String propimgs = propImgs.getPropimgs();
-        if (propimgs != null) {
-            for (String s : propimgs.split(";")) {
-                String[] pvu = s.split("##");
-                if (pvu.length == 2) {
-                    String[] pv = pvu[0].split(":");
-                    try {
-                        Long p = Long.valueOf(pv[0]);
-                        Long v = Long.valueOf(pv[1]);
-                        ShiguPropImg img = new ShiguPropImg();
-                        img.setPid(p);
-                        img.setVid(v);
-                        img.setUrl(pvu[1]);
-                        synItem.getPropImgs().add(img);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-        synItem.getInputStr();// 自定义值串   '用户自行输入的子属性名和属性值@所有属性别名加起来不能超过 3999字节。',
-        synItem.getInputPids();//自定义pid串  '用户自行输入的类目属性ID串',
-
-        synItem.getSellPoint();//卖点
-        synItem.getNum();//总量
-
-        synItem.getCid();//淘宝叶子类目ID
-        synItem.getCidAll();//商家编号
+//        synItem.getInputStr();// 自定义值串   '用户自行输入的子属性名和属性值@所有属性别名加起来不能超过 3999字节。',
+//        synItem.getInputPids();//自定义pid串  '用户自行输入的类目属性ID串',
+//
+//        synItem.getSellPoint();//卖点
+//        synItem.getNum();//总量
+//
+//        synItem.getCid();//淘宝叶子类目ID
+//        synItem.getCidAll();//商家编号
 
         return synItem;
     }

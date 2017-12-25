@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.GoatLicense;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.interfaces.ShiguGoodsModifiedMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.UserInfoVO;
@@ -186,6 +187,9 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+
+    @Autowired
+    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
 
 
 
@@ -525,7 +529,6 @@ public class ShopAction {
         }
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();
-
         PropsVO propsVO=tbPropsService.selProps(synItem.getCid());
         //转化成老的pageProps
         if(propsVO!=null){
@@ -564,7 +567,6 @@ public class ShopAction {
         if(synItem.getPropImgs() != null){
             propImgs= JSON.toJSONString(synItem.getPropImgs());
         }
-
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
             for (String p : props.split(";")) {
@@ -580,9 +582,9 @@ public class ShopAction {
 //                    }
 //                }
 
-
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+                //补充sku
                 for (SKUVO sku:skuAttribute){
                     for (SKUAttrVO skuvo : sku.getFormitems()){
                         if(skuvo.getKey().equals(pidvid)){
@@ -590,15 +592,22 @@ public class ShopAction {
                         }
                     }
                 }
-                formAttribute.get(0).getFormitem().setValue();
-
-                for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
-                    if( pvo.getValue().equals(pidvid)){
-                        pvo.set;
+                //补充商品数据formAttribute
+                if (formAttribute.get(0).getFormitem().getOptions() !=null &&formAttribute.get(0).getFormitem().getOptions().size()>0){
+                    for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
+                        if( pvo.getValue().equals(pidvid)){
+                            pvo.setSelected(true);
+                        }
                     }
-
                 }
-
+                if (formAttribute.get(0).getFormitem().getCheckboxs() !=null &&formAttribute.get(0).getFormitem().getCheckboxs().size()>0){
+                    for ( KVO pvo   :    formAttribute.get(0).getFormitem().getCheckboxs()){
+                        if( pvo.getValue().equals(pidvid)){
+                            pvo.setSelected(true);
+                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
+                        }
+                    }
+                }
             }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
             }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
