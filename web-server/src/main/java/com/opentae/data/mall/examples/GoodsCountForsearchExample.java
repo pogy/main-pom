@@ -15,7 +15,9 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static EntityColumn clickIp;
     public static EntityColumn goodsId;
     public static EntityColumn hadBigzip;
+    public static EntityColumn styleName;
     public static EntityColumn click;
+    public static EntityColumn sid;
     public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
@@ -37,7 +39,9 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         clickIp = listMap.get("clickIp");
         goodsId = listMap.get("goodsId");
         hadBigzip = listMap.get("hadBigzip");
+        styleName = listMap.get("styleName");
         click = listMap.get("click");
+        sid = listMap.get("sid");
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
@@ -304,6 +308,61 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
             return notBetween(hadBigzip, value1, value2);
         }
+        public GoodsCountForsearchExample.Criteria andStyleNameIsNull() {
+            return isNull(styleName);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameIsNotNull() {
+            return isNotNull(styleName);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameEqualTo(String value) {
+            return equalTo(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameNotEqualTo(String value) {
+            return notEqualTo(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameGreaterThan(String value) {
+            return greaterThan(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameLessThan(String value) {
+            return lessThan(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameLike(String value) {
+            return like(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameNotLike(String value) {
+            return notLike(styleName, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameIn(List<String> values) {
+            return in(styleName, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameNotIn(List<String> values) {
+            return notIn(styleName, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameBetween(String value1, String value2) {
+            return between(styleName, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleNameNotBetween(String value1, String value2) {
+            return notBetween(styleName, value1, value2);
+        }
         public GoodsCountForsearchExample.Criteria andClickIsNull() {
             return isNull(click);
         }
@@ -350,6 +409,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
             return notBetween(click, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andSidIsNull() {
+            return isNull(sid);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidIsNotNull() {
+            return isNotNull(sid);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidEqualTo(Integer value) {
+            return equalTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotEqualTo(Integer value) {
+            return notEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidGreaterThan(Integer value) {
+            return greaterThan(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidLessThan(Integer value) {
+            return lessThan(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(sid, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidIn(List<Integer> values) {
+            return in(sid, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotIn(List<Integer> values) {
+            return notIn(sid, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidBetween(Integer value1, Integer value2) {
+            return between(sid, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andSidNotBetween(Integer value1, Integer value2) {
+            return notBetween(sid, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);

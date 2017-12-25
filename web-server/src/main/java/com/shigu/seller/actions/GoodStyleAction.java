@@ -61,6 +61,9 @@ public class GoodStyleAction {
     @RequestMapping("addGoodsStyle")
     @ResponseBody
     public JSONObject addGoodsStyle(Long categoryId,String goodsStyleName,HttpSession session) throws JsonErrException{
+        if(goodsStyleName.length()>45){
+            return JsonResponseUtil.error("添加风格名超过限制");
+        }
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 //        ShopSession shopSession = personalSession.getLogshop();
         Long aLong = goodStyleService.addCustomerStyle(categoryId, goodsStyleName, personalSession.getUserId());
@@ -78,7 +81,7 @@ public class GoodStyleAction {
     public JSONObject editGoodsStyle(Long categoryId,Long goodsStyleId,String goodsStyleName,HttpSession session) throws JsonErrException{
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = personalSession.getUserId();
-        if (  goodStyleService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName,userId)!=0){
+        if ( goodStyleService.updateCustomerStyle(categoryId, goodsStyleId, goodsStyleName,userId)!=0){
             return JSONObject.fromObject(JsonResponseUtil.success());
         }
         return JSONObject.fromObject(JsonResponseUtil.error("更改失败"));

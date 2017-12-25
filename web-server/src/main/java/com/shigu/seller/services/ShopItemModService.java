@@ -282,13 +282,13 @@ public class ShopItemModService {
     /**
      * 设置商品风格
      */
-    public void setStyle(Long goodsId, Long styleId, String webSite){
+    public void setStyle(Long goodsId, Integer styleId, String webSite){
         itemAddOrUpdateService.setCustomStyle(goodsId,styleId,webSite);
     }
     /**
      *   关联同货号设置风格
      */
-    public void setSameNumStyle(Long goodsId, Long styleId, Long shopId, String webSite){
+    public void setSameNumStyle(Long goodsId, Integer styleId, Long shopId, String webSite){
         //查找该商品货号
         ShiguGoodsTinyExample example1 = new ShiguGoodsTinyExample();
         example1.setWebSite(webSite);

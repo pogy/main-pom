@@ -329,15 +329,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         tinyExample.setWebSite(webSite);
         ShiguGoodsTinyExample.Criteria criteria = tinyExample.createCriteria().andStoreIdEqualTo(shopId).andIsClosedEqualTo(0L);
         int onsaleNum = shiguGoodsTinyMapper.countByExample(tinyExample);
-
         criteria.andIsShowcaseEqualTo(1);
         int showcaseNum = shiguGoodsTinyMapper.countByExample(tinyExample);
-
         ShiguGoodsSoldoutExample soldoutExample = new ShiguGoodsSoldoutExample();
         soldoutExample.setWebSite(webSite);
         soldoutExample.createCriteria().andStoreIdEqualTo(shopId);
         int instockNum = shiguGoodsSoldoutMapper.countByExample(soldoutExample);
-
         ItemCount count = new ItemCount();
         count.setInstock(instockNum);
         count.setOnsale(onsaleNum);
@@ -474,6 +471,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     if (StringUtils.isNotBlank(otherInfo.getFabric())) {
                         item.setConstituentType(2);
                     }
+                    item.setGoodsStyleId(otherInfo.getGoodsStyleId());
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());

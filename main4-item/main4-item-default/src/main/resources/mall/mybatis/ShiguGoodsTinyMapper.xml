@@ -13,8 +13,7 @@
         a.is_Showcase as isShowCase,
         a.created as created,
         a.web_site as webSite,
-        a.is_excel_imp as isExcelImp,
-        a.remark9 as  goodsStyleId
+        a.is_excel_imp as isExcelImp
         <include refid="onsaleGoodsInfoSql"/>
         ORDER BY a.created DESC
         LIMIT #{start},#{size}
