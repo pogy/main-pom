@@ -507,7 +507,7 @@ public class ShopAction {
     public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
-        model.addAttribute("category_text",goodsSendService.selCatPath(synItem.getCid()));
+        model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
 
         GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
         goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
@@ -593,10 +593,12 @@ public class ShopAction {
                     }
                 }
                 //补充商品数据formAttribute
+
                 if (formAttribute.get(0).getFormitem().getOptions() !=null &&formAttribute.get(0).getFormitem().getOptions().size()>0){
                     for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
                         if( pvo.getValue().equals(pidvid)){
                             pvo.setSelected(true);
+                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
                         }
                     }
                 }
@@ -608,6 +610,7 @@ public class ShopAction {
                         }
                     }
                 }
+
             }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 
             }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
