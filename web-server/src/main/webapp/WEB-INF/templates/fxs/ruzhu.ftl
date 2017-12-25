@@ -114,7 +114,7 @@
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>旺旺号：</label>
-            <input type="text" class="fmInput" name="aliWw" maxlength="64" value="">
+            <input type="text" class="fmInput" name="aliWw" maxlength="60" value="">
         </div>
     </div>
     <div class="validateItem">

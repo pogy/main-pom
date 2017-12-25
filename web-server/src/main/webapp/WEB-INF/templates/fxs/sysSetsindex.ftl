@@ -91,7 +91,7 @@
     <div class="validateItem">
         <div class="formGroup">
             <label>阿里旺旺：</label>
-            <input class="fmInput" name="ww" placeholder="请输入您的旺旺" maxlength="64" value="${userInfo.imWw!}">
+            <input class="fmInput" name="ww" placeholder="请输入您的旺旺" maxlength="60" value="${userInfo.imWw!}">
         </div>
     </div>
     <div class="validateItem">
