@@ -504,9 +504,15 @@ public class ShopAction {
      */
     @RequestMapping("seller/editGoodsInfo")
     @ResponseBody
-    public String goodsEdite(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
+    public String editGoodsInfo(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
-        SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGooodsId()), shopSession);
+        if (shopSession.getType().equals(1)) {
+            throw new JsonErrException("淘宝店铺不支持手工发布");
+        }
+        SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGoodsId()), shopSession);
+        if(synItem == null){
+            throw new Exception("获取商品数据失败");
+        }
         model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
 
         GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
@@ -520,7 +526,7 @@ public class ShopAction {
         goodsInfoVO.setAllimg(synItem.getImageList());//五张图
         //需要判断是否设置
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
-        shiguGoodsModified.setItemId(Long.valueOf(bo.getGooodsId()));
+        shiguGoodsModified.setItemId(Long.valueOf(bo.getGoodsId()));
         shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
         if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
             goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
@@ -573,32 +579,13 @@ public class ShopAction {
                 pCollect.add(p);
             }
         }
-        Map<String , String> map = new HashMap<>();//<pidvid ,pid_name1>的map
+        Map<String , String> map = new HashMap<>();//<pidvid ,vid_name1>的map
         if(propsName != null){
             for (String pn : propsName.split(";")) {
                 String[] pnu = pn.split(":");
-                map.put(pnu[0]+pnu[1],pnu[2]);
+                map.put(pnu[0]+":"+pnu[1],pnu[3]);
             }
         }
-
-//        if (propimgs != null) {
-//            for (String s : propimgs.split(";")) {
-//                String[] pvu = s.split("##");
-//                if (pvu.length == 2) {
-//                    String[] pv = pvu[0].split(":");
-//                    try {
-//                        Long p = Long.valueOf(pv[0]);
-//                        Long v = Long.valueOf(pv[1]);
-//                        ShiguPropImg img = new ShiguPropImg();
-//                        img.setPid(p);
-//                        img.setVid(v);
-//                        img.setUrl(pvu[1]);
-//                        synItem.getPropImgs().add(img);
-//                    } catch (Exception ignore) {
-//                    }
-//                }
-//            }
-//        }
 
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
@@ -618,21 +605,20 @@ public class ShopAction {
                     for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
                         if( pvo.getValue().equals(pidvid)){
                             pvo.setSelected(true);
+                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
                         }
                     }
                 }
                 if (formAttribute.get(0).getFormitem().getCheckboxs() !=null &&formAttribute.get(0).getFormitem().getCheckboxs().size()>0){
                     for ( KVO pvo   :    formAttribute.get(0).getFormitem().getCheckboxs()){
                         if( pvo.getValue().equals(pidvid)){
-                            pvo.setSelected(true);
-//                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
+                            pvo.setChecked(true);
+                           formAttribute.get(0).getFormitem().setValue(pvo.getText());
                         }
                     }
                 }
-            }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
-
-            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
-
+//            }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+//            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
             }
 
         }

@@ -1,13 +1,13 @@
 package com.shigu.seller.bo;
 
 public class GoodsIdBO {
-    private String gooodsId;
+    private Long goodsId;
 
-    public String getGooodsId() {
-        return gooodsId;
+    public Long getGoodsId() {
+        return goodsId;
     }
 
-    public void setGooodsId(String gooodsId) {
-        this.gooodsId = gooodsId;
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 }
