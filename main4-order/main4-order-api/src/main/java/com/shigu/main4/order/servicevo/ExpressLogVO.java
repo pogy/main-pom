@@ -79,4 +79,5 @@ public class ExpressLogVO implements Serializable{
     public void setLogDesc(String logDesc) {
         this.logDesc = logDesc;
     }
+
 }
