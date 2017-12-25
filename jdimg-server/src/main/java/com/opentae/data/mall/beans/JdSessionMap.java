@@ -1,4 +1,4 @@
-package com.opentae.data.jd.beans;
+package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

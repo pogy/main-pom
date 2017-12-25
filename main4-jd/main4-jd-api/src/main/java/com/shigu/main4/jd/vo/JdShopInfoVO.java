@@ -1,6 +1,7 @@
 package com.shigu.main4.jd.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 京东店铺信息
@@ -10,26 +11,53 @@ public class JdShopInfoVO implements Serializable{
 
     private static final long serialVersionUID = 2288239808142507050L;
 
-    private String openTime;
-    private Long shopId;
-    private String categoryMainName;
-    private String categoryMain;
     /**
-    * 供应商ID
+     * 用户京东账号ID
+     */
+    private Long jdUid;
+
+    /**
+     * 店铺编号
+     */
+    private Long shopId;
+    /**
+     * 店铺名称
+     */
+    private String shopName;
+    /**
+     * logo地址
+     */
+    private String logoUrl;
+    /**
+     * 主营类目编号
+     */
+    private Long categoryMain;
+    /**
+     * 主营类目名称
+     */
+    private String categoryMainName;
+    /**
+    * 商家编号
     */
     private Long venderId;
+    /**
+     * 店铺简介
+     */
     private String brief;
-    private String logoUrl;
-    private String shopName;
+
+    /**
+     * 开店时间
+     */
+    private Date openTime;
 
     public JdShopInfoVO() {
     }
 
-    public String getOpenTime() {
+    public Date getOpenTime() {
         return openTime;
     }
 
-    public void setOpenTime(String openTime) {
+    public void setOpenTime(Date openTime) {
         this.openTime = openTime;
     }
 
@@ -49,11 +77,11 @@ public class JdShopInfoVO implements Serializable{
         this.categoryMainName = categoryMainName;
     }
 
-    public String getCategoryMain() {
+    public Long getCategoryMain() {
         return categoryMain;
     }
 
-    public void setCategoryMain(String categoryMain) {
+    public void setCategoryMain(Long categoryMain) {
         this.categoryMain = categoryMain;
     }
 
@@ -87,5 +115,13 @@ public class JdShopInfoVO implements Serializable{
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public Long getJdUid() {
+        return jdUid;
+    }
+
+    public void setJdUid(Long jdUid) {
+        this.jdUid = jdUid;
     }
 }

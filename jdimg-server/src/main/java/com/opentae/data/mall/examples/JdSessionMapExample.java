@@ -1,10 +1,10 @@
-package com.opentae.data.jd.examples;
+package com.opentae.data.mall.examples;
 
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.EntityColumn;
 import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
-import com.opentae.data.jd.beans.JdSessionMap;
+import com.opentae.data.mall.beans.JdSessionMap;
 
 import java.util.*;
 public class JdSessionMapExample extends SgExample<JdSessionMapExample.Criteria> {

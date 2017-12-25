@@ -15,45 +15,52 @@ public interface JdCategoryService {
 
     /**
      * 京东自定义店内分类
-     * @param accessToken
+     * @param userId
      * @throws JdException
-     * @throws IOException
      */
-    List<JdShopCategoryVO> getJdSellercats(String accessToken) throws  JdUpException;
+    List<JdShopCategoryVO> getJdSellercats(Long userId) throws  JdUpException;
 
     /**
      * 京东 获取类目属性列表
      * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
-     * @param accessToken
+     * @param userId
      * @throws JdException
      * @throws IOException
      */
-    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(String accessToken,Long cid,Integer type) throws  JdUpException;
+    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long userId,Long cid,Integer type) throws  JdUpException;
 
     /**
      * 京东 商家类目信息
-     * @param accessToken
+     * @param userId
      * @throws JdException
      * @throws IOException
      */
-    List<JdCategoryVO> getJdWarecats(String accessToken) throws  JdUpException;
+    List<JdCategoryVO> getJdWarecats(Long userId) throws  JdUpException;
 
     /**
      * 根据父级类目Id获取子集类目信息
-     * @param accessToken
+     * @param userId
      * @param pid 父类目id
      * @return
      * @throws JdUpException
      */
-    List<JdCategoryReadVO> getJdCategoryByPid(String accessToken,Long pid) throws JdUpException ;
+    List<JdCategoryReadVO> getJdCategoryByPid(Long userId,Long pid) throws JdUpException ;
 
     /**
      * 获取类目属性值
-     * @param token
+     * @param userId
      * @param pid
      * @return
      * @throws JdUpException
      */
-    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(String token, Long pid) throws JdUpException;
+    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long userId, Long pid) throws JdUpException;
+
+    /**
+     * 获取用户所拥有的品牌
+     * @param userId
+     * @return
+     */
+    List<JdVenderBrandPubInfoVO>  getAllBrand(Long userId) throws JdUpException;
+
 
 }

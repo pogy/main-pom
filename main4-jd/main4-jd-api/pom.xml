@@ -15,18 +15,15 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-common</artifactId>
-            <version>${main4-common.version}</version>
         </dependency>
         <!--freemarker-->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.22</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
         </dependency>
 
         <!--JD API Dependencies Start-->

@@ -10,25 +10,25 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
+import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdImgService;
+import com.shigu.goodsup.jd.service.JdPostageTemplateService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
-import com.shigu.goodsup.jd.vo.JdSessionVO;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.*;
-import com.shigu.main4.jd.vo.JdAuthedInfoVO;
-import com.shigu.main4.jd.vo.JdCategoryVO;
-import com.shigu.main4.jd.vo.JdShopInfoVO;
-import com.shigu.main4.jd.vo.JdWareAddVO;
+import com.shigu.main4.jd.vo.*;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -52,16 +52,16 @@ import java.util.*;
  * Created By admin on 2017/12/8/15:38
  */
 @Controller
-@RequestMapping("zs")
-public class JdGoodsuoAction {
+@RequestMapping("jd")
+public class JdGoodsupAction {
 
-    private static final Logger logger = LoggerFactory.getLogger(JdGoodsuoAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdGoodsupAction.class);
 
     @Autowired
     private JdAuthService jdAuthService;
 
     @Autowired
-    private JdShopService jdShopService;
+    private JdGoodsUpService jdGoodsUpService;
 
     @Autowired
     private UserBaseService userBaseService;
@@ -85,9 +85,13 @@ public class JdGoodsuoAction {
     private RedisIO redisIO;
 
     @Autowired
+    private OssIO ossIO;
+
+    @Autowired
     private JdImgService jdImgService;
 
-    public static final String JD_REDIS_KEY = "JD_AUTHED_INFO_";
+    @Autowired
+    private JdPostageTemplateService jdPostageTemplateService;
 
 
     /**
@@ -114,8 +118,6 @@ public class JdGoodsuoAction {
 
         /************获取用户登陆信息**********/
         JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
-        //每次登陆刷新Token
-        jdAuthedInfoVO = jdAuthService.refreshToken(jdAuthedInfoVO.getRefreshToken());
 
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
@@ -140,22 +142,8 @@ public class JdGoodsuoAction {
                 //还是检查一遍避免 字符串+null 出现
                 throw new JdUpException("授权失败");
             }
-            //获取店铺信息
-            JdShopInfoVO jdShopInfo = jdShopService.getJdShopInfo(jdAuthedInfoVO.getAccessToken());
-
-            JdSessionVO jdSessionVO = new JdSessionVO();
-            jdSessionVO.setUid(jdAuthedInfoVO.getUid());
-            jdSessionVO.setUserNick(jdAuthedInfoVO.getUserNick());
-            jdSessionVO.setAuthTime(jdAuthedInfoVO.getAuthTime());
-            jdSessionVO.setExpiresIn(jdAuthedInfoVO.getExpiresIn());
-            jdSessionVO.setAccessToken(jdAuthedInfoVO.getAccessToken());
-            jdSessionVO.setRefreshToken(jdAuthedInfoVO.getRefreshToken());
-            jdSessionVO.setShopId(jdShopInfo.getShopId());
-            jdSessionVO.setShopName(jdShopInfo.getShopName());
-            jdSessionVO.setVenderId(jdShopInfo.getVenderId());
-            jdSessionVO.setLogoUrl(jdShopInfo.getLogoUrl());
-
-            redisIO.put(JD_REDIS_KEY+personalSession.getUserId(),jdSessionVO);
+            //给授权信息绑定xz网 userId
+            jdAuthService.bindXzUid(personalSession.getUserId(),jdAuthedInfoVO.getUid());
 
             //得到回调用地址
             String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
@@ -187,11 +175,64 @@ public class JdGoodsuoAction {
     }
 
     /**
+     * 查询商品是否可京东上传
+     * @param itemId
+     * @return
+     * @throws JdUpException
+     */
+    @RequestMapping("canbeUploaded")
+    @ResponseBody
+    public JSONObject canbeUploaded(Long itemId) throws JdUpException {
+        Boolean canbeUploaded = jdGoodsUpService.goodsCanbeUploadedToJd(itemId);
+        return JsonResponseUtil.success().element("canbeUploaded",canbeUploaded);
+    }
+
+    /**
+     * 查询用户是否已上传过
+     * @param itemId
+     * @return
+     * @throws JdUpException
+     */
+    @RequestMapping("hasBeUploaded")
+    @ResponseBody
+    public JSONObject hasBeUploaded(Long itemId,HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Boolean hasBeUploaded = jdGoodsUpService.hasBeUploaded(ps.getUserId(),itemId);
+        return JsonResponseUtil.success().element("hasBeUploaded",hasBeUploaded);
+    }
+
+    /**
+     * 获取用户所拥有的品牌
+     */
+    @RequestMapping("getAllBrand")
+    @ResponseBody
+    public JSONObject getAllBrand(HttpSession session) throws JdUpException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(ps.getUserId());
+        return JsonResponseUtil.success().element("allBrand",allBrand);
+    }
+
+
+    /**
+     * 获取用户所拥有的品牌
+     */
+    @RequestMapping("getPostageTemplateList")
+    @ResponseBody
+    public JSONObject getPostageTemplateList(HttpSession session) throws JdUpException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        List<JdAgingTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getUserId());
+        return JsonResponseUtil.success().element("postageTemplateList",postageTemplateList);
+    }
+
+
+
+    /**
      * 上传页面
      * @return
      */
     @RequestMapping("publish")
     public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws JdUpException {
+
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         /********************************获取京东授权信息*******************************/
 
@@ -234,7 +275,7 @@ public class JdGoodsuoAction {
         }
 
         /********************************取京东店家类目********************************/
-        List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats("");
+        List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
 
         /********************************手机详情验签********************************/
         JdShowDataVO allData=new JdShowDataVO();
@@ -270,7 +311,7 @@ public class JdGoodsuoAction {
         allData.setJdUserId(0L);
         allData.setJdNick("");
 
-        allData.setDeliveyList(jdAgingtemplService.getAgingtempl(""));
+        allData.setDeliveyList(jdAgingtemplService.getAgingtempl(null));
         allData.setJdShopInfo(null);
 
         allData.setJdUserId(0L);
@@ -333,7 +374,7 @@ public class JdGoodsuoAction {
             jdImageUpdateBO.setImgIndex(imgIndex.toString());
 //            jdImageUpdateBO.setImgZoneId(null);
 
-            jdImgService.bindGoodsImgs(jdImageUpdateBO,null);
+            jdImgService.bindGoodsImgs(jdImageUpdateBO,userId);
 
         }
 
@@ -372,10 +413,10 @@ public class JdGoodsuoAction {
      */
     @RequestMapping("jd-up-xzw-img")
     @ResponseBody
-    public String upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile, HttpSession httpSession) {
+    public String upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile, HttpSession httpSession) throws IOException {
         PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String name=MD5Attestation.MD5Encode(multimagefile.getName()+Math.random())+".jpg";
-        return null;
+        return ossIO.uploadFile(multimagefile.getInputStream(),"jdonkey"+"/"+ps.getUserId()+"/"+name);
     }
 
     /**

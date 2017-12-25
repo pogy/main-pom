@@ -1,37 +1,22 @@
 package com.shigu.exceptions;
 
+import com.openJar.exceptions.OpenException;
+
 /**
  * Created By admin on 2017/12/22/16:16
  */
-public class ImgDownloadException extends Exception {
-    private String code;
-    private String errMsg;
+public class ImgDownloadException extends OpenException {
 
     public ImgDownloadException() {
     }
 
     public ImgDownloadException(String errMsg) {
-        this.errMsg = errMsg;
+        super.setErrMsg(errMsg);
     }
 
     public ImgDownloadException(String code, String errMsg) {
-        this.code = code;
-        this.errMsg = errMsg;
+        super.setCode(code);
+        super.setErrMsg(errMsg);
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getErrMsg() {
-        return errMsg;
-    }
-
-    public void setErrMsg(String errMsg) {
-        this.errMsg = errMsg;
-    }
 }

@@ -49,7 +49,7 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,String accessToken) throws JdUpException {
-       return jdGoodsService.jdImageUpdate(bo, accessToken);
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long userId) throws JdUpException {
+       return jdGoodsService.jdImageUpdate(bo, userId);
     }
 }

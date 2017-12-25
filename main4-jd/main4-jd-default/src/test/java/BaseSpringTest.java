@@ -47,13 +47,14 @@ public class BaseSpringTest {
     JdTbBindMapper jdTbBindMapper;
 
     String token="bb9199ea-f3c6-482a-a384-d08510eac37f";
+    Long userId = 1000086015L;
 //    List list=Arrays.asList(1315L,1672L,1620L,15248L,9709L,1319L,1318L,2574L,11729L,14239L,14301L);
     List list=Arrays.asList(1620L,15248L,1319L);
 
 //    @Test
     public void v() throws JdUpException {
         List<ShiguJdcat> l=new ArrayList<>();
-        List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(token,0L);
+        List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(userId,0L);
         jdCats=jdCats.stream().filter(jdCategoryReadVO -> list.contains(jdCategoryReadVO.getId())).collect(Collectors.toList());
         for(JdCategoryReadVO jdCat:jdCats){
             findCats(jdCat,null,l);
@@ -73,7 +74,7 @@ public class BaseSpringTest {
         cat.setParentCname(pname);
         cat.setIsParent(0);
         if(parentJdCat.getLev()<3){
-            List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(token,parentJdCat.getId());
+            List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(userId,parentJdCat.getId());
             if(jdCats.size()>0){
                 cat.setIsParent(1);
                 for(JdCategoryReadVO jdCat:jdCats){
@@ -96,13 +97,13 @@ public class BaseSpringTest {
                 continue;
             }
             try {
-                List<JdCategoryAttrJosVO> list3=jdCategoryService.getJdCategoryAttrJos(token,cat.getCid(),3);
+                List<JdCategoryAttrJosVO> list3=jdCategoryService.getJdCategoryAttrJos(userId,cat.getCid(),3);
                 Map<Long,JdItemProp> propMap=new HashMap<>();
                 list3.forEach(jdCategoryAttrJosVO -> {
                     JdItemProp prop=getProp(jdCategoryAttrJosVO);
                     propMap.put(jdCategoryAttrJosVO.getCategoryAttrId(),prop);
                 });
-                List<JdCategoryAttrJosVO> list4=jdCategoryService.getJdCategoryAttrJos(token,cat.getCid(),4);
+                List<JdCategoryAttrJosVO> list4=jdCategoryService.getJdCategoryAttrJos(userId,cat.getCid(),4);
                 list4.forEach(jdCategoryAttrJosVO -> {
                     JdItemProp prop=propMap.get(jdCategoryAttrJosVO.getCategoryAttrId());
                     if(prop==null){
@@ -178,7 +179,7 @@ public class BaseSpringTest {
                 continue;
             }
             try{
-                List<JdCategoryAttrValueJosVO> values=jdCategoryService.getCategoryReadFindValuesByAttrId(token,prop.getPid());
+                List<JdCategoryAttrValueJosVO> values=jdCategoryService.getCategoryReadFindValuesByAttrId(userId,prop.getPid());
                 List<JdPropValue> vs=values.stream().map(jdCategoryAttrValueJosVO -> {
                     JdPropValue v=new JdPropValue();
                     v.setCid(prop.getCid());

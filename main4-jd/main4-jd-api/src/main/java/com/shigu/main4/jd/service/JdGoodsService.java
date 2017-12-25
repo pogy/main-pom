@@ -17,14 +17,20 @@ public interface JdGoodsService {
     /**
      * 商品一键上传到京东
      * @param bo
-     * @param accessToken
+     * @param userId
      * @throws JdException
      * @throws IOException
      */
-     JdWareAddVO upToJd(JdUpBO bo, String accessToken) throws JdUpException;
+     JdWareAddVO upToJd(JdUpBO bo,Long userId) throws JdUpException;
 
     /**
      * 新增和修改商品图片
      */
-    Boolean jdImageUpdate(JdImageUpdateBO bo, String accessToken) throws JdUpException;
+    Boolean jdImageUpdate(JdImageUpdateBO bo,Long userId) throws JdUpException;
+
+    /**
+     * 根据cid查询商品是否可上传到京东
+     * @param tbCid
+     */
+    Boolean goodsCanbeUploadedToJd(Long tbCid) ;
 }

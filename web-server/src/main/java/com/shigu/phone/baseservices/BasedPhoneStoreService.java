@@ -12,7 +12,7 @@ import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
-import com.opentae.data.mall.AppShopBlockBean;
+import com.opentae.data.mall.multibeans.AppShopBlockBean;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -128,7 +128,7 @@ public class BasedPhoneStoreService {
                 .join(marketExample).on(shopExample.createCriteria().andShopIdIn(shopIds).equalTo(ShiguGoodsTinyExample.marketId, ShiguMarketExample.marketId))
                 .build();
         example.setGroupByClause("shigu_shop.shop_id");
-        appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, AppShopBlockBean.class));
+        appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, com.opentae.data.mall.multibeans.AppShopBlockBean.class));
         storeCollectVO.setShops(appShopBlockBeans.parallelStream().map(o -> {
             AppShopBlock shop = BeanMapper.map(o, AppShopBlock.class);
             //从ShopCdn拿档口商品数量

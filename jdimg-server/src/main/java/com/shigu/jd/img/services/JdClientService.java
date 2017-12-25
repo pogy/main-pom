@@ -1,4 +1,4 @@
-package com.shigu.jdimg.services;
+package com.shigu.jd.img.services;
 
 
 import com.jd.open.api.sdk.DefaultJdClient;
@@ -7,7 +7,7 @@ import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.JdRequest;
 import com.jd.open.api.sdk.response.AbstractResponse;
 import com.openJar.exceptions.imgs.JdUpException;
-import com.shigu.jdimg.constant.JdUrlConstant;
+import com.shigu.jd.img.constant.JdUrlConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

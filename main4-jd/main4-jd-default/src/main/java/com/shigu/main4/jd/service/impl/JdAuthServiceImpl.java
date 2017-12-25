@@ -3,6 +3,9 @@ package com.shigu.main4.jd.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.opentae.data.jd.beans.JdSessionMap;
+import com.opentae.data.jd.interfaces.JdSessionMapMapper;
+import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.jd.constant.JdUrlConstant;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
@@ -10,10 +13,6 @@ import com.shigu.main4.jd.util.HttpClientUtil;
 import com.shigu.main4.jd.util.JdUtil;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created By admin on 2017/12/11/16:29
@@ -34,6 +34,11 @@ public class JdAuthServiceImpl implements JdAuthService{
     @Autowired
     private JdUtil jdUtil;
 
+    @Autowired
+    private JdSessionMapMapper jdSessionMapMapper;
+
+    @Autowired
+    private JdShopInfoMapper jdShopInfoMapper;
 
     /**
      * 获取jd登陆页面跳转地址
@@ -53,7 +58,7 @@ public class JdAuthServiceImpl implements JdAuthService{
     }
 
     /**
-     * 获取授权信息
+     * 获取授权信息，并记录（更新）数据到库
      * @param code
      * @return
      * @throws IOException
@@ -68,7 +73,51 @@ public class JdAuthServiceImpl implements JdAuthService{
                         .replace("JD_STATE",jdUtil.getJdState());
         HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
         String entityString = EntityUtils.toString(entity);
-        return getJdAithedInfo(entityString);
+        JdAuthedInfoVO jdAithedInfo = getJdAithedInfo(entityString);
+
+        JdSessionMap jdSessionMap = new JdSessionMap();
+        jdSessionMap.setJdUid(jdAithedInfo.getUid());
+        Date now = new Date();
+        JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
+        if (selJdSessionMap == null) {
+            jdSessionMap.setJdUserNick(jdAithedInfo.getUserNick());
+            jdSessionMap.setAccessToken(jdAithedInfo.getAccessToken());
+            jdSessionMap.setRefreshToken(jdAithedInfo.getRefreshToken());
+            jdSessionMap.setAuthTime(new Date(jdAithedInfo.getAuthTime()));
+            jdSessionMap.setExpiresIn(jdAithedInfo.getExpiresIn());
+            jdSessionMap.setGmtCreate(now);
+            jdSessionMap.setGmtModify(now);
+            jdSessionMapMapper.insertSelective(jdSessionMap);
+        }else{
+            jdSessionMap.setId(selJdSessionMap.getId());
+            jdSessionMap.setJdUserNick(jdAithedInfo.getUserNick());
+            jdSessionMap.setAccessToken(jdAithedInfo.getAccessToken());
+            jdSessionMap.setRefreshToken(jdAithedInfo.getRefreshToken());
+            jdSessionMap.setAuthTime(new Date(jdAithedInfo.getAuthTime()));
+            jdSessionMap.setExpiresIn(jdAithedInfo.getExpiresIn());
+            jdSessionMap.setGmtCreate(now);
+            jdSessionMap.setGmtModify(now);
+            jdSessionMapMapper.updateByPrimaryKeySelective(jdSessionMap);
+        }
+        return jdAithedInfo;
+    }
+
+    @Override
+    public JdAuthedInfoVO getAuthedInfo(Long userId) {
+        JdSessionMap jdSessionMap = new JdSessionMap();
+        jdSessionMap.setShiguUid(userId);
+        JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
+        if (selJdSessionMap == null) {
+            return null;
+        }
+        JdAuthedInfoVO vo = new JdAuthedInfoVO();
+        vo.setUid(selJdSessionMap.getJdUid());
+        vo.setAccessToken(selJdSessionMap.getAccessToken());
+        vo.setRefreshToken(selJdSessionMap.getRefreshToken());
+        vo.setUserNick(selJdSessionMap.getJdUserNick());
+        vo.setAuthTime(selJdSessionMap.getAuthTime().getTime());
+        vo.setExpiresIn(selJdSessionMap.getExpiresIn());
+        return vo;
     }
 
     /**
@@ -84,6 +133,21 @@ public class JdAuthServiceImpl implements JdAuthService{
         HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
         String entityString = EntityUtils.toString(entity);
         return getJdAithedInfo(entityString);
+    }
+
+    /**
+     * 给授权信息绑定xz网用户ID
+     * @param xzUid
+     * @param jdUid
+     */
+    @Override
+    public void bindXzUid(Long xzUid, Long jdUid) {
+        JdSessionMap jdSessionMap = new JdSessionMap();
+        jdSessionMap.setJdUid(jdUid);
+        JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
+        selJdSessionMap.setShiguUid(xzUid);
+        selJdSessionMap.setGmtModify(new Date());
+        jdSessionMapMapper.updateByPrimaryKeySelective(selJdSessionMap);
     }
 
     private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException {

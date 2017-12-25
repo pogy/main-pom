@@ -1,4 +1,4 @@
-package com.shigu.jdimg.services;
+package com.shigu.jd.img.services;
 
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureDeleteRequest;
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureUploadRequest;
@@ -9,6 +9,7 @@ import com.openJar.exceptions.imgs.JdUpException;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
+import com.shigu.exceptions.XzUidToTokenException;
 import com.shigu.util.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ImgMovingService {
     private JdClientService jdClientService;
 
     @Autowired
-    private JdUidToTokenService jdUidToTokenService;
+    private XzUidToTokenService jdUidToTokenService;
 
     /**
      * 上传一张图片到京东图片空间
@@ -35,7 +36,7 @@ public class ImgMovingService {
      * @return
      * @throws JdUpException
      */
-    public JdUpImgResponse imgUpload (Long userId, List<String> imgUrls) {
+    public JdUpImgResponse imgUpload (Long userId, List<String> imgUrls) throws XzUidToTokenException {
         String accessToken = jdUidToTokenService.getTokenByUid(userId);
         List<JdImgInfo> jdImgInfos = new ArrayList<>();
         StringBuffer imgIds = new StringBuffer();
@@ -90,7 +91,7 @@ public class ImgMovingService {
      * @return
      * @throws JdUpException
      */
-    public JdImgDeleteResponse imgDelete (Long userId, String imgIds) throws JdUpException {
+    public JdImgDeleteResponse imgDelete (Long userId, String imgIds) throws XzUidToTokenException, JdUpException {
         String accessToken = jdUidToTokenService.getTokenByUid(userId);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);
