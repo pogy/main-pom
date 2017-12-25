@@ -154,6 +154,18 @@
             >授权管理</a>
         </li>
         </#if>
+        <#if 'goodsStyleManager' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'goodsStyleManager' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="goodsStyleManager.htm"
+            >风格管理</a>
+        </li>
+        </#if>
     </ul>
     <h2>营销管理</h2>
     <ul>
@@ -251,19 +263,6 @@
                 "
                     href="promotion.htm"
             >广告展示管理</a>
-        </li>
-        </#if>
-        <#if 'http://www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
-        <li>
-            <a
-                class="
-                    <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
-                            selected
-                    </#if>
-                "
-                    href="http://www.571xz.com/qualityControl.htm"
-                    target="_blank"
-            >我要质检</a>
         </li>
         </#if>
         <#if 'actRegister' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>

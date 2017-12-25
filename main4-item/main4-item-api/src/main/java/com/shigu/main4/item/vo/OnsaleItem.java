@@ -82,6 +82,20 @@ public class OnsaleItem implements Serializable{
      */
     private String goodsVideoUrl;
 
+    /**
+     * 风格id
+     * @return
+     */
+    private Integer goodsStyleId;
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
+
     public Long getItemId() {
         return itemId;
     }

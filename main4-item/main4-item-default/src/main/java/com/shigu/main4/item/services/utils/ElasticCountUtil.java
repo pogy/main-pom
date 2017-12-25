@@ -87,6 +87,7 @@ public class ElasticCountUtil {
                 goodsAggsVO.setFabric(goodsCountForsearch.getFabric());
                 goodsAggsVO.setInFabric(goodsCountForsearch.getInfabric());
                 goodsAggsVO.setVideoUrl(goodsCountForsearch.getVideoUrl());
+                goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid());
                 itemResult.put(goodsCountForsearch.getGoodsId().toString(),goodsAggsVO);
             }
             GoodsupNorealExample norealExample = new GoodsupNorealExample();

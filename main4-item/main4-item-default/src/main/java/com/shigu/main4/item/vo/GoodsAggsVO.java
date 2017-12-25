@@ -26,6 +26,18 @@ public class GoodsAggsVO implements Serializable {
     //商品主图视频
     private String videoUrl;
 
+    //风格id
+    private Integer goodsStyleId;
+
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
+
     /**
      * 增加上传量
      * @param upNum

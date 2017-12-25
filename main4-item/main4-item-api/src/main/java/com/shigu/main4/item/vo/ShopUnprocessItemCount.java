@@ -18,6 +18,28 @@ public class ShopUnprocessItemCount implements Serializable {
     //无材料成分数量
     private Integer noMaterialNum;
 
+    //无主图视频数量
+    private Integer noVideoNum;
+    //无风格标签数量
+    private Integer noGoodsStyleNum;
+
+    public Integer getNoGoodsStyleNum() {
+        return noGoodsStyleNum;
+    }
+
+    public void setNoGoodsStyleNum(Integer noGoodsStyleNum) {
+        this.noGoodsStyleNum = noGoodsStyleNum;
+    }
+
+    public Integer getNoVideoNum() {
+        return noVideoNum;
+    }
+
+    public void setNoVideoNum(Integer noVideoNum) {
+        this.noVideoNum = noVideoNum;
+    }
+
+
     public Integer getNoPriceNum() {
         return noPriceNum;
     }
