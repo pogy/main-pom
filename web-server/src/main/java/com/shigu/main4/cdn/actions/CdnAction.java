@@ -775,7 +775,13 @@ public class CdnAction {
     @RequestMapping("smallpic")
     @ResponseBody
     public JSONObject smallPic(Long id){
-        return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+        try {
+            String picUrl = shopsItemService.itemImgzipUrl(id);
+            return JsonResponseUtil.success().element("pic", picUrl);
+        } catch (Exception e) {
+            return JsonResponseUtil.error(e.getMessage());
+        }
+
     }
 
     @RequestMapping("downloadVideo")
