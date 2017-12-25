@@ -292,7 +292,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         collectExample.createCriteria().andGoodsIdEqualTo(collect.getItemId())
-                .andUserIdEqualTo(collect.getUserId()).andTypeEqualTo(collect.getType());
+                .andUserIdEqualTo(collect.getUserId());
         List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
