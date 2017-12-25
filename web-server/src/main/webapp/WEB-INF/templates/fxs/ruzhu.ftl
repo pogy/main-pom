@@ -288,7 +288,7 @@
     </span>
 </label>
 </#list>
-            <span class="clause">“<a href="http://www.571xz.com/static/mianze/contract.html">服务条款</a>”和“<a href="http://www.571xz.com/static/mianze/contract.html">政策</a>”</span>
+            <span class="clause">“<a href="/contract.htm">服务条款</a>”和“<a href="/privacy.htm">政策</a>”</span>
         </div>
     </div>
     <div class="validateItem">
