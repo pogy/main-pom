@@ -40,7 +40,7 @@ public class PreSaleShowAction {
     @RequestMapping("order/onlyRefund")
     public String onlyRefundId(Long childOrderId,Long refundId,Model model) throws OrderNotFindException {
         if(childOrderId==null&&refundId==null){
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         }
         if(childOrderId!=null){
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
@@ -69,7 +69,7 @@ public class PreSaleShowAction {
                     break;
                 }
                 default:{
-                    return "trade/noOrderInfo";
+                    return "order/noOrderInfo";
                 }
             }
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(assvo.getSubOrderId());
@@ -81,7 +81,7 @@ public class PreSaleShowAction {
             List<RefundApplyRecordVO> applyList=preSaleShowService.refundApplyRecordList(refundId);
             model.addAttribute("applylist",applyList);
         }
-        return "trade/onlyRefund";
+        return "order/onlyRefund";
     }
 
     @RequestMapping("order/onlyRefundApply")

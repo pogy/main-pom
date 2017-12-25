@@ -83,6 +83,15 @@ public class RedisIO {
         }
     }
 
+    public boolean putString(String key,String value){
+        Jedis jedis = getJedis();
+        try {
+            return value != null && "OK".equals(jedis.set(key, value));
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
     /**
      * 创建临时记录
      * @param key
@@ -94,6 +103,14 @@ public class RedisIO {
         Jedis jedis = getJedis();
         try {
             return value != null && "OK".equals(jedis.setex(key,time,JSON.toJSONString(value)));
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+    public boolean putStringTemp(String key,String value,Integer time){
+        Jedis jedis = getJedis();
+        try {
+            return value != null && "OK".equals(jedis.setex(key,time,value));
         }finally {
             returnJedis(jedis);
         }
