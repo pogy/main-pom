@@ -282,11 +282,6 @@
             <artifactId>ezmorph</artifactId>
             <version>${ezmorph.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.shigu</groupId>
-            <artifactId>error-report</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
 </project>
