@@ -101,5 +101,29 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="autoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean id="singleReporter" class="com.shigu.util.errReport.SingleReport">
+        <property name="reportUrl" value="${reporter.reportUrl}"/>
+    </bean>
+    <bean id="errorInfoResolver" class="com.shigu.util.errReport.ErrorReporter">
+        <property name="singleReport" ref="singleReporter"/>
+        <property name="ignoredExceptionNames">
+            <list>
+                <value>${resolver.ignoreException1}</value>
+                <value>${resolver.ignoreException2}</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="exceptionReporterAdvisor"
+          class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice">
+            <ref bean="errorInfoResolver"/>
+        </property>
+        <property name="patterns">
+            <list>
+                <value>com.shigu.main4.item.services..*.*(..)</value>
+            </list>
+        </property>
+    </bean>
     <import resource="../../item.xml"/>
 </beans>
