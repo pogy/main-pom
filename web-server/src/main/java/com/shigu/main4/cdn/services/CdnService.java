@@ -182,6 +182,9 @@ public class CdnService {
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {
+            if ("已收藏该商品".equals(e.getMessage())) {
+                return "2";
+            }
             return e.getMessage();
         }
         return "success";
