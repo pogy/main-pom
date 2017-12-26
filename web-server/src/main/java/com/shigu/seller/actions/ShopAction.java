@@ -600,6 +600,7 @@ public class ShopAction {
                 //补充商品数据formAttribute
                 if(map.get(pidvid) != null){
                     formAttribute.get(0).getFormitem().setValue(map.get(pidvid));
+                }else{formAttribute.get(0).getFormitem().setValue(null);
                 }
                 if (formAttribute.get(0).getFormitem().getOptions() !=null &&formAttribute.get(0).getFormitem().getOptions().size()>0){
                     for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
