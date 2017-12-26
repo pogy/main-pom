@@ -531,11 +531,7 @@ public class ShopAction {
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
         shiguGoodsModified.setItemId(Long.valueOf(bo.getGoodsId()));
         shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
-//        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
-            goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
-//        }else{
-//            goodsInfoVO.setLowestLiPrice(null);//最低零售价
-//        }
+        goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();
         PropsVO propsVO=tbPropsService.selProps(synItem.getCid());
