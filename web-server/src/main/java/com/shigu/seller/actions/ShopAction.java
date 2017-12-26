@@ -292,6 +292,8 @@ public class ShopAction {
         return "gys/createGoods21init";
     }
 
+
+
     /**
      * 同步一件宝贝
      * @return
@@ -503,18 +505,15 @@ public class ShopAction {
      * @throws Exception
      */
     @RequestMapping("seller/editGoodsInfo")
-    @ResponseBody
     public String editGoodsInfo(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
         ShopSession shopSession = getShopSession(session);
         if (shopSession.getType().equals(1)) {
-            throw new JsonErrException("淘宝店铺不支持手工发布");
+            throw new Exception("淘宝店铺不支持手工编辑");
         }
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGoodsId()), shopSession);
         if(synItem == null){
             throw new Exception("获取商品数据失败");
         }
-        model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
-
         GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
         goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
         goodsInfoVO.setPiPrice(synItem.getPiPriceString());//批发价
@@ -524,15 +523,16 @@ public class ShopAction {
         goodsInfoVO.setFabric(synItem.getFabric());//面料
         goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
         goodsInfoVO.setAllimg(synItem.getImageList());//五张图
+        goodsInfoVO.setQuantity(String.valueOf(synItem.getNum()));//数量
         //需要判断是否设置
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
         shiguGoodsModified.setItemId(Long.valueOf(bo.getGoodsId()));
         shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
-        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
+//        if(shiguGoodsModified != null && shiguGoodsModified.getHasSetPrice().equals(0)){
             goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
-        }else{
-            goodsInfoVO.setLowestLiPrice(null);//最低零售价
-        }
+//        }else{
+//            goodsInfoVO.setLowestLiPrice(null);//最低零售价
+//        }
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();
         PropsVO propsVO=tbPropsService.selProps(synItem.getCid());
@@ -556,9 +556,9 @@ public class ShopAction {
                 propsVO.getPingpai().getValues().add(0,pvv);
                 simpleProps.add(0,propsVO.getPingpai());
             }
-            if(propsVO.getHuohao()!=null){
-                simpleProps.add(0,propsVO.getHuohao());
-            }
+//            if(propsVO.getHuohao()!=null){
+//                simpleProps.add(0,propsVO.getHuohao());
+//            }
             if(simpleProps!=null){
                 for(PropertyItemVO piv:simpleProps){
                     formAttribute.add(goodsSendService.parseTaobaoItemPropVO(piv));
@@ -567,12 +567,12 @@ public class ShopAction {
         }
 
         String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
-        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
+//        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
         String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
-        String propImgs = null;//商品prop,带图部分
-        if(synItem.getPropImgs() != null){
-            propImgs= JSON.toJSONString(synItem.getPropImgs());
-        }
+//        String propImgs = null;//商品prop,带图部分
+//        if(synItem.getPropImgs() != null){
+//            propImgs= JSON.toJSONString(synItem.getPropImgs());
+//        }
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
             for (String p : props.split(";")) {
@@ -586,7 +586,6 @@ public class ShopAction {
                 map.put(pnu[0]+":"+pnu[1],pnu[3]);
             }
         }
-
         for (String pidvid:pCollect) {
             if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
                 //补充sku
@@ -598,32 +597,37 @@ public class ShopAction {
                     }
                 }
                 //补充商品数据formAttribute
-                if(map.get(pidvid) != null){
-                    formAttribute.get(0).getFormitem().setValue(map.get(pidvid));
-                }else{formAttribute.get(0).getFormitem().setValue(null);
-                }
-                if (formAttribute.get(0).getFormitem().getOptions() !=null &&formAttribute.get(0).getFormitem().getOptions().size()>0){
-                    for (KVO pvo   :    formAttribute.get(0).getFormitem().getOptions()){
-                        if( pvo.getValue().equals(pidvid)){
-                            pvo.setSelected(true);
-                            formAttribute.get(0).getFormitem().setValue(pvo.getText());
+                for (FormAttrVO formAttrVO :formAttribute){
+//                    if(map.get(pidvid) != null && StringUtils.isNotEmpty(map.get(pidvid))){
+//                        formAttrVO.getFormitem().setValue(map.get(pidvid));
+//                    }else{
+//                        formAttrVO.getFormitem().setValue(null);
+//                    }
+                    if (formAttrVO.getFormitem().getOptions() !=null && formAttrVO.getFormitem().getOptions().size()>0){
+                        for (KVO pvo   :    formAttrVO.getFormitem().getOptions()){
+                            if( pvo.getValue().equals(pidvid)){
+                                pvo.setSelected(true);
+                            }
+                        }
+                    }
+                    if (formAttrVO.getFormitem().getCheckboxs() !=null && formAttrVO.getFormitem().getCheckboxs().size()>0){
+                        for ( KVO pvo   :    formAttrVO.getFormitem().getCheckboxs()){
+                            if( pvo.getValue().equals(pidvid)){
+                                pvo.setChecked(true);
+                            }
                         }
                     }
                 }
-                if (formAttribute.get(0).getFormitem().getCheckboxs() !=null &&formAttribute.get(0).getFormitem().getCheckboxs().size()>0){
-                    for ( KVO pvo   :    formAttribute.get(0).getFormitem().getCheckboxs()){
-                        if( pvo.getValue().equals(pidvid)){
-                            pvo.setChecked(true);
-                           formAttribute.get(0).getFormitem().setValue(pvo.getText());
-                        }
-                    }
-                }
+
+
 //            }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
 //            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
             }
-
         }
 
+
+
+        //店内类目暂时不要
         String openflag=redisIO.get("open_more_pic");
         if (StringUtils.isNotEmpty(openflag)) {
             model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
@@ -631,15 +635,17 @@ public class ShopAction {
             model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
         }
         goodsInfoVO.setSkuAttribute(skuAttribute);//SKU列表
+        //  SKU列表
         goodsInfoVO.setFormAttribute(formAttribute);//商品属性数据
-
-//店内类目暂时不要
-        model.addAttribute("formAttribute",formAttribute);
-        model.addAttribute("skuAttribute",skuAttribute);
+        //店内类目暂时不要
+        model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
         model.addAttribute("goodsInfo",goodsInfoVO);
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
     }
+
+
+
 
     /**
      * 更新编辑好的商品

@@ -16,7 +16,10 @@ public class GoodsInfoVO {
      * 最低零售价
      */
     private String lowestLiPrice;
-
+    /**
+     * 商品数量
+     */
+    private String quantity;
     /**
      * 货号
      */
@@ -36,26 +39,14 @@ public class GoodsInfoVO {
     private  List<FormAttrVO> formAttribute;
 
 
-    public List<FormAttrVO> getFormAttribute() {
-        return formAttribute;
-    }
 
-    public void setFormAttribute(List<FormAttrVO> formAttribute) {
-        this.formAttribute = formAttribute;
-    }
 
     /**
      *SKU列表
      */
     private List<SKUVO>  skuAttribute;
 
-    public void setSkuAttribute(List<SKUVO> skuAttribute) {
-        this.skuAttribute = skuAttribute;
-    }
 
-    public List<SKUVO> getSkuAttribute() {
-        return skuAttribute;
-    }
 
     /**
      * 首图
@@ -85,6 +76,21 @@ public class GoodsInfoVO {
 
     public void setPiPrice(String piPrice) {
         this.piPrice = piPrice;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+    public List<FormAttrVO> getFormAttribute() {
+        return formAttribute;
+    }
+
+    public void setFormAttribute(List<FormAttrVO> formAttribute) {
+        this.formAttribute = formAttribute;
     }
 
     public String getLowestLiPrice() {
@@ -118,7 +124,13 @@ public class GoodsInfoVO {
     public void setInFabric(String inFabric) {
         this.inFabric = inFabric;
     }
+    public void setSkuAttribute(List<SKUVO> skuAttribute) {
+        this.skuAttribute = skuAttribute;
+    }
 
+    public List<SKUVO> getSkuAttribute() {
+        return skuAttribute;
+    }
 
 
 
