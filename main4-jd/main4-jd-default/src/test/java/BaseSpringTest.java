@@ -84,10 +84,10 @@ public class BaseSpringTest {
         }
     }
 
-//    @Test
+    @Test
     public void prop() throws JdUpException {
         ShiguJdcatExample jdcatExample=new ShiguJdcatExample();
-        jdcatExample.createCriteria().andIsParentEqualTo(0);
+        jdcatExample.createCriteria().andIsParentEqualTo(0).andCidGreaterThanOrEqualTo(9768L);
         jdcatExample.setOrderByClause("cid asc");
         List<ShiguJdcat> cats=shiguJdcatMapper.selectByExample(jdcatExample);
         for(ShiguJdcat cat:cats){
@@ -144,17 +144,20 @@ public class BaseSpringTest {
         prop.setIsKeyProp(0);
         prop.setIsSaleProp(0);
         prop.setMust(0);
-
+        prop.setIsBrand(0);
+        prop.setIsItemProp(0);
+        prop.setSortOrder(jdCategoryAttrJosVO.getAttrIndexId().longValue());
         for(JdFeatureCateAttrJosVO f:jdCategoryAttrJosVO.getAttrFeatures()){
+            if("erpAttType".equals(f.getAttrFeatureKey())&&"GGCS".equals(f.getAttrFeatureValue())){
+                prop.setIsItemProp(1);
+                continue;
+            }
             if("brand".equals(f.getAttrFeatureKey())&&"1".equals(f.getAttrFeatureValue())){
-                prop.setIsKeyProp(1);
+                prop.setIsBrand(1);
                 continue;
             }
             if("isRequired".equals(f.getAttrFeatureKey())&&"1".equals(f.getAttrFeatureValue())){
                 prop.setMust(1);
-                if(prop.getIsKeyProp()==1){
-                    break;
-                }
             }
         }
         return prop;
@@ -162,7 +165,7 @@ public class BaseSpringTest {
 
 
     Long lastPid=0L;
-    @Test
+//    @Test
     public void findPropValue() throws JdUpException {
         Set<Long> cids=jdTbBindMapper.select(new JdTbBind()).stream().map(JdTbBind::getJdCid).collect(Collectors.toSet());
         JdItemPropExample jdItemPropExample=new JdItemPropExample();

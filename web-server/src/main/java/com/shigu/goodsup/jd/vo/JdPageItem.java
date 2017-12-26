@@ -1,5 +1,6 @@
 package com.shigu.goodsup.jd.vo;
 
+import com.taobao.api.domain.Item;
 
 /**
  * 页面显示要用的商品数据
@@ -7,7 +8,7 @@ package com.shigu.goodsup.jd.vo;
  *
  */
 public class JdPageItem {
-
+    private Item item;
 	private Long goodsId;//商品ID
 	private Long storeId;//店铺ID
 	private String webSite;//分站
@@ -117,5 +118,12 @@ public class JdPageItem {
 	public void setStoreNum(String storeNum) {
 		this.storeNum = storeNum;
 	}
-	
+
+    public Item getItem() {
+        return this.item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

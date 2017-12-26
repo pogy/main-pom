@@ -26,6 +26,7 @@ public class JdItemPropExample extends SgExample<JdItemPropExample.Criteria> {
     public static EntityColumn name;
     public static EntityColumn isInputProp;
     public static EntityColumn must;
+    public static EntityColumn isBrand;
     public static EntityColumn status;
     public static EntityColumn cid;
     static {
@@ -50,6 +51,7 @@ public class JdItemPropExample extends SgExample<JdItemPropExample.Criteria> {
         name = listMap.get("name");
         isInputProp = listMap.get("isInputProp");
         must = listMap.get("must");
+        isBrand = listMap.get("isBrand");
         status = listMap.get("status");
         cid = listMap.get("cid");
         }
@@ -840,6 +842,53 @@ public class JdItemPropExample extends SgExample<JdItemPropExample.Criteria> {
 
         public JdItemPropExample.Criteria andMustNotBetween(Integer value1, Integer value2) {
             return notBetween(must, value1, value2);
+        }
+        public JdItemPropExample.Criteria andIsBrandIsNull() {
+            return isNull(isBrand);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandIsNotNull() {
+            return isNotNull(isBrand);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandEqualTo(Integer value) {
+            return equalTo(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandNotEqualTo(Integer value) {
+            return notEqualTo(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandGreaterThan(Integer value) {
+            return greaterThan(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandLessThan(Integer value) {
+            return lessThan(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isBrand, value);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandIn(List<Integer> values) {
+            return in(isBrand, values);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandNotIn(List<Integer> values) {
+            return notIn(isBrand, values);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandBetween(Integer value1, Integer value2) {
+            return between(isBrand, value1, value2);
+        }
+
+        public JdItemPropExample.Criteria andIsBrandNotBetween(Integer value1, Integer value2) {
+            return notBetween(isBrand, value1, value2);
         }
         public JdItemPropExample.Criteria andStatusIsNull() {
             return isNull(status);

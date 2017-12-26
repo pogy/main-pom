@@ -1,84 +1,79 @@
-package com.opentae.data.jd.beans;
+package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-public class JdItemProp implements Serializable {
+public class TaobaoItemProp implements Serializable {
     /**
      * 
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private Long jipid;
+	private Long tipid;
 
     /**
-     * 类目属性ID
+     * 
      */
 	private Long pid;
 
     /**
-     * 父级类目属性ID
+     * 
      */
 	private Long parentPid;
 
     /**
-     * 父级类目属性值ID
+     * 
      */
 	private Long parentVid;
 
     /**
-     * 类目属性名
+     * 
      */
 	private String name;
 
     /**
-     * 是否关键属性： 1是true0是false
+     * 1是true0是false
      */
 	private Integer isKeyProp;
 
     /**
-     * 是否销售属性：1是true0是false
+     * 1是true0是false
      */
 	private Integer isSaleProp;
 
     /**
-     * 是否颜色属性：1是true0是false
+     * 1是true0是false
      */
 	private Integer isColorProp;
 
     /**
-     * 是否选择属性1是true0是false
+     * 1是true0是false
      */
 	private Integer isEnumProp;
 
     /**
-     * 是不是扩展属性
+     * 1是true0是false
      */
 	private Integer isItemProp;
 
     /**
-     * 是不是品牌
-     */
-	private Integer isBrand;
-
-    /**
-     * 是否必须属性
+     * 
      */
 	private Integer must;
 
     /**
-     * 是否多选属性
+     * 
      */
 	private Integer multi;
 
     /**
-     * 是否有效
+     * 
      */
 	private String status;
 
     /**
-     * 属性排序
+     * 
      */
 	private Long sortOrder;
 
@@ -88,26 +83,76 @@ public class JdItemProp implements Serializable {
 	private String childTemplate;
 
     /**
-     * 是否个别名：1是true0是false
+     * 1是true0是false
      */
 	private Integer isAllowAlias;
 
     /**
-     * 是否可自定义（输入）：1是true0是false
+     * 1是true0是false
      */
 	private Integer isInputProp;
 
     /**
-     * 类目ID
+     * 
      */
 	private Long cid;
 
-	public void setJipid(Long jipid) {
-		this.jipid = jipid;
+    /**
+     * 
+     */
+	private String remark10;
+
+    /**
+     * 
+     */
+	private String remark9;
+
+    /**
+     * 
+     */
+	private String remark8;
+
+    /**
+     * 
+     */
+	private String remark7;
+
+    /**
+     * 
+     */
+	private String remark6;
+
+    /**
+     * 
+     */
+	private String remark5;
+
+    /**
+     * 
+     */
+	private String remark4;
+
+    /**
+     * 
+     */
+	private String remark3;
+
+    /**
+     * 
+     */
+	private String remark1;
+
+    /**
+     * 
+     */
+	private String remark2;
+
+	public void setTipid(Long tipid) {
+		this.tipid = tipid;
 	}
 
-	public Long getJipid() {
-		return this.jipid;
+	public Long getTipid() {
+		return this.tipid;
 	}
 
 	public void setPid(Long pid) {
@@ -182,14 +227,6 @@ public class JdItemProp implements Serializable {
 		return this.isItemProp;
 	}
 
-	public void setIsBrand(Integer isBrand) {
-		this.isBrand = isBrand;
-	}
-
-	public Integer getIsBrand() {
-		return this.isBrand;
-	}
-
 	public void setMust(Integer must) {
 		this.must = must;
 	}
@@ -252,6 +289,86 @@ public class JdItemProp implements Serializable {
 
 	public Long getCid() {
 		return this.cid;
+	}
+
+	public void setRemark10(String remark10) {
+		this.remark10 = remark10;
+	}
+
+	public String getRemark10() {
+		return this.remark10;
+	}
+
+	public void setRemark9(String remark9) {
+		this.remark9 = remark9;
+	}
+
+	public String getRemark9() {
+		return this.remark9;
+	}
+
+	public void setRemark8(String remark8) {
+		this.remark8 = remark8;
+	}
+
+	public String getRemark8() {
+		return this.remark8;
+	}
+
+	public void setRemark7(String remark7) {
+		this.remark7 = remark7;
+	}
+
+	public String getRemark7() {
+		return this.remark7;
+	}
+
+	public void setRemark6(String remark6) {
+		this.remark6 = remark6;
+	}
+
+	public String getRemark6() {
+		return this.remark6;
+	}
+
+	public void setRemark5(String remark5) {
+		this.remark5 = remark5;
+	}
+
+	public String getRemark5() {
+		return this.remark5;
+	}
+
+	public void setRemark4(String remark4) {
+		this.remark4 = remark4;
+	}
+
+	public String getRemark4() {
+		return this.remark4;
+	}
+
+	public void setRemark3(String remark3) {
+		this.remark3 = remark3;
+	}
+
+	public String getRemark3() {
+		return this.remark3;
+	}
+
+	public void setRemark1(String remark1) {
+		this.remark1 = remark1;
+	}
+
+	public String getRemark1() {
+		return this.remark1;
+	}
+
+	public void setRemark2(String remark2) {
+		this.remark2 = remark2;
+	}
+
+	public String getRemark2() {
+		return this.remark2;
 	}
 
 }

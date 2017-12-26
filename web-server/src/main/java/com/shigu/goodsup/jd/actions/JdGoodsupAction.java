@@ -13,8 +13,12 @@ import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.service.JdPostageTemplateService;
+import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
+import com.shigu.goodsup.jd.vo.PropsVO;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.*;
@@ -28,6 +32,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
+import com.taobao.api.domain.PropImg;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -45,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -89,6 +95,8 @@ public class JdGoodsupAction {
 
     @Autowired
     private JdImgService jdImgService;
+    @Autowired
+    private JdUpItemService jdUpItemService;
 
     @Autowired
     private JdPostageTemplateService jdPostageTemplateService;
@@ -231,7 +239,7 @@ public class JdGoodsupAction {
      * @return
      */
     @RequestMapping("publish")
-    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws JdUpException {
+    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception, ClassNotFoundException, CloneNotSupportedException, IOException {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         /********************************获取京东授权信息*******************************/
@@ -243,6 +251,8 @@ public class JdGoodsupAction {
             return "taobao/uperror";
         }
         /********************************查上传记录********************************/
+
+        //todo jd上传记录查询
         if (yesrepeat == null || yesrepeat != 1) {
             LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
             if (lastup != null) {
@@ -260,12 +270,12 @@ public class JdGoodsupAction {
                 return "taobao/uperror";
             }
             //计算标题与卖点的长度
-//            if(item.getItem().getTitle()!=null){
-//                item.setTitleLength(item.getItem().getTitle().getBytes(Charset.forName("GBK")).length);
-//            }
-//            if(item.getItem().getSellPoint()!=null){
-//                item.setSellPointLength(item.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
-//            }
+            if(item.getItem().getTitle()!=null){
+                item.setTitleLength(item.getItem().getTitle().getBytes(Charset.forName("GBK")).length);
+            }
+            if(item.getItem().getSellPoint()!=null){
+                item.setSellPointLength(item.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
+            }
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -275,6 +285,8 @@ public class JdGoodsupAction {
         }
 
         /********************************取京东店家类目********************************/
+        PropsVO props= jdUpItemService.selProps(itemId,ps.getUserId());
+
         List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
 
         /********************************手机详情验签********************************/
@@ -320,7 +332,7 @@ public class JdGoodsupAction {
         model.addAttribute("jd_yj_zh_session",null);
 
         //测试用
-        return "taobao/tb2";
+        return "jd/publish";
     }
 
     @RequestMapping("jdYjUpload")
