@@ -28,6 +28,7 @@ import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAgingtemplService;
 import com.shigu.main4.jd.service.JdCategoryService;
+import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.tb.common.exceptions.TbException;
 import com.shigu.tb.finder.vo.PropType;
@@ -215,8 +216,24 @@ public class JdUpItemService {
         List<PropertyItemVO> specProps=new ArrayList<>();
         for(JdItemProp jdItemProp:jdItemProps){
             List<JdPropValue> values=jdPropValueMap.get(jdItemProp.getPid());
-            if(jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0)){
-                continue;
+            if((jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0))||jdItemProp.getIsSaleProp()==1){
+                List<JdCategoryAttrValueJosVO> values1=jdCategoryService.getCategoryReadFindValuesByAttrId(2299600652L,jdItemProp.getPid());
+                values=values1.stream().map(jdCategoryAttrValueJosVO -> {
+                    JdPropValue v=new JdPropValue();
+                    v.setCid(jdItemProp.getCid());
+                    v.setIsParent(0);
+                    v.setName(jdCategoryAttrValueJosVO.getAttrValue());
+                    v.setPid(jdItemProp.getPid());
+                    v.setPropName(jdItemProp.getName());
+                    v.setVid(jdCategoryAttrValueJosVO.getAttrValueId());
+                    v.setStatus("1");
+                    v.setSortOrder(jdCategoryAttrValueJosVO.getAttrValueIndexId().longValue());
+                    return v;
+                }).collect(Collectors.toList());
+                if(values==null||values.size()==0){
+                    continue;
+                }
+                jdPropValueMap.put(jdItemProp.getPid(),values);
             }
             PropertyItemVO pv=new PropertyItemVO();
             pv.setCanAlias(jdItemProp.getIsAllowAlias()==1);
