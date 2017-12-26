@@ -1,0 +1,126 @@
+.c-dialog {
+    left:0;
+    position:absolute;
+    top:0;
+    z-index:100000;
+    color:#404040
+}
+.c-dialog .modal {
+    background:none repeat scroll 0 0 #000000;
+    opacity:0.5;
+    position:absolute;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50)
+}
+.hint-popup,.hint-overlay,.hint-guide {
+    position:relative
+}
+.hint-layer {
+    background-color:#fff;
+    -webkit-background-clip:content;
+    box-shadow:1px 1px 50px rgba(0,0,0,.3);
+    -webkit-animation-fill-mode:both;
+    animation-fill-mode:both;
+    -webkit-animation-duration:0.3s;
+    animation-duration:0.3s
+}
+.c-dialog .layer {
+    min-width:300px
+}
+.hint-popup .hint-ext-close,.hint-overlay .hint-ext-close,.hint-guide .hint-ext-close {
+    border:0 none;
+    cursor:pointer;
+    height:16px;
+    outline:0 none;
+    overflow:hidden;
+    position:absolute;
+    right:10px;
+    text-decoration:none;
+    top:10px;
+    vertical-align:middle;
+    width:16px
+}
+.hint-overlay .hint-ext-close:hover {
+    opacity:0.7
+}
+.hint-popup .hint-ext-close-x,.hint-overlay .hint-ext-close-x,.hint-guide .hint-ext-close-x {
+    background:url("http://jd.vvic.com/script/layer/skin/default/icon.png") no-repeat scroll 0 -40px rgba(0,0,0,0);
+    display:block;
+    height:16px;
+    margin:2px;
+    text-indent:-9999px;
+    width:16px
+}
+.hint-overlay .hint-contentbox {
+    padding:0 0 20px
+}
+.hint-overlay .hint-contentbox h3.hint-title {
+    font-family:"Microsoft Yahei",Helvetica,Verdana,sans-serif!important;
+    background-color:#F8F8F8;
+    font-size:14px;
+    font-weight:400;
+    border-bottom:1px solid #eee;
+    height:36px;
+    line-height:36px;
+    padding-left:10px
+}
+.lirun-tc {
+    background:#fff;
+    padding:30px 70px 10px;
+    font-size:14px
+}
+.lirun-tc .checkbox {
+    vertical-align:middle;
+    margin-right:5px
+}
+.lirun-tc .l1 {
+    font-family:"Microsoft Yahei",Helvetica,Verdana,sans-serif!important;
+    margin-bottom:20px
+}
+.lirun-tc .l2 {
+    margin-bottom:10px;
+    font-size:12px
+}
+.lirun-tc .l2 .radio {
+    margin-left:15px
+}
+.lirun-tc .l2 .txt {
+    border:1px solid #C9C9C9;
+    width:100px;
+    height:26px;
+    margin-right:5px;
+    padding-left:5px;
+    line-height:26px
+}
+.lirun-tc .l2 label {
+    margin-left:20px
+}
+.hint-contentbox .button {
+    margin:0 auto;
+    text-align:center
+}
+.hint-contentbox .button .btn {
+    font-size:12px;
+    background-color:#f40;
+    color:#fff;
+    text-decoration:none;
+    display:inline-block;
+    height:26px;
+    line-height:26px;
+    width:80px;
+    text-align:center;
+    margin-right:10px;
+    border:none
+}
+.hint-contentbox .button .cancel {
+    font-size:12px;
+    background-color:#fff;
+    color:#666;
+    text-decoration:none;
+    display:inline-block;
+    height:26px;
+    line-height:26px;
+    width:80px;
+    text-align:center;
+    margin:0;
+    border:1px #ccc solid
+}
