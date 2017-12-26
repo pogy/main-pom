@@ -480,6 +480,7 @@ public class ShopAction {
             synItem.setListTime(created);
             //淘宝下架时间，手动发布商品默认为七天后
             synItem.setDelistTime(DateUtil.addDay(created,7));
+            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
             itemId=itemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
@@ -522,7 +523,9 @@ public class ShopAction {
         goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
         goodsInfoVO.setFabric(synItem.getFabric());//面料
         goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
-        goodsInfoVO.setAllimg(synItem.getImageList());//五张图
+        List<String> imageList = synItem.getImageList();
+        imageList.remove(synItem.getPicUrl());
+        goodsInfoVO.setAllimg(imageList);//除首图的图
         goodsInfoVO.setQuantity(String.valueOf(synItem.getNum()));//数量
         //需要判断是否设置
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
@@ -624,9 +627,6 @@ public class ShopAction {
 //            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
             }
         }
-
-
-
         //店内类目暂时不要
         String openflag=redisIO.get("open_more_pic");
         if (StringUtils.isNotEmpty(openflag)) {
@@ -639,6 +639,7 @@ public class ShopAction {
         goodsInfoVO.setFormAttribute(formAttribute);//商品属性数据
         //店内类目暂时不要
         model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
+        model.addAttribute("cateId",synItem.getCid());
         model.addAttribute("goodsInfo",goodsInfoVO);
         model.addAttribute("query",bo);
         return "gys/editGoodsInfo";
@@ -653,9 +654,9 @@ public class ShopAction {
      * @return
      * @throws Exception
      */
-    @RequestMapping("seller/goodsUpdate")
+    @RequestMapping("seller/jsongoods_edit")
     @ResponseBody
-    public JSONObject goodsUpdate(@Valid GoodsInfoBO bo,BindingResult result, HttpSession session) throws JsonErrException {
+    public JSONObject jsongoods_edit(@Valid GoodsInfoBO bo,BindingResult result, HttpSession session) throws JsonErrException {
         if(result.hasErrors()){
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -681,6 +682,7 @@ public class ShopAction {
             synItem.setListTime(created);
             //淘宝下架时间，手动发布商品默认为七天后
             synItem.setDelistTime(DateUtil.addDay(created,7));
+            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
             itemAddOrUpdateService.userUpdateItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat=new EverUsedCatForAdd();

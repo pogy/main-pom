@@ -56,6 +56,12 @@ public class GoodsOfferBO implements Serializable{
      */
     @SafeHtml(message = "零售价包含非法页面标签")
     private String buynow;
+
+    /**
+     * 最低零售价
+     */
+    @SafeHtml(message = "零售价包含非法页面标签")
+    private String lowestLiPrice;
     /**
      * 卖点
      */
@@ -153,6 +159,14 @@ public class GoodsOfferBO implements Serializable{
 
     public void setPiPrice(String piPrice) {
         this.piPrice = piPrice;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
     }
 
     public String getBuynow() {

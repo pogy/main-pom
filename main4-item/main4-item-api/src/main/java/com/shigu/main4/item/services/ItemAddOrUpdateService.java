@@ -93,9 +93,6 @@ public interface ItemAddOrUpdateService {
      */
     SynItem selItemByGoodsId(Long goodsId, String webSite);
 
-
-
-
     /**
      * 查询是否有更新
      * @param item

@@ -19,19 +19,18 @@ public interface ItemSearchService {
 
     /**
      * 搜索主方法
-     *
-     * @param keyword        关键词
-     * @param mid            市场ID
-     * @param cids           叶子类目ID
+     * @param keyword 关键词
+     * @param mid 市场ID
+     * @param cids 叶子类目ID
      * @param shouldStoreIds 应该关联的店铺
-     * @param sid            风格ID
-     * @param priceFrom      批价开始
-     * @param priceTo        批价结束
-     * @param timeForm       created时间开始
-     * @param timeTo         created时间结束
-     * @param orderCase      条件
-     * @param page           当前页码
-     * @param pageSize       每页条数
+     * @param sid 风格ID
+     * @param priceFrom 批价开始
+     * @param priceTo 批价结束
+     * @param timeForm created时间开始
+     * @param timeTo created时间结束
+     * @param orderCase 条件
+     * @param page 当前页码
+     * @param pageSize 每页条数
      * @return
      */
     ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
@@ -40,19 +39,18 @@ public interface ItemSearchService {
 
     /**
      * 搜索主方法
-     *
-     * @param keyword        关键词
-     * @param mid            市场ID
-     * @param cids           叶子类目ID
+     * @param keyword 关键词
+     * @param mid 市场ID
+     * @param cids 叶子类目ID
      * @param shouldStoreIds 应该关联的店铺
-     * @param sid            风格ID
-     * @param priceFrom      批价开始
-     * @param priceTo        批价结束
-     * @param timeForm       created时间开始
-     * @param timeTo         created时间结束
-     * @param orderCase      条件
-     * @param page           当前页码
-     * @param pageSize       每页条数
+     * @param sid 风格ID
+     * @param priceFrom 批价开始
+     * @param priceTo 批价结束
+     * @param timeForm created时间开始
+     * @param timeTo created时间结束
+     * @param orderCase 条件
+     * @param page 当前页码
+     * @param pageSize 每页条数
      * @return
      */
     ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid,
@@ -61,7 +59,6 @@ public interface ItemSearchService {
 
     /**
      * 支持多市场的搜索方法
-     *
      * @param keyword
      * @param webSite
      * @param mids
@@ -74,7 +71,6 @@ public interface ItemSearchService {
 
     /**
      * 按ID查询
-     *
      * @param ids
      * @param webSite
      * @param page
@@ -85,7 +81,6 @@ public interface ItemSearchService {
 
     /**
      * 查询搜索类目
-     *
      * @param category
      * @return
      */
@@ -93,9 +88,9 @@ public interface ItemSearchService {
 
     /**
      * 查询子级搜索类目
-     *
      * @param parentCateValue
      * @return
      */
     List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category, String website);
+
 }

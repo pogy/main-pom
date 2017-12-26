@@ -3,16 +3,13 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
-import com.opentae.data.mall.beans.GoodsCountForsearch;
-import com.opentae.data.mall.beans.ShiguGoodsExtends;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguTaobaocat;
-import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.exceptions.Main4Exception;
+import com.opentae.data.mall.interfaces.SearchCategoryMapper;
+import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -73,12 +70,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-    @Autowired
-    private ShiguTaobaocatMapper shiguTaobaocatMapper;
-    @Autowired
-    private GoodsCountForsearchMapper goodsCountForsearchMapper;
-    @Autowired
-    private  ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
 
     @Override
     public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
