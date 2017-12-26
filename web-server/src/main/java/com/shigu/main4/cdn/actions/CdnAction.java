@@ -779,7 +779,7 @@ public class CdnAction {
             String picUrl = shopsItemService.itemImgzipUrl(id);
             return JsonResponseUtil.success().element("pic", picUrl);
         } catch (Exception e) {
-            return JsonResponseUtil.error(e.getMessage());
+            return JsonResponseUtil.error("下载失败，请重试！");
         }
 
     }
