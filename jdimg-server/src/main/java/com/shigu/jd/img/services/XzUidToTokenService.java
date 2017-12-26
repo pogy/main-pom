@@ -16,9 +16,9 @@ public class XzUidToTokenService {
     @Autowired
     private JdSessionMapMapper jdSessionMapMapper;
 
-    public String getTokenByUid(Long userId) throws XzUidToTokenException {
+    public String getTokenByUid(Long jdUid) throws XzUidToTokenException {
         JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setShiguUid(userId);
+        jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (jdSessionMap == null) {
             throw new XzUidToTokenException("获取京东授权信息失败");

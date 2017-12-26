@@ -41,13 +41,13 @@ public class JdGoodsServiceImpl implements JdGoodsService{
     /**
      * 商品一键上传到京东
      * @param bo
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
     @Override
-    public JdWareAddVO upToJd(JdUpBO bo, Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -62,8 +62,8 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * 新增和修改商品图片
      */
     @Override
-    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }

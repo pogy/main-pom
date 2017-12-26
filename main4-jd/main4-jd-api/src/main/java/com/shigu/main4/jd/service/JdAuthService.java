@@ -28,11 +28,11 @@ public interface JdAuthService {
 
     /**
      * 根据星座网用户Id获取授权信息
-     * @param userId
+     * @param jdUid
      * @return
      * @throws IOException
      */
-    JdAuthedInfoVO getAuthedInfo(Long userId) ;
+    JdAuthedInfoVO getAuthedInfo(Long jdUid) ;
 
 
     /**
@@ -41,10 +41,4 @@ public interface JdAuthService {
      */
     JdAuthedInfoVO refreshToken(String refreshToken) throws IOException, JdUpException;
 
-    /**
-     * 给授权信息绑定xz网用户ID
-     * @param xzUid
-     * @param jdUid
-     */
-    void bindXzUid(Long xzUid, Long jdUid);
 }

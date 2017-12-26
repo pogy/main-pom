@@ -1,14 +1,30 @@
 package com.shigu.goodsup.jd.service;
 
 
+import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.searchtool.configs.ElasticConfiguration;
+import com.searchtool.domain.SimpleElaBean;
+import com.searchtool.mappers.ElasticRepository;
+import com.shigu.goodsup.jd.vo.JdUpRecordVO;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdGoodsService;
-import com.shigu.main4.monitor.services.ItemUpRecordService;
-import com.shigu.main4.monitor.vo.LastUploadedVO;
+import com.shigu.main4.monitor.services.StarCaculateService;
+import com.shigu.main4.ucenter.services.UserLicenseService;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +34,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class JdGoodsUpService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JdGoodsUpService.class);
 
     @Autowired
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
@@ -29,10 +47,16 @@ public class JdGoodsUpService {
     private JdGoodsService jdGoodsService;
 
     @Autowired
-    private ItemUpRecordService itemUpRecordService;
+    private UserLicenseService userLicenseService;
+
+    @Autowired
+    private ShowForCdnService showForCdnService;
+
+    @Autowired
+    private StarCaculateService starCaculateService;
 
     /**
-     *查询用户是否已上传过
+     *查询商品是否可京东上传
      * 根据goodsId获取tbCid,然后去jd_tb_bind表查询,如果查不到,则不能上传
      * @return
      */
@@ -60,8 +84,59 @@ public class JdGoodsUpService {
      * @return
      */
     public Boolean hasBeUploaded(Long userId,Long goodsId) {
-        LastUploadedVO lastUploadedVO = itemUpRecordService.selLastUpByIds(userId, goodsId);
-        return lastUploadedVO != null;
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigu_jd_goodsup");
+        srb.setQuery(QueryBuilders.termQuery("userId",userId));
+        srb.setQuery(QueryBuilders.termQuery("goodsId",goodsId));
+        srb.setSize(0);
+        srb.setFrom(1);
+        TermsBuilder termsBuilder = AggregationBuilders.terms("userType");
+        srb.addAggregation(termsBuilder);
+        SearchResponse searchResponse = srb.execute()
+                .actionGet();
+
+        Terms type = searchResponse.getAggregations().get("userType");
+        return null;
+    }
+
+    /**
+     * 添加京东上传记录到ES
+     * @return
+     */
+    public void saveRecord(JdUpRecordVO vo) {
+        if (vo.getUserId() == null || vo.getGoodsId() == null) {
+            return;
+        }
+        ShiguGoodsIdGenerator sgig= shiguGoodsIdGeneratorMapper.selectByPrimaryKey(vo.getGoodsId());
+        if(sgig==null){
+            return;
+        }
+        CdnItem cdnItem = showForCdnService.selItemById(vo.getGoodsId());
+        vo.setWebSite(sgig.getWebSite());
+        try {
+            userLicenseService.addScore(vo.getUserId(),1);
+        } catch (Exception e) {
+            logger.error("加积分失败",e);
+        }
+
+        SimpleElaBean bean = new SimpleElaBean();
+        bean.setIndex("shigu_jd_goodsup");
+        bean.setType(sgig.getWebSite());
+        bean.setSource(JSON.toJSONString(vo));
+        try {
+            ElasticRepository elasticRepository = new ElasticRepository();
+            elasticRepository.insert(bean);
+        } catch (Exception e) {
+            logger.error("京东上传记录>>异常>>添加新索引>>data:" + JSON.toJSONString(vo) + " ERROR:" + e.toString());
+            e.printStackTrace();
+        }
+        //添加星星数计算
+        if(cdnItem.getShopId()!=null){
+            try {
+                starCaculateService.addItemUp(cdnItem.getShopId());
+            } catch (Exception e) {
+                logger.error("上传后重算星星数失败",e);
+            }
+        }
     }
 
 }

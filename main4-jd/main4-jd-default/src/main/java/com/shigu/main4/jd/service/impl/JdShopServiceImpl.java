@@ -49,14 +49,14 @@ public class JdShopServiceImpl implements JdShopService {
 
     /**
      * 京东店铺信息查询
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
     @Override
-    public JdShopInfoVO getJdShopInfo(Long userId) {
+    public JdShopInfoVO getJdShopInfo(Long jdUid) {
         JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setShiguUid(userId);
+        jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (jdSessionMap == null) {
             return null;
@@ -82,14 +82,14 @@ public class JdShopServiceImpl implements JdShopService {
 
     /**
      * 京东店铺信息查询（京东API查询）,并记（更新）到库
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
     @Override
-    public JdShopInfoVO getJdShopInfoByJdApi(Long userId) throws JdUpException {
+    public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException {
         JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setShiguUid(userId);
+        jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (jdSessionMap == null) {
             throw new JdUpException("更新京东店铺信息失败");

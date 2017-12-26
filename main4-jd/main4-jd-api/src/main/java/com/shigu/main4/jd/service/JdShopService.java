@@ -13,18 +13,18 @@ import java.io.IOException;
 public interface JdShopService {
     /**
      * 京东店铺信息查询（只取数据库）
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
-    JdShopInfoVO getJdShopInfo(Long userId) throws JdUpException;
+    JdShopInfoVO getJdShopInfo(Long jdUid) throws JdUpException;
 
     /**
      * 京东店铺信息查询（京东API查询）,并记（更新）到库
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
-    JdShopInfoVO getJdShopInfoByJdApi(Long userId) throws JdUpException;
+    JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException;
 
 }

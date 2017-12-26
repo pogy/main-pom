@@ -10,11 +10,13 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
+import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.service.JdPostageTemplateService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
+import com.shigu.goodsup.jd.vo.JdUpRecordVO;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.*;
@@ -136,14 +138,12 @@ public class JdGoodsupAction {
 ////                    memberSimpleService.updateJdShopNike(ps.getLogshop().getShopId(),jdAuthedInfoVO.getUserNick());
 //                }
 //            }
-            //登陆成功，更新redis缓存信息
+
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(strJdUid,strJdUid, LoginFromType.JD);
             if (personalSession == null || personalSession.getUserId() == null) {
                 //还是检查一遍避免 字符串+null 出现
                 throw new JdUpException("授权失败");
             }
-            //给授权信息绑定xz网 userId
-            jdAuthService.bindXzUid(personalSession.getUserId(),jdAuthedInfoVO.getUid());
 
             //得到回调用地址
             String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
@@ -218,9 +218,9 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getPostageTemplateList")
     @ResponseBody
-    public JSONObject getPostageTemplateList(HttpSession session) throws JdUpException {
+    public JSONObject getPostageTemplateList(HttpSession session) throws JdUpException, JdNotBindException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<JdAgingTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getUserId());
+        List<JdAgingTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId());
         return JsonResponseUtil.success().element("postageTemplateList",postageTemplateList);
     }
 
@@ -325,8 +325,8 @@ public class JdGoodsupAction {
 
     @RequestMapping("jdYjUpload")
     @ResponseBody
-    public JSONObject jdYjUpload(Long goodsId,String skuColorIds) throws JdUpException {
-        Long userId = 1L;
+    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
 
         //上传商品
@@ -343,7 +343,7 @@ public class JdGoodsupAction {
             List<String> subMsgs=new ArrayList<>();
             JdUpImgResponse response = null;
             try {
-                response = jdImgService.addImgs(userId, imgUrls);
+                response = jdImgService.addImgs(ps.getSubUserId(), imgUrls);
                 //1，操作成功；0，操作失败
                 if ("0".equals(response.getReturnCode())) {
                     return JSONObject.fromObject("{'status':'0'}");
@@ -351,6 +351,9 @@ public class JdGoodsupAction {
             } catch (JdUpImgException e) {
                 e.printStackTrace();
                 subMsgs.add(e.getErrMsg());
+            } catch (JdNotBindException e) {
+                e.printStackTrace();
+                subMsgs.add(e.getMessage());
             }
             List<JdImgInfo> jdImgInfos = response.getJdImgInfos();
             StringBuffer imgIds = new StringBuffer();
@@ -374,37 +377,15 @@ public class JdGoodsupAction {
             jdImageUpdateBO.setImgIndex(imgIndex.toString());
 //            jdImageUpdateBO.setImgZoneId(null);
 
-            jdImgService.bindGoodsImgs(jdImageUpdateBO,userId);
+            jdImgService.bindGoodsImgs(jdImageUpdateBO,ps.getSubUserId());
 
         }
 
+        //添加上传记录 TODO 传什么
+        JdUpRecordVO vo = new JdUpRecordVO();
+        jdGoodsUpService.saveRecord(vo);
+
         return null;
-    }
-
-
-    /**
-     * 店内类目更新
-     * @return
-     */
-    @RequestMapping("jd-shop-cat-update")
-    public String shopCatUpdate(HttpSession httpsession,HttpServletRequest request,Model model)  {
-        PersonalSession ps = (PersonalSession) httpsession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return "taobao/parts/storecat";
-    }
-
-    /**
-     * 更新物流
-     * @param httpSession
-     * @param model
-     * @return
-     */
-    @RequestMapping("jd-express-update")
-    public String expressUpdate(HttpSession httpSession,HttpServletRequest request,Model model)  {
-        PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        //这里查以前使用过的templateId
-        model.addAttribute("erverDyTemplateId","");
-        return "taobao/parts/deliver";
     }
 
     /**
@@ -417,54 +398,6 @@ public class JdGoodsupAction {
         PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String name=MD5Attestation.MD5Encode(multimagefile.getName()+Math.random())+".jpg";
         return ossIO.uploadFile(multimagefile.getInputStream(),"jdonkey"+"/"+ps.getUserId()+"/"+name);
-    }
-
-    /**
-     * 更新橱窗数
-     * @return
-     */
-    @RequestMapping("jd-windowsnum-update")
-    public String windowsnumUpdate(HttpSession httpsession,HttpServletRequest request,Model model) {
-        PersonalSession ps = (PersonalSession) httpsession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        model.addAttribute("shop", null);
-        return "taobao/parts/windowsnum";
-    }
-
-    /**
-     * 品牌,更多
-     * @param cid
-     * @param value
-     * @return
-     */
-    @RequestMapping("jd-propmore")
-    @ResponseBody
-    public JSONObject propMore(Long cid, String value){
-        return null;
-    }
-
-    /**
-     * 做手机详情
-     * @return
-     */
-    @RequestMapping("jd-make-mobile-desc")
-    @ResponseBody
-    public JSONObject makeMobileDesc(String imgList, @RequestParam("num_iid") Long numIid, HttpServletRequest request, HttpSession httpsession)  {
-        PersonalSession ps = (PersonalSession) httpsession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        return JSONObject.fromObject("{'status':'0'}");
-    }
-
-    /**
-     * 查单个品牌
-     * @param cid
-     * @param key
-     * @return
-     */
-    @RequestMapping("jd-prop-select")
-    public String propSelect(Long cid,String key,Model model){
-
-        return "taobao/parts/propselect";
     }
 
 }

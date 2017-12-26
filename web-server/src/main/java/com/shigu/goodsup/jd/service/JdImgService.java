@@ -4,6 +4,7 @@ import com.openJar.exceptions.imgs.JdUpImgException;
 import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.openJar.tools.OpenClient;
+import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdGoodsService;
@@ -23,20 +24,24 @@ public class JdImgService {
 
     @Autowired
     private JdGoodsService jdGoodsService;
+    
+    @Autowired
+    private JdUserInfoService jdUserInfoService;
 
     /**
      *上传图片到京东图片空间
-     * @param userId
+     * @param subUid
      * @param imgUrls
      * @return
      * @throws JdUpImgException
      */
-    public JdUpImgResponse addImgs(Long userId, List<String> imgUrls) throws JdUpImgException {
+    public JdUpImgResponse addImgs(Long subUid, List<String> imgUrls) throws JdUpImgException, JdNotBindException {
         if(imgUrls == null || imgUrls.isEmpty()){
             return null;
         }
+        String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
         JdUpImgRequest request = new JdUpImgRequest();
-        request.setUserId(userId);
+        request.setJdUid(Long.valueOf(jdUid));
         request.setImgUrls(imgUrls);
         OpenClient openClient = openClientService.getOpenClient();
         JdUpImgResponse response = openClient.execute(request);
@@ -49,7 +54,8 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long userId) throws JdUpException {
-       return jdGoodsService.jdImageUpdate(bo, userId);
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException {
+        String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
+       return jdGoodsService.jdImageUpdate(bo, Long.valueOf(jdUid));
     }
 }

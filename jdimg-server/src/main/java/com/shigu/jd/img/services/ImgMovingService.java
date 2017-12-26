@@ -32,12 +32,12 @@ public class ImgMovingService {
 
     /**
      * 上传一张图片到京东图片空间
-     * @param userId
+     * @param jdUid
      * @return
      * @throws JdUpException
      */
-    public JdUpImgResponse imgUpload (Long userId, List<String> imgUrls) throws XzUidToTokenException {
-        String accessToken = jdUidToTokenService.getTokenByUid(userId);
+    public JdUpImgResponse imgUpload (Long jdUid, List<String> imgUrls) throws XzUidToTokenException {
+        String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         List<JdImgInfo> jdImgInfos = new ArrayList<>();
         StringBuffer imgIds = new StringBuffer();
         String errMsg = null;
@@ -73,7 +73,7 @@ public class ImgMovingService {
         JdUpImgResponse jdUptoItemImgResponse = new JdUpImgResponse();
         if(imgUrls.size() != jdImgInfos.size()){
             try {
-                imgDelete(userId,imgIds.toString());
+                imgDelete(jdUid,imgIds.toString());
             } catch (JdUpException e) {
                 e.printStackTrace();
             }
@@ -87,12 +87,12 @@ public class ImgMovingService {
 
     /**
      * 删除图片 批量删除时ID间以半角逗号分隔，已被引用的图片不能删除
-     * @param userId
+     * @param jdUid
      * @return
      * @throws JdUpException
      */
-    public JdImgDeleteResponse imgDelete (Long userId, String imgIds) throws XzUidToTokenException, JdUpException {
-        String accessToken = jdUidToTokenService.getTokenByUid(userId);
+    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws XzUidToTokenException, JdUpException {
+        String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);
         //返回码1，操作成功；0，操作失败；2，部分操作成功

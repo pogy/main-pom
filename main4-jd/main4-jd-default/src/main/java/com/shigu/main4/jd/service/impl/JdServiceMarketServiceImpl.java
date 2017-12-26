@@ -29,11 +29,11 @@ public class JdServiceMarketServiceImpl implements JdServiceMarketService {
      * 订购关系查询（根据购买用户名和收费项目代码获取订购关系时长）
      * @param userName
      * @param itemCode
-     * @param userId
+     * @param jdUid
      */
     @Override
-    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }

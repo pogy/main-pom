@@ -47,13 +47,13 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
 
     /**
      * 京东自定义店内分类
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */
     @Override
-    public List<JdShopCategoryVO> getJdSellercats(Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -71,8 +71,8 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws IOException
      */
     @Override
-    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long userId,Long cid,Integer type) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -130,13 +130,13 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
 
     /**
      * 获取商家类目信息
-     * @param userId
+     * @param jdUid
      * @return
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryVO> getJdWarecats(Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -160,14 +160,14 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
 
     /**
      * 根据父级类目Id获取子集类目信息
-     * @param userId
+     * @param jdUid
      *  @param pid 父类目id
      * @return
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryReadVO> getJdCategoryByPid(Long userId,Long pid) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -201,14 +201,14 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
 
     /**
      * 获取类目属性值
-     * @param userId
+     * @param jdUid
      * @param pid
      * @return
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long userId,Long pid) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid,Long pid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
@@ -235,12 +235,12 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
 
     /**
      * 获取用户所拥有的品牌
-     * @param userId
+     * @param jdUid
      * @return
      */
     @Override
-    public List<JdVenderBrandPubInfoVO> getAllBrand(Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdVenderBrandPubInfoVO> getAllBrand(Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }

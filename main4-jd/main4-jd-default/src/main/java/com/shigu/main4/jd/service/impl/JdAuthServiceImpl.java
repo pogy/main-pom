@@ -95,17 +95,15 @@ public class JdAuthServiceImpl implements JdAuthService{
             jdSessionMap.setRefreshToken(jdAithedInfo.getRefreshToken());
             jdSessionMap.setAuthTime(new Date(jdAithedInfo.getAuthTime()));
             jdSessionMap.setExpiresIn(jdAithedInfo.getExpiresIn());
-            jdSessionMap.setGmtCreate(now);
-            jdSessionMap.setGmtModify(now);
             jdSessionMapMapper.updateByPrimaryKeySelective(jdSessionMap);
         }
         return jdAithedInfo;
     }
 
     @Override
-    public JdAuthedInfoVO getAuthedInfo(Long userId) {
+    public JdAuthedInfoVO getAuthedInfo(Long jdUid) {
         JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setShiguUid(userId);
+        jdSessionMap.setJdUid(jdUid);
         JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (selJdSessionMap == null) {
             return null;
@@ -133,21 +131,6 @@ public class JdAuthServiceImpl implements JdAuthService{
         HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
         String entityString = EntityUtils.toString(entity);
         return getJdAithedInfo(entityString);
-    }
-
-    /**
-     * 给授权信息绑定xz网用户ID
-     * @param xzUid
-     * @param jdUid
-     */
-    @Override
-    public void bindXzUid(Long xzUid, Long jdUid) {
-        JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setJdUid(jdUid);
-        JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
-        selJdSessionMap.setShiguUid(xzUid);
-        selJdSessionMap.setGmtModify(new Date());
-        jdSessionMapMapper.updateByPrimaryKeySelective(selJdSessionMap);
     }
 
     private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException {

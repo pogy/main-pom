@@ -12,18 +12,18 @@ import com.openJar.responses.imgs.JdImgDeleteResponse;
  */
 public class JdImgDeleteRequest extends Request<JdImgDeleteResponse> {
 
-    private Long userId;
+    private Long jdUid;
     /**
      * 图片ID，批量删除时ID间以半角逗号分隔，已被引用的图片不能删除
      */
     private String pictureIds;
 
-    public Long getUserId() {
-        return userId;
+    public Long getJdUid() {
+        return jdUid;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setJdUid(Long jdUid) {
+        this.jdUid = jdUid;
     }
 
     public String getPictureIds() {

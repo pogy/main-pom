@@ -14,11 +14,6 @@ public class JdSessionMap implements Serializable {
 	private Long id;
 
     /**
-     * 对应的xz账号ID
-     */
-	private Long shiguUid;
-
-    /**
      * 用户的京东uid
      */
 	private Long jdUid;
@@ -39,7 +34,7 @@ public class JdSessionMap implements Serializable {
 	private String refreshToken;
 
     /**
-     * 0000-00-00 00:00:00
+     * 授权时间
      */
 	private Date authTime;
 
@@ -64,14 +59,6 @@ public class JdSessionMap implements Serializable {
 
 	public Long getId() {
 		return this.id;
-	}
-
-	public void setShiguUid(Long shiguUid) {
-		this.shiguUid = shiguUid;
-	}
-
-	public Long getShiguUid() {
-		return this.shiguUid;
 	}
 
 	public void setJdUid(Long jdUid) {

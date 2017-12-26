@@ -15,18 +15,18 @@ public class JdUpImgRequest extends Request<JdUpImgResponse> {
     /**
      * 用户id
      */
-    private Long userId;
+    private Long jdUid;
     /**
      * 图片链接
      */
     private List<String> imgUrls;
 
-    public Long getUserId() {
-        return userId;
+    public Long getJdUid() {
+        return jdUid;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setJdUid(Long jdUid) {
+        this.jdUid = jdUid;
     }
 
     public List<String> getImgUrls() {

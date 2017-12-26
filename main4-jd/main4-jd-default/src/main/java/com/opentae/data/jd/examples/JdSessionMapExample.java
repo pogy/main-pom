@@ -10,7 +10,6 @@ import java.util.*;
 public class JdSessionMapExample extends SgExample<JdSessionMapExample.Criteria> {
     public static final Class<JdSessionMap> beanClass = JdSessionMap.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
-    public static EntityColumn shiguUid;
     public static EntityColumn expiresIn;
     public static EntityColumn jdUserNick;
     public static EntityColumn jdUid;
@@ -26,7 +25,6 @@ public class JdSessionMapExample extends SgExample<JdSessionMapExample.Criteria>
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
-        shiguUid = listMap.get("shiguUid");
         expiresIn = listMap.get("expiresIn");
         jdUserNick = listMap.get("jdUserNick");
         jdUid = listMap.get("jdUid");
@@ -57,53 +55,6 @@ public class JdSessionMapExample extends SgExample<JdSessionMapExample.Criteria>
             super(example);
         }
 
-        public JdSessionMapExample.Criteria andShiguUidIsNull() {
-            return isNull(shiguUid);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidIsNotNull() {
-            return isNotNull(shiguUid);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidEqualTo(Long value) {
-            return equalTo(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidNotEqualTo(Long value) {
-            return notEqualTo(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidGreaterThan(Long value) {
-            return greaterThan(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidLessThan(Long value) {
-            return lessThan(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(shiguUid, value);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidIn(List<Long> values) {
-            return in(shiguUid, values);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidNotIn(List<Long> values) {
-            return notIn(shiguUid, values);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidBetween(Long value1, Long value2) {
-            return between(shiguUid, value1, value2);
-        }
-
-        public JdSessionMapExample.Criteria andShiguUidNotBetween(Long value1, Long value2) {
-            return notBetween(shiguUid, value1, value2);
-        }
         public JdSessionMapExample.Criteria andExpiresInIsNull() {
             return isNull(expiresIn);
         }

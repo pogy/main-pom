@@ -14,9 +14,9 @@ import java.util.List;
 public interface JdAgingtemplService {
     /**
      * 商家时效模板查询接口
-     * @return userId
+     * @return jdUid
      * @throws JdException
      */
-    List<JdAgingTemplateVO> getAgingtempl(Long userId) throws JdUpException;
+    List<JdAgingTemplateVO> getAgingtempl(Long jdUid) throws JdUpException;
 
 }

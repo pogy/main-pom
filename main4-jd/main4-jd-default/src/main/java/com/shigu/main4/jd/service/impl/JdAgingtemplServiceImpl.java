@@ -30,13 +30,13 @@ public class JdAgingtemplServiceImpl implements JdAgingtemplService {
 
     /**
      * 商家时效模板查询接口
-     * @param userId
+     * @param jdUid
      * @return
      * @throws JdException
      */
     @Override
-    public List<JdAgingTemplateVO> getAgingtempl(Long userId) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(userId);
+    public List<JdAgingTemplateVO> getAgingtempl(Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
         }
