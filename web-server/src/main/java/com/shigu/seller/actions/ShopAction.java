@@ -559,23 +559,15 @@ public class ShopAction {
                 propsVO.getPingpai().getValues().add(0,pvv);
                 simpleProps.add(0,propsVO.getPingpai());
             }
-//            if(propsVO.getHuohao()!=null){
-//                simpleProps.add(0,propsVO.getHuohao());
-//            }
             if(simpleProps!=null){
                 for(PropertyItemVO piv:simpleProps){
                     formAttribute.add(goodsSendService.parseTaobaoItemPropVO(piv));
                 }
             }
         }
-
         String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
 //        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
         String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
-//        String propImgs = null;//商品prop,带图部分
-//        if(synItem.getPropImgs() != null){
-//            propImgs= JSON.toJSONString(synItem.getPropImgs());
-//        }
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
             for (String p : props.split(";")) {
@@ -601,11 +593,6 @@ public class ShopAction {
                 }
                 //补充商品数据formAttribute
                 for (FormAttrVO formAttrVO :formAttribute){
-//                    if(map.get(pidvid) != null && StringUtils.isNotEmpty(map.get(pidvid))){
-//                        formAttrVO.getFormitem().setValue(map.get(pidvid));
-//                    }else{
-//                        formAttrVO.getFormitem().setValue(null);
-//                    }
                     if (formAttrVO.getFormitem().getOptions() !=null && formAttrVO.getFormitem().getOptions().size()>0){
                         for (KVO pvo   :    formAttrVO.getFormitem().getOptions()){
                             if( pvo.getValue().equals(pidvid)){
@@ -621,10 +608,6 @@ public class ShopAction {
                         }
                     }
                 }
-
-
-//            }else if(propertyAlias.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
-//            }else if(propImgs.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
             }
         }
         //店内类目暂时不要
