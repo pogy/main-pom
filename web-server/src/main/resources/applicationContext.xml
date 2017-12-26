@@ -63,6 +63,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
     </bean>
     <import resource="spring-database/mall.xml"/>
+    <import resource="spring-database/jd.xml"/>
     <!--<import resource="spring-database/manager.xml"/>-->
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">

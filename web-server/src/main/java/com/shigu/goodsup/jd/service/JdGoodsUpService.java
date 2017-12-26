@@ -52,8 +52,8 @@ public class JdGoodsUpService {
     @Autowired
     private ShowForCdnService showForCdnService;
 
-    @Autowired
-    private StarCaculateService starCaculateService;
+//    @Autowired
+//    private StarCaculateService starCaculateService;
 
     /**
      *查询商品是否可京东上传
@@ -130,13 +130,13 @@ public class JdGoodsUpService {
             e.printStackTrace();
         }
         //添加星星数计算
-        if(cdnItem.getShopId()!=null){
-            try {
-                starCaculateService.addItemUp(cdnItem.getShopId());
-            } catch (Exception e) {
-                logger.error("上传后重算星星数失败",e);
-            }
-        }
+//        if(cdnItem.getShopId()!=null){
+//            try {
+//                starCaculateService.addItemUp(cdnItem.getShopId());
+//            } catch (Exception e) {
+//                logger.error("上传后重算星星数失败",e);
+//            }
+//        }
     }
 
 }

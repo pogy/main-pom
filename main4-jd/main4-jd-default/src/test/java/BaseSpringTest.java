@@ -46,8 +46,8 @@ public class BaseSpringTest {
     @Autowired
     JdTbBindMapper jdTbBindMapper;
 
-    String token="bb9199ea-f3c6-482a-a384-d08510eac37f";
-    Long userId = 1000086015L;
+    String token="50a911b2-243f-48ac-887a-01bd909d43f1";
+    Long userId = 4670196954L;
 //    List list=Arrays.asList(1315L,1672L,1620L,15248L,9709L,1319L,1318L,2574L,11729L,14239L,14301L);
     List list=Arrays.asList(1620L,15248L,1319L);
 
@@ -87,7 +87,7 @@ public class BaseSpringTest {
     @Test
     public void prop() throws JdUpException {
         ShiguJdcatExample jdcatExample=new ShiguJdcatExample();
-        jdcatExample.createCriteria().andIsParentEqualTo(0).andCidGreaterThanOrEqualTo(9768L);
+        jdcatExample.createCriteria().andIsParentEqualTo(0).andCidGreaterThanOrEqualTo(0L);
         jdcatExample.setOrderByClause("cid asc");
         List<ShiguJdcat> cats=shiguJdcatMapper.selectByExample(jdcatExample);
         for(ShiguJdcat cat:cats){
@@ -113,6 +113,7 @@ public class BaseSpringTest {
                     for(JdFeatureCateAttrJosVO f:jdCategoryAttrJosVO.getAttrFeatures()){
                         if("color".equals(f.getAttrFeatureKey())&&"1".equals(f.getAttrFeatureValue())){
                             prop.setIsKeyProp(1);
+                            prop.setIsColorProp(1);
                             break;
                         }
                     }
