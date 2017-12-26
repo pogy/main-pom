@@ -13,14 +13,12 @@
                                 <#if allData.props.pingpai.mustHave><em>*</em></#if>
                                 <ul class="J_ul-single ul-select">
                                     <li>
-                                        <#assign selectedpingpai=allData.props.pingpai.values[0]>
                                         <#assign lastvid=allData.props.pingpai.values[0].vid>
                                         <select id="prop_${allData.props.pingpai.pid}_select" class="keyPropClass" data-transtype="dropbox" style="display: none; visibility: hidden;">
                                             <#list allData.props.pingpai.values as pppv>
                                             <option data-pid="${allData.props.pingpai.pid}" data-fid="${pppv.fid}"
                                                 <#if pppv.selected>
                                                 selected
-                                                <#assign selectedpingpai=pppv>
                                                 </#if>
                                                 value="${allData.props.pingpai.pid}:${pppv.vid}"
                                             >${pppv.name}</option>
@@ -29,7 +27,7 @@
                                         </select>
                                         <div class="kui-combobox" role="combobox">
                                             <div class="kui-dropdown-trigger">
-                                                <input readonly="true" class="kui-combobox-caption prop_from" data-pid="${allData.props.pingpai.pid}" data-value="${allData.props.pingpai.pid}:${selectedpingpai.vid}" value="${selectedpingpai.name}" style="width:190px;" id="prop_${allData.props.pingpai.pid}" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
+                                                <input readonly="true" class="kui-combobox-caption prop_from" data-pid="${allData.props.pingpai.pid}" data-value="" value="" style="width:190px;" id="prop_${allData.props.pingpai.pid}" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
                                                 <div class="kui-icon-dropdown"></div>
                                             </div>
                                         </div>
