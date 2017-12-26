@@ -53,9 +53,14 @@ public class JdItemProp implements Serializable {
 	private Integer isEnumProp;
 
     /**
-     * 是否商品属性：1是true0是false
+     * 是不是扩展属性
      */
 	private Integer isItemProp;
+
+    /**
+     * 是不是品牌
+     */
+	private Integer isBrand;
 
     /**
      * 是否必须属性
@@ -175,6 +180,14 @@ public class JdItemProp implements Serializable {
 
 	public Integer getIsItemProp() {
 		return this.isItemProp;
+	}
+
+	public void setIsBrand(Integer isBrand) {
+		this.isBrand = isBrand;
+	}
+
+	public Integer getIsBrand() {
+		return this.isBrand;
 	}
 
 	public void setMust(Integer must) {
