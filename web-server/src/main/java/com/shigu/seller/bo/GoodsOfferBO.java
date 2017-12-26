@@ -105,6 +105,19 @@ public class GoodsOfferBO implements Serializable{
     @NotNull(message = "货号为必填选项")
     private String goodsNo;
 
+    /**
+     * 商品id
+     */
+    private String goodsId;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
+
     public String getPicPath() {
         return picPath;
     }

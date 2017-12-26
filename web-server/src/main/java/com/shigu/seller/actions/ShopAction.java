@@ -664,10 +664,10 @@ public class ShopAction {
         if (shopSession.getType().equals(1)) {
             throw new JsonErrException("淘宝店铺不支持手工发布");
         }
-        Long itemId;
         //包装bo
         try {
             SynItem synItem=bo.getOffer().parseToSynItem();
+            synItem.setGoodsId(Long.valueOf(bo.getOffer().getGoodsId()));
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
                     synItem.getInputPids(),synItem.getPropertyAlias()));
@@ -675,26 +675,9 @@ public class ShopAction {
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
             synItem.setItemFrom(ItemFrom.MEMBER);
-            Date created = new Date();
-            synItem.setCreated(created);
-            synItem.setModified(created);
-            //淘宝上架时间，手动发布商品默认为现在
-            synItem.setListTime(created);
-            //淘宝下架时间，手动发布商品默认为七天后
-            synItem.setDelistTime(DateUtil.addDay(created,7));
             synItem.setPriceString(bo.getOffer().getLowestLiPrice());
             itemAddOrUpdateService.userUpdateItem(synItem);
-            //保存上传记录
-//            EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
-//            usedCat.setCid(synItem.getCid());
-//            try {
-//                usedCat.setShowName(goodsSendService.selCatPath(synItem.getCid()));
-//                usedCat.setAllcids(goodsSendService.selCatIds(synItem.getCid()));
-//                usedCat.setCname(goodsSendService.selCnameById(synItem.getCid()));
-//                itemCatService.saveEverUsedCat(shopSession.getShopId(),usedCat);
-//            } catch (Main4Exception e) {
-//                logger.error("得到类目串失败",e);
-//            }
+
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
