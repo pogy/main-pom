@@ -22,7 +22,7 @@ public class GoodsOfferBO implements Serializable{
     @SafeHtml(message = "首图包含非法页面标签")
     private String picPath;
     /**
-     * 5张图,不包含首图
+     * 不包含首图
      */
     @SafeHtml(message = "5张图包含非法页面标签")
     private String allimg;

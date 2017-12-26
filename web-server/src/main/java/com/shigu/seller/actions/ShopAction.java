@@ -685,16 +685,16 @@ public class ShopAction {
             synItem.setPriceString(bo.getOffer().getLowestLiPrice());
             itemAddOrUpdateService.userUpdateItem(synItem);
             //保存上传记录
-            EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
-            usedCat.setCid(synItem.getCid());
-            try {
-                usedCat.setShowName(goodsSendService.selCatPath(synItem.getCid()));
-                usedCat.setAllcids(goodsSendService.selCatIds(synItem.getCid()));
-                usedCat.setCname(goodsSendService.selCnameById(synItem.getCid()));
-                itemCatService.saveEverUsedCat(shopSession.getShopId(),usedCat);
-            } catch (Main4Exception e) {
-                logger.error("得到类目串失败",e);
-            }
+//            EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
+//            usedCat.setCid(synItem.getCid());
+//            try {
+//                usedCat.setShowName(goodsSendService.selCatPath(synItem.getCid()));
+//                usedCat.setAllcids(goodsSendService.selCatIds(synItem.getCid()));
+//                usedCat.setCname(goodsSendService.selCnameById(synItem.getCid()));
+//                itemCatService.saveEverUsedCat(shopSession.getShopId(),usedCat);
+//            } catch (Main4Exception e) {
+//                logger.error("得到类目串失败",e);
+//            }
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
