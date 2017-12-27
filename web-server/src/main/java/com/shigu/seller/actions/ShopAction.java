@@ -188,10 +188,7 @@ public class ShopAction {
     @Autowired
     RedisIO redisIO;
 
-    @Autowired
-    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
-
-
+    
 
     /**
      * 当前登陆的session
@@ -526,11 +523,7 @@ public class ShopAction {
         List<String> imageList = synItem.getImageList();
         imageList.remove(synItem.getPicUrl());
         goodsInfoVO.setAllimg(imageList);//除首图的图
-        goodsInfoVO.setQuantity(String.valueOf(synItem.getNum()));//数量
-        //需要判断是否设置
-        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
-        shiguGoodsModified.setItemId(Long.valueOf(bo.getGoodsId()));
-        shiguGoodsModified=shiguGoodsModifiedMapper.selectOne(shiguGoodsModified);
+        goodsInfoVO.setQuantity(String.valueOf(synItem.getNum()));//数量;
         goodsInfoVO.setLowestLiPrice(synItem.getPriceString());//最低零售价
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();

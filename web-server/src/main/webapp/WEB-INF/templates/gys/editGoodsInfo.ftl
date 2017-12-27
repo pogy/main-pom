@@ -35,9 +35,6 @@
 <script modulepath="gys/editGoodsInfo#config">
 var deschtml = '${goodsInfo.deschtml}';
 </script>
-<script modulepath="gys/editGoodsInfo#config">
-var deschtml = '${goodsInfo.deschtml}';
-</script>
 <link href="http://g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
 <script src="http://g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
 <script src="http://style.571xz.com/v6/gys/temp/deonkey.js"></script>
