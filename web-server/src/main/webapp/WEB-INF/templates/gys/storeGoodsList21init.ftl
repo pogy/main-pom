@@ -1,4 +1,4 @@
-<#assign $pageid>storeGoodsList21init</#assign>
+<#assign $pageid="storeGoodsList21init">
 <!doctype html>
 <html>
 <head>
@@ -20,24 +20,18 @@
 <#include "/__style_torrent__/gys__storeGoodsList21init_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<#assign text>{"fields":[{"name":"state","value":query.state},{"name":"keyword","value":query.keyword},{"name":"goodsNo","value":query.goodsNo}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"state","value":query.state},{"name":"keyword","value":query.keyword},{"name":"goodsNo","value":query.goodsNo}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -91,9 +85,7 @@
     <ul class="head clearfix">
         <li class="name">
             <#if session_user_redis__.logshop.type == 1>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -161,9 +153,7 @@
     <ul class="body clearfix" data-id="${item.id!}">
         <li class="name">
             <#if session_user_redis__.logshop.type == 1>
-<#assign text>{"value":item.id}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":item.id}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -259,14 +249,13 @@
             <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
             <#else>
             <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+            <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
             </#if>
         </li>
     </ul>
     </#list>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination blue" id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -274,9 +263,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
