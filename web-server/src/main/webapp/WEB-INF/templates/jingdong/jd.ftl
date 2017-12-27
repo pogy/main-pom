@@ -122,7 +122,7 @@
             <div class="field clearfix">
                 <label class="fl"><em>*</em>市场价</label>
                 <div class="field-content fl">
-                    <input type="text" id="marketPrice" name="marketPrice" size="15" value="${item.price * 1.5}" class="text text-pri notBeEmpty" data-error-title='市场价'>
+                    <input type="text" id="marketPrice" name="marketPrice" size="15" value="${(item.price?number * 1.5)?string("0.00")}" class="text text-pri notBeEmpty" data-error-title='市场价'>
                     <span class="pri"> (市场价必需大于京东价，默认为京东价的1.5倍)</span>
                 </div>
             </div>

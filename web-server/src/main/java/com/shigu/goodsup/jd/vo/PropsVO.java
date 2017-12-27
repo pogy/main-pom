@@ -33,7 +33,7 @@ public class PropsVO implements Serializable{
      */
     private List<PropertyItemVO> saleProps;
 
-    private List<PropertyItemVO> specProps;
+    private List<PropertyItemVO> specification;
     /**
      * 列表SKU信息
      * 如果是null说明没有生成sku
@@ -199,11 +199,11 @@ public class PropsVO implements Serializable{
         this.saleProps = saleProps;
     }
 
-    public List<PropertyItemVO> getSpecProps() {
-        return this.specProps;
+    public List<PropertyItemVO> getSpecification() {
+        return this.specification;
     }
 
-    public void setSpecProps(List<PropertyItemVO> specProps) {
-        this.specProps = specProps;
+    public void setSpecification(List<PropertyItemVO> specification) {
+        this.specification = specification;
     }
 }

@@ -11,18 +11,24 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
-import com.shigu.goodsup.jd.service.*;
+import com.shigu.goodsup.jd.service.JdGoodsUpService;
+import com.shigu.goodsup.jd.service.JdImgService;
+import com.shigu.goodsup.jd.service.JdUpItemService;
+import com.shigu.goodsup.jd.service.JdUserInfoService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
-import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.service.*;
-import com.shigu.main4.jd.vo.*;
+import com.shigu.main4.jd.service.JdAuthService;
+import com.shigu.main4.jd.service.JdCategoryService;
+import com.shigu.main4.jd.service.JdGoodsService;
+import com.shigu.main4.jd.vo.JdAuthedInfoVO;
+import com.shigu.main4.jd.vo.JdPostTemplateVO;
+import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
+import com.shigu.main4.jd.vo.JdWareAddVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -49,7 +55,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created By admin on 2017/12/8/15:38
@@ -71,9 +79,6 @@ public class JdGoodsupAction {
 
     @Autowired
     private JdCategoryService jdCategoryService;
-
-    @Autowired
-    private JdPostageTemplateService jdPostageTemplateService;
 
     @Autowired
     private JdGoodsService jdGoodsService;
@@ -219,19 +224,6 @@ public class JdGoodsupAction {
 
 
     /**
-     * 获取用户所拥有的品牌
-     */
-    @RequestMapping("getPostageTemplateList")
-    @ResponseBody
-    public JSONObject getPostageTemplateList(HttpSession session) throws JdUpException, JdNotBindException {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<JdPostTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId());
-        return JsonResponseUtil.success().element("postageTemplateList",postageTemplateList);
-    }
-
-
-
-    /**
      * 上传页面
      * @return
      */
@@ -240,7 +232,8 @@ public class JdGoodsupAction {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         /********************************获取京东授权信息*******************************/
-
+//        Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
+        Long jdUserId=2299600652L;
         /********************************屏蔽卖家用户使用********************************/
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
@@ -281,24 +274,21 @@ public class JdGoodsupAction {
             return "taobao/uperror";
         }
 
-        /********************************取京东店家类目********************************/
-        PropsVO props= jdUpItemService.selProps(itemId,ps.getUserId(),item.getItem());
-
-//        List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
-        JdShowDataVO allData=new JdShowDataVO();
-
         /********************************包装所有数据********************************/
-        allData.setJdUserId(ps.getSubUserId());
-//        allData.setDeliveyList(jdAgingtemplService.getAgingtempl(null));
+        JdShowDataVO allData=new JdShowDataVO();
         allData.setItems(item);
-        allData.setProps(props);
-        allData.setJdUserId(0L);
+        allData.setJdUserId(ps.getSubUserId());
+        allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
+        allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem()));
+        allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
+        allData.setJdUserId(jdUserId);
+        allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
         model.addAttribute("allData", allData);
         model.addAttribute("id",itemId);
         model.addAttribute("jd_yj_zh_session",null);
 
         //测试用
-        return "jd/publish";
+        return "jingdong/jd";
     }
 
     @RequestMapping("jdYjUpload")

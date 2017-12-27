@@ -1,7 +1,7 @@
 <div class="field clearfix">
     <div id="J_SellProperties" class="sku-style">
         <div>
-            <#include "/taobao/parts/color.ftl">
+            <#include "/jingdong/parts/color.ftl">
             <#assign color=allData.props.color>
             <#assign selected_color={}>
             <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">
