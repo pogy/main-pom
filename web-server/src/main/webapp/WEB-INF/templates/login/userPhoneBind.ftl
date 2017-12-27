@@ -1,4 +1,4 @@
-<#assign $pageid="bindTelephone">
+<#assign $pageid="userPhoneBind">
 <!doctype html>
 <html>
 <head>
@@ -11,12 +11,12 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/login__common_css.ftl">
-<#include "/__style_torrent__/login__bindTelephone_css.ftl">
+<#include "/__style_torrent__/login__userPhoneBind_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
-<#include "/__style_torrent__/login__bindTelephone_js.ftl">
+<#include "/__style_torrent__/login__userPhoneBind_js.ftl">
 </head>
 <body>
 <#list [{}] as $it>

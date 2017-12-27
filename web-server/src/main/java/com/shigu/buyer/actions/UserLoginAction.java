@@ -287,7 +287,7 @@ public class UserLoginAction {
                 return "redirect:"+loginSuccessUrl(backUrl);
             } catch (LoginAuthException e) {
                 if(e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//还没绑定星座网用户,去绑定一下
-                    return "redirect:bindTelephone.htm";
+                    return "redirect:userPhoneBind.htm";
                 }else{
                     throw e;
                 }
@@ -619,7 +619,7 @@ public class UserLoginAction {
     @RequestMapping("userPhoneBind")
     public String userPhoneBind(String backUrl,Model model) throws Main4Exception {
         model.addAttribute("backUrl", backUrl);
-        return "login/bindTelephone";
+        return "login/userPhoneBind";
     }
 
     /**
