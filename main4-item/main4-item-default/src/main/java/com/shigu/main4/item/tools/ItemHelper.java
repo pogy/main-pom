@@ -140,6 +140,16 @@ public class ItemHelper {
             parseGoodsExtends(synItem);
 
             parsePropImgs(synItem);
+
+            parseGoodsCountForsearch(synItem);
+        }
+        /**
+         * 配置GoodsCountForsearch对象
+         * @param synItem 通讯对象
+         */
+        private void parseGoodsCountForsearch(SynItem synItem) {
+            this.goodsCountForsearch= BeanMapper.map(synItem, GoodsCountForsearch.class);
+
         }
 
         /**
@@ -211,7 +221,11 @@ public class ItemHelper {
         private ShiguGoodsTiny tiny;
         private ShiguGoodsExtends goodsExtends;
         private ShiguPropImgs shiguPropImgs;
+        private GoodsCountForsearch goodsCountForsearch;
 
+        public GoodsCountForsearch getGoodsCountForsearch() {
+            return goodsCountForsearch;
+        }
         public ShiguGoodsTiny getTiny() {
             return tiny;
         }

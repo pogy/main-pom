@@ -521,7 +521,7 @@ public class ShopAction {
         goodsInfoVO.setFabric(synItem.getFabric());//面料
         String goodsDesc = synItem.getGoodsDesc();
         if(goodsDesc != null){
-            goodsDesc=goodsDesc.replace("\n","");
+            goodsDesc=goodsDesc.replace(">\n<","><");
         }
         goodsInfoVO.setDeschtml(goodsDesc);//商品详情
         List<String> imageList = synItem.getImageList();

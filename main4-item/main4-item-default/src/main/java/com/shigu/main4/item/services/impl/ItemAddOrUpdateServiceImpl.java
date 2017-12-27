@@ -877,6 +877,31 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguPropImgsMapper.updateByExampleSelective(shiguPropImgs, propImgsExample);
         }
 
+
+        GoodsCountForsearch goodsCountForsearch = container.getGoodsCountForsearch();
+        if (objectIsNotBlank(goodsCountForsearch)) {
+            GoodsCountForsearchExample example= new GoodsCountForsearchExample();
+            example.createCriteria().andGoodsIdEqualTo(synItem.getGoodsId());
+
+            GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
+            goodsCountForsearch1.setGoodsId(synItem.getGoodsId());
+            if (goodsCountForsearchMapper.selectOne(goodsCountForsearch1) == null){
+                goodsCountForsearch1.setClick(0L);
+                goodsCountForsearch1.setClickIp(0L);
+                goodsCountForsearch1.setTrade(0L);
+                goodsCountForsearch1.setUp(0L);
+                goodsCountForsearch1.setUpMan(0L);
+                goodsCountForsearch1.setHadGoat(0);
+                goodsCountForsearch1.setWebSite(synItem.getWebSite());
+                goodsCountForsearch1.setHadBigzip(0);
+                goodsCountForsearch1.setHadVideo(0);
+                goodsCountForsearchMapper.insert(goodsCountForsearch1);
+            }
+            goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch, example);
+
+        }
+
+
         //4、更新es中对应goods数据，以上所有，需要在1个事务中进行
         ShiguGoodsTiny tiny = new ShiguGoodsTiny();
         tiny.setWebSite(goodsTiny.getWebSite());
