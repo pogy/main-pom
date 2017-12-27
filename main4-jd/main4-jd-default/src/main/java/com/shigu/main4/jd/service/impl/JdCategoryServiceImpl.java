@@ -66,7 +66,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
     /**
      * 京东 获取类目属性列表
      * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
-     * @param userId
+     * @param jdUid
      * @throws JdException
      * @throws IOException
      */

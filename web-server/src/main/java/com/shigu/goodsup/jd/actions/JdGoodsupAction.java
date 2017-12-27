@@ -11,20 +11,16 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
-import com.shigu.goodsup.jd.service.JdGoodsUpService;
-import com.shigu.goodsup.jd.service.JdImgService;
-import com.shigu.goodsup.jd.service.JdPostageTemplateService;
-import com.shigu.goodsup.jd.service.JdUpItemService;
+import com.shigu.goodsup.jd.service.*;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
-import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.goodsup.jd.vo.JdUpRecordVO;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.*;
 import com.shigu.main4.jd.vo.*;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
@@ -76,7 +72,7 @@ public class JdGoodsupAction {
     private JdCategoryService jdCategoryService;
 
     @Autowired
-    private JdAgingtemplService jdAgingtemplService;
+    private JdPostageTemplateService jdPostageTemplateService;
 
     @Autowired
     private JdGoodsService jdGoodsService;
@@ -96,11 +92,11 @@ public class JdGoodsupAction {
     @Autowired
     private JdImgService jdImgService;
 
-    @Autowired
-    private JdUpItemService jdUpItemService;
+//    @Autowired
+//    private JdUpItemService jdUpItemService;
 
     @Autowired
-    private JdPostageTemplateService jdPostageTemplateService;
+    private JdUserInfoService jdUserInfoService;
 
 
     /**
@@ -213,9 +209,10 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getAllBrand")
     @ResponseBody
-    public JSONObject getAllBrand(HttpSession session) throws JdUpException {
+    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(ps.getUserId());
+        String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
+        List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
         return JsonResponseUtil.success().element("allBrand",allBrand);
     }
 
@@ -227,7 +224,7 @@ public class JdGoodsupAction {
     @ResponseBody
     public JSONObject getPostageTemplateList(HttpSession session) throws JdUpException, JdNotBindException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<JdAgingTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId());
+        List<JdPostTemplateVO> postageTemplateList = jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId());
         return JsonResponseUtil.success().element("postageTemplateList",postageTemplateList);
     }
 
@@ -284,7 +281,7 @@ public class JdGoodsupAction {
         }
 
         /********************************取京东店家类目********************************/
-        PropsVO props= jdUpItemService.selProps(itemId,ps.getUserId());
+//        PropsVO props= jdUpItemService.selProps(itemId,ps.getSubUserId());
 
         List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
 
@@ -322,7 +319,7 @@ public class JdGoodsupAction {
         allData.setJdUserId(0L);
         allData.setJdNick("");
 
-        allData.setDeliveyList(jdAgingtemplService.getAgingtempl(null));
+        allData.setDeliveyList(jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId()));
         allData.setJdShopInfo(null);
 
         allData.setJdUserId(0L);
@@ -393,7 +390,20 @@ public class JdGoodsupAction {
         }
 
         //添加上传记录 TODO 传什么
-        JdUpRecordVO vo = new JdUpRecordVO();
+        ItemUpRecordVO vo=new ItemUpRecordVO();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        vo.setDaiTime(sdf.format(new Date()));
+//        vo.setFenGoodsName(subedItem.getTitle());
+//        vo.setFenImage(subedItem.getPicUrl());
+//        vo.setFenPrice(subedItem.getPrice());
+        vo.setFenNumiid(jdWareAddVO.getGoodsId());
+        String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
+        JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(Long.valueOf(jdUid));
+
+        vo.setFenUserId(jdAuthedInfoVO.getUid());
+        vo.setFenUserNick(jdAuthedInfoVO.getUserNick());
+        vo.setFlag("jd");
+        vo.setSupperGoodsId(goodsId);
         jdGoodsUpService.saveRecord(vo);
 
         return null;

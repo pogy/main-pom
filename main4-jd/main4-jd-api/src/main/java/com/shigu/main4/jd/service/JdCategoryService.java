@@ -48,19 +48,19 @@ public interface JdCategoryService {
 
     /**
      * 获取类目属性值
-     * @param userId
+     * @param jdUid
      * @param pid
      * @return
      * @throws JdUpException
      */
-    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long userId, Long pid) throws JdUpException;
+    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid, Long pid) throws JdUpException;
 
     /**
      * 获取用户所拥有的品牌
-     * @param userId
+     * @param jdUid
      * @return
      */
-    List<JdVenderBrandPubInfoVO>  getAllBrand(Long userId) throws JdUpException;
+    List<JdVenderBrandPubInfoVO>  getAllBrand(Long jdUid) throws JdUpException;
 
 
 }

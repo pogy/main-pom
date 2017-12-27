@@ -19,7 +19,7 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:service interface="com.shigu.main4.jd.service.JdAgingtemplService" ref="jdAgingtemplService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.jd.service.JdOrderService" ref="jdOrderService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdAuthService" ref="jdAuthService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdCategoryService" ref="jdCategoryService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdGoodsService" ref="jdGoodsService" retries="0" timeout="20000" />

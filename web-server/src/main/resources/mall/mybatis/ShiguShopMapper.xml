@@ -54,6 +54,11 @@
 	</select>
 
 
+	<select id="selMarketInfo" resultType="com.opentae.data.mall.beans.ShopNumAndMarket">
+		select a.shop_id as shopId,a.shop_num as storeNum,b.market_name as market from shigu_shop a,shigu_market b
+		where a.market_id = b.market_id and a.shop_id = ${shopId}
+	</select>
+
 
 
 </mapper>

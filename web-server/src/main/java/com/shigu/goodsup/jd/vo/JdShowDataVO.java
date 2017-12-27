@@ -1,7 +1,7 @@
 package com.shigu.goodsup.jd.vo;
 
-import com.shigu.main4.jd.vo.JdAgingTemplateVO;
 import com.shigu.main4.jd.vo.JdCategoryVO;
+import com.shigu.main4.jd.vo.JdPostTemplateVO;
 import com.shigu.main4.jd.vo.JdShopInfoVO;
 
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class JdShowDataVO implements Serializable{
     /**
      * 运费模板
      */
-    private List<JdAgingTemplateVO> deliveyList;
+    private List<JdPostTemplateVO> deliveyList;
     /**
      * 此前用过的快递模板ID
      */
@@ -141,11 +141,11 @@ public class JdShowDataVO implements Serializable{
         this.jdShopInfo = jdShopInfo;
     }
 
-    public List<JdAgingTemplateVO> getDeliveyList() {
+    public List<JdPostTemplateVO> getDeliveyList() {
         return deliveyList;
     }
 
-    public void setDeliveyList(List<JdAgingTemplateVO> deliveyList) {
+    public void setDeliveyList(List<JdPostTemplateVO> deliveyList) {
         this.deliveyList = deliveyList;
     }
 }
