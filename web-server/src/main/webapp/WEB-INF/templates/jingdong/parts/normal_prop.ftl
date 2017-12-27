@@ -3,8 +3,8 @@
         <em>*</em>宝贝属性</label>
     <div class="field-content fl">
         <div id="J_module-property" class="module-property module-form ">
-            <h1>基本参数</h1>
             <div class="skin">
+                <h1>基本参数</h1>
                 <ul>
                     <#if allData.props.pingpai??>
                         <li id="spu_${allData.props.pingpai.pid}" class="J_spu-property" name="spus">
@@ -39,32 +39,32 @@
                     </#if>
                     <#list allData.props.properties  as prop >
                         <#if prop.type.value=="input">
-                                <#include "/taobao/parts/input.ftl" />
+                                <#include "/jingdong/parts/input.ftl" />
                             <#elseif prop.type.value=="select">
-                                <#include "/taobao/parts/select.ftl" />
+                                <#include "/jingdong/parts/select.ftl" />
                             <#elseif prop.type.value=="checkbox">
-                                <#include "/taobao/parts/checkbox.ftl" />
+                                <#include "/jingdong/parts/checkbox.ftl" />
                         </#if>
                     </#list>
                 </ul>
                 <div class="error" id="err_NotNull_20603"></div>
             </div>
-            <h1>规格参数</h1>
             <div class="skin">
+                <h1>规格参数</h1>
                 <ul>
                     <#list allData.props.specification  as prop >
                         <#if prop.type.value=="input">
-                            <#include "/taobao/parts/input.ftl" />
+                            <#include "/jingdong/parts/input.ftl" />
                         <#elseif prop.type.value=="select">
-                            <#include "/taobao/parts/select.ftl" />
+                            <#include "/jingdong/parts/select.ftl" />
                         <#elseif prop.type.value=="checkbox">
-                            <#include "/taobao/parts/checkbox.ftl" />
+                            <#include "/jingdong/parts/checkbox.ftl" />
                         </#if>
                     </#list>
                 </ul>
             </div>
-            <h1>商品信息</h1>
             <div class="skin">
+                <h1>商品信息</h1>
                 <ul>
                     <li>
                         <label class="label-title">[包装]长：</label>

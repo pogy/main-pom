@@ -94,14 +94,14 @@ public class PropsService {
     /**
      * 导入item里面的value
      * @param propsVO 类目属性
-     * @param prop 类目属性ID串
+     * @param propName 类目属性串
      * @param propImgs 属性图
      * @param alias 类目属性别名
      * @param inputStr 自定义字符串
      * @param inputIds 自定义ID串
      * @return
      */
-    public PropsVO importValue(PropsVO propsVO, String prop, List<PropImg> propImgs, String alias, String inputStr, String inputIds) throws IOException, ClassNotFoundException, CloneNotSupportedException {
+    public PropsVO importValue(PropsVO propsVO, String propName, List<PropImg> propImgs, String alias, String inputStr, String inputIds) throws IOException, ClassNotFoundException, CloneNotSupportedException {
         //**************先把propsVO克隆一把,以免破坏缓存
         PropsVO psv=propsVO.deepClone();
         //把所有属性key\value化
@@ -135,8 +135,8 @@ public class PropsService {
         //input可能的选项,因为标准values里不存在
         TempOtProp nonpv=new TempOtProp();
         //先解析props把选项搞上
-        if(prop!=null&&!"".equals(prop)){
-            String[] proparr=prop.split(";");
+        if(propName!=null&&!"".equals(propName)){
+            String[] proparr=propName.split(";");
             for(String p:proparr){
                 String[] parr=p.split(":");
                 if(parr.length<2){//不是标准pid:vid格式
@@ -152,6 +152,7 @@ public class PropsService {
                 pvv.setSelected(true);
                 pvv.setVid(Long.valueOf(parr[1]));
                 pvv.setImgUrl(propUrlMap.get(piv.getPid()+":"+pvv.getVid()));
+                pvv.setName(parr[3]);
                 int result=piv.addPropValue(pvv);
                 if(result==1){
                     nonpv.addByPidandVid(piv.getPid(),pvv.getVid());

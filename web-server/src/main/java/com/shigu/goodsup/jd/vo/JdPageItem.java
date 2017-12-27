@@ -17,7 +17,7 @@ public class JdPageItem {
 	private String piPrice;//批发价
 	private String huohao;//货号
 	private Long numIid;//原NumIid
-	
+	private Long jdCid;
 	private String parentMarketName;//市场名
 	private String storeNum;//档口名
 	/**
@@ -125,5 +125,13 @@ public class JdPageItem {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Long getJdCid() {
+        return this.jdCid;
+    }
+
+    public void setJdCid(Long jdCid) {
+        this.jdCid = jdCid;
     }
 }

@@ -3,6 +3,7 @@ package com.shigu.main4.jd.service.impl;
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.domain.seller.ShopSafService.ShopJosResult;
 import com.jd.open.api.sdk.request.seller.VenderShopQueryRequest;
+import com.jd.open.api.sdk.request.sellercat.SellerCatsGetRequest;
 import com.jd.open.api.sdk.response.seller.VenderShopQueryResponse;
 import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.beans.JdShopInfo;

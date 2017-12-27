@@ -38,7 +38,8 @@
     </div>
     <script>
         $(function(){
-            $.post('getJdGoodsInfo.json', {}, function(resp){
+            var goodsId = '${id!}';
+            $.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){
                 if(resp.result == 'success'){
                     var html_ = '';
                     $.each(resp.attrList, function(key, item){
@@ -122,7 +123,7 @@
             <div class="field clearfix">
                 <label class="fl"><em>*</em>市场价</label>
                 <div class="field-content fl">
-                    <input type="text" id="marketPrice" name="marketPrice" size="15" value="${item.price * 1.5}" class="text text-pri notBeEmpty" data-error-title='市场价'>
+                    <input type="text" id="marketPrice" name="marketPrice" size="15" value="${(item.price?number * 1.5)?string("0.00")}" class="text text-pri notBeEmpty" data-error-title='市场价'>
                     <span class="pri"> (市场价必需大于京东价，默认为京东价的1.5倍)</span>
                 </div>
             </div>
@@ -279,25 +280,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="field clearfix">
-                    <label class="fl">物流参数</label>
-                    <div class="field-content fl">
-                        <div class="extend-info extend-border">
-                            <div class="extend-box">
-                                <div class="extend-field" data-range="" data-type="number" data-child="sub-129">
-                                    <label class="" for="field-129">物流体积(m3)：</label>
-                                    <input id="item_size" class="text" type="text" name="item_size" value=""
-                                           placeholder="无需输入单位" title="如果使用按体积计费的运费模板，则需要填写"></div>
-                                <div class="extend-field" data-range="" data-type="number" data-child="sub-128">
-                                    <label class="" for="field-128">物流重量(Kg)：</label>
-                                    <input id="item_weight" class="text" type="text" name="item_weight" value=""
-                                           placeholder="无需输入单位" title="如果使用按重量计费的运费模板，则需要填写"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h1>4. 宝贝其他信息</h1>
+                <h1> 宝贝其他信息</h1>
                 <div class="field clearfix">
                     <label class="fl">
                         <em>*</em>开始时间</label>
