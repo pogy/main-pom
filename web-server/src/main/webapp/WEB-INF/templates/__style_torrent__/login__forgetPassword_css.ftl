@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/login/css/forgetPassword_v20171123_133424.css" rel="stylesheet">
+<link href="http://style.571xz.com/v6/login/css/forgetPassword_v20171227_124222.css" rel="stylesheet">

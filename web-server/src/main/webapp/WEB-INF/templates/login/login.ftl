@@ -1,4 +1,4 @@
-<#assign $pageid>login</#assign>
+<#assign $pageid="login">
 <!doctype html>
 <html>
 <head>
@@ -50,9 +50,7 @@
                     <a href="regedit.htm" class="regegitEntery">立即注册</a>
                 </div>
                 <div class="loginItem">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -98,9 +96,7 @@
                 </div>
                 <div class="errorTip"></div>
                 <div class="loginItem">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
