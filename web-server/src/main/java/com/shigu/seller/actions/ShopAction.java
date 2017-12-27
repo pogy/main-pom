@@ -519,7 +519,11 @@ public class ShopAction {
         goodsInfoVO.setInFabric(synItem.getInFabric());//里料
         goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
         goodsInfoVO.setFabric(synItem.getFabric());//面料
-        goodsInfoVO.setDeschtml(synItem.getGoodsDesc());//商品详情
+        String goodsDesc = synItem.getGoodsDesc();
+        if(goodsDesc != null){
+            goodsDesc=goodsDesc.replace("\n","");
+        }
+        goodsInfoVO.setDeschtml(goodsDesc);//商品详情
         List<String> imageList = synItem.getImageList();
         imageList.remove(synItem.getPicUrl());
         goodsInfoVO.setAllimg(imageList);//除首图的图
