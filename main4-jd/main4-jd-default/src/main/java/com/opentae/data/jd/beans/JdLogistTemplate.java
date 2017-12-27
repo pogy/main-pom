@@ -26,7 +26,7 @@ public class JdLogistTemplate implements Serializable {
     /**
      * 顺序号
      */
-	private Integer index;
+	private Integer templateIndex;
 
     /**
      * 模板名称
@@ -77,12 +77,12 @@ public class JdLogistTemplate implements Serializable {
 		return this.templateId;
 	}
 
-	public void setIndex(Integer index) {
-		this.index = index;
+	public void setTemplateIndex(Integer templateIndex) {
+		this.templateIndex = templateIndex;
 	}
 
-	public Integer getIndex() {
-		return this.index;
+	public Integer getTemplateIndex() {
+		return this.templateIndex;
 	}
 
 	public void setTemplateName(String templateName) {

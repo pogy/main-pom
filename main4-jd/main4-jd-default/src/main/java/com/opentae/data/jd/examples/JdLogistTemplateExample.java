@@ -13,9 +13,9 @@ public class JdLogistTemplateExample extends SgExample<JdLogistTemplateExample.C
     public static EntityColumn jdUid;
     public static EntityColumn isFree;
     public static EntityColumn gmtModify;
+    public static EntityColumn templateIndex;
     public static EntityColumn templateName;
     public static EntityColumn ruleType;
-    public static EntityColumn index;
     public static EntityColumn id;
     public static EntityColumn gmtCreate;
     public static EntityColumn templateId;
@@ -28,9 +28,9 @@ public class JdLogistTemplateExample extends SgExample<JdLogistTemplateExample.C
         jdUid = listMap.get("jdUid");
         isFree = listMap.get("isFree");
         gmtModify = listMap.get("gmtModify");
+        templateIndex = listMap.get("templateIndex");
         templateName = listMap.get("templateName");
         ruleType = listMap.get("ruleType");
-        index = listMap.get("index");
         id = listMap.get("id");
         gmtCreate = listMap.get("gmtCreate");
         templateId = listMap.get("templateId");
@@ -196,6 +196,53 @@ public class JdLogistTemplateExample extends SgExample<JdLogistTemplateExample.C
         public JdLogistTemplateExample.Criteria andGmtModifyNotBetween(Date value1, Date value2) {
             return notBetween(gmtModify, value1, value2);
         }
+        public JdLogistTemplateExample.Criteria andTemplateIndexIsNull() {
+            return isNull(templateIndex);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexIsNotNull() {
+            return isNotNull(templateIndex);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexEqualTo(Integer value) {
+            return equalTo(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexNotEqualTo(Integer value) {
+            return notEqualTo(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexGreaterThan(Integer value) {
+            return greaterThan(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexLessThan(Integer value) {
+            return lessThan(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(templateIndex, value);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexIn(List<Integer> values) {
+            return in(templateIndex, values);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexNotIn(List<Integer> values) {
+            return notIn(templateIndex, values);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexBetween(Integer value1, Integer value2) {
+            return between(templateIndex, value1, value2);
+        }
+
+        public JdLogistTemplateExample.Criteria andTemplateIndexNotBetween(Integer value1, Integer value2) {
+            return notBetween(templateIndex, value1, value2);
+        }
         public JdLogistTemplateExample.Criteria andTemplateNameIsNull() {
             return isNull(templateName);
         }
@@ -297,53 +344,6 @@ public class JdLogistTemplateExample extends SgExample<JdLogistTemplateExample.C
 
         public JdLogistTemplateExample.Criteria andRuleTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(ruleType, value1, value2);
-        }
-        public JdLogistTemplateExample.Criteria andIndexIsNull() {
-            return isNull(index);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexIsNotNull() {
-            return isNotNull(index);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexEqualTo(Integer value) {
-            return equalTo(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexNotEqualTo(Integer value) {
-            return notEqualTo(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexGreaterThan(Integer value) {
-            return greaterThan(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexLessThan(Integer value) {
-            return lessThan(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(index, value);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexIn(List<Integer> values) {
-            return in(index, values);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexNotIn(List<Integer> values) {
-            return notIn(index, values);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexBetween(Integer value1, Integer value2) {
-            return between(index, value1, value2);
-        }
-
-        public JdLogistTemplateExample.Criteria andIndexNotBetween(Integer value1, Integer value2) {
-            return notBetween(index, value1, value2);
         }
         public JdLogistTemplateExample.Criteria andIdIsNull() {
             return isNull(id);

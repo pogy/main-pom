@@ -3,6 +3,7 @@ package com.shigu.goodsup.jd.actions;
 import com.openJar.beans.JdImgInfo;
 import com.openJar.commons.MD5Attestation;
 import com.openJar.exceptions.imgs.JdUpImgException;
+import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
@@ -17,26 +18,27 @@ import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUserInfoService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
+import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.service.JdGoodsService;
+import com.shigu.main4.jd.service.JdShopService;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
-import com.shigu.main4.jd.vo.JdPostTemplateVO;
+import com.shigu.main4.jd.vo.JdImgzoneCategoryVO;
 import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
 import com.shigu.main4.jd.vo.JdWareAddVO;
-import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.tools.OssIO;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
 import com.shigu.tools.JsonResponseUtil;
+import com.taobao.api.domain.DeliveryTemplate;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -87,12 +89,6 @@ public class JdGoodsupAction {
     private MemberFilter memberFilter;
 
     @Autowired
-    private ItemUpRecordService itemUpRecordService;
-
-    @Autowired
-    private RedisIO redisIO;
-
-    @Autowired
     private OssIO ossIO;
 
     @Autowired
@@ -103,6 +99,11 @@ public class JdGoodsupAction {
 
     @Autowired
     private JdUserInfoService jdUserInfoService;
+
+    @Autowired
+    private JdShopService jdShopService;
+
+    public static final String IMG_CATEGORY = "571xz";
 
 
     /**
@@ -224,6 +225,31 @@ public class JdGoodsupAction {
 
 
     /**
+     * 更新运费模板
+     */
+    @RequestMapping("updatePostModel")
+    @ResponseBody
+    public JSONObject updatePostModel(HttpSession session) throws JdUpException, JdNotBindException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
+        List<DeliveryTemplate> deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
+        return  JsonResponseUtil.success().element("deliveryTemplates",deliveryTemplates);
+    }
+
+    /**
+     * 更新店内类目
+     */
+    @RequestMapping("updateShopCats")
+    @ResponseBody
+    public JSONObject updateShopCats(HttpSession session) throws JdUpException, JdNotBindException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
+        List<StoreCatVO> storeCatVOS = jdUpItemService.updateShopCats(Long.valueOf(jdUid));
+        return  JsonResponseUtil.success().element("storeCatVOS",storeCatVOS);
+    }
+
+
+    /**
      * 上传页面
      * @return
      */
@@ -295,12 +321,27 @@ public class JdGoodsupAction {
     @ResponseBody
     public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
+        Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
 
         //上传商品
-        JdWareAddVO jdWareAddVO = jdGoodsService.upToJd(null, null);
+        JdWareAddVO jdWareAddVO = jdGoodsService.upToJd(null, jdUid);
 
-
+        //查看星座上传图片类目是否存在
+        List<JdImgzoneCategoryVO> vos = jdShopService.selImgCategory(jdUid,"商品货号",null);
+        Long imgCategoryId;
+        Long pImgCategoryId;
+        if (vos == null || vos.isEmpty()) {
+            //查图片主类目
+            List<JdImgzoneCategoryVO> pvos = jdShopService.selImgCategory(jdUid,IMG_CATEGORY,null);
+            if (pvos == null || pvos.isEmpty()) {
+                pImgCategoryId = jdShopService.addImgCategory(jdUid, IMG_CATEGORY, null);
+            }else {
+                pImgCategoryId = pvos.get(0).getCateId();
+            }
+            imgCategoryId = jdShopService.addImgCategory(jdUid, "商品货号", pImgCategoryId);
+        }else{
+            imgCategoryId = vos.get(0).getCateId();
+        }
         //绑定图片
         //颜色ID集合
         List<String> colorIds = new ArrayList<>();
@@ -311,7 +352,11 @@ public class JdGoodsupAction {
             List<String> subMsgs=new ArrayList<>();
             JdUpImgResponse response = null;
             try {
-                response = jdImgService.addImgs(ps.getSubUserId(), imgUrls);
+                JdUpImgRequest request = new JdUpImgRequest();
+                request.setJdUid(jdUid);
+                request.setImgUrls(imgUrls);
+                request.setPictureCateId(imgCategoryId);
+                response = jdImgService.addImgs(request);
                 //1，操作成功；0，操作失败
                 if ("0".equals(response.getReturnCode())) {
                     return JSONObject.fromObject("{'status':'0'}");
@@ -357,8 +402,7 @@ public class JdGoodsupAction {
 //        vo.setFenImage(subedItem.getPicUrl());
 //        vo.setFenPrice(subedItem.getPrice());
         vo.setFenNumiid(jdWareAddVO.getGoodsId());
-        String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(Long.valueOf(jdUid));
+        JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(jdUid);
 
         vo.setFenUserId(jdAuthedInfoVO.getUid());
         vo.setFenUserNick(jdAuthedInfoVO.getUserNick());

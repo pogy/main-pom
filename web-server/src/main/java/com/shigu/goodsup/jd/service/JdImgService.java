@@ -30,19 +30,10 @@ public class JdImgService {
 
     /**
      *上传图片到京东图片空间
-     * @param subUid
-     * @param imgUrls
      * @return
      * @throws JdUpImgException
      */
-    public JdUpImgResponse addImgs(Long subUid, List<String> imgUrls) throws JdUpImgException, JdNotBindException {
-        if(imgUrls == null || imgUrls.isEmpty()){
-            return null;
-        }
-        String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
-        JdUpImgRequest request = new JdUpImgRequest();
-        request.setJdUid(Long.valueOf(jdUid));
-        request.setImgUrls(imgUrls);
+    public JdUpImgResponse addImgs(JdUpImgRequest request) throws JdUpImgException, JdNotBindException {
         OpenClient openClient = openClientService.getOpenClient();
         JdUpImgResponse response = openClient.execute(request);
         if(!"1".equals(response.getReturnCode())){

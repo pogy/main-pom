@@ -20,6 +20,7 @@ public class JdAuthAction {
      */
     @RequestMapping("callback")
     public String jdCallback(String code, String state) {
+//        return "redirect:http://www.571xz.com/jd/callback.htm?code="+code+"&state="+state;
         return "redirect:http://www.571xz.com/jd/callback.htm?code="+code+"&state="+state;
     }
 

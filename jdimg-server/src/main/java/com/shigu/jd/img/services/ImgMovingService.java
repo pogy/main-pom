@@ -6,6 +6,7 @@ import com.jd.open.api.sdk.response.imgzone.ImgzonePictureDeleteResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureUploadResponse;
 import com.openJar.beans.JdImgInfo;
 import com.openJar.exceptions.imgs.JdUpException;
+import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
@@ -32,15 +33,16 @@ public class ImgMovingService {
 
     /**
      * 上传一张图片到京东图片空间
-     * @param jdUid
+     * @param jdUpImgRequest
      * @return
      * @throws JdUpException
      */
-    public JdUpImgResponse imgUpload (Long jdUid, List<String> imgUrls) throws XzUidToTokenException {
-        String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
+    public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws XzUidToTokenException {
+        String accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
         List<JdImgInfo> jdImgInfos = new ArrayList<>();
         StringBuffer imgIds = new StringBuffer();
         String errMsg = null;
+        List<String> imgUrls = jdUpImgRequest.getImgUrls();
         for (String imgUrl : imgUrls) {
             try {
                 ImgzonePictureUploadRequest request = new ImgzonePictureUploadRequest();
@@ -51,10 +53,9 @@ public class ImgMovingService {
                     break;
                 }
                 request.setImageData(imgData);
+                request.setPictureCateId(jdUpImgRequest.getPictureCateId());
 
-                ImgzonePictureUploadResponse response = null;
-
-                response = jdClientService.execute(request, accessToken);
+                ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
                 //返回码为1时为操作成功，返回码为0时为操作失败
                 if ("0".equals(response.getReturnCode())) {
                     break;
@@ -73,7 +74,7 @@ public class ImgMovingService {
         JdUpImgResponse jdUptoItemImgResponse = new JdUpImgResponse();
         if(imgUrls.size() != jdImgInfos.size()){
             try {
-                imgDelete(jdUid,imgIds.toString());
+                imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
             } catch (JdUpException e) {
                 e.printStackTrace();
             }

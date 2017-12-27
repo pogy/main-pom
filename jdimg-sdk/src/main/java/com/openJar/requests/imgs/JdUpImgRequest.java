@@ -17,6 +17,10 @@ public class JdUpImgRequest extends Request<JdUpImgResponse> {
      */
     private Long jdUid;
     /**
+     * 分类ID
+     */
+    private Long pictureCateId;
+    /**
      * 图片链接
      */
     private List<String> imgUrls;
@@ -35,6 +39,14 @@ public class JdUpImgRequest extends Request<JdUpImgResponse> {
 
     public void setImgUrls(List<String> imgUrls) {
         this.imgUrls = imgUrls;
+    }
+
+    public Long getPictureCateId() {
+        return pictureCateId;
+    }
+
+    public void setPictureCateId(Long pictureCateId) {
+        this.pictureCateId = pictureCateId;
     }
 
     public String restApiUrl() {

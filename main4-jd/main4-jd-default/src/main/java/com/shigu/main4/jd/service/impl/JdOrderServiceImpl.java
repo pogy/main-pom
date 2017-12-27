@@ -6,7 +6,6 @@ import com.jd.open.api.sdk.response.order.SkuFareTemplateServiceGetTemplatesResp
 import com.opentae.data.jd.beans.JdLogistTemplate;
 import com.opentae.data.jd.examples.JdLogistTemplateExample;
 import com.opentae.data.jd.interfaces.JdLogistTemplateMapper;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdOrderService;
@@ -57,7 +56,7 @@ public class JdOrderServiceImpl implements JdOrderService {
                 JdPostTemplateVO vo = new JdPostTemplateVO();
                 vo.setId(item.getTemplateId());
                 vo.setTemplateName(item.getTemplateName());
-                vo.setIndex(item.getIndex());
+                vo.setIndex(item.getTemplateIndex());
                 vo.setIsFree(item.getIsFree());
                 vo.setRuleType(item.getRuleType());
                 vos.add(vo);
@@ -100,7 +99,7 @@ public class JdOrderServiceImpl implements JdOrderService {
             JdLogistTemplate jdLogistTemplate = new JdLogistTemplate();
             jdLogistTemplate.setJdUid(jdUid);
             jdLogistTemplate.setTemplateId(item.getId());
-            jdLogistTemplate.setIndex(item.getIndex());
+            jdLogistTemplate.setTemplateIndex(item.getIndex());
             jdLogistTemplate.setTemplateName(item.getTemplateName());
             jdLogistTemplate.setRuleType(item.getRuleType());
             jdLogistTemplate.setIsFree(item.getIsFree());

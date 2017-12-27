@@ -30,7 +30,7 @@ public class ImgMovingController {
     @RequestMapping("uptoitemimg")
     @ResponseBody
     public JSONObject uptoitemimg(JdUpImgRequest request) throws XzUidToTokenException {
-        imgMovingService.imgUpload(request.getJdUid(),request.getImgUrls());
+        imgMovingService.imgUpload(request);
         return new JSONObject().element("success",true);
     }
 

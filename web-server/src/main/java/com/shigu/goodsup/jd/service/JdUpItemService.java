@@ -11,6 +11,7 @@ import com.opentae.data.jd.examples.JdTbBindExample;
 import com.opentae.data.jd.interfaces.JdItemPropMapper;
 import com.opentae.data.jd.interfaces.JdPropValueMapper;
 import com.opentae.data.jd.interfaces.JdTbBindMapper;
+import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguPropImgsExample;
 import com.opentae.data.mall.interfaces.*;
@@ -170,6 +171,28 @@ public class JdUpItemService {
     }
 
     /**
+     * 更新运费模版
+     * @param jdUserId
+     * @return
+     * @throws JdUpException
+     */
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException {
+        List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.updatePostTemplates(jdUserId);
+        List<DeliveryTemplate> vs=new ArrayList<>();
+        DeliveryTemplate v1=new DeliveryTemplate();
+        v1.setTemplateId(-1L);
+        v1.setName("不使用运费模版");
+        vs.add(v1);
+        vs.addAll(jdPostTemplateVOS.stream().map(jdPostTemplateVO -> {
+            DeliveryTemplate v=new DeliveryTemplate();
+            v.setTemplateId(jdPostTemplateVO.getId());
+            v.setName(jdPostTemplateVO.getTemplateName());
+            return v;
+        }).collect(Collectors.toList()));
+        return vs;
+    }
+
+    /**
      * 获取店内类目
      * @param jdUserId
      * @return
@@ -194,6 +217,33 @@ public class JdUpItemService {
             return vo;
         }).collect(Collectors.toList());
     }
+
+    /**
+     * 更新店内类目
+     * @param jdUserId
+     * @return
+     * @throws JdUpException
+     */
+    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException {
+        List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
+        Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
+        return map.get(0L).stream().map(jdShopCategoryVO -> {
+            StoreCatVO vo=new StoreCatVO();
+            vo.setCatId(jdShopCategoryVO.getCid());
+            vo.setName(jdShopCategoryVO.getName());
+            List<JdShopCategoryVO> vv=map.get(jdShopCategoryVO.getCid());
+            if(vv!=null){
+                vo.setSubCat(vv.stream().map(jdShopCategoryVO1 -> {
+                    StoreCatVO svo=new StoreCatVO();
+                    svo.setName(jdShopCategoryVO1.getName());
+                    svo.setCatId(jdShopCategoryVO1.getCid());
+                    return svo;
+                }).collect(Collectors.toList()));
+            }
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
     /**
      * 查类目路径
      * @return
