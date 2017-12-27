@@ -21,6 +21,13 @@ public interface JdCategoryService {
     List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws  JdUpException;
 
     /**
+     * 更新京东自定义店内分类
+     * @param jdUid
+     * @throws JdException
+     */
+    List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws  JdUpException;
+
+    /**
      * 京东 获取类目属性列表
      * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
      * @param jdUid

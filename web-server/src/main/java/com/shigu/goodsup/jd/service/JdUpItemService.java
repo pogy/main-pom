@@ -9,12 +9,8 @@ import com.opentae.data.jd.examples.JdTbBindExample;
 import com.opentae.data.jd.interfaces.JdItemPropMapper;
 import com.opentae.data.jd.interfaces.JdPropValueMapper;
 import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ShiguGoodsIdGeneratorExample;
 import com.opentae.data.mall.examples.ShiguPropImgsExample;
-import com.opentae.data.mall.examples.TaobaoItemPropExample;
-import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.PropertyItemVO;
@@ -23,23 +19,15 @@ import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
-import com.shigu.main4.item.vo.ShiguPropImg;
-import com.shigu.main4.item.vo.SynItem;
-import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.service.JdAgingtemplService;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
-import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
-import com.shigu.tb.common.exceptions.TbException;
 import com.shigu.tb.finder.vo.PropType;
-import com.taobao.api.ApiException;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.ItemImg;
 import com.taobao.api.domain.Location;
 import com.taobao.api.domain.PropImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -69,15 +56,9 @@ public class JdUpItemService {
     private ShiguShopMapper shiguShopMapper;
 
     @Autowired
-    private TaobaoItemPropMapper taobaoItemPropMapper;
-    @Autowired
-    private TaobaoPropValueMapper taobaoPropValueMapper;
-    @Autowired
     private JdItemPropMapper jdItemPropMapper;
     @Autowired
     private JdPropValueMapper jdPropValueMapper;
-    @Autowired
-    private ShiguJdcatMapper shiguJdcatMapper;
     @Autowired
     private JdTbBindMapper jdTbBindMapper;
     @Autowired

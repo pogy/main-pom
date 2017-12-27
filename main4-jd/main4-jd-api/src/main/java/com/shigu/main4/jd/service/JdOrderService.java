@@ -17,4 +17,11 @@ public interface JdOrderService {
      * @return
      */
     List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException;
+
+    /**
+     * 更新商家运费模板
+     * @param jdUid
+     * @return
+     */
+    List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException;
 }

@@ -8,14 +8,37 @@ import java.io.Serializable;
 public class JdShopCategoryVO implements Serializable {
 
     private static final long serialVersionUID = 1068022458103649657L;
-
+    /**
+     * 类目编号
+     */
     private long cid;
+    /**
+     * 父类目编号
+     */
     private long parentId;
+    /**
+     * 类目名称
+     */
     private String name;
+    /**
+     * 类目是否为父类目，即：该类目是否还有子类目
+     */
     private Boolean isParent;
+    /**
+     * 是否展开子分类
+     */
     private Boolean isOpen;
+    /**
+     * 是否在首页展示分类
+     */
     private Boolean isHomeShow;
+    /**
+     * 	店铺ID
+     */
     private long shopId;
+    /**
+     * 排序号
+     */
     private int orderNo;
 
     public JdShopCategoryVO() {

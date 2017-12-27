@@ -15,6 +15,9 @@ import com.jd.open.api.sdk.request.sellercat.SellerCatsGetRequest;
 import com.jd.open.api.sdk.response.category.CategorySearchResponse;
 import com.jd.open.api.sdk.response.list.*;
 import com.jd.open.api.sdk.response.sellercat.SellerCatsGetResponse;
+import com.opentae.data.jd.beans.JdShopCategory;
+import com.opentae.data.jd.examples.JdShopCategoryExample;
+import com.opentae.data.jd.interfaces.JdShopCategoryMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
@@ -23,12 +26,10 @@ import com.shigu.main4.jd.util.JdUtil;
 import com.shigu.main4.jd.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +45,9 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
     @Autowired
     private JdAuthService jdAuthService;
 
+    @Autowired
+    private JdShopCategoryMapper jdShopCategoryMapper;
+
 
     /**
      * 京东自定义店内分类
@@ -53,14 +57,44 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      */
     @Override
     public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException {
-        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
+        JdShopCategoryExample example = new JdShopCategoryExample();
+        example.createCriteria().andJdUidEqualTo(jdUid);
+        List<JdShopCategory> jdShopCategories = jdShopCategoryMapper.selectByExample(example);
+        List<JdShopCategoryVO> vos;
+        if (jdShopCategories == null || jdShopCategories.isEmpty()) {
+            vos = addShopCatgorys(jdUid);
+        }else {
+            vos = new ArrayList<>();
+            for(JdShopCategory item :jdShopCategories){
+                JdShopCategoryVO vo = new JdShopCategoryVO();
+                vo.setCid(item.getCid());
+                vo.setParentId(item.getParentId());
+                vo.setName(item.getName());
+                vo.setParent(item.getIsParent());
+                vo.setOpen(item.getIsOpen());
+                vo.setHomeShow(item.getIsHomeShow());
+                vo.setShopId(item.getShopId());
+                vo.setOrderNo(item.getOrderNo());
+                vos.add(vo);
+            }
         }
-        SellerCatsGetRequest request = new SellerCatsGetRequest();
-        SellerCatsGetResponse response = jdUtil.execute(request,authedInfo.getAccessToken());
-        List<ShopCategory> shopCatList = response.getShopCatList();
-        return BeanMapper.mapList(shopCatList,JdShopCategoryVO.class);
+        return vos;
+    }
+
+    /**
+     * 更新京东自定义店内分类
+     * @param jdUid
+     * @throws JdException
+     */
+    @Override
+    @Transactional
+    public List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException {
+        //先删
+        JdShopCategoryExample example = new JdShopCategoryExample();
+        example.createCriteria().andJdUidEqualTo(jdUid);
+        jdShopCategoryMapper.deleteByExample(example);
+        //再加
+        return addShopCatgorys(jdUid);
     }
 
     /**
@@ -251,6 +285,54 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
             return null;
         }
         return BeanMapper.mapList(brandList,JdVenderBrandPubInfoVO.class);
+    }
+
+    /**
+     * 新增店内类目数据
+     * @param jdUid
+     * @throws JdUpException
+     */
+    private List<JdShopCategoryVO> addShopCatgorys(Long jdUid) throws JdUpException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
+        if (authedInfo == null) {
+            throw new JdUpException("未获取到京东授权信息");
+        }
+        SellerCatsGetRequest request = new SellerCatsGetRequest();
+        SellerCatsGetResponse response = jdUtil.execute(request,authedInfo.getAccessToken());
+        List<ShopCategory> shopCatList = response.getShopCatList();
+        List<JdShopCategory> jdShopCategories = new ArrayList<>();
+        List<JdShopCategoryVO> vos = new ArrayList<>();
+        for(ShopCategory item : shopCatList){
+            //构建数据库实体
+            JdShopCategory jdShopCategory = new JdShopCategory();
+            jdShopCategory.setJdUid(jdUid);
+            jdShopCategory.setCid(item.getCid());
+            jdShopCategory.setParentId(item.getParentId());
+            jdShopCategory.setName(item.getName());
+            jdShopCategory.setIsParent(item.getParent());
+            jdShopCategory.setIsOpen(item.getOpen());
+            jdShopCategory.setIsHomeShow(item.getHomeShow());
+            jdShopCategory.setShopId(item.getShopId());
+            jdShopCategory.setOrderNo(item.getOrderNo());
+            Date now = new Date();
+            jdShopCategory.setGmtCreate(now);
+            jdShopCategory.setGmtModify(now);
+            jdShopCategories.add(jdShopCategory);
+
+            //构建返回数据
+            JdShopCategoryVO vo = new JdShopCategoryVO();
+            vo.setCid(item.getCid());
+            vo.setParentId(item.getParentId());
+            vo.setName(item.getName());
+            vo.setParent(item.getParent());
+            vo.setOpen(item.getOpen());
+            vo.setHomeShow(item.getHomeShow());
+            vo.setShopId(item.getShopId());
+            vo.setOrderNo(item.getOrderNo());
+            vos.add(vo);
+        }
+        jdShopCategoryMapper.insertListNoId(jdShopCategories);
+        return vos;
     }
 
 
