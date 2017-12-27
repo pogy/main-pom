@@ -14,6 +14,7 @@ import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.service.*;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
+import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdUpException;
@@ -92,8 +93,8 @@ public class JdGoodsupAction {
     @Autowired
     private JdImgService jdImgService;
 
-//    @Autowired
-//    private JdUpItemService jdUpItemService;
+    @Autowired
+    private JdUpItemService jdUpItemService;
 
     @Autowired
     private JdUserInfoService jdUserInfoService;
@@ -249,18 +250,18 @@ public class JdGoodsupAction {
         /********************************查上传记录********************************/
 
         //todo jd上传记录查询
-        if (yesrepeat == null || yesrepeat != 1) {
-            LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
-            if (lastup != null) {
-                model.addAttribute("lastup", lastup);
-                model.addAttribute("goodsId", itemId);
-                return "taobao/hasuped";
-            }
-        }
+//        if (yesrepeat == null || yesrepeat != 1) {
+//            LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
+//            if (lastup != null) {
+//                model.addAttribute("lastup", lastup);
+//                model.addAttribute("goodsId", itemId);
+//                return "taobao/hasuped";
+//            }
+//        }
         /********************************取商品********************************/
         JdPageItem item=null;
         try {
-            item= null;
+            item= jdUpItemService.findGoods(itemId);
             if(item==null){
                 model.addAttribute("errmsg","商品不存在");
                 return "taobao/uperror";
@@ -281,47 +282,16 @@ public class JdGoodsupAction {
         }
 
         /********************************取京东店家类目********************************/
-//        PropsVO props= jdUpItemService.selProps(itemId,ps.getSubUserId());
+        PropsVO props= jdUpItemService.selProps(itemId,ps.getUserId(),item.getItem());
 
-        List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
-
-        /********************************手机详情验签********************************/
+//        List<JdCategoryVO> jdWarecats = jdCategoryService.getJdWarecats(null);
         JdShowDataVO allData=new JdShowDataVO();
-        Map<String,Object> map=new HashMap<String, Object>();
-        map.put("goodsId", itemId);
-        map.put("jdUserId", "");
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        map.put("dd", sdf.format(new Date()));
-        allData.setMobileSign(MD5Attestation.signParam(map));
-
-
-        /********************************日期来10条********************************/
-        Calendar cal=Calendar.getInstance();
-        List<Date> dateList=new ArrayList<>();
-        for(int i=0;i<10;i++){
-            dateList.add(cal.getTime());
-            cal.add(Calendar.DATE,1);
-        }
-        allData.setDateList(dateList);
-
-        /********************************查出以前用过的快递模板********************************/
-        try {
-            final String usrJdId="templateId_"+"";
-            String templateId= redisIO.get(usrJdId);
-            if(templateId!=null){
-                allData.setErverDyTemplateId(Long.valueOf(templateId));
-            }
-        } catch (Exception e) {//这块出问题没那么重要
-            logger.error("redis templateId get error",e);
-        }
 
         /********************************包装所有数据********************************/
-        allData.setJdUserId(0L);
-        allData.setJdNick("");
-
-        allData.setDeliveyList(jdPostageTemplateService.getPostageTemplateList(ps.getSubUserId()));
-        allData.setJdShopInfo(null);
-
+        allData.setJdUserId(ps.getSubUserId());
+//        allData.setDeliveyList(jdAgingtemplService.getAgingtempl(null));
+        allData.setItems(item);
+        allData.setProps(props);
         allData.setJdUserId(0L);
         model.addAttribute("allData", allData);
         model.addAttribute("id",itemId);

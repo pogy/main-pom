@@ -14,6 +14,8 @@ import com.taobao.api.domain.ItemProp;
 import com.taobao.api.domain.PropImg;
 import com.taobao.api.domain.PropValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -36,14 +38,22 @@ public class PropsService {
     TaobaoPropValueMapper taobaoPropValueMapper;
     @Autowired
     private TaobaoItemPropMapper taobaoItemPropMapper;
+    @Autowired
+    EhCacheCacheManager ehCacheManager;
 
     /**
      * 计算页面要显示的属性列
      * @param cid 类目ID
      * @return
      */
+
     public PropsVO selProps(Long cid){
-        PropsVO propsVO=new PropsVO();
+        Cache cache=ehCacheManager.getCache("jdProps");
+        PropsVO propsVO=cache.get("tbprop_"+cid,PropsVO.class);
+        if(propsVO!=null){
+            return propsVO;
+        }
+        propsVO=new PropsVO();
         propsVO.setCid(cid);
         //开始处理品牌
         List<ItemProp> itemPropresponse= selItemProp(cid);//去接口里面调,有可能等于null
@@ -75,6 +85,7 @@ public class PropsService {
                 propsVO.addProperties(piv);
             }
         }
+        cache.put("prop_"+cid,propsVO);
         return propsVO;
     }
 
@@ -603,17 +614,21 @@ public class PropsService {
             p.setParentPid(taobaoItemProp.getParentPid());
             p.setParentVid(taobaoItemProp.getParentVid());
             p.setPid(taobaoItemProp.getPid());
-            p.setPropValues(longListMap.get(taobaoItemProp.getPid()).stream().map(taobaoPropValue -> {
-                PropValue v=new PropValue();
-                v.setCid(p.getCid());
-                v.setIsParent(false);
-                v.setName(taobaoPropValue.getName());
-                v.setNameAlias(taobaoPropValue.getNameAlias());
-                v.setPid(taobaoPropValue.getPid());
-                v.setPropName(taobaoPropValue.getPropName());
-                v.setVid(taobaoPropValue.getVid());
-                return v;
-            }).collect(Collectors.toList()));
+            List<TaobaoPropValue> list=longListMap.get(taobaoItemProp.getPid());
+            if(list!=null){
+                p.setPropValues(list.stream().map(taobaoPropValue -> {
+                    PropValue v=new PropValue();
+                    v.setCid(p.getCid());
+                    v.setIsParent(false);
+                    v.setName(taobaoPropValue.getName());
+                    v.setNameAlias(taobaoPropValue.getNameAlias());
+                    v.setPid(taobaoPropValue.getPid());
+                    v.setPropName(taobaoPropValue.getPropName());
+                    v.setVid(taobaoPropValue.getVid());
+                    return v;
+                }).collect(Collectors.toList()));
+            }
+
             return p;
         }).collect(Collectors.toList());
     }

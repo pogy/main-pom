@@ -27,6 +27,8 @@ import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAgingtemplService;
+import com.shigu.main4.jd.service.JdCategoryService;
+import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.tb.common.exceptions.TbException;
 import com.shigu.tb.finder.vo.PropType;
@@ -36,7 +38,9 @@ import com.taobao.api.domain.ItemImg;
 import com.taobao.api.domain.Location;
 import com.taobao.api.domain.PropImg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -79,11 +83,13 @@ public class JdUpItemService {
     @Autowired
     PropsService propsService;
     @Autowired
-    JdAgingtemplService jdAgingtemplService;
+    JdCategoryService jdCategoryService;
     @Autowired
     ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
     ShiguPropImgsMapper shiguPropImgsMapper;
+    @Autowired
+    EhCacheCacheManager ehCacheManager;
 
 
     /**
@@ -158,24 +164,38 @@ public class JdUpItemService {
     }
 
 
-    public PropsVO selProps(Long goodsId,Long userId) throws Main4Exception, CloneNotSupportedException, IOException, ClassNotFoundException {
-        ShiguGoodsIdGenerator idg=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
-        if(idg==null){
-            throw new Main4Exception("商品不存在");
+    public PropsVO selProps(Long goodsId,Long userId,Item item) throws Main4Exception, CloneNotSupportedException, IOException, ClassNotFoundException {
+        PropsVO tbPropsVO=propsService.selProps(item.getCid());
+        tbPropsVO=propsService.importValue(tbPropsVO,item.getProps(), BeanMapper.mapList(item.getItemImgs(), PropImg.class),item.getPropertyAlias(),item
+                .getInputStr(),item.getInputPids());
+        PropsVO prop=find(item);
+        fillPropValue(prop.getColor(),tbPropsVO.getColor());
+        fillProp(prop.getSaleProps(),tbPropsVO.getSaleProps());
+        fillProp(prop.getProperties(),tbPropsVO.getProperties());
+        fillProp(prop.getSpecProps(),tbPropsVO.getProperties());
+        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));
+        return prop;
+    }
+
+
+    private PropsVO find(Item item) throws Main4Exception {
+        Cache cache=ehCacheManager.getCache("jdProps");
+        PropsVO prop=cache.get("jdprop_"+item.getCid(),PropsVO.class);
+        if(prop!=null){
+            return prop;
         }
-        SynItem synItem=itemAddOrUpdateService.selItemByGoodsId(goodsId,idg.getWebSite());
+        prop=new PropsVO();
         JdTbBindExample jdTbBindExample=new JdTbBindExample();
-        jdTbBindExample.createCriteria().andTbCidEqualTo(synItem.getCid());
+        jdTbBindExample.createCriteria().andTbCidEqualTo(item.getCid());
         List<JdTbBind> binds=jdTbBindMapper.selectByExample(jdTbBindExample);
         if(binds.size()==0){
             throw new Main4Exception("商品暂不支持上传");
         }
-        List<ShiguPropImg> propImgs=synItem.getPropImgs();
         JdTbBind bind = binds.get(0);
         if(binds.size()>1){
-            if(synItem.getTitle().contains("女")){
+            if(item.getTitle().contains("女")){
                 bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==2).findFirst().get();
-            }else if(synItem.getTitle().contains("男")){
+            }else if(item.getTitle().contains("男")){
                 bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==1).findFirst().get();
             }else{
                 throw new Main4Exception("商品暂不支持上传");
@@ -190,20 +210,30 @@ public class JdUpItemService {
         List<JdPropValue> jdPropValues=jdPropValueMapper.selectByExample(jdPropValueExample);
         Map<Long,List<JdPropValue>> jdPropValueMap=jdPropValues.stream().collect(Collectors.groupingBy(JdPropValue::getPid));
 
-        PropsVO tbPropsVO=propsService.selProps(synItem.getCid());
-        tbPropsVO=propsService.importValue(tbPropsVO,synItem.getProps(), BeanMapper.mapList(propImgs, PropImg.class),synItem.getPropertyAlias(),synItem
-                .getInputStr(),synItem.getInputPids());
-
-
-        PropsVO prop=new PropsVO();
-        prop.setCid(synItem.getCid());
+        prop.setCid(item.getCid());
         List<PropertyItemVO> saleProps=new ArrayList<>();
         List<PropertyItemVO> properties=new ArrayList<>();
         List<PropertyItemVO> specProps=new ArrayList<>();
         for(JdItemProp jdItemProp:jdItemProps){
             List<JdPropValue> values=jdPropValueMap.get(jdItemProp.getPid());
-            if(jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0)){
-                continue;
+            if((jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0))||jdItemProp.getIsSaleProp()==1){
+                List<JdCategoryAttrValueJosVO> values1=jdCategoryService.getCategoryReadFindValuesByAttrId(2299600652L,jdItemProp.getPid());
+                values=values1.stream().map(jdCategoryAttrValueJosVO -> {
+                    JdPropValue v=new JdPropValue();
+                    v.setCid(jdItemProp.getCid());
+                    v.setIsParent(0);
+                    v.setName(jdCategoryAttrValueJosVO.getAttrValue());
+                    v.setPid(jdItemProp.getPid());
+                    v.setPropName(jdItemProp.getName());
+                    v.setVid(jdCategoryAttrValueJosVO.getAttrValueId());
+                    v.setStatus("1");
+                    v.setSortOrder(jdCategoryAttrValueJosVO.getAttrValueIndexId().longValue());
+                    return v;
+                }).collect(Collectors.toList());
+                if(values==null||values.size()==0){
+                    continue;
+                }
+                jdPropValueMap.put(jdItemProp.getPid(),values);
             }
             PropertyItemVO pv=new PropertyItemVO();
             pv.setCanAlias(jdItemProp.getIsAllowAlias()==1);
@@ -220,7 +250,7 @@ public class JdUpItemService {
                 pv.setType(PropType.INPUT);
             }
             pv.setValues(new ArrayList<>());
-            if(jdItemProp.getIsBrand()!=1){
+            if(jdItemProp.getIsBrand()!=1&&values!=null){
                 pv.addPropValueList(values.stream().map(jdPropValue -> {
                     PropertyValueVO propertyValueVO=new PropertyValueVO();
                     propertyValueVO.setFid(1);
@@ -232,7 +262,6 @@ public class JdUpItemService {
             }
             if(jdItemProp.getIsSaleProp()==1){
                 if(jdItemProp.getIsColorProp()==1){
-                    fillPropValue(pv,tbPropsVO.getColor());
                     prop.setColor(pv);
                     continue;
                 }
@@ -244,15 +273,6 @@ public class JdUpItemService {
                 continue;
             }
             if(jdItemProp.getIsBrand()==1){
-                pv.addPropValueList(jdAgingtemplService.getAgingtempl(userId).stream()
-                    .map(jdAgingTemplateVO -> {
-                        PropertyValueVO propertyValueVO=new PropertyValueVO();
-                        propertyValueVO.setFid(1);
-                        propertyValueVO.setName(jdAgingTemplateVO.getTemplateName());
-                        propertyValueVO.setVid(jdAgingTemplateVO.getTemplateId());
-                        propertyValueVO.setSelected(false);
-                        return propertyValueVO;
-                    }).collect(Collectors.toList()));
                 prop.setPingpai(pv);
                 continue;
             }
@@ -262,15 +282,13 @@ public class JdUpItemService {
             }
             properties.add(pv);
         };
-        fillProp(saleProps,tbPropsVO.getSaleProps());
-        fillProp(properties,tbPropsVO.getProperties());
-        fillProp(specProps,tbPropsVO.getProperties());
         prop.setProperties(properties);
         prop.setSaleProps(saleProps);
         prop.setSpecProps(specProps);
-        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));
+        cache.put("jdprop_"+item.getCid(),prop);
         return prop;
     }
+
 
     private void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
         for(PropertyItemVO jdV:jdVS){
