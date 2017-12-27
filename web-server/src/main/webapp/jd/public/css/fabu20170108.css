@@ -134,6 +134,7 @@ input.disabled {
 .module-property li span li {
     float:left;
     clear:none;
+    min-width:100px;
     margin:0 20px 0 0;
     white-space:nowrap;
     zoom:1
