@@ -188,7 +188,7 @@ public class ShopAction {
     @Autowired
     RedisIO redisIO;
 
-    
+
 
     /**
      * 当前登陆的session
@@ -503,14 +503,14 @@ public class ShopAction {
      * @throws Exception
      */
     @RequestMapping("seller/editGoodsInfo")
-    public String editGoodsInfo(GoodsIdBO bo,HttpSession session,Model model)throws Exception{
+    public String editGoodsInfo(GoodsIdBO bo,HttpSession session,Model model)throws  Main4Exception{
         ShopSession shopSession = getShopSession(session);
         if (shopSession.getType().equals(1)) {
-            throw new Exception("淘宝店铺不支持手工编辑");
+            throw new Main4Exception("淘宝店铺不支持手工编辑");
         }
         SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGoodsId()), shopSession);
         if(synItem == null){
-            throw new Exception("获取商品数据失败");
+            throw new Main4Exception("获取商品数据失败");
         }
         GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
         goodsInfoVO.setGoodsNo(synItem.getGoodsNo());//货号
