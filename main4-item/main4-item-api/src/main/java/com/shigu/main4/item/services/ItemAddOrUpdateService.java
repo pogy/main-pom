@@ -115,4 +115,46 @@ public interface ItemAddOrUpdateService {
      * @param sids 风格ID
      */
     void addGoodsStyle(Long goodsId, String webSite, String sids) throws ItemUpdateException;
+    /**
+     * 设置商品风格
+     * @param goodsId 商品ID
+     * @param webSite
+     */
+   void setCustomStyle(Long goodsId, Integer sid, String webSite);
+
+
+
+    /**
+     * 添加自定义风格
+     * @param categoryId
+     * @param goodsStyleName
+     * @param userId
+     * @return
+     */
+   Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId);
+
+    /**
+     * 修改自定义风格
+     * @param categoryId
+     * @param goodsStyleName
+     * @param userId
+     *
+     */
+   Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId);
+
+    /**
+     * 删除自定义风格
+     * @param goodsStyleId
+     * @param userId
+     * @param website
+     * @param shopId
+     */
+    void deleteCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId);
+
+    /**
+     * 移动商品风格排序
+     * @param goodsStyleId
+     * @param sortType
+     */
+    void moveSortCustomerStyle(Long goodsStyleId, Integer sortType);
 }

@@ -1,4 +1,4 @@
-<#assign $pageid>sysSetsindex</#assign>
+<#assign $pageid="sysSetsindex">
 <!doctype html>
 <html>
 <head>
@@ -14,25 +14,20 @@
 <#include "/__style_torrent__/fxs__sysSetsindex_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/common/js/plugin/jq.form.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.form.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/fxs__sysSetsindex_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>safecenter</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="safecenter">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -52,13 +47,13 @@
     <div class="validateItem">
         <div class="formGroup">
             <label>用户名：</label>
-            <input class="fmInput" name="nickname" id="name" placeholder="请输入您的昵称" value="${userInfo.userNick!}">
+            <input class="fmInput" name="nickname" placeholder="请输入您的昵称" maxlength="18" value="${userInfo.userNick!}">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label>电子邮箱：</label>
-            <input class="fmInput" name="email" id="email" placeholder="请输入您的电子邮箱" value="${userInfo.email!}">
+            <input class="fmInput" name="email" placeholder="请输入您的电子邮箱" maxlength="30" value="${userInfo.email!}">
         </div>
     </div>
     <div class="validateItem">
@@ -84,27 +79,25 @@
     <div class="validateItem">
         <div class="formGroup">
             <label>QQ：</label>
-            <input class="fmInput" name="qq" id="qq" placeholder="请输入您的QQ号码" value="${userInfo.imQq!}">
+            <input class="fmInput" name="qq" placeholder="请输入您的QQ号码" maxlength="13" value="${userInfo.imQq!}">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label>微信：</label>
-            <input class="fmInput" name="wx" id="wx" placeholder="请输入您的微信号" value="${userInfo.imWx!}">
+            <input class="fmInput" name="wx" placeholder="请输入您的微信号" maxlength="20" value="${userInfo.imWx!}">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label>阿里旺旺：</label>
-            <input class="fmInput" name="ww" id="ww" placeholder="请输入您的旺旺" value="${userInfo.imWw!}">
+            <input class="fmInput" name="ww" placeholder="请输入您的旺旺" maxlength="60" value="${userInfo.imWw!}">
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -132,9 +125,7 @@
         </div>
     </div>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 </#list>
             </div>
     </div>

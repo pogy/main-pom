@@ -5,7 +5,6 @@ import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
-import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
@@ -39,7 +38,6 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
 import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserLicense;
@@ -67,7 +65,6 @@ import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
 import com.shigu.tb.finder.vo.TbOnsale;
-import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
@@ -91,7 +88,11 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺的控制中心
@@ -501,7 +502,6 @@ public class ShopAction {
     @RequestMapping("seller/storeGoodsList21init")
     public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
-
         model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
         if(bo.getKeyword()!=null){
             bo.setKeyword(URLDecoder.decode(bo.getKeyword(),"utf-8"));
@@ -527,6 +527,13 @@ public class ShopAction {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
                 }
+                if(oi.getGoodsStyleId()!=null){
+                    vo.setGoodsStyleId(oi.getGoodsStyleId());
+                    vo.setGoodsStyleType(2);
+                }else{
+                    vo.setGoodsStyleId(null);
+                    vo.setGoodsStyleType(1);
+                }
                 goodsList.add(vo);
             }
             model.addAttribute("goodslist",goodsList);
@@ -547,6 +554,8 @@ public class ShopAction {
         shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
         shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
         shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
+        shopUnprocessItemCount.setNoVideoNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_VIDEO_INDEX_));
+        shopUnprocessItemCount.setNoGoodsStyleNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_));
         return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
     }
 
@@ -1309,6 +1318,45 @@ public class ShopAction {
         }
         return JsonResponseUtil.success().element("good", good);
 
+    }
+
+    /**
+     * 设置自定义商品风格update
+     * @param
+     * @return
+     */
+    @RequestMapping("seller/setGoodsStyle")
+    @ResponseBody
+    public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativeIs,HttpSession session) {
+        ShopSession shopSession = getShopSession(session);
+        int sid=styleId.intValue();
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
+        if (relativeIs){
+            shopItemModService.setSameNumStyle(goodsId,sid , shopSession.getShopId(),shopSession.getWebSite());
+        }
+        shopItemModService.setStyle( goodsId,sid, shopSession.getWebSite());
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     *获取自定义商品风格列表
+     * @param
+     * @return
+     */
+    @RequestMapping("seller/getUserGoodsStyleList")
+    @ResponseBody
+    public JSONObject getUserGoodsStyleList(HttpSession session){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return JsonResponseUtil.success().element("styleList",shopItemModService.getCustomStyle(ps.getUserId()));
+    }
+    /**
+     * 获取默认商品风格列表
+     */
+    @RequestMapping("seller/getDefaultGoodsStyleList")
+    @ResponseBody
+    public JSONObject getDefaultGoodsStyleList(HttpSession session){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return JsonResponseUtil.success().element("styleList",shopItemModService.getFixedStyle(ps.getLogshop().getWebSite()));
     }
 
 }

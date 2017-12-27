@@ -15,7 +15,7 @@ public class StoreGoodsListSearchBO implements Serializable {
     private String keyword;
     //货号
     private String goodsNo;
-    //1无最低零售价 2无大图 3无材料成分 null全部商品
+    //1无最低零售价 2无大图 3无材料成分 null全部商品,4无主图视频，5无风格标签
     private Integer state;
 
     public String getKeyword() {

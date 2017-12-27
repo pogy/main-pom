@@ -58,6 +58,12 @@
     </div>
     <div class="validateItem">
         <div class="formGroup">
+            <label></label>
+            <span class="fcF40">温馨提示：账户余额提现收取0.6%的手续费!</span>
+        </div>
+    </div>
+    <div class="validateItem">
+        <div class="formGroup">
             <label>充值方式：</label>
             <input type="text" class="fmInput" value="支付宝" readonly="readonly">
         </div>
