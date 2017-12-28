@@ -67,6 +67,16 @@
                 <i id="noMaterialNum"></i>
             </a>
         </li>
+        <li <#if query.state == 4>class="select"</#if>>
+            <a href="storeGoodsList21init.htm?state=4">无主图视频
+                <i id="noVideoNum"></i>
+            </a>
+        </li>
+        <li <#if query.state == 5>class="select"</#if>>
+            <a href="storeGoodsList21init.htm?state=5">无风格标签
+                <i id="noGoodsStyleNum"></i>
+            </a>
+        </li>
     </ul>
 </div>
 <div class="goodsFilterBar">
@@ -216,7 +226,7 @@
             <div class="">
                 <ul class="clearfix">
                     <li>
-                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}">
+                        <b jhand="openEditBigPicWindow" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}" >
                             <i class="icon-lgImg <#if item.correlateType == 2>setted</#if>"></i>
                             大图商品
                         </b>
@@ -228,7 +238,13 @@
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}" data-linksamegoodsno="${item.linkSameGoodsNo!}">
+                        <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
+                            <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
+                            风格标签
+                        </b>
+                    </li>
+                    <li>
+                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}">
                             <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>
                             主图视频
                         </b>
@@ -236,26 +252,6 @@
                 </ul>
             </div>
         </li>
-        <!--<li class="constituent">
-            <p>
-                <#if item.constituentType == 1>
-                <span>未设置</span>
-                <#elseif item.constituentType == 2>
-                <span>已设置</span>
-                </#if>
-                <b class="penIcon" jhand="openEditConstituentWindow" data-fabric="${item.fabric!}" data-inFabric="${item.infabric!}"></b>
-            </p>
-        </li>
-        <li class="bigPicCorrelate">
-            <p>
-                <#if item.correlateType == 1>
-                <span>未设置</span>
-                <#elseif item.correlateType == 2>
-                <span>已设置</span>
-                </#if>
-                <b class="penIcon" jhand="openEditBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
-            </p>
-        </li>-->
         <li class="saleCount">${item.saleCount!}</li>
         <li class="upcount">${item.count!}</li>
         <li class="control">

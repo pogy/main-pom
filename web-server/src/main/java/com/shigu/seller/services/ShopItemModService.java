@@ -1,20 +1,15 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.SearchCategorySub;
-import com.opentae.data.mall.beans.ShiguGoodsSoldout;
-import com.opentae.data.mall.beans.ShiguGoodsStyle;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.SearchCategorySubExample;
-import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
-import com.opentae.data.mall.examples.ShiguGoodsStyleExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +42,9 @@ public class ShopItemModService {
 
     @Autowired
     ShiguGoodsStyleMapper shiguGoodsStyleMappe;
+
+    @Autowired
+    ShiguCustomerStyleMapper shiguCustomerStyleMapper;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -237,5 +235,70 @@ public class ShopItemModService {
             }
         }
         return goodsStyle;
+    }
+
+    /**
+     * 获取固定风格
+     * @return
+     * @param webSite
+     */
+    public List<ShiguStyleVo> getFixedStyle(String webSite){
+        SearchCategorySubExample example = new SearchCategorySubExample();
+        example.createCriteria().andTypeEqualTo(3).andWebSiteEqualTo(webSite).andParentCateValueEqualTo("30");
+        List<SearchCategorySub> list = searchCategorySubMapper.selectByExample(example);
+        ArrayList<ShiguStyleVo> styleVos = new ArrayList<>();
+        for (SearchCategorySub searchCategorySub:list) {
+            ShiguStyleVo shiguStyleVo = new ShiguStyleVo();
+            shiguStyleVo.setStyleName(searchCategorySub.getCateName());
+            shiguStyleVo.setStyleId(searchCategorySub.getSubId());
+            styleVos.add(shiguStyleVo);
+        }
+        return styleVos;
+    }
+    /**
+     * 获取自定义风格
+     * @return
+     */
+    public List<ShiguStyleVo> getCustomStyle(Long userId){
+        ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(example);
+        List<ShiguStyleVo> styleVos = BeanMapper.mapList(list, ShiguStyleVo.class);
+        return styleVos;
+    }
+
+    /**
+     * 设置商品风格
+     */
+    public void setStyle(Long goodsId, Integer styleId, String webSite){
+        itemAddOrUpdateService.setCustomStyle(goodsId,styleId,webSite);
+    }
+    /**
+     *   关联同货号设置风格
+     */
+    public void setSameNumStyle(Long goodsId, Integer styleId, Long shopId, String webSite){
+        //查找该商品货号
+        ShiguGoodsTinyExample example1 = new ShiguGoodsTinyExample();
+        example1.setWebSite(webSite);
+        example1.createCriteria().andGoodsIdEqualTo(goodsId);
+        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example1);
+        String goodsNo =  shiguGoodsTinies.get(0).getGoodsNo();
+        if (goodsNo!=null&&StringUtils.isNotEmpty(goodsNo)){
+            //店里的商品
+            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+            example.createCriteria().andStoreIdEqualTo(shopId);
+            example.setWebSite(webSite);
+            List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
+            //设置风格
+            for (ShiguGoodsTiny goods:list) {
+                if(goods.getGoodsNo()!=null){
+                    if (goods.getGoodsNo().equals(goodsNo)){
+                        setStyle(goods.getGoodsId(),styleId,webSite);
+                    }
+                }
+            }
+
+        }
+
     }
 }

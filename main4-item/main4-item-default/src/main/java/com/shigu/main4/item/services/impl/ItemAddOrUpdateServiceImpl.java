@@ -1,5 +1,6 @@
 package com.shigu.main4.item.services.impl;
 
+import com.alibaba.druid.sql.visitor.functions.If;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
@@ -8,7 +9,6 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
@@ -20,11 +20,13 @@ import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
+import org.omg.CosNaming.NamingContextPackage.NotFoundReasonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +113,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
+
+    @Autowired
+    private ShiguCustomerStyleMapper shiguCustomerStyleMapper;
+
+    @Autowired
+    private SearchCategorySubMapper searchCategorySubMapper;
 
     /**
      * 系统上架一款商品
@@ -1149,5 +1157,145 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
         new ElasticRepository().insert(seb);
+    }
+
+    @Override
+    public void setCustomStyle(Long goodsId, Integer sid, String webSite) {
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(goodsId);
+            goodsCountForsearch=  goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+            if(goodsCountForsearch != null) {
+                goodsCountForsearch.setGoodsId(goodsId);
+                goodsCountForsearch.setHadStyle(1);
+                goodsCountForsearch.setSid(sid);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(Long.valueOf(sid));
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch.setStyleName(searchCategorySub.getCateName());
+                }else{
+                    goodsCountForsearch.setStyleName(null);
+                }
+                goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
+            }else{
+                GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
+                goodsCountForsearch1.setGoodsId(goodsId);
+                goodsCountForsearch1.setHadStyle(1);
+                goodsCountForsearch1.setSid(sid);
+                if(sid<=2000){
+                    SearchCategorySub searchCategorySub = new SearchCategorySub();
+                    searchCategorySub.setSubId(Long.valueOf(sid));
+                    searchCategorySub=searchCategorySubMapper.selectOne(searchCategorySub);
+                    goodsCountForsearch1.setStyleName(searchCategorySub.getCateName());
+                }else{
+                    goodsCountForsearch1.setStyleName(null);
+                }
+                goodsCountForsearch1.setWebSite(webSite);
+                goodsCountForsearch1.setUp(0L);
+                goodsCountForsearch1.setUpMan(0L);
+                goodsCountForsearch1.setClick(0L);
+                goodsCountForsearch1.setClickIp(0L);
+                goodsCountForsearch1.setHadGoat(0);
+                goodsCountForsearch1.setTrade(0L);
+                goodsCountForsearch1.setHadBigzip(0);
+                goodsCountForsearch1.setHadVideo(0);
+
+                goodsCountForsearchMapper.insert(goodsCountForsearch1);
+            }
+
+    }
+
+    @Override
+    public Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId) {
+        if (goodsStyleName != null && StringUtils.isNotEmpty(goodsStyleName) && goodsStyleName.length() < 45) {
+            ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
+            example.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName);
+            List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(example);
+            //判断是否已存在
+            if (shiguCustomerStyles == null||shiguCustomerStyles.isEmpty()) {
+                ShiguCustomerStyle shiguCustomerStyle = new ShiguCustomerStyle();
+                shiguCustomerStyle.setCId(categoryId);
+                shiguCustomerStyle.setStyleName(goodsStyleName);
+                shiguCustomerStyle.setUserId(userId);
+                shiguCustomerStyleMapper.insert(shiguCustomerStyle);
+                //设置排序数值为
+                ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+                shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId);
+                int i = shiguCustomerStyleMapper.countByExample(shiguCustomerStyleExample);
+                shiguCustomerStyle.setSort(i);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+                return shiguCustomerStyle.getStyleId();
+            }
+        }
+            return 0L;
+    }
+
+
+
+    @Override
+    public Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId) {
+        if(goodsStyleId!=null&&categoryId!=null&&StringUtils.isNotEmpty(goodsStyleName)&&goodsStyleName.length()<45){
+            ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample.createCriteria().andUserIdEqualTo(userId).andStyleNameEqualTo(goodsStyleName).andCIdEqualTo(categoryId);
+            List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+            //判断是否已存在
+            if(shiguCustomerStyles!=null&& shiguCustomerStyles.size()>0){
+                return 0L;
+            }
+            shiguCustomerStyleExample.clear();
+            shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+            List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+            if(list!=null && list.size()>0){
+                ShiguCustomerStyle shiguCustomerStyle =list.get(0);
+                shiguCustomerStyle.setCId(categoryId);
+                shiguCustomerStyle.setStyleName(goodsStyleName);
+                return  Long.valueOf(shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle));
+            }
+        }
+        return 0L;
+    }
+
+    @Override
+    public void deleteCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId) {
+        if (goodsStyleId!=null){
+            ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+            shiguCustomerStyleMapper.deleteByExample(shiguCustomerStyleExample);
+            //查当前风格的goods，并设置
+            GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
+            goodsCountForsearchExample.createCriteria().andWebSiteEqualTo(website).andSidEqualTo(goodsStyleId);
+            List<GoodsCountForsearch> goodsCountForsearches = goodsCountForsearchMapper.selectByExample(goodsCountForsearchExample);
+            if(goodsCountForsearches != null && goodsCountForsearches.size()>0){
+                for (GoodsCountForsearch goodsCountForsearch: goodsCountForsearches){
+                    goodsCountForsearch.setHadStyle(0);
+                    goodsCountForsearch.setSid(null);
+                    goodsCountForsearch.setStyleName(null);
+                    goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void moveSortCustomerStyle(Long goodsStyleId, Integer sortType) {
+        ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
+        shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
+        List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
+        if (shiguCustomerStyles.size()>0&&shiguCustomerStyles!=null){
+            ShiguCustomerStyle shiguCustomerStyle =shiguCustomerStyles.get(0);
+            int sort1=shiguCustomerStyle.getSort();//调整前的序号
+            int sort=shiguCustomerStyle.getSort()+sortType;//调整后的序号
+            ShiguCustomerStyleExample shiguCustomerStyleExample1 = new ShiguCustomerStyleExample();
+            shiguCustomerStyleExample1.createCriteria().andSortEqualTo(sort);
+            List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample1);
+            //调换序号
+            if(shiguCustomerStyles1.size()>0&&shiguCustomerStyles1!=null){
+                shiguCustomerStyle.setSort(sort);
+                shiguCustomerStyles1.get(0).setSort(sort1);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
+                shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyles1.get(0));
+            }
+        }
     }
 }
