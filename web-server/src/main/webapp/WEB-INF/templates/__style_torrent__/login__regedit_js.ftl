@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/login/js/regedit_v20171227_124223.js"></script>
+<script src="http://style.571xz.com/v6/login/js/regedit_v20171228_172335.js"></script>
