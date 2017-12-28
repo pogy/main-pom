@@ -336,7 +336,8 @@ function ready_publish(){
             skudata.push({
                 pid: colorPid,
                 vid: colorVid,
-                name: colorName
+                name: colorName,
+                sizes:[]
             })
             $.each(skudata, function(i, item){
                 if(item.pid == colorPid){
@@ -353,7 +354,7 @@ function ready_publish(){
         }
     });
     skudata = parse.stringify(skudata);
-    $("#mainform").append("<input type='hidden' name='sku[]' class='skuStr' value='"+skudata+"'>");
+    $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
 
     // var prop_arr = new Array;
     // $(".prop_from").each(function(){
