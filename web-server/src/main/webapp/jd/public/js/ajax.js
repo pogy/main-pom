@@ -270,19 +270,19 @@ function ready_publish(){
                 }
             }
             if(value!='其他' && value!='其它' && value!='其她'){ //这三个词不能以input方式提交,除了材质里面的其他
-                dataValue=dataPid+':'+value+'###';   //三个###表示是input方式
+                dataValue=dataPid+':###'+value;   //三个###表示是input方式
             }
         }
         if(!dataValue){
             return;
         }
         // $("#mainform").append("<input type='hidden' name='sku-props-"+dataPid+"[]' class='sku-props' value='"+dataValue+"'>");
-        $("#mainform").append("<input type='hidden' name='sku-props[]' class='sku-props' value='"+dataValue+"'>");
+        $("#mainform").append("<input type='hidden' name='sku_props[]' class='sku-props' value='"+dataValue+"'>");
     });
     if(propsComponent){
         componentPid=$('#componentPid').val();
         // $("#mainform").append("<input type='hidden' name='sku-props-"+componentPid+"[]' class='sku-props' value='"+'149422948:'+propsComponent+'###'+"'>");
-        $("#mainform").append("<input type='hidden' name='sku-props[]' class='sku-props' value='"+'149422948:'+propsComponent+'###'+"'>");
+        $("#mainform").append("<input type='hidden' name='sku_props[]' class='sku-props' value='"+'149422948:###'+propsComponent + "'>");
     }
 
 
@@ -297,8 +297,12 @@ function ready_publish(){
     });
 
     //生成所有sku的隐藏域
+    var skudata = [];
     $(".J_MapProductid").each(function(){
         data=$(this).data('id');
+        var color = data.split('_')[0];
+        var size = data.split('_')[1];
+        var colorPid = color.split('-')[0]
         quantity = $('#J_SkuField_quantity_'+data).val();
         price = $('#J_SkuField_price_'+data).val();
         var tsc=$('#J_SkuField_tsc_'+data).val();

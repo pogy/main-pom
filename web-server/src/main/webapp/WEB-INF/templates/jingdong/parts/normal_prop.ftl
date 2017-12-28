@@ -72,11 +72,11 @@
                     </li>
                     <li>
                         <label class="label-title">[包装]宽：</label>
-                        <span><em>*</em><input type="text" name="wide" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" name="width" class="text text-short" value=""> mm</span>
                     </li>
                     <li>
                         <label class="label-title">[包装]高：</label>
-                        <span><em>*</em><input type="text" name="high" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" name="height" class="text text-short" value=""> mm</span>
                     </li>
                     <li>
                         <label class="label-title">商品毛重：</label>
