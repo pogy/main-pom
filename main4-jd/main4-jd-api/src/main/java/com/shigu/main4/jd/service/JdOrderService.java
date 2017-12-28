@@ -4,6 +4,7 @@ import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdPostTemplateVO;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,12 +18,12 @@ public interface JdOrderService {
      * @param jdUid
      * @return
      */
-    List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 更新商家运费模板
      * @param jdUid
      * @return
      */
-    List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 }

@@ -12,6 +12,7 @@ import com.shigu.main4.jd.service.JdGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException, JdAuthFailureException {
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
        return jdGoodsService.jdImageUpdate(bo, Long.valueOf(jdUid));
     }

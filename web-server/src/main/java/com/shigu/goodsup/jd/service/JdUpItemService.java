@@ -154,7 +154,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdUpException, JdAuthFailureException {
+    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.getPostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -176,7 +176,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException, JdAuthFailureException {
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.updatePostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -198,7 +198,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException {
+    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
@@ -224,7 +224,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException {
+    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
@@ -283,7 +283,7 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid) throws Main4Exception {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid) throws Main4Exception, IOException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public class JdOrderServiceImpl implements JdOrderService {
      * @return
      */
     @Override
-    public List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdLogistTemplateExample example =  new JdLogistTemplateExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
         List<JdLogistTemplate> jdLogistTemplates = jdLogistTemplateMapper.selectByExample(example);
@@ -68,7 +69,7 @@ public class JdOrderServiceImpl implements JdOrderService {
 
     @Override
     @Transactional
-    public List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         //先删
         JdLogistTemplateExample example =  new JdLogistTemplateExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
@@ -83,7 +84,7 @@ public class JdOrderServiceImpl implements JdOrderService {
      * @return
      * @throws JdUpException
      */
-    private List<JdPostTemplateVO> addPostTemolates(Long jdUid) throws JdUpException, JdAuthFailureException {
+    private List<JdPostTemplateVO> addPostTemolates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");

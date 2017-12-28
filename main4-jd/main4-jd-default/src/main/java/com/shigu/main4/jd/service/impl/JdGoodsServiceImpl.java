@@ -47,7 +47,7 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * @throws IOException
      */
     @Override
-    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException, JdAuthFailureException {
+    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         WareAddRequest request = BeanMapper.map(bo, WareAddRequest.class);
         request.setWarePackType("1");//普通商品
@@ -60,7 +60,7 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * 新增和修改商品图片
      */
     @Override
-    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException, JdAuthFailureException {
+    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImageWriteUpdateRequest request=new ImageWriteUpdateRequest();
         request.setColorId(bo.getColorId());

@@ -22,12 +22,12 @@ public interface JdGoodsService {
      * @throws JdException
      * @throws IOException
      */
-     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdUpException, JdAuthFailureException;
+     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 新增和修改商品图片
      */
-    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdUpException, JdAuthFailureException;
+    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 根据cid查询商品是否可上传到京东

@@ -57,7 +57,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws IOException
      */
     @Override
-    public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdShopCategoryExample example = new JdShopCategoryExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
         List<JdShopCategory> jdShopCategories = jdShopCategoryMapper.selectByExample(example);
@@ -89,7 +89,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      */
     @Override
     @Transactional
-    public List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         //先删
         JdShopCategoryExample example = new JdShopCategoryExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
@@ -106,7 +106,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws IOException
      */
     @Override
-    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException, JdAuthFailureException {
+    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindAttrsByCategoryIdJosRequest request = new CategoryReadFindAttrsByCategoryIdJosRequest();
         request.setCid(cid);
@@ -167,7 +167,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         if (authedInfo == null) {
             throw new JdUpException("未获取到京东授权信息");
@@ -198,7 +198,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException {
+    public List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindByPIdRequest request = new CategoryReadFindByPIdRequest();
         request.setParentCid(pid);
@@ -236,7 +236,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @throws JdUpException
      */
     @Override
-    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException {
+    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindValuesByAttrIdJosRequest req=new CategoryReadFindValuesByAttrIdJosRequest();
         req.setCategoryAttrId(pid);
@@ -265,7 +265,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @return
      */
     @Override
-    public List<JdVenderBrandPubInfoVO> getAllBrand(Long jdUid) throws JdUpException, JdAuthFailureException {
+    public List<JdVenderBrandPubInfoVO> getAllBrand(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         PopVenderCenerVenderBrandQueryRequest request=new PopVenderCenerVenderBrandQueryRequest();
         PopVenderCenerVenderBrandQueryResponse response = jdUtil.execute(request, authedInfo.getAccessToken());
@@ -281,7 +281,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @param jdUid
      * @throws JdUpException
      */
-    private List<JdShopCategoryVO> addShopCatgorys(Long jdUid) throws JdUpException, JdAuthFailureException {
+    private List<JdShopCategoryVO> addShopCatgorys(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         SellerCatsGetRequest request = new SellerCatsGetRequest();
         SellerCatsGetResponse response = jdUtil.execute(request,authedInfo.getAccessToken());

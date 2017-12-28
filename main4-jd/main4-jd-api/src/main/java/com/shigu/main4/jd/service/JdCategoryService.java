@@ -19,14 +19,14 @@ public interface JdCategoryService {
      * @param jdUid
      * @throws JdException
      */
-    List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 更新京东自定义店内分类
      * @param jdUid
      * @throws JdException
      */
-    List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 京东 获取类目属性列表
@@ -35,7 +35,7 @@ public interface JdCategoryService {
      * @throws JdException
      * @throws IOException
      */
-    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException, JdAuthFailureException;
+    List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 京东 商家类目信息
@@ -43,7 +43,7 @@ public interface JdCategoryService {
      * @throws JdException
      * @throws IOException
      */
-    List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 根据父级类目Id获取子集类目信息
@@ -52,7 +52,7 @@ public interface JdCategoryService {
      * @return
      * @throws JdUpException
      */
-    List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException;
+    List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 获取类目属性值
@@ -61,14 +61,14 @@ public interface JdCategoryService {
      * @return
      * @throws JdUpException
      */
-    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid, Long pid) throws JdUpException, JdAuthFailureException;
+    List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid, Long pid) throws JdUpException, JdAuthFailureException, IOException;
 
     /**
      * 获取用户所拥有的品牌
      * @param jdUid
      * @return
      */
-    List<JdVenderBrandPubInfoVO>  getAllBrand(Long jdUid) throws JdUpException, JdAuthFailureException;
+    List<JdVenderBrandPubInfoVO>  getAllBrand(Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
 
 }

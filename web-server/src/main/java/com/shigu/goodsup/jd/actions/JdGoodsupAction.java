@@ -217,7 +217,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getAllBrand")
     @ResponseBody
-    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException {
+    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
@@ -230,7 +230,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updatePostModel")
     @ResponseBody
-    public JSONObject updatePostModel(HttpSession session) throws JdUpException, JdNotBindException {
+    public JSONObject updatePostModel(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<DeliveryTemplate> deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
@@ -242,7 +242,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updateShopCats")
     @ResponseBody
-    public JSONObject updateShopCats(HttpSession session) throws JdUpException, JdNotBindException {
+    public JSONObject updateShopCats(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<StoreCatVO> storeCatVOS = jdUpItemService.updateShopCats(Long.valueOf(jdUid));
@@ -320,7 +320,7 @@ public class JdGoodsupAction {
 
     @RequestMapping("jdYjUpload")
     @ResponseBody
-    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException {
+    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
 
