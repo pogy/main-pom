@@ -64,7 +64,7 @@ public class GoodsSearchAction {
             webSite="hz";
         }
         model.addAttribute("webSite",webSite);
-        return "search/picSearch";
+        return "xzPage/picSearch";
     }
 
     /**

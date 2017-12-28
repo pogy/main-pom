@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/xzPage/js/batchOrders_v20171207_113132.js"></script>
+<script src="http://style.571xz.com/v6/xzPage/js/batchOrders_v20171228_144427.js"></script>

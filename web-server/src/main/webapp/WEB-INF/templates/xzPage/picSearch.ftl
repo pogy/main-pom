@@ -1,11 +1,11 @@
-<#assign $pageid>picSearch</#assign>
+<#assign $pageid="picSearch">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300px">
-    <title>星座图搜 - 四季星座网</title>
+    <title>星座图搜 - 四季星座网 - 搜索(男装、女装、男鞋、女鞋代理平台)</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
@@ -19,9 +19,7 @@
 <#include "/__style_torrent__/xzPage__picSearch_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="headerPicSearch">
