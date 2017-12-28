@@ -10,6 +10,7 @@ import com.opentae.data.jd.interfaces.JdTbBindMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdGoodsService;
@@ -46,11 +47,8 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * @throws IOException
      */
     @Override
-    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException {
+    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException, JdAuthFailureException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
-        }
         WareAddRequest request = BeanMapper.map(bo, WareAddRequest.class);
         request.setWarePackType("1");//普通商品
         WareAddResponse response;
@@ -62,11 +60,8 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * 新增和修改商品图片
      */
     @Override
-    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException {
+    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException, JdAuthFailureException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
-        }
         ImageWriteUpdateRequest request=new ImageWriteUpdateRequest();
         request.setColorId(bo.getColorId());
         request.setImgId(bo.getImgId());

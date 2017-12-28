@@ -14,6 +14,7 @@ import com.opentae.data.jd.beans.JdShopInfo;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdShopService;
 import com.shigu.main4.jd.util.JdUtil;
@@ -48,7 +49,7 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    private JdShopInfoVO getJdShopInfo(String accessToken) throws JdUpException {
+    private JdShopInfoVO getJdShopInfo(String accessToken) throws JdUpException, JdAuthFailureException {
         VenderShopQueryRequest request = new VenderShopQueryRequest();
         VenderShopQueryResponse response = jdUtil.execute(request,accessToken);
         ShopJosResult shopJosResult = response.getShopJosResult();
@@ -95,7 +96,7 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws IOException
      */
     @Override
-    public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException {
+    public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException, JdAuthFailureException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
@@ -147,7 +148,7 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      */
     @Override
-    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdUpException {
+    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdUpException, JdAuthFailureException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
@@ -168,7 +169,7 @@ public class JdShopServiceImpl implements JdShopService {
     }
 
     @Override
-    public List<JdImgzoneCategoryVO> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdUpException {
+    public List<JdImgzoneCategoryVO> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdUpException, JdAuthFailureException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);

@@ -7,6 +7,7 @@ import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.jd.constant.JdUrlConstant;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.util.HttpClientUtil;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -101,14 +103,27 @@ public class JdAuthServiceImpl implements JdAuthService{
     }
 
     @Override
-    public JdAuthedInfoVO getAuthedInfo(Long jdUid) {
+    public JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException, IOException, JdUpException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (selJdSessionMap == null) {
-            return null;
+            throw new JdAuthFailureException("授权失效,请重新授权");
         }
-        JdAuthedInfoVO vo = new JdAuthedInfoVO();
+        JdAuthedInfoVO vo;
+
+        //校验token有效性，少于一小时视为无效
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(jdSessionMap.getAuthTime());
+        calendar.add(Calendar.SECOND,jdSessionMap.getExpiresIn());
+        calendar.add(Calendar.HOUR_OF_DAY,-1);
+
+        if(calendar.getTime().after(new Date())){
+            //刷新授权信息'
+           return refreshToken(selJdSessionMap.getId(),selJdSessionMap.getRefreshToken());
+        }
+
+        vo = new JdAuthedInfoVO();
         vo.setUid(selJdSessionMap.getJdUid());
         vo.setAccessToken(selJdSessionMap.getAccessToken());
         vo.setRefreshToken(selJdSessionMap.getRefreshToken());
@@ -120,17 +135,28 @@ public class JdAuthServiceImpl implements JdAuthService{
 
     /**
      * 刷新token
+     * @param id
      * @param refreshToken
      */
     @Override
-    public JdAuthedInfoVO refreshToken(String refreshToken) throws IOException, JdUpException {
+    public JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException {
         String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
                 .replace("JD_APPKEY",jdUtil.getJdAppkey())
                 .replace("JD_SECRET",jdUtil.getJdSecret())
                 .replace("REFRESH_TOKEN",refreshToken);
         HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
         String entityString = EntityUtils.toString(entity);
-        return getJdAithedInfo(entityString);
+        JdAuthedInfoVO jdAithedInfo = getJdAithedInfo(entityString);
+
+        JdSessionMap jdSessionMap = new JdSessionMap();
+        jdSessionMap.setId(id);
+        jdSessionMap.setJdUserNick(jdAithedInfo.getUserNick());
+        jdSessionMap.setAccessToken(jdAithedInfo.getAccessToken());
+        jdSessionMap.setRefreshToken(jdAithedInfo.getRefreshToken());
+        jdSessionMap.setAuthTime(new Date(jdAithedInfo.getAuthTime()));
+        jdSessionMap.setExpiresIn(jdAithedInfo.getExpiresIn());
+        jdSessionMapMapper.updateByPrimaryKeySelective(jdSessionMap);
+        return jdAithedInfo;
     }
 
     private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException {

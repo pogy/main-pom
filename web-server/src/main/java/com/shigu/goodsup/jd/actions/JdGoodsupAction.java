@@ -21,6 +21,7 @@ import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdCategoryService;
@@ -216,7 +217,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getAllBrand")
     @ResponseBody
-    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException {
+    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
@@ -319,7 +320,7 @@ public class JdGoodsupAction {
 
     @RequestMapping("jdYjUpload")
     @ResponseBody
-    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException {
+    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
 

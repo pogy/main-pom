@@ -1,5 +1,6 @@
 package com.shigu.main4.jd.service;
 
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 
@@ -32,13 +33,14 @@ public interface JdAuthService {
      * @return
      * @throws IOException
      */
-    JdAuthedInfoVO getAuthedInfo(Long jdUid) ;
+    JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException, IOException, JdUpException;
 
 
     /**
+     * @param id jd_session_map 主键
      * 刷新token
      * @param refreshToken
      */
-    JdAuthedInfoVO refreshToken(String refreshToken) throws IOException, JdUpException;
+    JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException;
 
 }

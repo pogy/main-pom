@@ -1,6 +1,7 @@
 package com.shigu.main4.jd.service;
 
 import com.jd.open.api.sdk.JdException;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdImgzoneCategoryVO;
 import com.shigu.main4.jd.vo.JdShopInfoVO;
@@ -27,7 +28,7 @@ public interface JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException;
+    JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException, JdAuthFailureException;
 
     /**
      * 新增京东店铺内图片空间
@@ -37,7 +38,7 @@ public interface JdShopService {
      * @return 图片分类ID
      * @throws JdException
      */
-    Long addImgCategory (Long jdUid,String imgCategory,Long parentCateId) throws JdUpException;
+    Long addImgCategory (Long jdUid,String imgCategory,Long parentCateId) throws JdUpException, JdAuthFailureException;
 
     /**
      * 查询京东店铺内图片空间
@@ -47,6 +48,6 @@ public interface JdShopService {
      * @return 图片分类ID
      * @throws JdException
      */
-    List<JdImgzoneCategoryVO> selImgCategory (Long jdUid, String imgCategory, Long parentCateId) throws JdUpException;
+    List<JdImgzoneCategoryVO> selImgCategory (Long jdUid, String imgCategory, Long parentCateId) throws JdUpException, JdAuthFailureException;
 
 }

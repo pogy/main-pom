@@ -10,7 +10,7 @@ import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
-import com.shigu.exceptions.XzUidToTokenException;
+import com.shigu.exceptions.JdAuthFailureException;
 import com.shigu.util.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class ImgMovingService {
      * @return
      * @throws JdUpException
      */
-    public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws XzUidToTokenException {
+    public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws JdAuthFailureException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
         List<JdImgInfo> jdImgInfos = new ArrayList<>();
         StringBuffer imgIds = new StringBuffer();
@@ -92,7 +92,7 @@ public class ImgMovingService {
      * @return
      * @throws JdUpException
      */
-    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws XzUidToTokenException, JdUpException {
+    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws JdAuthFailureException, JdUpException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);

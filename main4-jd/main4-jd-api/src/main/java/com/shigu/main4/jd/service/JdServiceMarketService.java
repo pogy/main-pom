@@ -1,7 +1,10 @@
 package com.shigu.main4.jd.service;
 
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdVasSubscribeVO;
+
+import java.io.IOException;
 
 /**
  * Created By admin on 2017/12/14/16:51
@@ -15,6 +18,6 @@ public interface JdServiceMarketService {
      * @param itemCode
      * @param jdUid
      */
-    JdVasSubscribeVO subscribe(String userName, String itemCode,Long jdUid) throws  JdUpException;
+    JdVasSubscribeVO subscribe(String userName, String itemCode,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
 }

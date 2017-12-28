@@ -3,6 +3,7 @@ package com.shigu.main4.jd.service;
 import com.jd.open.api.sdk.JdException;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdWareAddVO;
 
@@ -21,12 +22,12 @@ public interface JdGoodsService {
      * @throws JdException
      * @throws IOException
      */
-     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdUpException;
+     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdUpException, JdAuthFailureException;
 
     /**
      * 新增和修改商品图片
      */
-    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdUpException;
+    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdUpException, JdAuthFailureException;
 
     /**
      * 根据cid查询商品是否可上传到京东

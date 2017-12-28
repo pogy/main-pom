@@ -1,6 +1,5 @@
 package com.shigu.goodsup.jd.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.opentae.data.jd.beans.JdItemProp;
 import com.opentae.data.jd.beans.JdPropValue;
 import com.opentae.data.jd.beans.JdTbBind;
@@ -19,6 +18,7 @@ import com.shigu.goodsup.jd.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.service.JdOrderService;
@@ -154,7 +154,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdUpException {
+    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdUpException, JdAuthFailureException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.getPostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -176,7 +176,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException {
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException, JdAuthFailureException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.updatePostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -198,7 +198,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdUpException {
+    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
@@ -224,7 +224,7 @@ public class JdUpItemService {
      * @return
      * @throws JdUpException
      */
-    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException {
+    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {

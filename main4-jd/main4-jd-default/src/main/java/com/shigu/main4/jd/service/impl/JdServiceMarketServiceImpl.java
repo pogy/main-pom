@@ -3,6 +3,7 @@ package com.shigu.main4.jd.service.impl;
 
 import com.jd.open.api.sdk.request.market.VasSubscribeGetRequest;
 import com.jd.open.api.sdk.response.market.VasSubscribeGetResponse;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdServiceMarketService;
@@ -11,6 +12,8 @@ import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * Created By admin on 2017/12/14/16:51
@@ -32,11 +35,8 @@ public class JdServiceMarketServiceImpl implements JdServiceMarketService {
      * @param jdUid
      */
     @Override
-    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long jdUid) throws JdUpException {
+    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
-        }
         VasSubscribeGetRequest request=new VasSubscribeGetRequest();
         request.setUserName(userName);
         request.setItemCode(itemCode);

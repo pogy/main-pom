@@ -3,7 +3,7 @@ package com.shigu.jd.img.services;
 
 import com.opentae.data.mall.beans.JdSessionMap;
 import com.opentae.data.mall.interfaces.JdSessionMapMapper;
-import com.shigu.exceptions.XzUidToTokenException;
+import com.shigu.exceptions.JdAuthFailureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,12 @@ public class XzUidToTokenService {
     @Autowired
     private JdSessionMapMapper jdSessionMapMapper;
 
-    public String getTokenByUid(Long jdUid) throws XzUidToTokenException {
+    public String getTokenByUid(Long jdUid) throws JdAuthFailureException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (jdSessionMap == null) {
-            throw new XzUidToTokenException("获取京东授权信息失败");
+            throw new JdAuthFailureException("获取京东授权信息失败");
         }
         return jdSessionMap.getAccessToken();
     }

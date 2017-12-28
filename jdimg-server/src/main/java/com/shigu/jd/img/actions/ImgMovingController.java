@@ -2,7 +2,7 @@ package com.shigu.jd.img.actions;
 
 
 import com.openJar.requests.imgs.JdUpImgRequest;
-import com.shigu.exceptions.XzUidToTokenException;
+import com.shigu.exceptions.JdAuthFailureException;
 import com.shigu.jd.img.services.ImgMovingService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ImgMovingController {
      */
     @RequestMapping("uptoitemimg")
     @ResponseBody
-    public JSONObject uptoitemimg(JdUpImgRequest request) throws XzUidToTokenException {
+    public JSONObject uptoitemimg(JdUpImgRequest request) throws JdAuthFailureException {
         imgMovingService.imgUpload(request);
         return new JSONObject().element("success",true);
     }

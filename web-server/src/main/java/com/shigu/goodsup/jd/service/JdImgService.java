@@ -6,6 +6,7 @@ import com.openJar.responses.imgs.JdUpImgResponse;
 import com.openJar.tools.OpenClient;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException {
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException, JdAuthFailureException {
         String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
        return jdGoodsService.jdImageUpdate(bo, Long.valueOf(jdUid));
     }
