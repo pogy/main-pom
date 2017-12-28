@@ -105,6 +105,14 @@ function checkform(){
     actionFocus='';
     //sku数量不能为空
     error_msg='';
+
+    $('.mandatory').each(function(){
+        var val = $(this).find('input').val();
+        if(!val){
+            error_msg='存在未填写的必填属性，请补全';
+        }
+    });
+
     $(".J_MapQuantity").each(function(){
         skuNum=$(this).val();
         if(!skuNum){
