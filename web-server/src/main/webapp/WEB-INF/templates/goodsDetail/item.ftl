@@ -350,7 +350,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
  <div class="goodsPayMode">
     <label class="fc9">支付方式</label>
     <span class="alipay">支付宝</span>
-    <span class="weixin">微信</span>
+    <!--<span class="weixin">微信</span>-->
 </div>
     </#if>
 </div>
