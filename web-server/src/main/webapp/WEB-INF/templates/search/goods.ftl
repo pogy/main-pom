@@ -62,7 +62,7 @@
                     <#if goods_index lt 20>
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
                     <#else>
-                        <img class="lazyload img" src="http://style.571xz.com/v6/search/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
+                        <img class="lazyload img" src="http://style.571xz.com/v6/search/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
                     </#if>
                 </a>
                 <p class="p1">
