@@ -31,10 +31,7 @@
 <div class="r-box">
     <a href="javascript:void(0)" class="opt-btn">点击</a>
     <div class="list-box">
-        <div class="list clearfix">
-            <label class="name-con">款式：</label>
-            <div class="list-con">套头</div>
-        </div>
+
     </div>
     <script>
         $(function(){

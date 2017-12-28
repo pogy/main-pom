@@ -1130,7 +1130,7 @@ ol,ul{list-style: none}.clearfix:after {content: ".";display: block;height: 0;cl
     position: fixed;
     top: 150px;
     right: 0;
-    width: 220px;
+    width: 250px;
 }
 .r-box .opt-btn{
     position: absolute;
@@ -1146,10 +1146,10 @@ ol,ul{list-style: none}.clearfix:after {content: ".";display: block;height: 0;cl
     line-height: 24px;
 }
 .r-box .name-con{
-    width: 80px;
+    width: 90px;
     float: left;
     text-align: right;
 }
 .r-box .list-con{
-    padding-left: 80px;
+    padding-left: 90px;
 }
