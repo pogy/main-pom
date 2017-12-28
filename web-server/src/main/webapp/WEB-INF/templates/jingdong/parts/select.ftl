@@ -1,4 +1,4 @@
-<li id="spu_${prop.pid}" class="J_spu-property" name="spus">
+<li id="spu_${prop.pid}" class="J_spu-property <#if prop.mustHave>mandatory</#if>" name="spus">
     <label class="label-title" id="ariaby-prop_${prop.pid}">${prop.name}：</label>
                                                 <span>
                         <#if prop.mustHave><em>*</em></#if>                                                    <ul class="J_ul-single ul-select">

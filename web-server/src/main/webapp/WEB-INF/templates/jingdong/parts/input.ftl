@@ -1,4 +1,4 @@
-<li>
+<li class="<#if prop.mustHave>mandatory</#if>">
     <label class="label-title" for="prop_${prop.pid}">${prop.name}：</label>
     <span>
     <#if prop.mustHave><em>*</em></#if>

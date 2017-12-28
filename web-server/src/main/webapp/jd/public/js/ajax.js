@@ -105,6 +105,14 @@ function checkform(){
     actionFocus='';
     //sku数量不能为空
     error_msg='';
+
+    $('.mandatory').each(function(){
+        var val = $(this).find('input').val();
+        if(!val){
+            error_msg='存在未填写的必填属性，请补全';
+        }
+    });
+
     $(".J_MapQuantity").each(function(){
         skuNum=$(this).val();
         if(!skuNum){
@@ -115,6 +123,11 @@ function checkform(){
 
     //判断sku是否合法 sku价格只能在主价格的上下10%
     price=$('#buynow').val();
+    var marketPrice = $('#marketPrice').val();
+    if(parseFloat(marketPrice) < parseFloat(price)){
+        error_msg = '市场价必须大于京东价'
+        actionFocus = 'marketPrice';
+    }
     if(price){
         tenPercent=Number(parseFloat(price)*0.1).toFixed(2);
         priceMini=Number(parseFloat(price)-parseFloat(tenPercent)).toFixed(2);
@@ -156,6 +169,7 @@ function checkform(){
         if(!val){
             error=title=$(this).attr('data-error-title');
             error_msg=error+'不能为空;';
+            actionFocus = $(this).attr('id');
             return false;
         }
     });
@@ -270,19 +284,19 @@ function ready_publish(){
                 }
             }
             if(value!='其他' && value!='其它' && value!='其她'){ //这三个词不能以input方式提交,除了材质里面的其他
-                dataValue=dataPid+':'+value+'###';   //三个###表示是input方式
+                dataValue=dataPid+':###'+value;   //三个###表示是input方式
             }
         }
         if(!dataValue){
             return;
         }
         // $("#mainform").append("<input type='hidden' name='sku-props-"+dataPid+"[]' class='sku-props' value='"+dataValue+"'>");
-        $("#mainform").append("<input type='hidden' name='sku-props[]' class='sku-props' value='"+dataValue+"'>");
+        $("#mainform").append("<input type='hidden' name='sku_props[]' class='sku-props' value='"+dataValue+"'>");
     });
     if(propsComponent){
         componentPid=$('#componentPid').val();
         // $("#mainform").append("<input type='hidden' name='sku-props-"+componentPid+"[]' class='sku-props' value='"+'149422948:'+propsComponent+'###'+"'>");
-        $("#mainform").append("<input type='hidden' name='sku-props[]' class='sku-props' value='"+'149422948:'+propsComponent+'###'+"'>");
+        $("#mainform").append("<input type='hidden' name='sku_props[]' class='sku-props' value='"+'149422948:###'+propsComponent + "'>");
     }
 
 
@@ -297,18 +311,64 @@ function ready_publish(){
     });
 
     //生成所有sku的隐藏域
+    var skudata = [];
     $(".J_MapProductid").each(function(){
         data=$(this).data('id');
-        quantity = $('#J_SkuField_quantity_'+data).val();
-        price = $('#J_SkuField_price_'+data).val();
-        var tsc=$('#J_SkuField_tsc_'+data).val();
+        var color = data.split('_')[0];
+        var size = data.split('_')[1];
+        var colorPid = color.split('-')[0]
+        var colorVid = color.split('-')[1]
+        var sizePid = size.split('-')[0]
+        var sizeVid = size.split('-')[1]
         dataDetailTemp=data.split("_");
 
         colorName = $('.J_Map_'+dataDetailTemp[0]).html();
         sizeName  = $('.J_Map_'+dataDetailTemp[1]).html();
-        data=data+'#'+quantity+'#'+price+'#'+colorName+'#'+sizeName+'#'+tsc;
-        $("#mainform").append("<input type='hidden' name='sku[]' class='skuStr' value='"+data+"'>");
+        quantity = $('#J_SkuField_quantity_'+data).val();
+        price = $('#J_SkuField_price_'+data).val();
+        var tsc=$('#J_SkuField_tsc_'+data).val();
+        var colorIsExist = false;
+        if(skudata.length){
+            $.each(skudata, function(i, item){
+                if(item.pid == colorPid){
+                    colorIsExist = true;
+                    item.sizes.push({
+                        pid: sizePid,
+                        vid: sizeVid,
+                        name: sizeName,
+                        num: quantity,
+                        price: price,
+                        code: tsc
+                    })
+                    return false;
+                }
+            });
+        }
+
+
+        if(!colorIsExist){
+            skudata.push({
+                pid: colorPid,
+                vid: colorVid,
+                name: colorName,
+                sizes:[]
+            })
+            $.each(skudata, function(i, item){
+                if(item.pid == colorPid){
+                    item.sizes.push({
+                        pid: sizePid,
+                        vid: sizeVid,
+                        name: sizeName,
+                        num: quantity,
+                        price: price,
+                        code: tsc
+                    })
+                }
+            });
+        }
     });
+    skudata = parse.stringify(skudata);
+    $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
 
     // var prop_arr = new Array;
     // $(".prop_from").each(function(){

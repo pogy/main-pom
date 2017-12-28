@@ -7,7 +7,7 @@
                 <h1>基本参数</h1>
                 <ul>
                     <#if allData.props.pingpai??>
-                        <li id="spu_${allData.props.pingpai.pid}" class="J_spu-property" name="spus">
+                        <li id="spu_${allData.props.pingpai.pid}" class="J_spu-property <#if allData.props.pingpai.mustHave>mandatory</#if>" name="spus">
                             <label class="label-title" id="ariaby-prop_${allData.props.pingpai.pid}">品牌：</label>
                             <span>
                                 <#if allData.props.pingpai.mustHave><em>*</em></#if>
@@ -68,19 +68,19 @@
                 <ul>
                     <li>
                         <label class="label-title">[包装]长：</label>
-                        <span><em>*</em><input type="text" name="length" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="length" name="length" class="text text-short notBeEmpty" value="" data-error-title="包装长度"> mm</span>
                     </li>
                     <li>
                         <label class="label-title">[包装]宽：</label>
-                        <span><em>*</em><input type="text" name="wide" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="width" name="width" class="text text-short notBeEmpty" value="" data-error-title="包装宽度"> mm</span>
                     </li>
                     <li>
                         <label class="label-title">[包装]高：</label>
-                        <span><em>*</em><input type="text" name="high" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="height" name="height" class="text text-short notBeEmpty" value="" data-error-title="包装高度"> mm</span>
                     </li>
                     <li>
                         <label class="label-title">商品毛重：</label>
-                        <span><em>*</em><input type="text" name="weight" class="text text-short" value=""> 公斤</span>
+                        <span><em>*</em><input type="text" id="weight" name="weight" class="text text-short notBeEmpty" value="" data-error-title="包装重量"> 公斤</span>
                     </li>
                 </ul>
             </div>
