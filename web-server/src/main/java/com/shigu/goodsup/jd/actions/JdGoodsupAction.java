@@ -16,6 +16,7 @@ import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUserInfoService;
+import com.shigu.goodsup.jd.util.JdParseStateUtil;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
@@ -23,14 +24,8 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
-import com.shigu.main4.jd.service.JdAuthService;
-import com.shigu.main4.jd.service.JdCategoryService;
-import com.shigu.main4.jd.service.JdGoodsService;
-import com.shigu.main4.jd.service.JdShopService;
-import com.shigu.main4.jd.vo.JdAuthedInfoVO;
-import com.shigu.main4.jd.vo.JdImgzoneCategoryVO;
-import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
-import com.shigu.main4.jd.vo.JdWareAddVO;
+import com.shigu.main4.jd.service.*;
+import com.shigu.main4.jd.vo.*;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -41,6 +36,7 @@ import com.shigu.tools.HttpRequestUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.taobao.api.domain.DeliveryTemplate;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -61,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created By admin on 2017/12/8/15:38
@@ -104,6 +101,9 @@ public class JdGoodsupAction {
     @Autowired
     private JdShopService jdShopService;
 
+    @Autowired
+    private JdServiceMarketService jdServiceMarketService;
+
     public static final String IMG_CATEGORY = "571xz";
 
 
@@ -125,12 +125,23 @@ public class JdGoodsupAction {
      * @throws IOException
      */
     @RequestMapping("callback")
-    public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws IOException, JdUpException {
+    public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws IOException, JdUpException, JdAuthFailureException {
         /************检测是否订阅服务**********/
-//        SubscribeVO subscribeVO = jdTools.parseState(state);
+//        JdVasSubscribeVO subscribeVO = JdParseStateUtil.parseState(state);
+//        if (subscribeVO.getEndDate().after(new Date())) {
+//            //FW_GOODS-449409
+//            String itemId = subscribeVO.getItemCode().replace("FW_GOODS-", "");
+//            if (StringUtils.isEmpty(itemId)) {
+//                throw new JdUpException("获取服务信息失败");
+//            }
+//            return "redirect:https://fw.jd.com/"+itemId+".html";
+//        }
 
         /************获取用户登陆信息**********/
         JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
+        //保存订购信息
+//        subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
+//        jdServiceMarketService.saveSubscribe(subscribeVO);
 
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
@@ -261,6 +272,8 @@ public class JdGoodsupAction {
         /********************************获取京东授权信息*******************************/
 //        Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
         Long jdUserId=2299600652L;
+
+
         /********************************屏蔽卖家用户使用********************************/
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
@@ -304,7 +317,7 @@ public class JdGoodsupAction {
         /********************************包装所有数据********************************/
         JdShowDataVO allData=new JdShowDataVO();
         allData.setItems(item);
-        allData.setJdUserId(ps.getSubUserId());
+//        allData.setJdUserId(ps.getSubUserId());
         allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
         allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem()));
         allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
@@ -322,8 +335,8 @@ public class JdGoodsupAction {
     @ResponseBody
     public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
-
+//        Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
+        Long jdUid = 2299600652L;
         //上传商品
         JdWareAddVO jdWareAddVO = jdGoodsService.upToJd(null, jdUid);
 
@@ -343,6 +356,8 @@ public class JdGoodsupAction {
         }else{
             imgCategoryId = vos.get(0).getCateId();
         }
+
+
         //绑定图片
         //颜色ID集合
         List<String> colorIds = new ArrayList<>();
@@ -369,7 +384,8 @@ public class JdGoodsupAction {
                 e.printStackTrace();
                 subMsgs.add(e.getMessage());
             }
-            List<JdImgInfo> jdImgInfos = response.getJdImgInfos();
+            Map<String, JdImgInfo> jdImgInfos1 = response.getJdImgInfos();
+            List<JdImgInfo> jdImgInfos = new ArrayList<>();
             StringBuffer imgIds = new StringBuffer();
             StringBuffer skuImgUrls = new StringBuffer();
             StringBuffer imgIndex = new StringBuffer();
@@ -412,18 +428,6 @@ public class JdGoodsupAction {
         jdGoodsUpService.saveRecord(vo);
 
         return null;
-    }
-
-    /**
-     * 上传图片到星座网
-     * @return
-     */
-    @RequestMapping("jd-up-xzw-img")
-    @ResponseBody
-    public String upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile, HttpSession httpSession) throws IOException {
-        PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String name=MD5Attestation.MD5Encode(multimagefile.getName()+Math.random())+".jpg";
-        return ossIO.uploadFile(multimagefile.getInputStream(),"jdonkey"+"/"+ps.getUserId()+"/"+name);
     }
 
 }

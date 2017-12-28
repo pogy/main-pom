@@ -1,30 +1,20 @@
 import com.alibaba.fastjson.JSONArray;
-import com.jd.open.api.sdk.request.list.CategoryReadFindValuesByAttrIdJosRequest;
-import com.jd.open.api.sdk.request.ware.WareAddRequest;
-import com.jd.open.api.sdk.request.ware.WarePropimgAddRequest;
-import com.opentae.data.jd.beans.JdItemProp;
-import com.opentae.data.jd.beans.JdPropValue;
-import com.opentae.data.jd.beans.JdTbBind;
-import com.opentae.data.jd.beans.ShiguJdcat;
+import com.opentae.data.jd.beans.*;
 import com.opentae.data.jd.examples.JdItemPropExample;
 import com.opentae.data.jd.examples.JdPropValueExample;
 import com.opentae.data.jd.examples.ShiguJdcatExample;
-import com.opentae.data.jd.interfaces.JdItemPropMapper;
-import com.opentae.data.jd.interfaces.JdPropValueMapper;
-import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
+import com.opentae.data.jd.interfaces.*;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdCategoryService;
-import com.shigu.main4.jd.vo.JdCategoryAttrJosVO;
-import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
-import com.shigu.main4.jd.vo.JdCategoryReadVO;
-import com.shigu.main4.jd.vo.JdFeatureCateAttrJosVO;
+import com.shigu.main4.jd.vo.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,7 +42,7 @@ public class BaseSpringTest {
     List list=Arrays.asList(1620L,15248L,1319L);
 
 //    @Test
-    public void v() throws JdUpException {
+    public void v() throws JdUpException, IOException, JdAuthFailureException {
         List<ShiguJdcat> l=new ArrayList<>();
         List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(userId,0L);
         jdCats=jdCats.stream().filter(jdCategoryReadVO -> list.contains(jdCategoryReadVO.getId())).collect(Collectors.toList());
@@ -65,7 +55,7 @@ public class BaseSpringTest {
         }
         System.out.println();
     }
-    private void findCats(JdCategoryReadVO parentJdCat,String pname,List<ShiguJdcat> list) throws JdUpException {
+    private void findCats(JdCategoryReadVO parentJdCat,String pname,List<ShiguJdcat> list) throws JdUpException, IOException, JdAuthFailureException {
         ShiguJdcat cat=new ShiguJdcat();
         list.add(cat);
         cat.setCid(parentJdCat.getId());
@@ -85,7 +75,7 @@ public class BaseSpringTest {
     }
 
     @Test
-    public void prop() throws JdUpException {
+    public void prop() throws JdUpException, IOException, JdAuthFailureException {
         ShiguJdcatExample jdcatExample=new ShiguJdcatExample();
         jdcatExample.createCriteria().andIsParentEqualTo(0).andCidGreaterThanOrEqualTo(0L);
         jdcatExample.setOrderByClause("cid asc");
@@ -167,7 +157,7 @@ public class BaseSpringTest {
 
     Long lastPid=0L;
 //    @Test
-    public void findPropValue() throws JdUpException {
+    public void findPropValue() throws JdUpException, IOException, JdAuthFailureException {
         Set<Long> cids=jdTbBindMapper.select(new JdTbBind()).stream().map(JdTbBind::getJdCid).collect(Collectors.toSet());
         JdItemPropExample jdItemPropExample=new JdItemPropExample();
         jdItemPropExample.createCriteria().andCidIn(new ArrayList<>(cids)).andPidGreaterThanOrEqualTo(lastPid);

@@ -5,6 +5,7 @@ import com.jd.open.api.sdk.request.imgzone.ImgzonePictureUploadRequest;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureDeleteResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureUploadResponse;
 import com.openJar.beans.JdImgInfo;
+import com.openJar.commons.MD5Attestation;
 import com.openJar.exceptions.imgs.JdUpException;
 import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
@@ -16,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,10 +42,10 @@ public class ImgMovingService {
      */
     public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws JdAuthFailureException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
-        List<JdImgInfo> jdImgInfos = new ArrayList<>();
         StringBuffer imgIds = new StringBuffer();
         String errMsg = null;
         List<String> imgUrls = jdUpImgRequest.getImgUrls();
+        Map<String,JdImgInfo> jdImgInfos = new HashMap<>();
         for (String imgUrl : imgUrls) {
             try {
                 ImgzonePictureUploadRequest request = new ImgzonePictureUploadRequest();
@@ -54,6 +57,7 @@ public class ImgMovingService {
                 }
                 request.setImageData(imgData);
                 request.setPictureCateId(jdUpImgRequest.getPictureCateId());
+                request.setPictureName(MD5Attestation.MD5Encode(imgUrl));
 
                 ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
                 //返回码为1时为操作成功，返回码为0时为操作失败
@@ -63,7 +67,7 @@ public class ImgMovingService {
                 JdImgInfo jdImgInfo = new JdImgInfo();
                 jdImgInfo.setPictureId(response.getPictureId());
                 jdImgInfo.setPictureUrl(response.getPictureUrl());
-                jdImgInfos.add(jdImgInfo);
+                jdImgInfos.put(imgUrl,jdImgInfo);
                 imgIds.append(",").append(response.getPictureId());
             } catch (JdUpException|ImgDownloadException e) {
                 e.printStackTrace();
@@ -83,6 +87,7 @@ public class ImgMovingService {
         }
 
         jdUptoItemImgResponse.setReturnCode("1");
+        jdUptoItemImgResponse.setJdImgInfos(jdImgInfos);
         return jdUptoItemImgResponse;
     }
 
@@ -95,6 +100,7 @@ public class ImgMovingService {
     public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws JdAuthFailureException, JdUpException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
+        request.setPictureIds(imgIds);
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);
         //返回码1，操作成功；0，操作失败；2，部分操作成功
         if ("0".equals(response.getReturnCode())) {

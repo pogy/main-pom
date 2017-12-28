@@ -1,44 +1,43 @@
 package com.shigu.main4.jd.vo;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created By admin on 2017/12/18/15:39
+ * Created By admin on 2017/12/12/17:39
  */
-public class JdVasSubscribeVO implements Serializable {
+public class SubscribeVO implements Serializable{
 
     private static final long serialVersionUID = 1329826928743772122L;
     /**
-     * 用户京东ID
+     * 项目ID
      */
-    private Long jdUid;
+    private Long itemId;
     /**项目编码*/
     private String itemCode;
     /**购买人*/
     private String UserName;
     /**
-     * 调用来源
+     *调用来源
      */
     private String itemSource;
     /**
-     * 服务版本号
+     *服务版本号
      */
-    private Integer versionNo;
-    /**
-     * 到期时间
-     */
+    private String versionNo;
+
     private Date endDate;
 
-    public JdVasSubscribeVO() {
+    public SubscribeVO() {
     }
 
-    public Long getJdUid() {
-        return jdUid;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setJdUid(Long jdUid) {
-        this.jdUid = jdUid;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public String getItemCode() {
@@ -65,11 +64,11 @@ public class JdVasSubscribeVO implements Serializable {
         this.itemSource = itemSource;
     }
 
-    public Integer getVersionNo() {
+    public String getVersionNo() {
         return versionNo;
     }
 
-    public void setVersionNo(Integer versionNo) {
+    public void setVersionNo(String versionNo) {
         this.versionNo = versionNo;
     }
 

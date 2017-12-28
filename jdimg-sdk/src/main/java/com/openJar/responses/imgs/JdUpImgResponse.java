@@ -4,6 +4,7 @@ import com.openJar.beans.JdImgInfo;
 import com.openJar.responses.Response;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品主图上传
@@ -19,7 +20,7 @@ public class JdUpImgResponse extends Response{
      */
     private String desc;
 
-    List<JdImgInfo> jdImgInfos;
+    Map<String,JdImgInfo> jdImgInfos;
 
     public String getReturnCode() {
         return returnCode;
@@ -37,11 +38,11 @@ public class JdUpImgResponse extends Response{
         this.desc = desc;
     }
 
-    public List<JdImgInfo> getJdImgInfos() {
+    public Map<String, JdImgInfo> getJdImgInfos() {
         return jdImgInfos;
     }
 
-    public void setJdImgInfos(List<JdImgInfo> jdImgInfos) {
+    public void setJdImgInfos(Map<String, JdImgInfo> jdImgInfos) {
         this.jdImgInfos = jdImgInfos;
     }
 }

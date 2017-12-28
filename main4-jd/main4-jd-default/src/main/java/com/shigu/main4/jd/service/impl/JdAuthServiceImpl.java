@@ -66,7 +66,7 @@ public class JdAuthServiceImpl implements JdAuthService{
      * @throws IOException
      */
     @Override
-    public JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException {
+    public JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException, JdAuthFailureException {
         String url = JdUrlConstant.JD_AUTH_TOKEN_URL
                         .replace("JD_APPKEY",jdUtil.getJdAppkey())
                         .replace("JD_SECRET",jdUtil.getJdSecret())
@@ -114,11 +114,11 @@ public class JdAuthServiceImpl implements JdAuthService{
 
         //校验token有效性，少于一小时视为无效
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(jdSessionMap.getAuthTime());
-        calendar.add(Calendar.SECOND,jdSessionMap.getExpiresIn());
+        calendar.setTime(selJdSessionMap.getAuthTime());
+        calendar.add(Calendar.SECOND,selJdSessionMap.getExpiresIn());
         calendar.add(Calendar.HOUR_OF_DAY,-1);
 
-        if(calendar.getTime().after(new Date())){
+        if(calendar.getTime().before(new Date())){
             //刷新授权信息'
            return refreshToken(selJdSessionMap.getId(),selJdSessionMap.getRefreshToken());
         }
@@ -139,7 +139,7 @@ public class JdAuthServiceImpl implements JdAuthService{
      * @param refreshToken
      */
     @Override
-    public JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException {
+    public JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException, JdAuthFailureException {
         String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
                 .replace("JD_APPKEY",jdUtil.getJdAppkey())
                 .replace("JD_SECRET",jdUtil.getJdSecret())
@@ -159,7 +159,7 @@ public class JdAuthServiceImpl implements JdAuthService{
         return jdAithedInfo;
     }
 
-    private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException {
+    private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException, JdAuthFailureException {
         //注释：
         //uid：授权用户对应的京东ID
         //user_nick：授权用户对应的京东昵称
@@ -172,11 +172,7 @@ public class JdAuthServiceImpl implements JdAuthService{
         JSONObject authedInfo = JSON.parseObject(entityString);
         int returnCode  = authedInfo.getIntValue("code");
         if (0 != returnCode) {
-            String errorMsg  = authedInfo.getString("zh_desc");
-            if (logger.isDebugEnabled()){
-                logger.debug(String.format("授权失败"+authedInfo.toString()));
-            }
-            throw new JdUpException(String.valueOf(returnCode),errorMsg);
+            throw new JdAuthFailureException("授权失效,请重新授权");
         }
 
         JdAuthedInfoVO jdAuthedInfoVO = new JdAuthedInfoVO();

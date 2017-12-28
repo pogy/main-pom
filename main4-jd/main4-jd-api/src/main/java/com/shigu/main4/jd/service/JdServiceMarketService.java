@@ -20,4 +20,14 @@ public interface JdServiceMarketService {
      */
     JdVasSubscribeVO subscribe(String userName, String itemCode,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
 
+    /**
+     * 保存用户订购信息
+     * @param vo
+     * @return
+     * @throws IOException
+     * @throws JdUpException
+     * @throws JdAuthFailureException
+     */
+    void saveSubscribe(JdVasSubscribeVO vo) throws IOException, JdUpException, JdAuthFailureException;
+
 }

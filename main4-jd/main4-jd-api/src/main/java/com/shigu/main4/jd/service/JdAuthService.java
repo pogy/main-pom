@@ -25,7 +25,7 @@ public interface JdAuthService {
      * @return
      * @throws IOException
      */
-    JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException;
+    JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException, JdAuthFailureException;
 
     /**
      * 根据星座网用户Id获取授权信息
@@ -41,6 +41,6 @@ public interface JdAuthService {
      * 刷新token
      * @param refreshToken
      */
-    JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException;
+    JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException, JdAuthFailureException;
 
 }
