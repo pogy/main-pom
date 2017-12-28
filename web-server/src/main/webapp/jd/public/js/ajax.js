@@ -115,6 +115,11 @@ function checkform(){
 
     //判断sku是否合法 sku价格只能在主价格的上下10%
     price=$('#buynow').val();
+    var marketPrice = $('#marketPrice').val();
+    if(parseFloat(marketPrice) < parseFloat(price)){
+        error_msg = '市场价必须大于京东价'
+        actionFocus = 'marketPrice';
+    }
     if(price){
         tenPercent=Number(parseFloat(price)*0.1).toFixed(2);
         priceMini=Number(parseFloat(price)-parseFloat(tenPercent)).toFixed(2);
@@ -156,6 +161,7 @@ function checkform(){
         if(!val){
             error=title=$(this).attr('data-error-title');
             error_msg=error+'不能为空;';
+            actionFocus = $(this).attr('id');
             return false;
         }
     });

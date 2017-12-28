@@ -68,19 +68,19 @@
                 <ul>
                     <li>
                         <label class="label-title">[包装]长：</label>
-                        <span><em>*</em><input type="text" name="length" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="length" name="length" class="text text-short notBeEmpty" value=""> mm</span>
                     </li>
                     <li>
                         <label class="label-title">[包装]宽：</label>
-                        <span><em>*</em><input type="text" name="width" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="width" name="width" class="text text-short notBeEmpty" value=""> mm</span>
                     </li>
                     <li>
                         <label class="label-title">[包装]高：</label>
-                        <span><em>*</em><input type="text" name="height" class="text text-short" value=""> mm</span>
+                        <span><em>*</em><input type="text" id="height" name="height" class="text text-short notBeEmpty" value=""> mm</span>
                     </li>
                     <li>
                         <label class="label-title">商品毛重：</label>
-                        <span><em>*</em><input type="text" name="weight" class="text text-short" value=""> 公斤</span>
+                        <span><em>*</em><input type="text" id="weight" name="weight" class="text text-short notBeEmpty" value=""> 公斤</span>
                     </li>
                 </ul>
             </div>
