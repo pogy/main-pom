@@ -57,7 +57,7 @@ public class RegistAction {
      */
     @RequestMapping(value = "regedit", method = RequestMethod.GET)
     public String regedit() {
-        return "buyer/regedit";
+        return "login/regedit";
     }
 
     /**
@@ -147,7 +147,7 @@ public class RegistAction {
     @RequestMapping("privacy")
     public String privacy(Model model){
         model.addAttribute("webSite", "hz");
-        return "buyer/privacy";
+        return "login/privacy";
     }
 
     /**
@@ -156,7 +156,7 @@ public class RegistAction {
     @RequestMapping("contract")
     public String contract(Model model){
         model.addAttribute("webSite", "hz");
-        return "buyer/contract";
+        return "login/contract";
     }
 
 }
