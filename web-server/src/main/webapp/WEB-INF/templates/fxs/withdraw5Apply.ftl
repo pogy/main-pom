@@ -1,4 +1,4 @@
-<#assign $pageid>withdraw5Apply</#assign>
+<#assign $pageid="withdraw5Apply">
 <!doctype html>
 <html>
 <head>
@@ -20,18 +20,14 @@
 <#include "/__style_torrent__/fxs__withdraw5Apply_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -75,15 +71,26 @@
         <div class="validateItem">
             <div class="formGroup">
                 <label>金额：</label>
-                <input type="text" name="paynum" class="fmInput" placeholder="请输入提现金额">元
+                <input type="text" name="paynum" id="paynum" class="fmInput" placeholder="请输入提现金额">元
+            </div>
+        </div>
+        <div class="validateItem">
+            <div class="formGroup">
+                <label>实际到账金额：</label>
+                <input type="text" name="realWithdrawMoney" class="fmInput" placeholder="0.00" readonly>元
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+                <span class="freeWithdrawNum">当月免费提现：<em class="fcF40 fs14" id="freeWithdrawNum"></em> 次</span>
+                <span class="withdrawUpperLimit">每次提现上限：<em class="fcF40 fs14" id="withdrawUpperLimit"></em> 元</span>
+            </div>
+        </div>
+        <div class="validateItem">
+            <div class="formGroup">
+                <label></label>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -92,14 +99,16 @@
     class="fmButton
          fmButton-orange
          applyCashBtn"
-        <#if $it.disabled == true>disabled="disabled"</#if>
+        disabled="disabled"
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        id="applyCashBtn"
+        <#if $it.id??>
+            id=""
+        </#if>
 >
         提交提现申请信息
     <#if $it.href??>
@@ -114,7 +123,7 @@
     <div class="wxTip fc6">
         <em></em>
         <h2>温馨提示：</h2>
-        <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br><span class="fcF40">3.请正确输入实名，如实名有误将不予提现！</span></p>
+        <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br><span class="fcF40">3.请正确输入实名，如实名有误将不予提现！</span><br><span class="fcF40">4.账户余额提现收取0.6%的手续费！</span></p>
     </div>
     <div class="ewmWk">
         <div class="imgewm">

@@ -77,10 +77,12 @@
                 <th class="type">类型</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        </tbody>
     </table>
     <input type="hidden" class="tempCode" value="${tempCode!}" />
-    <div class="pagination"></div>
+    <div class="pagination">
+    </div>
 </div>
             </div>
     </div>
