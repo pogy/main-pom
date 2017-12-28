@@ -303,16 +303,57 @@ function ready_publish(){
         var color = data.split('_')[0];
         var size = data.split('_')[1];
         var colorPid = color.split('-')[0]
-        quantity = $('#J_SkuField_quantity_'+data).val();
-        price = $('#J_SkuField_price_'+data).val();
-        var tsc=$('#J_SkuField_tsc_'+data).val();
+        var colorVid = color.split('-')[1]
+        var sizePid = size.split('-')[0]
+        var sizeVid = size.split('-')[1]
         dataDetailTemp=data.split("_");
 
         colorName = $('.J_Map_'+dataDetailTemp[0]).html();
         sizeName  = $('.J_Map_'+dataDetailTemp[1]).html();
-        data=data+'#'+quantity+'#'+price+'#'+colorName+'#'+sizeName+'#'+tsc;
-        $("#mainform").append("<input type='hidden' name='sku[]' class='skuStr' value='"+data+"'>");
+        quantity = $('#J_SkuField_quantity_'+data).val();
+        price = $('#J_SkuField_price_'+data).val();
+        var tsc=$('#J_SkuField_tsc_'+data).val();
+        var colorIsExist = false;
+        if(skudata.length){
+            $.each(skudata, function(i, item){
+                if(item.pid == colorPid){
+                    colorIsExist = true;
+                    item.sizes.push({
+                        pid: sizePid,
+                        vid: sizeVid,
+                        name: sizeName,
+                        num: quantity,
+                        price: price,
+                        code: tsc
+                    })
+                    return false;
+                }
+            });
+        }
+
+
+        if(!colorIsExist){
+            skudata.push({
+                pid: colorPid,
+                vid: colorVid,
+                name: colorName
+            })
+            $.each(skudata, function(i, item){
+                if(item.pid == colorPid){
+                    item.sizes.push({
+                        pid: sizePid,
+                        vid: sizeVid,
+                        name: sizeName,
+                        num: quantity,
+                        price: price,
+                        code: tsc
+                    })
+                }
+            });
+        }
     });
+    skudata = parse.stringify(skudata);
+    $("#mainform").append("<input type='hidden' name='sku[]' class='skuStr' value='"+skudata+"'>");
 
     // var prop_arr = new Array;
     // $(".prop_from").each(function(){
