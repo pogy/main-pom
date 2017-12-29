@@ -34,6 +34,7 @@ import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
 import com.shigu.tools.JsonResponseUtil;
+import com.taobao.api.domain.Item;
 import com.taobao.api.domain.DeliveryTemplate;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -52,12 +53,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created By admin on 2017/12/8/15:38
@@ -235,6 +239,28 @@ public class JdGoodsupAction {
         return JsonResponseUtil.success().element("allBrand",allBrand);
     }
 
+    @RequestMapping("getJdGoodsInfo")
+    @ResponseBody
+    public JSONObject jdGoodsInfo(Long goodsId) throws Main4Exception {
+        Item item= jdUpItemService.staticGoods(jdUpItemService.selTiny(goodsId));
+        Map<String,String> map=new HashMap<>();
+        Arrays.stream(item.getPropsName().split(";")).forEach(s -> {
+            String[] strs=s.split(":");
+            String str=map.get(strs[2]);
+            if(str==null){
+                str="";
+            }
+            str+=strs[3]+",";
+            map.put(strs[2],str);
+        });
+        return JsonResponseUtil.success().element("attrList",map.entrySet().stream().map(s -> {
+            JSONObject o=new JSONObject();
+            o.put("name",s.getKey());
+            o.put("value",s.getValue().substring(0,s.getValue().length()-1));
+            return o;
+        }).collect(Collectors.toList()));
+    }
+
 
     /**
      * 更新运费模板
@@ -268,7 +294,12 @@ public class JdGoodsupAction {
     @RequestMapping("publish")
     public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception, ClassNotFoundException, CloneNotSupportedException, IOException {
 
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        if(ps==null){
+//            String queryString=request.getQueryString();
+//            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
+//                    (queryString==null?"":("?"+queryString)),"utf-8");
+//        }
         /********************************获取京东授权信息*******************************/
 //        Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
         Long jdUserId=2299600652L;
@@ -291,6 +322,18 @@ public class JdGoodsupAction {
 //                return "taobao/hasuped";
 //            }
 //        }
+        List<JdVenderBrandPubInfoVO> allBrand = null;
+        try {
+            allBrand = jdCategoryService.getAllBrand(jdUserId);
+        } catch (JdUpException e) {
+            String queryString=request.getQueryString();
+            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
+                    (queryString==null?"":("?"+queryString)),"utf-8");
+        }
+        if(allBrand==null){
+            model.addAttribute("errmsg", "不是京东商家");
+            return "taobao/uperror";
+        }
         /********************************取商品********************************/
         JdPageItem item=null;
         try {
@@ -317,9 +360,9 @@ public class JdGoodsupAction {
         /********************************包装所有数据********************************/
         JdShowDataVO allData=new JdShowDataVO();
         allData.setItems(item);
-//        allData.setJdUserId(ps.getSubUserId());
+        allData.setJdUserId(jdUserId);
         allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
-        allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem()));
+        allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
         allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
         allData.setJdUserId(jdUserId);
         allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
@@ -428,6 +471,18 @@ public class JdGoodsupAction {
         jdGoodsUpService.saveRecord(vo);
 
         return null;
+    }
+
+    /**
+     * 上传图片到星座网
+     * @return
+     */
+    @RequestMapping("jd-up-xzw-img")
+    @ResponseBody
+    public String upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile, HttpSession httpSession) throws IOException {
+        PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String name=MD5Attestation.MD5Encode(multimagefile.getName()+Math.random())+".jpg";
+        return ossIO.uploadFile(multimagefile.getInputStream(),"jdonkey"+"/"+ps.getUserId()+"/"+name);
     }
 
 }

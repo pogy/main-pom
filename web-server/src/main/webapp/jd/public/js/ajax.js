@@ -367,7 +367,7 @@ function ready_publish(){
             });
         }
     });
-    skudata = parse.stringify(skudata);
+    skudata = JSON.stringify(skudata);
     $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
 
     // var prop_arr = new Array;

@@ -27,7 +27,7 @@
     <bean id="exceptionResolver"
           class="com.shigu.resolver.ExceptionResolver">
     </bean>
-    <import resource="spring-database/mall.xml"/>
+    <import resource="spring-database/jd.xml"/>
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
     </bean>

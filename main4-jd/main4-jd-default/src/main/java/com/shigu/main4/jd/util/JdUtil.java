@@ -47,7 +47,6 @@ public class JdUtil {
             checkJdResponst(response);
             return response;
         } catch (JdException e) {
-            e.printStackTrace();
             throw new JdUpException(e.getErrCode(),e.getErrMsg());
         }
     }

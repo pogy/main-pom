@@ -2,6 +2,8 @@ package com.shigu.goodsup.jd.vo;
 
 import com.taobao.api.domain.Item;
 
+import java.text.DecimalFormat;
+
 /**
  * 页面显示要用的商品数据
  * @author zhaohongbo
@@ -34,12 +36,11 @@ public class JdPageItem {
 	 * @return
 	 */
 	public String getProfit() {
-//		Double p1=Double.valueOf(item.getPrice());//零售价
-//		Double p0=Double.valueOf(piPrice);//批价
-//		Double cp=p1-p0;//差价
-//		DecimalFormat df=new DecimalFormat("0.00");
-//		return df.format(cp);
-		return "0";
+		Double p1=Double.valueOf(item.getPrice());//零售价
+		Double p0=Double.valueOf(piPrice);//批价
+		Double cp=p1-p0;//差价
+		DecimalFormat df=new DecimalFormat("0.00");
+		return df.format(cp);
 	}
 
 	public int getTitleLength() {

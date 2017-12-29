@@ -90,23 +90,11 @@ public class JdUpItemService {
      * @throws Main4Exception
      */
     public JdPageItem findGoods(Long goodsId) throws Main4Exception{
-        ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
-        if(sgig==null){
-            throw new Main4Exception(goodsId+" goodsId生成表没找到");
-        }
-        ShiguGoodsTiny sgt=new ShiguGoodsTiny();
-        sgt.setGoodsId(goodsId);
-        sgt.setWebSite(sgig.getWebSite());
-        sgt=shiguGoodsTinyMapperImpl.selectByPrimaryKey(sgt);
-        if(sgt==null){
-            throw new Main4Exception(goodsId+" goodsTiny表没找到");
-        }
-        sgt.setWebSite(sgig.getWebSite());
-
+        ShiguGoodsTiny sgt=selTiny(goodsId);
         JdPageItem pageItem=new JdPageItem();
         pageItem.setNumIid(sgt.getNumIid());
         pageItem.setStoreId(sgt.getStoreId());
-        pageItem.setWebSite(sgig.getWebSite());
+        pageItem.setWebSite(sgt.getWebSite());
         pageItem.setGoodsId(goodsId);
         pageItem.setHuohao(sgt.getGoodsNo());
         pageItem.setPiPrice(sgt.getPiPriceString());
@@ -119,7 +107,6 @@ public class JdUpItemService {
                 pageItem.setStoreNum(gmi.get(0).getShopNum());
             }
         }
-
         Item it=staticGoods(sgt);
         pageItem.setItem(it);
         if(sgt.getNumIid()==null){
@@ -262,11 +249,15 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item) throws Main4Exception, CloneNotSupportedException, IOException, ClassNotFoundException {
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, CloneNotSupportedException, IOException, ClassNotFoundException {
         PropsVO tbPropsVO=propsService.selProps(item.getCid());
-        tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(item.getItemImgs(), PropImg.class),item.getPropertyAlias(),item
+        List<PropImg> propImgs=item.getPropImgs();
+        if (propImgs == null) {
+            propImgs=new ArrayList<>();
+        }
+        tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
                 .getInputStr(),item.getInputPids());
-        PropsVO prop=find(item,jdUserId,jdCid);
+        PropsVO prop=find(item,jdUserId,jdCid,brands);
         fillPropValue(prop.getColor(),tbPropsVO.getColor());
         fillProp(prop.getSaleProps(),tbPropsVO.getSaleProps());
         fillProp(prop.getProperties(),tbPropsVO.getProperties());
@@ -283,7 +274,7 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid) throws Main4Exception, IOException {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception,IOException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){
@@ -346,6 +337,7 @@ public class JdUpItemService {
                 pv.addPropValueList(values.stream().map(jdPropValue -> {
                     PropertyValueVO propertyValueVO=new PropertyValueVO();
                     propertyValueVO.setName(jdPropValue.getName());
+                    propertyValueVO.setOldName(jdPropValue.getName());
                     propertyValueVO.setVid(jdPropValue.getVid());
                     propertyValueVO.setSelected(false);
                     return propertyValueVO;
@@ -364,8 +356,7 @@ public class JdUpItemService {
                 continue;
             }
             if(jdItemProp.getIsBrand()==1){
-                List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(jdUserId);
-                pv.addPropValueList(allBrand.stream().map(jdVenderBrandPubInfoVO -> {
+                pv.addPropValueList(brands.stream().map(jdVenderBrandPubInfoVO -> {
                     PropertyValueVO vv=new PropertyValueVO();
                     vv.setVid(new Long(jdVenderBrandPubInfoVO.getErpBrandId()));
                     vv.setName(jdVenderBrandPubInfoVO.getBrandName());
@@ -596,7 +587,7 @@ public class JdUpItemService {
      * @param sgt
      * @return
      */
-    private Item staticGoods(ShiguGoodsTiny sgt){
+    public Item staticGoods(ShiguGoodsTiny sgt){
         Item it=new Item();
         //把微表数据奉上
         it=parseGoodsTinyToItem(it, sgt);
@@ -614,5 +605,20 @@ public class JdUpItemService {
             }
         }
         return it;
+    }
+    public ShiguGoodsTiny selTiny(Long goodsId) throws Main4Exception {
+        ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if(sgig==null){
+            throw new Main4Exception(goodsId+" goodsId生成表没找到");
+        }
+        ShiguGoodsTiny sgt=new ShiguGoodsTiny();
+        sgt.setGoodsId(goodsId);
+        sgt.setWebSite(sgig.getWebSite());
+        sgt=shiguGoodsTinyMapperImpl.selectByPrimaryKey(sgt);
+        if(sgt==null){
+            throw new Main4Exception(goodsId+" goodsTiny表没找到");
+        }
+        sgt.setWebSite(sgig.getWebSite());
+        return sgt;
     }
 }

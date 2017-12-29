@@ -1,8 +1,7 @@
 package com.shigu.jd.img.services;
 
-
-import com.opentae.data.mall.beans.JdSessionMap;
-import com.opentae.data.mall.interfaces.JdSessionMapMapper;
+import com.opentae.data.jd.beans.JdSessionMap;
+import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.shigu.exceptions.JdAuthFailureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

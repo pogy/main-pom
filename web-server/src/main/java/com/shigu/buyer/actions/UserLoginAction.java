@@ -219,10 +219,16 @@ public class UserLoginAction {
                         + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
                 break;
             }
-            case 5:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
-
-                    url=url.replace("&view=web","&view=wap");
+            case 5: {
+                url = llu.callTbUrl().replace("http://www.571xz.net/", xzSdkClient.getYjHost());
+                url = url.replace("&view=web", "&view=wap");
+                break;
+            }
+            //京东授权
+            case 6:{
+                url = "http://www.571xz.com/jd/login.htm";
+                break;
+            }
 
 
 
