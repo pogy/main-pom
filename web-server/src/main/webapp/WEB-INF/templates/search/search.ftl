@@ -69,7 +69,7 @@
     <div class="goodsList clearfix">
         <#list goodslist as goods>
             <div class="goodsitem" data-goodsid="${goods.id!}">
-                <a class="imgbox" href="/item.htm?id=${goods.id!}" target="_blank">
+                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">
                     <#if goods_index lt 20>
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
                     <#else>
@@ -81,9 +81,9 @@
                     <span class="viewCountBox"></span>
                 </p>
                 <#if goods.goodsNo?? && goods.goodsNo != "">
-                    <p class="goodsNo"><a href="/item.htm?id=${goods.id!}" target="_blank" title="${goods.goodsNo!}">货号：${goods.highLightGoodsNo!}</a></p>
+                    <p class="goodsNo"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank" title="${goods.goodsNo!}">货号：${goods.highLightGoodsNo!}</a></p>
                 <#else>
-                    <p class="title"><a href="/item.htm?id=${goods.id!}" target="_blank" title="${goods.title!}">${goods.highLightTitle!}</a></p>
+                    <p class="title"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank" title="${goods.title!}">${goods.highLightTitle!}</a></p>
                 </#if>
                 <div class="p3">
                     <span class="storeName"><a href="/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
