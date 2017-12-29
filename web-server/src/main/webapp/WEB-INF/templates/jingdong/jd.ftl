@@ -153,7 +153,7 @@
                                 <#if imgs[index_index]??>
                                     <li data-index="${index}" class="has-media">
                                         <input type="hidden" class="picUrl" name="picUrl[]" id="picurl${index}"
-                                               value="${imgs[index_index].url}">
+                                               value="${imgs[index_index].url}_800x800.jpg">
 
                                         <div class="operate">
                                             <i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>
