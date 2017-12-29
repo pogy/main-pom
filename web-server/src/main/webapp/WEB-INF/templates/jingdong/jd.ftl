@@ -250,7 +250,7 @@
                 <div class="field clearfix">
                     <label class="fl">店铺中分类</label>
                     <div class="field-content fl">
-                        <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类</div>
+                        <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类<a href="javascript:void(0);" id="ShopCatUpdate" class="gengxin"><i></i>立即更新</a></div>
                         <div class="list-box" id="shopcatlist">
                             <ul class="J_ShopCatList" id="J_ShopCatList">
                                 <#if allData.storeCats??>

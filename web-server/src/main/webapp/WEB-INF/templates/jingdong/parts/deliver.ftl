@@ -8,6 +8,7 @@
         </#list>
     </#if>
 </select>
+<a href="javascript:;" id="deliverUpdate" class="gengxin gengxin_yf"><i></i>更新运费模板</a>
 <div class="msg-error" style="display: none;margin-top: 3px;">
     <i class="icon icon-error"></i>
     <div class="msg"></div>
