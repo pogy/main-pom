@@ -306,14 +306,14 @@
                 <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.pid}</#if>">
                 <input type="hidden" name="sizePid" value="${allData.props.sizePid}">
                 <input type="hidden" id="cid" name="cid" value="${allData.props.cid}">
-                <input type="hidden" id="uid" name="uid" value="${allData.tbUserId}">
+                <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
                 <input type="hidden" id="mid" name="mid" value="${allData.items.goodsId}">
                 <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="http://upload.571xz.com/">
                 <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
                 <input type="hidden" id="getToken" name="getToken"
-                       value="uid=${allData.tbUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
+                       value="uid=-${allData.jdUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
             </div>
     </form>
 </div>
