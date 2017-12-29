@@ -460,6 +460,7 @@ function ready_publish(){
     var is_show_full=0;//是否提示过满了
 //将描述图上传到淘宝并替换链接
     function download_detail(url,order,times) {
+        return;
         if(!times){times=0;}
         if(is_pic_full==1){
             order=imgAllNum+1;
@@ -528,6 +529,7 @@ function ready_publish(){
 
     //将主图片上传到星座网
     function download_main(url,order){
+        return;
         if(order>img_arr_list_main_count){
             download_prop(img_arr_list_prop,1);return false;
         }

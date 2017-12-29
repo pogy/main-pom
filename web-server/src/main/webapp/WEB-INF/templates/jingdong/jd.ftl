@@ -153,7 +153,7 @@
                                 <#if imgs[index_index]??>
                                     <li data-index="${index}" class="has-media">
                                         <input type="hidden" class="picUrl" name="picUrl[]" id="picurl${index}"
-                                               value="${imgs[index_index].url}">
+                                               value="${imgs[index_index].url}_800x800.jpg">
 
                                         <div class="operate">
                                             <i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>
@@ -250,7 +250,7 @@
                 <div class="field clearfix">
                     <label class="fl">店铺中分类</label>
                     <div class="field-content fl">
-                        <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类</div>
+                        <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类<a href="javascript:void(0);" id="ShopCatUpdate" class="gengxin"><i></i>立即更新</a></div>
                         <div class="list-box" id="shopcatlist">
                             <ul class="J_ShopCatList" id="J_ShopCatList">
                                 <#if allData.storeCats??>
@@ -306,14 +306,14 @@
                 <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.pid}</#if>">
                 <input type="hidden" name="sizePid" value="${allData.props.sizePid}">
                 <input type="hidden" id="cid" name="cid" value="${allData.props.cid}">
-                <input type="hidden" id="uid" name="uid" value="${allData.tbUserId}">
+                <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
                 <input type="hidden" id="mid" name="mid" value="${allData.items.goodsId}">
                 <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="http://upload.571xz.com/">
                 <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
                 <input type="hidden" id="getToken" name="getToken"
-                       value="uid=${allData.tbUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
+                       value="uid=-${allData.jdUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
             </div>
     </form>
 </div>

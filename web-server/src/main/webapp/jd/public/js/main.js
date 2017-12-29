@@ -924,7 +924,7 @@ $(function(){
 
             if($imgE.length==0|| !$undel.is(":hidden")){
                 imgId=tileVal.replace(/:/, '_');  //id里有：jquey赋值会失败
-                imgHtml += '<input type="hidden" id="prop_img-'+imgId+'" name="prop_img[]" class="prop_img_default" data-value="'+tileVal+'" value="'+imgId+'##'+imgUrl+'">';
+                imgHtml += '<input type="hidden" id="prop_img-'+imgId+'" name="prop_img[]" class="prop_img_default" data-value="'+tileVal+'" value="'+imgId+'##'+imgUrl+'_800x800.jpg">';
                 imgHtml += '<a target="_blank" href="'+imgUrl+'">';
                 imgHtml += '<img width="40px" src="'+imgUrl+'"></a>';
                 imgHtml += '<a class="del" href="javascript:void(0);">删除</a>';
