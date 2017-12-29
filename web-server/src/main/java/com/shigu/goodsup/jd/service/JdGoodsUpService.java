@@ -1,6 +1,5 @@
 package com.shigu.goodsup.jd.service;
 
-
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
@@ -8,7 +7,7 @@ import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.jd.exceptions.JdUpException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.service.JdGoodsService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
@@ -51,11 +50,11 @@ public class JdGoodsUpService {
      * 根据goodsId获取tbCid,然后去jd_tb_bind表查询,如果查不到,则不能上传
      * @return
      */
-    public Boolean goodsCanbeUploadedToJd(Long goodsId) throws JdUpException {
+    public Boolean goodsCanbeUploadedToJd(Long goodsId) throws Main4Exception {
         ShiguGoodsIdGenerator generator;
         // 验证参数，并查询分站存在
         if (goodsId == null || (generator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId)) == null) {
-            throw new JdUpException("未查询到分站信息");
+            throw new Main4Exception("未查询到分站信息");
         }
         String webSite = generator.getWebSite();
         // 获取出售中商品
@@ -63,7 +62,7 @@ public class JdGoodsUpService {
         tiny.setGoodsId(goodsId);
         tiny.setWebSite(webSite);
         if ((tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny)) == null) {
-            throw new JdUpException("未查询到商品信息");
+            throw new Main4Exception("未查询到商品信息");
         }
         Long tbCid = tiny.getCid();
         return jdGoodsService.goodsCanbeUploadedToJd(tbCid);

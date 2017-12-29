@@ -18,8 +18,8 @@ import com.shigu.goodsup.jd.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.service.JdOrderService;
 import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
@@ -29,19 +29,12 @@ import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
 import com.shigu.tb.finder.vo.PropType;
 import com.taobao.api.domain.*;
 import org.apache.commons.lang3.StringUtils;
-import com.taobao.api.domain.Item;
-import com.taobao.api.domain.ItemImg;
-import com.taobao.api.domain.Location;
-import com.taobao.api.domain.PropImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,9 +132,8 @@ public class JdUpItemService {
      * 获取运费模版
      * @param jdUserId
      * @return
-     * @throws JdUpException
      */
-    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
+    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdAuthFailureException, JdApiException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.getPostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -161,9 +153,8 @@ public class JdUpItemService {
      * 更新运费模版
      * @param jdUserId
      * @return
-     * @throws JdUpException
      */
-    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdAuthFailureException, JdApiException {
         List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.updatePostTemplates(jdUserId);
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
@@ -183,9 +174,8 @@ public class JdUpItemService {
      * 获取店内类目
      * @param jdUserId
      * @return
-     * @throws JdUpException
      */
-    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
+    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdAuthFailureException, JdApiException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
@@ -209,9 +199,8 @@ public class JdUpItemService {
      * 更新店内类目
      * @param jdUserId
      * @return
-     * @throws JdUpException
      */
-    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdUpException, JdAuthFailureException, IOException {
+    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdAuthFailureException, JdApiException {
         List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
         Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
@@ -249,7 +238,7 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, CloneNotSupportedException, IOException, ClassNotFoundException {
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, IOException, ClassNotFoundException, CloneNotSupportedException, JdApiException {
         PropsVO tbPropsVO=propsService.selProps(item.getCid());
         List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
@@ -274,7 +263,7 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception,IOException {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, IOException, JdApiException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){
@@ -291,7 +280,7 @@ public class JdUpItemService {
         List<JdPropValue> jdPropValues=jdPropValueMapper.selectByExample(jdPropValueExample);
         Map<Long,List<JdPropValue>> jdPropValueMap=jdPropValues.stream().collect(Collectors.groupingBy(JdPropValue::getPid));
 
-        prop.setCid(item.getCid());
+        prop.setCid(jdCid);
         List<PropertyItemVO> saleProps=new ArrayList<>();
         List<PropertyItemVO> properties=new ArrayList<>();
         List<PropertyItemVO> specProps=new ArrayList<>();

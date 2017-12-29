@@ -1,6 +1,5 @@
 package com.shigu.main4.jd.service.impl;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.data.jd.beans.JdSessionMap;
@@ -8,7 +7,6 @@ import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.jd.constant.JdUrlConstant;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.util.HttpClientUtil;
 import com.shigu.main4.jd.util.JdUtil;
@@ -66,15 +64,20 @@ public class JdAuthServiceImpl implements JdAuthService{
      * @throws IOException
      */
     @Override
-    public JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException, JdAuthFailureException {
+    public JdAuthedInfoVO getAuthedInfo(String code) throws JdAuthFailureException {
         String url = JdUrlConstant.JD_AUTH_TOKEN_URL
                         .replace("JD_APPKEY",jdUtil.getJdAppkey())
                         .replace("JD_SECRET",jdUtil.getJdSecret())
                         .replace("JD_REDIRECT_URI",jdUtil.getJdRedirectUri())
                         .replace("CODE",code)
                         .replace("JD_STATE",jdUtil.getJdState());
-        HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
-        String entityString = EntityUtils.toString(entity);
+        String entityString = null;
+        try {
+            HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
+            entityString = EntityUtils.toString(entity);
+        } catch (IOException e) {
+            throw new JdAuthFailureException("授权失败");
+        }
         JdAuthedInfoVO jdAithedInfo = getJdAithedInfo(entityString);
 
         JdSessionMap jdSessionMap = new JdSessionMap();
@@ -103,7 +106,7 @@ public class JdAuthServiceImpl implements JdAuthService{
     }
 
     @Override
-    public JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException, IOException, JdUpException {
+    public JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException {
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
@@ -139,13 +142,18 @@ public class JdAuthServiceImpl implements JdAuthService{
      * @param refreshToken
      */
     @Override
-    public JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException, JdAuthFailureException {
+    public JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws JdAuthFailureException {
         String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
                 .replace("JD_APPKEY",jdUtil.getJdAppkey())
                 .replace("JD_SECRET",jdUtil.getJdSecret())
                 .replace("REFRESH_TOKEN",refreshToken);
-        HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
-        String entityString = EntityUtils.toString(entity);
+        String entityString = null;
+        try {
+            HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
+            entityString = EntityUtils.toString(entity);
+        } catch (IOException e) {
+            throw new JdAuthFailureException("授权失效,请重新授权");
+        }
         JdAuthedInfoVO jdAithedInfo = getJdAithedInfo(entityString);
 
         JdSessionMap jdSessionMap = new JdSessionMap();
@@ -159,7 +167,7 @@ public class JdAuthServiceImpl implements JdAuthService{
         return jdAithedInfo;
     }
 
-    private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdUpException, JdAuthFailureException {
+    private JdAuthedInfoVO getJdAithedInfo(String entityString) throws JdAuthFailureException {
         //注释：
         //uid：授权用户对应的京东ID
         //user_nick：授权用户对应的京东昵称

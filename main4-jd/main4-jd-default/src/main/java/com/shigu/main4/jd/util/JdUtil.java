@@ -6,8 +6,8 @@ import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.JdRequest;
 import com.jd.open.api.sdk.response.AbstractResponse;
 import com.shigu.main4.jd.constant.JdUrlConstant;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +41,25 @@ public class JdUtil {
        return new DefaultJdClient(JdUrlConstant.JD_SERVER_URL,accessToken,jdAppkey,jdSecret);
     }
 
-    public <T extends AbstractResponse> T execute(JdRequest<T> request,String accessToken) throws JdUpException, JdAuthFailureException {
+    public <T extends AbstractResponse> T execute(JdRequest<T> request,String accessToken) throws JdApiException, JdAuthFailureException {
         try {
             T response = getJdClient(accessToken).execute(request);
             checkJdResponst(response);
             return response;
         } catch (JdException e) {
-            throw new JdUpException(e.getErrCode(),e.getErrMsg());
+            throw new JdApiException(e.getErrMsg());
         }
     }
 
     /**
      * 验证jd接口是否正确返回
      */
-    private void checkJdResponst(AbstractResponse response) throws JdUpException, JdAuthFailureException {
+    private void checkJdResponst(AbstractResponse response) throws JdApiException, JdAuthFailureException {
         if ("19".equals(response.getCode())) {
             throw new JdAuthFailureException("授权失效,请重新授权");
         }
         if ( !( "0".equals(response.getCode())) ) {
-            throw new JdUpException(response.getCode(),response.getZhDesc());
+            throw new JdApiException(response.getZhDesc());
         }
     }
 

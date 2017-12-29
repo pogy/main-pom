@@ -524,7 +524,8 @@ function ready_publish(){
                 download_detail(url,order,times);
             },"json");
     }
-    download_detail(imgsList,1,0);
+    //download_detail(imgsList,1,0);
+    upForm();
 
 
     //将主图片上传到星座网

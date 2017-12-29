@@ -1,8 +1,10 @@
 package com.shigu.jd.img.services;
 
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureDeleteRequest;
+import com.jd.open.api.sdk.request.imgzone.ImgzonePictureQueryRequest;
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureUploadRequest;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureDeleteResponse;
+import com.jd.open.api.sdk.response.imgzone.ImgzonePictureQueryResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureUploadResponse;
 import com.openJar.beans.JdImgInfo;
 import com.openJar.commons.MD5Attestation;
@@ -41,6 +43,7 @@ public class ImgMovingService {
      * @throws JdUpException
      */
     public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws JdAuthFailureException {
+        JdUpImgResponse jdUptoItemImgResponse=new JdUpImgResponse();
         String accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
         StringBuffer imgIds = new StringBuffer();
         String errMsg = null;
@@ -48,6 +51,17 @@ public class ImgMovingService {
         Map<String,JdImgInfo> jdImgInfos = new HashMap<>();
         for (String imgUrl : imgUrls) {
             try {
+                String pictureName = MD5Attestation.MD5Encode(imgUrl);
+                ImgzonePictureQueryRequest imgzonePictureQueryRequest=new ImgzonePictureQueryRequest();
+                imgzonePictureQueryRequest.setPictureName(pictureName);
+                ImgzonePictureQueryResponse imgzonePictureQueryResponse = jdClientService.execute(imgzonePictureQueryRequest, accessToken);
+                if (imgzonePictureQueryResponse.getTotalNum() > 0) {
+                    JdImgInfo jdImgInfo = new JdImgInfo();
+                    jdImgInfo.setPictureId(imgzonePictureQueryResponse.getImgList().get(0).getPictureId());
+                    jdImgInfo.setPictureUrl(imgzonePictureQueryResponse.getImgList().get(0).getPictureUrl());
+                    jdImgInfos.put(imgUrl,jdImgInfo);
+                    continue;
+                }
                 ImgzonePictureUploadRequest request = new ImgzonePictureUploadRequest();
                 //下载图片
                 byte[] imgData = DownImage.downImgFile(imgUrl);
@@ -57,12 +71,12 @@ public class ImgMovingService {
                 }
                 request.setImageData(imgData);
                 request.setPictureCateId(jdUpImgRequest.getPictureCateId());
-                request.setPictureName(MD5Attestation.MD5Encode(imgUrl));
+                request.setPictureName(pictureName);
 
                 ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
                 //返回码为1时为操作成功，返回码为0时为操作失败
                 if ("0".equals(response.getReturnCode())) {
-                    break;
+                    throw new JdUpException();
                 }
                 JdImgInfo jdImgInfo = new JdImgInfo();
                 jdImgInfo.setPictureId(response.getPictureId());
@@ -70,22 +84,15 @@ public class ImgMovingService {
                 jdImgInfos.put(imgUrl,jdImgInfo);
                 imgIds.append(",").append(response.getPictureId());
             } catch (JdUpException|ImgDownloadException e) {
-                e.printStackTrace();
-                errMsg = e.getMessage();
+                try {
+                    imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
+                } catch (JdUpException ignored) {
+                }
+                jdUptoItemImgResponse.setReturnCode("0");
+                jdUptoItemImgResponse.setDesc("图片搬家失败");
+                return jdUptoItemImgResponse;
             }
         }
-
-        JdUpImgResponse jdUptoItemImgResponse = new JdUpImgResponse();
-        if(imgUrls.size() != jdImgInfos.size()){
-            try {
-                imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
-            } catch (JdUpException e) {
-                e.printStackTrace();
-            }
-            jdUptoItemImgResponse.setReturnCode("0");
-            jdUptoItemImgResponse.setDesc(errMsg);
-        }
-
         jdUptoItemImgResponse.setReturnCode("1");
         jdUptoItemImgResponse.setJdImgInfos(jdImgInfos);
         return jdUptoItemImgResponse;

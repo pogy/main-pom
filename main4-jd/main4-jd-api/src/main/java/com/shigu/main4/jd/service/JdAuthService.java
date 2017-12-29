@@ -1,7 +1,6 @@
 package com.shigu.main4.jd.service;
 
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ public interface JdAuthService {
      * @return
      * @throws IOException
      */
-    JdAuthedInfoVO getAuthedInfo(String code) throws IOException, JdUpException, JdAuthFailureException;
+    JdAuthedInfoVO getAuthedInfo(String code) throws JdAuthFailureException;
 
     /**
      * 根据星座网用户Id获取授权信息
@@ -33,7 +32,7 @@ public interface JdAuthService {
      * @return
      * @throws IOException
      */
-    JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException, IOException, JdUpException;
+    JdAuthedInfoVO getAuthedInfo(Long jdUid) throws JdAuthFailureException;
 
 
     /**
@@ -41,6 +40,6 @@ public interface JdAuthService {
      * 刷新token
      * @param refreshToken
      */
-    JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws IOException, JdUpException, JdAuthFailureException;
+    JdAuthedInfoVO refreshToken(Long id,String refreshToken) throws JdAuthFailureException;
 
 }

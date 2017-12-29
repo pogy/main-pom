@@ -11,17 +11,20 @@ import com.opentae.data.jd.interfaces.JdTbBindMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
+import com.shigu.main4.jd.exceptions.ImgDownloadException;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdGoodsService;
 import com.shigu.main4.jd.util.JdUtil;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
+import com.shigu.main4.jd.vo.JdSkuInfoVO;
 import com.shigu.main4.jd.vo.JdWareAddVO;
+import com.shigu.main4.jd.util.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * Created By admin on 2017/12/14/16:45
@@ -45,23 +48,25 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * @param bo
      * @param jdUid
      * @throws JdException
-     * @throws IOException
      */
     @Override
-    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdAuthFailureException, ImgDownloadException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         WareAddRequest request = BeanMapper.map(bo, WareAddRequest.class);
+        request.setWareImage(DownImage.downImgFile(bo.getWareImageUrl()));
         request.setWarePackType("1");//普通商品
-        WareAddResponse response;
-        jdUtil.execute(request,authedInfo.getAccessToken());
-        return null;
+        WareAddResponse response=jdUtil.execute(request,authedInfo.getAccessToken());
+        JdWareAddVO vo=new JdWareAddVO();
+        vo.setGoodsId(response.getWareId());
+        vo.setJdSkuInfoVOS(response.getSkuInfo().stream().map(skuInfo -> BeanMapper.map(authedInfo,JdSkuInfoVO.class)).collect(Collectors.toList()));
+        return vo;
     }
 
     /**
      * 新增和修改商品图片
      */
     @Override
-    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImageWriteUpdateRequest request=new ImageWriteUpdateRequest();
         request.setColorId(bo.getColorId());
@@ -93,7 +98,7 @@ public class JdGoodsServiceImpl implements JdGoodsService{
      * @param templateId
      */
     @Override
-    public Boolean bindPostTemplate(Long jdUid, Long wareId, Long templateId) throws JdAuthFailureException, JdUpException, IOException {
+    public Boolean bindPostTemplate(Long jdUid, Long wareId, Long templateId) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         TransportWriteUpdateWareTransportIdRequest request=new TransportWriteUpdateWareTransportIdRequest();
         request.setWareId(wareId);

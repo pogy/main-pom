@@ -1,5 +1,7 @@
 package com.shigu.goodsup.jd.bo;
 
+import java.util.List;
+
 public class JdUploadBO {
     private String stuffStatus;
     private String title;
@@ -18,6 +20,9 @@ public class JdUploadBO {
     private String width;
     private String height;
     private String weight;
+    private String goodsNo;
+    private Long postage_id;
+    private String approve_status;
 
 
 
@@ -158,4 +163,29 @@ public class JdUploadBO {
     public void setWeight(String weight) {
         this.weight = weight;
     }
+
+    public String getGoodsNo() {
+        return this.goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
+    public Long getPostage_id() {
+        return this.postage_id;
+    }
+
+    public void setPostage_id(Long postage_id) {
+        this.postage_id = postage_id;
+    }
+
+    public String getApprove_status() {
+        return this.approve_status;
+    }
+
+    public void setApprove_status(String approve_status) {
+        this.approve_status = approve_status;
+    }
+
 }

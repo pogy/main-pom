@@ -6,8 +6,8 @@ import com.jd.open.api.sdk.response.order.SkuFareTemplateServiceGetTemplatesResp
 import com.opentae.data.jd.beans.JdLogistTemplate;
 import com.opentae.data.jd.examples.JdLogistTemplateExample;
 import com.opentae.data.jd.interfaces.JdLogistTemplateMapper;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdOrderService;
 import com.shigu.main4.jd.util.JdUtil;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,7 @@ public class JdOrderServiceImpl implements JdOrderService {
      * @return
      */
     @Override
-    public List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdPostTemplateVO> getPostTemplates(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdLogistTemplateExample example =  new JdLogistTemplateExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
         List<JdLogistTemplate> jdLogistTemplates = jdLogistTemplateMapper.selectByExample(example);
@@ -69,7 +68,7 @@ public class JdOrderServiceImpl implements JdOrderService {
 
     @Override
     @Transactional
-    public List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdPostTemplateVO> updatePostTemplates(Long jdUid) throws JdAuthFailureException, JdApiException {
         //先删
         JdLogistTemplateExample example =  new JdLogistTemplateExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
@@ -82,13 +81,9 @@ public class JdOrderServiceImpl implements JdOrderService {
      *新增运费模板信息
      * @param jdUid
      * @return
-     * @throws JdUpException
      */
-    private List<JdPostTemplateVO> addPostTemolates(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    private List<JdPostTemplateVO> addPostTemolates(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
-        }
         SkuFareTemplateServiceGetTemplatesRequest request=new SkuFareTemplateServiceGetTemplatesRequest();
         SkuFareTemplateServiceGetTemplatesResponse response = jdUtil.execute(request, authedInfo.getAccessToken());
         List<SkuFareTemplate> templateList = response.getQuerySkuFareTemplateResult().getTemplateList();

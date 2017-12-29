@@ -4,8 +4,8 @@ import com.opentae.data.jd.examples.JdItemPropExample;
 import com.opentae.data.jd.examples.JdPropValueExample;
 import com.opentae.data.jd.examples.ShiguJdcatExample;
 import com.opentae.data.jd.interfaces.*;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.vo.*;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class BaseSpringTest {
     List list=Arrays.asList(1620L,15248L,1319L);
 
 //    @Test
-    public void v() throws JdUpException, IOException, JdAuthFailureException {
+    public void v() throws JdAuthFailureException, JdApiException {
         List<ShiguJdcat> l=new ArrayList<>();
         List<JdCategoryReadVO> jdCats=jdCategoryService.getJdCategoryByPid(userId,0L);
         jdCats=jdCats.stream().filter(jdCategoryReadVO -> list.contains(jdCategoryReadVO.getId())).collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class BaseSpringTest {
         }
         System.out.println();
     }
-    private void findCats(JdCategoryReadVO parentJdCat,String pname,List<ShiguJdcat> list) throws JdUpException, IOException, JdAuthFailureException {
+    private void findCats(JdCategoryReadVO parentJdCat,String pname,List<ShiguJdcat> list) throws JdAuthFailureException, JdApiException {
         ShiguJdcat cat=new ShiguJdcat();
         list.add(cat);
         cat.setCid(parentJdCat.getId());
@@ -75,7 +75,7 @@ public class BaseSpringTest {
     }
 
     @Test
-    public void prop() throws JdUpException, IOException, JdAuthFailureException {
+    public void prop() throws JdAuthFailureException, JdApiException {
         ShiguJdcatExample jdcatExample=new ShiguJdcatExample();
         jdcatExample.createCriteria().andIsParentEqualTo(0).andCidGreaterThanOrEqualTo(0L);
         jdcatExample.setOrderByClause("cid asc");
@@ -114,7 +114,7 @@ public class BaseSpringTest {
                 for(JdItemProp p:props){
                     jdItemPropMapper.insertSelective(p);
                 }
-            } catch (JdUpException e) {
+            } catch (Exception e) {
                 System.out.println(cat.getCid());
                 throw e;
             }
@@ -157,7 +157,7 @@ public class BaseSpringTest {
 
     Long lastPid=0L;
 //    @Test
-    public void findPropValue() throws JdUpException, IOException, JdAuthFailureException {
+    public void findPropValue() throws JdAuthFailureException, JdApiException {
         Set<Long> cids=jdTbBindMapper.select(new JdTbBind()).stream().map(JdTbBind::getJdCid).collect(Collectors.toSet());
         JdItemPropExample jdItemPropExample=new JdItemPropExample();
         jdItemPropExample.createCriteria().andCidIn(new ArrayList<>(cids)).andPidGreaterThanOrEqualTo(lastPid);

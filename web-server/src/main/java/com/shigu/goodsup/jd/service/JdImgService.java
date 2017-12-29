@@ -5,14 +5,14 @@ import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.openJar.tools.OpenClient;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,11 +35,15 @@ public class JdImgService {
      * @return
      * @throws JdUpImgException
      */
-    public JdUpImgResponse addImgs(JdUpImgRequest request) throws JdUpImgException, JdNotBindException {
+    public JdUpImgResponse addImgs(Long jdUid,List<String> imgUrls,Long imgCategoryId) throws Main4Exception {
         OpenClient openClient = openClientService.getOpenClient();
+        JdUpImgRequest request = new JdUpImgRequest();
+        request.setJdUid(jdUid);
+        request.setImgUrls(imgUrls);
+        request.setPictureCateId(imgCategoryId);
         JdUpImgResponse response = openClient.execute(request);
         if(!"1".equals(response.getReturnCode())){
-            throw new JdUpImgException(String.valueOf(response.getReturnCode()),response.getDesc());
+            throw new Main4Exception(response.getDesc());
         }
         return response;
     }
@@ -47,7 +51,7 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdNotBindException, JdAuthFailureException, JdApiException {
         String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
        return jdGoodsService.jdImageUpdate(bo, Long.valueOf(jdUid));
     }

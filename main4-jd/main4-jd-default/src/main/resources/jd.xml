@@ -22,7 +22,9 @@
     <dubbo:service interface="com.shigu.main4.jd.service.JdOrderService" ref="jdOrderService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdAuthService" ref="jdAuthService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdCategoryService" ref="jdCategoryService" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.jd.service.JdGoodsService" ref="jdGoodsService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.jd.service.JdGoodsService" ref="jdGoodsService" retries="0" timeout="20000" >
+        <dubbo:method name="upToJd" timeout="600000"/>
+    </dubbo:service>
     <dubbo:service interface="com.shigu.main4.jd.service.JdServiceMarketService" ref="jdServiceMarketService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.jd.service.JdShopService" ref="jdShopService" retries="0" timeout="20000" />
 

@@ -16,10 +16,6 @@ public class JdUpImgException extends OpenException implements Serializable{
        super.setErrMsg(errorMsg);
     }
 
-    public JdUpImgException(String errorCode, String errorMsg) {
-       super.setCode(errorCode);
-       super.setErrMsg(errorMsg);
-    }
 
 
 }

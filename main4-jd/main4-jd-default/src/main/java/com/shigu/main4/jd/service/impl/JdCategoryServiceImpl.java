@@ -19,8 +19,8 @@ import com.opentae.data.jd.beans.JdShopCategory;
 import com.opentae.data.jd.examples.JdShopCategoryExample;
 import com.opentae.data.jd.interfaces.JdShopCategoryMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.util.JdUtil;
@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,10 +53,9 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * 京东自定义店内分类
      * @param jdUid
      * @throws JdException
-     * @throws IOException
      */
     @Override
-    public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdShopCategoryVO> getJdSellercats(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdShopCategoryExample example = new JdShopCategoryExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
         List<JdShopCategory> jdShopCategories = jdShopCategoryMapper.selectByExample(example);
@@ -89,7 +87,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      */
     @Override
     @Transactional
-    public List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdShopCategoryVO> updateJdSellercats(Long jdUid) throws JdAuthFailureException, JdApiException {
         //先删
         JdShopCategoryExample example = new JdShopCategoryExample();
         example.createCriteria().andJdUidEqualTo(jdUid);
@@ -103,10 +101,9 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
      * @param jdUid
      * @throws JdException
-     * @throws IOException
      */
     @Override
-    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid,Long cid,Integer type) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindAttrsByCategoryIdJosRequest request = new CategoryReadFindAttrsByCategoryIdJosRequest();
         request.setCid(cid);
@@ -164,14 +161,10 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * 获取商家类目信息
      * @param jdUid
      * @return
-     * @throws JdUpException
      */
     @Override
-    public List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdCategoryVO> getJdWarecats(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        if (authedInfo == null) {
-            throw new JdUpException("未获取到京东授权信息");
-        }
         CategorySearchRequest request=new CategorySearchRequest();
         CategorySearchResponse response = jdUtil.execute(request,authedInfo.getAccessToken());
         List<Category> categorys = response.getCategory();
@@ -195,10 +188,9 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @param jdUid
      *  @param pid 父类目id
      * @return
-     * @throws JdUpException
      */
     @Override
-    public List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdCategoryReadVO> getJdCategoryByPid(Long jdUid,Long pid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindByPIdRequest request = new CategoryReadFindByPIdRequest();
         request.setParentCid(pid);
@@ -233,10 +225,9 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @param jdUid
      * @param pid
      * @return
-     * @throws JdUpException
      */
     @Override
-    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid,Long pid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdCategoryAttrValueJosVO> getCategoryReadFindValuesByAttrId(Long jdUid,Long pid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         CategoryReadFindValuesByAttrIdJosRequest req=new CategoryReadFindValuesByAttrIdJosRequest();
         req.setCategoryAttrId(pid);
@@ -265,7 +256,7 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
      * @return
      */
     @Override
-    public List<JdVenderBrandPubInfoVO> getAllBrand(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public List<JdVenderBrandPubInfoVO> getAllBrand(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         PopVenderCenerVenderBrandQueryRequest request=new PopVenderCenerVenderBrandQueryRequest();
         PopVenderCenerVenderBrandQueryResponse response = jdUtil.execute(request, authedInfo.getAccessToken());
@@ -279,9 +270,8 @@ public class JdCategoryServiceImpl implements  JdCategoryService {
     /**
      * 新增店内类目数据
      * @param jdUid
-     * @throws JdUpException
      */
-    private List<JdShopCategoryVO> addShopCatgorys(Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    private List<JdShopCategoryVO> addShopCatgorys(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         SellerCatsGetRequest request = new SellerCatsGetRequest();
         SellerCatsGetResponse response = jdUtil.execute(request,authedInfo.getAccessToken());

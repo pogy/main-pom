@@ -14,10 +14,13 @@ import com.opentae.data.jd.beans.JdShopInfo;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.jd.exceptions.ImgZoneException;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
+import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdShopService;
 import com.shigu.main4.jd.util.JdUtil;
+import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import com.shigu.main4.jd.vo.JdImgzoneCategoryVO;
 import com.shigu.main4.jd.vo.JdShopInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,8 @@ public class JdShopServiceImpl implements JdShopService {
 
     @Autowired
     private JdShopInfoMapper jdShopInfoMapper;
+    @Autowired
+    JdAuthService jdAuthService;
 
     /**
      * 京东店铺信息查询
@@ -49,7 +54,7 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    private JdShopInfoVO getJdShopInfo(String accessToken) throws JdUpException, JdAuthFailureException {
+    private JdShopInfoVO getJdShopInfo(String accessToken) throws JdAuthFailureException, JdApiException {
         VenderShopQueryRequest request = new VenderShopQueryRequest();
         VenderShopQueryResponse response = jdUtil.execute(request,accessToken);
         ShopJosResult shopJosResult = response.getShopJosResult();
@@ -63,21 +68,16 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws IOException
      */
     @Override
-    public JdShopInfoVO getJdShopInfo(Long jdUid) {
-        JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setJdUid(jdUid);
-        jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
-        if (jdSessionMap == null) {
-            return null;
-        }
+    public JdShopInfoVO getJdShopInfo(Long jdUid) throws JdAuthFailureException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         JdShopInfo jdShopInfo = new JdShopInfo();
-        jdShopInfo.setJdUid(jdSessionMap.getJdUid());
+        jdShopInfo.setJdUid(authedInfo.getUid());
         jdShopInfo = jdShopInfoMapper.selectOne(jdShopInfo);
         if (jdShopInfo == null) {
             return null;
         }
         JdShopInfoVO jdShopInfoVO = new JdShopInfoVO();
-        jdShopInfoVO.setJdUid(jdSessionMap.getJdUid());
+        jdShopInfoVO.setJdUid(authedInfo.getUid());
         jdShopInfoVO.setShopId(jdShopInfo.getJdShopId());
         jdShopInfoVO.setShopName(jdShopInfo.getJdShopName());
         jdShopInfoVO.setLogoUrl(jdShopInfo.getJdShopLogoUrl());
@@ -96,22 +96,17 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws IOException
      */
     @Override
-    public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdUpException, JdAuthFailureException {
-        JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setJdUid(jdUid);
-        jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
-        if (jdSessionMap == null) {
-            throw new JdUpException("更新京东店铺信息失败");
-        }
+    public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdAuthFailureException, JdApiException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
         JdShopInfo jdShopInfo = new JdShopInfo();
-        jdShopInfo.setJdUid(jdSessionMap.getJdUid());
+        jdShopInfo.setJdUid(authedInfo.getUid());
         JdShopInfo selJdShopInfo = jdShopInfoMapper.selectOne(jdShopInfo);
 
-        JdShopInfoVO  newJdShopInfo = getJdShopInfo(jdSessionMap.getAccessToken());
+        JdShopInfoVO  newJdShopInfo = getJdShopInfo(authedInfo.getAccessToken());
 
         if (selJdShopInfo == null) {
-            jdShopInfo.setJdUid(jdSessionMap.getJdUid());
+            jdShopInfo.setJdUid(authedInfo.getUid());
             jdShopInfo.setJdShopId(newJdShopInfo.getShopId());
             jdShopInfo.setJdShopName(newJdShopInfo.getShopName());
             jdShopInfo.setJdShopLogoUrl(newJdShopInfo.getLogoUrl());
@@ -123,7 +118,7 @@ public class JdShopServiceImpl implements JdShopService {
             jdShopInfoMapper.insertSelective(jdShopInfo);
         }else {
             jdShopInfo.setId(selJdShopInfo.getId());
-            jdShopInfo.setJdUid(jdSessionMap.getJdUid());
+            jdShopInfo.setJdUid(authedInfo.getUid());
             jdShopInfo.setJdShopId(newJdShopInfo.getShopId());
             jdShopInfo.setJdShopName(newJdShopInfo.getShopName());
             jdShopInfo.setJdShopLogoUrl(newJdShopInfo.getLogoUrl());
@@ -135,7 +130,7 @@ public class JdShopServiceImpl implements JdShopService {
             jdShopInfoMapper.updateByPrimaryKeySelective(jdShopInfo);
         }
 
-        newJdShopInfo.setJdUid(jdSessionMap.getJdUid());
+        newJdShopInfo.setJdUid(authedInfo.getUid());
         return newJdShopInfo;
     }
 
@@ -148,42 +143,32 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      */
     @Override
-    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdUpException, JdAuthFailureException {
-        JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setJdUid(jdUid);
-        jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
-        if (jdSessionMap == null) {
-            throw new JdUpException("获取京东授权信息失败");
-        }
+    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdAuthFailureException, ImgZoneException, JdApiException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
         ImgzoneCategoryAddRequest request=new ImgzoneCategoryAddRequest();
         request.setCateName(imgCategory);
         if (parentCateId != null) {
             request.setParentCateId(parentCateId);
         }
-        ImgzoneCategoryAddResponse response = jdUtil.execute(request, jdSessionMap.getAccessToken());
+        ImgzoneCategoryAddResponse response = jdUtil.execute(request, authedInfo.getAccessToken());
         if (response.getReturnCode() == 0) {
-            throw new JdUpException("新增图片分类失败");
+            throw new ImgZoneException("新增图片分类失败");
         }
         return response.getCateId();
     }
 
     @Override
-    public List<JdImgzoneCategoryVO> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdUpException, JdAuthFailureException {
-        JdSessionMap jdSessionMap = new JdSessionMap();
-        jdSessionMap.setJdUid(jdUid);
-        jdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
-        if (jdSessionMap == null) {
-            throw new JdUpException("获取京东授权信息失败");
-        }
+    public List<JdImgzoneCategoryVO> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdAuthFailureException, ImgZoneException, JdApiException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImgzoneCategoryQueryRequest selRequest = new ImgzoneCategoryQueryRequest();
         selRequest.setCateName(imgCategory);
         if (parentCateId != null) {
             selRequest.setParentCateId(parentCateId);
         }
-        ImgzoneCategoryQueryResponse selResponse = jdUtil.execute(selRequest, jdSessionMap.getAccessToken());
+        ImgzoneCategoryQueryResponse selResponse = jdUtil.execute(selRequest, authedInfo.getAccessToken());
         if (selResponse.getReturnCode() == 0) {
-            throw new JdUpException("查询图片分类失败");
+            throw new ImgZoneException("查询图片分类失败");
         }
         List<ImgzoneCategory> cateList = selResponse.getCateList();
         if (cateList == null || cateList.isEmpty()) {

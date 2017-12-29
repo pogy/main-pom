@@ -1,7 +1,7 @@
 package com.shigu.main4.jd.service;
 
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 
 import java.io.IOException;
@@ -18,16 +18,15 @@ public interface JdServiceMarketService {
      * @param itemCode
      * @param jdUid
      */
-    JdVasSubscribeVO subscribe(String userName, String itemCode,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
+    JdVasSubscribeVO subscribe(String userName, String itemCode,Long jdUid) throws JdAuthFailureException, JdApiException;
 
     /**
      * 保存用户订购信息
      * @param vo
      * @return
      * @throws IOException
-     * @throws JdUpException
      * @throws JdAuthFailureException
      */
-    void saveSubscribe(JdVasSubscribeVO vo) throws IOException, JdUpException, JdAuthFailureException;
+    void saveSubscribe(JdVasSubscribeVO vo) throws JdAuthFailureException;
 
 }

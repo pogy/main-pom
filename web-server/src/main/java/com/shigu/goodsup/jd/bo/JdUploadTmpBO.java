@@ -14,10 +14,10 @@ public class JdUploadTmpBO extends JdUploadBO{
     private List<JdUploadSkuBO> skus;
     private List<JdUploadPropInputBO> inputs;
     private List<JdUploadPropInputBO> props;
-
+    private List<Long> sellerCids;
     public void callProp_img(List<String> prop_img) {
         if(prop_img==null){
-            this.propImg=null;
+            this.propImg=new ArrayList<>();
         }else{
             this.propImg=prop_img.stream().map(s -> {
                 JdUploadPropImgBO bo=new JdUploadPropImgBO();
@@ -40,6 +40,9 @@ public class JdUploadTmpBO extends JdUploadBO{
                     bo.setValue(skus[1].substring(3));
                 }else{
                     bo.setVid(new Long(skus[1]));
+                    if(bo.getVid()<0L){
+                        continue;
+                    }
                 }
                 bo.setPid(new Long(skus[0]));
                 addSkus(bo);
@@ -69,8 +72,12 @@ public class JdUploadTmpBO extends JdUploadBO{
                 sku.append(str).append(ss.getVid()).append("|");
             }
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
     public String selSkuSale(){
         StringBuilder sku= new StringBuilder();
@@ -79,8 +86,12 @@ public class JdUploadTmpBO extends JdUploadBO{
                 sku.append(ss.getPrice()).append("|");
             }
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
     public String selSkuStock(){
         StringBuilder sku= new StringBuilder();
@@ -89,8 +100,12 @@ public class JdUploadTmpBO extends JdUploadBO{
                 sku.append(ss.getNum()).append("|");
             }
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
 
     public String selAttrs(){
@@ -104,8 +119,12 @@ public class JdUploadTmpBO extends JdUploadBO{
         for(JdUploadSkuBO s:skus.get(0).getSizes()){
             pstr.append(s.getPid()).append(":").append(s.getVid()).append("|");
         }
-        pstr = new StringBuilder(pstr.substring(0, pstr.length() - 1));
-        return pstr.toString();
+        if(pstr.length()>0){
+            pstr = new StringBuilder(pstr.substring(0, pstr.length() - 1));
+            return pstr.toString();
+        }else{
+            return null;
+        }
     }
 
     public String selAlias(List<PropertyItemVO> sales,PropertyItemVO color){
@@ -127,8 +146,12 @@ public class JdUploadTmpBO extends JdUploadBO{
                 }
             }
         }
-        str = new StringBuilder(str.substring(0, str.length() - 1));
-        return str.toString();
+        if(str.length()>0){
+            str = new StringBuilder(str.substring(0, str.length() - 1));
+            return str.toString();
+        }else{
+            return null;
+        }
     }
 
     public String selOuterId(){
@@ -138,8 +161,12 @@ public class JdUploadTmpBO extends JdUploadBO{
                 sku.append(ss.getCode()==null?"":ss.getCode()).append("|");
             }
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
 
     public String selInputPids(){
@@ -147,16 +174,24 @@ public class JdUploadTmpBO extends JdUploadBO{
         for(JdUploadPropInputBO s:inputs){
             sku.append(s.getPid()).append("|");
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
     public String selInputValues(){
         StringBuilder sku= new StringBuilder();
         for(JdUploadPropInputBO s:inputs){
             sku.append(s.getValue()).append("|");
         }
-        sku = new StringBuilder(sku.substring(0, sku.length() - 1));
-        return sku.toString();
+        if(sku.length()>0){
+            sku = new StringBuilder(sku.substring(0, sku.length() - 1));
+            return sku.toString();
+        }else{
+            return null;
+        }
     }
 
 
@@ -202,5 +237,12 @@ public class JdUploadTmpBO extends JdUploadBO{
 
     public void setProps(List<JdUploadPropInputBO> props) {
         this.props = props;
+    }
+    public List<Long> getSellerCids() {
+        return this.sellerCids;
+    }
+
+    public void setSellerCids(List<Long> sellerCids) {
+        this.sellerCids = sellerCids;
     }
 }

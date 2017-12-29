@@ -422,15 +422,16 @@
 
 <!-- 发布 -->
 <div class="pop" id="J_publish">
-    <div class="content fb-con">
+    <div class="content fb-con" style="padding:12px">
         <!--    <div  style="display: none"></div>-->
         <div>
             <p id="tip_default">
-                <img src="public/images/loading.gif" align="absmiddle"/>
-                <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张
+                正在上传中,请稍后
+                <#--<img src="public/images/loading.gif" align="absmiddle"/>
+                <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张-->
             </p>
             <p id="tip_content"></p>
-            <p class="time-con" style="display:none;">已使用时间<input id="txt" vlaue="0">秒</p>
+            <#--<p class="time-con" style="display:none;">已使用时间<input id="txt" vlaue="0">秒</p>-->
         </div>
         <#--<div class="" style="margin-top:10px;"><img src="public/images/2_1.png" style="max-width:530px;" /></div>-->
         <!--<a href="#" class="fb-btn">知道了</a>-->
@@ -563,6 +564,7 @@
         }
     }
     function initprovcity() {
+        return;
         for (var b = document.mainform.prov, a = 0; a < document.mainform.prov.options.length; a++) if (document.mainform.prov.options[a].value == "浙江") document.mainform.prov.selectedIndex = a;
         setcity()
     }

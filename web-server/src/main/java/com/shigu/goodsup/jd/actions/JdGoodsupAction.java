@@ -1,10 +1,6 @@
 package com.shigu.goodsup.jd.actions;
 
-import com.openJar.beans.JdImgInfo;
 import com.openJar.commons.MD5Attestation;
-import com.openJar.exceptions.imgs.JdUpImgException;
-import com.openJar.requests.imgs.JdUpImgRequest;
-import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -16,17 +12,15 @@ import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUserInfoService;
-import com.shigu.goodsup.jd.util.JdParseStateUtil;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.jd.bo.JdImageUpdateBO;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.*;
-import com.shigu.main4.jd.vo.*;
-import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.jd.vo.JdAuthedInfoVO;
+import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
@@ -34,10 +28,9 @@ import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
 import com.shigu.tools.JsonResponseUtil;
-import com.taobao.api.domain.Item;
 import com.taobao.api.domain.DeliveryTemplate;
+import com.taobao.api.domain.Item;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -55,12 +48,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -129,7 +120,7 @@ public class JdGoodsupAction {
      * @throws IOException
      */
     @RequestMapping("callback")
-    public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws IOException, JdUpException, JdAuthFailureException {
+    public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws Main4Exception {
         /************检测是否订阅服务**********/
 //        JdVasSubscribeVO subscribeVO = JdParseStateUtil.parseState(state);
 //        if (subscribeVO.getEndDate().after(new Date())) {
@@ -168,7 +159,7 @@ public class JdGoodsupAction {
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(strJdUid,strJdUid, LoginFromType.JD);
             if (personalSession == null || personalSession.getUserId() == null) {
                 //还是检查一遍避免 字符串+null 出现
-                throw new JdUpException("授权失败");
+                throw new Main4Exception("授权失败");
             }
 
             //得到回调用地址
@@ -204,11 +195,10 @@ public class JdGoodsupAction {
      * 查询商品是否可京东上传
      * @param itemId
      * @return
-     * @throws JdUpException
      */
     @RequestMapping("canbeUploaded")
     @ResponseBody
-    public JSONObject canbeUploaded(Long itemId) throws JdUpException {
+    public JSONObject canbeUploaded(Long itemId) throws Main4Exception {
         Boolean canbeUploaded = jdGoodsUpService.goodsCanbeUploadedToJd(itemId);
         return JsonResponseUtil.success().element("canbeUploaded",canbeUploaded);
     }
@@ -217,7 +207,6 @@ public class JdGoodsupAction {
      * 查询用户是否已上传过
      * @param itemId
      * @return
-     * @throws JdUpException
      */
     @RequestMapping("hasBeUploaded")
     @ResponseBody
@@ -232,7 +221,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getAllBrand")
     @ResponseBody
-    public JSONObject getAllBrand(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
+    public JSONObject getAllBrand(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
@@ -267,7 +256,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updatePostModel")
     @ResponseBody
-    public JSONObject updatePostModel(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
+    public JSONObject updatePostModel(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<DeliveryTemplate> deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
@@ -279,7 +268,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updateShopCats")
     @ResponseBody
-    public JSONObject updateShopCats(HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
+    public JSONObject updateShopCats(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<StoreCatVO> storeCatVOS = jdUpItemService.updateShopCats(Long.valueOf(jdUid));
@@ -292,7 +281,7 @@ public class JdGoodsupAction {
      * @return
      */
     @RequestMapping("publish")
-    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception, ClassNotFoundException, CloneNotSupportedException, IOException {
+    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception, IOException, ClassNotFoundException, CloneNotSupportedException {
 
 //        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 //        if(ps==null){
@@ -325,10 +314,13 @@ public class JdGoodsupAction {
         List<JdVenderBrandPubInfoVO> allBrand = null;
         try {
             allBrand = jdCategoryService.getAllBrand(jdUserId);
-        } catch (JdUpException e) {
+        } catch (JdAuthFailureException e) {
             String queryString=request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
                     (queryString==null?"":("?"+queryString)),"utf-8");
+        } catch (JdApiException e) {
+            model.addAttribute("errmsg", e.getMessage());
+            return "taobao/uperror";
         }
         if(allBrand==null){
             model.addAttribute("errmsg", "不是京东商家");
@@ -361,10 +353,14 @@ public class JdGoodsupAction {
         JdShowDataVO allData=new JdShowDataVO();
         allData.setItems(item);
         allData.setJdUserId(jdUserId);
-        allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
-        allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
-        allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
-        allData.setJdUserId(jdUserId);
+        try {
+            allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
+            allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
+            allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
+        } catch (JdApiException e) {
+            model.addAttribute("errmsg", e.getMessage());
+            return "taobao/uperror";
+        }
         allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
         model.addAttribute("allData", allData);
         model.addAttribute("id",itemId);
@@ -373,116 +369,4 @@ public class JdGoodsupAction {
         //测试用
         return "jingdong/jd";
     }
-
-    @RequestMapping("jdYjUpload")
-    @ResponseBody
-    public JSONObject jdYjUpload(Long goodsId,String skuColorIds,HttpSession session) throws JdUpException, JdNotBindException, JdAuthFailureException, IOException {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        Long jdUid = Long.valueOf(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
-        Long jdUid = 2299600652L;
-        //上传商品
-        JdWareAddVO jdWareAddVO = jdGoodsService.upToJd(null, jdUid);
-
-        //查看星座上传图片类目是否存在
-        List<JdImgzoneCategoryVO> vos = jdShopService.selImgCategory(jdUid,"商品货号",null);
-        Long imgCategoryId;
-        Long pImgCategoryId;
-        if (vos == null || vos.isEmpty()) {
-            //查图片主类目
-            List<JdImgzoneCategoryVO> pvos = jdShopService.selImgCategory(jdUid,IMG_CATEGORY,null);
-            if (pvos == null || pvos.isEmpty()) {
-                pImgCategoryId = jdShopService.addImgCategory(jdUid, IMG_CATEGORY, null);
-            }else {
-                pImgCategoryId = pvos.get(0).getCateId();
-            }
-            imgCategoryId = jdShopService.addImgCategory(jdUid, "商品货号", pImgCategoryId);
-        }else{
-            imgCategoryId = vos.get(0).getCateId();
-        }
-
-
-        //绑定图片
-        //颜色ID集合
-        List<String> colorIds = new ArrayList<>();
-        for(String skuColorId : colorIds){
-            //根据skuColorId 获取图片地址集合
-            List<String> imgUrls = new ArrayList<>();
-            //图片搬家
-            List<String> subMsgs=new ArrayList<>();
-            JdUpImgResponse response = null;
-            try {
-                JdUpImgRequest request = new JdUpImgRequest();
-                request.setJdUid(jdUid);
-                request.setImgUrls(imgUrls);
-                request.setPictureCateId(imgCategoryId);
-                response = jdImgService.addImgs(request);
-                //1，操作成功；0，操作失败
-                if ("0".equals(response.getReturnCode())) {
-                    return JSONObject.fromObject("{'status':'0'}");
-                }
-            } catch (JdUpImgException e) {
-                e.printStackTrace();
-                subMsgs.add(e.getErrMsg());
-            } catch (JdNotBindException e) {
-                e.printStackTrace();
-                subMsgs.add(e.getMessage());
-            }
-            Map<String, JdImgInfo> jdImgInfos1 = response.getJdImgInfos();
-            List<JdImgInfo> jdImgInfos = new ArrayList<>();
-            StringBuffer imgIds = new StringBuffer();
-            StringBuffer skuImgUrls = new StringBuffer();
-            StringBuffer imgIndex = new StringBuffer();
-            int index = 1;//index值：1-N
-            for(JdImgInfo imgInfo : jdImgInfos){
-                imgIds.append(",").append(imgInfo.getPictureId());
-                String pictureUrl = imgInfo.getPictureUrl();
-                String skuImgUrl= pictureUrl.substring(pictureUrl.indexOf("jfs/"));
-                skuImgUrls.append(",").append(skuImgUrl);
-                imgIndex.append(",").append(index);
-                index++;
-            }
-            //遍历颜色，设置图片
-            JdImageUpdateBO jdImageUpdateBO = new JdImageUpdateBO();
-            jdImageUpdateBO.setGoodsId(goodsId);
-            jdImageUpdateBO.setColorId(skuColorId);
-            jdImageUpdateBO.setImgId(imgIds.toString());
-            jdImageUpdateBO.setImgUrl(skuImgUrls.toString());
-            jdImageUpdateBO.setImgIndex(imgIndex.toString());
-//            jdImageUpdateBO.setImgZoneId(null);
-
-            jdImgService.bindGoodsImgs(jdImageUpdateBO,ps.getSubUserId());
-
-        }
-
-        //添加上传记录 TODO 传什么
-        ItemUpRecordVO vo=new ItemUpRecordVO();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        vo.setDaiTime(sdf.format(new Date()));
-//        vo.setFenGoodsName(subedItem.getTitle());
-//        vo.setFenImage(subedItem.getPicUrl());
-//        vo.setFenPrice(subedItem.getPrice());
-        vo.setFenNumiid(jdWareAddVO.getGoodsId());
-        JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(jdUid);
-
-        vo.setFenUserId(jdAuthedInfoVO.getUid());
-        vo.setFenUserNick(jdAuthedInfoVO.getUserNick());
-        vo.setFlag("jd");
-        vo.setSupperGoodsId(goodsId);
-        jdGoodsUpService.saveRecord(vo);
-
-        return null;
-    }
-
-    /**
-     * 上传图片到星座网
-     * @return
-     */
-    @RequestMapping("jd-up-xzw-img")
-    @ResponseBody
-    public String upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile, HttpSession httpSession) throws IOException {
-        PersonalSession ps = (PersonalSession) httpSession.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String name=MD5Attestation.MD5Encode(multimagefile.getName()+Math.random())+".jpg";
-        return ossIO.uploadFile(multimagefile.getInputStream(),"jdonkey"+"/"+ps.getUserId()+"/"+name);
-    }
-
 }

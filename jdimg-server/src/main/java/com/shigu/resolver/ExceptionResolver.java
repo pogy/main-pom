@@ -31,7 +31,6 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 
 
 	public ModelAndView systemErrorHandle(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) {
-		logger.info("全局异常处理ERROR:", ex);
 		JSONObject obj=new JSONObject();
 		if(ex instanceof OpenException){
 			OpenException e1=(OpenException)ex;

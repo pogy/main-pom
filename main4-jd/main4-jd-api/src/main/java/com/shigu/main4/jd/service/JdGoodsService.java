@@ -3,8 +3,9 @@ package com.shigu.main4.jd.service;
 import com.jd.open.api.sdk.JdException;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
+import com.shigu.main4.jd.exceptions.ImgDownloadException;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.vo.JdWareAddVO;
 
 import java.io.IOException;
@@ -22,12 +23,12 @@ public interface JdGoodsService {
      * @throws JdException
      * @throws IOException
      */
-     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
+     JdWareAddVO upToJd(JdUpBO bo,Long jdUid) throws JdAuthFailureException, ImgDownloadException, JdApiException;
 
     /**
      * 新增和修改商品图片
      */
-    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdUpException, JdAuthFailureException, IOException;
+    Boolean jdImageUpdate(JdImageUpdateBO bo,Long jdUid) throws JdAuthFailureException, JdApiException;
 
     /**
      * 根据cid查询商品是否可上传到京东
@@ -41,5 +42,5 @@ public interface JdGoodsService {
      * @param wareId
      * @param templateId
      */
-    Boolean bindPostTemplate(Long jdUid, Long wareId , Long templateId) throws JdAuthFailureException, JdUpException, IOException;
+    Boolean bindPostTemplate(Long jdUid, Long wareId , Long templateId) throws JdAuthFailureException, JdApiException;
 }

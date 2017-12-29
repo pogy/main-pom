@@ -1,12 +1,11 @@
 package com.shigu.main4.jd.service.impl;
 
-
 import com.jd.open.api.sdk.request.market.VasSubscribeGetRequest;
 import com.jd.open.api.sdk.response.market.VasSubscribeGetResponse;
 import com.opentae.data.jd.beans.JdFw;
 import com.opentae.data.jd.interfaces.JdFwMapper;
+import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.exceptions.JdUpException;
 import com.shigu.main4.jd.service.JdAuthService;
 import com.shigu.main4.jd.service.JdServiceMarketService;
 import com.shigu.main4.jd.util.JdUtil;
@@ -41,7 +40,7 @@ public class JdServiceMarketServiceImpl implements JdServiceMarketService {
      * @param jdUid
      */
     @Override
-    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long jdUid) throws JdUpException, JdAuthFailureException, IOException {
+    public JdVasSubscribeVO subscribe(String userName, String itemCode, Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         VasSubscribeGetRequest request=new VasSubscribeGetRequest();
         request.setUserName(userName);
@@ -60,11 +59,10 @@ public class JdServiceMarketServiceImpl implements JdServiceMarketService {
      * @param vo
      * @return
      * @throws IOException
-     * @throws JdUpException
      * @throws JdAuthFailureException
      */
     @Override
-    public void saveSubscribe(JdVasSubscribeVO vo) throws IOException, JdUpException, JdAuthFailureException {
+    public void saveSubscribe(JdVasSubscribeVO vo) throws JdAuthFailureException {
         JdFw jdFw = new JdFw();
         jdFw.setJdUid(vo.getJdUid());
         JdFw selJdFw = jdFwMapper.selectOne(jdFw);
