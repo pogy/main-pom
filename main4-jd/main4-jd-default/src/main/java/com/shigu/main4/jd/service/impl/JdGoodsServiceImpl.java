@@ -2,6 +2,7 @@ package com.shigu.main4.jd.service.impl;
 
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.ware.ImageWriteUpdateRequest;
+import com.jd.open.api.sdk.request.ware.TransportWriteUpdateWareTransportIdRequest;
 import com.jd.open.api.sdk.request.ware.WareAddRequest;
 import com.jd.open.api.sdk.response.ware.ImageWriteUpdateResponse;
 import com.jd.open.api.sdk.response.ware.WareAddResponse;
@@ -73,11 +74,30 @@ public class JdGoodsServiceImpl implements JdGoodsService{
         return response.getSuccess();
     }
 
+    /**
+     * 根据cid查询商品是否可上传到京东
+     * @param tbCid
+     */
     @Override
     public Boolean goodsCanbeUploadedToJd(Long tbCid) {
         JdTbBind jdTbBind = new JdTbBind();
         jdTbBind.setTbCid(tbCid);
         jdTbBind = jdTbBindMapper.selectOne(jdTbBind);
         return jdTbBind != null;
+    }
+
+    /**
+     * 绑定运费模板到商品
+     * @param jdUid
+     * @param wareId
+     * @param templateId
+     */
+    @Override
+    public Boolean bindPostTemplate(Long jdUid, Long wareId, Long templateId) throws JdAuthFailureException, JdUpException, IOException {
+        JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
+        TransportWriteUpdateWareTransportIdRequest request=new TransportWriteUpdateWareTransportIdRequest();
+        request.setWareId(wareId);
+        request.setTransportId(templateId);
+        return jdUtil.execute(request, authedInfo.getAccessToken()).getSuccess();
     }
 }

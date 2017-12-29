@@ -34,4 +34,12 @@ public interface JdGoodsService {
      * @param tbCid
      */
     Boolean goodsCanbeUploadedToJd(Long tbCid) ;
+
+    /**
+     * 绑定运费模板到商品
+     * @param jdUid
+     * @param wareId
+     * @param templateId
+     */
+    Boolean bindPostTemplate(Long jdUid, Long wareId , Long templateId) throws JdAuthFailureException, JdUpException, IOException;
 }
