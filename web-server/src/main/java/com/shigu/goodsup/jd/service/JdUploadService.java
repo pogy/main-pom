@@ -1,20 +1,15 @@
 package com.shigu.goodsup.jd.service;
 
 import com.openJar.beans.JdImgInfo;
-import com.openJar.exceptions.imgs.JdUpImgException;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.goodsup.jd.bo.JdUploadPropImgBO;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.bo.JdUploadTmpBO;
-import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
-import com.shigu.main4.jd.exceptions.ImgDownloadException;
-import com.shigu.main4.jd.exceptions.ImgZoneException;
 import com.shigu.main4.jd.exceptions.JdApiException;
-import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.service.JdGoodsService;
 import com.shigu.main4.jd.service.JdShopService;
@@ -29,7 +24,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;

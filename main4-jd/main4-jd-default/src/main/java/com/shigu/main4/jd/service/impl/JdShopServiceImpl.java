@@ -9,7 +9,6 @@ import com.jd.open.api.sdk.response.imgzone.ImgzoneCategory;
 import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryAddResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryQueryResponse;
 import com.jd.open.api.sdk.response.seller.VenderShopQueryResponse;
-import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.beans.JdShopInfo;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
@@ -39,9 +38,6 @@ public class JdShopServiceImpl implements JdShopService {
 
     @Autowired
     private JdUtil jdUtil;
-
-    @Autowired
-    private JdSessionMapMapper jdSessionMapMapper;
 
     @Autowired
     private JdShopInfoMapper jdShopInfoMapper;

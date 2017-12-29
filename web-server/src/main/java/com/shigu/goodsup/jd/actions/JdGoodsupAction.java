@@ -1,6 +1,5 @@
 package com.shigu.goodsup.jd.actions;
 
-import com.openJar.commons.MD5Attestation;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -9,7 +8,6 @@ import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.service.JdGoodsUpService;
-import com.shigu.goodsup.jd.service.JdImgService;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUserInfoService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
@@ -21,7 +19,6 @@ import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.*;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
-import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -39,9 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -76,28 +71,13 @@ public class JdGoodsupAction {
     private JdCategoryService jdCategoryService;
 
     @Autowired
-    private JdGoodsService jdGoodsService;
-
-    @Autowired
     private MemberFilter memberFilter;
-
-    @Autowired
-    private OssIO ossIO;
-
-    @Autowired
-    private JdImgService jdImgService;
 
     @Autowired
     private JdUpItemService jdUpItemService;
 
     @Autowired
     private JdUserInfoService jdUserInfoService;
-
-    @Autowired
-    private JdShopService jdShopService;
-
-    @Autowired
-    private JdServiceMarketService jdServiceMarketService;
 
     public static final String IMG_CATEGORY = "571xz";
 

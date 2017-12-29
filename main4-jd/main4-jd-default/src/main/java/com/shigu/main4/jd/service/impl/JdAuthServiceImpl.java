@@ -37,9 +37,6 @@ public class JdAuthServiceImpl implements JdAuthService{
     @Autowired
     private JdSessionMapMapper jdSessionMapMapper;
 
-    @Autowired
-    private JdShopInfoMapper jdShopInfoMapper;
-
     /**
      * 获取jd登陆页面跳转地址
      * @param agentIsMobile

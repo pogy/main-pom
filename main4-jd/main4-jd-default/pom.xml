@@ -189,7 +189,6 @@
         <dependency>
             <groupId>com.opentae.lib</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.6.3</version>
         </dependency>
 
     </dependencies>

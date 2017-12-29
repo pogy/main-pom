@@ -4,7 +4,6 @@ import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.vo.JdPostTemplateVO;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

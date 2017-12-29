@@ -1,6 +1,5 @@
 package com.shigu.main4.jd.exceptions;
 
-import com.openJar.exceptions.OpenException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 
 /**

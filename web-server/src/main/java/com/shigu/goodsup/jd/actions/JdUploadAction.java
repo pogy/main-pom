@@ -1,18 +1,14 @@
 package com.shigu.goodsup.jd.actions;
 
-import com.openJar.exceptions.imgs.JdUpImgException;
 import com.shigu.goodsup.jd.bo.JdUploadBO;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.bo.JdUploadTmpBO;
-import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUploadService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.jd.exceptions.ImgDownloadException;
-import com.shigu.main4.jd.exceptions.ImgZoneException;
 import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.JdCategoryService;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
