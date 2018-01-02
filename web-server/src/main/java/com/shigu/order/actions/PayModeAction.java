@@ -131,21 +131,29 @@ public class PayModeAction {
      */
     @RequestMapping("xzpayJson")
     @ResponseBody
-    public JSONObject xzpayJson(Long orderId,String orderCode, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
+    public JSONObject xzpayJson(Long orderId,String orderCode, String pwd, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         payModeService.checkPwd(pwd, ps.getUserId());
         PayApplyVO v;
         if(orderId!=null){
-            v = payModeService.payApply(orderId,ps.getUserId(), PayType.XZ);
+            try {
+                v = payModeService.payApply(orderId,ps.getUserId(), PayType.XZ);
+            } catch (PayApplyException e) {
+                throw new  JsonErrException(e.getMessage());
+            }
         }else{
             if(StringUtils.isEmpty(orderCode)){
-                throw new PayApplyException("缺少参数");
+                return JsonResponseUtil.error("缺少参数");
             }
             if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
-                throw new PayApplyException("没有访问的权限");
+                return JsonResponseUtil.error("没有访问的权限");
             }
             List<Long> orderIds= redisIO.getList(orderCode,Long.class);
-            v=morePayModeService.payApply(orderIds,ps.getUserId(),PayType.XZ);
+            try {
+                v=morePayModeService.payApply(orderIds,ps.getUserId(),PayType.XZ);
+            } catch (PayApplyException e) {
+                throw new  JsonErrException(e.getMessage());
+            }
         }
         payModeService.payxz(v, ps.getUserId());
         return JsonResponseUtil.success();
