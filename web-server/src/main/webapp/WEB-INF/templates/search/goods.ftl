@@ -124,10 +124,10 @@
         <ul>
             <#list tjGoodsList as goods>
             <li>
-                <a class="imgbox" href="/item.htm?id=${goods.id!}" target="_blank"><img src="${goods.imgsrc!}_240x240.jpg"></a>
+                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank"><img src="${goods.imgsrc!}_240x240.jpg"></a>
                 <p>
                     <em class="money yahei">&yen;${goods.piprice!}</em>
-                    <a class="storename" href="/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
+                    <a class="storename" href="${mainHost!}/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
                 </p>
             </li>
             </#list>

@@ -40,12 +40,12 @@
 <div class="storelist">
     <#list storelist as store>
     <div class="storeitem">
-        <a class="storeImgBox" href="${mainHost!}/shop.htm?id=${store.id!}">
+        <a class="storeImgBox" href="${mainHost!}/shop.htm?id=${store.id!}" target="_blank">
             <img src="${store.imgsrc!}">
         </a>
         <div class="storeInfoBox">
             <div class="p1">
-                <a class="title" href="${mainHost!}/shop.htm?id=${store.id!}" title="${store.marketName!} ${store.name!}"><em class="marketName">${store.highMarketName!}</em><em class="storeName">${store.highName!}</em></a>
+                <a class="title" href="${mainHost!}/shop.htm?id=${store.id!}" title="${store.marketName!} ${store.name!}" target="_blank"><em class="marketName">${store.highMarketName!}</em><em class="storeName">${store.highName!}</em></a>
                 <span class="xy">
 <#list [{"num":store.xy}] as $it>
 <#include "/common/xz__shopLevel.ftl">
@@ -72,7 +72,7 @@
         <div class="storeGoodslistBox">
             <#list store.goodslist as goods>
             <div class="picitem">
-                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}">
+                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">
                     <img class="img" src="${goods.imgsrc!}_220x220.jpg">
                 </a>
                 <p>&yen;${goods.piprice!}</p>
