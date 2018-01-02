@@ -250,7 +250,7 @@
         <p>如果您对本协议或本服务有意见或建议，可与石谷网络科技客户服务部门联系，我们会给予您必要的帮助。（正文完）</p>
         <p class="company">--杭州石谷网络科技有限公司</p>
     </div>
-    <div class="links"><a href="${main_host!}contract.html" target="_blank">服务条款</a> | <a href="${main_host!}privacy.html" target="_blank">隐私政策</a></div>
+    <div class="links"><a href="/contract.htm" target="_blank">服务条款</a> | <a href="/privacy.htm" target="_blank">隐私政策</a></div>
 </div>
 <div class="footer">
     <div class="inner">
