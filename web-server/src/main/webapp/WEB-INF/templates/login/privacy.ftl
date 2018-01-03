@@ -244,7 +244,7 @@
         <p>4、本协议的版权由石谷网络科技所有，石谷网络科技保留一切解释和修改权利。 </p>
         <p class="company">--杭州石谷网络科技有限公司</p>
     </div>
-    <div class="links"><a href="contract.html" target="_blank">服务条款</a> | <a href="privacy.html" target="_blank">隐私政策</a></div>
+    <div class="links"><a href="/contract.htm" target="_blank">服务条款</a> | <a href="/privacy.htm" target="_blank">隐私政策</a></div>
 </div>
 <div class="footer">
     <div class="inner">
