@@ -1,4 +1,4 @@
-<#assign $pageid>shiguStorebasicStore</#assign>
+<#assign $pageid="shiguStorebasicStore">
 <!doctype html>
 <html>
 <head>
@@ -19,18 +19,14 @@
 <#include "/__style_torrent__/gys__shiguStorebasicStore_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -42,9 +38,7 @@
         <ul>
             <#list typeset.business_type as type>
                 <#if typeset.mainBus == type>
-<#assign text>{"value":type,"text":type}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":type,"text":type}] as $it>
 <label class="fmRadio clearfix
         checked
 ">
@@ -69,9 +63,7 @@
 </label>
 </#list>
                 <#else>
-<#assign text>{"value":type,"text":type}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":type,"text":type}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>
             checked
@@ -128,9 +120,7 @@
     <div class="validateItem">
         <div class="formGroup acceptService">
             <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         checked
         <#if $it.disabled??>
@@ -165,15 +155,13 @@
     </span>
 </label>
 </#list>
-            <a href="http://www.571xz.com/static/mianze/contract.html" target="_blank">《服务条款》</a>和<a href="http://www.571xz.com/static/mianze/contract.html" target="_blank">《政策》</a>
+            <a href="/contract.htm" target="_blank">《服务条款》</a>和<a href="/privacy.htm" target="_blank">《政策》</a>
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
             <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
