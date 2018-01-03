@@ -943,26 +943,6 @@ public class MemberAction {
             return "fxs/withdraw5Apply";
         }
     }
-    
-    /**
-     * 获取提现金额实际值
-     *
-     * @param userWirteMoney 用户填写金额，单位：元
-     * @return
-     */
-    @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
-    @ResponseBody
-    public JSONObject getRealWithdrawMoney(Long userWirteMoney, Integer freeWithdrawNum) {
-        if (userWirteMoney == null || userWirteMoney <= 0) {
-            return JsonResponseUtil.error("请输入正确的金额");
-        }
-        if (freeWithdrawNum != null && freeWithdrawNum > 0) {
-            return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
-        }
-        //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
-    }
-
 
     /**
      * 店铺入驻申请
@@ -1293,7 +1273,13 @@ public class MemberAction {
         }
         return JsonResponseUtil.error("支付未完成");
     }
-
+    
+    /**
+     * 绑定成功跳转页
+     * @param identity
+     * @return
+     * @throws Main4Exception
+     */
     @RequestMapping("{identity}/bindAlipaySuccess")
     public String bindAlipaySuccess(@PathVariable String identity) throws Main4Exception {
         if (!isMemberOrSeller(identity)) {
@@ -1304,7 +1290,7 @@ public class MemberAction {
         }
         return "fxs/bindAlipaySuccess";
     }
-
+    
     /**
      * 获取提现金额实际值
      *
@@ -1313,14 +1299,30 @@ public class MemberAction {
      */
     @RequestMapping({"member/getRealWithdrawMoney", "seller/getRealWithdrawMoney"})
     @ResponseBody
-    public JSONObject getRealWithdrawMoney(Long userWirteMoney) {
+    public JSONObject getRealWithdrawMoney(Long userWirteMoney, Integer freeWithdrawNum) {
         if (userWirteMoney == null || userWirteMoney <= 0) {
             return JsonResponseUtil.error("请输入正确的金额");
+        }
+        if (freeWithdrawNum != null && freeWithdrawNum > 0) {
+            return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
         return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
     }
-
+    
+    /**
+     * 获取免费提现及限制信息
+     * @param session
+     * @return
+     */
+    @RequestMapping({"member/getFreeWithdrawAndLimitInfo","seller/getFreeWithdrawAndLimitInfo"})
+    @ResponseBody
+    public JSONObject getFreeWithdrawAndLimitInfo(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        return paySdkClientService.selCurrentFreeCashInfo(userId);
+    }
+    
     private boolean isMemberOrSeller(String identityPath) {
         return MEMBER_PATH.equals(identityPath) || SELLER_PATH.equals(identityPath);
     }

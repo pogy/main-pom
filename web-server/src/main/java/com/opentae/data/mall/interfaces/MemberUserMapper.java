@@ -17,4 +17,6 @@ import org.springframework.context.annotation.Scope;
 public interface MemberUserMapper extends Mapper<MemberUser> {
     /** 用户余额 */
     Long userBalance(@Param("userId")Long userId);
+    
+    Long userXzbAccount(@Param("userId") Long userId);
 }
