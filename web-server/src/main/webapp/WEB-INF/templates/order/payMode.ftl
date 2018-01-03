@@ -121,18 +121,18 @@
     </#if>
     class="fmButton
          fmButton-lg
-
+         fmButton-orange
         "
-        disabled="disabled"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        id="<#--submitPay-->"
+        id="submitPay"
 >
-        支付升级中...
+        立即支付
     <#if $it.href??>
     </a>
     <#else>

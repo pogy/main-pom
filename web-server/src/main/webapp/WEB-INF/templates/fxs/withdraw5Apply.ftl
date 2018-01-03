@@ -92,16 +92,16 @@
     class="fmButton
          fmButton-orange
          applyCashBtn"
-        disabled="disabled"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        id="<#--applyCashBtn-->"
+        id="applyCashBtn"
 >
-        支付升级中...
+        提交提现申请信息
     <#if $it.href??>
     </a>
     <#else>
