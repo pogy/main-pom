@@ -14,11 +14,10 @@ import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.exceptions.JdAuthFailureException;
-import com.shigu.util.DownImage;
+import com.shigu.jd.tools.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
