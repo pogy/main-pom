@@ -77,16 +77,16 @@ var otherRefundPrice = ${otherRefundPrice!};
          fmButton-lg applyBtn
          fmButton-orange
         "
-        <#if $it.disabled == true>disabled="disabled"</#if>
+        disabled="disabled"
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        id="refundApplyBtn"
+        id="<#--refundApplyBtn-->"
 >
-        提交申请
+        支付升级中...
     <#if $it.href??>
     </a>
     <#else>
