@@ -139,6 +139,6 @@ public class PaySdkClientService {
         int freeWithdrawNum = disposeBeanVO.getMaxFreeTimes() - cashTimes;
         return JsonResponseUtil.success()
                        .element("freeWithdrawNum", freeWithdrawNum < 0 ? 0 : freeWithdrawNum)
-                       .element("withdrawUpperLimit", disposeBeanVO.getMaxCashMoney());
+                       .element("withdrawUpperLimit", String.format("%.2f", 0.01 * disposeBeanVO.getMaxCashMoney()));
     }
 }
