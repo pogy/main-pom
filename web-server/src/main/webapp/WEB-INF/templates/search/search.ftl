@@ -37,7 +37,6 @@
 </form>
 </#if>
 </#list>
-</script>
 <#include "/__ftl_links__/search__common__nav.ftl">
 <div class="layout clearfix">
     <div class="fl leftContent">
