@@ -19,6 +19,7 @@ import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.session.main4.tool.BeanMapper;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -130,5 +131,16 @@ public class MemberSimpleService {
             throw new JsonErrException(e.getMessage());
         }
         userBaseService.setNewPayPwd(userId,newPwd);
+    }
+
+    public boolean isPayPwdMatch(Long userId, String payPwd){
+        if (userId == null || StringUtils.isBlank(payPwd)) {
+            return false;
+        }
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        if (memberUser == null || StringUtils.isBlank(memberUser.getPayPassword())) {
+            return false;
+        }
+        return memberUser.getPayPassword().equals(EncryptUtil.encrypt(payPwd));
     }
 }

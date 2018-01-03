@@ -9,4 +9,10 @@
         WHERE b.xz_user_id=#{userId}
         AND b.account_id=a.account_id
     </select>
+
+    <select id="userXzbAccount" parameterType="java.lang.Long" resultType="long">
+        select account_id
+        FROM  pay_site2.pay_account
+        WHERE xz_user_id=#{userId}
+    </select>
 </mapper>
