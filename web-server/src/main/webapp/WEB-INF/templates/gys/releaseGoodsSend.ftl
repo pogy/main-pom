@@ -141,6 +141,35 @@
         </ul>
     </div>
 </div>
+<#list skuAttribute as item>
+<div class="formPicks formSku">
+    <label class="formKey">${item.name!}</label>
+    <div class="formData">
+    <#if item.type == 'colorset'>
+        <ul class="skuColor">
+            <#list item.formitems as formitem>
+            <li>
+                <input class="checkbox" id="sku_${formitem.key_!}" type="checkbox" value="${formitem.key!}" name="${formitem.checkboxName!}" data-color="${formitem.color!}">
+                <label class="bgcolor" for="sku_${formitem.key_!}" style="background:${formitem.color!}"></label>
+                <label class="bgtext" title="${formitem.cnname!}" for="sku_${formitem.key_!}">${formitem.cnname!}</label>
+                <input class="input" type="text" value="${formitem.cnname!}" name="${formitem.inputName!}" maxlength="15">
+            </li>
+            </#list>
+        </ul>
+    <#elseif item.type == 'required'>
+        <ul class="skuBox">
+            <#list item.formitems as formitem>
+            <li>
+                <input class="checkbox" id="sku_${formitem.key_!}" type="checkbox" value="${formitem.key!}" name="${formitem.checkboxName!}">
+                <label class="bgtext" title="${formitem.cnname!}" for="sku_${formitem.key_!}">${formitem.cnname!}</label>
+                <input class="input" type="text" value="${formitem.cnname!}" name="${formitem.inputName!}" maxlength="15">
+            </li>
+            </#list>
+        </ul>
+    </#if>
+    </div>
+</div>
+</#list>
 <div class="formInput formPic">
     <label class="formKey">宝贝图片：</label>
     <div class="formData">

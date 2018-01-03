@@ -514,8 +514,15 @@ public class CdnAction {
     @ResponseBody
     public JSONObject addGoodsFavorite(@Valid ScGoodsBO bo,HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        cdnService.addItemCollect(ps.getUserId(),bo,2);
-        return JsonResponseUtil.success();
+        if (ps.getUserId() == null) {
+            //前端要求未登陆返回3
+            return JsonResponseUtil.error("3");
+        }
+        String result = cdnService.addItemCollect(ps.getUserId(), bo, 2);
+        if ("success".equals(result)) {
+            return JsonResponseUtil.success();
+        }
+        return JsonResponseUtil.error(result);
     }
 
     /**
@@ -532,7 +539,11 @@ public class CdnAction {
             return;
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(cdnService.addItemCollect(ps.getUserId(),bo,1)){
+        if (ps.getUserId() == null) {
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'3'}",response);
+        }
+        String addResult = cdnService.addItemCollect(ps.getUserId(), bo, 1);
+        if("success".equals(addResult)){
 //            return JsonResponseUtil.success();
             ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
         }else{
@@ -764,7 +775,13 @@ public class CdnAction {
     @RequestMapping("smallpic")
     @ResponseBody
     public JSONObject smallPic(Long id){
-        return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+        try {
+            String picUrl = shopsItemService.itemImgzipUrl(id);
+            return JsonResponseUtil.success().element("pic", picUrl);
+        } catch (Exception e) {
+            return JsonResponseUtil.error("下载失败，请重试！");
+        }
+
     }
 
     @RequestMapping("downloadVideo")
@@ -782,7 +799,7 @@ public class CdnAction {
         }
         String upflag="imgzip";
         DatuVO bigVo=goodsFileService.datuUrl(goodsId);
-        String url = "smallpic.htm?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
+        String url = "smallpic.json?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
 //        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {
@@ -896,7 +913,7 @@ public class CdnAction {
         model.addAttribute("goodsInfo",goods);
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
-        return "cdn/item";
+        return "goodsDetail/item";
     }
 
     /**
@@ -1020,7 +1037,7 @@ public class CdnAction {
     }
     @RequestMapping("loginWindow")
     public String loginWindow(){
-        return "cdn/loginWindow";
+        return "login/loginWindow";
     }
 
     @RequestMapping("daifaIndex")

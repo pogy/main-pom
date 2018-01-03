@@ -12,6 +12,8 @@ public enum ShopCountRedisCacheEnum {
     SHOP_NO_LOW_PRICE_INDEX_(1,"shop_no_low_price_index_in_redis_"),
     SHOP_NO_BIG_PIC_INDEX_(2,"shop_no_big_pic_index_in_redis_"),
     SHOP_NO_CONSITUTUENT_INDEX_(3,"shop_no_consitutuent_index_in_redis_"),
+    SHOP_NO_VIDEO_INDEX_(4,"shop_no_video_index_in_redis_"),
+    SHOP_NO_STYLE_INDEX_(5,"shop_no_style_index_in_redis_"),
     ;
     public final int state;
     public final String cacheName;

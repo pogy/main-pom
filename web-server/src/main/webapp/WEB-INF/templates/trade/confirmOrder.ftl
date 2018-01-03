@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017120601" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017121501" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017120601"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017121501"></script>
     
 </head>
 <body>
@@ -854,7 +854,7 @@ var webSite = '${webSite!}';
             </p>
         </div>
         <p class="msgTip fcF40"></p>
-
+        
     </div>
     <div class="settleBtn clearfix">
         

@@ -361,16 +361,16 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             throw new Main4Exception("没有查到物流信息");
         }
         LogisticsVO firstLogisticsVO = logisticsVOS.get(0);
-        String expressName = selLogisticCompanyCode(firstLogisticsVO.getCompanyId());
+        ExpressCompany express = selLogisticCompanyCode(firstLogisticsVO.getCompanyId());
         String expressId = firstLogisticsVO.getCourierNumber();
         expressInfoVO.setExpressId(expressId);
-        expressInfoVO.setExpressName(expressName);
+        expressInfoVO.setExpressName(express.getExpressName());
         expressInfoVO.setReceiverAddress(firstLogisticsVO.getAddress());
         expressInfoVO.setReceiverName(firstLogisticsVO.getName());
         expressInfoVO.setReceiverPhone(firstLogisticsVO.getTelephone());
         Integer state = 0;
         try {
-            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(expressName, expressId));
+            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(express.getRemark3(), expressId));
             if ("true".equals(jsonResult.get("Success") + "")) {
                 String stateStr = jsonResult.get("State").toString();
                 switch (stateStr) {
@@ -378,11 +378,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                         state = 2;
                         break;
                     case "3":
-                        state = 3;
-                        break;
-                    case "4":
                         state = 4;
                         break;
+//                    case "4":
+//                        state = 4;
+//                        break;
                     default:
                         state = 0;
                         break;
@@ -410,7 +410,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
-            companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
+            companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId()).getRemark3();
         }
         return expressLog(companyCode, itemOrderLogistics.getCourierNumber());
     }
@@ -428,7 +428,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         Calendar cal = Calendar.getInstance();
         if (resultVO.getTraces().size() > 0) {
-            for (SingleMsgVO msg : resultVO.getTraces()) {
+            for (int i=resultVO.getTraces().size()-1;i>=0;i--) {
+                SingleMsgVO msg =resultVO.getTraces().get(i);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date time = format.parse(msg.getAcceptTime());
                 cal.setTime(time);
@@ -448,15 +449,15 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     }
 
     //TODO:获取物流公司对应快递鸟平台公司编码
-    private String selLogisticCompanyCode(Long companyId) throws Main4Exception {
-        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId, FieldUtil.codeFields("express_company_id,remark2"));
+    private ExpressCompany selLogisticCompanyCode(Long companyId) throws Main4Exception {
+        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId, FieldUtil.codeFields("express_company_id,express_name,remark3"));
         if (expressCompany == null) {
             throw new Main4Exception("数据库没有对应的快递公司数据");
         }
-        if (expressCompany.getRemark2() == null) {
+        if (expressCompany.getRemark3() == null) {
             throw new Main4Exception("数据库没有对应的快递公司编码");
         }
-        return expressCompany.getRemark2();
+        return expressCompany;
     }
 
 

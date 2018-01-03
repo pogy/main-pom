@@ -77,6 +77,47 @@ public class OnsaleItemVO {
     //是否已设置主图视频 2已设置
     private Integer goodsVideoType;
 
+
+    //商品风格类型，1未设置，2已设置
+    private Integer goodsStyleType;
+    //已设置的商品风格名称
+    private Integer goodsStyleId;
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
+
+    public Integer getGoodsStyleType() {
+        return goodsStyleType;
+    }
+
+    public void setGoodsStyleType(Integer goodsStyleType) {
+        this.goodsStyleType = goodsStyleType;
+    }
+
+
+
+
+//    public Boolean getStyleLinkGoodsNo() {
+//        return styleLinkGoodsNo;
+//    }
+//
+//    public void setStyleLinkGoodsNo(Boolean styleLinkGoodsNo) {
+//        this.styleLinkGoodsNo = styleLinkGoodsNo;
+//    }
+//
+//    public Boolean getVideoLinkGoodsNo() {
+//        return videoLinkGoodsNo;
+//    }
+//
+//    public void setVideoLinkGoodsNo(Boolean videoLinkGoodsNo) {
+//        this.videoLinkGoodsNo = videoLinkGoodsNo;
+//    }
+
     public void setType(String type) {
         this.type = type;
     }
@@ -132,6 +173,12 @@ public class OnsaleItemVO {
         this.setConstituentType(onsaleItem.getConstituentType());
         this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
         this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
+//        if (onsaleItem.getGoodsStyleId() == null||StringUtils.isEmpty(onsaleItem.getGoodsStyleId())){
+//            this.setGoodsStyleId(0);
+//        }else{
+//            this.setGoodsStyleId(Integer.valueOf(onsaleItem.getGoodsStyleId()));
+//        }
+//        this.setGoodsStyleType(this.getGoodsStyleId() == 0 ? 1:2);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }

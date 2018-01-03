@@ -88,7 +88,7 @@ public class CartService {
      */
     public CartPageVO selMyCart(Long userId) {
         CartPageVO vo = packCartProductVo(itemCartProcess.someOneCart(userId));
-        vo.setGoodsCount(itemCartProcess.productNumbers(userId));
+//        vo.setGoodsCount(itemCartProcess.productNumbers(userId));
         return vo;
     }
 
@@ -100,6 +100,7 @@ public class CartService {
         CartPageVO vo = new CartPageVO();
         Map<Long, List<CartVO>> groupByShop = vos.stream().collect(Collectors.groupingBy(CartVO::getShopId));
         vo.setOrders(new ArrayList<>(groupByShop.size()));
+        int num=0;
         if (!groupByShop.isEmpty()) {
             Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
 
@@ -140,6 +141,7 @@ public class CartService {
                         childOrderVO.setGoodsNo(cdnItem.getHuohao());
                         childOrderVO.setColors(BeanMapper.getFieldList(cdnItem.getColors(), "value", String.class));
                         childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
+                        num+=productVO.getNum();
                     }
                 }
                 Collections.sort(orderVO.getChildOrders());
@@ -149,6 +151,7 @@ public class CartService {
             Collections.sort(vo.getOrders());
             Collections.reverse(vo.getOrders());
         }
+        vo.setGoodsCount(num);
         return vo;
     }
 

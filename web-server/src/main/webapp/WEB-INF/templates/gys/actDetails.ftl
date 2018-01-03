@@ -1,4 +1,4 @@
-<#assign $pageid>actDetails</#assign>
+<#assign $pageid="actDetails">
 <!doctype html>
 <html>
 <head>
@@ -19,9 +19,7 @@
 <#include "/__style_torrent__/gys__actDetails_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
@@ -55,27 +53,28 @@
             </div>
         </div>
         <div class="uploadImgBox clearfix">
-            <div class=" clearfix">
+            <div class="clearfix validateForm">
                 <div class="activityInfo">
                     <h3 class="title">活动商品信息：</h3>
-                    <ul>
-                        <li class="clearfix">
-                            <label>商品1：</label>
-                            <input name="goodsUrl" type="text" placeholder="请输入产品链接">
-                        </li>
-                    </ul>
+                    <div class="validateItem">
+                        <div class="formGroup">
+                            <label>商品：</label>
+                            <input class="fmInput" name="goodsUrl" placeholder="请输入产品链接" maxlength="48">
+                        </div>
+                    </div>
                 </div>
                 <div class="contactPhone">
                     <h3 class="title">联系方式：</h3>
-                    <div class="clearfix">
-                        <input type="text" name="tel" value="" placeholder="请输入您的手机号码">
+                    <div class="validateItem">
+                        <div class="formGroup">
+                            <label></label>
+                            <input class="fmInput" name="tel" placeholder="请输入您的手机号码" maxlength="11">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="checkBtns">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

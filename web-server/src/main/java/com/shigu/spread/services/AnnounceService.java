@@ -35,10 +35,10 @@ public class AnnounceService {
         shiguTemp.setFlag(ANNOUNCE_IDENTITY_FLAG);
         shiguTemp.setKey1(announceId);
         shiguTemp = shiguTempMapper.selectOne(shiguTemp);
-        if (shiguTemp == null || StringUtils.isBlank(shiguTemp.getKey2())) {
+        if (shiguTemp == null || StringUtils.isBlank(shiguTemp.getKey6())) {
             return null;
         }
         //能匹配到有效数据，输出为公告
-        return shiguTemp.getKey2();
+        return shiguTemp.getKey6();
     }
 }

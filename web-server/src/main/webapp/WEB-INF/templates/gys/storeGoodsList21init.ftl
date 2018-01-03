@@ -67,6 +67,16 @@
                 <i id="noMaterialNum"></i>
             </a>
         </li>
+        <li <#if query.state == 4>class="select"</#if>>
+            <a href="storeGoodsList21init.htm?state=4">无主图视频
+                <i id="noVideoNum"></i>
+            </a>
+        </li>
+        <li <#if query.state == 5>class="select"</#if>>
+            <a href="storeGoodsList21init.htm?state=5">无风格标签
+                <i id="noGoodsStyleNum"></i>
+            </a>
+        </li>
     </ul>
 </div>
 <div class="goodsFilterBar">
@@ -228,7 +238,13 @@
                         </b>
                     </li>
                     <li>
-                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}" data-linksamegoodsno="${item.linkSameGoodsNo!}">
+                        <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
+                            <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
+                            风格标签
+                        </b>
+                    </li>
+                    <li>
+                        <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}">
                             <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>
                             主图视频
                         </b>

@@ -1,4 +1,4 @@
-<#assign $pageid>regedit</#assign>
+<#assign $pageid="regedit">
 <!doctype html>
 <html>
 <head>
@@ -56,9 +56,7 @@
     <div class="validateItem">
         <div class="formGroup">
             <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
