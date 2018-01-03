@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/login/js/forgetPassword_v20171123_130752.js"></script>
+<script src="http://style.571xz.com/v6/login/js/forgetPassword_v20171227_124222.js"></script>
