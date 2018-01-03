@@ -85,16 +85,16 @@
          fmButton-lg
          fmButton-orange
          czBtn"
-        disabled="disabled"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        id="<#--czBtn-->"
+        id="czBtn"
 >
-        支付升级中...
+        确认充值
     <#if $it.href??>
     </a>
     <#else>

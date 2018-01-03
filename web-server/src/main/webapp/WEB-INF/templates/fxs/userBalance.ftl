@@ -52,11 +52,10 @@
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-    <a href="<#--iwantToRechargein5.htm-->"
+    <a href="iwantToRechargein5.htm"
         target="_blank"
     class="fmButton
          fmButton-orange
-         disabled
         "
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
@@ -67,16 +66,15 @@
         </#if>
         id="recharge"
 >
-        支付升级中...
+        充值
     </a>
 </#list>
 <#assign text>{}</#assign>
 <#assign moduleJsonStr=text?eval />
 <#list [moduleJsonStr] as $it>
-    <a href="<#--withdraw5Apply.htm-->"
+    <a href="withdraw5Apply.htm"
     class="fmButton
          fmButton-lighter-o
-         disabled
         "
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
@@ -87,7 +85,7 @@
         </#if>
         id="withdrawal"
 >
-        支付升级中...
+        提现
     </a>
 </#list>
     </div>
