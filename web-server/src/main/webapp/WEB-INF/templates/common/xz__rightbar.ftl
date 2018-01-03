@@ -1,6 +1,6 @@
 <div class="rightbar" id="rightbar">
     <div class="middlebox">
-        <div class="clickbox gwc" onclick="window.open('http://www.571xz.com/order/cart.htm')">
+        <div class="clickbox gwc" onclick="window.open('/order/cart.htm')">
             <div class="tipsbox">进货车<i></i></div>
             <i class="icon"></i>
             <em>进货车</em>
@@ -17,12 +17,12 @@
                 <ul class="shopList">
                     <li>数据加载中...</li>
                 </ul>
-                <a style="display:none;" class="viewAll" href="http://www.571xz.com/member/storeCollectinit.htm" target="_blank">查看全部</a>
+                <a style="display:none;" class="viewAll" href="/member/storeCollectinit.htm" target="_blank">查看全部</a>
             </div>
         </div>
     </div>
     <div class="bottombox">
-        <a class="clickbox kf" href="http://www.571xz.com/contact.htm" target="_blank">
+        <a class="clickbox kf" href="/contact.htm" target="_blank">
             <div class="tipsbox">在线客服<i></i></div>
             <i class="icon"></i>
         </a>

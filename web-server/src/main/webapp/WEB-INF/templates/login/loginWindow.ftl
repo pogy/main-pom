@@ -1,4 +1,4 @@
-<#assign $pageid>loginWindow</#assign>
+<#assign $pageid="loginWindow">
 <!doctype html>
 <html>
 <head>
@@ -14,6 +14,7 @@
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
+<#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/login__loginWindow_js.ftl">
 </head>
 <body>
@@ -37,13 +38,11 @@
                     <input type="password" class="fmInput-lg fmInput" name="password" placeholder="密码" >
                 </div>
                 <div class="loginItem fogertPassword">
-                    <a href="${main_host!}forgetPassword.htm">忘记密码?</a>
-                    <a href="${main_host!}regedit.htm" class="regegitEntery fr">注册账号</a>
+                    <a href="forgetPassword.htm" target="_blank">忘记密码?</a>
+                    <a href="regedit.htm" class="regegitEntery fr" target="_blank">注册账号</a>
                 </div>
                 <div class="loginItem">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -84,13 +83,11 @@
                     <div class="getMsgBox"><button type="button" id="getMsgBtn">获取验证码</button></div>
                 </div>
                  <div class="loginItem fogertPassword">
-                    <a href="${main_host!}forgetPassword.htm">忘记密码?</a>
-                    <a href="${main_host!}regedit.htm" class="regegitEntery fr">注册账号</a>
+                    <a href="forgetPassword.htm" target="_blank">忘记密码?</a>
+                    <a href="regedit.htm" class="regegitEntery fr" target="_blank">注册账号</a>
                 </div>
                 <div class="loginItem">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

@@ -1,4 +1,4 @@
-<#assign $pageid>privacy</#assign>
+<#assign $pageid="privacy">
 <!doctype html>
 <html>
 <head>
@@ -17,9 +17,7 @@
 <#include "/__style_torrent__/login__privacy_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">

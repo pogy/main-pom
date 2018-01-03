@@ -1,4 +1,4 @@
-<#assign $pageid>bindTelephone</#assign>
+<#assign $pageid="userPhoneBind">
 <!doctype html>
 <html>
 <head>
@@ -11,17 +11,15 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/login__common_css.ftl">
-<#include "/__style_torrent__/login__bindTelephone_css.ftl">
+<#include "/__style_torrent__/login__userPhoneBind_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
-<#include "/__style_torrent__/login__bindTelephone_js.ftl">
+<#include "/__style_torrent__/login__userPhoneBind_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -156,9 +154,7 @@
         <div class="bindFormItem">
             <div class="formGroup">
                 <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
