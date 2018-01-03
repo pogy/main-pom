@@ -1,4 +1,4 @@
-<#assign $pageid>iwantToRechargein5</#assign>
+<#assign $pageid="iwantToRechargein5">
 <!doctype html>
 <html>
 <head>
@@ -20,18 +20,14 @@
 <#include "/__style_torrent__/gys__iwantToRechargein5_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -68,9 +64,7 @@
     <div class="validateItem">
         <div class="formGroup payType clearfix">
             <label>充值方式：</label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmRadio clearfix
         checked
 ">
@@ -94,9 +88,7 @@
     </div>
     <div class="validateItem">
         <div class="formGroup">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

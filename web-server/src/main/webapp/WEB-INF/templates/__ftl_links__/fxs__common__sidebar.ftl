@@ -75,6 +75,18 @@
             >我的收藏</a>
         </li>
     </ul>
+    <h2>特色功能</h2>
+    <ul>
+        <li>
+            <a
+                <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
+                    class="selected"
+                </#if>
+                    href="http://www.571xz.com/qualityControl.htm"
+                    target="_blank"
+            >我要质检</a>
+        </li>
+    </ul>
     <h2>供应商申请</h2>
     <ul>
         <li>
