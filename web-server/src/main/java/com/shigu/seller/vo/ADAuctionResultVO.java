@@ -1,5 +1,8 @@
 package com.shigu.seller.vo;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 /**
@@ -13,6 +16,9 @@ public class ADAuctionResultVO {
     private List<WinnerVo> ggList;
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 

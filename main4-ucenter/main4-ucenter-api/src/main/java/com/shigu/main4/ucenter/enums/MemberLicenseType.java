@@ -1,5 +1,8 @@
 package com.shigu.main4.ucenter.enums;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 用户权益类别
  * Created by zhaohongbo on 17/3/1.
@@ -34,6 +37,9 @@ public enum MemberLicenseType {
     private int value;
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 

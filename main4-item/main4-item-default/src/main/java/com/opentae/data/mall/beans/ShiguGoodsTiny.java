@@ -1,6 +1,8 @@
 package com.opentae.data.mall.beans;
 
 import com.opentae.common.beans.MoreSiteBean;
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -132,6 +134,9 @@ public class ShiguGoodsTiny extends MoreSiteBean {
     }
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 

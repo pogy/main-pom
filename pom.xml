@@ -12,10 +12,9 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.2.1-RELEASE</version>
+    <version>4.2.4-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
-        <module>main4-dao</module>
         <module>main4-common</module>
         <module>main4-session</module>
         <module>main4-ucenter</module>
@@ -42,7 +41,7 @@
         <main4-session.version>${project.version}</main4-session.version>
         <main4-ucenter-api.version>${project.version}</main4-ucenter-api.version>
         <main4-common.version>${project.version}</main4-common.version>
-        <main4-dao.version>${project.version}</main4-dao.version>
+        <!--<main4-dao.version>${project.version}</main4-dao.version>-->
         <main4-store-default.version>${project.version}</main4-store-default.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>

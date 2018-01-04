@@ -1,8 +1,5 @@
 package com.shigu.tools;
 
-import com.sun.tools.corba.se.idl.StringGen;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class KeyWordsUtil {
     static String authorityKeyWords = "无需国家质量检测,错过就没机会了,中国驰名商标,再不抢就没了,不会再便宜了,专家推荐,万人疯抢,全民抢购,全民疯抢,抢疯了秀,卖疯了秀,免抽检,老字号,专供,特供,抢爆,秒杀";
 
 
-    private static List<String> veryKeyList = new ArrayList();
+    private static final List<String> veryKeyList ;
 
     private static final List<String> FHKKeyList;
 
@@ -52,57 +49,57 @@ public class KeyWordsUtil {
         authorityKeyList = Arrays.asList(authorityKeyWords.split(","));
     }
 
-    public static boolean verifyKeyWords(String orignalWords) {
-        for (int i = 0; i < veryKeyList.size(); i++) {
-            String value = veryKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < oneKeyList.size(); i++) {
-            String value = oneKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < FHKKeyList.size(); i++) {
-            String value = FHKKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < timeKeyList.size(); i++) {
-            String value = timeKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < extraKeyList.size(); i++) {
-            String value = extraKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < brandKeyList.size(); i++) {
-            String value = brandKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < shamKeyList.size(); i++) {
-            String value = shamKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        for (int i = 0; i < authorityKeyList.size(); i++) {
-            String value = authorityKeyList.get(i);
-            if(value.indexOf(orignalWords)>=0){
-                return true;
-            }
-        }
-        return  false;
-    }
+//    public static boolean verifyKeyWords(String orignalWords) {
+//        for (int i = 0; i < veryKeyList.size(); i++) {
+//            String value = veryKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < oneKeyList.size(); i++) {
+//            String value = oneKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < FHKKeyList.size(); i++) {
+//            String value = FHKKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < timeKeyList.size(); i++) {
+//            String value = timeKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < extraKeyList.size(); i++) {
+//            String value = extraKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < brandKeyList.size(); i++) {
+//            String value = brandKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < shamKeyList.size(); i++) {
+//            String value = shamKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        for (int i = 0; i < authorityKeyList.size(); i++) {
+//            String value = authorityKeyList.get(i);
+//            if(value.indexOf(orignalWords)>=0){
+//                return true;
+//            }
+//        }
+//        return  false;
+//    }
 
     /**
      * 替换语句中所有关键词
@@ -113,7 +110,7 @@ public class KeyWordsUtil {
     private static String duleKeyWordsInList(String orignalWords, List<String> keyWordsList) {
         for (int i = 0; i < keyWordsList.size(); i++) {
             String value = keyWordsList.get(i);
-            if(value.indexOf(orignalWords)>=0){
+            if(orignalWords.indexOf(value)>=0){
                 orignalWords=orignalWords.replaceAll(value,"");
             }
         }
@@ -126,7 +123,7 @@ public class KeyWordsUtil {
      * @return
      */
     public static String duleKeyWords(String orignalWords) {
-        orignalWords = duleKeyWordsInList(orignalWords,oneKeyList);
+        orignalWords = duleKeyWordsInList(orignalWords,veryKeyList);
         orignalWords = duleKeyWordsInList(orignalWords,FHKKeyList);
         orignalWords = duleKeyWordsInList(orignalWords,timeKeyList);
         orignalWords = duleKeyWordsInList(orignalWords,extraKeyList);

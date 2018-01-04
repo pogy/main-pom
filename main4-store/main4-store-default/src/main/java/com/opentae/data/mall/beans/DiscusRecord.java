@@ -1,6 +1,9 @@
 package com.opentae.data.mall.beans;
 
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -104,6 +107,9 @@ public class DiscusRecord implements Serializable {
     }
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return this.title;
     }
 

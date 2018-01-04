@@ -22,11 +22,25 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.8.v20171121</version>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.eclipse.jetty</groupId>-->
+                <!--<artifactId>jetty-maven-plugin</artifactId>-->
+                <!--<version>9.4.8.v20171121</version>-->
+            <!--</plugin>-->
+
+        <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <version>9.4.8.v20171121</version>
+            <configuration>
+                <scanIntervalSeconds>0</scanIntervalSeconds>
+                <httpConnector>
+                    <port>8080</port>
+                </httpConnector>
+            </configuration>
+        </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -49,39 +63,39 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-order-api</artifactId>
-            <version>${main4-order-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-ucenter-api</artifactId>
-            <version>${main4-ucenter-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-common</artifactId>
-            <version>${main4-common.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-store-api</artifactId>
-            <version>${main4-store-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-item-api</artifactId>
-            <version>${main4-item-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-monitor-api</artifactId>
-            <version>${main4-monitor-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-spread-api</artifactId>
-            <version>${main4-spread-api.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.tb</groupId>

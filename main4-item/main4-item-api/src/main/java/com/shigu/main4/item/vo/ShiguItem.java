@@ -1,6 +1,8 @@
 package com.shigu.main4.item.vo;
 
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -269,6 +271,10 @@ public class ShiguItem implements Serializable{
     }
 
     public String getTitle() {
+        //TODO powell important
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 
