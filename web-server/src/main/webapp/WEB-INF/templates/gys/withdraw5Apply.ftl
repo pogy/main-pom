@@ -35,7 +35,7 @@
     <a href="bindAlipayUserOpe.htm" class="fr fcBlue fs14"><i class="icon-plus"></i>添加新的支付宝账号</a>
 </ul>
 <div class="withdrawTip">
-    提现金额不能小于100元，提现金额会在2个工作日内达到您的支付宝内，账户余额提现收取0.6%的手续费！
+    提现金额不能小于100元，提现金额会在2个工作日内打到您的支付宝内，账户余额提现收取0.6%的手续费！
 </div>
 <div class="cashBox pr">
     <div class="validateForm cashApplyForm">
