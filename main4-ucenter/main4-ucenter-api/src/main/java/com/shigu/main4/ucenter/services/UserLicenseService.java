@@ -119,7 +119,7 @@ public interface UserLicenseService {
      * @param alipayName
      * @return
      */
-    boolean saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName);
+    String saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName);
 
     /**
      *删除绑定支付宝帐号

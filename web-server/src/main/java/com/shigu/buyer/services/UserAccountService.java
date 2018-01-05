@@ -156,10 +156,11 @@ public class UserAccountService {
      * @return
      */
     public JSONObject applyAliUserBind(MemberAlipayBindBO bo, Long userId) {
-        if (userLicenseService.saveOrUpdateUserAlipayBind(userId, bo.getAliAccount(), bo.getUserRealName())) {
+        String bindResult = userLicenseService.saveOrUpdateUserAlipayBind(userId, bo.getAliAccount(), bo.getUserRealName());
+        if ("success".equals(bindResult)) {
             return JsonResponseUtil.success();
         }
-        return JsonResponseUtil.error("绑定支付宝失败");
+        return JsonResponseUtil.error(bindResult);
     }
 
     /**

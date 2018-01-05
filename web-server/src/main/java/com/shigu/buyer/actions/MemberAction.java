@@ -1155,7 +1155,7 @@ public class MemberAction {
     public JSONObject getTeleValidateCode(String imgValidate, HttpSession session) {
         //校验手机验证码
         if (imgValidate == null || !imgValidate.equals(session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue()))) {
-            return JsonResponseUtil.error("请输入正确的验证码");
+            return JsonResponseUtil.error("请输入正确的图形验证码");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String phone = userLicenseService.findPhoneByUserId(ps.getUserId());
