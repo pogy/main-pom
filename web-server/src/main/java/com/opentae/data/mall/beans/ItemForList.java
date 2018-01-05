@@ -1,5 +1,8 @@
 package com.opentae.data.mall.beans;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 给列表用的商品简单信息
  * Created by Licca on 17/4/10.
@@ -69,6 +72,10 @@ public class ItemForList {
     }
 
     public String getTitle() {
+        //TODO Powell only kept here  111
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 

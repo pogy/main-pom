@@ -1,5 +1,8 @@
 package com.shigu.main4.newcdn.vo;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 /**
@@ -323,6 +326,10 @@ public class CdnGoodsInfoVO {
      * 获取 标题
      */
     public String getTitle() {
+        //TODO powell important 111
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return this.title;
     }
 

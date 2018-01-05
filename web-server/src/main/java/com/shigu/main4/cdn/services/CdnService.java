@@ -38,9 +38,11 @@ import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.KeyWordsUtil;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -324,8 +326,10 @@ public class CdnService {
         vo.setFabric(cdnItem.getFabric());
         vo.setInFabric(cdnItem.getInFabric());
 
-        if(cdnItem.getDescription()!=null){
-            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+        String cdnItemDescription = cdnItem.getDescription();
+        if(StringUtils.isNotBlank(cdnItemDescription)){
+             cdnItemDescription= KeyWordsUtil.duleKeyWords(cdnItemDescription);
+            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItemDescription).replace("<script ","")
                     .replace("<script>","")
                     .replace("</script>",""));
         }

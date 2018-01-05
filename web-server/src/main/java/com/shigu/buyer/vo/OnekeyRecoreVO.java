@@ -1,5 +1,8 @@
 package com.shigu.buyer.vo;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
 
 /**
@@ -52,6 +55,9 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     }
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 

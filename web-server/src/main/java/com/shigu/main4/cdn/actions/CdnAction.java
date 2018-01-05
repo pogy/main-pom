@@ -45,10 +45,7 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.tools.HtmlImgsLazyLoad;
-import com.shigu.tools.JsonResponseUtil;
-import com.shigu.tools.ResultRetUtil;
-import com.shigu.tools.XzSdkClient;
+import com.shigu.tools.*;
 import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
@@ -891,6 +888,14 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws Main4Exception, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
+        //TODO powell
+//        if(goods!=null){
+//            String title = goods.getTitle();
+//            if(StringUtils.isNotBlank(title)){
+//               title= KeyWordsUtil.duleKeyWords(title);
+//               goods.setTitle(title);
+//            }
+//        }
         if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
             goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
         }

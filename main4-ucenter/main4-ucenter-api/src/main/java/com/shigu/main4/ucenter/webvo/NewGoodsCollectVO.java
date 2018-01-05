@@ -1,5 +1,8 @@
 package com.shigu.main4.ucenter.webvo;
 
+import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -54,6 +57,9 @@ public class NewGoodsCollectVO implements Serializable{
     }
 
     public String getTitle() {
+        if(StringUtils.isNotBlank(title)){
+            title= KeyWordsUtil.duleKeyWords(title);
+        }
         return title;
     }
 
