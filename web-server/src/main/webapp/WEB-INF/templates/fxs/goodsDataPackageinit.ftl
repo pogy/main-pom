@@ -1,4 +1,4 @@
-<#assign $pageid>goodsDataPackageinit</#assign>
+<#assign $pageid="goodsDataPackageinit">
 <!doctype html>
 <html>
 <head>
@@ -20,18 +20,14 @@
 <#include "/__style_torrent__/fxs__goodsDataPackageinit_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -44,9 +40,7 @@
 <div class="dataList goodsList" id="goodsList">
     <ul class="head clearfix">
         <li class="name">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -98,9 +92,7 @@
                     <dl>
                     <#if packet.remark10??>
                         <dt>
-<#assign text>{"value":packet.dataPackageId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":packet.dataPackageId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -146,9 +138,7 @@
                         <#list packet.goods as goods>
                             <#if goods_index == 0>
                             <dt>
-<#assign text>{"value":packet.dataPackageId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":packet.dataPackageId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -188,13 +178,13 @@
 </label>
 </#list>
                                 <a class="piclink" href="#" title="查看宝贝详情" target="_blank"><img src="${goods.imgsrc!}"></a>
-                                <p><a class="title" href="${main_host!}item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a></p>
+                                <p><a class="title" href="/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a></p>
                             </dt>
                             </#if>
                             <dd>
                                 <i class="line"></i>
                                 <a class="piclink smallpic" href="#" title="查看宝贝详情" target="_blank"><img src="${goods.imgsrc!}"></a>
-                                <p><a class="title" href="${main_host!}item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a></p>
+                                <p><a class="title" href="/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a></p>
                             </dd>
                         </#list>
                     </#if>
@@ -219,9 +209,7 @@
                 </li>
             </ul>
         </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -229,9 +217,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -245,9 +231,7 @@
         <p class="noData">暂无已生成的数据包！</p>
     </#if>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
