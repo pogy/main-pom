@@ -1,5 +1,6 @@
 package com.shigu.main4.jd.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.ware.ImageWriteUpdateRequest;
 import com.jd.open.api.sdk.request.ware.TransportWriteUpdateWareTransportIdRequest;
@@ -52,9 +53,45 @@ public class JdGoodsServiceImpl implements JdGoodsService{
     @Override
     public JdWareAddVO upToJd(JdUpBO bo, Long jdUid) throws JdAuthFailureException, ImgDownloadException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        WareAddRequest request = BeanMapper.map(bo, WareAddRequest.class);
+        WareAddRequest request = new WareAddRequest();
+        request.setInputStrs(bo.getInputStrs());
+        request.setInputPids(bo.getInputPids());
+        request.setImported(bo.getImported());
+        request.setPayFirst(bo.getPayFirst());
+        request.setOuterId(bo.getOuterId());
+        request.setPropertyAlias(bo.getPropertyAlias());
+        request.setAttributes(bo.getAttributes());
+        request.setSkuStocks(bo.getSkuStocks());
+        request.setSkuPrices(bo.getSkuPrices());
+        request.setSkuProperties(bo.getSkuProperties());
+        request.setNotes(bo.getNotes());
+        request.setJdPrice(bo.getJdPrice());
+        request.setMarketPrice(bo.getMarketPrice());
+        request.setCostPrice(bo.getCostPrice());
+        request.setWeight(bo.getWeight());
+        request.setHigh(bo.getHigh());
+        request.setWide(bo.getWide());
+        request.setLength(bo.getLength());
+        request.setStockNum(bo.getStockNum());
+        request.setItemNum(bo.getItemNum());
+        request.setOptionType(bo.getOptionType());
+        request.setTitle(bo.getTitle());
+        request.setShopCategory(bo.getShopCategory());
+        request.setCid(bo.getCid());
+        request.setWarePackType(bo.getWarePackType());
+        request.setCanVAT(bo.getCanVAT());
+        request.setHasCheckCode(bo.getHasCheckCode());
+        request.setListTime(bo.getListTime());
+        request.setPackListing(bo.getPackListing());
+        request.setProducter(bo.getProducter());
+        request.setService(bo.getService());
+        request.setTradeNo(bo.getTradeNo());
+        request.setWareBigSmallModel(bo.getWareBigSmallModel());
+        request.setWareLocation(bo.getWareLocation());
+        request.setWrap(bo.getWrap());
+//        request.setWarePackType("1");//普通商品
+        System.out.println(JSONObject.toJSON(request));
         request.setWareImage(DownImage.downImgFile(bo.getWareImageUrl()));
-        request.setWarePackType("1");//普通商品
         WareAddResponse response=jdUtil.execute(request,authedInfo.getAccessToken());
         JdWareAddVO vo=new JdWareAddVO();
         vo.setGoodsId(response.getWareId());

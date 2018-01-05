@@ -2,6 +2,7 @@ package com.shigu.goodsup.jd.bo;
 
 import com.shigu.goodsup.jd.vo.PropertyItemVO;
 import com.shigu.goodsup.jd.vo.PropertyValueVO;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +68,9 @@ public class JdUploadTmpBO extends JdUploadBO{
     public String selSkuProp(){
         StringBuilder sku= new StringBuilder();
         for(JdUploadSkuBO s:skus){
-            String str=s.getPid()+":";
+            String str=s.getPid()+":"+s.getVid();
             for(JdUploadSkuBO ss:s.getSizes()){
-                sku.append(str).append(ss.getVid()).append("|");
+                sku.append(str).append("^").append(ss.getPid()).append(":").append(ss.getVid()).append("|");
             }
         }
         if(sku.length()>0){
@@ -132,7 +133,7 @@ public class JdUploadTmpBO extends JdUploadBO{
         for(JdUploadSkuBO s:skus){
             PropertyValueVO v= color.getPropValueByVid(s.getVid());
             if(!v.getOldName().equals(s.getName())){
-                str.append(s.getPid()).append(":").append(s.getVid()).append(":").append(s.getName()).append("|");
+                str.append(s.getPid()).append(":").append(s.getVid()).append(":").append(s.getName()).append("^");
             }
         }
         for(JdUploadSkuBO s:skus.get(0).getSizes()){
@@ -140,7 +141,7 @@ public class JdUploadTmpBO extends JdUploadBO{
                 if(Objects.equals(p.getPid(), s.getPid())){
                     PropertyValueVO v= p.getPropValueByVid(s.getVid());
                     if(!v.getOldName().equals(s.getName())){
-                        str.append(s.getPid()).append(":").append(s.getVid()).append(":").append(s.getName()).append("|");
+                        str.append(s.getPid()).append(":").append(s.getVid()).append(":").append(s.getName()).append("^");
                     }
                     break;
                 }
@@ -158,7 +159,7 @@ public class JdUploadTmpBO extends JdUploadBO{
         StringBuilder sku= new StringBuilder();
         for(JdUploadSkuBO s:skus){
             for(JdUploadSkuBO ss:s.getSizes()){
-                sku.append(ss.getCode()==null?"":ss.getCode()).append("|");
+                sku.append(StringUtils.isEmpty(ss.getCode())?super.getGoodsNo():ss.getCode()).append("|");
             }
         }
         if(sku.length()>0){

@@ -238,7 +238,7 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, IOException, ClassNotFoundException, CloneNotSupportedException, JdApiException {
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws IOException, ClassNotFoundException, CloneNotSupportedException, JdApiException, JdAuthFailureException {
         PropsVO tbPropsVO=propsService.selProps(item.getCid());
         List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
@@ -251,7 +251,7 @@ public class JdUpItemService {
         fillProp(prop.getSaleProps(),tbPropsVO.getSaleProps());
         fillProp(prop.getProperties(),tbPropsVO.getProperties());
         for(PropertyItemVO p:prop.getProperties()){
-            if("颜色".equals(p.getName())&&!p.getType().equals(PropType.INPUT)){
+            if("颜色".equals(p.getName())&&p.getType().equals(PropType.CHECKBOX)){
                 fillPropValue(p,tbPropsVO.getColor());
                 break;
             }
@@ -263,7 +263,7 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws Main4Exception, IOException, JdApiException {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws IOException, JdApiException, JdAuthFailureException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){
@@ -337,7 +337,7 @@ public class JdUpItemService {
                     prop.setColor(pv);
                     continue;
                 }
-                if("款式".equals(jdItemProp.getName())){
+                if("款式,banx".equals(jdItemProp.getName())){
                     properties.add(pv);
                     continue;
                 }

@@ -330,7 +330,7 @@ function ready_publish(){
         var colorIsExist = false;
         if(skudata.length){
             $.each(skudata, function(i, item){
-                if(item.pid == colorPid){
+                if(item.vid == colorVid){
                     colorIsExist = true;
                     item.sizes.push({
                         pid: sizePid,
@@ -354,7 +354,7 @@ function ready_publish(){
                 sizes:[]
             })
             $.each(skudata, function(i, item){
-                if(item.pid == colorPid){
+                if(item.vid == colorVid){
                     item.sizes.push({
                         pid: sizePid,
                         vid: sizeVid,

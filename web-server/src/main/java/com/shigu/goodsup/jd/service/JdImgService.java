@@ -7,6 +7,7 @@ import com.openJar.tools.OpenClient;
 import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
+import com.shigu.main4.jd.exceptions.ImgZoneException;
 import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.JdGoodsService;
@@ -35,7 +36,7 @@ public class JdImgService {
      * @return
      * @throws JdUpImgException
      */
-    public JdUpImgResponse addImgs(Long jdUid,List<String> imgUrls,Long imgCategoryId) throws Main4Exception {
+    public JdUpImgResponse addImgs(Long jdUid,List<String> imgUrls,Long imgCategoryId) throws ImgZoneException {
         OpenClient openClient = openClientService.getOpenClient();
         JdUpImgRequest request = new JdUpImgRequest();
         request.setJdUid(jdUid);
@@ -43,7 +44,7 @@ public class JdImgService {
         request.setPictureCateId(imgCategoryId);
         JdUpImgResponse response = openClient.execute(request);
         if(!"1".equals(response.getReturnCode())){
-            throw new Main4Exception(response.getDesc());
+            throw new ImgZoneException(response.getDesc());
         }
         return response;
     }
@@ -51,8 +52,8 @@ public class JdImgService {
     /**
      * 绑定图片到商品
      */
-    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long subUid) throws JdNotBindException, JdAuthFailureException, JdApiException {
-        String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
+    public Boolean bindGoodsImgs(JdImageUpdateBO bo,Long jdUid) throws JdNotBindException, JdAuthFailureException, JdApiException {
+//        String jdUid = jdUserInfoService.getJdUidBySubUid(subUid);
        return jdGoodsService.jdImageUpdate(bo, Long.valueOf(jdUid));
     }
 }

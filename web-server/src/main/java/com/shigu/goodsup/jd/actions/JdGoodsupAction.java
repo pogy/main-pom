@@ -10,15 +10,21 @@ import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.service.JdGoodsUpService;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.JdUserInfoService;
+import com.shigu.goodsup.jd.util.JdParseStateUtil;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.service.*;
+import com.shigu.main4.jd.service.JdAuthService;
+import com.shigu.main4.jd.service.JdCategoryService;
+import com.shigu.main4.jd.service.JdServiceMarketService;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
+import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
+import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -28,6 +34,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -43,10 +50,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,6 +83,11 @@ public class JdGoodsupAction {
     @Autowired
     private JdUserInfoService jdUserInfoService;
 
+    @Autowired
+    private JdServiceMarketService jdServiceMarketService;
+    @Autowired
+    ItemUpRecordService itemUpRecordService;
+
     public static final String IMG_CATEGORY = "571xz";
 
 
@@ -102,21 +111,21 @@ public class JdGoodsupAction {
     @RequestMapping("callback")
     public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws Main4Exception {
         /************检测是否订阅服务**********/
-//        JdVasSubscribeVO subscribeVO = JdParseStateUtil.parseState(state);
-//        if (subscribeVO.getEndDate().after(new Date())) {
-//            //FW_GOODS-449409
-//            String itemId = subscribeVO.getItemCode().replace("FW_GOODS-", "");
-//            if (StringUtils.isEmpty(itemId)) {
-//                throw new JdUpException("获取服务信息失败");
-//            }
-//            return "redirect:https://fw.jd.com/"+itemId+".html";
-//        }
+        JdVasSubscribeVO subscribeVO = JdParseStateUtil.parseState(state);
+        if (subscribeVO.getEndDate().after(new Date())) {
+            //FW_GOODS-449409
+            String itemId = subscribeVO.getItemCode().replace("FW_GOODS-", "");
+            if (StringUtils.isEmpty(itemId)) {
+                throw new Main4Exception("获取服务信息失败");
+            }
+            return "redirect:https://fw.jd.com/"+itemId+".html";
+        }
 
         /************获取用户登陆信息**********/
         JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
         //保存订购信息
-//        subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
-//        jdServiceMarketService.saveSubscribe(subscribeVO);
+        subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
+        jdServiceMarketService.saveSubscribe(subscribeVO);
 
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
@@ -261,92 +270,77 @@ public class JdGoodsupAction {
      * @return
      */
     @RequestMapping("publish")
-    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception, IOException, ClassNotFoundException, CloneNotSupportedException {
-
-//        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        if(ps==null){
-//            String queryString=request.getQueryString();
-//            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
-//                    (queryString==null?"":("?"+queryString)),"utf-8");
-//        }
-        /********************************获取京东授权信息*******************************/
-//        Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
-        Long jdUserId=2299600652L;
-
-
-        /********************************屏蔽卖家用户使用********************************/
-        Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
-            model.addAttribute("errmsg", "档口不支持代理功能");
-            return "taobao/uperror";
-        }
-        /********************************查上传记录********************************/
-
-        //todo jd上传记录查询
-//        if (yesrepeat == null || yesrepeat != 1) {
-//            LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
-//            if (lastup != null) {
-//                model.addAttribute("lastup", lastup);
-//                model.addAttribute("goodsId", itemId);
-//                return "taobao/hasuped";
-//            }
-//        }
-        List<JdVenderBrandPubInfoVO> allBrand = null;
+    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws ClassNotFoundException, CloneNotSupportedException, IOException {
         try {
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            if(ps==null){
+                throw new JdAuthFailureException();
+            }
+            /********************************获取京东授权信息*******************************/
+            Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
+
+            /********************************屏蔽卖家用户使用********************************/
+            Subject currentUser = SecurityUtils.getSubject();
+            if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
+                throw new JdApiException("档口不支持代理功能");
+            }
+            /********************************查上传记录********************************/
+
+            //todo jd上传记录查询
+            if (yesrepeat == null || yesrepeat != 1) {
+                LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
+                if (lastup != null) {
+                    model.addAttribute("lastup", lastup);
+                    model.addAttribute("goodsId", itemId);
+                    return "jingdong/hasuped";
+                }
+            }
+            List<JdVenderBrandPubInfoVO> allBrand = null;
             allBrand = jdCategoryService.getAllBrand(jdUserId);
+            if(allBrand==null){
+                throw new JdApiException("不是京东商家");
+            }
+            /********************************取商品********************************/
+            JdPageItem item=null;
+            try {
+                item= jdUpItemService.findGoods(itemId);
+                if(item==null){
+                    model.addAttribute("errmsg","商品不存在");
+                    return "jingdong/uperror";
+                }
+                //计算标题与卖点的长度
+                if(item.getItem().getTitle()!=null){
+                    item.setTitleLength(item.getItem().getTitle().getBytes(Charset.forName("GBK")).length);
+                }
+                if(item.getItem().getSellPoint()!=null){
+                    item.setSellPointLength(item.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                logger.error("获取商品数据异常",e);
+                throw new JdApiException("商品信息异常");
+            }
+            /********************************包装所有数据********************************/
+            JdShowDataVO allData=new JdShowDataVO();
+            allData.setItems(item);
+            allData.setJdUserId(jdUserId);
+            allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
+            allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
+            allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
+            allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
+            model.addAttribute("allData", allData);
+            model.addAttribute("id",itemId);
+            model.addAttribute("jd_yj_zh_session",null);
+            return "jingdong/jd";
+
+
+        } catch (JdApiException e) {
+            model.addAttribute("errmsg", e.getMessage());
+            return "jingdong/uperror";
         } catch (JdAuthFailureException e) {
             String queryString=request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
                     (queryString==null?"":("?"+queryString)),"utf-8");
-        } catch (JdApiException e) {
-            model.addAttribute("errmsg", e.getMessage());
-            return "taobao/uperror";
         }
-        if(allBrand==null){
-            model.addAttribute("errmsg", "不是京东商家");
-            return "taobao/uperror";
-        }
-        /********************************取商品********************************/
-        JdPageItem item=null;
-        try {
-            item= jdUpItemService.findGoods(itemId);
-            if(item==null){
-                model.addAttribute("errmsg","商品不存在");
-                return "taobao/uperror";
-            }
-            //计算标题与卖点的长度
-            if(item.getItem().getTitle()!=null){
-                item.setTitleLength(item.getItem().getTitle().getBytes(Charset.forName("GBK")).length);
-            }
-            if(item.getItem().getSellPoint()!=null){
-                item.setSellPointLength(item.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            logger.error("获取商品数据异常",e);
-            model.addAttribute("errmsg","商品信息异常");
-            return "taobao/uperror";
-        }
-
-        /********************************包装所有数据********************************/
-        JdShowDataVO allData=new JdShowDataVO();
-        allData.setItems(item);
-        allData.setJdUserId(jdUserId);
-        try {
-            allData.setDeliveyList(jdUpItemService.selPostModel(jdUserId));
-            allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
-            allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
-        } catch (JdApiException e) {
-            model.addAttribute("errmsg", e.getMessage());
-            return "taobao/uperror";
-        }
-        allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
-        model.addAttribute("allData", allData);
-        model.addAttribute("id",itemId);
-        model.addAttribute("jd_yj_zh_session",null);
-
-        //测试用
-        return "jingdong/jd";
     }
 }

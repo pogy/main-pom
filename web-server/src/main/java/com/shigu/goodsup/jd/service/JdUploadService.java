@@ -5,11 +5,15 @@ import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.goodsup.jd.bo.JdUploadPropImgBO;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.bo.JdUploadTmpBO;
+import com.shigu.goodsup.jd.exceptions.JdNotBindException;
 import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.jd.bo.JdImageUpdateBO;
 import com.shigu.main4.jd.bo.JdUpBO;
+import com.shigu.main4.jd.exceptions.ImgDownloadException;
+import com.shigu.main4.jd.exceptions.ImgZoneException;
 import com.shigu.main4.jd.exceptions.JdApiException;
+import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.JdCategoryService;
 import com.shigu.main4.jd.service.JdGoodsService;
 import com.shigu.main4.jd.service.JdShopService;
@@ -19,7 +23,10 @@ import com.shigu.main4.jd.vo.JdWareAddVO;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +49,10 @@ public class JdUploadService {
     JdImgService jdImgService;
     @Autowired
     JdGoodsUpService jdGoodsUpService;
-    public void upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws Main4Exception, JdApiException {
+    static List<Integer> cdnIndexs=Arrays.asList(10,11,12,13,14);
+    public void upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws JdApiException, JdAuthFailureException, ImgZoneException, ImgDownloadException, JdNotBindException {
         JdUpBO req=new JdUpBO();
         req.setCid(tbo.getCid().toString());
-        req.setShopCategory("店内类目");
         req.setTitle(tbo.getTitle());
         req.setOptionType("onsale".equals(tbo.getApprove_status())?"onsale":"offsale");//默认下架
         req.setItemNum(tbo.getGoodsNo());
@@ -65,8 +72,9 @@ public class JdUploadService {
         req.setInputPids(tbo.selInputPids());
         req.setInputStrs(tbo.selInputValues());
         req.setAdContent(tbo.getSellPoint());
-        req.setWareBigSmallModel("");
-        req.setWarePackType("");
+        req.setWrap(null);
+        req.setWareBigSmallModel(null);
+        req.setWarePackType(null);
 
         //拼装店内类目
         if(tbo.getSellerCids()!=null){
@@ -94,14 +102,8 @@ public class JdUploadService {
 
         String html=tbo.getPcContent();
         Document doc = Jsoup.parse(html);
-        //处理超链接
-        doc.select("a").forEach(element -> {
-            if(element.hasAttr("href")){
-                element.attr("href","javascript:void(0);");
-            }
-        });
         Elements descImgs=doc.select("img");
-        List<String> descImgUrls=descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).collect(Collectors.toList());
+        List<String> descImgUrls=descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).filter(s -> s.startsWith("http")).collect(Collectors.toList());
 
         List<String> allImgs=new ArrayList<>();
         allImgs.addAll(headImgUrls);
@@ -130,28 +132,42 @@ public class JdUploadService {
 
         Map<String,JdImgInfo> imgMap=jdUpImgResponse.getJdImgInfos();
 
+        int cdnIndex=cdnIndexs.get((int)(Math.random()*cdnIndexs.size()));
         for(String descImg:descImgUrls){
             JdImgInfo img=imgMap.get(descImg);
-            doc.getElementsByAttributeValue("src",descImg).attr("src",img.getPictureUrl());
+            doc.getElementsByAttributeValue("src",descImg).attr("src","//img"+cdnIndex+".360buyimg.com/imgzone/"+img.getPictureUrl());
         }
         html=doc.body().html();
         req.setNotes(html);
+
         //上传商品
         JdWareAddVO jdGoods= jdGoodsService.upToJd(req, jdUid);
         if(tbo.getPostage_id()!=null&&tbo.getPostage_id()!=-1L){
             jdGoodsService.bindPostTemplate(jdUid,jdGoods.getGoodsId(),tbo.getPostage_id());
         }
         //修改属性图
+        JdImageUpdateBO b=new JdImageUpdateBO();
+        StringBuilder colors=new StringBuilder();
+        StringBuilder images= new StringBuilder();
+        StringBuilder zids= new StringBuilder();
+        StringBuilder index=new StringBuilder();
+        int headIndex=1;
+        for(String himg:headImgUrls){
+            JdImgInfo img=imgMap.get(himg);
+            images.append(img.selImgUrl()).append(",");
+            zids.append(img.getPictureId()).append(",");
+            index.append(headIndex++).append(",");
+            colors.append("0000000000").append(",");
+        }
         for(JdUploadSkuBO sku:tbo.getSkus()){
-            JdImageUpdateBO b=new JdImageUpdateBO();
-            b.setColorId(sku.getVid().toString());
-            StringBuilder images= new StringBuilder();
-            StringBuilder zids= new StringBuilder();
+            int i=1;
             for(JdUploadPropImgBO jdUploadPropImgBO:tbo.getPropImg()){
                 if(Objects.equals(jdUploadPropImgBO.getVid(), sku.getVid())){
                     JdImgInfo img=imgMap.get(jdUploadPropImgBO.getImg());
                     images.append(img.selImgUrl()).append(",");
                     zids.append(img.getPictureId()).append(",");
+                    index.append(i++).append(",");
+                    colors.append(sku.getVid()).append(",");
                     break;
                 }
             }
@@ -159,16 +175,23 @@ public class JdUploadService {
                 JdImgInfo img=imgMap.get(himg);
                 images.append(img.selImgUrl()).append(",");
                 zids.append(img.getPictureId()).append(",");
+                index.append(i++).append(",");
+                colors.append(sku.getVid()).append(",");
             }
-            if(images.length()>0){
-                images = new StringBuilder(images.substring(0, images.length() - 1));
-                zids = new StringBuilder(zids.substring(0, zids.length() - 1));
-            }
+        }
+        if(images.length()>0){
+            images = new StringBuilder(images.substring(0, images.length() - 1));
+            zids = new StringBuilder(zids.substring(0, zids.length() - 1));
+            index = new StringBuilder(index.substring(0, index.length() - 1));
+            colors = new StringBuilder(colors.substring(0, colors.length() - 1));
+            b.setColorId(colors.toString());
             b.setGoodsId(jdGoods.getGoodsId());
             b.setImgUrl(images.toString());
             b.setImgZoneId(zids.toString());
+            b.setImgIndex(index.toString());
             jdImgService.bindGoodsImgs(b,jdUid);
         }
+
         ItemUpRecordVO vo=new ItemUpRecordVO();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         vo.setDaiTime(sdf.format(new Date()));
@@ -181,5 +204,14 @@ public class JdUploadService {
         vo.setFlag("jd");
         vo.setSupperGoodsId(tbo.getMid());
         jdGoodsUpService.saveRecord(vo);
+    }
+
+    public static void main(String[] args) {
+        String str="<div>" +
+                "<a onclick=''>,</a><b ons=''>,</b>" +
+                "" +
+                "</div>";
+        Elements on = Jsoup.parse(str).getElementsByAttributeStarting("on");
+        System.out.println(on.toString());
     }
 }

@@ -1,5 +1,6 @@
 package com.shigu.main4.jd.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jd.open.api.sdk.DefaultJdClient;
 import com.jd.open.api.sdk.JdClient;
 import com.jd.open.api.sdk.JdException;
@@ -44,6 +45,7 @@ public class JdUtil {
     public <T extends AbstractResponse> T execute(JdRequest<T> request,String accessToken) throws JdApiException, JdAuthFailureException {
         try {
             T response = getJdClient(accessToken).execute(request);
+            System.out.println(JSONObject.toJSON(response));
             checkJdResponst(response);
             return response;
         } catch (JdException e) {

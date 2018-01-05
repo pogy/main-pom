@@ -23,14 +23,11 @@ public class JdUserInfoService {
      * @return
      * @throws JdNotBindException
      */
-    public String getJdUidBySubUid(Long subUid) throws JdNotBindException {
+    public String getJdUidBySubUid(Long subUid) {
         MemberUserSub memberUserSub = new MemberUserSub();
         memberUserSub.setSubUserId(subUid);
         memberUserSub.setAccountType(LoginFromType.JD.getAccountType());
         memberUserSub = mebMemberUserSubMapper.selectOne(memberUserSub);
-        if (memberUserSub == null) {
-            throw new JdNotBindException("该用户未绑定京东账号到星座网");
-        }
         return memberUserSub.getSubUserKey();
     }
 }
