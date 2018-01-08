@@ -95,16 +95,14 @@
     class="fmButton
          fmButton-orange
          applyCashBtn"
-        disabled="disabled"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        <#if $it.id??>
-            id=""
-        </#if>
+        id="applyCashBtn"
 >
         提交提现申请信息
     <#if $it.href??>
@@ -115,6 +113,7 @@
 </#list>
             </div>
         </div>
+        <input type=hidden name="userBalance" value="${userBalance!}">
     </div>
     <!--<div class="ewmWk">
         <div class="imgewm">
