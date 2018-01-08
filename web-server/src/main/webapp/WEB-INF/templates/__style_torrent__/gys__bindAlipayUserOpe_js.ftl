@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/bindAlipayUserOpe_v20180104_160726.js"></script>
+<script src="http://style.571xz.com/v6/gys/js/bindAlipayUserOpe_v20180108_140611.js"></script>

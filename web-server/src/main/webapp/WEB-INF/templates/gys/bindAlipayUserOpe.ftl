@@ -64,7 +64,7 @@
             <div class="formGroup">
                 <label>手机验证码：</label>
                 <input type="text" name="teleValidateCode" class="fmInput teleValidateCode">
-                <b class="teleValidateCodeBtn" jbtn="teleValidateCodeBtn">手机验证码</b>
+                <b class="teleValidateCodeBtn" jbtn="teleValidateCodeBtn">获取验证码</b>
             </div>
         </div>
         <div class="validateItem">
