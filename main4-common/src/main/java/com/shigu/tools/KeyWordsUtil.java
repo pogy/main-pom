@@ -1,7 +1,6 @@
 package com.shigu.tools;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class KeyWordsUtil {
     //最
@@ -38,6 +37,8 @@ public class KeyWordsUtil {
 
     private static final List<String> authorityKeyList;
 
+    private static final List<String> allKeys;
+
     static {
         veryKeyList = Arrays.asList(veryKey.split(","));
         oneKeyList = Arrays.asList(oneKeyWords.split(","));
@@ -47,6 +48,16 @@ public class KeyWordsUtil {
         brandKeyList = Arrays.asList(brandKeyWords.split(","));
         shamKeyList = Arrays.asList(shamKeyWords.split(","));
         authorityKeyList = Arrays.asList(authorityKeyWords.split(","));
+        allKeys=new ArrayList<>();
+        allKeys.addAll(veryKeyList);
+        allKeys.addAll(oneKeyList);
+        allKeys.addAll(FHKKeyList);
+        allKeys.addAll(timeKeyList);
+        allKeys.addAll(extraKeyList);
+        allKeys.addAll(brandKeyList);
+        allKeys.addAll(shamKeyList);
+        allKeys.addAll(authorityKeyList);
+        Collections.sort(allKeys,new KeySort());
     }
 
 //    public static boolean verifyKeyWords(String orignalWords) {
@@ -123,19 +134,23 @@ public class KeyWordsUtil {
      * @return
      */
     public static String duleKeyWords(String orignalWords) {
-        orignalWords = duleKeyWordsInList(orignalWords,veryKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,FHKKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,timeKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,extraKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,brandKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,shamKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,authorityKeyList);
-        orignalWords = duleKeyWordsInList(orignalWords,oneKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,veryKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,FHKKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,timeKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,extraKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,brandKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,shamKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,authorityKeyList);
+//        orignalWords = duleKeyWordsInList(orignalWords,oneKeyList);
 
-       return orignalWords;
+       return duleKeyWordsInList(orignalWords,allKeys);
     }
 
 
-
-
+    static class KeySort implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            return o2.toString().length()-o1.toString().length();
+        }
+    }
 }
