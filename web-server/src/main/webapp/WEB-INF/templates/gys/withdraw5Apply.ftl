@@ -35,7 +35,7 @@
     <a href="bindAlipayUserOpe.htm" class="fr fcBlue fs14"><i class="icon-plus"></i>添加新的支付宝账号</a>
 </ul>
 <div class="withdrawTip">
-    提现金额不能小于100元，提现金额会在2个工作日内达到您的支付宝内，账户余额提现收取0.6%的手续费！
+    提现金额不能小于100元，提现金额会在2个工作日内打到您的支付宝内，账户余额提现收取0.6%的手续费！
 </div>
 <div class="cashBox pr">
     <div class="validateForm cashApplyForm">
@@ -95,16 +95,14 @@
     class="fmButton
          fmButton-blue
          applyCashBtn"
-        disabled="disabled"
+        <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
         </#if>
         <#if $it.title??>
             title=""
         </#if>
-        <#if $it.id??>
-            id=""
-        </#if>
+        id="applyCashBtn"
 >
         提交提现申请信息
     <#if $it.href??>
@@ -115,6 +113,7 @@
 </#list>
             </div>
         </div>
+        <input type=hidden name="userBalance" value="${userBalance!}">
     </div>
     <!--<div class="ewmWk">
         <div class="imgewm">

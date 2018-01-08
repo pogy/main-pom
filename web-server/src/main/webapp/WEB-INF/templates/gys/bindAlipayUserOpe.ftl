@@ -1,4 +1,4 @@
-<#assign $pageid>bindAlipayUserOpe</#assign>
+<#assign $pageid="bindAlipayUserOpe">
 <!doctype html>
 <html>
 <head>
@@ -19,18 +19,14 @@
 <#include "/__style_torrent__/gys__bindAlipayUserOpe_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -48,7 +44,7 @@
         <div class="validateItem">
             <div class="formGroup">
                 <label>真实姓名：</label>
-                <input type="text" name="payname" class="fmInput"  placeholder="正确输入支付宝账户实名，防止打错账">
+                <input type="text" name="payname" class="fmInput" maxlength="12"  placeholder="正确输入支付宝账户实名，防止打错账">
             </div>
         </div>
         <div class="validateItem">
@@ -68,15 +64,13 @@
             <div class="formGroup">
                 <label>手机验证码：</label>
                 <input type="text" name="teleValidateCode" class="fmInput teleValidateCode">
-                <b class="teleValidateCodeBtn" jbtn="teleValidateCodeBtn">手机验证码</b>
+                <b class="teleValidateCodeBtn" jbtn="teleValidateCodeBtn">获取验证码</b>
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

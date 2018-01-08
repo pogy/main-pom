@@ -935,6 +935,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 手续费率
         model.addAttribute("handlingCharge", "0.6%");
+        model.addAttribute("userBalance",memberSimpleService.getUserBalance(ps.getUserId()));
         model.addAttribute("alipayUserList", userAccountService.userAlipayBindList(ps.getUserId()));
         model.addAttribute("payPasswordIs", memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
         if (SELLER_PATH.equals(identity)) {
@@ -1155,7 +1156,7 @@ public class MemberAction {
     public JSONObject getTeleValidateCode(String imgValidate, HttpSession session) {
         //校验手机验证码
         if (imgValidate == null || !imgValidate.equals(session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue()))) {
-            return JsonResponseUtil.error("请输入正确的验证码");
+            return JsonResponseUtil.error("请输入正确的图形验证码");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String phone = userLicenseService.findPhoneByUserId(ps.getUserId());

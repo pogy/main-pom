@@ -462,9 +462,12 @@ public class UserLicenseServiceImpl implements UserLicenseService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName) {
-        if (userId == null || StringUtils.isBlank(alipayId) || StringUtils.isBlank(alipayName)) {
-            return false;
+    public String saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName) {
+        if (userId == null) {
+            return "请先登陆";
+        }
+        if (StringUtils.isBlank(alipayId) || StringUtils.isBlank(alipayName)) {
+            return "请输入正确的支付宝帐号和姓名";
         }
         MemberAlipayBind memberAlipayBind = new MemberAlipayBind();
         memberAlipayBind.setUserId(userId);
@@ -473,16 +476,24 @@ public class UserLicenseServiceImpl implements UserLicenseService {
         MemberAlipayBind record = memberAlipayBindMapper.selectOne(memberAlipayBind);
         if (record == null) {
             memberAlipayBind.setAlipayName(alipayName);
-            return memberAlipayBindMapper.insertSelective(memberAlipayBind) > 0;
+            if (memberAlipayBindMapper.insertSelective(memberAlipayBind) > 0) {
+                return "success";
+            } else {
+                return "绑定支付宝失败";
+            }
         }
         //删除过的支付宝帐号,更新支付宝实名并生效
         if (Objects.equals(true,record.getIsFailure())) {
             record.setAlipayName(alipayName);
             record.setIsFailure(false);
-            return memberAlipayBindMapper.updateByPrimaryKeySelective(record) > 0;
+            if (memberAlipayBindMapper.updateByPrimaryKeySelective(record) > 0) {
+                return "success";
+            } else {
+                return "绑定支付宝失败";
+            }
         }
         //该用户已经绑定过该支付宝帐号，且该绑定目前已经生效
-        return false;
+        return "本帐号已经绑定过这个支付宝帐号了";
     }
 
     /**
