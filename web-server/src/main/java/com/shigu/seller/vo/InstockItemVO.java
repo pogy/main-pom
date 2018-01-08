@@ -3,7 +3,7 @@ package com.shigu.seller.vo;
 import com.alibaba.druid.util.StringUtils;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.InstockItem;
-import com.shigu.tools.KeyWordsUtil;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

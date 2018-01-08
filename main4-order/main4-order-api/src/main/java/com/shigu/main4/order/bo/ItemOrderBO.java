@@ -1,7 +1,7 @@
 package com.shigu.main4.order.bo;
 
 
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.shigu.main4.goat.vo;
 
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;

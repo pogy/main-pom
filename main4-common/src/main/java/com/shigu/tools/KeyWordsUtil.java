@@ -1,6 +1,7 @@
 package com.shigu.tools;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KeyWordsUtil {
@@ -47,6 +48,7 @@ public class KeyWordsUtil {
         brandKeyList = Arrays.asList(brandKeyWords.split(","));
         shamKeyList = Arrays.asList(shamKeyWords.split(","));
         authorityKeyList = Arrays.asList(authorityKeyWords.split(","));
+        Collections.sort(veryKeyList, (String a, String b) -> a.length()>b.length());
     }
 
 //    public static boolean verifyKeyWords(String orignalWords) {

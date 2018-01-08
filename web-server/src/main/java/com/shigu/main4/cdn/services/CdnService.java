@@ -38,7 +38,7 @@ import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
-import com.shigu.tools.KeyWordsUtil;
+
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

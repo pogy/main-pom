@@ -1,7 +1,7 @@
 package com.shigu.order.vo;
 
 import com.opentae.core.mybatis.config.Column;
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
