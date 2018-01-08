@@ -935,6 +935,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 手续费率
         model.addAttribute("handlingCharge", "0.6%");
+        model.addAttribute("userBalance",memberSimpleService.getUserBalance(ps.getUserId()));
         model.addAttribute("alipayUserList", userAccountService.userAlipayBindList(ps.getUserId()));
         model.addAttribute("payPasswordIs", memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
         if (SELLER_PATH.equals(identity)) {
