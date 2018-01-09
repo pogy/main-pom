@@ -185,8 +185,11 @@ public class MemberAction {
         }
         ShiguPager<ItemCollectVO> pager=userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
                 bo.getPage(),bo.getRows());
-        if(pager.getContent()!=null)
-        model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
+        if(pager.getContent()!=null){
+            //极限词过滤
+            pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
+            model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
+        }
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("query",bo);
         model.addAttribute("website",bo.getWebsite());
@@ -223,6 +226,11 @@ public class MemberAction {
         int size = 12;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
+        //极限词过滤
+        if(pager.getContent()!=null){
+            pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
+        }
+
         model.addAttribute("goodsList",pager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(size));
@@ -264,16 +272,22 @@ public class MemberAction {
     public String goodsDataPackageinit(DataPackageBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("query",bo);
-        model.addAttribute("page",bo.getPage());
         List<PackageVO> goodslist=new ArrayList<>();
         for(DataPackage dp:pager.getContent()){
             if(dp.getGoods()!=null)
                 goodslist.add(new PackageVO(dp));
         }
+        //极限词过滤
+        goodslist.forEach(packageVO -> {
+            if(packageVO.getGoods()!=null){
+                packageVO.getGoods().forEach(packageItemVO -> packageItemVO.setTitle(KeyWordsUtil.duleKeyWords(packageItemVO.getTitle())));
+            }
+        });
         model.addAttribute("goodslist",goodslist);
+        model.addAttribute("website",bo.getWebsite());
+        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
+        model.addAttribute("query",bo);
+        model.addAttribute("page",bo.getPage());
         return "fxs/goodsDataPackageinit";
     }
 
@@ -321,6 +335,9 @@ public class MemberAction {
             nick=memberSimpleService.selNick(ps.getUserId());
         }
         ShiguPager<OnekeyRecoreVO> pager = goodsupRecordSimpleService.selOnekeyRecore(ps.getUserId(), nick, bo);
+        //极限词过滤
+        pager.getContent().forEach(onekeyRecoreVO -> onekeyRecoreVO.setTitle(KeyWordsUtil.duleKeyWords(onekeyRecoreVO.getTitle())));
+
         model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));

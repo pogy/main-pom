@@ -52,9 +52,6 @@ public class OneItemVO implements Serializable {
     private String details;
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

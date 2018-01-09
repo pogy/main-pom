@@ -39,6 +39,7 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
 
+import com.shigu.tools.KeyWordsUtil;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -323,7 +324,7 @@ public class CdnService {
 
         String cdnItemDescription = cdnItem.getDescription();
         if(StringUtils.isNotBlank(cdnItemDescription)){
-             cdnItemDescription= KeyWordsUtil.duleKeyWords(cdnItemDescription);
+            cdnItemDescription= KeyWordsUtil.duleKeyWords(cdnItemDescription);
             vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItemDescription).replace("<script ","")
                     .replace("<script>","")
                     .replace("</script>",""));

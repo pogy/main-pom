@@ -52,9 +52,6 @@ public enum ShiguTags implements Serializable {
     private String value;
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

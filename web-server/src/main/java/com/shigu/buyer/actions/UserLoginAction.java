@@ -118,6 +118,9 @@ public class UserLoginAction {
         if (!vos.isEmpty()) {
 //            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //                spreadService.createBySync(listObjFromCache);
+            //极限词过滤
+            vos.get(0).setText(KeyWordsUtil.duleKeyWords(vos.get(0).getText()));
+
             model.addAttribute("index_goat", vos.get(0));
         }
         return "buyer/login";

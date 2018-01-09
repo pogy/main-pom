@@ -126,9 +126,6 @@ public class InstockItemVO {
     }
 
     public String getTitle() {
-        if(org.apache.commons.lang3.StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

@@ -271,10 +271,6 @@ public class ShiguItem implements Serializable{
     }
 
     public String getTitle() {
-        //TODO powell important
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

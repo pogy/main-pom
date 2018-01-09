@@ -38,7 +38,7 @@ public class GoodStyleAction {
         Long userId=personalSession.getUserId();
         String webSite=personalSession.getLogshop().getWebSite();
         //类目选项卡数据
-       model.addAttribute("categoryTabs", goodStyleService.selCategoryTabVos(webSite,shopId,userId));
+        model.addAttribute("categoryTabs", goodStyleService.selCategoryTabVos(webSite,shopId,userId));
         //自定义商品风格列表数据
         model.addAttribute("userGoodsStyleList",goodStyleService.getUserStyle(bo.getPid(),userId,shopId,webSite));
         model.addAttribute("query",bo);

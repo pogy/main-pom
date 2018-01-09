@@ -7,9 +7,11 @@ import com.shigu.activity.service.StyleService;
 import com.shigu.activity.vo.PicCateNav;
 import com.shigu.activity.vo.StyleGoodsVo;
 import com.shigu.activity.vo.StyleNavVo;
+import com.shigu.activity.vo.TextCateNav;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
+import com.shigu.tools.KeyWordsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,9 +59,20 @@ public class StyleAction {
         PicCateNav picCateNav = styleService.selPicCateNav(bo.getWebSite());
         styleNavVos.addAll(picCateNav.getPicCates());
         styleNavVos.addAll(picCateNav.getTextCates());
-        model.addAttribute("picCateNav", picCateNav);
         ShiguAggsPager pager = styleService.searchGoods(bo);
-        model.addAttribute("textCateNav", styleService.selTextCateNav(pager.getCats(), pager.getMarkets(),bo.getWebSite()));
+        TextCateNav textCateNav=styleService.selTextCateNav(pager.getCats(), pager.getMarkets(),bo.getWebSite());
+
+
+        //极限词过滤
+        if(picCateNav.getTextCates()!=null)picCateNav.getTextCates().forEach(styleNavVo -> styleNavVo.setText(KeyWordsUtil.duleKeyWords(styleNavVo.getText())));
+        if(pager.getContent()!=null)pager.getContent().forEach(searchItem -> {
+            searchItem.setTitle(KeyWordsUtil.duleKeyWords(searchItem.getTitle()));
+            searchItem.setHighLightTitle(KeyWordsUtil.duleKeyWords(searchItem.getHighLightTitle()));
+        });
+
+
+        model.addAttribute("picCateNav", picCateNav);
+        model.addAttribute("textCateNav", textCateNav);
         model.addAttribute("goodslist", packGoods(pager.getContent()));
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("styleGoodsCount", pager.getTotalCount());

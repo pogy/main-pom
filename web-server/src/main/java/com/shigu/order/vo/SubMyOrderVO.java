@@ -109,10 +109,6 @@ public class SubMyOrderVO {
      * 获取 商品标题
      */
     public String getTitle() {
-        //TODO powell important 111
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return this.title;
     }
 

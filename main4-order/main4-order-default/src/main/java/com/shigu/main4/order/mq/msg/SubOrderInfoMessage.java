@@ -133,9 +133,6 @@ public class SubOrderInfoMessage implements Serializable {
     }
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

@@ -69,10 +69,6 @@ public class TinyItemCollect implements Serializable {
     }
 
     public String getTitle() {
-        //TODO powell important 111
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

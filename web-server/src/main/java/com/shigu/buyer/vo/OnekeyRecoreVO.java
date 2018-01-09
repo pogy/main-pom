@@ -55,9 +55,6 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     }
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 
