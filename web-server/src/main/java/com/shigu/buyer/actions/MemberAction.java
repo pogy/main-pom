@@ -1,7 +1,11 @@
 package com.shigu.buyer.actions;
 
 import com.shigu.buyer.bo.*;
-import com.shigu.buyer.services.*;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
+import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.UserAccountService;
+import com.shigu.buyer.services.UserCollectSimpleService;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -33,7 +37,11 @@ import com.shigu.session.main4.tool.BeanMapper;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.tools.*;
+import com.shigu.tools.DateParseUtil;
+import com.shigu.tools.EmailUtil;
+import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.RedomUtil;
+import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -1270,7 +1278,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (userAccountService.alreadyCharged(ps.getUserId(), applyId)) {
             //供应商|分销商 充值完成跳转地址
-            return JsonResponseUtil.success().element("redirectUrl", identity + "/userBalance");
+            return JsonResponseUtil.success().element("redirectUrl", "userBalance.htm");
         }
         return JsonResponseUtil.error("支付未完成");
     }
