@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/order/js/payMode_v20171218_161655.js"></script>
+<script src="http://style.571xz.com/v6/order/js/payMode_v20180108_135533.js"></script>
