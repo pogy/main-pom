@@ -74,10 +74,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <import resource="dubbo_application_test.xml"/>
     <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver"/>
 
-    <bean id="disposeBeanVO" class="com.shigu.buyer.vo.DisposeBeanVO">
-        <property name="maxFreeTimes" value="${cash.maxFreeTimes}"/>
-        <property name="maxCashMoney" value="${cash.maxCashMoney}"/>
-    </bean>
 
     <import resource="mvc.xml"/>
     <!--<import resource="message_queue.xml"/>-->
