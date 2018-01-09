@@ -103,15 +103,15 @@ public class AfterSaleShowAction {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
         }
-        return "trade/exchange";
+        return "order/exchange";
     }
 
     /**
