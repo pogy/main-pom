@@ -94,7 +94,7 @@ public class AfterSaleShowAction {
      * @param model model
      * @return  返回页面
      */
-//    @RequestMapping(value = "exchange", method = RequestMethod.GET)
+    @RequestMapping(value = "exchange", method = RequestMethod.GET)
     public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
             , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
