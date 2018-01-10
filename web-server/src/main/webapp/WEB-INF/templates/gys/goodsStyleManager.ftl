@@ -66,7 +66,7 @@
         <#list userGoodsStyleList as item>
             <ul data-styleid="${item.goodsStyleId!}" data-categoryid="${item.categoryId!}" data-stylename="${item.goodsStyleName!}">
                 <li class="rank">${item_index+1}</li>
-                <li class="style">${item.goodsStyleName!}</li>
+                <li class="style" title="${item.goodsStyleName!}">${item.goodsStyleName!}</li>
                 <li class="cat">${item.categoryName!}</li>
                 <li class="num">${item.goodsNum!}</li>
                 <li class="move"><i class="icon-s-up" jhand="moveTo" data-move="up"></i><i class="icon-s-down" jhand="moveTo" data-move="down"></i></li>

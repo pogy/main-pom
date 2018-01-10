@@ -1,4 +1,4 @@
-<#assign $pageid>capStatistic</#assign>
+<#assign $pageid="capStatistic">
 <!doctype html>
 <html>
 <head>
@@ -19,18 +19,14 @@
 <#include "/__style_torrent__/fxs__capStatistic_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -67,20 +63,23 @@
         <button class="search_con_btn" jbtn="search_con">搜索</button>
     </div>
 </div>
+<p class="friendlyTips fc3 yahei tac">提示：资金明细只显示星座宝的交易记录，如使用微信、支付宝支付的订单交易记录，请在相关的软件中查看。为了方便您查看资金明细，支付方式建议您首选星座宝！</p>
 <div class="capital_subsidiary_all">
     <table>
         <thead>
             <tr class="th_tr">
-                <th class="orderno">订单编号</th>
+                <th class="orderno">交易编号</th>
                 <th class="time">时间</th>
                 <th class="money">金额</th>
                 <th class="type">类型</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        </tbody>
     </table>
     <input type="hidden" class="tempCode" value="${tempCode!}" />
-    <div class="pagination"></div>
+    <div class="pagination">
+    </div>
 </div>
             </div>
     </div>
