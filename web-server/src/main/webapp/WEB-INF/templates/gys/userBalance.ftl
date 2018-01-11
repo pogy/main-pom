@@ -1,4 +1,4 @@
-<#assign $pageid>userBalance</#assign>
+<#assign $pageid="userBalance">
 <!doctype html>
 <html>
 <head>
@@ -19,18 +19,14 @@
 <#include "/__style_torrent__/gys__userBalance_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -49,9 +45,7 @@
         </div>
     </div>
     <div class="remainSumBtom">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="iwantToRechargein5.htm"
     class="fmButton
          fmButton-blue
@@ -68,9 +62,7 @@
         充值
     </a>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="withdraw5Apply.htm"
     class="fmButton
          fmButton-lighter-b
@@ -94,7 +86,7 @@
     <table>
         <thead>
             <tr class="thTr">
-                <th class="orderno">订单编号</th>
+                <th class="orderno">交易编号</th>
                 <th class="time">时间</th>
                 <th class="money">金额</th>
                 <th class="type">类型</th>

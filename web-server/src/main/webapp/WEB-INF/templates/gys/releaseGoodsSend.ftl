@@ -1,4 +1,4 @@
-<#assign $pageid>releaseGoodsSend</#assign>
+<#assign $pageid="releaseGoodsSend">
 <!doctype html>
 <html>
 <head>
@@ -8,7 +8,6 @@
     <title>发布宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
-<link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
 <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
@@ -17,25 +16,19 @@
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
 <script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__releaseGoodsSend_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -56,14 +49,6 @@
     </div>
     <div class="formData fcF40 errorWarn">不能超过60个字符</div>
 </div>
-<div class="formInput formSubtitle">
-    <label class="formKey">宝贝卖点：</label>
-    <div class="formData">
-        <textarea id="sellPoint" type="text" value="" name="subTitle" class="input" maxlength="150"></textarea>
-        <span class="afterText">0/150</span>
-    </div>
-    <div class="formData fcF40 errorWarn">不能超过150个字符</div>
-</div>
 <div class="formPriceAndGoodsNo clearfix">
     <label class="formKey"><i>*</i>批发价与货号：</label>
     <div class="formPriceAGnInfoCon clearfix fl">
@@ -82,7 +67,7 @@
         <div class="formInput formOid fl">
             <label class="formKey"><i>*</i>商品货号</label>
             <div class="formData">
-                <input id="goodsNo" type="text" value="" maxlength="12" name="_fma.pu._0.o" class="input">
+                <input id="goodsNo" type="text" value="" maxlength="15" name="_fma.pu._0.o" class="input">
             </div>
         </div>
         <div class="formInput formOutprice fl">
@@ -246,9 +231,7 @@
     </#if>
 </div>
 <div class="form-submit pa">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
