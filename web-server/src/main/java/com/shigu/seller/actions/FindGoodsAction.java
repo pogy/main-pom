@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 /**
  * 发现好货商户中心操作
@@ -57,7 +58,7 @@ public class FindGoodsAction {
         JSONObject obj= JsonResponseUtil.success();
         //极限词过滤
         obj.element("items", JSONArray.fromObject(pager.getContent()
-                .stream().peek(findGoodsItemVO -> findGoodsItemVO.setTitle(KeyWordsUtil.duleKeyWords(findGoodsItemVO.getTitle())))));
+                .stream().peek(findGoodsItemVO -> findGoodsItemVO.setTitle(KeyWordsUtil.duleKeyWords(findGoodsItemVO.getTitle()))).collect(Collectors.toList())));
         obj.element("pageOption",pager.selPageOption(size));
         return obj;
     }

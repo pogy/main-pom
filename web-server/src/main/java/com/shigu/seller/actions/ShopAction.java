@@ -94,6 +94,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 店铺的控制中心
@@ -270,7 +271,7 @@ public class ShopAction {
                         list.add(new ItemSendVO2(to));
                     }
                     //极限词过滤
-                    model.addAttribute("goodslist",list.stream().peek(itemSendVO2 -> itemSendVO2.setTitle(KeyWordsUtil.duleKeyWords(itemSendVO2.getTitle()))));
+                    model.addAttribute("goodslist",list.stream().peek(itemSendVO2 -> itemSendVO2.setTitle(KeyWordsUtil.duleKeyWords(itemSendVO2.getTitle()))).collect(Collectors.toList()));
                 }
             } else if (authstatu == 2) {
                 get.setFeedback(2);
@@ -539,7 +540,7 @@ public class ShopAction {
                 goodsList.add(vo);
             }
             //极限词过滤
-            model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))));
+            model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
@@ -718,7 +719,7 @@ public class ShopAction {
                 goodsList.add(new OnsaleItemVO(oi));
             }
             //极限词过滤
-            model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))));
+            model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
@@ -743,7 +744,7 @@ public class ShopAction {
             }
         }
         //极限词过滤
-        model.addAttribute("goodslist",goodslist.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))));
+        model.addAttribute("goodslist",goodslist.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("query",bo);
         return "gys/storeGoodsListinit";
@@ -799,7 +800,7 @@ public class ShopAction {
             goodsList.add(new XiufuItemVO(oi));
         }
         //极限词过滤
-        model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))));
+        model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
         return "gys/xiufuGoods21init";

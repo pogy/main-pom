@@ -294,7 +294,7 @@ public class GoodsSearchAction {
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         if(website.equals("hz")&&bo.getPid().equals(30L))
-        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))));
+        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/goods";
         } else {
