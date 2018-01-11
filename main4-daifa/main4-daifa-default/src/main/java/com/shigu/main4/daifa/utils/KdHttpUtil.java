@@ -1,6 +1,8 @@
 package com.shigu.main4.daifa.utils;
 
+import com.shigu.main4.daifa.exception.KdApiException;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -74,10 +76,11 @@ public class KdHttpUtil {
      * @return 远程资源的响应结果
      */
 	@SuppressWarnings("unused")
-	public static String sendPost(String url, Map<String, String> params) {
+	public static String sendPost(String url, Map<String, String> params) throws KdApiException {
         OutputStreamWriter out = null;
         BufferedReader in = null;        
-        StringBuilder result = new StringBuilder(); 
+        StringBuilder result = new StringBuilder();
+		StackTraceElement[] stackTrace = null;
         try {
             URL realUrl = new URL(url);
             HttpURLConnection conn =(HttpURLConnection) realUrl.openConnection();
@@ -119,8 +122,9 @@ public class KdHttpUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-        } catch (Exception e) {            
-            e.printStackTrace();
+        } catch (Exception e) {
+			stackTrace = e.getStackTrace();
+			e.printStackTrace();
         }
         //使用finally块来关闭输出流、输入流
         finally{
@@ -136,6 +140,11 @@ public class KdHttpUtil {
                 ex.printStackTrace();
             }
         }
-        return result.toString();
+		if (StringUtils.isEmpty(result.toString())) {
+			KdApiException kdApiException =  new KdApiException(KdApiException.KdApiExceptionEnum.API_ERROR);
+			kdApiException.setStackTrace(stackTrace);
+			throw kdApiException;
+		}
+		return result.toString();
     }
 }

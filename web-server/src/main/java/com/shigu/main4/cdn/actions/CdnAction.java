@@ -597,7 +597,10 @@ public class CdnAction {
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
-        String webSite=storeRelation.getWebSite();
+        String webSite = "hz";
+        if (storeRelation == null) {
+            webSite=storeRelation.getWebSite();
+        }
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
@@ -1029,7 +1032,10 @@ public class CdnAction {
     @RequestMapping("getShopCollection")
     public void getShopCollection(HttpSession session,HttpServletResponse response,String webSite,String callback) throws IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<CdnCollectShopVO> vos=cdnService.colloectShop(ps.getUserId(), webSite);
+        List<CdnCollectShopVO> vos = new ArrayList<>();
+        if (ps != null) {
+            vos=cdnService.colloectShop(ps.getUserId(), webSite);
+        }
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("shops",vos);
