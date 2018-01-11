@@ -1,5 +1,6 @@
 package com.shigu.main4.order.utils;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +26,13 @@ public class KdniaoUtil {
     @Autowired
     private RedisIO redisIO;
     public String getOrderTracesByJson(String expCode, String expNo) throws Exception{
+        if (expCode == null || expNo == null) {
+            throw new Main4Exception("没查询到快递信息");
+        }
         String result=redisIO.get("orderTracesByJson_"+expCode+"_"+expNo);
         if(result==null){
             String ReqURL="http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
+
             String requestData= "{\"OrderCode\":\"\",\"ShipperCode\":\"" + expCode + "\",\"LogisticCode\":\"" + expNo + "\"}";
 
             Map<String, String> params = new HashMap<String, String>();
