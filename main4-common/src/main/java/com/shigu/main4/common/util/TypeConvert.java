@@ -808,8 +808,8 @@ public static String DoubleToString(Double dd){
        
         for (int i=0;i<Locale.getAvailableLocales().length;i++){             
             //System.out.println("country:"+Locale.getAvailableLocales()[i].getCountry()+
-                    " langue:"+Locale.getAvailableLocales()[i].getLanguage()+
-                    " countryName:"+Locale.getAvailableLocales()[i].getDisplayCountry());
+            //        " langue:"+Locale.getAvailableLocales()[i].getLanguage()+
+            //        " countryName:"+Locale.getAvailableLocales()[i].getDisplayCountry());
         }
        
          df.setMaximumFractionDigits(3);
@@ -837,7 +837,7 @@ public static String DoubleToString(Double dd){
 		       //System.out.println(printContext.indexOf("${request.getContextPath()}"));
 		       //System.out.println("${request.getContextPath()}".length());
 		       //System.out.println( printContext.substring(0,3)+
-		               printContext.substring(3+"${request.getContextPath()}".length(),printContext.length()));
+		       //        printContext.substring(3+"${request.getContextPath()}".length(),printContext.length()));
 		   }
 		   //System.out.println(printContext);
          
