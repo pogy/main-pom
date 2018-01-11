@@ -1,6 +1,6 @@
 package com.opentae.data.mall.beans;
 
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.GeneratedValue;
@@ -162,9 +162,6 @@ public class ItemOrder implements Serializable {
 	}
 
 	public String getTitle() {
-		if(StringUtils.isNotBlank(title)){
-			title= KeyWordsUtil.duleKeyWords(title);
-		}
 		return this.title;
 	}
 

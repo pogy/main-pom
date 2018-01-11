@@ -1,5 +1,9 @@
 package com.shigu.tools;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import java.util.*;
 
 public class KeyWordsUtil {
@@ -48,6 +52,7 @@ public class KeyWordsUtil {
         brandKeyList = Arrays.asList(brandKeyWords.split(","));
         shamKeyList = Arrays.asList(shamKeyWords.split(","));
         authorityKeyList = Arrays.asList(authorityKeyWords.split(","));
+
         allKeys=new ArrayList<>();
         allKeys.addAll(veryKeyList);
         allKeys.addAll(oneKeyList);

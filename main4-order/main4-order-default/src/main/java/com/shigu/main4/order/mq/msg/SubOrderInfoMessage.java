@@ -1,6 +1,6 @@
 package com.shigu.main4.order.mq.msg;
 
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -133,9 +133,6 @@ public class SubOrderInfoMessage implements Serializable {
     }
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

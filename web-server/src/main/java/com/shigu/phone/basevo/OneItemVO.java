@@ -1,7 +1,7 @@
 package com.shigu.phone.basevo;
 
 import com.openJar.beans.app.AppItemKv;
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -52,9 +52,6 @@ public class OneItemVO implements Serializable {
     private String details;
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

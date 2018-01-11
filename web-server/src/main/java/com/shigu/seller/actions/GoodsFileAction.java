@@ -18,6 +18,7 @@ import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.Arith;
 import com.shigu.tools.JsonResponseUtil;
 
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -85,8 +86,10 @@ public class GoodsFileAction {
         final int size=10;
         ShiguPager<GoodsFileSearchVO> pager=goodsFileService.searchGoodsForFile(shop.getShopId(),shop.getWebSite(),keyword
         ,page,size);
+        //极限词过滤
         return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
-                .element("goodslist", JSONArray.fromObject(pager.getContent()));
+                .element("goodslist", JSONArray.fromObject(pager.getContent()
+                        .stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle())))));
     }
 
     /**
@@ -108,8 +111,9 @@ public class GoodsFileAction {
         ShopSession shop=logshop(session);
         final int size=10;
         ShiguPager<GoodsFileSearchVO> pager=goodsFileService.fileRelationFile(shop.getShopId(),fileId,shop.getWebSite(),page,size);
+        //极限词过滤
         return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
-                .element("goodslist", JSONArray.fromObject(pager.getContent()));
+                .element("goodslist", JSONArray.fromObject(pager.getContent().stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle())))));
     }
 
     /**
@@ -122,7 +126,8 @@ public class GoodsFileAction {
             throw new JsonErrException("key信息异常");
         }
         List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(logshop(session).getShopId(),fileKey);
-        return JsonResponseUtil.success().element("goods", goodsFilesList);
+        //极限词过滤
+        return JsonResponseUtil.success().element("goods", goodsFilesList.stream().peek(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getTitle()))));
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.shigu.spread.vo;
 
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -37,9 +37,6 @@ public class ItemSimpleInfo {
     }
 
     public String getTitle() {
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

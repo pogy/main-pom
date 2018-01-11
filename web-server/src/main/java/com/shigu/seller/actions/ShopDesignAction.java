@@ -2,6 +2,7 @@ package com.shigu.seller.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
@@ -24,6 +25,7 @@ import com.shigu.seller.vo.ShopForModuleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -211,8 +213,12 @@ public class ShopDesignAction {
             }
         }
         bo.setIds(goodsIds);
+        ShiguPager<ItemShowBlock> itemShowBlockShiguPager = shopDesignService.selPromoteItems(bo, shopId, shopSession.getWebSite());
+        //极限词过滤
+        itemShowBlockShiguPager.getContent().forEach(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getTitle())));
+
         model.addAttribute("bo", bo);
-        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId, shopSession.getWebSite()));
+        model.addAttribute("pager", itemShowBlockShiguPager);
         model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId, shopSession.getWebSite()));
         return "/shop_design/goods-tui-get-goods-list";
     }

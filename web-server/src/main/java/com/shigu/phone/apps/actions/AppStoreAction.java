@@ -6,6 +6,7 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.apps.services.AppStoreService;
 import com.shigu.phone.apps.services.PhoneStoreService;
 import com.shigu.phone.wrapper.WrapperUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -91,7 +92,8 @@ public class AppStoreAction {
         if (request.getSize() == null) {
             request.setSize(30);
         }
-        return JSONObject.fromObject(phoneStoreService.shopSearch(request));
+        ShopSearchResponse shopSearchResponse = phoneStoreService.shopSearch(request);
+        return JSONObject.fromObject(shopSearchResponse);
     }
 
 

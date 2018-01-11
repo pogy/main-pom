@@ -24,7 +24,9 @@
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserBaseService" id="userBaseService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000">
+        <dubbo:method name="createDataPackageByCoolectIds" timeout="300000"/>
+    </dubbo:reference>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
 

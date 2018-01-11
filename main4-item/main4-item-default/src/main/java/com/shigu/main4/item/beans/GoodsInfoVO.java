@@ -1,7 +1,7 @@
 package com.shigu.main4.item.beans;
 
 import com.opentae.core.mybatis.config.Column;
-import com.shigu.tools.KeyWordsUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -78,10 +78,6 @@ public class GoodsInfoVO implements Serializable {
     }
 
     public String getTitle() {
-        //TODO powell important  111
-        if(StringUtils.isNotBlank(title)){
-            title= KeyWordsUtil.duleKeyWords(title);
-        }
         return title;
     }
 

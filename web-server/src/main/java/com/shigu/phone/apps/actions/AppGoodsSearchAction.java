@@ -5,9 +5,11 @@ import com.openJar.requests.app.ItemSearchRequest;
 import com.openJar.requests.app.OneItemRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
+import com.openJar.responses.app.OneItemResponse;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.phone.apps.services.PhoneGoodsSearchService;
 import com.shigu.phone.wrapper.WrapperUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +68,15 @@ public class AppGoodsSearchAction {
         if (request.getSize() == null || request.getSize() > 30) {
             request.setSize(30);
         }
-        return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
+        ItemSearchResponse itemSearchResponse = phoneGoodsSearchService.itemSearch(request);
+        //极限词过滤
+        if (itemSearchResponse.getItems() != null) {
+            itemSearchResponse.getItems().forEach(appGoodsBlock -> {
+                appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+                appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+            });
+        }
+        return JSONObject.fromObject(itemSearchResponse);
     }
 
     @RequestMapping("imgSearch")
@@ -78,7 +88,15 @@ public class AppGoodsSearchAction {
         if (request.getWebSite() == null) {
             request.setWebSite("hz");
         }
-        return JSONObject.fromObject(phoneGoodsSearchService.imgSearch(request));
+        ImgSearchResponse imgSearchResponse = phoneGoodsSearchService.imgSearch(request);
+        //极限词过滤
+        if (imgSearchResponse.getItems() != null) {
+            imgSearchResponse.getItems().forEach(appGoodsBlock -> {
+                appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+                appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+            });
+        }
+        return JSONObject.fromObject(imgSearchResponse);
     }
 
     @RequestMapping("oneItem")
@@ -87,7 +105,10 @@ public class AppGoodsSearchAction {
         if (request.getWebSite() == null) {
             request.setWebSite("hz");
         }
-        return JSONObject.fromObject(phoneGoodsSearchService.oneItem(request));
+        OneItemResponse oneItemResponse = phoneGoodsSearchService.oneItem(request);
+        //极限词过滤
+        oneItemResponse.setTitle(KeyWordsUtil.duleKeyWords(oneItemResponse.getTitle()));
+        return JSONObject.fromObject(oneItemResponse);
     }
 
 
