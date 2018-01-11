@@ -37,6 +37,7 @@ import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.ModuleVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
@@ -109,7 +110,11 @@ public class CdnService {
      * @return
      */
     public String bannerHtml(Long shopId,String webSite) throws IOException, TemplateException {
-        return shopDesignService.selHeadModuleWithData(shopId,webSite,false).getHtml();
+        ModuleVO moduleVO = shopDesignService.selHeadModuleWithData(shopId, webSite, false);
+        if (moduleVO == null) {
+            return "";
+        }
+        return moduleVO.getHtml();
     }
 
     /**
