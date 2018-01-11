@@ -1,4 +1,4 @@
-<#assign $pageid>forgetPassword</#assign>
+<#assign $pageid="forgetPassword">
 <!doctype html>
 <html>
 <head>
@@ -46,9 +46,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -58,7 +56,6 @@
          fmButton-lg
          fmButton-orange
          netxStep"
-        jbtn="click"
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
@@ -86,9 +83,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -131,9 +126,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

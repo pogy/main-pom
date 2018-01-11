@@ -74,6 +74,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <import resource="dubbo_application_test.xml"/>
     <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver"/>
 
+
     <import resource="mvc.xml"/>
     <!--<import resource="message_queue.xml"/>-->
     <import resource="message_queue_test.xml"/>

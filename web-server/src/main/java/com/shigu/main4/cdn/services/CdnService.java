@@ -162,20 +162,20 @@ public class CdnService {
      * @param type 类型：1.数据包，2.收藏
      * @return
      */
-    public boolean addItemCollect(Long userId,ScGoodsBO bo,int type){
+    public String addItemCollect(Long userId,ScGoodsBO bo,int type){
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
         //查出店、webSite
         ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(bo.getGoodsId());
         if(sgig==null){
-            return false;
+            return "商品不存在";
         }
         ShiguGoodsTiny sgt=new ShiguGoodsTiny();
         sgt.setGoodsId(bo.getGoodsId());
         sgt.setWebSite(sgig.getWebSite());
         sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
         if(sgt==null){
-            return false;
+            return "商品不存在";
         }
         itemCollect.setItemId(bo.getGoodsId());
         itemCollect.setStoreId(sgt.getStoreId());
@@ -185,9 +185,12 @@ public class CdnService {
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {
-            return false;
+            if ("已收藏该商品".equals(e.getMessage())) {
+                return "2";
+            }
+            return e.getMessage();
         }
-        return true;
+        return "success";
     }
 
     /**
@@ -321,6 +324,8 @@ public class CdnService {
         vo.setTbGoodsId(cdnItem.getTbNumIid());
         vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+        vo.setFabric(cdnItem.getFabric());
+        vo.setInFabric(cdnItem.getInFabric());
 
         String cdnItemDescription = cdnItem.getDescription();
         if(StringUtils.isNotBlank(cdnItemDescription)){

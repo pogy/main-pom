@@ -1,4 +1,4 @@
-<#assign $pageid="goodsStyleManager">
+<#assign $pageid>goodsStyleManager</#assign>
 <!doctype html>
 <html>
 <head>
@@ -19,18 +19,24 @@
 <#include "/__style_torrent__/gys__goodsStyleManager_js.ftl">
 </head>
 <body>
-<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
+<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType="index">
-<#list [{"type":sidebarType}] as $it>
+            <#assign sidebarType>index</#assign>
+<#assign text>{"type":sidebarType}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<#list [{"fields":[{"name":"pid","value":query.pid}]}] as $it>
+<#assign text>{"fields":[{"name":"pid","value":query.pid}]}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

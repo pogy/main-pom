@@ -1,17 +1,11 @@
 package com.shigu.main4.ucenter.services.impl;
 
 
-import com.opentae.data.mall.beans.MemberLicense;
-import com.opentae.data.mall.beans.MemberLicenseApply;
-import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.MemberLicenseApplyExample;
 import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.MemberLicenseApplyMapper;
-import com.opentae.data.mall.interfaces.MemberLicenseMapper;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.MemberLicenseException;
@@ -22,6 +16,7 @@ import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserLicense;
 import com.shigu.session.main4.enums.LoginFromType;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +24,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -52,6 +48,9 @@ public class UserLicenseServiceImpl implements UserLicenseService {
 
     @Resource(name = "tae_mall_memberLicenseApplyMapper")
     private MemberLicenseApplyMapper memberLicenseApplyMapper;
+
+    @Autowired
+    private MemberAlipayBindMapper memberAlipayBindMapper;
 
     @Override
     public Long selUserScore(Long userId) {
@@ -454,5 +453,66 @@ public class UserLicenseServiceImpl implements UserLicenseService {
         return memberLicense.getContext();
     }
 
+    /**
+     * 用户绑定支付宝帐号
+     * @param userId
+     * @param alipayId
+     * @param alipayName
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName) {
+        if (userId == null) {
+            return "请先登陆";
+        }
+        if (StringUtils.isBlank(alipayId) || StringUtils.isBlank(alipayName)) {
+            return "请输入正确的支付宝帐号和姓名";
+        }
+        MemberAlipayBind memberAlipayBind = new MemberAlipayBind();
+        memberAlipayBind.setUserId(userId);
+        memberAlipayBind.setAlipayId(alipayId);
+        //查询数据库
+        MemberAlipayBind record = memberAlipayBindMapper.selectOne(memberAlipayBind);
+        if (record == null) {
+            memberAlipayBind.setAlipayName(alipayName);
+            if (memberAlipayBindMapper.insertSelective(memberAlipayBind) > 0) {
+                return "success";
+            } else {
+                return "绑定支付宝失败";
+            }
+        }
+        //删除过的支付宝帐号,更新支付宝实名并生效
+        if (Objects.equals(true,record.getIsFailure())) {
+            record.setAlipayName(alipayName);
+            record.setIsFailure(false);
+            if (memberAlipayBindMapper.updateByPrimaryKeySelective(record) > 0) {
+                return "success";
+            } else {
+                return "绑定支付宝失败";
+            }
+        }
+        //该用户已经绑定过该支付宝帐号，且该绑定目前已经生效
+        return "本帐号已经绑定过这个支付宝帐号了";
+    }
 
+    /**
+     *删除绑定支付宝帐号
+     * @param userId
+     * @param memberAlipayBindId 用户支付宝绑定记录id
+     * @return
+     */
+    @Override
+    public boolean cancelMemberAlipayBind(Long userId, Long memberAlipayBindId) {
+        if (memberAlipayBindId == null || userId == null) {
+            return false;
+        }
+        MemberAlipayBind bindRecord = memberAlipayBindMapper.selectByPrimaryKey(memberAlipayBindId);
+        if (bindRecord == null || !userId.equals(bindRecord.getUserId())) {
+            return false;
+        }
+        bindRecord.setIsFailure(true);
+        memberAlipayBindMapper.updateByPrimaryKeySelective(bindRecord);
+        return true;
+    }
 }

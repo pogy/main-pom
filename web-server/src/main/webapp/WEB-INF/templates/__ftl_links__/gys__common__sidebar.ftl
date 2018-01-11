@@ -265,6 +265,19 @@
             >广告展示管理</a>
         </li>
         </#if>
+        <#if 'http://www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="http://www.571xz.com/qualityControl.htm"
+                    target="_blank"
+            >我要质检</a>
+        </li>
+        </#if>
         <#if 'actRegister' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -281,29 +294,40 @@
     <#elseif $it.type == 'mybag'>
     <h2>我的钱包</h2>
     <ul>
-        <#if 'iwantToRechargein5' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if 'userBalance' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'iwantToRechargein5' == $pageid >
+                    <#if 'userBalance' == $pageid >
                             selected
                     </#if>
+                            <#if 'withdraw5Apply' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'iwantToRechargein5' == $pageid >
+                                    selected
+                            </#if>
                 "
-                    href="iwantToRechargein5.htm"
-                    target="_blank"
-            >充值</a>
+                    href="userBalance.htm"
+            >我的资金</a>
         </li>
         </#if>
-        <#if 'withdraw5Apply' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if 'bindAlipayUser' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'withdraw5Apply' == $pageid >
+                    <#if 'bindAlipayUser' == $pageid >
                             selected
                     </#if>
+                            <#if 'bindAlipayUserOpe' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'bindAlipaySuccess' == $pageid >
+                                    selected
+                            </#if>
                 "
-                    href="withdraw5Apply.htm"
-            >提现</a>
+                    href="bindAlipayUser.htm"
+            >绑定设置</a>
         </li>
         </#if>
     </ul>
@@ -318,6 +342,9 @@
                             selected
                     </#if>
                             <#if 'safexgmm' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'safeXgPaymm' == $pageid >
                                     selected
                             </#if>
                 "
