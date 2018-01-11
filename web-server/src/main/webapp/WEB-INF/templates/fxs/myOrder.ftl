@@ -1,4 +1,4 @@
-<#assign $pageid>myOrder</#assign>
+<#assign $pageid="myOrder">
 <!doctype html>
 <html>
 <head>
@@ -20,24 +20,18 @@
 <#include "/__style_torrent__/fxs__myOrder_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"status","value":""+query.status},{"name":"goodsNo","value":""+query.goodsNo},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":""+query.orderId},{"name":"receiver","value":""+query.receiver},{"name":"telePhone","value":""+query.telePhone},{"name":"orderType","value":""+query.orderType}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"status","value":""+query.status},{"name":"goodsNo","value":""+query.goodsNo},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":""+query.orderId},{"name":"receiver","value":""+query.receiver},{"name":"telePhone","value":""+query.telePhone},{"name":"orderType","value":""+query.orderType}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -74,9 +68,7 @@
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if> maxlength="20"></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
         <li class="marginLeft">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -120,9 +112,7 @@
     </div>
 <div class="batchOpe">
     <#if session_user_redis__.otherPlatform.__moreOrder__ == true><!--批量操作的权限验证-->
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -162,9 +152,7 @@
 </label>
 </#list>
         <#if query.status == "1" || !query.status>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -195,9 +183,7 @@
 </#list>
         </#if>
         <#if query.status == "3" || !query.status>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -233,10 +219,9 @@
         <#list orders as order>
         <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>" data-id="${order.orderId!}" data-mainstate="${order.mainState!}">
             <div class="orderHead fl">
-                <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+                <#if session_user_redis__.otherPlatform.__moreOrder__ == true>
+                    <#if order.mainState == 2 || order.mainState == 4 || order.mainState == 5>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -276,10 +261,8 @@
     </span>
 </label>
 </#list>
-                <#else>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+                    <#else>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -321,6 +304,7 @@
     </span>
 </label>
 </#list>
+                    </#if>
                 </#if>
                 <span class="fc6 mr">订单编号：${order.orderId!}</span>
                 <span class="fc6 mr">时间：${order.tradeTime!}</span>
@@ -330,9 +314,9 @@
                 <#list order.childOrders as childOrder>
 <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
     <li class="goods goodsDetail">
-        <div class="imgBox fl">
+        <a class="imgBox fl" href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}">
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
-        </div>
+        </a>
         <div class="goodsCon">
             <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
@@ -457,9 +441,7 @@
     <li class="orderState">
         <#if childOrder_index == 0>
             <#if order.mainState == 1>
-<#assign text>{"href":"/order/payMode.htm?orderId="+order.orderId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"href":"/order/payMode.htm?orderId="+order.orderId}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -520,9 +502,7 @@
     <#else>
         <p class="fs20 fc6 tac noOrder">暂无订单！</p>
     </#if>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -530,9 +510,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

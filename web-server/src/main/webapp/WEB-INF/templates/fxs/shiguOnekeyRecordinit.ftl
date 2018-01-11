@@ -1,4 +1,4 @@
-<#assign $pageid>shiguOnekeyRecordinit</#assign>
+<#assign $pageid="shiguOnekeyRecordinit">
 <!doctype html>
 <html>
 <head>
@@ -20,24 +20,18 @@
 <#include "/__style_torrent__/fxs__shiguOnekeyRecordinit_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"uploadGoodsState","value":""+query.uploadGoodsState},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime},{"name":"shopState","value":""+query.shopState},{"name":"tbState","value":""+query.tbState}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"uploadGoodsState","value":""+query.uploadGoodsState},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime},{"name":"shopState","value":""+query.shopState},{"name":"tbState","value":""+query.tbState}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -69,10 +63,9 @@
             <span class="divideLine">-</span>
             <input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" id="endTime" placeholder="截止时间" <#if query.endTime??>value="${query.endTime!}"</#if>>
         </li>
+        <#if query.uploadGoodsState != 1 && query.uploadGoodsState != 2>
         <li><label>档口状态：</label>
-<#assign text>{"value":""+query.shopState}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":""+query.shopState}] as $it>
 <div class="fmSelect" id="shopState">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -83,10 +76,9 @@
     >
 </div>
 </#list></li>
+        </#if>
         <li><label>淘宝状态：</label>
-<#assign text>{"value":""+query.tbState}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":""+query.tbState}] as $it>
 <div class="fmSelect" id="tbState">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -98,9 +90,7 @@
 </div>
 </#list></li>
         <li class="noMargin">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -132,9 +122,7 @@
     <ul class="head clearfix">
         <li class="name">
             <label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -186,9 +174,7 @@
         <ul class="body clearfix" goodsid="${goods.goodsId!}">
             <li class="name">
                 <#if goods.taobaoSaleState == 1>
-<#assign text>{"value":goods.goodsId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":goods.goodsId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -236,7 +222,7 @@
                 <p class="fl">
                     <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
-                <p class="fl"><span>货号：${goods.shopNum!}</span></p>
+                <p class="fl"><span>货号：${goods.goodsNo!}</span></p>
                 <p class="fl">
                     <#if goods.shopSaleState == 1>
                     <i class="shopSaleState"></i>
@@ -257,14 +243,10 @@
                 <p>${goods.marketName!}</p>
                 <p>${goods.shopNum!}</p>
                 <p>
-<#assign text>{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":goods.imWw}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
-<#assign text>{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":goods.imQq}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>
                 </p>
@@ -274,9 +256,7 @@
             </li>
             <li class="control">
                 <#if goods.taobaoSaleState == 1>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -309,9 +289,7 @@
             </li>
         </ul>
         </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -319,9 +297,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

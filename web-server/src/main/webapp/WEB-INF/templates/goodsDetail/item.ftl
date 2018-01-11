@@ -207,8 +207,8 @@ ${userShopHdHtml}
                 <span class="imgBox">
                 <img src="${imgUrl!}_400x400.jpg">
 <span id="scaleTipsLayer"></span>
-<span id="scaleImgbox"></span>
                 </span>
+                <span id="scaleImgbox"></span>
             </a>
             </#if>
         </#list>
@@ -517,13 +517,6 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     </div>
 </div>
         </div>
-    </div>
-</div>
-<div class="recommendShop">
-    <h3 class="fcF40">推荐档口</h3>
-    <div class="shopCon">
-        <ul class="clearfix">
-        </ul>
     </div>
 </div>
 <#include "/common/xz__rightbar.ftl">
