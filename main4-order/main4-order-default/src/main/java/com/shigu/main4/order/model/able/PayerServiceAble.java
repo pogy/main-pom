@@ -164,7 +164,7 @@ public abstract class PayerServiceAble implements PayerService{
         for(OrderPayRelationship r:relationships){
             orderPayRelationshipMapper.insertSelective(r);
         }
-        System.out.println(relationships.get(0).getRid());
+        //System.out.println(relationships.get(0).getRid());
 //        orderPayRelationshipMapper.insertListNoId(relationships);
         return orderPay.getPayId();
     }

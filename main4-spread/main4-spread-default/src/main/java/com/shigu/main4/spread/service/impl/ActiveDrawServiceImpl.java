@@ -891,7 +891,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService {
         srb.setQuery(boolQuery);
         srb.setFrom(0).setSize(100);
 
-        System.out.println(srb);
+        //System.out.println(srb);
         SearchResponse response = srb.execute().actionGet();
         SearchHit[] hits=response.getHits().getHits();
         Map<Long,Long> numIidMaps=new HashMap<>();

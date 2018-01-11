@@ -523,7 +523,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             idsBoolQuery.should(queryId);
         }
         boleanQueryBuilder.must(idsBoolQuery);
-        System.out.println(boleanQueryBuilder);
+        //System.out.println(boleanQueryBuilder);
         srb.setQuery(boleanQueryBuilder);
         SearchResponse response = srb.execute().actionGet();
         SearchHit[] hits = response.getHits().getHits();

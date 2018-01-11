@@ -132,7 +132,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     //e.printStackTrace();
-                   // System.out.println("解压失败！");
+                   // //System.out.println("解压失败！");
                     ///////////////////////////////////////////////////////////
                     throw new Main4Exception (packageUrl+",解压失败！");
                     ///////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                             if(filelist[k].endsWith(".csv")&&!filelist[k].endsWith("_new.csv")){
                                 csvname=filelist[k];
                                 csvname= csvname.substring(0, csvname.length()-4);
-                                // System.out.println("ssss="+filelist[k]);
+                                // //System.out.println("ssss="+filelist[k]);
                                 flags=true;
                             }
                         }
@@ -197,7 +197,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
                         if(goodsList.size ()==0){
                             //写入错误表
-                           // System.out.println("商品转换失败！");
+                           // //System.out.println("商品转换失败！");
                             throw new Main4Exception (packageUrl+",商品转换失败！");
                         }else{
                             deleteFileAndFolder( temppath);
@@ -205,14 +205,14 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         }
 
                     }else{//CSV不存在
-                       // System.out.println("压缩包内没有CSV文件！");
+                       // //System.out.println("压缩包内没有CSV文件！");
                         throw new Main4Exception (packageUrl+",压缩包内没有CSV文件！");
 
                     }
                     //String imgPath=csvName.replace(".zip", "/")+folder+"/";
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }else{
-                   // System.out.println("压缩包内没有CSV文件！");
+                   // //System.out.println("压缩包内没有CSV文件！");
                     throw new Main4Exception (packageUrl+",压缩包内没有CSV文件！");
                 }
 
@@ -251,7 +251,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                             List<ShiguGoodsTinyVO> goodsList=importCsvFileService.importCsvFileString(storeId,csvFilePath,image_save_path);
                             if(goodsList.size ()==0){
                                 //写入错误表
-                                //System.out.println("商品转换失败！");
+                                ////System.out.println("商品转换失败！");
                                 throw new Main4Exception (packageUrl+",商品转换失败！");
                             }else{
                                 deleteFileAndFolder( temppath);
@@ -267,7 +267,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         throw new Main4Exception (packageUrl+",压缩包内没有CSV文件！");
                     }
                 }else{
-                   // System.out.println("压缩包内没有CSV文件！");
+                   // //System.out.println("压缩包内没有CSV文件！");
                     throw new Main4Exception (packageUrl+",压缩包内没有CSV文件！");
                 }
             }
@@ -282,7 +282,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
     private void deleteFileAndFolder(String temppath){
         File file=new File(temppath);
-        //System.out.println("@@@@@@@@@@@@@@@@@开始删除"+temppath);
+        ////System.out.println("@@@@@@@@@@@@@@@@@开始删除"+temppath);
         File files[]= file.listFiles ();
         for(File file1:files){
             // file1.getParent ()
@@ -299,7 +299,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                             } catch (InterruptedException e) {
                                 e.printStackTrace ();
                             }
-                            System.out.println (filename);*/
+                            //System.out.println (filename);*/
                         }
                         file2.delete ();
                         /*try {
@@ -315,7 +315,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                         } catch (InterruptedException e) {
                             e.printStackTrace ();
                         }
-                        System.out.println (filename);*/
+                        //System.out.println (filename);*/
                     }
 
                 }
@@ -333,7 +333,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 } catch (InterruptedException e) {
                     e.printStackTrace ();
                 }*/
-               // System.out.println (filename);
+               // //System.out.println (filename);
             }
 
         }
@@ -344,7 +344,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             e.printStackTrace ();
         }*/
 
-       // System.out.println (file.getName ());
+       // //System.out.println (file.getName ());
         File floders[]= file.listFiles ();
         for(File filess:floders){
             filess.delete ();
@@ -360,6 +360,6 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         } catch (InterruptedException e) {
             e.printStackTrace ();
         }*/
-       // System.out.println ("删除完成！");
+       // //System.out.println ("删除完成！");
     }
 }

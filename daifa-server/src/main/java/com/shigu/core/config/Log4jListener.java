@@ -18,7 +18,7 @@ public class Log4jListener extends Log4jConfigListener {
     public void contextInitialized(ServletContextEvent servletcontextevent) {
         String log4jdir = servletcontextevent.getServletContext().getRealPath("/");
         log4jdir=log4jdir+"/WEB-INF/logs";
-        //System.out.println("log4jdir:"+log4jdir);
+        ////System.out.println("log4jdir:"+log4jdir);
         System.setProperty(log4jdirkey, log4jdir);
         super.contextInitialized(servletcontextevent);
     }

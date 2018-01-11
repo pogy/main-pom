@@ -262,7 +262,7 @@ public class ExpressModelImpl implements ExpressModel {
             throw new KdApiException(KdApiException.KdApiExceptionEnum.SIGN_ERROR);
         }
         String result = KdHttpUtil.sendPost(kdConfig.getEorderserviceReqURL(), params);
-//System.out.println("@@@@@@@@@@@@@@"+result);
+////System.out.println("@@@@@@@@@@@@@@"+result);
         JSONObject obj = JSONObject.fromObject(result);
 
         if (obj.containsKey("Success")) {

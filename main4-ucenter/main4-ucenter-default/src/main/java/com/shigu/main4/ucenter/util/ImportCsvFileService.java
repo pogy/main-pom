@@ -89,14 +89,14 @@ public class ImportCsvFileService {
                 int kpi=0;
                 while ((csvRow = csvReader.readNext()) != null){
                     kpi++;
-                    //System.out.println("第"+kpi+"行");
+                    ////System.out.println("第"+kpi+"行");
                     vector=new Vector();
                     for (int i =0; i<csvRow.length; i++){
                         String temp = csvRow[i];
                         vector.add(temp);
                     }
                     vector_h.add(vector);
-                    //System.out.println("下一行");
+                    ////System.out.println("下一行");
                     //保存linkman到数据库
                 }
             }
@@ -106,7 +106,7 @@ public class ImportCsvFileService {
 
             for(int i=2;i<vector_h.size();i++){
                 if(i==11){
-                   // System.out.println(i);
+                   // //System.out.println(i);
                 }
                 Vector v_title=vector_h.get(0);
                 Vector v11=vector_h.get(i);
@@ -119,7 +119,7 @@ public class ImportCsvFileService {
                 for(int k=0;k<v_title.size();k++){
                     //if(v_title.get(k).equals("q1")){
 
-                    //System.out.println("第"+i+"行第"+k+"列"+v_title.get(k)+"="+v11.get(k));
+                    ////System.out.println("第"+i+"行第"+k+"列"+v_title.get(k)+"="+v11.get(k));
                     //}
                     String tt=(String)v_title.get(k);
 
@@ -127,8 +127,8 @@ public class ImportCsvFileService {
                         case "title":record.setTitle((String)v11.get(k));break;//title//标题
                         case "cid"://宝贝类目
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
-                                //System.out.println(((String)v11.get(k)).trim());
-                                //System.out.println(k);
+                                ////System.out.println(((String)v11.get(k)).trim());
+                                ////System.out.println(k);
                                 Long cid=new Long(((String)v11.get(k)).trim());
 
                                 cidList.add (cid);
@@ -329,7 +329,7 @@ public class ImportCsvFileService {
                                 getImgs((String)v11.get(k), record,sge,image_save_path,map);
                                // Date tpicend=new Date();
                                // long timepic=tpicend.getTime()-tpic.getTime();
-                               // System.out.println(i+"执行图片处理"+timepic);
+                               // //System.out.println(i+"执行图片处理"+timepic);
                             }else{
                                 record.setError ("没有主图");
                             }
@@ -548,14 +548,14 @@ public class ImportCsvFileService {
                 PriceDataGrid data = priceErrorService.piPriceMatcher(shop, record, 10.00, 0.2, 4, "p,f", 1);
                 //Date datepprice2=new Date();
                 //long time_piprice=datepprice2.getTime ()-datepprice1.getTime ();
-                //System.out.println(i+"执行piPriceMatcher的时间="+time_piprice);
-                //System.out.println(data.getpPriceString());
-               /* System.out.println("-------------------@@@@@@@@@@@@@-----------------");
-                System.out.println("msg===="+data.getMsg());
-                System.out.println("isStandard==="+data.getGoods().getIsStandard());
-                System.out.println("PiPrice==="+data.getGoods().getPiPrice());
-                System.out.println("PiPriceString===="+data.getGoods().getPiPriceString());
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
+                ////System.out.println(i+"执行piPriceMatcher的时间="+time_piprice);
+                ////System.out.println(data.getpPriceString());
+               /* //System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                //System.out.println("msg===="+data.getMsg());
+                //System.out.println("isStandard==="+data.getGoods().getIsStandard());
+                //System.out.println("PiPrice==="+data.getGoods().getPiPrice());
+                //System.out.println("PiPriceString===="+data.getGoods().getPiPriceString());
+                //System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
                 record.setPiPriceString(data.getGoods().getPiPriceString());
                 record.setPiPrice(data.getGoods().getPiPrice());
                 record.setIsStandard(data.getGoods().getIsStandard());
@@ -565,9 +565,9 @@ public class ImportCsvFileService {
                 String checkres=checkRecord(record,sge);
                 record.setError (checkres);
                 record.setExtendsGoods (sge);
-                /*System.out.println("-------------------@@@@@@@@@@@@@-----------------");
-                System.out.println("PropertyAlias"+i+"===="+sge.getPropertyAlias ());
-                System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
+                /*//System.out.println("-------------------@@@@@@@@@@@@@-----------------");
+                //System.out.println("PropertyAlias"+i+"===="+sge.getPropertyAlias ());
+                //System.out.println("-------------------@@@@@@@@@@@@@-----------------");*/
                 goodsList.add (record);
             }
 
@@ -593,7 +593,7 @@ public class ImportCsvFileService {
             }
             //Date dcid2=new Date();
             //Long dr1=dcid2.getTime()-dcid1.getTime();
-           // System.out.println ("类目执行时间：" + dr1);
+           // //System.out.println ("类目执行时间：" + dr1);
             //=================================================================================================
 
         } catch (Exception e) {
@@ -602,7 +602,7 @@ public class ImportCsvFileService {
         }
         //Date t2=new Date();
         //Long dr1=t2.getTime()-t1.getTime();
-       // System.out.println ("全部执行时间为：" + dr1);
+       // //System.out.println ("全部执行时间为：" + dr1);
 
         return goodsList;
     }
@@ -628,7 +628,7 @@ public class ImportCsvFileService {
             for(int i=0;i<imgs.length;i++){
                 String img=imgs[i];
                 String img_w[]=img.split("\\|");
-                //System.out.println(img_w.length);
+                ////System.out.println(img_w.length);
                 if(img_w.length>1){
                     String mainpics[]= img_w[0].split(":");
                     if(mainpics.length>2){
@@ -654,7 +654,7 @@ public class ImportCsvFileService {
                     //没有直接的图片
                     String pics[]=img_w[0].split(":");
                     if("1".equals (pics[1])) {
-                        //System.out.println(pics[0]);
+                        ////System.out.println(pics[0]);
                         if (i == 0) {
 
                             imgse = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
@@ -721,7 +721,7 @@ public class ImportCsvFileService {
             e.printStackTrace ();
         }
 
-        //System.out.println("picUrl="+picUrl);
+        ////System.out.println("picUrl="+picUrl);
         return picUrl;
 
     }
@@ -973,7 +973,7 @@ public class ImportCsvFileService {
                     String ss[] = propss[ki].split(":");
                     if (ss.length > 1) {
                         int p = ss[1].indexOf("-");
-                        //System.out.println(p);
+                        ////System.out.println(p);
                         if (p == -1) {
                             if (ki == 0) {
                                 props_new += ss[0] + ":" + ss[1];
@@ -1096,7 +1096,7 @@ public class ImportCsvFileService {
         cs.setPnc(pnc);
         cs.setColorString(colorString);
         cs.setSizeString(sizeString);
-        //System.out.println(pn);
+        ////System.out.println(pn);
         return cs;
 
     }
@@ -1203,7 +1203,7 @@ public class ImportCsvFileService {
 
     public static boolean isNumeric(String str){
         for (int i = 0; i < str.length(); i++){
-            //System.out.println(str.charAt(i));
+            ////System.out.println(str.charAt(i));
             if (!Character.isDigit(str.charAt(i))){
                 return false;
             }

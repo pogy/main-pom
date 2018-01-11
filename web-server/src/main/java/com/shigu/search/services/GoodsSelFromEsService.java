@@ -75,10 +75,10 @@ public class GoodsSelFromEsService {
                 storeIds.add(si.getStoreId());
             }
             List<SearchShopSimple> shops=shopSearchService.selShopByIds(new ArrayList<Long>(storeIds),website);
-//            System.out.println(storeIds);
-//            System.out.println("storeIds "+storeIds.size());
-//            System.out.println(shops);
-//            System.out.println("shops "+shops.size());
+//            //System.out.println(storeIds);
+//            //System.out.println("storeIds "+storeIds.size());
+//            //System.out.println(shops);
+//            //System.out.println("shops "+shops.size());
             Map<Long,SearchShopSimple> shopMap=new HashMap<>();
             for(SearchShopSimple sss:shops){
                 shopMap.put(sss.getShopId(),sss);

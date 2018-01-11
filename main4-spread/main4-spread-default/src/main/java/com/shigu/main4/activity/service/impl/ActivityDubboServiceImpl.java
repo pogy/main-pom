@@ -73,9 +73,9 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityVO selActivityById(Long activityId) throws ActivityException {
-        System.out.println("112112121");
+        //System.out.println("112112121");
         ActivityVO activityVO=BeanMapper.map(activityFactory.selActivityById(activityId),ActivityVO.class);
-        System.out.println(activityVO);
+        //System.out.println(activityVO);
         return activityVO;
     }
 

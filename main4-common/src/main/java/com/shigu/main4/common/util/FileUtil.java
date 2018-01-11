@@ -182,7 +182,7 @@ public class FileUtil {
         byte[] bytes = new byte[fileInputStream.available()];
         fileInputStream.read(bytes,0,bytes.length);
         String fileType = getFileType(bytes);
-        System.out.println(fileType);
+        //System.out.println(fileType);
 
     }
 

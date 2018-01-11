@@ -27,13 +27,13 @@ public class FileDeal {
 
     static void changeFile(File f,String name) throws Exception {
         if (f.isFile()) {//如果是文件，直接更名
-            //System.out.println("文件名"+f.getPath());
+            ////System.out.println("文件名"+f.getPath());
             if(f.getName().endsWith(".csv")||f.getName().endsWith(".txt")) {
-            //System.out.println("文件名全路径"+f.getPath());
-               // System.out.println("文件名"+f.getName());
-               // System.out.println("文件的上级文件夹全路径"+f.getParent());
-               // System.out.println("CSV文件名"+f.getAbsolutePath());
-                //System.out.println("CSV文件名"+f.getCanonicalPath());
+            ////System.out.println("文件名全路径"+f.getPath());
+               // //System.out.println("文件名"+f.getName());
+               // //System.out.println("文件的上级文件夹全路径"+f.getParent());
+               // //System.out.println("CSV文件名"+f.getAbsolutePath());
+                ////System.out.println("CSV文件名"+f.getCanonicalPath());
                 if(f.getName().endsWith(".csv")) {
                     f.renameTo(new File(f.getParent() + "/"+name+".csv"));
                 }else{
@@ -45,9 +45,9 @@ public class FileDeal {
             //for (java.io.File f3 : fs)//foreach循环，取文件
                // changeFile(f3);//递归
 
-            //System.out.println("文件夹路径："+f.getPath());
-            //System.out.println("文件夹名："+f.getName());
-            //System.out.println("文件夹父级：" + f.getParent());
+            ////System.out.println("文件夹路径："+f.getPath());
+            ////System.out.println("文件夹名："+f.getName());
+            ////System.out.println("文件夹父级：" + f.getParent());
             if(!f.getName ().equals ("__MACOSX")) {
 
                 f.renameTo (new File (f.getParent () + "/" + name));//循环完后，把该目录更名。
