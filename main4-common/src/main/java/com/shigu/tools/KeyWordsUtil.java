@@ -1,5 +1,7 @@
 package com.shigu.tools;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -124,10 +126,12 @@ public class KeyWordsUtil {
      * @return
      */
     private static String duleKeyWordsInList(String orignalWords, List<String> keyWordsList) {
-        for (int i = 0; i < keyWordsList.size(); i++) {
-            String value = keyWordsList.get(i);
-            if(orignalWords.indexOf(value)>=0){
-                orignalWords=orignalWords.replaceAll(value,"");
+        if(StringUtils.isEmpty(orignalWords)){
+            return orignalWords;
+        }
+        for (String value : keyWordsList) {
+            if (orignalWords.contains(value)) {
+                orignalWords = orignalWords.replaceAll(value, "");
             }
         }
         return orignalWords;
