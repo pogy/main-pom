@@ -28,6 +28,7 @@
 <#assign searchType="goods">
 <#assign headerTitle=null>
 <#include "/common/xz__searchHeader.ftl">
+<#include "/__ftl_links__/search__common__pageNav.ftl">
 <#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"mid","value":""+query.mid},{"name":"pid","value":""+query.pid},{"name":"cid","value":""+query.cid},{"name":"sort","value":""+query.sort},{"name":"d","value":""+query.d},{"name":"sp","value":""+query.sp},{"name":"ep","value":""+query.ep},{"name":"st","value":""+query.st},{"name":"et","value":""+query.et},{"name":"keyword","value":""+query.keyword},{"name":"page","value":""+query.page},{"name":"bpic","value":""+query.bpic},{"name":"goodsVideo","value":""+query.goodsVideo}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
@@ -37,7 +38,6 @@
 </form>
 </#if>
 </#list>
-<#include "/__ftl_links__/search__common__nav.ftl">
 <div class="layout clearfix">
     <div class="fl leftContent">
 <#include "/__ftl_links__/search__common__catFilterBar.ftl">
@@ -149,7 +149,7 @@
                 <a href="/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
                 <p>
                     <span class="price">&yen;${goods.piprice!}</span>
-                    <a href="/shop.htm?id=${goods.storeid!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
+                    <a href="/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
                 </p>
             </li>
             </#list>

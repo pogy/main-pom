@@ -24,7 +24,7 @@
 <#assign searchType="shop">
 <#assign headerTitle=null>
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/search__common__nav.ftl">
+<#include "/__ftl_links__/search__common__pageNav.ftl">
 <#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"mid","value":""+query.mid},{"name":"keyword","value":""+query.keyword}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">

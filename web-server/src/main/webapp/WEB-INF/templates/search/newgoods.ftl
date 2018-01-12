@@ -26,7 +26,7 @@
 <#assign searchType="goods">
 <#assign headerTitle=null>
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/search__common__nav.ftl">
+<#include "/__ftl_links__/search__common__pageNav.ftl">
 <div class="bgBox">
 <div class="iconCateNav layout">
     <ul>
