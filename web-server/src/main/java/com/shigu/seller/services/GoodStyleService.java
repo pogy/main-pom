@@ -22,10 +22,7 @@ import org.elasticsearch.action.fieldstats.FieldStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -170,6 +167,9 @@ public class GoodStyleService {
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         //主类目
         List<SearchCategory> list = SearchCategoryMapper.selectByExample(example);
+        if (list.isEmpty()) {
+            return Collections.emptyList();
+        }
         //返回数据
         List<CategoryTabsVo> categoryTabsVos = new ArrayList();
         //主类目 值
