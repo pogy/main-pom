@@ -76,7 +76,6 @@
     >
 </div>
 </#list></li>
-        </#if>
         <li><label>淘宝状态：</label>
 <#list [{"value":""+query.tbState}] as $it>
 <div class="fmSelect" id="tbState">
@@ -89,6 +88,7 @@
     >
 </div>
 </#list></li>
+        </#if>
         <li class="noMargin">
 <#list [{}] as $it>
     <#if $it.href??>
