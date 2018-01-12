@@ -204,7 +204,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                 }
 
                 List<ShiguShop> shopList = shiguShopMapper.selectShopListByShopIdsForMarketList(shopIdList);
-                for (int m = 0; m < shopIdList.size(); m++) {
+                for (int m = 0; m < shopList.size(); m++) {
                     ShiguShop shiguShop = shopList.get(m);
                     ShopShow s = map.get(shiguShop.getShopId());
                     if (s == null||shiguShop.getShopStatus() != 0 || shiguShop.getDisplayInMarket() != 1) {
