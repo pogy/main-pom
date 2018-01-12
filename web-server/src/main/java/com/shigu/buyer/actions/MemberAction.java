@@ -197,9 +197,9 @@ public class MemberAction {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(), bo.getKeyword(), bo.getWebsite(),
-                bo.getPage(), bo.getRows());
-        if(pager.getContent()!=null){
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
+                bo.getPage(),bo.getRows());
+        if(pager.getContent() !=null) {
             //极限词过滤
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
             model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
@@ -290,8 +290,8 @@ public class MemberAction {
     @RequestMapping("member/goodsDataPackageinit")
     public String goodsDataPackageinit(DataPackageBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
-        List<PackageVO> goodslist=new ArrayList<>();
+        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
+        List<PackageVO> goodslist = new ArrayList<>();
         for(DataPackage dp:pager.getContent()){
             if(dp.getGoods()!=null)
                 goodslist.add(new PackageVO(dp));

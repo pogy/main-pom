@@ -1,8 +1,5 @@
 package com.shigu.seller.vo;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 
 /**

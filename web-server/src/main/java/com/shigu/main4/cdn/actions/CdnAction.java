@@ -984,14 +984,6 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws Main4Exception, IOException, TemplateException {
         CdnGoodsInfoVO goods =cdnService.cdnGoodsInfo(id);
-        //TODO powell
-//        if(goods!=null){
-//            String title = goods.getTitle();
-//            if(StringUtils.isNotBlank(title)){
-//               title= KeyWordsUtil.duleKeyWords(title);
-//               goods.setTitle(title);
-//            }
-//        }
         if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
             goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
         }

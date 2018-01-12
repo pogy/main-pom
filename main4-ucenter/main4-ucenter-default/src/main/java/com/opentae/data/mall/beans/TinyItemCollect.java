@@ -1,8 +1,5 @@
 package com.opentae.data.mall.beans;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 
 /**

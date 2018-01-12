@@ -1,8 +1,5 @@
 package com.opentae.data.mall.beans;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 给列表用的商品简单信息
  * Created by Licca on 17/4/10.

@@ -1,8 +1,5 @@
 package com.shigu.spread.vo;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 商品简单信息
  * Created by zhaohongbo on 17/4/10.
