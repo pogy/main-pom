@@ -2,8 +2,6 @@ package com.opentae.data.mall.beans;
 
 import com.opentae.common.beans.MoreSiteBean;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

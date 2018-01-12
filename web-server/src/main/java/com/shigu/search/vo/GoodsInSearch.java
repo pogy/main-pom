@@ -2,8 +2,6 @@ package com.shigu.search.vo;
 
 import com.shigu.main4.vo.ItemShowBlock;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 
 /**

@@ -1,9 +1,6 @@
 package com.shigu.main4.ucenter.webvo;
 
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 
 /**

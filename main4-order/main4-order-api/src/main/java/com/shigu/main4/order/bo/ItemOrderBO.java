@@ -1,9 +1,6 @@
 package com.shigu.main4.order.bo;
 
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 import java.util.List;
 

@@ -2,8 +2,6 @@ package com.shigu.phone.basevo;
 
 import com.openJar.beans.app.AppItemKv;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 import java.util.List;
 

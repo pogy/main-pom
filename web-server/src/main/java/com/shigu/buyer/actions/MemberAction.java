@@ -197,9 +197,9 @@ public class MemberAction {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ShiguPager<ItemCollectVO> pager=userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
                 bo.getPage(),bo.getRows());
-        if(pager.getContent()!=null){
+        if(pager.getContent() !=null) {
             //极限词过滤
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
             model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
@@ -290,8 +290,8 @@ public class MemberAction {
     @RequestMapping("member/goodsDataPackageinit")
     public String goodsDataPackageinit(DataPackageBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager=userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
-        List<PackageVO> goodslist=new ArrayList<>();
+        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
+        List<PackageVO> goodslist = new ArrayList<>();
         for(DataPackage dp:pager.getContent()){
             if(dp.getGoods()!=null)
                 goodslist.add(new PackageVO(dp));
@@ -942,7 +942,7 @@ public class MemberAction {
         String money = paySdkClientService.rechange(ps.getUserId(), bo.getPaynum(), bo.getAlipay());
         return JsonResponseUtil.success().element("data", JSONObject.fromObject("{'rechangeMoney':" + money + "}"));
     }
-
+    
     /**
      * 提现
      *
@@ -1295,7 +1295,7 @@ public class MemberAction {
         }
         return JsonResponseUtil.error("支付未完成");
     }
-
+    
     /**
      * 绑定成功跳转页
      * @param identity
@@ -1312,7 +1312,7 @@ public class MemberAction {
         }
         return "fxs/bindAlipaySuccess";
     }
-
+    
     /**
      * 获取提现金额实际值
      *
@@ -1331,7 +1331,7 @@ public class MemberAction {
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
         return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
     }
-
+    
     /**
      * 获取免费提现及限制信息
      * @param session
@@ -1344,7 +1344,7 @@ public class MemberAction {
         Long userId = ps.getUserId();
         return paySdkClientService.selCurrentFreeCashInfo(userId);
     }
-
+    
     private boolean isMemberOrSeller(String identityPath) {
         return MEMBER_PATH.equals(identityPath) || SELLER_PATH.equals(identityPath);
     }

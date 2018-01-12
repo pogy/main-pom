@@ -1,8 +1,5 @@
 package com.shigu.main4.ucenter.enums;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 用户权益类别
  * Created by zhaohongbo on 17/3/1.

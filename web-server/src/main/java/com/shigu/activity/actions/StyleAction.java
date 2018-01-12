@@ -39,8 +39,8 @@ public class StyleAction {
     private ShiguShopMapper shiguShopMapper;
 
     @RequestMapping("/activity/style")
-    public String styleShow(QueryBo bo, HttpServletRequest request, Model model){
-        if(StringUtils.isEmpty(bo.getSid())){
+    public String styleShow(QueryBo bo, HttpServletRequest request, Model model) {
+        if (StringUtils.isEmpty(bo.getSid())) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null)
                 for (Cookie c : cookies) {
@@ -49,7 +49,7 @@ public class StyleAction {
                         break;
                     }
                 }
-            if(StringUtils.isEmpty(bo.getSid())){
+            if (StringUtils.isEmpty(bo.getSid())) {
                 bo.setSid("9");
             }
         }
@@ -60,15 +60,20 @@ public class StyleAction {
         styleNavVos.addAll(picCateNav.getPicCates());
         styleNavVos.addAll(picCateNav.getTextCates());
         ShiguAggsPager pager = styleService.searchGoods(bo);
-        TextCateNav textCateNav=styleService.selTextCateNav(pager.getCats(), pager.getMarkets(),bo.getWebSite());
+        TextCateNav textCateNav = styleService.selTextCateNav(pager.getCats(), pager.getMarkets(), bo.getWebSite());
 
 
         //极限词过滤
-        if(picCateNav.getTextCates()!=null)picCateNav.getTextCates().forEach(styleNavVo -> styleNavVo.setText(KeyWordsUtil.duleKeyWords(styleNavVo.getText())));
-        if(pager.getContent()!=null)pager.getContent().forEach(searchItem -> {
-            searchItem.setTitle(KeyWordsUtil.duleKeyWords(searchItem.getTitle()));
-            searchItem.setHighLightTitle(KeyWordsUtil.duleKeyWords(searchItem.getHighLightTitle()));
-        });
+        if (picCateNav.getTextCates() != null) {
+            picCateNav.getTextCates().forEach(styleNavVo -> styleNavVo.setText(KeyWordsUtil.duleKeyWords(styleNavVo.getText())));
+        }
+        if (pager.getContent() != null) {
+            pager.getContent().forEach(searchItem -> {
+                searchItem.setTitle(KeyWordsUtil.duleKeyWords(searchItem.getTitle()));
+                searchItem.setHighLightTitle(KeyWordsUtil.duleKeyWords(searchItem.getHighLightTitle()));
+            });
+        }
+
 
 
         model.addAttribute("picCateNav", picCateNav);

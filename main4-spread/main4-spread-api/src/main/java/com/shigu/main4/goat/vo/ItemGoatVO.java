@@ -1,8 +1,5 @@
 package com.shigu.main4.goat.vo;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 
 /**

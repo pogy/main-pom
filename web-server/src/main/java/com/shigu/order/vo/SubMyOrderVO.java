@@ -2,8 +2,6 @@ package com.shigu.order.vo;
 
 import com.opentae.core.mybatis.config.Column;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 
 public class SubMyOrderVO {

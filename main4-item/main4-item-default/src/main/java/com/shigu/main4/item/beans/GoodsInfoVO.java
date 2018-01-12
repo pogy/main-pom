@@ -2,8 +2,6 @@ package com.shigu.main4.item.beans;
 
 import com.opentae.core.mybatis.config.Column;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 

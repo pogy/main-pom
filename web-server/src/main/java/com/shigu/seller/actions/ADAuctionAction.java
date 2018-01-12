@@ -81,7 +81,6 @@ public class ADAuctionAction {
         if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
              return ftlDir+"/dtggapplyNull";
         }
-
         ActivityVO activityVO=selActivityById(id);
         if (activityVO == null) {
             return "redirect:dtgglist.htm?id="+(id!=null?id:"");
