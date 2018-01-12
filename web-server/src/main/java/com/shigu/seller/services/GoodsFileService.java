@@ -260,8 +260,6 @@ public class GoodsFileService extends OssIO {
                 if (vo != null) {
                     vo.setHasLinkGoods(true);
                     vo.setLinkFileId(gf.getFileKey().replace(getHomeDir(shopId),""));
-                }else{
-                    vo.setHasLinkGoods(false);
                 }
             }
         }
