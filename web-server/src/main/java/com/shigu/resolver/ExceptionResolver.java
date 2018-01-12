@@ -29,17 +29,21 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request,
 			HttpServletResponse response, Object arg2, Exception ex) {
-
+	    String msg=ex.getMessage();
+        if(!(ex instanceof Main4Exception)&&!(ex instanceof OpenException)){
+            log.error(ex.getMessage(),ex);
+            msg="系统异常";
+        }
 	    if(request.getServletPath().contains("/app/")&&request.getServletPath().endsWith(".json")){
-            appResolveException(response,ex);
+            appResolveException(response,msg);
             return null;
         }
         if(request.getServletPath().contains("/waps/")&&request.getServletPath().endsWith(".json")){
-            wapResolveException(response,ex);
+            wapResolveException(response,msg);
             return null;
         }
         if(request.getServletPath().contains("/datas/")&&request.getServletPath().endsWith(".json")){
-            wapResolveException(response,ex);
+            wapResolveException(response,msg);
             return null;
         }
 		if(request.getServletPath().endsWith(".json")){//json类型的问题
@@ -50,11 +54,11 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			JSONObject jsonObj=JSONObject.fromObject("{'result':'error'}");
 			if(otherFields!=null){
 				if(!otherFields.containsKey("msg")){
-					jsonObj.element("msg",ex.getMessage());
+					jsonObj.element("msg",msg);
 				}
 				jsonObj.accumulateAll(otherFields);
 			}else{
-				jsonObj.element("msg",ex.getMessage());
+				jsonObj.element("msg",msg);
 			}
 			String jsonString = jsonObj.toString();
 			response.setCharacterEncoding("UTF-8");
@@ -67,18 +71,17 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
             writer(response,jsonString);
 			return null;
 		}else if(ex instanceof Main4Exception){//页面已知的错误
-			request.setAttribute("errMsg",ex.getMessage());
+			request.setAttribute("errMsg",msg);
 		}else{//页面未知的错误
 			request.setAttribute("errMsg","系统异常");
-			ex.printStackTrace();
 		}
 		//记录异常日志...
 		return getModelAndView("500", ex, request);
 	}
 
-	private void appResolveException(HttpServletResponse response,Exception ex){
+	private void appResolveException(HttpServletResponse response,String msg){
         OpenException exception=new OpenException();
-        exception.setErrMsg(ex.getMessage());
+        exception.setErrMsg(msg);
         SystemResponse systemResponse=new SystemResponse();
         systemResponse.setSuccess(false);
         systemResponse.setException(exception);
@@ -87,11 +90,11 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
         response.setContentType("application/json");
         writer(response,jsonString);
     }
-    private void wapResolveException(HttpServletResponse response,Exception ex){
+    private void wapResolveException(HttpServletResponse response,String msg){
         SystemResponse systemResponse=new SystemResponse();
         systemResponse.setSuccess(false);
         JSONObject errJson=JSONObject.fromObject(systemResponse);
-        errJson.put("msg",ex.getMessage());
+        errJson.put("msg",msg);
         String jsonString = errJson.toString();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

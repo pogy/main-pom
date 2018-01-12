@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/3/22.
@@ -80,6 +81,7 @@ public class ADAuctionAction {
         if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
              return ftlDir+"/dtggapplyNull";
         }
+
         ActivityVO activityVO=selActivityById(id);
         if (activityVO == null) {
             return "redirect:dtgglist.htm?id="+(id!=null?id:"");
@@ -205,7 +207,7 @@ public class ADAuctionAction {
         }
         model.addAttribute("query",bo);
         //极限词过滤
-        model.addAttribute("indexggList",list.stream().peek(adAuctionResultVO -> adAuctionResultVO.setTitle(KeyWordsUtil.duleKeyWords(adAuctionResultVO.getTitle()))));
+        model.addAttribute("indexggList",list.stream().peek(adAuctionResultVO -> adAuctionResultVO.setTitle(KeyWordsUtil.duleKeyWords(adAuctionResultVO.getTitle()))).collect(Collectors.toList()));
         return ftlDir+"/dtgglistFinish";
     }
 }

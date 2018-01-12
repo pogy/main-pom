@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -51,7 +52,7 @@ public class ActivitysAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //极限词过滤
         return JsonResponseUtil.success().element("applyGoodsLists", activityService
-                .applyItems(actid, ps.getUserId()).stream().peek(applyItemVO -> applyItemVO.setTitle(KeyWordsUtil.duleKeyWords(applyItemVO.getTitle()))));
+                .applyItems(actid, ps.getUserId()).stream().peek(applyItemVO -> applyItemVO.setTitle(KeyWordsUtil.duleKeyWords(applyItemVO.getTitle()))).collect(Collectors.toList()));
     }
 
     @RequestMapping("submitInputInfo")

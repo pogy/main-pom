@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2017/7/26.
@@ -89,7 +90,7 @@ public class GoodsFileAction {
         //极限词过滤
         return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
                 .element("goodslist", JSONArray.fromObject(pager.getContent()
-                        .stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle())))));
+                        .stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle()))).collect(Collectors.toList())));
     }
 
     /**
@@ -113,7 +114,7 @@ public class GoodsFileAction {
         ShiguPager<GoodsFileSearchVO> pager=goodsFileService.fileRelationFile(shop.getShopId(),fileId,shop.getWebSite(),page,size);
         //极限词过滤
         return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
-                .element("goodslist", JSONArray.fromObject(pager.getContent().stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle())))));
+                .element("goodslist", JSONArray.fromObject(pager.getContent().stream().peek(goodsFileSearchVO -> goodsFileSearchVO.setTitle(KeyWordsUtil.duleKeyWords(goodsFileSearchVO.getTitle()))).collect(Collectors.toList())));
     }
 
     /**
@@ -127,7 +128,7 @@ public class GoodsFileAction {
         }
         List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(logshop(session).getShopId(),fileKey);
         //极限词过滤
-        return JsonResponseUtil.success().element("goods", goodsFilesList.stream().peek(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getTitle()))));
+        return JsonResponseUtil.success().element("goods", goodsFilesList.stream().peek(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getTitle()))).collect(Collectors.toList()));
     }
 
     /**
