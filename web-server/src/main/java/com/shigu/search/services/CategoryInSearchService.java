@@ -107,8 +107,17 @@ public class CategoryInSearchService {
             }
         }
         List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category, webSite);
+        List<CategoryValue> returnCates = new ArrayList<>();
+        List<String> keyWords = new ArrayList<>();
+        for (CategoryValue item : cates){
+            if (keyWords.contains(item.getCateValue())){
+                continue;
+            }
+            keyWords.add(item.getCateValue());
+            returnCates.add(item);
+        }
         List<CateNav> navs=new ArrayList<>();
-        for(CategoryValue gv:cates){
+        for(CategoryValue gv:returnCates){
             if(category.equals(SearchCategory.STYLE)){
                 navs.add(new CateNav(gv.getSubId()+"",gv.getCateName(),gv.getCateValue()));
             }else{
