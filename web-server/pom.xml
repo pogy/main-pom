@@ -26,6 +26,11 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.8.v20171121</version>
+                <configuration>
+                    <httpConnector>
+                        <port>9999</port>
+                    </httpConnector>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -200,27 +205,27 @@
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-spring</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-ehcache</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-quartz</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-quartz</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>com.shiro</groupId>
-        <artifactId>shiro-freemarker-tags</artifactId>
-        <version>0.1</version>
+            <groupId>com.shiro</groupId>
+            <artifactId>shiro-freemarker-tags</artifactId>
+            <version>0.1</version>
         </dependency>
 
         <!--freemarker-->
@@ -432,10 +437,10 @@
             <artifactId>zookeeper</artifactId>
             <version>3.4.6</version>
             <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>io.netty</groupId>-->
-                    <!--<artifactId>netty</artifactId>-->
-                <!--</exclusion>-->
+            <!--<exclusion>-->
+            <!--<groupId>io.netty</groupId>-->
+            <!--<artifactId>netty</artifactId>-->
+            <!--</exclusion>-->
             <!--</exclusions>-->
         </dependency>
 
@@ -455,7 +460,7 @@
             <artifactId>wxpay-scanpay-java-sdk</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
-<!--查淘宝店内信息-->
+        <!--查淘宝店内信息-->
         <!--支付的对接-->
         <dependency>
             <groupId>webs.pay_site</groupId>
@@ -471,8 +476,8 @@
                     <artifactId>xinzuo_mybatis</artifactId>
                 </exclusion>
                 <!--<exclusion>-->
-                    <!--<groupId>com.openJar</groupId>-->
-                    <!--<artifactId>open_order_endsdk</artifactId>-->
+                <!--<groupId>com.openJar</groupId>-->
+                <!--<artifactId>open_order_endsdk</artifactId>-->
                 <!--</exclusion>-->
             </exclusions>
         </dependency>
@@ -500,7 +505,7 @@
             <artifactId>mail</artifactId>
             <version>1.0</version>
         </dependency>
-<!--阿里登陆用-->
+        <!--阿里登陆用-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>alibaba_zhb</artifactId>
@@ -517,7 +522,7 @@
             <artifactId>aliyun-sdk-opensearch</artifactId>
             <version>3.1.3</version>
         </dependency>
-<!--微信包-->
+        <!--微信包-->
         <dependency>
             <groupId>org.sword</groupId>
             <artifactId>wechat4j</artifactId>
