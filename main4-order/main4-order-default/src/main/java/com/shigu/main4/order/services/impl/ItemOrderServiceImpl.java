@@ -427,7 +427,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         List<ExpressLogVO> logVOList = new ArrayList<>();
         String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         Calendar cal = Calendar.getInstance();
-        if (resultVO.getTraces().size() > 0) {
+        if (resultVO.getTraces() != null && resultVO.getTraces().size() > 0) {
             for (int i=resultVO.getTraces().size()-1;i>=0;i--) {
                 SingleMsgVO msg =resultVO.getTraces().get(i);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -101,7 +101,10 @@ public class PageViewAction {
         Map<String, String> params = new HashMap<>();
         String[] path$param = url.split("\\?");
         String path = path$param[0];
-        path = path.substring(path.indexOf("/"));
+        int index = path.indexOf("/");
+        if (index >=0){
+            path = path.substring(index);
+        }
         params.put("path", path);
         if(path$param.length < 2){
             return params;

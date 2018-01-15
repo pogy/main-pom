@@ -331,7 +331,9 @@ public class ActivityAction {
         int actState;
         ShiguActivityVO vo = activityService.activityInfo(id);
         long current = System.currentTimeMillis();
-        if (vo.getStartApply().getTime() > current) {
+        if (vo == null || vo.getStartApply() == null || vo.getEndApply() == null) {
+            actState = 2;
+        }else if (vo.getStartApply().getTime() > current) {
             actState = 0;
         } else if (vo.getEndApply().getTime() > current) {
             actState = 1;

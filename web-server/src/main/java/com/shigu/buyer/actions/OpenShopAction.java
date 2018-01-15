@@ -13,10 +13,7 @@ import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.vo.OuterUser;
-import com.shigu.main4.vo.FloorForRegist;
-import com.shigu.main4.vo.MarketForRegist;
-import com.shigu.main4.vo.ShopRegister;
-import com.shigu.main4.vo.SiteForRegist;
+import com.shigu.main4.vo.*;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
@@ -179,14 +176,20 @@ public class OpenShopAction {
         //微信公众号二维码地址
         String wxCode = "http://style.571xz.com/v6/common/img/qrcode.jpg";
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        boolean result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
-        model.addAttribute("wxpic", wxCode);
-        model.addAttribute("storeName",shopRegistService.selDetailById(ps.getUserId(),Long.valueOf(userCode)).getShopNum());
-        model.addAttribute("userCode",userCode);
+        boolean result = false;
+        if (ps != null) {
+            result=shopExamineTypeService.canExamine(ps.getUserId(),Long.valueOf(userCode));
+        }
         if(!result){//信息不全
             return "redirect:https://oauth.taobao.com/authorize?response_type=code&client_id=21720662" +
                     "&redirect_uri="+xzSdkClient.getYjHost()+"openStoreAuth.htm&state="+userCode+"&view=web";
         }
+        model.addAttribute("wxpic", wxCode);
+        ShopApplyDetail shopApplyDetail = shopRegistService.selDetailById(ps.getUserId(), Long.valueOf(userCode));
+        if (shopApplyDetail != null) {
+            model.addAttribute("storeName",shopApplyDetail.getShopNum());
+        }
+        model.addAttribute("userCode",userCode);
         return "fxs/ruzhu_sq";
     }
 
