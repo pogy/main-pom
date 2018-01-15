@@ -6,6 +6,7 @@ import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -48,7 +50,9 @@ public class ActivitysAction {
     @ResponseBody
     public JSONObject applyItems(Long actid, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("applyGoodsLists", activityService.applyItems(actid, ps.getUserId()));
+        //极限词过滤
+        return JsonResponseUtil.success().element("applyGoodsLists", activityService
+                .applyItems(actid, ps.getUserId()).stream().peek(applyItemVO -> applyItemVO.setTitle(KeyWordsUtil.duleKeyWords(applyItemVO.getTitle()))).collect(Collectors.toList()));
     }
 
     @RequestMapping("submitInputInfo")

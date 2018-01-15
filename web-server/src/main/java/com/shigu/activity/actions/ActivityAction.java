@@ -7,6 +7,7 @@ import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
+import com.shigu.activity.tempvo.PopularGoodsVO;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
@@ -21,9 +22,11 @@ import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.seller.services.ActivityService;
+import com.shigu.seller.vo.GfGoodsStyleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +113,7 @@ public class ActivityAction {
         List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null, null, "ben");
 
         // 用户上一期获奖数据
-        List<ActiveDrawRecordUserVo> userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+        List<ActiveDrawRecordUserVo> userVoList = new ArrayList<>();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -122,14 +125,25 @@ public class ActivityAction {
         }
 
         if (userVoList == null) {
-            userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+            userVoList = new ArrayList<>();
         }
 
-        for (int i = 0; i < userVoList.size(); i++) {
-            if (userVoList.get(i).getDrawStatus().intValue() == 1) {
-                userVoList.get(i).setDrawStatus(2);
+        for (ActiveDrawRecordUserVo anUserVoList : userVoList) {
+            if (1 == anUserVoList.getDrawStatus()) {
+                anUserVoList.setDrawStatus(2);
             }
         }
+
+
+        //极限词过滤
+        drawStyleVo.getShopList().forEach(activeDrawShopVo -> {
+            if (activeDrawShopVo.getItems() != null) {
+                activeDrawShopVo.getItems().forEach(shopItemVo -> shopItemVo.setTitle(KeyWordsUtil.duleKeyWords(shopItemVo.getTitle())));
+            }
+        });
+        drawStyleVo.getGoodsList().forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+        daliyGoodsVoList.forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+
 
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("styleItem", drawStyleVo);
@@ -188,6 +202,9 @@ public class ActivityAction {
         );
 
         Collections.shuffle(daliyGoodsVoList);
+        //极限词过滤
+        daliyGoodsVoList.forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         // 时间处理
         model.addAttribute("webSite", "hz");
@@ -280,12 +297,27 @@ public class ActivityAction {
     @RequestMapping("activity/popular")
     public String gfShow(Long id, Model model) throws Main4Exception {
         ShiguActivity activity;
-        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null)
+        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null){
             throw new Main4Exception("页面不存在");
+        }
+
+
+        List<GfGoodsStyleVO> goodsStyles=activityService.gfShow(id);
+
+        //极限词过滤
+        activity.setTitle(KeyWordsUtil.duleKeyWords(activity.getTitle()));
+        goodsStyles.forEach(gfGoodsStyleVO -> {
+            gfGoodsStyleVO.setTitleText(KeyWordsUtil.duleKeyWords(gfGoodsStyleVO.getTitleText()));
+            if(gfGoodsStyleVO.getGoodsList()!=null)
+            gfGoodsStyleVO.getGoodsList().forEach(gfShowVO -> {
+                gfShowVO.setTitle(KeyWordsUtil.duleKeyWords(gfShowVO.getTitle()));
+            });
+        });
+
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsStyle", activityService.gfShow(id));
+        model.addAttribute("goodsStyle", goodsStyles);
         model.addAttribute("webSite", "hz");
         return "xzSearch/popular";
     }
@@ -306,6 +338,10 @@ public class ActivityAction {
         } else {
             actState = 2;
         }
+
+        //极限词过滤
+        vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+
         model.addAttribute("actState", actState);
         model.addAttribute("id", id);
         return "activity/apply";
@@ -355,8 +391,12 @@ public class ActivityAction {
      */
     @RequestMapping("activity/newPopular")
     public String newPopular(Model model) {
+        List<PopularGoodsVO> popularGoodsVOS=newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG);
+        //极限词过滤
+        popularGoodsVOS.forEach(popularGoodsVO -> popularGoodsVO.setTitle(KeyWordsUtil.duleKeyWords(popularGoodsVO.getTitle())));
+
         model.addAttribute("webSite", "hz");
-        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG));
+        model.addAttribute("goodsList", popularGoodsVOS);
         return "activity/newPopular";
     }
 

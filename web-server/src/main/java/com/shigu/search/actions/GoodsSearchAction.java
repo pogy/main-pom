@@ -17,6 +17,7 @@ import com.shigu.search.vo.SearchNav;
 import com.shigu.search.vo.SearchVO;
 import com.shigu.tools.EncodeParamter;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,7 @@ import sun.misc.BASE64Decoder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * 商品搜索
@@ -133,6 +135,14 @@ public class GoodsSearchAction {
             model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }
         ShiguPager<GoodsInSearch> pager = todayNewGoodsService.selGoodsNew(bo);
+        //极限词过滤
+        if (pager.getContent() != null) {
+            pager.getContent().forEach(goodsInSearch -> {
+                goodsInSearch.setTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getTitle()));
+                goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
+            });
+        }
+
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         model.addAttribute("goodslist", pager.getContent() == null ? new ArrayList<>() : pager.getContent());
         model.addAttribute("query", bo);
@@ -181,7 +191,16 @@ public class GoodsSearchAction {
         if (bo.getPage() == 1) {
             model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
         }
-        model.addAttribute("goodslist", pager.getContent() == null ? Collections.emptyList() : pager.getContent());
+        //极限词过滤
+        if (pager.getContent() != null) {
+            pager.getContent().forEach(goodsInSearch -> {
+                goodsInSearch.setTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getTitle()));
+                goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
+            });
+        }
+
+
+        model.addAttribute("goodslist", pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 1, bo.getPid()));
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         //查顶部导航
@@ -238,6 +257,15 @@ public class GoodsSearchAction {
         bo.setFrom("goods");
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
+        //极限词过滤
+        if (pager.getContent() != null) {
+            pager.getContent().forEach(goodsInSearch -> {
+                goodsInSearch.setTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getTitle()));
+                goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
+            });
+        }
+
+
         maxTotalSizeOrPage(pager, bo.getRows());
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
@@ -266,7 +294,7 @@ public class GoodsSearchAction {
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         if(website.equals("hz")&&bo.getPid().equals(30L))
-        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website));
+        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/goods";
         } else {

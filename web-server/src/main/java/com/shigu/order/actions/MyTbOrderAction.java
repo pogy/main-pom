@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
+import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.order.bo.MoreTbOrderBO;
@@ -15,6 +16,7 @@ import com.shigu.order.vo.MyTbOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,8 +63,10 @@ public class MyTbOrderAction {
         if(StringUtils.isEmpty(bo.getPage())){
             bo.setPage(1);
         }
-        MyTbOrderVO pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
+        MyTbOrderVO<TbOrderVO> pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
                 bo.getPage(),size,bo.getSt(),bo.getEt());
+        //极限词过滤
+        pager.getContent().forEach(tbOrderVO -> tbOrderVO.getChildOrders().forEach(subTbOrderVO -> subTbOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subTbOrderVO.getTitle()))));
 
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("notLinkNum",pager.getNotLinkNum());
@@ -92,6 +96,9 @@ public class MyTbOrderAction {
         Integer size=4;
         Integer maxPage=5000/size;
         ShiguPager<GoodsVO> pager=myTbOrderService.selectglGoods(keyword,webSite,page,size);
+        //极限词过滤
+        pager.getContent().forEach(goodsVO -> goodsVO.setTitle(KeyWordsUtil.duleKeyWords(goodsVO.getTitle())));
+
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("goodsList",pager.getContent());
@@ -178,6 +185,9 @@ public class MyTbOrderAction {
             throw new OrderException("没有访问的权限");
         }
         List<SubTbOrderVO> vos= myTbOrderService.moreTbNeedBind(notLinkCode,ps.getUserId());
+        //极限词过滤
+        vos.forEach(subTbOrderVO -> subTbOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subTbOrderVO.getTitle())));
+
         model.addAttribute("goodsList",vos);
         return "fxs/tbBindGoodsNo";
     }
