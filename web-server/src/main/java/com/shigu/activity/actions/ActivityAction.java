@@ -445,4 +445,12 @@ public class ActivityAction {
     public String qualityControl() {
         return "xzPage/qualityControl";
     }
+
+    /**
+     *
+     */
+    @RequestMapping("xzPage/about")
+    public String about() {
+        return "xzPage/about";
+    }
 }

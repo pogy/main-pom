@@ -1,4 +1,4 @@
-<#assign $pageid>tbBindGoodsNo</#assign>
+<#assign $pageid="tbBindGoodsNo">
 <!doctype html>
 <html>
 <head>
@@ -18,18 +18,14 @@
 <#include "/__style_torrent__/fxs__tbBindGoodsNo_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -50,11 +46,11 @@
 <div class="goodsItem" name="${goods.numiid!}" data-webSite="${goods.webSite!}">
     <ul class="clearfix">
         <li class="tbGoods clearfix">
-            <a href="javascript:;" class="imgBox fl">
+            <span href="javascript:;" class="imgBox fl">
                 <img src="${goods.imgSrc!}_80x80.jpg" alt width="80" height="80">
-            </a>
+            </span>
             <div class="goodsInfo fl">
-                <a title="${goods.title!}">${goods.title!}</a>
+                <span title="${goods.title!}">${goods.title!}</span>
                 <p class="fc9" title="颜色：${goods.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${goods.size!}">颜色：${goods.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${goods.size!}</p>
                 <#if goods.newTbPrice??>
                 <p class="fcF40 fs16 yahei">&yen; ${goods.newTbPrice!}</p>
@@ -68,9 +64,7 @@
         </li>
         <li class="opera borderLe" data-imgSrc="${goods.imgSrc!}" data-title="${goods.title!}" <#if goods.newTbPrice??>data-price="${goods.newTbPrice!}"<#else>data-price="${goods.oldTbPrice!}"</#if> data-tbId="${goods.numiid!}">
             <p class="goodsGlBtn">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
