@@ -224,7 +224,7 @@ var refundId = '${refundId!}';
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 物流单号：</label>
-            <input type="text" name="expressCode" class="fmInput" placeholder="请填写物流单号">
+            <input type="text" name="expressCode" class="fmInput" maxlength="18" placeholder="请填写物流单号">
             <div class="errorTip">物流单号格式不正确！</div>
         </li>
         <li>
@@ -289,7 +289,7 @@ var refundId = '${refundId!}';
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 物流单号：</label>
-            <input type="text" name="expressCode" class="fmInput" placeholder="请填写物流单号">
+            <input type="text" name="expressCode" class="fmInput" maxlength="18" placeholder="请填写物流单号">
             <div class="errorTip">物流单号格式不正确！</div>
         </li>
         <li>
