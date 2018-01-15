@@ -12,12 +12,14 @@
     </a>
 </li>
 <li
+        <#if 'goods' == $pageid>class="actived"</#if>
 >
     <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
         商品库
     </a>
 </li>
 <li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
 >
     <a href="http://so.571xz.com/newgoods.htm" target="_blank">
         今日新品
@@ -58,6 +60,7 @@
                 <#elseif webSite == 'bj'>
                 <#elseif webSite == 'gz'>
                 </#if>
+            </ul>
         </div>
     </div>
 </div>

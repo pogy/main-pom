@@ -1,4 +1,4 @@
-<#assign $pageid>cash</#assign>
+<#assign $pageid="cash">
 <!doctype html>
 <html>
 <head>
@@ -17,15 +17,13 @@
 <#include "/__style_torrent__/xzSearch__cash_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
 <div class="banner"></div>
 <div class="bgBox">
 <div class="introduce layout">

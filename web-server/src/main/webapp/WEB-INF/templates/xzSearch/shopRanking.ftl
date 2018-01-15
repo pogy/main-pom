@@ -1,4 +1,4 @@
-<#assign $pageid>shopRanking</#assign>
+<#assign $pageid="shopRanking">
 <!doctype html>
 <html>
 <head>
@@ -17,15 +17,13 @@
 <#include "/__style_torrent__/xzSearch__shopRanking_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
  <div class="layout">
 <#list rankingCateList as rankingCateItem>
 <div class="rankingCateItem">
@@ -61,9 +59,7 @@
                                 <span class="rank-num"><#if shopItem_index gt 2>${shopItem_index + 1}</#if></span>
                                 <a target="_blank" href="/shop.htm?id=${shopItem.shopId!}" class="place">${shopItem.fullShopName!}</a>
                                 <span class="honor">
-<#assign text>{"num":shopItem.shopLevel}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"num":shopItem.shopLevel}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
 </span>
@@ -117,9 +113,7 @@
                         <span class="rank-num"><#if shopItem_index gt 2>${shopItem_index + 1}</#if></span>
                         <a target="_blank" href="/shop.htm?id=${shopItem.shopId!}" class="place">${shopItem.fullShopName!}</a>
                         <span class="honor">
-<#assign text>{"num":shopItem.shopLevel}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"num":shopItem.shopLevel}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
 </span>

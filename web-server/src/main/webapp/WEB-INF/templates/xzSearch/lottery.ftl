@@ -1,4 +1,4 @@
-<#assign $pageid>lottery</#assign>
+<#assign $pageid="lottery">
 <!doctype html>
 <html>
 <head>
@@ -19,15 +19,13 @@
 <#include "/__style_torrent__/xzSearch__lottery_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
 <div class="rotateContainer">
     <div class="layout pr">
         <div class="title"></div>
