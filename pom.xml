@@ -47,7 +47,8 @@
         <main4-order-default.version>${project.version}</main4-order-default.version>
         <main4-daifa-api.version>${project.version}</main4-daifa-api.version>
         <main4-daifa-default.version>${project.version}</main4-daifa-default.version>
-
+        <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
+        <daifa-sdk.version>${project.version}</daifa-sdk.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>

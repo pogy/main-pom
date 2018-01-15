@@ -15,6 +15,7 @@ import com.shigu.seller.vo.ADAuctionResultVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.KeyWordsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/3/22.
@@ -203,7 +205,8 @@ public class ADAuctionAction {
             model.addAttribute("indexggQ",term.getTermId());
         }
         model.addAttribute("query",bo);
-        model.addAttribute("indexggList",list);
+        //极限词过滤
+        model.addAttribute("indexggList",list.stream().peek(adAuctionResultVO -> adAuctionResultVO.setTitle(KeyWordsUtil.duleKeyWords(adAuctionResultVO.getTitle()))).collect(Collectors.toList()));
         return ftlDir+"/dtgglistFinish";
     }
 }

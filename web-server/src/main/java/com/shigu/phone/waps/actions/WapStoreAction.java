@@ -117,7 +117,7 @@ public class WapStoreAction {
     @ResponseBody
     public JSONObject queryShopCollectList(HttpSession session,String webSite,Integer index,Integer size) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps == null && ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             return JsonResponseUtil.error("用户未登录").element("success",false).element("stateCode",3);
         }
         if (index == null) {
