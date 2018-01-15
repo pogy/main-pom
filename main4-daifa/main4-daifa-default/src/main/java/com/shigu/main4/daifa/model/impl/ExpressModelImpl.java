@@ -18,6 +18,7 @@ import com.shigu.main4.daifa.utils.KdHttpUtil;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.QueryPostCodeVO;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -266,6 +267,9 @@ public class ExpressModelImpl implements ExpressModel {
             throw new KdApiException(KdApiException.KdApiExceptionEnum.SIGN_ERROR);
         }
         String result = KdHttpUtil.sendPost(kdConfig.getEorderserviceReqURL(), params);
+        if (StringUtils.isBlank(result)) {
+            throw new KdApiException(KdApiException.KdApiExceptionEnum.API_ERROR);
+        }
 //System.out.println("@@@@@@@@@@@@@@"+result);
         JSONObject obj = JSONObject.fromObject(result);
 
