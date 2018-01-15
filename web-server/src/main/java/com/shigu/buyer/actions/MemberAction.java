@@ -44,7 +44,7 @@ import com.shigu.tools.RedomUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -1191,8 +1191,15 @@ public class MemberAction {
         if (result.hasErrors()) {
             return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
+        String userRealName = bo.getUserRealName();
+        if (StringUtils.isEmpty(userRealName)) {
+            return JsonResponseUtil.error("提示：对不起，请您填写真实姓名，真实姓名是您进行支付宝账户绑定时重要的信息。");
+        }
+        if (userRealName.length() > 150) {
+            return JsonResponseUtil.error("提示：对不起，请您填写真实姓名，真实姓名是您进行支付宝账户绑定时重要的信息。");
+        }
         PhoneVerify verify = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
-        if (verify == null || !bo.getTeleValidateCode().equals(verify.getVerify())) {
+        if (verify == null || !verify.getVerify().equals(bo.getTeleValidateCode())) {
             return JsonResponseUtil.error("需要正确的手机验证码");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
