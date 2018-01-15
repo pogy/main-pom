@@ -6,6 +6,7 @@ import com.shigu.order.services.ShManaOrderService;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.KeyWordsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +29,17 @@ public class ShManaOrderAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         ShiguPager<MyOrderVO> pager=shManaOrderService.selectShList(bo, userId);
-
+        //极限词过滤
+        pager.getContent().forEach(myOrderVO -> {
+            if (myOrderVO.getChildOrders() != null) {
+                myOrderVO.getChildOrders().forEach(subMyOrderVO -> subMyOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subMyOrderVO.getTitle())));
+            }
+        });
 
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+bo.getSize()+","+pager.getNumber());
-        return "buyer/shManaOrder";
+        return "fxs/shManaOrder";
     }
 
 }

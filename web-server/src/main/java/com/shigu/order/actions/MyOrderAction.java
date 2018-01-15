@@ -5,6 +5,7 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.OrderBO;
@@ -14,8 +15,11 @@ import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -57,7 +65,7 @@ public class MyOrderAction {
      * @exception: ====================================================================================
      */
     @RequestMapping("myOrder")
-    public String myOrder(HttpSession session, Model model, OrderBO bo) throws ParseException {
+    public String myOrder(HttpSession session, Model model, OrderBO bo) throws Main4Exception {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (bo.getPageSize() == null) {
@@ -66,11 +74,31 @@ public class MyOrderAction {
         if (bo.getPage() == null) {
             bo.setPage(1);
         }
+        String dateFormat = "yyyy-MM-dd";
+        if (bo.getSt() != null) {
+            Date st = DateParseUtil.parseFromString(dateFormat, bo.getSt());
+            if (st == null) {
+                throw new Main4Exception("查询开始日期错误");
+            }
+        }
+        if (bo.getEt() != null) {
+            Date et = DateParseUtil.parseFromString(dateFormat, bo.getEt());
+            if (et == null) {
+                throw new Main4Exception("查询结束日期错误");
+            }
+        }
         ShiguPager<MyOrderVO> pager = myOrderService.selectMyOrderPager(bo, ps.getUserId());
+        //过滤极限词
+        pager.getContent().forEach(myOrderVO -> {
+            if (myOrderVO.getChildOrders() != null) {
+                myOrderVO.getChildOrders().forEach(subMyOrderVO -> subMyOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subMyOrderVO.getTitle())));
+            }
+        });
+
         model.addAttribute("query", bo);//返回查询条件
         model.addAttribute("orders", pager.getContent());
         model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
-        return "buyer/myOrder";
+        return "fxs/myOrder";
 
     }
 
@@ -171,17 +199,22 @@ public class MyOrderAction {
         if (orderId == null) {
             //订单出错
             model.addAttribute("msg", "订单号不能为空！");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean flag = myOrderService.orderBelongTo(orderId, ps.getUserId());
         if (!flag) {
             //没有这个订单
             model.addAttribute("msg", "非法访问！");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         } else {
 
             MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId,ps.getUserId());
+            //极限词过滤
+            if (detailVo.getChildOrders() != null) {
+                detailVo.getChildOrders().forEach(subMyOrderVO -> subMyOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subMyOrderVO.getTitle())));
+            }
+
             model.addAttribute("orderDetailVO", detailVo);
             model.addAttribute("orderStateText", detailVo.getOrderStateText());
             model.addAttribute("orderCreateTime", detailVo.getOrderCreateTime());
@@ -195,7 +228,7 @@ public class MyOrderAction {
             model.addAttribute("orderStateTime", detailVo.getOrderStateTime());
         }
 
-        return "trade/orderDetail";
+        return "order/orderDetail";
     }
 
 
@@ -203,7 +236,7 @@ public class MyOrderAction {
     public String expressDetail(HttpSession session, Long orderId, Model model) throws Main4Exception, ParseException {
         if (orderId == null) {
             model.addAttribute("msg","订单不能为空");
-            return "trade/noOrderInfo";
+            return "order/noOrderInfo";
         }
         ExpressInfoVO expressInfoVO = myOrderService.expressInfo(orderId);
         model.addAttribute("expressStateDesc", Stream.of("1待揽件","2运输", "3派送", "4签收"));
@@ -212,7 +245,7 @@ public class MyOrderAction {
         model.addAttribute("expressDetail",myOrderService.expressDetail(orderId).getDetail());
         model.addAttribute("expressName",expressInfoVO.getExpressName());
         model.addAttribute("expressCode",expressInfoVO.getExpressId());
-        return "trade/expressDetail";
+        return "order/expressDetail";
     }
 
 
@@ -221,6 +254,14 @@ public class MyOrderAction {
     public JSONObject tbSend(HttpSession session,Long orderId) throws Main4Exception {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         myOrderService.tbSend(ps.getUserId(),orderId);
+        return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("upBatchPostDataToServer")
+    @ResponseBody
+    public JSONObject moreTbSend(HttpSession session,String leftOrderIds) throws Main4Exception {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        myOrderService.moreTbSend(ps.getUserId(), Arrays.stream(leftOrderIds.split(",")).filter(StringUtils::isNotEmpty).map(Long::parseLong).collect(Collectors.toList()));
         return JsonResponseUtil.success();
     }
 

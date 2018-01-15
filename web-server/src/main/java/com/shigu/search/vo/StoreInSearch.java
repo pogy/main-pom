@@ -15,7 +15,7 @@ public class StoreInSearch implements Serializable{
     /**
      * 档口图标
      */
-    private String imgsrc="http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
+    private String imgsrc;
     /**
      * 档口名称
      */
@@ -74,6 +74,9 @@ public class StoreInSearch implements Serializable{
     }
 
     public String getImgsrc() {
+        if (imgsrc == null) {
+            return "http://gw.alicdn.com/tps/i3/TB1yeWeIFXXXXX5XFXXuAZJYXXX-210-210.png_80x80.jpg";
+        }
         return imgsrc;
     }
 

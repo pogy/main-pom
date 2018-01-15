@@ -1,16 +1,11 @@
 package com.shigu.order.services;
 
 import com.opentae.core.mybatis.mapper.MultipleMapper;
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.ItemOrderLogistics;
-import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.examples.ItemOrderServiceExample;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.exceptions.TbSendException;
@@ -25,16 +20,16 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.orderQuery.OrderQuery;
 import com.shigu.order.orderQuery.QueryByOrder;
-import com.shigu.order.vo.*;
+import com.shigu.order.vo.MyOrderDetailVO;
+import com.shigu.order.vo.MyOrderVO;
 import com.shigu.tools.DateParseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -76,9 +71,15 @@ public class MyOrderService {
     private ItemOrderProcess itemOrderProcess;
     @Autowired
     private MultipleMapper multipleMapper;
+    @Autowired
+    OrderProvMapper orderProvMapper;
+    @Autowired
+    OrderCityMapper orderCityMapper;
+    @Autowired
+    OrderTownMapper orderTownMapper;
 
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) {
         //return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false, userId, bo, null);
         OrderQuery orderQuery = SpringBeanFactory.getBean(QueryByOrder.class,userId, bo);
         return orderQuery.selectMyOrderPager(bo.getPage(),bo.getPageSize());
@@ -107,9 +108,20 @@ public class MyOrderService {
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(t);
         if (!select.isEmpty()) {
             ItemOrderLogistics logistics = select.get(0);
+            String address="";
+            OrderProv prov=orderProvMapper.selectByPrimaryKey(logistics.getProvId());
+            OrderCity city=orderCityMapper.selectByPrimaryKey(logistics.getCityId());
+            address+=prov.getProvName()+" "+city.getCityName()+" ";
+            if(logistics.getTownId()!=null){
+                OrderTown town=orderTownMapper.selectByPrimaryKey(logistics.getTownId());
+                if(town!=null){
+                    address+=town.getTownName()+" ";
+                }
+            }
+            address+=logistics.getAddress();
             OrderAddrInfoVO vo = new OrderAddrInfoVO();
             vo.setOrderId(orderId);
-            vo.setAddress(logistics.getAddress());
+            vo.setAddress(address);
             vo.setName(logistics.getName());
             vo.setPhone(logistics.getTelephone());
             return vo;
@@ -183,6 +195,33 @@ public class MyOrderService {
             itemOrderProcess.tbSend(oid);
         } catch (TbSendException e) {
             throw new Main4Exception(e.getMessage());
+        }
+    }
+
+    public void moreTbSend(Long userId,List<Long> oids) throws Main4Exception {
+        ItemOrderExample itemOrderExample=new ItemOrderExample();
+        itemOrderExample.createCriteria().andOidIn(oids);
+        List<ItemOrder> os=itemOrderMapper.selectByExample(itemOrderExample);
+        List<Long> orderIds=os.stream().filter(Objects::nonNull).filter(itemOrder -> Objects.equals(itemOrder.getUserId(), userId)&&!itemOrder.getTbSend()
+            && !StringUtils.isEmpty(itemOrder.getOuterId())
+        )
+                .map(ItemOrder::getOid).collect(Collectors.toList());
+        if(orderIds.size()==0){
+            throw new Main4Exception("选择的订单中未找到可发货的淘宝订单");
+        }
+        StringBuilder oidStrs= new StringBuilder();
+        for(Long oid:orderIds){
+            try {
+                itemOrderProcess.tbSend(oid);
+            } catch (TbSendException e) {
+                if (oidStrs.length() > 0) {
+                    oidStrs.append(",");
+                }
+                oidStrs.append(oid);
+            }
+        }
+        if(oidStrs.length()>0){
+            throw new Main4Exception("部分订单标记失败,请单个订单操作");
         }
     }
 

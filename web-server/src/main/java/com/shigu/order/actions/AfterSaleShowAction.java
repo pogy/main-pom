@@ -51,7 +51,7 @@ public class AfterSaleShowAction {
      * @param childOrderId 子弹id
      * @return ftl
      */
-    @RequestMapping(value = "returnOrChange", method = RequestMethod.GET)
+//    @RequestMapping(value = "returnOrChange", method = RequestMethod.GET)
     public String returnOrChange(@RequestParam(value = "childOrderId") String childOrderId, Model model) {
         Map<String, Object> map = afterSaleShowService.returnOrChange(childOrderId);
 
@@ -76,15 +76,15 @@ public class AfterSaleShowAction {
             Map<String, Object> map = afterSaleShowService.refundChildOrder(childOrderId);
             map.put("refundDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/refund";
+            return "order/refund";
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refund(refundId,express);
             map.put("refundDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/refund";
+            return "order/refund";
         }
 
-        return "trade/refund";
+        return "order/refund";
     }
 
     /**
@@ -103,15 +103,15 @@ public class AfterSaleShowAction {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
         }
-        return "trade/exchange";
+        return "order/exchange";
     }
 
     /**

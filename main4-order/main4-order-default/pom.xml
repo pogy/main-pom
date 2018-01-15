@@ -235,11 +235,7 @@
             <artifactId>taobao-sdk-java-auto</artifactId>
             <version>1487931282132</version>
         </dependency>
-        <dependency>
-            <groupId>com.opentae.tae</groupId>
-            <artifactId>opentae_utils_authlogin</artifactId>
-            <version>1.0.2_releases</version>
-        </dependency>
+
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>

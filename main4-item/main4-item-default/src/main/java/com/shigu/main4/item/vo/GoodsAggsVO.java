@@ -23,6 +23,20 @@ public class GoodsAggsVO implements Serializable {
     private String inFabric;
     //是否设置过最低零售价
     private Integer hasRetailPriceSet;
+    //商品主图视频
+    private String videoUrl;
+
+    //风格id
+    private Integer goodsStyleId;
+
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
 
     /**
      * 增加上传量
@@ -78,5 +92,13 @@ public class GoodsAggsVO implements Serializable {
 
     public void setHasRetailPriceSet(Integer hasRetailPriceSet) {
         this.hasRetailPriceSet = hasRetailPriceSet;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }

@@ -20,7 +20,6 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
     public static EntityColumn remark12;
     public static EntityColumn goodsId;
     public static EntityColumn remark11;
-    public static EntityColumn type;
     public static EntityColumn remark19;
     public static EntityColumn remark20;
     public static EntityColumn website;
@@ -39,6 +38,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
     public static EntityColumn remark1;
     public static EntityColumn remark3;
     public static EntityColumn remark2;
+    public static EntityColumn type;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -55,7 +55,6 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         remark12 = listMap.get("remark12");
         goodsId = listMap.get("goodsId");
         remark11 = listMap.get("remark11");
-        type = listMap.get("type");
         remark19 = listMap.get("remark19");
         remark20 = listMap.get("remark20");
         website = listMap.get("website");
@@ -74,6 +73,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         remark1 = listMap.get("remark1");
         remark3 = listMap.get("remark3");
         remark2 = listMap.get("remark2");
+        type = listMap.get("type");
         }
 
     public ShiguGoodsCollectExample() {
@@ -637,9 +637,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
             return isNotNull(type);
         }
 
-        public ShiguGoodsCollectExample.Criteria andTypeEqualTo(Integer value) {
-            return equalTo(type, value);
-        }
+
 
         public ShiguGoodsCollectExample.Criteria andTypeNotEqualTo(Integer value) {
             return notEqualTo(type, value);
@@ -1625,6 +1623,9 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
 
         public ShiguGoodsCollectExample.Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
+        }
+        public ShiguGoodsCollectExample.Criteria andTypeEqualTo(Integer value){
+            return equalTo(type,value);
         }
     }
 }

@@ -52,7 +52,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerCachedTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 72L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 48534L);
         refundItemOrder.sellerCached();
         //测试重复操作
         //refundItemOrder.sellerCached();

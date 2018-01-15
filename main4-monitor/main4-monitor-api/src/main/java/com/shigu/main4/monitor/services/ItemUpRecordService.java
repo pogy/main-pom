@@ -19,6 +19,16 @@ public interface ItemUpRecordService {
     void addItemUpRecord(ItemUpRecordVO itemUpRecordVO);
 
     /**
+     * 修改上传记录
+     * PS:原纪录通过"singleUploadedItem"接口查询
+     * @param itemUpRecordVO
+     * @param oneKeyId
+     */
+    void updateItemUpload(ItemUpRecordVO itemUpRecordVO,String oneKeyId);
+
+
+
+    /**
      * 查最后一次上传的时间
      * @param userId
      * @param supperGoodsId
@@ -41,6 +51,27 @@ public interface ItemUpRecordService {
      */
     ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick, String target, String keyword, Date fromDate, Date toDate,
                                              int pageNo, int pageSize);
+
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,int type,int pageNo, int pageSize);
+
+    /**
+     * 查询已上传的宝贝
+     * @param userId 用户ID
+     * @return 已上传的宝贝分页信息
+     */
+    ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId,String tbNick,int type,int pageNo, int pageSize);
+
+    /**
+     * 根据ID查询已上传的宝贝
+     * @return 已上传的宝贝信息
+     */
+    SingleItemUpRecordVO singleUploadedItem(String uploadId);
 
     /**
      * 删除一键上传记录

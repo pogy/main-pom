@@ -96,10 +96,11 @@ public class OrderPayApply implements Serializable {
 		return this.payFor;
 	}
 
+	@Deprecated
 	public void setOid(Long oid) {
 		this.oid = oid;
 	}
-
+	@Deprecated
 	public Long getOid() {
 		return this.oid;
 	}

@@ -33,6 +33,14 @@ public interface ItemOrderService {
     Long createOrder(ItemOrderBO orderBO) throws OrderException;
 
     /**
+     * 批量创建订单
+     * @param orderBO
+     * @return
+     * @throws OrderException
+     */
+    List<Long> createOrders(List<ItemOrderBO> orderBO) throws OrderException;
+
+    /**
      * 重算快递费
      * @param senderId 发件机构ID
      * @param companyId 物流公司ID

@@ -279,7 +279,11 @@ public class AfterSaleServiceImpl implements AfterSaleService {
                 break;
         }
         statusVo.setAfterSaleStatus(afterSaleStatus);
-        statusVo.setContent(refundinfo.getReason());
+        if(RefundStateEnum.SELLER_REFUND.equals(refundinfo.getRefundState())){
+            statusVo.setContent(refundinfo.getFailMsg());
+        }else{
+            statusVo.setContent(refundinfo.getReason());
+        }
         statusVo.setModifyRefundPrice(refundinfo.getSellerProposalMoney());
         return statusVo;
     }

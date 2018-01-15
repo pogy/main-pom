@@ -112,4 +112,21 @@ public interface UserLicenseService {
      */
     String findPhoneByUserId(Long userId);
 
+    /**
+     * 用户绑定支付宝帐号
+     * @param userId
+     * @param alipayId
+     * @param alipayName
+     * @return
+     */
+    String saveOrUpdateUserAlipayBind(Long userId, String alipayId, String alipayName);
+
+    /**
+     *删除绑定支付宝帐号
+     * @param userId
+     * @param memberAlipayBindId 用户支付宝绑定记录id
+     * @return
+     */
+    boolean cancelMemberAlipayBind(Long userId, Long memberAlipayBindId);
+
 }

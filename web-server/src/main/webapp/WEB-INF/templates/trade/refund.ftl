@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/refund.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/refund.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -32,7 +33,8 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/refund.js?t=2017103001"></script>
+    <script src="http://style.571xz.com/v2/order/js/refund.js?v=201712131628"></script>
+    
 </head>
 <body>
 
@@ -83,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    

@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/exchange.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/exchange.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -32,7 +33,8 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/exchange.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/exchange.js?v=2017112401"></script>
+    
 </head>
 <body>
 
@@ -83,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    

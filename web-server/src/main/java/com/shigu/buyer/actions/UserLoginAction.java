@@ -1,7 +1,6 @@
 package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
-import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.UserAccountService;
@@ -16,6 +15,7 @@ import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.services.SendMsgService;
@@ -25,7 +25,6 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -44,7 +43,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.security.krb5.internal.crypto.Des3;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -92,7 +90,7 @@ public class UserLoginAction {
     @RequestMapping("frameLogin")
     public String frameLogin( HttpSession session, Model model,String backUrl){
         model.addAttribute("backUrl", backUrl);
-        return "buyer/framelogin";
+        return "login/loginWindow";
     }
 
     /**
@@ -120,9 +118,12 @@ public class UserLoginAction {
         if (!vos.isEmpty()) {
 //            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //                spreadService.createBySync(listObjFromCache);
+            //极限词过滤
+            vos.get(0).setText(KeyWordsUtil.duleKeyWords(vos.get(0).getText()));
+
             model.addAttribute("index_goat", vos.get(0));
         }
-        return "buyer/login";
+        return "login/login";
     }
 
     @ResponseBody
@@ -151,8 +152,8 @@ public class UserLoginAction {
      */
     @RequestMapping("jsonplogin")
     @ResponseBody
-    public void jsonplogin(@Valid JsonpLoginBO bo,BindingResult result,HttpServletRequest request
-            ,HttpServletResponse response) throws IOException {
+    public void jsonplogin(@Valid JsonpLoginBO bo, BindingResult result, HttpServletRequest request
+            , HttpServletResponse response) throws IOException {
         //验证数据
         if(result.hasErrors()){
 //            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'"+result.getAllErrors().get(0).getDefaultMessage()+"'}",response);
@@ -195,20 +196,20 @@ public class UserLoginAction {
      */
     @RequestMapping("ortherLogin")
     public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
-        LoginLinkUtil llu = new LoginLinkUtil();
         String url="";
         switch(ortherLoginType) {
             case 1:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
                 if(HttpRequestUtil.checkAgentIsMobile(request)){
                     url=url.replace("&view=web","&view=wap");
                 }
                 break;
             case 2:
-                url = llu.callAliUrl();
+                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=8E3A8CB1174177B346BEA3F67FABDF2678E07D71&redirect_uri=http://1688.571xz.com/offer/ali_redirect_auth.jsp&state=login&client_id=5684643";
                 break;
             case 3:
-                url = llu.callQqUrl();
+                url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
                 break;
             case 4: {
                 HashMap e = new HashMap ();
@@ -220,7 +221,8 @@ public class UserLoginAction {
                 break;
             }
             case 5:
-                url = llu.callTbUrl().replace("http://www.571xz.net/",xzSdkClient.getYjHost());
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
+                        +"redirect_auth.jsp&state=login&view=web";
 
                     url=url.replace("&view=web","&view=wap");
 
@@ -237,7 +239,7 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("loginback")
-    public String loginback(@Valid LoginBackBO bo, BindingResult result,HttpServletRequest request,
+    public String loginback(@Valid LoginBackBO bo, BindingResult result, HttpServletRequest request,
                             HttpSession session) throws Main4Exception {
         if(result.hasErrors()){
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
@@ -261,13 +263,13 @@ public class UserLoginAction {
             //选择登陆方式
             LoginFromType loginFromType;
             if(bo.getType().equals("ali")){
-                loginFromType=LoginFromType.ALI;
+                loginFromType= LoginFromType.ALI;
             }else if(bo.getType().equals("tb")){
-                loginFromType=LoginFromType.TAOBAO;
+                loginFromType= LoginFromType.TAOBAO;
             }else if(bo.getType().equals("qq")){
-                loginFromType=LoginFromType.QQ;
+                loginFromType= LoginFromType.QQ;
             }else if(bo.getType().equals("wx")){
-                loginFromType=LoginFromType.WX;
+                loginFromType= LoginFromType.WX;
             }else{
                 throw new Main4Exception("登陆方式传入有错");
             }
@@ -276,7 +278,7 @@ public class UserLoginAction {
             token.setSubKey(bo.getKey());
             try {
                 currentUser.login(token);
-                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType==LoginFromType.TAOBAO){//有店铺
+                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType== LoginFromType.TAOBAO){//有店铺
                     PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                     if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
                         memberSimpleService.updateShopNick(ps.getLogshop().getShopId(),usernamezhong);
@@ -341,7 +343,7 @@ public class UserLoginAction {
      */
     @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
     public String forgetPassword() throws Main4Exception {
-        return "buyer/forgetPassword";
+        return "login/forgetPassword";
     }
 
     @ResponseBody
@@ -494,6 +496,7 @@ public class UserLoginAction {
             obj.element("userName",ps.getLoginName());
             obj.element("loginName",ps.getLoginName());
             obj.element("userId",ps.getUserId());
+            obj.element("memberVipIs",ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
             if (ps.getLogshop() != null) {
                 obj.element("userType","gys");
             }else{
@@ -619,7 +622,7 @@ public class UserLoginAction {
     @RequestMapping("userPhoneBind")
     public String userPhoneBind(String backUrl,Model model) throws Main4Exception {
         model.addAttribute("backUrl", backUrl);
-        return "buyer/userPhoneBind";
+        return "login/userPhoneBind";
     }
 
     /**
@@ -722,7 +725,7 @@ public class UserLoginAction {
           // System.out.println (back);
             return "redirect:"+back;
         }else{
-            return "redirect:frameLogin.htm";
+            return "redirect:loginWindow.htm";
         }
 
     }

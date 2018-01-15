@@ -107,4 +107,14 @@ public interface ShopsItemService {
      */
     boolean checkHasLowestLiPriceSet(Long goodsId) throws Main4Exception;
 
+    /**
+     * 设置商品视频链接
+     * @param shopId
+     * @param webSite
+     * @param goodsId
+     * @param goodsVideoUrl 视频地址链接
+     * @param linkSameGoodsNo 是否关联同货号商品 false否 true是
+     */
+    void setGoodsVideo(Long shopId,String webSite,Long goodsId,String goodsVideoUrl,boolean linkSameGoodsNo) throws JsonErrException;
+
 }

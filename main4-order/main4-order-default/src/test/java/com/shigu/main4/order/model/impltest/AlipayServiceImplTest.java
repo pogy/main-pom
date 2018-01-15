@@ -25,7 +25,7 @@ public class AlipayServiceImplTest  extends BaseTest {
 
     @Test
     public void payApply() throws Exception {
-        PayApplyVO apply = aliPayerService.payApply(9968L,5L, 1L, "iphone 6plus 手机");
+        PayApplyVO apply = aliPayerService.payApply(9968L, 1L, "iphone 6plus 手机",5L);
         System.out.println(apply.getPayLink());
         show(apply);
 
