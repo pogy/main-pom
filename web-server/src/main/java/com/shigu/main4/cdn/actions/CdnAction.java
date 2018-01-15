@@ -514,7 +514,7 @@ public class CdnAction {
     @ResponseBody
     public JSONObject addGoodsFavorite(@Valid ScGoodsBO bo,HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             //前端要求未登陆返回3
             return JsonResponseUtil.error("3");
         }
@@ -586,15 +586,14 @@ public class CdnAction {
     @RequestMapping("shop")
     public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
-
+        if(result!=null&&result.hasErrors()){
+            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
+        }
         if(bo.getId()>1000000){
             Long shopId=oldStoreNumShowService.selShopId(bo.getId());
             if(shopId!=null){
                 return "redirect:/shop.htm?id="+shopId;
             }
-        }
-        if(result!=null&&result.hasErrors()){
-            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite = "hz";
@@ -758,7 +757,10 @@ public class CdnAction {
         vo.setHasAuth(shopBaseService.shopAuthState(bo.getId()));
         vo.setShopLicenses(shopLicenseService.selShopLicenses(bo.getId()));
         vo.setOther(shopForCdnService.selShopBase(bo.getId()));
-        vo.setScoreAvg(shopDiscusService.selScoreAvg(bo.getId()).toString());
+        Double aDouble = shopDiscusService.selScoreAvg(bo.getId());
+        if (aDouble != null) {
+            vo.setScoreAvg(aDouble.toString());
+        }
         vo.setStoreRelation(storeRelationService.selRelationById(bo.getId()));
         vo.setDiscus(shopDiscusService.selDiscusByShopId(bo.getId(),bo.getPageNo(),bo.getPageSize()));
         vo.setTotalCount(shopDiscusService.countAllDiscusByShopId(bo.getId()));
@@ -795,6 +797,10 @@ public class CdnAction {
     @RequestMapping("downloadImg")
     public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (personalSession == null) {
+            ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'请登陆'}",response);
+            return ;
+        }
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);

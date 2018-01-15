@@ -173,7 +173,7 @@ public class ShopDesignService {
      * @return
      * @throws IOException
      */
-    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException {
+    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException, ShopFitmentException {
         return parseToContainer(shopFitmentService.selPageOnpub(pageId),shop,false);
     }
 
