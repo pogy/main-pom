@@ -101,9 +101,7 @@
 </#list>
 </#list>
     <#else>
-<div class="goodslistEmptyCon">
-    <p class="fs18 yahei fc6">Sorry, 未查询到相应商品~</p>
-</div>
+<#include "/__ftl_links__/search__common__noDateTip.ftl">
     </#if>
 </div>
 <#include "/common/xz__footer.ftl">
