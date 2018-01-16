@@ -335,7 +335,7 @@ public class ActivityAction {
             model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpApply";
+        return "xzSearch/qzxpApply";
     }
 
     /**
@@ -344,7 +344,7 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpShop")
     public String qzxpShop(Model model) {
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpShop";
+        return "xzSearch/qzxpShop";
     }
 
     /**
@@ -367,7 +367,7 @@ public class ActivityAction {
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
         model.addAttribute("lettoryNumber", lotteryNum);
-        return "activity/lottery";
+        return "xzSearch/lottery";
     }
 
     @RequestMapping("activity/getAwards")
