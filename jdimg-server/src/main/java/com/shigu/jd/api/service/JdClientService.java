@@ -1,4 +1,4 @@
-package com.shigu.jd.img.services;
+package com.shigu.jd.api.service;
 
 
 import com.jd.open.api.sdk.DefaultJdClient;
@@ -6,8 +6,8 @@ import com.jd.open.api.sdk.JdClient;
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.JdRequest;
 import com.jd.open.api.sdk.response.AbstractResponse;
-import com.openJar.exceptions.imgs.JdUpException;
-import com.shigu.jd.img.constant.JdUrlConstant;
+import com.openJar.exceptions.imgs.JdApiException;
+import com.shigu.jd.api.constant.JdUrlConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,23 +41,23 @@ public class JdClientService {
        return new DefaultJdClient(JdUrlConstant.JD_SERVER_URL,accessToken,jdAppkey,jdSecret);
     }
 
-    public <T extends AbstractResponse> T execute(JdRequest<T> request, String accessToken) throws JdUpException {
+    public <T extends AbstractResponse> T execute(JdRequest<T> request, String accessToken) throws JdApiException {
         try {
             T response = getJdClient(accessToken).execute(request);
             checkJdResponst(response);
             return response;
         } catch (JdException e) {
             e.printStackTrace();
-            throw new JdUpException(e.getErrCode(),e.getErrMsg());
+            throw new JdApiException(e.getErrCode(),e.getErrMsg());
         }
     }
 
     /**
      * 验证jd接口是否正确返回
      */
-    private void checkJdResponst(AbstractResponse response) throws JdUpException {
+    private void checkJdResponst(AbstractResponse response) throws JdApiException {
         if ( !( "0".equals(response.getCode())) ) {
-            throw new JdUpException(response.getCode(),response.getZhDesc());
+            throw new JdApiException(response.getCode(),response.getZhDesc());
         }
     }
 

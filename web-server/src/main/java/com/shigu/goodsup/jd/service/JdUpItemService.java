@@ -1,5 +1,15 @@
 package com.shigu.goodsup.jd.service;
 
+import com.openJar.beans.JdCategoryAttrValueJos;
+import com.openJar.beans.JdPostTemplate;
+import com.openJar.beans.SdkJdShopCategory;
+import com.openJar.beans.JdVenderBrandPubInfo;
+import com.openJar.requests.api.JdCategoryAttrValueJosRequest;
+import com.openJar.requests.api.JdPostTemplateRequest;
+import com.openJar.requests.api.JdShopCategoryRequest;
+import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
+import com.openJar.responses.api.JdPostTemplateResponse;
+import com.openJar.responses.api.JdShopCategoryResponse;
 import com.opentae.data.jd.beans.JdItemProp;
 import com.opentae.data.jd.beans.JdPropValue;
 import com.opentae.data.jd.beans.JdTbBind;
@@ -18,14 +28,6 @@ import com.shigu.goodsup.jd.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
-import com.shigu.main4.jd.exceptions.JdApiException;
-import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.service.JdCategoryService;
-import com.shigu.main4.jd.service.JdOrderService;
-import com.shigu.main4.jd.vo.JdCategoryAttrValueJosVO;
-import com.shigu.main4.jd.vo.JdPostTemplateVO;
-import com.shigu.main4.jd.vo.JdShopCategoryVO;
-import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
 import com.shigu.tb.finder.vo.PropType;
 import com.taobao.api.domain.*;
 import org.apache.commons.lang3.StringUtils;
@@ -56,27 +58,22 @@ public class JdUpItemService {
     @Autowired
     private JdTbBindMapper jdTbBindMapper;
     @Autowired
-    ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
+    private ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
-    ShiguPropImgsMapper shiguPropImgsMapper;
+    private ShiguPropImgsMapper shiguPropImgsMapper;
     @Autowired
-    ShiguJdcatMapper shiguJdcatMapper;
+    private ShiguJdcatMapper shiguJdcatMapper;
+    @Autowired
+    private EhCacheCacheManager ehCacheManager;
+    @Autowired
+    private ItemAddOrUpdateService itemAddOrUpdateService;
+    @Autowired
+    private PropsService propsService;
+    @Autowired
+    private JdUserInfoService jdUserInfoService;
+    @Autowired
+    private OpenClientService openClientService;
 
-
-    @Autowired
-    EhCacheCacheManager ehCacheManager;
-
-
-    @Autowired
-    ItemAddOrUpdateService itemAddOrUpdateService;
-    @Autowired
-    PropsService propsService;
-    @Autowired
-    JdUserInfoService jdUserInfoService;
-    @Autowired
-    JdOrderService jdOrderService;
-    @Autowired
-    JdCategoryService jdCategoryService;
     /**
      * 得到商品
      * @return
@@ -133,13 +130,21 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws JdAuthFailureException, JdApiException {
-        List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.getPostTemplates(jdUserId);
+    public List<DeliveryTemplate> selPostModel(Long jdUserId) {
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
         v1.setTemplateId(-1L);
         v1.setName("不使用运费模版");
         vs.add(v1);
+
+        JdPostTemplateRequest request = new JdPostTemplateRequest();
+        request.setJdUid(jdUserId);
+        JdPostTemplateResponse response = openClientService.getOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            return vs;
+        }
+        List<JdPostTemplate> jdPostTemplateVOS = response.getJdPostTemplates();
+
         vs.addAll(jdPostTemplateVOS.stream().map(jdPostTemplateVO -> {
             DeliveryTemplate v=new DeliveryTemplate();
             v.setTemplateId(jdPostTemplateVO.getId());
@@ -154,8 +159,14 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws JdAuthFailureException, JdApiException {
-        List<JdPostTemplateVO> jdPostTemplateVOS=jdOrderService.updatePostTemplates(jdUserId);
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId)  {
+        JdPostTemplateRequest request = new JdPostTemplateRequest();
+        request.setJdUid(jdUserId);
+        JdPostTemplateResponse response = openClientService.getOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            return new ArrayList<>();
+        }
+        List<JdPostTemplate> jdPostTemplateVOS= response.getJdPostTemplates();
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
         v1.setTemplateId(-1L);
@@ -175,39 +186,20 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<StoreCatVO> selShopCats(Long jdUserId) throws JdAuthFailureException, JdApiException {
-        List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
-        Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
+    public List<StoreCatVO> selShopCats(Long jdUserId) {
+        JdShopCategoryRequest request = new JdShopCategoryRequest();
+        request.setJdUid(jdUserId);
+        JdShopCategoryResponse response = openClientService.getOpenClient().execute(request);
+        if (!response.isSuccess()){
+            return new ArrayList<>();
+        }
+        List<SdkJdShopCategory> jdShopCategoryVOS = response.getJdShopCategories();
+        Map<Long,List<SdkJdShopCategory>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(SdkJdShopCategory::getParentId));
         return map.get(0L).stream().map(jdShopCategoryVO -> {
             StoreCatVO vo=new StoreCatVO();
             vo.setCatId(jdShopCategoryVO.getCid());
             vo.setName(jdShopCategoryVO.getName());
-            List<JdShopCategoryVO> vv=map.get(jdShopCategoryVO.getCid());
-            if(vv!=null){
-                vo.setSubCat(vv.stream().map(jdShopCategoryVO1 -> {
-                    StoreCatVO svo=new StoreCatVO();
-                    svo.setName(jdShopCategoryVO1.getName());
-                    svo.setCatId(jdShopCategoryVO1.getCid());
-                    return svo;
-                }).collect(Collectors.toList()));
-            }
-            return vo;
-        }).collect(Collectors.toList());
-    }
-
-    /**
-     * 更新店内类目
-     * @param jdUserId
-     * @return
-     */
-    public List<StoreCatVO> updateShopCats(Long jdUserId) throws JdAuthFailureException, JdApiException {
-        List<JdShopCategoryVO> jdShopCategoryVOS=jdCategoryService.getJdSellercats(jdUserId);
-        Map<Long,List<JdShopCategoryVO>> map=jdShopCategoryVOS.stream().collect(Collectors.groupingBy(JdShopCategoryVO::getParentId));
-        return map.get(0L).stream().map(jdShopCategoryVO -> {
-            StoreCatVO vo=new StoreCatVO();
-            vo.setCatId(jdShopCategoryVO.getCid());
-            vo.setName(jdShopCategoryVO.getName());
-            List<JdShopCategoryVO> vv=map.get(jdShopCategoryVO.getCid());
+            List<SdkJdShopCategory> vv=map.get(jdShopCategoryVO.getCid());
             if(vv!=null){
                 vo.setSubCat(vv.stream().map(jdShopCategoryVO1 -> {
                     StoreCatVO svo=new StoreCatVO();
@@ -238,7 +230,7 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfoVO> brands) throws IOException, ClassNotFoundException, CloneNotSupportedException, JdApiException, JdAuthFailureException {
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfo> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException {
         PropsVO tbPropsVO=propsService.selProps(item.getCid());
         List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
@@ -263,7 +255,7 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfoVO> brands) throws IOException, JdApiException, JdAuthFailureException {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfo> brands) {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){
@@ -287,7 +279,15 @@ public class JdUpItemService {
         for(JdItemProp jdItemProp:jdItemProps){
             List<JdPropValue> values=jdPropValueMap.get(jdItemProp.getPid());
             if((jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0))||jdItemProp.getIsSaleProp()==1){
-                List<JdCategoryAttrValueJosVO> values1=jdCategoryService.getCategoryReadFindValuesByAttrId(jdUserId,jdItemProp.getPid());
+                //TODO  循环请求改造
+                JdCategoryAttrValueJosRequest request = new JdCategoryAttrValueJosRequest();
+                request.setJdUid(jdUserId);
+                request.setPid(jdItemProp.getPid());
+                JdCategoryAttrValueJosResponse response = openClientService.getOpenClient().execute(request);
+                if (!response.isSuccess()) {
+                    return null;
+                }
+                List<JdCategoryAttrValueJos> values1 = response.getJdCategoryAttrValueJos();
                 values=values1.stream().map(jdCategoryAttrValueJosVO -> {
                     JdPropValue v=new JdPropValue();
                     v.setCid(jdItemProp.getCid());

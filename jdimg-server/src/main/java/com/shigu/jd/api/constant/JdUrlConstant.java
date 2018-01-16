@@ -1,4 +1,4 @@
-package com.shigu.jd.img.constant;
+package com.shigu.jd.api.constant;
 
 /**
  * Created By admin on 2017/12/12/15:25

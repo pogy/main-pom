@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Created by zhaohongbo on 16/12/20.
  */
 public enum JdImgEnum implements Serializable{
-    TEST("http://zs.571xz.com/jdImgApi/"),REST("http://zs.571xz.com/jdImgApi/");
+    TEST("http://zs.571xz.com/"),REST("http://zs.571xz.com/");
 
     JdImgEnum(String url) {
         this.url = url;

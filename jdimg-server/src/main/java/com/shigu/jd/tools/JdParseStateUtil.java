@@ -1,8 +1,8 @@
-package com.shigu.goodsup.jd.util;
+package com.shigu.jd.tools;
 
 import com.jd.open.api.sdk.internal.util.codec.Base64;
+import com.openJar.responses.api.JdVasSubscribeResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.jd.vo.JdVasSubscribeVO;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,7 +21,7 @@ public class JdParseStateUtil {
      * @param state
      * @return
      */
-    public static JdVasSubscribeVO parseState(String state) throws Main4Exception {
+    public static JdVasSubscribeResponse parseState(String state) {
         //state中如果有“+”号，因浏览器交互的原因，会出现“+”号替换成空格的现象，导致授权报错
         //如果出现此种情况，请把的state 中的空格再替换成“+”号
         state = state.replace(" ","+");
@@ -30,7 +30,7 @@ public class JdParseStateUtil {
         //验证state
         String itemCode = uerSubscribeJson.getString("item_code");
         if (StringUtils.isEmpty(itemCode)) {//未订阅
-            throw new Main4Exception("授权失败");
+           return null;
         }
 
         String userName = uerSubscribeJson.getString("user_name");
@@ -41,13 +41,13 @@ public class JdParseStateUtil {
         Date now = new Date();
         Date endAt = new Date(endDate);
         if(endAt.before(now)){
-            throw new Main4Exception("服务订阅已到期");
+            return null;
         }
 
 //        String source = uerSubscribeJson.getString("source");
 //        String versionNo = uerSubscribeJson.getString("version_no");
 
-        JdVasSubscribeVO subscribeVO = new JdVasSubscribeVO();
+        JdVasSubscribeResponse subscribeVO = new JdVasSubscribeResponse();
         subscribeVO.setItemCode(itemCode);
         subscribeVO.setUserName(userName);
         subscribeVO.setEndDate(new Date(endDate));

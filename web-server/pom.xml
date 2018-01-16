@@ -25,11 +25,6 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-jd-api</artifactId>
-            <version>${main4-jd-api.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
@@ -578,6 +573,23 @@
             <groupId>dh3t_sms_util</groupId>
             <artifactId>dh3t_sms_util</artifactId>
             <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--JD API Dependencies Start-->
+        <dependency>
+            <groupId>com.jd</groupId>
+            <artifactId>open-api-sdk</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.2</version>
         </dependency>
 
     </dependencies>

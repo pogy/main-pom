@@ -1,28 +1,19 @@
 package com.shigu.goodsup.jd.actions;
 
+import com.openJar.beans.JdVenderBrandPubInfo;
+import com.openJar.exceptions.imgs.JdApiException;
+import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
-import com.shigu.goodsup.jd.exceptions.JdNotBindException;
-import com.shigu.goodsup.jd.service.JdGoodsUpService;
-import com.shigu.goodsup.jd.service.JdUpItemService;
-import com.shigu.goodsup.jd.service.JdUserInfoService;
-import com.shigu.goodsup.jd.util.JdParseStateUtil;
+import com.shigu.goodsup.jd.service.*;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.jd.exceptions.JdApiException;
-import com.shigu.main4.jd.exceptions.JdAuthFailureException;
-import com.shigu.main4.jd.service.JdAuthService;
-import com.shigu.main4.jd.service.JdCategoryService;
-import com.shigu.main4.jd.service.JdServiceMarketService;
-import com.shigu.main4.jd.vo.JdAuthedInfoVO;
-import com.shigu.main4.jd.vo.JdVasSubscribeVO;
-import com.shigu.main4.jd.vo.JdVenderBrandPubInfoVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -33,13 +24,14 @@ import com.shigu.tools.HttpRequestUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
+import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,16 +55,10 @@ public class JdGoodsupAction {
     private static final Logger logger = LoggerFactory.getLogger(JdGoodsupAction.class);
 
     @Autowired
-    private JdAuthService jdAuthService;
-
-    @Autowired
     private JdGoodsUpService jdGoodsUpService;
 
     @Autowired
     private UserBaseService userBaseService;
-
-    @Autowired
-    private JdCategoryService jdCategoryService;
 
     @Autowired
     private MemberFilter memberFilter;
@@ -84,12 +70,29 @@ public class JdGoodsupAction {
     private JdUserInfoService jdUserInfoService;
 
     @Autowired
-    private JdServiceMarketService jdServiceMarketService;
+    private ItemUpRecordService itemUpRecordService;
+
     @Autowired
-    ItemUpRecordService itemUpRecordService;
+    private OpenClientService openClientService;
+
+    @Autowired
+    private JdCategoryService jdCategoryService;
 
     public static final String IMG_CATEGORY = "571xz";
 
+    public static final String JD_AUTH_URL = "https://oauth.jd.com/oauth/authorize?response_type=code&client_id=JD_APPKEY&redirect_uri=JD_REDIRECT_URI&state=JD_STATE";
+
+    @Value("${jd.app.key}")
+    private String jdAppkey;
+
+    @Value("${jd.app.secret}")
+    private String jdSecret;
+
+    @Value("${jd.app.state}")
+    private String jdState;
+
+    @Value("${jd.app.redirect_uri}")
+    private String jdRedirectUri;
 
     /**
      * 京东引导登陆页
@@ -98,38 +101,31 @@ public class JdGoodsupAction {
      */
     @RequestMapping("login")
     public String login(HttpServletRequest request) {
-        return "redirect:" + jdAuthService.getAuthUrl(HttpRequestUtil.checkAgentIsMobile(request));
+        String url = JD_AUTH_URL
+                .replace("JD_APPKEY",jdAppkey)
+                .replace("JD_REDIRECT_URI",jdSecret)
+                .replace("JD_STATE",jdState);
+
+        if (HttpRequestUtil.checkAgentIsMobile(request)){
+            url += "view=wap";
+        }
+        return "redirect:" + url;
     }
 
     /**
      * 京东CODE回调
-     * @param state
      * @param code
      * @return
      * @throws IOException
      */
     @RequestMapping("callback")
-    public String jdCallback(String code, String state, HttpServletRequest request,HttpSession session) throws Main4Exception {
-        /************检测是否订阅服务**********/
-        JdVasSubscribeVO subscribeVO = JdParseStateUtil.parseState(state);
-        if (subscribeVO.getEndDate().after(new Date())) {
-            //FW_GOODS-449409
-            String itemId = subscribeVO.getItemCode().replace("FW_GOODS-", "");
-            if (StringUtils.isEmpty(itemId)) {
-                throw new Main4Exception("获取服务信息失败");
-            }
-            return "redirect:https://fw.jd.com/"+itemId+".html";
-        }
-
-        /************获取用户登陆信息**********/
-        JdAuthedInfoVO jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
-        //保存订购信息
-        subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
-        jdServiceMarketService.saveSubscribe(subscribeVO);
+    public String jdCallback(String code, HttpServletRequest request,HttpSession session) throws Main4Exception {
+        JSONObject jsonObject = JSONObject.fromObject(Opt3Des.decryptPlainData(code));
+        JdAuthedInfoResponse jdAuthedInfo = (JdAuthedInfoResponse) JSONObject.toBean(jsonObject, JdAuthedInfoResponse.class);
 
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
-        String strJdUid = String.valueOf(jdAuthedInfoVO.getUid());
+        String strJdUid = String.valueOf(jdAuthedInfo.getUid());
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                 strJdUid, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
         token.setLoginFromType(LoginFromType.JD);
@@ -187,7 +183,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("canbeUploaded")
     @ResponseBody
-    public JSONObject canbeUploaded(Long itemId) throws Main4Exception {
+    public JSONObject canbeUploaded(Long itemId){
         Boolean canbeUploaded = jdGoodsUpService.goodsCanbeUploadedToJd(itemId);
         return JsonResponseUtil.success().element("canbeUploaded",canbeUploaded);
     }
@@ -210,10 +206,13 @@ public class JdGoodsupAction {
      */
     @RequestMapping("getAllBrand")
     @ResponseBody
-    public JSONObject getAllBrand(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
+    public JSONObject getAllBrand(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<JdVenderBrandPubInfoVO> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
+        List<JdVenderBrandPubInfo> allBrand = jdCategoryService.getAllBrand(Long.valueOf(jdUid));
+        if (allBrand == null) {
+            return JsonResponseUtil.success().element("allBrand",new ArrayList());
+        }
         return JsonResponseUtil.success().element("allBrand",allBrand);
     }
 
@@ -245,7 +244,7 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updatePostModel")
     @ResponseBody
-    public JSONObject updatePostModel(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
+    public JSONObject updatePostModel(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
         List<DeliveryTemplate> deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
@@ -257,10 +256,10 @@ public class JdGoodsupAction {
      */
     @RequestMapping("updateShopCats")
     @ResponseBody
-    public JSONObject updateShopCats(HttpSession session) throws JdNotBindException, JdAuthFailureException, JdApiException {
+    public JSONObject updateShopCats(HttpSession session)  {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<StoreCatVO> storeCatVOS = jdUpItemService.updateShopCats(Long.valueOf(jdUid));
+        List<StoreCatVO> storeCatVOS = jdUpItemService.selShopCats(Long.valueOf(jdUid));
         return  JsonResponseUtil.success().element("storeCatVOS",storeCatVOS);
     }
 
@@ -274,7 +273,7 @@ public class JdGoodsupAction {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if(ps==null){
-                throw new JdAuthFailureException();
+                return "redirect:/jd/login.htm";
             }
             /********************************获取京东授权信息*******************************/
             Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
@@ -295,7 +294,7 @@ public class JdGoodsupAction {
                     return "jingdong/hasuped";
                 }
             }
-            List<JdVenderBrandPubInfoVO> allBrand = null;
+            List<JdVenderBrandPubInfo> allBrand = null;
             allBrand = jdCategoryService.getAllBrand(jdUserId);
             if(allBrand==null){
                 throw new JdApiException("不是京东商家");
@@ -337,10 +336,6 @@ public class JdGoodsupAction {
         } catch (JdApiException e) {
             model.addAttribute("errmsg", e.getMessage());
             return "jingdong/uperror";
-        } catch (JdAuthFailureException e) {
-            String queryString=request.getQueryString();
-            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl="+ URLEncoder.encode(request.getRequestURL().toString()+
-                    (queryString==null?"":("?"+queryString)),"utf-8");
         }
     }
 }

@@ -8,12 +8,13 @@ import com.jd.open.api.sdk.response.imgzone.ImgzonePictureQueryResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureUploadResponse;
 import com.openJar.beans.JdImgInfo;
 import com.openJar.commons.MD5Attestation;
-import com.openJar.exceptions.imgs.JdUpException;
+import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.exceptions.JdAuthFailureException;
+import com.shigu.jd.api.service.JdClientService;
 import com.shigu.jd.tools.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class ImgMovingService {
      * 上传一张图片到京东图片空间
      * @param jdUpImgRequest
      * @return
-     * @throws JdUpException
+     * @throws JdApiException
      */
     public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws JdAuthFailureException {
         JdUpImgResponse jdUptoItemImgResponse=new JdUpImgResponse();
@@ -75,17 +76,17 @@ public class ImgMovingService {
                 ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
                 //返回码为1时为操作成功，返回码为0时为操作失败
                 if ("0".equals(response.getReturnCode())) {
-                    throw new JdUpException();
+                    throw new JdApiException();
                 }
                 JdImgInfo jdImgInfo = new JdImgInfo();
                 jdImgInfo.setPictureId(response.getPictureId());
                 jdImgInfo.setPictureUrl(response.getPictureUrl());
                 jdImgInfos.put(imgUrl,jdImgInfo);
                 imgIds.append(",").append(response.getPictureId());
-            } catch (JdUpException|ImgDownloadException e) {
+            } catch (JdApiException |ImgDownloadException e) {
                 try {
                     imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
-                } catch (JdUpException ignored) {
+                } catch (JdApiException ignored) {
                 }
                 jdUptoItemImgResponse.setReturnCode("0");
                 jdUptoItemImgResponse.setDesc("图片搬家失败");
@@ -101,16 +102,16 @@ public class ImgMovingService {
      * 删除图片 批量删除时ID间以半角逗号分隔，已被引用的图片不能删除
      * @param jdUid
      * @return
-     * @throws JdUpException
+     * @throws JdApiException
      */
-    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws JdAuthFailureException, JdUpException {
+    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws JdAuthFailureException, JdApiException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
         request.setPictureIds(imgIds);
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);
         //返回码1，操作成功；0，操作失败；2，部分操作成功
         if ("0".equals(response.getReturnCode())) {
-            throw new JdUpException(response.getDesc());
+            throw new JdApiException(response.getDesc());
         }
         JdImgDeleteResponse jdImgDeleteResponse = new JdImgDeleteResponse();
         jdImgDeleteResponse.setReturnCode(response.getReturnCode());

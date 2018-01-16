@@ -7,15 +7,15 @@ import java.io.Serializable;
 /**
  * Created By admin on 2017/12/22/14:19
  */
-public class JdUpException extends OpenException implements Serializable {
-    public JdUpException() {
+public class JdApiException extends OpenException implements Serializable {
+    public JdApiException() {
     }
 
-    public JdUpException(String errMdg) {
+    public JdApiException(String errMdg) {
         super.setErrMsg(errMdg);
     }
 
-    public JdUpException(String errCode, String errMdg) {
+    public JdApiException(String errCode, String errMdg) {
         super.setErrMsg(errMdg);
         super.setCode(errCode);
     }

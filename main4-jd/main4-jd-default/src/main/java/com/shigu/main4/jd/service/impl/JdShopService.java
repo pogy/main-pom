@@ -10,14 +10,12 @@ import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryAddResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryQueryResponse;
 import com.jd.open.api.sdk.response.seller.VenderShopQueryResponse;
 import com.opentae.data.jd.beans.JdShopInfo;
-import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.jd.exceptions.ImgZoneException;
 import com.shigu.main4.jd.exceptions.JdApiException;
 import com.shigu.main4.jd.exceptions.JdAuthFailureException;
 import com.shigu.main4.jd.service.JdAuthService;
-import com.shigu.main4.jd.service.JdShopService;
 import com.shigu.main4.jd.util.JdUtil;
 import com.shigu.main4.jd.vo.JdAuthedInfoVO;
 import com.shigu.main4.jd.vo.JdImgzoneCategoryVO;
@@ -33,8 +31,8 @@ import java.util.List;
  * Created By admin on 2017/12/14/16:54
  * 京东店铺Service
  */
-@Service("jdShopService")
-public class JdShopServiceImpl implements JdShopService {
+@Service
+public class JdShopService {
 
     @Autowired
     private JdUtil jdUtil;
@@ -63,7 +61,6 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    @Override
     public JdShopInfoVO getJdShopInfo(Long jdUid) throws JdAuthFailureException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         JdShopInfo jdShopInfo = new JdShopInfo();
@@ -91,7 +88,6 @@ public class JdShopServiceImpl implements JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    @Override
     public JdShopInfoVO getJdShopInfoByJdApi(Long jdUid) throws JdAuthFailureException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
@@ -138,7 +134,6 @@ public class JdShopServiceImpl implements JdShopService {
      * @return 图片分类ID
      * @throws JdException
      */
-    @Override
     public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdAuthFailureException, ImgZoneException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
@@ -154,7 +149,6 @@ public class JdShopServiceImpl implements JdShopService {
         return response.getCateId();
     }
 
-    @Override
     public List<JdImgzoneCategoryVO> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdAuthFailureException, ImgZoneException, JdApiException {
         JdAuthedInfoVO authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImgzoneCategoryQueryRequest selRequest = new ImgzoneCategoryQueryRequest();
