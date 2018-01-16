@@ -74,10 +74,10 @@ public class KdHttpUtil {
      * @return 远程资源的响应结果
      */
 	@SuppressWarnings("unused")
-	public static String sendPost(String url, Map<String, String> params) {
+	public static String sendPost(String url, Map<String, String> params){
         OutputStreamWriter out = null;
         BufferedReader in = null;        
-        StringBuilder result = new StringBuilder(); 
+        StringBuilder result = new StringBuilder();
         try {
             URL realUrl = new URL(url);
             HttpURLConnection conn =(HttpURLConnection) realUrl.openConnection();
@@ -119,8 +119,8 @@ public class KdHttpUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-        } catch (Exception e) {            
-            e.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
         }
         //使用finally块来关闭输出流、输入流
         finally{
@@ -136,6 +136,6 @@ public class KdHttpUtil {
                 ex.printStackTrace();
             }
         }
-        return result.toString();
+		return result.toString();
     }
 }

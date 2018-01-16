@@ -79,6 +79,9 @@ public class MyTbOrderAction {
     @RequestMapping("myBatchTbOrder")
     public String myBatchTbOrder(HttpSession session, TaobaoOrderBO bo, Model model) throws OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null) {
+            throw new OrderException("没有访问的权限");
+        }
         if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
             throw new OrderException("没有访问的权限");
         }

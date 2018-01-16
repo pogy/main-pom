@@ -588,7 +588,7 @@ public class CdnAction {
     @ResponseBody
     public JSONObject addGoodsFavorite(@Valid ScGoodsBO bo,HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps.getUserId() == null) {
+        if (ps == null || ps.getUserId() == null) {
             //前端要求未登陆返回3
             return JsonResponseUtil.error("3");
         }
@@ -660,18 +660,20 @@ public class CdnAction {
     @RequestMapping("shop")
     public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
-
+        if(result!=null&&result.hasErrors()){
+            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
+        }
         if(bo.getId()>1000000){
             Long shopId=oldStoreNumShowService.selShopId(bo.getId());
             if(shopId!=null){
                 return "redirect:/shop.htm?id="+shopId;
             }
         }
-        if(result!=null&&result.hasErrors()){
-            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
-        }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
-        String webSite=storeRelation.getWebSite();
+        String webSite = "hz";
+        if (storeRelation == null) {
+            webSite=storeRelation.getWebSite();
+        }
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
@@ -789,9 +791,6 @@ public class CdnAction {
             pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),webSite,
                     bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
         }
-        //极限词过滤
-        pager.getContent().forEach(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getTitle())));
-
         containerVO.getSearchModule().getData().put("goodsList",pager);
         containerVO.getSearchModule().getData().put("bo",bo);
         model.addAttribute("container",containerVO);
@@ -848,7 +847,10 @@ public class CdnAction {
         vo.setHasAuth(shopBaseService.shopAuthState(bo.getId()));
         vo.setShopLicenses(shopLicenseService.selShopLicenses(bo.getId()));
         vo.setOther(shopForCdnService.selShopBase(bo.getId()));
-        vo.setScoreAvg(shopDiscusService.selScoreAvg(bo.getId()).toString());
+        Double aDouble = shopDiscusService.selScoreAvg(bo.getId());
+        if (aDouble != null) {
+            vo.setScoreAvg(aDouble.toString());
+        }
         vo.setStoreRelation(storeRelationService.selRelationById(bo.getId()));
         vo.setDiscus(shopDiscusService.selDiscusByShopId(bo.getId(),bo.getPageNo(),bo.getPageSize()));
         vo.setTotalCount(shopDiscusService.countAllDiscusByShopId(bo.getId()));
@@ -885,6 +887,10 @@ public class CdnAction {
     @RequestMapping("downloadImg")
     public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (personalSession == null) {
+            ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'请登陆'}",response);
+            return ;
+        }
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
@@ -996,7 +1002,22 @@ public class CdnAction {
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
-        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+
+//        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+        List<CdnSimpleGoodsVO> see = new ArrayList<>();
+        ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,goods.getShopId(),goods.getWebSite(),"common",1,3);
+        List<ItemShowBlock> content = itemPager.getContent();
+        if (content != null && !content.isEmpty()) {
+            for(ItemShowBlock item : content){
+                CdnSimpleGoodsVO vo = new CdnSimpleGoodsVO();
+                vo.setGoodsId(item.getItemId());
+                vo.setImgSrc(item.getImgUrl());
+                vo.setPrice(item.getPrice());
+                vo.setTitle(item.getTitle());
+                see.add(vo);
+            }
+        }
+
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
         }
@@ -1123,10 +1144,8 @@ public class CdnAction {
         dz=KeyWordsUtil.duleKeyWords(dz);
 
         model.addAttribute("bo",bo);
-        model.addAttribute("vo",itemShowVO);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
         model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
-        model.addAttribute("navCon",dz);
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         return "cdn/xieItem";
     }

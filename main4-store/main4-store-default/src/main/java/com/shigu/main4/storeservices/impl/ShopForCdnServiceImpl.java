@@ -272,49 +272,50 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                         .addAggs(AggsBuilder.count("cid").size(1000))
                         .execute();
 
-                List<Facet.Bucket> items = searchResponse.getResult().getFacet().get(0).getItems();
-                List<Long> cids = new ArrayList<>();
-                cids.add(-10086L);// In empty 会尴尬的
-                for (Facet.Bucket item : items) {
-                    cids.add(((Facet.LongBucket) item).getValue());
-                }
-
-                // 3. 商品所属类目
-                ShiguTaobaocatExample catExample = new ShiguTaobaocatExample();
-                catExample.createCriteria().andCidIn(cids);
-                List<ShiguTaobaocat> shiguTaobaocats = shiguTaobaocatMapper.selectByExample(catExample);
-
-                // 4. 拿到所有商品类目的父级类目
-                Set<Long> parentCids = new HashSet<>();
-                parentCids.add(-10010L);
-                for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
-                    parentCids.add(shiguTaobaocat.getParentCid());
-                }
-                ShiguTaobaocatExample parentCatExample = new ShiguTaobaocatExample();
-                parentCatExample.createCriteria().andCidIn(new ArrayList<>(parentCids));
-                List<ShiguTaobaocat> parentTaobaoCats = shiguTaobaocatMapper.selectByExample(parentCatExample);
-
-                // 5. 父级类目Map<父类目ID，父类目信息>
-                Map<Long, CatPolymerization> polymerizationMap = new HashMap<>();
-                for (ShiguTaobaocat parentTaobaoCat : parentTaobaoCats) {
-                    CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, items);
-                    catPolymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
-                    polymerizationMap.put(parentTaobaoCat.getCid(), catPolymerization);
-                }
-                // 6. 处理商品类目
-                for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
-                    CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, items);
-                    CatPolymerization parentPolymerization = polymerizationMap.get(shiguTaobaocat.getParentCid());
-
-                    // 有父类目的，加入其父类目的子类目列表%……%￥￥……&*……&
-                    if (parentPolymerization != null) {
-                        parentPolymerization.getSubPolymerizations().add(polymerization);
-                    } else { // 当前类目当做顶级类目，放入父类目MAP
-                        polymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
-                        polymerizationMap.put(shiguTaobaocat.getCid(), polymerization);
+                List<Facet.Bucket> items = new ArrayList<>();
+                //防止下标越界
+                if(searchResponse.getResult().getFacet() !=null && searchResponse.getResult().getFacet().size()>0){
+                    items = searchResponse.getResult().getFacet().get(0).getItems();
+                    List<Long> cids = new ArrayList<>();
+                    cids.add(-10086L);// In empty 会尴尬的
+                    for (Facet.Bucket item : items) {
+                        cids.add(((Facet.LongBucket) item).getValue());
                     }
+                    // 3. 商品所属类目
+                    ShiguTaobaocatExample catExample = new ShiguTaobaocatExample();
+                    catExample.createCriteria().andCidIn(cids);
+                    List<ShiguTaobaocat> shiguTaobaocats = shiguTaobaocatMapper.selectByExample(catExample);
+                    // 4. 拿到所有商品类目的父级类目
+                    Set<Long> parentCids = new HashSet<>();
+                    parentCids.add(-10010L);
+                    for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
+                        parentCids.add(shiguTaobaocat.getParentCid());
+                    }
+                    ShiguTaobaocatExample parentCatExample = new ShiguTaobaocatExample();
+                    parentCatExample.createCriteria().andCidIn(new ArrayList<>(parentCids));
+                    List<ShiguTaobaocat> parentTaobaoCats = shiguTaobaocatMapper.selectByExample(parentCatExample);
+                    // 5. 父级类目Map<父类目ID，父类目信息>
+                    Map<Long, CatPolymerization> polymerizationMap = new HashMap<>();
+                    for (ShiguTaobaocat parentTaobaoCat : parentTaobaoCats) {
+                        CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, items);
+                        catPolymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
+                        polymerizationMap.put(parentTaobaoCat.getCid(), catPolymerization);
+                    }
+                    // 6. 处理商品类目
+                    for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
+                        CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, items);
+                        CatPolymerization parentPolymerization = polymerizationMap.get(shiguTaobaocat.getParentCid());
+
+                        // 有父类目的，加入其父类目的子类目列表%……%￥￥……&*……&
+                        if (parentPolymerization != null) {
+                            parentPolymerization.getSubPolymerizations().add(polymerization);
+                        } else { // 当前类目当做顶级类目，放入父类目MAP
+                            polymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
+                            polymerizationMap.put(shiguTaobaocat.getCid(), polymerization);
+                        }
+                    }
+                    polymerizationList = new ArrayList<>(polymerizationMap.values());
                 }
-                polymerizationList = new ArrayList<>(polymerizationMap.values());
                 cache.put(shopId, polymerizationList);
             }
         }

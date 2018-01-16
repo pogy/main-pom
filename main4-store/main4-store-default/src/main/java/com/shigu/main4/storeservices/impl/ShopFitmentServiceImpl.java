@@ -573,10 +573,13 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     }
 
     @Override
-    public FitmentPage selPageOnpub(Long pageId) {
+    public FitmentPage selPageOnpub(Long pageId) throws ShopFitmentException {
         ShopFitmentFtl pageFtl=new ShopFitmentFtl();
         pageFtl.setPageId(pageId);
         pageFtl=shopFitmentFtlMapper.selectOne(pageFtl);
+        if (pageFtl == null){
+            throw new ShopFitmentException("未查询到数据");
+        }
         JSONObject pageJson=JSON.parseObject(pageFtl.getContext());
         //查shopId
         ShopFitmentPage sfpage=shopFitmentPageMapper.selectFieldsByPrimaryKey(pageId,FieldUtil.codeFields("page_id,shop_id"));

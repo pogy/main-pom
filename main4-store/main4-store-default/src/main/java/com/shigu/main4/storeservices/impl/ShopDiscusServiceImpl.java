@@ -41,7 +41,7 @@ public class ShopDiscusServiceImpl implements ShopDiscusService {
     @Override
     public Double selScoreAvg(Long shopId) {
         if(shopId == null){
-            return null;
+            return  0.00;
         }
         Double avgScoreDouble = discusScoreMapper.selectAvgScore(shopId);
         if(avgScoreDouble == null){

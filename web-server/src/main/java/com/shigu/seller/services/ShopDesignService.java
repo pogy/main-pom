@@ -104,7 +104,11 @@ public class ShopDesignService {
      * @throws IOException
      */
     public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
-        return parseModule(shopFitmentService.selShopHead(shopId).getAllarea().get(0),selShopForModule(shopId,webSite)
+        List<FitmentModule> allarea = shopFitmentService.selShopHead(shopId).getAllarea();
+        if (allarea.isEmpty()) {
+            return null;
+        }
+        return parseModule(allarea.get(0),selShopForModule(shopId,webSite)
                 ,isEditer);
     }
 
@@ -169,7 +173,7 @@ public class ShopDesignService {
      * @return
      * @throws IOException
      */
-    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException {
+    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException, ShopFitmentException {
         return parseToContainer(shopFitmentService.selPageOnpub(pageId),shop,false);
     }
 

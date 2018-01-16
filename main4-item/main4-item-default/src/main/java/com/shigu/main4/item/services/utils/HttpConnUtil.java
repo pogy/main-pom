@@ -52,6 +52,9 @@ public class HttpConnUtil {
     }
 
     public static Connection getConnection(String url) {
+        if (!url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
+            url = "http://"+url.replace("//","");
+        }
         Connection conn = Jsoup.connect(url);
         conn.followRedirects(false);
         conn.timeout(100000);
@@ -59,6 +62,9 @@ public class HttpConnUtil {
     }
 
     private static Connection getConn(String url) {
+        if (!url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
+            url = "http://"+url.replace("//","");
+        }
         Connection conn = Jsoup.connect(url);
         conn.timeout(50000);
         return conn;
