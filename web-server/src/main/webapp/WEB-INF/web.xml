@@ -171,7 +171,7 @@
 	<!--错误页面-->
 	<error-page>
 		<error-code>404</error-code>
-		<location>/404.html</location>
+		<location>/page404.htm</location>
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>

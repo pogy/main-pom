@@ -6,6 +6,7 @@ import com.shigu.api.responses.SystemResponse;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -70,13 +71,15 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			}
             writer(response,jsonString);
 			return null;
-		}else if(ex instanceof Main4Exception){//页面已知的错误
-			request.setAttribute("errMsg",msg);
-		}else{//页面未知的错误
-			request.setAttribute("errMsg","系统异常");
+		}else if(!(ex instanceof Main4Exception)){//页面未知的错误
+            msg = "系统异常";
 		}
+        request.setAttribute("errMsg",msg);
+        if (StringUtils.isNotBlank(msg) && !"系统异常".equals(msg)) {
+            request.setAttribute("errorCon",msg);
+        }
 		//记录异常日志...
-		return getModelAndView("500", ex, request);
+		return getModelAndView("xzSysPage/500", ex, request);
 	}
 
 	private void appResolveException(HttpServletResponse response,String msg){
