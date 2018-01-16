@@ -144,7 +144,7 @@
                 <a href="/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
                     <img src="${goods.imgsrc!}_220x220.jpg" alt>
                 </a>
-                <a href="/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
+                <a href="/itegit m.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
                 <p>
                     <span class="price">&yen;${goods.piprice!}</span>
                     <a href="/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
