@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services.utils;
 
 import net.sf.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -52,7 +53,7 @@ public class HttpConnUtil {
     }
 
     public static Connection getConnection(String url) {
-        if (!url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
+        if (!StringUtils.isBlank(url) && !url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
             url = "http://"+url.replace("//","");
         }
         Connection conn = Jsoup.connect(url);
@@ -62,7 +63,7 @@ public class HttpConnUtil {
     }
 
     private static Connection getConn(String url) {
-        if (!url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
+        if (!StringUtils.isBlank(url) && !url.startsWith("http")) {//添加protocol，统一成http，宁愿他自己重定向
             url = "http://"+url.replace("//","");
         }
         Connection conn = Jsoup.connect(url);
