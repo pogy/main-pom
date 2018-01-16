@@ -35,7 +35,11 @@
             <#list goodsStyle as item>
                 <div class="styleItem">
                     <#if item.titleText??>
-                        <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!})"></h3>
+                        <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}">
+                            <#if item.titleImg??>
+                                <img src="${item.titleImg!}" />
+                            </#if>
+                        </h3>
                     <#else>
                         <div class="mt40"></div>
                     </#if>
