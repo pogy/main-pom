@@ -1,10 +1,10 @@
-<#assign $pageid>shopIconCopyright</#assign>
+<#assign $pageid="shopIconCopyright">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>商家知识产权展示 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,15 +18,13 @@
 <#include "/__style_torrent__/xzSearch__shopIconCopyright_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
 <div class="banner">
     <div class="layout pr applyBox">
         <a class="pa applyBtn" href="bqsqIndex.htm"></a>
@@ -46,9 +44,7 @@
         </ul>
     </div>
     <div class="paginationBox layout">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -56,9 +52,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
