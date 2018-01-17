@@ -671,7 +671,7 @@ public class CdnAction {
         }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite = "hz";
-        if (storeRelation == null) {
+        if (storeRelation != null) {
             webSite=storeRelation.getWebSite();
         }
         int shopStatus = shopBaseService.getShopStatus(bo.getId());

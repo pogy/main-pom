@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -797,8 +798,16 @@ public class StringUtil {
 			fProp = new FileInputStream(propFile);
 			prop.load(fProp);
 		} catch (Exception ex) {
-			System.out.println(ex);
+//			System.out.println(ex);
 			return null;
+		}finally {
+			if (fProp != null) {
+				try {
+					fProp.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		HashMap infos = new HashMap();

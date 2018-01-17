@@ -738,18 +738,34 @@ public class ImportCsvFileService {
      */
     public static byte[] readYjImgBypath(String path){
 
-        byte[] arg0=null;
+        byte[] arg0;
         File f=new File(path);
-        FileInputStream fis;
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
         try {
             fis = new FileInputStream(f);
             arg0=new byte[fis.available()];
-            BufferedInputStream bis=new BufferedInputStream(fis);
+            bis=new BufferedInputStream(fis);
             bis.read(arg0);
             return arg0;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             return null;
+        }finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

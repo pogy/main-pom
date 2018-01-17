@@ -90,7 +90,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @PostConstruct
     public void init() {
-        if (refundApplyBO != null || fromUser != null) {
+        if (refundApplyBO != null && fromUser != null) {
             //可以进行多次退款的另外处理
             if (refundApplyBO.getType() == 5) {
                 multiRefundApply(refundApplyBO, fromUser);
