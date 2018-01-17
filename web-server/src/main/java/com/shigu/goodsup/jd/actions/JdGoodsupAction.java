@@ -1,5 +1,6 @@
 package com.shigu.goodsup.jd.actions;
 
+import com.openJar.beans.JdAuthedInfo;
 import com.openJar.beans.JdVenderBrandPubInfo;
 import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.responses.api.JdAuthedInfoResponse;
@@ -9,6 +10,8 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
+import com.shigu.goodsup.jd.exceptions.AuthOverException;
+import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.service.*;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.JdShowDataVO;
@@ -73,9 +76,6 @@ public class JdGoodsupAction {
     private ItemUpRecordService itemUpRecordService;
 
     @Autowired
-    private OpenClientService openClientService;
-
-    @Autowired
     private JdCategoryService jdCategoryService;
 
     public static final String IMG_CATEGORY = "571xz";
@@ -120,9 +120,9 @@ public class JdGoodsupAction {
      */
     @RequestMapping("callback")
     public String jdCallback(String code, HttpServletRequest request,HttpSession session) throws Main4Exception {
-        JSONObject jsonObject = JSONObject.fromObject(Opt3Des.decryptPlainData(code));
-        JdAuthedInfoResponse jdAuthedInfo = (JdAuthedInfoResponse) JSONObject.toBean(jsonObject, JdAuthedInfoResponse.class);
-
+        JSONObject jsonObject = JSONObject.fromObject(Opt3Des.decryptPlainData(code.replace(" ", "+")));
+        JdAuthedInfoResponse res = (JdAuthedInfoResponse) JSONObject.toBean(jsonObject, JdAuthedInfoResponse.class);
+        JdAuthedInfo jdAuthedInfo=res.getData();
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
         String strJdUid = String.valueOf(jdAuthedInfo.getUid());
@@ -218,8 +218,13 @@ public class JdGoodsupAction {
 
     @RequestMapping("getJdGoodsInfo")
     @ResponseBody
-    public JSONObject jdGoodsInfo(Long goodsId) throws Main4Exception {
-        Item item= jdUpItemService.staticGoods(jdUpItemService.selTiny(goodsId));
+    public JSONObject jdGoodsInfo(Long goodsId){
+        Item item;
+        try {
+            item = jdUpItemService.staticGoods(jdUpItemService.selTiny(goodsId));
+        } catch (CustomException e) {
+            return JsonResponseUtil.error(e.getMessage());
+        }
         Map<String,String> map=new HashMap<>();
         Arrays.stream(item.getPropsName().split(";")).forEach(s -> {
             String[] strs=s.split(":");
@@ -247,7 +252,14 @@ public class JdGoodsupAction {
     public JSONObject updatePostModel(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<DeliveryTemplate> deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
+        List<DeliveryTemplate> deliveryTemplates;
+        try {
+            deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
+        } catch (AuthOverException e) {
+            return JsonResponseUtil.error("授权失效");
+        } catch (CustomException e) {
+            return JsonResponseUtil.error(e.getMessage());
+        }
         return  JsonResponseUtil.success().element("deliveryTemplates",deliveryTemplates);
     }
 
@@ -259,7 +271,14 @@ public class JdGoodsupAction {
     public JSONObject updateShopCats(HttpSession session)  {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<StoreCatVO> storeCatVOS = jdUpItemService.selShopCats(Long.valueOf(jdUid));
+        List<StoreCatVO> storeCatVOS = null;
+        try {
+            storeCatVOS = jdUpItemService.selShopCats(Long.valueOf(jdUid));
+        } catch (AuthOverException e) {
+            return JsonResponseUtil.error("授权失效");
+        } catch (CustomException e) {
+            return JsonResponseUtil.error(e.getMessage());
+        }
         return  JsonResponseUtil.success().element("storeCatVOS",storeCatVOS);
     }
 
@@ -269,7 +288,7 @@ public class JdGoodsupAction {
      * @return
      */
     @RequestMapping("publish")
-    public String publish(Long itemId, Integer yesrepeat, HttpServletRequest request, HttpSession session, Model model) throws ClassNotFoundException, CloneNotSupportedException, IOException {
+    public String publish(Long itemId, Integer yesrepeat,HttpServletRequest request, HttpSession session, Model model) throws ClassNotFoundException, CloneNotSupportedException, IOException {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if(ps==null){
@@ -281,7 +300,7 @@ public class JdGoodsupAction {
             /********************************屏蔽卖家用户使用********************************/
             Subject currentUser = SecurityUtils.getSubject();
             if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
-                throw new JdApiException("档口不支持代理功能");
+                throw new CustomException("档口不支持代理功能");
             }
             /********************************查上传记录********************************/
 
@@ -297,7 +316,7 @@ public class JdGoodsupAction {
             List<JdVenderBrandPubInfo> allBrand = null;
             allBrand = jdCategoryService.getAllBrand(jdUserId);
             if(allBrand==null){
-                throw new JdApiException("不是京东商家");
+                throw new CustomException("不是京东商家");
             }
             /********************************取商品********************************/
             JdPageItem item=null;
@@ -317,7 +336,7 @@ public class JdGoodsupAction {
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 logger.error("获取商品数据异常",e);
-                throw new JdApiException("商品信息异常");
+                throw new CustomException("商品信息异常");
             }
             /********************************包装所有数据********************************/
             JdShowDataVO allData=new JdShowDataVO();
@@ -333,9 +352,13 @@ public class JdGoodsupAction {
             return "jingdong/jd";
 
 
-        } catch (JdApiException e) {
+        } catch (CustomException e) {
             model.addAttribute("errmsg", e.getMessage());
             return "jingdong/uperror";
+        } catch (AuthOverException e) {
+            String queryString = request.getQueryString();
+            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
+                    (queryString == null ? "" : ("?" + queryString)), "utf-8");
         }
     }
 }

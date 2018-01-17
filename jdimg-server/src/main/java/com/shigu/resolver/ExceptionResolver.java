@@ -3,6 +3,7 @@ package com.shigu.resolver;
 import com.alibaba.fastjson.JSON;
 import com.openJar.exceptions.OpenException;
 import com.opentae.common.beans.LogUtil;
+import com.shigu.exceptions.JdAuthOverdueException;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,7 +39,13 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			obj.put("exception", ex1);
 		}else{
 			JSONObject ex1=new JSONObject();
-			ex1.put("errMsg", ex.getMessage());
+			if(ex instanceof JdAuthOverdueException){
+                ex1.put("errMsg", "授权失效");
+                ex1.put("code","01");
+            }else{
+                ex1.put("errMsg", ex.getMessage());
+                ex1.put("code","02");
+            }
 			obj.put("exception", ex1);
 		}
 		// 判断请求类型

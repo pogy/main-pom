@@ -1,6 +1,7 @@
 package com.shigu.jd.tools;
 
 import com.jd.open.api.sdk.internal.util.codec.Base64;
+import com.openJar.beans.SdkJdVasSubscribe;
 import com.openJar.responses.api.JdVasSubscribeResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import net.sf.json.JSONObject;
@@ -21,7 +22,7 @@ public class JdParseStateUtil {
      * @param state
      * @return
      */
-    public static JdVasSubscribeResponse parseState(String state) {
+    public static SdkJdVasSubscribe parseState(String state) {
         //state中如果有“+”号，因浏览器交互的原因，会出现“+”号替换成空格的现象，导致授权报错
         //如果出现此种情况，请把的state 中的空格再替换成“+”号
         state = state.replace(" ","+");
@@ -47,7 +48,7 @@ public class JdParseStateUtil {
 //        String source = uerSubscribeJson.getString("source");
 //        String versionNo = uerSubscribeJson.getString("version_no");
 
-        JdVasSubscribeResponse subscribeVO = new JdVasSubscribeResponse();
+        SdkJdVasSubscribe subscribeVO = new SdkJdVasSubscribe();
         subscribeVO.setItemCode(itemCode);
         subscribeVO.setUserName(userName);
         subscribeVO.setEndDate(new Date(endDate));

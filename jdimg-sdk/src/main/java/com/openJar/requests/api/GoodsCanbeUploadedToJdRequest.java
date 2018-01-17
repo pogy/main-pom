@@ -28,11 +28,11 @@ public class GoodsCanbeUploadedToJdRequest extends Request<GoodsCanbeUploadedToJ
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"goodsApi/goodsCanbeUploadedToJdRequest.json";
+        return JdImgEnum.REST+"api/goodsCanbeUploadedToJdRequest.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"goodsApi/goodsCanbeUploadedToJdRequest.json";
+        return JdImgEnum.TEST+"api/goodsCanbeUploadedToJdRequest.json";
     }
 
 }

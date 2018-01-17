@@ -9,12 +9,17 @@ import com.jd.open.api.sdk.response.imgzone.ImgzoneCategory;
 import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryAddResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzoneCategoryQueryResponse;
 import com.jd.open.api.sdk.response.seller.VenderShopQueryResponse;
+import com.openJar.beans.JdAuthedInfo;
+import com.openJar.beans.SdkJdImgzoneCategory;
+import com.openJar.beans.SdkJdShopInfo;
 import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdImgzoneCategoryResponse;
 import com.openJar.responses.api.JdShopInfoResponse;
 import com.opentae.data.jd.beans.JdShopInfo;
 import com.opentae.data.jd.interfaces.JdShopInfoMapper;
+import com.shigu.exceptions.JdAuthOverdueException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.exceptions.ImgZoneException;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -46,11 +51,11 @@ public class JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    private JdShopInfoResponse getJdShopInfo(String accessToken) throws JdAuthFailureException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
+    private SdkJdShopInfo getJdShopInfo(String accessToken) throws JdAuthOverdueException, OtherCustomException {
         VenderShopQueryRequest request = new VenderShopQueryRequest();
         VenderShopQueryResponse response = jdClientService.execute(request,accessToken);
         ShopJosResult shopJosResult = response.getShopJosResult();
-        return BeanMapper.map(shopJosResult, JdShopInfoResponse.class);
+        return BeanMapper.map(shopJosResult, SdkJdShopInfo.class);
     }
 
     /**
@@ -59,15 +64,15 @@ public class JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    public JdShopInfoResponse getJdShopInfo(Long jdUid) throws JdAuthFailureException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public SdkJdShopInfo getJdShopInfo(Long jdUid) throws JdAuthFailureException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         JdShopInfo jdShopInfo = new JdShopInfo();
         jdShopInfo.setJdUid(authedInfo.getUid());
         jdShopInfo = jdShopInfoMapper.selectOne(jdShopInfo);
         if (jdShopInfo == null) {
             return null;
         }
-        JdShopInfoResponse jdShopInfoVO = new JdShopInfoResponse();
+        SdkJdShopInfo jdShopInfoVO = new SdkJdShopInfo();
         jdShopInfoVO.setJdUid(authedInfo.getUid());
         jdShopInfoVO.setShopId(jdShopInfo.getJdShopId());
         jdShopInfoVO.setShopName(jdShopInfo.getJdShopName());
@@ -86,14 +91,14 @@ public class JdShopService {
      * @throws JdException
      * @throws IOException
      */
-    public JdShopInfoResponse getJdShopInfoByJdApi(Long jdUid) throws JdAuthFailureException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public SdkJdShopInfo getJdShopInfoByJdApi(Long jdUid) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
         JdShopInfo jdShopInfo = new JdShopInfo();
         jdShopInfo.setJdUid(authedInfo.getUid());
         JdShopInfo selJdShopInfo = jdShopInfoMapper.selectOne(jdShopInfo);
 
-        JdShopInfoResponse  newJdShopInfo = getJdShopInfo(authedInfo.getAccessToken());
+        SdkJdShopInfo  newJdShopInfo = getJdShopInfo(authedInfo.getAccessToken());
 
         if (selJdShopInfo == null) {
             jdShopInfo.setJdUid(authedInfo.getUid());
@@ -132,8 +137,8 @@ public class JdShopService {
      * @return 图片分类ID
      * @throws JdException
      */
-    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdAuthFailureException, ImgZoneException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public Long addImgCategory(Long jdUid, String imgCategory,Long parentCateId) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
 
         ImgzoneCategoryAddRequest request=new ImgzoneCategoryAddRequest();
         request.setCateName(imgCategory);
@@ -142,13 +147,13 @@ public class JdShopService {
         }
         ImgzoneCategoryAddResponse response = jdClientService.execute(request, authedInfo.getAccessToken());
         if (response.getReturnCode() == 0) {
-            throw new ImgZoneException("新增图片分类失败");
+            throw new OtherCustomException("新增图片分类失败");
         }
         return response.getCateId();
     }
 
-    public List<JdImgzoneCategoryResponse> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdAuthFailureException, ImgZoneException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public List<SdkJdImgzoneCategory> selImgCategory(Long jdUid, String imgCategory, Long parentCateId) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImgzoneCategoryQueryRequest selRequest = new ImgzoneCategoryQueryRequest();
         selRequest.setCateName(imgCategory);
         if (parentCateId != null) {
@@ -156,15 +161,15 @@ public class JdShopService {
         }
         ImgzoneCategoryQueryResponse selResponse = jdClientService.execute(selRequest, authedInfo.getAccessToken());
         if (selResponse.getReturnCode() == 0) {
-            throw new ImgZoneException("查询图片分类失败");
+            throw new OtherCustomException("查询图片分类失败");
         }
         List<ImgzoneCategory> cateList = selResponse.getCateList();
         if (cateList == null || cateList.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
-        List<JdImgzoneCategoryResponse> vos = new ArrayList<>();
+        List<SdkJdImgzoneCategory> vos = new ArrayList<>();
         for(ImgzoneCategory item : cateList){
-            JdImgzoneCategoryResponse vo = new JdImgzoneCategoryResponse();
+            SdkJdImgzoneCategory vo = new SdkJdImgzoneCategory();
             vo.setCateId(item.getCateId());
             vo.setCateLevel(item.getCateLevel());
             vo.setCateName(item.getCateName());
@@ -176,6 +181,4 @@ public class JdShopService {
         }
         return vos;
     }
-
-
 }

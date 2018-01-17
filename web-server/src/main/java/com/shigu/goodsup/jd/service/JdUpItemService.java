@@ -1,29 +1,26 @@
 package com.shigu.goodsup.jd.service;
 
-import com.openJar.beans.JdCategoryAttrValueJos;
-import com.openJar.beans.JdPostTemplate;
-import com.openJar.beans.SdkJdShopCategory;
-import com.openJar.beans.JdVenderBrandPubInfo;
+import com.openJar.beans.*;
 import com.openJar.requests.api.JdCategoryAttrValueJosRequest;
 import com.openJar.requests.api.JdPostTemplateRequest;
 import com.openJar.requests.api.JdShopCategoryRequest;
+import com.openJar.requests.interfaces.SelJdItemPropsRequest;
+import com.openJar.requests.interfaces.SelJdPropValuesRequest;
+import com.openJar.requests.interfaces.SelJdTbBindsRequest;
+import com.openJar.requests.interfaces.SelShiguJdCatRequest;
 import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
 import com.openJar.responses.api.JdPostTemplateResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
-import com.opentae.data.jd.beans.JdItemProp;
-import com.opentae.data.jd.beans.JdPropValue;
-import com.opentae.data.jd.beans.JdTbBind;
-import com.opentae.data.jd.beans.ShiguJdcat;
-import com.opentae.data.jd.examples.JdItemPropExample;
-import com.opentae.data.jd.examples.JdPropValueExample;
-import com.opentae.data.jd.examples.JdTbBindExample;
-import com.opentae.data.jd.interfaces.JdItemPropMapper;
-import com.opentae.data.jd.interfaces.JdPropValueMapper;
-import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
+import com.openJar.responses.interfaces.SelJdItemPropsRespone;
+import com.openJar.responses.interfaces.SelJdPropValuesResponse;
+import com.openJar.responses.interfaces.SelJdTbBindsResponse;
+import com.openJar.responses.interfaces.SelShiguJdCatResponse;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguPropImgsExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.goodsup.jd.exceptions.AuthOverException;
+import com.shigu.goodsup.jd.exceptions.CustomException;
+import com.shigu.goodsup.jd.util.XzJdSdkSend;
 import com.shigu.goodsup.jd.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
@@ -40,6 +37,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+
 /**
  * Created By admin on 2017/12/15/15:23
  */
@@ -52,34 +51,27 @@ public class JdUpItemService {
     @Autowired
     private ShiguShopMapper shiguShopMapper;
     @Autowired
-    private JdItemPropMapper jdItemPropMapper;
+    ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
-    private JdPropValueMapper jdPropValueMapper;
+    ShiguPropImgsMapper shiguPropImgsMapper;
     @Autowired
-    private JdTbBindMapper jdTbBindMapper;
+    EhCacheCacheManager ehCacheManager;
     @Autowired
-    private ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
+    ItemAddOrUpdateService itemAddOrUpdateService;
     @Autowired
-    private ShiguPropImgsMapper shiguPropImgsMapper;
+    PropsService propsService;
     @Autowired
-    private ShiguJdcatMapper shiguJdcatMapper;
+    JdUserInfoService jdUserInfoService;
     @Autowired
-    private EhCacheCacheManager ehCacheManager;
+    JdCategoryService jdCategoryService;
     @Autowired
-    private ItemAddOrUpdateService itemAddOrUpdateService;
-    @Autowired
-    private PropsService propsService;
-    @Autowired
-    private JdUserInfoService jdUserInfoService;
-    @Autowired
-    private OpenClientService openClientService;
-
+    XzJdSdkSend xzJdSdkSend;
     /**
      * 得到商品
      * @return
      * @throws Main4Exception
      */
-    public JdPageItem findGoods(Long goodsId) throws Main4Exception{
+    public JdPageItem findGoods(Long goodsId) throws AuthOverException, CustomException {
         ShiguGoodsTiny sgt=selTiny(goodsId);
         JdPageItem pageItem=new JdPageItem();
         pageItem.setNumIid(sgt.getNumIid());
@@ -105,12 +97,13 @@ public class JdUpItemService {
             pageItem.setGoodsType(1);
         }
         pageItem.setDataType(2);
-        JdTbBindExample jdTbBindExample=new JdTbBindExample();
-        jdTbBindExample.createCriteria().andTbCidEqualTo(it.getCid());
-        List<JdTbBind> binds=jdTbBindMapper.selectByExample(jdTbBindExample);
-        if(binds.size()==0){
-            throw new Main4Exception("商品暂不支持上传");
+        SelJdTbBindsRequest selJdTbBindRequest=new SelJdTbBindsRequest();
+        selJdTbBindRequest.setCid(it.getCid());
+        SelJdTbBindsResponse selJdTbBindResponse=xzJdSdkSend.send(selJdTbBindRequest);
+        if(!selJdTbBindResponse.isSuccess()||selJdTbBindResponse.getDatas().size()==0){
+            throw new CustomException("商品暂不支持上传");
         }
+        List<JdTbBind> binds=selJdTbBindResponse.getDatas();
         JdTbBind bind = binds.get(0);
         if(binds.size()>1){
             if(it.getTitle().contains("女")){
@@ -118,7 +111,7 @@ public class JdUpItemService {
             }else if(it.getTitle().contains("男")){
                 bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==1).findFirst().get();
             }else{
-                throw new Main4Exception("商品暂不支持上传");
+                throw new CustomException("商品暂不支持上传");
             }
         }
         pageItem.setJdCid(bind.getJdCid());
@@ -130,7 +123,7 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<DeliveryTemplate> selPostModel(Long jdUserId) {
+    public List<DeliveryTemplate> selPostModel(Long jdUserId) throws AuthOverException, CustomException {
         List<DeliveryTemplate> vs=new ArrayList<>();
         DeliveryTemplate v1=new DeliveryTemplate();
         v1.setTemplateId(-1L);
@@ -139,7 +132,7 @@ public class JdUpItemService {
 
         JdPostTemplateRequest request = new JdPostTemplateRequest();
         request.setJdUid(jdUserId);
-        JdPostTemplateResponse response = openClientService.getOpenClient().execute(request);
+        JdPostTemplateResponse response = xzJdSdkSend.send(request);
         if (!response.isSuccess()) {
             return vs;
         }
@@ -159,10 +152,10 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<DeliveryTemplate> updatePostModel(Long jdUserId)  {
+    public List<DeliveryTemplate> updatePostModel(Long jdUserId) throws AuthOverException, CustomException {
         JdPostTemplateRequest request = new JdPostTemplateRequest();
         request.setJdUid(jdUserId);
-        JdPostTemplateResponse response = openClientService.getOpenClient().execute(request);
+        JdPostTemplateResponse response = xzJdSdkSend.send(request);
         if (!response.isSuccess()) {
             return new ArrayList<>();
         }
@@ -186,10 +179,10 @@ public class JdUpItemService {
      * @param jdUserId
      * @return
      */
-    public List<StoreCatVO> selShopCats(Long jdUserId) {
+    public List<StoreCatVO> selShopCats(Long jdUserId) throws AuthOverException, CustomException {
         JdShopCategoryRequest request = new JdShopCategoryRequest();
         request.setJdUid(jdUserId);
-        JdShopCategoryResponse response = openClientService.getOpenClient().execute(request);
+        JdShopCategoryResponse response = xzJdSdkSend.send(request);
         if (!response.isSuccess()){
             return new ArrayList<>();
         }
@@ -216,8 +209,12 @@ public class JdUpItemService {
      * 查类目路径
      * @return
      */
-    public String selCatPath(Long cid){
-        ShiguJdcat st=shiguJdcatMapper.selectByPrimaryKey(cid);
+    public String selCatPath(Long cid) throws AuthOverException, CustomException {
+//        ShiguJdcat st=shiguJdcatMapper.selectByPrimaryKey(cid);
+        SelShiguJdCatRequest selShiguJdCatRequest=new SelShiguJdCatRequest();
+        selShiguJdCatRequest.setCid(cid);
+        SelShiguJdCatResponse selShiguJdCatResponse=xzJdSdkSend.send(selShiguJdCatRequest);
+        ShiguJdcat st=selShiguJdCatResponse.getData();
         if(st!=null){
             if(st.getParentCname()!=null){
                 return st.getParentCname()+" > "+st.getCname();
@@ -230,7 +227,7 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfo> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException {
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfo> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException, AuthOverException, CustomException {
         PropsVO tbPropsVO=propsService.selProps(item.getCid());
         List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
@@ -255,21 +252,23 @@ public class JdUpItemService {
     }
 
 
-    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfo> brands) {
+    private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfo> brands) throws AuthOverException, CustomException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
         if(prop!=null){
             return prop;
         }
         prop=new PropsVO();
-        JdItemPropExample jdItemPropExample=new JdItemPropExample();
-        jdItemPropExample.createCriteria().andCidEqualTo(jdCid);
-        List<JdItemProp> jdItemProps=jdItemPropMapper.selectByExample(jdItemPropExample);
+        SelJdItemPropsRequest selJdItemPropsRequest=new SelJdItemPropsRequest();
+        selJdItemPropsRequest.setJdCid(jdCid);
+        SelJdItemPropsRespone selJdItemPropsRespone=xzJdSdkSend.send(selJdItemPropsRequest);
+        List<JdItemProp> jdItemProps=selJdItemPropsRespone.getDatas();
         jdItemProps.sort(Comparator.comparingLong(JdItemProp::getSortOrder));
 
-        JdPropValueExample jdPropValueExample=new JdPropValueExample();
-        jdPropValueExample.createCriteria().andCidEqualTo(jdCid);
-        List<JdPropValue> jdPropValues=jdPropValueMapper.selectByExample(jdPropValueExample);
+        SelJdPropValuesRequest selJdPropValuesRequest=new SelJdPropValuesRequest();
+        selJdPropValuesRequest.setJdCid(jdCid);
+        SelJdPropValuesResponse selJdPropValuesResponse=xzJdSdkSend.send(selJdPropValuesRequest);
+        List<JdPropValue> jdPropValues=selJdPropValuesResponse.getDatas();
         Map<Long,List<JdPropValue>> jdPropValueMap=jdPropValues.stream().collect(Collectors.groupingBy(JdPropValue::getPid));
 
         prop.setCid(jdCid);
@@ -283,9 +282,9 @@ public class JdUpItemService {
                 JdCategoryAttrValueJosRequest request = new JdCategoryAttrValueJosRequest();
                 request.setJdUid(jdUserId);
                 request.setPid(jdItemProp.getPid());
-                JdCategoryAttrValueJosResponse response = openClientService.getOpenClient().execute(request);
+                JdCategoryAttrValueJosResponse response = xzJdSdkSend.send(request);
                 if (!response.isSuccess()) {
-                    return null;
+                    continue;
                 }
                 List<JdCategoryAttrValueJos> values1 = response.getJdCategoryAttrValueJos();
                 values=values1.stream().map(jdCategoryAttrValueJosVO -> {
@@ -595,19 +594,23 @@ public class JdUpItemService {
         }
         return it;
     }
-    public ShiguGoodsTiny selTiny(Long goodsId) throws Main4Exception {
+    public ShiguGoodsTiny selTiny(Long goodsId) throws CustomException {
         ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
         if(sgig==null){
-            throw new Main4Exception(goodsId+" goodsId生成表没找到");
+            throw new CustomException(goodsId+" goodsId生成表没找到");
         }
         ShiguGoodsTiny sgt=new ShiguGoodsTiny();
         sgt.setGoodsId(goodsId);
         sgt.setWebSite(sgig.getWebSite());
         sgt=shiguGoodsTinyMapperImpl.selectByPrimaryKey(sgt);
         if(sgt==null){
-            throw new Main4Exception(goodsId+" goodsTiny表没找到");
+            throw new CustomException(goodsId+" goodsTiny表没找到");
         }
         sgt.setWebSite(sgig.getWebSite());
+
         return sgt;
     }
+
+
+
 }

@@ -22,10 +22,10 @@ public class JdShopCategoryRequest extends Request<JdShopCategoryResponse> {
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"shopApi/jdShopCategory.json";
+        return JdImgEnum.REST+"api/jdShopCategory.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"shopApi/jdShopCategory.json";
+        return JdImgEnum.TEST+"api/jdShopCategory.json";
     }
 }

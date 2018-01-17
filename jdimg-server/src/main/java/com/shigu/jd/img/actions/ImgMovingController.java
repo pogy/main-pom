@@ -29,7 +29,7 @@ public class ImgMovingController {
      */
     @RequestMapping("uptoitemimg")
     @ResponseBody
-    public JSONObject uptoitemimg(JdUpImgRequest request) throws JdAuthFailureException {
+    public JSONObject uptoitemimg(JdUpImgRequest request){
 
         return JSONObject.fromObject(imgMovingService.imgUpload(request));
     }

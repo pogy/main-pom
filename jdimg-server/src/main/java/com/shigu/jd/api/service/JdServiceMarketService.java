@@ -2,12 +2,17 @@ package com.shigu.jd.api.service;
 
 import com.jd.open.api.sdk.request.market.VasSubscribeGetRequest;
 import com.jd.open.api.sdk.response.market.VasSubscribeGetResponse;
+import com.openJar.beans.JdAuthedInfo;
+import com.openJar.beans.SdkJdVasSubscribe;
 import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdVasSubscribeResponse;
 import com.opentae.data.jd.beans.JdFw;
 import com.opentae.data.jd.interfaces.JdFwMapper;
+import com.shigu.exceptions.JdAuthOverdueException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
+import com.shigu.main4.common.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,17 +41,17 @@ public class JdServiceMarketService {
      * @param itemCode
      * @param jdUid
      */
-    public JdVasSubscribeResponse subscribe(String userName, String itemCode, Long jdUid) throws JdAuthFailureException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public SdkJdVasSubscribe subscribe(String userName, String itemCode, Long jdUid) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         VasSubscribeGetRequest request=new VasSubscribeGetRequest();
         request.setUserName(userName);
         request.setItemCode(itemCode);
         VasSubscribeGetResponse response = jdClientService.execute(request,authedInfo.getAccessToken());
-        JdVasSubscribeResponse vo = new JdVasSubscribeResponse();
+        SdkJdVasSubscribe vo = new SdkJdVasSubscribe();
         vo.setUserName(userName);
         vo.setJdUid(jdUid);
         vo.setItemCode(itemCode);
-        vo.setEndDate(new Date(response.getEndDate()));
+        vo.setEndDate(DateUtil.stringToDate(response.getEndDate(),DateUtil.patternD));
         return vo;
     }
 
@@ -57,7 +62,7 @@ public class JdServiceMarketService {
      * @throws IOException
      * @throws JdAuthFailureException
      */
-    public void saveSubscribe(JdVasSubscribeResponse vo) throws JdAuthFailureException {
+    public void saveSubscribe(SdkJdVasSubscribe vo) throws JdAuthFailureException {
         JdFw jdFw = new JdFw();
         jdFw.setJdUid(vo.getJdUid());
         JdFw selJdFw = jdFwMapper.selectOne(jdFw);

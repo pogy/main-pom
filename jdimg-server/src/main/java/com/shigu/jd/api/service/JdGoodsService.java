@@ -7,15 +7,21 @@ import com.jd.open.api.sdk.request.ware.TransportWriteUpdateWareTransportIdReque
 import com.jd.open.api.sdk.request.ware.WareAddRequest;
 import com.jd.open.api.sdk.response.ware.ImageWriteUpdateResponse;
 import com.jd.open.api.sdk.response.ware.WareAddResponse;
+import com.openJar.beans.JdAuthedInfo;
+import com.openJar.beans.SdkJdWareAdd;
 import com.openJar.exceptions.imgs.JdApiException;
+import com.openJar.responses.api.GoodsCanbeUploadedToJdResponse;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdSkuInfoResponse;
 import com.openJar.responses.api.JdWareAddResponse;
 import com.opentae.data.jd.beans.JdTbBind;
 import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.shigu.jd.api.bo.JdImageUpdateBO;
-import com.shigu.jd.api.bo.JdUpBO;
-import com.shigu.jd.api.exceptions.ImgDownloadException;
+import com.openJar.beans.SdkJdImageUpdate;
+import com.openJar.beans.JdUpGoods;
+import com.shigu.exceptions.CustomException;
+import com.shigu.exceptions.ImgDownloadException;
+import com.shigu.exceptions.JdAuthOverdueException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.jd.tools.DownImage;
 import com.shigu.main4.common.util.BeanMapper;
@@ -47,8 +53,8 @@ public class JdGoodsService {
      * @param jdUid
      * @throws JdException
      */
-    public JdWareAddResponse upToJd(JdUpBO bo, Long jdUid) throws JdAuthFailureException, ImgDownloadException, com.shigu.jd.api.exceptions.JdApiException, com.shigu.exceptions.ImgDownloadException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public SdkJdWareAdd upToJd(JdUpGoods bo, Long jdUid) throws OtherCustomException, JdAuthOverdueException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         WareAddRequest request = new WareAddRequest();
         request.setInputStrs(bo.getInputStrs());
         request.setInputPids(bo.getInputPids());
@@ -85,21 +91,20 @@ public class JdGoodsService {
         request.setWareBigSmallModel(bo.getWareBigSmallModel());
         request.setWareLocation(bo.getWareLocation());
         request.setWrap(bo.getWrap());
-//        request.setWarePackType("1");//普通商品
-        System.out.println(JSONObject.toJSON(request));
         request.setWareImage(DownImage.downImgFile(bo.getWareImageUrl()));
-        WareAddResponse response=jdClientService.execute(request,authedInfo.getAccessToken());
-        JdWareAddResponse vo=new JdWareAddResponse();
-        vo.setGoodsId(response.getWareId());
-        vo.setJdSkuInfoVOS(response.getSkuInfo().stream().map(skuInfo -> BeanMapper.map(authedInfo,JdSkuInfoResponse.class)).collect(Collectors.toList()));
-        return vo;
+        WareAddResponse response;
+        response = jdClientService.execute(request,authedInfo.getAccessToken());
+        SdkJdWareAdd goods=new SdkJdWareAdd();
+        goods.setGoodsId(response.getWareId());
+        goods.setJdSkuInfoVOS(response.getSkuInfo().stream().map(skuInfo -> BeanMapper.map(authedInfo,JdSkuInfoResponse.class)).collect(Collectors.toList()));
+        return goods;
     }
 
     /**
      * 新增和修改商品图片
      */
-    public Boolean jdImageUpdate(JdImageUpdateBO bo, Long  jdUid) throws JdAuthFailureException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public void jdImageUpdate(SdkJdImageUpdate bo, Long  jdUid) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         ImageWriteUpdateRequest request=new ImageWriteUpdateRequest();
         request.setColorId(bo.getColorId());
         request.setImgId(bo.getImgId());
@@ -107,15 +112,14 @@ public class JdGoodsService {
         request.setImgUrl(bo.getImgUrl());
         request.setImgZoneId(bo.getImgZoneId());
         request.setWareId(bo.getGoodsId());
-        ImageWriteUpdateResponse response = jdClientService.execute(request, authedInfo.getAccessToken());
-        return response.getSuccess();
+        jdClientService.execute(request, authedInfo.getAccessToken());
     }
 
     /**
      * 根据cid查询商品是否可上传到京东
      * @param tbCid
      */
-    public Boolean goodsCanbeUploadedToJd(Long tbCid) {
+    public boolean goodsCanbeUploadedToJd(Long tbCid) {
         JdTbBind jdTbBind = new JdTbBind();
         jdTbBind.setTbCid(tbCid);
         jdTbBind = jdTbBindMapper.selectOne(jdTbBind);
@@ -128,8 +132,8 @@ public class JdGoodsService {
      * @param wareId
      * @param templateId
      */
-    public Boolean bindPostTemplate(Long jdUid, Long wareId, Long templateId) throws JdAuthFailureException, com.shigu.jd.api.exceptions.JdApiException, JdApiException {
-        JdAuthedInfoResponse authedInfo = jdAuthService.getAuthedInfo(jdUid);
+    public boolean bindPostTemplate(Long jdUid, Long wareId, Long templateId) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
         TransportWriteUpdateWareTransportIdRequest request=new TransportWriteUpdateWareTransportIdRequest();
         request.setWareId(wareId);
         request.setTransportId(templateId);

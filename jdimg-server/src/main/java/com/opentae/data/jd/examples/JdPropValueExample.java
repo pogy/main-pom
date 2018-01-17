@@ -6,11 +6,7 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.jd.beans.JdPropValue;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 public class JdPropValueExample extends SgExample<JdPropValueExample.Criteria> {
     public static final Class<JdPropValue> beanClass = JdPropValue.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -52,515 +48,515 @@ public class JdPropValueExample extends SgExample<JdPropValueExample.Criteria> {
     }
 
     @Override
-    protected Criteria createCriteriaInternal() {
-        return new Criteria(this);
+    protected JdPropValueExample.Criteria createCriteriaInternal() {
+        return new JdPropValueExample.Criteria(this);
     }
 
-    public static class Criteria extends GeneratedCriteria<Criteria> {
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
         protected Criteria(SgExample example) {
             super(example);
         }
 
-        public Criteria andVidIsNull() {
+        public JdPropValueExample.Criteria andVidIsNull() {
             return isNull(vid);
         }
 
-        public Criteria andVidIsNotNull() {
+        public JdPropValueExample.Criteria andVidIsNotNull() {
             return isNotNull(vid);
         }
 
-        public Criteria andVidEqualTo(Long value) {
+        public JdPropValueExample.Criteria andVidEqualTo(Long value) {
             return equalTo(vid, value);
         }
 
-        public Criteria andVidNotEqualTo(Long value) {
+        public JdPropValueExample.Criteria andVidNotEqualTo(Long value) {
             return notEqualTo(vid, value);
         }
 
-        public Criteria andVidGreaterThan(Long value) {
+        public JdPropValueExample.Criteria andVidGreaterThan(Long value) {
             return greaterThan(vid, value);
         }
 
-        public Criteria andVidGreaterThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andVidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(vid, value);
         }
 
-        public Criteria andVidLessThan(Long value) {
+        public JdPropValueExample.Criteria andVidLessThan(Long value) {
             return lessThan(vid, value);
         }
 
-        public Criteria andVidLessThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andVidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(vid, value);
         }
 
-        public Criteria andVidIn(List<Long> values) {
+        public JdPropValueExample.Criteria andVidIn(List<Long> values) {
             return in(vid, values);
         }
 
-        public Criteria andVidNotIn(List<Long> values) {
+        public JdPropValueExample.Criteria andVidNotIn(List<Long> values) {
             return notIn(vid, values);
         }
 
-        public Criteria andVidBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andVidBetween(Long value1, Long value2) {
             return between(vid, value1, value2);
         }
 
-        public Criteria andVidNotBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andVidNotBetween(Long value1, Long value2) {
             return notBetween(vid, value1, value2);
         }
-        public Criteria andJdVidIsNull() {
+        public JdPropValueExample.Criteria andJdVidIsNull() {
             return isNull(jdVid);
         }
 
-        public Criteria andJdVidIsNotNull() {
+        public JdPropValueExample.Criteria andJdVidIsNotNull() {
             return isNotNull(jdVid);
         }
 
-        public Criteria andJdVidEqualTo(Long value) {
+        public JdPropValueExample.Criteria andJdVidEqualTo(Long value) {
             return equalTo(jdVid, value);
         }
 
-        public Criteria andJdVidNotEqualTo(Long value) {
+        public JdPropValueExample.Criteria andJdVidNotEqualTo(Long value) {
             return notEqualTo(jdVid, value);
         }
 
-        public Criteria andJdVidGreaterThan(Long value) {
+        public JdPropValueExample.Criteria andJdVidGreaterThan(Long value) {
             return greaterThan(jdVid, value);
         }
 
-        public Criteria andJdVidGreaterThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andJdVidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(jdVid, value);
         }
 
-        public Criteria andJdVidLessThan(Long value) {
+        public JdPropValueExample.Criteria andJdVidLessThan(Long value) {
             return lessThan(jdVid, value);
         }
 
-        public Criteria andJdVidLessThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andJdVidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(jdVid, value);
         }
 
-        public Criteria andJdVidIn(List<Long> values) {
+        public JdPropValueExample.Criteria andJdVidIn(List<Long> values) {
             return in(jdVid, values);
         }
 
-        public Criteria andJdVidNotIn(List<Long> values) {
+        public JdPropValueExample.Criteria andJdVidNotIn(List<Long> values) {
             return notIn(jdVid, values);
         }
 
-        public Criteria andJdVidBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andJdVidBetween(Long value1, Long value2) {
             return between(jdVid, value1, value2);
         }
 
-        public Criteria andJdVidNotBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andJdVidNotBetween(Long value1, Long value2) {
             return notBetween(jdVid, value1, value2);
         }
-        public Criteria andIsParentIsNull() {
+        public JdPropValueExample.Criteria andIsParentIsNull() {
             return isNull(isParent);
         }
 
-        public Criteria andIsParentIsNotNull() {
+        public JdPropValueExample.Criteria andIsParentIsNotNull() {
             return isNotNull(isParent);
         }
 
-        public Criteria andIsParentEqualTo(Integer value) {
+        public JdPropValueExample.Criteria andIsParentEqualTo(Integer value) {
             return equalTo(isParent, value);
         }
 
-        public Criteria andIsParentNotEqualTo(Integer value) {
+        public JdPropValueExample.Criteria andIsParentNotEqualTo(Integer value) {
             return notEqualTo(isParent, value);
         }
 
-        public Criteria andIsParentGreaterThan(Integer value) {
+        public JdPropValueExample.Criteria andIsParentGreaterThan(Integer value) {
             return greaterThan(isParent, value);
         }
 
-        public Criteria andIsParentGreaterThanOrEqualTo(Integer value) {
+        public JdPropValueExample.Criteria andIsParentGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(isParent, value);
         }
 
-        public Criteria andIsParentLessThan(Integer value) {
+        public JdPropValueExample.Criteria andIsParentLessThan(Integer value) {
             return lessThan(isParent, value);
         }
 
-        public Criteria andIsParentLessThanOrEqualTo(Integer value) {
+        public JdPropValueExample.Criteria andIsParentLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(isParent, value);
         }
 
-        public Criteria andIsParentIn(List<Integer> values) {
+        public JdPropValueExample.Criteria andIsParentIn(List<Integer> values) {
             return in(isParent, values);
         }
 
-        public Criteria andIsParentNotIn(List<Integer> values) {
+        public JdPropValueExample.Criteria andIsParentNotIn(List<Integer> values) {
             return notIn(isParent, values);
         }
 
-        public Criteria andIsParentBetween(Integer value1, Integer value2) {
+        public JdPropValueExample.Criteria andIsParentBetween(Integer value1, Integer value2) {
             return between(isParent, value1, value2);
         }
 
-        public Criteria andIsParentNotBetween(Integer value1, Integer value2) {
+        public JdPropValueExample.Criteria andIsParentNotBetween(Integer value1, Integer value2) {
             return notBetween(isParent, value1, value2);
         }
-        public Criteria andNameAliasIsNull() {
+        public JdPropValueExample.Criteria andNameAliasIsNull() {
             return isNull(nameAlias);
         }
 
-        public Criteria andNameAliasIsNotNull() {
+        public JdPropValueExample.Criteria andNameAliasIsNotNull() {
             return isNotNull(nameAlias);
         }
 
-        public Criteria andNameAliasEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameAliasEqualTo(String value) {
             return equalTo(nameAlias, value);
         }
 
-        public Criteria andNameAliasNotEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameAliasNotEqualTo(String value) {
             return notEqualTo(nameAlias, value);
         }
 
-        public Criteria andNameAliasGreaterThan(String value) {
+        public JdPropValueExample.Criteria andNameAliasGreaterThan(String value) {
             return greaterThan(nameAlias, value);
         }
 
-        public Criteria andNameAliasGreaterThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameAliasGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(nameAlias, value);
         }
 
-        public Criteria andNameAliasLessThan(String value) {
+        public JdPropValueExample.Criteria andNameAliasLessThan(String value) {
             return lessThan(nameAlias, value);
         }
 
-        public Criteria andNameAliasLessThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameAliasLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(nameAlias, value);
         }
 
-        public Criteria andNameAliasLike(String value) {
+        public JdPropValueExample.Criteria andNameAliasLike(String value) {
             return like(nameAlias, value);
         }
 
-        public Criteria andNameAliasNotLike(String value) {
+        public JdPropValueExample.Criteria andNameAliasNotLike(String value) {
             return notLike(nameAlias, value);
         }
 
-        public Criteria andNameAliasIn(List<String> values) {
+        public JdPropValueExample.Criteria andNameAliasIn(List<String> values) {
             return in(nameAlias, values);
         }
 
-        public Criteria andNameAliasNotIn(List<String> values) {
+        public JdPropValueExample.Criteria andNameAliasNotIn(List<String> values) {
             return notIn(nameAlias, values);
         }
 
-        public Criteria andNameAliasBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andNameAliasBetween(String value1, String value2) {
             return between(nameAlias, value1, value2);
         }
 
-        public Criteria andNameAliasNotBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andNameAliasNotBetween(String value1, String value2) {
             return notBetween(nameAlias, value1, value2);
         }
-        public Criteria andSortOrderIsNull() {
+        public JdPropValueExample.Criteria andSortOrderIsNull() {
             return isNull(sortOrder);
         }
 
-        public Criteria andSortOrderIsNotNull() {
+        public JdPropValueExample.Criteria andSortOrderIsNotNull() {
             return isNotNull(sortOrder);
         }
 
-        public Criteria andSortOrderEqualTo(Long value) {
+        public JdPropValueExample.Criteria andSortOrderEqualTo(Long value) {
             return equalTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderNotEqualTo(Long value) {
+        public JdPropValueExample.Criteria andSortOrderNotEqualTo(Long value) {
             return notEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderGreaterThan(Long value) {
+        public JdPropValueExample.Criteria andSortOrderGreaterThan(Long value) {
             return greaterThan(sortOrder, value);
         }
 
-        public Criteria andSortOrderGreaterThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andSortOrderGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderLessThan(Long value) {
+        public JdPropValueExample.Criteria andSortOrderLessThan(Long value) {
             return lessThan(sortOrder, value);
         }
 
-        public Criteria andSortOrderLessThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andSortOrderLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderIn(List<Long> values) {
+        public JdPropValueExample.Criteria andSortOrderIn(List<Long> values) {
             return in(sortOrder, values);
         }
 
-        public Criteria andSortOrderNotIn(List<Long> values) {
+        public JdPropValueExample.Criteria andSortOrderNotIn(List<Long> values) {
             return notIn(sortOrder, values);
         }
 
-        public Criteria andSortOrderBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andSortOrderBetween(Long value1, Long value2) {
             return between(sortOrder, value1, value2);
         }
 
-        public Criteria andSortOrderNotBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andSortOrderNotBetween(Long value1, Long value2) {
             return notBetween(sortOrder, value1, value2);
         }
-        public Criteria andNameIsNull() {
+        public JdPropValueExample.Criteria andNameIsNull() {
             return isNull(name);
         }
 
-        public Criteria andNameIsNotNull() {
+        public JdPropValueExample.Criteria andNameIsNotNull() {
             return isNotNull(name);
         }
 
-        public Criteria andNameEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameEqualTo(String value) {
             return equalTo(name, value);
         }
 
-        public Criteria andNameNotEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameNotEqualTo(String value) {
             return notEqualTo(name, value);
         }
 
-        public Criteria andNameGreaterThan(String value) {
+        public JdPropValueExample.Criteria andNameGreaterThan(String value) {
             return greaterThan(name, value);
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(name, value);
         }
 
-        public Criteria andNameLessThan(String value) {
+        public JdPropValueExample.Criteria andNameLessThan(String value) {
             return lessThan(name, value);
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(name, value);
         }
 
-        public Criteria andNameLike(String value) {
+        public JdPropValueExample.Criteria andNameLike(String value) {
             return like(name, value);
         }
 
-        public Criteria andNameNotLike(String value) {
+        public JdPropValueExample.Criteria andNameNotLike(String value) {
             return notLike(name, value);
         }
 
-        public Criteria andNameIn(List<String> values) {
+        public JdPropValueExample.Criteria andNameIn(List<String> values) {
             return in(name, values);
         }
 
-        public Criteria andNameNotIn(List<String> values) {
+        public JdPropValueExample.Criteria andNameNotIn(List<String> values) {
             return notIn(name, values);
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andNameBetween(String value1, String value2) {
             return between(name, value1, value2);
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andNameNotBetween(String value1, String value2) {
             return notBetween(name, value1, value2);
         }
-        public Criteria andPidIsNull() {
+        public JdPropValueExample.Criteria andPidIsNull() {
             return isNull(pid);
         }
 
-        public Criteria andPidIsNotNull() {
+        public JdPropValueExample.Criteria andPidIsNotNull() {
             return isNotNull(pid);
         }
 
-        public Criteria andPidEqualTo(Long value) {
+        public JdPropValueExample.Criteria andPidEqualTo(Long value) {
             return equalTo(pid, value);
         }
 
-        public Criteria andPidNotEqualTo(Long value) {
+        public JdPropValueExample.Criteria andPidNotEqualTo(Long value) {
             return notEqualTo(pid, value);
         }
 
-        public Criteria andPidGreaterThan(Long value) {
+        public JdPropValueExample.Criteria andPidGreaterThan(Long value) {
             return greaterThan(pid, value);
         }
 
-        public Criteria andPidGreaterThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andPidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(pid, value);
         }
 
-        public Criteria andPidLessThan(Long value) {
+        public JdPropValueExample.Criteria andPidLessThan(Long value) {
             return lessThan(pid, value);
         }
 
-        public Criteria andPidLessThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andPidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(pid, value);
         }
 
-        public Criteria andPidIn(List<Long> values) {
+        public JdPropValueExample.Criteria andPidIn(List<Long> values) {
             return in(pid, values);
         }
 
-        public Criteria andPidNotIn(List<Long> values) {
+        public JdPropValueExample.Criteria andPidNotIn(List<Long> values) {
             return notIn(pid, values);
         }
 
-        public Criteria andPidBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andPidBetween(Long value1, Long value2) {
             return between(pid, value1, value2);
         }
 
-        public Criteria andPidNotBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andPidNotBetween(Long value1, Long value2) {
             return notBetween(pid, value1, value2);
         }
-        public Criteria andPropNameIsNull() {
+        public JdPropValueExample.Criteria andPropNameIsNull() {
             return isNull(propName);
         }
 
-        public Criteria andPropNameIsNotNull() {
+        public JdPropValueExample.Criteria andPropNameIsNotNull() {
             return isNotNull(propName);
         }
 
-        public Criteria andPropNameEqualTo(String value) {
+        public JdPropValueExample.Criteria andPropNameEqualTo(String value) {
             return equalTo(propName, value);
         }
 
-        public Criteria andPropNameNotEqualTo(String value) {
+        public JdPropValueExample.Criteria andPropNameNotEqualTo(String value) {
             return notEqualTo(propName, value);
         }
 
-        public Criteria andPropNameGreaterThan(String value) {
+        public JdPropValueExample.Criteria andPropNameGreaterThan(String value) {
             return greaterThan(propName, value);
         }
 
-        public Criteria andPropNameGreaterThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andPropNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(propName, value);
         }
 
-        public Criteria andPropNameLessThan(String value) {
+        public JdPropValueExample.Criteria andPropNameLessThan(String value) {
             return lessThan(propName, value);
         }
 
-        public Criteria andPropNameLessThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andPropNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(propName, value);
         }
 
-        public Criteria andPropNameLike(String value) {
+        public JdPropValueExample.Criteria andPropNameLike(String value) {
             return like(propName, value);
         }
 
-        public Criteria andPropNameNotLike(String value) {
+        public JdPropValueExample.Criteria andPropNameNotLike(String value) {
             return notLike(propName, value);
         }
 
-        public Criteria andPropNameIn(List<String> values) {
+        public JdPropValueExample.Criteria andPropNameIn(List<String> values) {
             return in(propName, values);
         }
 
-        public Criteria andPropNameNotIn(List<String> values) {
+        public JdPropValueExample.Criteria andPropNameNotIn(List<String> values) {
             return notIn(propName, values);
         }
 
-        public Criteria andPropNameBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andPropNameBetween(String value1, String value2) {
             return between(propName, value1, value2);
         }
 
-        public Criteria andPropNameNotBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andPropNameNotBetween(String value1, String value2) {
             return notBetween(propName, value1, value2);
         }
-        public Criteria andCidIsNull() {
+        public JdPropValueExample.Criteria andCidIsNull() {
             return isNull(cid);
         }
 
-        public Criteria andCidIsNotNull() {
+        public JdPropValueExample.Criteria andCidIsNotNull() {
             return isNotNull(cid);
         }
 
-        public Criteria andCidEqualTo(Long value) {
+        public JdPropValueExample.Criteria andCidEqualTo(Long value) {
             return equalTo(cid, value);
         }
 
-        public Criteria andCidNotEqualTo(Long value) {
+        public JdPropValueExample.Criteria andCidNotEqualTo(Long value) {
             return notEqualTo(cid, value);
         }
 
-        public Criteria andCidGreaterThan(Long value) {
+        public JdPropValueExample.Criteria andCidGreaterThan(Long value) {
             return greaterThan(cid, value);
         }
 
-        public Criteria andCidGreaterThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andCidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(cid, value);
         }
 
-        public Criteria andCidLessThan(Long value) {
+        public JdPropValueExample.Criteria andCidLessThan(Long value) {
             return lessThan(cid, value);
         }
 
-        public Criteria andCidLessThanOrEqualTo(Long value) {
+        public JdPropValueExample.Criteria andCidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(cid, value);
         }
 
-        public Criteria andCidIn(List<Long> values) {
+        public JdPropValueExample.Criteria andCidIn(List<Long> values) {
             return in(cid, values);
         }
 
-        public Criteria andCidNotIn(List<Long> values) {
+        public JdPropValueExample.Criteria andCidNotIn(List<Long> values) {
             return notIn(cid, values);
         }
 
-        public Criteria andCidBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andCidBetween(Long value1, Long value2) {
             return between(cid, value1, value2);
         }
 
-        public Criteria andCidNotBetween(Long value1, Long value2) {
+        public JdPropValueExample.Criteria andCidNotBetween(Long value1, Long value2) {
             return notBetween(cid, value1, value2);
         }
-        public Criteria andStatusIsNull() {
+        public JdPropValueExample.Criteria andStatusIsNull() {
             return isNull(status);
         }
 
-        public Criteria andStatusIsNotNull() {
+        public JdPropValueExample.Criteria andStatusIsNotNull() {
             return isNotNull(status);
         }
 
-        public Criteria andStatusEqualTo(String value) {
+        public JdPropValueExample.Criteria andStatusEqualTo(String value) {
             return equalTo(status, value);
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
+        public JdPropValueExample.Criteria andStatusNotEqualTo(String value) {
             return notEqualTo(status, value);
         }
 
-        public Criteria andStatusGreaterThan(String value) {
+        public JdPropValueExample.Criteria andStatusGreaterThan(String value) {
             return greaterThan(status, value);
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andStatusGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(status, value);
         }
 
-        public Criteria andStatusLessThan(String value) {
+        public JdPropValueExample.Criteria andStatusLessThan(String value) {
             return lessThan(status, value);
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
+        public JdPropValueExample.Criteria andStatusLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(status, value);
         }
 
-        public Criteria andStatusLike(String value) {
+        public JdPropValueExample.Criteria andStatusLike(String value) {
             return like(status, value);
         }
 
-        public Criteria andStatusNotLike(String value) {
+        public JdPropValueExample.Criteria andStatusNotLike(String value) {
             return notLike(status, value);
         }
 
-        public Criteria andStatusIn(List<String> values) {
+        public JdPropValueExample.Criteria andStatusIn(List<String> values) {
             return in(status, values);
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
+        public JdPropValueExample.Criteria andStatusNotIn(List<String> values) {
             return notIn(status, values);
         }
 
-        public Criteria andStatusBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andStatusBetween(String value1, String value2) {
             return between(status, value1, value2);
         }
 
-        public Criteria andStatusNotBetween(String value1, String value2) {
+        public JdPropValueExample.Criteria andStatusNotBetween(String value1, String value2) {
             return notBetween(status, value1, value2);
         }
     }

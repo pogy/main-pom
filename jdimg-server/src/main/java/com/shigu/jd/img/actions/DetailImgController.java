@@ -1,6 +1,7 @@
 package com.shigu.jd.img.actions;
 
 
+import com.shigu.exceptions.CustomException;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.jd.img.bo.DownOtherBO;
 import com.shigu.jd.img.vo.DownOtherVO;
@@ -47,8 +48,7 @@ public class DetailImgController {
             if(!addIp(request.getRemoteAddr())){
                 return;
             }
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
         //先计算urlkey
         DownOtherVO dov=new DownOtherVO();
@@ -60,9 +60,9 @@ public class DetailImgController {
                 dov.setStatus(1);
                 dov.setUrl(url);
             }
-        } catch (ImgDownloadException e) {
+        } catch (CustomException e) {
 //            e.printStackTrace();
-            dov.setMsg(e.getErrMsg());
+            dov.setMsg(e.getMessage());
         }
         response.setContentType("application/x-javascript");//jsonp异常响应处理
         String jsonString = request.getParameter("callback") + "(" + JSONObject.fromObject(dov) + ")";

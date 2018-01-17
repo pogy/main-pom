@@ -1,5 +1,7 @@
 package com.shigu.jd.actions;
 
+import com.openJar.beans.JdAuthedInfo;
+import com.openJar.beans.SdkJdVasSubscribe;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdVasSubscribeResponse;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
@@ -44,14 +46,14 @@ public class JdAuthAction {
             return "redirect:http://www.571xz.com";
         }
         /************检测是否订阅服务**********/
-        JdVasSubscribeResponse subscribeVO = JdParseStateUtil.parseState(state);
+        SdkJdVasSubscribe subscribeVO = JdParseStateUtil.parseState(state);
         if (subscribeVO == null || subscribeVO.getEndDate().after(new Date())) {
             //FW_GOODS-449409
             return "redirect:https://fw.jd.com/"+itemId+".html";
         }
 
         /************获取用户登陆信息**********/
-        JdAuthedInfoResponse jdAuthedInfoVO = null;
+        JdAuthedInfo jdAuthedInfoVO = null;
         try {
             jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
             //保存订购信息
@@ -62,7 +64,11 @@ public class JdAuthAction {
             return "redirect:http://www.571xz.com";
         }
 
-        JSONObject jsonObject = JSONObject.fromObject(jdAuthedInfoVO);
+        JdAuthedInfoResponse res=new JdAuthedInfoResponse();
+        res.setSuccess(true);
+        res.setData(jdAuthedInfoVO);
+
+        JSONObject jsonObject = JSONObject.fromObject(res);
         String encryptPlainData = Opt3Des.encryptPlainData(jsonObject.toString());//加密
         return "redirect:http://www.571xz.com/jd/callback.htm?code="+encryptPlainData;
     }

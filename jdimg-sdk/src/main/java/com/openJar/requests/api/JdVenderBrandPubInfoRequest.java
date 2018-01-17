@@ -25,10 +25,10 @@ public class JdVenderBrandPubInfoRequest extends Request<JdVenderBrandPubInfoRes
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"userApi/jdVenderBrandPubInfo.json";
+        return JdImgEnum.REST+"api/jdVenderBrandPubInfo.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"userApi/jdVenderBrandPubInfo.json";
+        return JdImgEnum.TEST+"api/jdVenderBrandPubInfo.json";
     }
 }

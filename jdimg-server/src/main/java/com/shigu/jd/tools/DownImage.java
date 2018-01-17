@@ -1,7 +1,6 @@
 package com.shigu.jd.tools;
 
-
-import com.shigu.exceptions.ImgDownloadException;
+import com.shigu.exceptions.OtherCustomException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,7 +22,7 @@ import java.net.URL;
 public class DownImage {
     private static final Logger logger = LoggerFactory.getLogger(DownImage.class);
 
-    public static void main(String[] args) throws ImgDownloadException {
+    public static void main(String[] args) throws OtherCustomException {
         System.out.println(downImgFile("https://img.alicdn.com/imgextra/i2/105348211/TB237rop1J8puFjy1XbXXagqVXa_!!105348211.jpg"));
     }
 
@@ -35,9 +34,9 @@ public class DownImage {
      * @param sourceUrl
      * @return
      */
-    public static byte[] downImgFile(String sourceUrl) throws ImgDownloadException {
+    public static byte[] downImgFile(String sourceUrl) throws OtherCustomException {
         if (StringUtils.isEmpty(sourceUrl)) {
-            throw new ImgDownloadException("sourceUrl is null");
+            throw new OtherCustomException("sourceUrl is null");
         }
         try {
             HttpURLConnection connection = getHttpURLConnectionByUrl(sourceUrl);
@@ -46,7 +45,7 @@ public class DownImage {
             int code = connection.getResponseCode();
             try {
                 if (code >= 400) {//网络资源不存在
-                    throw new ImgDownloadException("图片下载失败");
+                    throw new OtherCustomException("图片下载失败");
                 } else {
                     Connection conn = Jsoup.connect(sourceUrl);
                     conn.followRedirects(false);
@@ -68,7 +67,7 @@ public class DownImage {
             //记一下日志
             logger.error("down img error", e);
         }
-        throw new ImgDownloadException("图片下载失败");
+        throw new OtherCustomException("图片下载失败");
     }
 
     /**

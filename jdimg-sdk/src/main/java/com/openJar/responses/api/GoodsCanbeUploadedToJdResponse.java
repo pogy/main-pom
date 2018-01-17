@@ -9,13 +9,19 @@ public class GoodsCanbeUploadedToJdResponse extends Response {
     /**
      * 商品是否可以上传到京东 true：可以
      */
-    private Boolean can;
+    private boolean can;
 
-    public Boolean getCan() {
-        return can;
+    /**
+     * 获取 商品是否可以上传到京东 true：可以
+     */
+    public boolean isCan() {
+        return this.can;
     }
 
-    public void setCan(Boolean can) {
+    /**
+     * 设置 商品是否可以上传到京东 true：可以
+     */
+    public void setCan(boolean can) {
         this.can = can;
     }
 }

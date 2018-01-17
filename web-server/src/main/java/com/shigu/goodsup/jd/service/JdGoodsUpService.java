@@ -9,10 +9,14 @@ import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.goodsup.jd.exceptions.AuthOverException;
+import com.shigu.goodsup.jd.exceptions.CustomException;
+import com.shigu.goodsup.jd.util.XzJdSdkSend;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +36,8 @@ public class JdGoodsUpService {
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-
     @Autowired
-    private OpenClientService openClientService;
-
+    XzJdSdkSend xzJdSdkSend;
     @Autowired
     private ItemUpRecordService itemUpRecordService;
 
@@ -50,7 +52,7 @@ public class JdGoodsUpService {
      * 根据goodsId获取tbCid,然后去jd_tb_bind表查询,如果查不到,则不能上传
      * @return
      */
-    public Boolean goodsCanbeUploadedToJd(Long goodsId)  {
+    public Boolean goodsCanbeUploadedToJd(Long goodsId) {
         ShiguGoodsIdGenerator generator;
         // 验证参数，并查询分站存在
         if (goodsId == null || (generator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId)) == null) {
@@ -67,8 +69,13 @@ public class JdGoodsUpService {
         Long tbCid = tiny.getCid();
         GoodsCanbeUploadedToJdRequest request = new GoodsCanbeUploadedToJdRequest();
         request.setTbCid(tbCid);
-        GoodsCanbeUploadedToJdResponse response = openClientService.getOpenClient().execute(request);
-        return response.getCan();
+        GoodsCanbeUploadedToJdResponse response = null;
+        try {
+            response = xzJdSdkSend.send(request);
+        } catch (Exception e) {
+            return false;
+        }
+        return response.isCan();
     }
 
 

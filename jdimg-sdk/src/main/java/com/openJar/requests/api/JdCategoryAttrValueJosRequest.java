@@ -33,10 +33,10 @@ public class JdCategoryAttrValueJosRequest extends Request<JdCategoryAttrValueJo
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"shopApi/JdCategoryAttrValueJos.json";
+        return JdImgEnum.REST+"api/jdCategoryAttrValueJos.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"shopApi/JdCategoryAttrValueJos.json";
+        return JdImgEnum.TEST+"api/jdCategoryAttrValueJos.json";
     }
 }

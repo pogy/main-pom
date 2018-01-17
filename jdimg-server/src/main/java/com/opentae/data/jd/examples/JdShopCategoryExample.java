@@ -57,7 +57,7 @@ public class JdShopCategoryExample extends SgExample<JdShopCategoryExample.Crite
         return new Criteria(this);
     }
 
-    public static class Criteria extends GeneratedCriteria<Criteria> {
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
         protected Criteria(SgExample example) {
             super(example);
         }

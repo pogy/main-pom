@@ -14,6 +14,8 @@ import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.exceptions.JdAuthFailureException;
+import com.shigu.exceptions.JdAuthOverdueException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.service.JdClientService;
 import com.shigu.jd.tools.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +44,17 @@ public class ImgMovingService {
      * @return
      * @throws JdApiException
      */
-    public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) throws JdAuthFailureException {
+    public JdUpImgResponse imgUpload (JdUpImgRequest jdUpImgRequest) {
         JdUpImgResponse jdUptoItemImgResponse=new JdUpImgResponse();
-        String accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
-        StringBuffer imgIds = new StringBuffer();
-        String errMsg = null;
+        String accessToken = null;
+        try {
+            accessToken = jdUidToTokenService.getTokenByUid(jdUpImgRequest.getJdUid());
+        } catch (JdAuthOverdueException e) {
+            jdUptoItemImgResponse.setReturnCode("0");
+            jdUptoItemImgResponse.setDesc("图片搬家失败");
+            return jdUptoItemImgResponse;
+        }
+        StringBuilder imgIds = new StringBuilder();
         List<String> imgUrls = jdUpImgRequest.getImgUrls();
         Map<String,JdImgInfo> jdImgInfos = new HashMap<>();
         for (String imgUrl : imgUrls) {
@@ -66,7 +74,7 @@ public class ImgMovingService {
                 //下载图片
                 byte[] imgData = DownImage.downImgFile(imgUrl);
                 //如果大于1M直接失败
-                if (imgData.length > 1024 * 1 * 1024) {
+                if (imgData.length > 1024 * 1024) {
                     break;
                 }
                 request.setImageData(imgData);
@@ -76,17 +84,17 @@ public class ImgMovingService {
                 ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
                 //返回码为1时为操作成功，返回码为0时为操作失败
                 if ("0".equals(response.getReturnCode())) {
-                    throw new JdApiException();
+                    throw new OtherCustomException("图片搬家失败");
                 }
                 JdImgInfo jdImgInfo = new JdImgInfo();
                 jdImgInfo.setPictureId(response.getPictureId());
                 jdImgInfo.setPictureUrl(response.getPictureUrl());
                 jdImgInfos.put(imgUrl,jdImgInfo);
                 imgIds.append(",").append(response.getPictureId());
-            } catch (JdApiException |ImgDownloadException e) {
+            } catch (OtherCustomException|JdAuthOverdueException e) {
                 try {
                     imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
-                } catch (JdApiException ignored) {
+                } catch (JdAuthOverdueException|OtherCustomException ignored) {
                 }
                 jdUptoItemImgResponse.setReturnCode("0");
                 jdUptoItemImgResponse.setDesc("图片搬家失败");
@@ -104,14 +112,14 @@ public class ImgMovingService {
      * @return
      * @throws JdApiException
      */
-    public JdImgDeleteResponse imgDelete (Long jdUid, String imgIds) throws JdAuthFailureException, JdApiException {
+    private JdImgDeleteResponse imgDelete(Long jdUid, String imgIds) throws JdAuthOverdueException, OtherCustomException {
         String accessToken = jdUidToTokenService.getTokenByUid(jdUid);
         ImgzonePictureDeleteRequest request = new ImgzonePictureDeleteRequest();
         request.setPictureIds(imgIds);
         ImgzonePictureDeleteResponse response = jdClientService.execute(request, accessToken);
         //返回码1，操作成功；0，操作失败；2，部分操作成功
         if ("0".equals(response.getReturnCode())) {
-            throw new JdApiException(response.getDesc());
+            throw new OtherCustomException(response.getDesc());
         }
         JdImgDeleteResponse jdImgDeleteResponse = new JdImgDeleteResponse();
         jdImgDeleteResponse.setReturnCode(response.getReturnCode());

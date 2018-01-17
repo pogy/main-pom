@@ -2,6 +2,7 @@ package com.shigu.jd.api.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.openJar.beans.JdAuthedInfo;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
@@ -51,7 +52,7 @@ public class JdAuthService {
      * @return
      * @throws IOException
      */
-    public JdAuthedInfoResponse getAuthedInfo(String code) {
+    public JdAuthedInfo getAuthedInfo(String code) {
         String url = JdUrlConstant.JD_AUTH_TOKEN_URL
                         .replace("JD_APPKEY",jdClientService.getJdAppkey())
                         .replace("JD_SECRET",jdClientService.getJdSecret())
@@ -65,7 +66,7 @@ public class JdAuthService {
         } catch (IOException e) {
             return null;
         }
-        JdAuthedInfoResponse jdAithedInfo = getJdAithedInfo(entityString);
+        JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
 
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdAithedInfo.getUid());
@@ -92,14 +93,14 @@ public class JdAuthService {
         return jdAithedInfo;
     }
 
-    public JdAuthedInfoResponse getAuthedInfo(Long jdUid) {
+    public JdAuthedInfo getAuthedInfo(Long jdUid) {
+        JdAuthedInfo info=new JdAuthedInfo();
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdUid);
         JdSessionMap selJdSessionMap = jdSessionMapMapper.selectOne(jdSessionMap);
         if (selJdSessionMap == null) {
             return null;
         }
-        JdAuthedInfoResponse response;
 
         //校验token有效性，少于一小时视为无效
         Calendar calendar = Calendar.getInstance();
@@ -111,15 +112,13 @@ public class JdAuthService {
             //刷新授权信息'
            return refreshToken(selJdSessionMap.getId(),selJdSessionMap.getRefreshToken());
         }
-
-        response = new JdAuthedInfoResponse();
-        response.setUid(selJdSessionMap.getJdUid());
-        response.setAccessToken(selJdSessionMap.getAccessToken());
-        response.setRefreshToken(selJdSessionMap.getRefreshToken());
-        response.setUserNick(selJdSessionMap.getJdUserNick());
-        response.setAuthTime(selJdSessionMap.getAuthTime().getTime());
-        response.setExpiresIn(selJdSessionMap.getExpiresIn());
-        return response;
+        info.setUid(selJdSessionMap.getJdUid());
+        info.setAccessToken(selJdSessionMap.getAccessToken());
+        info.setRefreshToken(selJdSessionMap.getRefreshToken());
+        info.setUserNick(selJdSessionMap.getJdUserNick());
+        info.setAuthTime(selJdSessionMap.getAuthTime().getTime());
+        info.setExpiresIn(selJdSessionMap.getExpiresIn());
+        return info;
     }
 
     /**
@@ -127,7 +126,7 @@ public class JdAuthService {
      * @param id
      * @param refreshToken
      */
-    public JdAuthedInfoResponse refreshToken(Long id,String refreshToken) {
+    public JdAuthedInfo refreshToken(Long id,String refreshToken) {
         String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
                 .replace("JD_APPKEY",jdClientService.getJdAppkey())
                 .replace("JD_SECRET",jdClientService.getJdSecret())
@@ -139,7 +138,7 @@ public class JdAuthService {
         } catch (IOException e) {
            return null;
         }
-        JdAuthedInfoResponse jdAithedInfo = getJdAithedInfo(entityString);
+        JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
 
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setId(id);
@@ -152,7 +151,7 @@ public class JdAuthService {
         return jdAithedInfo;
     }
 
-    private JdAuthedInfoResponse getJdAithedInfo(String entityString)  {
+    private JdAuthedInfo getJdAithedInfo(String entityString)  {
         //注释：
         //uid：授权用户对应的京东ID
         //user_nick：授权用户对应的京东昵称
@@ -168,7 +167,7 @@ public class JdAuthService {
             return null;
         }
 
-        JdAuthedInfoResponse response = new JdAuthedInfoResponse();
+        JdAuthedInfo response = new JdAuthedInfo();
         response.setAccessToken(authedInfo.getString("access_token"));
         response.setRefreshToken(authedInfo.getString("refresh_token"));
         response.setUid(authedInfo.getLong("uid"));

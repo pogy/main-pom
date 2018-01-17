@@ -1,12 +1,12 @@
 package com.shigu.jd.api.service;
 
-
 import com.jd.open.api.sdk.DefaultJdClient;
 import com.jd.open.api.sdk.JdClient;
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.request.JdRequest;
 import com.jd.open.api.sdk.response.AbstractResponse;
-import com.openJar.exceptions.imgs.JdApiException;
+import com.shigu.exceptions.JdAuthOverdueException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.constant.JdUrlConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,23 +41,25 @@ public class JdClientService {
        return new DefaultJdClient(JdUrlConstant.JD_SERVER_URL,accessToken,jdAppkey,jdSecret);
     }
 
-    public <T extends AbstractResponse> T execute(JdRequest<T> request, String accessToken) throws JdApiException {
+    public <T extends AbstractResponse> T execute(JdRequest<T> request, String accessToken) throws OtherCustomException, JdAuthOverdueException {
         try {
             T response = getJdClient(accessToken).execute(request);
             checkJdResponst(response);
             return response;
         } catch (JdException e) {
-            e.printStackTrace();
-            throw new JdApiException(e.getErrCode(),e.getErrMsg());
+            throw new OtherCustomException(e.getErrMsg());
         }
     }
 
     /**
      * 验证jd接口是否正确返回
      */
-    private void checkJdResponst(AbstractResponse response) throws JdApiException {
+    private void checkJdResponst(AbstractResponse response) throws OtherCustomException,JdAuthOverdueException {
         if ( !( "0".equals(response.getCode())) ) {
-            throw new JdApiException(response.getCode(),response.getZhDesc());
+            if("19".equals(response.getCode())){
+                throw new JdAuthOverdueException(response.getZhDesc());
+            }
+            throw new OtherCustomException(response.getZhDesc());
         }
     }
 

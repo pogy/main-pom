@@ -5,6 +5,7 @@ import com.jcloud.jss.exception.StorageClientException;
 import com.jcloud.jss.exception.StorageServerException;
 import com.jcloud.jss.service.ObjectService;
 import com.shigu.exceptions.ImgDownloadException;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.main4.common.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -111,7 +112,7 @@ public class JdOssIO {
      * @param imgUrl
      * @return
      */
-    public  String uploadFile(String imgUrl) throws IOException, ImgDownloadException {
+    public  String uploadFile(String imgUrl) throws IOException, OtherCustomException {
         Long contentLengthClose = DownImage.getContentLengthClose(imgUrl);
         byte[] bytes = DownImage.downImgFile(imgUrl);
         InputStream input = new ByteArrayInputStream(bytes);

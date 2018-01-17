@@ -1,11 +1,6 @@
 package com.shigu.goodsup.jd.vo;
 
-import com.shigu.main4.jd.vo.JdCategoryVO;
-import com.shigu.main4.jd.vo.JdPostTemplateVO;
-import com.shigu.main4.jd.vo.JdShopInfoVO;
-
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -22,10 +22,10 @@ public class JdPostTemplateRequest extends Request<JdPostTemplateResponse> {
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"userApi/jdPostTemplate.json";
+        return JdImgEnum.REST+"api/jdPostTemplate.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"userApi/jdPostTemplate.json";
+        return JdImgEnum.TEST+"api/jdPostTemplate.json";
     }
 }
