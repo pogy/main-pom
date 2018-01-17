@@ -479,7 +479,7 @@ function ready_publish(){
         if(in_array(url[order],img_detal_arr_temp)){
             download_detail(url,order+1,0);return false;
         }
-        $.getJSON("http://imgbj.571xz.net/down-img-detail.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     $('#imgType').html('开始搬家：描述图');
