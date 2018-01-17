@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguHelpcenterQuestionMapper">
+
+    <select id="search" resultType="com.opentae.data.mall.beans.ShiguHelpcenterQuestion"
+            parameterType="java.lang.String">
+        SELECT * FROM shigu_helpcenter_question WHERE title LIKE "%"#{keyword}"%"
+    </select>
+    <delete id="del" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterQuestion">
+        delete from shigu_helpcenter_question where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="save" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterQuestion">
+        insert into shigu_helpcenter_question(title,answer,gid,cid)
+        VALUES (#{title},#{answer},#{gid},#{cid})
+    </insert>
+    <update id="updata" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterQuestion">
+        update shigu_helpcenter_question
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="answer != null">answer = #{answer},</if>
+            <if test="gid != null">gid = #{gid},</if>
+            <if test="cid != null">cid = #{cid},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
