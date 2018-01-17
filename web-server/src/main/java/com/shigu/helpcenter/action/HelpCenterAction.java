@@ -190,15 +190,6 @@ public class HelpCenterAction {
         return JsonResponseUtil.success().element("helpCenter", allUpdataVo);
     }
 
-    @RequestMapping("updataQuedata")
-    @ResponseBody
-    public JSONObject updata(Integer id) {
-
-
-        return JsonResponseUtil.error("error");
-    }
-
-
     public List<QueIndexVo> getAll() {
         List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
         List<QueIndexVo> queIndexVoList = new ArrayList<QueIndexVo>();
