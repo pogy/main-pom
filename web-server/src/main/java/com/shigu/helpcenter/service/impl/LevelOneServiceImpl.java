@@ -17,7 +17,7 @@ import java.util.List;
 public class LevelOneServiceImpl implements LevelOneService {
     @Autowired
     private ShiguHelpcenterLevel1Mapper shiguHelpcenterLevel1Mapper;
-
+   
     @Override
     public List<ShiguHelpcenterLevel1> getAll() {
         ShiguHelpcenterLevel1Example example = new ShiguHelpcenterLevel1Example();
