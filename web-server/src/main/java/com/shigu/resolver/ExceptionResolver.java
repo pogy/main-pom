@@ -77,6 +77,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
         request.setAttribute("errMsg",msg);
         if (StringUtils.isNotBlank(msg) && !"系统异常".equals(msg)) {
             request.setAttribute("errorCon",msg);
+            return getModelAndView("xzSysPage/otherError", ex, request);
         }
 		//记录异常日志...
 		return getModelAndView("xzSysPage/500", ex, request);
