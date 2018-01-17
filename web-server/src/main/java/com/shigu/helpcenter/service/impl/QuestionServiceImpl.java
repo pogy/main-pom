@@ -64,7 +64,7 @@ public class QuestionServiceImpl implements QuestionService {
         shiguHelpcenterQuestion.setTitle(name);
         ShiguHelpcenterQuestion selectOne = shiguHelpcenterQuestionMapper.selectOne(shiguHelpcenterQuestion);
         if (selectOne != null){
-            return selectOne.getCid();
+            return selectOne.getId();
         }
         return null;
     }

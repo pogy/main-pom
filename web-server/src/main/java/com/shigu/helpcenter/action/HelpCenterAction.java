@@ -53,11 +53,11 @@ public class HelpCenterAction {
         }
         //搜索
         if (StringUtils.isNotBlank(keyword)) {
-            List<ShiguHelpcenterQuestion> search = questionService.search(keyword);
+           /* List<ShiguHelpcenterQuestion> search = questionService.search(keyword);
             ShiguHelpcenterQuestionSearchVo shiguHelpcenterQuestionSearchVo = new ShiguHelpcenterQuestionSearchVo();
             shiguHelpcenterQuestionSearchVo.setShiguHelpcenterQuestions(search);
-            shiguHelpcenterQuestionSearchVo.setKeyword(keyword);
-            return JsonResponseUtil.success().element("helpCenter", search);
+            shiguHelpcenterQuestionSearchVo.setKeyword(keyword);*/
+            return showQuestion(page,keyword);
         }
         return null;
     }
@@ -86,7 +86,6 @@ public class HelpCenterAction {
     @ResponseBody
     public JSONObject showQuestion(Integer page, String keyword) {
         if (page == null) {
-            System.out.println("null");
             page = 1;
         }
         Integer pageSize = 2;
@@ -152,7 +151,7 @@ public class HelpCenterAction {
         }
         if (pid != null && cid != null && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName)) {
             ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
-            shiguHelpcenterQuestion.setTitle(queTitle);
+            //shiguHelpcenterQuestion.setTitle(queTitle);
             shiguHelpcenterQuestion.setAnswer(queAnswer);
             shiguHelpcenterQuestion.setId(questionService.getPkByTitle(queTitle));
             String updata = questionService.updata(shiguHelpcenterQuestion);
