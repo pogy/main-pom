@@ -179,12 +179,14 @@ public class HelpCenterAction {
     public JSONObject addOrModify(Integer id) {
         ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
         AllUpdataVo allUpdataVo = new AllUpdataVo();
-        allUpdataVo.setId(id);
-        allUpdataVo.setCid(questionServiceByPk.getCid());
-        allUpdataVo.setPid(questionServiceByPk.getGid());
-        allUpdataVo.setMainCate(levelOneService.getByPk(questionServiceByPk.getGid()));
-        allUpdataVo.setQueTitle(questionServiceByPk.getTitle());
-        allUpdataVo.setQueAnswer(questionServiceByPk.getAnswer());
+        if (questionServiceByPk != null){
+            allUpdataVo.setId(id);
+            allUpdataVo.setCid(questionServiceByPk.getCid());
+            allUpdataVo.setPid(questionServiceByPk.getGid());
+            allUpdataVo.setMainCate(levelOneService.getByPk(questionServiceByPk.getGid()));
+            allUpdataVo.setQueTitle(questionServiceByPk.getTitle());
+            allUpdataVo.setQueAnswer(questionServiceByPk.getAnswer());
+        }
         return JsonResponseUtil.success().element("helpCenter", allUpdataVo);
     }
 
