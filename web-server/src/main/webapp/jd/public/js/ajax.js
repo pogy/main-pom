@@ -8,8 +8,9 @@ $(document).ready(function () {
         if(fireUrl.indexOf("fakepath")){
             var formData = new FormData($( "#spaceImg" )[0]);
             $.ajax({
-                url: 'up-xzw-img.action' ,
+                url: 'zs.571xz.com/detailImg/upload.json?callback=?' ,
                 type: 'POST',
+                dataType: 'jsonp',
                 data: formData,
                 async: false,
                 cache: false,
@@ -412,7 +413,7 @@ function ready_publish(){
         }
         imgAllNum=imgsList.length-1;
 
-        //抓取商品描述图搬家记录并生成数组 搬家=将编辑器中的图片通过ajax替换成自动淘宝相册中的图片
+        //抓取商品描述图搬家记录并生成数组 搬家=将编辑器中的图片通过ajax替换成自动京东相册中的图片
         var img_detal_arr_temp = new Array();
         $(".imgDetailTemp").each(function(){
             imgOwn=$(this).data('own');
@@ -458,15 +459,14 @@ function ready_publish(){
 
     var is_pic_full=0;//图片空间是否满了，1表示满了，0表示未满
     var is_show_full=0;//是否提示过满了
-//将描述图上传到淘宝并替换链接
+//将描述图上传到京东并替换链接
     function download_detail(url,order,times) {
-        return;
         if(!times){times=0;}
         if(is_pic_full==1){
             order=imgAllNum+1;
             if(is_show_full==0){
                 is_show_full=1;
-                $('#tip_content').html('您的淘宝图片空间容量不足，请进入淘宝图片空间进行删除或订购！' +
+                $('#tip_content').html('您的京东图片空间容量不足，请进入京东图片空间进行删除或订购！' +
                     '<br/><br/>前往图片空间：<a href="https://tadget.taobao.com/redaction/manager.htm" target="_blank">https://tadget.taobao.com/redaction/manager.htm</a>');
                 $('#tip_content').show();
                 $('#tip_default').hide();
@@ -524,20 +524,18 @@ function ready_publish(){
                 download_detail(url,order,times);
             },"json");
     }
-    //download_detail(imgsList,1,0);
-    upForm();
+    download_detail(imgsList,1,0);
 
 
     //将主图片上传到星座网
     function download_main(url,order){
-        return;
         if(order>img_arr_list_main_count){
             download_prop(img_arr_list_prop,1);return false;
         }
         if(url[order]==undefined || url[order].indexOf("@")==0){   //如果用户没刷新修改参数后点击发布，则绕开上传直接跳过+图片被取消
             download_main(url,order+1);return false;
         }
-        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_main_error=0;
@@ -564,7 +562,7 @@ function ready_publish(){
             c=0;
             timeCount();
             //
-            $('#tip_content').html('<img src='+domainHidden+'public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到淘宝,请勿取消...<br/>过程大概需要1-3分钟。');
+            $('#tip_content').html('<img src='+domainHidden+'public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到京东,请勿取消...<br/>过程大概需要1-3分钟。');
             $('#tip_content').show();
             $('#tip_default').hide();
             //alert('搞定');return false;
@@ -580,7 +578,7 @@ function ready_publish(){
             propids=propurl.substring(0,propurl.indexOf("##"));
             propurl=propurl.substring(propurl.indexOf("##")+2);
         }
-        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_prop_error=0;
