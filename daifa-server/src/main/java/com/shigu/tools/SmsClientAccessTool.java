@@ -52,6 +52,7 @@ public class SmsClientAccessTool {
 
         StringBuffer receive = new StringBuffer();
         BufferedWriter wr = null;
+        DataOutputStream dos = null;
         try {
             if (backEncodType == null || backEncodType.equals("")) {
                 backEncodType = "UTF-8";
@@ -74,8 +75,7 @@ public class SmsClientAccessTool {
             URLConn.setRequestProperty("Content-Length", String
                     .valueOf(sendParam.getBytes().length));
 
-            DataOutputStream dos = new DataOutputStream(URLConn
-                                                                .getOutputStream());
+            dos = new DataOutputStream(URLConn.getOutputStream());
             dos.writeBytes(sendParam);
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(
@@ -95,7 +95,13 @@ public class SmsClientAccessTool {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                wr = null;
+            }
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -137,8 +143,6 @@ public class SmsClientAccessTool {
                 } catch (java.io.IOException ex) {
                     ex.printStackTrace();
                 }
-                in = null;
-
             }
         }
 
