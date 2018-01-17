@@ -1,10 +1,10 @@
-<#assign $pageid>safeXgPaymm</#assign>
+<#assign $pageid="safeXgPaymm">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>修改支付密码 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -19,18 +19,14 @@
 <#include "/__style_torrent__/fxs__safeXgPaymm_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>safecenter</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="safecenter">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -68,9 +64,7 @@
         <div class="formGroup">
             <label>短信验证码：</label>
             <input type="text" class="fmInput msgCode" name="msgCode" placeholder="请输入短信验证码">
-<#assign text>{"value":telphone}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":telphone}] as $it>
 <button type="button"
      id="getMsgCode"
      class="getVerCode"
@@ -95,9 +89,7 @@
         <div class="formGroup">
             <label></label>
             <#if forPayPswType == 1>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -123,9 +115,7 @@
     </#if>
 </#list>
             <#elseif forPayPswType == 2>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -151,9 +141,7 @@
     </#if>
 </#list>
             <#elseif forPayPswType == 3>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

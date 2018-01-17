@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/storeGoodsList21init_v20180110_124933.js"></script>
+<script src="http://style.571xz.com/v6/gys/js/storeGoodsList21init_v20180117_170925.js"></script>
