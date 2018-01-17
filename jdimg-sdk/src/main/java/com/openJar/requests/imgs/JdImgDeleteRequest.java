@@ -35,11 +35,11 @@ public class JdImgDeleteRequest extends Request<JdImgDeleteResponse> {
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"jdImgApi/deleteImgs.json";
+        return JdImgEnum.REST+"api/deleteImgs.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"jdImgApi/deleteImgs.json";
+        return JdImgEnum.TEST+"api/deleteImgs.json";
     }
 
 

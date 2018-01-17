@@ -1,6 +1,8 @@
 package com.shigu.jd.tools;
 
 import com.jcloud.jss.JingdongStorageService;
+import com.jcloud.jss.constant.JssHeaders;
+import com.jcloud.jss.domain.StorageClass;
 import com.jcloud.jss.exception.StorageClientException;
 import com.jcloud.jss.exception.StorageServerException;
 import com.jcloud.jss.service.ObjectService;
@@ -52,10 +54,10 @@ public class JdOssIO {
             //创建objectService实例
             ObjectService inputStreamPutService = jss.bucket(bucketName).object(filePath);
             //使用低冗余存储，则使用该句代码
-            //inputStreamPutService.getBuilder().getHeaders().put(JssHeaders.X_JSS_STORAGE_CLASS, StorageClass.ReducedRedundancy.toString());
+            inputStreamPutService.getBuilder().getHeaders().put(JssHeaders.X_JSS_STORAGE_CLASS, StorageClass.ReducedRedundancy.toString());
 
             //设置上传文件Content-type为"text/html"。函数返回上传数据的Etag,目前Etag的值为上传数据的MD5
-            inputStreamPutService.entity(f).contentType("text/html").put();
+            inputStreamPutService.entity(f).contentType("image/jpeg").put();
             //若对上传文件进行加密，则使用该句代码
             //String inputStreamMd5 = objectService.entity(contentLength,inputStream).contentType("text/html").put(true);
         } catch (StorageClientException e) {
@@ -88,10 +90,10 @@ public class JdOssIO {
             //创建objectService实例
             ObjectService inputStreamPutService = jss.bucket(bucketName).object(filePath);
             //使用低冗余存储，则使用该句代码
-//        inputStreamPutService.getBuilder().getHeaders().put(JssHeaders.X_JSS_STORAGE_CLASS, StorageClass.ReducedRedundancy.toString());
+            inputStreamPutService.getBuilder().getHeaders().put(JssHeaders.X_JSS_STORAGE_CLASS, StorageClass.ReducedRedundancy.toString());
 
             //设置上传文件Content-type为"text/html"。函数返回上传数据的Etag,目前Etag的值为上传数据的MD5
-            inputStreamPutService.entity(contentLength, inputStream).contentType("text/html").put();
+            inputStreamPutService.entity(contentLength, inputStream).contentType("image/jpeg").put();
             //若对上传文件进行加密，则使用该句代码
             //String inputStreamMd5 = objectService.entity(contentLength,inputStream).contentType("text/html").put(true);
         } catch (StorageClientException e) {
@@ -112,11 +114,11 @@ public class JdOssIO {
      * @param imgUrl
      * @return
      */
-    public  String uploadFile(String imgUrl) throws IOException, OtherCustomException {
+    public  String uploadFile(String imgUrl,String filePath) throws IOException, OtherCustomException {
         Long contentLengthClose = DownImage.getContentLengthClose(imgUrl);
         byte[] bytes = DownImage.downImgFile(imgUrl);
         InputStream input = new ByteArrayInputStream(bytes);
-        return uploadFile(contentLengthClose, input, "temp" + File.separator + UUIDGenerator.getSysUUID());
+        return uploadFile(contentLengthClose, input, filePath);
     }
 
     /**

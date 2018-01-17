@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created By admin on 2017/12/22/13:30
  */
 @Controller
-@RequestMapping("jdImgApi/")
+@RequestMapping("api/")
 public class ImgMovingController {
 
     @Autowired
