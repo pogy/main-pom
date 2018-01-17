@@ -50,10 +50,10 @@ public class JdUpImgRequest extends Request<JdUpImgResponse> {
     }
 
     public String restApiUrl() {
-        return JdImgEnum.REST+"jdImgApi/uptoitemimg.json";
+        return JdImgEnum.REST+"api/uptoitemimg.json";
     }
 
     public String testApiUrl() {
-        return JdImgEnum.TEST+"jdImgApi/uptoitemimg.json";
+        return JdImgEnum.TEST+"api/uptoitemimg.json";
     }
 }

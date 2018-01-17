@@ -21,7 +21,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /*Api/** = api
+                /api/** = api
                 /** = anon
                 <!--/** = anon-->
             </value>

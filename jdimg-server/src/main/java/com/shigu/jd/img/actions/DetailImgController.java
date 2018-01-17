@@ -1,24 +1,21 @@
 package com.shigu.jd.img.actions;
 
-
-import com.shigu.exceptions.CustomException;
-import com.shigu.exceptions.ImgDownloadException;
-import com.shigu.jd.img.bo.DownOtherBO;
+import com.openJar.commons.MD5Attestation;
+import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.img.vo.DownOtherVO;
 import com.shigu.jd.tools.JdOssIO;
-import com.shigu.jd.tools.RedisUtil;
+import com.shigu.main4.common.util.UUIDGenerator;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -31,39 +28,63 @@ import java.io.PrintWriter;
 public class DetailImgController {
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    @Autowired
     private JdOssIO jdOssIO;
+
+    public static final String FOLDER = "upload";
 
 
     /**
-     * 上传详情图
+     * 上传图片到京东oss
+     * @return
+     */
+    @RequestMapping("uploadByUrl")
+    @ResponseBody
+    public void uploadByUrl(String imgUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        DownOtherVO dov=new DownOtherVO();
+        try {
+            String url = jdOssIO.uploadFile(imgUrl,FOLDER + "/" + UUIDGenerator.getSysUUID()+".jpg");
+            dov.setStatus(1);
+            dov.setUrl(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            dov.setStatus(0);
+            dov.setMsg("上传失败");
+        } catch (OtherCustomException e) {
+            e.printStackTrace();
+            dov.setStatus(0);
+            dov.setMsg(e.getMessage());
+        }
+
+        response.setContentType("application/x-javascript");//jsonp异常响应处理
+        String jsonString = request.getParameter("callback") + "(" + JSONObject.fromObject(dov) + ")";
+        writeResponse(response.getWriter(),jsonString);
+    }
+
+
+    /**
+     * 上传图片到京东oss
      * @return
      */
     @RequestMapping("upload")
     @ResponseBody
-    public void upload(@Valid DownOtherBO bo, BindingResult br, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            if(!addIp(request.getRemoteAddr())){
-                return;
-            }
-        } catch (Exception ignored) {
-        }
-        //先计算urlkey
+    public void upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile,HttpServletRequest request,
+                         HttpServletResponse response) throws IOException {
         DownOtherVO dov=new DownOtherVO();
+
         try {
-            if(br.hasErrors()){
-                dov.setMsg(br.getAllErrors().get(0).getDefaultMessage());
-            }else{//无错
-                String url = jdOssIO.uploadFile(bo.getUrl());
-                dov.setStatus(1);
-                dov.setUrl(url);
-            }
-        } catch (CustomException e) {
-//            e.printStackTrace();
-            dov.setMsg(e.getMessage());
+            FileInputStream fis = (FileInputStream)multimagefile.getInputStream();
+            Long contentLength = fis.getChannel().size();
+            String url = jdOssIO.uploadFile(contentLength, fis, FOLDER + "/" + UUIDGenerator.getSysUUID() + ".jpg");
+
+            dov.setStatus(1);
+            dov.setUrl(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            dov.setStatus(0);
+            dov.setMsg("上传失败");
         }
+
         response.setContentType("application/x-javascript");//jsonp异常响应处理
         String jsonString = request.getParameter("callback") + "(" + JSONObject.fromObject(dov) + ")";
         writeResponse(response.getWriter(),jsonString);
@@ -73,30 +94,6 @@ public class DetailImgController {
         writer.print(result);
         writer.flush();
         writer.close();
-    }
-
-    /**
-     * 添加IP到redis
-     * 如果有问题,返回false
-     * @param ip
-     * @return
-     */
-    private boolean addIp(final String ip){
-        Boolean ok= (Boolean) redisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
-            String countStr= RedisUtil.formatKey(redisConnection.get(RedisUtil.parseKey("count_"+ip)));
-            Integer count;
-            if (countStr == null) {
-                count=0;
-            }else{
-                count=Integer.valueOf(countStr);
-            }
-            count++;
-            redisConnection.setEx(RedisUtil.parseKey("count_"+ip),3600,RedisUtil.parseKey(count.toString()));
-            Integer black= (Integer) RedisUtil.formatValue(redisConnection.get(RedisUtil.parseKey("black_"+ip)));
-            return black==null&&count<10000;
-        });
-        //查一下,是否黑名单,如果是,直接返回
-        return ok;
     }
 
 }
