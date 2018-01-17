@@ -27,6 +27,15 @@
 <#assign headerTitle=null>
 <#include "/common/xz__searchHeader.ftl">
 <#include "/__ftl_links__/search__common__pageNav.ftl">
+<#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"cid","value":""+query.cid},{"name":"keyword","value":""+query.keyword}]}] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
 <div class="bgBox">
 <div class="iconCateNav layout">
     <ul>
