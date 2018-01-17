@@ -35,7 +35,7 @@ public class IdDensityInterceptor extends DensityInterceptor {
         if (ipWhiteList != null && ipWhiteList.contains(ip)) {
             return true;
         }
-        String token = request.getParameter("token");
+        String token = request.getParameter("_csrf");
         if (StringUtils.isBlank(token)) {
             return false;
         }
