@@ -379,7 +379,7 @@ public class HelpCenterAction {
         Integer pageSize = 2;
         //当前页码
         Integer pageNo = page;
-        //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
+
         String pageOption = String.valueOf(pageTol) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
 
         List<ShiguHelpcenterQuestion> questionList = titleByCid.stream()
