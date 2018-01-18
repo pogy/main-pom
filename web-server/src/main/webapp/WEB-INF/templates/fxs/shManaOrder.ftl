@@ -66,9 +66,9 @@
                 <#list order.childOrders as childOrder>
 <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
     <li class="goods goodsDetail">
-        <div class="imgBox fl">
+        <a class="imgBox fl" href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}">
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
-        </div>
+        </a>
         <div class="goodsCon">
             <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>

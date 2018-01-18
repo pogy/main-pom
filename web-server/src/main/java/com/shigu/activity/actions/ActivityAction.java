@@ -331,7 +331,9 @@ public class ActivityAction {
         int actState;
         ShiguActivityVO vo = activityService.activityInfo(id);
         long current = System.currentTimeMillis();
-        if (vo.getStartApply().getTime() > current) {
+        if (vo == null || vo.getStartApply() == null || vo.getEndApply() == null) {
+            actState = 2;
+        }else if (vo.getStartApply().getTime() > current) {
             actState = 0;
         } else if (vo.getEndApply().getTime() > current) {
             actState = 1;
@@ -339,8 +341,10 @@ public class ActivityAction {
             actState = 2;
         }
 
-        //极限词过滤
-        vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        if (vo != null) {
+            //极限词过滤
+            vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        }
 
         model.addAttribute("actState", actState);
         model.addAttribute("id", id);
@@ -371,7 +375,7 @@ public class ActivityAction {
             model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpApply";
+        return "xzSearch/qzxpApply";
     }
 
     /**
@@ -380,7 +384,7 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpShop")
     public String qzxpShop(Model model) {
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpShop";
+        return "xzSearch/qzxpShop";
     }
 
     /**
@@ -407,7 +411,7 @@ public class ActivityAction {
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
         model.addAttribute("lettoryNumber", lotteryNum);
-        return "activity/lottery";
+        return "xzSearch/lottery";
     }
 
     @RequestMapping("activity/getAwards")
@@ -444,5 +448,13 @@ public class ActivityAction {
     @RequestMapping("qualityControl")
     public String qualityControl() {
         return "xzPage/qualityControl";
+    }
+
+    /**
+     *
+     */
+    @RequestMapping("xzPage/about")
+    public String about() {
+        return "xzPage/about";
     }
 }

@@ -226,6 +226,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress.setAddress(buyerAddress.getAddress());
         } catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
+            if (buyerAddressVO == null) {
+                throw new OrderException("下单失败，未查询到收货地址");
+            }
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
@@ -427,7 +430,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         List<ExpressLogVO> logVOList = new ArrayList<>();
         String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         Calendar cal = Calendar.getInstance();
-        if (resultVO.getTraces().size() > 0) {
+        if (resultVO.getTraces() != null && resultVO.getTraces().size() > 0) {
             for (int i=resultVO.getTraces().size()-1;i>=0;i--) {
                 SingleMsgVO msg =resultVO.getTraces().get(i);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
