@@ -47,7 +47,8 @@ public class HelpCenterAction {
     * */
     @RequestMapping("queIndex")
     @ResponseBody
-    public JSONObject getLecelOneAll(Integer gid, Integer id, String keyword, Integer page) {
+    public JSONObject getLecelOneAll(Integer pid, Integer id, String keyword, Integer page) {
+        Integer gid = pid;
         //初始化page
         if (page == null) {
             page = 1;
