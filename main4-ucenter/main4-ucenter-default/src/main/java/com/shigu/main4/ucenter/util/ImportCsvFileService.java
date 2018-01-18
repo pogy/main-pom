@@ -17,6 +17,8 @@ import com.shigu.main4.ucenter.vo.PriceDataGrid;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.ucenter.vo.ShiguPropImg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ import java.util.*;
  */
 @Service
 public class ImportCsvFileService {
+
+    public static Logger logger = LoggerFactory.getLogger(ImportCsvFileService.class);
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
@@ -756,14 +760,18 @@ public class ImportCsvFileService {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
                 }
             }
             if (bis != null) {
                 try {
                     bis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
                 }
             }
         }
