@@ -1,7 +1,7 @@
 <div class="footer">
     <div class="inner">
         <p class="sitemap">
-            <a href="/" target="_blank">首页</a>
+            <a href="${mainHost!}/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
             <a href="http://gz.571xz.com" target="_blank">广州站</a>
