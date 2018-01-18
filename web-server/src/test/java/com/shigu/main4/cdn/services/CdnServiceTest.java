@@ -47,42 +47,48 @@ public class CdnServiceTest {
 
     @Test
     public void v(){
-        similarityProvMap();
-        similarityCityMap();
-        similarityTownMap();
-        OrderProvMapper orderProvMapper= SpringBeanFactory.getBean(OrderProvMapper.class);
-        OrderProvExample example1 = new OrderProvExample();
-        List<OrderProv> provs = orderProvMapper.selectFieldsByExample(example1, FieldUtil.codeFields("prov_id,prov_name"));
-        OrderCityMapper orderCityMapper=SpringBeanFactory.getBean(OrderCityMapper.class);
-        OrderCityExample example2 = new OrderCityExample();
-        List<OrderCity> citys = orderCityMapper.selectFieldsByExample(example2, FieldUtil.codeFields("city_id,city_name,prov_id"));
-        OrderTownMapper orderTownMapper=SpringBeanFactory.getBean(OrderTownMapper.class);
-        OrderTownExample example3 = new OrderTownExample();
-        List<OrderTown> towns = orderTownMapper.selectFieldsByExample(example3, FieldUtil.codeFields("town_id,town_name,city_id"));
-        for (OrderProv p : provs) {
-            for(OrderCity c:citys){
-                if(c.getProvId().longValue()!=p.getProvId()){
-                    continue;
-                }
-                for(OrderTown t:towns){
-                    if(t.getCityId().longValue()!=c.getCityId()){
-                        continue;
-                    }
-                    String s=p.getProvName()+c.getCityName()+t.getTownName();
-                    if(p.getProvName().equals("西藏")){
-                        System.out.println();
-                    }
-                    String s1=similarityProvMap.get(p.getProvName(),null).getProvName()
-                            +similarityCityMap.get(c.getCityName(),p.getProvId()).getCityName()
-                            +similarityTownMap.get(t.getTownName().substring(0,t.getTownName().length()-1),c.getCityId()).getTownName();
-                    if(!s.equals(s1)){
-                        System.out.println(s);
-                        System.out.println(s1);
-                        System.out.println(s.equals(s1));
-                    }
-                }
-            }
-        }
+        SimilarityMap<OrderProv> provmap = similarityProvMap();
+        SimilarityMap<OrderCity> citymap = similarityCityMap();
+        SimilarityMap<OrderTown> townmap = similarityTownMap();
+        OrderProv prov=provmap.get("河北省",0L);
+        OrderCity city=citymap.get("唐山市",prov.getProvId());
+        OrderTown town=townmap.get("路北区 ",city.getCityId());
+        System.out.println();
+
+
+//        OrderProvMapper orderProvMapper= SpringBeanFactory.getBean(OrderProvMapper.class);
+//        OrderProvExample example1 = new OrderProvExample();
+//        List<OrderProv> provs = orderProvMapper.selectFieldsByExample(example1, FieldUtil.codeFields("prov_id,prov_name"));
+//        OrderCityMapper orderCityMapper=SpringBeanFactory.getBean(OrderCityMapper.class);
+//        OrderCityExample example2 = new OrderCityExample();
+//        List<OrderCity> citys = orderCityMapper.selectFieldsByExample(example2, FieldUtil.codeFields("city_id,city_name,prov_id"));
+//        OrderTownMapper orderTownMapper=SpringBeanFactory.getBean(OrderTownMapper.class);
+//        OrderTownExample example3 = new OrderTownExample();
+//        List<OrderTown> towns = orderTownMapper.selectFieldsByExample(example3, FieldUtil.codeFields("town_id,town_name,city_id"));
+//        for (OrderProv p : provs) {
+//            for(OrderCity c:citys){
+//                if(c.getProvId().longValue()!=p.getProvId()){
+//                    continue;
+//                }
+//                for(OrderTown t:towns){
+//                    if(t.getCityId().longValue()!=c.getCityId()){
+//                        continue;
+//                    }
+//                    String s=p.getProvName()+c.getCityName()+t.getTownName();
+//                    if(p.getProvName().equals("西藏")){
+//                        System.out.println();
+//                    }
+//                    String s1=similarityProvMap.get(p.getProvName(),null).getProvName()
+//                            +similarityCityMap.get(c.getCityName(),p.getProvId()).getCityName()
+//                            +similarityTownMap.get(t.getTownName().substring(0,t.getTownName().length()-1),c.getCityId()).getTownName();
+//                    if(!s.equals(s1)){
+//                        System.out.println(s);
+//                        System.out.println(s1);
+//                        System.out.println(s.equals(s1));
+//                    }
+//                }
+//            }
+//        }
 //        for (OrderProv p : provs) {
 //            boolean b=similarityProvMap.get(p.getProvName().substring(0,p.getProvName().length()-1),null).getProvName().equals(p.getProvName());
 //            if(!b){

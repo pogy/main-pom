@@ -17,6 +17,7 @@ public class SimilarityMap<T> extends HashMap<String, T> {
         if (key == null) {
             return null;
         }
+        key=key.trim();
         if (pid == null) {
             if (this.size() > 0) {
                 if (super.values().iterator().next() instanceof OrderProv) {
