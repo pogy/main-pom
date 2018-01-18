@@ -13,7 +13,7 @@
             <li type="shop" <#if 'shop' == searchType>class="select"</#if>>档口</li>
         </ul>
         <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
-        <a href="/picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
+        <a href="${mainHost!}/picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
         </#if>
     </div>
     <div class="searchBox">
