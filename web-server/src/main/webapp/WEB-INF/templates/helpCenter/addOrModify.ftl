@@ -43,6 +43,7 @@
     <div class="dataItem">
         <label>问题标题：</label>
         <input type="text" name="queTitle" class="fmInput" <#if queTitle??>value="${queTitle!}"</#if>>
+        <input type="hidden" name="queId" <#if query.id??>value="${query.id!}"</#if>>
     </div>
     <div class="dataItem">
         <label>问题答案：</label>
