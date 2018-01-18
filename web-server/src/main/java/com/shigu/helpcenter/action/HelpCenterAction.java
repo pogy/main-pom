@@ -10,10 +10,12 @@ import com.shigu.helpcenter.service.QuestionService;
 import com.shigu.helpcenter.vo.*;
 import com.shigu.tools.JsonResponseUtil;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,12 +23,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 /*
-* 帮助中心 helpCenter
-* 创建时间 18.1.16
-* 创建者 张喜惠
-* v1.2 ： 添加一些注释，精简部分代码 18.1.17
-* */
+ * 帮助中心 helpCenter
+ * 创建时间 18.1.16
+ * 创建者 张喜惠
+ * v1.2 ： 添加一些注释，精简部分代码 18.1.17
+ * */
 @Controller
 @RequestMapping("helpCenter/")
 public class HelpCenterAction {
@@ -36,45 +39,70 @@ public class HelpCenterAction {
     private LevelTwoService levelTwoService;
     @Autowired
     private QuestionService questionService;
+
     /*
-    * 帮助中心首页
-    * 请求地址：helpCenter/queIndex.htm
-    * 参数：
-    *   gid      一级目录ID
-    *   id       问题ID
-    *   keyword  搜索关键字
-    *   page     页码
-    * */
+     * 帮助中心首页
+     * 请求地址：helpCenter/queIndex.htm
+     * 参数：
+     *
+     *   id       问题ID
+     *   keyword  搜索关键字
+     *   page     页码
+     * */
     @RequestMapping("queIndex")
-    @ResponseBody
-    public JSONObject getLecelOneAll(Integer pid, Integer id, String keyword, Integer page) {
-        Integer gid = pid;
+    public String getLecelOneAll(Integer page,Integer id, String keyword, Model model) {
+        if (id == null) {
+            id = 1;
+        }
         //初始化page
         if (page == null) {
             page = 1;
         }
-        if (id == null && StringUtils.isBlank(keyword)) {
-            List<QueIndexVo> queIndexVos = getAll();
-            return JsonResponseUtil.success().element("helpCenter", queIndexVos);
+        List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
+        List<IndexVo> sidebarList = new ArrayList<IndexVo>();
+        for (ShiguHelpcenterLevel1 s : level1List) {
+            IndexVo indexVo = new IndexVo();
+            indexVo.setPid(s.getPid());
+            indexVo.setName(s.getName());
+            List<ShiguHelpcenterLevel2> level2s = levelTwoService.getLevelTowByGid(s.getPid());
+            indexVo.setSubSidebarList(level2s);
+            sidebarList.add(indexVo);
         }
-        if (id != null && StringUtils.isBlank(keyword)) {
-            List<QueIndexVo> queIndexVos = getAll();
-            QueIndexVo queIndexVo = new QueIndexVo();
-            //获取二级目录下对应ID的问题
-            queIndexVo.setQuestionList(getTitleByCid(gid, id, page));
-            queIndexVos.add(queIndexVo);
-            return JsonResponseUtil.success().element("helpCenter", queIndexVos);
-        }
-        //搜索
+        List<IndexVo> vos = sidebarList.stream().sorted((p1, p2) -> (p1.getPid() - p2.getPid())).collect(Collectors.toList());
+        Integer pageSize = 2;
+        List<ShiguHelpcenterQuestion> title = null;
         if (StringUtils.isNotBlank(keyword)) {
-           /* List<ShiguHelpcenterQuestion> search = questionService.search(keyword);
-            ShiguHelpcenterQuestionSearchVo shiguHelpcenterQuestionSearchVo = new ShiguHelpcenterQuestionSearchVo();
-            shiguHelpcenterQuestionSearchVo.setShiguHelpcenterQuestions(search);
-            shiguHelpcenterQuestionSearchVo.setKeyword(keyword);*/
-            return showQuestion(page, keyword);
+            title = questionService.search(keyword);
+        } else {
+            title = questionService.getTitleByCid(id);
         }
-        return null;
+        List<ShiguHelpcenterQuestion> collect = title.stream()
+                .limit(page * pageSize)
+                .skip((page - 1) * pageSize).collect(Collectors.toList());
+        Integer pageNo = page;
+        //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
+        String pageOption = String.valueOf(title.size()) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
+        String gname = levelOneService.getByPk(levelTwoService.getByPk(id).getGid()).getName();
+        String cname = levelTwoService.getByPk(id).getName();
+
+        String queCateNamePath = null;
+        if (keyword == null){
+            queCateNamePath = gname + " > " + cname;
+        }else {
+            queCateNamePath = "搜索结果";
+        }
+        Query query = new Query();
+        query.setKeyword(keyword);
+        model.addAttribute("query", query);
+        model.addAttribute("sidebarList", vos);
+        model.addAttribute("pageOption", pageOption);
+        model.addAttribute("queList", collect);
+        model.addAttribute("cid",id);
+        model.addAttribute("queCateNamePath", queCateNamePath);
+
+        return "helpCenter/queIndex";
     }
+
     /*
      * 帮助中心详情
      * 请求地址：helpCenter/queDetail.htm
@@ -82,23 +110,40 @@ public class HelpCenterAction {
      *   id  问题ID
      * */
     @RequestMapping("queDetail")
-    @ResponseBody
-    public JSONObject getAnswerById(Integer id) {
-        List<QueDetailVo> queDetailVos = getAllQ();
-        if (queDetailVos != null) {
-            ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
-            String answer = questionServiceByPk.getAnswer();
-            String gname = levelOneService.getByPk(questionServiceByPk.getGid()).getName();
-            String cname = levelTwoService.getByPk(questionServiceByPk.getCid()).getName();
-            //拼装路径信息
-            String queCateNamePath = gname + " > " + cname;
-            QueDetailVo queDetailVo = new QueDetailVo();
-            queDetailVo.setAnswer(answer);
-            queDetailVo.setQueCateNamePath(queCateNamePath);
-            queDetailVos.add(queDetailVo);
-            return JsonResponseUtil.success().element("helpCenter", queDetailVos);
+
+    public String getAnswerById(Integer id, String keyword,Model model) {
+        List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
+        List<IndexVo> indexVos = new ArrayList<IndexVo>();
+        for (ShiguHelpcenterLevel1 s : level1List) {
+            IndexVo indexVo = new IndexVo();
+            indexVo.setPid(s.getPid());
+            indexVo.setName(s.getName());
+            List<ShiguHelpcenterLevel2> level2s = levelTwoService.getLevelTowByGid(s.getPid());
+            indexVo.setSubSidebarList(level2s);
+            indexVos.add(indexVo);
         }
-        return null;
+        List<IndexVo> sidebarList = indexVos.stream().sorted((p1, p2) -> (p1.getPid() - p2.getPid())).collect(Collectors.toList());
+
+        ShiguHelpcenterQuestion question = questionService.getByPk(id);
+
+        String gname = levelOneService.getByPk(question.getGid()).getName();
+        String cname = levelTwoService.getByPk(question.getCid()).getName();
+        String title = question.getTitle();
+        String queCateNamePath = gname + " > " + cname + " > " + title;
+        Query query = new Query();
+        query.setKeyword(keyword);
+        model.addAttribute("sidebarList",sidebarList);
+        model.addAttribute("pid",question.getGid());
+        model.addAttribute("cid",question.getCid());
+        model.addAttribute("queTitle",question.getTitle());
+        model.addAttribute("queDetail",question.getAnswer());
+        model.addAttribute("queCateNamePath",queCateNamePath);
+        model.addAttribute("query",query);
+
+
+        return "helpCenter/queDetail";
+
+
     }
 
     /*
@@ -109,8 +154,7 @@ public class HelpCenterAction {
      *   keyword  搜索关键字
      * */
     @RequestMapping("showQuestion")
-    @ResponseBody
-    public JSONObject showQuestion(Integer page, String keyword) {
+    public String showQuestion(Integer page, String keyword, Model model) {
         //初始化page
         if (page == null) {
             page = 1;
@@ -130,10 +174,12 @@ public class HelpCenterAction {
         //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
         String pageOption = String.valueOf(pageTol) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
         if (questionList != null) {
-            ShowQuestionVo showQuestionVo = new ShowQuestionVo();
-            showQuestionVo.setQueList(collect);
-            showQuestionVo.setPageOption(pageOption);
-            return JsonResponseUtil.success().element("helpCenter", showQuestionVo);
+            Query query = new Query();
+            query.setKeyword(keyword);
+            model.addAttribute("query", query);
+            model.addAttribute("queList", collect);
+            model.addAttribute("pageOption", pageOption);
+            return "helpCenter/showQuestion";
         }
         return null;
     }
@@ -150,7 +196,7 @@ public class HelpCenterAction {
      */
     @RequestMapping("saveQuedata")
     @ResponseBody
-    public JSONObject saveQuestion(Integer pid, Integer cid, String mainCateName, String categoryName, String queTitle, String queAnswer) {
+    public JSONObject saveQuestion(Integer pid, Integer cid,Integer queId, String mainCateName, String categoryName, String queTitle, String queAnswer) {
         //当没有PID,CID认为添加新的问题
         if (pid == null && cid == null) {
             ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
@@ -172,24 +218,47 @@ public class HelpCenterAction {
                     shiguHelpcenterQuestion.setCid(levelTwoService.getPkByName(categoryName));
                     String save3 = questionService.save(shiguHelpcenterQuestion);
                     if (save3.equals("success")) {
-                        return JsonResponseUtil.success();
+                        return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
                     }
                 }
             }
         }
-        //当有PID CID 时获取问题标题更改改标题下的答案内容
-        if (pid != null && cid != null && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName)) {
+
+        if (pid != null && cid == null && StringUtils.isNotBlank(categoryName) && StringUtils.isNotBlank(queTitle)) {
+            ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
             ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
-            //shiguHelpcenterQuestion.setTitle(queTitle);
+            shiguHelpcenterLevel2.setGid(pid);
+            shiguHelpcenterLevel2.setName(categoryName);
+            String save1 = levelTwoService.save(shiguHelpcenterLevel2);
+            if (save1.equals("success")) {
+                shiguHelpcenterQuestion.setGid(pid);
+                shiguHelpcenterQuestion.setCid(levelTwoService.getPkByName(categoryName));
+                shiguHelpcenterQuestion.setTitle(queTitle);
+                shiguHelpcenterQuestion.setAnswer(queAnswer);
+                String save2 = questionService.save(shiguHelpcenterQuestion);
+                if (save2.equals("success")) {
+                    return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+                }
+            }
+
+        }
+        //当有PID CID 时获取问题标题更改改标题下的答案内容
+        if (pid != null && cid != null && StringUtils.isNotBlank(queTitle) && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName)) {
+            ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
+            shiguHelpcenterQuestion.setId(queId);
+            shiguHelpcenterQuestion.setTitle(queTitle);
             shiguHelpcenterQuestion.setAnswer(queAnswer);
-            shiguHelpcenterQuestion.setId(questionService.getPkByTitle(queTitle));
+
+            System.out.println(shiguHelpcenterQuestion);
+
             String updata = questionService.updata(shiguHelpcenterQuestion);
             if (updata.equals("success")) {
-                return JsonResponseUtil.success().element("redictUrl", "/helpCenter/addOrModify.htm");
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
             }
         }
         return JsonResponseUtil.error("error");
     }
+
     /* 删除操作
      * 请求地址：helpCenter/deleteQue.htm
      * 参数
@@ -206,26 +275,55 @@ public class HelpCenterAction {
         }
         return JsonResponseUtil.error("error");
     }
+
     /* 修改页问题详情展示
      * 请求地址：helpCenter/deleteQue.htm
      * 参数
      *      id  问题ID
      */
     @RequestMapping("addOrModify")
-    @ResponseBody
-    public JSONObject addOrModify(Integer id) {
-        ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
-        AllUpdataVo allUpdataVo = new AllUpdataVo();
-        if (questionServiceByPk != null) {
-            allUpdataVo.setId(id);
-            allUpdataVo.setCid(questionServiceByPk.getCid());
-            allUpdataVo.setPid(questionServiceByPk.getGid());
-            allUpdataVo.setMainCate(levelOneService.getByPk(questionServiceByPk.getGid()));
-            allUpdataVo.setQueTitle(questionServiceByPk.getTitle());
-            allUpdataVo.setQueAnswer(questionServiceByPk.getAnswer());
+    public String addOrModify(Integer id, Model model) {
+        if (id == null){
+            return "helpCenter/addOrModify";
         }
-        return JsonResponseUtil.success().element("helpCenter", allUpdataVo);
+        ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
+        List<ShiguHelpcenterLevel1> all = levelOneService.getAll();
+
+        Query query = new Query();
+        if (questionServiceByPk != null) {
+            List<PidChangeIdVo> pidChangeIdVoList = new ArrayList<PidChangeIdVo>();
+            for (ShiguHelpcenterLevel1 s : all){
+                PidChangeIdVo pidChangeIdVo = new PidChangeIdVo();
+                pidChangeIdVo.setId(s.getPid());
+                pidChangeIdVo.setName(s.getName());
+                pidChangeIdVoList.add(pidChangeIdVo);
+            }
+            query.setId(id);
+            model.addAttribute("mainCate", pidChangeIdVoList.stream().sorted((p1,p2)->(p1.getId()-p2.getId())).collect(Collectors.toList()));
+            model.addAttribute("queTitle", questionServiceByPk.getTitle());
+            model.addAttribute("queAnswer", questionServiceByPk.getAnswer());
+            model.addAttribute("pid", questionServiceByPk.getGid());
+            model.addAttribute("cid", questionServiceByPk.getCid());
+            model.addAttribute("query", query);
+        }
+        return "helpCenter/addOrModify";
     }
+
+    @RequestMapping("getCategories")
+    @ResponseBody
+    public JSONObject getCategories(Integer pid) {
+        List<ShiguHelpcenterLevel2> level2s = levelTwoService.getLevelTowByGid(pid);
+        ArrayList<CidChangeIdVo> cidChangeIdVos = new ArrayList<CidChangeIdVo>();
+        for (ShiguHelpcenterLevel2 s : level2s){
+            CidChangeIdVo cidChangeIdVo = new CidChangeIdVo();
+            cidChangeIdVo.setId(s.getCid());
+            cidChangeIdVo.setName(s.getName());
+            cidChangeIdVo.setPid(s.getGid());
+            cidChangeIdVos.add(cidChangeIdVo);
+        }
+        return JsonResponseUtil.success().element("categories",cidChangeIdVos);
+    }
+
 
     /*
      * 以下为自建的方法，提供给control使用
@@ -297,5 +395,6 @@ public class HelpCenterAction {
         }
         return null;
     }
+
 
 }

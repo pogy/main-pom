@@ -72,4 +72,14 @@ public class ShiguHelpcenterQuestion implements Serializable {
 		return this.cid;
 	}
 
+	@Override
+	public String toString() {
+		return "ShiguHelpcenterQuestion{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", answer='" + answer + '\'' +
+				", gid=" + gid +
+				", cid=" + cid +
+				'}';
+	}
 }

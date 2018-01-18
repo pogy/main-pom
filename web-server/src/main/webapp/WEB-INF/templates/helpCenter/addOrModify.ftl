@@ -35,6 +35,7 @@
         <input type="text" name="mainCateName" class="fmInput" placeholder="如下拉框内无所需主类目，请手动填写">
     </div>
     <div class="dataItem">
+
         <label>子类目：</label>
         <select class="fmInput categories">
         </select>

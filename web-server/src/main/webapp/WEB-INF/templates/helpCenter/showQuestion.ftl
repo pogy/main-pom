@@ -43,6 +43,7 @@
 </#if>
 </#list>
 <div class="queList">
+
     <table>
         <thead>
             <th class="queId">ID</th>
