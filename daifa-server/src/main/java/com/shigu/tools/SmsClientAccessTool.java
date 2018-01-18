@@ -1,5 +1,8 @@
 package com.shigu.tools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -19,6 +22,9 @@ import java.net.URL;
  * @commonents:
  */
 public class SmsClientAccessTool {
+
+    private Logger logger = LoggerFactory.getLogger(SmsClientAccessTool.class);
+
     private static SmsClientAccessTool smsClientToolInstance;
 
     /**
@@ -92,15 +98,19 @@ public class SmsClientAccessTool {
             if (wr != null) {
                 try {
                     wr.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
                 }
             }
             if (dos != null) {
                 try {
                     dos.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
                 }
             }
         }
@@ -141,7 +151,9 @@ public class SmsClientAccessTool {
                 try {
                     in.close();
                 } catch (java.io.IOException ex) {
-                    ex.printStackTrace();
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",ex);
+                    }
                 }
             }
         }
