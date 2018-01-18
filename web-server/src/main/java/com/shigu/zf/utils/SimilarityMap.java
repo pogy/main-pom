@@ -5,7 +5,6 @@ import com.opentae.data.mall.beans.OrderProv;
 import com.opentae.data.mall.beans.OrderTown;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
