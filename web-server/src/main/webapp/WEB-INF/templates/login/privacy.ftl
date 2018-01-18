@@ -1,10 +1,10 @@
-<#assign $pageid>privacy</#assign>
+<#assign $pageid="privacy">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>隐私保护 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,9 +17,7 @@
 <#include "/__style_torrent__/login__privacy_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -246,7 +244,7 @@
         <p>4、本协议的版权由石谷网络科技所有，石谷网络科技保留一切解释和修改权利。 </p>
         <p class="company">--杭州石谷网络科技有限公司</p>
     </div>
-    <div class="links"><a href="contract.html" target="_blank">服务条款</a> | <a href="privacy.html" target="_blank">隐私政策</a></div>
+    <div class="links"><a href="/contract.htm" target="_blank">服务条款</a> | <a href="/privacy.htm" target="_blank">隐私政策</a></div>
 </div>
 <div class="footer">
     <div class="inner">

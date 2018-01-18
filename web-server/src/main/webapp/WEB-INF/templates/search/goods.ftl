@@ -74,7 +74,7 @@
                     <span class="storeName"><a href="${mainHost!}/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
 <#list [{"id":""+goods.aliww}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=gicntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list>
                     <div class="upload">
