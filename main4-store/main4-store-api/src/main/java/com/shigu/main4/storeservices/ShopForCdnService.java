@@ -1,12 +1,7 @@
 package com.shigu.main4.storeservices;
 
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.vo.CatPolymerization;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBaseForCdn;
-import com.shigu.main4.vo.ShopCat;
-import com.shigu.main4.vo.ShopFitment;
-import com.shigu.main4.vo.ShopLicense;
+import com.shigu.main4.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -117,5 +112,12 @@ public interface ShopForCdnService {
      * @return
      */
     List<ItemShowBlock> shopGoodsNew(Long shopId);
+
+    /**
+     * 获取店内商品风格（风格频道）
+     * @param shopId
+     * @return
+     */
+    List<ShiguStyleShowVO> selShopStyleById(Long shopId);
 
 }

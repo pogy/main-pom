@@ -13,10 +13,7 @@ import com.shigu.main4.item.vo.OpenItemVo;
 import com.shigu.main4.item.vo.SearchGoodsVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
-import com.shigu.main4.vo.CatPolymerization;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBaseForCdn;
-import com.shigu.main4.vo.ShopCat;
+import com.shigu.main4.vo.*;
 import com.shigu.opensearchsdk.OpenSearch;
 import com.shigu.opensearchsdk.builder.AggsBuilder;
 import com.shigu.opensearchsdk.builder.FilterBuilder;
@@ -811,5 +808,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         goodsNewList = searchItemOnsale(null, shopId, webSite, "time_down", 1, 4).getContent();
         goodsNewCache.put(shopId,goodsNewList);
         return goodsNewList;
+    }
+
+    @Override
+    public List<ShiguStyleShowVO> selShopStyleById(Long shopId) {
+
+        return null;
     }
 }
