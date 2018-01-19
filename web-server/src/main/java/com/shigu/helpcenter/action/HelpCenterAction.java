@@ -223,6 +223,27 @@ public class HelpCenterAction {
                 }
             }
         }
+        //更改主目录
+        if (pid != null && StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
+            ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
+            shiguHelpcenterLevel1.setPid(pid);
+            shiguHelpcenterLevel1.setName(mainCateName);
+            String updata = levelOneService.updata(shiguHelpcenterLevel1);
+            if (updata.equals("success")){
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            }
+
+        }
+        //更改子目录
+        if (pid == null && cid != null &&StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
+            ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
+            shiguHelpcenterLevel2.setCid(cid);
+            shiguHelpcenterLevel2.setName(categoryName);
+            String updata = levelTwoService.updata(shiguHelpcenterLevel2);
+            if (updata.equals("success")){
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            }
+        }
 
         if (pid != null && cid == null && StringUtils.isNotBlank(categoryName) && StringUtils.isNotBlank(queTitle)) {
             ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
