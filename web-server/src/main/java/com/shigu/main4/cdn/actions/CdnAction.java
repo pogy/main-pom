@@ -1020,6 +1020,7 @@ public class CdnAction {
 
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
+            shop.setTbUrl(null);
         }
         //极限词过滤
         goods.setTitle(KeyWordsUtil.duleKeyWords(goods.getTitle()));
