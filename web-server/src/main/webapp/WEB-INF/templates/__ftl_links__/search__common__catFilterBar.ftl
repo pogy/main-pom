@@ -13,7 +13,7 @@
                     <ul>
                         <#list navCate as cate>
                             <li <#if query.pid?? && query.pid == cate.id>class="select"</#if>>
-                                <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if cate.id??>&pid=${cate.id!}</#if><#if cate.keyword??>&keyword=${cate.keyword!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${cate.text!}</a>
+                                <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if cate.id??>&pid=${cate.id!}</#if><#if cate.keyword??>&keyword=${cate.keyword!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${cate.text!}</a>
                             </li>
                         </#list>
                     </ul>
