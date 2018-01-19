@@ -226,6 +226,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress.setAddress(buyerAddress.getAddress());
         } catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
+            if (buyerAddressVO == null) {
+                throw new OrderException("下单失败，未查询到收货地址");
+            }
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }

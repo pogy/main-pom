@@ -31,6 +31,7 @@ public class FieldToMd {
                     strarr[2]+"("+strarr[3]+")",strarr.length>7?strarr[7]:"",must,strarr[6]));
             str=sca.readLine();
         }
+        sca.close();
 
     }
     class MdField{

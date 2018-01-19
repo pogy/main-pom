@@ -341,8 +341,10 @@ public class ActivityAction {
             actState = 2;
         }
 
-        //极限词过滤
-        vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        if (vo != null) {
+            //极限词过滤
+            vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        }
 
         model.addAttribute("actState", actState);
         model.addAttribute("id", id);

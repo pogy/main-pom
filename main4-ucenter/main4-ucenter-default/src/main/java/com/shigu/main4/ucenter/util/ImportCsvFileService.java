@@ -17,6 +17,8 @@ import com.shigu.main4.ucenter.vo.PriceDataGrid;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.ucenter.vo.ShiguPropImg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ import java.util.*;
  */
 @Service
 public class ImportCsvFileService {
+
+    public static Logger logger = LoggerFactory.getLogger(ImportCsvFileService.class);
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
@@ -738,18 +742,38 @@ public class ImportCsvFileService {
      */
     public static byte[] readYjImgBypath(String path){
 
-        byte[] arg0=null;
+        byte[] arg0;
         File f=new File(path);
-        FileInputStream fis;
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
         try {
             fis = new FileInputStream(f);
             arg0=new byte[fis.available()];
-            BufferedInputStream bis=new BufferedInputStream(fis);
+            bis=new BufferedInputStream(fis);
             bis.read(arg0);
             return arg0;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             return null;
+        }finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
+                }
+            }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
+                }
+            }
         }
     }
 

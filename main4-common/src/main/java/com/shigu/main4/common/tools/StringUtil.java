@@ -1,9 +1,12 @@
 package com.shigu.main4.common.tools;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -31,6 +34,9 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class StringUtil {
+
+	public static Logger logger = LoggerFactory.getLogger(StringUtil.class);
+
 	// ~ 静态对象初始化
 	// ----------------------------------------------------------------
 
@@ -786,6 +792,7 @@ public class StringUtil {
 	 * 设置prop文件的配置文件,读取配置文件中的map的映射对应关系,保存到infos对象中
 	 */
 	public static HashMap getPropertiesInfos(File propFile) {
+
 		// 对象为空,对象不存在,直接返回
 		if ((propFile == null) || !propFile.exists()) {
 			return null;
@@ -797,8 +804,18 @@ public class StringUtil {
 			fProp = new FileInputStream(propFile);
 			prop.load(fProp);
 		} catch (Exception ex) {
-			System.out.println(ex);
+//			System.out.println(ex);
 			return null;
+		}finally {
+			if (fProp != null) {
+				try {
+					fProp.close();
+				} catch (IOException e) {
+					if (logger.isErrorEnabled()) {
+						logger.error("关闭流失败",e);
+					}
+				}
+			}
 		}
 
 		HashMap infos = new HashMap();

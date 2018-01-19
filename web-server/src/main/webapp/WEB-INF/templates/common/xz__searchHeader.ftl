@@ -13,7 +13,7 @@
             <li type="shop" <#if 'shop' == searchType>class="select"</#if>>档口</li>
         </ul>
         <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
-        <a href="/picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
+        <a href="${mainHost!}/picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
         </#if>
     </div>
     <div class="searchBox">
@@ -25,7 +25,7 @@
             </#if>
         >
             <#if searchType == 'shop'><input class="searchWeb" type="hidden" name="webSite" value="${webSite!}"> </#if>
-            <input type="text" class="searchCon fl" name="keyword" placeholder="<#if searchType == 'shop'>输入店铺名称<#else>输入商品名称</#if>" <#if $pageid == 'search'>value="${query.keyword!}"</#if>>
+            <input type="text" class="searchCon fl" name="keyword" placeholder="<#if searchType == 'shop'>输入店铺名称<#else>输入商品名称</#if>" <#if $pageid == 'search' || $pageid == 'storenum'>value="${query.keyword!}"</#if>>
             <button type="submit" class="searchBtn fs14">搜索</button>
         </form>
     </div>
