@@ -69,7 +69,7 @@ public class HelpCenterAction {
             sidebarList.add(indexVo);
         }
         List<IndexVo> vos = sidebarList.stream().sorted((p1, p2) -> (p1.getPid() - p2.getPid())).collect(Collectors.toList());
-        Integer pageSize = 2;
+        Integer pageSize = 10;
         List<ShiguHelpcenterQuestion> title = null;
         if (StringUtils.isNotBlank(keyword)) {
             title = questionService.search(keyword);
@@ -93,11 +93,13 @@ public class HelpCenterAction {
         }
         Query query = new Query();
         query.setKeyword(keyword);
+
         model.addAttribute("query", query);
         model.addAttribute("sidebarList", vos);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("queList", collect);
         model.addAttribute("cid",id);
+        model.addAttribute("pid",levelTwoService.getByPk(id).getGid());
         model.addAttribute("queCateNamePath", queCateNamePath);
 
         return "helpCenter/queIndex";
@@ -159,7 +161,7 @@ public class HelpCenterAction {
         if (page == null) {
             page = 1;
         }
-        Integer pageSize = 2;
+        Integer pageSize = 10;
         List<ShiguHelpcenterQuestion> questionList = null;
         if (StringUtils.isNotBlank(keyword)) {
             questionList = questionService.search(keyword);
@@ -468,7 +470,7 @@ public class HelpCenterAction {
         //数据总数
         Integer pageTol = titleByCid.size();
         //每页显示数量
-        Integer pageSize = 2;
+        Integer pageSize = 10;
         //当前页码
         Integer pageNo = page;
 
