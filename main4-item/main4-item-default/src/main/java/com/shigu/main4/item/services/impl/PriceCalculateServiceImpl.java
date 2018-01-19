@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,6 +113,54 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
             return errPrice;
         }
         return price; // 没有匹配到的返回原价
+    }
+
+    @Override
+    public Long pickPipriceFromTitle(Long shopId,Long itemId,Long numIid, Long price, String... strs) {
+        //标题(title) > 货号(goods_no) > 商家外部编号(outer_id)
+        List<Long> piPrices = new ArrayList<>(strs.length);
+        Set<Long> allPrices = new HashSet<>();
+        boolean isErr=false;
+        for (String s : strs) {
+            if (StringUtils.isEmpty(s)) {
+                continue;
+            }
+            Long piPrice = pickString(null, "0" + s);
+            if (piPrice != null) {
+                allPrices.add(piPrice);
+                //批价区间	批价/原价占比	处置方案
+                //10元以下	小于10%	舍弃
+                //10元以上	小于15%	舍弃
+                //30元以上	小于5%	舍弃
+                //50元以上	小于1%	舍弃
+                boolean discard = piPrice < 1000 && piPrice * 10 < price
+                        ||    piPrice > 1000 && piPrice <= 3000 && piPrice * 100 / 15 < price
+                        ||    piPrice > 3000 && piPrice <= 5000 && piPrice * 100 / 5 < price
+                        ||    piPrice > 5000  && piPrice * 100 < price;
+                if (discard) {
+                    isErr=true;
+                    continue;
+                }
+                if(piPrice > price){
+                    isErr=true;
+                }
+                piPrices.add(piPrice);
+            }
+        }
+        Long returnPrice=price;
+        if(piPrices.size()>0){
+            returnPrice= piPrices.get(0);
+        }else{
+            isErr=true;
+        }
+        if (isErr && (itemId != null || numIid != null)) {
+            //todo 写入匹配异常表
+
+
+
+
+        }
+        return returnPrice;
     }
 
     /**

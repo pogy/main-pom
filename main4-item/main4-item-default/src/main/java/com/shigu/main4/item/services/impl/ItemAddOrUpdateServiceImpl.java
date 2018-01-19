@@ -212,7 +212,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 }
             }
             if (price != null) {
-                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(), price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
+                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(),itemId,null, price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
                 tiny.setPiPriceString(String.format("%.2f", tiny.getPiPrice() * .01));
             }
         }
@@ -1117,6 +1117,8 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         Long price = new Double(Double.valueOf(item.getPriceString()) * 100).longValue();
         Long piPrice = priceCalculateService.pickPipriceFromTitle(
                 item.getShopId(),
+                null,
+                item.getNumIid(),
                 price,
                 strs
         );
