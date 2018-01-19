@@ -94,6 +94,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -972,17 +974,30 @@ public class ShopAction {
     @RequestMapping("seller/shiguStoreerjiyuming")
     public String shiguStoreerjiyuming(String domain,HttpSession session,Model model) {
         ShopSession shopSession = getShopSession(session);
-        if(domain==null){
+        if(StringUtils.isBlank(domain)){
             model.addAttribute("domain",shopBaseService.selDomain(shopSession.getShopId()));
         }else{
-            try {
-                shopBaseService.updateDomain(shopSession.getShopId(),domain);
-            } catch (ShopDomainException e) {
-                model.addAttribute("msg",e.getMsg());
+            if (isContainChinese(domain)) {
+                model.addAttribute("msg","二级域名只允许字母和数字的组合，建议长度3-8位");
+            }else {
+                try {
+                    shopBaseService.updateDomain(shopSession.getShopId(), domain);
+                } catch (ShopDomainException e) {
+                    model.addAttribute("msg", e.getMsg());
+                }
+                model.addAttribute("domain", domain);
             }
-            model.addAttribute("domain",domain);
         }
         return "gys/shiguStoreerjiyuming";
+    }
+
+    private static boolean isContainChinese(String str) {
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            return true;
+        }
+        return false;
     }
 
     /**
