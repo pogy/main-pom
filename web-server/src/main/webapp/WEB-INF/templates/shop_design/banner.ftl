@@ -94,6 +94,33 @@
                             </div>
                         </div>
                     </li>
+                    <#if shopStyles??>
+                        <#if (shopStyles?size>0)>
+                            <li class="c_all_tit">
+                                <a href="/shop/search.htm?id=${shop.shopId}" style="color:${moduleSet.storeNav.color};"">
+                                    风格类别
+                                    <i class="show-down">
+                                    </i>
+                                </a>
+                                <div class="con_bg" style="display: none;">
+                                   <div class="con clearfix" style="display: block">
+                                     <ul class="first clearfix">
+                                         <#list shopStyles as style >
+                                             <li class="f_con">
+                                                 <a href="/shop/search.htm?id=${shop.shopId}&psid=${style.psid!}">
+                                                     ${style.name!}
+                                                     <span>
+                                                         &gt;
+                                                     </span>
+                                                 </a>
+                                             </li>
+                                         </#list>
+                                     </ul>
+                                   </div>
+                                </div>
+                            </li>
+                        </#if>
+                    </#if>
                     <#list checkedNavs as nav>
                         <li>
                             <a href="${nav.href!}" style="color:${moduleSet.storeNav.color!};">
