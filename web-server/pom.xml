@@ -41,6 +41,84 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+
+            <!-- jetty 插件：
+				a. 启动：
+					mvn jetty:run
+				b. 默认加载资源：
+					resources in ${project.basedir}/src/main/webapp
+					classes in ${project.build.outputDirectory}
+					web.xml in ${project.basedir}/src/main/webapp/WEB-INF/
+			-->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <!-- useFileMappedBuffer默认true，锁定资源文件的解决：待解决 -->
+                    <!-- 自动热部署，单位：秒 -->
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
+                    <httpConnector>
+                        <port>80</port>
+                    </httpConnector>
+                    <webApp>
+                        <!-- 访问路径 -->
+                        <contextPath>/</contextPath>
+                        <!-- 非默认路径下的资源加载
+                        <resourceBases>
+                            <resourceBase>${project.basedir}/src/main/webapp</resourceBase>
+                            <resourceBase>${project.basedir}/commons</resourceBase>
+                        </resourceBases>
+                        -->
+                    </webApp>
+                    <!-- reload与大于0的scanIntervalSeconds节点一起作用，实现自动热部署的工作，默认值为automatic。
+                         设为manual后，修改文件并保存时，不会马上触发自动扫描和重部署的动作，还可以继续的修改，
+                         直至你在Console或命令行中敲回车键（Enter）的时候才触发重新加载的动作。这样可以更加的方便调试修改。
+                    -->
+                    <reload>manual</reload>
+                    <!-- 使用mvn jetty:stop执行关闭jetty
+                    <stopKey>shutdown</stopKey>
+                    <stopPort>9966</stopPort>
+                    -->
+                    <!-- jetty在启动时会把当前服务进程的内存信息输出到控制台中
+                    <dumpOnStart>true</dumpOnStart>
+                    -->
+                    <!-- 存储访问日志
+                    <requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+                        <filename>target/access-yyyy_mm_dd.log</filename>
+                        <filenameDateFormat>yyyy_MM_dd</filenameDateFormat>
+                        <logDateFormat>yyyy-MM-dd HH:mm:ss</logDateFormat>
+                        <logTimeZone>GMT+8:00</logTimeZone>
+                        <append>true</append>
+                        <logServer>true</logServer>
+                        <retainDays>120</retainDays>
+                        <logCookies>true</logCookies>
+                    </requestLog>
+                    -->
+                </configuration>
+            </plugin>
+
+            <!-- tomcat7插件 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <path>/</path>
+                    <port>80</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <!-- 名称必须与配置文件的id名称一致 -->
+                    <server>tomcat7</server>
+                </configuration>
+                <!-- tomcat7打包时运行
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions> -->
+            </plugin>
         </plugins>
     </build>
     <dependencies>

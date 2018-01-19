@@ -67,7 +67,7 @@
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>
-                            <p class="fc9">${item.payCodeText!}${item.payCode!}</p>
+                            <p class="fc9">${item.payCodeText!}：${item.payCode!}</p>
                         </li>
                     </ul>
                 </#list>
