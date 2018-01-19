@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.2 ： 添加一些注释，精简部分代码 18.1.17
+ * v1.3.4 ： 命名进行规范 18.1.19
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -75,9 +75,9 @@ public class HelpCenterAction {
      *   page     页码
      * */
     @RequestMapping("queIndex")
-    public String getLecelOneAll(Integer page,Integer id, String keyword, Model model) {
-        if (id == null) {
-            id = 1;
+    public String getLecelOneAll(Integer page,Integer cid, String keyword, Model model) {
+        if (cid == null) {
+            cid = 1;
         }
         //初始化page
         if (page == null) {
@@ -99,7 +99,7 @@ public class HelpCenterAction {
         if (StringUtils.isNotBlank(keyword)) {
             title = questionService.search(keyword);
         } else {
-            title = questionService.getTitleByCid(id);
+            title = questionService.getTitleByCid(cid);
         }
         List<ShiguHelpcenterQuestion> collect = title.stream()
                 .limit(page * pageSize)
@@ -107,8 +107,8 @@ public class HelpCenterAction {
         Integer pageNo = page;
         //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
         String pageOption = String.valueOf(title.size()) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
-        String gname = levelOneService.getByPk(levelTwoService.getByPk(id).getGid()).getName();
-        String cname = levelTwoService.getByPk(id).getName();
+        String gname = levelOneService.getByPk(levelTwoService.getByPk(cid).getGid()).getName();
+        String cname = levelTwoService.getByPk(cid).getName();
 
         String queCateNamePath = null;
         if (keyword == null){
@@ -118,15 +118,13 @@ public class HelpCenterAction {
         }
         Query query = new Query();
         query.setKeyword(keyword);
-
+        query.setCid(cid);
+        query.setPid(levelTwoService.getByPk(cid).getGid());
         model.addAttribute("query", query);
         model.addAttribute("sidebarList", vos);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("queList", collect);
-        model.addAttribute("cid",id);
-        model.addAttribute("pid",levelTwoService.getByPk(id).getGid());
         model.addAttribute("queCateNamePath", queCateNamePath);
-
         return "helpCenter/queIndex";
     }
 
