@@ -197,8 +197,8 @@ public class HelpCenterAction {
     @RequestMapping("saveQuedata")
     @ResponseBody
     public JSONObject saveQuestion(Integer pid, Integer cid,Integer queId, String mainCateName, String categoryName, String queTitle, String queAnswer) {
-        //当没有PID,CID认为添加新的问题
-        if (pid == null && cid == null) {
+        //当没有PID,CID认为添加全新的一级二级和问题  OK
+        if (pid == null && cid == null && queId == null) {
             ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
             ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
             ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
@@ -223,8 +223,40 @@ public class HelpCenterAction {
                 }
             }
         }
-        //更改主目录
-        if (pid != null && StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
+
+        //增加问题 OK
+        if (pid != null && cid != null && queId == null && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName) && StringUtils.isNotBlank(queTitle) && StringUtils.isNotBlank(queAnswer)){
+            ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
+            shiguHelpcenterQuestion.setGid(pid);
+            shiguHelpcenterQuestion.setCid(cid);
+            shiguHelpcenterQuestion.setTitle(queTitle);
+            shiguHelpcenterQuestion.setAnswer(queAnswer);
+            String save = questionService.save(shiguHelpcenterQuestion);
+            if (save.equals("success")){
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            }
+        }
+
+        //当有PID CID 时获取问题标题,更改该标题下的答案内容和问题标题  OK
+        if (pid != null && cid != null && cid != null && StringUtils.isNotBlank(queTitle) && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName)) {
+            ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
+            shiguHelpcenterQuestion.setId(queId);
+            shiguHelpcenterQuestion.setTitle(queTitle);
+            shiguHelpcenterQuestion.setAnswer(queAnswer);
+
+           // System.out.println(shiguHelpcenterQuestion);
+
+            String updata = questionService.updata(shiguHelpcenterQuestion);
+            if (updata.equals("success")) {
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            }
+        }
+
+
+
+
+        /*//更改主目录
+        if (pid != null & cid == null && StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
             ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
             shiguHelpcenterLevel1.setPid(pid);
             shiguHelpcenterLevel1.setName(mainCateName);
@@ -232,10 +264,11 @@ public class HelpCenterAction {
             if (updata.equals("success")){
                 return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
             }
+            return JsonResponseUtil.error("error updata level_1");
 
-        }
-        //更改子目录
-        if (pid == null && cid != null &&StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
+        }*/
+       /* //更改子目录
+        if (pid != null && StringUtils.isBlank(mainCateName) && StringUtils.isNotBlank(categoryName) && queTitle.equals("修改")){
             ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
             shiguHelpcenterLevel2.setCid(cid);
             shiguHelpcenterLevel2.setName(categoryName);
@@ -243,39 +276,46 @@ public class HelpCenterAction {
             if (updata.equals("success")){
                 return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
             }
-        }
+            return JsonResponseUtil.error("error updata level_2");
+        }*/
+        /*//增加主类目
+        if (pid == null && StringUtils.isNotBlank(mainCateName) && cid == null && StringUtils.isBlank(categoryName)){
+            ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
+            shiguHelpcenterLevel1.setName(mainCateName);
+            String save = levelOneService.save(shiguHelpcenterLevel1);
+            if (save.equals("success")){
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            }
+            return JsonResponseUtil.error("error");
+        }*/
 
-        if (pid != null && cid == null && StringUtils.isNotBlank(categoryName) && StringUtils.isNotBlank(queTitle)) {
+       //增加子类目 ok
+         if (pid != null && cid == null && StringUtils.isBlank(mainCateName) && StringUtils.isNotBlank(categoryName) && StringUtils.isNotBlank(queTitle)) {
             ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
             ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
             shiguHelpcenterLevel2.setGid(pid);
             shiguHelpcenterLevel2.setName(categoryName);
-            String save1 = levelTwoService.save(shiguHelpcenterLevel2);
-            if (save1.equals("success")) {
-                shiguHelpcenterQuestion.setGid(pid);
-                shiguHelpcenterQuestion.setCid(levelTwoService.getPkByName(categoryName));
-                shiguHelpcenterQuestion.setTitle(queTitle);
-                shiguHelpcenterQuestion.setAnswer(queAnswer);
-                String save2 = questionService.save(shiguHelpcenterQuestion);
-                if (save2.equals("success")) {
-                    return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            List<ShiguHelpcenterQuestion> questions = questionService.getAll();
+            boolean flag = true;
+            for (ShiguHelpcenterQuestion s : questions){
+                if (s.getTitle().equals(queTitle)){
+                    flag = false;
                 }
             }
-
-        }
-        //当有PID CID 时获取问题标题更改改标题下的答案内容
-        if (pid != null && cid != null && StringUtils.isNotBlank(queTitle) && StringUtils.isBlank(mainCateName) && StringUtils.isBlank(categoryName)) {
-            ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
-            shiguHelpcenterQuestion.setId(queId);
-            shiguHelpcenterQuestion.setTitle(queTitle);
-            shiguHelpcenterQuestion.setAnswer(queAnswer);
-
-            System.out.println(shiguHelpcenterQuestion);
-
-            String updata = questionService.updata(shiguHelpcenterQuestion);
-            if (updata.equals("success")) {
-                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+            if (flag){
+                String save1 = levelTwoService.save(shiguHelpcenterLevel2);
+                if (save1.equals("success")) {
+                    shiguHelpcenterQuestion.setGid(pid);
+                    shiguHelpcenterQuestion.setCid(levelTwoService.getPkByName(categoryName));
+                    shiguHelpcenterQuestion.setTitle(queTitle);
+                    shiguHelpcenterQuestion.setAnswer(queAnswer);
+                    String save2 = questionService.save(shiguHelpcenterQuestion);
+                    if (save2.equals("success")) {
+                        return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+                    }
+                }
             }
+            return JsonResponseUtil.error("error");
         }
         return JsonResponseUtil.error("error");
     }
@@ -288,10 +328,29 @@ public class HelpCenterAction {
     @RequestMapping("deleteQue")
     @ResponseBody
     public JSONObject deleteQue(Integer id) {
+        ShiguHelpcenterQuestion question = questionService.getByPk(id);
         ShiguHelpcenterQuestion shiguHelpcenterQuestion = new ShiguHelpcenterQuestion();
         shiguHelpcenterQuestion.setId(id);
         String del = questionService.del(shiguHelpcenterQuestion);
-        if (del.equals("success")) {
+        if (del.equals("success")){
+            List<ShiguHelpcenterQuestion> titleByGidAndCid = questionService.getTitleByGidAndCid(question.getGid(), question.getCid());
+            if (titleByGidAndCid.size()<1){
+                ShiguHelpcenterLevel2 shiguHelpcenterLevel2 = new ShiguHelpcenterLevel2();
+                shiguHelpcenterLevel2.setCid(question.getCid());
+                String del1 = levelTwoService.del(shiguHelpcenterLevel2);
+                if (del1.equals("success")){
+                    List<ShiguHelpcenterLevel2> levelTowByGid = levelTwoService.getLevelTowByGid(question.getGid());
+
+                    if (levelTowByGid.size()<1){
+                        ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
+                        shiguHelpcenterLevel1.setPid(question.getGid());
+                        String del2 = levelOneService.del(shiguHelpcenterLevel1);
+                        if (del2.equals("success")){
+                            return JsonResponseUtil.success();
+                        }
+                    }
+                }
+            }
             return JsonResponseUtil.success();
         }
         return JsonResponseUtil.error("error");
@@ -305,6 +364,18 @@ public class HelpCenterAction {
     @RequestMapping("addOrModify")
     public String addOrModify(Integer id, Model model) {
         if (id == null){
+            List<ShiguHelpcenterLevel1> all = levelOneService.getAll();
+            List<PidChangeIdVo> pidChangeIdVoList = new ArrayList<PidChangeIdVo>();
+            for (ShiguHelpcenterLevel1 s : all){
+                PidChangeIdVo pidChangeIdVo = new PidChangeIdVo();
+                pidChangeIdVo.setId(s.getPid());
+                pidChangeIdVo.setName(s.getName());
+                pidChangeIdVoList.add(pidChangeIdVo);
+            }
+
+            model.addAttribute("mainCate", pidChangeIdVoList);
+            model.addAttribute("query", null);
+
             return "helpCenter/addOrModify";
         }
         ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
