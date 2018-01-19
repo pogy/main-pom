@@ -500,8 +500,8 @@ function ready_publish(){
                 }else if(data['msg']=='img018'){
                     is_pic_full=1;
                 }else if(data['msg']!='img016'&&data['msg']!='img017'){
-                    if(times>=6){
-                        //重试6次后放弃
+                    if(times>=3){
+                        //重试3次后放弃
                         imgtemp=$('#pcContent').val();
                         if(url[order]!==undefined)
                         oldUrl=url[order].replace(new RegExp("[?]","g"),"[?]");  //把原url中的?id=123 替换成 [?]id=123 这样正则才能识别
