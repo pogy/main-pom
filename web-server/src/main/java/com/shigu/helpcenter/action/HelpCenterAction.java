@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.3.4 ： 命名进行规范 18.1.19
+ * v1.3.5 ： 命名进行规范 18.1.19
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -70,7 +70,7 @@ public class HelpCenterAction {
      * 请求地址：helpCenter/queIndex.htm
      * 参数：
      *
-     *   id       问题ID
+     *   cid      二级目录ID
      *   keyword  搜索关键字
      *   page     页码
      * */
