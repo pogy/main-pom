@@ -1,7 +1,36 @@
 <div class="J_TModule clearfix ui-droppable">
     <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161216" />
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
+    <#assign sortparam="id="+shop.shopId/>
+    <#if bo??>
+        <#if bo.pstring??>
+            <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
+        </#if>
+        <#if bo.cid??>
+            <#assign sortparam=sortparam+"&cid="+bo.cid/>
+        </#if>
+        <#if bo.scid??>
+            <#assign sortparam=sortparam+"&scid="+bo.scid/>
+        </#if>
+        <#if bo.dd??>
+            <#assign sortparam=sortparam+"&dd="+bo.dd/>
+        </#if>
+    </#if>
+    <style>
+        .diyStyle{margin-right:-6px; margin-bottom:15px;}
+        .diyStyle .styleItem{display: inline-block; width:158px; height:40px; border:1px solid #d7d7d7; text-align:center; line-height:40px; color:#333; margin-right:6px;}
+        .diyStyle .styleItem:hover,
+        .diyStyle .styleItem.selected{color:#f40; border-color:#f40; background:#FFF0EA;}
+    </style>
     <div class="js-module" data-not-edit="" data-not-del="">
+            <div class="clearfix diyStyle">
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+                    <a class="styleItem" href="/shop/search.htm?${sortparam}&amp;sid=123">日系大码</a>
+            </div>
         <div class="mr-title">
             <a>所有宝贝</a>
             <a href="javascript:;" style="">
@@ -64,25 +93,12 @@
                     <#--<li class="sort">-->
                     <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
                     <#--</li>-->
-                    <#assign sortparam="id="+shop.shopId/>
                     <#if bo??>
-                        <#if bo.pstring??>
-                            <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
-                        </#if>
-                        <#if bo.cid??>
-                            <#assign sortparam=sortparam+"&cid="+bo.cid/>
-                        </#if>
-                        <#if bo.scid??>
-                            <#assign sortparam=sortparam+"&scid="+bo.scid/>
-                        </#if>
                         <#if bo.beginPrice??>
                             <#assign sortparam=sortparam+"&beginPrice="+bo.beginPrice/>
                         </#if>
                         <#if bo.endPrice??>
                             <#assign sortparam=sortparam+"&endPrice="+bo.endPrice/>
-                        </#if>
-                        <#if bo.dd??>
-                            <#assign sortparam=sortparam+"&dd="+bo.dd/>
                         </#if>
                         <#if bo.startDate??>
                             <#assign sortparam=sortparam+"&startDate="+bo.startDate/>
