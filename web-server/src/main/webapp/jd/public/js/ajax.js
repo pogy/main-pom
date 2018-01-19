@@ -511,10 +511,11 @@ function ready_publish(){
                         $('#pcContent').html(imgreplace); //兼容Firfox
                         $('#pcContent').val(imgreplace);
 
-                        order=order+1;
+                        //order=order+1;
                         times=0;
                     }else{
                         console.log('#'+times+'$'+order+'#'+data['msg']+'&');
+                        order=order+1;
                         times++;
                     }
 
