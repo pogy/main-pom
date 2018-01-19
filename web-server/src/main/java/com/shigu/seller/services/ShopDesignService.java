@@ -246,7 +246,7 @@ public class ShopDesignService {
             //栏目,+搜索条件
             mv=new SearchModuleVO(module,cfg);
             mv.getData().put("shop",shop);
-            //mv.getData().put("",);
+            mv.getData().put("shopStyles", shopForCdnService.selShopStyleById(shopId));
         }else if(module instanceof ShopBanner){
             mv.getData().put("checkedNavs",selCheckedPageNav(shopId,((ShopBanner) module).getStoreNav().getPages()));
             mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shopId));

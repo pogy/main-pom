@@ -252,7 +252,7 @@
                         </div>
 
                         <div class="btnview">
-                            <a href="http://www.571xz.com/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
+                            <a href="http://upload.571xz.com/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
                                 <i></i>
                                 淘宝
                             </a>
