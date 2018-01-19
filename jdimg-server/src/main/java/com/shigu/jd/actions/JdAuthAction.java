@@ -6,6 +6,7 @@ import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdVasSubscribeResponse;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.jd.api.service.JdAuthService;
+import com.shigu.jd.api.service.JdClientService;
 import com.shigu.jd.api.service.JdServiceMarketService;
 import com.shigu.jd.tools.JdParseStateUtil;
 import com.utils.publics.Opt3Des;
@@ -28,10 +29,9 @@ public class JdAuthAction {
     @Autowired
     private JdAuthService jdAuthService;
     @Autowired
+    private JdClientService jdClientService;
+    @Autowired
     private JdServiceMarketService jdServiceMarketService;
-
-    @Value("jd.app.itemId")
-    private String itemId;
 
     /**
      * 京东CODE回调
@@ -49,7 +49,7 @@ public class JdAuthAction {
         SdkJdVasSubscribe subscribeVO = JdParseStateUtil.parseState(state);
         if (subscribeVO == null || subscribeVO.getEndDate().after(new Date())) {
             //FW_GOODS-449409
-            return "redirect:https://fw.jd.com/"+itemId+".html";
+            return "redirect:https://fw.jd.com/"+jdClientService.getItemId()+".html";
         }
 
         /************获取用户登陆信息**********/

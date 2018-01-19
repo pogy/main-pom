@@ -29,8 +29,8 @@ public class JdClientService {
     @Value("${jd.app.redirect_uri}")
     private String jdRedirectUri;
 
-    @Value("${jd.app.item_code}")
-    private String jdItemCode;
+    @Value("${jd.app.itemId}")
+    private String itemId;
 
     /**
      * 获取京东Client
@@ -96,11 +96,11 @@ public class JdClientService {
         this.jdRedirectUri = jdRedirectUri;
     }
 
-    public String getJdItemCode() {
-        return jdItemCode;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setJdItemCode(String jdItemCode) {
-        this.jdItemCode = jdItemCode;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 }

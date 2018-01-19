@@ -2,7 +2,10 @@ package com.shigu.jd.img.actions;
 
 import com.openJar.commons.MD5Attestation;
 import com.shigu.exceptions.OtherCustomException;
+import com.shigu.jd.img.UploadImgTask;
+import com.shigu.jd.img.WorkerMan;
 import com.shigu.jd.img.vo.DownOtherVO;
+import com.shigu.jd.tools.DownImage;
 import com.shigu.jd.tools.JdOssIO;
 import com.shigu.main4.common.util.UUIDGenerator;
 import net.sf.json.JSONObject;
@@ -15,9 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -32,6 +36,9 @@ public class DetailImgController {
 
     public static final String FOLDER = "upload";
 
+    private WorkerMan workerMan = WorkerMan.getInstance();
+    private ExecutorService pool = workerMan.getPool();
+
 
     /**
      * 上传图片到京东oss
@@ -43,17 +50,30 @@ public class DetailImgController {
 
         DownOtherVO dov=new DownOtherVO();
         try {
-            String url = jdOssIO.uploadFile(imgUrl,FOLDER + "/" + UUIDGenerator.getSysUUID()+".jpg");
+            Long contentLength = DownImage.getContentLengthClose(imgUrl);
+            byte[] bytes = DownImage.downImgFile(imgUrl);
+            InputStream input = new ByteArrayInputStream(bytes);
+            String pictureName = MD5Attestation.MD5Encode(bytes.toString());
+
+            UploadImgTask task = new UploadImgTask();
+            task.setContentLength(contentLength);
+            task.setFilePath(FOLDER + "/" + pictureName + ".jpg");
+            task.setInput(input);
+            task.setJdOssIO(jdOssIO);
+
+            Future<String> future = pool.submit(task);
+
+            String url = future.get(workerMan.getTimeOut(), TimeUnit.SECONDS);
             dov.setStatus(1);
             dov.setUrl(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-            dov.setStatus(0);
-            dov.setMsg("上传失败");
-        } catch (OtherCustomException e) {
+        }catch (OtherCustomException e) {
             e.printStackTrace();
             dov.setStatus(0);
             dov.setMsg(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            dov.setStatus(0);
+            dov.setMsg("上传失败");
         }
 
         response.setContentType("application/x-javascript");//jsonp异常响应处理
@@ -71,15 +91,31 @@ public class DetailImgController {
     public void upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile,HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         DownOtherVO dov=new DownOtherVO();
-
         try {
-            FileInputStream fis = (FileInputStream)multimagefile.getInputStream();
-            Long contentLength = fis.getChannel().size();
-            String url = jdOssIO.uploadFile(contentLength, fis, FOLDER + "/" + UUIDGenerator.getSysUUID() + ".jpg");
+            FileInputStream input = (FileInputStream)multimagefile.getInputStream();
+
+            ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+            byte[] buff = new byte[1024];
+            int rc;
+            while ((rc = input.read(buff, 0, 100)) > 0) {
+                swapStream.write(buff, 0, rc);
+            }
+            byte[] bytes = swapStream.toByteArray();
+            Long contentLength = input.getChannel().size();
+            String pictureName = MD5Attestation.MD5Encode(bytes.toString());
+
+            UploadImgTask task = new UploadImgTask();
+            task.setContentLength(contentLength);
+            task.setFilePath(FOLDER + "/" + pictureName + ".jpg");
+            task.setInput(input);
+            task.setJdOssIO(jdOssIO);
+
+            Future<String> future = pool.submit(task);
+            String url = future.get(workerMan.getTimeOut(), TimeUnit.SECONDS);
 
             dov.setStatus(1);
             dov.setUrl(url);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             dov.setStatus(0);
             dov.setMsg("上传失败");

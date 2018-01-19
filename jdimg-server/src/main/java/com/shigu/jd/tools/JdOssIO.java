@@ -2,9 +2,12 @@ package com.shigu.jd.tools;
 
 import com.jcloud.jss.JingdongStorageService;
 import com.jcloud.jss.constant.JssHeaders;
+import com.jcloud.jss.domain.ObjectListing;
+import com.jcloud.jss.domain.ObjectSummary;
 import com.jcloud.jss.domain.StorageClass;
 import com.jcloud.jss.exception.StorageClientException;
 import com.jcloud.jss.exception.StorageServerException;
+import com.jcloud.jss.service.BucketService;
 import com.jcloud.jss.service.ObjectService;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.exceptions.OtherCustomException;
@@ -69,7 +72,7 @@ public class JdOssIO {
                 jss.destroy();
             }
         }
-        return domain + filePath;
+        return domain +"/" + filePath;
     }
 
     /**
@@ -105,20 +108,33 @@ public class JdOssIO {
                 jss.destroy();
             }
         }
-        return domain + filePath;
+        return domain + "/" +filePath;
     }
 
-    /**
-     * 根据网络地址上传
-     *
-     * @param imgUrl
-     * @return
-     */
-    public  String uploadFile(String imgUrl,String filePath) throws IOException, OtherCustomException {
-        Long contentLengthClose = DownImage.getContentLengthClose(imgUrl);
-        byte[] bytes = DownImage.downImgFile(imgUrl);
-        InputStream input = new ByteArrayInputStream(bytes);
-        return uploadFile(contentLengthClose, input, filePath);
+
+    public  void deleteFile(String filePath) {
+        //创建JingdongStorageService实例
+        JingdongStorageService jss = null;
+        try {
+            jss = initClient();
+
+            //PutObject -- 流式上传
+            //创建objectService实例
+            BucketService bucketService = jss.bucket(bucketName);
+            ObjectListing objectList = bucketService.listObject();
+            for (ObjectSummary objectSummary : objectList.getObjectSummaries()) {
+                ObjectService service = bucketService.object(objectSummary.getKey());
+                service.delete();
+            }
+        } catch (StorageClientException e) {
+            e.printStackTrace();
+        } catch (StorageServerException e) {
+            e.printStackTrace();
+        } finally {
+            if (jss != null) {
+                jss.destroy();
+            }
+        }
     }
 
     /**

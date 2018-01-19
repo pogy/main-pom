@@ -48,6 +48,15 @@
         </property>
     </bean>
 
+    <bean id="workerMan" class="com.shigu.jd.img.WorkerMan" >
+        <!--每个任务最大执行时间 单位秒-->
+        <property name="timeOut" value="600" />
+        <!--队列最大长度默认200-->
+        <property name="maxQueue" value="200" />
+        <!--线程池初始线程数-->
+        <property name="threadNum" value="8" />
+    </bean>
+
     <mvc:interceptors>
         <!-- IP密度拦截器 - 发送短信-->
         <mvc:interceptor>
@@ -58,6 +67,8 @@
                 <property name="startNum" value="100"/>
                 <!--记录存活时间-->
                 <property name="refuseSecond" value="60"/>
+                <!--token验签容错范围 单位秒-->
+                <property name="signTime" value="3600"/>
                 <property name="ipWhiteList" >
                     <list>
                         <value>192.168.1.193</value>

@@ -20,6 +20,18 @@ public class IdDensityInterceptor extends DensityInterceptor {
      * ip白名单
      */
     private List<String> ipWhiteList;
+    /**
+     * token验签容错范围 单位秒
+     */
+    private Long signTime;
+
+    public Long getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(Long signTime) {
+        this.signTime = signTime;
+    }
 
     public List<String> getIpWhiteList() {
         return ipWhiteList;
@@ -56,7 +68,7 @@ public class IdDensityInterceptor extends DensityInterceptor {
 
         //token过期，返回
         //token时间差 1小时
-        if(System.currentTimeMillis() - 60 * 60 * 10000 - jdToken.getCreateTime().getTime() > 0){
+        if(System.currentTimeMillis() - signTime * 10000 - jdToken.getCreateTime().getTime() > 0){
             return false;
         }
 
