@@ -1,10 +1,10 @@
-<#assign $pageid>index</#assign>
+<#assign $pageid="index">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>首页 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,27 +18,21 @@
 <#include "/__style_torrent__/fxs__index_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
 <#if goodsDownCount gt 0>
 <div class="topTips">
     提示：您的所售商品中，有<em>${goodsDownCount!}</em>件已被档口下架！
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="shiguOnekeyRecordinit.htm?uploadGoodsState=2"
     class="fmButton
          fmButton-sm
@@ -61,7 +55,7 @@
 </div>
 </#if>
 <input type="hidden" id="userId" value="${session_user_redis__.userId!}">
-<div class="userInfo">
+<div class="userInfo clearfix">
     <div class="fl userBase">
         <#if session_user_redis__.headUrl??>
         <img src="${session_user_redis__.headUrl!}" class="headImg fl">
@@ -80,14 +74,12 @@
         </div>
     </div>
 <div class="fl userAccount">
-    <h4>账户余额（元）</h4>
+    <h4 class="fs14 fc3">账户余额（元）</h4>
     <p class="money">
         <em id="yuer_balance">加载中...</em>（可提现<span id="yuer_carry">加载中...</span>）
     </p>
     <p class="button-box clearfix">
-<#assign text>{"href":"iwantToRechargein5.htm"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"href":"iwantToRechargein5.htm"}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -115,9 +107,7 @@
     </button>
     </#if>
 </#list>
-<#assign text>{"href":"withdraw5Apply.htm"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"href":"withdraw5Apply.htm"}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -148,6 +138,19 @@
     </p>
     <input type="hidden" id="tempCode" value="${tempCode!}">
 </div>
+<div class="fl userBouns">
+    <h4 class="fs14 fc3">红包余额（元）</h4>
+    <p class="money"><em>
+        <#if bonusBalance??>
+            ${bonusBalance!}
+        <#else>
+            0.00
+        </#if>
+    </em></p>
+    <div class="tips fc3 pr">红包余额不可提现<i class="icon-doubt fcF40" id="bonusTipIcon"></i>
+        <div class="tipTest pa"><em></em><b></b>提示：红包可直接在订单中减扣金额，功能开发中敬请期待·········</div>
+    </div>
+</div>
 </div>
 <div class="tradeCounts">
     <ul class="clearfix fs16 iconList"></ul>
@@ -158,9 +161,7 @@
         <ul class="clearfix"></ul>
     </div>
     <p class="button-box">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
