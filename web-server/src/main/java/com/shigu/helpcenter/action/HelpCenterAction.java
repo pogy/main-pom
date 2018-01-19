@@ -14,6 +14,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,30 @@ public class HelpCenterAction {
     private LevelTwoService levelTwoService;
     @Autowired
     private QuestionService questionService;
+
+    @Value("${help.center.psw}")
+    private String helpCenterPsw;
+    @Value("${help.center.session}")
+    private String helpCenterSession;
+    @Value("${help.center.index}")
+    private String helpCenterIndex;
+
+    @RequestMapping("login")
+    public String helpLogin(String psw,HttpSession session,Model model){
+        if(session.getAttribute(helpCenterSession)!=null){
+            return "redirect:"+helpCenterIndex;
+        }
+        if(!StringUtils.isBlank(psw)){
+            if(helpCenterPsw.endsWith(psw)){
+                session.setAttribute(helpCenterSession,1);
+                return "redirect:"+helpCenterIndex;
+            }else{
+                model.addAttribute("err","密码错误");
+            }
+        }
+        return "helpCenter/helpLogin";
+    }
+
 
     /*
      * 帮助中心首页
