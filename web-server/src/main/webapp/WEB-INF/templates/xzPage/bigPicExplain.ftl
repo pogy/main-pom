@@ -1,4 +1,4 @@
-<#assign $pageid>bigPicExplain</#assign>
+<#assign $pageid="bigPicExplain">
 <!doctype html>
 <html>
 <head>
@@ -16,9 +16,7 @@
 <#include "/__style_torrent__/xzPage__bigPicExplain_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="bannerBox"></div>

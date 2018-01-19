@@ -5,7 +5,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.monitor.enums.CidMapEnum;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
-import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.RankingSimpleService;
 import com.shigu.main4.monitor.vo.RankingShopVO;
 import org.springframework.beans.factory.annotation.Autowired;

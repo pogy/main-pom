@@ -1,4 +1,4 @@
-<#assign $pageid>qualityControl</#assign>
+<#assign $pageid="qualityControl">
 <!doctype html>
 <html>
 <head>
@@ -16,9 +16,7 @@
 <#include "/__style_torrent__/xzPage__qualityControl_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner">
