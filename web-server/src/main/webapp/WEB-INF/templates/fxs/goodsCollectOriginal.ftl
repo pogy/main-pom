@@ -174,10 +174,10 @@
                     <p>${goods.marketName!}</p>
                     <p>${goods.shopNum!}</p>
                     <p>
-<#list [{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}] as $it>
+<#list [{"id":goods.imWw}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
-<#list [{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}] as $it>
+<#list [{"id":goods.imQq}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>
                     </p>
