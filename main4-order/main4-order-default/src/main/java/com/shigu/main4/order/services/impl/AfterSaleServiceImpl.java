@@ -3,7 +3,6 @@ package com.shigu.main4.order.services.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -457,6 +456,10 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         redisIO.putTemp("doRefundMoney_zf_20171130_"+refundId,1,360);
         try {
             RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+            RefundVO refundinfo=refundItemOrder.refundinfo();
+            if(refundinfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
+                throw new RefundException("订单状态错误");
+            }
             if (isAgree) {
                 refundItemOrder.buyerReprice();
             } else {
