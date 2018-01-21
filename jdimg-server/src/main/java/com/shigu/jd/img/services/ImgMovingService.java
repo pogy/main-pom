@@ -12,12 +12,9 @@ import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.requests.imgs.JdUpImgRequest;
 import com.openJar.responses.imgs.JdImgDeleteResponse;
 import com.openJar.responses.imgs.JdUpImgResponse;
-import com.shigu.exceptions.ImgDownloadException;
-import com.shigu.exceptions.JdAuthFailureException;
 import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.service.JdClientService;
-import com.shigu.jd.img.ImgMovingTask;
 import com.shigu.jd.img.WorkerMan;
 import com.shigu.jd.tools.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 
 /**
