@@ -63,7 +63,7 @@
             </list>
         </property>
         <property name="dataSource" ref="jd_dataSource"></property>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+        <!--<property name="configLocation" value="classpath:/mybatis-config.xml"></property>-->
         <property name="mapperLocations" value="classpath*:/jd/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.jd"></property>
     </bean>

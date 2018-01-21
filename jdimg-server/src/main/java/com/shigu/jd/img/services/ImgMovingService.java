@@ -80,27 +80,27 @@ public class ImgMovingService {
                     jdImgInfos.put(imgUrl,jdImgInfo);
                     continue;
                 }
-                ImgMovingTask task = new ImgMovingTask();
-                task.setAccessToken(accessToken);
-                task.setImgUrl(imgUrl);
-                task.setJdClientService(jdClientService);
-                task.setPictureCateId(jdUpImgRequest.getPictureCateId());
-                task.setPictureName(pictureName);
-
-                JdImgInfo jdImgInfo = null;
-                try {
-                    Future<JdImgInfo> future = pool.submit(task);
-                    jdImgInfo = future.get(workerMan.getTimeOut(), TimeUnit.MILLISECONDS);
-                } catch (Exception e) {
-//                    e.printStackTrace();
-                    throw new OtherCustomException("图片上传失败");
-                }finally {
-                    if (jdImgInfo == null) {
-                        throw new OtherCustomException("图片上传失败");
-                    }
+                ImgzonePictureUploadRequest request = new ImgzonePictureUploadRequest();
+                //下载图片
+                byte[] imgData = DownImage.downImgFile(imgUrl);
+                //如果大于1M直接失败
+                if (imgData.length > 1024 * 1024) {
+                    break;
                 }
+                request.setImageData(imgData);
+                request.setPictureCateId(jdUpImgRequest.getPictureCateId());
+                request.setPictureName(pictureName);
+
+                ImgzonePictureUploadResponse response = jdClientService.execute(request, accessToken);
+                //返回码为1时为操作成功，返回码为0时为操作失败
+                if ("0".equals(response.getReturnCode())) {
+                    throw new OtherCustomException("图片搬家失败");
+                }
+                JdImgInfo jdImgInfo = new JdImgInfo();
+                jdImgInfo.setPictureId(response.getPictureId());
+                jdImgInfo.setPictureUrl(response.getPictureUrl());
                 jdImgInfos.put(imgUrl,jdImgInfo);
-                imgIds.append(",").append(jdImgInfo.getPictureId());
+                imgIds.append(",").append(response.getPictureId());
             } catch (OtherCustomException|JdAuthOverdueException e) {
                 try {
                     imgDelete(jdUpImgRequest.getJdUid(),imgIds.toString());
@@ -113,6 +113,7 @@ public class ImgMovingService {
         }
         jdUptoItemImgResponse.setReturnCode("1");
         jdUptoItemImgResponse.setJdImgInfos(jdImgInfos);
+        jdUptoItemImgResponse.setSuccess(true);
         return jdUptoItemImgResponse;
     }
 

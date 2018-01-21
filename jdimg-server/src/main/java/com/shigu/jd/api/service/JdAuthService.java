@@ -7,6 +7,7 @@ import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.shigu.jd.api.constant.JdUrlConstant;
+import com.shigu.jd.api.utils.JdKeyConfig;
 import com.shigu.jd.tools.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
@@ -37,9 +38,9 @@ public class JdAuthService {
      */
     public String getAuthUrl(Boolean agentIsMobile){
         String url = JdUrlConstant.JD_AUTH_URL
-                .replace("JD_APPKEY",jdClientService.getJdAppkey())
-                .replace("JD_REDIRECT_URI",jdClientService.getJdRedirectUri())
-                .replace("JD_STATE",jdClientService.getJdState());
+                .replace("JD_APPKEY",JdKeyConfig.jdAppkey)
+                .replace("JD_REDIRECT_URI",JdKeyConfig.jdRedirectUri)
+                .replace("JD_STATE",JdKeyConfig.jdState);
         if (agentIsMobile){
             url += "view=wap";
         }
@@ -54,11 +55,11 @@ public class JdAuthService {
      */
     public JdAuthedInfo getAuthedInfo(String code) {
         String url = JdUrlConstant.JD_AUTH_TOKEN_URL
-                        .replace("JD_APPKEY",jdClientService.getJdAppkey())
-                        .replace("JD_SECRET",jdClientService.getJdSecret())
-                        .replace("JD_REDIRECT_URI",jdClientService.getJdRedirectUri())
+                        .replace("JD_APPKEY", JdKeyConfig.jdAppkey)
+                        .replace("JD_SECRET",JdKeyConfig.jdSecret)
+                        .replace("JD_REDIRECT_URI",JdKeyConfig.jdRedirectUri)
                         .replace("CODE",code)
-                        .replace("JD_STATE",jdClientService.getJdState());
+                        .replace("JD_STATE",JdKeyConfig.jdState);
         String entityString = null;
         try {
             HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
@@ -128,8 +129,8 @@ public class JdAuthService {
      */
     public JdAuthedInfo refreshToken(Long id,String refreshToken) {
         String url = JdUrlConstant.JD_REFRESH_TOKEN_URL
-                .replace("JD_APPKEY",jdClientService.getJdAppkey())
-                .replace("JD_SECRET",jdClientService.getJdSecret())
+                .replace("JD_APPKEY",JdKeyConfig.jdAppkey)
+                .replace("JD_SECRET",JdKeyConfig.jdSecret)
                 .replace("REFRESH_TOKEN",refreshToken);
         String entityString = null;
         try {

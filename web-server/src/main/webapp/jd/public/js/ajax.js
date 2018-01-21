@@ -8,7 +8,7 @@ $(document).ready(function () {
         if(fireUrl.indexOf("fakepath")){
             var formData = new FormData($( "#spaceImg" )[0]);
             $.ajax({
-                url: 'zs.571xz.com/detailImg/upload.json?callback=?' ,
+                url: 'zs.571xz.com:8080/detailImg/upload.json?callback=?' ,
                 type: 'POST',
                 dataType: 'jsonp',
                 data: formData,
@@ -479,7 +479,7 @@ function ready_publish(){
         if(in_array(url[order],img_detal_arr_temp)){
             download_detail(url,order+1,0);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com:8080/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     $('#imgType').html('开始搬家：描述图');
@@ -535,7 +535,7 @@ function ready_publish(){
         if(url[order]==undefined || url[order].indexOf("@")==0){   //如果用户没刷新修改参数后点击发布，则绕开上传直接跳过+图片被取消
             download_main(url,order+1);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com:8080/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_main_error=0;
@@ -578,7 +578,7 @@ function ready_publish(){
             propids=propurl.substring(0,propurl.indexOf("##"));
             propurl=propurl.substring(propurl.indexOf("##")+2);
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
+        $.getJSON("http://zs.571xz.com:8080/detailImg/uploadByUrl.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_prop_error=0;

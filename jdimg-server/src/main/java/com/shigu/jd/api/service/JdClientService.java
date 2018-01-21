@@ -8,6 +8,7 @@ import com.jd.open.api.sdk.response.AbstractResponse;
 import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.constant.JdUrlConstant;
+import com.shigu.jd.api.utils.JdKeyConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class JdClientService {
 
-    @Value("${jd.app.key}")
-    private String jdAppkey;
-
-    @Value("${jd.app.secret}")
-    private String jdSecret;
-
-    @Value("${jd.app.state}")
-    private String jdState;
-
-    @Value("${jd.app.redirect_uri}")
-    private String jdRedirectUri;
-
-    @Value("${jd.app.itemId}")
-    private String itemId;
-
     /**
      * 获取京东Client
      * @param accessToken
      * @return
      */
     public JdClient getJdClient(String accessToken){
-       return new DefaultJdClient(JdUrlConstant.JD_SERVER_URL,accessToken,jdAppkey,jdSecret);
+       return new DefaultJdClient(JdUrlConstant.JD_SERVER_URL,accessToken, JdKeyConfig.jdAppkey,JdKeyConfig.jdSecret);
     }
 
     public <T extends AbstractResponse> T execute(JdRequest<T> request, String accessToken) throws OtherCustomException, JdAuthOverdueException {
@@ -63,44 +49,4 @@ public class JdClientService {
         }
     }
 
-
-    public String getJdAppkey() {
-        return jdAppkey;
-    }
-
-    public void setJdAppkey(String jdAppkey) {
-        this.jdAppkey = jdAppkey;
-    }
-
-    public String getJdSecret() {
-        return jdSecret;
-    }
-
-    public void setJdSecret(String jdSecret) {
-        this.jdSecret = jdSecret;
-    }
-
-    public String getJdState() {
-        return jdState;
-    }
-
-    public void setJdState(String jdState) {
-        this.jdState = jdState;
-    }
-
-    public String getJdRedirectUri() {
-        return jdRedirectUri;
-    }
-
-    public void setJdRedirectUri(String jdRedirectUri) {
-        this.jdRedirectUri = jdRedirectUri;
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
 }

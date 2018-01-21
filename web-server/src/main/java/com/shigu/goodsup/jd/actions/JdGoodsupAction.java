@@ -1,6 +1,7 @@
 package com.shigu.goodsup.jd.actions;
 
 import com.openJar.beans.JdAuthedInfo;
+import com.openJar.beans.JdToken;
 import com.openJar.beans.JdVenderBrandPubInfo;
 import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.responses.api.JdAuthedInfoResponse;
@@ -103,7 +104,7 @@ public class JdGoodsupAction {
     public String login(HttpServletRequest request) {
         String url = JD_AUTH_URL
                 .replace("JD_APPKEY",jdAppkey)
-                .replace("JD_REDIRECT_URI",jdSecret)
+                .replace("JD_REDIRECT_URI",jdRedirectUri)
                 .replace("JD_STATE",jdState);
 
         if (HttpRequestUtil.checkAgentIsMobile(request)){
@@ -133,14 +134,6 @@ public class JdGoodsupAction {
         token.setSubKey(strJdUid);
         try {
             currentUser.login(token);
-            //京东暂时只支持一键上传
-//            if(currentUser.hasRole(RoleEnum.STORE.getValue())){//有店铺
-//                PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//                if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
-////                    memberSimpleService.updateJdShopNike(ps.getLogshop().getShopId(),jdAuthedInfoVO.getUserNick());
-//                }
-//            }
-
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(strJdUid,strJdUid, LoginFromType.JD);
             if (personalSession == null || personalSession.getUserId() == null) {
                 //还是检查一遍避免 字符串+null 出现
@@ -292,7 +285,9 @@ public class JdGoodsupAction {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if(ps==null){
-                return "redirect:/jd/login.htm";
+                String queryString = request.getQueryString();
+                return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
+                        (queryString == null ? "" : ("?" + queryString)), "utf-8");
             }
             /********************************获取京东授权信息*******************************/
             Long jdUserId = new Long(jdUserInfoService.getJdUidBySubUid(ps.getSubUserId()));
@@ -304,7 +299,6 @@ public class JdGoodsupAction {
             }
             /********************************查上传记录********************************/
 
-            //todo jd上传记录查询
             if (yesrepeat == null || yesrepeat != 1) {
                 LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
                 if (lastup != null) {
@@ -319,7 +313,7 @@ public class JdGoodsupAction {
                 throw new CustomException("不是京东商家");
             }
             /********************************取商品********************************/
-            JdPageItem item=null;
+            JdPageItem item;
             try {
                 item= jdUpItemService.findGoods(itemId);
                 if(item==null){
@@ -346,9 +340,17 @@ public class JdGoodsupAction {
             allData.setProps(jdUpItemService.selProps(itemId,item.getJdCid(),jdUserId,item.getItem(),allBrand));
             allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
             allData.setGoodsCat(jdUpItemService.selCatPath(item.getJdCid()));
+
+            JdToken token=new JdToken();
+            token.setId(jdUserId);
+            token.setCreateTime(new Date());
+            String tokenStr=Opt3Des.encryptPlainData(JSONObject.fromObject(token).toString());
+            allData.setToken(tokenStr);
+
             model.addAttribute("allData", allData);
             model.addAttribute("id",itemId);
             model.addAttribute("jd_yj_zh_session",null);
+
             return "jingdong/jd";
 
 

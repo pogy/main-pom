@@ -16,6 +16,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,9 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Created By zf on 2017/12/8/15:38
+ */
 @Controller
 public class JdUploadAction {
     @Autowired
@@ -63,11 +67,13 @@ public class JdUploadAction {
         tbo.setPicUrls(picUrls);
         tbo.setSellerCids(sellerCids);
         List<JdVenderBrandPubInfo> allBrand = null;
+        Long numIid=null;
+        String errorMsg=null;
         try {
             allBrand = jdCategoryService.getAllBrand(jdUserId);
 
             if (allBrand == null) {
-                return "不是京东商家";
+                throw new CustomException("不是京东商家");
             }
             /********************************取商品********************************/
             JdPageItem item;
@@ -75,7 +81,7 @@ public class JdUploadAction {
             try {
                 item = jdUpItemService.findGoods(bo.getMid());
                 if (item == null) {
-                    return "商品不存在";
+                    throw new CustomException("商品不存在");
                 }
                 //计算标题与卖点的长度
                 if (item.getItem().getTitle() != null) {
@@ -86,18 +92,20 @@ public class JdUploadAction {
                 }
                 prop = jdUpItemService.selProps(bo.getMid(), item.getJdCid(), jdUserId, item.getItem(), allBrand);
             } catch (Exception e) {
-                return "商品信息异常";
+                throw new CustomException("商品信息异常");
             }
 
-            jdUploadService.upload(prop, tbo, jdUserId);
-            return "jingdong/parts/success";
+            numIid=jdUploadService.upload(prop, tbo, jdUserId);
         } catch (AuthOverException e) {
             String queryString = request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
                     (queryString == null ? "" : ("?" + queryString)), "utf-8");
         } catch (CustomException e) {
-            return e.getMessage();
+            errorMsg=e.getMessage();
         }
+        model.addAttribute("errorMsg",errorMsg);
+        model.addAttribute("numIid",numIid);
+        return "jingdong/parts/success";
     }
 
 }

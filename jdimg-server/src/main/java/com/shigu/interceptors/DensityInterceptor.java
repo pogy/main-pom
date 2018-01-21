@@ -51,6 +51,7 @@ public class DensityInterceptor implements HandlerInterceptor {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("AlibabaAvoidNewDateGetTime")
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         DensityVO dv = DENSITY.get(key + primaryKey);
@@ -65,7 +66,7 @@ public class DensityInterceptor implements HandlerInterceptor {
             DENSITY.put(key + primaryKey,densityVO);
             return true;
         }
-        if(new Date().getTime() - dv.getLastTime().getTime() < minMillionSecond){//时限内,+1
+        if(System.currentTimeMillis() - dv.getLastTime().getTime() < minMillionSecond){//时限内,+1
             dv.getNumber().addAndGet(1);
         }else{//时限外,清为1
             dv.setNumber(new AtomicInteger(1));

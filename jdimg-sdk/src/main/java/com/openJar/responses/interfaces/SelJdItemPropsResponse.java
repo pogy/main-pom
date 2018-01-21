@@ -5,7 +5,7 @@ import com.openJar.responses.Response;
 
 import java.util.List;
 
-public class SelJdItemPropsRespone extends Response{
+public class SelJdItemPropsResponse extends Response{
     private List<JdItemProp> datas;
 
     public List<JdItemProp> getDatas() {

@@ -11,7 +11,7 @@ import com.openJar.requests.interfaces.SelShiguJdCatRequest;
 import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
 import com.openJar.responses.api.JdPostTemplateResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
-import com.openJar.responses.interfaces.SelJdItemPropsRespone;
+import com.openJar.responses.interfaces.SelJdItemPropsResponse;
 import com.openJar.responses.interfaces.SelJdPropValuesResponse;
 import com.openJar.responses.interfaces.SelJdTbBindsResponse;
 import com.openJar.responses.interfaces.SelShiguJdCatResponse;
@@ -26,6 +26,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.tb.finder.vo.PropType;
+import com.shigu.tools.KeyWordsUtil;
 import com.taobao.api.domain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,8 @@ public class JdUpItemService {
             }
         }
         Item it=staticGoods(sgt);
+        it.setTitle(KeyWordsUtil.duleKeyWords(it.getTitle()));
+        it.setDesc(KeyWordsUtil.duleKeyWords(it.getDesc()));
         pageItem.setItem(it);
         if(sgt.getNumIid()==null){
             pageItem.setGoodsType(2);
@@ -261,7 +264,7 @@ public class JdUpItemService {
         prop=new PropsVO();
         SelJdItemPropsRequest selJdItemPropsRequest=new SelJdItemPropsRequest();
         selJdItemPropsRequest.setJdCid(jdCid);
-        SelJdItemPropsRespone selJdItemPropsRespone=xzJdSdkSend.send(selJdItemPropsRequest);
+        SelJdItemPropsResponse selJdItemPropsRespone=xzJdSdkSend.send(selJdItemPropsRequest);
         List<JdItemProp> jdItemProps=selJdItemPropsRespone.getDatas();
         jdItemProps.sort(Comparator.comparingLong(JdItemProp::getSortOrder));
 
@@ -350,6 +353,7 @@ public class JdUpItemService {
                     vv.setName(jdVenderBrandPubInfoVO.getBrandName());
                     return vv;
                 }).collect(Collectors.toList()));
+                pv.setMustHave(true);
                 prop.setPingpai(pv);
                 continue;
             }
@@ -536,7 +540,9 @@ public class JdUpItemService {
             }
             String[] proparr=propimgstr.split(";");
             for(String p:proparr){
-                if(!p.contains("##")) continue;
+                if(!p.contains("##")) {
+                    continue;
+                }
                 String[] parr=p.split("##");
                 TaobaoPropimg tp=new TaobaoPropimg();
                 tp.setProperties(parr[0]);

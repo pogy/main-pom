@@ -1,5 +1,6 @@
 package com.shigu.jd.actions;
 
+import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.OpenException;
 import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.requests.api.GoodsCanbeUploadedToJdRequest;
@@ -15,6 +16,7 @@ import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.jd.api.service.JdGoodsService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,15 +44,15 @@ public class JdGoodsUpAction {
      */
     @RequestMapping("goodsCanbeUploadedToJdRequest")
     @ResponseBody
-    public GoodsCanbeUploadedToJdResponse goodsCanbeUploadedToJdResponse (@Valid GoodsCanbeUploadedToJdRequest request,
-            GoodsCanbeUploadedToJdResponse response,BindingResult bindingResult) throws OtherCustomException {
+    public JSONObject goodsCanbeUploadedToJdResponse (@Valid GoodsCanbeUploadedToJdRequest request,
+                                                      GoodsCanbeUploadedToJdResponse response, BindingResult bindingResult) throws OtherCustomException {
         if (bindingResult.hasErrors()) {
             throw new OtherCustomException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
         GoodsCanbeUploadedToJdResponse res=new GoodsCanbeUploadedToJdResponse();
         res.setSuccess(true);
         res.setCan(jdGoodsService.goodsCanbeUploadedToJd(request.getTbCid()));
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
     /**
@@ -62,27 +64,27 @@ public class JdGoodsUpAction {
      */
     @RequestMapping("jdWareAdd")
     @ResponseBody
-    public JdWareAddResponse jdWareAddResponse(JdWareAddRequest request) throws OtherCustomException, JdAuthOverdueException {
+    public JSONObject jdWareAddResponse(JdWareAddRequest request) throws OtherCustomException, JdAuthOverdueException {
         JdWareAddResponse res=new JdWareAddResponse();
         res.setSuccess(true);
         res.setData(jdGoodsService.upToJd(request.getGoods(),request.getJdUid()));
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
     @RequestMapping("jdTransportWriteUpdateWareTransportId")
     @ResponseBody
-    public JdTransportWriteUpdateWareTransportIdResponse jdTransportWriteUpdateWareTransportId(JdTransportWriteUpdateWareTransportIdRequest request) throws JdAuthOverdueException, OtherCustomException {
+    public JSONObject jdTransportWriteUpdateWareTransportId(JdTransportWriteUpdateWareTransportIdRequest request) throws JdAuthOverdueException, OtherCustomException {
         JdTransportWriteUpdateWareTransportIdResponse res=new JdTransportWriteUpdateWareTransportIdResponse();
         res.setSuccess(true);
         res.setCan(jdGoodsService.bindPostTemplate(request.getJdUid(),request.getWareId(),request.getTemplateId()));
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
     @RequestMapping("jdImageWriteUpdate")
     @ResponseBody
-    public JdImageWriteUpdateResponse jdImageWriteUpdate(JdImageWriteUpdateRequest request) throws JdAuthOverdueException, OtherCustomException {
+    public JSONObject jdImageWriteUpdate(JdImageWriteUpdateRequest request) throws JdAuthOverdueException, OtherCustomException {
         jdGoodsService.jdImageUpdate(request.getBo(),request.getJdUid());
         JdImageWriteUpdateResponse res=new JdImageWriteUpdateResponse();
         res.setSuccess(true);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
 }

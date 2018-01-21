@@ -1,15 +1,14 @@
 package com.shigu.interceptors;
 
 import com.openJar.beans.JdToken;
+import com.shigu.component.core.ApiHttpServletRequest;
 import com.utils.publics.Opt3Des;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
+import java.util.*;
 
 /**
  * Id密度过滤器
@@ -71,7 +70,10 @@ public class IdDensityInterceptor extends DensityInterceptor {
         if(System.currentTimeMillis() - signTime * 10000 - jdToken.getCreateTime().getTime() > 0){
             return false;
         }
-
+        Map<String,String[]> map=new HashMap<>(request.getParameterMap());
+        request = new ApiHttpServletRequest(request,map);
+        String[] jdUid={jdToken.getId().toString()};
+        map.put("jdUid", jdUid);
         primaryKey="id_"+jdToken.getId();
         return super.preHandle(request, response, handler);
     }

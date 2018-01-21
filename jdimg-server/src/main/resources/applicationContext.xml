@@ -55,12 +55,14 @@
         <property name="maxQueue" value="200" />
         <!--线程池初始线程数-->
         <property name="threadNum" value="8" />
+        <!--单用户最大任务数-->
+        <property name="userMaxNum" value="10" />
     </bean>
 
     <mvc:interceptors>
         <!-- IP密度拦截器 - 发送短信-->
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
+            <mvc:mapping path="/detailImg/**"/>
             <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
             <bean class="com.shigu.interceptors.IdDensityInterceptor">
                 <property name="minMillionSecond" value="5000"/>

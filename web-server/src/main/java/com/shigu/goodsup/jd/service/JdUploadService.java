@@ -38,7 +38,7 @@ public class JdUploadService {
     JdGoodsUpService jdGoodsUpService;
     static List<Integer> cdnIndexs = Arrays.asList(10, 11, 12, 13, 14);
 
-    public void upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
+    public Long upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
         JdWareAddRequest request = new JdWareAddRequest();
         JdUpGoods req = new JdUpGoods();
         req.setCid(tbo.getCid().toString());
@@ -96,14 +96,14 @@ public class JdUploadService {
         Map<String, String> skuImgUrls = tbo.getPropImg().stream().collect(Collectors.toMap(JdUploadPropImgBO::getImg, jdUploadPropImgBO -> jdUploadPropImgBO.getPid() + ":" + jdUploadPropImgBO.getVid()));
 
         String html = tbo.getPcContent();
-        Document doc = Jsoup.parse(html);
-        Elements descImgs = doc.select("img");
-        List<String> descImgUrls = descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).filter(s -> s.startsWith("http")).collect(Collectors.toList());
+//        Document doc = Jsoup.parse(html);
+//        Elements descImgs = doc.select("img");
+//        List<String> descImgUrls = descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).filter(s -> s.startsWith("http")).collect(Collectors.toList());
 
         List<String> allImgs = new ArrayList<>();
         allImgs.addAll(headImgUrls);
         allImgs.addAll(skuImgUrls.keySet());
-        allImgs.addAll(descImgUrls);
+//        allImgs.addAll(descImgUrls);
 
         //创建图片目录
         //查看星座上传图片类目是否存在
@@ -159,11 +159,11 @@ public class JdUploadService {
         Map<String, JdImgInfo> imgMap = jdUpImgResponse.getJdImgInfos();
 
         int cdnIndex = cdnIndexs.get((int) (Math.random() * cdnIndexs.size()));
-        for (String descImg : descImgUrls) {
-            JdImgInfo img = imgMap.get(descImg);
-            doc.getElementsByAttributeValue("src", descImg).attr("src", "//img" + cdnIndex + ".360buyimg.com/imgzone/" + img.getPictureUrl());
-        }
-        html = doc.body().html();
+//        for (String descImg : descImgUrls) {
+//            JdImgInfo img = imgMap.get(descImg);
+//            doc.getElementsByAttributeValue("src", descImg).attr("src", "//img" + cdnIndex + ".360buyimg.com/imgzone/" + img.getPictureUrl());
+//        }
+//        html = doc.body().html();
         req.setNotes(html);
 
         //上传商品
@@ -249,6 +249,7 @@ public class JdUploadService {
         vo.setFlag("jd");
         vo.setSupperGoodsId(tbo.getMid());
         jdGoodsUpService.saveRecord(vo);
+        return jdGoods.getGoodsId();
     }
 
     public static void main(String[] args) {

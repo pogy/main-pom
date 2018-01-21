@@ -3,6 +3,7 @@ package com.shigu.jd.actions;
 import com.openJar.beans.JdCategoryAttrValueJos;
 import com.openJar.beans.SdkJdImgzoneCategory;
 import com.openJar.beans.SdkJdShopCategory;
+import com.openJar.commons.ResponseUtil;
 import com.openJar.requests.api.JdCategoryAttrValueJosRequest;
 import com.openJar.requests.api.JdImgzoneCategoryAddRequest;
 import com.openJar.requests.api.JdImgzoneCategoryRequest;
@@ -15,6 +16,7 @@ import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.service.JdCategoryService;
 import com.shigu.jd.api.service.JdShopService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,7 +40,7 @@ public class JdShopAction {
 
     @RequestMapping("jdShopCategory")
     @ResponseBody
-    public JdShopCategoryResponse goodsCanbeUploadedToJdResponse (
+    public JSONObject goodsCanbeUploadedToJdResponse (
             @Valid JdShopCategoryRequest request, BindingResult bindingResult) throws JdAuthOverdueException, OtherCustomException {
 
         if (bindingResult.hasErrors()) {
@@ -48,12 +50,12 @@ public class JdShopAction {
         JdShopCategoryResponse res=new JdShopCategoryResponse();
         res.setSuccess(true);
         res.setJdShopCategories(datas);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
     @RequestMapping("jdCategoryAttrValueJos")
     @ResponseBody
-    public JdCategoryAttrValueJosResponse goodsCanbeUploadedToJdResponse (
+    public JSONObject goodsCanbeUploadedToJdResponse (
             @Valid JdCategoryAttrValueJosRequest request, BindingResult bindingResult) throws OtherCustomException, JdAuthOverdueException {
         if (bindingResult.hasErrors()) {
             throw new OtherCustomException(bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -62,27 +64,27 @@ public class JdShopAction {
         JdCategoryAttrValueJosResponse res=new JdCategoryAttrValueJosResponse();
         res.setJdCategoryAttrValueJos(datas);
         res.setSuccess(true);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
     @RequestMapping("jdImgzoneCategory")
     @ResponseBody
-    public JdImgzoneCategoryResponse selImgCategory(JdImgzoneCategoryRequest request) throws JdAuthOverdueException, OtherCustomException {
+    public JSONObject selImgCategory(JdImgzoneCategoryRequest request) throws JdAuthOverdueException, OtherCustomException {
         List<SdkJdImgzoneCategory> datas=jdShopService.selImgCategory(request.getJdUid(),request.getImgCategory(),request.getParentCateId());
         JdImgzoneCategoryResponse res=new JdImgzoneCategoryResponse();
         res.setSuccess(true);
         res.setDatas(datas);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
-    @RequestMapping("jdAuthedInfo")
+    @RequestMapping("jdImgzoneCategoryAdd")
     @ResponseBody
-    public JdImgzoneCategoryAddResponse addImgCategory(JdImgzoneCategoryAddRequest request) throws JdAuthOverdueException, OtherCustomException {
+    public JSONObject addImgCategory(JdImgzoneCategoryAddRequest request) throws JdAuthOverdueException, OtherCustomException {
         Long id=jdShopService.addImgCategory(request.getJdUid(),request.getImgCategory(),request.getParentCateId());
         JdImgzoneCategoryAddResponse response=new JdImgzoneCategoryAddResponse();
         response.setSuccess(true);
         response.setImgZoneId(id);
-        return response;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 
 }

@@ -4,6 +4,7 @@ import com.openJar.commons.MD5Attestation;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.img.UploadImgTask;
 import com.shigu.jd.img.WorkerMan;
+import com.shigu.jd.img.exceptions.ImgThreadOverloadException;
 import com.shigu.jd.img.vo.DownOtherVO;
 import com.shigu.jd.tools.DownImage;
 import com.shigu.jd.tools.JdOssIO;
@@ -22,7 +23,7 @@ import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created By admin on 2017/12/22/13:30
@@ -37,37 +38,25 @@ public class DetailImgController {
     public static final String FOLDER = "upload";
 
     private WorkerMan workerMan = WorkerMan.getInstance();
-    private ExecutorService pool = workerMan.getPool();
-
-
     /**
      * 上传图片到京东oss
      * @return
      */
     @RequestMapping("uploadByUrl")
     @ResponseBody
-    public void uploadByUrl(String imgUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    public void uploadByUrl(String url,Long jdUid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         DownOtherVO dov=new DownOtherVO();
         try {
-            Long contentLength = DownImage.getContentLengthClose(imgUrl);
-            byte[] bytes = DownImage.downImgFile(imgUrl);
-            InputStream input = new ByteArrayInputStream(bytes);
-            String pictureName = MD5Attestation.MD5Encode(bytes.toString());
-
             UploadImgTask task = new UploadImgTask();
-            task.setContentLength(contentLength);
-            task.setFilePath(FOLDER + "/" + pictureName + ".jpg");
-            task.setInput(input);
+            task.setFolder(FOLDER);
             task.setJdOssIO(jdOssIO);
+            task.setJdUid(jdUid);
+            task.setUrl(url);
 
-            Future<String> future = pool.submit(task);
-
-            String url = future.get(workerMan.getTimeOut(), TimeUnit.SECONDS);
+            String imgUrl = workerMan.start(task);
             dov.setStatus(1);
-            dov.setUrl(url);
-        }catch (OtherCustomException e) {
-            e.printStackTrace();
+            dov.setUrl(imgUrl);
+        } catch (ImgThreadOverloadException e){
             dov.setStatus(0);
             dov.setMsg(e.getMessage());
         } catch (Exception e) {
@@ -75,7 +64,6 @@ public class DetailImgController {
             dov.setStatus(0);
             dov.setMsg("上传失败");
         }
-
         response.setContentType("application/x-javascript");//jsonp异常响应处理
         String jsonString = request.getParameter("callback") + "(" + JSONObject.fromObject(dov) + ")";
         writeResponse(response.getWriter(),jsonString);
@@ -88,33 +76,23 @@ public class DetailImgController {
      */
     @RequestMapping("upload")
     @ResponseBody
-    public void upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile,HttpServletRequest request,
+    public void upxzwimg(@RequestParam(value = "multimagefile1") MultipartFile multimagefile,Long jdUid,HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         DownOtherVO dov=new DownOtherVO();
         try {
             FileInputStream input = (FileInputStream)multimagefile.getInputStream();
-
-            ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-            byte[] buff = new byte[1024];
-            int rc;
-            while ((rc = input.read(buff, 0, 100)) > 0) {
-                swapStream.write(buff, 0, rc);
-            }
-            byte[] bytes = swapStream.toByteArray();
-            Long contentLength = input.getChannel().size();
-            String pictureName = MD5Attestation.MD5Encode(bytes.toString());
-
             UploadImgTask task = new UploadImgTask();
-            task.setContentLength(contentLength);
-            task.setFilePath(FOLDER + "/" + pictureName + ".jpg");
-            task.setInput(input);
+            task.setFolder(FOLDER);
+            task.setJdUid(jdUid);
             task.setJdOssIO(jdOssIO);
+            task.setInput(input);
 
-            Future<String> future = pool.submit(task);
-            String url = future.get(workerMan.getTimeOut(), TimeUnit.SECONDS);
-
+            String imgUrl = workerMan.start(task);
             dov.setStatus(1);
-            dov.setUrl(url);
+            dov.setUrl(imgUrl);
+        } catch (ImgThreadOverloadException e){
+            dov.setStatus(0);
+            dov.setMsg(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             dov.setStatus(0);

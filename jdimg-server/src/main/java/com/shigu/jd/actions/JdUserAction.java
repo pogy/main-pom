@@ -2,6 +2,7 @@ package com.shigu.jd.actions;
 
 import com.openJar.beans.JdPostTemplate;
 import com.openJar.beans.JdVenderBrandPubInfo;
+import com.openJar.commons.ResponseUtil;
 import com.openJar.requests.api.GoodsCanbeUploadedToJdRequest;
 import com.openJar.requests.api.JdPostTemplateRequest;
 import com.openJar.requests.api.JdVenderBrandPubInfoRequest;
@@ -11,6 +12,7 @@ import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.api.service.JdCategoryService;
 import com.shigu.jd.api.service.JdOrderService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,7 +43,7 @@ public class JdUserAction {
      */
     @RequestMapping("jdVenderBrandPubInfo")
     @ResponseBody
-    public JdVenderBrandPubInfoResponse jdVenderBrandPubInfo (
+    public JSONObject jdVenderBrandPubInfo (
             @Valid JdVenderBrandPubInfoRequest request , BindingResult bindingResult) throws JdAuthOverdueException, OtherCustomException {
 
         if (bindingResult.hasErrors()) {
@@ -51,7 +53,7 @@ public class JdUserAction {
         JdVenderBrandPubInfoResponse res = new JdVenderBrandPubInfoResponse();
         res.setSuccess(true);
         res.setJdVenderBrandPubInfos(datas);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 
     /**
@@ -62,7 +64,7 @@ public class JdUserAction {
      */
     @RequestMapping("jdPostTemplate")
     @ResponseBody
-    public JdPostTemplateResponse JdPostTemplate (
+    public JSONObject JdPostTemplate (
             @Valid JdPostTemplateRequest request , BindingResult bindingResult) throws JdAuthOverdueException, OtherCustomException {
         if (bindingResult.hasErrors()) {
             throw new OtherCustomException(bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -71,6 +73,6 @@ public class JdUserAction {
         JdPostTemplateResponse res=new JdPostTemplateResponse();
         res.setSuccess(true);
         res.setJdPostTemplates(datas);
-        return res;
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
 }

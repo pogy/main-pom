@@ -15,7 +15,7 @@ public class JdShowDataVO implements Serializable{
     private JdPageItem items;
     private List storeCats;
     private List deliveyList;
-
+    private String token;
     public String getGoodsCat() {
         return this.goodsCat;
     }
@@ -63,5 +63,13 @@ public class JdShowDataVO implements Serializable{
 
     public void setJdUserId(Long jdUserId) {
         this.jdUserId = jdUserId;
+    }
+
+    public String getToken() {
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
