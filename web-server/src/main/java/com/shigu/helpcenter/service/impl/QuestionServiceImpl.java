@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("questionService")
 public class QuestionServiceImpl implements QuestionService {
@@ -19,7 +20,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<ShiguHelpcenterQuestion> getAll() {
         ShiguHelpcenterQuestionExample example = new ShiguHelpcenterQuestionExample();
-        example.createCriteria();
+        example.setOrderByClause("id desc");
         List<ShiguHelpcenterQuestion> shiguHelpcenterQuestions = shiguHelpcenterQuestionMapper.selectByExample(example);
         if (shiguHelpcenterQuestions != null){
             return  shiguHelpcenterQuestions;

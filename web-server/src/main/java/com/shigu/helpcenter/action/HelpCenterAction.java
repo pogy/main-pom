@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.4.2 ： 修改BUG 18.1.22
+ * v1.4.4 ： 修改BUG 18.1.22
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -125,8 +125,10 @@ public class HelpCenterAction {
         List<ShiguHelpcenterQuestion> title = null;
         if (StringUtils.isNotBlank(keyword)) {
             title = questionService.search(keyword);
-        } else {
+        } else if (cid != null){
             title = questionService.getTitleByCid(cid);
+        } else  if (cid == null){
+            title = new ArrayList<>();
         }
         List<ShiguHelpcenterQuestion> collect = title.stream()
                 .limit(page * pageSize)
@@ -144,7 +146,7 @@ public class HelpCenterAction {
         }else {
             queCateNamePath = "搜索结果";
         }
-        if (StringUtils.isNotBlank(keyword) && cid ==null){
+        if ((StringUtils.isNotBlank(keyword) && cid ==null) || (StringUtils.isBlank(keyword) && cid ==null)){
             query.setKeyword(keyword);
         }else {
             query.setKeyword(keyword);
@@ -219,7 +221,7 @@ public class HelpCenterAction {
         }
         List<ShiguHelpcenterQuestion> collect = questionList.stream()
                 .limit(page * pageSize)
-                .skip((page - 1) * pageSize).sorted((p1,p2)->(p2.getCid()-p1.getCid())).collect(Collectors.toList());
+                .skip((page - 1) * pageSize).collect(Collectors.toList());
         Integer pageTol = questionList.size();
         Integer pageNo = page;
         //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
@@ -450,7 +452,7 @@ public class HelpCenterAction {
 
     @RequestMapping("uploadHelpCenterImage")
     @ResponseBody
-    public JSONObject uploadicon(@RequestParam(value = "file", required = false) MultipartFile file) {
+    public JSONObject uploadicon(@RequestParam(value = "wangEditorH5File", required = false) MultipartFile file) {
         if (file == null) {
             return JsonResponseUtil.error("文件数据不存在");
         }
@@ -460,6 +462,7 @@ public class HelpCenterAction {
         } catch (IOException e) {
             return JsonResponseUtil.error("图片数据读取失败");
         }
+        System.out.println(url);
         return JsonResponseUtil.success().element("imgSrc", url);
     }
 
