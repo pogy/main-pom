@@ -29,7 +29,7 @@
 <#include "/__ftl_links__/helpCenter__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#if (queList?size) gt 0>
+<#if queList??>
 <div class="queList">
     <h3 class="fs14 yahei">${queCateNamePath!}</h3>
     <div class="queListCon">
