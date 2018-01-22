@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.3.5 ： 命名进行规范 18.1.19
+ * v1.4 ： 修改BUG 18.1.22
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -77,7 +77,12 @@ public class HelpCenterAction {
     @RequestMapping("queIndex")
     public String getLecelOneAll(Integer page,Integer cid, String keyword, Model model) {
         if (cid == null) {
-            cid = 1;
+            model.addAttribute("query", null);
+            model.addAttribute("sidebarList", null);
+            model.addAttribute("pageOption", null);
+            model.addAttribute("queList", null);
+            model.addAttribute("queCateNamePath", null);
+            return "helpCenter/queIndex";
         }
         //初始化page
         if (page == null) {
