@@ -583,6 +583,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         String orderBy = shopForCdnBo.getOrderBy();
         if (StringUtils.isEmpty(orderBy)) {
             requestBuilder.addSort(new SortField("created", Order.DECREASE));
+            if (shopForCdnBo.getParentStyleId() != null) {
+                requestBuilder.addSort(new SortField("style_search_score",Order.DECREASE));
+            }
         } else {
             switch (orderBy) {
                 case "price-asc":
