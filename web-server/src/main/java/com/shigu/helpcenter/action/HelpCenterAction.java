@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.4 ： 修改BUG 18.1.22
+ * v1.4.2 ： 修改BUG 18.1.22
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -350,9 +350,9 @@ public class HelpCenterAction {
                     }
                 }
             }
-            return JsonResponseUtil.error("error");
+            return JsonResponseUtil.error("通过DB进行修改");
         }
-        return JsonResponseUtil.error("error");
+        return JsonResponseUtil.error("通过DB进行修改");
     }
 
     /* 删除操作
