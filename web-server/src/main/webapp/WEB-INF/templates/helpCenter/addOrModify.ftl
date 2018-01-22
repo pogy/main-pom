@@ -27,7 +27,7 @@
     <div class="dataItem">
         <label>主类目：</label>
         <select class="fmInput mainCate">
-            <option>请选择主类目</option>
+            <option value="">请选择主类目</option>
             <#list mainCate as cate>
             <option value="${cate.id!}" <#if cate.id == pid>selected</#if>>${cate.name!}</option>
             </#list>
