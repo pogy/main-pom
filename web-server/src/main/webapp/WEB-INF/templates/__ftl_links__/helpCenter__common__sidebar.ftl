@@ -9,7 +9,7 @@
                     <ul>
                         <#list item.subSidebarList as subItem>
                         <li <#if query.cid == subItem.cid>class="selected"</#if>>
-                            <a href="queIndex.htm?cid=${subItem.cid!}&pid=${item.pid!}"><i class="rightArrow"></i>${subItem.name!}</a>
+                            <a href="queIndex.htm?cid=${subItem.cid!}"><i class="rightArrow"></i>${subItem.name!}</a>
                         </li>
                         </#list>
                     </ul>
