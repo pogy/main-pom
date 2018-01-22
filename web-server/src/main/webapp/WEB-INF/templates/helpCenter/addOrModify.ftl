@@ -37,6 +37,7 @@
     <div class="dataItem">
         <label>子类目：</label>
         <select class="fmInput categories">
+            <option value="">请选择子类目</option>
         </select>
         <input type="text" name="categoryName" class="fmInput" placeholder="如下拉框内无所需子类目，请手动填写">
     </div>
