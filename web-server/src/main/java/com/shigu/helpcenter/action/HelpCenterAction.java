@@ -8,6 +8,12 @@ import com.shigu.helpcenter.service.LevelOneService;
 import com.shigu.helpcenter.service.LevelTwoService;
 import com.shigu.helpcenter.service.QuestionService;
 import com.shigu.helpcenter.vo.*;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -18,9 +24,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +49,8 @@ public class HelpCenterAction {
     private LevelTwoService levelTwoService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private OssIO ossIO;
 
     @Value("${help.center.psw}")
     private String helpCenterPsw;
@@ -206,7 +217,7 @@ public class HelpCenterAction {
         }
         List<ShiguHelpcenterQuestion> collect = questionList.stream()
                 .limit(page * pageSize)
-                .skip((page - 1) * pageSize).collect(Collectors.toList());
+                .skip((page - 1) * pageSize).sorted((p1,p2)->(p2.getCid()-p1.getCid())).collect(Collectors.toList());
         Integer pageTol = questionList.size();
         Integer pageNo = page;
         //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
@@ -433,6 +444,23 @@ public class HelpCenterAction {
         }
         return "helpCenter/addOrModify";
     }
+
+
+    @RequestMapping("uploadHelpCenterImage")
+    @ResponseBody
+    public JSONObject uploadicon(@RequestParam(value = "file", required = false) MultipartFile file) {
+        if (file == null) {
+            return JsonResponseUtil.error("文件数据不存在");
+        }
+        String url = "";
+        try {
+            url = ossIO.uploadFile(file.getBytes(), "mall/file/" + System.currentTimeMillis() + ".jpg");
+        } catch (IOException e) {
+            return JsonResponseUtil.error("图片数据读取失败");
+        }
+        return JsonResponseUtil.success().element("imgSrc", url);
+    }
+
 
     @RequestMapping("getCategories")
     @ResponseBody
