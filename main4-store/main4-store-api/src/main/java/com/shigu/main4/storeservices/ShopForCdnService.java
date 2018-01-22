@@ -1,5 +1,6 @@
 package com.shigu.main4.storeservices;
 
+import com.shigu.main4.bo.OnsaleItemQueryBO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.vo.*;
 
@@ -89,7 +90,17 @@ public interface ShopForCdnService {
             ,int pageSize);
 
     /**
-     * 查询店内出售中的商品
+     * 出售中的商品,shopId非空则查店内商品
+     * @param onsaleItemQueryBO
+     * @param webSite
+     * @param paggeNo
+     * @param pageSize
+     * @return
+     */
+    ShiguPager<ItemShowBlock> searchItemOnsaleByBO(OnsaleItemQueryBO onsaleItemQueryBO, String webSite, int paggeNo, int pageSize);
+
+    /**
+     * 查询店内下架的商品
      * @param from 开始时间
      * @param to 结束时间
      * @param pageNo 当前页

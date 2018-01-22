@@ -7,6 +7,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.bo.OnsaleItemQueryBO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.OpenItemVo;
@@ -451,6 +452,18 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return shiguPager;
     }
 
+
+    @Override
+    public ShiguPager<ItemShowBlock> searchItemOnsaleByBO(OnsaleItemQueryBO onsaleItemQueryBO, String webSite, int paggeNo, int pageSize) {
+        ShiguPager<ItemShowBlock> pager = new ShiguPager<>();
+        ShopForCdnBo bo = BeanMapper.map(onsaleItemQueryBO, ShopForCdnBo.class);
+        bo.setIsOff(0);
+        bo.setPageNo(paggeNo);
+        bo.setPageSize(pageSize);
+        selectItemShowBlockByBo(bo,pager,webSite);
+        return pager;
+    }
+
     /**
      * 查询店内仓库中的商品
      *
@@ -630,6 +643,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
             requestBuilder.addFilter(FilterBuilder.number("store_id", shopId));
+        }
+        if (shopForCdnBo.getParentStyleId() != null) {
+            requestBuilder.addFilter(FilterBuilder.number("parent_style_id", shopForCdnBo.getParentStyleId()));
         }
         List<Long> goodsIds = shopForCdnBo.getGoodsIds();
         if (goodsIds != null ) {
@@ -824,6 +840,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return goodsNewList;
     }
 
+    /**
+     * 获取店内商品风格（风格频道）
+     * @param shopId
+     * @return
+     */
     @Override
     public List<ShiguStyleShowVO> selShopStyleById(Long shopId) {
         if (shopId == null) {
