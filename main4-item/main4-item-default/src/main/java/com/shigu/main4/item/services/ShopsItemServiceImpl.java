@@ -1,7 +1,6 @@
 package com.shigu.main4.item.services;
 
 import com.opentae.core.mybatis.SgExample;
-import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
@@ -33,12 +32,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -470,10 +467,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
                 if (otherInfo != null) {
                     //设置材质时必须设置面料为必填项
-                    if (StringUtils.isNotBlank(otherInfo.getFabric())) {
-                        item.setConstituentType(2);
-                    }
-                    item.setGoodsStyleId(otherInfo.getGoodsStyleId());
+                    item.setStyleId(otherInfo.getStyleId());
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
