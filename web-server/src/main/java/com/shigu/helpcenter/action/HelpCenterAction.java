@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * 帮助中心 helpCenter
  * 创建时间 18.1.16
  * 创建者 张喜惠
- * v1.4.4 ： 修改BUG 18.1.22
+ * v1.4.6 ： 修改BUG 18.1.22
  * */
 @Controller
 @RequestMapping("helpCenter/")
@@ -288,7 +288,12 @@ public class HelpCenterAction {
             shiguHelpcenterQuestion.setAnswer(queAnswer);
             String save = questionService.save(shiguHelpcenterQuestion);
             if (save.equals("success")){
+                if (questionService.getPkByTitle(queTitle) == null){
+                    return JsonResponseUtil.error("error : 超长");
+                }
                 return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+questionService.getPkByTitle(queTitle));
+            }else {
+                return JsonResponseUtil.error("error : 超长");
             }
         }
 
