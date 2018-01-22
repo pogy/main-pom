@@ -330,11 +330,8 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     @Transactional
-    public void buyerNoReprice() throws Main4Exception {
+    public void buyerNoReprice(){
         RefundVO refundInfo = refundinfo();
-        if(refundInfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
-            throw new Main4Exception("订单状态错误");
-        }
         refundStateChangeAndLog(refundInfo,RefundStateEnum.BUYER_NOREPRICE, null);
     }
 
@@ -384,9 +381,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Transactional(rollbackFor = Exception.class)
     public void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
-        if(refundinfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
-            throw new RefundException("订单状态错误");
-        }
         if (refundinfo.getType() == 5) {
             throw new RefundException("系统退款不走一般退款流程");
         }
