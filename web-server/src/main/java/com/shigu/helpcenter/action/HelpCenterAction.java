@@ -203,7 +203,7 @@ public class HelpCenterAction {
      * 后台首页
      * 请求地址：helpCenter/showQuestion.htm
      * 参数：
-     *   page     页码
+     *   page     请求页码
      *   keyword  搜索关键字
      * */
     @RequestMapping("showQuestion")
