@@ -77,8 +77,19 @@ public class HelpCenterAction {
     @RequestMapping("queIndex")
     public String getLecelOneAll(Integer page,Integer cid, String keyword, Model model) {
         if (cid == null) {
+            List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
+            List<IndexVo> sidebarList = new ArrayList<IndexVo>();
+            for (ShiguHelpcenterLevel1 s : level1List) {
+                IndexVo indexVo = new IndexVo();
+                indexVo.setPid(s.getPid());
+                indexVo.setName(s.getName());
+                List<ShiguHelpcenterLevel2> level2s = levelTwoService.getLevelTowByGid(s.getPid());
+                indexVo.setSubSidebarList(level2s);
+                sidebarList.add(indexVo);
+            }
+            List<IndexVo> vos = sidebarList.stream().sorted((p1, p2) -> (p1.getPid() - p2.getPid())).collect(Collectors.toList());
             model.addAttribute("query", null);
-            model.addAttribute("sidebarList", null);
+            model.addAttribute("sidebarList", vos);
             model.addAttribute("pageOption", null);
             model.addAttribute("queList", null);
             model.addAttribute("queCateNamePath", null);
