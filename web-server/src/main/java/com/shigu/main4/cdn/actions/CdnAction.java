@@ -1003,7 +1003,7 @@ public class CdnAction {
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
 
-//        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+//      List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();
         ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,goods.getShopId(),goods.getWebSite(),"common",1,3);
         List<ItemShowBlock> content = itemPager.getContent();

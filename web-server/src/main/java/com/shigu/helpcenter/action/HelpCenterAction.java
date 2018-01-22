@@ -185,6 +185,8 @@ public class HelpCenterAction {
         String queCateNamePath = gname + " > " + cname + " > " + title;
         Query query = new Query();
         query.setKeyword(keyword);
+        query.setPid(question.getGid());
+        query.setCid(question.getCid());
         model.addAttribute("sidebarList",sidebarList);
         model.addAttribute("pid",question.getGid());
         model.addAttribute("cid",question.getCid());
