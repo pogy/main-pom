@@ -64,7 +64,6 @@ public class HelpCenterAction {
         return "helpCenter/helpLogin";
     }
 
-
     /*
      * 帮助中心首页
      * 请求地址：helpCenter/queIndex.htm
@@ -76,7 +75,8 @@ public class HelpCenterAction {
      * */
     @RequestMapping("queIndex")
     public String getLecelOneAll(Integer page,Integer cid, String keyword, Model model) {
-        if (cid == null) {
+        Query query = new Query();
+        if (cid == null && keyword == null) {
             List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
             List<IndexVo> sidebarList = new ArrayList<IndexVo>();
             for (ShiguHelpcenterLevel1 s : level1List) {
@@ -123,19 +123,23 @@ public class HelpCenterAction {
         Integer pageNo = page;
         //分页配置参数，分别是商品总数，每页显示条数，当前页码，使用逗号隔开，比如：'28,10,1'
         String pageOption = String.valueOf(title.size()) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
-        String gname = levelOneService.getByPk(levelTwoService.getByPk(cid).getGid()).getName();
-        String cname = levelTwoService.getByPk(cid).getName();
-
+        String gname = null;
+        String cname = null;
         String queCateNamePath = null;
         if (keyword == null){
+            gname = levelOneService.getByPk(levelTwoService.getByPk(cid).getGid()).getName();
+            cname = levelTwoService.getByPk(cid).getName();
             queCateNamePath = gname + " > " + cname;
         }else {
             queCateNamePath = "搜索结果";
         }
-        Query query = new Query();
-        query.setKeyword(keyword);
-        query.setCid(cid);
-        query.setPid(levelTwoService.getByPk(cid).getGid());
+        if (StringUtils.isNotBlank(keyword) && cid ==null){
+            query.setKeyword(keyword);
+        }else {
+            query.setKeyword(keyword);
+            query.setCid(cid);
+            query.setPid(levelTwoService.getByPk(cid).getGid());
+        }
         model.addAttribute("query", query);
         model.addAttribute("sidebarList", vos);
         model.addAttribute("pageOption", pageOption);
@@ -151,7 +155,6 @@ public class HelpCenterAction {
      *   id  问题ID
      * */
     @RequestMapping("queDetail")
-
     public String getAnswerById(Integer id, String keyword,Model model) {
         List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
         List<IndexVo> indexVos = new ArrayList<IndexVo>();
@@ -164,9 +167,7 @@ public class HelpCenterAction {
             indexVos.add(indexVo);
         }
         List<IndexVo> sidebarList = indexVos.stream().sorted((p1, p2) -> (p1.getPid() - p2.getPid())).collect(Collectors.toList());
-
         ShiguHelpcenterQuestion question = questionService.getByPk(id);
-
         String gname = levelOneService.getByPk(question.getGid()).getName();
         String cname = levelTwoService.getByPk(question.getCid()).getName();
         String title = question.getTitle();
@@ -180,11 +181,7 @@ public class HelpCenterAction {
         model.addAttribute("queDetail",question.getAnswer());
         model.addAttribute("queCateNamePath",queCateNamePath);
         model.addAttribute("query",query);
-
-
         return "helpCenter/queDetail";
-
-
     }
 
     /*
@@ -292,9 +289,6 @@ public class HelpCenterAction {
                 return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
             }
         }
-
-
-
 
         /*//更改主目录
         if (pid != null & cid == null && StringUtils.isNotBlank(mainCateName) && StringUtils.isBlank(categoryName)){
@@ -413,10 +407,8 @@ public class HelpCenterAction {
                 pidChangeIdVo.setName(s.getName());
                 pidChangeIdVoList.add(pidChangeIdVo);
             }
-
             model.addAttribute("mainCate", pidChangeIdVoList);
             model.addAttribute("query", null);
-
             return "helpCenter/addOrModify";
         }
         ShiguHelpcenterQuestion questionServiceByPk = questionService.getByPk(id);
@@ -476,58 +468,4 @@ public class HelpCenterAction {
         }
         return null;
     }
-
-
-    public List<QueDetailVo> getAllQ() {
-        List<ShiguHelpcenterLevel1> level1List = levelOneService.getAll();
-        List<QueDetailVo> queDetailVoList = new ArrayList<QueDetailVo>();
-        if (level1List != null) {
-            for (ShiguHelpcenterLevel1 s : level1List) {
-                QueDetailVo queDetailVo = new QueDetailVo();
-                queDetailVo.setSidebarList(s);
-                queDetailVo.setSubSidebarList(levelTwoService.getLevelTowByGid(s.getPid()));
-                queDetailVoList.add(queDetailVo);
-            }
-            return queDetailVoList;
-        }
-        return null;
-    }
-
-
-    public JSONObject getLevelTowByGid(int gid) {
-        List<ShiguHelpcenterLevel2> levelTowByGid = levelTwoService.getLevelTowByGid(gid);
-        if (levelTowByGid != null) {
-            return JsonResponseUtil.success().element("levelTowByGid", levelTowByGid);
-        }
-        return null;
-    }
-
-
-    public ShiguHelpcenterQuestionVo getTitleByCid(int gid, int cid, Integer page) {
-        List<ShiguHelpcenterQuestion> titleByCid = questionService.getTitleByGidAndCid(gid, cid);
-        ShiguHelpcenterQuestionVo shiguHelpcenterQuestionVo = new ShiguHelpcenterQuestionVo();
-        //数据总数
-        Integer pageTol = titleByCid.size();
-        //每页显示数量
-        Integer pageSize = 10;
-        //当前页码
-        Integer pageNo = page;
-
-        String pageOption = String.valueOf(pageTol) + "," + String.valueOf(pageSize) + "," + String.valueOf(pageNo);
-
-        List<ShiguHelpcenterQuestion> questionList = titleByCid.stream()
-                .limit(page * pageSize)
-                .skip((page - 1) * pageSize).collect(Collectors.toList());
-        String gname = levelOneService.getByPk(questionList.get(1).getGid()).getName();
-        String cname = levelTwoService.getByPk(questionList.get(1).getCid()).getName();
-        if (titleByCid != null) {
-            shiguHelpcenterQuestionVo.setTitle(questionList);
-            shiguHelpcenterQuestionVo.setQueCateNamePath(gname + " > " + cname);
-            shiguHelpcenterQuestionVo.setPageOption(pageOption);
-            return shiguHelpcenterQuestionVo;
-        }
-        return null;
-    }
-
-
 }
