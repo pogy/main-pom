@@ -74,6 +74,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,17 +84,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -187,6 +185,25 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+
+    @Value("${used.domain}")
+    private String usedDomain;
+
+    public static  Set<String> usedDomains;
+    @PostConstruct
+    public void init(){
+        usedDomains = new HashSet<>();
+        if (!StringUtils.isBlank(usedDomain)) {
+            String[] split = usedDomain.split(",");
+            for (int i = 0; i < split.length; i++) {
+                String domain = split[i];
+                if (!StringUtils.isBlank(domain)) {
+                    usedDomains.add(domain.trim());
+                }
+            }
+        }
+        usedDomain = null;
+    }
 
 
     /**
@@ -980,6 +997,12 @@ public class ShopAction {
             if (isContainChinese(domain)) {
                 model.addAttribute("msg","二级域名只允许字母和数字的组合，建议长度3-8位");
             }else {
+                if (usedDomains.contains(domain)) {
+                    model.addAttribute("msg", "该域名已经被占用");
+                    model.addAttribute("domain", domain);
+                    return "gys/shiguStoreerjiyuming";
+
+                }
                 try {
                     shopBaseService.updateDomain(shopSession.getShopId(), domain);
                 } catch (ShopDomainException e) {
