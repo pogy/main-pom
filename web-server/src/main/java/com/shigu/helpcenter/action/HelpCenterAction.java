@@ -273,7 +273,7 @@ public class HelpCenterAction {
                     if (save3.equals("success")) {
                         return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+questionService.getPkByTitle(queTitle));
                     }else {
-                        return JsonResponseUtil.error("error : 超长");
+                        return JsonResponseUtil.error("error : 问题超长或者问题名称不唯一");
                     }
                 }
             }
@@ -310,7 +310,7 @@ public class HelpCenterAction {
             if (updata.equals("success")) {
                 return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+shiguHelpcenterQuestion.getId());
             }else{
-                return JsonResponseUtil.error("error : 超长");
+                return JsonResponseUtil.error("error : 问题超长或者问题名称不唯一");
             }
         }
 
@@ -374,9 +374,9 @@ public class HelpCenterAction {
                     }
                 }
             }
-            return JsonResponseUtil.error("ERROR : 请上数据库修改");
+            return JsonResponseUtil.error("error : 问题超长或者问题名称不唯一 , 除问题以外修改请到数据库");
         }
-        return JsonResponseUtil.error("ERROR : 请上数据库修改");
+        return JsonResponseUtil.error("error : 问题超长或者问题名称不唯一 , 除问题以外修改请到数据库");
     }
 
     /* 删除操作
@@ -399,7 +399,6 @@ public class HelpCenterAction {
                 String del1 = levelTwoService.del(shiguHelpcenterLevel2);
                 if (del1.equals("success")){
                     List<ShiguHelpcenterLevel2> levelTowByGid = levelTwoService.getLevelTowByGid(question.getGid());
-
                     if (levelTowByGid.size()<1){
                         ShiguHelpcenterLevel1 shiguHelpcenterLevel1 = new ShiguHelpcenterLevel1();
                         shiguHelpcenterLevel1.setPid(question.getGid());
