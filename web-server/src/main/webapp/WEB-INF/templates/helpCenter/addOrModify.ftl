@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300">
-    <title></title>
+    <title>添加或修改问题 - 帮助中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
@@ -35,7 +35,6 @@
         <input type="text" name="mainCateName" class="fmInput" placeholder="如下拉框内无所需主类目，请手动填写">
     </div>
     <div class="dataItem">
-
         <label>子类目：</label>
         <select class="fmInput categories">
         </select>
