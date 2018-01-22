@@ -33,10 +33,10 @@
 <div class="queList">
     <h3 class="fs14 yahei">${queCateNamePath!}</h3>
     <div class="queListCon">
-        <h4 class="fcF40 yahei fs20">问题列表</h4>
+        <h4 class="yahei fs20">问题列表</h4>
         <ul>
             <#list queList as que>
-            <li><a href="queDetail.htm?id=${que.id!}">${que.title!}</a></li>
+            <li><a href="queDetail.htm?id=${que.id!}" class="fc9">${que.title!}</a></li>
             </#list>
         </ul>
     </div>
