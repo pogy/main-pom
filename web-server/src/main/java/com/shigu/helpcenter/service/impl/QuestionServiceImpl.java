@@ -5,6 +5,8 @@ import com.opentae.data.mall.examples.ShiguHelpcenterQuestionExample;
 import com.opentae.data.mall.interfaces.ShiguHelpcenterQuestionMapper;
 import com.shigu.helpcenter.service.QuestionService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service("questionService")
 public class QuestionServiceImpl implements QuestionService {
+    private static final Logger logger = LoggerFactory.getLogger(QuestionServiceImpl.class);
+
     @Autowired
     private ShiguHelpcenterQuestionMapper shiguHelpcenterQuestionMapper;
 
@@ -97,7 +101,7 @@ public class QuestionServiceImpl implements QuestionService {
             shiguHelpcenterQuestionMapper.save(shiguHelpcenterQuestion);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }
@@ -109,7 +113,7 @@ public class QuestionServiceImpl implements QuestionService {
             shiguHelpcenterQuestionMapper.del(shiguHelpcenterQuestion);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
 
@@ -123,7 +127,7 @@ public class QuestionServiceImpl implements QuestionService {
             shiguHelpcenterQuestionMapper.updata(shiguHelpcenterQuestion);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }

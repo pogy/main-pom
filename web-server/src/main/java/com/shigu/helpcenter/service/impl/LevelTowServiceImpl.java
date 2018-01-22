@@ -6,6 +6,9 @@ import com.opentae.data.mall.beans.ShiguHelpcenterLevel2;
 import com.opentae.data.mall.examples.ShiguHelpcenterLevel2Example;
 import com.opentae.data.mall.interfaces.ShiguHelpcenterLevel2Mapper;
 import com.shigu.helpcenter.service.LevelTwoService;
+import com.sun.tools.javah.LLNI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,9 @@ import java.util.List;
 
 @Service("levelTwoService")
 public class LevelTowServiceImpl implements LevelTwoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LevelTowServiceImpl.class);
+
     @Autowired
     private ShiguHelpcenterLevel2Mapper shiguHelpcenterLevel2Mapper;
 
@@ -66,7 +72,7 @@ public class LevelTowServiceImpl implements LevelTwoService {
             shiguHelpcenterLevel2Mapper.save(shiguHelpcenterLevel2);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }
@@ -78,7 +84,7 @@ public class LevelTowServiceImpl implements LevelTwoService {
             shiguHelpcenterLevel2Mapper.del(shiguHelpcenterLevel2);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }
@@ -90,7 +96,7 @@ public class LevelTowServiceImpl implements LevelTwoService {
             shiguHelpcenterLevel2Mapper.updata(shiguHelpcenterLevel2);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }

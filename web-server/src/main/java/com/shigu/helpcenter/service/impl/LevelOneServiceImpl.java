@@ -7,6 +7,8 @@ import com.opentae.data.mall.interfaces.ShiguHelpcenterLevel1Mapper;
 
 
 import com.shigu.helpcenter.service.LevelOneService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service("levelOneService")
 public class LevelOneServiceImpl implements LevelOneService {
+    private static final Logger logger = LoggerFactory.getLogger(LevelOneServiceImpl.class);
     @Autowired
     private ShiguHelpcenterLevel1Mapper shiguHelpcenterLevel1Mapper;
    
@@ -56,7 +59,7 @@ public class LevelOneServiceImpl implements LevelOneService {
             shiguHelpcenterLevel1Mapper.save(shiguHelpcenterLevel1);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }
@@ -68,7 +71,7 @@ public class LevelOneServiceImpl implements LevelOneService {
             shiguHelpcenterLevel1Mapper.del(shiguHelpcenterLevel1);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }
@@ -80,7 +83,7 @@ public class LevelOneServiceImpl implements LevelOneService {
             shiguHelpcenterLevel1Mapper.updata(shiguHelpcenterLevel1);
             msg = "success";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return msg;
     }

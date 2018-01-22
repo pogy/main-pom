@@ -271,7 +271,9 @@ public class HelpCenterAction {
                     shiguHelpcenterQuestion.setCid(levelTwoService.getPkByName(categoryName));
                     String save3 = questionService.save(shiguHelpcenterQuestion);
                     if (save3.equals("success")) {
-                        return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+                        return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+shiguHelpcenterQuestion.getId());
+                    }else {
+                        return JsonResponseUtil.error("error : 超长");
                     }
                 }
             }
@@ -286,7 +288,7 @@ public class HelpCenterAction {
             shiguHelpcenterQuestion.setAnswer(queAnswer);
             String save = questionService.save(shiguHelpcenterQuestion);
             if (save.equals("success")){
-                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+questionService.getPkByTitle(queTitle));
             }
         }
 
@@ -301,7 +303,7 @@ public class HelpCenterAction {
 
             String updata = questionService.updata(shiguHelpcenterQuestion);
             if (updata.equals("success")) {
-                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queIndex.htm");
+                return JsonResponseUtil.success().element("redictUrl","/helpCenter/queDetail.htm?id="+shiguHelpcenterQuestion.getId());
             }
         }
 
