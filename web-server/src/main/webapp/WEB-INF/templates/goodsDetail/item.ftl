@@ -94,8 +94,6 @@
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
@@ -151,8 +149,6 @@
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
@@ -428,8 +424,6 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
