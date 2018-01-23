@@ -11,6 +11,8 @@ import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class ShopItemModService {
 
     @Autowired
     ShiguCustomerStyleMapper shiguCustomerStyleMapper;
+
+    @Autowired
+    ShiguStyleMapper shiguStyleMapper;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -237,68 +242,127 @@ public class ShopItemModService {
         return goodsStyle;
     }
 
+    ///**
+    // * 获取固定风格
+    // * @return
+    // * @param webSite
+    // */
+    //// TODO: 18-1-23 准备撤掉
+    //public List<ShiguStyleVo> getFixedStyle(String webSite){
+    //    SearchCategorySubExample example = new SearchCategorySubExample();
+    //    example.createCriteria().andTypeEqualTo(3).andWebSiteEqualTo(webSite).andParentCateValueEqualTo("30");
+    //    List<SearchCategorySub> list = searchCategorySubMapper.selectByExample(example);
+    //    ArrayList<ShiguStyleVo> styleVos = new ArrayList<>();
+    //    for (SearchCategorySub searchCategorySub:list) {
+    //        ShiguStyleVo shiguStyleVo = new ShiguStyleVo();
+    //        shiguStyleVo.setStyleName(searchCategorySub.getCateName());
+    //        shiguStyleVo.setStyleId(searchCategorySub.getSubId());
+    //        styleVos.add(shiguStyleVo);
+    //    }
+    //    return styleVos;
+    //}
+    ///**
+    // * 获取自定义风格
+    // * @return
+    // */
+    //// TODO: 18-1-23 准备撤掉
+    //public List<ShiguStyleVo> getCustomStyle(Long userId){
+    //    ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
+    //    example.createCriteria().andUserIdEqualTo(userId);
+    //    List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(example);
+    //    List<ShiguStyleVo> styleVos = BeanMapper.mapList(list, ShiguStyleVo.class);
+    //    return styleVos;
+    //}
+    //
+    ///**
+    // * 设置商品风格
+    // */
+    //// TODO: 18-1-23 准备撤掉
+    //public void setStyle(Long goodsId, Integer styleId, String webSite){
+    //    itemAddOrUpdateService.setCustomStyle(goodsId,styleId,webSite);
+    //}
+    ///**
+    // *   关联同货号设置风格
+    // */
+    //// TODO: 18-1-23 准备撤掉
+    //public void setSameNumStyle(Long goodsId, Integer styleId, Long shopId, String webSite){
+    //    //查找该商品货号
+    //    ShiguGoodsTinyExample example1 = new ShiguGoodsTinyExample();
+    //    example1.setWebSite(webSite);
+    //    example1.createCriteria().andGoodsIdEqualTo(goodsId);
+    //    List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example1);
+    //    String goodsNo =  shiguGoodsTinies.get(0).getGoodsNo();
+    //    if (goodsNo!=null&&StringUtils.isNotEmpty(goodsNo)){
+    //        //店里的商品
+    //        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+    //        example.createCriteria().andStoreIdEqualTo(shopId);
+    //        example.setWebSite(webSite);
+    //        List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
+    //        //设置风格
+    //        for (ShiguGoodsTiny goods:list) {
+    //            if(goods.getGoodsNo()!=null){
+    //                if (goods.getGoodsNo().equals(goodsNo)){
+    //                    //setStyle(goods.getGoodsId(),styleId,webSite);
+    //                }
+    //            }
+    //        }
+    //
+    //    }
+    //
+    //}
+
     /**
-     * 获取固定风格
+     * 获取所有子级风格
      * @return
-     * @param webSite
      */
-    public List<ShiguStyleVo> getFixedStyle(String webSite){
-        SearchCategorySubExample example = new SearchCategorySubExample();
-        example.createCriteria().andTypeEqualTo(3).andWebSiteEqualTo(webSite).andParentCateValueEqualTo("30");
-        List<SearchCategorySub> list = searchCategorySubMapper.selectByExample(example);
-        ArrayList<ShiguStyleVo> styleVos = new ArrayList<>();
-        for (SearchCategorySub searchCategorySub:list) {
-            ShiguStyleVo shiguStyleVo = new ShiguStyleVo();
-            shiguStyleVo.setStyleName(searchCategorySub.getCateName());
-            shiguStyleVo.setStyleId(searchCategorySub.getSubId());
-            styleVos.add(shiguStyleVo);
+    public List<ShiguStyleVo> getSubStyleVO() {
+        ShiguStyleExample example = new ShiguStyleExample();
+        example.createCriteria().andIsParentEqualTo(0);
+        List<ShiguStyle> shiguStyles = shiguStyleMapper.selectByExample(example);
+        List<ShiguStyleVo> shiguStyleVos = new ArrayList<>(shiguStyles.size());
+        for (ShiguStyle shiguStyle : shiguStyles) {
+            ShiguStyleVo vo = new ShiguStyleVo();
+            vo.setStyleId(shiguStyle.getId());
+            vo.setStyleName(shiguStyle.getStyleName());
+            shiguStyleVos.add(vo);
         }
-        return styleVos;
-    }
-    /**
-     * 获取自定义风格
-     * @return
-     */
-    public List<ShiguStyleVo> getCustomStyle(Long userId){
-        ShiguCustomerStyleExample example = new ShiguCustomerStyleExample();
-        example.createCriteria().andUserIdEqualTo(userId);
-        List<ShiguCustomerStyle> list = shiguCustomerStyleMapper.selectByExample(example);
-        List<ShiguStyleVo> styleVos = BeanMapper.mapList(list, ShiguStyleVo.class);
-        return styleVos;
+        return shiguStyleVos;
     }
 
     /**
      * 设置商品风格
+     * @param goodsId
+     * @param styleId
+     * @param shopId
+     * @param webSite
+     * @param sameGoodsNoSet 是否关联相同货号
+     * @return
      */
-    public void setStyle(Long goodsId, Integer styleId, String webSite){
-        itemAddOrUpdateService.setCustomStyle(goodsId,styleId,webSite);
-    }
-    /**
-     *   关联同货号设置风格
-     */
-    public void setSameNumStyle(Long goodsId, Integer styleId, Long shopId, String webSite){
-        //查找该商品货号
-        ShiguGoodsTinyExample example1 = new ShiguGoodsTinyExample();
-        example1.setWebSite(webSite);
-        example1.createCriteria().andGoodsIdEqualTo(goodsId);
-        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example1);
-        String goodsNo =  shiguGoodsTinies.get(0).getGoodsNo();
-        if (goodsNo!=null&&StringUtils.isNotEmpty(goodsNo)){
-            //店里的商品
-            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-            example.createCriteria().andStoreIdEqualTo(shopId);
-            example.setWebSite(webSite);
-            List<ShiguGoodsTiny> list = shiguGoodsTinyMapper.selectByExample(example);
-            //设置风格
-            for (ShiguGoodsTiny goods:list) {
-                if(goods.getGoodsNo()!=null){
-                    if (goods.getGoodsNo().equals(goodsNo)){
-                        setStyle(goods.getGoodsId(),styleId,webSite);
-                    }
-                }
-            }
-
+    public JSONObject setStyle(Long goodsId, Long styleId, Long shopId, String webSite, boolean sameGoodsNoSet) {
+        if (goodsId == null || styleId == null || shopId == null || StringUtils.isBlank(webSite)) {
+            return JsonResponseUtil.error("非法的请求参数");
         }
-
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        if (tiny == null) {
+            return JsonResponseUtil.error("商品不存在或已下架");
+        }
+        if (!shopId.equals(tiny.getStoreId())) {
+            return JsonResponseUtil.error("只能操作本店鋪的商品");
+        }
+        Set<Long> goodsIds = new HashSet<>();
+        goodsIds.add(goodsId);
+        if (sameGoodsNoSet && StringUtils.isNotBlank(tiny.getGoodsNo())) {
+            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+            example.setWebSite(webSite);
+            example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
+            List<ShiguGoodsTiny> goodsList = shiguGoodsTinyMapper.selectFieldsByExample(example, "goods_id");
+            for (ShiguGoodsTiny shiguGoodsTiny : goodsList) {
+                goodsIds.add(shiguGoodsTiny.getGoodsId());
+            }
+        }
+        return null;
     }
 }

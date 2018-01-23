@@ -71,7 +71,7 @@ import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -181,6 +181,8 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+
+
 
 
     /**
@@ -1367,27 +1369,34 @@ public class ShopAction {
     @ResponseBody
     public JSONObject setGoodsStyle(Long goodsId, Long styleId, Boolean relativeIs, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        int sid = styleId.intValue();
-        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
-        if (relativeIs) {
-            shopItemModService.setSameNumStyle(goodsId, sid, shopSession.getShopId(), shopSession.getWebSite());
+        if (shopSession.getShopId() == null || StringUtils.isBlank(shopSession.getWebSite())) {
+            return JsonResponseUtil.error("只有档口用户可以修改商品风格");
         }
-        shopItemModService.setStyle(goodsId, sid, shopSession.getWebSite());
-        return JsonResponseUtil.success();
+        if (goodsId == null) {
+            return JsonResponseUtil.error("请指点要修改的商品");
+        }
+        if (styleId == null) {
+            return JsonResponseUtil.error("请指定风格");
+        }
+        JSONObject result = shopItemModService.setStyle(goodsId, styleId, shopSession.getShopId(), shopSession.getWebSite(), Objects.equals(true, relativeIs));
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
+        return result;
     }
 
-    /**
-     * 获取自定义商品风格列表
-     *
-     * @param
-     * @return
-     */
-    @RequestMapping("seller/getUserGoodsStyleList")
-    @ResponseBody
-    public JSONObject getUserGoodsStyleList(HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("styleList", shopItemModService.getCustomStyle(ps.getUserId()));
-    }
+    ///**
+    // * 获取自定义商品风格列表
+    // *
+    // * @param
+    // * @return
+    // */
+    //@Deprecated
+    //// TODO: 18-1-23 准备撤掉
+    //@RequestMapping("seller/getUserGoodsStyleList")
+    //@ResponseBody
+    //public JSONObject getUserGoodsStyleList(HttpSession session) {
+    //    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    return JsonResponseUtil.success().element("styleList", shopItemModService.getCustomStyle(ps.getUserId()));
+    //}
 
     /**
      * 获取默认商品风格列表
@@ -1396,7 +1405,7 @@ public class ShopAction {
     @ResponseBody
     public JSONObject getDefaultGoodsStyleList(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("styleList", shopItemModService.getFixedStyle(ps.getLogshop().getWebSite()));
+        return JsonResponseUtil.success().element("styleList", shopItemModService.getSubStyleVO());
     }
 
 }

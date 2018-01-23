@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.*;
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException;
@@ -120,6 +121,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     private SearchCategorySubMapper searchCategorySubMapper;
+
+    @Autowired
+    private ShiguStyleMapper shiguStyleMapper;
 
     /**
      * 系统上架一款商品
@@ -1165,7 +1169,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             if(goodsCountForsearch != null) {
                 goodsCountForsearch.setGoodsId(goodsId);
                 goodsCountForsearch.setHadStyle(1);
-                goodsCountForsearch.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1179,7 +1185,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
                 goodsCountForsearch1.setGoodsId(goodsId);
                 goodsCountForsearch1.setHadStyle(1);
-                goodsCountForsearch1.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch1.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1280,7 +1288,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
         shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
-        if (shiguCustomerStyles.size()>0&&shiguCustomerStyles!=null){
+        if (shiguCustomerStyles!=null&&shiguCustomerStyles.size()>0){
             ShiguCustomerStyle shiguCustomerStyle =shiguCustomerStyles.get(0);
             int sort1=shiguCustomerStyle.getSort();//调整前的序号
             int sort=shiguCustomerStyle.getSort()+sortType;//调整后的序号
@@ -1288,7 +1296,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguCustomerStyleExample1.createCriteria().andSortEqualTo(sort);
             List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample1);
             //调换序号
-            if(shiguCustomerStyles1.size()>0&&shiguCustomerStyles1!=null){
+            if(shiguCustomerStyles1!=null&&shiguCustomerStyles1.size()>0){
                 shiguCustomerStyle.setSort(sort);
                 shiguCustomerStyles1.get(0).setSort(sort1);
                 shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
@@ -1296,4 +1304,56 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             }
         }
     }
+
+    @Override
+    public String setGoodsStyle(Set<Long> goodsIds, Long styleId, String webSite) {
+        if (0 == goodsIds.size()) {
+            return "没有要更改风格的商品";
+        }
+        if (StringUtils.isBlank(webSite)) {
+            return "没有站点信息";
+        }
+        List<Long> ids = new ArrayList<>(goodsIds);
+        GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+        example.createCriteria().andGoodsIdIn(ids);
+        List<Long> countGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
+        if (countGoodsIds.size() < goodsIds.size()) {
+            ids.removeAll(countGoodsIds);
+            List<GoodsCountForsearch> insertList = new ArrayList<>();
+            for (Long id : ids) {
+                GoodsCountForsearch val = new GoodsCountForsearch();
+                val.setGoodsId(id);
+                val.setWebSite(webSite);
+                val.setClick(0L);
+                val.setClickIp(0L);
+                val.setUp(0L);
+                val.setUpMan(0L);
+                val.setTrade(0L);
+                val.setHadGoat(0);
+                val.setHadBigzip(0);
+                val.setHadVideo(0);
+                val.setStyleSearchScore(0L);
+                insertList.add(val);
+            }
+            goodsCountForsearchMapper.insertListNoId(insertList);
+        }
+        ShiguStyle shiguStyle = shiguStyleMapper.selectByPrimaryKey(styleId);
+        if (shiguStyle == null) {
+            return "不存在的风格";
+        }
+        //只能设置子级风格
+        if (!Objects.equals(0,shiguStyle.getIsParent())) {
+            return "只能设置具体风格";
+        }
+        GoodsCountForsearch updateVal = new GoodsCountForsearch();
+        updateVal.setStyleId(styleId);
+        updateVal.setStyleSearchScore(0L);
+        updateVal.setParentStyleId(shiguStyle.getParentStyleId());
+        GoodsCountForsearchExample updateExample = new GoodsCountForsearchExample();
+        updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);
+        goodsCountForsearchMapper.updateByExampleSelective(updateVal,updateExample);
+        return "success";
+    }
+
+
 }

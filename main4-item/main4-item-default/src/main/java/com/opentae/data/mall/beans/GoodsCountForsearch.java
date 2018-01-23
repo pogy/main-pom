@@ -108,6 +108,11 @@ public class GoodsCountForsearch implements Serializable {
      */
 	private Long parentStyleId;
 
+    /**
+     * 商品风格频道搜索权重
+     */
+	private Long styleSearchScore;
+
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
 	}
@@ -266,6 +271,14 @@ public class GoodsCountForsearch implements Serializable {
 
 	public Long getParentStyleId() {
 		return this.parentStyleId;
+	}
+
+	public void setStyleSearchScore(Long styleSearchScore) {
+		this.styleSearchScore = styleSearchScore;
+	}
+
+	public Long getStyleSearchScore() {
+		return this.styleSearchScore;
 	}
 
 }

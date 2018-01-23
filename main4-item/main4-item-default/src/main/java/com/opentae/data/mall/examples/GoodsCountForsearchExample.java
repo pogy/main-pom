@@ -11,6 +11,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static final Class<GoodsCountForsearch> beanClass = GoodsCountForsearch.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn flowFixedTime;
+    public static EntityColumn styleSearchScore;
     public static EntityColumn hadStyle;
     public static EntityColumn clickIp;
     public static EntityColumn goodsId;
@@ -37,6 +38,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
             listMap.put(column.getProperty(), column);
         }
         flowFixedTime = listMap.get("flowFixedTime");
+        styleSearchScore = listMap.get("styleSearchScore");
         hadStyle = listMap.get("hadStyle");
         clickIp = listMap.get("clickIp");
         goodsId = listMap.get("goodsId");
@@ -123,6 +125,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
             return notBetween(flowFixedTime, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreIsNull() {
+            return isNull(styleSearchScore);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreIsNotNull() {
+            return isNotNull(styleSearchScore);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreEqualTo(Long value) {
+            return equalTo(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreNotEqualTo(Long value) {
+            return notEqualTo(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreGreaterThan(Long value) {
+            return greaterThan(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreLessThan(Long value) {
+            return lessThan(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(styleSearchScore, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreIn(List<Long> values) {
+            return in(styleSearchScore, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreNotIn(List<Long> values) {
+            return notIn(styleSearchScore, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreBetween(Long value1, Long value2) {
+            return between(styleSearchScore, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreNotBetween(Long value1, Long value2) {
+            return notBetween(styleSearchScore, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andHadStyleIsNull() {
             return isNull(hadStyle);
