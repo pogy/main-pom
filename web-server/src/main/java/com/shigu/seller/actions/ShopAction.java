@@ -74,7 +74,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,8 +82,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -185,26 +182,6 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
-
-    @Value("${used.domain}")
-    private String usedDomain;
-
-    public static  Set<String> usedDomains;
-    @PostConstruct
-    public void init(){
-        usedDomains = new HashSet<>();
-        if (!StringUtils.isBlank(usedDomain)) {
-            String[] split = usedDomain.split(",");
-            for (int i = 0; i < split.length; i++) {
-                String domain = split[i];
-                if (!StringUtils.isBlank(domain)) {
-                    usedDomains.add(domain.trim());
-                }
-            }
-        }
-        usedDomain = null;
-    }
-
 
     /**
      * 当前登陆的session
@@ -991,24 +968,21 @@ public class ShopAction {
     @RequestMapping("seller/shiguStoreerjiyuming")
     public String shiguStoreerjiyuming(String domain,HttpSession session,Model model) {
         ShopSession shopSession = getShopSession(session);
-        if(StringUtils.isBlank(domain)){
-            model.addAttribute("domain",shopBaseService.selDomain(shopSession.getShopId()));
-        }else{
-            if (isContainChinese(domain)) {
+        String oldDomain = shopBaseService.selDomain(shopSession.getShopId());
+        if(oldDomain.equals(domain)){
+            model.addAttribute("domain",oldDomain);
+        } else {
+            if (StringUtils.isBlank(domain) || isContainChinese(domain)) {
+                model.addAttribute("domain",oldDomain);
                 model.addAttribute("msg","二级域名只允许字母和数字的组合，建议长度3-8位");
             }else {
-                if (usedDomains.contains(domain)) {
-                    model.addAttribute("msg", "该域名已经被占用");
-                    model.addAttribute("domain", domain);
-                    return "gys/shiguStoreerjiyuming";
-
-                }
                 try {
                     shopBaseService.updateDomain(shopSession.getShopId(), domain);
+                    model.addAttribute("domain", domain);
                 } catch (ShopDomainException e) {
                     model.addAttribute("msg", e.getMsg());
+                    model.addAttribute("domain", oldDomain);
                 }
-                model.addAttribute("domain", domain);
             }
         }
         return "gys/shiguStoreerjiyuming";
