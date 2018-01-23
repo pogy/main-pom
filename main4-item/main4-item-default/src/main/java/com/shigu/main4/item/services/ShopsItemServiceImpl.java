@@ -36,9 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -77,6 +75,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private ShiguMarketMapper shiguMarketMapper;
 
     @Autowired
+    private ShiguStyleMapper shiguStyleMapper;
+
+    @Autowired
     private ElasticCountUtil elasticCountUtil;
 
     @Autowired
@@ -86,6 +87,8 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
     @Autowired
     OssIO ossIO;
+
+    private static final String SHOP_STYLE_HANDLER_QUEUE_INDEX = "shop_style_handler_queue_";
 
     /**
      * 查出售中的商品
@@ -598,6 +601,56 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             goodsCountForsearchMapper.insertListNoId(insertSearch);
         }
         itemCache.cleanItemCache(goodsId);
+    }
+
+    @Override
+    public String setGoodsStyle(Set<Long> goodsIds, Long styleId, String webSite) {
+        if (0 == goodsIds.size()) {
+            return "没有要更改风格的商品";
+        }
+        if (StringUtils.isBlank(webSite)) {
+            return "没有站点信息";
+        }
+        List<Long> ids = new ArrayList<>(goodsIds);
+        GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+        example.createCriteria().andGoodsIdIn(ids);
+        List<Long> countGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
+        if (countGoodsIds.size() < goodsIds.size()) {
+            ids.removeAll(countGoodsIds);
+            List<GoodsCountForsearch> insertList = new ArrayList<>();
+            for (Long id : ids) {
+                GoodsCountForsearch val = new GoodsCountForsearch();
+                val.setGoodsId(id);
+                val.setWebSite(webSite);
+                val.setClick(0L);
+                val.setClickIp(0L);
+                val.setUp(0L);
+                val.setUpMan(0L);
+                val.setTrade(0L);
+                val.setHadGoat(0);
+                val.setHadBigzip(0);
+                val.setHadVideo(0);
+                val.setStyleSearchScore(0L);
+                insertList.add(val);
+            }
+            goodsCountForsearchMapper.insertListNoId(insertList);
+        }
+        ShiguStyle shiguStyle = shiguStyleMapper.selectByPrimaryKey(styleId);
+        if (shiguStyle == null) {
+            return "不存在的风格";
+        }
+        //只能设置子级风格
+        if (!Objects.equals(0,shiguStyle.getIsParent())) {
+            return "只能设置具体风格";
+        }
+        GoodsCountForsearch updateVal = new GoodsCountForsearch();
+        updateVal.setStyleId(styleId);
+        updateVal.setStyleSearchScore(0L);
+        updateVal.setParentStyleId(shiguStyle.getParentStyleId());
+        GoodsCountForsearchExample updateExample = new GoodsCountForsearchExample();
+        updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);
+        goodsCountForsearchMapper.updateByExampleSelective(updateVal,updateExample);
+        return "success";
     }
 
 }

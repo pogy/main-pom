@@ -7,8 +7,10 @@ import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.StyleVo;
 import com.shigu.tools.JsonResponseUtil;
@@ -51,6 +53,14 @@ public class ShopItemModService {
     @Autowired
     ShiguStyleMapper shiguStyleMapper;
 
+    @Autowired
+    ShopsItemService shopsItemService;
+
+    @Autowired
+    RedisIO redisIO;
+
+    // 店铺风格处理队列redis标签
+    private static final String SHOP_STYLE_HANDLER_QUEUE_INDEX = "shop_style_handler_queue_";
 
     @Transactional(rollbackFor = Exception.class)
     public void moreModify(List<SynItem> items) throws ItemModifyException {
@@ -363,6 +373,11 @@ public class ShopItemModService {
                 goodsIds.add(shiguGoodsTiny.getGoodsId());
             }
         }
-        return null;
+        String result = shopsItemService.setGoodsStyle(goodsIds, styleId, webSite);
+        if ("success".equals(result)) {
+            redisIO.rpush(SHOP_STYLE_HANDLER_QUEUE_INDEX,shopId);
+            return JsonResponseUtil.success();
+        }
+        return JsonResponseUtil.error(result);
     }
 }

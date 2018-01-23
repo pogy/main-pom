@@ -171,12 +171,5 @@ public interface ItemAddOrUpdateService {
     // TODO: 18-1-23 准备撤掉
     void moveSortCustomerStyle(Long goodsStyleId, Integer sortType);
 
-    /**
-     * 设置商品风格
-     * @param goodsIds
-     * @param styleId
-     * @param webSite
-     * @return
-     */
-    String setGoodsStyle(Set<Long> goodsIds, Long styleId, String webSite);
+
 }
