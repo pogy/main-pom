@@ -214,7 +214,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-        Long companyId = new Long(logistics.getCompanyId());
+        Long companyId =  Long.parseLong(logistics.getCompanyId());
 //        ExpressCompany company = new ExpressCompany();
 //        company.setRemark2(companyId);
 //        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
