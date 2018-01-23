@@ -1,7 +1,9 @@
 package com.shigu.buyer.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
@@ -17,8 +19,7 @@ import com.shigu.main4.vo.ShopBase;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.session.main4.tool.BeanMapper;
-import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -27,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -50,6 +50,9 @@ public class MemberSimpleService {
 
     @Autowired
     UserBaseService userBaseService;
+    
+    @Autowired
+    PaySdkClientService paySdkClientService;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -130,5 +133,77 @@ public class MemberSimpleService {
             throw new JsonErrException(e.getMessage());
         }
         userBaseService.setNewPayPwd(userId,newPwd);
+    }
+
+    public boolean isPayPwdMatch(Long userId, String payPwd){
+        if (userId == null || StringUtils.isBlank(payPwd)) {
+            return false;
+        }
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        if (memberUser == null || StringUtils.isBlank(memberUser.getPayPassword())) {
+            return false;
+        }
+        return memberUser.getPayPassword().equals(EncryptUtil.encrypt(payPwd));
+    }
+    
+    /**
+     * 获取用户余额,正常用户登陆后才会调用到这个接口，userId不会为空
+     * @param userId
+     * @return
+     */
+    public String getUserBalance(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        Long balance = memberUserMapper.userBalance(userId);
+        if (balance == null) {
+            //如果还没有对应支付站账户，去创建账户
+            paySdkClientService.tempcode(userId);
+            balance = memberUserMapper.userBalance(userId);
+        }
+        return String.format("%.2f",balance * 0.01);
+    }
+
+    /**
+     * 获取用户红包余额
+     * @param thirdId
+     * @return
+     */
+    public Long getUserBonusBalance(String thirdId) {
+        if (StringUtils.isBlank(thirdId)) {
+            return null;
+        }
+        return memberUserMapper.getUserBonusBalance(thirdId);
+    }
+
+    /**
+     * 获取用户红包明细
+     * @param thirdId
+     * @return
+     */
+    public List<ShiguBonusRecord> getUserBonusRecord(String thirdId) {
+        if (StringUtils.isBlank(thirdId)) {
+            return null;
+        }
+        return memberUserMapper.getUserBonusRecord(thirdId);
+    }
+
+    /**
+     * 获取用户的淘宝昵称
+     * @param userId
+     * @return
+     */
+    public String getTaobaoNick(Long userId) {
+        MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
+        MemberUserSubExample.Criteria criteria = memberUserSubExample.createCriteria();
+        criteria.andUserIdEqualTo(userId)
+                .andAccountTypeEqualTo(3)
+                .andUseStatusEqualTo(1);
+        List<MemberUserSub> memberUserSubList = memberUserSubMapper
+                .selectFieldsByExample(memberUserSubExample, FieldUtil.codeFields("sub_user_key,sub_user_name"));
+        if (memberUserSubList != null && !memberUserSubList.isEmpty()) {
+            return memberUserSubList.get(0).getSubUserName();
+        }
+        return null;
     }
 }

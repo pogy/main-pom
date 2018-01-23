@@ -581,9 +581,18 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             Map<String, Object> source = hit.getSource();
             HotUpItem hotUpItem = new HotUpItem();
             hotUpItems.add(hotUpItem);
-            hotUpItem.setGoodsId(Long.valueOf(source.get("supperGoodsId").toString()));
-            hotUpItem.setPrice(source.get("supperPrice").toString());
-            hotUpItem.setImgUrl(source.get("supperImage").toString());
+            Object supperGoodsId = source.get("supperGoodsId");
+            if (supperGoodsId != null) {
+                hotUpItem.setGoodsId(Long.valueOf(supperGoodsId.toString()));
+            }
+            Object supperPrice = source.get("supperPrice");
+            if (supperPrice != null) {
+                hotUpItem.setPrice(supperPrice.toString());
+            }
+            Object supperImage = source.get("supperImage");
+            if (supperImage != null) {
+                hotUpItem.setImgUrl(supperImage.toString());
+            }
         }
         return hotUpItems;
     }

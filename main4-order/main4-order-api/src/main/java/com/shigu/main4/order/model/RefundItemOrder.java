@@ -78,7 +78,7 @@ public interface RefundItemOrder {
     /**
      * 买家拒绝附议
      */
-    void buyerNoReprice();
+    void buyerNoReprice() throws Main4Exception;
 
     /**
      * 修改期望金额

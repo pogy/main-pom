@@ -12,6 +12,7 @@ import com.shigu.order.vo.CartPageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import com.shigu.tools.ResultRetUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,15 @@ public class CartAction {
     @RequestMapping("cart")
     public String cart(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        model.addAttribute("cart", cartService.selMyCart(ps.getUserId()));
+        CartPageVO cartPageVO = cartService.selMyCart(ps.getUserId());
+        //极限词过滤
+        if(cartPageVO.getOrders()!=null){
+            cartPageVO.getOrders().forEach(cartOrderVO -> cartOrderVO.getChildOrders().forEach(cartChildOrderVO -> cartChildOrderVO.setTitle(KeyWordsUtil.duleKeyWords(cartChildOrderVO.getTitle()))));
+        }
+
+        model.addAttribute("cart", cartPageVO);
         model.addAttribute("webSite", "hz");
-        return "trade/cart";
+        return "order/cart";
     }
 
 

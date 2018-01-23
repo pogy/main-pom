@@ -212,5 +212,5 @@ public interface ShopFitmentService {
      * @param pageId
      * @return
      */
-    FitmentPage selPageOnpub(Long pageId);
+    FitmentPage selPageOnpub(Long pageId) throws ShopFitmentException;
 }

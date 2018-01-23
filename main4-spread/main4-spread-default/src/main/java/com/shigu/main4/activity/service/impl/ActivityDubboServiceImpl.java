@@ -56,8 +56,13 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException {
+        modifyTerm(termId, type, start, end,null);
+    }
+
+    @Override
+    public void modifyTerm(Long termId, ActivityType type, Date start, Date end, String manOrWoman) throws ActivityException {
         ActivityTerm term=activityFactory.selTermById(termId);
-        term.modify(type,start,end);
+        term.modify(type,start,end,manOrWoman);
     }
 
     @Override
@@ -106,12 +111,22 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityTermVO selTermByTime(ActivityType type, Date time) {
-        return BeanMapper.map(activityFactory.selTermByTime(type,time),ActivityTermVO.class);
+        return selTermByTime(type, time, "man");
+    }
+
+    @Override
+    public ActivityTermVO selTermByTime(ActivityType type, Date time, String manOrWoman) {
+        return BeanMapper.map(activityFactory.selTermByTime(type,time,manOrWoman),ActivityTermVO.class);
     }
 
     @Override
     public ActivityTermVO selNowFinishedTerm(ActivityType type, Date time) {
-        return BeanMapper.map(activityFactory.selNowFinishedTerm(type,time),ActivityTermVO.class);
+        return selNowFinishedTerm(type,time,"man");
+    }
+
+    @Override
+    public ActivityTermVO selNowFinishedTerm(ActivityType type, Date time, String manOrWoman) {
+        return BeanMapper.map(activityFactory.selNowFinishedTerm(type,time,manOrWoman),ActivityTermVO.class);
     }
 
     @Override
@@ -131,12 +146,19 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityTermVO selafterTermId(ActivityType type, Long termId) {
-        return BeanMapper.map(activityFactory.selafterTermId(type,termId),ActivityTermVO.class);
+        return selafterTermId(type,termId,"man");
+    }
+
+    @Override
+    public ActivityTermVO selafterTermId(ActivityType type, Long termId, String manOrWoman) {
+        return BeanMapper.map(activityFactory.selafterTermId(type,termId,manOrWoman),ActivityTermVO.class);
     }
 
     @Override
     public void joinActivity(Long activityId, Long userId, Long shopId,String userName, String tel) throws ActivityException {
         activityFactory.selActivityById(activityId).joinActivity(userId,shopId,userName,tel);
     }
+
+
 
 }

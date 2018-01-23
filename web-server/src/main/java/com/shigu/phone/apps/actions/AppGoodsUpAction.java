@@ -3,8 +3,10 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.InstockMyItemRequest;
 import com.openJar.requests.app.UpToWxRequest;
 import com.openJar.requests.app.UploadedItemRequest;
+import com.openJar.responses.app.UploadedItemResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.PhoneGoodsUpService;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,7 +52,12 @@ public class AppGoodsUpAction {
         if (request.getSize() == null || request.getSize() > 30) {
             request.setSize(30);
         }
-        return JSONObject.fromObject(phoneGoodsUpService.uploadedItem(request));
+        UploadedItemResponse uploadedItemResponse = phoneGoodsUpService.uploadedItem(request);
+        //极限词过滤
+        if (uploadedItemResponse.getItems() != null) {
+            uploadedItemResponse.getItems().forEach(appItemUploaded -> appItemUploaded.setTitle(KeyWordsUtil.duleKeyWords(appItemUploaded.getTitle())));
+        }
+        return JSONObject.fromObject(uploadedItemResponse);
     }
     @RequestMapping("instockMyItem")
     @ResponseBody

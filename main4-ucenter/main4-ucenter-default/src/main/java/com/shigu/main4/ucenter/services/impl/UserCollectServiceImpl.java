@@ -80,6 +80,8 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     @Autowired
     private ShiguMarketMapper shiguMarketMapper;
+    @Autowired
+    TaobaoItemPropMapper taobaoItemPropMapper;
 
     @Autowired
     OssIO ossIO;
@@ -292,7 +294,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         collectExample.createCriteria().andGoodsIdEqualTo(collect.getItemId())
-                .andUserIdEqualTo(collect.getUserId());
+                .andUserIdEqualTo(collect.getUserId()).andTypeEqualTo(collect.getType());
         List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
@@ -379,27 +381,42 @@ public class UserCollectServiceImpl implements UserCollectService {
         DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
         String picture = subimageString;//新图片
         String video = "";//视频
-        TaobaoSkuExample example_ts = new TaobaoSkuExample();
-        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
-        example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
-        example_ts.setOrderByClause("properties asc");
         // 销售属性组合
         StringBuffer skuProps = new StringBuffer();//sku组合属性
-        List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        List<TaobaoSku> list_ts=new ArrayList<>();
+        if(goods.getNumIid()!=null){
+            TaobaoSkuExample example_ts = new TaobaoSkuExample();
+            example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
+            example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
+            example_ts.setOrderByClause("properties asc");
+            list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        }
         String input_custom_cpv = "";//自定义属性
 
+        TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+        taobaoItemPropExample.createCriteria().andCidEqualTo(goods.getCid()).andIsSalePropEqualTo(1);
+        List<TaobaoItemProp> taobaoItemProps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+        Long colorId=null;
+        Long sizeId=null;
+        for(TaobaoItemProp taobaoItemProp:taobaoItemProps){
+            if(taobaoItemProp.getIsColorProp()==1){
+                colorId=taobaoItemProp.getPid();
+            }else{
+                sizeId=taobaoItemProp.getPid();
+            }
+        }
         if (list_ts.size() > 0) {
             for (int i = 0; i < list_ts.size(); i++) {
                 skuProps.append(list_ts.get(i).getPrice()).append(':').append(list_ts.get(i).getQuantity()).append(':').append(':').append(list_ts.get(i).getProperties()).append(';');
             }
         } else {
             String props = sge.getProps();
-            if (!props.contains("20509") || !props.contains("1627207")) {
+            if (!props.contains(colorId.toString()) || !props.contains(sizeId.toString())) {
                 return null;
             }
             //获取尺码属性
-            List<String> sizePropList = matchHelp("20509:\\d+",props);
-            List<String> colorPropList = matchHelp("1627207:\\d+",props);
+            List<String> sizePropList = matchHelp(sizeId+":\\d+",props);
+            List<String> colorPropList = matchHelp(colorId+":\\d+",props);
             String[] sizes = sizePropList.toArray(new String[0]);
             String[] colors = colorPropList.toArray(new String[0]);
             for (int i = 1; i < colors.length; i++) {

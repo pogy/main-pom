@@ -70,7 +70,7 @@ public class H5ForWxLoginAction {
             try {
                 //取openIid
                 openIid=parseOpenIid(bo.getCode(),bo.getBackUrl());
-                if(openIid.startsWith("redirect")){
+                if(StringUtils.isNotEmpty(openIid) && openIid.startsWith("redirect")){
                     return openIid;
                 }
                 Long userId=redisIO.get(openIid,Long.class);

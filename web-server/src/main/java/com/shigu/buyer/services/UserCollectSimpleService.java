@@ -75,7 +75,7 @@ public class UserCollectSimpleService {
         if (splitIds.length == 0) {
             return;
         }
-        List<Long> collect = Arrays.stream(splitIds).map(o -> Long.valueOf(o)).collect(Collectors.toList());
+        List<Long> collect = Arrays.stream(splitIds).map(Long::valueOf).collect(Collectors.toList());
         try {
             userCollectService.delItemCollection(userId,collect);
         } catch (Exception e){

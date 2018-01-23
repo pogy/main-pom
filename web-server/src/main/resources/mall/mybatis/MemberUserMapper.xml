@@ -2,11 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.mall.interfaces.MemberUserMapper" >
 
+    <resultMap id="BonusRecordMap" type="com.opentae.data.mall.beans.ShiguBonusRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+        <result column="from_user_id" jdbcType="BIGINT" property="fromUserId" />
+        <result column="to_user_id" jdbcType="BIGINT" property="toUserId" />
+        <result column="third_id" jdbcType="VARCHAR" property="thirdId" />
+        <result column="amount" jdbcType="BIGINT" property="amount" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
     <!-- 用户id 查询星座宝余额 -->
     <select id="userBalance" parameterType="java.lang.Long" resultType="long">
         SELECT a.money
         FROM pay_site2.pay_xzb a, pay_site2.pay_account b
         WHERE b.xz_user_id=#{userId}
         AND b.account_id=a.account_id
+    </select>
+
+    <select id="userXzbAccount" parameterType="java.lang.Long" resultType="long">
+        select account_id
+        FROM  pay_site2.pay_account
+        WHERE xz_user_id=#{userId}
+    </select>
+
+    <select id="getUserBonusBalance" parameterType="java.lang.String" resultType="long">
+        SELECT balance
+        FROM shigu_bonus
+        WHERE third_id = #{thirdId}
+        AND status = 1
+    </select>
+
+    <select id="getUserBonusRecord" parameterType="java.lang.String" resultMap="BonusRecordMap">
+        SELECT *
+        FROM shigu_bonus_record
+        WHERE third_id = #{thirdId}
+        AND status = 1
+        ORDER BY id desc
     </select>
 </mapper>

@@ -24,6 +24,7 @@ import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.*;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,9 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
     @Autowired
     private SoidsCreater soidsCreater;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 售后页面的子单简单数据
@@ -279,7 +283,11 @@ public class AfterSaleServiceImpl implements AfterSaleService {
                 break;
         }
         statusVo.setAfterSaleStatus(afterSaleStatus);
-        statusVo.setContent(refundinfo.getReason());
+        if(RefundStateEnum.SELLER_REFUND.equals(refundinfo.getRefundState())){
+            statusVo.setContent(refundinfo.getFailMsg());
+        }else{
+            statusVo.setContent(refundinfo.getReason());
+        }
         statusVo.setModifyRefundPrice(refundinfo.getSellerProposalMoney());
         return statusVo;
     }
@@ -443,13 +451,21 @@ public class AfterSaleServiceImpl implements AfterSaleService {
      */
     @Override
     public void agreeOrRejectRefundPrice(Long refundId, boolean isAgree) throws Main4Exception {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
-        if (isAgree) {
-            refundItemOrder.buyerReprice();
-        } else {
-            refundItemOrder.buyerNoReprice();
+        if(redisIO.get("doRefundMoney_zf_20171130_"+refundId)!=null){
+            throw new RefundException("退款执行中,请勿重复操作");
         }
-        orderMessageProducter.repriceAgree(refundId, isAgree);
+        redisIO.putTemp("doRefundMoney_zf_20171130_"+refundId,1,360);
+        try {
+            RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+            if (isAgree) {
+                refundItemOrder.buyerReprice();
+            } else {
+                refundItemOrder.buyerNoReprice();
+            }
+            orderMessageProducter.repriceAgree(refundId, isAgree);
+        } finally {
+            redisIO.del("doRefundMoney_zf_20171130_"+refundId);
+        }
     }
 
     /**

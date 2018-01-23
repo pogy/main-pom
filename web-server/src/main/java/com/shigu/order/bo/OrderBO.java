@@ -1,9 +1,6 @@
 package com.shigu.order.bo;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by zf on 2017/7/17.
@@ -17,15 +14,13 @@ public class OrderBO implements Serializable{
 
     private Integer status;
     /**
-     * 开始时间
+     * 开始时间 yyyy-MM-dd 格式传入
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date st;
+    private String  st;
     /**
-     * 结束时间
+     * 结束时间 yyyy-MM-dd 格式传入
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date et;
+    private String  et;
     /**
      * 订单ID
      */
@@ -74,19 +69,19 @@ public class OrderBO implements Serializable{
         this.goodsNo = goodsNo;
     }
 
-    public Date getSt () {
+    public String getSt() {
         return st;
     }
 
-    public void setSt (Date st) {
+    public void setSt(String st) {
         this.st = st;
     }
 
-    public Date getEt () {
+    public String getEt() {
         return et;
     }
 
-    public void setEt (Date et) {
+    public void setEt(String et) {
         this.et = et;
     }
 

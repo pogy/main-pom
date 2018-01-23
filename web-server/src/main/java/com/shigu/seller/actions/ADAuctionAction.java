@@ -1,19 +1,21 @@
 package com.shigu.seller.actions;
 
-import com.shigu.main4.activity.beans.ActivityTerm;
-import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.service.ActivityDubboService;
-import com.shigu.main4.activity.vo.*;
+import com.shigu.main4.activity.vo.ActivityEnlistVO;
+import com.shigu.main4.activity.vo.ActivityTermVO;
+import com.shigu.main4.activity.vo.ActivityVO;
+import com.shigu.main4.activity.vo.GoatActivityVO;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.seller.bo.AuctionApplyBo;
+import com.shigu.seller.bo.GoatApplyTypeBO;
 import com.shigu.seller.services.ADAuctionService;
 import com.shigu.seller.vo.ADAuctionResultVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.KeyWordsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +23,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/3/22.
@@ -41,7 +43,7 @@ import java.util.List;
 public class ADAuctionAction {
 
 
-    String ftlDir="seller";
+    String ftlDir="gys";
 
     @Autowired
     ActivityDubboService activityDubboService;
@@ -56,11 +58,15 @@ public class ADAuctionAction {
      * @return
      */
     @RequestMapping(value = "/indexgglist" , method = RequestMethod.GET)
-    public String dtgTypeList(HttpSession session,HttpServletRequest request){
+    public String dtgTypeList(HttpSession session, Model model, GoatApplyTypeBO bo){
 //        List<SpreadTypeViewVo> spreadAuctTypeList = adAuctionService.getSpreadAuctTypeList();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        request.setAttribute("adsBoxList", adAuctionService.selSellGoats(ps.getUserId()));
-        return ftlDir + "/indexgglist";
+        if (StringUtils.isBlank(bo.getType())) {
+            bo.setType("man");
+        }
+        model.addAttribute("adsBoxList", adAuctionService.selSellGoats(ps.getUserId(), bo.getType()));
+        model.addAttribute("query",bo);
+        return "gys/indexgglist";
     }
 
     /**
@@ -106,7 +112,7 @@ public class ADAuctionAction {
     private ActivityVO selActivityById(Long id) throws ActivityException {
         if (id == null||id==1001L) {
             //活动是否还在进行中
-            ActivityTermVO term=activityDubboService.selTermByTime(ActivityType.GOAT_LED,new Date());
+            ActivityTermVO term=activityDubboService.selTermByTime(ActivityType.GOAT_LED,new Date(),null);
             if(term==null){//已经结束
                 return null;
             }
@@ -125,18 +131,18 @@ public class ADAuctionAction {
         model.addAttribute("introductionHtml",introductionHtml);
         ActivityTermVO term;
         if(id==null||id==1001L){
-            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_LED,new Date());
+            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_LED,new Date(),null);
             if (term != null) {
                 ActivityVO activityVO=activityDubboService.selActivityInTerm(term.getTermId()).get(0);
                 model.addAttribute("ggList", adAuctionService.selLedWinner(activityDubboService.selEnlist(1,activityVO.getActivityId())));
             }
         }else{
-            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date());
+            term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date(),null);
             ActivityVO activityVO=activityDubboService.selActivityById(id);
             model.addAttribute("ggList", adAuctionService.selLedWinner(activityDubboService.selEnlist(1,activityVO.getActivityId())));
         }
         if (term != null) {
-            ActivityTermVO nextTerm = activityDubboService.selafterTermId(term.getActivityType(), term.getTermId());
+            ActivityTermVO nextTerm = activityDubboService.selafterTermId(term.getActivityType(), term.getTermId(),null);
             if (nextTerm != null) {
                 model.addAttribute("nexttimeText", DateUtil.dateToString(nextTerm.getStartTime(), "yyyy-MM-dd HH:mm:ss"));
             } else {
@@ -175,9 +181,12 @@ public class ADAuctionAction {
      * @return
      */
     @RequestMapping("/dtgglistFinish")
-    public String dtgglistFinish(Model model){
+    public String dtgglistFinish(GoatApplyTypeBO bo,Model model){
 //        model.addAttribute("indexggList",auctionService.auctionResults());
-        ActivityTermVO term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date());
+        if (StringUtils.isBlank(bo.getType())) {
+            bo.setType("man");
+        }
+        ActivityTermVO term=activityDubboService.selNowFinishedTerm(ActivityType.GOAT_SELL,new Date(),bo.getType());
         List<ADAuctionResultVO> list=new ArrayList<>();
         if (term != null) {
             List<GoatActivityVO> activityVOs=activityDubboService.selActivityInTerm(term.getTermId());
@@ -195,7 +204,9 @@ public class ADAuctionAction {
             }
             model.addAttribute("indexggQ",term.getTermId());
         }
-        model.addAttribute("indexggList",list);
+        model.addAttribute("query",bo);
+        //极限词过滤
+        model.addAttribute("indexggList",list.stream().peek(adAuctionResultVO -> adAuctionResultVO.setTitle(KeyWordsUtil.duleKeyWords(adAuctionResultVO.getTitle()))).collect(Collectors.toList()));
         return ftlDir+"/dtgglistFinish";
     }
 }

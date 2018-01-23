@@ -18,11 +18,15 @@
     <dubbo:reference interface="com.shigu.main4.spread.processes.HitDrawChooser" id="hitDrawChooser" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.service.ActiveDrawService" id="activeDrawService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.service.TrademarkService" id="trademarkService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.VoucherService" id="vipVoucherService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.ActiveShowService" id="activeShowService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.goat.service.GoatDubboService" id="goatDubboService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserBaseService" id="userBaseService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000">
+        <dubbo:method name="createDataPackageByCoolectIds" timeout="300000"/>
+    </dubbo:reference>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
 
@@ -62,6 +66,7 @@
     <dubbo:reference interface="com.shigu.main4.monitor.services.ItemBrowerService" id="itemBrowerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.ItemUpRecordService" id="itemUpRecordService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.RankingSimpleService" id="rankingSimpleService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.monitor.services.ShiguFeedbackService" id="shiguFeedbackService"  timeout="20000"/>
 
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>

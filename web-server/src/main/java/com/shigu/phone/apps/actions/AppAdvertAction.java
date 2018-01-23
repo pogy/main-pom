@@ -3,9 +3,11 @@ package com.shigu.phone.apps.actions;
 import com.openJar.requests.app.ImgSpreadRequest;
 import com.openJar.requests.app.ItemSpreadRequest;
 import com.openJar.responses.app.ImgSpreadResponse;
+import com.openJar.responses.app.ItemSpreadResponse;
 import com.shigu.phone.apps.services.AppAdvertService;
 import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,7 +51,13 @@ public class AppAdvertAction {
         if (spread == null) {
             return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
         }
-        return JSONObject.fromObject(appAdvertService.imgSpread(spread));
+        ImgSpreadResponse response1 = appAdvertService.imgSpread(spread);
+        //极限词过滤
+        if (response1.getSpreads() != null) {
+            response1.getSpreads().forEach(appImgBanner -> appImgBanner.setText(KeyWordsUtil.duleKeyWords(appImgBanner.getText())));
+        }
+
+        return JSONObject.fromObject(response1);
     }
 
     /**
@@ -75,7 +83,12 @@ public class AppAdvertAction {
         if (spread == null) {
             return WrapperUtil.wrapperOpenException("缺少错误:spreadCode="+request.getSpreadCode(),response);
         }
-        return JSONObject.fromObject(appAdvertService.itemSpread(request.getWebSite(),spread));
+        ItemSpreadResponse response1 = appAdvertService.itemSpread(request.getWebSite(), spread);
+        //极限词过滤
+        if (response1.getSpreads() != null) {
+            response1.getSpreads().forEach(appItemSpread -> appItemSpread.setTitle(KeyWordsUtil.duleKeyWords(appItemSpread.getTitle())));
+        }
+        return JSONObject.fromObject(response1);
     }
 
 }

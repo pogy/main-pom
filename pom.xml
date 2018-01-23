@@ -49,6 +49,8 @@
         <main4-order-default.version>${project.version}</main4-order-default.version>
         <main4-daifa-api.version>${project.version}</main4-daifa-api.version>
         <main4-daifa-default.version>${project.version}</main4-daifa-default.version>
+        <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
+        <daifa-sdk.version>${project.version}</daifa-sdk.version>
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
 
 
@@ -79,6 +81,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>opensearch</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!--测试用-->
         <dependency>

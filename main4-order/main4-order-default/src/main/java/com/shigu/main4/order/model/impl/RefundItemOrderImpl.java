@@ -18,6 +18,7 @@ import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @PostConstruct
     public void init() {
-        if (refundApplyBO != null || fromUser != null) {
+        if (refundApplyBO != null && fromUser != null) {
             //可以进行多次退款的另外处理
             if (refundApplyBO.getType() == 5) {
                 multiRefundApply(refundApplyBO, fromUser);
@@ -329,8 +330,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     @Transactional
-    public void buyerNoReprice() {
-        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE, null);
+    public void buyerNoReprice() throws Main4Exception {
+        RefundVO refundInfo = refundinfo();
+        if(refundInfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
+            throw new Main4Exception("订单状态错误");
+        }
+        refundStateChangeAndLog(refundInfo,RefundStateEnum.BUYER_NOREPRICE, null);
     }
 
     /**
@@ -379,10 +384,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Transactional(rollbackFor = Exception.class)
     public void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
+        if(refundinfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
+            throw new RefundException("订单状态错误");
+        }
         if (refundinfo.getType() == 5) {
             throw new RefundException("系统退款不走一般退款流程");
         }
-
         // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
         Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
         if (!checkOrderLeftMoneyEnough(refundinfo.getOid(),money)) {

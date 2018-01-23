@@ -15,6 +15,7 @@ import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,9 +84,14 @@ public class WapGoodsSearchAction {
             bo.setKeyword(null);//type == 1 不需要关键词
         }
 
-        ItemSearchVO itemSearchVo = null;
+        ItemSearchVO itemSearchVo;
         try {
             itemSearchVo = wapPhoneGoodsSearchService.itemSearch(bo);
+            //极限词过滤
+            itemSearchVo.getItems().forEach(appGoodsBlock -> {
+                appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+                appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+            });
             return JsonResponseUtil
                         .success()
                         .element("success",true)
@@ -114,8 +120,12 @@ public class WapGoodsSearchAction {
         if (webSite == null) {
             request.setWebSite("hz");
         }
-        List<AppGoodsBlock> appGoodsBlocks = null;
-            appGoodsBlocks = wapPhoneGoodsSearchService.imgSearch(imgurl, webSite);
+        List<AppGoodsBlock> appGoodsBlocks = wapPhoneGoodsSearchService.imgSearch(imgurl, webSite);
+        //极限词过滤
+        appGoodsBlocks.forEach(appGoodsBlock -> {
+            appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+            appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+        });
         return JsonResponseUtil.success().element("success",true).element("imgSearch",appGoodsBlocks);
     }
 
@@ -132,6 +142,9 @@ public class WapGoodsSearchAction {
             if (oneItemVO == null) {
                 return JsonResponseUtil.error("未查询到数据").element("success",false);
             }
+            //极限词过滤
+            oneItemVO.setTitle(KeyWordsUtil.duleKeyWords(oneItemVO.getTitle()));
+            oneItemVO.setDetails(KeyWordsUtil.duleKeyWords(oneItemVO.getDetails()));
             return JsonResponseUtil
                         .success()
                         .element("success",true)

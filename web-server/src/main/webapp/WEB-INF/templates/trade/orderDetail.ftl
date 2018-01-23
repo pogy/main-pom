@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/orderDetail.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/orderDetail.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/orderDetail.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/orderDetail.js?v=2017112401"></script>
     
 </head>
 <body>

@@ -103,7 +103,8 @@ public class MarketListService {
         //因为单个市场的店铺有限，此处为了缓存方便，每次取全市场，由程序实现筛选
         MarketShow marketShow=marketShopService.selMarketShow(mid);
         if (marketShow == null) {
-            return null;
+            //默认查杭州
+            marketShow=marketShopService.selMarketShow(1L);
         }
         MarketVO vo=new MarketVO();
         vo.setWebSite(marketShow.getWebSite());

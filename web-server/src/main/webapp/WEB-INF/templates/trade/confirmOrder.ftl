@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017121501" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017121501"></script>
     
 </head>
 <body>
@@ -518,7 +518,7 @@ var webSite = '${webSite!}';
     </div>
     
     <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
-    <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
+    <input id="addressId" name="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
@@ -853,6 +853,8 @@ var webSite = '${webSite!}';
                 </#if>
             </p>
         </div>
+        <p class="msgTip fcF40"></p>
+        
     </div>
     <div class="settleBtn clearfix">
         
@@ -906,6 +908,8 @@ var webSite = '${webSite!}';
     </div>
     <input type="hidden" name="code" id="code" value="${code!}">
 </div>
+
+
 
 
 

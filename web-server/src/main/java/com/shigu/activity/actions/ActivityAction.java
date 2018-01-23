@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
+import com.shigu.activity.tempvo.PopularGoodsVO;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
@@ -15,12 +17,16 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
+import com.shigu.main4.spread.vo.ActiveForShowVO;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.seller.services.ActivityService;
+import com.shigu.seller.vo.GfGoodsStyleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +56,9 @@ public class ActivityAction {
     private ShiguActivityMapper shiguActivityMapper;
 
     @Autowired
+    private ActivityWebService activityWebService;
+
+    @Autowired
     private RedisIO redisIO;
 
     /**
@@ -66,7 +75,7 @@ public class ActivityAction {
     @RequestMapping("activity/cash")
     public String cash(Model model){
         model.addAttribute("webSite", "hz");
-        return "activity/cash";
+        return "xzSearch/cash";
     }
     /**
      * 发现好货
@@ -104,7 +113,7 @@ public class ActivityAction {
         List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null, null, "ben");
 
         // 用户上一期获奖数据
-        List<ActiveDrawRecordUserVo> userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+        List<ActiveDrawRecordUserVo> userVoList = new ArrayList<>();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -116,14 +125,25 @@ public class ActivityAction {
         }
 
         if (userVoList == null) {
-            userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+            userVoList = new ArrayList<>();
         }
 
-        for (int i = 0; i < userVoList.size(); i++) {
-            if (userVoList.get(i).getDrawStatus().intValue() == 1) {
-                userVoList.get(i).setDrawStatus(2);
+        for (ActiveDrawRecordUserVo anUserVoList : userVoList) {
+            if (1 == anUserVoList.getDrawStatus()) {
+                anUserVoList.setDrawStatus(2);
             }
         }
+
+
+        //极限词过滤
+        drawStyleVo.getShopList().forEach(activeDrawShopVo -> {
+            if (activeDrawShopVo.getItems() != null) {
+                activeDrawShopVo.getItems().forEach(shopItemVo -> shopItemVo.setTitle(KeyWordsUtil.duleKeyWords(shopItemVo.getTitle())));
+            }
+        });
+        drawStyleVo.getGoodsList().forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+        daliyGoodsVoList.forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+
 
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("styleItem", drawStyleVo);
@@ -138,32 +158,13 @@ public class ActivityAction {
      *
      * @return
      */
-    @RequestMapping("member/awardInfo")
+    @RequestMapping({"member/awardInfo","fxs/awardInfo"})
     public String awardInfo(HttpSession session, Model model) {
-        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
-        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
-        model.addAttribute("allInfo", drawPem.getInfo());
-
-        model.addAttribute("thisHdTime", parseToStartEnd(drawPem.getStartTime()));
-        List<ActiveDrawRecordUserVo> userVoList = Collections.emptyList();
-        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (object != null) {
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if (drawLastPem != null) {
-                model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
-                // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
-                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
-                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
-                    if (anUserVoList.getDrawStatus() != 3) {
-                        iterator.remove();
-                    }
-                }
-                model.addAttribute("lastUserAward",JSON.toJSONString(userVoList));
-            }
-        }
-        return "buyer/awardInfo";
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
+        List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs);
+        model.addAttribute("actList",actList);
+        return "fxs/awardInfo";
     }
 
     /**
@@ -201,6 +202,9 @@ public class ActivityAction {
         );
 
         Collections.shuffle(daliyGoodsVoList);
+        //极限词过滤
+        daliyGoodsVoList.forEach(activeDrawGoodsVo -> activeDrawGoodsVo.setTitle(KeyWordsUtil.duleKeyWords(activeDrawGoodsVo.getTitle())));
+
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         // 时间处理
         model.addAttribute("webSite", "hz");
@@ -247,62 +251,37 @@ public class ActivityAction {
     @RequestMapping(value = "activity/qtiqucode", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject qtiqucode(String tqcode) {
-        JSONObject rspJsonObject = new JSONObject();
-
         if (StringUtils.isEmpty(tqcode)) {
-            rspJsonObject.put("status", 1);
-            rspJsonObject.put("desc", "请输入有效领取码");
-            return rspJsonObject;
+            return JsonResponseUtil.error("请输入有效领取码");
         }
-
-        rspJsonObject.put("status", 1);
 
         try {
-            ActiveDrawRecordUserVo activeDrawRecordUserVo = activeDrawServiceImpl.selUserDrawList(tqcode);
-            if (activeDrawRecordUserVo == null) {
-                rspJsonObject.put("desc", "数据有误");
-                return rspJsonObject;
-            }
-            rspJsonObject.put("type", activeDrawRecordUserVo.getWard());
-            rspJsonObject.put("q", activeDrawRecordUserVo.getPemId());
-            rspJsonObject.put("userId", activeDrawRecordUserVo.getUserId());
-            rspJsonObject.put("tqcode", tqcode);
-            rspJsonObject.put("status", 0);
+            return JsonResponseUtil.success().element("awardInfo", activityWebService.queryByCode(tqcode));
         } catch (Main4Exception me) {
             me.printStackTrace();
-            rspJsonObject.put("desc", me.getMessage());
+            return JsonResponseUtil.error(me.getMessage());
         }
-
-        return rspJsonObject;
     }
 
     /**
      * 领取奖品
      *
      * @param tqcode
-     * @param userId
      * @return
      */
     @RequestMapping(value = "activity/qzhongjinag", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qzhongjinag(String tqcode, Long userId) {
-        JSONObject rspJsonObject = new JSONObject();
-        rspJsonObject.put("status", 1);
-
-        if (StringUtils.isEmpty(tqcode) || userId == null) {
-            rspJsonObject.put("desc", "请输入有效领取码和用户");
-            return rspJsonObject;
+    public JSONObject qzhongjinag(String tqcode) {
+        if (StringUtils.isEmpty(tqcode)) {
+            return JsonResponseUtil.error("请输入有效领取码和用户");
         }
-
         try {
-            activeDrawServiceImpl.receUserWard(tqcode, userId);
-            rspJsonObject.put("status", 0);
+            activeDrawServiceImpl.receUserWard(tqcode);
+            return JsonResponseUtil.success();
         } catch (Main4Exception e) {
             e.printStackTrace();
-            rspJsonObject.put("desc", e.getMessage());
+            return JsonResponseUtil.error(e.getMessage());
         }
-
-        return rspJsonObject;
     }
 
     /**
@@ -312,20 +291,35 @@ public class ActivityAction {
      */
     @RequestMapping(value = "activity/receWards", method = RequestMethod.GET)
     public String receWards() {
-        return "activity/fdGdsLqzjb";
+        return "webApp/pickUpVouchers";
     }
 
     @RequestMapping("activity/popular")
     public String gfShow(Long id, Model model) throws Main4Exception {
         ShiguActivity activity;
-        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null)
+        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null){
             throw new Main4Exception("页面不存在");
+        }
+
+
+        List<GfGoodsStyleVO> goodsStyles=activityService.gfShow(id);
+
+        //极限词过滤
+        activity.setTitle(KeyWordsUtil.duleKeyWords(activity.getTitle()));
+        goodsStyles.forEach(gfGoodsStyleVO -> {
+            gfGoodsStyleVO.setTitleText(KeyWordsUtil.duleKeyWords(gfGoodsStyleVO.getTitleText()));
+            if(gfGoodsStyleVO.getGoodsList()!=null)
+            gfGoodsStyleVO.getGoodsList().forEach(gfShowVO -> {
+                gfShowVO.setTitle(KeyWordsUtil.duleKeyWords(gfShowVO.getTitle()));
+            });
+        });
+
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsStyle", activityService.gfShow(id));
+        model.addAttribute("goodsStyle", goodsStyles);
         model.addAttribute("webSite", "hz");
-        return "activity/popular";
+        return "xzSearch/popular";
     }
 
     @RequestMapping("activity/apply")
@@ -337,13 +331,21 @@ public class ActivityAction {
         int actState;
         ShiguActivityVO vo = activityService.activityInfo(id);
         long current = System.currentTimeMillis();
-        if (vo.getStartApply().getTime() > current) {
+        if (vo == null || vo.getStartApply() == null || vo.getEndApply() == null) {
+            actState = 2;
+        }else if (vo.getStartApply().getTime() > current) {
             actState = 0;
         } else if (vo.getEndApply().getTime() > current) {
             actState = 1;
         } else {
             actState = 2;
         }
+
+        if (vo != null) {
+            //极限词过滤
+            vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        }
+
         model.addAttribute("actState", actState);
         model.addAttribute("id", id);
         return "activity/apply";
@@ -373,7 +375,7 @@ public class ActivityAction {
             model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpApply";
+        return "xzSearch/qzxpApply";
     }
 
     /**
@@ -382,7 +384,7 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpShop")
     public String qzxpShop(Model model) {
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpShop";
+        return "xzSearch/qzxpShop";
     }
 
     /**
@@ -393,8 +395,12 @@ public class ActivityAction {
      */
     @RequestMapping("activity/newPopular")
     public String newPopular(Model model) {
+        List<PopularGoodsVO> popularGoodsVOS=newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG);
+        //极限词过滤
+        popularGoodsVOS.forEach(popularGoodsVO -> popularGoodsVO.setTitle(KeyWordsUtil.duleKeyWords(popularGoodsVO.getTitle())));
+
         model.addAttribute("webSite", "hz");
-        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG));
+        model.addAttribute("goodsList", popularGoodsVOS);
         return "activity/newPopular";
     }
 
@@ -405,7 +411,7 @@ public class ActivityAction {
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
         model.addAttribute("lettoryNumber", lotteryNum);
-        return "activity/lottery";
+        return "xzSearch/lottery";
     }
 
     @RequestMapping("activity/getAwards")
@@ -426,4 +432,37 @@ public class ActivityAction {
         return JsonResponseUtil.success().element("awards", awards);
     }
 
+
+    /**
+     * 批量下单活动宣传页
+     * @return
+     */
+    @RequestMapping("batchOrders")
+    public String batchOrders() {
+        return "xzPage/batchOrders";
+    }
+
+    /**
+     *
+     */
+    @RequestMapping("qualityControl")
+    public String qualityControl() {
+        return "xzPage/qualityControl";
+    }
+
+    /**
+     *
+     */
+    @RequestMapping("xzPage/about")
+    public String about() {
+        return "xzPage/about";
+    }
+
+    /**
+     *
+     */
+    @RequestMapping("redEnvelopeIntro")
+    public String redEnvelopeIntro() {
+        return "xzPage/redEnvelopeIntro";
+    }
 }

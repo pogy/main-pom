@@ -1,8 +1,7 @@
-
 <div class="footer">
     <div class="inner">
-        <p class="sitemap"> 
-            <a href="/" target="_blank">首页</a>
+        <p class="sitemap">
+            <a href="${mainHost!}/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
             <a href="http://gz.571xz.com" target="_blank">广州站</a>
@@ -22,13 +21,13 @@
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span>
             <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
-            <br> 
+            <br>
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
-            | 
+            |
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
                 <i class="bigIcon" title="浙公网安备"></i>
                 浙公网安备 33010202000302号
-            </a> 
+            </a>
         </p>
     </div>
 </div>
