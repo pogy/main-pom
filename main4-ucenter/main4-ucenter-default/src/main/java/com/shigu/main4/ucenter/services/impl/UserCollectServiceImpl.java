@@ -802,7 +802,7 @@ public class UserCollectServiceImpl implements UserCollectService {
                         shopCollect.setWebSite(shiguStoreCollect.getWebSite());
                         vos.add(shopCollect);
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        //System.out.println(e.getMessage());
                     }
                 }
             }

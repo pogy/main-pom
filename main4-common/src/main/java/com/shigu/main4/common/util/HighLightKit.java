@@ -41,6 +41,6 @@ public class HighLightKit {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(HighLightKit.getInstance("(", ")").bright("hao", "haasdha"));
+//        //System.out.println(HighLightKit.getInstance("(", ")").bright("hao", "haasdha"));
 //    }
 }

@@ -66,7 +66,7 @@ public abstract class OrderQuery {
 //                        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
 //                        ItemOrderSub itemOrderSub = itemOrderSubs.get(0);
 //                        subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
-//                        System.out.println(itemOrderSub.getInStok());
+//                        //System.out.println(itemOrderSub.getInStok());
 //                    });
 //                });
             }

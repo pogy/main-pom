@@ -45,7 +45,7 @@ public class BulkFromRedisServiceImpl implements BulkFromRedisService {
         }
         flowHasDoing=true;
         try {
-            System.out.println("bulk flow"+new Date());
+            //System.out.println("bulk flow"+new Date());
         } finally {
             flowHasDoing=false;
         }
@@ -58,7 +58,7 @@ public class BulkFromRedisServiceImpl implements BulkFromRedisService {
         }
         goodsHasDoing=true;
         try {
-            System.out.println("bulk goods"+new Date());
+            //System.out.println("bulk goods"+new Date());
         } finally {
             goodsHasDoing=false;
         }

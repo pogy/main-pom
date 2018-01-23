@@ -1045,6 +1045,9 @@ public class CdnAction {
     @RequestMapping("/itemGoat")
     @ResponseBody
     public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
@@ -1071,6 +1074,9 @@ public class CdnAction {
     @RequestMapping("/itemBottomGoat")
     @ResponseBody
     public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();

@@ -60,7 +60,7 @@ public class SimilarityUtil {
       
         String str1 = "chenlb.blogjava.net";
         String str2 = "chenlb.javaeye.com";
-        System.out.println("ld="+ld(str1, str2));
-        System.out.println("sim="+sim(str1, str2));
+        //System.out.println("ld="+ld(str1, str2));
+        //System.out.println("sim="+sim(str1, str2));
     }
 } 
