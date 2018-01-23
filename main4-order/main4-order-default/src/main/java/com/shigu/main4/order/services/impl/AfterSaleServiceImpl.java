@@ -3,7 +3,6 @@ package com.shigu.main4.order.services.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -451,12 +450,16 @@ public class AfterSaleServiceImpl implements AfterSaleService {
      */
     @Override
     public void agreeOrRejectRefundPrice(Long refundId, boolean isAgree) throws Main4Exception {
-        if(redisIO.get("doRefundMoney_zf_20171130_"+refundId)!=null){
+        if(redisIO.get("doAgreeRefundMoney_zf_20180122_"+refundId)!=null){
             throw new RefundException("退款执行中,请勿重复操作");
         }
-        redisIO.putTemp("doRefundMoney_zf_20171130_"+refundId,1,360);
+        redisIO.putTemp("doAgreeRefundMoney_zf_20180122_"+refundId,1,360);
         try {
             RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+            RefundVO refundinfo=refundItemOrder.refundinfo();
+            if(refundinfo.getRefundState()!=RefundStateEnum.SELLER_REPRICE){
+                throw new RefundException("订单状态错误");
+            }
             if (isAgree) {
                 refundItemOrder.buyerReprice();
             } else {
@@ -464,7 +467,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             }
             orderMessageProducter.repriceAgree(refundId, isAgree);
         } finally {
-            redisIO.del("doRefundMoney_zf_20171130_"+refundId);
+            redisIO.del("doAgreeRefundMoney_zf_20180122_"+refundId);
         }
     }
 

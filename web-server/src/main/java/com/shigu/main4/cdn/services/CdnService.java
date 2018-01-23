@@ -442,7 +442,6 @@ public class CdnService {
         List<CdnShopCatVO> cdnCats= BeanMapper.mapList(cats,CdnShopCatVO.class);
         return cdnCats;
     }
-
     /**
      * 看了有看
      * @param shopId
