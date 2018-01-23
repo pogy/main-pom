@@ -467,13 +467,15 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 GoodsAggsVO otherInfo = goodsOtherInfoMap.get(item.getItemId().toString());
                 if (otherInfo != null) {
                     //设置材质时必须设置面料为必填项
-                    item.setStyleId(otherInfo.getStyleId());
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
                     item.setGoodsVideoUrl(otherInfo.getVideoUrl());
                     item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
+                    item.setStyleId(otherInfo.getStyleId());
+                    // TODO: 18-1-23 兼容旧版，等新版风格上线后去掉goodsStyleId
+                    item.setGoodsStyleId(otherInfo.getGoodsStyleId());
                 }
                 onsaleItems.add(item);
             });

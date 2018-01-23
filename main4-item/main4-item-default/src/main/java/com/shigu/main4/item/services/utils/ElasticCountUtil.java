@@ -89,6 +89,11 @@ public class ElasticCountUtil {
                 goodsAggsVO.setInFabric(goodsCountForsearch.getInfabric());
                 goodsAggsVO.setVideoUrl(goodsCountForsearch.getVideoUrl());
                 goodsAggsVO.setStyleId(goodsCountForsearch.getStyleId());
+                // TODO: 18-1-23 兼容旧版，等新版风格上线后去掉goodsStyleId
+                if (goodsCountForsearch.getSid() != null) {
+                    goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid().intValue());
+                }
+
                 itemResult.put(goodsCountForsearch.getGoodsId().toString(), goodsAggsVO);
             }
             GoodsupNorealExample norealExample = new GoodsupNorealExample();
