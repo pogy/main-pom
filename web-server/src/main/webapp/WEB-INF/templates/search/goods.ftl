@@ -74,7 +74,7 @@
                     <span class="storeName"><a href="${mainHost!}/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
 <#list [{"id":""+goods.aliww}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=gicntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list>
                     <div class="upload">
@@ -141,13 +141,13 @@
         <ul class="clearfix">
             <#list goodsGoats as goods>
             <li>
-                <a href="/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
+                <a href="http://www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
                     <img src="${goods.imgsrc!}_220x220.jpg" alt>
                 </a>
-                <a href="/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
+                <a href="http://www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
                 <p>
                     <span class="price">&yen;${goods.piprice!}</span>
-                    <a href="/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
+                    <a href="http://www.571xz.com/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
                 </p>
             </li>
             </#list>
