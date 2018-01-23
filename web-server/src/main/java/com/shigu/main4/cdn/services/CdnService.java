@@ -127,7 +127,7 @@ public class CdnService {
      */
     public List<CatPolymerization> formatCatPoly(Long shopId){
         List<CatPolymerization> cats = shopForCdnService.selCatRolymerizations(shopId);
-        if (cats.size() < 1) {
+        if (cats == null || 0 == cats.size()) {
             cats = new ArrayList<>();
         }
         List<CatPolyFormatVO> polys=new ArrayList<>();
