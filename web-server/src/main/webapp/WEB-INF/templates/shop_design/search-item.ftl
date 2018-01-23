@@ -1,17 +1,39 @@
 <div class="J_TModule clearfix ui-droppable">
     <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161216" />
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
-    <style>
-        .diyStyle{margin-right:-6px; margin-bottom:15px;}
-        .diyStyle .styleItem{display: inline-block; width:158px; height:40px; border:1px solid #d7d7d7; text-align:center; line-height:40px; color:#333; margin-right:6px;}
-        .diyStyle .styleItem:hover,
-        .diyStyle .styleItem.selected{color:#f40; border-color:#f40; background:#FFF0EA;}
-    </style>
+
     <div class="js-module" data-not-edit="" data-not-del="">
         <#if shopStyles??>
             <div class="clearfix">
                 <#list shopStyles as cate>
-                    <div class="styleItem" href="/shop/search.htm?${sortparam}&amp;psid=${cate.psid}">${cate.name!}</div>
+                    <a class="styleItem
+                        <#if cate.psid == 1>
+                            green
+                        <#elseif cate.psid == 2>
+                            purple
+                        <#elseif cate.psid == 3>
+                            blue
+                        <#elseif cate.psid == 4>
+                            pink
+                        <#elseif cate.psid == 5>
+                            yellow
+                        <#elseif cate.psid == 6>
+                            orange
+                        </#if>
+                        <#if cate.psid == bo.psid>
+                            selected
+                        <#elseif cate.psid == bo.psid>
+                            selected
+                        <#elseif cate.psid == bo.psid>
+                            selected
+                        <#elseif cate.psid == bo.psid>
+                            selected
+                        <#elseif cate.psid == bo.psid>
+                            selected
+                        <#elseif cate.psid == bo.psid>
+                            selected
+                        </#if>
+                        " href="/shop/search.htm?${sortparam}&amp;psid=${cate.psid}">${cate.name!}</a>
                 </#list>
             </div>
         </#if>

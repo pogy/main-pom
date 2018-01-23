@@ -29,3 +29,24 @@
 .page-link span {
     margin-left: 10px;
 }
+
+.diyStyle{margin-right:-6px; margin-bottom:15px;}
+.diyStyle .styleItem{display: inline-block; width:158px; height:40px; border-width:1px; border-style:solid; text-align:center; line-height:40px; color:#333; margin-right:6px;}
+.diyStyle .styleItem.green{border-color:#a0dbdd; color:#a0dbdd;}
+.diyStyle .styleItem.purple{border-color:#bcbef0; color:#bcbef0;}
+.diyStyle .styleItem.blue{border-color:#a4c2eb; color:#a4c2eb;}
+.diyStyle .styleItem.pink{border-color:#f59199; color:#f59199;}
+.diyStyle .styleItem.yellow{border-color:#fdb974; color:#fdb974;}
+.diyStyle .styleItem.orange{border-color:#f3b586; color:#f3b586;}
+.diyStyle .styleItem.green:hover,
+.diyStyle .styleItem.green.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopGreen.jpg");}
+.diyStyle .styleItem.purple:hover,
+.diyStyle .styleItem.purple.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopPurple.jpg");}
+.diyStyle .styleItem.blue:hover,
+.diyStyle .styleItem.blue.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopBlue.jpg");}
+.diyStyle .styleItem.pink:hover,
+.diyStyle .styleItem.pink.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopPink.jpg");}
+.diyStyle .styleItem.yellow:hover,
+.diyStyle .styleItem.yellow.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopYellow.jpg");}
+.diyStyle .styleItem.orange:hover,
+.diyStyle .styleItem.orange.selected{color:#fff; border:none; width:160px; height:42px; background:url("../../img/shop/shopOrange.jpg");}
