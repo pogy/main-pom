@@ -132,12 +132,6 @@ public class CdnAction {
     @Autowired
     SimpleVideoService simpleVideoService;
 
-    @RequestMapping("")
-    public String jdUpload(){
-        return "";
-    }
-
-
     /**
      * 联系我们
      * @return
