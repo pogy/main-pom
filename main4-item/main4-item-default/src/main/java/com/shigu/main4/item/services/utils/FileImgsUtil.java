@@ -232,7 +232,7 @@ public class FileImgsUtil {
                 in.close();
             }
             out.close();
-            //System.out.println("压缩完成.");
+            ////System.out.println("压缩完成.");
         } catch (IOException e) {
             e.printStackTrace();
         }

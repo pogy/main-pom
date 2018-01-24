@@ -95,7 +95,7 @@ public class RegistAction {
         }
         String code=RedomUtil.redomNumber(6);
         sendMsgService.sendVerificationCode(bo.getTelephone(),code);
-//        System.out.println(code);
+//        //System.out.println(code);
         session.setAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue(),new PhoneVerify(bo.getTelephone(),code));
         return JsonResponseUtil.success();
     }

@@ -67,7 +67,7 @@ public class ZipUtil {
   expand.setDest(new File(destinationPath));
   expand.setEncoding(ENCODE);
   expand.execute();
-  //System.out.println("unzip done!!!");
+  ////System.out.println("unzip done!!!");
   return true;
  }
  public static void main(String[] args) {
@@ -79,7 +79,7 @@ public class ZipUtil {
   ZipUtil zUtil=new ZipUtil();
  //String csvName= zUtil.uzipall( orginString, destStirng);
  String csvName= zUtil.uzipall( orginString);
- //System.out.println(csvName);
+ ////System.out.println(csvName);
 
  }
 
@@ -150,7 +150,7 @@ public class ZipUtil {
     // BufferedReader br = null;
     // BufferedWriter bw = null;
      try {
-    	// System.out.println("code="+code+"outputcode="+ENCODE);
+    	// //System.out.println("code="+code+"outputcode="+ENCODE);
     	 FileInputStream is = new FileInputStream(srcFileName);//文件读取
     	 InputStreamReader isr = new InputStreamReader(is, code);//解码  //gbk   //Unicode(服务器)
      	FileOutputStream os = new FileOutputStream(destFileName);//文件输出
@@ -162,7 +162,7 @@ public class ZipUtil {
              if(length == -1){
                  break;
              }
-            // System.out.println(new String(c, 0, length));
+            // //System.out.println(new String(c, 0, length));
              osw.write(c, 0, length);
              osw.flush();
          }

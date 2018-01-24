@@ -192,8 +192,8 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         if (aggs != null) {
             List<Terms.Bucket> bucks=aggs.getBuckets();
             for(Terms.Bucket bk:bucks){
-//                System.out.println("key:"+bk.getKeyAsString());
-//                System.out.println("value:"+bk.getDocCount());
+//                //System.out.println("key:"+bk.getKeyAsString());
+//                //System.out.println("value:"+bk.getDocCount());
                 map.put(bk.getKeyAsNumber().longValue(),bk.getDocCount());
             }
         }

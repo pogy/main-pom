@@ -79,7 +79,7 @@ public class Pingyin {
         StringBuffer strBuf = new StringBuffer();
         byte[] bGBK = cnStr.getBytes();
         for (int i = 0; i < bGBK.length; i++) {
-            // System.out.println(Integer.toHexString(bGBK[i]&0xff));
+            // //System.out.println(Integer.toHexString(bGBK[i]&0xff));
             strBuf.append(Integer.toHexString(bGBK[i] & 0xff));
         }
         return strBuf.toString();
@@ -88,7 +88,7 @@ public class Pingyin {
     public static void main(String[] args) {
 
         String cnStr = "圆通";
-        System.out.println(getPingYin(cnStr));
-        System.out.println(getPinYinHeadChar(cnStr));
+        //System.out.println(getPingYin(cnStr));
+        //System.out.println(getPinYinHeadChar(cnStr));
     }
 }

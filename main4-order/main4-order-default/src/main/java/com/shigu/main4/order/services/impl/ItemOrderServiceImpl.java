@@ -411,6 +411,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         if (itemOrderLogistics == null) {
             throw new Main4Exception("快递信息不存在");
         }
+        if(StringUtils.isBlank(itemOrderLogistics.getCourierNumber())){
+            return new ArrayList<>();
+        }
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
             companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId()).getRemark3();

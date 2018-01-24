@@ -313,7 +313,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JsonResponseUtil.success();
     }
 
@@ -413,7 +413,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JsonResponseUtil.success();
     }
 
@@ -477,7 +477,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(phone, code));
         sendMsgService.sendVerificationCode(phone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JSONObject.fromObject("{'result':'success'}");
     }
 
@@ -678,7 +678,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
         sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
@@ -722,7 +722,7 @@ public class UserLoginAction {
           // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
             String key= Opt3Des.encryptPlainData (shopId+"");
            String back=backUrl+"?key="+key;
-          // System.out.println (back);
+          // //System.out.println (back);
             return "redirect:"+back;
         }else{
             return "redirect:loginWindow.htm";

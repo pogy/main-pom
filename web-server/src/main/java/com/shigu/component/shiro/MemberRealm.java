@@ -102,7 +102,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //System.out.println("授权判断--------------------------------------------------");
+        ////System.out.println("授权判断--------------------------------------------------");
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //查出用户所有的权限
         info.addRole(UserType.MEMBER.getValue());

@@ -19,10 +19,11 @@
        xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.productAi.*,com.shigu.*">
+    <context:component-scan base-package="com.opentae.*">
     </context:component-scan>
 
-
+    <bean class="com.shigu.main4.cdn.services.CdnServiceTest" id="cdnServiceTest"></bean>
+    <bean class="com.shigu.main4.tools.SpringBeanFactory" id="SpringBeanFactory"></bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
