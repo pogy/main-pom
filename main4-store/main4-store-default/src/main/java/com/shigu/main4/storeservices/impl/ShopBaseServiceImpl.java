@@ -101,24 +101,27 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getMessage());
         }
-        // 二级域名长度验证 不能小于3，不包含中文的档口号除外
-        if(domain.length() < 3 && !StringUtils.equals(domain.toLowerCase(), shiguShop.getShopNum().toLowerCase())){
-            throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
-                    ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
-        }
-        if(domain.length() > 8 && !StringUtils.equals(domain.toLowerCase(), shiguShop.getShopNum().toLowerCase())){
-            throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
-                    ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
+
+        //doamin 等于自己档口号不做长度校验
+        if (!StringUtils.equals(domain.toLowerCase(), shiguShop.getShopNum().toLowerCase())) {
+            if (domain.length() < 3 || domain.length() > 8) {
+                throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
+                        ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
+            }
         }
 
-        // 二级域名与档口号重复校验,不能设置成其他档口的档口号
+        // 如果一个档口号对应多个档口。不允许设置
         ShiguShopExample example = new ShiguShopExample();
         example.createCriteria().andShopNumEqualTo(domain);
         int shopNum = shiguShopMapper.countByExample(example);
-        if (shopNum > 1){// 如果一个档口号对应多个档口。不允许设置
+        if (shopNum > 1){
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED.getMessage());
         }
+
+        //假如domain是档口号，那么根据domain查询该档口号是否是自己档口号
+        //shopdataId 等于空证明 domain不是档口号
+        //shopdataId == shopId 说明是自己的档口
         Long  shopdataId = shiguShopMapper.selectDoaminRepeatById(null,null,domain);
         if (shopdataId != null
                 && shopdataId.intValue() != shopId.intValue()) {
@@ -127,7 +130,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
                         ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED_WITH_OTHERS.getMessage());
             }
         }
-        //二级域名与现存档口二级域名重复校验
+        //校验domain是否被占用
         shopdataId = shiguShopMapper.selectDoaminRepeatById(domain,null,null);
         if (shopdataId != null
                 && shopdataId.intValue() != shopId.intValue()) {
