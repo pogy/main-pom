@@ -445,7 +445,7 @@ if(pageType == 'W'){
                     <img src="${goods.imgSrc!}_300x300.jpg">
                 </a>
                 <div class="goodsInfo">
-                    <span class="fcF40 yahei fs14">&yen;${goods.price!}</span>
+                    <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
                     <a href="${mainHost!}/shop.html?id=${goods.shopId!}" target="_blank" class="fr">${goods.market!} ${goods.shopNo!}</a>
                 </div>
             </li>
