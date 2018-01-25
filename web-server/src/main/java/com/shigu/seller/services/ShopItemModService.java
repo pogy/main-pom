@@ -332,8 +332,8 @@ public class ShopItemModService {
         List<ShiguStyleVo> shiguStyleVos = new ArrayList<>(shiguStyles.size());
         for (ShiguStyle shiguStyle : shiguStyles) {
             ShiguStyleVo vo = new ShiguStyleVo();
-            vo.setStyleId(shiguStyle.getId());
-            vo.setStyleName(shiguStyle.getStyleName());
+            vo.setScid(shiguStyle.getId());
+            vo.setScname(shiguStyle.getStyleName());
             shiguStyleVos.add(vo);
         }
         return shiguStyleVos;
