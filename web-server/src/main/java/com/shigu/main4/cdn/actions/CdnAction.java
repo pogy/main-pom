@@ -132,12 +132,6 @@ public class CdnAction {
     @Autowired
     SimpleVideoService simpleVideoService;
 
-    @RequestMapping("")
-    public String jdUpload(){
-        return "";
-    }
-
-
     /**
      * 联系我们
      * @return
@@ -1023,11 +1017,11 @@ public class CdnAction {
                 see.add(vo);
             }
         }
-
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
             shop.setTbUrl(null);
         }
+
         //极限词过滤
         goods.setTitle(KeyWordsUtil.duleKeyWords(goods.getTitle()));
         goods.setDescHtml(KeyWordsUtil.duleKeyWords(goods.getDescHtml()));

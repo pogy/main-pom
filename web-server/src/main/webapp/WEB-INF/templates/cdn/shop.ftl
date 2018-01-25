@@ -24,11 +24,11 @@
             <base href="${baseUrl!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1511428980730" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1516693917873" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1511428980730"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1516693917873"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -357,9 +357,6 @@ function openShop(){
                     <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
                     <#if vo.other.taobaoUrl??>
                     <b xzclick="openTaobaoShop" data-href="${vo.other.taobaoUrl!}">淘宝店铺</b>
-                    
-                    <#else>
-                    <em class="disabled">淘宝店铺</em>
                     </#if>
                     <#if session_user_redis__.logshop.shopId??>
                         
