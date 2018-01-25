@@ -4,6 +4,8 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
+import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -36,4 +38,23 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
      * @return
      */
     List<ItemForList> selForSee(@Param("website") String website,@Param("storeId") Long storeId);
+
+    /**
+     * 统计店铺内各风格商品数
+     * @param shopId
+     * @param parentStyleIds
+     * @return
+     */
+    List<ShopStyleGoodsAggrBean> countShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleIds") List<Long> parentStyleIds);
+
+    /**
+     * 查询店内风格商品
+     * @param webSite
+     * @param shopId
+     * @param parentStyleId
+     * @param startIndex
+     * @param endIndex
+     * @return
+     */
+    List<GoodsStyleInfoBean> selShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleId") Long parentStyleId, int startIndex, int endIndex);
 }

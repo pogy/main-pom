@@ -35,5 +35,23 @@
         ORDER BY b.up_man desc limit 0,3
     </select>
 
+    <select id="countShopStyleGoods" resultType="com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean">
+        SELECT b.parent_style_id parentStyleId,count(b.goods_id) styleGoodsCount
+        FROM shigu_goods_tiny_#{website} a, goods_count_forsearch b
+        WHERE a.store_id = #{shopId} AND b.goods_id = a.goods_id
+        and b.parent_style_id in
+        <foreach collection="parentStyleIds" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY b.parent_style_id
+    </select>
+
+    <select id="selShopStyleGoods" resultType="com.opentae.data.mall.multibeans.GoodsStyleInfoBean">
+        SELECT a.goods_id goodsId, a.title title, a.pic_url imgsrc, b.style_id styleId
+        FROM shigu_goods_tiny_${website} a, goods_count_forsearch b
+        WHERE a.store_id = #{shopId} AND b.goods_id = a.goods_id and b.parent_style_id = #{parentStyleId}
+        LIMIT #{startIndex},#{endIndex}
+    </select>
 
 </mapper>

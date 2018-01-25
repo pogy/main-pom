@@ -4,6 +4,10 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
+import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
+import com.shigu.main4.cdn.services.IndexShowService;
+import com.shigu.main4.cdn.vo.StyleChannelVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
@@ -12,6 +16,8 @@ import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.ShiguStyleVo;
+import com.shigu.seller.vo.ShopStyleGoodsAggrVO;
+import com.shigu.seller.vo.ShopStyleGoodsInfoVO;
 import com.shigu.seller.vo.StyleVo;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -22,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 店内商品修改服务
@@ -55,6 +62,9 @@ public class ShopItemModService {
 
     @Autowired
     ShopsItemService shopsItemService;
+
+    @Autowired
+    private IndexShowService indexShowService;
 
     @Autowired
     RedisIO redisIO;
@@ -380,4 +390,69 @@ public class ShopItemModService {
         }
         return JsonResponseUtil.error(result);
     }
+
+    /**
+     * 获取用户店内商品风格统计数据
+     * @param webSite
+     * @param shopId
+     * @return
+     */
+    public List<ShopStyleGoodsAggrVO> selStyleAggrList(String webSite, Long shopId) {
+        if (StringUtils.isBlank(webSite) || null == shopId) {
+            return Collections.EMPTY_LIST;
+        }
+        List<StyleChannelVO> parentChannels = indexShowService.selStyleChannelInfo().selObj();
+        if (parentChannels.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        Map<Long, ShopStyleGoodsAggrVO> parentStyleInfoMap = parentChannels.stream().collect(Collectors.toMap(StyleChannelVO::getSpid, o -> {
+            ShopStyleGoodsAggrVO vo = new ShopStyleGoodsAggrVO();
+            vo.setSpid(o.getSpid());
+            vo.setSname(o.getSname());
+            return vo;
+        }));
+        if (parentStyleInfoMap.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        Set<Long> psIdset = parentStyleInfoMap.keySet();
+        List<ShopStyleGoodsAggrBean> shopStyleGoodsAggrBeans = shiguGoodsTinyMapper.countShopStyleGoods(webSite, shopId, new ArrayList<>(psIdset));
+        for (ShopStyleGoodsAggrBean aggr : shopStyleGoodsAggrBeans) {
+            parentStyleInfoMap.get(aggr.getParentStyleId()).setGoodsCount(aggr.getStyleGoodsCount());
+        }
+        return new ArrayList<>(parentStyleInfoMap.values());
+    }
+
+    /**
+     * 获取商品风格信息
+     * @param webSite
+     * @param shopId
+     * @param parentStyleId
+     * @param stateIndex
+     * @param endIndex
+     * @return
+     */
+    public List<ShopStyleGoodsInfoVO> selShopStyleGoods(String webSite, Long shopId, Long parentStyleId, int stateIndex, int endIndex) {
+        if (StringUtils.isBlank(webSite) || null == shopId || parentStyleId == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List<GoodsStyleInfoBean> list = shiguGoodsTinyMapper.selShopStyleGoods(webSite, shopId, parentStyleId, stateIndex, endIndex);
+        if (list.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        ShiguStyle shiguStyle = new ShiguStyle();
+        shiguStyle.setParentStyleId(parentStyleId);
+        Map<Long, String> styleIdNameMap = shiguStyleMapper.select(shiguStyle).stream().collect(Collectors.toMap(ShiguStyle::getId, ShiguStyle::getStyleName));
+        ArrayList<ShopStyleGoodsInfoVO> vos = new ArrayList<>(list.size());
+        for (GoodsStyleInfoBean goodsStyleInfoBean : list) {
+            ShopStyleGoodsInfoVO vo = new ShopStyleGoodsInfoVO();
+            vo.setGoodsid(goodsStyleInfoBean.getGoodsId());
+            vo.setImgsrc(goodsStyleInfoBean.getImgsrc());
+            vo.setTitle(goodsStyleInfoBean.getTitle());
+            vo.setScid(goodsStyleInfoBean.getStyleId());
+            vo.setScname(styleIdNameMap.get(goodsStyleInfoBean.getStyleId()));
+            vos.add(vo);
+        }
+        return vos;
+    }
+
 }
