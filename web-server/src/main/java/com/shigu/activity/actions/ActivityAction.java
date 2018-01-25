@@ -473,8 +473,8 @@ public class ActivityAction {
     /**
      * 上传得现金活动介绍页面
      */
-    @RequestMapping("activity/cash")
-    public String activityCash(Model model) {
+    @RequestMapping("activity/getCash")
+    public String activityGetCash(Model model) {
         ShiguNewActivity activity = activityWebService.getActivityNow();
         if (activity != null) {
             model.addAttribute("bannerImg", StringUtils.isEmpty(activity.getBannerImgUrl()) ? "http://style.571xz.com/v6/xzPage/css/img/cash/banner.jpg" : activity.getBannerImgUrl());

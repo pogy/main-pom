@@ -85,7 +85,12 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
      * @throws ShopDomainException
      */
     @Override
+    @Transactional  //加入事物，避免脏读
     public void updateDomain(Long shopId, String domain) throws ShopDomainException {
+        if (StringUtils.isBlank(domain)) {
+            throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
+                    ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
+        }
         // 数据无效验证
         if (shopId == null || StringUtils.isEmpty(domain)) {
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getCode(),
@@ -96,30 +101,46 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getMessage());
         }
-        // 二级域名长度验证 不能大于4
-        if(domain.length() <= 4 && !StringUtils.equals(domain.toLowerCase(), shiguShop.getShopNum().toLowerCase())){
-            throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
-                    ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
+
+        //doamin 等于自己档口号不做长度校验
+        if (!StringUtils.equals(domain.toLowerCase(), shiguShop.getShopNum().toLowerCase())) {
+            if (domain.length() < 3 || domain.length() > 8) {
+                throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getCode(),
+                        ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_NUM4_REPEAT.getMessage());
+            }
         }
-        // 二级域名与其他域名重复校验
-        Long shopdataId = shiguShopMapper.selectDoaminRepeatById(domain,shopId,null);
+
+        // 如果一个档口号对应多个档口。不允许设置
+        ShiguShopExample example = new ShiguShopExample();
+        example.createCriteria().andShopNumEqualTo(domain);
+        int shopNum = shiguShopMapper.countByExample(example);
+        if (shopNum > 1){
+            throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED.getCode(),
+                    ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED.getMessage());
+        }
+
+        //假如domain是档口号，那么根据domain查询该档口号是否是自己档口号
+        //shopdataId 等于空证明 domain不是档口号
+        //shopdataId == shopId 说明是自己的档口
+        Long  shopdataId = shiguShopMapper.selectDoaminRepeatById(null,null,domain);
+        if (shopdataId != null
+                && shopdataId.intValue() != shopId.intValue()) {
+            if(!StringUtils.equals(shiguShop.getShopNum(), domain)){
+                throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED_WITH_OTHERS.getCode(),
+                        ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_NOT_ALLOWTED_WITH_OTHERS.getMessage());
+            }
+        }
+        //校验domain是否被占用
+        shopdataId = shiguShopMapper.selectDoaminRepeatById(domain,null,null);
         if (shopdataId != null
                 && shopdataId.intValue() != shopId.intValue()) {
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_REPEAT.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_REPEAT.getMessage());
         }
-        // 二级域名与档口号重复校验
-        shopdataId = shiguShopMapper.selectDoaminRepeatById(null,null,domain);
-        if (shopdataId != null
-                && shopdataId.intValue() != shopId.intValue()) {
-            if(!StringUtils.equals(shiguShop.getShopNum(), domain)){
-                throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_SHOPNUM_REPEAT.getCode(),
-                        ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_SHOPNUM_REPEAT.getMessage());
-            }
-        }
+
         // 二级域名与系统保留区域重复校验
         ShiguDomainRetainExample shiguDomainRetainExample = new ShiguDomainRetainExample();
-        shiguDomainRetainExample.createCriteria().andDomainEqualTo(domain.toLowerCase());
+        shiguDomainRetainExample.createCriteria().andDomainEqualTo(domain.toLowerCase()).andStatusEqualTo(1);
         int result = shiguDomainRetainMapper.countByExample(shiguDomainRetainExample);
         if(result != 0){
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DOMAIN_WITH_SYSTEM_REPEAT.getCode(),
