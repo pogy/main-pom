@@ -1003,7 +1003,7 @@ public class CdnAction {
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
 
-//        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+//      List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();
         ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,goods.getShopId(),goods.getWebSite(),"common",1,3);
         List<ItemShowBlock> content = itemPager.getContent();
@@ -1017,10 +1017,11 @@ public class CdnAction {
                 see.add(vo);
             }
         }
-
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
+            shop.setTbUrl(null);
         }
+
         //极限词过滤
         goods.setTitle(KeyWordsUtil.duleKeyWords(goods.getTitle()));
         goods.setDescHtml(KeyWordsUtil.duleKeyWords(goods.getDescHtml()));
@@ -1044,6 +1045,9 @@ public class CdnAction {
     @RequestMapping("/itemGoat")
     @ResponseBody
     public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
@@ -1070,6 +1074,9 @@ public class CdnAction {
     @RequestMapping("/itemBottomGoat")
     @ResponseBody
     public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();

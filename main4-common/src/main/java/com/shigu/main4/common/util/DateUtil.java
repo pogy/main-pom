@@ -590,7 +590,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            return s;
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
        return date2;
    }
@@ -618,7 +618,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            return s;
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
        return date2;
    }
@@ -643,7 +643,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            l2 = sdf.parse(date2).getTime();
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
 
        return (l2-l1)/1000;

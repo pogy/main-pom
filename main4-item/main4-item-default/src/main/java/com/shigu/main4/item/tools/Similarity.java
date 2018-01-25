@@ -21,7 +21,7 @@ public class Similarity {
         String strB = "你是中国人5556";
 
         double result=getSimilarity(strA, strB);
-        System.out.println(result);
+        //System.out.println(result);
 
     }
 

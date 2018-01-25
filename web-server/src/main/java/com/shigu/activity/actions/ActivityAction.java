@@ -457,4 +457,12 @@ public class ActivityAction {
     public String about() {
         return "xzPage/about";
     }
+
+    /**
+     *
+     */
+    @RequestMapping("redEnvelopeIntro")
+    public String redEnvelopeIntro() {
+        return "xzPage/redEnvelopeIntro";
+    }
 }

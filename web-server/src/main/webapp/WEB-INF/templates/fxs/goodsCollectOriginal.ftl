@@ -1,10 +1,10 @@
-<#assign $pageid>goodsCollectOriginal</#assign>
+<#assign $pageid="goodsCollectOriginal">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>收藏的商品 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -20,24 +20,18 @@
 <#include "/__style_torrent__/fxs__goodsCollectOriginal_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"website","value":""+query.website}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"website","value":""+query.website}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -51,9 +45,7 @@
         <li class="select"><a href="goodsCollectOriginal.htm">收藏的商品</a></li>
         <li><a href="storeCollectinit.htm">收藏的档口</a></li>
         <li class="website">
-<#assign text>{"value":""+query.website}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":""+query.website}] as $it>
 <div class="fmSelect" id="websiteList">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -71,9 +63,7 @@
     <ul class="head clearfix">
         <li class="name">
             <label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -123,9 +113,7 @@
         <#list goodsList as goods>
             <ul class="body clearfix" data-id="${goods.collId!}">
                 <li class="name">
-<#assign text>{"value":goods.collId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":goods.collId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -186,22 +174,16 @@
                     <p>${goods.marketName!}</p>
                     <p>${goods.shopNum!}</p>
                     <p>
-<#assign text>{"id":"${(goods.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":goods.imWw}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
-<#assign text>{"id":"${(goods.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":goods.imQq}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>
                     </p>
                 </li>
                 <li class="control">
-<#assign text>{"dataId":goods.collId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"dataId":goods.collId}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -233,9 +215,7 @@
                 </li>
             </ul>
         </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -243,9 +223,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

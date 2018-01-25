@@ -1,10 +1,10 @@
-<#assign $pageid>pictureSpace</#assign>
+<#assign $pageid="pictureSpace">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>图片空间 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -14,28 +14,26 @@
 <#include "/__style_torrent__/gys__pictureSpace_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/gys__pictureSpace_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
+<script modulepath="gys/pictureSpace#config">
+var shopId = '${session_user_redis__.logshop.shopId!}';
+</script>
 <script modulepath="gys/pictureSpace#config">
 var shopId = '${session_user_redis__.logshop.shopId!}';
 </script>
@@ -45,9 +43,7 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
 <div id="bodyContent" class="hideContent">
     <p class="loadingTips">图片空间加载中...</p>
 <div class="headButton">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -72,9 +68,7 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
     </button>
     </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -124,12 +118,8 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
 </div>
 <div class="successTip"><i></i><span>文件上传成功！</span></div>
 <div class="errorTips"><i></i><span>上传失败！单个文件大于150M！</span></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -139,9 +129,7 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
 </#if>
 </#list>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 </#list>
             </div>
     </div>

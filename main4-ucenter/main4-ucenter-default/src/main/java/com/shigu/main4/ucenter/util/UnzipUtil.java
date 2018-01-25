@@ -73,7 +73,7 @@ public class UnzipUtil {
                     		csvName=csv_extends[0];
                     	}
 
-                   // System.out.println("gbkPath="+gbkPath);
+                   // //System.out.println("gbkPath="+gbkPath);
                     }
                     strtemp = strPath + "/" + gbkPath;
 
@@ -82,7 +82,7 @@ public class UnzipUtil {
                     for(int i = 0; i < strsubdir.length(); i++) {
                         if(strsubdir.substring(i, i + 1).equalsIgnoreCase("/")) {
                             String temp = strPath + "/" + strsubdir.substring(0, i);
-                           // System.out.println("temp="+temp);
+                           // //System.out.println("temp="+temp);
                             File subdir = new File(temp);
                             if(!subdir.exists())
                             subdir.mkdir();
@@ -127,7 +127,7 @@ public class UnzipUtil {
                 ZipEntry zipEnt = (ZipEntry) e.nextElement();
                 gbkPath=zipEnt.getName();
                 gbkPath=dealccaddr(gbkPath,pathString);
-               // System.out.println(gbkPath);
+               // //System.out.println(gbkPath);
                 if(gbkPath.endsWith(".csv")||gbkPath.endsWith(".txt")||gbkPath.endsWith(".tbi")){
                 	//读写文件
                     InputStream is = zipFile.getInputStream(zipEnt);
@@ -141,7 +141,7 @@ public class UnzipUtil {
                     		csvName=csv_extends[0];
                     	}
 
-                   // System.out.println("gbkPath="+gbkPath);
+                   // //System.out.println("gbkPath="+gbkPath);
                     }*/
                     strtemp = strPath + "/" + gbkPath;
 
@@ -150,7 +150,7 @@ public class UnzipUtil {
                     for(int i = 0; i < strsubdir.length(); i++) {
                         if(strsubdir.substring(i, i + 1).equalsIgnoreCase("/")) {
                             String temp = strPath + "/" + strsubdir.substring(0, i);
-                           // System.out.println("temp="+temp);
+                           // //System.out.println("temp="+temp);
                             File subdir = new File(temp);
                             if(!subdir.exists())
                             subdir.mkdir();
@@ -207,16 +207,16 @@ public class UnzipUtil {
 		try {
 			se1 = new String(addr.getBytes("gbk"));
 			//if(addr.endsWith(".csv")){
-				//System.out.println("addr="+se1);
+				////System.out.println("addr="+se1);
 			//}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	//System.out.println(se1);
+    	////System.out.println(se1);
     	String repalced="";
         	int se=addr.lastIndexOf("\\");
-        	//System.out.println(se);
+        	////System.out.println(se);
         	String seeString[]=null;
         	/*if(se==-1){
         		 seeString=addr.split(File.separator);
@@ -236,18 +236,18 @@ public class UnzipUtil {
         	if(seeString.length>=0){
         		if(addr.endsWith(".csv")){
     				repalced=t2+".csv";
-    				//System.out.println(repalced);
+    				////System.out.println(repalced);
     				addr=repalced;
     				//addr=addr.replaceAll(repalced, t2);
     			}else{
     				if(addr.endsWith(".txt")){
     					repalced="readme.txt";
-    				//	System.out.println(repalced);
+    				//	//System.out.println(repalced);
 
     					addr=repalced;
     				}else{
     					if(addr.endsWith(".tbi")){
-    						//System.out.println(addr);
+    						////System.out.println(addr);
     						addr=t2+"/"+seeString[seeString.length-1];
     					}else{
     						addr=t2;
@@ -537,7 +537,7 @@ public class UnzipUtil {
     public static String unRarFile(String srcRarPath, String dstDirectoryPath) {
     	String csvName="";
         if (!srcRarPath.toLowerCase().endsWith(".rar")) {
-            //System.out.println("非rar文件！");
+            ////System.out.println("非rar文件！");
             return "非法rar";
         }
         File dstDiretory = new File(dstDirectoryPath);
@@ -592,7 +592,7 @@ public class UnzipUtil {
                                 csvName = paths[1];
                             }
                             File out = new File(dstDirectoryPath + File.separator + paths[0]);//  + fh.getFileNameString().trim());
-                            //System.out.println(out.getAbsolutePath());
+                            ////System.out.println(out.getAbsolutePath());
                             try {// 之所以这么写try，是因为万一这里面有了异常，不影响继续解压.
                                 if (!out.exists()) {
                                     if (!out.getParentFile().exists()) {// 相对路径可能多级，可能需要创建父目录.
@@ -623,7 +623,7 @@ public class UnzipUtil {
 
     public static String unRarFile(String srcRarPath) {
         if (!srcRarPath.toLowerCase().endsWith(".rar")) {
-            //System.out.println("非rar文件！");
+            ////System.out.println("非rar文件！");
             return "非rar文件";
         }
         String dstDirectoryPath=getrarpath(srcRarPath);
@@ -632,10 +632,10 @@ public class UnzipUtil {
 
 
     private  static String  dealzhongwenaddr2(String addr,Long t2){//有中文
-    	//System.out.println("有中文");
+    	////System.out.println("有中文");
 
     	int se=addr.lastIndexOf("\\");
-    	//System.out.println(se);
+    	////System.out.println(se);
     	String seeString[]=null;
 
     	if(se==-1){
@@ -670,7 +670,7 @@ public class UnzipUtil {
     		result=path+":"+pcsv;
 
     	}
-    	//System.out.println(result);
+    	////System.out.println(result);
     	return result;
     }
 
@@ -679,7 +679,7 @@ public class UnzipUtil {
     	if(path.endsWith(".rar")){
 
     		int se=path.lastIndexOf("\\");
-        	//System.out.println(se);
+        	////System.out.println(se);
         	String seeString[]=null;
         	if(se==-1){
 	   	   		 seeString=path.split("/");
@@ -710,20 +710,20 @@ public class UnzipUtil {
         //decompression.unRarFile("E:/1111/zip/BBL20150702.rar", "E:/1111/zip");
 
        // decompression.unRarFile("E:/1111/zip/BBL20150702.rar");
-        //System.out.println(decompression.getrarpath("E:/1111/zip/BBL20150702.rar"));
+        ////System.out.println(decompression.getrarpath("E:/1111/zip/BBL20150702.rar"));
        // decompression.dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
     	UnzipUtil decompression=new UnzipUtil();
     	//String se=decompression.unzipFile("D:\\home\\sjbfolder\\4\\csml11442571987448\\1443172368175\\1443172368175.zip",true);
 
     	String se=decompression.unRarFile("/Users/gzy/testsjb/sjbfolder/266/fc0981eb78547806af01c2541e1dc21761509/1444928922894/1444928922894.rar");
-    	//System.out.println("%%%%%"+se);
+    	////System.out.println("%%%%%"+se);
 
       /*  String pathrsString=dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
     	String paths[]=pathrsString.split(":");
     	if(paths.length==2){
-    		System.out.println(paths[0]+"@@@"+paths[1]);
+    		//System.out.println(paths[0]+"@@@"+paths[1]);
     	}else{
-    		System.out.println(paths[0]+"!!!!!!!!!!!"+pathrsString);
+    		//System.out.println(paths[0]+"!!!!!!!!!!!"+pathrsString);
     	}*/
 
     }

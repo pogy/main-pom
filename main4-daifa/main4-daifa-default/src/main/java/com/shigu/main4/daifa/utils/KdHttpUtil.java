@@ -105,9 +105,9 @@ public class KdHttpUtil {
 		        	  param.append(entry.getKey());
 		        	  param.append("=");
 		        	  param.append(entry.getValue());		        	  
-//System.out.println(entry.getKey()+":"+entry.getValue());
+////System.out.println(entry.getKey()+":"+entry.getValue());
 		          }
-//System.out.println("param:"+param.toString());
+////System.out.println("param:"+param.toString());
 		          out.write(param.toString());
             }
             // flush输出流的缓冲

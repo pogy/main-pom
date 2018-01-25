@@ -214,7 +214,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-        Long companyId = new Long(logistics.getCompanyId());
+        Long companyId =  Long.parseLong(logistics.getCompanyId());
 //        ExpressCompany company = new ExpressCompany();
 //        company.setRemark2(companyId);
 //        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
@@ -410,6 +410,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
         if (itemOrderLogistics == null) {
             throw new Main4Exception("快递信息不存在");
+        }
+        if(StringUtils.isBlank(itemOrderLogistics.getCourierNumber())){
+            return new ArrayList<>();
         }
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
