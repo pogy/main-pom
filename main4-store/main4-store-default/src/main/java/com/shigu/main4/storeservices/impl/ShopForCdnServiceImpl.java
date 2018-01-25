@@ -866,10 +866,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             //是正常店铺，且在店铺风格索引表中还没有记录，添加记录
             shiguShopStyleRelation = new ShiguShopStyleRelation();
             shiguShopStyleRelation.setShopId(shopId);
-            //现在正常店铺数据，都含有市场id和楼层id
-            shiguShopStyleRelation.setMarketId(shiguShop.getMarketId());
-            shiguShopStyleRelation.setFloorId(shiguShop.getFloorId());
             shiguShopStyleRelation.setWebSite(shiguShop.getWebSite());
+            shiguShopStyleRelation.setShopParentStyleIds(",");
             shiguShopStyleRelationMapper.insertSelective(shiguShopStyleRelation);
             // 推送到redis，交给定时项目处理店铺内风格数据
             redisIO.rpush(SHOP_STYLE_HANDLER_QUEUE_INDEX,shopId);

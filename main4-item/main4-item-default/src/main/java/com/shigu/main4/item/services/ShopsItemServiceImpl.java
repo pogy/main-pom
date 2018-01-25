@@ -648,7 +648,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         updateVal.setStyleSearchScore(0L);
         updateVal.setParentStyleId(shiguStyle.getParentStyleId());
         GoodsCountForsearchExample updateExample = new GoodsCountForsearchExample();
-        updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);
+        updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdIsNull().or().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);
         goodsCountForsearchMapper.updateByExampleSelective(updateVal,updateExample);
         return "success";
     }

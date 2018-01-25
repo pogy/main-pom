@@ -19,16 +19,6 @@ public class ShiguShopStyleRelation implements Serializable {
 	private Long shopId;
 
     /**
-     * 市场id，用于加快市场列表展示搜索
-     */
-	private Long marketId;
-
-    /**
-     * 楼层id，用于加快楼层列表展示搜索
-     */
-	private Long floorId;
-
-    /**
      * 
      */
 	private String shopParentStyleIds;
@@ -62,22 +52,6 @@ public class ShiguShopStyleRelation implements Serializable {
 
 	public Long getShopId() {
 		return this.shopId;
-	}
-
-	public void setMarketId(Long marketId) {
-		this.marketId = marketId;
-	}
-
-	public Long getMarketId() {
-		return this.marketId;
-	}
-
-	public void setFloorId(Long floorId) {
-		this.floorId = floorId;
-	}
-
-	public Long getFloorId() {
-		return this.floorId;
 	}
 
 	public void setShopParentStyleIds(String shopParentStyleIds) {

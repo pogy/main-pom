@@ -10,28 +10,24 @@ import java.util.*;
 public class ShiguShopStyleRelationExample extends SgExample<ShiguShopStyleRelationExample.Criteria> {
     public static final Class<ShiguShopStyleRelation> beanClass = ShiguShopStyleRelation.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
-    public static EntityColumn floorId;
     public static EntityColumn webSite;
     public static EntityColumn gmtModify;
     public static EntityColumn shopParentStyleIds;
     public static EntityColumn shopId;
     public static EntityColumn id;
     public static EntityColumn gmtCreate;
-    public static EntityColumn marketId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
-        floorId = listMap.get("floorId");
         webSite = listMap.get("webSite");
         gmtModify = listMap.get("gmtModify");
         shopParentStyleIds = listMap.get("shopParentStyleIds");
         shopId = listMap.get("shopId");
         id = listMap.get("id");
         gmtCreate = listMap.get("gmtCreate");
-        marketId = listMap.get("marketId");
         }
 
     public ShiguShopStyleRelationExample() {
@@ -53,53 +49,6 @@ public class ShiguShopStyleRelationExample extends SgExample<ShiguShopStyleRelat
             super(example);
         }
 
-        public ShiguShopStyleRelationExample.Criteria andFloorIdIsNull() {
-            return isNull(floorId);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdIsNotNull() {
-            return isNotNull(floorId);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdEqualTo(Long value) {
-            return equalTo(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdNotEqualTo(Long value) {
-            return notEqualTo(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdGreaterThan(Long value) {
-            return greaterThan(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdLessThan(Long value) {
-            return lessThan(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(floorId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdIn(List<Long> values) {
-            return in(floorId, values);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdNotIn(List<Long> values) {
-            return notIn(floorId, values);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdBetween(Long value1, Long value2) {
-            return between(floorId, value1, value2);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
-            return notBetween(floorId, value1, value2);
-        }
         public ShiguShopStyleRelationExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
@@ -397,53 +346,6 @@ public class ShiguShopStyleRelationExample extends SgExample<ShiguShopStyleRelat
 
         public ShiguShopStyleRelationExample.Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             return notBetween(gmtCreate, value1, value2);
-        }
-        public ShiguShopStyleRelationExample.Criteria andMarketIdIsNull() {
-            return isNull(marketId);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdIsNotNull() {
-            return isNotNull(marketId);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdEqualTo(Long value) {
-            return equalTo(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdNotEqualTo(Long value) {
-            return notEqualTo(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdGreaterThan(Long value) {
-            return greaterThan(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdLessThan(Long value) {
-            return lessThan(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(marketId, value);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdIn(List<Long> values) {
-            return in(marketId, values);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdNotIn(List<Long> values) {
-            return notIn(marketId, values);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdBetween(Long value1, Long value2) {
-            return between(marketId, value1, value2);
-        }
-
-        public ShiguShopStyleRelationExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
-            return notBetween(marketId, value1, value2);
         }
     }
 }
