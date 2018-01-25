@@ -14,11 +14,11 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
     public static EntityColumn isParent;
     public static EntityColumn parentStyleId;
     public static EntityColumn gmtModify;
+    public static EntityColumn description;
     public static EntityColumn id;
     public static EntityColumn sort;
     public static EntityColumn styleName;
     public static EntityColumn gmtCreate;
-    public static EntityColumn desc;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -29,11 +29,11 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
         isParent = listMap.get("isParent");
         parentStyleId = listMap.get("parentStyleId");
         gmtModify = listMap.get("gmtModify");
+        description = listMap.get("description");
         id = listMap.get("id");
         sort = listMap.get("sort");
         styleName = listMap.get("styleName");
         gmtCreate = listMap.get("gmtCreate");
-        desc = listMap.get("desc");
         }
 
     public ShiguStyleExample() {
@@ -251,6 +251,61 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
         public ShiguStyleExample.Criteria andGmtModifyNotBetween(Date value1, Date value2) {
             return notBetween(gmtModify, value1, value2);
         }
+        public ShiguStyleExample.Criteria andDescriptionIsNull() {
+            return isNull(description);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionIsNotNull() {
+            return isNotNull(description);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionEqualTo(String value) {
+            return equalTo(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionNotEqualTo(String value) {
+            return notEqualTo(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionGreaterThan(String value) {
+            return greaterThan(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionLessThan(String value) {
+            return lessThan(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionLike(String value) {
+            return like(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionNotLike(String value) {
+            return notLike(description, value);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionIn(List<String> values) {
+            return in(description, values);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionNotIn(List<String> values) {
+            return notIn(description, values);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionBetween(String value1, String value2) {
+            return between(description, value1, value2);
+        }
+
+        public ShiguStyleExample.Criteria andDescriptionNotBetween(String value1, String value2) {
+            return notBetween(description, value1, value2);
+        }
         public ShiguStyleExample.Criteria andIdIsNull() {
             return isNull(id);
         }
@@ -446,61 +501,6 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
 
         public ShiguStyleExample.Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             return notBetween(gmtCreate, value1, value2);
-        }
-        public ShiguStyleExample.Criteria andDescIsNull() {
-            return isNull(desc);
-        }
-
-        public ShiguStyleExample.Criteria andDescIsNotNull() {
-            return isNotNull(desc);
-        }
-
-        public ShiguStyleExample.Criteria andDescEqualTo(String value) {
-            return equalTo(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescNotEqualTo(String value) {
-            return notEqualTo(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescGreaterThan(String value) {
-            return greaterThan(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescLessThan(String value) {
-            return lessThan(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescLike(String value) {
-            return like(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescNotLike(String value) {
-            return notLike(desc, value);
-        }
-
-        public ShiguStyleExample.Criteria andDescIn(List<String> values) {
-            return in(desc, values);
-        }
-
-        public ShiguStyleExample.Criteria andDescNotIn(List<String> values) {
-            return notIn(desc, values);
-        }
-
-        public ShiguStyleExample.Criteria andDescBetween(String value1, String value2) {
-            return between(desc, value1, value2);
-        }
-
-        public ShiguStyleExample.Criteria andDescNotBetween(String value1, String value2) {
-            return notBetween(desc, value1, value2);
         }
     }
 }

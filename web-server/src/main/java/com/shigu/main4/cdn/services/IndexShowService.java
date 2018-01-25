@@ -294,12 +294,14 @@ public class IndexShowService {
                     vo.setSpid(parentStyle.getId());
                     vo.setSname(parentStyle.getStyleName());
                     vo.setImgsrc(parentStyle.getChannelImgUrl());
-                    vo.setDesc(parentStyle.getDesc());
+                    vo.setDesc(parentStyle.getDescription());
                     list.add(vo);
                 }
                 return list;
             }
         };
     }
+
+
 
 }

@@ -44,14 +44,14 @@ public class ShiguStyle implements Serializable {
 	private Long parentStyleId;
 
     /**
+     * 风格描述信息
+     */
+	private String description;
+
+    /**
      * 
      */
 	private String channelImgUrl;
-
-    /**
-     * 风格描述信息
-     */
-	private String desc;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -109,20 +109,20 @@ public class ShiguStyle implements Serializable {
 		return this.parentStyleId;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
 	public void setChannelImgUrl(String channelImgUrl) {
 		this.channelImgUrl = channelImgUrl;
 	}
 
 	public String getChannelImgUrl() {
 		return this.channelImgUrl;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public String getDesc() {
-		return this.desc;
 	}
 
 }

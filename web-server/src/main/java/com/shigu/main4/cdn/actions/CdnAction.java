@@ -47,6 +47,7 @@ import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.spread.vo.ItemSpreadVO;
+import com.shigu.spread.vo.NewHzManIndexItemGoatVO;
 import com.shigu.tools.*;
 import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
@@ -192,19 +193,20 @@ public class CdnAction {
         //商品数量
         ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
         model.addAttribute("userCount", selFromCache(numListObjFromCache));
-        //热卖
-        ObjFromCache<List<ItemSpreadVO>> itemSpreadRms = spreadService.selItemSpreads(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_RM : SpreadEnum.MAN_RM);
-        itemSpreadRms.selObj().forEach(itemSpreadVO -> itemSpreadVO.setTitle(KeyWordsUtil.duleKeyWords(itemSpreadVO.getTitle())));
         if ("Man".equals(manOrWoman)) {
             //****男装首页数据
             //热卖
+            ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, SpreadEnum.MAN_RM);
             model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
             //风格频道
             ObjFromCache<List<StyleChannelVO>> styleList = indexShowService.selStyleChannelInfo();
             model.addAttribute("styleList",selFromCache(styleList));
+            return "hzMan/index";
         }else {
             //****女装首页数据
             //热卖
+            ObjFromCache<List<ItemSpreadVO>> itemSpreadRms = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_RM);
+            itemSpreadRms.selObj().forEach(itemSpreadVO -> itemSpreadVO.setTitle(KeyWordsUtil.duleKeyWords(itemSpreadVO.getTitle())));
             model.addAttribute("hotsaleGoodslist", selFromCache(itemSpreadRms));
             //风格类目
             model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
@@ -231,8 +233,8 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(sz));
             loves.add((LoveGoodsList) selFromCache(xz));
             model.addAttribute("loveGoodslist", loves);
+            return "index/hzWoman";
         }
-        return "index/hz" + manOrWoman;
     }
 
     /**
