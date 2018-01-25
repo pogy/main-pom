@@ -1,11 +1,14 @@
 package com.shigu.main4.cdn.services;
 
+import com.opentae.data.mall.beans.ShiguStyle;
 import com.opentae.data.mall.examples.ShiguGoodsIdGeneratorExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.ShiguStyleMapper;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
+import com.shigu.main4.cdn.vo.StyleChannelVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
@@ -69,6 +72,11 @@ public class IndexShowService {
 
     @Autowired
     GoodsSelFromEsService goodsSelFromEsService;
+
+    @Autowired
+    private ShiguStyleMapper shiguStyleMapper;
+
+    private final String HZ_MAN_INDEX_STYLE_CHANNEL_INDEX = "hz_man_index_style_channel_index";
 
     /**
      * 把商品总数数字按个排出
@@ -268,5 +276,30 @@ public class IndexShowService {
         return shopcount;
     }
 
+
+    /**
+     * 杭州男装首页风格频道数据
+     * @return
+     */
+    public ObjFromCache<List<StyleChannelVO>> selStyleChannelInfo() {
+        return new ObjFromCache<List<StyleChannelVO>>(redisForIndexPage,HZ_MAN_INDEX_STYLE_CHANNEL_INDEX,StyleChannelVO.class) {
+            @Override
+            public List<StyleChannelVO> selReal() {
+                ShiguStyle shiguStyle = new ShiguStyle();
+                shiguStyle.setIsParent(1);
+                List<ShiguStyle> parentStyles = shiguStyleMapper.select(shiguStyle);
+                List<StyleChannelVO> list = new ArrayList<>(parentStyles.size());
+                for (ShiguStyle parentStyle : parentStyles) {
+                    StyleChannelVO vo = new StyleChannelVO();
+                    vo.setSpid(parentStyle.getId());
+                    vo.setSname(parentStyle.getStyleName());
+                    vo.setImgsrc(parentStyle.getChannelImgUrl());
+                    vo.setDesc(parentStyle.getDesc());
+                    list.add(vo);
+                }
+                return list;
+            }
+        };
+    }
 
 }
