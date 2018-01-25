@@ -26,4 +26,7 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
                             @Param("shopNum") String shopNum);
 
     List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
+
+    ShopNumAndMarket selMarketInfo(@Param("shopId") Long shopId);
+
 }

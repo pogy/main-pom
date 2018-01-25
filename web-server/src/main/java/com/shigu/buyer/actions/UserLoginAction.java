@@ -220,14 +220,18 @@ public class UserLoginAction {
                         + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
                 break;
             }
-            case 5:
-                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
-                        +"redirect_auth.jsp&state=login&view=web";
+            case 5: {
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=" + xzSdkClient.getYjHost()
+                        + "redirect_auth.jsp&state=login&view=web";
 
-                    url=url.replace("&view=web","&view=wap");
-
-
-
+                url = url.replace("&view=web", "&view=wap");
+                break;
+            }
+            //京东授权
+            case 6:{
+                url = "http://www.571xz.com/jd/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
         return "redirect:"+url;
