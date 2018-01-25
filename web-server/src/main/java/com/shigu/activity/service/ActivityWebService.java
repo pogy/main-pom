@@ -1,16 +1,21 @@
 package com.shigu.activity.service;
 
+import com.opentae.data.mall.beans.ShiguNewActiveParticipants;
+import com.opentae.data.mall.beans.ShiguNewActivity;
+import com.opentae.data.mall.examples.ShiguNewActiveParticipantsExample;
+import com.opentae.data.mall.examples.ShiguNewActivityExample;
+import com.opentae.data.mall.interfaces.ShiguNewActiveParticipantsMapper;
+import com.opentae.data.mall.interfaces.ShiguNewActivityMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.spread.enums.ActiveEnum;
 import com.shigu.main4.spread.service.ActiveShowService;
 import com.shigu.main4.spread.vo.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +29,13 @@ import java.util.stream.Collectors;
 @Service
 public class ActivityWebService {
     @Autowired
-    ActiveShowService activeShowService;
+    private ActiveShowService activeShowService;
+
+    @Autowired
+    private ShiguNewActivityMapper shiguNewActivityMapper;
+
+    @Autowired
+    private ShiguNewActiveParticipantsMapper shiguNewActiveParticipantsMapper;
 
     public List<ActiveForShowVO> getAwardInfo(Long userId, boolean vipIs){
         List<ActiveForShowVO> activeForShowVOS = activeShowService.selCurrentAwardInfoWithoutUser();
@@ -76,6 +87,77 @@ public class ActivityWebService {
         return String.format("第%d期可领%s", prizePoolVO.getPemId(), prizePoolVO.getPrizeName());
     }
 
+    /**
+     * 当前时间正在进行的上传得现金活动
+     * @return
+     */
+    public ShiguNewActivity getActivityNow() {
+        ShiguNewActivity activity = null;
+        Date now = new Date();
+        ShiguNewActivityExample example = new ShiguNewActivityExample();
+        example.setEndIndex(0);
+        example.setEndIndex(1);
+        ShiguNewActivityExample.Criteria criteria = example.createCriteria();
+        criteria.andStartTimeLessThanOrEqualTo(now).andEndTimeGreaterThanOrEqualTo(now);
+        List<ShiguNewActivity> activityList = shiguNewActivityMapper.selectByExample(example);
+        if (activityList != null && !activityList.isEmpty()) {
+            activity = activityList.get(0);
+        }
+        return activity;
+    }
+
+    /**
+     * 上传得现金活动的中奖信息
+     * @param userId
+     * @return
+     */
+    public List<ActiveForShowVO> getActivityAwardInfo(Long userId) {
+        List<ActiveForShowVO> activeForShowVOList = new ArrayList<>();
+        // 获取用户最新的两条中奖信息
+        ShiguNewActiveParticipantsExample example = new ShiguNewActiveParticipantsExample();
+        ShiguNewActiveParticipantsExample.Criteria criteria = example.createCriteria();
+        criteria.andMemberIdEqualTo(userId);
+        criteria.andWinningStatusIn(Arrays.asList(3, 4));
+        example.setOrderByClause("new_active_id desc");
+        example.setStartIndex(0);
+        example.setEndIndex(2);
+        List<ShiguNewActiveParticipants> activeParticipantsList = shiguNewActiveParticipantsMapper.selectByExample(example);
+        List<ActivePhaseForShowVO> actPhaseList = new ArrayList<>();
+        if (activeParticipantsList != null && !activeParticipantsList.isEmpty()) {
+            for (ShiguNewActiveParticipants participants : activeParticipantsList) {
+                ShiguNewActivity activity = shiguNewActivityMapper.selectByPrimaryKey(participants.getNewActiveId());
+                ActivePhaseForShowVO activePhaseForShowVO = new ActivePhaseForShowVO();
+                activePhaseForShowVO.setPhaseTime(DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
+                        + " —— " + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
+                activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules()));
+                UserPrizeForShowVO userPrizeForShowVO = new UserPrizeForShowVO();
+                userPrizeForShowVO.setImg(StringUtils.isEmpty(activity.getGoodsImgUrl()) ? "http://style.571xz.com/actTest/3.png" : activity.getGoodsImgUrl());
+                userPrizeForShowVO.setName("现金奖");
+                userPrizeForShowVO.setPrize(Integer.parseInt(activity.getAmount()) / 100 + "元");
+                userPrizeForShowVO.setState(3);
+                if (participants.getWinningStatus() == 3) {
+                    userPrizeForShowVO.setTakedIs(false);
+                    userPrizeForShowVO.setTakeCode(participants.getWinningCode());
+                } else {
+                    userPrizeForShowVO.setTakedIs(true);
+                }
+                List<UserPrizeForShowVO> awardList = new ArrayList<>();
+                awardList.add(userPrizeForShowVO);
+                activePhaseForShowVO.setAwardList(awardList);
+                actPhaseList.add(activePhaseForShowVO);
+
+//                ActiveForShowVO activeForShowVO = new ActiveForShowVO();
+//                activeForShowVO.setActName(activity.getTitle());
+//                activeForShowVO.setActPhaseList(actPhaseList);
+//                activeForShowVOList.add(activeForShowVO);
+            }
+        }
+        ActiveForShowVO activeForShowVO = new ActiveForShowVO();
+        activeForShowVO.setActName("上传商品得现金活动");
+        activeForShowVO.setActPhaseList(actPhaseList);
+        activeForShowVOList.add(activeForShowVO);
+        return activeForShowVOList;
+    }
 
 
 }
