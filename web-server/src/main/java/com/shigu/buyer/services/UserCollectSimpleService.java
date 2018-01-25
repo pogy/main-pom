@@ -79,7 +79,7 @@ public class UserCollectSimpleService {
         try {
             userCollectService.delItemCollection(userId,collect);
         } catch (Exception e){
-            System.out.println(e);
+            //System.out.println(e);
         }
 
     }

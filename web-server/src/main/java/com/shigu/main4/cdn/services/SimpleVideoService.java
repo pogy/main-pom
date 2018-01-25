@@ -35,6 +35,9 @@ public class SimpleVideoService {
         CdnItem cdnItem = showForCdnService.selItemById(goodsId);
         try {
             String linkUrl = cdnItem.getGoodsVideoUrl();
+            if (!isVideoUrl(linkUrl)) {
+                throw new JsonErrException("不提供该格式的视频下载");
+            }
             int point = linkUrl.lastIndexOf(".");
             String fileFormat = linkUrl.substring(point);
             CdnShopInfoVO shopInfoVO = cdnService.cdnShopInfo(cdnItem.getShopId());
@@ -55,5 +58,22 @@ public class SimpleVideoService {
         } catch (Exception e){
             throw new JsonErrException(e.getMessage());
         }
+    }
+
+    /**
+     * 判断是否是支持的视频格式
+     * @param videoUrl
+     * @return
+     */
+    public boolean isVideoUrl(String videoUrl) {
+        if (videoUrl == null) {
+            return false;
+        }
+        if (videoUrl.endsWith(".mp4")||videoUrl.endsWith(".MP4")
+                ||videoUrl.endsWith(".webm")||videoUrl.endsWith(".WEBM")
+                ||videoUrl.endsWith("ogg")||videoUrl.endsWith("OGG")) {
+            return true;
+        }
+        return false;
     }
 }
