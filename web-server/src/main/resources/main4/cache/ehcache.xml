@@ -152,4 +152,8 @@
     <cache name="appWebSite" maxElementsInMemory="100" eternal="false"
            timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
     </cache>
+
+    <cache name="jdProps" maxElementsInMemory="100" eternal="false"
+           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
+    </cache>
 </ehcache>

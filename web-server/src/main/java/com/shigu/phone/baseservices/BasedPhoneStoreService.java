@@ -1,7 +1,6 @@
 package com.shigu.phone.baseservices;
 
 
-import com.alibaba.druid.sql.visitor.functions.If;
 import com.openJar.beans.app.AppShopBlock;
 import com.openJar.exceptions.OpenException;
 import com.opentae.core.mybatis.example.MultipleExample;
@@ -129,7 +128,7 @@ public class BasedPhoneStoreService {
                 .join(marketExample).on(shopExample.createCriteria().andShopIdIn(shopIds).equalTo(ShiguGoodsTinyExample.marketId, ShiguMarketExample.marketId))
                 .build();
         example.setGroupByClause("shigu_shop.shop_id");
-        appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, AppShopBlockBean.class));
+        appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, com.opentae.data.mall.multibeans.AppShopBlockBean.class));
         storeCollectVO.setShops(appShopBlockBeans.parallelStream().map(o -> {
             AppShopBlock shop = BeanMapper.map(o, AppShopBlock.class);
             //从ShopCdn拿档口商品数量
