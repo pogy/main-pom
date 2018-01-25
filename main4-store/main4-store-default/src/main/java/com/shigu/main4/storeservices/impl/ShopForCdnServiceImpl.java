@@ -892,7 +892,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         List<ShiguStyleShowVO> list = new ArrayList<>(shiguStyles.size());
         for (ShiguStyle shiguStyle : shiguStyles) {
             ShiguStyleShowVO styleShowVO = new ShiguStyleShowVO();
-            styleShowVO.setPsId(shiguStyle.getId());
+            styleShowVO.setSpid(shiguStyle.getId());
             styleShowVO.setName(shiguStyle.getStyleName());
             styleShowVO.setSort(shiguStyle.getSort());
             list.add(styleShowVO);

@@ -107,11 +107,8 @@
                                      <ul class="first clearfix">
                                          <#list shopStyles as style >
                                              <li class="f_con">
-                                                 <a href="/shop/search.htm?id=${shop.shopId}&psid=${style.psid!}">
+                                                 <a href="/shop/search.htm?id=${shop.shopId}&spid=${style.spid!}">
                                                      ${style.name!}
-                                                     <span>
-                                                         &gt;
-                                                     </span>
                                                  </a>
                                              </li>
                                          </#list>

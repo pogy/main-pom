@@ -807,7 +807,7 @@ public class CdnAction {
         queryBO.setCid(bo.getCid());
         queryBO.setScid(bo.getScid());
         queryBO.setOrderBy(bo.getOrder());
-        queryBO.setParentStyleId(bo.getPsid());
+        queryBO.setParentStyleId(bo.getSpid());
         queryBO.setDateFrom(startDate);
         queryBO.setDateTo(endDate);
         pager = shopForCdnService.searchItemOnsaleByBO(queryBO, webSite, bo.getPageNo(), bo.getPageSize());

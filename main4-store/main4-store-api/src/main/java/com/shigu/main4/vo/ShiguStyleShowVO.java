@@ -11,7 +11,7 @@ import java.io.Serializable;
  **/
 public class ShiguStyleShowVO implements Serializable, Comparable<ShiguStyleShowVO> {
     //父级风格id
-    private Long psId;
+    private Long spid;
     //风格显示名称
     private String name;
     //排序
@@ -35,12 +35,12 @@ public class ShiguStyleShowVO implements Serializable, Comparable<ShiguStyleShow
         return this.sort - o.sort;
     }
 
-    public Long getPsId() {
-        return psId;
+    public Long getSpid() {
+        return spid;
     }
 
-    public void setPsId(Long psId) {
-        this.psId = psId;
+    public void setSpid(Long spid) {
+        this.spid = spid;
     }
 
     public String getName() {

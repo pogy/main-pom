@@ -46,7 +46,7 @@ public class ShopCdnBO implements Serializable{
     /**
      * 父类风格id
      */
-    private Long psid;
+    private Long spid;
     /**
      * 排序条件
      */
@@ -163,12 +163,12 @@ public class ShopCdnBO implements Serializable{
         }
     }
 
-    public Long getPsid() {
-        return psid;
+    public Long getSpid() {
+        return spid;
     }
 
-    public void setPsid(Long psid) {
-        this.psid = psid;
+    public void setSpid(Long spid) {
+        this.spid = spid;
     }
 
     public Double getBeginPrice() {

@@ -7,33 +7,33 @@
             <div class="clearfix">
                 <#list shopStyles as cate>
                     <a class="styleItem
-                        <#if cate.psid == 1>
+                        <#if cate.spid == 1>
                             green
-                        <#elseif cate.psid == 2>
+                        <#elseif cate.spid == 2>
                             purple
-                        <#elseif cate.psid == 3>
+                        <#elseif cate.spid == 3>
                             blue
-                        <#elseif cate.psid == 4>
+                        <#elseif cate.spid == 4>
                             pink
-                        <#elseif cate.psid == 5>
+                        <#elseif cate.spid == 5>
                             yellow
-                        <#elseif cate.psid == 6>
+                        <#elseif cate.spid == 6>
                             orange
                         </#if>
-                        <#if cate.psid == bo.psid>
+                        <#if cate.spid == bo.spid>
                             selected
-                        <#elseif cate.psid == bo.psid>
+                        <#elseif cate.spid == bo.spid>
                             selected
-                        <#elseif cate.psid == bo.psid>
+                        <#elseif cate.spid == bo.spid>
                             selected
-                        <#elseif cate.psid == bo.psid>
+                        <#elseif cate.spid == bo.spid>
                             selected
-                        <#elseif cate.psid == bo.psid>
+                        <#elseif cate.spid == bo.spid>
                             selected
-                        <#elseif cate.psid == bo.psid>
+                        <#elseif cate.spid == bo.spid>
                             selected
                         </#if>
-                        " href="/shop/search.htm?${sortparam}&amp;psid=${cate.psid}">${cate.name!}</a>
+                        " href="/shop/search.htm?${sortparam}&amp;spid=${cate.spid}">${cate.name!}</a>
                 </#list>
             </div>
         </#if>
@@ -101,8 +101,8 @@
                     <#--</li>-->
                     <#assign sortparam="id="+shop.shopId/>
                     <#if bo??>
-                        <#if bo.psid??>
-                            <#assign sortparam=sortparam+"&psid="+bo.psid/>
+                        <#if bo.spid??>
+                            <#assign sortparam=sortparam+"&spid="+bo.spid/>
                         </#if>
                         <#if bo.pstring??>
                             <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
