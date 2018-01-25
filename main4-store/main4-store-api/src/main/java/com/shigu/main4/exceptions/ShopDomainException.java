@@ -20,7 +20,9 @@ public class ShopDomainException extends StoreException{
         DOMAIN_WITH_REPEAT("DOMAIN_WITH_REPEAT", "二级域名已存在"),
         DOMAIN_WITH_SHOPNUM_REPEAT("DOMAIN_WITH_SHOPNUM_REPEAT", "二级域名已存在"),
         DOMAIN_WITH_SYSTEM_REPEAT("DOMAIN_WITH_SYSTEM_REPEAT", "该二级域名为系统保留域名"),
-        DOMAIN_WITH_NUM4_REPEAT("DOMAIN_WITH_NUM4_REPEAT", "不允许使用4位以下二级域名（本店档口号除外）"),
+        DOMAIN_WITH_NUM4_REPEAT("DOMAIN_WITH_NUM4_REPEAT", "不允许使用3位以下8位以上二级域名（本店档口号除外）"),
+        DOMAIN_NOT_ALLOWTED("DOMAIN_NOT_ALLOWTED", "该二级域名不允许注册"),
+        DOMAIN_NOT_ALLOWTED_WITH_OTHERS("DOMAIN_NOT_ALLOWTED_WITH_OTHERS", "该二级域名为档口号,不允许其他档口注册"),
         ;
 
         private ShopDomainExceptionErrorCode(String code, String message){
