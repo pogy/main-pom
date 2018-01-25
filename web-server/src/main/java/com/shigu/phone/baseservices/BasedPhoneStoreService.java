@@ -86,7 +86,7 @@ public class BasedPhoneStoreService {
             vo.setHighLightMarket(o.getHighMarketName());
             vo.setShopNum(o.getName());
             vo.setHighLightShopNum(o.getHighName());
-            vo.setStarNum(o.getXy());
+            vo.setStarNum(o.getXy().toString());
             vo.setTelephone(o.getTel());
             vo.setImAliww(o.getAliww());
             vo.setImQq(o.getImqq());
