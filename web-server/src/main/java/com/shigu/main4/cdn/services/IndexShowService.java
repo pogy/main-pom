@@ -6,9 +6,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguStyleMapper;
-import com.shigu.main4.cdn.vo.IndexNavVO;
-import com.shigu.main4.cdn.vo.LoveGoodsList;
-import com.shigu.main4.cdn.vo.StyleChannelVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
@@ -303,5 +301,23 @@ public class IndexShowService {
     }
 
 
+    private List<StyleCateNavVO> styleCateNavVOStatic = null;
+
+    /**
+     * 风格频道导航栏
+     * @return
+     */
+    public List<StyleCateNavVO> selStyleChannelCateNavVO() {
+        if (styleCateNavVOStatic == null) {
+            styleCateNavVOStatic = new ArrayList<>();
+            StyleCateNavVO manCoat = new StyleCateNavVO("manCoat");
+            manCoat.getDetailitems().add(new SubStyleCateNavVO("男装上衣","衬衫|pid=30&cid=50011123,针织衫/毛衣|pid=30&cid=50000557,外套|pid=30&keyword=外套,风衣|pid=30&cid=50011159,棉衣|pid=30&cid=50011165,羽绒服|pid=30&cid=50011167,毛呢大衣|pid=30&cid=50025883,皮衣|pid=30&cid=50011161,套装|pid=30&keyword=套装,西装|pid=30&cid=50010160,西装套装|pid=30&cid=50011130,运动套装|pid=30&keyword=运动套装,情侣装|pid=30&keyword=情侣装,背心/马甲|pid=30&cid=50011153"));
+            styleCateNavVOStatic.add(manCoat);
+            StyleCateNavVO manPants = new StyleCateNavVO("manPants");
+            manPants.getDetailitems().add(new SubStyleCateNavVO("男装裤子","休闲裤|pid=30&cid=3035,牛仔裤|pid=30&cid=50010167,运动裤|pid=30&keyword=运动裤,西装裤|pid=30&keyword=西装裤,工装裤|pid=30&keyword=工装裤,阔腿裤|pid=30&keyword=阔腿裤,哈伦裤|pid=30&keyword=哈伦裤,小脚裤|pid=30&keyword=小脚裤,卫裤|pid=30&keyword=卫裤,长裤|pid=30&keyword=长裤,九分裤|pid=30&keyword=九分裤,七分裤|pid=30&keyword=七分裤"));
+            styleCateNavVOStatic.add(manPants);
+        }
+        return styleCateNavVOStatic;
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.shigu.main4.cdn.actions;
 
+import com.shigu.main4.cdn.bo.StyleChanelMarketSearchBO;
+import com.shigu.main4.cdn.bo.StyleChannelGoodsSearchBO;
 import com.shigu.main4.cdn.bo.StyleChannelSearchBO;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.vo.StyleChannelVO;
@@ -47,6 +49,20 @@ public class StyleIndexAction {
         return "styleChannel/styleIndex";
     }
 
+    @RequestMapping("styleGoodsList")
+    public String styleGoodsList(StyleChannelGoodsSearchBO bo, Model model) {
+        String varifyResult = varifyBoAndAddCommon(bo, model);
+        if (!SUCCESS.equals(varifyResult)) {
+            return varifyResult;
+        }
+
+        //model.addAttribute("marketList")
+        //model.addAttribute("totalPage")
+        //model.addAttribute("goodsList")
+        //model.addAttribute("pageOption")
+        return "styleChannel/styleGoodsList";
+    }
+
     /**
      * 风格商品推荐
      *
@@ -62,6 +78,19 @@ public class StyleIndexAction {
         return "styleChannel/styleRecommd";
     }
 
+
+    @RequestMapping("styleMarket")
+    public String styleMarket(StyleChanelMarketSearchBO bo, Model model) {
+        String varifyResult = varifyBoAndAddCommon(bo, model);
+        if (!SUCCESS.equals(varifyResult)) {
+            return varifyResult;
+        }
+        Long mid = bo.getMid();
+        model.addAttribute("marketId",null==mid?1:mid);
+        //model.addAttribute("markets")
+        //model.addAttribute("marketList")
+        return "styleChannel/styleMarket";
+    }
 
 
     /**
@@ -85,7 +114,7 @@ public class StyleIndexAction {
                 model.addAttribute("sname", vo.getSname());
             }
         }
-        //model.addAttribute("cateList","");
+        model.addAttribute("catemenu",indexShowService.selStyleChannelCateNavVO());
         return SUCCESS;
     }
 
