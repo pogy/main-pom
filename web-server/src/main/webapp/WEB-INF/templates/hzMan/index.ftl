@@ -60,6 +60,7 @@ if(pageType == 'W'){
     $('body').addClass('pageWoman')
 }
 </script>
+<#assign disabledIndexNav=true>
 <script modulepath="hzMan/index#config">
 var pageType = 'M'
 if(pageType == 'W'){
