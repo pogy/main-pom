@@ -107,11 +107,129 @@ public class ActivityWebService {
     }
 
     /**
+     * 获取最新的两期上传得现金活动
+     * @return
+     */
+    public List<ShiguNewActivity> getNewestActivityList() {
+        ShiguNewActivity activity = null;
+        Date now = new Date();
+        ShiguNewActivityExample example = new ShiguNewActivityExample();
+        example.setEndIndex(0);
+        example.setEndIndex(2);
+        example.setOrderByClause("id desc");
+        ShiguNewActivityExample.Criteria criteria = example.createCriteria();
+        criteria.andStartTimeLessThanOrEqualTo(now);
+        return shiguNewActivityMapper.selectByExample(example);
+    }
+
+    /**
      * 上传得现金活动的中奖信息
      * @param userId
      * @return
      */
     public List<ActiveForShowVO> getActivityAwardInfo(Long userId) {
+        List<ActiveForShowVO> activeForShowVOList = new ArrayList<>();
+        // 获取最新的两期活动
+        List<ShiguNewActivity> activityList = getNewestActivityList();
+        if (activityList != null && !activityList.isEmpty()) {
+            List<ActivePhaseForShowVO> actPhaseList = new ArrayList<>();
+            for (ShiguNewActivity activity : activityList) {
+                ActivePhaseForShowVO activePhaseForShowVO = new ActivePhaseForShowVO();
+                activePhaseForShowVO.setPhaseTime(DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
+                        + " —— " + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
+                activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules()));
+                UserPrizeForShowVO userPrizeForShowVO = new UserPrizeForShowVO();
+                userPrizeForShowVO.setImg(StringUtils.isEmpty(activity.getGoodsImgUrl()) ? "http://style.571xz.com/actTest/3.png" : activity.getGoodsImgUrl());
+                userPrizeForShowVO.setName("现金奖");
+                userPrizeForShowVO.setPrize(Integer.parseInt(activity.getAmount()) / 100 + "元");
+                if (activity.getEndTime().getTime() > System.currentTimeMillis()) {
+                    userPrizeForShowVO.setState(1); // 等待抽奖
+                } else {
+                    // 获取用户的中奖信息
+                    ShiguNewActiveParticipants query = new ShiguNewActiveParticipants();
+                    query.setNewActiveId(activity.getId());
+                    query.setMemberId(userId);
+                    ShiguNewActiveParticipants participants = shiguNewActiveParticipantsMapper.selectOne(query);
+                    if (participants == null) {
+                        userPrizeForShowVO.setState(2); // 未中奖
+                    } else {
+                        if (participants.getWinningStatus() == 3) {
+                            userPrizeForShowVO.setState(3); // 已中奖
+                            userPrizeForShowVO.setTakedIs(false); // 未领奖
+                            userPrizeForShowVO.setTakeCode(participants.getWinningCode());
+                        } else if (participants.getWinningStatus() == 4) {
+                            userPrizeForShowVO.setState(3); // 已中奖
+                            userPrizeForShowVO.setTakedIs(true); // 已领奖
+                        } else {
+                            userPrizeForShowVO.setState(2); // 未中奖
+                        }
+                    }
+                }
+                List<UserPrizeForShowVO> awardList = new ArrayList<>();
+                awardList.add(userPrizeForShowVO);
+                activePhaseForShowVO.setAwardList(awardList);
+                actPhaseList.add(activePhaseForShowVO);
+            }
+            ActiveForShowVO activeForShowVO = new ActiveForShowVO();
+            activeForShowVO.setActName("上传商品得现金活动");
+            activeForShowVO.setActPhaseList(actPhaseList);
+            activeForShowVOList.add(activeForShowVO);
+        }
+        return activeForShowVOList;
+
+
+//        // 获取用户最新的两条中奖信息
+//        ShiguNewActiveParticipantsExample example = new ShiguNewActiveParticipantsExample();
+//        ShiguNewActiveParticipantsExample.Criteria criteria = example.createCriteria();
+//        criteria.andMemberIdEqualTo(userId);
+//        criteria.andWinningStatusIn(Arrays.asList(3, 4));
+//        example.setOrderByClause("new_active_id desc");
+//        example.setStartIndex(0);
+//        example.setEndIndex(2);
+//        List<ShiguNewActiveParticipants> activeParticipantsList = shiguNewActiveParticipantsMapper.selectByExample(example);
+//        List<ActivePhaseForShowVO> actPhaseList = new ArrayList<>();
+//        if (activeParticipantsList != null && !activeParticipantsList.isEmpty()) {
+//            for (ShiguNewActiveParticipants participants : activeParticipantsList) {
+//                ShiguNewActivity activity = shiguNewActivityMapper.selectByPrimaryKey(participants.getNewActiveId());
+//                ActivePhaseForShowVO activePhaseForShowVO = new ActivePhaseForShowVO();
+//                activePhaseForShowVO.setPhaseTime(DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
+//                        + " —— " + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
+//                activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules()));
+//                UserPrizeForShowVO userPrizeForShowVO = new UserPrizeForShowVO();
+//                userPrizeForShowVO.setImg(StringUtils.isEmpty(activity.getGoodsImgUrl()) ? "http://style.571xz.com/actTest/3.png" : activity.getGoodsImgUrl());
+//                userPrizeForShowVO.setName("现金奖");
+//                userPrizeForShowVO.setPrize(Integer.parseInt(activity.getAmount()) / 100 + "元");
+//                userPrizeForShowVO.setState(3);
+//                if (participants.getWinningStatus() == 3) {
+//                    userPrizeForShowVO.setTakedIs(false);
+//                    userPrizeForShowVO.setTakeCode(participants.getWinningCode());
+//                } else {
+//                    userPrizeForShowVO.setTakedIs(true);
+//                }
+//                List<UserPrizeForShowVO> awardList = new ArrayList<>();
+//                awardList.add(userPrizeForShowVO);
+//                activePhaseForShowVO.setAwardList(awardList);
+//                actPhaseList.add(activePhaseForShowVO);
+//
+////                ActiveForShowVO activeForShowVO = new ActiveForShowVO();
+////                activeForShowVO.setActName(activity.getTitle());
+////                activeForShowVO.setActPhaseList(actPhaseList);
+////                activeForShowVOList.add(activeForShowVO);
+//            }
+//        }
+//        ActiveForShowVO activeForShowVO = new ActiveForShowVO();
+//        activeForShowVO.setActName("上传商品得现金活动");
+//        activeForShowVO.setActPhaseList(actPhaseList);
+//        activeForShowVOList.add(activeForShowVO);
+//        return activeForShowVOList;
+    }
+
+    /**
+     * 上传得现金活动的中奖信息
+     * @param userId
+     * @return
+     */
+    public List<ActiveForShowVO> getActivityAwardInfo2(Long userId) {
         List<ActiveForShowVO> activeForShowVOList = new ArrayList<>();
         // 获取用户最新的两条中奖信息
         ShiguNewActiveParticipantsExample example = new ShiguNewActiveParticipantsExample();

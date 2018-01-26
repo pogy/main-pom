@@ -94,6 +94,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     @Autowired
     private ShiguNewActivityUpRecordMapper shiguNewActivityUpRecordMapper;
 
+    @Autowired
+    private ShiguTaobaocatMapper shiguTaobaocatMapper;
+
     //上传类目统计前缀
     String CAT_UP_COUNT_INDEX = "count_upload_for_cat_cid_index_";
 
@@ -109,6 +112,13 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             return;
         }
         itemUpRecordVO.setStatus(0L);
+
+        // 充值送现金活动上传统计
+        try {
+            countUploadForCash(itemUpRecordVO);
+        } catch (Exception e) {
+            logger.error("充值送现金活动上传统计发生异常。", e);
+        }
 
         JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
         Object supperPiPrice = goodsUp.get("supperPiPrice");
@@ -145,56 +155,102 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 logger.error("上传后重算星星数失败",e);
             }
         }
-        // 充值送现金活动上传统计（只统计上传到出售中的）
+    }
+
+    /**
+     * 充值送现金活动上传统计（只统计上传到出售中的男装）
+     * @param itemUpRecordVO
+     */
+    public void countUploadForCash(ItemUpRecordVO itemUpRecordVO) {
         if ("onsale".equals(itemUpRecordVO.getApproveStatus())) {
             Date now = new Date();
-            ShiguNewActivityExample example = new ShiguNewActivityExample();
-            example.setEndIndex(0);
-            example.setEndIndex(1);
-            ShiguNewActivityExample.Criteria criteria = example.createCriteria();
-            criteria.andStartTimeLessThanOrEqualTo(now).andEndTimeGreaterThanOrEqualTo(now);
-            List<ShiguNewActivity> activityList = shiguNewActivityMapper.selectFieldsByExample(example, "id,title");
-            if (activityList != null && !activityList.isEmpty()) {
-                ShiguNewActivityUpRecord record = new ShiguNewActivityUpRecord();
-                record.setMemberId(itemUpRecordVO.getFenUserId());
-                record.setGoodsId(itemUpRecordVO.getSupperGoodsId());
-                record.setNewActiveId(activityList.get(0).getId());
-                record.setGmtCreate(now);
-                record.setGmtModify(now);
-                if (shiguNewActivityUpRecordMapper.selectOne(record) == null) {
-                    // 没记录的时候保存
-                    int count = 0;
-                    try {
-                        count = shiguNewActivityUpRecordMapper.insert(record);
-                    } catch (DuplicateKeyException e) {
-                        // 唯一索引冲突，无需处理
-                        System.out.println("ShiguNewActivityUpRecord唯一索引冲突，记录一下看看，无需处理: " + record);
-                    }
-                    // 增加用户上传数
-                    if (count == 1) {
-                        count = 0;
-                        count = shiguNewActiveParticipantsMapper.increaseUploadNum(record.getMemberId(), record.getNewActiveId());
-                        if (count != 1) {
-                            // 数据库中不存在记录，则新增
-                            ShiguNewActiveParticipants participants = new ShiguNewActiveParticipants();
-                            participants.setMemberId(record.getMemberId());
-                            participants.setNewActiveId(record.getNewActiveId());
-                            participants.setGoodsUploadNum(1L);
-                            participants.setWinningStatus(1);
-                            participants.setGmtCreate(now);
-                            participants.setGmtModify(now);
-                            try {
-                                shiguNewActiveParticipantsMapper.insert(participants);
-                            } catch (DuplicateKeyException e) {
-                                // 唯一索引冲突，无需处理
-                                System.out.println("ShiguNewActiveParticipants唯一索引冲突，记录一下看看，无需处理: " + participants);
-                            }
-                        }
+            ShiguNewActivity activity = getActivityNow(now); // 获取当前活动
+            if (activity != null) {
+                if (isMan(itemUpRecordVO.getCid())) { // 男装
+                    // 先保存上传记录，再增加上传数
+                    if (saveActivityUpRecord(itemUpRecordVO.getFenUserId(), itemUpRecordVO.getSupperGoodsId(), activity.getId(), now)) {
+                        increaseUploadNum(itemUpRecordVO.getFenUserId(), activity.getId(), now);
                     }
                 }
-
             }
         }
+    }
+
+    /**
+     * 保存活动期间的上传记录
+     * @return
+     */
+    private boolean saveActivityUpRecord(Long memberId, Long goodsId, Long activityId, Date now) {
+        ShiguNewActivityUpRecord record = new ShiguNewActivityUpRecord();
+        record.setMemberId(memberId);
+        record.setGoodsId(goodsId);
+        record.setNewActiveId(activityId);
+        if (shiguNewActivityUpRecordMapper.selectOne(record) == null) {
+            // 没记录的时候保存
+            int count = 0;
+            record.setGmtCreate(now);
+            record.setGmtModify(now);
+            try {
+                count = shiguNewActivityUpRecordMapper.insert(record);
+            } catch (DuplicateKeyException e) {
+                // 唯一索引冲突，无需处理
+                System.out.println("ShiguNewActivityUpRecord唯一索引冲突，记录一下看看，无需处理: " + record);
+            }
+            return count == 1; // 等于1表示保存成功
+        }
+        return false;
+    }
+
+    /**
+     * 增加用户的上传记录数
+     */
+    private void increaseUploadNum(Long memberId, Long activityId, Date now) {
+        int count = shiguNewActiveParticipantsMapper.increaseUploadNum(memberId, activityId);
+        if (count < 1) {
+            // 数据库中不存在记录，则新增
+            ShiguNewActiveParticipants participants = new ShiguNewActiveParticipants();
+            participants.setMemberId(memberId);
+            participants.setNewActiveId(activityId);
+            participants.setGoodsUploadNum(1L);
+            participants.setWinningStatus(1);
+            participants.setGmtCreate(now);
+            participants.setGmtModify(now);
+            try {
+                shiguNewActiveParticipantsMapper.insert(participants);
+            } catch (DuplicateKeyException e) {
+                // 唯一索引冲突，无需处理
+                System.out.println("ShiguNewActiveParticipants唯一索引冲突，记录一下看看，无需处理: " + participants);
+            }
+        }
+    }
+
+    /**
+     * 获取当前进行的上传得现金活动
+     * @return
+     */
+    private ShiguNewActivity getActivityNow(Date now) {
+        ShiguNewActivity activity = null;
+        ShiguNewActivityExample example = new ShiguNewActivityExample();
+        example.setEndIndex(0);
+        example.setEndIndex(1);
+        ShiguNewActivityExample.Criteria criteria = example.createCriteria();
+        criteria.andStartTimeLessThanOrEqualTo(now).andEndTimeGreaterThanOrEqualTo(now);
+        List<ShiguNewActivity> activityList = shiguNewActivityMapper.selectFieldsByExample(example, "id,title");
+        if (activityList != null && !activityList.isEmpty()) {
+            activity = activityList.get(0);
+        }
+        return activity;
+    }
+
+    /**
+     * 是否男装
+     * @param cid
+     * @return
+     */
+    private boolean isMan(Long cid) {
+    //    ShiguTaobaocat cat = shiguTaobaocatMapper.selectByPrimaryKey(cid);
+    //    return cat != null && (cat.getParentCid() == 30L || cat.getCid() == 30L);
+        return true;
     }
 
     @Override
