@@ -120,6 +120,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             logger.error("充值送现金活动上传统计发生异常。", e);
         }
 
+
         JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
         Object supperPiPrice = goodsUp.get("supperPiPrice");
         if (supperPiPrice != null) {
@@ -133,9 +134,14 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 //        ElasticRepository elasticRepository = new ElasticRepository();
 //        elasticRepository.insert(bean);
         redisIO.rpush(goodslistName,bean);
+
         //推送消息
-        pushAddMessage(itemUpRecordVO);
+        try {
+            pushAddMessage(itemUpRecordVO);
 //        producer.sendAsync(new Message());
+        } catch (Exception e) {
+            logger.error("推送消息失败", e);
+        }
 
         //每周类目上传统计
         RankingPeriodEnum periodEnum = RankingPeriodEnum.RANKING_BY_WEEK;
@@ -248,9 +254,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
      * @return
      */
     private boolean isMan(Long cid) {
-    //    ShiguTaobaocat cat = shiguTaobaocatMapper.selectByPrimaryKey(cid);
-    //    return cat != null && (cat.getParentCid() == 30L || cat.getCid() == 30L);
-        return true;
+        ShiguTaobaocat cat = shiguTaobaocatMapper.selectByPrimaryKey(cid);
+        return cat != null && (cat.getParentCid() == 30L || cat.getCid() == 30L);
     }
 
     @Override
