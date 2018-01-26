@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161216" />
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
 
-    <div class="js-module" data-not-edit="" data-not-del="">
+    <div class="js-module" data-not-edit="" data-not-del="" class="diyStyle">
         <#if shopStyles??>
             <div class="clearfix">
                 <#list shopStyles as cate>

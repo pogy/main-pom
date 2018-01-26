@@ -653,4 +653,27 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         return "success";
     }
 
+    @Override
+    public void delGoodsStyle(Long goodsId, Long shopId) {
+        if (goodsId == null || shopId == null) {
+            return;
+        }
+        CdnItem cdnItem = showForCdnService.selItemById(goodsId);
+        if (cdnItem == null) {
+            return;
+        }
+        if (!shopId.equals(cdnItem.getShopId())) {
+            return;
+        }
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(goodsId);
+        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (goodsCountForsearch == null) {
+            return;
+        }
+        goodsCountForsearch.setStyleId(null);
+        goodsCountForsearch.setParentStyleId(null);
+        //风格搜索分在风格设置时清空
+        goodsCountForsearchMapper.updateByPrimaryKey(goodsCountForsearch);
+    }
 }

@@ -128,4 +128,11 @@ public interface ShopsItemService {
      */
     String setGoodsStyle(Set<Long> goodsIds, Long styleId, String webSite);
 
+    /**
+     * 删除商品风格
+     * @param goodsId
+     * @param shopId
+     */
+    void delGoodsStyle(Long goodsId, Long shopId);
+
 }

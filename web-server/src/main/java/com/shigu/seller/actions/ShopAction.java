@@ -1405,7 +1405,24 @@ public class ShopAction {
     @ResponseBody
     public JSONObject getDefaultGoodsStyleList(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("styleList", shopItemModService.getSubStyleVO());
+        return JsonResponseUtil.success().element("childStyleList", shopItemModService.getSubStyleVO());
+    }
+
+    /**
+     * 移除商品风格
+     * @param goodsId
+     * @param session
+     * @return
+     */
+    @RequestMapping("seller/deleteGoodsStyle")
+    @ResponseBody
+    public JSONObject deleteGoodsStyle(Long goodsId, HttpSession session) {
+        if (goodsId == null) {
+            return JsonResponseUtil.error("请选择商品");
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession logshop = ps.getLogshop();
+        return shopItemModService.delGoodsStyle(goodsId, logshop.getShopId());
     }
 
 }

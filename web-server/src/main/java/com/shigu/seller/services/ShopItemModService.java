@@ -455,4 +455,18 @@ public class ShopItemModService {
         return vos;
     }
 
+    /**
+     * 删除商品风格
+     * @param goodsId
+     * @param shopId
+     * @return
+     */
+    public JSONObject delGoodsStyle(Long goodsId, Long shopId) {
+        if (shopId == null) {
+            return JsonResponseUtil.error("只有店铺能操作风格");
+        }
+        shopsItemService.delGoodsStyle(goodsId, shopId);
+        return JsonResponseUtil.success();
+    }
+
 }
