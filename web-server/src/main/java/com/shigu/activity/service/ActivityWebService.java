@@ -95,7 +95,7 @@ public class ActivityWebService {
         ShiguNewActivity activity = null;
         Date now = new Date();
         ShiguNewActivityExample example = new ShiguNewActivityExample();
-        example.setEndIndex(0);
+        example.setStartIndex(0);
         example.setEndIndex(1);
         ShiguNewActivityExample.Criteria criteria = example.createCriteria();
         criteria.andStartTimeLessThanOrEqualTo(now).andEndTimeGreaterThanOrEqualTo(now);
@@ -113,7 +113,7 @@ public class ActivityWebService {
     public List<ShiguNewActivity> getNewestActivityList() {
         Date now = new Date();
         ShiguNewActivityExample example = new ShiguNewActivityExample();
-        example.setEndIndex(0);
+        example.setStartIndex(0);
         example.setEndIndex(2);
         example.setOrderByClause("id desc");
         ShiguNewActivityExample.Criteria criteria = example.createCriteria();
@@ -136,7 +136,7 @@ public class ActivityWebService {
                 ActivePhaseForShowVO activePhaseForShowVO = new ActivePhaseForShowVO();
                 activePhaseForShowVO.setPhaseTime(DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
                         + " —— " + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
-                activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules()));
+                activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules().split("\n")));
                 UserPrizeForShowVO userPrizeForShowVO = new UserPrizeForShowVO();
                 userPrizeForShowVO.setImg(StringUtils.isEmpty(activity.getGoodsImgUrl()) ? "http://style.571xz.com/actTest/3.png" : activity.getGoodsImgUrl());
                 userPrizeForShowVO.setName("现金奖");
