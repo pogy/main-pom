@@ -16,8 +16,12 @@ import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.Bind3RdsException;
+import com.shigu.main4.ucenter.model.BindOuterRdUser;
+import com.shigu.main4.ucenter.model.impl.BindJdUser;
+import com.shigu.main4.ucenter.model.impl.BindTbUser;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
@@ -214,41 +218,21 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         boolean pans = userCanRegist(tempUser.getSubUserName(),tempUser.getSubUserKey(), tempUser.getLoginFromType());
         if (!pans) {
             throw new Main4Exception("该第三方账号已经绑定，不能重复绑定");
-        } else if (tempUser.getLoginFromType() == LoginFromType.TAOBAO){
-            /*
-            新加情况2
-            2、if(loginType == taobao){//如果是淘宝店
-               if(shop.hasNick(sub_user_name) && telephone.hasStore){//如果淘宝昵称已经开过店，并且手机号下有店
-                 禁入
-               }
-            }
-             */
-            ShiguShopExample shopExample=new ShiguShopExample();
-            shopExample.createCriteria().andTbNickEqualTo(tempUser.getSubUserName()).andShopStatusEqualTo(0);
-            List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
-            ShiguShop shop=null;
-            if (shops.size()>0) {
-                shop=shops.get(0);
-            }
-            if (shop != null) {
-                MemberLicense license = new MemberLicense();
-                license.setLicenseType(4);
-                license.setContext(phone);
-                license.setLicenseFailure(1);
-                license = memberLicenseMapper.selectOne(license);
-                if (license != null) {
-                    shopExample.clear();
-                    shopExample.createCriteria().andUserIdEqualTo(license.getUserId()).andShopStatusEqualTo(0)
-                            .andTbNickNotEqualTo(tempUser.getSubUserName());
-                    //需要查出非本昵称下的店铺，如果手机有非本昵称下的店铺，且本昵称有店，不准入
-//                    ShiguShop shiguShop = new ShiguShop();
-//                    shiguShop.setUserId(license.getUserId());
-//                    shiguShop.setShopStatus(0);
-                    if (shiguShopMapper.countByExample(shopExample) > 0)
-                        throw new Main4Exception("该账号不符合账号准入机制");
-                }
-            }
         }
+
+        BindOuterRdUser bindOuterRdUser;
+        switch (tempUser.getLoginFromType()) {
+            case TAOBAO:
+                bindOuterRdUser = SpringBeanFactory.getBean(BindTbUser.class);
+                break;
+            case JD:
+                bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
+                break;
+            default:
+                throw new Main4Exception("暂不支持该第三方账号绑定");
+        }
+        //检验是否准入
+        bindOuterRdUser.admittance(phone, tempUser);
 
         Long userId = selUserIdByName(phone, LoginFromType.PHONE);
         boolean existMember = false;
@@ -302,30 +286,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 return false;
             }
         }
-        if (tempUser.getLoginFromType() == LoginFromType.TAOBAO) {
-            ShiguShopExample shopExample = new ShiguShopExample();
-            shopExample.createCriteria().andTbNickEqualTo(tempUser.getSubUserName()).andShopStatusEqualTo(0);
-            List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
-            for (ShiguShop shiguShop : shiguShops) {
-                if (shiguShop.getUserId() == null) {
-                    shiguShop.setUserId(userId);
-                    shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-                } else if(shiguShop.getUserId().equals(userId)){//除自己外
-                    break;
-                }else {
-                    throw new Bind3RdsException("本淘宝账号[" + tempUser.getSubUserName() + "]对应店铺已经绑给其它用户，请先登陆其它用户解绑或联系客服处理");
-                }
-                break;
-            }
-            //查出用户名下的店铺非淘宝店铺
-            shopExample.clear();
-            shopExample.createCriteria().andTbNickIsNull().andShopStatusEqualTo(0).andUserIdEqualTo(userId);
-            List<ShiguShop> untbShops=shiguShopMapper.selectByExample(shopExample);
-            for(ShiguShop shop:untbShops){
-                shop.setTbNick(tempUser.getSubUserName());
-                shiguShopMapper.updateByPrimaryKeySelective(shop);
-            }
-        }
+
+        //绑定店铺信息
+        bindOuterRdUser.bindShop(phone,tempUser,userId);
         return true;
     }
 

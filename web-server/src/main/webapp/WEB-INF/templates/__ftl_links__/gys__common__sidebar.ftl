@@ -307,6 +307,9 @@
                             <#if 'iwantToRechargein5' == $pageid >
                                     selected
                             </#if>
+                            <#if 'userBonus' == $pageid >
+                                    selected
+                            </#if>
                 "
                     href="userBalance.htm"
             >我的资金</a>

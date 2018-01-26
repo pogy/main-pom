@@ -623,7 +623,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         }
         Long shopId = shopForCdnBo.getShopId();
         if (shopId != null && shopForCdnBo.getScid() != null) {
-            Long scid = Long.valueOf(shopForCdnBo.getScid());
+            Long scid = Long.parseLong(shopForCdnBo.getScid());
             String scidStr = selScidStr(shopId,scid);
             TermQuery cidAllQuery = null;
             for (String scidOneCat : scidStr.split(",")) {

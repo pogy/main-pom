@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>我的资金 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -32,6 +32,7 @@
             <div class="rightBox">
 <ul class="pageTabs clearfix">
     <li class="select"><a>我的资金</a></li>
+    <li><a href="userBonus.htm">红包余额</a></li>
 </ul>
 <div class="remainSum">
     <div class="remainSumTop">

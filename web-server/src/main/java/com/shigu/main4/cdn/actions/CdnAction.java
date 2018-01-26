@@ -1032,6 +1032,7 @@ public class CdnAction {
 
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
+            shop.setTbUrl(null);
         }
         //极限词过滤
         goods.setTitle(KeyWordsUtil.duleKeyWords(goods.getTitle()));
@@ -1056,7 +1057,9 @@ public class CdnAction {
      */
     @RequestMapping("/itemGoat")
     @ResponseBody
-    public Object itemGoat(HttpServletRequest request, Long goodsId) throws JsonErrException {
+    public Object itemGoat(HttpServletRequest request, Long goodsId) throws JsonErrException {        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
@@ -1084,6 +1087,9 @@ public class CdnAction {
     @RequestMapping("/itemBottomGoat")
     @ResponseBody
     public Object itemBottomGoat(HttpServletRequest request, Long goodsId) throws JsonErrException {
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();

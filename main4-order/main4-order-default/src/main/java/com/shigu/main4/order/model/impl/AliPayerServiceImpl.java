@@ -2,9 +2,9 @@ package com.shigu.main4.order.model.impl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.AlipayResponse;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.util.BeanMapper;
@@ -103,9 +103,12 @@ public class AliPayerServiceImpl extends PayerServiceAble {
                 "    \"out_request_no\":\"" + refundNo + "\"" +
                 "  }");
         try {
-            AlipayResponse response = alipayClient.execute(request);
+            AlipayTradeRefundResponse response = alipayClient.execute(request);
             if(!response.isSuccess()){
                 throw new PayerException("支付宝退款失败: "+ response.getCode() + ", " + response.getMsg());
+            }
+            if("N".equals(response.getFundChange())){
+                throw new PayerException("退款重复,回滚");
             }
         } catch (AlipayApiException e) {
             throw new PayerException(e.getMessage());

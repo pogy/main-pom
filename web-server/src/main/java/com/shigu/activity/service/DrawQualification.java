@@ -5,6 +5,7 @@ import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.processes.HitDrawChooser;
 import com.shigu.main4.spread.vo.active.draw.DrawResult;
 import com.shigu.main4.spread.vo.active.draw.DrawVerifyVO;
+import com.shigu.tools.JsonResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

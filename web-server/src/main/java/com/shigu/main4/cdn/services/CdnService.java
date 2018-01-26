@@ -126,8 +126,8 @@ public class CdnService {
      * @return
      */
     public List<CatPolymerization> formatCatPoly(Long shopId){
-        List<CatPolymerization> cats=shopForCdnService.selCatRolymerizations(shopId);
-        if (cats == null) {
+        List<CatPolymerization> cats = shopForCdnService.selCatRolymerizations(shopId);
+        if (cats == null || 0 == cats.size()) {
             cats = new ArrayList<>();
         }
         List<CatPolyFormatVO> polys=new ArrayList<>();
@@ -442,7 +442,6 @@ public class CdnService {
         List<CdnShopCatVO> cdnCats= BeanMapper.mapList(cats,CdnShopCatVO.class);
         return cdnCats;
     }
-
     /**
      * 看了有看
      * @param shopId

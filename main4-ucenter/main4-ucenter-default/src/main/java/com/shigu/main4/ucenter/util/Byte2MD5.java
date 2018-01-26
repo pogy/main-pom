@@ -36,7 +36,7 @@ public class Byte2MD5 {
 			int k = 0;
 			for (int i = 0; i < j; i++) {
 				byte b = md[i];
-				// System.out.println((int)b);
+				// //System.out.println((int)b);
 				// 将没个数(int)b进行双字节加密
 				str[k++] = hexDigits[b >> 4 & 0xf];
 				str[k++] = hexDigits[b & 0xf];

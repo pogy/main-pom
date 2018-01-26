@@ -54,7 +54,7 @@ public class SmsClientKeyword {
             } else {
                 return "需要检查的字符串不能为空";
             }
-            System.out.println(sendParam);
+            //System.out.println(sendParam);
 
             return SmsClientAccessTool.getInstance().doAccessHTTPPost(url,
                                                                       sendParam.toString(), "UTF-8");

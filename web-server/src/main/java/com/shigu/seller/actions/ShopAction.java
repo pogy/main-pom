@@ -82,7 +82,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -90,6 +89,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -181,9 +182,6 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
-
-
-
 
     /**
      * 当前登陆的session
@@ -992,17 +990,33 @@ public class ShopAction {
     @RequestMapping("seller/shiguStoreerjiyuming")
     public String shiguStoreerjiyuming(String domain, HttpSession session, Model model) {
         ShopSession shopSession = getShopSession(session);
-        if (domain == null) {
-            model.addAttribute("domain", shopBaseService.selDomain(shopSession.getShopId()));
+        String oldDomain = shopBaseService.selDomain(shopSession.getShopId());
+        if(oldDomain.equals(domain)){
+            model.addAttribute("domain",oldDomain);
         } else {
-            try {
-                shopBaseService.updateDomain(shopSession.getShopId(), domain);
-            } catch (ShopDomainException e) {
-                model.addAttribute("msg", e.getMsg());
+            if (StringUtils.isBlank(domain) || isContainChinese(domain)) {
+                model.addAttribute("domain",oldDomain);
+                model.addAttribute("msg","二级域名只允许字母和数字的组合，建议长度3-8位");
+            }else {
+                try {
+                    shopBaseService.updateDomain(shopSession.getShopId(), domain);
+                    model.addAttribute("domain", domain);
+                } catch (ShopDomainException e) {
+                    model.addAttribute("msg", e.getMsg());
+                    model.addAttribute("domain", oldDomain);
+                }
             }
-            model.addAttribute("domain", domain);
         }
         return "gys/shiguStoreerjiyuming";
+    }
+
+    private static boolean isContainChinese(String str) {
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            return true;
+        }
+        return false;
     }
 
     /**

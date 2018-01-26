@@ -1,7 +1,9 @@
 package com.shigu.buyer.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
@@ -160,5 +162,48 @@ public class MemberSimpleService {
             balance = memberUserMapper.userBalance(userId);
         }
         return String.format("%.2f",balance * 0.01);
+    }
+
+    /**
+     * 获取用户红包余额
+     * @param thirdId
+     * @return
+     */
+    public Long getUserBonusBalance(String thirdId) {
+        if (StringUtils.isBlank(thirdId)) {
+            return null;
+        }
+        return memberUserMapper.getUserBonusBalance(thirdId);
+    }
+
+    /**
+     * 获取用户红包明细
+     * @param thirdId
+     * @return
+     */
+    public List<ShiguBonusRecord> getUserBonusRecord(String thirdId) {
+        if (StringUtils.isBlank(thirdId)) {
+            return null;
+        }
+        return memberUserMapper.getUserBonusRecord(thirdId);
+    }
+
+    /**
+     * 获取用户的淘宝昵称
+     * @param userId
+     * @return
+     */
+    public String getTaobaoNick(Long userId) {
+        MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
+        MemberUserSubExample.Criteria criteria = memberUserSubExample.createCriteria();
+        criteria.andUserIdEqualTo(userId)
+                .andAccountTypeEqualTo(3)
+                .andUseStatusEqualTo(1);
+        List<MemberUserSub> memberUserSubList = memberUserSubMapper
+                .selectFieldsByExample(memberUserSubExample, FieldUtil.codeFields("sub_user_key,sub_user_name"));
+        if (memberUserSubList != null && !memberUserSubList.isEmpty()) {
+            return memberUserSubList.get(0).getSubUserName();
+        }
+        return null;
     }
 }

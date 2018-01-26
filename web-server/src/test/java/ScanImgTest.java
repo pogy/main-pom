@@ -1,4 +1,10 @@
+import com.shigu.main4.cdn.bo.MarketBO;
+import com.shigu.main4.cdn.services.MarketListService;
+import com.shigu.main4.cdn.vo.FloorVO;
+import com.shigu.main4.cdn.vo.MarketVO;
+import com.shigu.main4.cdn.vo.ShopInFloorVO;
 import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -12,10 +18,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+
 /**
  * Created By pc on 2017-10-24/17:35
  */
@@ -99,5 +110,118 @@ public class ScanImgTest {
         workbook.close();
         os.close();
     }
+
+    /**
+     * 自己搭建测试环境吧haha~~~~
+     */
+    @Autowired
+    MarketListService marketListService;
+    /**
+     * 按列导出市场
+     * @return
+     */
+    @Test
+    public void marketIndex(MarketBO bo, Model model){
+        MarketVO marketVO=marketListService.selMarketData(bo.getMid(),bo.getCid());
+        model.addAttribute("marketName", marketVO.getMarketName());
+        model.addAttribute("markets", marketVO.getMarketTags());
+        model.addAttribute("cates",marketVO.getCates());
+        model.addAttribute("marketList",marketVO.getFloorVOs());
+        model.addAttribute("webSite",marketVO.getWebSite());
+        model.addAttribute("marketId",bo.getMid());
+        model.addAttribute("cateId",bo.getCid());
+
+        //
+        List<FloorVO> floorVOs = marketVO.getFloorVOs();
+        List<List<List<ShopInFloorVO>>> list0 = new ArrayList<>();
+        for (FloorVO vo : floorVOs){
+            List<ShopInFloorVO> stores = vo.getStores();
+            List<List<ShopInFloorVO>> list = new ArrayList<>();
+            list0.add(list);
+
+            List<ShopInFloorVO> s1 = new ArrayList<>();
+            List<ShopInFloorVO> s2 = new ArrayList<>();
+            List<ShopInFloorVO> s3 = new ArrayList<>();
+            List<ShopInFloorVO> s4 = new ArrayList<>();
+            List<ShopInFloorVO> s5 = new ArrayList<>();
+            List<ShopInFloorVO> s6 = new ArrayList<>();
+            List<ShopInFloorVO> s7 = new ArrayList<>();
+
+            list.add(s1);
+            list.add(s2);
+            list.add(s3);
+            list.add(s4);
+            list.add(s5);
+            list.add(s6);
+            list.add(s7);
+
+            for (int i = 0; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s1.add(shopInFloorVO);
+            }
+            for (int i = 1; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s2.add(shopInFloorVO);
+            }
+            for (int i = 2; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s3.add(shopInFloorVO);
+            }
+            for (int i = 3; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s4.add(shopInFloorVO);
+            }
+            for (int i = 4; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s5.add(shopInFloorVO);
+            }
+            for (int i = 5; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s6.add(shopInFloorVO);
+            }
+            for (int i = 6; i < stores.size(); i += 7) {
+                ShopInFloorVO shopInFloorVO = stores.get(i);
+                s7.add(shopInFloorVO);
+            }
+        }
+
+        try {
+            createExcel(list0);
+        } catch (WriteException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BiffException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createExcel(List<List<List<ShopInFloorVO>>> list0) throws WriteException, IOException, BiffException {
+        FileOutputStream os = new FileOutputStream(new File("D:\\线上档口.xls"));
+
+//        Workbook book = Workbook.getWorkbook(os);
+        WritableWorkbook  wb = Workbook.createWorkbook(os);
+
+        //创建要显示的内容,创建一个单元格，第一个参数为列坐标，第二个参数为行坐标，第三个参数为内容
+        //把创建的内容写入到输出流中，并关闭输出流
+        for (int a=0;a<list0.size() ;a++) {
+            List<List<ShopInFloorVO>> list = list0.get(a);
+            WritableSheet sheet = wb.createSheet(a+1+"楼", 1);
+            for (int i = 0; i < list.size(); i++) {
+                //创建新的一页
+                List<ShopInFloorVO> shopInFloorVOs = list.get(i);
+                Label floor = new Label(i, 0, i + 1 + "列");
+                sheet.addCell(floor);
+                for (int j = 0; j < shopInFloorVOs.size(); j++) {
+                    Label qinghua = new Label(i, j + 1, "电商" + shopInFloorVOs.get(j).getNum() + "档口");
+                    sheet.addCell(qinghua);
+                }
+            }
+        }
+        wb.write();
+        wb.close();
+        os.close();
+    }
+
 
 }
