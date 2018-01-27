@@ -572,6 +572,9 @@ public class ShopDesignService {
     }
 
     public boolean defaultModuleValueIs(Long moduleId){
+        if (moduleId == null) {
+            return false;
+        }
         ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
         if (shopFitmentModule != null) {
             if ("{}".equals(shopFitmentModule.getModuleValue())) {
