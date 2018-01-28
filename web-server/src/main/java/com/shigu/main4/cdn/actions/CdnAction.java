@@ -1102,7 +1102,6 @@ public class CdnAction {
         }
         return  itemGoatCidAndWebsiteVO;
     }
-
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
         //如果东北商品,用东北的模板
         ItemShowVO itemShowVO=new ItemShowVO();

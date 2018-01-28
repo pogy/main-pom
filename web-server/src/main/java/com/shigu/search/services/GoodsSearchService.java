@@ -71,8 +71,8 @@ public class GoodsSearchService {
     @Autowired
     ProductAiInterface productAiInterface;
 
-    String dbUid="aliyun_1582227";
-    String dbSeckey="vsDnnCviEeeHHwAWPhwgkg";
+//    String dbUid="aliyun_1582227";
+//    String dbSeckey="vsDnnCviEeeHHwAWPhwgkg";
 
     @Autowired
     RedisIO redisIO;
@@ -260,11 +260,15 @@ public class GoodsSearchService {
                 shouldShopId.size()==0?null:shouldShopId,null,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
         );
-        SearchVO vo=new SearchVO();
-        vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager,bo.getWebSite()));
-        vo.setMarkets(pager.getMarkets());
-        vo.setParentCats(pager.getParentCats());
-        return vo;
+        SearchVO vo = new SearchVO();
+        if(pager!=null) {
+            vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager, bo.getWebSite()));
+            vo.setMarkets(pager.getMarkets());
+            vo.setParentCats(pager.getParentCats());
+            return vo;
+        }else{
+            return vo;
+        }
     }
 
     /**

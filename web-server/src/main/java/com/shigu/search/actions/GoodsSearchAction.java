@@ -260,8 +260,11 @@ public class GoodsSearchAction {
         bo.setFrom("goods");
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
+        if(pager==null){
+             pager=new ShiguPager<GoodsInSearch>();
+        }
         //极限词过滤
-        if (pager.getContent() != null) {
+        if (pager.getContent() != null&&pager.getContent().size()>0) {
             pager.getContent().forEach(goodsInSearch -> {
                 goodsInSearch.setTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getTitle()));
                 goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
