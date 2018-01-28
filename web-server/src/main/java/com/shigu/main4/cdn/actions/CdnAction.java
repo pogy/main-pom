@@ -1116,7 +1116,7 @@ public class CdnAction {
             throw new CdnException("商品不存在");
         }
         //店招
-        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
+//        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
 
         ItemBO bo=new ItemBO();
         bo.setId(id);
@@ -1128,8 +1128,10 @@ public class CdnAction {
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum=starNum==null?0:    starNum;
+        Long starNum = 0l;
+        if(shopForCdnService.selShopStarById(cdnItem.getShopId())!=null){
+            starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        }
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
         itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
@@ -1141,7 +1143,7 @@ public class CdnAction {
             itemShowVO.getCdnItem().setTitle(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getTitle()));
             itemShowVO.getCdnItem().setDescription(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getDescription()));
         }
-        dz=KeyWordsUtil.duleKeyWords(dz);
+//        dz=KeyWordsUtil.duleKeyWords(dz);
 
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
