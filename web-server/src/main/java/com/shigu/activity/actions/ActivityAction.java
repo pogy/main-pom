@@ -351,7 +351,7 @@ public class ActivityAction {
         return "activity/apply";
     }
 
-    final String flag = "autumn_new5";
+    final static String flag = "autumn_new5";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
