@@ -1,5 +1,6 @@
 package com.shigu.main4.order.whx;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -77,7 +78,12 @@ public class RefundItemOrderImplTest extends BaseTest{
     @Test
     public void buyerNoRepriceTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
-        refundItemOrder.buyerNoReprice();
+        try {
+            refundItemOrder.buyerNoReprice();
+        } catch (Main4Exception e) {
+            e.printStackTrace();
+        }
+
         //测试重复操作
 //        refundItemOrder.buyerNoReprice();
     }
