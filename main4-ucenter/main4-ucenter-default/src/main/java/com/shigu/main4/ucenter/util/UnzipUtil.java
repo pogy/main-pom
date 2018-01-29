@@ -41,7 +41,7 @@ public class UnzipUtil {
     @SuppressWarnings("unchecked")
     public synchronized String unzipFile(String zipFileName) throws Exception {
     	String csvName="";
-    	String pathString=new Date().getTime()+"";
+//    	String pathString=new Date().getTime()+"";
         try {
             File f = new File(zipFileName);
             ZipFile zipFile = new ZipFile(zipFileName);
@@ -203,16 +203,16 @@ public class UnzipUtil {
     }
 
     public static String  dealccaddr(String addr,String t2){
-    	String se1="";
-		try {
-			se1 = new String(addr.getBytes("gbk"));
-			//if(addr.endsWith(".csv")){
-				//System.out.println("addr="+se1);
-			//}
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//    	String se1="";
+//		try {
+//			se1 = new String(addr.getBytes("gbk"));
+//			//if(addr.endsWith(".csv")){
+//				//System.out.println("addr="+se1);
+//			//}
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     	//System.out.println(se1);
     	String repalced="";
         	int se=addr.lastIndexOf("\\");
@@ -701,30 +701,30 @@ public class UnzipUtil {
      * 执行实例
      * @param args
      */
-    public static void main(String[] args) throws Exception {
-       // UnzipUtil decompression=new UnzipUtil();
-      //  decompression.unzipFile("E:\\1111\\zip\\BBL20150702\\BBL20150702.zip");
-       // decompression.unzipFile("E:\\1111\\zip\\a11.zip");
-        //decompression.unzip("d:/Inetpub.zip","d://Inetpub");
-        //decompression.zip("c:/Inetpub", "c:/Inetpub.zip");
-        //decompression.unRarFile("E:/1111/zip/BBL20150702.rar", "E:/1111/zip");
-
-       // decompression.unRarFile("E:/1111/zip/BBL20150702.rar");
-        //System.out.println(decompression.getrarpath("E:/1111/zip/BBL20150702.rar"));
-       // decompression.dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
-    	UnzipUtil decompression=new UnzipUtil();
-    	//String se=decompression.unzipFile("D:\\home\\sjbfolder\\4\\csml11442571987448\\1443172368175\\1443172368175.zip",true);
-
-    	String se=decompression.unRarFile("/Users/gzy/testsjb/sjbfolder/266/fc0981eb78547806af01c2541e1dc21761509/1444928922894/1444928922894.rar");
-    	//System.out.println("%%%%%"+se);
-
-      /*  String pathrsString=dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
-    	String paths[]=pathrsString.split(":");
-    	if(paths.length==2){
-    		System.out.println(paths[0]+"@@@"+paths[1]);
-    	}else{
-    		System.out.println(paths[0]+"!!!!!!!!!!!"+pathrsString);
-    	}*/
-
-    }
+//    public static void main(String[] args) throws Exception {
+//       // UnzipUtil decompression=new UnzipUtil();
+//      //  decompression.unzipFile("E:\\1111\\zip\\BBL20150702\\BBL20150702.zip");
+//       // decompression.unzipFile("E:\\1111\\zip\\a11.zip");
+//        //decompression.unzip("d:/Inetpub.zip","d://Inetpub");
+//        //decompression.zip("c:/Inetpub", "c:/Inetpub.zip");
+//        //decompression.unRarFile("E:/1111/zip/BBL20150702.rar", "E:/1111/zip");
+//
+//       // decompression.unRarFile("E:/1111/zip/BBL20150702.rar");
+//        //System.out.println(decompression.getrarpath("E:/1111/zip/BBL20150702.rar"));
+//       // decompression.dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
+//    	UnzipUtil decompression=new UnzipUtil();
+//    	//String se=decompression.unzipFile("D:\\home\\sjbfolder\\4\\csml11442571987448\\1443172368175\\1443172368175.zip",true);
+//
+//    	String se=decompression.unRarFile("/Users/gzy/testsjb/sjbfolder/266/fc0981eb78547806af01c2541e1dc21761509/1444928922894/1444928922894.rar");
+//    	//System.out.println("%%%%%"+se);
+//
+//      /*  String pathrsString=dealzhongwenaddr("BBL20150702\\布芭啦10款\\00585843632.csv",12365890L);
+//    	String paths[]=pathrsString.split(":");
+//    	if(paths.length==2){
+//    		System.out.println(paths[0]+"@@@"+paths[1]);
+//    	}else{
+//    		System.out.println(paths[0]+"!!!!!!!!!!!"+pathrsString);
+//    	}*/
+//
+//    }
 }

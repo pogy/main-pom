@@ -272,10 +272,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                         .addAggs(AggsBuilder.count("cid").size(1000))
                         .execute();
 
-                List<Facet.Bucket> items = new ArrayList<>();
+//                List<Facet.Bucket> items = new ArrayList<>();
                 //防止下标越界
                 if(searchResponse.getResult().getFacet() !=null && searchResponse.getResult().getFacet().size()>0){
-                    items = searchResponse.getResult().getFacet().get(0).getItems();
+                    List<Facet.Bucket> items = searchResponse.getResult().getFacet().get(0).getItems();
                     List<Long> cids = new ArrayList<>();
                     cids.add(-10086L);// In empty 会尴尬的
                     for (Facet.Bucket item : items) {

@@ -236,8 +236,8 @@ public class DataPackageUtil {
      */
     private static String savePic(String savepicPath, String url) {
         String result = "";
-        String picnameString[] = url.split("/");
-        String picname = picnameString[picnameString.length - 1];
+//        String picnameString[] = url.split("/");
+//        String picname = picnameString[picnameString.length - 1];
 
         Connection con = HttpConnUtil.getConnection(url);
         if (con != null) {

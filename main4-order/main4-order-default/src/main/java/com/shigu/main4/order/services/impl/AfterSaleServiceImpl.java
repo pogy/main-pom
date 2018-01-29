@@ -418,7 +418,7 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         RefundVO refundinfo = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo();
 
         ReturnableExpressInfoVO vo = new ReturnableExpressInfoVO();
-        String[] buyerCourier = refundinfo.getBuyerCourier().split(":");
+//        String[] buyerCourier = refundinfo.getBuyerCourier().split(":");
         vo.setExpressCode(refundinfo.getBuyerCourier());
         vo.setExpressName("");// TODO：没有保存退货发货的公司
         vo.setReturnableExpressTime(refundinfo.getBuyerReturnTime() != null ? refundinfo.getBuyerReturnTime().getTime() : null);

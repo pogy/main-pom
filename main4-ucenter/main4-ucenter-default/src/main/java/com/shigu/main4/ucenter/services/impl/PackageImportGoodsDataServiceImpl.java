@@ -185,7 +185,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                     String csvFilepath=tempDir+"/"+csvname+".csv";
                     String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
                     File csvFile = new File(csvFilepath);
-                    File newcsvFile = new File(newcsvFilepath);
+//                    File newcsvFile = new File(newcsvFilepath);
 
                     if(csvFile!=null&&csvFile.exists()){//存在CSV文件
                         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,7 +245,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                     String csvFilePath=tempDir+"/"+csvname+".csv";
                     String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
                     File csvFile = new File(csvFilePath);
-                    File newcsvFile = new File(newcsvFilepath);
+//                    File newcsvFile = new File(newcsvFilepath);
                     if(csvFile!=null&&csvFile.exists()){
                         try {
                             List<ShiguGoodsTinyVO> goodsList=importCsvFileService.importCsvFileString(storeId,csvFilePath,image_save_path);

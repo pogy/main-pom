@@ -502,7 +502,7 @@ public class BigNumber extends Exception{
 	    int R1=10,R2=23,R3=2;
 	    int f=0;
 	    BigNumber b=new BigNumber(MyNumber,R1);//10进制
-	    BigNumber c=new BigNumber(MyNumber2,R2);//23进制
+//	    BigNumber c=new BigNumber(MyNumber2,R2);//23进制
 		long c1=System.currentTimeMillis();
 		System.out.println("将"+R1+"进制数"+MyNumber+"转化为"+R2+"进制数并保留"+f+"位小数后去除无效位的结果为:"+b.HexConversion(23, f));
 		long c2=System.currentTimeMillis();

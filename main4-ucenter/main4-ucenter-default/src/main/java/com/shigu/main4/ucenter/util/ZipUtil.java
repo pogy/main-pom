@@ -135,7 +135,7 @@ public class ZipUtil {
      }
  }
  public static boolean copyFile(File srcFileName, File destFileName) throws IOException {// 把文件转换为GBK文件
-	 char[] ch = new char[1024];
+//	 char[] ch = new char[1024];
  	FileInputStream is1 = new FileInputStream(srcFileName);//文件读取
  	int[] head = new int[4];
      for(int i=0; i<4; i++){
