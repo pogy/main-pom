@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 @Service
 public class StyleChannelService {
 
-    private static final Logger logger = LoggerFactory.getLogger(StyleChannelService.class)
+    private static final Logger logger = LoggerFactory.getLogger(StyleChannelService.class);
 
     @Autowired
     private RedisIO redisIO;
