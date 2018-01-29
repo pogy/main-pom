@@ -232,6 +232,9 @@ public class CdnService {
      */
     public ShopShowVO shopSimpleVo(Long shopId){
         ShopShowVO shopShowVO=new ShopShowVO();
+        if (shopId == null) {
+            return shopShowVO;
+        }
         shopShowVO.setOther(shopForCdnService.selShopBase(shopId));
         shopShowVO.setDomain(shopBaseService.selDomain(shopId));
         shopShowVO.setHasAuth(shopBaseService.shopAuthState(shopId));
@@ -240,7 +243,11 @@ public class CdnService {
         //查商品
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
-        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
+        StoreRelation storeRelation = shopShowVO.getStoreRelation();
+        if (storeRelation != null) {
+            String webSite = storeRelation.getWebSite();
+            shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId, webSite));
+        }
         Long starNum=shopForCdnService.selShopStarById(shopId);
         starNum=starNum==null?0:starNum;
         shopShowVO.setStarNum(starNum);
@@ -344,12 +351,15 @@ public class CdnService {
         }
         List<NormalProp> nps=cdnItem.getNormalProps();
         List<CdnGoodsPropVO> props=new ArrayList<>();
-        for(NormalProp np:nps){
-            CdnGoodsPropVO prop=new CdnGoodsPropVO();
-            prop.setName(np.getPname());
-            prop.setValue(np.getValue());
-            props.add(prop);
+        if (nps != null && !nps.isEmpty()) {
+            for(NormalProp np:nps){
+                CdnGoodsPropVO prop=new CdnGoodsPropVO();
+                prop.setName(np.getPname());
+                prop.setValue(np.getValue());
+                props.add(prop);
+            }
         }
+
         vo.setNormalAttrs(props);
         if (shopsItemService.checkHasLowestLiPriceSet(goodsId)) {
             vo.setLowestLiPrice(vo.getLiPrice());

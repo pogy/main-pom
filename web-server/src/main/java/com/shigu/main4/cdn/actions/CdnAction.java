@@ -1001,7 +1001,10 @@ public class CdnAction {
         }
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
-        List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
+        List<CdnShopCatVO> cats = new ArrayList<>();
+        if (shop != null) {
+            cats =cdnService.cdnShopCat(shop.getShopId());
+        }
 
 //      List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();

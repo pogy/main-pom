@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.*;
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException;
@@ -705,6 +706,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      */
     @Override
     public void systemSynSomeItems(List<SynItem> items) throws SystemSynItemException {
+        items = items.stream().filter(item -> item != null).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(items)) {
             String webSite = items.get(0).getWebSite();
             Client client = ElasticConfiguration.client;
