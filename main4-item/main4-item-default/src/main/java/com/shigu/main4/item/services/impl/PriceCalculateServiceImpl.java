@@ -1,6 +1,9 @@
 package com.shigu.main4.item.services.impl;
 
+import com.opentae.data.mall.beans.GoodsPiPriceError;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.GoodsPiPriceErrorExample;
+import com.opentae.data.mall.interfaces.GoodsPiPriceErrorMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.item.services.PriceCalculateService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +41,8 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+    @Autowired
+    private GoodsPiPriceErrorMapper goodsPiPriceErrorMapper;
     /**
      * 计算批发价
      * @param shopId 店铺ID
@@ -153,15 +158,56 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
         }else{
             isErr=true;
         }
-        if (isErr && (itemId != null || numIid != null)) {
-            //todo 写入匹配异常表
-
-
-
-
+        if(itemId!=null||numIid!=null){
+            GoodsPiPriceErrorExample goodsPiPriceErrorExample=new GoodsPiPriceErrorExample();
+            goodsPiPriceErrorExample.setOrderByClause("create_time asc");
+            GoodsPiPriceErrorExample.Criteria ca=goodsPiPriceErrorExample.createCriteria();
+            if(itemId!=null){
+                ca.andGoodsIdEqualTo(itemId);
+            }
+            if(numIid!=null){
+                ca.andNumIidEqualTo(numIid);
+            }
+            List<GoodsPiPriceError> ges=goodsPiPriceErrorMapper.selectByExample(goodsPiPriceErrorExample);
+            GoodsPiPriceError g=new GoodsPiPriceError();
+            g.setNumIid(numIid);
+            g.setGoodsId(itemId);
+            g.setHasEnt(0);
+            g.setPrice(price);
+            try {
+                g.setTitle(strs[0]);
+                g.setGoodsNo(strs[1]);
+                g.setOtherId(strs[2]);
+            } catch (Exception ignored) {
+            }
+            g.setSysPiPrice(returnPrice);
+            StringBuilder pistr= new StringBuilder();
+            for(Long p:piPrices){
+                pistr.append(p).append(",");
+            }
+            if(pistr.length()>0){
+                pistr = new StringBuilder(pistr.substring(0, pistr.length() - 1));
+            }
+            g.setErrorPiPrice(pistr.toString());
+            if(ges.size()>0&&ges.get(0).getSysPiPrice().longValue()==returnPrice&&ges.get(0).getHasEnt()==1){
+                //符合条件,意味着这个已经手动处理过了
+                returnPrice= ges.get(0).getCustomPiPrice();
+                //手动处理过,定义为批发价正常
+                isErr=false;
+            }
+            if (isErr) {
+                if(ges.size()==0){
+                    goodsPiPriceErrorMapper.insertSelective(g);
+                }else{
+                    g.setPipriceId(ges.get(0).getPipriceId());
+                    goodsPiPriceErrorMapper.updateByPrimaryKeySelective(g);
+                }
+            }
         }
         return returnPrice;
     }
+
+
 
     /**
      * 批发价解析

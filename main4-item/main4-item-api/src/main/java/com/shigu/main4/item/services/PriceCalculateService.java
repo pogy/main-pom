@@ -18,6 +18,9 @@ public interface PriceCalculateService {
 
 
     /**
+     *
+     * 特别注意:该方法在ModPriceCalculateServiceImpl中未实现
+     *
      * 计算批发价
      * @param shopId 店铺ID
      * @param itemId 商品ID
