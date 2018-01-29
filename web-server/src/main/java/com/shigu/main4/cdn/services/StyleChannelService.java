@@ -28,8 +28,12 @@ import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopShow;
 import com.shigu.search.services.CategoryInSearchService;
+import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
+import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ImgBannerVO;
+import com.shigu.spread.vo.NewHzManIndexItemGoatVO;
 import com.shigu.spread.vo.StyleSpreadChannelVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -70,6 +74,9 @@ public class StyleChannelService {
 
     @Autowired
     private ItemSearchService itemSearchService;
+
+    @Autowired
+    private SpreadService spreadService;
 
     @Autowired
     private CategoryInSearchService categoryInSearchService;
@@ -451,6 +458,89 @@ public class StyleChannelService {
                 return recommendList;
             }
         };
+    }
+
+    /**
+     * 风格频道首页热销广告列表
+     *
+     * @return
+     */
+    public List<NewHzManIndexItemGoatVO> selStyleHotStyleList(Long parentStyleId) {
+        StyleSpreadChannelVO styleSpreadChannel = getStyleSpreadChannel(parentStyleId);
+        if (styleSpreadChannel == null) {
+            return new ArrayList<>();
+        }
+        return selStyleHotStyleGoods(styleSpreadChannel).selObj();
+    }
+
+    /**
+     * 风格频道首页热销商品数据
+     *
+     * @param vo
+     * @return
+     */
+    public ObjFromCache<List<NewHzManIndexItemGoatVO>> selStyleHotStyleGoods(StyleSpreadChannelVO vo) {
+        return new ObjFromCache<List<NewHzManIndexItemGoatVO>>(redisForIndexPage, vo.hotStyleTag(), NewHzManIndexItemGoatVO.class) {
+            @Override
+            public List<NewHzManIndexItemGoatVO> selReal() {
+                if (StyleSpreadChannelVO.ERROR_TAG.equals(vo.hotStyleTag())) {
+                    return new ArrayList<>();
+                }
+                List<NewHzManIndexItemGoatVO> list = new ArrayList<>();
+                try {
+                    List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(vo.hotStyleTag());
+                    Set<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> itemGoatVO.getItemId() != null).map(ItemGoatVO::getItemId).collect(Collectors.toSet());
+                    if (goodsIds.size() > 0) {
+                        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                        shiguGoodsTinyExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds));
+                        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,pi_price_string,store_id"));
+                        Map<Long, ShiguGoodsTiny> goodsTinyMap = shiguGoodsTinies.stream().collect(Collectors.toMap(ShiguGoodsTiny::getGoodsId, o -> o));
+                        Set<Long> shopIds = shiguGoodsTinies.stream().map(ShiguGoodsTiny::getStoreId).collect(Collectors.toSet());
+                        Map<Long, SearchShopSimple> shopInfoMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), vo.getWebSite()).stream().collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
+                        for (ItemGoatVO goatVO : goatVOS) {
+                            if (goatVO.getItemId() != null) {
+                                ShiguGoodsTiny shiguGoodsTiny = goodsTinyMap.get(goatVO.getItemId());
+                                if (shiguGoodsTiny != null) {
+                                    NewHzManIndexItemGoatVO goods = new NewHzManIndexItemGoatVO();
+                                    goods.setId(shiguGoodsTiny.getGoodsId().toString());
+                                    goods.setImgSrc(shiguGoodsTiny.getPicUrl());
+                                    goods.setPiprice(shiguGoodsTiny.getPiPriceString());
+                                    goods.setShopId(shiguGoodsTiny.getStoreId().toString());
+                                    SearchShopSimple searchShopSimple = shopInfoMap.get(shiguGoodsTiny.getStoreId());
+                                    if (searchShopSimple != null) {
+                                        goods.setShopNo(searchShopSimple.getShopNum());
+                                        goods.setMarketName(searchShopSimple.getMarket());
+                                    }
+                                    list.add(goods);
+                                }
+                            }
+
+                        }
+                    }
+
+                } catch (GoatException e) {
+                    logger.error("获取风格热销数据失败", e);
+                }
+                return list;
+            }
+        };
+    }
+
+    /**
+     * 获取风格频道首页轮播大图
+     * @param parentStyleId
+     * @return
+     */
+    public List<ImgBannerVO> selStyleIndexBanner(Long parentStyleId) {
+        StyleSpreadChannelVO channel = getStyleSpreadChannel(parentStyleId);
+        if (channel == null) {
+            return new ArrayList<>();
+        }
+        SpreadEnum spreadEnum = SpreadEnum.getSpreadEnumByCode(channel.bannerTag());
+        if (spreadEnum == null) {
+            return new ArrayList<>();
+        }
+        return spreadService.selImgBanners(spreadEnum).selObj();
     }
 
     private StyleSpreadChannelVO getStyleSpreadChannel(Long parentStyleId) {

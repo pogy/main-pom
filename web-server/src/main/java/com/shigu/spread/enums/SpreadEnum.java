@@ -18,6 +18,14 @@ public enum SpreadEnum {
     BACK_SHOP("供应商后台", "BACK_SHOP"), BACK_MEMBER("分销商后台", "BACK_MEMBER"),
     MAN_GXT("男装小图","MAN-GXT"),
 
+    HZ_MAN_STYLE_BANNER_GANGFENG_QINGLV("风格频道港风情侣频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_GANGFENG_QINGLV"),
+    HZ_MAN_STYLE_BANNER_RIXI_DAMA("风格频道日系大码频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_RIXI_DAMA"),
+    HZ_MAN_STYLE_BANNER_YINGLUN_XINGNAN("风格频道英伦型男频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_YINGLUN_XINGNAN"),
+    HZ_MAN_STYLE_BANNER_PINGPU_GUAPAI("风格频道平铺挂拍频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_PINGPU_GUAPAI"),
+    HZ_MAN_STYLE_BANNER_WAIJING_JIEPAI("风格频道外景街拍频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_WAIJING_JIEPAI"),
+    HZ_MAN_STYLE_BANNER_QITA("风格频道其它频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_GUOCHAO_QITA"),
+
+
     JX_SPREAD_INDEX_DT("濮院站首页幻灯片商品广告", "JX_SPREAD_INDEX_DT"),
     JX_SPREAD_INDEX_XT("濮院站首页幻灯片下方商品广告", "JX_SPREAD_INDEX_XT"),
     JX_SPREAD_INDEX_MENS("濮院站首页男装商品广告", "JX_SPREAD_INDEX_MENS"),
@@ -68,6 +76,18 @@ public enum SpreadEnum {
                 if (is.getCode().equals(womanCode)) {
                     return is;
                 }
+            }
+        }
+        return null;
+    }
+
+    public static SpreadEnum getSpreadEnumByCode(String code) {
+        if (code == null) {
+            return null;
+        }
+        for (SpreadEnum spreadEnum : values()) {
+            if (spreadEnum.code.equals(code)) {
+                return spreadEnum;
             }
         }
         return null;
