@@ -4,13 +4,22 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.cdn.bo.StyleChannelGoodsSearchBO;
 import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
 import com.shigu.main4.cdn.vo.StyleChannelMarketVO;
 import com.shigu.main4.cdn.vo.StyleGoodsInSearch;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ItemGoatVO;
+import com.shigu.main4.item.bo.GoodsSearchBO;
+import com.shigu.main4.item.enums.SearchCheckd;
+import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.vo.SearchItem;
+import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.tools.RedisIO;
@@ -18,6 +27,7 @@ import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopShow;
+import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.vo.StyleSpreadChannelVO;
@@ -57,6 +67,12 @@ public class StyleChannelService {
 
     @Autowired
     private ShopSearchService shopSearchService;
+
+    @Autowired
+    private ItemSearchService itemSearchService;
+
+    @Autowired
+    private CategoryInSearchService categoryInSearchService;
 
     @Autowired
     private ShiguOuterFloorMapper shiguOuterFloorMapper;
@@ -102,6 +118,111 @@ public class StyleChannelService {
         }
     }
 
+    /**
+     * 风格频道商品列表
+     *
+     * @return
+     */
+    public ShiguPager<StyleGoodsInSearch> searchStyleGoods(StyleChannelGoodsSearchBO bo) {
+        ShiguPager<StyleGoodsInSearch> pager = new ShiguPager<>();
+        pager.setNumber(bo.getPage());
+        //没有风格id，直接返回
+        if (bo.getSpid() == null) {
+            pager.setContent(new ArrayList<>());
+            pager.calPages(0, 50);
+            return pager;
+        }
+        GoodsSearchBO goodsSearchBO = new GoodsSearchBO();
+        goodsSearchBO.setWebSite(bo.getWebSite());
+        goodsSearchBO.setParentStyleId(bo.getSpid());
+        goodsSearchBO.setKeyword(bo.getKeyword());
+        goodsSearchBO.setMid(bo.getMid());
+        goodsSearchBO.setPriceFrom(bo.getSp());
+        goodsSearchBO.setPriceTo(bo.getEp());
+        List<SearchCheckd> checkds = new ArrayList<>();
+        if (Objects.equals(1, bo.getBpic())) {
+            checkds.add(SearchCheckd.BIGZIP);
+        }
+        if (Objects.equals(1, bo.getGoodsVideo())) {
+            checkds.add(SearchCheckd.VIDEO);
+        }
+        goodsSearchBO.setCheckds(checkds);
+        List<Long> cids = new ArrayList<>();
+        if (bo.getCid() != null) {
+            cids.addAll(categoryInSearchService.selCidsFromCid(bo.getCid()));
+        } else if (bo.getPid() != null) {
+            cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
+        }
+        if (cids.size() > 0) {
+            goodsSearchBO.setCids(cids);
+        }
+        String sort = bo.getSort();
+        if (sort == null) {
+            sort = "style_channel";
+        }
+        Date timeFrom = null;
+        Date timeTo = null;
+        //查过去几天内的商品
+        Integer days = bo.getD();
+        if (days != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -days);
+            timeFrom = calendar.getTime();
+        } else {
+            //如果是用时间区间查询
+            if (bo.getSt() != null) {
+                timeFrom = DateUtil.stringToDate(bo.getSt(), "yyyy.MM.dd");
+            }
+            if (bo.getEt() != null) {
+                timeTo = DateUtil.stringToDate(bo.getEt(), "yyyy.MM.dd");
+            }
+        }
+        goodsSearchBO.setTimeForm(timeFrom);
+        goodsSearchBO.setTimeTo(timeTo);
+
+        SearchOrderBy searchOrderBy = SearchOrderBy.valueIs(sort);
+        if (searchOrderBy == null) {
+            searchOrderBy = SearchOrderBy.STYLE_CHANNEL;
+        }
+        goodsSearchBO.setOrderCase(searchOrderBy);
+        goodsSearchBO.setPage(bo.getPage());
+        goodsSearchBO.setPageSize(50);
+        ShiguAggsPager shiguAggsPager = itemSearchService.searchItem(goodsSearchBO);
+        pager.calPages(shiguAggsPager.getTotalCount(), 50);
+        List<SearchItem> searchItems = shiguAggsPager.getContent();
+        List<StyleGoodsInSearch> context = new ArrayList<>();
+        pager.setContent(context);
+        Set<Long> shopIds = searchItems.stream().filter(searchItem -> searchItem.getStoreId() != null).map(SearchItem::getStoreId).collect(Collectors.toSet());
+        //查商品店铺信息
+        Map<Long, SearchShopSimple> shopInfoMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), bo.getWebSite()).stream().collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
+        for (SearchItem source : searchItems) {
+            StyleGoodsInSearch vo = new StyleGoodsInSearch();
+            vo.setId(source.getItemId());
+            vo.setTitle(source.getTitle());
+            vo.setHighLightTitle(source.getHighLightTitle());
+            vo.setGoodsNo(source.getGoodsNo());
+            vo.setHighLightGoodsNo(source.getHighLightGoodsNo());
+            vo.setImgsrc(source.getPicUrl());
+            vo.setPiprice(source.getPrice());
+            vo.setShopId(source.getStoreId());
+            SearchShopSimple searchShopSimple = shopInfoMap.get(source.getStoreId());
+            if (searchShopSimple != null) {
+                vo.setAliww(searchShopSimple.getImAliww());
+                vo.setFullStoreName(searchShopSimple.getMarket() + " " + searchShopSimple.getShopNum());
+            }
+            context.add(vo);
+        }
+        return pager;
+    }
+
+
+    /**
+     * 获取市场中设置过风格的显示的档口列表
+     *
+     * @param outerMarketId
+     * @param parentStyleId
+     * @return
+     */
     public List<FloorVO> selStyleMarketShows(Long outerMarketId, Long parentStyleId) {
         if (parentStyleId == null) {
             return new ArrayList<>();
@@ -251,7 +372,7 @@ public class StyleChannelService {
                     //市场内有楼层有设置了风格的店铺，添加显示
                     if (outFloorShopIds != null && outFloorShopIds.size() > 0) {
                         StyleChannelMarketVO market = new StyleChannelMarketVO();
-                        market.setId(shiguOuterMarket.getRuleId());
+                        market.setMid(shiguOuterMarket.getRuleId());
                         market.setName(shiguOuterMarket.getMarketName());
                         markets.add(market);
                         break;
@@ -266,6 +387,7 @@ public class StyleChannelService {
 
     /**
      * 获取推荐商品广告数据列表
+     *
      * @param parentStyleId
      * @return
      */
@@ -279,6 +401,7 @@ public class StyleChannelService {
 
     /**
      * 查询推荐商品广告数据
+     *
      * @param vo
      * @return
      */

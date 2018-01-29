@@ -12,16 +12,16 @@ import java.io.Serializable;
 public class StyleChannelMarketVO implements Serializable {
 
     //市场id
-    private Long id;
+    private Long mid;
     //市场名称
     private String name;
 
-    public Long getId() {
-        return id;
+    public Long getMid() {
+        return mid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMid(Long mid) {
+        this.mid = mid;
     }
 
     public String getName() {

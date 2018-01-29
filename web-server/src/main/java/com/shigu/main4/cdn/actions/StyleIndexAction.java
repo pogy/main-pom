@@ -6,6 +6,8 @@ import com.shigu.main4.cdn.bo.StyleChannelSearchBO;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.StyleChannelService;
 import com.shigu.main4.cdn.vo.StyleChannelVO;
+import com.shigu.main4.cdn.vo.StyleGoodsInSearch;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.search.actions.PageErrAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +38,6 @@ public class StyleIndexAction {
     private final String SUCCESS = "success";
 
 
-
     /**
      * 风格频道首页
      *
@@ -62,11 +63,11 @@ public class StyleIndexAction {
         if (!SUCCESS.equals(varifyResult)) {
             return varifyResult;
         }
-
-        //model.addAttribute("marketList")
-        //model.addAttribute("totalPage")
-        //model.addAttribute("goodsList")
-        //model.addAttribute("pageOption")
+        model.addAttribute("marketList", styleChannelService.selStyleMarkets(bo.getWebSite(), bo.getSpid()));
+        ShiguPager<StyleGoodsInSearch> pager = styleChannelService.searchStyleGoods(bo);
+        model.addAttribute("goodsList", pager.getContent());
+        model.addAttribute("totalPage", pager.getTotalPages());
+        model.addAttribute("pageOption", pager.selPageOption(50));
         return "styleChannel/styleGoodsList";
     }
 
@@ -81,7 +82,7 @@ public class StyleIndexAction {
         if (!SUCCESS.equals(varifyResult)) {
             return varifyResult;
         }
-        model.addAttribute("goodsList",styleChannelService.selStyleRecommendGoodsList(bo.getSpid()));
+        model.addAttribute("goodsList", styleChannelService.selStyleRecommendGoodsList(bo.getSpid()));
         return "styleChannel/styleRecommd";
     }
 
@@ -122,7 +123,7 @@ public class StyleIndexAction {
                 model.addAttribute("sname", vo.getSname());
             }
         }
-        //model.addAttribute("catemenu", indexShowService.selStyleChannelCateNavVO());
+        model.addAttribute("catemenu", indexShowService.selStyleChannelCateNavVO());
         return SUCCESS;
     }
 

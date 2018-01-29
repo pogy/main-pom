@@ -24,11 +24,11 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
     //排序类型
     private String sort;
     //对应时间内发布的商品，d为天数
-    private String d;
+    private Integer d;
     //筛选开始价格
-    private String sp;
+    private Double sp;
     //筛选结束价格
-    private String ep;
+    private Double ep;
     //筛选开始时间 数据格式：yy.mm.dd 例如 2014.04.12
     private String st;
     //筛选结束时间 数据格式：yy.mm.dd 例如 2014.04.12
@@ -41,6 +41,9 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
     private Integer goodsVideo;
 
     public String getWebSite() {
+        if (webSite == null) {
+            webSite = "hz";
+        }
         return webSite;
     }
 
@@ -88,27 +91,27 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
         this.sort = sort;
     }
 
-    public String getD() {
+    public Integer getD() {
         return d;
     }
 
-    public void setD(String d) {
+    public void setD(Integer d) {
         this.d = d;
     }
 
-    public String getSp() {
+    public Double getSp() {
         return sp;
     }
 
-    public void setSp(String sp) {
+    public void setSp(Double sp) {
         this.sp = sp;
     }
 
-    public String getEp() {
+    public Double getEp() {
         return ep;
     }
 
-    public void setEp(String ep) {
+    public void setEp(Double ep) {
         this.ep = ep;
     }
 
