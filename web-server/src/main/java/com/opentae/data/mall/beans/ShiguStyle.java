@@ -53,6 +53,11 @@ public class ShiguStyle implements Serializable {
      */
 	private String channelImgUrl;
 
+    /**
+     * 广告位缓存风格类型识别标签
+     */
+	private String tag;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -123,6 +128,14 @@ public class ShiguStyle implements Serializable {
 
 	public String getChannelImgUrl() {
 		return this.channelImgUrl;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getTag() {
+		return this.tag;
 	}
 
 }

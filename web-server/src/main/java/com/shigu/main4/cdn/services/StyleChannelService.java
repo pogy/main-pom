@@ -1,30 +1,33 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguOuterFloor;
-import com.opentae.data.mall.beans.ShiguOuterMarket;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShiguShopStyleRelation;
-import com.opentae.data.mall.examples.ShiguOuterFloorExample;
-import com.opentae.data.mall.examples.ShiguOuterMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.ShiguShopStyleRelationExample;
-import com.opentae.data.mall.interfaces.ShiguOuterFloorMapper;
-import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.opentae.data.mall.interfaces.ShiguShopStyleRelationMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.vo.FloorVO;
 import com.shigu.main4.cdn.vo.ShopInFloorVO;
 import com.shigu.main4.cdn.vo.StyleChannelMarketVO;
+import com.shigu.main4.cdn.vo.StyleGoodsInSearch;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.storeservices.MarketShopService;
+import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketShow;
+import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopShow;
+import com.shigu.spread.services.ObjFromCache;
+import com.shigu.spread.services.RedisForIndexPage;
+import com.shigu.spread.vo.StyleSpreadChannelVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,8 +41,22 @@ import java.util.stream.Collectors;
 @Service
 public class StyleChannelService {
 
+    private static final Logger logger = LoggerFactory.getLogger(StyleChannelService.class)
+
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private RedisForIndexPage redisForIndexPage;
+
+    @Autowired
+    private GoatDubboService goatDubboService;
+
+    @Autowired
+    private MarketShopService marketShopService;
+
+    @Autowired
+    private ShopSearchService shopSearchService;
 
     @Autowired
     private ShiguOuterFloorMapper shiguOuterFloorMapper;
@@ -48,19 +65,42 @@ public class StyleChannelService {
     private ShiguShopMapper shiguShopMapper;
 
     @Autowired
-    private MarketShopService marketShopService;
-
-    @Autowired
     private ShiguShopStyleRelationMapper shiguShopStyleRelationMapper;
 
     @Autowired
     private ShiguOuterMarketMapper shiguOuterMarketMapper;
+
+    @Autowired
+    private ShiguStyleMapper shiguStyleMapper;
+
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
 
     //市场店铺数据缓存
     private final String STYLE_MARKET_SHOP_CACHE_FORMAT = "cached_shops_for_market_%d_style_%d";
 
     private final String STYLE_MARKET_CACHE_FORMAT = "cached_market_for_website_%s_style_%d";
 
+    private Map<Long, StyleSpreadChannelVO> styleSpreadMap;
+
+    //初始化风格广告标签map
+    @PostConstruct
+    public void initStyleSpreadMap() {
+        styleSpreadMap = new HashMap<>();
+        ShiguStyleExample shiguStyleExample = new ShiguStyleExample();
+        shiguStyleExample.createCriteria().andIsParentEqualTo(1);
+        List<ShiguStyle> shiguStyles = shiguStyleMapper.selectByExample(shiguStyleExample);
+        for (ShiguStyle shiguStyle : shiguStyles) {
+            if (StringUtils.isNotBlank(shiguStyle.getTag())) {
+                StyleSpreadChannelVO vo = new StyleSpreadChannelVO();
+                vo.setStyleId(shiguStyle.getId());
+                vo.setSpreadTag(shiguStyle.getTag());
+                //vo.setWebSite("hz");
+                styleSpreadMap.put(shiguStyle.getId(), vo);
+            }
+        }
+    }
 
     public List<FloorVO> selStyleMarketShows(Long outerMarketId, Long parentStyleId) {
         if (parentStyleId == null) {
@@ -224,4 +264,76 @@ public class StyleChannelService {
         return markets;
     }
 
+    /**
+     * 获取推荐商品广告数据列表
+     * @param parentStyleId
+     * @return
+     */
+    public List<StyleGoodsInSearch> selStyleRecommendGoodsList(Long parentStyleId) {
+        StyleSpreadChannelVO styleSpreadChannel = getStyleSpreadChannel(parentStyleId);
+        if (styleSpreadChannel == null) {
+            return new ArrayList<>();
+        }
+        return selStyleRecommendGoods(styleSpreadChannel).selObj();
+    }
+
+    /**
+     * 查询推荐商品广告数据
+     * @param vo
+     * @return
+     */
+    public ObjFromCache<List<StyleGoodsInSearch>> selStyleRecommendGoods(StyleSpreadChannelVO vo) {
+        return new ObjFromCache<List<StyleGoodsInSearch>>(redisForIndexPage, vo.recommendTag(), StyleGoodsInSearch.class) {
+            @Override
+            public List<StyleGoodsInSearch> selReal() {
+                //广告标记
+                String localCode = vo.recommendTag();
+                //错误的标签，直接返回
+                if (StyleSpreadChannelVO.ERROR_TAG.equals(localCode)) {
+                    return new ArrayList<>();
+                }
+                List<StyleGoodsInSearch> recommendList = new ArrayList<>();
+                try {
+                    List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(localCode);
+                    //广告商品id集合
+                    List<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toList());
+                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                    shiguGoodsTinyExample.setWebSite(vo.getWebSite());
+                    shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIds);
+                    //做广告的商品id
+                    List<ShiguGoodsTiny> goatGoods = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,title,pic_url,goods_no,store_id"));
+                    Set<Long> shopIds = goatGoods.stream().filter(shiguGoodsTiny -> shiguGoodsTiny.getStoreId() != null).map(ShiguGoodsTiny::getStoreId).collect(Collectors.toSet());
+                    Map<Long, SearchShopSimple> shopMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), vo.getWebSite()).stream().filter(searchShopSimple -> searchShopSimple.getShopId() != null).collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
+                    recommendList = goatGoods.stream().map(g -> {
+                        StyleGoodsInSearch goodsVo = new StyleGoodsInSearch();
+                        goodsVo.setId(g.getGoodsId());
+                        goodsVo.setTitle(g.getTitle());
+                        goodsVo.setImgsrc(g.getPicUrl());
+                        goodsVo.setPiprice(g.getPiPriceString());
+                        goodsVo.setGoodsNo(g.getGoodsNo());
+                        goodsVo.setShopId(g.getStoreId());
+                        SearchShopSimple searchShopSimple = shopMap.get(g.getStoreId());
+                        if (searchShopSimple != null) {
+                            goodsVo.setAliww(searchShopSimple.getImAliww());
+                            goodsVo.setFullStoreName(searchShopSimple.getMarket() + " " + searchShopSimple.getShopNum());
+                        }
+                        //这里没用到
+                        goodsVo.setHighLightGoodsNo("");
+                        goodsVo.setHighLightTitle("");
+                        return goodsVo;
+                    }).collect(Collectors.toList());
+                } catch (GoatException e) {
+                    logger.error("获取风格推荐广告商品数据异常", e);
+                }
+                return recommendList;
+            }
+        };
+    }
+
+    private StyleSpreadChannelVO getStyleSpreadChannel(Long parentStyleId) {
+        if (parentStyleId == null) {
+            return null;
+        }
+        return styleSpreadMap.get(parentStyleId);
+    }
 }

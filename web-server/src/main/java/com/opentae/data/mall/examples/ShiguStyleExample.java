@@ -17,6 +17,7 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
     public static EntityColumn description;
     public static EntityColumn id;
     public static EntityColumn sort;
+    public static EntityColumn tag;
     public static EntityColumn styleName;
     public static EntityColumn gmtCreate;
     static {
@@ -32,6 +33,7 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
         description = listMap.get("description");
         id = listMap.get("id");
         sort = listMap.get("sort");
+        tag = listMap.get("tag");
         styleName = listMap.get("styleName");
         gmtCreate = listMap.get("gmtCreate");
         }
@@ -399,6 +401,61 @@ public class ShiguStyleExample extends SgExample<ShiguStyleExample.Criteria> {
 
         public ShiguStyleExample.Criteria andSortNotBetween(Integer value1, Integer value2) {
             return notBetween(sort, value1, value2);
+        }
+        public ShiguStyleExample.Criteria andTagIsNull() {
+            return isNull(tag);
+        }
+
+        public ShiguStyleExample.Criteria andTagIsNotNull() {
+            return isNotNull(tag);
+        }
+
+        public ShiguStyleExample.Criteria andTagEqualTo(String value) {
+            return equalTo(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagNotEqualTo(String value) {
+            return notEqualTo(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagGreaterThan(String value) {
+            return greaterThan(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagLessThan(String value) {
+            return lessThan(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagLike(String value) {
+            return like(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagNotLike(String value) {
+            return notLike(tag, value);
+        }
+
+        public ShiguStyleExample.Criteria andTagIn(List<String> values) {
+            return in(tag, values);
+        }
+
+        public ShiguStyleExample.Criteria andTagNotIn(List<String> values) {
+            return notIn(tag, values);
+        }
+
+        public ShiguStyleExample.Criteria andTagBetween(String value1, String value2) {
+            return between(tag, value1, value2);
+        }
+
+        public ShiguStyleExample.Criteria andTagNotBetween(String value1, String value2) {
+            return notBetween(tag, value1, value2);
         }
         public ShiguStyleExample.Criteria andStyleNameIsNull() {
             return isNull(styleName);

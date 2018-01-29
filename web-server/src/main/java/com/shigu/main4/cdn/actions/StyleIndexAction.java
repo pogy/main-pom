@@ -35,6 +35,8 @@ public class StyleIndexAction {
 
     private final String SUCCESS = "success";
 
+
+
     /**
      * 风格频道首页
      *
@@ -79,7 +81,7 @@ public class StyleIndexAction {
         if (!SUCCESS.equals(varifyResult)) {
             return varifyResult;
         }
-        //model.addAttribute("goodsList","");
+        model.addAttribute("goodsList",styleChannelService.selStyleRecommendGoodsList(bo.getSpid()));
         return "styleChannel/styleRecommd";
     }
 
