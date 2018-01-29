@@ -48,6 +48,8 @@ public class UserTest extends BaseSDKClientTest {
 //        //测试值临时放5分钟
 //        redisIO.putTemp("phone_bind_type_msg_"+ telephone,bindVerify,300);
 //        Rds3TempUser rds3TempUser = new Rds3TempUser();
+
+
 //        rds3TempUser.setSubUserKey("32235ea1d3674b4ea3762ebe8364814d");
 //        rds3TempUser.setSubUserName("15168224104");
 //        rds3TempUser.setLoginFromType(LoginFromType.XZ);
