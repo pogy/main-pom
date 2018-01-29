@@ -4,6 +4,7 @@ import com.shigu.main4.cdn.bo.StyleChanelMarketSearchBO;
 import com.shigu.main4.cdn.bo.StyleChannelGoodsSearchBO;
 import com.shigu.main4.cdn.bo.StyleChannelSearchBO;
 import com.shigu.main4.cdn.services.IndexShowService;
+import com.shigu.main4.cdn.services.StyleChannelService;
 import com.shigu.main4.cdn.vo.StyleChannelVO;
 import com.shigu.search.actions.PageErrAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,14 @@ public class StyleIndexAction {
     @Autowired
     private IndexShowService indexShowService;
 
+    @Autowired
+    private StyleChannelService styleChannelService;
+
     private final String SUCCESS = "success";
 
     /**
      * 风格频道首页
+     *
      * @param bo
      * @param model
      * @return
@@ -86,15 +91,16 @@ public class StyleIndexAction {
             return varifyResult;
         }
         Long mid = bo.getMid();
-        model.addAttribute("marketId",null==mid?1:mid);
-        //model.addAttribute("markets")
-        //model.addAttribute("marketList")
+        model.addAttribute("marketId", null == mid ? 1 : mid);
+        model.addAttribute("markets", styleChannelService.selStyleMarkets("hz", bo.getSpid()));
+        model.addAttribute("marketList", styleChannelService.selStyleMarketShows(bo.getMid(), bo.getSpid()));
         return "styleChannel/styleMarket";
     }
 
 
     /**
      * 风格频道公共搜索条件验证与共同响应结果添加
+     *
      * @param bo
      * @param model
      * @return
@@ -114,7 +120,7 @@ public class StyleIndexAction {
                 model.addAttribute("sname", vo.getSname());
             }
         }
-        model.addAttribute("catemenu",indexShowService.selStyleChannelCateNavVO());
+        //model.addAttribute("catemenu", indexShowService.selStyleChannelCateNavVO());
         return SUCCESS;
     }
 
