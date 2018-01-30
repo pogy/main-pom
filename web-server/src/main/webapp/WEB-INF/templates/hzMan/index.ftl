@@ -447,7 +447,7 @@ if(pageType == 'W'){
                 </a>
                 <div class="goodsInfo">
                     <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
-                    <a href="${mainHost!}/shop.html?id=${goods.shopId!}" target="_blank" class="fr">${goods.market!} ${goods.shopNo!}</a>
+                    <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr">${goods.market!} ${goods.shopNo!}</a>
                 </div>
             </li>
         </#list>
