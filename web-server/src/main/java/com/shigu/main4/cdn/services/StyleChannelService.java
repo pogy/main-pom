@@ -571,80 +571,82 @@ public class StyleChannelService {
                     List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(vo.goatShopTag());
                     Set<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toSet());
                     List<Long> goodsIdsList = new ArrayList<>(goodsIds);
-                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-                    shiguGoodsTinyExample.setWebSite(vo.getWebSite());
-                    shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIdsList);
-                    List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,store_id"));
-                    HashMap<Long, List<StyleSpreadShopGoodsVO>> shopGoodsMap = new HashMap<>();
-                    for (ShiguGoodsTiny shiguGoodsTiny : shiguGoodsTinies) {
-                        List<StyleSpreadShopGoodsVO> styleSpreadShopGoodsVOS = shopGoodsMap.get(shiguGoodsTiny.getStoreId());
-                        if (styleSpreadShopGoodsVOS == null) {
-                            styleSpreadShopGoodsVOS = new ArrayList<>();
-                            shopGoodsMap.put(shiguGoodsTiny.getStoreId(), styleSpreadShopGoodsVOS);
+                    if (goodsIds.size()>0) {
+                        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                        shiguGoodsTinyExample.setWebSite(vo.getWebSite());
+                        shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIdsList);
+                        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,store_id"));
+                        HashMap<Long, List<StyleSpreadShopGoodsVO>> shopGoodsMap = new HashMap<>();
+                        for (ShiguGoodsTiny shiguGoodsTiny : shiguGoodsTinies) {
+                            List<StyleSpreadShopGoodsVO> styleSpreadShopGoodsVOS = shopGoodsMap.get(shiguGoodsTiny.getStoreId());
+                            if (styleSpreadShopGoodsVOS == null) {
+                                styleSpreadShopGoodsVOS = new ArrayList<>();
+                                shopGoodsMap.put(shiguGoodsTiny.getStoreId(), styleSpreadShopGoodsVOS);
+                            }
+                            StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
+                            goodsVO.setGoodsId(shiguGoodsTiny.getGoodsId());
+                            goodsVO.setImgsrc(shiguGoodsTiny.getPicUrl());
+                            styleSpreadShopGoodsVOS.add(goodsVO);
                         }
-                        StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
-                        goodsVO.setGoodsId(shiguGoodsTiny.getGoodsId());
-                        goodsVO.setImgsrc(shiguGoodsTiny.getPicUrl());
-                        styleSpreadShopGoodsVOS.add(goodsVO);
-                    }
-                    Set<Long> shopIds = new HashSet<>(shopGoodsMap.keySet());
-                    if (shiguGoodsTinies.size() < goodsIds.size()) {
-                        //有商品下架了
-                        ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
-                        shiguGoodsSoldoutExample.setWebSite(vo.getWebSite());
-                        shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(goodsIdsList);
-                        List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("store_id"));
-                        shopIds.addAll(shiguGoodsSoldouts.stream().filter(shiguGoodsSoldout -> shiguGoodsSoldout.getStoreId() != null).map(ShiguGoodsSoldout::getStoreId).collect(Collectors.toList()));
-                    }
-                    for (Long shopId : shopIds) {
-                        List<StyleSpreadShopGoodsVO> shopGoodsInfos = shopGoodsMap.get(shopId);
-                        if (shopGoodsInfos == null) {
-                            shopGoodsInfos = new ArrayList<>();
-                            shopGoodsMap.put(shopId, shopGoodsInfos);
+                        Set<Long> shopIds = new HashSet<>(shopGoodsMap.keySet());
+                        if (shiguGoodsTinies.size() < goodsIds.size()) {
+                            //有商品下架了
+                            ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
+                            shiguGoodsSoldoutExample.setWebSite(vo.getWebSite());
+                            shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(goodsIdsList);
+                            List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("store_id"));
+                            shopIds.addAll(shiguGoodsSoldouts.stream().filter(shiguGoodsSoldout -> shiguGoodsSoldout.getStoreId() != null).map(ShiguGoodsSoldout::getStoreId).collect(Collectors.toList()));
                         }
-                        int goodsSize = shopGoodsInfos.size();
-                        if (goodsSize > shopGoodsSize) {
-                            shopGoodsInfos = new ArrayList<>(shopGoodsInfos.subList(0, shopGoodsSize));
-                            shopGoodsMap.put(shopId, shopGoodsInfos);
-                        }
-                        if (goodsSize < shopGoodsSize) {
-                            //有商品下架了或商品个数不足，从对应店铺获取对应风格商品数据填充，正常维护数据时不会进入这部分流程
-                            List<Long> existedGoodsIds = BeanMapper.getFieldList(shopGoodsInfos, "goodsId", Long.class);
-                            List<GoodsStyleInfoBean> goodsStyleInfoBeans = shiguGoodsTinyMapper.selShopStyleGoods(vo.getWebSite(), shopId, vo.getStyleId(), existedGoodsIds, 0, shopGoodsSize - goodsSize);
-                            for (GoodsStyleInfoBean goodsStyleInfoBean : goodsStyleInfoBeans) {
-                                StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
-                                goodsVO.setGoodsId(goodsStyleInfoBean.getGoodsId());
-                                goodsVO.setImgsrc(goodsStyleInfoBean.getImgsrc());
-                                shopGoodsInfos.add(goodsVO);
+                        for (Long shopId : shopIds) {
+                            List<StyleSpreadShopGoodsVO> shopGoodsInfos = shopGoodsMap.get(shopId);
+                            if (shopGoodsInfos == null) {
+                                shopGoodsInfos = new ArrayList<>();
+                                shopGoodsMap.put(shopId, shopGoodsInfos);
+                            }
+                            int goodsSize = shopGoodsInfos.size();
+                            if (goodsSize > shopGoodsSize) {
+                                shopGoodsInfos = new ArrayList<>(shopGoodsInfos.subList(0, shopGoodsSize));
+                                shopGoodsMap.put(shopId, shopGoodsInfos);
+                            }
+                            if (goodsSize < shopGoodsSize) {
+                                //有商品下架了或商品个数不足，从对应店铺获取对应风格商品数据填充，正常维护数据时不会进入这部分流程
+                                List<Long> existedGoodsIds = BeanMapper.getFieldList(shopGoodsInfos, "goodsId", Long.class);
+                                List<GoodsStyleInfoBean> goodsStyleInfoBeans = shiguGoodsTinyMapper.selShopStyleGoods(vo.getWebSite(), shopId, vo.getStyleId(), existedGoodsIds, 0, shopGoodsSize - goodsSize);
+                                for (GoodsStyleInfoBean goodsStyleInfoBean : goodsStyleInfoBeans) {
+                                    StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
+                                    goodsVO.setGoodsId(goodsStyleInfoBean.getGoodsId());
+                                    goodsVO.setImgsrc(goodsStyleInfoBean.getImgsrc());
+                                    shopGoodsInfos.add(goodsVO);
+                                }
                             }
                         }
-                    }
-                    //开店的档口
-                    if (shopIds.size() > 0) {
-                        ShiguShopExample shiguShopExample = new ShiguShopExample();
-                        shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(shopIds)).andShopStatusEqualTo(0);
-                        List<ShiguShop> shiguShops = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,market_id,shop_num,create_date"));
-                        Map<Long, String> marketIdNameMap = new HashMap<>();
-                        Set<Long> marketIds = shiguShops.stream().filter(shiguShop -> shiguShop.getMarketId() != null).map(ShiguShop::getMarketId).collect(Collectors.toSet());
-                        if (marketIds.size() > 0) {
-                            ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-                            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<>(marketIds));
-                            marketIdNameMap.putAll(shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name")).stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName)));
-                        }
-                        for (ShiguShop shiguShop : shiguShops) {
-                            Long shopId = shiguShop.getShopId();
-                            StyleSpreadShopVO shopVO = new StyleSpreadShopVO();
-                            shopVO.setShopId(shopId);
-                            String marketName = marketIdNameMap.get(shiguShop.getMarketId());
-                            shopVO.setShopName((marketName == null ? "" : marketName) + shiguShop.getShopNum());
-                            Calendar calendar = Calendar.getInstance();
-                            int curYear = calendar.get(Calendar.YEAR);
-                            Date createDate = shiguShop.getCreateDate();
-                            calendar.setTime(createDate);
-                            int createYear = calendar.get(Calendar.YEAR);
-                            shopVO.setShopAge(curYear - createYear + 1);
-                            shopVO.setGoodsList(shopGoodsMap.get(shopId));
-                            vos.add(shopVO);
+                        //开店的档口
+                        if (shopIds.size() > 0) {
+                            ShiguShopExample shiguShopExample = new ShiguShopExample();
+                            shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(shopIds)).andShopStatusEqualTo(0);
+                            List<ShiguShop> shiguShops = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,market_id,shop_num,create_date"));
+                            Map<Long, String> marketIdNameMap = new HashMap<>();
+                            Set<Long> marketIds = shiguShops.stream().filter(shiguShop -> shiguShop.getMarketId() != null).map(ShiguShop::getMarketId).collect(Collectors.toSet());
+                            if (marketIds.size() > 0) {
+                                ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+                                shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<>(marketIds));
+                                marketIdNameMap.putAll(shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name")).stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName)));
+                            }
+                            for (ShiguShop shiguShop : shiguShops) {
+                                Long shopId = shiguShop.getShopId();
+                                StyleSpreadShopVO shopVO = new StyleSpreadShopVO();
+                                shopVO.setShopId(shopId);
+                                String marketName = marketIdNameMap.get(shiguShop.getMarketId());
+                                shopVO.setShopName((marketName == null ? "" : marketName) + shiguShop.getShopNum());
+                                Calendar calendar = Calendar.getInstance();
+                                int curYear = calendar.get(Calendar.YEAR);
+                                Date createDate = shiguShop.getCreateDate();
+                                calendar.setTime(createDate);
+                                int createYear = calendar.get(Calendar.YEAR);
+                                shopVO.setShopAge(curYear - createYear + 1);
+                                shopVO.setGoodsList(shopGoodsMap.get(shopId));
+                                vos.add(shopVO);
+                            }
                         }
                     }
                 } catch (GoatException e) {
