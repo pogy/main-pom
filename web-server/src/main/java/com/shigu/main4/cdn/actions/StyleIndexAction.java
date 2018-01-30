@@ -51,9 +51,10 @@ public class StyleIndexAction {
         if (!SUCCESS.equals(varifyResult)) {
             return varifyResult;
         }
-        model.addAttribute("styleBanner", styleChannelService.selStyleIndexBanner(bo.getSpid()));
-        //model.addAttribute("shopList",shopList)
-        model.addAttribute("hotSaleGoodsList", styleChannelService.selStyleHotStyleList(bo.getSpid()));
+        Long spid = bo.getSpid();
+        model.addAttribute("styleBanner", styleChannelService.selStyleIndexBanner(spid));
+        model.addAttribute("shopList",styleChannelService.selSpreadShop(spid));
+        model.addAttribute("hotSaleGoodsList", styleChannelService.selStyleHotStyleList(spid));
         return "styleChannel/styleIndex";
     }
 

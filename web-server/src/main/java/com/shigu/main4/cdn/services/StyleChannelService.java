@@ -4,12 +4,11 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
 import com.shigu.main4.cdn.bo.StyleChannelGoodsSearchBO;
-import com.shigu.main4.cdn.vo.FloorVO;
-import com.shigu.main4.cdn.vo.ShopInFloorVO;
-import com.shigu.main4.cdn.vo.StyleChannelMarketVO;
-import com.shigu.main4.cdn.vo.StyleGoodsInSearch;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
@@ -99,6 +98,11 @@ public class StyleChannelService {
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+    @Autowired
+    private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
+
+    @Autowired
+    private ShiguMarketMapper shiguMarketMapper;
 
     //市场店铺数据缓存
     private final String STYLE_MARKET_SHOP_CACHE_FORMAT = "cached_shops_for_market_%d_style_%d";
@@ -453,7 +457,7 @@ public class StyleChannelService {
                         return goodsVo;
                     }).collect(Collectors.toList());
                 } catch (GoatException e) {
-                    logger.error("获取风格推荐广告商品数据异常", e);
+                    logger.error("获取风格推荐广告商品数据异常" + vo.recommendTag(), e);
                 }
                 return recommendList;
             }
@@ -519,7 +523,7 @@ public class StyleChannelService {
                     }
 
                 } catch (GoatException e) {
-                    logger.error("获取风格热销数据失败", e);
+                    logger.error("获取风格热销数据失败" + vo.hotStyleTag(), e);
                 }
                 return list;
             }
@@ -528,6 +532,7 @@ public class StyleChannelService {
 
     /**
      * 获取风格频道首页轮播大图
+     *
      * @param parentStyleId
      * @return
      */
@@ -541,6 +546,113 @@ public class StyleChannelService {
             return new ArrayList<>();
         }
         return spreadService.selImgBanners(spreadEnum).selObj();
+    }
+
+    public List<StyleSpreadShopVO> selSpreadShop(Long parentStyleId) {
+        StyleSpreadChannelVO channel = getStyleSpreadChannel(parentStyleId);
+        if (channel == null) {
+            return new ArrayList<>();
+        }
+        return selSpreadShop(channel).selObj();
+    }
+
+    public ObjFromCache<List<StyleSpreadShopVO>> selSpreadShop(StyleSpreadChannelVO vo) {
+        return new ObjFromCache<List<StyleSpreadShopVO>>(redisForIndexPage, vo.goatShopTag(), StyleSpreadShopVO.class) {
+            @Override
+            public List<StyleSpreadShopVO> selReal() {
+                if (StyleSpreadChannelVO.ERROR_TAG.equals(vo.goatShopTag())) {
+                    return new ArrayList<>();
+                }
+                //一个店铺中的广告商品的数量
+                int shopGoodsSize = 2;
+                List<StyleSpreadShopVO> vos = new ArrayList<>();
+                try {
+                    //因为是公司运营添加的广告商品，所以没有对商品实际风格进行限制
+                    List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(vo.goatShopTag());
+                    Set<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toSet());
+                    List<Long> goodsIdsList = new ArrayList<>(goodsIds);
+                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                    shiguGoodsTinyExample.setWebSite(vo.getWebSite());
+                    shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIdsList);
+                    List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,store_id"));
+                    HashMap<Long, List<StyleSpreadShopGoodsVO>> shopGoodsMap = new HashMap<>();
+                    for (ShiguGoodsTiny shiguGoodsTiny : shiguGoodsTinies) {
+                        List<StyleSpreadShopGoodsVO> styleSpreadShopGoodsVOS = shopGoodsMap.get(shiguGoodsTiny.getStoreId());
+                        if (styleSpreadShopGoodsVOS == null) {
+                            styleSpreadShopGoodsVOS = new ArrayList<>();
+                            shopGoodsMap.put(shiguGoodsTiny.getStoreId(), styleSpreadShopGoodsVOS);
+                        }
+                        StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
+                        goodsVO.setGoodsId(shiguGoodsTiny.getGoodsId());
+                        goodsVO.setImgsrc(shiguGoodsTiny.getPicUrl());
+                        styleSpreadShopGoodsVOS.add(goodsVO);
+                    }
+                    Set<Long> shopIds = new HashSet<>(shopGoodsMap.keySet());
+                    if (shiguGoodsTinies.size() < goodsIds.size()) {
+                        //有商品下架了
+                        ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
+                        shiguGoodsSoldoutExample.setWebSite(vo.getWebSite());
+                        shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(goodsIdsList);
+                        List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("store_id"));
+                        shopIds.addAll(shiguGoodsSoldouts.stream().filter(shiguGoodsSoldout -> shiguGoodsSoldout.getStoreId() != null).map(ShiguGoodsSoldout::getStoreId).collect(Collectors.toList()));
+                    }
+                    for (Long shopId : shopIds) {
+                        List<StyleSpreadShopGoodsVO> shopGoodsInfos = shopGoodsMap.get(shopId);
+                        if (shopGoodsInfos == null) {
+                            shopGoodsInfos = new ArrayList<>();
+                            shopGoodsMap.put(shopId, shopGoodsInfos);
+                        }
+                        int goodsSize = shopGoodsInfos.size();
+                        if (goodsSize > shopGoodsSize) {
+                            shopGoodsInfos = new ArrayList<>(shopGoodsInfos.subList(0, shopGoodsSize));
+                            shopGoodsMap.put(shopId, shopGoodsInfos);
+                        }
+                        if (goodsSize < shopGoodsSize) {
+                            //有商品下架了或商品个数不足，从对应店铺获取对应风格商品数据填充，正常维护数据时不会进入这部分流程
+                            List<Long> existedGoodsIds = BeanMapper.getFieldList(shopGoodsInfos, "goodsId", Long.class);
+                            List<GoodsStyleInfoBean> goodsStyleInfoBeans = shiguGoodsTinyMapper.selShopStyleGoods(vo.getWebSite(), shopId, vo.getStyleId(), existedGoodsIds, 0, shopGoodsSize - goodsSize);
+                            for (GoodsStyleInfoBean goodsStyleInfoBean : goodsStyleInfoBeans) {
+                                StyleSpreadShopGoodsVO goodsVO = new StyleSpreadShopGoodsVO();
+                                goodsVO.setGoodsId(goodsStyleInfoBean.getGoodsId());
+                                goodsVO.setImgsrc(goodsStyleInfoBean.getImgsrc());
+                                shopGoodsInfos.add(goodsVO);
+                            }
+                        }
+                    }
+                    //开店的档口
+                    if (shopIds.size() > 0) {
+                        ShiguShopExample shiguShopExample = new ShiguShopExample();
+                        shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(shopIds)).andShopStatusEqualTo(0);
+                        List<ShiguShop> shiguShops = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,market_id,shop_num,create_date"));
+                        Map<Long, String> marketIdNameMap = new HashMap<>();
+                        Set<Long> marketIds = shiguShops.stream().filter(shiguShop -> shiguShop.getMarketId() != null).map(ShiguShop::getMarketId).collect(Collectors.toSet());
+                        if (marketIds.size() > 0) {
+                            ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+                            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<>(marketIds));
+                            marketIdNameMap.putAll(shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name")).stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName)));
+                        }
+                        for (ShiguShop shiguShop : shiguShops) {
+                            Long shopId = shiguShop.getShopId();
+                            StyleSpreadShopVO shopVO = new StyleSpreadShopVO();
+                            shopVO.setShopId(shopId);
+                            String marketName = marketIdNameMap.get(shiguShop.getMarketId());
+                            shopVO.setShopName((marketName == null ? "" : marketName) + shiguShop.getShopNum());
+                            Calendar calendar = Calendar.getInstance();
+                            int curYear = calendar.get(Calendar.YEAR);
+                            Date createDate = shiguShop.getCreateDate();
+                            calendar.setTime(createDate);
+                            int createYear = calendar.get(Calendar.YEAR);
+                            shopVO.setShopAge(curYear - createYear + 1);
+                            shopVO.setGoodsList(shopGoodsMap.get(shopId));
+                            vos.add(shopVO);
+                        }
+                    }
+                } catch (GoatException e) {
+                    logger.error("获取风格频道首页档口数据失败" + vo.goatShopTag(), e);
+                }
+                return vos;
+            }
+        };
     }
 
     private StyleSpreadChannelVO getStyleSpreadChannel(Long parentStyleId) {

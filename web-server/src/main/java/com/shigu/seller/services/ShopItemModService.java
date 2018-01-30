@@ -435,7 +435,7 @@ public class ShopItemModService {
         if (StringUtils.isBlank(webSite) || null == shopId || parentStyleId == null) {
             return Collections.EMPTY_LIST;
         }
-        List<GoodsStyleInfoBean> list = shiguGoodsTinyMapper.selShopStyleGoods(webSite, shopId, parentStyleId, stateIndex, endIndex);
+        List<GoodsStyleInfoBean> list = shiguGoodsTinyMapper.selShopStyleGoods(webSite, shopId, parentStyleId, null, stateIndex, endIndex);
         if (list.size() == 0) {
             return Collections.EMPTY_LIST;
         }

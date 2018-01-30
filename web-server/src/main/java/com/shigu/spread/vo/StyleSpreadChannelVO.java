@@ -29,7 +29,7 @@ public class StyleSpreadChannelVO implements Serializable {
         return "STYLE_CHANNEL_BANNER_" + spreadTag;
     }
 
-    public String goadShopTag() {
+    public String goatShopTag() {
         if (styleId == null || StringUtils.isBlank(spreadTag)) {
             return ERROR_TAG;
         }
@@ -67,5 +67,9 @@ public class StyleSpreadChannelVO implements Serializable {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public Long getStyleId() {
+        return styleId;
     }
 }

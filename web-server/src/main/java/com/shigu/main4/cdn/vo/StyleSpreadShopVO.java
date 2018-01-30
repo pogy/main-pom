@@ -18,7 +18,7 @@ public class StyleSpreadShopVO implements Serializable {
     //档口年限
     private Integer shopAge;
     //商品列表
-    private List<StylleSpreadShopGoodsVO> goodsList;
+    private List<StyleSpreadShopGoodsVO> goodsList;
 
     public Long getShopId() {
         return shopId;
@@ -44,11 +44,11 @@ public class StyleSpreadShopVO implements Serializable {
         this.shopAge = shopAge;
     }
 
-    public List<StylleSpreadShopGoodsVO> getGoodsList() {
+    public List<StyleSpreadShopGoodsVO> getGoodsList() {
         return goodsList;
     }
 
-    public void setGoodsList(List<StylleSpreadShopGoodsVO> goodsList) {
+    public void setGoodsList(List<StyleSpreadShopGoodsVO> goodsList) {
         this.goodsList = goodsList;
     }
 }

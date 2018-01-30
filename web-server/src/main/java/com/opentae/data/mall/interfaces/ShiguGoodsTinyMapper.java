@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
 import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
+import com.shigu.main4.cdn.vo.StyleSpreadShopGoodsVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -56,5 +57,6 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
      * @param endIndex
      * @return
      */
-    List<GoodsStyleInfoBean> selShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleId") Long parentStyleId, int startIndex, int endIndex);
+    List<GoodsStyleInfoBean> selShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleId") Long parentStyleId, @Param("ignoredGoodsIds") List<Long> ignoredGoodsIds, int startIndex, int endIndex);
+
 }
