@@ -41,7 +41,7 @@ public class UnzipUtil {
     @SuppressWarnings("unchecked")
     public synchronized String unzipFile(String zipFileName) throws Exception {
     	String csvName="";
-    	String pathString=new Date().getTime()+"";
+//    	String pathString=new Date().getTime()+"";
         try {
             File f = new File(zipFileName);
             ZipFile zipFile = new ZipFile(zipFileName);
@@ -203,17 +203,17 @@ public class UnzipUtil {
     }
 
     public static String  dealccaddr(String addr,String t2){
-    	String se1="";
-		try {
-			se1 = new String(addr.getBytes("gbk"));
-			//if(addr.endsWith(".csv")){
-				////System.out.println("addr="+se1);
-			//}
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	////System.out.println(se1);
+//    	String se1="";
+//		try {
+//			se1 = new String(addr.getBytes("gbk"));
+//			//if(addr.endsWith(".csv")){
+//				//System.out.println("addr="+se1);
+//			//}
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+    	//System.out.println(se1);
     	String repalced="";
         	int se=addr.lastIndexOf("\\");
         	////System.out.println(se);

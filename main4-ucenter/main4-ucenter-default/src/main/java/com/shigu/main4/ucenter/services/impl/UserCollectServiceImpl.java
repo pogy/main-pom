@@ -560,7 +560,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         // 生成文件数据
         date_package = version + "\r\n" + title_EString + "\r\n" + title_CString + "\r\n" + contentBuffer.toString();
 
-        String s = date_package;
+//        String s = date_package;
         String savepath = relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "571sjb.csv";
 
         //生成csv文件

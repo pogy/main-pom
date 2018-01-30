@@ -71,7 +71,7 @@ public class ThirdSupportAction {
     public JSONObject shortCompleteChecked(ShortCompleteCheckedRequest request) throws OpenException {
         ShortCompleteCheckedResponse response = new ShortCompleteCheckedResponse();
         response.setSuccess(true);
-        OpenException exception = new OpenException();
+//        OpenException exception = new OpenException();
         if (request.getBarCodeMore() == null) {
             response.setSkuList(new ArrayList<>());
             response.setSumNum(0);

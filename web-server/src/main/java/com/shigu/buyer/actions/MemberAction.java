@@ -121,9 +121,9 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
-    private final String MEMBER_PATH = "member";
+    private final static String MEMBER_PATH = "member";
 
-    private final String SELLER_PATH = "seller";
+    private final  static String SELLER_PATH = "seller";
 
 
     /**
@@ -1398,7 +1398,7 @@ public class MemberAction {
             return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double)10) * 0.01));
     }
 
     /**

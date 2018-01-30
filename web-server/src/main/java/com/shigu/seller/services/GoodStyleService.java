@@ -46,8 +46,8 @@ public class GoodStyleService {
         SearchCategoryExample example = new SearchCategoryExample();
         example.createCriteria().andTypeEqualTo(1).andWebSiteEqualTo(webSite);
         //朱类目
-        List<SearchCategory> list2 =new ArrayList<>();
-        list2=SearchCategoryMapper.selectByExample(example);
+//        List<SearchCategory> list2 =new ArrayList<>();
+        List<SearchCategory> list2=SearchCategoryMapper.selectByExample(example);
         //所有的 主类目 值
 //        List<String> collect = new ArrayList<>();
         if(pid!=null){
@@ -185,9 +185,9 @@ public class GoodStyleService {
             //风格id集合
             List<Long> sids = shiguCustomerStyles1.stream().map(ShiguCustomerStyle::getStyleId).collect(Collectors.toList());
             //
-            List<Map<String, Long>> maps =new ArrayList<>();
+//            List<Map<String, Long>> maps =new ArrayList<>();
 
-            maps = goodsCountForsearchMapper.countGoodsByStyles(userId, sids, webSite);
+            List<Map<String, Long>> maps = goodsCountForsearchMapper.countGoodsByStyles(userId, sids, webSite);
             for (SearchCategory searchCategory:list) {
                 CategoryTabsVo categoryTabsVo = new CategoryTabsVo();
                 categoryTabsVo.setCateId(searchCategory.getCateValue());
