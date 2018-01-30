@@ -49,12 +49,10 @@
                 <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
             </li>
             <#list catemenu as cate>
-                <#list cate.detailitems as cateItem>
-                    <#list cateItem.items as item>
-                        <li <#if query.cid?? && query.cid == item.cid || query.keyword?? && query.keyword == item.keyword>class="selected"</#if>>
-                            <a href="?webSite=${query.webSite!}&spid=${query.spid!}&cid=${item.cid!}&keyword=${item.keyword!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${item.text!}</a>
-                        </li>
-                    </#list>
+                <#list cate.submenu as item>
+                    <li <#if query.cid?? && query.cid == item.cid || query.keyword?? && query.keyword == item.keyword>class="selected"</#if>>
+                        <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if item.cid??>&cid=${item.cid!}</#if><#if item.keyword??>&keyword=${item.keyword!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${item.text!}</a>
+                    </li>
                 </#list>
             </#list>
         </ul>
