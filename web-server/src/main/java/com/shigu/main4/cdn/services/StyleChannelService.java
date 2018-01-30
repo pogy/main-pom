@@ -431,31 +431,33 @@ public class StyleChannelService {
                     List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(localCode);
                     //广告商品id集合
                     List<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toList());
-                    ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-                    shiguGoodsTinyExample.setWebSite(vo.getWebSite());
-                    shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIds);
-                    //做广告的商品id
-                    List<ShiguGoodsTiny> goatGoods = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,title,pic_url,goods_no,store_id"));
-                    Set<Long> shopIds = goatGoods.stream().filter(shiguGoodsTiny -> shiguGoodsTiny.getStoreId() != null).map(ShiguGoodsTiny::getStoreId).collect(Collectors.toSet());
-                    Map<Long, SearchShopSimple> shopMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), vo.getWebSite()).stream().filter(searchShopSimple -> searchShopSimple.getShopId() != null).collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
-                    recommendList = goatGoods.stream().map(g -> {
-                        StyleGoodsInSearch goodsVo = new StyleGoodsInSearch();
-                        goodsVo.setId(g.getGoodsId());
-                        goodsVo.setTitle(g.getTitle());
-                        goodsVo.setImgsrc(g.getPicUrl());
-                        goodsVo.setPiprice(g.getPiPriceString());
-                        goodsVo.setGoodsNo(g.getGoodsNo());
-                        goodsVo.setShopId(g.getStoreId());
-                        SearchShopSimple searchShopSimple = shopMap.get(g.getStoreId());
-                        if (searchShopSimple != null) {
-                            goodsVo.setAliww(searchShopSimple.getImAliww());
-                            goodsVo.setFullStoreName(searchShopSimple.getMarket() + " " + searchShopSimple.getShopNum());
-                        }
-                        //这里没用到
-                        goodsVo.setHighLightGoodsNo("");
-                        goodsVo.setHighLightTitle("");
-                        return goodsVo;
-                    }).collect(Collectors.toList());
+                    if (goodsIds.size()>0) {
+                        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                        shiguGoodsTinyExample.setWebSite(vo.getWebSite());
+                        shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIds);
+                        //做广告的商品id
+                        List<ShiguGoodsTiny> goatGoods = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,title,pic_url,goods_no,store_id"));
+                        Set<Long> shopIds = goatGoods.stream().filter(shiguGoodsTiny -> shiguGoodsTiny.getStoreId() != null).map(ShiguGoodsTiny::getStoreId).collect(Collectors.toSet());
+                        Map<Long, SearchShopSimple> shopMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), vo.getWebSite()).stream().filter(searchShopSimple -> searchShopSimple.getShopId() != null).collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
+                        recommendList = goatGoods.stream().map(g -> {
+                            StyleGoodsInSearch goodsVo = new StyleGoodsInSearch();
+                            goodsVo.setId(g.getGoodsId());
+                            goodsVo.setTitle(g.getTitle());
+                            goodsVo.setImgsrc(g.getPicUrl());
+                            goodsVo.setPiprice(g.getPiPriceString());
+                            goodsVo.setGoodsNo(g.getGoodsNo());
+                            goodsVo.setShopId(g.getStoreId());
+                            SearchShopSimple searchShopSimple = shopMap.get(g.getStoreId());
+                            if (searchShopSimple != null) {
+                                goodsVo.setAliww(searchShopSimple.getImAliww());
+                                goodsVo.setFullStoreName(searchShopSimple.getMarket() + " " + searchShopSimple.getShopNum());
+                            }
+                            //这里没用到
+                            goodsVo.setHighLightGoodsNo("");
+                            goodsVo.setHighLightTitle("");
+                            return goodsVo;
+                        }).collect(Collectors.toList());
+                    }
                 } catch (GoatException e) {
                     logger.error("获取风格推荐广告商品数据异常" + vo.recommendTag(), e);
                 }
