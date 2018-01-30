@@ -111,7 +111,7 @@ public class ApiReguarFilter implements Filter {
      */
     public Map<String, String[]> parseJsonArray(String key, JsonArray arr) {
         Map<String, String[]> allparams = new HashMap<String, String[]>();
-        List<String> arrList = new ArrayList<String>();
+//        List<String> arrList = new ArrayList<String>();
         for (int i = 0; i < arr.size(); i++) {
             String hereKey = key + "[" + i + "]";
             JsonElement el = arr.get(i);

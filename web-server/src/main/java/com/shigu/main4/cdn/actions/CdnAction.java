@@ -1001,7 +1001,10 @@ public class CdnAction {
         }
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
-        List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
+        List<CdnShopCatVO> cats = new ArrayList<>();
+        if (shop != null) {
+            cats =cdnService.cdnShopCat(shop.getShopId());
+        }
 
 //      List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();
@@ -1134,9 +1137,9 @@ public class CdnAction {
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum = 0l;
-        if(shopForCdnService.selShopStarById(cdnItem.getShopId())!=null){
-            starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
+        if (starNum == null) {
+            starNum = 0L;
         }
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));

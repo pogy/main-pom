@@ -28,7 +28,7 @@ public class TestUUID {
     public static  String getgoodsId(Long storeId,Integer pki){
         String orderNo = "" ;
         UUID uuid = UUID.randomUUID();
-        String trandNo = String.valueOf((Math.random() * 9 + 1) * 1000000);
+//        String trandNo = String.valueOf((Math.random() * 9 + 1) * 1000000);
         String sdf = new SimpleDateFormat ("yyyyMMddHHMMSS").format(new Date ());
         orderNo = uuid.toString().substring(0, 8);
         orderNo = orderNo + sdf ;
