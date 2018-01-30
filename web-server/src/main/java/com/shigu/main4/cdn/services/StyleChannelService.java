@@ -498,6 +498,7 @@ public class StyleChannelService {
                     Set<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> itemGoatVO.getItemId() != null).map(ItemGoatVO::getItemId).collect(Collectors.toSet());
                     if (goodsIds.size() > 0) {
                         ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                        shiguGoodsTinyExample.setWebSite(vo.getWebSite());
                         shiguGoodsTinyExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds));
                         List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,pi_price_string,store_id"));
                         Map<Long, ShiguGoodsTiny> goodsTinyMap = shiguGoodsTinies.stream().collect(Collectors.toMap(ShiguGoodsTiny::getGoodsId, o -> o));

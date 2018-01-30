@@ -26,6 +26,7 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
 
     /**
      * 下架的商品
+     *
      * @param website
      * @param goodsIds
      * @return
@@ -34,14 +35,16 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
 
     /**
      * 看了又看
+     *
      * @param website
      * @param storeId
      * @return
      */
-    List<ItemForList> selForSee(@Param("website") String website,@Param("storeId") Long storeId);
+    List<ItemForList> selForSee(@Param("website") String website, @Param("storeId") Long storeId);
 
     /**
      * 统计店铺内各风格商品数
+     *
      * @param shopId
      * @param parentStyleIds
      * @return
@@ -50,6 +53,7 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
 
     /**
      * 查询店内风格商品
+     *
      * @param webSite
      * @param shopId
      * @param parentStyleId
@@ -57,6 +61,6 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
      * @param endIndex
      * @return
      */
-    List<GoodsStyleInfoBean> selShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleId") Long parentStyleId, @Param("ignoredGoodsIds") List<Long> ignoredGoodsIds, int startIndex, int endIndex);
+    List<GoodsStyleInfoBean> selShopStyleGoods(@Param("website") String webSite, @Param("shopId") Long shopId, @Param("parentStyleId") Long parentStyleId, @Param("ignoredGoodsIds") List<Long> ignoredGoodsIds, @Param("startIndex") Integer startIndex, @Param("endIndex") Integer endIndex);
 
 }
