@@ -119,7 +119,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService {
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
 
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<>();// 页面VO容器
-        if (!drawGoodsList.isEmpty()) {
+        if (drawGoodsList != null && !drawGoodsList.isEmpty()) {
             List<Long> goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", Long.class);
             ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
             ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();

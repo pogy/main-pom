@@ -411,7 +411,10 @@ public class UserCollectServiceImpl implements UserCollectService {
             }
         } else {
             String props = sge.getProps();
-            if (!props.contains(colorId.toString()) || !props.contains(sizeId.toString())) {
+            if (colorId == null || !props.contains(colorId.toString())) {
+                return null;
+            }
+            if (sizeId == null || !props.contains(sizeId.toString())) {
                 return null;
             }
             //获取尺码属性
