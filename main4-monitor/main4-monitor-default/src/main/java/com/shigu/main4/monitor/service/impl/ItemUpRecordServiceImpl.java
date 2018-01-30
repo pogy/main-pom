@@ -168,7 +168,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
      * @param itemUpRecordVO
      */
     public void countUploadForCash(ItemUpRecordVO itemUpRecordVO) {
-        if ("onsale".equals(itemUpRecordVO.getApproveStatus())) {
+        if ("web-tb".equals(itemUpRecordVO.getFlag()) && "onsale".equals(itemUpRecordVO.getApproveStatus())) {
             Date now = new Date();
             ShiguNewActivity activity = getActivityNow(now); // 获取当前活动
             if (activity != null) {
