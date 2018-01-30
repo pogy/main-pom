@@ -51,6 +51,13 @@
         SELECT a.goods_id goodsId, a.title title, a.pic_url imgsrc, b.style_id styleId
         FROM shigu_goods_tiny_${website} a, goods_count_forsearch b
         WHERE a.store_id = #{shopId} AND b.goods_id = a.goods_id and b.parent_style_id = #{parentStyleId}
+        <if test="null != ignoredGoodsIds and ignoredGoodsIds.size > 0">
+            AND a.goods_id NOT IN
+            <foreach collection="ignoredGoodsIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY a.created DESC
         LIMIT #{startIndex},#{endIndex}
     </select>
 
