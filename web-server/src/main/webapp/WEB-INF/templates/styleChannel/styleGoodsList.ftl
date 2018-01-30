@@ -37,7 +37,7 @@
 </#if>
 </#list>
 <#include "/__ftl_links__/styleChannel__common__pageNav.ftl">
-<div class="layout">
+<div class="layout pr">
 <#list [{"style":"close"}] as $it>
 <#include "/__ftl_links__/styleChannel__common__pageCateMenu.ftl">
 </#list>
