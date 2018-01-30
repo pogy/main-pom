@@ -13,12 +13,18 @@ public class SubStyleCateNavVO implements Serializable {
 
     //子类目名称
     private String text;
-    //子类目列表，格式：类目名|id或keyword，多个用空格隔开
-    private String items;
+    //子类目所属pid
+    private Long pid;
+    //子类目id, 有cid没有keyword
+    private Long cid;
+    //类目keyword,有keyword没有cid
+    private String keyword;
 
-    public SubStyleCateNavVO(String text, String items) {
+    public SubStyleCateNavVO(String text, Long pid, Long cid, String keyword) {
         this.text = text;
-        this.items = items;
+        this.pid = pid;
+        this.cid = cid;
+        this.keyword = keyword;
     }
 
     public String getText() {
@@ -29,11 +35,27 @@ public class SubStyleCateNavVO implements Serializable {
         this.text = text;
     }
 
-    public String getItems() {
-        return items;
+    public Long getPid() {
+        return pid;
     }
 
-    public void setItems(String items) {
-        this.items = items;
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    public Long getCid() {
+        return cid;
+    }
+
+    public void setCid(Long cid) {
+        this.cid = cid;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

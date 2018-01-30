@@ -78,21 +78,22 @@ public class IndexShowService {
 
     /**
      * 把商品总数数字按个排出
+     *
      * @return
      */
-    public ObjFromCache<List<Integer>> selNumList(){
-        return new ObjFromCache<List<Integer>>(redisForIndexPage,"selNumList",Integer.class){
+    public ObjFromCache<List<Integer>> selNumList() {
+        return new ObjFromCache<List<Integer>>(redisForIndexPage, "selNumList", Integer.class) {
             @Override
             public List<Integer> selReal() {
-                int count=shiguGoodsIdGeneratorMapper.countByExample(new ShiguGoodsIdGeneratorExample());
-                List<Integer> list=new ArrayList<>();
-                while(count>0){
-                    if(count/10>0){
-                        list.add(count%10);
-                    }else{
+                int count = shiguGoodsIdGeneratorMapper.countByExample(new ShiguGoodsIdGeneratorExample());
+                List<Integer> list = new ArrayList<>();
+                while (count > 0) {
+                    if (count / 10 > 0) {
+                        list.add(count % 10);
+                    } else {
                         list.add(count);
                     }
-                    count=count/10;
+                    count = count / 10;
                 }
                 //反转
                 Collections.reverse(list);
@@ -103,16 +104,17 @@ public class IndexShowService {
 
     /**
      * 取得会签
+     *
      * @param parentValue
      * @param category
      * @return
      */
-    public List<IndexNavVO> selStyleOrElementNav(String parentValue,SearchCategory category, String webSite){
-        List<CateNav> navs=categoryInSearchService.selSubCates(parentValue,category,webSite);
-        List<IndexNavVO> vos=new ArrayList<>();
+    public List<IndexNavVO> selStyleOrElementNav(String parentValue, SearchCategory category, String webSite) {
+        List<CateNav> navs = categoryInSearchService.selSubCates(parentValue, category, webSite);
+        List<IndexNavVO> vos = new ArrayList<>();
         if (navs != null) {
-            for(CateNav cn:navs){
-                vos.add(new IndexNavVO(cn.getText(),Long.valueOf(parentValue)));
+            for (CateNav cn : navs) {
+                vos.add(new IndexNavVO(cn.getText(), Long.valueOf(parentValue)));
             }
         }
         return vos;
@@ -120,21 +122,22 @@ public class IndexShowService {
 
     /**
      * 查首页标签类广告
+     *
      * @param spread
      * @return
      */
-    public ObjFromCache<List<IndexNavVO>> selNavVOs(final SpreadEnum spread){
-        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,spread.getCode(),IndexNavVO.class) {
+    public ObjFromCache<List<IndexNavVO>> selNavVOs(final SpreadEnum spread) {
+        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage, spread.getCode(), IndexNavVO.class) {
             @Override
             public List<IndexNavVO> selReal() {
-                List<IndexNavVO> navVOs=new ArrayList<>();
+                List<IndexNavVO> navVOs = new ArrayList<>();
                 try {
                     List<TextGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for (TextGoatVO tgv : goats) {
                         navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }
-                }catch (GoatException e){
-                    logger.error("查询标签类广告,miss",e);
+                } catch (GoatException e) {
+                    logger.error("查询标签类广告,miss", e);
                 }
                 return navVOs;
             }
@@ -143,26 +146,26 @@ public class IndexShowService {
     }
 
 
-
     /**
      * 猜你喜欢
+     *
      * @return
      */
-    public ObjFromCache<LoveGoodsList> loveGoods(final int number,final String text, final String webSite, final List<Long> cids){
-        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,webSite+"_"+text,LoveGoodsList.class) {
+    public ObjFromCache<LoveGoodsList> loveGoods(final int number, final String text, final String webSite, final List<Long> cids) {
+        return new ObjFromCache<LoveGoodsList>(redisForIndexPage, webSite + "_" + text, LoveGoodsList.class) {
             @Override
             public LoveGoodsList selReal() {
-                ShiguAggsPager pager=itemSearchService.searchItem(null,webSite,null,cids,null,null,null,null,
-                        null,null, SearchOrderBy.USER_LOVE,1,number,false);
-                ShiguPager<GoodsInSearch> goodsInSearch=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
-                List<GoodsInSearch> items=goodsInSearch.getContent();
-                LoveGoodsList loveGoodsList=new LoveGoodsList();
+                ShiguAggsPager pager = itemSearchService.searchItem(null, webSite, null, cids, null, null, null, null,
+                        null, null, SearchOrderBy.USER_LOVE, 1, number, false);
+                ShiguPager<GoodsInSearch> goodsInSearch = goodsSelFromEsService.addShopInfoToGoods(pager, webSite);
+                List<GoodsInSearch> items = goodsInSearch.getContent();
+                LoveGoodsList loveGoodsList = new LoveGoodsList();
                 loveGoodsList.setTypeText(text);
-                List<ItemSpreadVO> spreadVOs=new ArrayList<>();
+                List<ItemSpreadVO> spreadVOs = new ArrayList<>();
                 loveGoodsList.setItems(spreadVOs);
                 if (items != null) {
                     items.forEach(it -> {
-                        ItemSpreadVO itemSpreadVO=new ItemSpreadVO();
+                        ItemSpreadVO itemSpreadVO = new ItemSpreadVO();
                         itemSpreadVO.setId(it.getId());
                         itemSpreadVO.setImgsrc(it.getImgsrc());
                         itemSpreadVO.setMarketText(it.getFullStoreName());
@@ -179,11 +182,12 @@ public class IndexShowService {
 
     /**
      * 女上装
-     * @return  cid的list
+     *
+     * @return cid的list
      */
-    public List<Long> womanUp(){
+    public List<Long> womanUp() {
         //上装
-        List<Long> cids=new ArrayList<>();
+        List<Long> cids = new ArrayList<>();
         cids.add(50011277L);
         cids.add(162116L);
         cids.add(50000697L);
@@ -201,10 +205,11 @@ public class IndexShowService {
 
     /**
      * 女下装
+     *
      * @return
      */
-    public List<Long> womanBottom(){
-        List<Long> cids=new ArrayList<>();
+    public List<Long> womanBottom() {
+        List<Long> cids = new ArrayList<>();
         cids.add(162205L);
         cids.add(1623L);
         return cids;
@@ -212,40 +217,44 @@ public class IndexShowService {
 
     /**
      * 男夹克
+     *
      * @return
      */
-    public List<Long> manJack(){
-        List<Long> cids=new ArrayList<>();
+    public List<Long> manJack() {
+        List<Long> cids = new ArrayList<>();
         cids.add(50010158L);
         return cids;
     }
 
     /**
      * 棉衣
+     *
      * @return
      */
-    public List<Long> manMianyi(){
-        List<Long> cids=new ArrayList<>();
+    public List<Long> manMianyi() {
+        List<Long> cids = new ArrayList<>();
         cids.add(50011165L);
         return cids;
     }
 
     /**
      * 男休闲
+     *
      * @return
      */
-    public List<Long> manFree(){
-        List<Long> cids=new ArrayList<>();
+    public List<Long> manFree() {
+        List<Long> cids = new ArrayList<>();
         cids.add(3035L);
         return cids;
     }
 
     /**
      * 看鞋的类目
+     *
      * @return
      */
-    public List<Long> xie(){
-        List<Long> cids=new ArrayList<>();
+    public List<Long> xie() {
+        List<Long> cids = new ArrayList<>();
         cids.add(50011746L);
         cids.add(50011744L);
         cids.add(50011745L);
@@ -265,22 +274,24 @@ public class IndexShowService {
 
     /**
      * 商户个数
+     *
      * @param webSite
      * @return
      */
-    public int getShopAllCount(String webSite){
-        int shopcount = shiguShopMapper.selectShopCountByBo(null,null,null,null,
-                null,null,null,null,null);
+    public int getShopAllCount(String webSite) {
+        int shopcount = shiguShopMapper.selectShopCountByBo(null, null, null, null,
+                null, null, null, null, null);
         return shopcount;
     }
 
 
     /**
      * 杭州男装首页风格频道数据
+     *
      * @return
      */
     public ObjFromCache<List<StyleChannelVO>> selStyleChannelInfo() {
-        return new ObjFromCache<List<StyleChannelVO>>(redisForIndexPage,HZ_MAN_INDEX_STYLE_CHANNEL_INDEX,StyleChannelVO.class) {
+        return new ObjFromCache<List<StyleChannelVO>>(redisForIndexPage, HZ_MAN_INDEX_STYLE_CHANNEL_INDEX, StyleChannelVO.class) {
             @Override
             public List<StyleChannelVO> selReal() {
                 ShiguStyle shiguStyle = new ShiguStyle();
@@ -305,16 +316,42 @@ public class IndexShowService {
 
     /**
      * 风格频道导航栏
+     *
      * @return
      */
     public List<StyleCateNavVO> selStyleChannelCateNavVO() {
         if (styleCateNavVOStatic == null) {
             styleCateNavVOStatic = new ArrayList<>();
-            StyleCateNavVO manCoat = new StyleCateNavVO("manCoat");
-            manCoat.getDetailitems().add(new SubStyleCateNavVO("男装上衣","衬衫|pid=30&cid=50011123,针织衫/毛衣|pid=30&cid=50000557,外套|pid=30&keyword=外套,风衣|pid=30&cid=50011159,棉衣|pid=30&cid=50011165,羽绒服|pid=30&cid=50011167,毛呢大衣|pid=30&cid=50025883,皮衣|pid=30&cid=50011161,套装|pid=30&keyword=套装,西装|pid=30&cid=50010160,西装套装|pid=30&cid=50011130,运动套装|pid=30&keyword=运动套装,情侣装|pid=30&keyword=情侣装,背心/马甲|pid=30&cid=50011153"));
+            StyleCateNavVO manCoat = new StyleCateNavVO("manCoat", "男装上衣");
+            manCoat.add(new SubStyleCateNavVO("衬衫", 30L, 50011123L, null))
+                    .add(new SubStyleCateNavVO("针织衫/毛衣", 30L, 50000557L, null))
+                    .add(new SubStyleCateNavVO("外套", 30L, null, "外套"))
+                    .add(new SubStyleCateNavVO("风衣", 30L, 50011159L, null))
+                    .add(new SubStyleCateNavVO("棉衣", 30L, 50011165L, null))
+                    .add(new SubStyleCateNavVO("羽绒服", 30L, 50011167L, null))
+                    .add(new SubStyleCateNavVO("毛呢大衣", 30L, 50025883L, null))
+                    .add(new SubStyleCateNavVO("皮衣", 30L, 50011161L, null))
+                    .add(new SubStyleCateNavVO("套装", 30L, null, "套装"))
+                    .add(new SubStyleCateNavVO("西装", 30L, 50010160L, null))
+                    .add(new SubStyleCateNavVO("西装套装", 30L, 50011130L, null))
+                    .add(new SubStyleCateNavVO("运动套装", 30L, null, "运动套装"))
+                    .add(new SubStyleCateNavVO("情侣装", 30L, null, "情侣装"))
+                    .add(new SubStyleCateNavVO("背心/马甲", 30L, 50011153L, null));
+
             styleCateNavVOStatic.add(manCoat);
-            StyleCateNavVO manPants = new StyleCateNavVO("manPants");
-            manPants.getDetailitems().add(new SubStyleCateNavVO("男装裤子","休闲裤|pid=30&cid=3035,牛仔裤|pid=30&cid=50010167,运动裤|pid=30&keyword=运动裤,西装裤|pid=30&keyword=西装裤,工装裤|pid=30&keyword=工装裤,阔腿裤|pid=30&keyword=阔腿裤,哈伦裤|pid=30&keyword=哈伦裤,小脚裤|pid=30&keyword=小脚裤,卫裤|pid=30&keyword=卫裤,长裤|pid=30&keyword=长裤,九分裤|pid=30&keyword=九分裤,七分裤|pid=30&keyword=七分裤"));
+            StyleCateNavVO manPants = new StyleCateNavVO("manPants", "男装裤子");
+            manPants.add(new SubStyleCateNavVO("休闲裤", 30L, 3035L, null))
+                    .add(new SubStyleCateNavVO("牛仔裤", 30L, 50010167L, null))
+                    .add(new SubStyleCateNavVO("运动裤", 30L, null, "运动裤"))
+                    .add(new SubStyleCateNavVO("西装裤", 30L, null, "西装裤"))
+                    .add(new SubStyleCateNavVO("工装裤", 30L, null, "工装裤"))
+                    .add(new SubStyleCateNavVO("阔腿裤", 30L, null, "阔腿裤"))
+                    .add(new SubStyleCateNavVO("哈伦裤", 30L, null, "哈伦裤"))
+                    .add(new SubStyleCateNavVO("小脚裤", 30L, null, "小脚裤"))
+                    .add(new SubStyleCateNavVO("卫裤", 30L, null, "卫裤"))
+                    .add(new SubStyleCateNavVO("长裤", 30L, null, "长裤"))
+                    .add(new SubStyleCateNavVO("九分裤", 30L, null, "九分裤"))
+                    .add(new SubStyleCateNavVO("七分裤", 30L, null, "七分裤"));
             styleCateNavVOStatic.add(manPants);
         }
         return styleCateNavVOStatic;

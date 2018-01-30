@@ -14,11 +14,14 @@ import java.util.List;
 public class StyleCateNavVO implements Serializable {
     //类目标记
     private String id;
+    //类目名称
+    private String text;
     //子类目导航
-    private List<SubStyleCateNavVO> detailitems;
+    private List<SubStyleCateNavVO> submenu;
 
-    public StyleCateNavVO(String id) {
+    public StyleCateNavVO(String id, String text) {
         this.id = id;
+        this.text = text;
     }
 
     public String getId() {
@@ -29,14 +32,27 @@ public class StyleCateNavVO implements Serializable {
         this.id = id;
     }
 
-    public List<SubStyleCateNavVO> getDetailitems() {
-        if (detailitems == null) {
-            detailitems = new ArrayList<>();
-        }
-        return detailitems;
+    public String getText() {
+        return text;
     }
 
-    public void setDetailitems(List<SubStyleCateNavVO> detailitems) {
-        this.detailitems = detailitems;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public List<SubStyleCateNavVO> getSubmenu() {
+        if (submenu == null) {
+            submenu = new ArrayList<>();
+        }
+        return submenu;
+    }
+
+    public void setSubmenu(List<SubStyleCateNavVO> submenu) {
+        this.submenu = submenu;
+    }
+
+    public StyleCateNavVO add(SubStyleCateNavVO vo) {
+        this.getSubmenu().add(vo);
+        return this;
     }
 }
