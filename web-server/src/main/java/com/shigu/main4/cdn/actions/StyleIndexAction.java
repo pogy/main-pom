@@ -58,6 +58,12 @@ public class StyleIndexAction {
         return "styleChannel/styleIndex";
     }
 
+    /**
+     * 风格频道商品列表
+     * @param bo
+     * @param model
+     * @return
+     */
     @RequestMapping("styleGoodsList")
     public String styleGoodsList(StyleChannelGoodsSearchBO bo, Model model) {
         String varifyResult = varifyBoAndAddCommon(bo, model);
