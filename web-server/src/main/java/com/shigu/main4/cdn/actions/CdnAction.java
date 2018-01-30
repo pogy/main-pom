@@ -1127,9 +1127,9 @@ public class CdnAction {
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum = 0l;
-        if(shopForCdnService.selShopStarById(cdnItem.getShopId())!=null){
-            starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
+        if (starNum == null) {
+            starNum = 0L;
         }
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));

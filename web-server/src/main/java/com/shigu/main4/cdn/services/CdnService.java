@@ -241,9 +241,9 @@ public class CdnService {
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
         shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
-        Long starNum=0l;
-        if(shopForCdnService.selShopStarById(shopId)!=null){
-            starNum=shopForCdnService.selShopStarById(shopId);
+        Long starNum = shopForCdnService.selShopStarById(shopId);
+        if (starNum == null) {
+            starNum = 0L;
         }
         shopShowVO.setStarNum(starNum);
         return shopShowVO;
@@ -409,9 +409,9 @@ public class CdnService {
         vo.setShopNo(shop.getStoreNum());
         vo.setMobile(shop.getTelephone());
         //星星数
-        Long starNum=0l;
-        if(shopForCdnService.selShopStarById(shopId)!=null){
-            starNum=shopForCdnService.selShopStarById(shopId);
+        Long starNum = shopForCdnService.selShopStarById(shopId);
+        if (starNum == null) {
+            starNum = 0L;
         }
         vo.setStarNum(starNum);
         //其他信息
