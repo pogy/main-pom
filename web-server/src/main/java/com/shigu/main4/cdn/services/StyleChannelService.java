@@ -438,7 +438,7 @@ public class StyleChannelService {
                         shiguGoodsTinyExample.setWebSite(vo.getWebSite());
                         shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIds);
                         //做广告的商品id
-                        List<ShiguGoodsTiny> goatGoods = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,title,pic_url,goods_no,store_id"));
+                        List<ShiguGoodsTiny> goatGoods = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,title,pic_url,goods_no,store_id,pi_price"));
                         Set<Long> shopIds = goatGoods.stream().filter(shiguGoodsTiny -> shiguGoodsTiny.getStoreId() != null).map(ShiguGoodsTiny::getStoreId).collect(Collectors.toSet());
                         Map<Long, SearchShopSimple> shopMap = shopSearchService.selShopByIds(new ArrayList<>(shopIds), vo.getWebSite()).stream().filter(searchShopSimple -> searchShopSimple.getShopId() != null).collect(Collectors.toMap(SearchShopSimple::getShopId, o -> o));
                         recommendList = goatGoods.stream().map(g -> {
@@ -460,9 +460,6 @@ public class StyleChannelService {
                                 goodsVo.setAliww(searchShopSimple.getImAliww());
                                 goodsVo.setFullStoreName(searchShopSimple.getMarket() + " " + searchShopSimple.getShopNum());
                             }
-                            //这里没用到
-                            goodsVo.setHighLightGoodsNo("");
-                            goodsVo.setHighLightTitle("");
                             return goodsVo;
                         }).collect(Collectors.toList());
                     }
