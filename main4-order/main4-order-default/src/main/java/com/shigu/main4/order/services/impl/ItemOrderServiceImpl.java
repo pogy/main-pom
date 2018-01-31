@@ -140,6 +140,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             if (vo.getAreaIds() == null || vo.getAreaIds().size() == 0) {
                 if (vo.getCityIds() != null && vo.getCityIds().contains(cityId)) {
                     return true;
+                }else{
+                    if (provId != null && vo.getProvIds() != null) {
+                        if (vo.getProvIds().contains(provId)) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -235,7 +241,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
-        if (buyerAddress.getTownId() != null && someAreaCantSend(companyId, buyerAddress.getTownId(),
+        if (someAreaCantSend(companyId, buyerAddress.getTownId(),
                 buyerAddress.getCityId(), buyerAddress.getProvId())) {
             throw new OrderException("下单失败，该地区快递暂时无法送达");
         }
