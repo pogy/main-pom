@@ -200,9 +200,9 @@ public class CdnAction {
             model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
             //风格频道
             ObjFromCache<List<StyleChannelVO>> styleList = indexShowService.selStyleChannelInfo();
-            model.addAttribute("styleList",selFromCache(styleList));
+            model.addAttribute("styleList", selFromCache(styleList));
             return "hzMan/index";
-        }else {
+        } else {
             //****女装首页数据
             //热卖
             ObjFromCache<List<ItemSpreadVO>> itemSpreadRms = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_RM);
@@ -1011,11 +1011,11 @@ public class CdnAction {
         if ("kx".equalsIgnoreCase(goods.getWebSite())) {
             return oldItemForKx(id, model);
         }
-        CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
-        String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
+        CdnShopInfoVO shop = cdnService.cdnShopInfo(goods.getShopId());
+        String dzhtml = cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
         List<CdnShopCatVO> cats = new ArrayList<>();
         if (shop != null) {
-            cats =cdnService.cdnShopCat(shop.getShopId());
+            cats = cdnService.cdnShopCat(shop.getShopId());
         }
 
 //        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
@@ -1060,7 +1060,8 @@ public class CdnAction {
      */
     @RequestMapping("/itemGoat")
     @ResponseBody
-    public Object itemGoat(HttpServletRequest request, Long goodsId) throws JsonErrException {        if (goodsId == null) {
+    public Object itemGoat(HttpServletRequest request, Long goodsId) throws JsonErrException {
+        if (goodsId == null) {
             return JsonResponseUtil.error("非法的请求参数");
         }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);

@@ -106,7 +106,7 @@ public class ShopDesignService {
      * @return
      * @throws IOException
      */
-    public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
+    public ModuleVO selHeadModuleWithData(Long shopId, String webSite, Boolean isEditer) throws IOException {
         FitmentArea fitmentArea = shopFitmentService.selShopHead(shopId);
         if (fitmentArea == null) {
             return null;
@@ -605,7 +605,7 @@ public class ShopDesignService {
         return vo;
     }
 
-    public boolean defaultModuleValueIs(Long moduleId){
+    public boolean defaultModuleValueIs(Long moduleId) {
         if (moduleId == null) {
             return false;
         }
