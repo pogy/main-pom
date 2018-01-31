@@ -140,6 +140,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             if (vo.getAreaIds() == null || vo.getAreaIds().size() == 0) {
                 if (vo.getCityIds() != null && vo.getCityIds().contains(cityId)) {
                     return true;
+                }else{
+                    if (provId != null && vo.getProvIds() != null) {
+                        if (vo.getProvIds().contains(provId)) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
