@@ -428,7 +428,7 @@ if(pageType == 'W'){
                 <ul>
                     <li><a href="/styleGoodsList.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>全部商品</li>
                     <li><a href="/styleMarket.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>市场列表</li>
-                    <li><a href="/styleGoods.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>推荐商品</li>
+                    <li><a href="/styleRecommd.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>推荐商品</li>
                 </ul>
                 <a href="/styleIndex.htm?spid=${item.spid!}" target="_blank"><img src="${item.imgsrc!}"></a>
             </div>
@@ -460,7 +460,7 @@ if(pageType == 'W'){
             <li>
                 <i class="iconServer manDp"></i>
                 <p>15,000多家档口</p>
-                <span>集合最优质货源</span>
+                <span>精选货源 一网打尽</span>
             </li>
             <li>
                 <i class="iconServer manUp"></i>
