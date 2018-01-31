@@ -445,9 +445,15 @@ public class StyleChannelService {
                             StyleGoodsInSearch goodsVo = new StyleGoodsInSearch();
                             goodsVo.setId(g.getGoodsId());
                             goodsVo.setTitle(g.getTitle());
+                            goodsVo.setHighLightTitle(g.getTitle());
                             goodsVo.setImgsrc(g.getPicUrl());
                             goodsVo.setPiprice(String.format("%.2f", g.getPiPrice() * 0.01));
-                            goodsVo.setGoodsNo(g.getGoodsNo());
+                            String goodsNo = g.getGoodsNo();
+                            //配合前端需求，只有goodsNo存在时才输出
+                            if (StringUtils.isNotBlank(goodsNo)) {
+                                goodsVo.setGoodsNo(goodsNo);
+                                goodsVo.setHighLightGoodsNo(goodsNo);
+                            }
                             goodsVo.setShopId(g.getStoreId());
                             SearchShopSimple searchShopSimple = shopMap.get(g.getStoreId());
                             if (searchShopSimple != null) {
