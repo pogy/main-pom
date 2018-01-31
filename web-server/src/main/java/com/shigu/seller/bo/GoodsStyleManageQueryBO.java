@@ -14,6 +14,9 @@ public class GoodsStyleManageQueryBO implements Serializable {
     private Long spid;
 
     public Long getSpid() {
+        if (spid == null) {
+            spid = 1L;
+        }
         return spid;
     }
 

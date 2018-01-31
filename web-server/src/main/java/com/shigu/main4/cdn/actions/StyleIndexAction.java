@@ -101,9 +101,12 @@ public class StyleIndexAction {
             return varifyResult;
         }
         Long mid = bo.getMid();
-        model.addAttribute("marketId", null == mid ? 1 : mid);
+        if (mid == null) {
+            mid = 1L;
+        }
+        model.addAttribute("marketId", mid);
         model.addAttribute("markets", styleChannelService.selStyleMarkets("hz", bo.getSpid()));
-        model.addAttribute("marketList", styleChannelService.selStyleMarketShows(bo.getMid(), bo.getSpid()));
+        model.addAttribute("marketList", styleChannelService.selStyleMarketShows(mid, bo.getSpid()));
         return "styleChannel/styleMarket";
     }
 
