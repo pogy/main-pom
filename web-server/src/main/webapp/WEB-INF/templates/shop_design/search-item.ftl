@@ -3,6 +3,7 @@
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
 
     <div class="js-module" data-not-edit="" data-not-del="">
+        <#assign sortparam="id="+shop.shopId/>
         <#if shopStyles??>
             <div class="clearfix diyStyle">
                 <#list shopStyles as cate>
@@ -99,7 +100,6 @@
                     <#--<li class="sort">-->
                     <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
                     <#--</li>-->
-                    <#assign sortparam="id="+shop.shopId/>
                     <#if bo??>
                         <#if bo.spid??>
                             <#assign sortparam=sortparam+"&spid="+bo.spid/>
