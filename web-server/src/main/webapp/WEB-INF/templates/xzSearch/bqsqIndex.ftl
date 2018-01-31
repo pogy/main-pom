@@ -175,7 +175,7 @@
                     </div>
                     <div class="registHover">
                         <h2>加急登记</h2>
-                        <p>专业顾问分析，最快流程办理。</p>
+                        <p>专业顾问分析，高效流程办理。</p>
                         <div class="price"><em>&yen;</em>1000</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.30.6403c6c4dAGPor&amp;id=560129154701" target="_blank" class="contactBtn">立即办理</a>
                     </div>
