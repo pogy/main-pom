@@ -407,7 +407,9 @@ public class StyleChannelService {
         if (styleSpreadChannel == null) {
             return new ArrayList<>();
         }
-        return selStyleRecommendGoods(styleSpreadChannel).selObj();
+        List<StyleGoodsInSearch> recommend = selStyleRecommendGoods(styleSpreadChannel).selObj();
+        Collections.shuffle(recommend);
+        return recommend;
     }
 
     /**
@@ -431,7 +433,7 @@ public class StyleChannelService {
                     List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(localCode);
                     //广告商品id集合
                     List<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toList());
-                    if (goodsIds.size()>0) {
+                    if (goodsIds.size() > 0) {
                         ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
                         shiguGoodsTinyExample.setWebSite(vo.getWebSite());
                         shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIds);
@@ -476,7 +478,9 @@ public class StyleChannelService {
         if (styleSpreadChannel == null) {
             return new ArrayList<>();
         }
-        return selStyleHotStyleGoods(styleSpreadChannel).selObj();
+        List<NewHzManIndexItemGoatVO> hotSale = selStyleHotStyleGoods(styleSpreadChannel).selObj();
+        Collections.shuffle(hotSale);
+        return hotSale;
     }
 
     /**
@@ -556,7 +560,9 @@ public class StyleChannelService {
         if (channel == null) {
             return new ArrayList<>();
         }
-        return selSpreadShop(channel).selObj();
+        List<StyleSpreadShopVO> shops = selSpreadShop(channel).selObj();
+        Collections.shuffle(shops);
+        return shops;
     }
 
     public ObjFromCache<List<StyleSpreadShopVO>> selSpreadShop(StyleSpreadChannelVO vo) {
@@ -574,7 +580,7 @@ public class StyleChannelService {
                     List<ItemGoatVO> goatVOS = goatDubboService.selGoatsFromLocalCode(vo.goatShopTag());
                     Set<Long> goodsIds = goatVOS.stream().filter(itemGoatVO -> null != itemGoatVO.getItemId()).map(ItemGoatVO::getItemId).collect(Collectors.toSet());
                     List<Long> goodsIdsList = new ArrayList<>(goodsIds);
-                    if (goodsIds.size()>0) {
+                    if (goodsIds.size() > 0) {
                         ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
                         shiguGoodsTinyExample.setWebSite(vo.getWebSite());
                         shiguGoodsTinyExample.createCriteria().andGoodsIdIn(goodsIdsList);
@@ -643,10 +649,12 @@ public class StyleChannelService {
                                 shopVO.setShopName((marketName == null ? "" : marketName) + shiguShop.getShopNum());
                                 Calendar calendar = Calendar.getInstance();
                                 int curYear = calendar.get(Calendar.YEAR);
+                                int curMonth = calendar.get(Calendar.MONTH);
                                 Date createDate = shiguShop.getCreateDate();
                                 calendar.setTime(createDate);
                                 int createYear = calendar.get(Calendar.YEAR);
-                                shopVO.setShopAge(curYear - createYear + 1);
+                                int createMonth = calendar.get(Calendar.MONTH);
+                                shopVO.setShopAge((curYear - createYear) + (curMonth - createMonth <= 0 ? 0 : 1));
                                 shopVO.setGoodsList(shopGoodsMap.get(shopId));
                                 vos.add(shopVO);
                             }
