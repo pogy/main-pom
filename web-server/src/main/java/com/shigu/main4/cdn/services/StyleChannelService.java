@@ -446,7 +446,7 @@ public class StyleChannelService {
                             goodsVo.setId(g.getGoodsId());
                             goodsVo.setTitle(g.getTitle());
                             goodsVo.setImgsrc(g.getPicUrl());
-                            goodsVo.setPiprice(g.getPiPriceString());
+                            goodsVo.setPiprice(String.format("%.2f", g.getPiPrice() * 0.01));
                             goodsVo.setGoodsNo(g.getGoodsNo());
                             goodsVo.setShopId(g.getStoreId());
                             SearchShopSimple searchShopSimple = shopMap.get(g.getStoreId());
