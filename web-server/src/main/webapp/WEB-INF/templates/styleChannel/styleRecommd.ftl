@@ -54,17 +54,11 @@
                     <span class="pricebox yahei">&yen; ${goods.piprice!}</span>
                     <span class="viewCountBox"></span>
                 </p>
-                <#if goods.goodsNo?? && goods.goodsNo != "">
-                    <p class="goodsNo"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank" title="${goods.goodsNo!}">货号：${goods.highLightGoodsNo}</a></p>
-                <#else>
-                    <p class="title"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank" title="${goods.title!}">${goods.highLightTitle}</a></p>
-                </#if>
+                <p class="title"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank" title="${goods.title!}">${goods.highLightTitle!}</a></p>
                 <div class="p3">
                     <span class="storeName"><a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
-<#list [{"id":""+goods.aliww}] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
-</#if>
+<#list [{"id":"${goods.aliww!}"}] as $it>
+<#include "/common/xz__imAliww.ftl">
 </#list>
                     <div class="upload">
                         <em><i class="iconUp"></i>一键上传</em>
