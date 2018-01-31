@@ -1,5 +1,5 @@
 <div class="J_TModule clearfix ui-droppable">
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161216" />
+    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20180131" />
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
 
     <div class="js-module" data-not-edit="" data-not-del="">
