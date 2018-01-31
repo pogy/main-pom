@@ -37,7 +37,7 @@
 
     <select id="countShopStyleGoods" resultType="com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean">
         SELECT b.parent_style_id parentStyleId,count(b.goods_id) styleGoodsCount
-        FROM shigu_goods_tiny_#{website} a, goods_count_forsearch b
+        FROM shigu_goods_tiny_${website} a, goods_count_forsearch b
         WHERE a.store_id = #{shopId} AND b.goods_id = a.goods_id
         and b.parent_style_id in
         <foreach collection="parentStyleIds" item="item" open="("

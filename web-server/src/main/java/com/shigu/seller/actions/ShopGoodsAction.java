@@ -40,7 +40,6 @@ public class ShopGoodsAction {
      * @return
      */
     @RequestMapping("seller/goodsStyleManager")
-    @ResponseBody
     public String goodsStyleManager(GoodsStyleManageQueryBO bo, Integer page, HttpSession session, Model model) {
         model.addAttribute("query",bo);
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
