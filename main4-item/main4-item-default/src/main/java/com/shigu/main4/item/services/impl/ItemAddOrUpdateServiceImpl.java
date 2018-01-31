@@ -706,6 +706,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      */
     @Override
     public void systemSynSomeItems(List<SynItem> items) throws SystemSynItemException {
+        items = items.stream().filter(item -> item != null).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(items)) {
             String webSite = items.get(0).getWebSite();
             Client client = ElasticConfiguration.client;

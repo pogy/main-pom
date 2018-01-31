@@ -1011,9 +1011,12 @@ public class CdnAction {
         if ("kx".equalsIgnoreCase(goods.getWebSite())) {
             return oldItemForKx(id, model);
         }
-        CdnShopInfoVO shop = cdnService.cdnShopInfo(goods.getShopId());
-        String dzhtml = cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
-        List<CdnShopCatVO> cats = cdnService.cdnShopCat(shop.getShopId());
+        CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
+        String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
+        List<CdnShopCatVO> cats = new ArrayList<>();
+        if (shop != null) {
+            cats =cdnService.cdnShopCat(shop.getShopId());
+        }
 
 //        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();
@@ -1136,7 +1139,7 @@ public class CdnAction {
             throw new CdnException("商品不存在");
         }
         //店招
-        String dz = cdnService.bannerHtml(cdnItem.getShopId(), cdnItem.getWebSite());
+//        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
 
         ItemBO bo = new ItemBO();
         bo.setId(id);
@@ -1149,7 +1152,7 @@ public class CdnAction {
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
         Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum = starNum == null ? 0 : starNum;
+        starNum = starNum == null ? 0L : starNum;
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
         itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
@@ -1161,7 +1164,7 @@ public class CdnAction {
             itemShowVO.getCdnItem().setTitle(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getTitle()));
             itemShowVO.getCdnItem().setDescription(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getDescription()));
         }
-        dz = KeyWordsUtil.duleKeyWords(dz);
+//        dz=KeyWordsUtil.duleKeyWords(dz);
 
         model.addAttribute("bo", bo);
         model.addAttribute("webSite", itemShowVO.getCdnItem().getWebSite());

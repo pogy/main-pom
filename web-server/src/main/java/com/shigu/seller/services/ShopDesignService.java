@@ -106,9 +106,13 @@ public class ShopDesignService {
      * @return
      * @throws IOException
      */
-    public ModuleVO selHeadModuleWithData(Long shopId, String webSite, Boolean isEditer) throws IOException {
-        List<FitmentModule> allarea = shopFitmentService.selShopHead(shopId).getAllarea();
-        if (allarea.isEmpty()) {
+    public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
+        FitmentArea fitmentArea = shopFitmentService.selShopHead(shopId);
+        if (fitmentArea == null) {
+            return null;
+        }
+        List<FitmentModule> allarea = fitmentArea.getAllarea();
+        if (allarea == null || allarea.isEmpty()) {
             return null;
         }
         return parseModule(allarea.get(0), selShopForModule(shopId, webSite)
@@ -601,7 +605,10 @@ public class ShopDesignService {
         return vo;
     }
 
-    public boolean defaultModuleValueIs(Long moduleId) {
+    public boolean defaultModuleValueIs(Long moduleId){
+        if (moduleId == null) {
+            return false;
+        }
         ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
         if (shopFitmentModule != null) {
             if ("{}".equals(shopFitmentModule.getModuleValue())) {

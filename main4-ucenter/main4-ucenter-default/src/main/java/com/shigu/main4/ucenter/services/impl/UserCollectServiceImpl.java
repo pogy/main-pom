@@ -411,7 +411,10 @@ public class UserCollectServiceImpl implements UserCollectService {
             }
         } else {
             String props = sge.getProps();
-            if (!props.contains(colorId.toString()) || !props.contains(sizeId.toString())) {
+            if (colorId == null || !props.contains(colorId.toString())) {
+                return null;
+            }
+            if (sizeId == null || !props.contains(sizeId.toString())) {
                 return null;
             }
             //获取尺码属性
@@ -560,7 +563,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         // 生成文件数据
         date_package = version + "\r\n" + title_EString + "\r\n" + title_CString + "\r\n" + contentBuffer.toString();
 
-        String s = date_package;
+//        String s = date_package;
         String savepath = relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "571sjb.csv";
 
         //生成csv文件

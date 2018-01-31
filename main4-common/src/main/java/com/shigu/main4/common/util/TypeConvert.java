@@ -86,9 +86,9 @@ public class TypeConvert {
         String currency_format="#,##0.000";
         int currency_scale=2;
         
-        DecimalFormat formater=new DecimalFormat(currency_format);
-        ParsePosition par=new ParsePosition(2); 
-        Number number=formater.parse("3.38886",par);        
+//        DecimalFormat formater=new DecimalFormat(currency_format);
+//        ParsePosition par=new ParsePosition(2);
+//        Number number=formater.parse("3.38886",par);
         Currency currency=Currency.getInstance(Locale.CHINA);
         //System.out.println(currency.getSymbol());
         try{ 
@@ -689,10 +689,10 @@ public class TypeConvert {
         try {
             meth = obj.getClass().getMethod(getFieldIndexName, null);
             Object retobj = meth.invoke(obj, null);  
-            String setFieldIndexName="set"+fieldIndexName;
+//            String setFieldIndexName="set"+fieldIndexName;
             Class partypes[] = new Class[1];
             partypes[0] = Integer.class; 
-            Method meth1 =obj.getClass().getMethod(setFieldIndexName, partypes);  
+//            Method meth1 =obj.getClass().getMethod(setFieldIndexName, partypes);
             Object arglist[] = new Object[1];
             arglist[0] = new Integer(1); 
             Object retobjTmp = meth.invoke(retobj, arglist); //产生自增号 

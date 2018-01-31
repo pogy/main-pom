@@ -3,6 +3,7 @@ package com.shigu.activity.actions;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
+import com.opentae.data.mall.beans.ShiguNewActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
@@ -29,6 +30,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -162,8 +164,10 @@ public class ActivityAction {
     public String awardInfo(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
-        List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs);
-        model.addAttribute("actList",actList);
+        List<ActiveForShowVO> activityAwardInfoList = activityWebService.getActivityAwardInfo(ps.getUserId()); // 上传发现金活动奖品
+        // List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs); // 其它活动奖品，暂停
+        // activityAwardInfoList.addAll(actList);
+        model.addAttribute("actList", activityAwardInfoList);
         return "fxs/awardInfo";
     }
 
@@ -351,7 +355,7 @@ public class ActivityAction {
         return "activity/apply";
     }
 
-    final String flag = "autumn_new5";
+    final static String flag = "autumn_new5";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
@@ -464,5 +468,22 @@ public class ActivityAction {
     @RequestMapping("redEnvelopeIntro")
     public String redEnvelopeIntro() {
         return "xzPage/redEnvelopeIntro";
+    }
+
+    /**
+     * 上传得现金活动介绍页面
+     */
+    @RequestMapping("activity/getCash")
+    public String activityGetCash(Model model) {
+        ShiguNewActivity activity = activityWebService.getActivityNow();
+        if (activity != null) {
+            model.addAttribute("bannerImg", StringUtils.isEmpty(activity.getBannerImgUrl()) ? "http://style.571xz.com/v6/xzPage/css/img/cash/banner.jpg" : activity.getBannerImgUrl());
+            model.addAttribute("actNumber", activity.getId());
+            model.addAttribute("actPeriod", DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
+                    + "—" + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
+            model.addAttribute("actEndTime", activity.getEndTime().getTime());
+            model.addAttribute("actNowTime", System.currentTimeMillis());
+        }
+        return "xzPage/cash";
     }
 }
