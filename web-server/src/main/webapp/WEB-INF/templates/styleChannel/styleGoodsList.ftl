@@ -238,4 +238,5 @@
 </#if>
 </div>
 <#include "/common/xz__footer.ftl">
+</body>
 <#include "/common/cnzz.ftl">

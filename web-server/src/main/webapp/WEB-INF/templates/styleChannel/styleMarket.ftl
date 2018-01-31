@@ -122,4 +122,5 @@ $$.setBg();  // 重新生成背景
 </script>
 </div>
 <#include "/common/xz__footer.ftl">
+</body>
 <#include "/common/cnzz.ftl">
