@@ -8,4 +8,11 @@
 		WHERE member_id = #{memberId}
 			AND new_active_id = #{activeId}
 	</update>
+
+	<update id="increaseUploadStoreNum">
+		UPDATE shigu_new_active_participants
+		SET goods_upload_store_num = goods_upload_store_num + 1
+		WHERE member_id = #{memberId}
+		AND new_active_id = #{activeId}
+	</update>
 </mapper>

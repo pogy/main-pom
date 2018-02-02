@@ -29,6 +29,11 @@ public class ShiguNewActivityUpRecord implements Serializable {
 	private Long goodsId;
 
     /**
+     * 类型：1=出售中，2=仓库中
+     */
+	private Integer type;
+
+    /**
      * 记录创建时间
      */
 	private Date gmtCreate;
@@ -70,6 +75,14 @@ public class ShiguNewActivityUpRecord implements Serializable {
 		return this.goodsId;
 	}
 
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getType() {
+		return this.type;
+	}
+
 	public void setGmtCreate(Date gmtCreate) {
 		this.gmtCreate = gmtCreate;
 	}
@@ -86,15 +99,4 @@ public class ShiguNewActivityUpRecord implements Serializable {
 		return this.gmtModify;
 	}
 
-	@Override
-	public String toString() {
-		return "ShiguNewActivityUpRecord{" +
-				"id=" + id +
-				", newActiveId=" + newActiveId +
-				", memberId=" + memberId +
-				", goodsId=" + goodsId +
-				", gmtCreate=" + gmtCreate +
-				", gmtModify=" + gmtModify +
-				'}';
-	}
 }

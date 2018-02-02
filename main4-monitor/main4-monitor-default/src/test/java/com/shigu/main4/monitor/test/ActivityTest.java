@@ -36,9 +36,11 @@ public class ActivityTest {
     public void test() {
 
         ItemUpRecordVO itemUpRecordVO = new ItemUpRecordVO();
-        itemUpRecordVO.setApproveStatus("onsale");
-        itemUpRecordVO.setFenUserId(1000L);
-        itemUpRecordVO.setSupperGoodsId(2000L);
+        itemUpRecordVO.setFlag("tb");
+        itemUpRecordVO.setApproveStatus("instock");
+        //    itemUpRecordVO.setApproveStatus("onsale");
+        itemUpRecordVO.setFenUserId(300L);
+        itemUpRecordVO.setSupperGoodsId(300L);
         itemUpRecordVO.setCid(30L);
 
         itemUpRecordService.countUploadForCash(itemUpRecordVO);

@@ -15,6 +15,7 @@ public class ShiguNewActivityUpRecordExample extends SgExample<ShiguNewActivityU
     public static EntityColumn goodsId;
     public static EntityColumn id;
     public static EntityColumn gmtCreate;
+    public static EntityColumn type;
     public static EntityColumn memberId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -27,6 +28,7 @@ public class ShiguNewActivityUpRecordExample extends SgExample<ShiguNewActivityU
         goodsId = listMap.get("goodsId");
         id = listMap.get("id");
         gmtCreate = listMap.get("gmtCreate");
+        type = listMap.get("type");
         memberId = listMap.get("memberId");
         }
 
@@ -283,6 +285,53 @@ public class ShiguNewActivityUpRecordExample extends SgExample<ShiguNewActivityU
 
         public ShiguNewActivityUpRecordExample.Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             return notBetween(gmtCreate, value1, value2);
+        }
+        public ShiguNewActivityUpRecordExample.Criteria andTypeIsNull() {
+            return isNull(type);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
+        }
+
+        public ShiguNewActivityUpRecordExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
         public ShiguNewActivityUpRecordExample.Criteria andMemberIdIsNull() {
             return isNull(memberId);
