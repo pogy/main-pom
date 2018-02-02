@@ -168,14 +168,21 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
      * @param itemUpRecordVO
      */
     public void countUploadForCash(ItemUpRecordVO itemUpRecordVO) {
-        if ("web-tb".equals(itemUpRecordVO.getFlag()) && "onsale".equals(itemUpRecordVO.getApproveStatus())) {
-            Date now = new Date();
-            ShiguNewActivity activity = getActivityNow(now); // 获取当前活动
-            if (activity != null) {
-                if (isMan(itemUpRecordVO.getCid())) { // 男装
-                    // 先保存上传记录，再增加上传数
-                    if (saveActivityUpRecord(itemUpRecordVO.getFenUserId(), itemUpRecordVO.getSupperGoodsId(), activity.getId(), now)) {
-                        increaseUploadNum(itemUpRecordVO.getFenUserId(), activity.getId(), now);
+        if ("web-tb".equals(itemUpRecordVO.getFlag()) || "tb".equals(itemUpRecordVO.getFlag())) { // pc端或app端上传到淘宝
+            if ("onsale".equals(itemUpRecordVO.getApproveStatus()) || "instock".equals(itemUpRecordVO.getApproveStatus())
+                    || "onsale_clock".equals(itemUpRecordVO.getApproveStatus())) {
+                Date now = new Date();
+                ShiguNewActivity activity = getActivityNow(now); // 获取当前活动
+                if (activity != null) {
+                    if (isMan(itemUpRecordVO.getCid())) { // 男装
+                        int type = 1; // 上传到出售中
+                        if ("instock".equals(itemUpRecordVO.getApproveStatus())) {
+                            type = 2; // 上传到仓库中
+                        }
+                        // 先保存上传记录，再增加上传数
+                        if (saveActivityUpRecord(itemUpRecordVO.getFenUserId(), itemUpRecordVO.getSupperGoodsId(), activity.getId(), now, type)) {
+                            increaseUploadNum(itemUpRecordVO.getFenUserId(), activity.getId(), now, type);
+                        }
                     }
                 }
             }
@@ -186,14 +193,22 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
      * 保存活动期间的上传记录
      * @return
      */
-    private boolean saveActivityUpRecord(Long memberId, Long goodsId, Long activityId, Date now) {
-        ShiguNewActivityUpRecord record = new ShiguNewActivityUpRecord();
-        record.setMemberId(memberId);
-        record.setGoodsId(goodsId);
-        record.setNewActiveId(activityId);
-        if (shiguNewActivityUpRecordMapper.selectOne(record) == null) {
+    private boolean saveActivityUpRecord(Long memberId, Long goodsId, Long activityId, Date now, int type) {
+        ShiguNewActivityUpRecordExample example = new ShiguNewActivityUpRecordExample();
+        ShiguNewActivityUpRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andNewActiveIdEqualTo(activityId).andMemberIdEqualTo(memberId).andGoodsIdEqualTo(goodsId);
+        if (type == 1) {
+            criteria.andTypeEqualTo(type);
+        }
+        List list = shiguNewActivityUpRecordMapper.selectByExample(example);
+        if (list == null || list.isEmpty()) {
             // 没记录的时候保存
             int count = 0;
+            ShiguNewActivityUpRecord record = new ShiguNewActivityUpRecord();
+            record.setMemberId(memberId);
+            record.setGoodsId(goodsId);
+            record.setNewActiveId(activityId);
+            record.setType(type);
             record.setGmtCreate(now);
             record.setGmtModify(now);
             try {
@@ -210,14 +225,25 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     /**
      * 增加用户的上传记录数
      */
-    private void increaseUploadNum(Long memberId, Long activityId, Date now) {
-        int count = shiguNewActiveParticipantsMapper.increaseUploadNum(memberId, activityId);
+    private void increaseUploadNum(Long memberId, Long activityId, Date now, int type) {
+        int count;
+        if (type == 1) {
+            count = shiguNewActiveParticipantsMapper.increaseUploadNum(memberId, activityId);
+        } else {
+            count = shiguNewActiveParticipantsMapper.increaseUploadStoreNum(memberId, activityId);
+        }
         if (count < 1) {
             // 数据库中不存在记录，则新增
             ShiguNewActiveParticipants participants = new ShiguNewActiveParticipants();
             participants.setMemberId(memberId);
             participants.setNewActiveId(activityId);
-            participants.setGoodsUploadNum(1L);
+            if (type == 1) {
+                participants.setGoodsUploadNum(1L);
+                participants.setGoodsUploadStoreNum(0L);
+            } else {
+                participants.setGoodsUploadNum(0L);
+                participants.setGoodsUploadStoreNum(1L);
+            }
             participants.setWinningStatus(1);
             participants.setGmtCreate(now);
             participants.setGmtModify(now);

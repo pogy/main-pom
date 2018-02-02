@@ -17,4 +17,6 @@ import org.springframework.context.annotation.Scope;
 public interface ShiguNewActiveParticipantsMapper extends Mapper<ShiguNewActiveParticipants> {
 
     int increaseUploadNum(@Param("memberId") Long memberId, @Param("activeId") Long activeId);
+
+    int increaseUploadStoreNum(@Param("memberId") Long memberId, @Param("activeId") Long activeId);
 }

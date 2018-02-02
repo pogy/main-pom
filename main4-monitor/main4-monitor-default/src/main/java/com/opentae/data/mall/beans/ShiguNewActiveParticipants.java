@@ -29,6 +29,11 @@ public class ShiguNewActiveParticipants implements Serializable {
 	private Long goodsUploadNum;
 
     /**
+     * 商品上传到仓库量
+     */
+	private Long goodsUploadStoreNum;
+
+    /**
      * 中奖状态 1 等待中奖 2未中奖 3中奖4已领奖
      */
 	private Integer winningStatus;
@@ -37,6 +42,11 @@ public class ShiguNewActiveParticipants implements Serializable {
      * 中奖码
      */
 	private String winningCode;
+
+    /**
+     * 
+     */
+	private String remarker;
 
     /**
      * 记录创建时间
@@ -80,6 +90,14 @@ public class ShiguNewActiveParticipants implements Serializable {
 		return this.goodsUploadNum;
 	}
 
+	public void setGoodsUploadStoreNum(Long goodsUploadStoreNum) {
+		this.goodsUploadStoreNum = goodsUploadStoreNum;
+	}
+
+	public Long getGoodsUploadStoreNum() {
+		return this.goodsUploadStoreNum;
+	}
+
 	public void setWinningStatus(Integer winningStatus) {
 		this.winningStatus = winningStatus;
 	}
@@ -94,6 +112,14 @@ public class ShiguNewActiveParticipants implements Serializable {
 
 	public String getWinningCode() {
 		return this.winningCode;
+	}
+
+	public void setRemarker(String remarker) {
+		this.remarker = remarker;
+	}
+
+	public String getRemarker() {
+		return this.remarker;
 	}
 
 	public void setGmtCreate(Date gmtCreate) {
@@ -112,17 +138,4 @@ public class ShiguNewActiveParticipants implements Serializable {
 		return this.gmtModify;
 	}
 
-	@Override
-	public String toString() {
-		return "ShiguNewActiveParticipants{" +
-				"id=" + id +
-				", memberId=" + memberId +
-				", newActiveId=" + newActiveId +
-				", goodsUploadNum=" + goodsUploadNum +
-				", winningStatus=" + winningStatus +
-				", winningCode='" + winningCode + '\'' +
-				", gmtCreate=" + gmtCreate +
-				", gmtModify=" + gmtModify +
-				'}';
-	}
 }
