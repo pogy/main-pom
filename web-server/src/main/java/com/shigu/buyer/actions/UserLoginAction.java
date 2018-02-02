@@ -321,6 +321,19 @@ public class UserLoginAction {
         return JsonResponseUtil.success();
     }
 
+    /**
+     * 手机号码登陆,无验证码
+     * @return
+     */
+    @RequestMapping("loginWindowGetMsgCode")
+    @ResponseBody
+    public JSONObject loginWindowGetMsgCode(String telephone, HttpSession session) {
+        String code= RedomUtil.redomNumber(6);
+        session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
+        return JsonResponseUtil.success();
+    }
+
     @ResponseBody
     @RequestMapping("telephoneLogin")
     public JSONObject telephoneLogin(String telephone, String msgValidate, HttpSession session, HttpServletRequest request) throws JsonErrException {
