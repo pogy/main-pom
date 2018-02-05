@@ -70,7 +70,7 @@ public class StyleIndexAction {
         if (!SUCCESS.equals(varifyResult)) {
             return varifyResult;
         }
-        model.addAttribute("marketList", styleChannelService.selStyleMarketsForStyleGoodsList(bo.getWebSite(), bo.getSpid()));
+        model.addAttribute("marketList", styleChannelService.selStyleMarketsForStyleGoodsList(bo.getWebSite(), bo.getSpid(),bo.getPid()));
         ShiguPager<StyleGoodsInSearch> pager = styleChannelService.searchStyleGoods(bo);
         model.addAttribute("goodsList", pager.getContent());
         model.addAttribute("totalPage", pager.getTotalPages());
