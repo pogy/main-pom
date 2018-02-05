@@ -59,7 +59,6 @@
 		<a class="next" href="javascript:void(0)"></a>
 	</div>
 </div>
-<!--文档地址：http://www.superslide2.com/param.html-->
 </div>
 <div class="powerStore yahei">
     <div class="layout">
@@ -69,12 +68,12 @@
                 <#list shopList as store>
                     <div class="storeItem">
                         <div class="storeHead">
-                            <a href="${mainHost!}/shop.htm?id=${store.shopId!}">${store.shopName!}</a><span class="fr"><i></i><em>${store.shopAge!}年老店</em></span>
+                            <a href="${mainHost!}/shop.htm?id=${store.shopId!}" target="_blank">${store.shopName!}</a><span class="fr"><i></i><em>${store.shopAge!}年老店</em></span>
                         </div>
                         <div class="storeGoods">
                             <ul>
                                 <#list store.goodsList as goods>
-                                    <li><a href="item.htm?id=${goods.goodsId!}"><img src="${goods.imgsrc!}"></a></li>
+                                    <li><a href="item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgsrc!}"></a></li>
                                 </#list>
                             </ul>
                         </div>
@@ -97,7 +96,7 @@
                         </a>
                         <div class="goodsInfo">
                             <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
-                            <a href="${mainHost!}/shop.html?id=${goods.shopId!}" target="_blank" class="fr">${goods.marketName!} ${goods.shopNo!}</a>
+                            <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr">${goods.marketName!} ${goods.shopNo!}</a>
                         </div>
                     </li>
                 </#list>
