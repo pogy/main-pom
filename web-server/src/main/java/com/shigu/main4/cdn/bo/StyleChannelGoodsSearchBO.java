@@ -52,6 +52,10 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
     }
 
     public Long getPid() {
+        if (pid == null) {
+            //没有传，默认拉男装的
+            pid = 30L;
+        }
         return pid;
     }
 

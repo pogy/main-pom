@@ -14,6 +14,7 @@ import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.item.bo.GoodsSearchBO;
+import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
@@ -27,6 +28,7 @@ import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopShow;
 import com.shigu.search.services.CategoryInSearchService;
+import com.shigu.search.vo.CateNav;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
@@ -106,8 +108,10 @@ public class StyleChannelService {
 
     //市场店铺数据缓存
     private final String STYLE_MARKET_SHOP_CACHE_FORMAT = "cached_shops_for_market_%d_style_%d";
-
+    //市场页市场信息缓存
     private final String STYLE_MARKET_CACHE_FORMAT = "cached_market_for_website_%s_style_%d";
+    //风格商品列表页市场信息缓存
+    private final String STYLE_GOODS_LIST_MARKET_CACHE_FORMAT = "cached_market_for_website_%s_style_goods_list_%d";
 
     private Map<Long, StyleSpreadChannelVO> styleSpreadMap;
 
@@ -290,7 +294,58 @@ public class StyleChannelService {
 
 
     /**
-     * 获取有店铺设置过商品风格的市场列表
+     * 风格商品列表页市场信息
+     *
+     * @param webSite
+     * @param parentStyleId
+     * @return
+     */
+    public List<StyleChannelMarketVO> selStyleMarketsForStyleGoodsList(String webSite, Long parentStyleId, Long pid) {
+        if (parentStyleId == null || StringUtils.isBlank(webSite)) {
+            return new ArrayList<>();
+        }
+        List<StyleChannelMarketVO> vos = redisIO.getList(String.format(STYLE_GOODS_LIST_MARKET_CACHE_FORMAT, webSite, parentStyleId), StyleChannelMarketVO.class);
+        if (vos != null) {
+            return vos;
+        }
+        List<CateNav> marketNavs = categoryInSearchService.selSubCates("" + pid, SearchCategory.MARKET, webSite);
+        if (marketNavs == null) {
+            return new ArrayList<>();
+        }
+        //所有可展示的市场id列表
+        Set<String> marketIdsStringSet = marketNavs.stream().filter(cateNav -> StringUtils.isNotBlank(cateNav.getKeyword())).map(CateNav::getKeyword).collect(Collectors.toSet());
+        Set<Long> marketIds = new HashSet<>();
+        vos = new ArrayList<>();
+        ShiguShopExample shopExample = new ShiguShopExample();
+        shopExample.createCriteria().andWebSiteEqualTo(webSite).andShopStatusEqualTo(0);
+        Map<Long, Long> shopIdMarketMap = shiguShopMapper.selectFieldsByExample(shopExample, FieldUtil.codeFields("shop_id,market_id")).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
+        if (shopIdMarketMap.size() > 0) {
+            ShiguShopStyleRelationExample shiguShopStyleRelationExample = new ShiguShopStyleRelationExample();
+            shiguShopStyleRelationExample.createCriteria().andShopIdIn(new ArrayList<>(shopIdMarketMap.keySet())).andShopParentStyleIdsLike("%," + parentStyleId + ",%");
+            List<ShiguShopStyleRelation> shopStyleRelations = shiguShopStyleRelationMapper.selectByExample(shiguShopStyleRelationExample);
+            shopStyleRelations.stream().filter(o -> shopIdMarketMap.get(o.getShopId()) != null).forEach(shopStyle -> marketIds.add(shopIdMarketMap.get(shopStyle.getShopId())));
+        }
+        if (marketIds.size() > 0) {
+            ShiguMarketExample marketExample = new ShiguMarketExample();
+            marketExample.createCriteria().andMarketIdIn(new ArrayList<>(marketIds)).andIsParentEqualTo(1L).andWebSiteEqualTo(webSite);
+            List<ShiguMarket> shiguMarkets = shiguMarketMapper.selectByExample(marketExample);
+            for (ShiguMarket shiguMarket : shiguMarkets) {
+                //只有允许展示的市场才展示
+                if (marketIdsStringSet.contains("" + shiguMarket.getMarketId())) {
+                    StyleChannelMarketVO vo = new StyleChannelMarketVO();
+                    vo.setMid(shiguMarket.getMarketId());
+                    vo.setName(shiguMarket.getMarketName());
+                    vos.add(vo);
+                }
+            }
+        }
+        redisIO.putTemp(String.format(STYLE_GOODS_LIST_MARKET_CACHE_FORMAT, webSite, parentStyleId), vos, 60 * 60 * 3);
+        return vos;
+
+    }
+
+    /**
+     * 获取有店铺设置过商品风格的市场列表,市场页使用，mid使用的是shigu_outer_market的id
      *
      * @param webSite
      * @param parentStyleId
