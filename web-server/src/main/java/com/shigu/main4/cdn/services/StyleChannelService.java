@@ -318,7 +318,7 @@ public class StyleChannelService {
         vos = new ArrayList<>();
         ShiguShopExample shopExample = new ShiguShopExample();
         shopExample.createCriteria().andWebSiteEqualTo(webSite).andShopStatusEqualTo(0);
-        Map<Long, Long> shopIdMarketMap = shiguShopMapper.selectFieldsByExample(shopExample, FieldUtil.codeFields("shop_id,market_id")).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
+        Map<Long, Long> shopIdMarketMap = shiguShopMapper.selectFieldsByExample(shopExample, FieldUtil.codeFields("shop_id,market_id")).stream().filter(shiguShop -> shiguShop.getShopId() != null && shiguShop.getMarketId() != null).collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
         if (shopIdMarketMap.size() > 0) {
             ShiguShopStyleRelationExample shiguShopStyleRelationExample = new ShiguShopStyleRelationExample();
             shiguShopStyleRelationExample.createCriteria().andShopIdIn(new ArrayList<>(shopIdMarketMap.keySet())).andShopParentStyleIdsLike("%," + parentStyleId + ",%");
