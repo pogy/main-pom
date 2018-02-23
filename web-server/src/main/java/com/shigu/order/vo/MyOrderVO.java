@@ -52,8 +52,8 @@ public class MyOrderVO {
     @Column("item_order.tb_send")
     private Boolean isTbShipments;
 
-    @Column("item_order.finish_time")
-    private Date finishTime;
+    @Column("item_order.pay_time")
+    private Date payTime;
 
     /**
      * 子单数据
@@ -200,11 +200,11 @@ public class MyOrderVO {
         this.isTbShipments = isTbShipments;
     }
 
-    public Date getFinishTime() {
-        return this.finishTime;
+    public Date getPayTime() {
+        return this.payTime;
     }
 
-    public void setFinishTime(Date finishTime) {
-        this.finishTime = finishTime;
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 }

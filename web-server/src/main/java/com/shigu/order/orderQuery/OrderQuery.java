@@ -99,11 +99,11 @@ public abstract class OrderQuery {
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
                     ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
                     subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
-                    if(myOrderVO.getFinishTime()!=null){
+                    if(myOrderVO.getPayTime()!=null){
                         try {
-                            String fd= DateUtil.dateToString(myOrderVO.getFinishTime(),DateUtil.patternB);
+                            String fd= DateUtil.dateToString(myOrderVO.getPayTime(),DateUtil.patternB);
                             int day=new Integer(fd);
-                            if(day>=20180125&&day<=20180223){
+                            if(day>=20180120&&day<=20180222){
                                 subMyOrderVO.setRestoreSaleAfterServiceIs(true);
                             }
                         } catch (Exception ignored) {
