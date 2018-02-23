@@ -14,6 +14,7 @@
         item_order.TYPE = 2 as isTbOrder,
         item_order.tb_send as isTbShipments,
         item_order.WEB_SITE as webSite,
+        item_order.finishTime as finishTime,
         item_order_sub.soid as childOrderId,
         item_order_sub.goods_id as goodsId,
         item_order_sub.title as title,
@@ -63,6 +64,7 @@
         item_order.isTbOrder as isTbOrder,
         item_order.isTbShipments as isTbShipments,
         item_order.webSite as webSite,
+        item_order.finishTime as finishTime,
         item_order_sub.soid as childOrderId,
         item_order_sub.goods_id as goodsId,
         item_order_sub.title as title,
@@ -89,7 +91,8 @@
         item_order.ORDER_STATUS mainState,
         item_order.TYPE = 2 isTbOrder,
         item_order.tb_send isTbShipments,
-        item_order.WEB_SITE webSite
+        item_order.WEB_SITE webSite,
+        item_order.finish_time finishTime
         FROM
         `item_order` item_order
         INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
@@ -139,6 +142,7 @@
         <result column="isTbOrder" property="isTbOrder"/>
         <result column="webSite" property="webSite"/>
         <result column="isTbShipments" property="isTbShipments"/>
+        <result column="finishTime" property="finishTime"/>
         <collection property="childOrders" resultMap="SubMyOrderVO"/>
     </resultMap>
 

@@ -10,6 +10,7 @@ import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.AfterSalingVO;
 import com.shigu.order.vo.MyOrderVO;
@@ -98,6 +99,16 @@ public abstract class OrderQuery {
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
                     ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
                     subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
+                    if(myOrderVO.getFinishTime()!=null){
+                        try {
+                            String fd= DateUtil.dateToString(myOrderVO.getFinishTime(),DateUtil.patternB);
+                            int day=new Integer(fd);
+                            if(day>=20180125&&day<=20180223){
+                                subMyOrderVO.setRestoreSaleAfterServiceIs(true);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    }
                     subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
                         afterSaleVO.setNewAfterSaleInfoIs(false);
                         if (types.contains(afterSaleVO.getType())) {
@@ -136,8 +147,8 @@ public abstract class OrderQuery {
                                         break;
                                     }
                                 }
+                                afterSaleVO.setNewAfterSaleInfoIs(!refund.getUserShow());
                             }
-                            afterSaleVO.setNewAfterSaleInfoIs(!refund.getUserShow());
                             afterSaleVO.setAfterSaling(afterSaling);
                         }
                     });
