@@ -105,6 +105,6 @@
         <!--队列最大长度默认200-->
         <property name="maxQueue" value="200" />
         <!--线程池初始线程数-->
-        <property name="threadNum" value="8" />
+        <property name="threadNum" value="2" />
     </bean>
 </beans>
