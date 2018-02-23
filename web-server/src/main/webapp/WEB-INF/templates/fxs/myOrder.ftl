@@ -423,7 +423,6 @@
                 <#elseif order.mainState == 3>
                 <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 <#elseif order.mainState == 4>
-                ${childOrder.restoreSaleAfterServiceIs!}
                     <#if childOrder.restoreSaleAfterServiceIs == true>
                     <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                     <#else>
