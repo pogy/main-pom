@@ -14,7 +14,7 @@
         item_order.TYPE = 2 as isTbOrder,
         item_order.tb_send as isTbShipments,
         item_order.WEB_SITE as webSite,
-        item_order.payTime as payTime,
+        item_order.pay_time as payTime,
         item_order_sub.soid as childOrderId,
         item_order_sub.goods_id as goodsId,
         item_order_sub.title as title,
