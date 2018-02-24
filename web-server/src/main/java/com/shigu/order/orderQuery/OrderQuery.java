@@ -103,7 +103,7 @@ public abstract class OrderQuery {
                         try {
                             String fd= DateUtil.dateToString(myOrderVO.getPayTime(),DateUtil.patternB);
                             int day=new Integer(fd);
-                            if(day>=20180120&&day<=20180222){
+                            if(day>=20180110&&day<=20180224){
                                 subMyOrderVO.setRestoreSaleAfterServiceIs(true);
                             }
                         } catch (Exception ignored) {
