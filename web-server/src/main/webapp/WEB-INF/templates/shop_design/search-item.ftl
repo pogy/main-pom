@@ -326,6 +326,9 @@
         <#if bo.endDate??>
             <#assign pageparam=pageparam+"&endDate="+bo.endDate/>
         </#if>
+        <#if bo.spid??>
+            <#assign pageparam=pageparam+"&spid="+bo.spid/>
+        </#if>
     </#if>
     <#assign href = "/shop/search.htm?${pageparam}&pageNo=">
     <#if goodsList.content?size gt 0>
