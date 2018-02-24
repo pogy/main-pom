@@ -162,7 +162,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
             }else {
                 loginRecord.setUserType(0);//分销商
             }
-            loginRecord.setLoginTime(new Date());
+            loginRecord.setTime(new Date());
             loginRecord.setIp(IpUtil.getIpFromRequest(request));
             registerAndLoginService.loginRecord(loginRecord);
         }

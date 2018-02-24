@@ -21,7 +21,7 @@ public class LoginRecord  implements Serializable {
      * 存的时候，存它的value
      */
     private LoginFromType loginFromType;
-    private Date loginTime;
+    private Date time;
     private String ip;
 
     public String getIp() {
@@ -64,12 +64,12 @@ public class LoginRecord  implements Serializable {
         this.userType = userType;
     }
 
-    public Date getLoginTime() {
-        return loginTime;
+    public Date getTime() {
+        return time;
     }
 
-    public void setLoginTime(Date loginTime) {
-        this.loginTime = loginTime;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public Long getUserId() {

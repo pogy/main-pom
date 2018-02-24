@@ -296,7 +296,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     public void loginRecord(LoginRecord loginRecord) {
         if (loginRecord == null || loginRecord.getLoginFromType() == null || StringUtils.isEmpty(loginRecord.getIp()) ||
                 StringUtils.isEmpty(loginRecord.getSubUserName()) || loginRecord.getSubUserId() == null ||
-                loginRecord.getLoginTime() == null || loginRecord.getUserId() == null) {
+                loginRecord.getTime() == null || loginRecord.getUserId() == null) {
             logger.error("登录记录>>有空值数据>>data:" + JSON.toJSONString(loginRecord));
             return;
         }

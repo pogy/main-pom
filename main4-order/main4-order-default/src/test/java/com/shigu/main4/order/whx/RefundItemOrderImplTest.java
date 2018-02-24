@@ -78,11 +78,11 @@ public class RefundItemOrderImplTest extends BaseTest{
     @Test
     public void buyerNoRepriceTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
-        try {
-            refundItemOrder.buyerNoReprice();
-        } catch (Main4Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            refundItemOrder.buyerNoReprice();
+//        } catch (Main4Exception e) {
+//            e.printStackTrace();
+//        }
 
         //测试重复操作
 //        refundItemOrder.buyerNoReprice();
