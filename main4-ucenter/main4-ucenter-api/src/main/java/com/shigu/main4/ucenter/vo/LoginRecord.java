@@ -14,10 +14,14 @@ public class LoginRecord  implements Serializable {
     private Long userId;
     private String subUserName;
     /**
+     * 1：供应商 0 分销商
+     */
+    private Integer userType;
+    /**
      * 存的时候，存它的value
      */
     private LoginFromType loginFromType;
-    private Date time;
+    private Date loginTime;
     private String ip;
 
     public String getIp() {
@@ -52,12 +56,20 @@ public class LoginRecord  implements Serializable {
         this.subUserName = subUserName;
     }
 
-    public Date getTime() {
-        return time;
+    public Integer getUserType() {
+        return userType;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
     }
 
     public Long getUserId() {

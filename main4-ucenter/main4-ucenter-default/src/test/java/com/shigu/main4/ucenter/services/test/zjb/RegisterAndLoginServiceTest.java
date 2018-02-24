@@ -122,7 +122,7 @@ public class RegisterAndLoginServiceTest {
         registerAndLoginService.loginRecord(loginRecord);
         loginRecord.setSubUserId(11L);
         registerAndLoginService.loginRecord(loginRecord);
-        loginRecord.setTime(new Date());
+        loginRecord.setLoginTime(new Date());
         registerAndLoginService.loginRecord(loginRecord);
         loginRecord.setUserId(1L);
         registerAndLoginService.loginRecord(loginRecord);
@@ -148,7 +148,7 @@ public class RegisterAndLoginServiceTest {
             loginRecord.setUserId(memberLoginRecord.getUserId());
             loginRecord.setSubUserId(memberLoginRecord.getSubUserId());
             loginRecord.setSubUserName(memberLoginRecord.getSubUserName());
-            loginRecord.setTime(memberLoginRecord.getLastTime());
+            loginRecord.setLoginTime(memberLoginRecord.getLastTime());
             loginRecord.setIp(memberLoginRecord.getLastIp());
             LoginFromType loginFromType = LoginFromType.getLoginFromType(memberLoginRecord.getAccountType());
             loginRecord.setLoginFromType(loginFromType);
