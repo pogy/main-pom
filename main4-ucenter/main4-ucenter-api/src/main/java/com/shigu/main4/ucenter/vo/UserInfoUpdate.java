@@ -1,6 +1,7 @@
 package com.shigu.main4.ucenter.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 供修改的用户基本信息
@@ -43,6 +44,10 @@ public class UserInfoUpdate implements Serializable{
      * 旺旺
      */
     private String imWw;
+    /**
+     * 最后一次登陆时间
+     */
+    private Date lastTime;
 
     public String getEmail() {
         return email;
@@ -114,5 +119,13 @@ public class UserInfoUpdate implements Serializable{
 
     public void setUserNick(String userNick) {
         this.userNick = userNick;
+    }
+
+    public Date getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Date lastTime) {
+        this.lastTime = lastTime;
     }
 }

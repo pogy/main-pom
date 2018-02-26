@@ -6,11 +6,13 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.services.UserShopService;
 import com.shigu.main4.ucenter.vo.LoginRecord;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.ShopSession;
@@ -150,6 +152,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //		info.addObjectPermissions(allPermissions);
 
         if (auth != null) {
+            Date now = new Date();
             //添加登陆记录
             LoginRecord loginRecord = new LoginRecord();
             loginRecord.setUserId(auth.getUserId());
@@ -162,10 +165,21 @@ public class MemberRealm extends ShiguAuthorizingRealm {
             }else {
                 loginRecord.setUserType(0);//分销商
             }
-            loginRecord.setTime(new Date());
+            loginRecord.setTime(now);
             loginRecord.setIp(IpUtil.getIpFromRequest(request));
             registerAndLoginService.loginRecord(loginRecord);
+
+            //修改MemberUser表最后登录时间
+            UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+            userInfoUpdate.setUserId(auth.getUserId());
+            userInfoUpdate.setLastTime(now);
+            try {
+                userBaseService.updateUserInfo(userInfoUpdate);
+            } catch (UpdateUserInfoException e) {
+                e.printStackTrace();
+            }
         }
+
 
         return info;
     }
