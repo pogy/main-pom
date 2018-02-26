@@ -159,7 +159,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
             loginRecord.setSubUserId(auth.getSubUserId());
             loginRecord.setSubUserName(auth.getLoginName());
             loginRecord.setLoginFromType(auth.getLoginFromType());
-            boolean isStore = auth.getLogshop() != null;
+            boolean isStore = (auth.getLogshop() != null) || (auth.getLogshop()==null&&auth.getOtherShops().size()>0);
             if (isStore){
                 loginRecord.setUserType(1);//供应商
             }else {
