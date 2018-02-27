@@ -150,8 +150,9 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //		}
 //		info.addRoles(roleStrings);
 //		info.addObjectPermissions(allPermissions);
-
-        if (auth != null) {
+        String reqPath = request.getServletPath().toLowerCase();
+        if (auth != null && (reqPath.contains("login") || reqPath.contains("regedit")
+            || reqPath.contains("callback") || reqPath.contains("regist"))) {
             Date now = new Date();
             //添加登陆记录
             LoginRecord loginRecord = new LoginRecord();
@@ -159,7 +160,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
             loginRecord.setSubUserId(auth.getSubUserId());
             loginRecord.setSubUserName(auth.getLoginName());
             loginRecord.setLoginFromType(auth.getLoginFromType());
-            boolean isStore = (auth.getLogshop() != null) || (auth.getLogshop()==null&&auth.getOtherShops().size()>0);
+            boolean isStore = (auth.getLogshop() != null) || (auth.getOtherShops()!=null && auth.getOtherShops().size()>0);
             if (isStore){
                 loginRecord.setUserType(1);//供应商
             }else {
@@ -169,6 +170,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
             //随时随地获取当前request
             //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             loginRecord.setIp(IpUtil.getIpFromRequest(request));
+
             registerAndLoginService.loginRecord(loginRecord);
 
             //修改MemberUser表最后登录时间
