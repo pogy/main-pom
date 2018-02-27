@@ -166,6 +166,8 @@ public class MemberRealm extends ShiguAuthorizingRealm {
                 loginRecord.setUserType(0);//分销商
             }
             loginRecord.setTime(now);
+            //随时随地获取当前request
+            //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             loginRecord.setIp(IpUtil.getIpFromRequest(request));
             registerAndLoginService.loginRecord(loginRecord);
 
