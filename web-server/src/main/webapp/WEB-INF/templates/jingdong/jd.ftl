@@ -19,7 +19,7 @@
             <div class="user">
         <span>
           欢迎登录：
-          <a target="_top" href="javascript:void(0)">${jd_yj_zh_session.userNick}</a> <a href="/membertc.htm">退出</a>
+          <a target="_top" href="javascript:void(0)">${jd_yj_zh_session.userNick}</a> <a href="http://www.571xz.com/membertc.htm">退出</a>
             </span>
             </div>
         </div>
