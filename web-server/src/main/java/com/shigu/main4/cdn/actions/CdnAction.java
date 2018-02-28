@@ -778,7 +778,13 @@ public class CdnAction {
         if(bo.getDd()!=null&&bo.getDd()>0){
             Calendar cal=Calendar.getInstance();
             endDate=cal.getTime();
-            cal.add(Calendar.DATE,-bo.getDd());
+            if(bo.getDd()==1){
+                cal.set(Calendar.HOUR_OF_DAY,0);
+                cal.set(Calendar.MINUTE,0);
+                cal.set(Calendar.SECOND,0);
+            }else{
+                cal.add(Calendar.DATE,-bo.getDd());
+            }
             startDate=cal.getTime();
         }else{
             startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");

@@ -281,7 +281,7 @@ public class GoodsSearchService {
     public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
         ProductAiSearchBo bo =new ProductAiSearchBo();
         bo.setUrl(picUrl);
-        bo.setCount(20);
+        bo.setCount(40);
         bo.setTags(webSite);
         List<AiImageInfo> search = productAiInterface.search(bo);
 
@@ -303,7 +303,7 @@ public class GoodsSearchService {
             }
             List<GoodsInSearch> imgGoods = new ArrayList<>();
             if(goodsId.size()>0){
-                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,20);
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,40);
                 ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 if (goodsPager != null) {
                     List<GoodsInSearch> imgs = goodsPager.getContent();
@@ -311,8 +311,17 @@ public class GoodsSearchService {
                     for(GoodsInSearch gis:imgs){
                         imgMap.put(Long.valueOf(gis.getId()),gis);
                     }
+                    int count=0;
                     for(Long gid:goodsId){
-                        imgGoods.add(imgMap.get(gid));
+                        GoodsInSearch img=imgMap.get(gid);
+                        if(img==null){
+                            continue;
+                        }
+                        count++;
+                        if(count==20){
+                            break;
+                        }
+                        imgGoods.add(img);
                     }
                 }
             }
