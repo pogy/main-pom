@@ -8,6 +8,11 @@
 	<listener>
 		<listener-class>com.shigu.core.config.Log4jListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
 	<!--spring配置文件-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

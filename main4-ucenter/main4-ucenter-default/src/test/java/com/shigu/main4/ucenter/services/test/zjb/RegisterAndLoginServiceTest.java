@@ -131,7 +131,7 @@ public class RegisterAndLoginServiceTest {
     /**
      * 数据迁移
      */
-    @Test
+//    @Test
     public void loginRecordRransfer(){
         int pageNo = 1;
         int pageSize = 100;

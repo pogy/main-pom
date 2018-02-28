@@ -6,14 +6,19 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
+import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.services.UserShopService;
+import com.shigu.main4.ucenter.vo.LoginRecord;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.IpUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -24,9 +29,12 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +51,12 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 
     @Autowired
     UserLicenseService userLicenseService;
+
+    @Autowired
+    RegisterAndLoginService registerAndLoginService;
+
+    @Autowired
+    HttpServletRequest request;
 
     public MemberRealm() {
         super();
@@ -107,7 +121,8 @@ public class MemberRealm extends ShiguAuthorizingRealm {
         //查出用户所有的权限
         info.addRole(UserType.MEMBER.getValue());
 
-        Session session = SecurityUtils.getSubject().getSession();
+        Subject subject = SecurityUtils.getSubject();
+        Session session = subject.getSession();
 
         PersonalSession auth = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
@@ -135,6 +150,41 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //		}
 //		info.addRoles(roleStrings);
 //		info.addObjectPermissions(allPermissions);
+        String reqPath = request.getServletPath().toLowerCase();
+        if (auth != null && (reqPath.contains("login") || reqPath.contains("regedit")
+            || reqPath.contains("callback") || reqPath.contains("regist"))) {
+            Date now = new Date();
+            //添加登陆记录
+            LoginRecord loginRecord = new LoginRecord();
+            loginRecord.setUserId(auth.getUserId());
+            loginRecord.setSubUserId(auth.getSubUserId());
+            loginRecord.setSubUserName(auth.getLoginName());
+            loginRecord.setLoginFromType(auth.getLoginFromType());
+            boolean isStore = (auth.getLogshop() != null) || (auth.getOtherShops()!=null && auth.getOtherShops().size()>0);
+            if (isStore){
+                loginRecord.setUserType(1);//供应商
+            }else {
+                loginRecord.setUserType(0);//分销商
+            }
+            loginRecord.setTime(now);
+            //随时随地获取当前request
+            //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+            loginRecord.setIp(IpUtil.getIpFromRequest(request));
+
+            registerAndLoginService.loginRecord(loginRecord);
+
+            //修改MemberUser表最后登录时间
+            UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+            userInfoUpdate.setUserId(auth.getUserId());
+            userInfoUpdate.setLastTime(now);
+            try {
+                userBaseService.updateUserInfo(userInfoUpdate);
+            } catch (UpdateUserInfoException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         return info;
     }
 
