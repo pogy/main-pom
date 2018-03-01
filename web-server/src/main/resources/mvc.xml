@@ -85,6 +85,19 @@
             </bean>
         </mvc:interceptor>
 
+        <!-- 用户密度拦截器 - 数据包上传 - -->
+        <mvc:interceptor>
+            <mvc:mapping path="/seller/noticeGoodsPackageUploaded.*"/>
+            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+            <bean class="com.shigu.interceptors.UserDensityInterceptor">
+                <property name="minMillionSecond" value="10000"/>
+                <property name="startNum" value="1"/>
+                <property name="redisIO" ref="redisIO"/>
+                <!--记录存活时间-->
+                <property name="refuseSecond" value="20"/>
+            </bean>
+        </mvc:interceptor>
+
         <!-- 用户商品访问记录密度拦截器 - -->
         <mvc:interceptor>
             <mvc:mapping path="/monitor/*"/>
@@ -97,6 +110,7 @@
                 <property name="refuseSecond" value="600"/>
             </bean>
         </mvc:interceptor>
+
     </mvc:interceptors>
 
     <!--app访问拦截器-->

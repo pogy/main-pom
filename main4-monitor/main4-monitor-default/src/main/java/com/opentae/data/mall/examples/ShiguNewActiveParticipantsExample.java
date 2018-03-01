@@ -12,6 +12,8 @@ public class ShiguNewActiveParticipantsExample extends SgExample<ShiguNewActiveP
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn gmtModify;
     public static EntityColumn newActiveId;
+    public static EntityColumn goodsUploadStoreNum;
+    public static EntityColumn remarker;
     public static EntityColumn winningCode;
     public static EntityColumn id;
     public static EntityColumn gmtCreate;
@@ -26,6 +28,8 @@ public class ShiguNewActiveParticipantsExample extends SgExample<ShiguNewActiveP
         }
         gmtModify = listMap.get("gmtModify");
         newActiveId = listMap.get("newActiveId");
+        goodsUploadStoreNum = listMap.get("goodsUploadStoreNum");
+        remarker = listMap.get("remarker");
         winningCode = listMap.get("winningCode");
         id = listMap.get("id");
         gmtCreate = listMap.get("gmtCreate");
@@ -146,6 +150,108 @@ public class ShiguNewActiveParticipantsExample extends SgExample<ShiguNewActiveP
 
         public ShiguNewActiveParticipantsExample.Criteria andNewActiveIdNotBetween(Long value1, Long value2) {
             return notBetween(newActiveId, value1, value2);
+        }
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumIsNull() {
+            return isNull(goodsUploadStoreNum);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumIsNotNull() {
+            return isNotNull(goodsUploadStoreNum);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumEqualTo(Long value) {
+            return equalTo(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumNotEqualTo(Long value) {
+            return notEqualTo(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumGreaterThan(Long value) {
+            return greaterThan(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumLessThan(Long value) {
+            return lessThan(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodsUploadStoreNum, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumIn(List<Long> values) {
+            return in(goodsUploadStoreNum, values);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumNotIn(List<Long> values) {
+            return notIn(goodsUploadStoreNum, values);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumBetween(Long value1, Long value2) {
+            return between(goodsUploadStoreNum, value1, value2);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andGoodsUploadStoreNumNotBetween(Long value1, Long value2) {
+            return notBetween(goodsUploadStoreNum, value1, value2);
+        }
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerIsNull() {
+            return isNull(remarker);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerIsNotNull() {
+            return isNotNull(remarker);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerEqualTo(String value) {
+            return equalTo(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerNotEqualTo(String value) {
+            return notEqualTo(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerGreaterThan(String value) {
+            return greaterThan(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerLessThan(String value) {
+            return lessThan(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerLike(String value) {
+            return like(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerNotLike(String value) {
+            return notLike(remarker, value);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerIn(List<String> values) {
+            return in(remarker, values);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerNotIn(List<String> values) {
+            return notIn(remarker, values);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerBetween(String value1, String value2) {
+            return between(remarker, value1, value2);
+        }
+
+        public ShiguNewActiveParticipantsExample.Criteria andRemarkerNotBetween(String value1, String value2) {
+            return notBetween(remarker, value1, value2);
         }
         public ShiguNewActiveParticipantsExample.Criteria andWinningCodeIsNull() {
             return isNull(winningCode);

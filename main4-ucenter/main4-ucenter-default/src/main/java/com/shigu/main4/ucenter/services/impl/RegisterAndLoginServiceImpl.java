@@ -2,13 +2,10 @@ package com.shigu.main4.ucenter.services.impl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
@@ -18,7 +15,6 @@ import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
-import com.shigu.main4.ucenter.exceptions.Bind3RdsException;
 import com.shigu.main4.ucenter.model.BindOuterRdUser;
 import com.shigu.main4.ucenter.model.impl.BindJdUser;
 import com.shigu.main4.ucenter.model.impl.BindTbUser;
@@ -81,7 +77,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 StringUtils.isEmpty(user.getPassword())){
             return null;
         }
-        boolean panss = userCanRegist(user.getTelephone() ,LoginFromType.PHONE);
+        boolean panss = userCanRegist(user.getTelephone() , LoginFromType.PHONE);
         if(!panss){
             logger.info("注册新用户>>失败>>Phone已经使用>>loginPhone:" + user.getTelephone());
             return null;

@@ -60,7 +60,7 @@
         <#if session_user_redis__.headUrl??>
         <img src="${session_user_redis__.headUrl!}" class="headImg fl">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/DefaultImg.jpg" class="headImg fl">
+        <img src="http://style.571xz.com/v6/fxs/css/img/DefaultImg.jpg" class="headImg fl">
         </#if>
         <div class="myinfo">
             <p class="welcome"><em></em>您好！</p>

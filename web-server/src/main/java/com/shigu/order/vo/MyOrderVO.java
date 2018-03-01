@@ -2,6 +2,7 @@ package com.shigu.order.vo;
 
 import com.opentae.core.mybatis.config.Column;
 
+import java.util.Date;
 import java.util.List;
 
 public class MyOrderVO {
@@ -50,6 +51,10 @@ public class MyOrderVO {
      */
     @Column("item_order.tb_send")
     private Boolean isTbShipments;
+
+    @Column("item_order.pay_time")
+    private Date payTime;
+
     /**
      * 子单数据
      */
@@ -193,5 +198,13 @@ public class MyOrderVO {
      */
     public void setIsTbShipments(Boolean isTbShipments) {
         this.isTbShipments = isTbShipments;
+    }
+
+    public Date getPayTime() {
+        return this.payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 }

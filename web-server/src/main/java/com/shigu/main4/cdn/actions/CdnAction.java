@@ -777,14 +777,20 @@ public class CdnAction {
         ShiguPager<ItemShowBlock> pager;
         Date startDate;
         Date endDate;
-        if (bo.getDd() != null && bo.getDd() > 0) {
-            Calendar cal = Calendar.getInstance();
-            endDate = cal.getTime();
-            cal.add(Calendar.DATE, -bo.getDd());
-            startDate = cal.getTime();
-        } else {
-            startDate = DateUtil.stringToDate(bo.getStartDate(), "yyyy-MM-dd");
-            endDate = DateUtil.stringToDate(bo.getEndDate(), "yyyy-MM-dd");
+        if(bo.getDd()!=null&&bo.getDd()>0){
+            Calendar cal=Calendar.getInstance();
+            endDate=cal.getTime();
+            if(bo.getDd()==1){
+                cal.set(Calendar.HOUR_OF_DAY,0);
+                cal.set(Calendar.MINUTE,0);
+                cal.set(Calendar.SECOND,0);
+            }else{
+                cal.add(Calendar.DATE,-bo.getDd());
+            }
+            startDate=cal.getTime();
+        }else{
+            startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
+            endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
         }
         OnsaleItemQueryBO queryBO = new OnsaleItemQueryBO();
         queryBO.setKeyword(bo.getPstring());
@@ -881,7 +887,7 @@ public class CdnAction {
     public JSONObject smallPic(Long id) {
         try {
             String picUrl = shopsItemService.itemImgzipUrl(id);
-            return JsonResponseUtil.success().element("pic", picUrl);
+            return JsonResponseUtil.success().element("pic", picUrl.replace("#","%23"));
         } catch (Exception e) {
             return JsonResponseUtil.error("下载失败，请重试！");
         }

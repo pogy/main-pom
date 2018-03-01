@@ -75,6 +75,8 @@ public class SubMyOrderVO {
 
     private Integer refundCount;
 
+    private Boolean restoreSaleAfterServiceIs=false;
+
     /**
      * 获取 子单id
      */
@@ -247,5 +249,13 @@ public class SubMyOrderVO {
 
     public void setHaveTakeGoodsNum(Integer haveTakeGoodsNum) {
         this.haveTakeGoodsNum = haveTakeGoodsNum;
+    }
+
+    public Boolean getRestoreSaleAfterServiceIs() {
+        return this.restoreSaleAfterServiceIs;
+    }
+
+    public void setRestoreSaleAfterServiceIs(Boolean restoreSaleAfterServiceIs) {
+        this.restoreSaleAfterServiceIs = restoreSaleAfterServiceIs;
     }
 }

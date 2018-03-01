@@ -340,7 +340,7 @@ public class CdnService {
         vo.setTitle(cdnItem.getTitle());
         vo.setTbGoodsId(cdnItem.getTbNumIid());
         vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
-        vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+        //vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
         vo.setFabric(cdnItem.getFabric());
         vo.setInFabric(cdnItem.getInFabric());
 
