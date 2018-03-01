@@ -1,6 +1,7 @@
 package com.shigu.buyer.actions;
 
 import com.opentae.data.mall.beans.ShiguBonusRecord;
+import com.opentae.data.mall.custombeans.BalanceVO;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
@@ -138,8 +139,11 @@ public class MemberAction {
             return "redirect:/seller/index.htm";
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempCode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempCode);
+        BalanceVO userBalance = memberSimpleService.getUserBalance(ps.getUserId());
+        //可用资金
+        model.addAttribute("balance",String.format("%.2f",userBalance.getMoney()*0.01));
+        //冻结资金
+        model.addAttribute("blockMoney",String.format("%.2f",userBalance.getBlockMoney()*0.01));
         model.addAttribute("jifenCount", userLicenseService.selUserScore(ps.getUserId()));
         // 分销商广告
         List<ImgBannerVO> imageGoat = spreadService.selImgBanners(SpreadEnum.BACK_MEMBER).selReal();
@@ -928,8 +932,11 @@ public class MemberAction {
             throw new Main4Exception("路径非法");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempcode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempcode);
+        BalanceVO userBalance = memberSimpleService.getUserBalance(ps.getUserId());
+        //可用资金
+        model.addAttribute("balance",String.format("%.2f",userBalance.getMoney()*0.01));
+        //冻结资金
+        model.addAttribute("blockMoney",String.format("%.2f",userBalance.getBlockMoney()*0.01));
         if (SELLER_PATH.equals(identity)) {
             return "gys/iwantToRechargein5";
         }
@@ -965,7 +972,7 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 手续费率
         model.addAttribute("handlingCharge", "0.6%");
-        model.addAttribute("userBalance",memberSimpleService.getUserBalance(ps.getUserId()));
+        model.addAttribute("userBalance",String.format("%.2f",memberSimpleService.getUserBalance(ps.getUserId()).getMoney()*0.01));
         model.addAttribute("alipayUserList", userAccountService.userAlipayBindList(ps.getUserId()));
         model.addAttribute("payPasswordIs", memberSimpleService.selIsPayPwdByUserId(ps.getUserId()) ? 1 : 0);
         if (SELLER_PATH.equals(identity)) {

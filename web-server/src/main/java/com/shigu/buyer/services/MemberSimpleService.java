@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.ShiguBonusRecord;
+import com.opentae.data.mall.custombeans.BalanceVO;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
@@ -151,17 +152,23 @@ public class MemberSimpleService {
      * @param userId
      * @return
      */
-    public String getUserBalance(Long userId) {
+    public BalanceVO getUserBalance(Long userId) {
         if (userId == null) {
             return null;
         }
-        Long balance = memberUserMapper.userBalance(userId);
-        if (balance == null) {
+        BalanceVO balanceVO = memberUserMapper.userBalanceInfo(userId);
+        if (balanceVO == null) {
             //如果还没有对应支付站账户，去创建账户
             paySdkClientService.tempcode(userId);
-            balance = memberUserMapper.userBalance(userId);
+            balanceVO = memberUserMapper.userBalanceInfo(userId);
         }
-        return String.format("%.2f",balance * 0.01);
+        // 星座宝账户不存在且账户创建失败
+        if (balanceVO == null || balanceVO.getMoney() == null) {
+            balanceVO = new BalanceVO();
+            balanceVO.setMoney(0L);
+            balanceVO.setBlockMoney(0L);
+        }
+        return balanceVO;
     }
 
     /**

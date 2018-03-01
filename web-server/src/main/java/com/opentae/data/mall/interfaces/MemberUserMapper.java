@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.ShiguBonusRecord;
+import com.opentae.data.mall.custombeans.BalanceVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -29,4 +30,11 @@ public interface MemberUserMapper extends Mapper<MemberUser> {
 
     /** 用户红包记录 */
     List<ShiguBonusRecord> getUserBonusRecord(String thirdId);
+
+    /**
+     * 用户余额信息
+     * @param userId
+     * @return
+     */
+    BalanceVO userBalanceInfo(@Param("userId") Long userId);
 }
