@@ -878,7 +878,7 @@ public class CdnAction {
     public JSONObject smallPic(Long id){
         try {
             String picUrl = shopsItemService.itemImgzipUrl(id);
-            return JsonResponseUtil.success().element("pic", picUrl);
+            return JsonResponseUtil.success().element("pic", picUrl.replace("#","%23"));
         } catch (Exception e) {
             return JsonResponseUtil.error("下载失败，请重试！");
         }
