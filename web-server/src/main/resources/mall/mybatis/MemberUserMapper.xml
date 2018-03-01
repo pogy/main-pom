@@ -43,4 +43,11 @@
         AND status = 1
         ORDER BY id desc
     </select>
+
+    <select id="userBalanceInfo" parameterType="java.lang.Long" resultType="com.opentae.data.mall.custombeans.BalanceVO">
+        SELECT a.money money , a.block_money blockMoney
+        FROM pay_site2.pay_xzb a, pay_site2.pay_account b
+        WHERE b.xz_user_id=#{userId}
+        AND b.account_id=a.account_id
+    </select>
 </mapper>
