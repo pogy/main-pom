@@ -28,6 +28,6 @@ public class BeanSetterGetterHelper {
 //                .map(Class::getDeclaredFields)
 //                .flatMap(Stream::of)
 //                .filter(field -> field.getModifiers() == Modifier.PRIVATE)
-//                .forEach(field -> System.out.println(String.format("%s.%set%s();", StringUtils.uncapitalize(clazz.getSimpleName()), getOrSet?'g':'s', StringUtils.capitalize(field.getName()))));
+//                .forEach(field -> //System.out.println(String.format("%s.%set%s();", StringUtils.uncapitalize(clazz.getSimpleName()), getOrSet?'g':'s', StringUtils.capitalize(field.getName()))));
 //    }
 }

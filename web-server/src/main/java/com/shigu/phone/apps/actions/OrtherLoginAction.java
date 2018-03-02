@@ -80,7 +80,7 @@ public class OrtherLoginAction {
             currentUser.login(token);
             //返回需要数据
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8"), LoginFromType.TAOBAO);
-            Long userId = personalSession.getUserId();
+//            Long userId = personalSession.getUserId();
             //token
             String uuid=phoneUserService.createToken(personalSession.getUserId(),"phone_login_token");
             uuid = TokenUtil.str2HexStr(uuid);

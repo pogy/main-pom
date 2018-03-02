@@ -6,7 +6,7 @@
     <title>逛市场 - 四季星座网</title>
     <meta name="keywords" content="四季星座网,四季星座论坛,杭州网店之家,网店代理货源,淘宝货源,男装货源,女装货源,一件代发,一键上传。">
     
-    <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
+    <meta name="description" content="发现好货-发现好货，每天实时推荐档口热卖好货！">
     
     <link href="http://style.571xz.com/marketV3/css/index.css?t=2017112301" rel="stylesheet">
     

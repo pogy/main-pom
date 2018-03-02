@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/gys/css/shiguStoreerjiyuming_v20171123_140304.css" rel="stylesheet">
+<link href="http://style.571xz.com/v6/gys/css/shiguStoreerjiyuming_v20180117_170925.css" rel="stylesheet">

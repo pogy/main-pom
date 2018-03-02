@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShopFitmentArea;
 import com.opentae.data.mall.beans.ShopFitmentModule;
 import com.opentae.data.mall.beans.ShopFitmentPage;
-import com.opentae.data.mall.examples.ShopFitmentAreaExample;
 import com.opentae.data.mall.examples.ShopFitmentPageExample;
 import com.opentae.data.mall.interfaces.ShopFitmentAreaMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentModuleMapper;
@@ -104,8 +103,12 @@ public class ShopDesignService {
      * @throws IOException
      */
     public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
-        List<FitmentModule> allarea = shopFitmentService.selShopHead(shopId).getAllarea();
-        if (allarea.isEmpty()) {
+        FitmentArea fitmentArea = shopFitmentService.selShopHead(shopId);
+        if (fitmentArea == null) {
+            return null;
+        }
+        List<FitmentModule> allarea = fitmentArea.getAllarea();
+        if (allarea == null || allarea.isEmpty()) {
             return null;
         }
         return parseModule(allarea.get(0),selShopForModule(shopId,webSite)
@@ -572,6 +575,9 @@ public class ShopDesignService {
     }
 
     public boolean defaultModuleValueIs(Long moduleId){
+        if (moduleId == null) {
+            return false;
+        }
         ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
         if (shopFitmentModule != null) {
             if ("{}".equals(shopFitmentModule.getModuleValue())) {

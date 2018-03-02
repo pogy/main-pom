@@ -1,5 +1,6 @@
 package com.shigu.buyer.actions;
 
+import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
@@ -41,6 +42,7 @@ import com.shigu.tools.*;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -119,9 +121,9 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
-    private final String MEMBER_PATH = "member";
+    private final static String MEMBER_PATH = "member";
 
-    private final String SELLER_PATH = "seller";
+    private final  static String SELLER_PATH = "seller";
 
 
     /**
@@ -146,6 +148,13 @@ public class MemberAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
+        // 用户红包余额
+        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
+        if (bonusBalance == null) {
+            bonusBalance = 0L;
+        }
+        model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
         return "fxs/index";
     }
 
@@ -1088,6 +1097,59 @@ public class MemberAction {
     }
 
     /**
+     * 红包余额
+     * @param identity
+     * @param session
+     * @param model
+     * @return
+     * @throws Main4Exception
+     */
+    @RequestMapping("{identity}/userBonus")
+    public String userBonus(@PathVariable String identity, HttpSession session, Model model) throws Main4Exception {
+        if (!isMemberOrSeller(identity)) {
+            throw new Main4Exception("非法的路径");
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        // 用户红包余额
+        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
+        if (bonusBalance == null) {
+            bonusBalance = 0L;
+        }
+        model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
+        // 用户红包记录
+        List<BonusRecordVo> bonusRecordVoList = new ArrayList<>();
+        List<ShiguBonusRecord> bonusRecordList = memberSimpleService.getUserBonusRecord(taobaoNick);
+        if (bonusRecordList != null && !bonusRecordList.isEmpty()) {
+            for (ShiguBonusRecord bonusRecord : bonusRecordList) {
+                BonusRecordVo bonusRecordVo = new BonusRecordVo();
+                int type = bonusRecord.getType();
+                if (type == 1) { // 系统充值
+                    bonusRecordVo.setPayText("四季星座网平台赠送");
+                    bonusRecordVo.setPayCodeText("充值编号");
+                } else if (type == 2) { // 用户使用
+                    bonusRecordVo.setMoney("-" + String.format("%.2f", bonusRecord.getAmount() * 0.01));
+                    bonusRecordVo.setPayText("订单支付");
+                    bonusRecordVo.setPayCodeText("交易编号");
+                } else { // 其它
+                    bonusRecordVo.setPayText("其它");
+                    bonusRecordVo.setPayCodeText("编号");
+                }
+                bonusRecordVo.setMoney(String.format("%.2f", bonusRecord.getAmount() * 0.01));
+                bonusRecordVo.setPayState(type);
+                bonusRecordVo.setPayCode(bonusRecord.getSerialNumber());
+                bonusRecordVo.setTime(DateFormatUtils.format(bonusRecord.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+                bonusRecordVoList.add(bonusRecordVo);
+            }
+        }
+        model.addAttribute("bonusList", bonusRecordVoList);
+        if (SELLER_PATH.equals(identity)) {
+            return "gys/userBonus";
+        }
+        return "fxs/userBonus";
+    }
+
+    /**
      * 资金流水
      *
      * @return
@@ -1336,7 +1398,7 @@ public class MemberAction {
             return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / 10) * 0.01));
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double)10) * 0.01));
     }
 
     /**

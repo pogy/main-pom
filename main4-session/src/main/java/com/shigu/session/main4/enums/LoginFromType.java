@@ -5,8 +5,18 @@ package com.shigu.session.main4.enums;
  * Created by zhaohongbo on 17/2/20.
  */
 public enum LoginFromType {
-    TAOBAO("淘宝","taobao",3),QQ("微信","qq",4),WX("微信","wx",5),XZ("星座网账号","xz",7),
-    ALI("阿里","ali",6),PHONE("手机验证码","phone",7),SUPER("超级权限无密登陆","supper",-1);
+    TAOBAO("淘宝","taobao",3),
+    QQ("微信","qq",4),
+    WX("微信","wx",5),
+    XZ("星座网账号","xz",7),
+    ALI("阿里","ali",6),
+    PHONE("手机验证码","phone",7),
+    SUPER("超级权限无密登陆","supper",-1),
+    JD("京东","jd",8)
+
+    ;
+
+
     LoginFromType(String title, String value,int type) {
         this.title = title;
         this.value = value;

@@ -1,10 +1,10 @@
-<#assign $pageid>awardInfo</#assign>
+<#assign $pageid="awardInfo">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>开奖结果 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,18 +17,14 @@
 <#include "/__style_torrent__/fxs__awardInfo_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -49,34 +45,67 @@
                     </div>
                 </div>
             </div>
-            <div class="awardList clearfix">
-                <ul>
-                    <#list phase.awardList as award>
-                        <li>
-                            <dl>
-                                <dt><img src="${award.img!}"></dt>
-                                <dd>
-                                    <span>${award.name!}</span>
-                                    <p>${award.prize!}</p>
-                                </dd>
-                            </dl>
-                            <div class="lotteryState">
-                                <#if award.state == 1>
-                                    等待抽奖
-                                <#elseif award.state == 2>
-                                    未中奖
-                                <#elseif award.state == 3>
-                                    <#if award.takedIs == true>
-                                        <span class="hasTake">已领取</span>
-                                    <#else>
-                                        <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
+            <#if (phase.awardList?size) gt 1>
+                <div class="awardList clearfix">
+                    <ul>
+                        <#list phase.awardList as award>
+                            <li>
+                                <dl>
+                                    <dt><img src="${award.img!}"></dt>
+                                    <dd>
+                                        <span>${award.name!}</span>
+                                        <p>${award.prize!}</p>
+                                    </dd>
+                                </dl>
+                                <div class="lotteryState">
+                                    <#if award.state == 1>
+                                        等待抽奖
+                                    <#elseif award.state == 2>
+                                        未中奖
+                                    <#elseif award.state == 3>
+                                        <#if award.takedIs == true>
+                                            <span class="hasTake">已领取</span>
+                                        <#else>
+                                            <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
+                                        </#if>
                                     </#if>
-                                </#if>
+                                </div>
+                            </li>
+                        </#list>
+                    </ul>
+                </div>
+            <#else>
+                <div class="justOneAward">
+                    <#list phase.awardList as award>
+                        <div class="awardBox">
+                            <#if award.state == 3>
+                                <div class="awardMoney"></div>
+                            <#elseif award.state == 2 || award.state == 1>
+                                <div class="awardMoney noAward"></div>
+                            </#if>
+                            <div class="awardInfo">
+                                <ul>
+                                    <li>中奖情况：
+                                        <#if award.state == 1>
+                                            等待抽奖
+                                        <#elseif award.state == 2>
+                                            未中奖
+                                        <#elseif award.state == 3>
+                                            <#if award.takedIs == true>
+                                                <span class="hasTake">已领取</span>
+                                            <#else>
+                                                <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
+                                            </#if>
+                                        </#if>
+                                    </li>
+                                    <li>使用期限：以短信通知日期为准</li>
+                                    <li>领取地点：置地国际电商基地1楼</li>
+                                </ul>
                             </div>
-                        </li>
+                        </div>
                     </#list>
-                </ul>
-            </div>
+                </div>
+            </#if>
         </div>
         </#list>
     </div>

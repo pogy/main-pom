@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/shiguStoreerjiyuming_v20171123_140050.js"></script>
+<script src="http://style.571xz.com/v6/gys/js/shiguStoreerjiyuming_v20180117_170925.js"></script>

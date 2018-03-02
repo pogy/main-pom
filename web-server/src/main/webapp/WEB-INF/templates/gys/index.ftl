@@ -1,10 +1,10 @@
-<#assign $pageid>index</#assign>
+<#assign $pageid="index">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -14,25 +14,19 @@
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
 <script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__index_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -81,7 +75,6 @@
         <div class="imglist_left fl">
           <p class="c_title">热门宝贝<!--  <a href="javascript:;">查看更多> --></span></p>
           <ul class="hotGoods clearfix">
-          <!--<li><a href="http://www.571xz.com/item.htm?id=8431271" target="_blank"><img src="https://img.alicdn.com/bao/uploaded/http://img.alicdn.com/imgextra/i3/25771684245/TB2c4iAmXXXXXbzXXXXXXXXXXXX_!!25771684245.jpg" width="84" height="84"><p>￥29.00</p></a></li>-->
           </ul>
           <p class="c_title">建议优化宝贝<!-- @<span>近30天未被上传 <a href="javascript:;">马上去优化></span> @--></p>
           <ul class="nothotGoods clearfix">

@@ -316,6 +316,9 @@ public class GoodsFileService extends OssIO {
      * @return
      */
     public boolean hasDatu(Long goodsId){
+        if (goodsId == null) {
+            return false;
+        }
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andGoodsIdEqualTo(goodsId);
         return goodsFileMapper.countByExample(example)>0;

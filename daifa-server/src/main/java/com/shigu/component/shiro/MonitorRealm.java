@@ -110,7 +110,7 @@ public class MonitorRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-		//System.out.println("授权判断--------------------------------------------------");
+		////System.out.println("授权判断--------------------------------------------------");
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		//查出用户所有的权限
 		//AuthorityUser auth = (AuthorityUser) principals.getPrimaryPrincipal();
@@ -122,7 +122,7 @@ public class MonitorRealm extends AuthorizingRealm {
 		List<String> roleStrings=new ArrayList<String>();
 		List<Permission> allPermissions=new ArrayList<Permission>();
 		for(TsysRole ur:roles){
-			//System.out.println(ur.getRoleTag ());
+			////System.out.println(ur.getRoleTag ());
 			roleStrings.add(ur.getRoleTag());
 			allPermissions.addAll(simpleRolePermissionReader.resolvePermissionsInRole(ur.getRoleTag()));
 		}
@@ -136,7 +136,7 @@ public class MonitorRealm extends AuthorizingRealm {
      */
 	/*@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		//System.out.println("授权判断--------------------------------------------------");
+		////System.out.println("授权判断--------------------------------------------------");
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		//查出用户所有的权限
 		//AuthorityUser auth = (AuthorityUser) principals.getPrimaryPrincipal();
@@ -149,7 +149,7 @@ public class MonitorRealm extends AuthorizingRealm {
 		List<String> roleStrings=new ArrayList<String>();
 		List<Permission> allPermissions=new ArrayList<Permission>();
 		for(UserRole ur:roles){
-			System.out.println(ur.getRoleTag ());
+			//System.out.println(ur.getRoleTag ());
 			roleStrings.add(ur.getRoleTag());
 			allPermissions.addAll(simpleRolePermissionReader.resolvePermissionsInRole(ur.getRoleTag()));
 		}

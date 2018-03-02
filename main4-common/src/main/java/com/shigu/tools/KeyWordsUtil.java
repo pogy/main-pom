@@ -152,7 +152,7 @@ public class KeyWordsUtil {
 //        orignalWords = duleKeyWordsInList(orignalWords,authorityKeyList);
 //        orignalWords = duleKeyWordsInList(orignalWords,oneKeyList);
 
-       return duleKeyWordsInList(orignalWords,allKeys);
+        return duleKeyWordsInList(orignalWords,allKeys);
     }
 
     public static void main(String[] args) {

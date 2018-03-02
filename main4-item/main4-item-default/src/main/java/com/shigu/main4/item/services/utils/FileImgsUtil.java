@@ -51,8 +51,8 @@ public class FileImgsUtil {
      */
     private static String savePic(String savepicPath, String url, String fileName) {
         String result = "";
-        String picnameString[] = url.split("/");
-        String picname = picnameString[picnameString.length - 1];
+//        String picnameString[] = url.split("/");
+//        String picname = picnameString[picnameString.length - 1];
 
         Connection con = HttpConnUtil.getConnection(url);
         if (con != null) {
@@ -232,7 +232,7 @@ public class FileImgsUtil {
                 in.close();
             }
             out.close();
-            //System.out.println("压缩完成.");
+            ////System.out.println("压缩完成.");
         } catch (IOException e) {
             e.printStackTrace();
         }

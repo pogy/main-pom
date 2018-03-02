@@ -19,6 +19,7 @@
 				<entry key="member" value-ref="memberFilter"/>
 				<entry key="shop" value-ref="shopFilter"/>
 				<entry key="sdk" value-ref="tae_apiRequestFilter"/>
+                <entry key="help" value-ref="tae_helpRequestFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -32,6 +33,10 @@
 				/activity/lottery.htm = member
 				/seller/** = shop
 				/app/** = sdk
+                /helpCenter/login.htm = anon
+                /helpCenter/queIndex.htm = anon
+                /helpCenter/queDetail.htm = anon
+                /helpCenter/** = help
 				/** = anon
 			</value>
 		</property>

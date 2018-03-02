@@ -10,6 +10,7 @@ import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.AfterSalingVO;
 import com.shigu.order.vo.MyOrderVO;
@@ -66,7 +67,7 @@ public abstract class OrderQuery {
 //                        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
 //                        ItemOrderSub itemOrderSub = itemOrderSubs.get(0);
 //                        subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
-//                        System.out.println(itemOrderSub.getInStok());
+//                        //System.out.println(itemOrderSub.getInStok());
 //                    });
 //                });
             }
@@ -89,59 +90,72 @@ public abstract class OrderQuery {
         List<Integer> types = Arrays.asList(2, 3);
         List<Long> soids = myOrderVOS.stream().flatMap(myOrderVO -> myOrderVO.getChildOrders().stream())
                 .map(SubMyOrderVO::getChildOrderId).collect(Collectors.toList());//子单单号集合
-        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
-        itemOrderRefundExample.createCriteria().andSoidIn(soids).andTypeIn(types);
-        List<ItemOrderRefund> afters = getItemOrderRefundMapper().selectByExample(itemOrderRefundExample);
-        Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
-        myOrderVOS.forEach(myOrderVO -> {//主单
-            myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
-                ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
-                subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
-                subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
-                    afterSaleVO.setNewAfterSaleInfoIs(false);
-                    if (types.contains(afterSaleVO.getType())) {
-                        List<AfterSalingVO> afterSaling = new ArrayList<>();
-                        ItemOrderRefund refund = afterGroup.get(afterSaleVO.getRefundId());
-                        if (refund != null) {
-                            afterSaleVO.setRefuseReason(refund.getFailMsg());
-                            AfterSalingVO asa = new AfterSalingVO();
-                            switch (refund.getRefundSubInfo()) {
-                                case 0:
-                                case 1:
-                                case 2: {
-                                    asa.setType(refund.getRefundSubInfo());
-                                    afterSaling.add(asa);
-                                    break;
-                                }
-                                case 4: {
-                                    asa.setType(5);
-                                    afterSaling.add(asa);
-                                    break;
-                                }
-                                case 3: {
-                                    int number = refund.getType()==5?refund.getFailNumber():refund.getNumber();
-                                    int failNumber = refund.getType()==5?refund.getFailNumber()-refund.getNumber():refund.getFailNumber();
-                                    if (number - failNumber > 0&& refund.getStatus()>6) {
-                                        asa.setType(4);
-                                        asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
-                                        afterSaling.add(asa);
-                                    }
-                                    if (failNumber > 0) {
-                                        asa=new AfterSalingVO();
-                                        asa.setType(3);
-                                        asa.setOpeAfterSaleNum(refund.getFailNumber());
-                                        afterSaling.add(asa);
-                                    }
-                                    break;
-                                }
+        if (soids != null && !soids.isEmpty()) {
+            ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+            itemOrderRefundExample.createCriteria().andSoidIn(soids).andTypeIn(types);
+            List<ItemOrderRefund> afters = getItemOrderRefundMapper().selectByExample(itemOrderRefundExample);
+            Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
+            myOrderVOS.forEach(myOrderVO -> {//主单
+                myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
+                    ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
+                    subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
+                    if(myOrderVO.getPayTime()!=null){
+                        try {
+                            String fd= DateUtil.dateToString(myOrderVO.getPayTime(),DateUtil.patternB);
+                            int day=new Integer(fd);
+                            if(day>=20180110&&day<=20180224){
+                                subMyOrderVO.setRestoreSaleAfterServiceIs(true);
                             }
+                        } catch (Exception ignored) {
                         }
-                        afterSaleVO.setNewAfterSaleInfoIs(!refund.getUserShow());
-                        afterSaleVO.setAfterSaling(afterSaling);
                     }
+                    subMyOrderVO.getAfterSales().forEach(afterSaleVO -> {
+                        afterSaleVO.setNewAfterSaleInfoIs(false);
+                        if (types.contains(afterSaleVO.getType())) {
+                            List<AfterSalingVO> afterSaling = new ArrayList<>();
+                            ItemOrderRefund refund = afterGroup.get(afterSaleVO.getRefundId());
+                            if (refund != null) {
+                                afterSaleVO.setRefuseReason(refund.getFailMsg());
+                                AfterSalingVO asa = new AfterSalingVO();
+                                switch (refund.getRefundSubInfo()) {
+                                    case 0:
+                                    case 1:
+                                    case 2: {
+                                        asa.setType(refund.getRefundSubInfo());
+                                        afterSaling.add(asa);
+                                        break;
+                                    }
+                                    case 4: {
+                                        asa.setType(5);
+                                        afterSaling.add(asa);
+                                        break;
+                                    }
+                                    case 3: {
+                                        int number = refund.getType()==5?refund.getFailNumber():refund.getNumber();
+                                        int failNumber = refund.getType()==5?refund.getFailNumber()-refund.getNumber():refund.getFailNumber();
+                                        if (number - failNumber > 0&& refund.getStatus()>6) {
+                                            asa.setType(4);
+                                            asa.setOpeAfterSaleNum(refund.getNumber() - refund.getFailNumber());
+                                            afterSaling.add(asa);
+                                        }
+                                        if (failNumber > 0) {
+                                            asa=new AfterSalingVO();
+                                            asa.setType(3);
+                                            asa.setOpeAfterSaleNum(refund.getFailNumber());
+                                            afterSaling.add(asa);
+                                        }
+                                        break;
+                                    }
+                                }
+                                afterSaleVO.setNewAfterSaleInfoIs(!refund.getUserShow());
+                            }
+                            afterSaleVO.setAfterSaling(afterSaling);
+                        }
+                    });
                 });
             });
-        });
+        }
+
         List<Long> orderIds = myOrderVOS.stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
         // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
         ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();

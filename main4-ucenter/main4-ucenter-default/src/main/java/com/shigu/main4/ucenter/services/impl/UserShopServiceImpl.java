@@ -62,7 +62,7 @@ public class UserShopServiceImpl implements UserShopService{
         }
         ShiguShop shiguShop = new ShiguShop();
         shiguShop.setShopId(shiguUserLastloginshopList.get(0).getShopId());
-        shiguShop.setShopStatus(0);
+//        shiguShop.setShopStatus(0);
         shiguShop.setUserId(userId);
         shiguShop = shiguShopMapper.selectOne(shiguShop);
         if(shiguShop == null){

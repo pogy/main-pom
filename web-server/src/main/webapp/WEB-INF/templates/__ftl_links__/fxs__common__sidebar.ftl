@@ -129,6 +129,9 @@
                         <#if 'withdraw5Apply' == $pageid >
                             class="selected"
                         </#if>
+                        <#if 'userBonus' == $pageid >
+                            class="selected"
+                        </#if>
                     href="/member/userBalance.htm"
             >我的资金</a>
         </li>

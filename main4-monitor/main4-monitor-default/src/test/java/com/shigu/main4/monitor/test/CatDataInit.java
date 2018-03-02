@@ -165,7 +165,7 @@ public class CatDataInit {
                 itemUpRecordVOS.add(itemUpRecordVO);
             }
             for (String webSite : webSiteItemUpMap.keySet()) {
-                List<Long> goodsIds = webSiteItemUpMap.get(webSite).stream().filter(item -> item.getSupperGoodsId() != null).map(ItemUpRecordVO::getSupperGoodsId).collect(Collectors.toList());
+                List<Long> goodsIds = webSiteItemUpMap.get(webSite).stream().filter(item -> item != null && item.getSupperGoodsId() != null).map(ItemUpRecordVO::getSupperGoodsId).collect(Collectors.toList());
                 if (goodsIds.isEmpty()) {
                     continue;
                 }

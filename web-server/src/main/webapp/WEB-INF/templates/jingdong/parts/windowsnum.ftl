@@ -1,0 +1,1 @@
+您现有${shop.allCount}个橱窗位，已使用${shop.usedCount}，剩余${shop.remainCount}个。

@@ -778,7 +778,13 @@ public class CdnAction {
         if(bo.getDd()!=null&&bo.getDd()>0){
             Calendar cal=Calendar.getInstance();
             endDate=cal.getTime();
-            cal.add(Calendar.DATE,-bo.getDd());
+            if(bo.getDd()==1){
+                cal.set(Calendar.HOUR_OF_DAY,0);
+                cal.set(Calendar.MINUTE,0);
+                cal.set(Calendar.SECOND,0);
+            }else{
+                cal.add(Calendar.DATE,-bo.getDd());
+            }
             startDate=cal.getTime();
         }else{
             startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
@@ -872,7 +878,7 @@ public class CdnAction {
     public JSONObject smallPic(Long id){
         try {
             String picUrl = shopsItemService.itemImgzipUrl(id);
-            return JsonResponseUtil.success().element("pic", picUrl);
+            return JsonResponseUtil.success().element("pic", picUrl.replace("#","%23"));
         } catch (Exception e) {
             return JsonResponseUtil.error("下载失败，请重试！");
         }
@@ -1001,9 +1007,12 @@ public class CdnAction {
         }
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
-        List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
+        List<CdnShopCatVO> cats = new ArrayList<>();
+        if (shop != null) {
+            cats =cdnService.cdnShopCat(shop.getShopId());
+        }
 
-//        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+//      List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         List<CdnSimpleGoodsVO> see = new ArrayList<>();
         ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,goods.getShopId(),goods.getWebSite(),"common",1,3);
         List<ItemShowBlock> content = itemPager.getContent();
@@ -1017,10 +1026,11 @@ public class CdnAction {
                 see.add(vo);
             }
         }
-
         if (shop.getType() == null || shop.getType() != 1) {
             goods.setTbGoodsId(null);
+            shop.setTbUrl(null);
         }
+
         //极限词过滤
         goods.setTitle(KeyWordsUtil.duleKeyWords(goods.getTitle()));
         goods.setDescHtml(KeyWordsUtil.duleKeyWords(goods.getDescHtml()));
@@ -1044,6 +1054,9 @@ public class CdnAction {
     @RequestMapping("/itemGoat")
     @ResponseBody
     public Object itemGoat (HttpServletRequest request,Long goodsId) throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
@@ -1070,6 +1083,9 @@ public class CdnAction {
     @RequestMapping("/itemBottomGoat")
     @ResponseBody
     public Object itemBottomGoat (HttpServletRequest request,Long goodsId)throws JsonErrException{
+        if (goodsId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
         boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
@@ -1102,7 +1118,6 @@ public class CdnAction {
         }
         return  itemGoatCidAndWebsiteVO;
     }
-
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
         //如果东北商品,用东北的模板
         ItemShowVO itemShowVO=new ItemShowVO();
@@ -1116,7 +1131,7 @@ public class CdnAction {
             throw new CdnException("商品不存在");
         }
         //店招
-        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
+//        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
 
         ItemBO bo=new ItemBO();
         bo.setId(id);
@@ -1128,8 +1143,10 @@ public class CdnAction {
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum=starNum==null?0:    starNum;
+        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
+        if (starNum == null) {
+            starNum = 0L;
+        }
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
         itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
@@ -1141,7 +1158,7 @@ public class CdnAction {
             itemShowVO.getCdnItem().setTitle(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getTitle()));
             itemShowVO.getCdnItem().setDescription(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getDescription()));
         }
-        dz=KeyWordsUtil.duleKeyWords(dz);
+//        dz=KeyWordsUtil.duleKeyWords(dz);
 
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());

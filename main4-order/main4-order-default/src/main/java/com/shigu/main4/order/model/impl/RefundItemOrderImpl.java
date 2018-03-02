@@ -67,11 +67,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private SubOrderSoidpsMapper subOrderSoidpsMapper;
-
-    @Autowired
-    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
     @Autowired
     private RedisIO redisIO;
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -332,8 +331,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     @Transactional
-    public void buyerNoReprice() {
-        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE, null);
+    public void buyerNoReprice(){
+        RefundVO refundInfo = refundinfo();
+        refundStateChangeAndLog(refundInfo,RefundStateEnum.BUYER_NOREPRICE, null);
     }
 
     /**

@@ -33,6 +33,9 @@ public class ShiguPager<T> implements Serializable {
      * @param pageSize
      */
     public void calPages(int totalCount, int pageSize){
+        if(pageSize<=0){
+            return ;
+        }
         int totalPages = totalCount / pageSize + ((totalCount % pageSize == 0) ? 0 : 1);
         this.setTotalPages(totalPages);
         this.setTotalCount(totalCount);

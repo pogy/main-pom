@@ -86,17 +86,17 @@ public class TypeConvert {
         String currency_format="#,##0.000";
         int currency_scale=2;
         
-        DecimalFormat formater=new DecimalFormat(currency_format);
-        ParsePosition par=new ParsePosition(2); 
-        Number number=formater.parse("3.38886",par);        
+//        DecimalFormat formater=new DecimalFormat(currency_format);
+//        ParsePosition par=new ParsePosition(2);
+//        Number number=formater.parse("3.38886",par);
         Currency currency=Currency.getInstance(Locale.CHINA);
-        System.out.println(currency.getSymbol());
+        //System.out.println(currency.getSymbol());
         try{ 
             DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance();
             nf.applyPattern("$#0.00#");
             String s = "";
             s = nf.format(d);
-            System.out.println(s);
+            //System.out.println(s);
           }catch(Exception e){
             e.printStackTrace(); 
           } 
@@ -689,10 +689,10 @@ public class TypeConvert {
         try {
             meth = obj.getClass().getMethod(getFieldIndexName, null);
             Object retobj = meth.invoke(obj, null);  
-            String setFieldIndexName="set"+fieldIndexName;
+//            String setFieldIndexName="set"+fieldIndexName;
             Class partypes[] = new Class[1];
             partypes[0] = Integer.class; 
-            Method meth1 =obj.getClass().getMethod(setFieldIndexName, partypes);  
+//            Method meth1 =obj.getClass().getMethod(setFieldIndexName, partypes);
             Object arglist[] = new Object[1];
             arglist[0] = new Integer(1); 
             Object retobjTmp = meth.invoke(retobj, arglist); //产生自增号 
@@ -773,73 +773,73 @@ public static String DoubleToString(Double dd){
 		return dString;
 	}
     public static void main(String[] args) {
-        System.out.println(TypeConvert.formatDouble(3.4467, 3));
-        System.out.println(TypeConvert.formatBecomePercent(3.44676));
+        //System.out.println(TypeConvert.formatDouble(3.4467, 3));
+        //System.out.println(TypeConvert.formatBecomePercent(3.44676));
         Date date = TypeConvert.setDate(2005, 1, 22);
         TypeConvert.dateAddDay(date, 3);
-        System.out.println(TypeConvert.formatDate(date));
+        //System.out.println(TypeConvert.formatDate(date));
         Date date1 = new Date();
         Date date2 = new Date();
         TypeConvert.getYearScope(date, date1, date2);
-        System.out.println(TypeConvert.formatDate(date1));
-        System.out.println(TypeConvert.formatDate(date2));
-        System.out.println("---------------------");
+        //System.out.println(TypeConvert.formatDate(date1));
+        //System.out.println(TypeConvert.formatDate(date2));
+        //System.out.println("---------------------");
         TypeConvert.getHalfYearScope(date, date1, date2);
-        System.out.println(TypeConvert.formatDate(date1));
-        System.out.println(TypeConvert.formatDate(date2));
-        System.out.println("---------------------");
+        //System.out.println(TypeConvert.formatDate(date1));
+        //System.out.println(TypeConvert.formatDate(date2));
+        //System.out.println("---------------------");
         TypeConvert.getQuarterScope(date, date1, date2);
-        System.out.println(TypeConvert.formatDate(date1));
-        System.out.println(TypeConvert.formatDate(date2));
-        System.out.println("---------------------");
+        //System.out.println(TypeConvert.formatDate(date1));
+        //System.out.println(TypeConvert.formatDate(date2));
+        //System.out.println("---------------------");
         TypeConvert.getMonthScope(date, date1, date2);
-        System.out.println(TypeConvert.formatDate(date1));
-        System.out.println(TypeConvert.formatDate(date2));
+        //System.out.println(TypeConvert.formatDate(date1));
+        //System.out.println(TypeConvert.formatDate(date2));
         int a = (int) Math.ceil(10 / 3.0);
 
-        System.out.println("---------------------");
-        System.out.println(a);
-        System.out.println(TypeConvert.formatDate(new Date(),"yyyyMMddHHmmssz"));
+        //System.out.println("---------------------");
+        //System.out.println(a);
+        //System.out.println(TypeConvert.formatDate(new Date(),"yyyyMMddHHmmssz"));
         Locale lc=new Locale("en","US");
-        System.out.println("country:"+lc.getCountry()+" getLanguage:"+lc.getLanguage());
+        //System.out.println("country:"+lc.getCountry()+" getLanguage:"+lc.getLanguage());
         NumberFormat df = NumberFormat.getCurrencyInstance(lc);
         ((DecimalFormat) df).applyPattern("#0.000");
        df.setGroupingUsed(true); 
        
         for (int i=0;i<Locale.getAvailableLocales().length;i++){             
-            System.out.println("country:"+Locale.getAvailableLocales()[i].getCountry()+
-                    " langue:"+Locale.getAvailableLocales()[i].getLanguage()+
-                    " countryName:"+Locale.getAvailableLocales()[i].getDisplayCountry());
+            //System.out.println("country:"+Locale.getAvailableLocales()[i].getCountry()+
+            //        " langue:"+Locale.getAvailableLocales()[i].getLanguage()+
+            //        " countryName:"+Locale.getAvailableLocales()[i].getDisplayCountry());
         }
        
          df.setMaximumFractionDigits(3);
          //df.setCurrency(new Currency());
          double d=33333.56;
-         System.out.println("d:"+df.format(d));
-         System.out.println(TypeConvert.formatDouble(00.3688,"#0.00##"));
-         System.out.println(TypeConvert.formatBecomePercent(0.334866));
+         //System.out.println("d:"+df.format(d));
+         //System.out.println(TypeConvert.formatDouble(00.3688,"#0.00##"));
+         //System.out.println(TypeConvert.formatBecomePercent(0.334866));
          Object qty=TypeConvert.stringParseNumber("-3");
          if (qty instanceof Double){
              Double bigQty=(Double) qty;
-             System.out.println("double类型："+bigQty);
+             //System.out.println("double类型："+bigQty);
          } else if (qty instanceof Long){
              Long bigQty=(Long) qty;
-             System.out.println("整形："+bigQty);
+             //System.out.println("整形："+bigQty);
          }
          
-         System.out.println(TypeConvert.stringParseDouble("3"));
-         System.out.println(TypeConvert.stringParseLong("0.334556"));
-         System.out.println(TypeConvert.formatNumberToCurrentcy(222)); 
+         //System.out.println(TypeConvert.stringParseDouble("3"));
+         //System.out.println(TypeConvert.stringParseLong("0.334556"));
+         //System.out.println(TypeConvert.formatNumberToCurrentcy(222)); 
          TypeConvert typeConvert=new TypeConvert();
-         System.out.println(typeConvert.getClass().getName());
+         //System.out.println(typeConvert.getClass().getName());
          String printContext="tgprere=${request.getContextPath()}/wwewe/wewe";
 		   if (printContext!=null && printContext.indexOf("${request.getContextPath()}")>0){
-		       System.out.println(printContext.indexOf("${request.getContextPath()}"));
-		       System.out.println("${request.getContextPath()}".length());
-		       System.out.println( printContext.substring(0,3)+
-		               printContext.substring(3+"${request.getContextPath()}".length(),printContext.length()));
+		       //System.out.println(printContext.indexOf("${request.getContextPath()}"));
+		       //System.out.println("${request.getContextPath()}".length());
+		       //System.out.println( printContext.substring(0,3)+
+		       //        printContext.substring(3+"${request.getContextPath()}".length(),printContext.length()));
 		   }
-		   System.out.println(printContext);
+		   //System.out.println(printContext);
          
     }
 }

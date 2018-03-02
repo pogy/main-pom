@@ -1,10 +1,10 @@
-<#assign $pageid>goodsCollectinit</#assign>
+<#assign $pageid="goodsCollectinit">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>我的数据包 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -20,24 +20,18 @@
 <#include "/__style_torrent__/fxs__goodsCollectinit_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"keyword","value":""+query.keyword},{"name":"website","value":""+query.website}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"keyword","value":""+query.keyword},{"name":"website","value":""+query.website}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -51,9 +45,7 @@
         <li class="select"><a href="goodsCollectinit.htm">我的数据包</a></li>
         <li><a href="goodsDataPackageinit.htm">已生成的数据包</a></li>
         <li class="website">
-<#assign text>{"value":""+query.website}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":""+query.website}] as $it>
 <div class="fmSelect" id="websiteList">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -71,9 +63,7 @@
     <ul>
         <li><label>商品标题：</label><input type="text" id="keyword" name="keyword" <#if query.keyword??> value="${query.keyword!}" </#if>></li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -104,9 +94,7 @@
     <ul class="head clearfix">
         <li class="name">
             <label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -156,9 +144,7 @@
         <#list goodslist as goods>
             <ul class="body clearfix" goodsid="${goods.goodsCollectId!}">
                 <li class="name">
-<#assign text>{"value":goods.goodsCollectId}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"value":goods.goodsCollectId}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -212,9 +198,7 @@
                 </li>
             </ul>
         </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -222,9 +206,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -238,9 +220,7 @@
          <p class="noData tac fs20 fc6">暂无数据</p>
     </#if>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

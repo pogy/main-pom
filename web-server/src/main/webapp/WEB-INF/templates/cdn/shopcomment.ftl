@@ -223,7 +223,7 @@ function openShop(){
 
 </script>            
             <div class="storeXybox">
-<#assign text>{"num":${vo.starNum!}}</#assign>
+<#assign text>{"num":${vo.starNum?c}}</#assign>
 <#assign $it=text?eval />
 
                 <em class="shopLevel">
