@@ -70,7 +70,7 @@ public class ModPriceCalculateServiceImpl implements PriceCalculateService {
     }
 
     @Override
-    public Long pickPipriceFromTitle(Long shopId, Long itemId, Long numIid, Long price, String... strs) {
+    public Long pickPipriceFromTitle(Long shopId,String webSite, Long itemId, Long numIid, Long price, String... strs) {
         return null;
     }
 

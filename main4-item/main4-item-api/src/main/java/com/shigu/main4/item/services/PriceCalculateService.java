@@ -34,5 +34,5 @@ public interface PriceCalculateService {
      *                  {title,huohao,outerId,,,,}
      * @return 批发价
      */
-    Long pickPipriceFromTitle(Long shopId,Long itemId,Long numIid,Long price,String ... strs);
+    Long pickPipriceFromTitle(Long shopId,String webSite,Long itemId,Long numIid,Long price,String ... strs);
 }

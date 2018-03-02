@@ -121,7 +121,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
     }
 
     @Override
-    public Long pickPipriceFromTitle(Long shopId,Long itemId,Long numIid, Long price, String... strs) {
+    public Long pickPipriceFromTitle(Long shopId,String webSite,Long itemId,Long numIid, Long price, String... strs) {
         //标题(title) > 货号(goods_no) > 商家外部编号(outer_id)
         List<Long> piPrices = new ArrayList<>(strs.length);
         Set<Long> allPrices = new HashSet<>();
@@ -181,6 +181,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
             } catch (Exception ignored) {
             }
             g.setSysPiPrice(returnPrice);
+            g.setWebSite(webSite);
             StringBuilder pistr= new StringBuilder();
             for(Long p:piPrices){
                 pistr.append(p).append(",");
@@ -196,11 +197,14 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
                 isErr=false;
             }
             if (isErr) {
-                if(ges.size()==0){
-                    goodsPiPriceErrorMapper.insertSelective(g);
-                }else{
-                    g.setPipriceId(ges.get(0).getPipriceId());
-                    goodsPiPriceErrorMapper.updateByPrimaryKeySelective(g);
+                try {
+                    if(ges.size()==0){
+                        goodsPiPriceErrorMapper.insertSelective(g);
+                    }else{
+                        g.setPipriceId(ges.get(0).getPipriceId());
+                        goodsPiPriceErrorMapper.updateByPrimaryKeySelective(g);
+                    }
+                } catch (Exception ignored) {
                 }
             }
         }
