@@ -213,7 +213,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 }
             }
             if (price != null) {
-                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(), price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
+                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(),generator.getWebSite(),itemId,null, price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
                 tiny.setPiPriceString(String.format("%.2f", tiny.getPiPrice() * .01));
             }
         }
@@ -853,6 +853,47 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         }
         return 0;
     }
+    /**
+     * 系统后台更新一款商品,操作和userUpdateItem一样,就是取消shigu_goods_modify的修改
+     * @param item
+     * @return
+     */
+    @Override
+    public int officeUpdateItem(SynItem item) throws ItemModifyException {
+        if (item == null || item.getGoodsId() == null || item.getWebSite() == null || item.getShopId() == null)
+            throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException, null);
+        SynItem synItem = selItemByGoodsId(item.getGoodsId(), item.getWebSite());
+        if (synItem == null)
+            throw new ItemUpdateException(ITEM_DOES_NOT_EXIST, item.getGoodsId());
+        // 商品无(false)修改
+        boolean modify = false;
+        // 主图更新？
+        boolean picModifild = false;
+        // 比较
+        try {
+            for (Field field : item.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                Object o = field.get(item);//所有比较过程中，null默认跳过，空字条串认为有内容
+                if (o != null && !o.equals(field.get(synItem))) {
+                    if (field.getName().equals("picUrl")) {
+                        picModifild = true;
+                    }
+                    modify = true;
+                }
+            }
+        } catch (IllegalAccessException e) {
+            logger.error("商品更新操作->对象比较失败.字段无法访问.", e);
+        }
+        // 商品修改
+        if (modify) {
+            // shigu_goods_modified 中的字段修改
+            if (picModifild) {
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(),item.getPicUrl(), 1);
+            }
+            return updateItem(item);
+        }
+        return 0;
+    }
 
     /**
      * 更新数据库，更新ES
@@ -1119,6 +1160,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         Long price = new Double(Double.valueOf(item.getPriceString()) * 100).longValue();
         Long piPrice = priceCalculateService.pickPipriceFromTitle(
                 item.getShopId(),
+                item.getWebSite(),
+                null,
+                item.getNumIid(),
                 price,
                 strs
         );

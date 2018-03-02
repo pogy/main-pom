@@ -71,6 +71,14 @@ public interface ItemAddOrUpdateService {
     int systemUpdateItem(SynItem item) throws ItemModifyException;
 
     /**
+     * 系统后台更新一款商品,操作和userUpdateItem一样,就是取消shigu_goods_modify的修改
+     * sites.admin工程专用方法
+     * @param item
+     * @return
+     */
+    int officeUpdateItem(SynItem item) throws ItemModifyException;
+
+    /**
      * 用户更新一款商品
      * 暂时不用
      * @param item

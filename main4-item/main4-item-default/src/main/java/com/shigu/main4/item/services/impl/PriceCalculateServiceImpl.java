@@ -1,6 +1,10 @@
 package com.shigu.main4.item.services.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.GoodsPiPriceError;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.GoodsPiPriceErrorExample;
+import com.opentae.data.mall.interfaces.GoodsPiPriceErrorMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.item.services.PriceCalculateService;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +42,8 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+    @Autowired
+    private GoodsPiPriceErrorMapper goodsPiPriceErrorMapper;
     /**
      * 计算批发价
      * @param shopId 店铺ID
@@ -112,6 +120,106 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
         }
         return price; // 没有匹配到的返回原价
     }
+
+    @Override
+    public Long pickPipriceFromTitle(Long shopId,String webSite,Long itemId,Long numIid, Long price, String... strs) {
+        //标题(title) > 货号(goods_no) > 商家外部编号(outer_id)
+        List<Long> piPrices = new ArrayList<>(strs.length);
+        Set<Long> allPrices = new HashSet<>();
+        boolean isErr=false;
+        for (String s : strs) {
+            if (StringUtils.isEmpty(s)) {
+                continue;
+            }
+            Long piPrice = pickString(null, "0" + s);
+            if (piPrice != null) {
+                allPrices.add(piPrice);
+                //批价区间	批价/原价占比	处置方案
+                //10元以下	小于10%	舍弃
+                //10元以上	小于15%	舍弃
+                //30元以上	小于5%	舍弃
+                //50元以上	小于1%	舍弃
+                boolean discard = piPrice < 1000 && piPrice * 10 < price
+                        ||    piPrice > 1000 && piPrice <= 3000 && piPrice * 100 / 15 < price
+                        ||    piPrice > 3000 && piPrice <= 5000 && piPrice * 100 / 5 < price
+                        ||    piPrice > 5000  && piPrice * 100 < price;
+                if (discard) {
+                    isErr=true;
+                    continue;
+                }
+                if(piPrice > price){
+                    isErr=true;
+                }
+                piPrices.add(piPrice);
+            }
+        }
+        Long returnPrice=price;
+        if(piPrices.size()>0){
+            returnPrice= piPrices.get(0);
+        }else{
+            isErr=true;
+        }
+        if(itemId!=null||numIid!=null){
+            if(StringUtils.isBlank(webSite)&&shopId==null){
+                return returnPrice;
+            }
+            GoodsPiPriceErrorExample goodsPiPriceErrorExample=new GoodsPiPriceErrorExample();
+            goodsPiPriceErrorExample.setOrderByClause("create_time asc");
+            GoodsPiPriceErrorExample.Criteria ca=goodsPiPriceErrorExample.createCriteria();
+            if(itemId!=null){
+                ca.andGoodsIdEqualTo(itemId);
+            }
+            if(numIid!=null){
+                ca.andNumIidEqualTo(numIid);
+            }
+            List<GoodsPiPriceError> ges=goodsPiPriceErrorMapper.selectByExample(goodsPiPriceErrorExample);
+            GoodsPiPriceError g=new GoodsPiPriceError();
+            g.setNumIid(numIid);
+            g.setGoodsId(itemId);
+            g.setHasEnt(0);
+            g.setPrice(price);
+            try {
+                g.setTitle(strs[0]);
+                g.setGoodsNo(strs[1]);
+                g.setOtherId(strs[2]);
+            } catch (Exception ignored) {
+            }
+            g.setSysPiPrice(returnPrice);
+            if(StringUtils.isBlank(webSite)){
+                ShiguShop shop=shiguShopMapper.selectFieldsByPrimaryKey(shopId, FieldUtil.codeFields("shop_id,web_site"));
+                webSite=shop.getWebSite();
+            }
+            g.setWebSite(webSite);
+            StringBuilder pistr= new StringBuilder();
+            for(Long p:piPrices){
+                pistr.append(p).append(",");
+            }
+            if(pistr.length()>0){
+                pistr = new StringBuilder(pistr.substring(0, pistr.length() - 1));
+            }
+            g.setErrorPiPrice(pistr.toString());
+            if(ges.size()>0&&ges.get(0).getSysPiPrice().longValue()==returnPrice&&ges.get(0).getHasEnt()==1){
+                //符合条件,意味着这个已经手动处理过了
+                returnPrice= ges.get(0).getCustomPiPrice();
+                //手动处理过,定义为批发价正常
+                isErr=false;
+            }
+            if (isErr) {
+                try {
+                    if(ges.size()==0){
+                        goodsPiPriceErrorMapper.insertSelective(g);
+                    }else{
+                        g.setPipriceId(ges.get(0).getPipriceId());
+                        goodsPiPriceErrorMapper.updateByPrimaryKeySelective(g);
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return returnPrice;
+    }
+
+
 
     /**
      * 批发价解析
