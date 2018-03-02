@@ -1,5 +1,6 @@
 package com.shigu.main4.item.services.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoodsPiPriceError;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.GoodsPiPriceErrorExample;
@@ -159,6 +160,9 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
             isErr=true;
         }
         if(itemId!=null||numIid!=null){
+            if(StringUtils.isBlank(webSite)&&shopId==null){
+                return returnPrice;
+            }
             GoodsPiPriceErrorExample goodsPiPriceErrorExample=new GoodsPiPriceErrorExample();
             goodsPiPriceErrorExample.setOrderByClause("create_time asc");
             GoodsPiPriceErrorExample.Criteria ca=goodsPiPriceErrorExample.createCriteria();
@@ -181,6 +185,10 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
             } catch (Exception ignored) {
             }
             g.setSysPiPrice(returnPrice);
+            if(StringUtils.isBlank(webSite)){
+                ShiguShop shop=shiguShopMapper.selectFieldsByPrimaryKey(shopId, FieldUtil.codeFields("shop_id,web_site"));
+                webSite=shop.getWebSite();
+            }
             g.setWebSite(webSite);
             StringBuilder pistr= new StringBuilder();
             for(Long p:piPrices){
