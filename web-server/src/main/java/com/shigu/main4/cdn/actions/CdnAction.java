@@ -194,7 +194,7 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(sz));
             loves.add((LoveGoodsList) selFromCache(xz));
         }else{
-            ObjFromCache<LoveGoodsList> my = indexShowService.loveGoods(5, "棉衣", webSite,indexShowService.manMianyi());
+            ObjFromCache<LoveGoodsList> my = indexShowService.loveGoods(5, "夹克", webSite,indexShowService.manJack());
             ObjFromCache<LoveGoodsList> xxk = indexShowService.loveGoods(5, "休闲裤", webSite,indexShowService.manFree());
             //极限词过滤
             my.selObj().getItems().forEach(itemSpreadVO -> itemSpreadVO.setTitle(KeyWordsUtil.duleKeyWords(itemSpreadVO.getTitle())));
