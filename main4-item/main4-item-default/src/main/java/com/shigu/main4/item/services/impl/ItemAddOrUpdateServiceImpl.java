@@ -591,7 +591,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if (item == null || StringUtils.isEmpty(item.getWebSite()) || item.getShopId() == null)
             throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.IllegalArgumentException, null);
         //1.添加shigu_goods_id_generator  //下面简称generator
-
+        if(item.getListTime()==null){
+            item.setListTime(item.getModified());
+        }
+        if(item.getDelistTime()==null){
+            item.setDelistTime(item.getModified());
+        }
         // 更新批发价 只有系统添加才会自动应用批发价
         if (isSys && item.getPriceString() != null) {
             updatePiPrice(item, item.getTitle(), item.getGoodsNo(), item.getOuterId());
