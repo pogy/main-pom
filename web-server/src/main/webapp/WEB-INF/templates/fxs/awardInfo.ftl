@@ -87,9 +87,9 @@
                                     <#list phase.awardList as award>
                                         <div class="awardBox">
                                             <#if award.state == 3>
-                                                <div class="awardMoney <#if award.moneyNum == 300>awardMoney300</#if>"></div>
+                                                <div class="awardMoney awardMoney${award.moneyNum!}"></div>
                                             <#elseif award.state == 2 || award.state == 1>
-                                                <div class="awardMoney noAward <#if award.moneyNum == 300>noAward300</#if>"></div>
+                                                <div class="awardMoney noAward${award.moneyNum!}"></div>
                                             </#if>
                                             <div class="awardInfo">
                                                 <ul>
