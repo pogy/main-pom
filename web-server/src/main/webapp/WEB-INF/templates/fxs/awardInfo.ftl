@@ -86,11 +86,7 @@
                                 <div class="justOneAward">
                                     <#list phase.awardList as award>
                                         <div class="awardBox">
-                                            <#if award.state == 3>
-                                                <div class="awardMoney awardMoney${award.moneyNum!}"></div>
-                                            <#elseif award.state == 2 || award.state == 1>
-                                                <div class="awardMoney noAward${award.moneyNum!}"></div>
-                                            </#if>
+                                            <div class="awardMoney" style="background-image:url(${award.img!})"></div>
                                             <div class="awardInfo">
                                                 <ul>
                                                     <li>中奖情况：
@@ -107,7 +103,7 @@
                                                         </#if>
                                                     </li>
                                                     <li>
-                                                        <#if award.moneyNum == 300>上传商品个数：
+                                                        <#if award.uploadNum??>上传商品个数：
                                                             <#if award.state == 3>
                                                                 <span class="fcF40">${phase.uploadNum!}</span>
                                                             <#else>
