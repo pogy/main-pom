@@ -206,7 +206,7 @@ public class UserLoginAction {
                 }
                 break;
             case 2:
-                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=8E3A8CB1174177B346BEA3F67FABDF2678E07D71&redirect_uri=http://1688.571xz.com/offer/ali_redirect_auth.jsp&state=login&client_id=5684643";
+                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&redirect_uri=http://1688.571xz.com/offer/authorizeauth.htm&_aop_signature=ED8C8744A9F41E9B425E028AEE65E154F1F36949&state=20576956&client_id=1022851";
                 break;
             case 3:
                 url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
