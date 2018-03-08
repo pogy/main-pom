@@ -39,7 +39,7 @@
         </div>
         <div class="actDetail">
             <#list actList as list>
-                <div <#if item_index gt 0>style="display:none"</#if>>
+                <div <#if list_index gt 0>style="display:none"</#if>>
                     <#list list.actPhaseList as phase>
                         <div class="actPhase">
                             <div class="actHead">
