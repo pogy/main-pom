@@ -118,7 +118,7 @@ public class ActivityWebService {
         example.setOrderByClause("id desc");
         ShiguNewActivityExample.Criteria criteria = example.createCriteria();
         criteria.andStartTimeLessThanOrEqualTo(now);
-        return shiguNewActivityMapper.selectByExample(example);
+        return shiguNewActivityMapper.selectByConditionList(example);
     }
 
     /**

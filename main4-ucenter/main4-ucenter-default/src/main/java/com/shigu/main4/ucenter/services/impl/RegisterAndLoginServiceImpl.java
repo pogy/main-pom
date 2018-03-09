@@ -224,6 +224,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             case JD:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
                 break;
+            case ALI:
+                bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
+                break;
             default:
                 throw new Main4Exception("暂不支持该第三方账号绑定");
         }
