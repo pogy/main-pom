@@ -103,7 +103,7 @@
                                                         </#if>
                                                     </li>
                                                     <li>
-                                                        <#if award.uploadNum??>上传商品个数：
+                                                        <#if phase.uploadNum??>上传商品个数：
                                                             <#if award.state == 3>
                                                                 <span class="fcF40">${phase.uploadNum!}</span>
                                                             <#else>
