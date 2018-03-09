@@ -42,7 +42,7 @@ public class RedisIO {
     private int TIMEOUT = 10000;             // 超时时间
     private int DATABASE = 10;                // 数据库编号
     private boolean BORROW = true;           // 在borrow一个事例时是否提前进行validate操作
-    private static JedisPool pool = null;
+    private JedisPool pool = null;
 
     /**
      * 初始化线程池
