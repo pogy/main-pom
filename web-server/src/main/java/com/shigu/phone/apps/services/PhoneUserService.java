@@ -251,8 +251,12 @@ public class PhoneUserService {
         //把token存入redis,设置存活时间30分钟
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex(key+userId, 604800, inRedisToken);
-        return uuid;
+        try {
+            jedis.setex(key + userId, 604800, inRedisToken);
+            return uuid;
+        }finally {
+            redisIO.returnJedis(jedis);
+        }
     }
 
     /**
