@@ -266,7 +266,11 @@ public class PayModeAction {
         if(StringUtils.isEmpty(uuid)){
             uuid= UUIDGenerator.getUUID();
             Jedis jedis = redisIO.getJedis();
-            jedis.setex("moreToPayCode"+session.getId(),3600,uuid);
+            try {
+                jedis.setex("moreToPayCode" + session.getId(), 3600, uuid);
+            }finally {
+                redisIO.returnJedis(jedis);
+            }
         }
         redisIO.putTemp(uuid, oids, 3600);
         return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode="+uuid);
