@@ -6,7 +6,6 @@ import com.opentae.data.mall.beans.ShiguHelpcenterLevel2;
 import com.opentae.data.mall.examples.ShiguHelpcenterLevel2Example;
 import com.opentae.data.mall.interfaces.ShiguHelpcenterLevel2Mapper;
 import com.shigu.helpcenter.service.LevelTwoService;
-import com.sun.tools.javah.LLNI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

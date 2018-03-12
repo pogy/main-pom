@@ -64,7 +64,7 @@ public class JdAuthService {
         try {
             HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
             entityString = EntityUtils.toString(entity);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return null;
         }
         JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
@@ -136,7 +136,7 @@ public class JdAuthService {
         try {
             HttpEntity entity = HttpClientUtil.excuteWithEntityRes(url);
             entityString = EntityUtils.toString(entity);
-        } catch (IOException e) {
+        } catch (Exception e) {
            return null;
         }
         JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);

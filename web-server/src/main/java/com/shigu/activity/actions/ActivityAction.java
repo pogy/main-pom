@@ -446,6 +446,15 @@ public class ActivityAction {
     }
 
     /**
+     * 保太和招商宣传页
+     * @return
+     */
+    @RequestMapping("xznzMerchants")
+    public String xznzMerchants() {
+        return "xzPage/xznzMerchants";
+    }
+
+    /**
      *
      */
     @RequestMapping("qualityControl")
