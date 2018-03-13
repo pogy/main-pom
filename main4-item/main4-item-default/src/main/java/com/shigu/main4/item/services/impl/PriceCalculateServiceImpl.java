@@ -35,7 +35,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
     /**
      * 默认的批发价解析规则
      */
-    private static final Pattern DEFAULT_P_RULE = Pattern.compile("[^a-zA-Z][p|P](\\d+(\\.[0-9]*)?)");
+    private static final Pattern DEFAULT_P_RULE = Pattern.compile("([^a-zA-Z]|[t|T])[p|P](\\d+(\\.[0-9]*)?)");
     private static final Pattern DEFAULT_F_RULE = Pattern.compile("[^a-zA-Z][f|F](\\d+(\\.[0-9]*)?)");
 
     private static final Pattern NUMBER = Pattern.compile("[1-9]\\d*(\\.\\d*)?|0\\.\\d*[1-9]\\d*");
@@ -227,7 +227,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
      * @param str 目标
      * @return 批发价
      */
-    private Long pickString(Pattern pattern, String str) {
+    private static Long pickString(Pattern pattern, String str) {
         Long l = null;
         String piPriceString;
         if (pattern != null) {
@@ -254,7 +254,7 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
         return l;
     }
 
-    private String findMatcher(Pattern pattern, String str) {
+    private static String findMatcher(Pattern pattern, String str) {
         Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
             String group = matcher.group();
