@@ -216,7 +216,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             throw new Main4Exception("该第三方账号已经绑定，不能重复绑定");
         }
 
-        BindOuterRdUser bindOuterRdUser;
+        BindOuterRdUser bindOuterRdUser = null;
         switch (tempUser.getLoginFromType()) {
             case TAOBAO:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindTbUser.class);
@@ -227,11 +227,11 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             case ALI:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
                 break;
-            default:
-                throw new Main4Exception("暂不支持该第三方账号绑定");
         }
         //检验是否准入
-        bindOuterRdUser.admittance(phone, tempUser);
+        if(bindOuterRdUser != null){
+            bindOuterRdUser.admittance(phone, tempUser);
+        }
 
         Long userId = selUserIdByName(phone, LoginFromType.PHONE);
         boolean existMember = false;
@@ -287,7 +287,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         }
 
         //绑定店铺信息
-        bindOuterRdUser.bindShop(phone,tempUser,userId);
+        if(bindOuterRdUser != null){
+            bindOuterRdUser.bindShop(phone,tempUser,userId);
+        }
         return true;
     }
 
