@@ -148,7 +148,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -160,7 +160,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -175,12 +175,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

@@ -164,10 +164,9 @@ public class ActivityAction {
     public String awardInfo(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
-        List<ActiveForShowVO> activityAwardInfoList = activityWebService.getActivityAwardInfo(ps.getUserId()); // 上传发现金活动奖品
+        activityWebService.getActivityAwardInfo(ps.getUserId(),model); // 上传发现金活动奖品
         // List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs); // 其它活动奖品，暂停
         // activityAwardInfoList.addAll(actList);
-        model.addAttribute("actList", activityAwardInfoList);
         return "fxs/awardInfo";
     }
 
@@ -444,6 +443,15 @@ public class ActivityAction {
     @RequestMapping("batchOrders")
     public String batchOrders() {
         return "xzPage/batchOrders";
+    }
+
+    /**
+     * 保太和招商宣传页
+     * @return
+     */
+    @RequestMapping("xznzMerchants")
+    public String xznzMerchants() {
+        return "xzPage/xznzMerchants";
     }
 
     /**

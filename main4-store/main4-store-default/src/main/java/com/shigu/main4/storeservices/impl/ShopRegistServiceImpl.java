@@ -400,6 +400,11 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long toExamine(Long registId) throws ShopExamineException {
+        return toExamine(registId, null);
+    }
+
+    @Override
+    public long toExamine(Long registId, String operator) throws ShopExamineException {
         ShiguShopApply shiguShopApply = shiguShopApplyMapper.selectByPrimaryKey(registId);
 
         //如果申请记录为不可审核的，返回异常
@@ -417,7 +422,6 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
 
         if (!shopCanOpen(shiguShopApply.getUserId(),shiguShopApply.getTbNick(), shiguShopApply.getMarketId(), shiguShopApply.getShopNum()))
             throw new ShopExamineException("该申请不符合准入条件");
-
 
         //如果审核瞬间店铺已经存在，返回异常
         ShiguShopExample shiguShopExample = new ShiguShopExample();
@@ -483,6 +487,9 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         apply.setRuzhuId(registId);
         apply.setApplyStatus(1);
         apply.setCanExamine(2);
+        if (StringUtils.isNotBlank(operator)) {
+            apply.setRefuseReason("开店：" + operator);
+        }
         shiguShopApplyMapper.updateByPrimaryKeySelective(apply);
         // 解析退换服务信息
         String tags = shiguShopApply.getTags();

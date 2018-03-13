@@ -173,7 +173,12 @@ public class CdnAction {
         ObjFromCache<List<ItemSpreadVO>> itemSpreadFgs = spreadService.selItemSpreads(webSite,manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_FG : SpreadEnum.MAN_FG);
         ObjFromCache<List<ItemSpreadVO>> itemSpreadYss = spreadService.selItemSpreads(webSite,manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_YS : SpreadEnum.MAN_YS);
         ObjFromCache<List<ItemSpreadVO>> itemSpreadTjdks = spreadService.selItemSpreads(webSite,manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_TJDK : SpreadEnum.MAN_TJDK);
-        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(SpreadEnum.INDEX_TOP);
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops;
+        if (cid == 30) {
+            selImgBannerTops = spreadService.selImgBanners(SpreadEnum.INDEX_TOP);
+        }else{
+            selImgBannerTops = spreadService.selImgBanners(SpreadEnum.INDEX_TOP_WOMAN);
+        }
         //极限词过滤
         navListObjFromCache.selObj().forEach(indexNavVO -> indexNavVO.setText(KeyWordsUtil.duleKeyWords(indexNavVO.getText())));
         imgBannerXts.selObj().forEach(imgBannerVO -> imgBannerVO.setText(KeyWordsUtil.duleKeyWords(imgBannerVO.getText())));
@@ -194,7 +199,7 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(sz));
             loves.add((LoveGoodsList) selFromCache(xz));
         }else{
-            ObjFromCache<LoveGoodsList> my = indexShowService.loveGoods(5, "棉衣", webSite,indexShowService.manMianyi());
+            ObjFromCache<LoveGoodsList> my = indexShowService.loveGoods(5, "夹克", webSite,indexShowService.manJack());
             ObjFromCache<LoveGoodsList> xxk = indexShowService.loveGoods(5, "休闲裤", webSite,indexShowService.manFree());
             //极限词过滤
             my.selObj().getItems().forEach(itemSpreadVO -> itemSpreadVO.setTitle(KeyWordsUtil.duleKeyWords(itemSpreadVO.getTitle())));
