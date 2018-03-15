@@ -43,8 +43,12 @@ public class SoidsModelImpl implements SoidsModel {
         SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
         subOrderSoidpsExample.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.OUT_OF_STOCK.getStatus());
         int stockNum = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample);
+        SubOrderSoidpsExample subOrderSoidpsExample2 = new SubOrderSoidpsExample();
+        subOrderSoidpsExample2.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.ARRIVAL.getStatus());
+        int inStock = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample2);//拿到货量
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
         itemOrderSub.setOutOfStok(stockNum);
+        itemOrderSub.setInStok(inStock);
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
 
@@ -86,8 +90,12 @@ public class SoidsModelImpl implements SoidsModel {
         SubOrderSoidpsExample subOrderSoidpsExample2 = new SubOrderSoidpsExample();
         subOrderSoidpsExample2.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.ARRIVAL.getStatus());
         int inStock = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample2);//拿到货量
+        SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
+        subOrderSoidpsExample.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.OUT_OF_STOCK.getStatus());
+        int stockNum = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample);//查缺货量
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
         itemOrderSub.setInStok(inStock);
+        itemOrderSub.setOutOfStok(stockNum);
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
 

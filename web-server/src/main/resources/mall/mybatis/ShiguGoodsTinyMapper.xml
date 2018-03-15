@@ -27,5 +27,13 @@
         </foreach>
     </select>
 
+    <select id="selForSee" resultType="com.opentae.data.mall.beans.ItemForList">
+        select a.goods_id as goodsId,a.pic_url as picUrl,a.title,a.store_id as storeId,
+        a.pi_price_string as piPriceString,d.shop_num as storeNum,c.market_name as market
+        from shigu_goods_tiny_${website} a,goods_count_forsearch b,shigu_market c,shigu_shop d
+        where a.goods_id=b.goods_id and a.store_id=#{storeId} and a.parent_market_id=c.market_id and a.store_id=d.shop_id
+        ORDER BY b.up_man desc limit 0,3
+    </select>
+
 
 </mapper>

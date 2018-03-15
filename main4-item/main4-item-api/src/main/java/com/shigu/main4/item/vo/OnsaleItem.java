@@ -77,6 +77,24 @@ public class OnsaleItem implements Serializable{
      * 是否设置过最低零售价
      */
     private Boolean hasRetailPriceSet;
+    /**
+     * 主图链接
+     */
+    private String goodsVideoUrl;
+
+    /**
+     * 风格id
+     * @return
+     */
+    private Integer goodsStyleId;
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
 
     public Long getItemId() {
         return itemId;
@@ -204,5 +222,13 @@ public class OnsaleItem implements Serializable{
 
     public void setHasRetailPriceSet(Boolean hasRetailPriceSet) {
         this.hasRetailPriceSet = hasRetailPriceSet;
+    }
+
+    public String getGoodsVideoUrl() {
+        return goodsVideoUrl;
+    }
+
+    public void setGoodsVideoUrl(String goodsVideoUrl) {
+        this.goodsVideoUrl = goodsVideoUrl;
     }
 }

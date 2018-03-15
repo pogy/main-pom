@@ -24,11 +24,11 @@
             <base href="${baseUrl!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1504256449852" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1511428980730" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1504256449852"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1511428980730"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -104,7 +104,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -137,7 +137,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    

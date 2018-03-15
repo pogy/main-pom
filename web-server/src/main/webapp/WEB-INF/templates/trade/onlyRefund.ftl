@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css?v=2017091301" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css?v=2017112401" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/onlyRefund.js?v=2017091301"></script>
+    <script src="http://style.571xz.com/v2/order/js/onlyRefund.js?v=2017112401"></script>
+    
 </head>
 <body>
 
@@ -78,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -343,9 +350,11 @@ var otherRefundPrice = ${otherRefundPrice!};
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    
                 </#if>
                 </p>
             </div>
@@ -386,9 +395,11 @@ var otherRefundPrice = ${otherRefundPrice!};
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    
                 </#if>
                 </p>
             </div>
@@ -430,9 +441,11 @@ var otherRefundPrice = ${otherRefundPrice!};
                 </h4>
                 <p>
                 <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}<br>
+                    
                 <#elseif record.userType == 0>
-                ${record.recordContent!}
+                ${record.recordContent!}<br>
+                    
                 </#if>
                 </p>
             </div>

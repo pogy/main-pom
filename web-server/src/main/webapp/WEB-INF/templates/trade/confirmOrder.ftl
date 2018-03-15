@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017121501" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017121501"></script>
+    
 </head>
 <body>
 
@@ -78,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -285,7 +292,9 @@ var webSite = '${webSite!}';
 
 
         
+        
         <input type="hidden" id="updatePostPrice">
+
 
 
 
@@ -397,7 +406,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
                 
@@ -440,7 +448,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -511,7 +518,7 @@ var webSite = '${webSite!}';
     </div>
     
     <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
-    <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
+    <input id="addressId" name="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
@@ -749,6 +756,12 @@ var webSite = '${webSite!}';
     
         checked
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -780,16 +793,23 @@ var webSite = '${webSite!}';
         
             checked
         
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
+        
     >
     <i class="before"></i> 
     <span>
     
-        <#if $it.text??>
-            ${$it.text!}
+        同意
+    
+    
+        <#if $it.html??>
+            ${$it.html}
         </#if>
-    
-    
-        同意<a href="#" target="_blank">《档口退换货规则》</a><span class="fcF40">（特别提示：货物是否可退货换是根据档口规则，所以拍下时请咨询档口）</span>
     
     </span>
 </label>
@@ -798,7 +818,7 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
+<a href="571xz.com" target="_blank">《档口退换货规则》</a><span class="fcF40">（特别提示：货物是否可退货换是根据档口规则，所以拍下时请咨询档口）</span>
         </p>
         <p class="tar goodsFee">商品总金额:<em class="fcF40 goodsCostShow">0.00</em>元</p>
     </div>
@@ -833,6 +853,8 @@ var webSite = '${webSite!}';
                 </#if>
             </p>
         </div>
+        <p class="msgTip fcF40"></p>
+        
     </div>
     <div class="settleBtn clearfix">
         
@@ -880,7 +902,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         
@@ -890,11 +911,7 @@ var webSite = '${webSite!}';
 
 
 
-<input type="hidden" id="updateServicePrice">
 
-<script>
-var serviceRulers = ${serviceRulers!};
-</script>
 
 
 
@@ -906,8 +923,6 @@ var serviceRulers = ${serviceRulers!};
 
 
 </div>
-
-
 
 
 
@@ -928,7 +943,7 @@ var serviceRulers = ${serviceRulers!};
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

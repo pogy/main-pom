@@ -47,6 +47,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaSendOrderMapper daifaSendOrderMapper;
     @Autowired
     DaifaWaitSendMapper daifaWaitSendMapper;
+    @Autowired
+    DaifaSellerMapper daifaSellerMapper;
 
     @Override
     public void newOrder(OrderBO order) {
@@ -148,17 +150,29 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void orderTimeout() {
         //查出超时的单子
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -3);
-        Date minTime = cal.getTime();
-        DaifaTradeExample example = new DaifaTradeExample();
-        example.createCriteria().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PAYED.getValue()).andIsOldEqualTo (0);
-        example.or().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PACKING.getValue()).andIsOldEqualTo (0);
-        List<DaifaTrade> timeoutTrades = daifaTradeMapper.selectFieldsByExample(example, FieldUtil.codeFields("df_trade_id"));
-        timeoutTrades.forEach(t -> {
-            OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, t.getDfTradeId());
-            orderModel.timeout();
-        });
+        DaifaSellerExample daifaSellerExample=new DaifaSellerExample();
+        daifaSellerExample.createCriteria().andStatusEqualTo(1);
+        List<DaifaSeller> sellers=daifaSellerMapper.selectByExample(daifaSellerExample);
+        for(DaifaSeller s:sellers){
+            if(s.getEndSpeed()!=null&&s.getEndSpeed()<1){
+                continue;
+            }
+            int endSpeed=s.getEndSpeed();
+            if(s.getEndSpeed()==null){
+                endSpeed=3;
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -endSpeed);
+            Date minTime = cal.getTime();
+            DaifaTradeExample example = new DaifaTradeExample();
+            example.createCriteria().andCreateTimeLessThan(minTime).andSellerIdEqualTo(s.getDfSellerId())
+                    .andTradeStatusIn(Arrays.asList(DaifaTradeStatus.PAYED.getValue(),DaifaTradeStatus.PACKING.getValue())).andIsOldEqualTo(0);
+            List<DaifaTrade> timeoutTrades = daifaTradeMapper.selectFieldsByExample(example, FieldUtil.codeFields("df_trade_id"));
+            timeoutTrades.forEach(t -> {
+                OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, t.getDfTradeId());
+                orderModel.timeout();
+            });
+        }
     }
 
     @Override

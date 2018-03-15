@@ -326,7 +326,7 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public PayApplyVO payApply(PayType payType) throws PayApplyException {
         ItemOrderVO orderInfo = orderInfo();
-        return SpringBeanFactory.getBean(payType.getService(), PayerService.class).payApply(orderInfo.getUserId(),orderInfo.getOrderId(), orderInfo.getTotalFee(), orderInfo.getTitle());
+        return SpringBeanFactory.getBean(payType.getService(), PayerService.class).payApply(orderInfo.getUserId(), orderInfo.getTotalFee(), orderInfo.getTitle(),orderInfo.getOrderId());
     }
 
     @Override

@@ -572,6 +572,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 case "time_down":
                     requestBuilder.addSort(new SortField("created", Order.DECREASE));
                     break;
+                case "xp":
+                    requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                    break;
                 case "popular":
                     requestBuilder.setRank("goods_search_default","goods_search_popular",2000);
                     break;

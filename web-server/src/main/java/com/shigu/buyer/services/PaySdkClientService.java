@@ -9,8 +9,12 @@ import com.openJar.responses.sgpay.AlipayMoneyTradeSearch4OldResponse;
 import com.openJar.responses.sgpay.AlipayToCashEd4OldResponse;
 import com.openJar.responses.sgpay.UserTempSecret4OldResponse;
 import com.openJar.responses.sgpay.XzbPayResponse;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.bo.TixianBO;
+import com.shigu.buyer.vo.DisposeBeanVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
@@ -18,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 支付sdk调用系统服务
@@ -28,7 +34,17 @@ public class PaySdkClientService {
     private static final Logger logger = Logger.getLogger(PaySdkClientService.class);
     @Autowired
     XzSdkClient xzSdkClient;
+    
+    @Autowired
+    private MemberUserMapper memberUserMapper;
+    
+    @Autowired
+    private RedisIO redisIO;
+    
+    @Autowired
+    private DisposeBeanVO disposeBeanVO;
 
+    private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
     /**
      * 支付系统临时授权码
      * @param userId
@@ -106,5 +122,23 @@ public class PaySdkClientService {
             throw new JsonErrException(response.getBody());
         }
         return response.getPayId();
+    }
+    
+    /**
+     * 获取用户当月免费提现次数信息
+     * @param userId
+     * @return
+     */
+    public JSONObject selCurrentFreeCashInfo(Long userId) {
+        Long xzbId = memberUserMapper.userXzbAccount(userId);
+        Map withdrawMap = redisIO.get(String.format("%s%d_%d", freeCashInfoPrefix, xzbId, new Date().getMonth()), Map.class);
+        int cashTimes = 0;
+        if (withdrawMap != null) {
+            cashTimes = withdrawMap.size();
+        }
+        int freeWithdrawNum = disposeBeanVO.getMaxFreeTimes() - cashTimes;
+        return JsonResponseUtil.success()
+                       .element("freeWithdrawNum", freeWithdrawNum < 0 ? 0 : freeWithdrawNum)
+                       .element("withdrawUpperLimit", String.format("%.2f", 0.01 * disposeBeanVO.getMaxCashMoney()));
     }
 }

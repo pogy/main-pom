@@ -16,8 +16,20 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+    <cache:annotation-driven cache-manager="ordercacheManager" />
+
+    <bean id="orderehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/cache/order-cache.xml"/>
+    </bean>
+
+    <bean id="ordercacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="orderehcacheManager"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
 
     <bean id="alipayClient"
           class="com.alipay.api.DefaultAlipayClient">
@@ -45,6 +57,12 @@
         <property name="mailpwd" value="${xz_mailpwd}"/>
         <property name="smtpauth" value="${xz_smtpauth}"/>
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
+    </bean>
+
+    <bean id="tbClient" class="com.shigu.tools.TbClient">
+        <property name="appkey" value="${taobao.app.key}"/>
+        <property name="secret" value="${taobao.app.secret}"/>
+        <property name="url" value="${taobao.app.server.url}"/>
     </bean>
     <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.AfterSaleService" ref="afterSaleService" retries="0" timeout="20000" />

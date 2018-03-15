@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.tools.OssIO;
@@ -17,6 +18,11 @@ import com.shigu.main4.ucenter.util.FileOperator;
 import com.shigu.main4.ucenter.util.FilePathConstant;
 import com.shigu.main4.ucenter.util.UtilCharacter;
 import com.shigu.main4.ucenter.vo.*;
+import com.shigu.main4.ucenter.vo.DataPackage;
+import com.shigu.main4.ucenter.vo.ItemCollect;
+import com.shigu.main4.ucenter.vo.PackageItem;
+import com.shigu.main4.ucenter.vo.ShopCollect;
+import com.shigu.main4.ucenter.webvo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
@@ -30,6 +36,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by wxc on 2017/2/25.
@@ -72,6 +80,8 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     @Autowired
     private ShiguMarketMapper shiguMarketMapper;
+    @Autowired
+    TaobaoItemPropMapper taobaoItemPropMapper;
 
     @Autowired
     OssIO ossIO;
@@ -131,6 +141,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             //新收藏，存收藏时title
             shiguGoodsCollectExample.createCriteria().andRemark1Like(keyword);
         }
+        shiguGoodsCollectExample.setOrderByClause("goods_collect_id DESC");
         int count = shiguGoodsCollectMapper.countByExample(shiguGoodsCollectExample);
         pager.calPages(count, pageSize);
         if (count > 0) {
@@ -149,13 +160,17 @@ public class UserCollectServiceImpl implements UserCollectService {
                 for (ShiguGoodsCollect shiguGoodsCollect : shiguGoodsCollects) {
                     NewGoodsCollectVO newGoodsCollectVO = new NewGoodsCollectVO();
                     newGoodsCollectVO.setCollId(shiguGoodsCollect.getGoodsCollectId());
-                    CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
                     newGoodsCollectVO.setGoodsId(shiguGoodsCollect.getGoodsId());
-                    newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
-                    newGoodsCollectVO.setTitle(goodsInfo.getTitle());
-                    newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
-                    newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
-                    newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    try {
+                        CollectSimpleGoodsInfo goodsInfo = goodsIdInfoMap.get(shiguGoodsCollect.getGoodsId());
+                        newGoodsCollectVO.setGoodsNo(goodsInfo.getGoodsNo());
+                        newGoodsCollectVO.setTitle(goodsInfo.getTitle());
+                        newGoodsCollectVO.setImgSrc(goodsInfo.getPicUrl());
+                        newGoodsCollectVO.setPiprice(goodsInfo.getPiPriceString());
+                        newGoodsCollectVO.setOnSaleIs(goodsInfo.getOnSaleIs());
+                    } catch (Exception e) {
+                        newGoodsCollectVO.setGoodsNo("此商品已被删除");
+                    }
                     ShopInfo shopInfo = shopIdInfoMap.get(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setShopId(shiguGoodsCollect.getStoreId());
                     newGoodsCollectVO.setMarketName(shopInfo.getMarketName());
@@ -193,6 +208,64 @@ public class UserCollectServiceImpl implements UserCollectService {
     }
 
     /**
+     * 查询本收藏该宝贝信息
+     * @param userId 用户ID
+     * @param goodsId 商品ID
+     * @param webSite 分站标识
+     * @return
+     */
+    public ItemCollectInfoVO selItemCollectionInfo(Long userId, Long goodsId, String webSite) {
+        if (userId == null || goodsId == null) {
+            if(logger.isErrorEnabled()){
+                logger.error("查询店铺收藏的宝贝信息失败: [userId="+userId+" , goodsId="+goodsId+" , webSite="+webSite+"]");
+            }
+        }
+        ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
+        shiguGoodsCollect.setUserId(userId);
+        shiguGoodsCollect.setGoodsId(goodsId);
+        if(!StringUtil.isNull(webSite)){
+            shiguGoodsCollect.setWebsite(webSite);
+        }
+        shiguGoodsCollect =  shiguGoodsCollectMapper.selectOne(shiguGoodsCollect);
+        if ( shiguGoodsCollect == null) {
+            return null;
+        }
+        return BeanMapper.map(shiguGoodsCollect,ItemCollectInfoVO.class);
+    }
+
+    /**
+     * 按条件查询收藏商品
+     * @param userId
+     * @param goodsId
+     * @param useStatus
+     * @param storeId
+     * @param webSite
+     * @return
+     */
+    public List<ItemCollectInfoVO> selItemCollection(Long userId, Long goodsId, Integer useStatus, Long storeId, String webSite) {
+        ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
+        ShiguGoodsCollectExample.Criteria criteria = collectExample.createCriteria();
+        if (userId != null) {
+            criteria.andUserIdEqualTo(userId);
+        }
+        if (goodsId != null) {
+            criteria.andGoodsIdEqualTo(goodsId);
+        }
+        if (useStatus != null) {
+            criteria.andUseStatusEqualTo(useStatus);
+        }
+        if (storeId != null) {
+            criteria.andStoreIdEqualTo(storeId);
+        }
+        if (!StringUtil.isNull(webSite)) {
+            criteria.andWebsiteEqualTo(webSite);
+        }
+        List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
+        if (shiguGoodsCollects == null || shiguGoodsCollects.isEmpty())return null;
+        return BeanMapper.mapList(shiguGoodsCollects,ItemCollectInfoVO.class);
+    }
+
+    /**
      * 按主键批量删除收藏记录
      *
      * @param userId     用户IDs
@@ -221,7 +294,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         collectExample.createCriteria().andGoodsIdEqualTo(collect.getItemId())
-                .andUserIdEqualTo(collect.getUserId());
+                .andUserIdEqualTo(collect.getUserId()).andTypeEqualTo(collect.getType());
         List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
@@ -232,7 +305,6 @@ public class UserCollectServiceImpl implements UserCollectService {
         } else
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);
     }
-
 
     /**
      * 单个数据包str组成
@@ -309,49 +381,49 @@ public class UserCollectServiceImpl implements UserCollectService {
         DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
         String picture = subimageString;//新图片
         String video = "";//视频
-        TaobaoSkuExample example_ts = new TaobaoSkuExample();
-        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
-        example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
-        example_ts.setOrderByClause("properties asc");
         // 销售属性组合
         StringBuffer skuProps = new StringBuffer();//sku组合属性
-        List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        List<TaobaoSku> list_ts=new ArrayList<>();
+        if(goods.getNumIid()!=null){
+            TaobaoSkuExample example_ts = new TaobaoSkuExample();
+            example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
+            example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
+            example_ts.setOrderByClause("properties asc");
+            list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        }
         String input_custom_cpv = "";//自定义属性
 
+        TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+        taobaoItemPropExample.createCriteria().andCidEqualTo(goods.getCid()).andIsSalePropEqualTo(1);
+        List<TaobaoItemProp> taobaoItemProps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+        Long colorId=null;
+        Long sizeId=null;
+        for(TaobaoItemProp taobaoItemProp:taobaoItemProps){
+            if(taobaoItemProp.getIsColorProp()==1){
+                colorId=taobaoItemProp.getPid();
+            }else{
+                sizeId=taobaoItemProp.getPid();
+            }
+        }
         if (list_ts.size() > 0) {
-
             for (int i = 0; i < list_ts.size(); i++) {
-                skuProps.append(list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";");
+                skuProps.append(list_ts.get(i).getPrice()).append(':').append(list_ts.get(i).getQuantity()).append(':').append(':').append(list_ts.get(i).getProperties()).append(';');
             }
         } else {
             String props = sge.getProps();
-            if (!props.contains("20509") || !props.contains("1627207")) {
+            if (!props.contains(colorId.toString()) || !props.contains(sizeId.toString())) {
                 return null;
             }
-            String substring = props.substring(props.indexOf("1627207"));
-            String colorStr = substring.substring(0, substring.indexOf("20509:"));
-            String sizeStr = substring.substring(substring.indexOf("20509:"), substring.lastIndexOf("20509:"));
-            String s = substring.replace(colorStr, "").replace(sizeStr, "");
-            String s1 = null;
-            if (s.endsWith(";")) {
-                s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
-            } else {
-                if (s.split(":").length > 2) {
-                    s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
-                } else {
-                    s1 = s.substring(s.indexOf("20509:")) + ";";
-                }
-            }
-            sizeStr += s1;
-
-            String[] sizes = sizeStr.split("20509:");
-            String[] colors = colorStr.split("1627207:");
-
+            //获取尺码属性
+            List<String> sizePropList = matchHelp(sizeId+":\\d+",props);
+            List<String> colorPropList = matchHelp(colorId+":\\d+",props);
+            String[] sizes = sizePropList.toArray(new String[0]);
+            String[] colors = colorPropList.toArray(new String[0]);
             for (int i = 1; i < colors.length; i++) {
                 for (int j = 1; j < sizes.length; j++) {
-                    skuProps.append(goods.getPriceString() + ":" + "100" + ":" + "" + ":");
-                    skuProps.append("1627207:" + colors[i]);
-                    skuProps.append("20509:" + sizes[j]);
+                    skuProps.append(goods.getPriceString()).append(':').append("100").append(':').append(':');
+                    skuProps.append(colors[i]).append(';');
+                    skuProps.append(sizes[j]).append(';');
                 }
             }
         }
@@ -396,21 +468,21 @@ public class UserCollectServiceImpl implements UserCollectService {
         if ("second".equals(goods.getStuffStatus())) {
             stuff_status = "3";
         }
-
-        String contentsString = "";
-        contentsString += goods.getTitle() + '\t' + goods.getCid() + '\t' + goods.getCidAll() + '\t' + stuff_status + '\t' + goods.getProv() + '\t' + goods.getCity() + '\t' + item_type + '\t' + goods.getPriceString() + '\t' + auction_increment + '\t';
-        contentsString += goods.getNum() + "" + '\t' + valid_thru + '\t' + freight_payer + '\t' + "0" + '\t' + "0" + '\t' + "0" + '\t' + has_invoice + '\t' + has_warranty + '\t' + approve_status + '\t' + has_showcase + '\t';
-        contentsString += list_time + '\t' + "\"" + goodsdesc + "\"" + '\t' + sge.getProps() + '\t' + postage_id + '\t' + has_discount + '\t' + modified + '\t' + upload_fail_msg + '\t' + picture_status + '\t' + auction_point + '\t';
-        contentsString += picture + '\t' + video + '\t' + skuProps.toString() + '\t' + inputPids + '\t' + inputValues + '\t' + goods.getOuterId() + '\t' + sge.getPropertyAlias() + '\t' + auto_fill + '\t' + num_id + '\t' + local_cid + '\t' + navigation_type + '\t';
-        contentsString += user_name + '\t' + syncStatus + '\t' + is_lighting_consigment + '\t' + is_xinpin + '\t' + foodparame + '\t' + features + '\t' + buyareatype + '\t' + global_stock_type + '\t' + global_stock_country + '\t' + sub_stock_type + '\t' + item_size + '\t';
-        contentsString += item_weight + '\t' + sell_promise + '\t' + custom_design_flag + '\t' + wireless_desc + '\t' + barcode + '\t' + sku_barcode + '\t' + newprepay + '\t' + subtitle + '\t' + cpv_memo + '\t' + input_custom_cpv + '\t' + qualification + '\t';
-        contentsString += add_qualification + '\t' + o2o_bind_service + '\t' + tmall_extend + '\t' + product_combine + '\t' + tmall_item_prop_combine + '\t' + taoschema_extend + '\r' + '\n';
+        StringBuffer contentsString = new StringBuffer();
+        contentsString.append(goods.getTitle()).append('\t').append(goods.getCid()).append('\t').append(goods.getCidAll()).append('\t').append(stuff_status).append('\t').append(goods.getProv()).append('\t').append(goods.getCity()).append('\t').append(item_type).append('\t').append(goods.getPriceString()).append('\t').append(auction_increment).append('\t');
+        contentsString.append(goods.getNum()).append('\t').append(valid_thru).append('\t').append(freight_payer).append('\t').append('0').append('\t').append('0').append('\t').append('0').append('\t').append(has_invoice).append('\t').append(has_warranty).append('\t').append(approve_status).append('\t').append(has_showcase).append('\t');
+        contentsString.append(list_time).append('\t').append("\"").append(goodsdesc).append("\"").append('\t').append(sge.getProps()).append('\t').append(postage_id).append('\t').append(has_discount).append('\t').append(modified).append('\t').append(upload_fail_msg).append('\t').append(picture_status).append('\t').append(auction_point).append('\t');
+        contentsString.append(picture).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goods.getOuterId()).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
+        contentsString.append(user_name).append('\t').append(syncStatus).append('\t').append(is_lighting_consigment).append('\t').append(is_xinpin).append('\t').append(foodparame).append('\t').append(features).append('\t').append(buyareatype).append('\t').append(global_stock_type).append('\t').append(global_stock_country).append('\t').append(sub_stock_type).append('\t').append(item_size).append('\t');
+        contentsString.append(item_weight).append('\t').append(sell_promise).append('\t').append(custom_design_flag).append('\t').append(wireless_desc).append('\t').append(barcode).append('\t').append(sku_barcode).append('\t').append(newprepay).append('\t').append(subtitle).append('\t').append(cpv_memo).append('\t').append(input_custom_cpv).append('\t').append(qualification).append('\t');
+        contentsString.append(add_qualification).append('\t').append(o2o_bind_service).append('\t').append(tmall_extend).append('\t').append(product_combine).append('\t').append(tmall_item_prop_combine).append('\t').append(taoschema_extend).append('\r').append('\n');
 
         Map<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("contents", contentsString);
+        hashMap.put("contents", contentsString.toString());
         hashMap.put("shopId", shopId.toString());
         return hashMap;
     }
+
 
     /**
      * 数据包生成
@@ -476,7 +548,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             contentBuffer.append(hashMap.get("contents"));
             shopBuffer.append(hashMap.get("shopId"));
             if (i != itemIds.size() && i != 0) {
-                shopBuffer.append(",");
+                shopBuffer.append(',');
             }
             if (i == 0) {
                 shopId = Long.valueOf(hashMap.get("shopId"));
@@ -669,7 +741,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             logger.error("删除数据包>>入参数据为空");
         }
         ShiguGoodsDataPackageExample packageExample = new ShiguGoodsDataPackageExample();
-        packageExample.createCriteria().andGoodsIdIn(packageIds);
+        packageExample.createCriteria().andDataPackageIdIn(packageIds);
         List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByExample(packageExample);
         if (shiguGoodsDataPackageList.size() == 0) {
             return;
@@ -756,6 +828,20 @@ public class UserCollectServiceImpl implements UserCollectService {
     }
 
     /**
+     * 按店铺id删除
+     * @param userId
+     * @param shopIds
+     */
+    public void delShopCollectionByShopIds(Long userId, List<Long> shopIds) {
+        if (userId == null || shopIds == null || shopIds.isEmpty()){
+            return;
+        }
+        ShiguStoreCollectExample example = new ShiguStoreCollectExample();
+        example.createCriteria().andUserIdEqualTo(userId).andStoreIdIn(shopIds);
+        shiguStoreCollectMapper.deleteByExample(example);
+    }
+
+    /**
      * 添加店铺收藏
      *
      * @param collect 店铺收藏
@@ -806,5 +892,21 @@ public class UserCollectServiceImpl implements UserCollectService {
             }
         }
         return shopInfoList;
+    }
+
+    /**
+     * 获取字符串中所有符合规则的子串
+     * @param regex 正则表达式
+     * @param source 源字符串
+     * @return
+     */
+    private List<String> matchHelp(String regex,String source){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        List<String> resultList = new ArrayList<>();
+        while (matcher.find()) {
+            resultList.add(matcher.group());
+        }
+        return resultList;
     }
 }

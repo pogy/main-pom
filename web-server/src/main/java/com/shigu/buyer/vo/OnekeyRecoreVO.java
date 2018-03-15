@@ -32,6 +32,8 @@ public class OnekeyRecoreVO implements java.io.Serializable {
     private Integer taobaoSaleState;
     // 档口在售状态 1在售 2下架
     private Integer shopSaleState;
+    // 货号
+    private String goodsNo;
 
     public Long getGoodsId() {
         return goodsId;
@@ -111,5 +113,13 @@ public class OnekeyRecoreVO implements java.io.Serializable {
 
     public void setShopSaleState(Integer shopSaleState) {
         this.shopSaleState = shopSaleState;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 }

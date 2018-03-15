@@ -55,6 +55,10 @@ public class UserCollectServiceTest {
     @Autowired
     private ShiguStoreCollectMapper shiguStoreCollectMapper;
 
+    @Test
+    public void testSelByType(){
+        userCollectService.selItemCollectionsByType(1000067987L,null,"hz",1,12,2);
+    }
     /**
      * 查询本店收藏的宝贝
      */

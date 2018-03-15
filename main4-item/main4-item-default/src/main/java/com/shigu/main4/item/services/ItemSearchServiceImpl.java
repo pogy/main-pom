@@ -117,7 +117,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
 //            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
 //            if (StringUtils.isNotEmpty(keywordChina)) {
-                searchQuery = QueryBuilder.search("title", keyword);
+                searchQuery = QueryBuilder.search("title", keyword).or(QueryBuilder.termSearch("style_name",keyword));
                 requestBuilder.addSummary(SummaryBuild.field("title").length(120));
 //            }
             if (StringUtils.isNotEmpty(keywordNum)&&keywordNum.equals(keyword)) {//非中文的才匹配货号
@@ -168,10 +168,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             filters.and(FilterBuilder.number("created").lte(timeTo.getTime()));
         }
 
-        if (webSite.equals("hz")&&checkds!=null) {//只有杭州的有checkeds
+        if ("hz".equalsIgnoreCase(webSite)&&checkds!=null) {//只有杭州的有checkeds
             for(SearchCheckd sc:checkds){
                 switch (sc){
-                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));
+                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));break;
+                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));break;
                 }
 
             }

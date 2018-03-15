@@ -5,7 +5,9 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.services.UserShopService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
@@ -39,6 +41,9 @@ public class MemberRealm extends ShiguAuthorizingRealm {
     @Autowired
     UserShopService userShopService;
 
+    @Autowired
+    UserLicenseService userLicenseService;
+
     public MemberRealm() {
         super();
         setAuthenticationTokenClass(CaptchaUsernamePasswordToken.class);
@@ -55,7 +60,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //        PersonalSession ufs= (PersonalSession) getCacheObject(CacheEnum.MEMBERUSER_CACHE,tokens.getUsername()+"_"
 //                +tokens.getLoginFromType().getAccountType());
 //        if(ufs==null){//缓存不存在
-            PersonalSession ufs=userBaseService.selUserForSessionByUserName(tokens.getUsername(), tokens.getLoginFromType());
+            PersonalSession ufs=userBaseService.selUserForSessionByUserName(tokens.getUsername(),tokens.getSubKey(), tokens.getLoginFromType());
             if(ufs==null){
 //                throw new AuthenticationException("账号不存在");
                 //如果是星座类登陆,无法查出就扔异常
@@ -70,7 +75,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
                 Session session = SecurityUtils.getSubject().getSession();
                 session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(),rt);
                 throw new LoginAuthException(LoginErrorEnum.TO_BIND_XZUSER);
-            }else if(ufs.getOtherPlatform().get("__bindPhone__")==null){//没绑定手机号
+            }else if(ufs.getOtherPlatform().get(OtherPlatformEnum.BIND_PHONE.getValue())==null){//没绑定手机号
                 //验证一波密码
                 MemberCredentialsMatcher memberCredentialsMatcher= (MemberCredentialsMatcher) getCredentialsMatcher();
                 if(memberCredentialsMatcher.checkPassword(ufs,tokens.getPassword())){

@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,17 +18,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/cart.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/cart.css?v=2017112401" rel="stylesheet">
     
 
     
 
+    
+    
+    
+    
+    
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/cart.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/cart.js?v=2017112401"></script>
+    
 </head>
 <body>
 
@@ -78,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -261,7 +268,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
             <div class="tips pa fwb none">请勾选您要结算的商品 <i></i></div>
@@ -286,6 +292,12 @@ var webSite = '${webSite!}';
     
         <#if $it.checked??>
             checked
+        </#if>
+    
+    
+    
+        <#if $it.disabled??>
+            disabled
         </#if>
     
 ">
@@ -320,6 +332,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -365,6 +384,12 @@ var webSite = '${webSite!}';
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -399,6 +424,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -481,6 +513,12 @@ var webSite = '${webSite!}';
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -517,6 +555,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -633,7 +678,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
                 
@@ -680,7 +724,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -846,6 +889,12 @@ var webSite = '${webSite!}';
             checked
         </#if>
     
+    
+    
+        <#if $it.disabled??>
+            disabled
+        </#if>
+    
 ">
     <input 
         type="checkbox"
@@ -878,6 +927,13 @@ var webSite = '${webSite!}';
             <#if $it.checked??>
                 checked
             </#if>
+        
+        
+        
+            <#if $it.disabled??>
+                disabled
+            </#if>
+        
         
     >
     <i class="before"></i> 
@@ -948,7 +1004,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
             <div class="tips pa fwb none">请勾选您要结算的商品 <i></i></div>
@@ -997,7 +1052,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

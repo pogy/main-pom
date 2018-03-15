@@ -73,6 +73,31 @@ public class GoodsCountForsearch implements Serializable {
      */
 	private String infabric;
 
+    /**
+     * 视频链接地址
+     */
+	private String videoUrl;
+
+    /**
+     * 是否设置了视频链接，给opensearch提供搜索项
+     */
+	private Integer hadVideo;
+
+    /**
+     * 0是没有 1是有
+     */
+	private Integer hadStyle;
+
+    /**
+     * 风格名称  应对商品库风格查询
+     */
+	private String styleName;
+
+    /**
+     * 风格id 
+     */
+	private Integer sid;
+
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
 	}
@@ -175,6 +200,46 @@ public class GoodsCountForsearch implements Serializable {
 
 	public String getInfabric() {
 		return this.infabric;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	public String getVideoUrl() {
+		return this.videoUrl;
+	}
+
+	public void setHadVideo(Integer hadVideo) {
+		this.hadVideo = hadVideo;
+	}
+
+	public Integer getHadVideo() {
+		return this.hadVideo;
+	}
+
+	public void setHadStyle(Integer hadStyle) {
+		this.hadStyle = hadStyle;
+	}
+
+	public Integer getHadStyle() {
+		return this.hadStyle;
+	}
+
+	public void setStyleName(String styleName) {
+		this.styleName = styleName;
+	}
+
+	public String getStyleName() {
+		return this.styleName;
+	}
+
+	public void setSid(Integer sid) {
+		this.sid = sid;
+	}
+
+	public Integer getSid() {
+		return this.sid;
 	}
 
 }

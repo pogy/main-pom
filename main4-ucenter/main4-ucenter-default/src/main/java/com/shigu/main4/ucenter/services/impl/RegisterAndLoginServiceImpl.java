@@ -63,6 +63,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
 
+
     /**
      * 注册新用户
      * @param user
@@ -122,6 +123,17 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      */
     @Override
     public boolean userCanRegist(String username, LoginFromType loginFromType) {
+        return userCanRegist(username,null,loginFromType);
+    }
+
+
+    /**
+     * 手机号是否允许注册
+     *
+     * @return
+     */
+    @Override
+    public boolean userCanRegist(String username,String key, LoginFromType loginFromType) {
         if (StringUtils.isEmpty(username) || loginFromType == null) {
             return false;
         }
@@ -140,7 +152,16 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             if (count > 0) {
                 return false;
             }
-        } else {
+        } else if(loginFromType.getAccountType() == LoginFromType.WX.getAccountType()){//微信
+            // 第三方
+            MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
+            memberUserSubExample.createCriteria().andSubUserKeyEqualTo(key==null?"123321":key).
+                    andAccountTypeEqualTo(loginFromType.getAccountType());
+            int count = memberUserSubMapper.countByExample(memberUserSubExample);
+            if (count > 0) {
+                return false;
+            }
+        }else{
             // 第三方
             MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
             memberUserSubExample.createCriteria().andSubUserNameEqualTo(username).
@@ -190,7 +211,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 || tempUser.getLoginFromType() == null){
             return false;
         }
-        boolean pans = userCanRegist(tempUser.getSubUserName(), tempUser.getLoginFromType());
+        boolean pans = userCanRegist(tempUser.getSubUserName(),tempUser.getSubUserKey(), tempUser.getLoginFromType());
         if (!pans) {
             throw new Main4Exception("该第三方账号已经绑定，不能重复绑定");
         } else if (tempUser.getLoginFromType() == LoginFromType.TAOBAO){

@@ -39,7 +39,7 @@ public class StoreSearchAction {
         }
         model.addAttribute("query",bo);
         model.addAttribute("markets",categoryInSearchService.selMarkets(bo.getWebSite()));
-            ShiguPager<StoreInSearch> pager=storeSelFromEsService.searchStore(bo);
+        ShiguPager<StoreInSearch> pager=storeSelFromEsService.searchStore(bo);
         model.addAttribute("storelist",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite",bo.getWebSite());

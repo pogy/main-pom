@@ -14,7 +14,7 @@ public class OnsaleItemBO extends GhsGet{
 
     private String goodsNo;
 
-    //1无最低零售价 2无大图 3无材料成分 null所有
+    //1无最低零售价 2无大图 3无材料成分 4 无主图，5无风格 null所有
     private Integer state;
 
     private Integer page;

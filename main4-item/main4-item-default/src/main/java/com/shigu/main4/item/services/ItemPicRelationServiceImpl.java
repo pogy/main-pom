@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
+import com.shigu.main4.item.tools.ItemCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class ItemPicRelationServiceImpl implements ItemPicRelationService{
 
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
+    @Autowired
+    ItemCache itemCache;
 
     @Override
     public boolean removeFileRelation(String fileId, Long goodsId) {
@@ -70,11 +73,15 @@ public class ItemPicRelationServiceImpl implements ItemPicRelationService{
         countForsearch.setHadBigzip(hadBigPic?1:0);
         countForsearch.setWebSite(webSite);
         countForsearch.setGoodsId(goodsId);
+
+        int u;
         try {
-            return goodsCountForsearchMapper.insertSelective(countForsearch);
+            u=goodsCountForsearchMapper.insertSelective(countForsearch);
         } catch (Exception e) {
-            return goodsCountForsearchMapper.updateByExampleSelective(countForsearch, countForsearchExample);
+            u=goodsCountForsearchMapper.updateByExampleSelective(countForsearch, countForsearchExample);
         }
+        itemCache.cleanItemCache(goodsId);
+        return u;
     }
 
     @Override

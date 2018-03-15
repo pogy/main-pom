@@ -7,7 +7,6 @@ import com.google.gson.JsonParser;
 import com.openJar.commons.MD5Attestation;
 import com.openJar.commons.ParamUtil;
 import com.openJar.commons.ResponseUtil;
-import com.openJar.exceptions.SignErrorException;
 import com.shigu.api.exceptions.SystemException;
 import com.shigu.api.responses.SystemResponse;
 import net.sf.json.JSONObject;
@@ -16,7 +15,10 @@ import org.springframework.stereotype.Repository;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by zhaohongbo on 16/6/13.
@@ -133,8 +135,14 @@ public class ApiRequestFilter implements Filter {
      * @throws IOException
      */
     private void writeFalseToResponse(ServletResponse response) throws IOException {
-        SystemResponse rsp = new SystemResponse();
         SystemException e= new SystemException();
+        e.setErrMsg("验签失败");
+        writeFalseToResponse(response,e);
+    }
+    public static void writeFalseToResponse(ServletResponse response,SystemException e) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        SystemResponse rsp = new SystemResponse();
         rsp.setSuccess(false);
         rsp.setException(e);
         response.getWriter().print(JSONObject.fromObject(ResponseUtil.dealResponse(rsp).toString()));

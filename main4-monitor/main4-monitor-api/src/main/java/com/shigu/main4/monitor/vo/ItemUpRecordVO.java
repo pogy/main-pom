@@ -135,6 +135,10 @@ public class ItemUpRecordVO implements Serializable{
      * 淘宝下架
      */
     private Boolean tbSoldout;
+    /**
+     * 淘宝上架状态
+     */
+    private String approveStatus;
 
 
     public String getSupperImww() {
@@ -345,6 +349,8 @@ public class ItemUpRecordVO implements Serializable{
         this.fenNumiid = fenNumiid;
     }
 
+
+
     public Long getCid() {
         return cid;
     }
@@ -367,5 +373,13 @@ public class ItemUpRecordVO implements Serializable{
 
     public void setTbSoldout(Boolean tbSoldout) {
         this.tbSoldout = tbSoldout;
+    }
+
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
     }
 }

@@ -12,6 +12,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -135,7 +136,8 @@ public class DataPackageImportAction {
                 vo.setGoodsId (goodsVO.getGoodsId ());
                 vo.setPiPrice (goodsVO.getPiPriceString ());
                 vo.setShopCode (goodsVO.getOuterId ());
-                vo.setTitle (goodsVO.getTitle ());
+                //极限词过滤
+                vo.setTitle (KeyWordsUtil.duleKeyWords(goodsVO.getTitle()));
                 voList.add (vo);
             }
 
@@ -144,7 +146,7 @@ public class DataPackageImportAction {
         model.addAttribute ("allGoodsCount",list.size ());
         redisIO.put ("packageList",list);
 
-        return "seller/uploadPackageList";
+        return "gys/uploadPackageList";
     }
 
 }

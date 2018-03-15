@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/orderDetail.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/orderDetail.css?v=2017112401" rel="stylesheet">
     
 
     
@@ -32,7 +33,8 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/orderDetail.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/orderDetail.js?v=2017112401"></script>
+    
 </head>
 <body>
 
@@ -83,7 +85,7 @@
                         <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -434,9 +436,9 @@ $(function(){
         <#list childOrders as childOrder>
         <ul>
             <li class="goodsDesc">
-                <a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
+                <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
                 <div class="goodsTitle pr fl">
-                    <h4><a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank">${childOrder.title!}</a></h4>
+                    <h4><a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank">${childOrder.title!}</a></h4>
                     <p class="marketCode fwb pa">商品货号：${childOrder.goodsNo!}</p>
                 </div>
             </li>

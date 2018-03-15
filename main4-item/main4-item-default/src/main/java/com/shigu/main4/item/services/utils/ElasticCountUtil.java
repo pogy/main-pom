@@ -86,12 +86,14 @@ public class ElasticCountUtil {
                 goodsAggsVO.addSaleCount(goodsCountForsearch.getTrade().intValue());
                 goodsAggsVO.setFabric(goodsCountForsearch.getFabric());
                 goodsAggsVO.setInFabric(goodsCountForsearch.getInfabric());
+                goodsAggsVO.setVideoUrl(goodsCountForsearch.getVideoUrl());
+                goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid());
                 itemResult.put(goodsCountForsearch.getGoodsId().toString(),goodsAggsVO);
             }
             GoodsupNorealExample norealExample = new GoodsupNorealExample();
             norealExample.createCriteria().andItemIdIn(goodsIds);
             for (GoodsupNoreal goodsupNoreal : goodsupNorealMapper.selectByExample(norealExample)) {
-                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.toString());
+                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.getItemId().toString());
                 if (goodsAggsVO == null) {
                     goodsAggsVO = new GoodsAggsVO();
                     itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);

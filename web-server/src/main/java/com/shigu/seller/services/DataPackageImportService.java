@@ -3,6 +3,7 @@ package com.shigu.seller.services;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
@@ -16,7 +17,6 @@ import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
-import com.shigu.zhb.utils.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +83,12 @@ public class DataPackageImportService {
         item.setProps(tiny.getExtendsGoods().getProps());
         item.setInputPids(tiny.getExtendsGoods().getInputPids());
         item.setInputStr(tiny.getExtendsGoods().getInputStr());
+        String picUrl=tiny.getPicUrl();
+        String newPicUrl="";//搬家后的首图
+        if (StringUtils.isNotEmpty(picUrl)) {
+            newPicUrl=banjia(tiny.getPicUrl());
+            item.setPicUrl(newPicUrl);
+        }
         List<ShiguPropImg> propImgs=BeanMapper.mapList(tiny.getExtendsGoods().getList_spi(), ShiguPropImg.class);
         for(ShiguPropImg img:propImgs){
             img.setUrl(banjia(img.getUrl()));
@@ -95,7 +101,11 @@ public class DataPackageImportService {
         if (StringUtils.isNotEmpty(images)) {
             String[] imgarr=images.split(",");
             for(String img:imgarr){
-                imageList.add(banjia(img));
+                if (img.equals(picUrl)) {
+                    imageList.add(newPicUrl);
+                }else {
+                    imageList.add(banjia(img));
+                }
             }
         }
         item.setImageList(imageList);
@@ -105,8 +115,14 @@ public class DataPackageImportService {
     public String banjia(String url){
         String targetUrl=url;
         if (url.contains(URL_FLAG)) {
-            String srcFilePath=url.substring(url.indexOf(URL_FLAG)+1,url.length());
+            String srcFilePath=url.substring(url.indexOf(URL_FLAG),url.length());
             String targetFilePath=srcFilePath.replace(URL_FLAG,URL_NORMAL);
+            if (srcFilePath.length()>0) {
+                srcFilePath=srcFilePath.substring(1,srcFilePath.length());
+            }
+            if (targetFilePath.length()>0) {
+                targetFilePath=targetFilePath.substring(1,targetFilePath.length());
+            }
             targetUrl=url.replace(URL_FLAG,URL_NORMAL);
             ossIO.moveFile(srcFilePath,targetFilePath);
         }
@@ -187,10 +203,10 @@ public class DataPackageImportService {
             }
             if (value == null) {//查一下自定义区
                 List<String> inputValues=inputMap.get(pid);
-                if (inputValues == null||inputValues.size()==0) {
-                    continue;
+                if (inputValues != null&&inputValues.size()>0) {
+                    value=inputValues.remove(0);
                 }
-                value=inputValues.remove(0);
+
             }
             if (value == null){//查一下cpv
                 value=cpvMap.get(pid+":"+vid);

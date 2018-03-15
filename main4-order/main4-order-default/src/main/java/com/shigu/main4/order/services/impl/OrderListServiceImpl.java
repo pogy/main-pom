@@ -13,12 +13,12 @@ import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -83,6 +83,7 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     @Override
+    @Cacheable(value = "expressLogCache",key = "#orderId")
     public OrderDetailExpressVO selectExpress (Long orderId) throws Main4Exception, ParseException {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
         ExpressInfoVO expressInfoVO = itemOrderService.expressInfo(orderId);
@@ -91,25 +92,31 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setName(expressInfoVO.getExpressName());
             vo.setId(expressId);
             ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
-            List<OrderDetailExpressDetailVO> detailVOS = Collections.emptyList();
+            List<OrderDetailExpressDetailVO> detailVOS = new ArrayList<>();
             if (orderModel.selLogisticses().size()>0) {
                 List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(orderModel.selLogisticses().get(0).getId());
-                Map<String, List<ExpressLogVO>> dateExpressMap = expressLogVOS.stream().collect(Collectors.groupingBy(ExpressLogVO::getLogDate));
-                detailVOS = dateExpressMap.keySet().stream().map(date -> {
-                    OrderDetailExpressDetailVO detailVO = new OrderDetailExpressDetailVO();
-                    detailVO.setOrderId(orderId);
-                    detailVO.setId(expressId);
-                    detailVO.setDate(date);
-                    detailVO.setWeek(dateExpressMap.get(date).get(0).getLogWeek());
-                    detailVO.setDetailList(dateExpressMap.get(date).stream().map(log -> {
-                        ExpressDetailTimeAndDescVO timeAndDescVO = new ExpressDetailTimeAndDescVO();
-                        timeAndDescVO.setTime(log.getLogTime());
-                        timeAndDescVO.setDesc(log.getLogDesc());
-                        return timeAndDescVO;
-                    }).collect(Collectors.toList()));
-                    return detailVO;
-                }).collect(Collectors.toList());
-
+                for(ExpressLogVO expressLogVO:expressLogVOS){
+                    OrderDetailExpressDetailVO dvo=null;
+                    for(OrderDetailExpressDetailVO d:detailVOS){
+                        if(d.getDate().equals(expressLogVO.getLogDate())){
+                            dvo=d;
+                            break;
+                        }
+                    }
+                    if(dvo==null){
+                        dvo=new OrderDetailExpressDetailVO();
+                        dvo.setDetailList(new ArrayList<>());
+                        dvo.setDate(expressLogVO.getLogDate());
+                        dvo.setOrderId(orderId);
+                        dvo.setId(expressId);
+                        dvo.setWeek(expressLogVO.getLogWeek());
+                        detailVOS.add(dvo);
+                    }
+                    ExpressDetailTimeAndDescVO timeAndDescVO = new ExpressDetailTimeAndDescVO();
+                    timeAndDescVO.setTime(expressLogVO.getLogTime());
+                    timeAndDescVO.setDesc(expressLogVO.getLogDesc());
+                    dvo.getDetailList().add(timeAndDescVO);
+                }
             }
             vo.setDetail(detailVOS);
         }

@@ -1,13 +1,10 @@
 package com.shigu.main4.item.services;
 
 import com.opentae.core.mybatis.SgExample;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
-import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
 import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.*;
@@ -28,6 +25,7 @@ import com.shigu.main4.item.services.utils.ElasticCountUtil;
 import com.shigu.main4.item.services.utils.FileImgsUtil;
 import com.shigu.main4.item.services.utils.OnsaleInstockReader;
 import com.shigu.main4.item.services.utils.SelIOItemsUtil;
+import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.vo.*;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
@@ -35,10 +33,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,8 +83,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
     private ElasticCountUtil elasticCountUtil;
 
     @Autowired
-    private MultipleMapper tae_mall_multipleMapper;
-
+    private ItemCache itemCache;
     @Autowired
     private RedisIO redisIO;
 
@@ -332,15 +331,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         tinyExample.setWebSite(webSite);
         ShiguGoodsTinyExample.Criteria criteria = tinyExample.createCriteria().andStoreIdEqualTo(shopId).andIsClosedEqualTo(0L);
         int onsaleNum = shiguGoodsTinyMapper.countByExample(tinyExample);
-
         criteria.andIsShowcaseEqualTo(1);
         int showcaseNum = shiguGoodsTinyMapper.countByExample(tinyExample);
-
         ShiguGoodsSoldoutExample soldoutExample = new ShiguGoodsSoldoutExample();
         soldoutExample.setWebSite(webSite);
         soldoutExample.createCriteria().andStoreIdEqualTo(shopId);
         int instockNum = shiguGoodsSoldoutMapper.countByExample(soldoutExample);
-
         ItemCount count = new ItemCount();
         count.setInstock(instockNum);
         count.setOnsale(onsaleNum);
@@ -477,10 +473,12 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     if (StringUtils.isNotBlank(otherInfo.getFabric())) {
                         item.setConstituentType(2);
                     }
+                    item.setGoodsStyleId(otherInfo.getGoodsStyleId());
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
+                    item.setGoodsVideoUrl(otherInfo.getVideoUrl());
                     item.setHasRetailPriceSet(otherInfo.getHasRetailPriceSet()!=null&&otherInfo.getHasRetailPriceSet()==1);
                 }
                 onsaleItems.add(item);
@@ -521,6 +519,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         } else {
             goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
         }
+        itemCache.cleanItemCache(goodsId);
     }
 
     /**
@@ -536,10 +535,8 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         StoreGoodsListSearchBO bo = new StoreGoodsListSearchBO();
         bo.setState(aggrType.state);
         aggrNum = shiguGoodsTinyMapper.countOnsaleGoods(shopId,webSite,bo);
-        redisIO.putTemp(cacheIndex,aggrNum,600);
         return aggrNum;
     }
-
     @Override
     public void clearShopCountCache(Long shopId, ShopCountRedisCacheEnum type) {
         String cacheIndex = String.format("%s%d", type.cacheName, shopId);
@@ -557,4 +554,54 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         hasModified.setHasSetPrice(1);
         return shiguGoodsModifiedMapper.selectOne(hasModified)!=null;
     }
+
+    @Override
+    public void setGoodsVideo(Long shopId, String webSite, Long goodsId, String goodsVideoUrl, boolean linkSameGoodsNo) throws JsonErrException {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny.setStoreId(shopId);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        List<Long> goodsIds = new ArrayList<>();
+        if (tiny != null) {
+            if (!tiny.getStoreId().equals(shopId)) {
+                throw new JsonErrException("只能操作本店铺商品");
+            }
+            if (linkSameGoodsNo && StringUtils.isNotBlank(tiny.getGoodsNo())) {
+                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+                example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
+                example.setWebSite(webSite);
+                goodsIds.addAll(shiguGoodsTinyMapper.selectByExample(example).stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList()));
+            } else {
+                goodsIds.add(goodsId);
+            }
+        }
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setVideoUrl(goodsVideoUrl);
+        goodsCountForsearch.setHadVideo(1);
+        GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+        example.createCriteria().andGoodsIdIn(goodsIds);
+        goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch,example);
+        List<Long> existedGoodsIds = goodsCountForsearchMapper.selectByExample(example).stream().map(GoodsCountForsearch::getGoodsId).collect(Collectors.toList());
+        goodsIds.removeAll(existedGoodsIds);
+        if (goodsIds.size()>0) {
+            goodsCountForsearch.setWebSite(webSite);
+            goodsCountForsearch.setClick(0L);
+            goodsCountForsearch.setClickIp(0L);
+            goodsCountForsearch.setTrade(0L);
+            goodsCountForsearch.setUp(0L);
+            goodsCountForsearch.setUpMan(0L);
+            goodsCountForsearch.setHadGoat(0);
+            goodsCountForsearch.setHadBigzip(0);
+            List<GoodsCountForsearch> insertSearch = new ArrayList<>(goodsIds.size());
+            for (Long id : goodsIds) {
+                GoodsCountForsearch copy = BeanMapper.map(goodsCountForsearch,GoodsCountForsearch.class);
+                copy.setGoodsId(id);
+                insertSearch.add(copy);
+            }
+            goodsCountForsearchMapper.insertListNoId(insertSearch);
+        }
+        itemCache.cleanItemCache(goodsId);
+    }
+
 }

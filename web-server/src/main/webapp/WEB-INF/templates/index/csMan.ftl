@@ -108,7 +108,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -141,7 +141,7 @@
                             <div class="myColle cnBoxCon">
                                 <ul>
                                     <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
                         </div>    
@@ -837,7 +837,7 @@ if(session_shopId != ""){
             <li>
                 <h5>代理商</h5>
                 <p><a href="http://zixun.571xz.com/article?id=45" target="_blank">一键上传</a></p>
-                <p><a href="http://daifa.571xz.com" target="_blank">一件代发</a></p>
+                <p><a href="http://www.571xz.com/daifaIndex.htm" target="_blank">一件代发</a></p>
             </li>
             <li>
                 <h5>供应商</h5>

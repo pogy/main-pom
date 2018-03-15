@@ -38,14 +38,18 @@ import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
+
+import com.shigu.tools.KeyWordsUtil;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * cdn服务
@@ -158,20 +162,20 @@ public class CdnService {
      * @param type 类型：1.数据包，2.收藏
      * @return
      */
-    public boolean addItemCollect(Long userId,ScGoodsBO bo,int type){
+    public String addItemCollect(Long userId,ScGoodsBO bo,int type){
         ItemCollect itemCollect=new ItemCollect();
         itemCollect.setUserId(userId);
         //查出店、webSite
         ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(bo.getGoodsId());
         if(sgig==null){
-            return false;
+            return "商品不存在";
         }
         ShiguGoodsTiny sgt=new ShiguGoodsTiny();
         sgt.setGoodsId(bo.getGoodsId());
         sgt.setWebSite(sgig.getWebSite());
         sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
         if(sgt==null){
-            return false;
+            return "商品不存在";
         }
         itemCollect.setItemId(bo.getGoodsId());
         itemCollect.setStoreId(sgt.getStoreId());
@@ -181,9 +185,12 @@ public class CdnService {
         try {
             userCollectService.addItemCollection(itemCollect);
         } catch (ItemCollectionException e) {
-            return false;
+            if ("已收藏该商品".equals(e.getMessage())) {
+                return "2";
+            }
+            return e.getMessage();
         }
-        return true;
+        return "success";
     }
 
     /**
@@ -226,7 +233,6 @@ public class CdnService {
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
         shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
-
         Long starNum=shopForCdnService.selShopStarById(shopId);
         starNum=starNum==null?0:starNum;
         shopShowVO.setStarNum(starNum);
@@ -316,9 +322,15 @@ public class CdnService {
         vo.setPostTime(cdnItem.getListTime());
         vo.setTitle(cdnItem.getTitle());
         vo.setTbGoodsId(cdnItem.getTbNumIid());
+        vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
         vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
-        if(cdnItem.getDescription()!=null){
-            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+        vo.setFabric(cdnItem.getFabric());
+        vo.setInFabric(cdnItem.getInFabric());
+
+        String cdnItemDescription = cdnItem.getDescription();
+        if(StringUtils.isNotBlank(cdnItemDescription)){
+            cdnItemDescription= KeyWordsUtil.duleKeyWords(cdnItemDescription);
+            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItemDescription).replace("<script ","")
                     .replace("<script>","")
                     .replace("</script>",""));
         }
@@ -429,17 +441,14 @@ public class CdnService {
      * @return
      */
     public List<CdnSimpleGoodsVO> cdnSimpleGoods(Long shopId, String webSite){
-        ShiguPager<ItemShowBlock> pager= shopForCdnService.searchItemOnsale(null,shopId,webSite,"common",1,3);
-        List<CdnSimpleGoodsVO> list=new ArrayList<>();
-        for(ItemShowBlock item:pager.getContent()){
+        return shiguGoodsTinyMapper.selForSee(webSite,shopId).stream().map(o -> {
             CdnSimpleGoodsVO v=new CdnSimpleGoodsVO();
-            v.setGoodsId(item.getItemId());
-            v.setImgSrc(item.getImgUrl());
-            v.setPrice(item.getPrice());
-            v.setTitle(item.getTitle());
-            list.add(v);
-        }
-        return list;
+            v.setGoodsId(o.getGoodsId());
+            v.setImgSrc(o.getPicUrl());
+            v.setPrice(o.getPiPriceString());
+            v.setTitle(o.getTitle());
+            return v;
+        }).collect(Collectors.toList());
     }
 
     /**

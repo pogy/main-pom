@@ -80,11 +80,11 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         MarketShow marketShowTop = new MarketShow();
         marketShowTop.setMarketId(shiguOuterMarket.getMarketId());
         marketShowTop.setMarketOuterId(shiguOuterMarket.getRuleId());
+        marketShowTop.setWebSite(shiguOuterMarket.getWebSite());
         if (shiguOuterMarket.getMarketId() != null) {
             ShiguMarket shiguMarketNow = shiguMarketMapper.selectByPrimaryKey(shiguOuterMarket.getMarketId());
             if (shiguMarketNow != null) {
                 marketShowTop.setPingying(shiguMarketNow.getMarketPingyin());
-                marketShowTop.setWebSite(shiguMarketNow.getWebSite());
                 marketShowTop.setMarketName(shiguMarketNow.getMarketName());
             }
         }
@@ -204,7 +204,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                 }
 
                 List<ShiguShop> shopList = shiguShopMapper.selectShopListByShopIdsForMarketList(shopIdList);
-                for (int m = 0; m < shopIdList.size(); m++) {
+                for (int m = 0; m < shopList.size(); m++) {
                     ShiguShop shiguShop = shopList.get(m);
                     ShopShow s = map.get(shiguShop.getShopId());
                     if (s == null||shiguShop.getShopStatus() != 0 || shiguShop.getDisplayInMarket() != 1) {
