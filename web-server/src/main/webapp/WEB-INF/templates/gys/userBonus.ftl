@@ -41,7 +41,7 @@
             0.00
         </#if>
     </p>
-    <p class="tips fc3">红包余额不可提现，仅可订单支付使用！</p>
+    <p class="tips fc3">红包可充值账户余额！<a href="iwantToRechargein5.htm" target="_blank">立即充值</a></p>
 </div>
 <div class="bonusList">
     <h3 class="yahei fs16 fc3">红包明细</h3>
@@ -67,7 +67,7 @@
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>
-                            <p class="fc9">${item.payCodeText!}：${item.payCode!}</p>
+                            <p class="fc9">${item.payCodeText!}${item.payCode!}</p>
                         </li>
                     </ul>
                 </#list>

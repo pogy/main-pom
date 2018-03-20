@@ -41,7 +41,7 @@
             0.00
         </#if>
     </p>
-    <p class="tips fc3">红包余额不可提现，仅可订单支付使用！</p>
+    <p class="tips fc3">红包余额仅支持兑换代金券，线下档口支付使用！&nbsp;&nbsp;&nbsp;&nbsp;兑换地址：电商基地一楼大厅</p>
 </div>
 <div class="bonusList">
     <h3 class="yahei fs16 fc3">红包明细</h3>
@@ -67,7 +67,7 @@
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>
-                            <p class="fc9">${item.payCodeText!}：${item.payCode!}</p>
+                            <p class="fc9"><#if item.payCode??>${item.payCodeText!}${item.payCode!}</#if></p>
                         </li>
                     </ul>
                 </#list>

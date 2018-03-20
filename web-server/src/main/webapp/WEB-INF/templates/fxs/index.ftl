@@ -140,16 +140,19 @@
 </div>
 <div class="fl userBouns">
     <h4 class="fs14 fc3">红包余额（元）</h4>
-    <p class="money"><em>
-        <#if bonusBalance??>
-            ${bonusBalance!}
-        <#else>
-            0.00
-        </#if>
-    </em></p>
-    <div class="tips fc3 pr">红包余额不可提现<i class="icon-doubt fcF40" id="bonusTipIcon"></i>
-        <div class="tipTest pa"><em></em><b></b>提示：红包可直接在订单中减扣金额，功能开发中敬请期待·········</div>
+    <div class="bounsMoney pr">
+        <span>
+            <#if bonusBalance??>
+                ${bonusBalance!}
+            <#else>
+                0.00
+            </#if>
+        </span>
+        <div class="tips fc3 pa">红包可领取代金券<i class="icon-warn fcF40" id="bonusTipIcon"></i>
+            <div class="tipTest pa"><em></em><b></b>提示：红包可直接在订单中减扣金额，功能开发中敬请期待·········</div>
+        </div>
     </div>
+    <a href="#" target="_blank" class="goView">查看活动详情</a>
 </div>
 </div>
 <div class="tradeCounts">
