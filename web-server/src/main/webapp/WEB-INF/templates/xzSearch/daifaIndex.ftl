@@ -136,15 +136,15 @@
                 <div class="">
                     <ul>
                         <li>
-                            <p class="question">1、星座代发什么时候截单？</p>
+                            <p class="question">1、星座网代发什么时候截单？</p>
                             <p class="answer">每天16:00截单，如有特殊情况会提前截单。为了保证您的发货时效，请尽早下单。</p>
                         </li>
                         <li>
-                            <p class="question">2、星座代发什么时候拿货？</p>
+                            <p class="question">2、星座网代发什么时候拿货？</p>
                             <p class="answer">每日11时起，会有专门的配货员为您配货，直至截单后最后一单配货完成。</p>
                         </li>
                         <li>
-                            <p class="question">3、星座代发什么时候发货？</p>
+                            <p class="question">3、星座网代发什么时候发货？</p>
                             <p class="answer">当天配齐订单，保证当天发货，物流信息以快递公司揽件后更新为准。</p>
                         </li>
                         <li>

@@ -59,7 +59,11 @@ public class TokenUtil {
         if (time2 - time > 600000L) {
             String uuid = oldToken + "@@@@@---@@@@@" + time2;
             Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_login_token" + userId, 604800, uuid);
+            try {
+                jedis.setex("phone_login_token" + userId, 604800, uuid);
+            }finally {
+                redisIO.returnJedis(jedis);
+            }
         }
         return userId;
     }

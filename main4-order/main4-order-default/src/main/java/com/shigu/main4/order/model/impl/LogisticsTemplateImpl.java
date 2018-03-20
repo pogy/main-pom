@@ -255,6 +255,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 .where(templateExample.createCriteria().andSenderIdEqualTo(senderId),
                         provExample.createCriteria().andProvIdEqualTo(provId)).build();
         multipleExample.setDistinct(true);
+        multipleExample.setOrderByClause("express_company.remark5 asc");
         List<PostInfoVO> postInfoVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, PostInfoVO.class);
         List<PostVO> postVOS = null;
         if (postInfoVOS != null && !postInfoVOS.isEmpty()) {
@@ -286,6 +287,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         List<Long> conpanyIds = BeanMapper.getFieldList(logisticsTemplateCompanies,"companyId",Long.class);
         ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
         expressCompanyExample.createCriteria().andExpressCompanyIdIn(conpanyIds);
+        expressCompanyExample.setOrderByClause("remark5 asc");
         return expressCompanyMapper.selectByExample(expressCompanyExample)
                 .stream().map(expressCompany -> {
                     PostVO postVO = new PostVO();

@@ -93,6 +93,15 @@ public interface ShopRegistService {
     long toExamine(Long registId) throws ShopExamineException;
 
     /**
+     * 审核店铺
+     * @param registId 申请ID
+     * @param operator 审核人员
+     * @return 新店铺ID
+     * @throws ShopExamineException
+     */
+    long toExamine(Long registId, String operator) throws ShopExamineException;
+
+    /**
      * 拒绝审核
      * @param registId
      * @param reason

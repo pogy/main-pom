@@ -25,6 +25,7 @@ import com.shigu.main4.ucenter.vo.LoginRecord;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
+import org.apache.zookeeper.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -216,7 +217,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             throw new Main4Exception("该第三方账号已经绑定，不能重复绑定");
         }
 
-        BindOuterRdUser bindOuterRdUser;
+        BindOuterRdUser bindOuterRdUser = null;
         switch (tempUser.getLoginFromType()) {
             case TAOBAO:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindTbUser.class);
@@ -227,11 +228,11 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             case ALI:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
                 break;
-            default:
-                throw new Main4Exception("暂不支持该第三方账号绑定");
         }
         //检验是否准入
-        bindOuterRdUser.admittance(phone, tempUser);
+        if(bindOuterRdUser != null){
+            bindOuterRdUser.admittance(phone, tempUser);
+        }
 
         Long userId = selUserIdByName(phone, LoginFromType.PHONE);
         boolean existMember = false;
@@ -262,13 +263,20 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
 
         // 主账号已存在 判断子表数据
         MemberUserSub memberUserSub = new MemberUserSub();
-//        memberUserSub.setSubUserKey(tempUser.getSubUserKey());
-        memberUserSub.setSubUserName(tempUser.getSubUserName());
+        if (tempUser.getLoginFromType() == LoginFromType.WX) {
+            memberUserSub.setSubUserKey(tempUser.getSubUserKey());
+        }else{
+            memberUserSub.setSubUserName(tempUser.getSubUserName());
+        }
         memberUserSub.setAccountType(tempUser.getLoginFromType().getAccountType());
         result = memberUserSubMapper.selectCount(memberUserSub);
         if (result == 0) {
             // 子表数据不存在 绑定第三方数据
-            memberUserSub.setSubUserName(tempUser.getSubUserName());
+            if (tempUser.getLoginFromType() == LoginFromType.WX) {
+                memberUserSub.setSubUserKey(tempUser.getSubUserKey());
+            }else{
+                memberUserSub.setSubUserName(tempUser.getSubUserName());
+            }
             memberUserSub.setUserId(userId);
             memberUserSub.setSubUserKey(tempUser.getSubUserKey());
             memberUserSub.setAccountType(tempUser.getLoginFromType().getAccountType());
@@ -287,7 +295,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         }
 
         //绑定店铺信息
-        bindOuterRdUser.bindShop(phone,tempUser,userId);
+        if(bindOuterRdUser != null){
+            bindOuterRdUser.bindShop(phone,tempUser,userId);
+        }
         return true;
     }
 
