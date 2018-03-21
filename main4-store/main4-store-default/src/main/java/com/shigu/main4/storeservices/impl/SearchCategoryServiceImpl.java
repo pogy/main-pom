@@ -20,7 +20,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
     @Override
     public List<CateMenu> getMarketCateShow() {
         ShiguSiteSearchCategoryExample ssscOneExample = new ShiguSiteSearchCategoryExample();
-        ssscOneExample.createCriteria().andTypeEqualTo(3).andCStatusEqualTo(1);
+        ssscOneExample.createCriteria().andTypeEqualTo(3).andCStatusEqualTo(1).andDisplayEqualTo(1);
         List<ShiguSiteSearchCategory> ssscOneList = shiguSiteSearchCategoryMapper.selectByExample(ssscOneExample);
         if (ssscOneList == null){
             return new ArrayList<>();
@@ -37,7 +37,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             cateMenu.setIcon(ssscOneList.get(i).getIcon());
             cateMenu.setText(ssscOneList.get(i).getCname());
             ssscTwoExample = new ShiguSiteSearchCategoryExample();
-            ssscTwoExample.createCriteria().andParentCidEqualTo(ssscOneList.get(i).getId()).andCStatusEqualTo(1);
+            ssscTwoExample.createCriteria().andParentCidEqualTo(ssscOneList.get(i).getId()).andCStatusEqualTo(1).andDisplayEqualTo(1);
             ssscTwoList = shiguSiteSearchCategoryMapper.selectByExample(ssscTwoExample);
             subMenuList = new ArrayList<SubMenu>();
             for (int j = 0; j <ssscTwoList.size() ; j++) {
