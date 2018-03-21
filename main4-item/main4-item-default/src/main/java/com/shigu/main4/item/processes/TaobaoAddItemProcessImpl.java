@@ -146,6 +146,7 @@ public class TaobaoAddItemProcessImpl implements TaobaoAddItemProcess {
         req.setItemWeight(bo.getItem_weight());
         req.setSellPoint(bo.getSellPoint());
         req.setInputCustomCpv(spv.getInputCustomCpv());
+        req.setHasShowcase(bo.getHas_showcase());
         ItemAddResponse rsp = null;
         try {
             rsp = client.execute(req, session.getSession());
