@@ -337,8 +337,8 @@ public class IndexShowService {
                     .add(new SubStyleCateNavVO("运动套装", 30L, null, "运动套装"))
                     .add(new SubStyleCateNavVO("情侣装", 30L, null, "情侣装"))
                     .add(new SubStyleCateNavVO("背心/马甲", 30L, 50011153L, null));
-
             styleCateNavVOStatic.add(manCoat);
+
             StyleCateNavVO manPants = new StyleCateNavVO("manPants", "男装裤子");
             manPants.add(new SubStyleCateNavVO("休闲裤", 30L, 3035L, null))
                     .add(new SubStyleCateNavVO("牛仔裤", 30L, 50010167L, null))

@@ -150,7 +150,17 @@ public class StyleChannelService {
         GoodsSearchBO goodsSearchBO = new GoodsSearchBO();
         goodsSearchBO.setWebSite(bo.getWebSite());
         goodsSearchBO.setParentStyleId(bo.getSpid());
-        goodsSearchBO.setKeyword(bo.getKeyword());
+        //非实际类目搜索用
+        String keyword = null;
+        if (StringUtils.isNotBlank(bo.getSearchName())) {
+            keyword = bo.getSearchName();
+        }
+        if (StringUtils.isNotBlank(bo.getKeyword())) {
+            if (keyword != null) {
+                keyword = String.format("%s  %s", keyword, bo.getKeyword());
+            }
+        }
+        goodsSearchBO.setKeyword(keyword);
         goodsSearchBO.setMid(bo.getMid());
         goodsSearchBO.setPriceFrom(bo.getSp());
         goodsSearchBO.setPriceTo(bo.getEp());

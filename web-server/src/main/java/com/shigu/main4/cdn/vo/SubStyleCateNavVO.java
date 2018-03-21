@@ -18,13 +18,13 @@ public class SubStyleCateNavVO implements Serializable {
     //子类目id, 有cid没有keyword
     private Long cid;
     //类目keyword,有keyword没有cid
-    private String keyword;
+    private String searchName;
 
-    public SubStyleCateNavVO(String text, Long pid, Long cid, String keyword) {
+    public SubStyleCateNavVO(String text, Long pid, Long cid, String searchName) {
         this.text = text;
         this.pid = pid;
         this.cid = cid;
-        this.keyword = keyword;
+        this.searchName = searchName;
     }
 
     public String getText() {
@@ -51,11 +51,11 @@ public class SubStyleCateNavVO implements Serializable {
         this.cid = cid;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getSearchName() {
+        return searchName;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
     }
 }

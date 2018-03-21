@@ -19,6 +19,8 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
     private Long mid;
     //类目id
     private Long cid;
+    //搜索类目名
+    private String searchName;
     //关键词
     private String keyword;
     //排序类型
@@ -77,6 +79,14 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public String getSearchName() {
+        return searchName;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
     }
 
     public String getKeyword() {
