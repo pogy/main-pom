@@ -27,7 +27,7 @@
 </#list>
 <#assign isShowHoverCate=undefined>
 <#include "/__ftl_links__/styleChannel__common__searchHeader.ftl">
-<#list [{"fields":[{"name":"spid","value":""+query.spid},{"name":"webSite","value":""+query.webSite},{"name":"pid","value":""+query.pid},{"name":"keyword","value":""+query.pid},{"name":"mid","value":""+query.mid},{"name":"cid","value":""+query.cid},{"name":"sort","value":""+query.sort},{"name":"d","value":""+query.d},{"name":"sp","value":""+query.sp},{"name":"ep","value":""+query.ep},{"name":"st","value":""+query.st},{"name":"et","value":""+query.et},{"name":"page","value":""+query.page},{"name":"bpic","value":""+query.bpic},{"name":"goodsVideo","value":""+query.goodsVideo}]}] as $it>
+<#list [{"fields":[{"name":"spid","value":""+query.spid},{"name":"webSite","value":""+query.webSite},{"name":"pid","value":""+query.pid},{"name":"searchName","value":""+query.searchName},{"name":"keyword","value":""+query.keyword},{"name":"mid","value":""+query.mid},{"name":"cid","value":""+query.cid},{"name":"sort","value":""+query.sort},{"name":"d","value":""+query.d},{"name":"sp","value":""+query.sp},{"name":"ep","value":""+query.ep},{"name":"st","value":""+query.st},{"name":"et","value":""+query.et},{"name":"page","value":""+query.page},{"name":"bpic","value":""+query.bpic},{"name":"goodsVideo","value":""+query.goodsVideo}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -45,13 +45,13 @@
     <div class="filterBox byCate">
         <label>按分类：</label>
         <ul>
-            <li <#if !query.cid && !query.keyword>class="selected"</#if>>
+            <li <#if !query.cid && !query.searchName>class="selected"</#if>>
                 <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
             </li>
             <#list catemenu as cate>
                 <#list cate.submenu as item>
-                    <li <#if query.cid?? && query.cid == item.cid || query.keyword?? && query.keyword == item.keyword>class="selected"</#if>>
-                        <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if item.cid??>&cid=${item.cid!}</#if><#if item.keyword??>&keyword=${item.keyword!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${item.text!}</a>
+                    <li <#if query.cid?? && query.cid == item.cid || query.searchName?? && query.searchName == item.searchName>class="selected"</#if>>
+                        <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if item.cid??>&cid=${item.cid!}</#if><#if item.searchName??>&searchName=${item.searchName!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${item.text!}</a>
                     </li>
                 </#list>
             </#list>
@@ -61,11 +61,11 @@
         <label>按市场：</label>
         <ul>
             <li <#if !query.mid>class="selected"</#if>>
-                <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if query.cid??>&cid=${query.cid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
+                <a href="?webSite=${query.webSite!}&spid=${query.spid!}<#if query.cid??>&cid=${query.cid!}</#if><#if query.searchName??>&searchName=${query.searchName!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
             </li>
             <#list marketList as market>
                 <li <#if query.mid?? && query.mid == market.mid>class="selected"</#if>>
-                    <a href="?webSite=${query.webSite!}&spid=${query.spid!}&mid=${market.mid!}<#if query.cid??>&cid=${query.cid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${market.name!}</a>
+                    <a href="?webSite=${query.webSite!}&spid=${query.spid!}&mid=${market.mid!}<#if query.cid??>&cid=${query.cid!}</#if><#if query.searchName??>&searchName=${query.searchName!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${market.name!}</a>
                 </li>
             </#list>
         </ul>
