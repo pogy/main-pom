@@ -3,6 +3,7 @@ package com.shigu.main4.item.services.utils;
 import com.opentae.data.mall.beans.TaobaoPropValue;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
+import com.shigu.main4.tools.RedisIO;
 import com.taobao.api.domain.PropValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -20,15 +21,25 @@ public class UpdatePropValueService {
 
     @Autowired
     TaobaoPropValueMapper taobaoPropValueMallMapper;
+    @Autowired
+    RedisIO redisIO;
 
     @Async
     public void updatePropValue(Long cid,Long pid,String name,List<PropValue> pvlist){
-        //如果数据库里没有,存一下
-        TaobaoPropValueExample vexample=new TaobaoPropValueExample();
-        vexample.createCriteria().andCidEqualTo(cid).andPidEqualTo(20000L);
-        taobaoPropValueMallMapper.deleteByExample(vexample);
-        taobaoPropValueMallMapper.insertListNoId(parseLocalPropValues(pvlist,cid,pid,
-                name));
+        String cidPropTmp=redisIO.get("cidPropTmp_"+cid);
+        if(cidPropTmp==null){
+            redisIO.putStringTemp("cidPropTmp_"+cid,"1",60);
+            //如果数据库里没有,存一下
+            try {
+                TaobaoPropValueExample vexample=new TaobaoPropValueExample();
+                vexample.createCriteria().andCidEqualTo(cid).andPidEqualTo(20000L);
+                taobaoPropValueMallMapper.deleteByExample(vexample);
+                taobaoPropValueMallMapper.insertListNoId(parseLocalPropValues(pvlist,cid,pid,
+                        name));
+            } finally {
+                redisIO.del("cidPropTmp_"+cid);
+            }
+        }
     }
 
     /**
