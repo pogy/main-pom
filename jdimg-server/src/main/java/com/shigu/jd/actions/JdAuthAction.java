@@ -4,6 +4,7 @@ import com.openJar.beans.JdAuthedInfo;
 import com.openJar.beans.SdkJdVasSubscribe;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdVasSubscribeResponse;
+import com.shigu.jd.api.exceptions.AppNotBuyException;
 import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.jd.api.service.JdAuthService;
 import com.shigu.jd.api.service.JdClientService;
@@ -45,22 +46,30 @@ public class JdAuthAction {
             return "redirect:http://www.571xz.com";
         }
         /************检测是否订阅服务**********/
-        JdAuthedInfo jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
-        if(!JdKeyConfig.jdState.equals(state)){
-            SdkJdVasSubscribe subscribeVO = JdParseStateUtil.parseState(state);
+        JdAuthedInfo jdAuthedInfoVO;
+        try {
+            jdAuthedInfoVO = jdAuthService.getAuthedInfo(code);
+        } catch (AppNotBuyException e) {
+            return "redirect:https://fw.jd.com/591601.html";
+        }
+        SdkJdVasSubscribe subscribeVO = null;
+        try {
+            subscribeVO = JdParseStateUtil.parseState(state);
             if (subscribeVO == null || subscribeVO.getEndDate().after(new Date())) {
                 //FW_GOODS-449409
-                return "redirect:https://fw.jd.com/"+JdKeyConfig.itemId+".html";
+                return "redirect:https://fw.jd.com/591601.html";
             }
-            try {
-                //保存订购信息
-                subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
-                jdServiceMarketService.saveSubscribe(subscribeVO);
-            } catch (JdAuthFailureException e) {
-                e.printStackTrace();
-                return "redirect:http://www.571xz.com";
-            }
+        } catch (Exception ignored) {
         }
+        try {
+            //保存订购信息
+            subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
+            jdServiceMarketService.saveSubscribe(subscribeVO);
+        } catch (JdAuthFailureException e) {
+            e.printStackTrace();
+            return "redirect:http://www.571xz.com";
+        }
+
         /************获取用户登陆信息**********/
         JdAuthedInfoResponse res=new JdAuthedInfoResponse();
         res.setSuccess(true);
