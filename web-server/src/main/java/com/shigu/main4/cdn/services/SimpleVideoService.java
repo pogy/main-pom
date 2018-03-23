@@ -86,7 +86,7 @@ public class SimpleVideoService {
      */
     public boolean isTbUrl(String tbUrl) {
         if (tbUrl.startsWith("http://cloud.video.taobao.com")
-                || (tbUrl.startsWith("https://cloud.video.taobao.com")){
+                || (tbUrl.startsWith("https://cloud.video.taobao.com"))){
             return true;
         }
         return false;
