@@ -18,6 +18,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
     public static EntityColumn hadBigzip;
     public static EntityColumn styleName;
     public static EntityColumn click;
+    public static EntityColumn styleSearchScoreAdded;
     public static EntityColumn sid;
     public static EntityColumn webSite;
     public static EntityColumn trade;
@@ -45,6 +46,7 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         hadBigzip = listMap.get("hadBigzip");
         styleName = listMap.get("styleName");
         click = listMap.get("click");
+        styleSearchScoreAdded = listMap.get("styleSearchScoreAdded");
         sid = listMap.get("sid");
         webSite = listMap.get("webSite");
         trade = listMap.get("trade");
@@ -462,6 +464,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
             return notBetween(click, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedIsNull() {
+            return isNull(styleSearchScoreAdded);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedIsNotNull() {
+            return isNotNull(styleSearchScoreAdded);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedEqualTo(Long value) {
+            return equalTo(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedNotEqualTo(Long value) {
+            return notEqualTo(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedGreaterThan(Long value) {
+            return greaterThan(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedLessThan(Long value) {
+            return lessThan(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(styleSearchScoreAdded, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedIn(List<Long> values) {
+            return in(styleSearchScoreAdded, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedNotIn(List<Long> values) {
+            return notIn(styleSearchScoreAdded, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedBetween(Long value1, Long value2) {
+            return between(styleSearchScoreAdded, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andStyleSearchScoreAddedNotBetween(Long value1, Long value2) {
+            return notBetween(styleSearchScoreAdded, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andSidIsNull() {
             return isNull(sid);

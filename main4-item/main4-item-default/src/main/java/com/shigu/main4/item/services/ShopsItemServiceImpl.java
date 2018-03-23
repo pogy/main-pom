@@ -628,9 +628,6 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                 val.setUpMan(0L);
                 val.setTrade(0L);
                 val.setHadGoat(0);
-                val.setHadBigzip(0);
-                val.setHadVideo(0);
-                val.setStyleSearchScore(0L);
                 insertList.add(val);
             }
             goodsCountForsearchMapper.insertListNoId(insertList);
@@ -646,6 +643,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         GoodsCountForsearch updateVal = new GoodsCountForsearch();
         updateVal.setStyleId(styleId);
         updateVal.setStyleSearchScore(0L);
+        updateVal.setStyleSearchScoreAdded(0L);
         updateVal.setParentStyleId(shiguStyle.getParentStyleId());
         GoodsCountForsearchExample updateExample = new GoodsCountForsearchExample();
         updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdIsNull().or().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);

@@ -79,22 +79,22 @@ public class GoodsCountForsearch implements Serializable {
 	private String videoUrl;
 
     /**
-     * 是否设置了视频链接，给opensearch提供搜索项
+     * 是否设置了视频链接 0没有 1有 是否设置了视频链接，给opensearch提供搜索项
      */
 	private Integer hadVideo;
 
     /**
-     * 0是没有 1是有
+     * 是否有风格0没有 1有
      */
 	private Integer hadStyle;
 
     /**
-     * 风格名称  应对商品库风格查询
+     * 固定风格名称
      */
 	private String styleName;
 
     /**
-     * 风格id 
+     * 风格id
      */
 	private Long sid;
 
@@ -112,6 +112,11 @@ public class GoodsCountForsearch implements Serializable {
      * 商品风格频道搜索权重
      */
 	private Long styleSearchScore;
+
+    /**
+     * 商品风格权重人工调整值
+     */
+	private Long styleSearchScoreAdded;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -279,6 +284,14 @@ public class GoodsCountForsearch implements Serializable {
 
 	public Long getStyleSearchScore() {
 		return this.styleSearchScore;
+	}
+
+	public void setStyleSearchScoreAdded(Long styleSearchScoreAdded) {
+		this.styleSearchScoreAdded = styleSearchScoreAdded;
+	}
+
+	public Long getStyleSearchScoreAdded() {
+		return this.styleSearchScoreAdded;
 	}
 
 }

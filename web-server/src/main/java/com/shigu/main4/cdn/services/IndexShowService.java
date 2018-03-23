@@ -323,35 +323,35 @@ public class IndexShowService {
         if (styleCateNavVOStatic == null) {
             styleCateNavVOStatic = new ArrayList<>();
             StyleCateNavVO manCoat = new StyleCateNavVO("manCoat", "男装上衣");
-            manCoat.add(new SubStyleCateNavVO("衬衫", 30L, 50011123L, null))
+            manCoat.add(new SubStyleCateNavVO("T恤", 30L, 50000436L, null))
                     .add(new SubStyleCateNavVO("针织衫/毛衣", 30L, 50000557L, null))
-                    .add(new SubStyleCateNavVO("外套", 30L, null, "外套"))
+                    .add(new SubStyleCateNavVO("民族服装", 30L, 50001748L, null))
+                    .add(new SubStyleCateNavVO("工装制服", 30L, 50005867L, null))
+                    .add(new SubStyleCateNavVO("夹克", 30L, 50010158L, null))
+                    .add(new SubStyleCateNavVO("卫衣", 30L, 50010159L, null))
+                    .add(new SubStyleCateNavVO("西服", 30L, 50010160L, null))
+                    .add(new SubStyleCateNavVO("polo衫", 30L, 50010402L, null))
+                    .add(new SubStyleCateNavVO("衬衫", 30L, 50011123L, null))
+                    .add(new SubStyleCateNavVO("西服套装", 30L, 50011130L, null))
+                    .add(new SubStyleCateNavVO("背心/马甲", 30L, 50011153L, null))
                     .add(new SubStyleCateNavVO("风衣", 30L, 50011159L, null))
+                    .add(new SubStyleCateNavVO("皮衣", 30L, 50011161L, null))
                     .add(new SubStyleCateNavVO("棉衣", 30L, 50011165L, null))
                     .add(new SubStyleCateNavVO("羽绒服", 30L, 50011167L, null))
-                    .add(new SubStyleCateNavVO("毛呢大衣", 30L, 50025883L, null))
-                    .add(new SubStyleCateNavVO("皮衣", 30L, 50011161L, null))
-                    .add(new SubStyleCateNavVO("套装", 30L, null, "套装"))
-                    .add(new SubStyleCateNavVO("西装", 30L, 50010160L, null))
-                    .add(new SubStyleCateNavVO("西装套装", 30L, 50011130L, null))
-                    .add(new SubStyleCateNavVO("运动套装", 30L, null, "运动套装"))
-                    .add(new SubStyleCateNavVO("情侣装", 30L, null, "情侣装"))
-                    .add(new SubStyleCateNavVO("背心/马甲", 30L, 50011153L, null));
+                    .add(new SubStyleCateNavVO("毛呢大衣", 30L, 50025883L, null));
             styleCateNavVOStatic.add(manCoat);
 
             StyleCateNavVO manPants = new StyleCateNavVO("manPants", "男装裤子");
             manPants.add(new SubStyleCateNavVO("休闲裤", 30L, 3035L, null))
                     .add(new SubStyleCateNavVO("牛仔裤", 30L, 50010167L, null))
-                    .add(new SubStyleCateNavVO("运动裤", 30L, null, "运动裤"))
-                    .add(new SubStyleCateNavVO("西装裤", 30L, null, "西装裤"))
-                    .add(new SubStyleCateNavVO("工装裤", 30L, null, "工装裤"))
-                    .add(new SubStyleCateNavVO("阔腿裤", 30L, null, "阔腿裤"))
-                    .add(new SubStyleCateNavVO("哈伦裤", 30L, null, "哈伦裤"))
-                    .add(new SubStyleCateNavVO("小脚裤", 30L, null, "小脚裤"))
-                    .add(new SubStyleCateNavVO("卫裤", 30L, null, "卫裤"))
-                    .add(new SubStyleCateNavVO("长裤", 30L, null, "长裤"))
-                    .add(new SubStyleCateNavVO("九分裤", 30L, null, "九分裤"))
-                    .add(new SubStyleCateNavVO("七分裤", 30L, null, "七分裤"));
+                    .add(new SubStyleCateNavVO("皮裤", 30L, 50011127L, null))
+                    .add(new SubStyleCateNavVO("西裤", 30L, 50011129L, null))
+                    .add(new SubStyleCateNavVO("羽绒裤", 30L, 50025884L, null))
+                    .add(new SubStyleCateNavVO("棉裤", 30L, 50025885L, null))
+                    .add(new SubStyleCateNavVO("其他套装", 30L, 124688002L, null))
+                    .add(new SubStyleCateNavVO("套装", 30L, 124730001L, null))
+                    .add(new SubStyleCateNavVO("休闲运动套装", 30L, 124732001L, null));
+
             styleCateNavVOStatic.add(manPants);
         }
         return styleCateNavVOStatic;
