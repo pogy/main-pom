@@ -306,9 +306,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if ((tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny)) == null) {
             throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.ITEM_DOES_NOT_EXIST, itemId);
         }
-        if (tiny.getIsExcelImp() == 0) {
-            throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.TB_ITEM_NOT_ALLOW_DOWN, itemId);
-        }
+//        if (tiny.getIsExcelImp() == 0) {
+//            throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.TB_ITEM_NOT_ALLOW_DOWN, itemId);
+//        }
         downItem(itemId);
         // 设置has_mod_instock=1
         setGoodsModifiedHasModInstock(itemId, 1);
