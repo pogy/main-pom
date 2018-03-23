@@ -349,7 +349,7 @@ public class JdGoodsupAction {
 
             model.addAttribute("allData", allData);
             model.addAttribute("id",itemId);
-            model.addAttribute("jd_yj_zh_session",null);
+            model.addAttribute("jd_yj_zh_session",ps);
 
             return "jingdong/jd";
 
