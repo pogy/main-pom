@@ -92,7 +92,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         // 市场列表
         List<MarketShow> marketShowList = new ArrayList<MarketShow>();
         ShiguOuterMarketExample outerMarketExample = new ShiguOuterMarketExample();
-        outerMarketExample.createCriteria().andWebSiteEqualTo(shiguOuterMarket.getWebSite());
+        outerMarketExample.createCriteria().andWebSiteEqualTo(shiguOuterMarket.getWebSite()).andMarkerShowEqualTo(1);
         List<ShiguOuterMarket> outerMarketList = shiguOuterMarketMapper.selectByExample(outerMarketExample);
         Map<Long, MarketShow> marketShowMap = new HashMap<>(outerMarketList.size());
         List<Long> marketIds = new ArrayList<>(outerMarketList.size());

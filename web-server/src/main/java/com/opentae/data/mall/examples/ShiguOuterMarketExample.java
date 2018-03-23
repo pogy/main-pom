@@ -20,6 +20,7 @@ public class ShiguOuterMarketExample extends SgExample<ShiguOuterMarketExample.C
     public static EntityColumn outerFloorIds;
     public static EntityColumn sortOrder;
     public static EntityColumn ruleId;
+    public static EntityColumn markerShow;
     public static EntityColumn marketId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -34,7 +35,8 @@ public class ShiguOuterMarketExample extends SgExample<ShiguOuterMarketExample.C
         sortOrder = listMap.get("sortOrder");
         ruleId = listMap.get("ruleId");
         marketId = listMap.get("marketId");
-        }
+        markerShow = listMap.get("markerShow");
+    }
 
     public ShiguOuterMarketExample() {
         this.setTableAlias(entityTable.getName());
@@ -53,6 +55,10 @@ public class ShiguOuterMarketExample extends SgExample<ShiguOuterMarketExample.C
     public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
         protected Criteria(SgExample example) {
             super(example);
+        }
+
+        public Criteria andMarkerShowEqualTo(Integer value) {
+            return equalTo(markerShow, value);
         }
 
         public Criteria andWebSiteIsNull() {
