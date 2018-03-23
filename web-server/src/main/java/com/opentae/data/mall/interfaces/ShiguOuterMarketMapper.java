@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 /**
- * 
+ *
  * Created by exampleCreater.
  */
 @MyBatisRepository("tae_mall_shiguOuterMarketMapper")
