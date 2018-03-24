@@ -20,6 +20,9 @@ public class SubStyleCateNavVO implements Serializable {
     //类目keyword,有keyword没有cid
     private String searchName;
 
+    public SubStyleCateNavVO() {
+    }
+
     public SubStyleCateNavVO(String text, Long pid, Long cid, String searchName) {
         this.text = text;
         this.pid = pid;
