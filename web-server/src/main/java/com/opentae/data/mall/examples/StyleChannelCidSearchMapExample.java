@@ -15,6 +15,7 @@ public class StyleChannelCidSearchMapExample extends SgExample<StyleChannelCidSe
     public static EntityColumn showCase;
     public static EntityColumn id;
     public static EntityColumn sort;
+    public static EntityColumn realParentCid;
     public static EntityColumn cateName;
     public static EntityColumn cid;
     static {
@@ -28,6 +29,7 @@ public class StyleChannelCidSearchMapExample extends SgExample<StyleChannelCidSe
         showCase = listMap.get("showCase");
         id = listMap.get("id");
         sort = listMap.get("sort");
+        realParentCid = listMap.get("realParentCid");
         cateName = listMap.get("cateName");
         cid = listMap.get("cid");
         }
@@ -293,6 +295,53 @@ public class StyleChannelCidSearchMapExample extends SgExample<StyleChannelCidSe
 
         public StyleChannelCidSearchMapExample.Criteria andSortNotBetween(Integer value1, Integer value2) {
             return notBetween(sort, value1, value2);
+        }
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidIsNull() {
+            return isNull(realParentCid);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidIsNotNull() {
+            return isNotNull(realParentCid);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidEqualTo(Long value) {
+            return equalTo(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidNotEqualTo(Long value) {
+            return notEqualTo(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidGreaterThan(Long value) {
+            return greaterThan(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidLessThan(Long value) {
+            return lessThan(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(realParentCid, value);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidIn(List<Long> values) {
+            return in(realParentCid, values);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidNotIn(List<Long> values) {
+            return notIn(realParentCid, values);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidBetween(Long value1, Long value2) {
+            return between(realParentCid, value1, value2);
+        }
+
+        public StyleChannelCidSearchMapExample.Criteria andRealParentCidNotBetween(Long value1, Long value2) {
+            return notBetween(realParentCid, value1, value2);
         }
         public StyleChannelCidSearchMapExample.Criteria andCateNameIsNull() {
             return isNull(cateName);

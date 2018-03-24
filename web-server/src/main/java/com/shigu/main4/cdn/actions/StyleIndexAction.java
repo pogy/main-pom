@@ -71,6 +71,7 @@ public class StyleIndexAction {
             return varifyResult;
         }
         model.addAttribute("marketList", styleChannelService.selStyleMarketsForStyleGoodsList(bo.getWebSite(), bo.getSpid(),bo.getPid()));
+        model.addAttribute("filterMenus",styleChannelService.styleSearchCat(bo.getWebSite(),bo.getPid()));
         ShiguPager<StyleGoodsInSearch> pager = styleChannelService.searchStyleGoods(bo);
         model.addAttribute("goodsList", pager.getContent());
         model.addAttribute("totalPage", pager.getTotalPages());

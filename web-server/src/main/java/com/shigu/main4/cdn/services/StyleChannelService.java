@@ -106,12 +106,20 @@ public class StyleChannelService {
     @Autowired
     private ShiguMarketMapper shiguMarketMapper;
 
+    @Autowired
+    private StyleChannelSearchParentMapper styleChannelSearchParentMapper;
+
+    @Autowired
+    private StyleChannelCidSearchMapMapper styleChannelCidSearchMapMapper;
+
     //市场店铺数据缓存
     private final String STYLE_MARKET_SHOP_CACHE_FORMAT = "cached_shops_for_market_%d_style_%d";
     //市场页市场信息缓存
     private final String STYLE_MARKET_CACHE_FORMAT = "cached_market_for_website_%s_style_%d";
     //风格商品列表页市场信息缓存
     private final String STYLE_GOODS_LIST_MARKET_CACHE_FORMAT = "cached_market_for_website_%s_style_goods_list_%d";
+
+    private final String STYLE_GOODS_LIST_SEARCH_CATE_FORMAT = "cached_search_category_for_website_%s_pid_%d";
 
     private Map<Long, StyleSpreadChannelVO> styleSpreadMap;
 
@@ -173,6 +181,7 @@ public class StyleChannelService {
         }
         goodsSearchBO.setCheckds(checkds);
         List<Long> cids = new ArrayList<>();
+        //优先查询cid
         if (bo.getCid() != null) {
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getCid()));
         } else if (bo.getPid() != null) {
@@ -240,6 +249,44 @@ public class StyleChannelService {
         return pager;
     }
 
+    /**
+     * 获取风格商品列表类目数据
+     *
+     * @param webSite
+     * @param searchPid
+     * @return
+     */
+    public List<SubStyleCateNavVO> styleSearchCat(String webSite, Long searchPid) {
+        //默认值为杭州,男装
+        if (StringUtils.isBlank(webSite)) {
+            webSite = "hz";
+        }
+        if (searchPid == null) {
+            searchPid = 30L;
+        }
+        String key = String.format(STYLE_GOODS_LIST_SEARCH_CATE_FORMAT, webSite, searchPid);
+        List<SubStyleCateNavVO> result = redisIO.getList(key, SubStyleCateNavVO.class);
+        if (result != null) {
+            return result;
+        }
+        result = new ArrayList<>();
+        StyleChannelSearchParent styleChannelSearchParent = new StyleChannelSearchParent();
+        styleChannelSearchParent.setWebSite(webSite);
+        styleChannelSearchParent.setSearchPid(searchPid);
+        styleChannelSearchParent = styleChannelSearchParentMapper.selectOne(styleChannelSearchParent);
+        if (styleChannelSearchParent == null) {
+            return result;
+        }
+        StyleChannelCidSearchMapExample cateExample = new StyleChannelCidSearchMapExample();
+        cateExample.createCriteria().andStyleChannelSearchIdEqualTo(styleChannelSearchParent.getId()).andShowCaseEqualTo(1);
+        cateExample.setOrderByClause(" sort asc");
+        for (StyleChannelCidSearchMap data : styleChannelCidSearchMapMapper.selectByExample(cateExample)) {
+            result.add(new SubStyleCateNavVO(data.getCateName(), data.getRealParentCid(), data.getCid(), data.getSearchName()));
+        }
+        //缓存5分钟
+        redisIO.putTemp(key, result, 60 * 5);
+        return result;
+    }
 
     /**
      * 获取市场中设置过风格的显示的档口列表
@@ -739,4 +786,6 @@ public class StyleChannelService {
         }
         return styleSpreadMap.get(parentStyleId);
     }
+
+
 }

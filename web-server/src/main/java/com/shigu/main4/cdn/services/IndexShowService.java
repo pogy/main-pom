@@ -348,9 +348,9 @@ public class IndexShowService {
                     .add(new SubStyleCateNavVO("西裤", 30L, 50011129L, null))
                     .add(new SubStyleCateNavVO("羽绒裤", 30L, 50025884L, null))
                     .add(new SubStyleCateNavVO("棉裤", 30L, 50025885L, null))
-                    .add(new SubStyleCateNavVO("其他套装", 30L, 124688002L, null))
+                    .add(new SubStyleCateNavVO("其他套装", 124730001L, 124688002L, null))
                     .add(new SubStyleCateNavVO("套装", 30L, 124730001L, null))
-                    .add(new SubStyleCateNavVO("休闲运动套装", 30L, 124732001L, null));
+                    .add(new SubStyleCateNavVO("休闲运动套装", 124730001L, 124732001L, null));
 
             styleCateNavVOStatic.add(manPants);
         }

@@ -42,6 +42,11 @@ public class StyleChannelCidSearchMap implements Serializable {
      */
 	private Integer showCase;
 
+    /**
+     * 类目实际父类目cid
+     */
+	private Long realParentCid;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -96,6 +101,14 @@ public class StyleChannelCidSearchMap implements Serializable {
 
 	public Integer getShowCase() {
 		return this.showCase;
+	}
+
+	public void setRealParentCid(Long realParentCid) {
+		this.realParentCid = realParentCid;
+	}
+
+	public Long getRealParentCid() {
+		return this.realParentCid;
 	}
 
 }

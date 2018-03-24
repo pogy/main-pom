@@ -11,8 +11,7 @@ import java.io.Serializable;
  */
 public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements Serializable {
 
-    //当前站点id
-    private String webSite;
+
     //pid
     private Long pid;
     //市场id
@@ -41,17 +40,6 @@ public class StyleChannelGoodsSearchBO extends StyleChannelSearchBO implements S
     private Integer bpic;
     //当值为1时，开启商品视频筛选
     private Integer goodsVideo;
-
-    public String getWebSite() {
-        if (webSite == null) {
-            webSite = "hz";
-        }
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
 
     public Long getPid() {
         if (pid == null) {
