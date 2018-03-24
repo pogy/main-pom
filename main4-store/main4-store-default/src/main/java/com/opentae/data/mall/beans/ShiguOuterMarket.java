@@ -37,6 +37,9 @@ public class ShiguOuterMarket implements Serializable{
     /** 外部楼层ID串，中间用,分开 */
     private String outerFloorIds;
 
+    /** 是否显示市场 */
+    private Integer markerShow;
+
     /** 指向市场名称 */
     @Transient
     private String pointMarketName;
@@ -95,5 +98,13 @@ public class ShiguOuterMarket implements Serializable{
 
     public void setPointMarketName(String pointMarketName) {
         this.pointMarketName = pointMarketName;
+    }
+
+    public Integer getMarkerShow() {
+        return markerShow;
+    }
+
+    public void setMarkerShow(Integer markerShow) {
+        this.markerShow = markerShow;
     }
 }
