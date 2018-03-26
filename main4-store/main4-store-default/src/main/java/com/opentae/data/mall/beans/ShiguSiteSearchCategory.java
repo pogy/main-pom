@@ -43,9 +43,19 @@ public class ShiguSiteSearchCategory implements Serializable {
 	private String icon;
 
     /**
+     * 导航栏页面 1：逛市场，2：首页
+     */
+	private Integer pageType;
+
+    /**
      * 自定义类目名
      */
 	private String keyword;
+
+    /**
+     * 是否热卖 1：热卖，2：非热卖
+     */
+	private Integer hot;
 
     /**
      * 是否显示  1：显示，2：不显示
@@ -138,12 +148,28 @@ public class ShiguSiteSearchCategory implements Serializable {
 		return this.icon;
 	}
 
+	public void setPageType(Integer pageType) {
+		this.pageType = pageType;
+	}
+
+	public Integer getPageType() {
+		return this.pageType;
+	}
+
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
 
 	public String getKeyword() {
 		return this.keyword;
+	}
+
+	public void setHot(Integer hot) {
+		this.hot = hot;
+	}
+
+	public Integer getHot() {
+		return this.hot;
 	}
 
 	public void setDisplay(Integer display) {

@@ -14,10 +14,12 @@ public class ShiguSiteSearchCategoryExample extends SgExample<ShiguSiteSearchCat
     public static EntityColumn cname;
     public static EntityColumn icon;
     public static EntityColumn topCid;
+    public static EntityColumn hot;
     public static EntityColumn type;
     public static EntityColumn cStatus;
     public static EntityColumn parentCname;
     public static EntityColumn parentCid;
+    public static EntityColumn pageType;
     public static EntityColumn remark4;
     public static EntityColumn id;
     public static EntityColumn keyword;
@@ -35,10 +37,12 @@ public class ShiguSiteSearchCategoryExample extends SgExample<ShiguSiteSearchCat
         cname = listMap.get("cname");
         icon = listMap.get("icon");
         topCid = listMap.get("topCid");
+        hot = listMap.get("hot");
         type = listMap.get("type");
         cStatus = listMap.get("cStatus");
         parentCname = listMap.get("parentCname");
         parentCid = listMap.get("parentCid");
+        pageType = listMap.get("pageType");
         remark4 = listMap.get("remark4");
         id = listMap.get("id");
         keyword = listMap.get("keyword");
@@ -271,6 +275,53 @@ public class ShiguSiteSearchCategoryExample extends SgExample<ShiguSiteSearchCat
         public ShiguSiteSearchCategoryExample.Criteria andTopCidNotBetween(Long value1, Long value2) {
             return notBetween(topCid, value1, value2);
         }
+        public ShiguSiteSearchCategoryExample.Criteria andHotIsNull() {
+            return isNull(hot);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotIsNotNull() {
+            return isNotNull(hot);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotEqualTo(Integer value) {
+            return equalTo(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotNotEqualTo(Integer value) {
+            return notEqualTo(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotGreaterThan(Integer value) {
+            return greaterThan(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotLessThan(Integer value) {
+            return lessThan(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(hot, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotIn(List<Integer> values) {
+            return in(hot, values);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotNotIn(List<Integer> values) {
+            return notIn(hot, values);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotBetween(Integer value1, Integer value2) {
+            return between(hot, value1, value2);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andHotNotBetween(Integer value1, Integer value2) {
+            return notBetween(hot, value1, value2);
+        }
         public ShiguSiteSearchCategoryExample.Criteria andTypeIsNull() {
             return isNull(type);
         }
@@ -466,6 +517,53 @@ public class ShiguSiteSearchCategoryExample extends SgExample<ShiguSiteSearchCat
 
         public ShiguSiteSearchCategoryExample.Criteria andParentCidNotBetween(Long value1, Long value2) {
             return notBetween(parentCid, value1, value2);
+        }
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeIsNull() {
+            return isNull(pageType);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeIsNotNull() {
+            return isNotNull(pageType);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeEqualTo(Integer value) {
+            return equalTo(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeNotEqualTo(Integer value) {
+            return notEqualTo(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeGreaterThan(Integer value) {
+            return greaterThan(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeLessThan(Integer value) {
+            return lessThan(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(pageType, value);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeIn(List<Integer> values) {
+            return in(pageType, values);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeNotIn(List<Integer> values) {
+            return notIn(pageType, values);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeBetween(Integer value1, Integer value2) {
+            return between(pageType, value1, value2);
+        }
+
+        public ShiguSiteSearchCategoryExample.Criteria andPageTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(pageType, value1, value2);
         }
         public ShiguSiteSearchCategoryExample.Criteria andRemark4IsNull() {
             return isNull(remark4);

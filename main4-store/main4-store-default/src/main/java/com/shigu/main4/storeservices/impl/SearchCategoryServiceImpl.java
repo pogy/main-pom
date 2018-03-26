@@ -4,8 +4,7 @@ import com.opentae.data.mall.beans.ShiguSiteSearchCategory;
 import com.opentae.data.mall.examples.ShiguSiteSearchCategoryExample;
 import com.opentae.data.mall.interfaces.ShiguSiteSearchCategoryMapper;
 import com.shigu.main4.storeservices.SearchCategoryService;
-import com.shigu.main4.vo.CateMenu;
-import com.shigu.main4.vo.SubMenu;
+import com.shigu.main4.vo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,10 +16,11 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Resource(name = "tae_mall_shiguSiteSearchCategoryMapper")
     ShiguSiteSearchCategoryMapper shiguSiteSearchCategoryMapper;
+
     @Override
     public List<CateMenu> getMarketCateShow() {
         ShiguSiteSearchCategoryExample ssscOneExample = new ShiguSiteSearchCategoryExample();
-        ssscOneExample.createCriteria().andTypeEqualTo(3).andCStatusEqualTo(1).andDisplayEqualTo(1);
+        ssscOneExample.createCriteria().andTypeEqualTo(3).andCStatusEqualTo(1).andDisplayEqualTo(1).andPageTypeEqualTo(1);
         List<ShiguSiteSearchCategory> ssscOneList = shiguSiteSearchCategoryMapper.selectByExample(ssscOneExample);
         if (ssscOneList == null){
             return new ArrayList<>();
@@ -55,5 +55,72 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             cateMenus.add(cateMenu);
         }
         return cateMenus;
+    }
+
+    @Override
+    public List<HomeCateMenu> getHomeCateShow() {
+        ShiguSiteSearchCategoryExample ssscExample1 = new ShiguSiteSearchCategoryExample();
+        ssscExample1.createCriteria().andCStatusEqualTo(1).andDisplayEqualTo(1).andTypeEqualTo(3).andPageTypeEqualTo(2);
+        List<ShiguSiteSearchCategory> ssscList1 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample1);
+        if (ssscList1 == null){
+            return new ArrayList<>();
+        }
+
+        HomeCateMenu homeCateMenu = null;
+        List<ShiguSiteSearchCategory> ssscList2 = null;
+        HomeCateItem homeCateItem = null;
+        ThreeCateMenu listItem = null;
+        ThreeCateMenu detailItem = null;
+        List<ThreeCateMenu> listItemList = null;
+        List<ThreeCateMenu> detailItemList = null;
+        List<HomeCateItem> itemList = null;
+        List<ShiguSiteSearchCategory> ssscList3 = null;
+        List<HomeCateItem> hotItemList = null;
+        List<HomeCateMenu> homeCateMenus = new ArrayList<>();
+
+        for (int i = 0; i <ssscList1.size() ; i++) {
+            homeCateMenu = new HomeCateMenu();
+            homeCateMenu.setId(ssscList1.get(i).getId());
+            homeCateMenu.setText(ssscList1.get(i).getCname());
+            ShiguSiteSearchCategoryExample ssscExample2 = new ShiguSiteSearchCategoryExample();
+            ssscExample2.createCriteria().andDisplayEqualTo(1).andCStatusEqualTo(1).andParentCidEqualTo(ssscList1.get(i).getId());
+            ssscList2 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample2);
+            if (ssscList2 != null && ssscList2.size() > 0){
+                detailItemList = new ArrayList<>();
+                listItemList = new ArrayList<>();
+                for (int j = 0; j <ssscList2.size() ; j++) {
+                    detailItem = new ThreeCateMenu();
+                    listItem = new ThreeCateMenu();
+                    detailItem.setText(ssscList2.get(j).getCname());
+                    ShiguSiteSearchCategoryExample ssscExample3 = new ShiguSiteSearchCategoryExample();
+                    ssscExample3.createCriteria().andCStatusEqualTo(1).andDisplayEqualTo(1).andParentCidEqualTo(ssscList2.get(j).getId());
+                    ssscList3 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample3);
+                    if (ssscList3 != null && ssscList3.size() > 0){
+                        itemList = new ArrayList<>();
+                        hotItemList = new ArrayList<>();
+                        for (int k = 0; k <ssscList3.size() ; k++) {
+                            homeCateItem = new HomeCateItem();
+                            homeCateItem.setName(ssscList3.get(k).getCname());
+                            if (ssscList3.get(k).getKeyword() == null || ssscList3.get(k).getKeyword() =="") {
+                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
+                            }
+                            homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid="+ ssscList3.get(k).getTopCid() +"&keyword=" + ssscList3.get(k).getKeyword());
+                            if (ssscList3.get(k).getHot() == 1){
+                                hotItemList.add(homeCateItem);
+                            }
+                            itemList.add(homeCateItem);
+                        }
+                        listItem.setItems(hotItemList);
+                        detailItem.setItems(itemList);
+                    }
+                    listItemList.add(listItem);
+                    detailItemList.add(detailItem);
+                }
+                homeCateMenu.setDetailitems(detailItemList);
+                homeCateMenu.setListitems(listItemList);
+            }
+            homeCateMenus.add(homeCateMenu);
+        }
+        return homeCateMenus;
     }
 }

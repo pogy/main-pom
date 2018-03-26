@@ -26,6 +26,7 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.*;
+import com.shigu.main4.vo.HomeCateMenu;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
@@ -130,6 +131,8 @@ public class CdnAction {
     SimpleVideoService simpleVideoService;
     @Autowired
     StyleChannelService styleChannelService;
+    @Autowired
+    SearchCategoryService searchCategoryService;
 
     /**
      * 联系我们
@@ -198,8 +201,8 @@ public class CdnAction {
             List<StyleChannelVO> styleChannelVOS= (List<StyleChannelVO>) selFromCache(styleList);
             model.addAttribute("styleList", styleChannelVOS);
             //todo 类目导航
-
-
+            List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
+            model.addAttribute("catemenu",catemenu);
             //人气商品
             List<HzManIndexHotItemsVO> hzManIndexHotItemsVOS=new ArrayList<>();
             for(StyleChannelVO styleChannelVO:styleChannelVOS){
