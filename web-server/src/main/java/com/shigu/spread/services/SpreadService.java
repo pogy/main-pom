@@ -1,16 +1,18 @@
 package com.shigu.spread.services;
 
 import com.opentae.data.mall.beans.ItemForList;
+import com.opentae.data.mall.beans.ShiguYesterdayStyleHot;
+import com.opentae.data.mall.examples.ShiguYesterdayStyleHotExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguYesterdayStyleHotMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.vo.ImgBannerVO;
-import com.shigu.spread.vo.ItemSimpleInfo;
-import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.spread.vo.NewHzManIndexItemGoatVO;
+import com.shigu.spread.vo.*;
+import com.shigu.tools.KeyWordsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class SpreadService {
 
     @Autowired
     RedisForIndexPage redisForIndexPage;
+
+    @Autowired
+    ShiguYesterdayStyleHotMapper shiguYesterdayStyleHotMapper;
     
     /**
      * 查广告数据
@@ -52,7 +57,7 @@ public class SpreadService {
     }
 
 
-    public List<ItemSpreadVO> selItemGoatList(String webSite,SpreadEnum spread) {
+    private List<ItemSpreadVO> selItemGoatList(String webSite, SpreadEnum spread) {
         List<ItemSpreadVO> vos=new ArrayList<>();
         try {
             List<Long> goodsIds=new ArrayList<>();
@@ -122,7 +127,7 @@ public class SpreadService {
                         if ((SpreadEnum.BACK_MEMBER.equals(spread)||SpreadEnum.BACK_SHOP.equals(spread))&&gv.getToTime().before(now)) {
                             continue;
                         }
-                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), gv.getText()));
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), KeyWordsUtil.duleKeyWords(gv.getText())));
                     }
                 }catch (GoatException e){
                     logger.error("查图片类广告Miss",e);
@@ -159,6 +164,39 @@ public class SpreadService {
             }
         };
     }
+
+    public ObjFromCache<HzManIndexHotItemsVO> castedHotItemGoatList(Long parentStyleId,String parentStyleName,String tag){
+        return new ObjFromCache<HzManIndexHotItemsVO>(redisForIndexPage,tag,HzManIndexHotItemsVO.class){
+            @Override
+            public HzManIndexHotItemsVO selReal() {
+                ShiguYesterdayStyleHotExample shiguYesterdayStyleHotExample=new ShiguYesterdayStyleHotExample();
+                shiguYesterdayStyleHotExample.createCriteria().andParentStyleIdEqualTo(parentStyleId)
+                        .andShowDayEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB));
+                shiguYesterdayStyleHotExample.setEndIndex(10);
+                shiguYesterdayStyleHotExample.setStartIndex(0);
+                shiguYesterdayStyleHotExample.setOrderByClause("id asc");
+                List<ShiguYesterdayStyleHot> shiguYesterdayStyleHots = shiguYesterdayStyleHotMapper.selectByExample(shiguYesterdayStyleHotExample);
+                List<NewHzManIndexItemGoatVO> vos = new ArrayList<>(shiguYesterdayStyleHots.size());
+                for (ShiguYesterdayStyleHot shiguYesterdayStyleHot : shiguYesterdayStyleHots) {
+                    NewHzManIndexItemGoatVO vo = new NewHzManIndexItemGoatVO();
+                    vo.setId(shiguYesterdayStyleHot.getGoodsId().toString());
+                    vo.setPiprice(shiguYesterdayStyleHot.getPiPrice());
+                    vo.setImgSrc(shiguYesterdayStyleHot.getPicPath());
+                    vo.setShopId(shiguYesterdayStyleHot.getShopId().toString());
+                    vo.setShopNo(shiguYesterdayStyleHot.getShopNum());
+                    vo.setMarketName(shiguYesterdayStyleHot.getMarketName());
+                    vos.add(vo);
+                }
+                HzManIndexHotItemsVO hzManIndexHotItemsVO=new HzManIndexHotItemsVO();
+                hzManIndexHotItemsVO.setGoodsList(vos);
+                hzManIndexHotItemsVO.setSname(parentStyleName);
+                return hzManIndexHotItemsVO;
+            }
+        };
+    }
+
+
+
 
 //    /**
 //     * 用于造缓存

@@ -23,6 +23,8 @@ public class NewHzManIndexItemGoatVO implements Serializable {
     private String shopNo;
     //店铺所属市场
     private String marketName;
+    //发布时间
+    private String time;
 
     public String getId() {
         return id;
@@ -70,5 +72,13 @@ public class NewHzManIndexItemGoatVO implements Serializable {
 
     public void setMarketName(String marketName) {
         this.marketName = marketName;
+    }
+
+    public String getTime() {
+        return this.time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

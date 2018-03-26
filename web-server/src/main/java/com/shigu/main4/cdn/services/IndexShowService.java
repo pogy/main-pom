@@ -11,12 +11,14 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.TextGoatVO;
+import com.shigu.main4.item.bo.GoodsSearchBO;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.services.GoodsSelFromEsService;
+import com.shigu.search.utils.TimeParseUtil;
 import com.shigu.search.vo.CateNav;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.spread.enums.SpreadEnum;
@@ -24,14 +26,15 @@ import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
+import com.shigu.spread.vo.NewHzManIndexItemGoatVO;
+import com.shigu.tools.KeyWordsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 首页数据支持
@@ -134,7 +137,7 @@ public class IndexShowService {
                 try {
                     List<TextGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for (TextGoatVO tgv : goats) {
-                        navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
+                        navVOs.add(new IndexNavVO(tgv.getHref(), KeyWordsUtil.duleKeyWords(tgv.getText())));
                     }
                 } catch (GoatException e) {
                     logger.error("查询标签类广告,miss", e);
@@ -355,6 +358,27 @@ public class IndexShowService {
             styleCateNavVOStatic.add(manPants);
         }
         return styleCateNavVOStatic;
+    }
+
+
+    public List<NewHzManIndexItemGoatVO> realTimeItems(List<Long> cids,String webSite){
+        GoodsSearchBO bo=new GoodsSearchBO();
+        bo.setCids(cids);
+        bo.setPage(1);
+        bo.setPageSize(10);
+        bo.setOrderCase(SearchOrderBy.NEW);
+        bo.setWebSite(webSite);
+        ShiguAggsPager shiguAggsPager = itemSearchService.searchItem(bo);
+        Long time=System.currentTimeMillis();
+        return shiguAggsPager.getContent().stream().map(searchItem -> {
+            NewHzManIndexItemGoatVO vo = new NewHzManIndexItemGoatVO();
+            vo.setId(searchItem.getItemId().toString());
+            vo.setPiprice(searchItem.getPrice());
+            vo.setImgSrc(searchItem.getPicUrl());
+            vo.setShopId(searchItem.getStoreId().toString());
+            vo.setTime(TimeParseUtil.timeParse(searchItem.getCreated()));
+            return vo;
+        }).collect(Collectors.toList());
     }
 
 }

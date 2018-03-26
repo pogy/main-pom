@@ -50,6 +50,13 @@ public class StyleSpreadChannelVO implements Serializable {
         return "STYLE_CHANNEL_RECOMMEND_" + spreadTag;
     }
 
+    public String yesterdayHotTag() {
+        if (styleId == null || StringUtils.isBlank(spreadTag)) {
+            return ERROR_TAG;
+        }
+        return "YESTERDAY_HOT_" + spreadTag;
+    }
+
     public void setStyleId(Long styleId) {
         this.styleId = styleId;
     }

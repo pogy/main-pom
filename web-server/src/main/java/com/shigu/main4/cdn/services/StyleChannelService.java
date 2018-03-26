@@ -780,7 +780,7 @@ public class StyleChannelService {
         };
     }
 
-    private StyleSpreadChannelVO getStyleSpreadChannel(Long parentStyleId) {
+    public StyleSpreadChannelVO getStyleSpreadChannel(Long parentStyleId) {
         if (parentStyleId == null) {
             return null;
         }
