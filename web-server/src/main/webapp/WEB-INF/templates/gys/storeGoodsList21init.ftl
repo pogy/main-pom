@@ -31,7 +31,7 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<#list [{"fields":[{"name":"state","value":query.state},{"name":"keyword","value":query.keyword},{"name":"goodsNo","value":query.goodsNo}]}] as $it>
+<#list [{"fields":[{"name":"state","value":query.state},{"name":"keyword","value":query.keyword},{"name":"goodsNo","value":query.goodsNo},{"name":"goodsStyle","value":query.goodsStyle}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -77,9 +77,36 @@
     <ul class="clearfix">
         <li><label>商品名称：</label><input id="keyword" class="textinput" value="${query.keyword!}"></li>
         <li><label>商品货号：</label><input id="goodsNo" class="textinput" value="${query.goodsNo!}"></li>
+        <li>
+            <label>商品风格：</label>
+<#list [{"name":"goodsStyle","value":query.goodsStyle}] as $it>
+<div class="fmSelect" id="goodsStyle">
+    <span class="text">请选择</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+</#list>
+        </li>
         <li><button id="doGoodsFilterSearch">查询</button></li>
     </ul>
 </div>
+<script modulepath="gys/common#goodsFilterBar">
+var goodsStyles = '${goodsStyles!}';
+$$.domready('#goodsStyle', function(){
+    var cGoodsStyles = [':全部', '-1:无']
+    var childStyleList = JSON.parse(goodsStyles);
+    $.each(childStyleList, function(i, item){
+        cGoodsStyles[i+2] = item.scid + ':' + item.scname
+    })
+    $$.select('#goodsStyle', {
+        options:cGoodsStyles
+    })
+});
+</script>
 <#if (goodslist?size) gt 0 >
 <div class="goodsList" id="goodsList">
     <ul class="head clearfix">
@@ -230,7 +257,11 @@
                     <li>
                         <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
                             <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
+                            <#if item.goodsStyleType == 2>
+                            风格:${item.goodsStyleName!}
+                            <#else>
                             风格标签
+                            </#if>
                         </b>
                     </li>
                     <li>
