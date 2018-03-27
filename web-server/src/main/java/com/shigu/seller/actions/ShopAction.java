@@ -541,6 +541,7 @@ public class ShopAction {
             }
             //极限词过滤
             model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
+            model.addAttribute("goodsStyles",JSONArray.fromObject(shopItemModService.getSubStyleVO()).toString());
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId=" + shopSession.getShopId(), e);
         }
