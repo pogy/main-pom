@@ -361,7 +361,11 @@ public class IndexShowService {
     }
 
 
-    public List<NewHzManIndexItemGoatVO> realTimeItems(List<Long> cids,String webSite){
+    public List<NewHzManIndexItemGoatVO> realTimeItems(Long cid,String webSite){
+        List<Long> cids=null;
+        if (cid != null) {
+            cids=categoryInSearchService.selCidsFromCid(cid);
+        }
         GoodsSearchBO bo=new GoodsSearchBO();
         bo.setCids(cids);
         bo.setPage(1);

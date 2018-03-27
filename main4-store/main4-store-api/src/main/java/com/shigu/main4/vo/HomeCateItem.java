@@ -21,4 +21,11 @@ public class HomeCateItem implements Serializable{
     public void setHref(String href) {
         this.href = href;
     }
+    public HomeCateItem(){
+        
+    }
+    public HomeCateItem(String name, String href) {
+        this.name = name;
+        this.href = href;
+    }
 }
