@@ -1,6 +1,8 @@
 package com.shigu.search.actions;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -22,7 +24,25 @@ public class PageErrAction {
         return "xzSysPage/404";
     }
 
+    /**
+     * 页面请求异常
+     * @param errorCon
+     * @param model
+     * @return
+     */
+    @RequestMapping
+    public String pageErr(String errorCon, Model model) {
+        if (StringUtils.isBlank(errorCon) || "系统异常".equals(errorCon)) {
+            return "xzSysPage/500";
+        }
+        model.addAttribute("errorCon",errorCon);
+        return "xzSysPage/otherError";
+    }
 
+    /**
+     * 请求超时
+     * @return
+     */
     @RequestMapping("page503")
     public String pageTimeout() {
         return "xzSysPage/orderTimeout";

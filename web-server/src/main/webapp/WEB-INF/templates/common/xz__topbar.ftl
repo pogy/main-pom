@@ -93,10 +93,28 @@
                 <#if webSite?? && webSite != ''>
                 <li>
                     <div class="cnBox pr">
-                        <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <a class="cgcom pr"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
                         <div class="webNav cnBoxCon pa">
                             <h4 class="fs14 fcF40">市场大全</h4>
                             <ul></ul>
+                        </div>
+                    </div>
+                </li>
+                </#if>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/helpCenter/queIndex.htm" target="_blank">帮助中心</a>
+                </li>
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><em>手机APP</em><i class="downArrow"></i></a>
+                        <div class="appQr cnBoxCon pa">
+                            <ul>
+                                <li>
+                                    <p><img src="http://style.571xz.com/v6/common/img/AppDownloadQr.png" width="80" hieght="80"></p>
+                                    <p class="fwb tac fs14">分销商App</p>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </li>

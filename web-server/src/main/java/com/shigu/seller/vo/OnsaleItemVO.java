@@ -1,8 +1,8 @@
 package com.shigu.seller.vo;
 
-import com.alibaba.druid.util.StringUtils;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.OnsaleItem;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,20 +76,10 @@ public class OnsaleItemVO {
     private String goodsVideoUrl;
     //是否已设置主图视频 2已设置
     private Integer goodsVideoType;
-
-
     //商品风格类型，1未设置，2已设置
     private Integer goodsStyleType;
     //已设置的商品风格名称
-    private Integer goodsStyleId;
-
-    public Integer getGoodsStyleId() {
-        return goodsStyleId;
-    }
-
-    public void setGoodsStyleId(Integer goodsStyleId) {
-        this.goodsStyleId = goodsStyleId;
-    }
+    private Long goodsStyleId;
 
     public Integer getGoodsStyleType() {
         return goodsStyleType;
@@ -98,25 +88,6 @@ public class OnsaleItemVO {
     public void setGoodsStyleType(Integer goodsStyleType) {
         this.goodsStyleType = goodsStyleType;
     }
-
-
-
-
-//    public Boolean getStyleLinkGoodsNo() {
-//        return styleLinkGoodsNo;
-//    }
-//
-//    public void setStyleLinkGoodsNo(Boolean styleLinkGoodsNo) {
-//        this.styleLinkGoodsNo = styleLinkGoodsNo;
-//    }
-//
-//    public Boolean getVideoLinkGoodsNo() {
-//        return videoLinkGoodsNo;
-//    }
-//
-//    public void setVideoLinkGoodsNo(Boolean videoLinkGoodsNo) {
-//        this.videoLinkGoodsNo = videoLinkGoodsNo;
-//    }
 
     public void setType(String type) {
         this.type = type;
@@ -160,8 +131,8 @@ public class OnsaleItemVO {
         this.setImgsrc(onsaleItem.getPicUrl());
         this.setPrice(onsaleItem.getPiPrice());
         this.setTitle(onsaleItem.getTitle());
-        this.setDetailUrlnew(onsaleItem.getItemFrom().equals(ItemFrom.TAOBAO)?"1":"");
-        this.setCount(onsaleItem.getGoodsUpNum()+"");
+        this.setDetailUrlnew(onsaleItem.getItemFrom().equals(ItemFrom.TAOBAO) ? "1" : "");
+        this.setCount(onsaleItem.getGoodsUpNum() + "");
         this.setPrice1(onsaleItem.getPrice());
         this.setPrice2(onsaleItem.getPiPrice());
         this.setPrice3(onsaleItem.getPrice());
@@ -170,15 +141,13 @@ public class OnsaleItemVO {
         this.setSaleCount(onsaleItem.getSaleCount());
         this.setFabric(onsaleItem.getFabric());
         this.setInFabric(onsaleItem.getInFabric());
+        this.setConstituentType(StringUtils.isBlank(onsaleItem.getFabric()) ? 1 : 2);
         this.setConstituentType(onsaleItem.getConstituentType());
         this.setGoodsVideoUrl(onsaleItem.getGoodsVideoUrl());
-        this.setGoodsVideoType(this.getGoodsVideoUrl()==null||"".equals(this.getGoodsVideoUrl())?1:2);
-//        if (onsaleItem.getGoodsStyleId() == null||StringUtils.isEmpty(onsaleItem.getGoodsStyleId())){
-//            this.setGoodsStyleId(0);
-//        }else{
-//            this.setGoodsStyleId(Integer.valueOf(onsaleItem.getGoodsStyleId()));
-//        }
-//        this.setGoodsStyleType(this.getGoodsStyleId() == 0 ? 1:2);
+        this.setGoodsVideoType(this.getGoodsVideoUrl() == null || "".equals(this.getGoodsVideoUrl()) ? 1 : 2);
+        Long styleId = onsaleItem.getStyleId();
+        this.setGoodsStyleType(styleId == null ? 1 : 2);
+        this.setGoodsStyleId(styleId);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }
@@ -189,9 +158,9 @@ public class OnsaleItemVO {
     }
 
     public void setIsShowcase(Integer isShowcase) {
-        if(this.isShowcase == null || this.isShowcase == 0){
+        if (this.isShowcase == null || this.isShowcase == 0) {
             this.tj = false;
-        }else{
+        } else {
             this.tj = true;
         }
         this.isShowcase = isShowcase;
@@ -206,7 +175,7 @@ public class OnsaleItemVO {
     }
 
     public String getHref() {
-        return "http://www.571xz.com/item.htm?id="+this.id;
+        return "http://www.571xz.com/item.htm?id=" + this.id;
     }
 
     public void setHref(String href) {
@@ -250,23 +219,22 @@ public class OnsaleItemVO {
     }
 
     public String getCount() {
-        if(count == null||!isNumeric(count)){
+        if (count == null || !isNumeric(count)) {
             return "0";
         }
         return count;
     }
 
     public void setCount(String count) {
-        if(count == null||!isNumeric(count)){
+        if (count == null || !isNumeric(count)) {
             count = "0";
         }
         this.count = count;
     }
 
-    public boolean isNumeric(String str){
-        for (int i = 0; i < str.length(); i++){
-            ////System.out.println(str.charAt(i));
-            if (!Character.isDigit(str.charAt(i))){
+    public boolean isNumeric(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
                 return false;
             }
         }
@@ -298,9 +266,9 @@ public class OnsaleItemVO {
     }
 
     public Boolean getTj() {
-        if(this.isShowcase == null || this.isShowcase == 0){
+        if (this.isShowcase == null || this.isShowcase == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -335,9 +303,9 @@ public class OnsaleItemVO {
     }
 
     public void setDetailUrlnew(String detailUrlnew) {
-        if(!StringUtils.isEmpty(detailUrlnew)){
+        if (!StringUtils.isEmpty(detailUrlnew)) {
             this.type = "淘宝同步";
-        }else{
+        } else {
             this.type = "手工发布";
         }
         this.detailUrlnew = detailUrlnew;
@@ -349,7 +317,7 @@ public class OnsaleItemVO {
     }
 
     public void setLoadDate(Date loadDate) {
-        if(loadDate == null){
+        if (loadDate == null) {
             this.time = "              ";
             return;
         }
@@ -450,5 +418,13 @@ public class OnsaleItemVO {
 
     public void setGoodsVideoType(Integer goodsVideoType) {
         this.goodsVideoType = goodsVideoType;
+    }
+
+    public Long getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Long goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
     }
 }

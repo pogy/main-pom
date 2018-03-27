@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.item.bo.GoodsSearchBO;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
@@ -55,6 +56,14 @@ public interface ItemSearchService {
     ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
+
+    /**
+     * 商品搜索
+     * @param bo 搜索条件
+     * @return
+     */
+    ShiguAggsPager searchItem(GoodsSearchBO bo);
+
 
     /**
      * 支持多市场的搜索方法

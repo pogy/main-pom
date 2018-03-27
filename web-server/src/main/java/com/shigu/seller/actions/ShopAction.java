@@ -71,7 +71,7 @@ import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -213,26 +213,28 @@ public class ShopAction {
 
     /**
      * 供货商中心,暂时访问老的
+     *
      * @return
      */
     @RequestMapping("seller/jsonGhLoadInfoNew")
     @ResponseBody
-    public JSONObject jsonGhLoadInfoNew(HttpSession session){
+    public JSONObject jsonGhLoadInfoNew(HttpSession session) {
         ShopSession shopSession = getShopSession(session);
         return JSONObject.fromObject(shopIndexDataService.selIndexDataFlow(shopSession.getShopId()));
     }
 
     /**
      * 走线图
+     *
      * @param dayType
      * @param session
      * @return
      */
     @RequestMapping("seller/jsonGhTongjiByDay")
     @ResponseBody
-    public JSONObject jsonGhTongjiByDay(Integer dayType,HttpSession session){
+    public JSONObject jsonGhTongjiByDay(Integer dayType, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        return JSONObject.fromObject(shopIndexDataService.selGhTongjiByDay(shopSession.getShopId(),dayType));
+        return JSONObject.fromObject(shopIndexDataService.selGhTongjiByDay(shopSession.getShopId(), dayType));
     }
 
     /**
@@ -249,25 +251,25 @@ public class ShopAction {
                 get.setFeedback(1);
             } else if (authstatu == 1) {//授权正常的情况
                 get.setFeedback(-1);
-                if(tbOnsaleService==null){
+                if (tbOnsaleService == null) {
                     throw new TbOnsaleException("dubbo 注入失败");
                 }
-                if(get.getKeyword()!=null){
-                    get.setKeyword(URLDecoder.decode(get.getKeyword(),"utf-8"));
+                if (get.getKeyword() != null) {
+                    get.setKeyword(URLDecoder.decode(get.getKeyword(), "utf-8"));
                 }
                 ShiguPager<TbOnsale> pager = tbOnsaleService.selTbOnsale(shopSession.getShopId(),
                         get.getKeyword(), get.getPageNo(), get.getPageSize());
                 if (pager == null) {
                     throw new SendGoodsException("实际调用时授权过期");
                 }
-                model.addAttribute("pageOption",pager.selPageOption(get.getPageSize()));
-                if(pager.getContent()!=null){
-                    List<ItemSendVO2> list=new ArrayList<>();
-                    for(TbOnsale to:pager.getContent()){
+                model.addAttribute("pageOption", pager.selPageOption(get.getPageSize()));
+                if (pager.getContent() != null) {
+                    List<ItemSendVO2> list = new ArrayList<>();
+                    for (TbOnsale to : pager.getContent()) {
                         list.add(new ItemSendVO2(to));
                     }
                     //极限词过滤
-                    model.addAttribute("goodslist",list.stream().peek(itemSendVO2 -> itemSendVO2.setTitle(KeyWordsUtil.duleKeyWords(itemSendVO2.getTitle()))).collect(Collectors.toList()));
+                    model.addAttribute("goodslist", list.stream().peek(itemSendVO2 -> itemSendVO2.setTitle(KeyWordsUtil.duleKeyWords(itemSendVO2.getTitle()))).collect(Collectors.toList()));
                 }
             } else if (authstatu == 2) {
                 get.setFeedback(2);
@@ -276,26 +278,27 @@ public class ShopAction {
         } catch (SendGoodsException e1) {
             get.setFeedback(2);
         } catch (TbOnsaleException e) {
-            logger.error("调用淘宝接口异常",e);
+            logger.error("调用淘宝接口异常", e);
             get.setFeedback(2);
         }
-        model.addAttribute("query",get);
+        model.addAttribute("query", get);
         return "gys/createGoods21init";
     }
 
     /**
      * 同步一件宝贝
+     *
      * @return
      */
     @RequestMapping("seller/jsonsyntbgoods")
     @ResponseBody
-    public JSONObject jsonsyntbgoods(Long numIid,HttpSession session) throws JsonErrException {
+    public JSONObject jsonsyntbgoods(Long numIid, HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
-        if(numIid==null){
+        if (numIid == null) {
             throw new JsonErrException("参数异常");
         }
         try {
-            taobaoSynService.synOneItem(shopSession.getShopId(),numIid,shopSession.getTbNick());
+            taobaoSynService.synOneItem(shopSession.getShopId(), numIid, shopSession.getTbNick());
         } catch (TbItemSynException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -304,10 +307,11 @@ public class ShopAction {
 
     /**
      * 选择类目
+     *
      * @return
      */
     @RequestMapping("seller/releaseGoodsinit")
-    public String releaseGoodsinit(HttpSession session,Model model){
+    public String releaseGoodsinit(HttpSession session, Model model) {
         ShopSession shop = getShopSession(session);
         int size = 5;
         List<EverUsedCat> everUsedCats = itemCatService.everUsedCats(shop.getShopId(), size);
@@ -319,69 +323,71 @@ public class ShopAction {
             historyCatVO.setText(everUsedCat.getShowName());
             historyCatVOS.add(historyCatVO);
         }
-        model.addAttribute("historyCategory",historyCatVOS);
+        model.addAttribute("historyCategory", historyCatVOS);
         return "gys/releaseGoodsinit";
     }
 
     /**
      * 手工发布类目,编辑页面
+     *
      * @return
      */
     @RequestMapping("seller/releaseGoodsSend")
-    public String releaseGoodsSend(@Valid GoodsSendBO bo,BindingResult result,HttpSession session,Model model) throws Main4Exception {
-        if(result.hasErrors()){
+    public String releaseGoodsSend(@Valid GoodsSendBO bo, BindingResult result, HttpSession session, Model model) throws Main4Exception {
+        if (result.hasErrors()) {
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
-        model.addAttribute("category_text",goodsSendService.selCatPath(bo.getCid()));
-        PropsVO propsVO=tbPropsService.selProps(bo.getCid());
+        model.addAttribute("category_text", goodsSendService.selCatPath(bo.getCid()));
+        PropsVO propsVO = tbPropsService.selProps(bo.getCid());
         //转化成老的pageProps
-        List<FormAttrVO> formAttribute=new ArrayList<>();
-        List<SKUVO> skuAttribute=new ArrayList<>();
-        if(propsVO!=null){
-            List<PropertyItemVO> saleProps=propsVO.getSaleProps();
-            PropertyItemVO colorProps=propsVO.getColor();
-            if(colorProps!=null){
-                skuAttribute.add(goodsSendService.parseTaobaoSaleVO(colorProps,1));
+        List<FormAttrVO> formAttribute = new ArrayList<>();
+        List<SKUVO> skuAttribute = new ArrayList<>();
+        if (propsVO != null) {
+            List<PropertyItemVO> saleProps = propsVO.getSaleProps();
+            PropertyItemVO colorProps = propsVO.getColor();
+            if (colorProps != null) {
+                skuAttribute.add(goodsSendService.parseTaobaoSaleVO(colorProps, 1));
             }
-            if(saleProps!=null){
-                for(PropertyItemVO piv:saleProps){
-                    skuAttribute.add(goodsSendService.parseTaobaoSaleVO(piv,0));
+            if (saleProps != null) {
+                for (PropertyItemVO piv : saleProps) {
+                    skuAttribute.add(goodsSendService.parseTaobaoSaleVO(piv, 0));
                 }
             }
-            List<PropertyItemVO> simpleProps=propsVO.getProperties();
+            List<PropertyItemVO> simpleProps = propsVO.getProperties();
 
-            if(propsVO.getPingpai()!=null){
-                PropertyValueVO pvv=new PropertyValueVO();
+            if (propsVO.getPingpai() != null) {
+                PropertyValueVO pvv = new PropertyValueVO();
                 pvv.setVid(-2L);
                 pvv.setName("其它/other");
-                propsVO.getPingpai().getValues().add(0,pvv);
-                simpleProps.add(0,propsVO.getPingpai());
+                propsVO.getPingpai().getValues().add(0, pvv);
+                simpleProps.add(0, propsVO.getPingpai());
             }
-            if(propsVO.getHuohao()!=null){
-                simpleProps.add(0,propsVO.getHuohao());
+            if (propsVO.getHuohao() != null) {
+                simpleProps.add(0, propsVO.getHuohao());
             }
-            if(simpleProps!=null){
-                for(PropertyItemVO piv:simpleProps){
+            if (simpleProps != null) {
+                for (PropertyItemVO piv : simpleProps) {
                     formAttribute.add(goodsSendService.parseTaobaoItemPropVO(piv));
                 }
             }
         }
         //店内类目暂时不要
-        model.addAttribute("formAttribute",formAttribute);
-        model.addAttribute("skuAttribute",skuAttribute);
-        model.addAttribute("query",bo);
+        model.addAttribute("formAttribute", formAttribute);
+        model.addAttribute("skuAttribute", skuAttribute);
+        model.addAttribute("query", bo);
         ShopSession shopSession = getShopSession(session);//暂时都开放
-        String openflag=redisIO.get("open_more_pic");
+        String openflag = redisIO.get("open_more_pic");
         if (StringUtils.isNotEmpty(openflag)) {
-            model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
-        }else{
-            model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
+            model.addAttribute("showMoreImgBtnIs", openflag.contains(shopSession.getWebSite()));
+        } else {
+            model.addAttribute("showMoreImgBtnIs", "kx".equals(shopSession.getWebSite()));
         }
         return "gys/releaseGoodsSend";
     }
 
     /**
      * 上传单张图片到淘宝
+     *
      * @param file
      * @param session
      * @return
@@ -389,34 +395,35 @@ public class ShopAction {
      */
     @RequestMapping("seller/jsontaobao_fileUpload")
     @ResponseBody
-    public JSONObject jsontaobao_fileUpload(@RequestParam(value = "multimagefile", required = false) MultipartFile file,HttpSession session) throws JsonErrException {
+    public JSONObject jsontaobao_fileUpload(@RequestParam(value = "multimagefile", required = false) MultipartFile file, HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
-        String url="";
+        String url = "";
         try {
-            url=ossIO.uploadFile(file.getBytes(),"mall/file/item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg");
+            url = ossIO.uploadFile(file.getBytes(), "mall/file/item/" + shopSession.getShopId() + "/" + System.currentTimeMillis() + ".jpg");
 //            url=fileUploadService.fileUpload("item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg",file.getBytes());
         } catch (IOException e) {
-            throw new JsonErrException("").addErrMap("err","图片数据读取失败");
+            throw new JsonErrException("").addErrMap("err", "图片数据读取失败");
         }
-        return JsonResponseUtil.success().element("status",1).element("type","ajax").element("url",url);
+        return JsonResponseUtil.success().element("status", 1).element("type", "ajax").element("url", url);
     }
 
     /**
      * 编辑页,详情上传图片
+     *
      * @return
      */
     @RequestMapping("seller/jsonuoloadImgFitment")
     public void jsonuoloadImgFitment(@RequestParam(value = "Filedata", required = false) MultipartFile file, HttpServletResponse response, HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
-        JSONObject result=new JSONObject();
-        String url="";
+        JSONObject result = new JSONObject();
+        String url = "";
         try {
-            url=ossIO.uploadFile(file.getBytes(),"mall/file/item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg");
+            url = ossIO.uploadFile(file.getBytes(), "mall/file/item/" + shopSession.getShopId() + "/" + System.currentTimeMillis() + ".jpg");
 //            url=fileUploadService.fileUpload("item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg",file.getBytes());
-            result.element("imgUrl",url);
+            result.element("imgUrl", url);
         } catch (IOException e) {
 //            throw new JsonErrException("").addErrMap("err","图片数据读取失败");
-            result.element("error","图片数据读取失败");
+            result.element("error", "图片数据读取失败");
         }
         response.setContentType("text/html;charset=UTF-8");
         try {
@@ -428,23 +435,26 @@ public class ShopAction {
 
     /**
      * 查询子类目
+     *
      * @param cid
      * @return
      */
     @RequestMapping("seller/jsonSelSubCat")
     @ResponseBody
-    public JSONObject jsonSelSubCat(Long cid){
-        List<TbCat> cats=itemCatService.subCats(cid);
+    public JSONObject jsonSelSubCat(Long cid) {
+        List<TbCat> cats = itemCatService.subCats(cid);
         return JsonResponseUtil.success().element("rows", JSONArray.fromObject(cats));
     }
+
     /**
      * 发页商品
+     *
      * @return
      */
     @RequestMapping("seller/jsongoods_send")
     @ResponseBody
-    public JSONObject jsongoods_send(@Valid GoodsInfoBO bo,BindingResult result, HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsongoods_send(@Valid GoodsInfoBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
@@ -454,10 +464,10 @@ public class ShopAction {
         Long itemId;
         //包装bo
         try {
-            SynItem synItem=bo.getOffer().parseToSynItem();
+            SynItem synItem = bo.getOffer().parseToSynItem();
             synItem.setShopId(shopSession.getShopId());
-            synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
-                    synItem.getInputPids(),synItem.getPropertyAlias()));
+            synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(), synItem.getProps(), synItem.getInputStr(),
+                    synItem.getInputPids(), synItem.getPropertyAlias()));
             synItem.setMarketId(shopSession.getMarketId());
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
@@ -468,42 +478,43 @@ public class ShopAction {
             //淘宝上架时间，手动发布商品默认为现在
             synItem.setListTime(created);
             //淘宝下架时间，手动发布商品默认为七天后
-            synItem.setDelistTime(DateUtil.addDay(created,7));
-            itemId=itemAddOrUpdateService.userAddItem(synItem);
+            synItem.setDelistTime(DateUtil.addDay(created, 7));
+            itemId = itemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
-            EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
+            EverUsedCatForAdd usedCat = new EverUsedCatForAdd();
             usedCat.setCid(synItem.getCid());
             try {
                 usedCat.setShowName(goodsSendService.selCatPath(synItem.getCid()));
                 usedCat.setAllcids(goodsSendService.selCatIds(synItem.getCid()));
                 usedCat.setCname(goodsSendService.selCnameById(synItem.getCid()));
-                itemCatService.saveEverUsedCat(shopSession.getShopId(),usedCat);
+                itemCatService.saveEverUsedCat(shopSession.getShopId(), usedCat);
             } catch (Main4Exception e) {
-                logger.error("得到类目串失败",e);
+                logger.error("得到类目串失败", e);
             }
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
-        return JsonResponseUtil.success().element("goodsId",itemId).element("webSite",shopSession.getWebSite());
+        return JsonResponseUtil.success().element("goodsId", itemId).element("webSite", shopSession.getWebSite());
     }
 
     @RequestMapping("seller/getAccessInfoForImgUpload")
     @ResponseBody
     public JSONObject getAccessInfoForImgUpload(HttpSession session) throws UnsupportedEncodingException {
         ShopSession shopSession = getShopSession(session);
-        return JSONObject.fromObject(ossIO.createPostSignInfo("itemup/"+shopSession.getWebSite()+"/"+shopSession.getShopId()+"/")).element("result","success");
+        return JSONObject.fromObject(ossIO.createPostSignInfo("itemup/" + shopSession.getWebSite() + "/" + shopSession.getShopId() + "/")).element("result", "success");
     }
+
     /**
      * 出售中的宝贝
      *
      * @return
      */
     @RequestMapping("seller/storeGoodsList21init")
-    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session,Model model) throws UnsupportedEncodingException, Main4Exception {
+    public String storeGoodsList21init(OnsaleItemBO bo, HttpSession session, Model model) throws UnsupportedEncodingException, Main4Exception {
         ShopSession shopSession = getShopSession(session);
-        model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
-        if(bo.getKeyword()!=null){
-            bo.setKeyword(URLDecoder.decode(bo.getKeyword(),"utf-8"));
+        model.addAttribute("goods_counts", selOnsaleCountByShopId(shopSession.getShopId()));
+        if (bo.getKeyword() != null) {
+            bo.setKeyword(URLDecoder.decode(bo.getKeyword(), "utf-8"));
         }
         //商品列表数据  String keyword,String goodsNo,Long numIid, Long shopId, int pageNo, int pageSize
         try {
@@ -511,56 +522,50 @@ public class ShopAction {
             search.setKeyword(bo.getKeyword());
             search.setGoodsNo(bo.getGoodsNo());
             search.setState(bo.getState());
-            ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),search,bo.getPage(),bo.getPageSize());
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-            List<OnsaleItem> list=pager.getContent();
+            ShiguPager<OnsaleItem> pager = shopsItemService.selOnsaleItems(shopSession.getShopId(), shopSession.getWebSite(), search, bo.getPage(), bo.getPageSize());
+            model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
+            List<OnsaleItem> list = pager.getContent();
             List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
             Map<Long, GoodsFile> goodsIdFileMap = BeanMapper.list2Map(goodsFileService.selGoodsFileInfo(goodIds), "goodsId", Long.class);
-            List<OnsaleItemVO> goodsList=new ArrayList<>();
-            for(OnsaleItem oi:list){
+            List<OnsaleItemVO> goodsList = new ArrayList<>();
+            for (OnsaleItem oi : list) {
                 OnsaleItemVO vo = new OnsaleItemVO(oi);
                 GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
-                vo.setCorrelateType(fileInfo==null?1:2);
-                vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
+                vo.setCorrelateType(fileInfo == null ? 1 : 2);
+                vo.setBigPicType(fileInfo == null ? 2 : fileInfo.getNeedPwd() ? 1 : 2);
                 if (fileInfo != null) {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
-                }
-                if(oi.getGoodsStyleId()!=null){
-                    vo.setGoodsStyleId(oi.getGoodsStyleId());
-                    vo.setGoodsStyleType(2);
-                }else{
-                    vo.setGoodsStyleId(null);
-                    vo.setGoodsStyleType(1);
                 }
                 goodsList.add(vo);
             }
             //极限词过滤
             model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         } catch (ItemException e) {
-            logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
+            logger.error("拉取店铺出售中失败,shopId=" + shopSession.getShopId(), e);
         }
-        model.addAttribute("query",bo);
+        model.addAttribute("query", bo);
         return "gys/storeGoodsList21init";
     }
 
     @RequestMapping("seller/getSaleGoodsNumByType")
     @ResponseBody
-    public JSONObject getSaleGoodsNumByType(HttpSession session){
+    public JSONObject getSaleGoodsNumByType(HttpSession session) {
         ShopSession shopSession = getShopSession(session);
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
         ShopUnprocessItemCount shopUnprocessItemCount = new ShopUnprocessItemCount();
-        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
-        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
-        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
-        shopUnprocessItemCount.setNoVideoNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_VIDEO_INDEX_));
-        shopUnprocessItemCount.setNoGoodsStyleNum(shopsItemService.countOnsaleGoodsAggrNum(shopId,webSite,ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_));
-        return JSONObject.fromObject(shopUnprocessItemCount).element("result","success");
+        shopUnprocessItemCount.setNoPriceNum(shopsItemService.countOnsaleGoodsAggrNum(shopId, webSite, ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_));
+        shopUnprocessItemCount.setNoBigpicNum(shopsItemService.countOnsaleGoodsAggrNum(shopId, webSite, ShopCountRedisCacheEnum.SHOP_NO_BIG_PIC_INDEX_));
+        shopUnprocessItemCount.setNoMaterialNum(shopsItemService.countOnsaleGoodsAggrNum(shopId, webSite, ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_));
+        shopUnprocessItemCount.setNoVideoNum(shopsItemService.countOnsaleGoodsAggrNum(shopId, webSite, ShopCountRedisCacheEnum.SHOP_NO_VIDEO_INDEX_));
+        shopUnprocessItemCount.setNoGoodsStyleNum(shopsItemService.countOnsaleGoodsAggrNum(shopId, webSite, ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_));
+        return JSONObject.fromObject(shopUnprocessItemCount).element("result", "success");
     }
 
     /**
      * 修改商品材质
+     *
      * @param bo
      * @param result
      * @param session
@@ -569,26 +574,27 @@ public class ShopAction {
      */
     @RequestMapping("seller/setConstituent")
     @ResponseBody
-    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
+        shopsItemService.setConstituent(bo.getGoodsId(), shopSession.getShopId(), shopSession.getWebSite(), bo.getFabricStr(), bo.getInFabricStr());
         shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
         return JsonResponseUtil.success();
     }
 
     /**
      * 查出售中的商品上面的统计数据
+     *
      * @param shopId
      * @return
      */
-    private OnsaleCountsVO selOnsaleCountByShopId(Long shopId){
-        OnsaleCountsVO onsaleCountsVO=new OnsaleCountsVO();
+    private OnsaleCountsVO selOnsaleCountByShopId(Long shopId) {
+        OnsaleCountsVO onsaleCountsVO = new OnsaleCountsVO();
         //统计数据
         try {
-            ItemCount itemCount=shopsItemService.selItemCount(shopId);
+            ItemCount itemCount = shopsItemService.selItemCount(shopId);
             onsaleCountsVO.setSale(itemCount.getOnsale());
             onsaleCountsVO.setStore(itemCount.getInstock());
             onsaleCountsVO.setTj(itemCount.getShowcase());
@@ -600,8 +606,10 @@ public class ShopAction {
         }
         return onsaleCountsVO;
     }
+
     /**
      * 修改商品标题与货号
+     *
      * @param bo
      * @return
      */
@@ -609,10 +617,10 @@ public class ShopAction {
     @ResponseBody
     public JSONObject jsonupdategoodsinfo(@Valid ModifyGoodsinfoBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        SynItem synItem=new SynItem();
+        SynItem synItem = new SynItem();
         synItem.setGoodsId(bo.getGoodsId());
         synItem.setTitle(bo.getTitle());
         synItem.setShopId(shopSession.getShopId());
@@ -623,7 +631,7 @@ public class ShopAction {
         try {
             itemAddOrUpdateService.userUpdateItem(synItem);
         } catch (ItemModifyException e) {
-            logger.error("更新商品失败",e);
+            logger.error("更新商品失败", e);
             throw new JsonErrException("更新商品失败");
         }
         return JsonResponseUtil.success();
@@ -631,22 +639,23 @@ public class ShopAction {
 
     /**
      * 商品推荐
+     *
      * @return
      */
     @RequestMapping("seller/jsonshowcaseRecommends")
     @ResponseBody
-    public JSONObject jsonshowcaseRecommends(@Valid RecommendsBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsonshowcaseRecommends(@Valid RecommendsBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        List<Long> goodsIds=new ArrayList<>();
-        String[] idsarr=bo.getGoodsIds().split(",");
-        for(String id:idsarr){
+        List<Long> goodsIds = new ArrayList<>();
+        String[] idsarr = bo.getGoodsIds().split(",");
+        for (String id : idsarr) {
             goodsIds.add(Long.valueOf(id));
         }
         try {
-            itemShowCaseService.modifyShowcase(shopSession.getShopId(),shopSession.getWebSite(),goodsIds,bo.getIsShowcase());
+            itemShowCaseService.modifyShowcase(shopSession.getShopId(), shopSession.getWebSite(), goodsIds, bo.getIsShowcase());
         } catch (ShowCaseException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -655,29 +664,30 @@ public class ShopAction {
 
     /**
      * 修改商品价格
+     *
      * @return
      */
     @RequestMapping("seller/jsonupdategoodsprice")
     @ResponseBody
-    public JSONObject jsonupdategoodsprice(@Valid ModifyPriceBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsonupdategoodsprice(@Valid ModifyPriceBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        SynItem synItem=new SynItem();
+        SynItem synItem = new SynItem();
         synItem.setGoodsId(bo.getGoodsId());
         synItem.setShopId(shopSession.getShopId());
-        if(bo.getType() == 1){
+        if (bo.getType() == 1) {
             synItem.setPriceString(bo.getPrice());
-        }else{
+        } else {
             synItem.setPiPriceString(bo.getPrice());
         }
         synItem.setWebSite(shopSession.getWebSite());
         try {
             itemAddOrUpdateService.userUpdateItem(synItem);
-            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
+            shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
-            logger.error("更新商品失败",e);
+            logger.error("更新商品失败", e);
             throw new JsonErrException("更新商品失败");
         }
         return JsonResponseUtil.success();
@@ -685,43 +695,46 @@ public class ShopAction {
 
     /**
      * 商品下架
+     *
      * @param goodsIds
      * @return
      */
     @RequestMapping("seller/jsonGoodsDown")
     @ResponseBody
-    public JSONObject jsonGoodsDown(String goodsIds,HttpSession session){
+    public JSONObject jsonGoodsDown(String goodsIds, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        shopItemModService.downItems(shopSession.getShopId(),goodsIds,shopSession.getWebSite());
-        return JsonResponseUtil.success().element("ok","下架成功").element("success",true);
+        shopItemModService.downItems(shopSession.getShopId(), goodsIds, shopSession.getWebSite());
+        return JsonResponseUtil.success().element("ok", "下架成功").element("success", true);
     }
 
     /**
      * 推荐的宝贝
+     *
      * @return
      */
     @RequestMapping("seller/storeRecommendListinit")
-    public String storeRecommendListinit(OnsaleItemBO bo, HttpSession session,Model model){
+    public String storeRecommendListinit(OnsaleItemBO bo, HttpSession session, Model model) {
         ShopSession shopSession = getShopSession(session);
         //统计数据
-        model.addAttribute("goods_counts",selOnsaleCountByShopId(shopSession.getShopId()));
+        model.addAttribute("goods_counts", selOnsaleCountByShopId(shopSession.getShopId()));
         try {
-            ShiguPager<ShowCaseItem> pager=itemShowCaseService.selShowCases(bo.getKeyword(),bo.getGoodsNo(),bo.getGoodsNumIid()
-                    ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-            List<ShowCaseItem> list=pager.getContent();
-            List<OnsaleItemVO> goodsList=new ArrayList<>();
-            for(ShowCaseItem oi:list){
+            ShiguPager<ShowCaseItem> pager = itemShowCaseService.selShowCases(bo.getKeyword(), bo.getGoodsNo(), bo.getGoodsNumIid()
+                    , shopSession.getShopId(), bo.getPage(), bo.getPageSize());
+            model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
+            List<ShowCaseItem> list = pager.getContent();
+            List<OnsaleItemVO> goodsList = new ArrayList<>();
+            for (ShowCaseItem oi : list) {
                 goodsList.add(new OnsaleItemVO(oi));
             }
             //极限词过滤
-            model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
+            model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
         } catch (ItemException e) {
-            logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
+            logger.error("拉取店铺出售中失败,shopId=" + shopSession.getShopId(), e);
         }
-        model.addAttribute("get",bo);
+        model.addAttribute("get", bo);
         return "seller/storeRecommendListinit";
     }
+
     /**
      * 仓库中的宝贝
      *
@@ -730,39 +743,41 @@ public class ShopAction {
     @RequestMapping("seller/storeGoodsListinit")
     public String storeGoodsListinit(InstockItemBO bo, HttpSession session, Model model) throws ItemException {
         ShopSession shopSession = getShopSession(session);
-        ShiguPager<InstockItem> pager=shopsItemService.selInstockItems(bo.getKeyword(),bo.getGoodsNo(),
-                bo.getGoodsNumIid(),shopSession.getShopId(),bo.getPage(),bo.getPageSize());
-        List<InstockItem> list=pager.getContent();
-        List<InstockItemVO> goodslist=new ArrayList<>();
-        if(list!=null){
-            for(InstockItem instockItem:list){
+        ShiguPager<InstockItem> pager = shopsItemService.selInstockItems(bo.getKeyword(), bo.getGoodsNo(),
+                bo.getGoodsNumIid(), shopSession.getShopId(), bo.getPage(), bo.getPageSize());
+        List<InstockItem> list = pager.getContent();
+        List<InstockItemVO> goodslist = new ArrayList<>();
+        if (list != null) {
+            for (InstockItem instockItem : list) {
                 goodslist.add(new InstockItemVO(instockItem));
             }
         }
         //极限词过滤
-        model.addAttribute("goodslist",goodslist.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
-        model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-        model.addAttribute("query",bo);
+        model.addAttribute("goodslist", goodslist.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
+        model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
+        model.addAttribute("query", bo);
         return "gys/storeGoodsListinit";
     }
 
     /**
      * 商品上架
+     *
      * @return
      */
     @RequestMapping("seller/jsonGoodsUp")
     @ResponseBody
-    public JSONObject jsonGoodsUp(@Valid GoodsUpBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsonGoodsUp(@Valid GoodsUpBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopItemModService.upItems(shopSession.getShopId(),bo.getGoodsIds(),shopSession.getWebSite());
-        return JsonResponseUtil.success().element("ok","上架成功").element("success",true);
+        shopItemModService.upItems(shopSession.getShopId(), bo.getGoodsIds(), shopSession.getWebSite());
+        return JsonResponseUtil.success().element("ok", "上架成功").element("success", true);
     }
 
     /**
      * 删除商品
+     *
      * @param bo
      * @param result
      * @param session
@@ -771,49 +786,51 @@ public class ShopAction {
      */
     @RequestMapping("seller/jsonSoldoutGoodsDelete")
     @ResponseBody
-    public JSONObject jsonSoldoutGoodsDelete(@Valid DeleteItemBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsonSoldoutGoodsDelete(@Valid DeleteItemBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopItemModService.delInstockItems(shopSession.getShopId(),bo.getGoodsIds(),shopSession.getWebSite());
-        return JsonResponseUtil.success().element("ok","删除成功").element("success",true);
+        shopItemModService.delInstockItems(shopSession.getShopId(), bo.getGoodsIds(), shopSession.getWebSite());
+        return JsonResponseUtil.success().element("ok", "删除成功").element("success", true);
     }
+
     /**
      * 修复宝贝
      *
      * @return
      */
     @RequestMapping("seller/xiufuGoods21init")
-    public String xiufuGoods21init(XiufuGoodsBO bo,HttpSession session,Model model) throws ItemException {
+    public String xiufuGoods21init(XiufuGoodsBO bo, HttpSession session, Model model) throws ItemException {
         ShopSession shopSession = getShopSession(session);
-        ShiguPager<XiufuItem> pager=shopsItemService.selXiufuItem(bo.getKeyword(),bo.getGoodsId()
-                ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
+        ShiguPager<XiufuItem> pager = shopsItemService.selXiufuItem(bo.getKeyword(), bo.getGoodsId()
+                , shopSession.getShopId(), bo.getPage(), bo.getPageSize());
 
-        List<XiufuItem> list=pager.getContent();
-        List<XiufuItemVO> goodsList=new ArrayList<>();
-        for(XiufuItem oi:list){
+        List<XiufuItem> list = pager.getContent();
+        List<XiufuItemVO> goodsList = new ArrayList<>();
+        for (XiufuItem oi : list) {
             goodsList.add(new XiufuItemVO(oi));
         }
         //极限词过滤
-        model.addAttribute("goodslist",goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
-        model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-        model.addAttribute("get",bo);
+        model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
+        model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
+        model.addAttribute("get", bo);
         return "gys/xiufuGoods21init";
     }
 
     /**
      * 修复-同步一件商品
+     *
      * @return
      */
     @RequestMapping("seller/jsonsyngoodsupdate")
     @ResponseBody
-    public JSONObject jsonsyngoodsupdate(String goodsId,HttpSession session) throws JsonErrException {
+    public JSONObject jsonsyngoodsupdate(String goodsId, HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
-        if(StringUtils.isEmpty(goodsId)){
+        if (StringUtils.isEmpty(goodsId)) {
             throw new JsonErrException("请求数据有误");
         }
-        String [] goodIds = goodsId.split(",");
+        String[] goodIds = goodsId.split(",");
         for (int i = 0; i < goodIds.length; i++) {
             Long numIid = shopItemModService.selNumiidByGoodsId(Long.valueOf(goodIds[i]), shopSession.getWebSite());
             if (numIid == null) {
@@ -839,6 +856,7 @@ public class ShopAction {
 
     /**
      * 同步店内类目
+     *
      * @return
      */
     @RequestMapping("seller/jsonsynstorecat")
@@ -846,7 +864,7 @@ public class ShopAction {
     public JSONObject jsonsynstorecat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(), shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -864,6 +882,7 @@ public class ShopAction {
 
     /**
      * 修复宝贝类目
+     *
      * @return
      */
     @RequestMapping("seller/jsonsyngoodscat")
@@ -871,7 +890,7 @@ public class ShopAction {
     public JSONObject jsonsyngoodscat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(), shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -880,6 +899,7 @@ public class ShopAction {
 
     /**
      * 同步店内类目
+     *
      * @return
      */
     @RequestMapping("seller/jsonsynAlltbgoods")
@@ -887,8 +907,8 @@ public class ShopAction {
     public JSONObject jsonsynAlltbgoods(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
-            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(), shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(), shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -901,43 +921,44 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/storeGoodsNoListinit")
-    public String storeGoodsNoListinit(MoreModifyBO bo,HttpSession session,Model model) throws Main4Exception {
+    public String storeGoodsNoListinit(MoreModifyBO bo, HttpSession session, Model model) throws Main4Exception {
         ShopSession shopSession = getShopSession(session);
         //查总量
-        model.addAttribute("inSaleCount",selOnsaleCountByShopId(shopSession.getShopId()).getSale());
+        model.addAttribute("inSaleCount", selOnsaleCountByShopId(shopSession.getShopId()).getSale());
         //查单页
-        ShiguPager<OnsaleItem> pager=shopsItemService.selOnsaleItems(shopSession.getShopId(),shopSession.getWebSite(),null,bo.getPage(),bo.getPageSize());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-        List<OnsaleItem> list=pager.getContent();
-        List<MoreModifyItemVO> volist=new ArrayList<>();
-        for(OnsaleItem oi:list){
-            MoreModifyItemVO mmi=BeanMapper.map(oi,MoreModifyItemVO.class);
+        ShiguPager<OnsaleItem> pager = shopsItemService.selOnsaleItems(shopSession.getShopId(), shopSession.getWebSite(), null, bo.getPage(), bo.getPageSize());
+        model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
+        List<OnsaleItem> list = pager.getContent();
+        List<MoreModifyItemVO> volist = new ArrayList<>();
+        for (OnsaleItem oi : list) {
+            MoreModifyItemVO mmi = BeanMapper.map(oi, MoreModifyItemVO.class);
             mmi.setCreated(oi.getCreated());
             volist.add(mmi);
         }
         model.addAttribute("dataList", volist);
-        model.addAttribute("webSite",shopSession.getWebSite());
+        model.addAttribute("webSite", shopSession.getWebSite());
         return "gys/storeGoodsNoListinit";
     }
 
     /**
      * 批量修改货号提交
+     *
      * @return
      */
     @RequestMapping("seller/jsonupdateGoodsNoPrice")
     @ResponseBody
-    public JSONObject jsonupdateGoodsNoPrice(@Valid MoreModifyUpdateBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+    public JSONObject jsonupdateGoodsNoPrice(@Valid MoreModifyUpdateBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
         try {
-            shopItemModService.moreModify(bo.parseSynItems(shopSession.getShopId(),shopSession.getWebSite()));
-            shopsItemService.clearShopCountCache(shopSession.getShopId(),ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
+            shopItemModService.moreModify(bo.parseSynItems(shopSession.getShopId(), shopSession.getWebSite()));
+            shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
         }
-        return JsonResponseUtil.success().element("OK","OK");
+        return JsonResponseUtil.success().element("OK", "OK");
     }
 
     /**
@@ -952,12 +973,13 @@ public class ShopAction {
 
     /**
      * 切换档口号
+     *
      * @return
      */
     @RequestMapping("seller/changeStoreNum")
     public String changeStoreNum(Long storeNumId) throws ChangeStoreException {
         memberRealm.changeShop(storeNumId);
-        return "redirect:"+memberFilter.getSuccessUrl();
+        return "redirect:" + memberFilter.getSuccessUrl();
     }
 
     /**
@@ -966,7 +988,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/shiguStoreerjiyuming")
-    public String shiguStoreerjiyuming(String domain,HttpSession session,Model model) {
+    public String shiguStoreerjiyuming(String domain, HttpSession session, Model model) {
         ShopSession shopSession = getShopSession(session);
         String oldDomain = shopBaseService.selDomain(shopSession.getShopId());
         if(oldDomain.equals(domain)){
@@ -1013,60 +1035,61 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/shiguStorebasicStore")
-    public String shiguStorebasicStore(@Valid ShopBaseBO bo,BindingResult result, HttpSession session, Model model) throws Main4Exception {
-        if(result.hasErrors()){
+    public String shiguStorebasicStore(@Valid ShopBaseBO bo, BindingResult result, HttpSession session, Model model) throws Main4Exception {
+        if (result.hasErrors()) {
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        if(bo!=null){
-            shopBaseSaveService.saveShopBase(shopSession.getShopId(),bo);
+        if (bo != null) {
+            shopBaseSaveService.saveShopBase(shopSession.getShopId(), bo);
         }
-        ShopBase base=shopBaseService.shopBaseForUpdate(shopSession.getShopId());
-        StoreRelation relation=storeRelationService.selRelationById(shopSession.getShopId());
-        List<ShopBaseVO> shopinfo=new ArrayList<>();
-        shopinfo.add(new ShopBaseVO("档口号","storeNum",true,relation.getStoreNum()));
-        shopinfo.add(new ShopBaseVO("店铺名","storeName",true,base.getShopName()));
-        shopinfo.add(new ShopBaseVO("小标题","smallTitle",false,base.getSystemRecommon()));
-        shopinfo.add(new ShopBaseVO("联系手机号","telephone",false,relation.getTelephone()));
-        shopinfo.add(new ShopBaseVO("旺旺号","imWw",false,relation.getImWw()));
-        shopinfo.add(new ShopBaseVO("QQ号码","imQq",false,relation.getImQq()));
-        shopinfo.add(new ShopBaseVO("微信号","imWx",false,relation.getImWx()));
-        shopinfo.add(new ShopBaseVO("数据包地址","packetUrl",false,base.getDataPackageUrl()));
+        ShopBase base = shopBaseService.shopBaseForUpdate(shopSession.getShopId());
+        StoreRelation relation = storeRelationService.selRelationById(shopSession.getShopId());
+        List<ShopBaseVO> shopinfo = new ArrayList<>();
+        shopinfo.add(new ShopBaseVO("档口号", "storeNum", true, relation.getStoreNum()));
+        shopinfo.add(new ShopBaseVO("店铺名", "storeName", true, base.getShopName()));
+        shopinfo.add(new ShopBaseVO("小标题", "smallTitle", false, base.getSystemRecommon()));
+        shopinfo.add(new ShopBaseVO("联系手机号", "telephone", false, relation.getTelephone()));
+        shopinfo.add(new ShopBaseVO("旺旺号", "imWw", false, relation.getImWw()));
+        shopinfo.add(new ShopBaseVO("QQ号码", "imQq", false, relation.getImQq()));
+        shopinfo.add(new ShopBaseVO("微信号", "imWx", false, relation.getImWx()));
+        shopinfo.add(new ShopBaseVO("数据包地址", "packetUrl", false, base.getDataPackageUrl()));
 
-        model.addAttribute("shopinfo",shopinfo);
+        model.addAttribute("shopinfo", shopinfo);
 
-        ShopTypeSetVO shopTypeSetVO=new ShopTypeSetVO();
+        ShopTypeSetVO shopTypeSetVO = new ShopTypeSetVO();
         shopTypeSetVO.setMainBus(base.getMainBus());
-        List<ShiguTags> sgtags=shopLicenseService.selTagLicenseByShopId(shopSession.getShopId());
-        List<ShopTagVO> tags=new ArrayList<>();
-        tags.add(new ShopTagVO("可退","1"));
-        tags.add(new ShopTagVO("可换","2"));
+        List<ShiguTags> sgtags = shopLicenseService.selTagLicenseByShopId(shopSession.getShopId());
+        List<ShopTagVO> tags = new ArrayList<>();
+        tags.add(new ShopTagVO("可退", "1"));
+        tags.add(new ShopTagVO("可换", "2"));
 //      tags.add(new ShopTagVO("可退可换","1,2"));
-        List<String> servers=new ArrayList<>();
-        for(ShiguTags st:sgtags){
+        List<String> servers = new ArrayList<>();
+        for (ShiguTags st : sgtags) {
             servers.add(st.getValue());
         }
         shopTypeSetVO.setServer_level(tags);
         shopTypeSetVO.setServers(servers);
         shopTypeSetVO.setBusiness_type(xzSdkClient.getXzMainBus().split(","));
-        model.addAttribute("typeset",shopTypeSetVO);
+        model.addAttribute("typeset", shopTypeSetVO);
         return "gys/shiguStorebasicStore";
     }
 
     /**
      * 全店同步
+     *
      * @param shopId
      * @return
      */
-    @RequestMapping(value = "/seller/jsonSynAllGoods" , method = RequestMethod.POST)
+    @RequestMapping(value = "/seller/jsonSynAllGoods", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject synWholeShop(Long shopId, HttpSession session){
+    public JSONObject synWholeShop(Long shopId, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        try{
-            taobaoSynService.synOneShop(shopId,shopSession.getTbNick());
+        try {
+            taobaoSynService.synOneShop(shopId, shopSession.getTbNick());
             taobaoTmcService.addToTmc(shopSession.getTbNick());
             return JSONObject.fromObject(JsonResponseUtil.success());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return JSONObject.fromObject("{'result':'error','msg':'系统错误'}");
@@ -1131,13 +1154,14 @@ public class ShopAction {
 
     /**
      * 个人设置
+     *
      * @return
      */
     @RequestMapping("seller/sysSetsindex")
-    public String sysSetsindex(HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    public String sysSetsindex(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         UserInfo userInfo = userBaseService.selUserInfo(ps.getUserId());
-        UserInfoVO userInfoVO= com.shigu.session.main4.tool.BeanMapper.map(userInfo, UserInfoVO.class);
+        UserInfoVO userInfoVO = com.shigu.session.main4.tool.BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
         return "gys/sysSetsindex";
@@ -1189,28 +1213,31 @@ public class ShopAction {
 
     /**
      * 修改密码
+     *
      * @return
      */
     @RequestMapping("seller/safexgmm")
-    public String safexgmm(String code,HttpSession session,Model model){
+    public String safexgmm(String code, HttpSession session, Model model) {
         //如果code和手机忘记密码验证码一样,则不需要原密码
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
-        if(checkFromForget(ps.getUserId(),code,phoneCode)){
-            model.addAttribute("fromForget",phoneCode);
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        PhoneVerify phoneCode = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        if (checkFromForget(ps.getUserId(), code, phoneCode)) {
+            model.addAttribute("fromForget", phoneCode);
         }
         return "gys/safexgmm";
     }
+
     /**
      * 验证是否忘记密码来的
+     *
      * @param code
      * @param phoneVerify
      * @return
      */
-    private boolean checkFromForget(Long userId,String code,PhoneVerify phoneVerify){
-        if(code!=null){
+    private boolean checkFromForget(Long userId, String code, PhoneVerify phoneVerify) {
+        if (code != null) {
             //手机验证码一样,用户ID一样
-            if(phoneVerify!=null&&phoneVerify.getVerify().equals(code)&&userId.equals(phoneVerify.getUserId())){
+            if (phoneVerify != null && phoneVerify.getVerify().equals(code) && userId.equals(phoneVerify.getUserId())) {
                 return true;
             }
         }
@@ -1219,23 +1246,24 @@ public class ShopAction {
 
     /**
      * 邮箱绑定
+     *
      * @return
      */
     @RequestMapping("seller/safeszyx")
-    public String safeszyx(HttpSession session,Model model){
+    public String safeszyx(HttpSession session, Model model) {
         //查出旧的邮箱
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        SafeAbout safeAbout=userLicenseService.selUserLicenses(ps.getUserId());
-        if(safeAbout!=null){
-            List<UserLicense> licenses=safeAbout.getLicenses();
-            if(licenses!=null){
-                for(UserLicense ul:licenses){
-                    if(ul.getType().equals(MemberLicenseType.EMAIL)){
-                        MailBindVO mail=new MailBindVO();
-                        String context=ul.getContext();
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        SafeAbout safeAbout = userLicenseService.selUserLicenses(ps.getUserId());
+        if (safeAbout != null) {
+            List<UserLicense> licenses = safeAbout.getLicenses();
+            if (licenses != null) {
+                for (UserLicense ul : licenses) {
+                    if (ul.getType().equals(MemberLicenseType.EMAIL)) {
+                        MailBindVO mail = new MailBindVO();
+                        String context = ul.getContext();
                         mail.setEmail(context);
                         mail.setMsg("认证成功");
-                        model.addAttribute("mail",mail);
+                        model.addAttribute("mail", mail);
                     }
                 }
             }
@@ -1245,34 +1273,36 @@ public class ShopAction {
 
     /**
      * 邮箱认证回调
+     *
      * @return
      */
     @RequestMapping("seller/safeemail")
-    public String safeemail(String p,HttpSession session,Model model) throws UnsupportedEncodingException {
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    public String safeemail(String p, HttpSession session, Model model) throws UnsupportedEncodingException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (p.contains("%"))
-            p= URLDecoder.decode(p,"utf-8");
-        p=Opt3Des.decryptPlainData(p);
+            p = URLDecoder.decode(p, "utf-8");
+        p = Opt3Des.decryptPlainData(p);
         JSONObject json = JSONObject.fromObject(p);
         Long userId = json.getLong("userId");
-        MailBindVO mail=new MailBindVO();
+        MailBindVO mail = new MailBindVO();
         mail.setEmail(json.getString("email"));
-        if(ps.getUserId().equals(userId)){
+        if (ps.getUserId().equals(userId)) {
             try {
-                userLicenseService.bindEmail(ps.getUserId(),json.getString("email"));
+                userLicenseService.bindEmail(ps.getUserId(), json.getString("email"));
                 mail.setMsg("认证成功");
             } catch (Main4Exception e) {
                 mail.setMsg(e.getMessage());
             }
-        }else{
+        } else {
             mail.setMsg("当前登陆账号与认证发起账号不符合,请切换账号,重新激活");
         }
-        model.addAttribute("mail",mail);
+        model.addAttribute("mail", mail);
         return "seller/safeszyx";
     }
 
     /**
      * 首页广告管理
+     *
      * @return
      */
     @RequestMapping("seller/promotion")
@@ -1283,37 +1313,38 @@ public class ShopAction {
         String webSite = shopSession.getWebSite();
         List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
         //分为开始与没开始两种
-        List<GoatListVO> inForceList=new ArrayList<>();
-        List<GoatListVO> willInForceList=new ArrayList<>();
-        Map<String,GoatListVO> map=new HashMap<>();
-        for(IndexGoatVO igv:myIndexTerms){
+        List<GoatListVO> inForceList = new ArrayList<>();
+        List<GoatListVO> willInForceList = new ArrayList<>();
+        Map<String, GoatListVO> map = new HashMap<>();
+        for (IndexGoatVO igv : myIndexTerms) {
             String key;
-            if(igv.getHadStart()){
-                key=igv.getCode()+"_ol";
-            }else{
-                key=igv.getCode()+"_unol";
+            if (igv.getHadStart()) {
+                key = igv.getCode() + "_ol";
+            } else {
+                key = igv.getCode() + "_unol";
             }
-            GoatListVO glv=map.get(key);
-            if(glv == null){
-                glv=new GoatListVO();
+            GoatListVO glv = map.get(key);
+            if (glv == null) {
+                glv = new GoatListVO();
                 glv.setCode(igv.getCode());
                 glv.setPosList(new ArrayList<IndexGoatVO>());
-                map.put(key,glv);
-                if(igv.getHadStart()){
+                map.put(key, glv);
+                if (igv.getHadStart()) {
                     inForceList.add(glv);
-                }else{
+                } else {
                     willInForceList.add(glv);
                 }
             }
             glv.getPosList().add(igv);
         }
         model.addAttribute("inForceList", inForceList);
-        model.addAttribute("willInForceList",willInForceList);
+        model.addAttribute("willInForceList", willInForceList);
         return "gys/promotion";
     }
 
     /**
      * 首页广告管理，更换广告接口
+     *
      * @return
      */
     @RequestMapping("seller/setNewIndexGoodsData")
@@ -1323,16 +1354,16 @@ public class ShopAction {
         ShopSession shopSession = personalSession.getLogshop();
         String webSite = shopSession.getWebSite();
         Long shopId = shopSession.getShopId();
-        GoatLicense license=goatShopService.getGoatLicenseByCodeId(id,shopId);
+        GoatLicense license = goatShopService.getGoatLicenseByCodeId(id, shopId);
         GoatShopService.GoatLicenseStatu statu = goatShopService.getGoatLicenseStatu(license);
         ShiguGoodsTiny good = goatShopService.getShopGoodsInfo(webSite, goodsId, shopId);
         switch (statu) {
             case PUBLISH: {
-                goatShopService.publishGoatUpdate(license,personalSession.getUserId(), good);
+                goatShopService.publishGoatUpdate(license, personalSession.getUserId(), good);
                 break;
             }
             case PREPUBLISH: {
-                goatShopService.prepublishGoatUpdate(license,personalSession.getUserId(), good);
+                goatShopService.prepublishGoatUpdate(license, personalSession.getUserId(), good);
                 break;
             }
         }
@@ -1344,41 +1375,68 @@ public class ShopAction {
 
     /**
      * 设置自定义商品风格update
+     *
      * @param
      * @return
      */
     @RequestMapping("seller/setGoodsStyle")
     @ResponseBody
-    public JSONObject setGoodsStyle(Long goodsId,Long styleId,Boolean relativeIs,HttpSession session) {
+    public JSONObject setGoodsStyle(Long goodsId, Long styleId, Boolean relativeIs, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
-        int sid=styleId.intValue();
-        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
-        if (relativeIs){
-            shopItemModService.setSameNumStyle(goodsId,sid , shopSession.getShopId(),shopSession.getWebSite());
+        if (shopSession.getShopId() == null || StringUtils.isBlank(shopSession.getWebSite())) {
+            return JsonResponseUtil.error("只有档口用户可以修改商品风格");
         }
-        shopItemModService.setStyle( goodsId,sid, shopSession.getWebSite());
-        return JsonResponseUtil.success();
+        if (goodsId == null) {
+            return JsonResponseUtil.error("请指点要修改的商品");
+        }
+        if (styleId == null) {
+            return JsonResponseUtil.error("请指定风格");
+        }
+        JSONObject result = shopItemModService.setStyle(goodsId, styleId, shopSession.getShopId(), shopSession.getWebSite(), Objects.equals(true, relativeIs));
+        shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
+        return result;
     }
 
-    /**
-     *获取自定义商品风格列表
-     * @param
-     * @return
-     */
-    @RequestMapping("seller/getUserGoodsStyleList")
-    @ResponseBody
-    public JSONObject getUserGoodsStyleList(HttpSession session){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("styleList",shopItemModService.getCustomStyle(ps.getUserId()));
-    }
+    ///**
+    // * 获取自定义商品风格列表
+    // *
+    // * @param
+    // * @return
+    // */
+    //@Deprecated
+    //// TODO: 18-1-23 准备撤掉
+    //@RequestMapping("seller/getUserGoodsStyleList")
+    //@ResponseBody
+    //public JSONObject getUserGoodsStyleList(HttpSession session) {
+    //    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    //    return JsonResponseUtil.success().element("styleList", shopItemModService.getCustomStyle(ps.getUserId()));
+    //}
+
     /**
      * 获取默认商品风格列表
      */
     @RequestMapping("seller/getDefaultGoodsStyleList")
     @ResponseBody
-    public JSONObject getDefaultGoodsStyleList(HttpSession session){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return JsonResponseUtil.success().element("styleList",shopItemModService.getFixedStyle(ps.getLogshop().getWebSite()));
+    public JSONObject getDefaultGoodsStyleList(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return JsonResponseUtil.success().element("childStyleList", shopItemModService.getSubStyleVO());
+    }
+
+    /**
+     * 移除商品风格
+     * @param goodsId
+     * @param session
+     * @return
+     */
+    @RequestMapping("seller/deleteGoodsStyle")
+    @ResponseBody
+    public JSONObject deleteGoodsStyle(Long goodsId, HttpSession session) {
+        if (goodsId == null) {
+            return JsonResponseUtil.error("请选择商品");
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession logshop = ps.getLogshop();
+        return shopItemModService.delGoodsStyle(goodsId, logshop.getShopId());
     }
 
 }
