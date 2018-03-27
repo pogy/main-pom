@@ -6,7 +6,7 @@ import java.util.List;
 public class HomeCateMenu implements Serializable{
     private Long id;
     private String text;
-    private List<ThreeCateMenu> listitems;
+    private List<HomeCateItem> listitems;
     private List<ThreeCateMenu> detailitems;
 
     public Long getId() {
@@ -25,11 +25,11 @@ public class HomeCateMenu implements Serializable{
         this.text = text;
     }
 
-    public List<ThreeCateMenu> getListitems() {
+    public List<HomeCateItem> getListitems() {
         return listitems;
     }
 
-    public void setListitems(List<ThreeCateMenu> listitems) {
+    public void setListitems(List<HomeCateItem> listitems) {
         this.listitems = listitems;
     }
 

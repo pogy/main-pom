@@ -66,16 +66,14 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             return new ArrayList<>();
         }
 
-        HomeCateMenu homeCateMenu = null;
-        List<ShiguSiteSearchCategory> ssscList2 = null;
-        HomeCateItem homeCateItem = null;
-        ThreeCateMenu listItem = null;
-        ThreeCateMenu detailItem = null;
-        List<ThreeCateMenu> listItemList = null;
-        List<ThreeCateMenu> detailItemList = null;
-        List<HomeCateItem> itemList = null;
-        List<ShiguSiteSearchCategory> ssscList3 = null;
-        List<HomeCateItem> hotItemList = null;
+        HomeCateMenu homeCateMenu;
+        List<ShiguSiteSearchCategory> ssscList2;
+        HomeCateItem homeCateItem;
+        ThreeCateMenu detailItem;
+        List<ThreeCateMenu> detailItemList;
+        List<HomeCateItem> itemList;
+        List<ShiguSiteSearchCategory> ssscList3;
+        List<HomeCateItem> hotItemList;
         List<HomeCateMenu> homeCateMenus = new ArrayList<>();
 
         for (int i = 0; i <ssscList1.size() ; i++) {
@@ -87,17 +85,15 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             ssscList2 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample2);
             if (ssscList2 != null && ssscList2.size() > 0){
                 detailItemList = new ArrayList<>();
-                listItemList = new ArrayList<>();
+                hotItemList = new ArrayList<>();
                 for (int j = 0; j <ssscList2.size() ; j++) {
                     detailItem = new ThreeCateMenu();
-                    listItem = new ThreeCateMenu();
                     detailItem.setText(ssscList2.get(j).getCname());
                     ShiguSiteSearchCategoryExample ssscExample3 = new ShiguSiteSearchCategoryExample();
                     ssscExample3.createCriteria().andCStatusEqualTo(1).andDisplayEqualTo(1).andParentCidEqualTo(ssscList2.get(j).getId());
                     ssscList3 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample3);
                     if (ssscList3 != null && ssscList3.size() > 0){
                         itemList = new ArrayList<>();
-                        hotItemList = new ArrayList<>();
                         for (int k = 0; k <ssscList3.size() ; k++) {
                             homeCateItem = new HomeCateItem();
                             homeCateItem.setName(ssscList3.get(k).getCname());
@@ -110,14 +106,12 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                             }
                             itemList.add(homeCateItem);
                         }
-                        listItem.setItems(hotItemList);
                         detailItem.setItems(itemList);
                     }
-                    listItemList.add(listItem);
                     detailItemList.add(detailItem);
                 }
                 homeCateMenu.setDetailitems(detailItemList);
-                homeCateMenu.setListitems(listItemList);
+                homeCateMenu.setListitems(hotItemList);
             }
             homeCateMenus.add(homeCateMenu);
         }

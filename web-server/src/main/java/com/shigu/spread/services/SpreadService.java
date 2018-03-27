@@ -10,6 +10,10 @@ import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
+import com.shigu.main4.storeservices.SearchCategoryService;
+import com.shigu.main4.vo.HomeCateItem;
+import com.shigu.main4.vo.HomeCateMenu;
+import com.shigu.main4.vo.ThreeCateMenu;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.vo.*;
 import com.shigu.tools.KeyWordsUtil;
@@ -40,6 +44,8 @@ public class SpreadService {
 
     @Autowired
     ShiguYesterdayStyleHotMapper shiguYesterdayStyleHotMapper;
+    @Autowired
+    SearchCategoryService searchCategoryService;
     
     /**
      * 查广告数据
@@ -138,6 +144,33 @@ public class SpreadService {
     }
 
     /**
+     * 图片类广告
+     * @param spreadCode
+     * @return
+     */
+    public ObjFromCache<List<ImgBannerVO>> selImgBanners(final String spreadCode){
+        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,spreadCode,ImgBannerVO.class) {
+            @Override
+            public List<ImgBannerVO> selReal() {
+                List<ImgBannerVO> vos=new ArrayList<>();
+                try {
+                    List<ImgGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spreadCode);
+                    Date now = new Date();
+                    for (ImgGoatVO gv : goats) {
+                        if ((SpreadEnum.BACK_MEMBER.getCode().equals(spreadCode)||SpreadEnum.BACK_SHOP.getCode().equals(spreadCode))&&gv.getToTime().before(now)) {
+                            continue;
+                        }
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), KeyWordsUtil.duleKeyWords(gv.getText())));
+                    }
+                }catch (GoatException e){
+                    logger.error("查图片类广告Miss",e);
+                }
+                return vos;
+            }
+        };
+    }
+
+    /**
      * 前端修改了部分商品广告字段,线上存在新老商品广告字段并存情况
      * @param webSite
      * @param spread
@@ -165,6 +198,13 @@ public class SpreadService {
         };
     }
 
+    /**
+     * 新杭州男装风格缓存
+     * @param parentStyleId
+     * @param parentStyleName
+     * @param tag
+     * @return
+     */
     public ObjFromCache<HzManIndexHotItemsVO> castedHotItemGoatList(Long parentStyleId,String parentStyleName,String tag){
         return new ObjFromCache<HzManIndexHotItemsVO>(redisForIndexPage,tag,HzManIndexHotItemsVO.class){
             @Override
@@ -196,6 +236,49 @@ public class SpreadService {
     }
 
 
+    public ObjFromCache<List<HomeCateMenu>> castedHomeCateMenu(){
+        return new ObjFromCache<List<HomeCateMenu>>(redisForIndexPage,"NEW_HZ_HomeCateMenu",HzManIndexHotItemsVO.class){
+            @Override
+            public List<HomeCateMenu> selReal() {
+                //todo 类目导航,市场暂时写死
+                HomeCateMenu hzMarkets=new HomeCateMenu();
+                hzMarkets.setId(1L);
+                hzMarkets.setText("男装市场");
+                hzMarkets.setListitems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/maarket.htm?mid=1"),
+                        new HomeCateItem("精品男装","http://www.571xz.com/maarket.htm?mid=2"),
+                        new HomeCateItem("四季星座","http://www.571xz.com/maarket.htm?mid=3"),
+                        new HomeCateItem("钱塘大厦","http://www.571xz.com/maarket.htm?mid=5"),
+                        new HomeCateItem("新杭派","http://www.571xz.com/maarket.htm?mid=12"),
+                        new HomeCateItem("置地国际","http://www.571xz.com/maarket.htm?mid=8"),
+                        new HomeCateItem("之江服饰","http://www.571xz.com/maarket.htm?mid=10"),
+                        new HomeCateItem("优品基地","http://www.571xz.com/maarket.htm?mid=76")
+                ));
+                ThreeCateMenu threeCateMenu=new ThreeCateMenu();
+                threeCateMenu.setText("男装市场");
+                threeCateMenu.setItems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/maarket.htm?mid=1"),
+                        new HomeCateItem("精品男装","http://www.571xz.com/maarket.htm?mid=2"),
+                        new HomeCateItem("四季星座","http://www.571xz.com/maarket.htm?mid=3"),
+                        new HomeCateItem("钱塘大厦","http://www.571xz.com/maarket.htm?mid=5"),
+                        new HomeCateItem("新杭派","http://www.571xz.com/maarket.htm?mid=12"),
+                        new HomeCateItem("置地国际","http://www.571xz.com/maarket.htm?mid=8"),
+                        new HomeCateItem("之江服饰","http://www.571xz.com/maarket.htm?mid=10"),
+                        new HomeCateItem("男鞋基地","http://www.571xz.com/maarket.htm?mid=18"),
+                        new HomeCateItem("石狮工厂店","http://www.571xz.com/maarket.htm?mid=20"),
+                        new HomeCateItem("优品基地","http://www.571xz.com/maarket.htm?mid=76"),
+                        new HomeCateItem("原创男装","http://www.571xz.com/maarket.htm?mid=16"),
+                        new HomeCateItem("九天国际","http://www.571xz.com/maarket.htm?mid=11"),
+                        new HomeCateItem("潮牌基地","http://www.571xz.com/maarket.htm?mid=9"),
+                        new HomeCateItem("周边市场","http://www.571xz.com/maarket.htm?mid=19")
+                ));
+                hzMarkets.setDetailitems(Collections.singletonList(threeCateMenu));
+                List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
+                List<HomeCateMenu> c=new ArrayList<>();
+                c.add(hzMarkets);
+                c.addAll(catemenu);
+                return c;
+            }
+        };
+    }
 
 
 //    /**

@@ -38,10 +38,10 @@ public abstract class ObjFromCache<T>{
      */
     public T selObj(){
         T obj;
-        try {
-            obj= (T) redisForIndexPage.getFromCache(key,tclass);
-            return obj;
-        } catch (SpreadCacheException e) {
+//        try {
+//            obj= (T) redisForIndexPage.getFromCache(key,tclass);
+//            return obj;
+//        } catch (SpreadCacheException e) {
 //            type=e.getType();
 //            if(type.equals(SpreadCacheException.CacheType.NONE)){
                 obj=selReal();
@@ -50,7 +50,7 @@ public abstract class ObjFromCache<T>{
 //            }else if(type.equals(SpreadCacheException.CacheType.LONG)){
 //                return (T) e.getObj();
 //            }
-        }
+//        }
 //        return null;
     }
 

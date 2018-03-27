@@ -660,11 +660,7 @@ public class StyleChannelService {
         if (channel == null) {
             return new ArrayList<>();
         }
-        SpreadEnum spreadEnum = SpreadEnum.getSpreadEnumByCode(channel.bannerTag());
-        if (spreadEnum == null) {
-            return new ArrayList<>();
-        }
-        return spreadService.selImgBanners(spreadEnum).selObj();
+        return spreadService.selImgBanners(channel.bannerTag()).selObj();
     }
 
     public List<StyleSpreadShopVO> selSpreadShop(Long parentStyleId) {
