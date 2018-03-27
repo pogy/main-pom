@@ -59,15 +59,11 @@
                     <ul class="clearfix">
                         <li class="time fc3">${item.time!}</li>
                         <li class="money">
-                            <#if item.payState == 1>
-                                <span class="green">+${item.money!}</span>
-                            <#elseif item.payState ==2>
-                                <span class="red">-${item.money!}</span>
-                            </#if>
+                            <span class="<#if (item.money)?? && (item.money)?starts_with("+")>green<#else>red</#if>">${(item.money)!}</span>
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>
-                            <p class="fc9">${item.payCodeText!}${item.payCode!}</p>
+                            <p class="fc9"><#if item.payCode??>${item.payCodeText!}${item.payCode!}</#if></p>
                         </li>
                     </ul>
                 </#list>

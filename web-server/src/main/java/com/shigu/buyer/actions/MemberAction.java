@@ -1,8 +1,8 @@
 package com.shigu.buyer.actions;
 
 import com.opentae.data.mall.beans.ShiguBonusRecord;
-import com.opentae.data.mall.custombeans.BalanceVO;
 import com.shigu.buyer.bo.*;
+import com.shigu.buyer.enums.BonusRecordTypeEnum;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
@@ -43,7 +43,6 @@ import com.shigu.tools.*;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -57,6 +56,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -73,7 +74,6 @@ import java.util.Objects;
  */
 @Controller
 public class MemberAction {
-    private static final Logger logger = Logger.getLogger(UserLoginAction.class);
 
     @Autowired
     PaySdkClientService paySdkClientService;
@@ -148,11 +148,7 @@ public class MemberAction {
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
         // 用户红包余额
-        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
-        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
-        if (bonusBalance == null) {
-            bonusBalance = 0L;
-        }
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
         return "fxs/index";
     }
@@ -927,6 +923,8 @@ public class MemberAction {
             throw new Main4Exception("路径非法");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
+        model.addAttribute("envelopeBalance", String.format("%.2f", bonusBalance * 0.01));
         if (SELLER_PATH.equals(identity)) {
             return "gys/iwantToRechargein5";
         }
@@ -1118,34 +1116,18 @@ public class MemberAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 用户红包余额
-        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
-        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
-        if (bonusBalance == null) {
-            bonusBalance = 0L;
-        }
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
         // 用户红包记录
         List<BonusRecordVo> bonusRecordVoList = new ArrayList<>();
-        List<ShiguBonusRecord> bonusRecordList = memberSimpleService.getUserBonusRecord(taobaoNick);
+        List<ShiguBonusRecord> bonusRecordList = memberSimpleService.getUserBonusRecord(ps.getUserId());
         if (bonusRecordList != null && !bonusRecordList.isEmpty()) {
             for (ShiguBonusRecord bonusRecord : bonusRecordList) {
                 BonusRecordVo bonusRecordVo = new BonusRecordVo();
-                int type = bonusRecord.getType();
-                if (type == 1) { // 系统充值
-                    bonusRecordVo.setPayText("四季星座网平台赠送");
-                    bonusRecordVo.setPayCodeText("充值编号");
-                } else if (type == 2) { // 用户使用
-                    bonusRecordVo.setMoney("-" + String.format("%.2f", bonusRecord.getAmount() * 0.01));
-                    bonusRecordVo.setPayText("订单支付");
-                    bonusRecordVo.setPayCodeText("交易编号");
-                } else { // 其它
-                    bonusRecordVo.setPayText("其它");
-                    bonusRecordVo.setPayCodeText("编号");
+                bonusRecordVo = BonusRecordTypeEnum.fillBonusRecordVo(bonusRecordVo,bonusRecord);
+                if (bonusRecordVo == null) {//未知类型不展示
+                    continue;
                 }
-                bonusRecordVo.setMoney(String.format("%.2f", bonusRecord.getAmount() * 0.01));
-                bonusRecordVo.setPayState(type);
-                bonusRecordVo.setPayCode(bonusRecord.getSerialNumber());
-                bonusRecordVo.setTime(DateFormatUtils.format(bonusRecord.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 bonusRecordVoList.add(bonusRecordVo);
             }
         }
@@ -1316,13 +1298,26 @@ public class MemberAction {
      */
     @RequestMapping({"member/userRecharge", "seller/userRecharge"})
     @ResponseBody
-    public JSONObject userRecharge(Double money, Integer type, HttpSession session) throws PayApplyException {
+    public JSONObject userRecharge(Double money, Integer type, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws PayApplyException, IOException {
         if (money == null || money <= 0) {
             return JsonResponseUtil.error("请输入正确的金额");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        PayApplyVO payApplyVO = userAccountService.rechargeApply(ps.getUserId(), (long) (money * 100));
-        return JsonResponseUtil.success().element("href", "/order/alipayByApplyId.htm?applyId=" + payApplyVO.getApplyId()).element("applyId", payApplyVO.getApplyId());
+        String servletPath = request.getServletPath();
+        if (servletPath.contains("member") && type == 3) {//分销商不能红包充值  1支付宝充值 2微信充值 3红包充值
+            return JsonResponseUtil.error("供应商不能进行红包充值");
+        }
+
+        if (type == 3) {
+            boolean success = userAccountService.redPackApply(ps.getUserId(), (long) (money * 100));
+            if (success) {
+                return JsonResponseUtil.success();
+            }
+            return JsonResponseUtil.error("充值失败");
+        }else {
+            PayApplyVO payApplyVO = userAccountService.rechargeApply(ps.getUserId(), (long) (money * 100));
+            return JsonResponseUtil.success().element("href", "/order/alipayByApplyId.htm?applyId=" + payApplyVO.getApplyId()).element("applyId", payApplyVO.getApplyId());
+        }
     }
 
     /**
