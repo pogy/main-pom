@@ -69,7 +69,9 @@ public class JdAuthService {
             return null;
         }
         JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
-
+        if(jdAithedInfo==null){
+            return null;
+        }
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdAithedInfo.getUid());
         Date now = new Date();
