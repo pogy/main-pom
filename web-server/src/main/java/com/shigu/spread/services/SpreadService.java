@@ -144,6 +144,33 @@ public class SpreadService {
     }
 
     /**
+     * 图片类广告
+     * @param spreadCode
+     * @return
+     */
+    public ObjFromCache<List<ImgBannerVO>> selImgBanners(final String spreadCode){
+        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,spreadCode,ImgBannerVO.class) {
+            @Override
+            public List<ImgBannerVO> selReal() {
+                List<ImgBannerVO> vos=new ArrayList<>();
+                try {
+                    List<ImgGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spreadCode);
+                    Date now = new Date();
+                    for (ImgGoatVO gv : goats) {
+                        if ((SpreadEnum.BACK_MEMBER.getCode().equals(spreadCode)||SpreadEnum.BACK_SHOP.getCode().equals(spreadCode))&&gv.getToTime().before(now)) {
+                            continue;
+                        }
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), KeyWordsUtil.duleKeyWords(gv.getText())));
+                    }
+                }catch (GoatException e){
+                    logger.error("查图片类广告Miss",e);
+                }
+                return vos;
+            }
+        };
+    }
+
+    /**
      * 前端修改了部分商品广告字段,线上存在新老商品广告字段并存情况
      * @param webSite
      * @param spread
