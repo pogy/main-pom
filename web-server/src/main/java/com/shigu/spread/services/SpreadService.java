@@ -277,18 +277,17 @@ public class SpreadService {
                 hzMarketStyle.setId(11L);
                 hzMarketStyle.setText("时尚风格");
                 hzMarketStyle.setListitems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
-                        new HomeCateItem("日系","http://www.571xz.com/styleGoodsList.htm?spid=2"),
-                        new HomeCateItem("英伦","http://www.571xz.com/styleGoodsList.htm?spid=3"),
-                        new HomeCateItem("国潮","http://www.571xz.com/styleGoodsList.htm?spid=4")
+                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3")
                 ));
                 ThreeCateMenu threeMenu=new ThreeCateMenu();
                 threeMenu.setText("时尚风格");
                 threeMenu.setItems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
-                        new HomeCateItem("日系","http://www.571xz.com/styleGoodsList.htm?spid=2"),
-                        new HomeCateItem("英伦","http://www.571xz.com/styleGoodsList.htm?spid=3"),
-                        new HomeCateItem("国潮","http://www.571xz.com/styleGoodsList.htm?spid=4"),
-                        new HomeCateItem("外景","http://www.571xz.com/styleGoodsList.htm?spid=5"),
-                        new HomeCateItem("鞋包","http://www.571xz.com/styleGoodsList.htm?spid=6")
+                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3"),
+                        new HomeCateItem("国潮/情侣","http://www.571xz.com/styleGoodsList.htm?spid=4"),
+                        new HomeCateItem("外景/商城","http://www.571xz.com/styleGoodsList.htm?spid=5"),
+                        new HomeCateItem("鞋包/其他","http://www.571xz.com/styleGoodsList.htm?spid=6")
                 ));
                 hzMarketStyle.setDetailitems(Collections.singletonList(threeMenu));
 
