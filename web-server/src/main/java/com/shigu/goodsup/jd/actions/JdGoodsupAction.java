@@ -284,7 +284,7 @@ public class JdGoodsupAction {
     public String publish(Long itemId, Integer yesrepeat,HttpServletRequest request, HttpSession session, Model model) throws ClassNotFoundException, CloneNotSupportedException, IOException {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            if(ps==null){
+            if(ps==null || ps.getLoginFromType() != LoginFromType.JD){
                 String queryString = request.getQueryString();
                 return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
                         (queryString == null ? "" : ("?" + queryString)), "utf-8");
