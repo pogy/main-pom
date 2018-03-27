@@ -92,6 +92,7 @@ public class ElasticCountUtil {
                 // TODO: 18-1-23 兼容旧版，等新版风格上线后去掉goodsStyleId
                 if (goodsCountForsearch.getSid() != null) {
                     goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid().intValue());
+                    goodsAggsVO.setGoodsStyleName(goodsCountForsearch.getStyleName());
                 }
 
                 itemResult.put(goodsCountForsearch.getGoodsId().toString(), goodsAggsVO);

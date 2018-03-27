@@ -81,6 +81,8 @@ public class OnsaleItemVO {
     //已设置的商品风格名称
     private Long goodsStyleId;
 
+    private String goodsStyleName;
+
     public Integer getGoodsStyleType() {
         return goodsStyleType;
     }
@@ -148,6 +150,7 @@ public class OnsaleItemVO {
         Long styleId = onsaleItem.getStyleId();
         this.setGoodsStyleType(styleId == null ? 1 : 2);
         this.setGoodsStyleId(styleId);
+        this.setGoodsStyleName(onsaleItem.getGoodsStyleName());
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }
@@ -426,5 +429,13 @@ public class OnsaleItemVO {
 
     public void setGoodsStyleId(Long goodsStyleId) {
         this.goodsStyleId = goodsStyleId;
+    }
+
+    public String getGoodsStyleName() {
+        return this.goodsStyleName;
+    }
+
+    public void setGoodsStyleName(String goodsStyleName) {
+        this.goodsStyleName = goodsStyleName;
     }
 }
