@@ -29,6 +29,8 @@ public class GoodsAggsVO implements Serializable {
     // TODO: 18-1-22 暂时留下,兼容线上版本
     @Deprecated
     private Integer goodsStyleId;
+    //风格名
+    private String goodsStyleName;
 
     /**
      * 增加上传量
@@ -108,5 +110,13 @@ public class GoodsAggsVO implements Serializable {
 
     public void setGoodsStyleId(Integer goodsStyleId) {
         this.goodsStyleId = goodsStyleId;
+    }
+
+    public String getGoodsStyleName() {
+        return this.goodsStyleName;
+    }
+
+    public void setGoodsStyleName(String goodsStyleName) {
+        this.goodsStyleName = goodsStyleName;
     }
 }
