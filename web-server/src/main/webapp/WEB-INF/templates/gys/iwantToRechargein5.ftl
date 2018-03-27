@@ -48,6 +48,9 @@
     <input type="hidden" id="tempCode" value="${tempCode!}">
 </div>
 <hr class="splitLine">
+<script modulepath="gys/iwantToRechargein5#form1">
+var envelopeBalance = '${envelopeBalance!}'
+</script>
 <div class="validateForm rechargeForm">
     <div class="validateItem">
         <div class="formGroup">
