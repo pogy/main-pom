@@ -271,10 +271,32 @@ public class SpreadService {
                         new HomeCateItem("周边市场","http://www.571xz.com/maarket.htm?mid=19")
                 ));
                 hzMarkets.setDetailitems(Collections.singletonList(threeCateMenu));
+
+                //todo 类目导航,风格暂时写死
+                HomeCateMenu hzMarketStyle=new HomeCateMenu();
+                hzMarketStyle.setId(11L);
+                hzMarketStyle.setText("时尚风格");
+                hzMarketStyle.setListitems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
+                        new HomeCateItem("日系","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+                        new HomeCateItem("英伦","http://www.571xz.com/styleGoodsList.htm?spid=3"),
+                        new HomeCateItem("国潮","http://www.571xz.com/styleGoodsList.htm?spid=4")
+                ));
+                ThreeCateMenu threeMenu=new ThreeCateMenu();
+                threeMenu.setText("时尚风格");
+                threeMenu.setItems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
+                        new HomeCateItem("日系","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+                        new HomeCateItem("英伦","http://www.571xz.com/styleGoodsList.htm?spid=3"),
+                        new HomeCateItem("国潮","http://www.571xz.com/styleGoodsList.htm?spid=4"),
+                        new HomeCateItem("外景","http://www.571xz.com/styleGoodsList.htm?spid=5"),
+                        new HomeCateItem("鞋包","http://www.571xz.com/styleGoodsList.htm?spid=6")
+                ));
+                hzMarketStyle.setDetailitems(Collections.singletonList(threeMenu));
+
                 List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
                 List<HomeCateMenu> c=new ArrayList<>();
                 c.add(hzMarkets);
                 c.addAll(catemenu);
+                c.add(hzMarketStyle);
                 return c;
             }
         };
