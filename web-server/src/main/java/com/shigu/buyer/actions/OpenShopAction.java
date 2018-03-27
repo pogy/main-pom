@@ -21,6 +21,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -141,6 +142,9 @@ public class OpenShopAction {
         //如果已经开过店,扔异常
         if(ps.getLogshop()!=null){
             throw new JsonErrException("账号已经开过店");
+        }
+        if(StringUtils.isBlank(bo.getTbNick())){
+            throw new JsonErrException("请先进行淘宝绑定");
         }
         ShopRegister shopRegister=new ShopRegister();
         shopRegister.setIp(request.getRemoteHost());
