@@ -521,7 +521,12 @@ public class ShopAction {
             StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
             search.setKeyword(bo.getKeyword());
             search.setGoodsNo(bo.getGoodsNo());
-            search.setState(bo.getState());
+            if(bo.getState()!=null){
+                search.setState(bo.getState());
+                if(bo.getState()==5||bo.getState()==1){
+                    bo.setGoodsStyle(null);
+                }
+            }
             search.setStyleId(bo.getGoodsStyle());
             ShiguPager<OnsaleItem> pager = shopsItemService.selOnsaleItems(shopSession.getShopId(), shopSession.getWebSite(), search, bo.getPage(), bo.getPageSize());
             model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
