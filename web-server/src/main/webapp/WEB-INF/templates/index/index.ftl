@@ -103,7 +103,7 @@ if(pageType == 'W'){
             <div class="myOrderBox fl">
             <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
 <#list [{}] as $it>
-    <a href="http://www.571xz.com/member/myOrder.htm"
+    <a href="http://www.571xz.com/order/myOrder.htm"
         target="_blank"
     class="fmButton
          fmButton-white-o
@@ -707,5 +707,7 @@ if(pageType == 'W'){
         </ul>
     </div>
 </div>
+<#list [{"bg":"whiteBg"}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
