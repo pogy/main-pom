@@ -55,6 +55,16 @@
         <if test="bo.keyword!=null">
             AND a.title like concat('%',#{bo.keyword},'%')
         </if>
+        <if test="bo.styleId!=null">
+            <choose>
+                <when test="bo.styleId==-1">
+                    AND (b is null or b.styleId is null)
+                </when>
+                <when test="bo.styleId!=-1">
+                    AND b.style_id=${bo.styleId}
+                </when>
+            </choose>
+        </if>
         <if test="bo.state!=null">
             <choose>
                 <when test="bo.state==1">
