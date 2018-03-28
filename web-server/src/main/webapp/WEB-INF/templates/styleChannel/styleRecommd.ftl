@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=1300">
     <title>风格商品推荐 - 四季星座网</title>
 <#include "/common/base__config.ftl">
+<#assign searchType="goods">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/styleChannel__common_css.ftl">
