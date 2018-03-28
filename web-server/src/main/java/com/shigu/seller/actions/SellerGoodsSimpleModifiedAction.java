@@ -39,6 +39,10 @@ public class SellerGoodsSimpleModifiedAction {
         if (bindingResult.hasErrors()) {
             return JsonResponseUtil.error(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
+        String tbUrl = bo.getGoodsVideoUrl();
+        if (!simpleVideoService.isTbUrl(tbUrl)){
+            return JsonResponseUtil.error("只支持使用淘宝视频地址的主图视频");
+        }
         String videoUrl = bo.getGoodsVideoUrl();
         if (!simpleVideoService.isVideoUrl(videoUrl)) {
             return JsonResponseUtil.error("只支持使用mp4,webm和ogg格式的视频");

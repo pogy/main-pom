@@ -322,6 +322,17 @@ public class ActivityService {
                 fGoodsStyleList.add(gfGoodsStyleVO);
             }
         }
+        fGoodsStyleList.sort(new GfGoodsStyleVOCompatar());
         return fGoodsStyleList;
+    }
+    /**
+     * 活动页面类目排序
+     * todo 没有特别做过校验
+     */
+    class GfGoodsStyleVOCompatar implements Comparator<GfGoodsStyleVO> {
+        @Override
+        public int compare(GfGoodsStyleVO o1, GfGoodsStyleVO o2) {
+            return (int)(o1.getId() - o2.getId());
+        }
     }
 }

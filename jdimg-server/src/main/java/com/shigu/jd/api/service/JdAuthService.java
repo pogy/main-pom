@@ -7,6 +7,7 @@ import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.interfaces.JdSessionMapMapper;
 import com.shigu.jd.api.constant.JdUrlConstant;
+import com.shigu.jd.api.exceptions.AppNotBuyException;
 import com.shigu.jd.api.utils.JdKeyConfig;
 import com.shigu.jd.tools.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -53,7 +54,7 @@ public class JdAuthService {
      * @return
      * @throws IOException
      */
-    public JdAuthedInfo getAuthedInfo(String code) {
+    public JdAuthedInfo getAuthedInfo(String code) throws AppNotBuyException {
         String url = JdUrlConstant.JD_AUTH_TOKEN_URL
                         .replace("JD_APPKEY", JdKeyConfig.jdAppkey)
                         .replace("JD_SECRET",JdKeyConfig.jdSecret)
@@ -68,7 +69,9 @@ public class JdAuthService {
             return null;
         }
         JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
-
+        if(jdAithedInfo==null){
+            return null;
+        }
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setJdUid(jdAithedInfo.getUid());
         Date now = new Date();
@@ -139,7 +142,12 @@ public class JdAuthService {
         } catch (Exception e) {
            return null;
         }
-        JdAuthedInfo jdAithedInfo = getJdAithedInfo(entityString);
+        JdAuthedInfo jdAithedInfo = null;
+        try {
+            jdAithedInfo = getJdAithedInfo(entityString);
+        } catch (AppNotBuyException e) {
+            return null;
+        }
 
         JdSessionMap jdSessionMap = new JdSessionMap();
         jdSessionMap.setId(id);
@@ -152,7 +160,7 @@ public class JdAuthService {
         return jdAithedInfo;
     }
 
-    private JdAuthedInfo getJdAithedInfo(String entityString)  {
+    private JdAuthedInfo getJdAithedInfo(String entityString) throws AppNotBuyException {
         //注释：
         //uid：授权用户对应的京东ID
         //user_nick：授权用户对应的京东昵称
@@ -164,6 +172,9 @@ public class JdAuthService {
         //code 返回码
         JSONObject authedInfo = JSON.parseObject(entityString);
         int returnCode  = authedInfo.getIntValue("code");
+        if(405==returnCode){
+            throw new AppNotBuyException();
+        }
         if (0 != returnCode) {
             return null;
         }

@@ -21,6 +21,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
