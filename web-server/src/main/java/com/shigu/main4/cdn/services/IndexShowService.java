@@ -307,6 +307,7 @@ public class IndexShowService {
                     vo.setSname(parentStyle.getStyleName());
                     vo.setImgsrc(parentStyle.getChannelImgUrl());
                     vo.setDesc(parentStyle.getDescription());
+                    vo.setHref("http://www.571xz.com/styleIndex.htm?spid="+parentStyle.getId());
                     list.add(vo);
                 }
                 return list;

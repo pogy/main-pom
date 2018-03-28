@@ -196,6 +196,17 @@ public class CdnAction {
             //风格频道
             ObjFromCache<List<StyleChannelVO>> styleList = indexShowService.selStyleChannelInfo();
             List<StyleChannelVO> styleChannelVOS= (List<StyleChannelVO>) selFromCache(styleList);
+            //获取风格频道广告信息
+            List<ImgBannerVO> stylePics= (List<ImgBannerVO>) selFromCache(spreadService.selImgBanners(SpreadEnum.MAN_STYLE_PICS));
+            styleChannelVOS.forEach(styleChannelVO -> {
+                stylePics.forEach(imgBannerVO -> {
+                    if(styleChannelVO.getSpid().toString().equals(imgBannerVO.getText())){
+                        styleChannelVO.setImgsrc(imgBannerVO.getImgsrc());
+                        styleChannelVO.setHref(imgBannerVO.getHref());
+                    }
+                });
+            });
+
             model.addAttribute("styleList", styleChannelVOS);
             //类目导航
             ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu();
