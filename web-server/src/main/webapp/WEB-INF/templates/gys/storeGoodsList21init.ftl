@@ -97,10 +97,10 @@
 <script modulepath="gys/common#goodsFilterBar">
 var goodsStyles = '${goodsStyles!}';
 $$.domready('#goodsStyle', function(){
-    var cGoodsStyles = [':全部', '-1:无']
+    var cGoodsStyles = [':全部']
     var childStyleList = JSON.parse(goodsStyles);
     $.each(childStyleList, function(i, item){
-        cGoodsStyles[i+2] = item.scid + ':' + item.scname
+        cGoodsStyles[i+1] = item.scid + ':' + item.scname
     })
     $$.select('#goodsStyle', {
         options:cGoodsStyles
@@ -276,9 +276,9 @@ $$.domready('#goodsStyle', function(){
         <li class="saleCount">${item.saleCount!}</li>
         <li class="upcount">${item.count!}</li>
         <li class="control">
-            <#if session_user_redis__.logshop.type == 1>
+            <#if item.goodsSource == 1>
             <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
-            <#else>
+            <#elseif item.goodsSource == 2>
             <p><em class="xjgoods" jhand="downGoods">下架</em></p>
             </#if>
         </li>
