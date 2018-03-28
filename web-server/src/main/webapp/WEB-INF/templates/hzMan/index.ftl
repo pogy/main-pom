@@ -497,5 +497,7 @@ if(pageType == 'W'){
         </div>
     </div>
 </div>
+<#list [{"bg":"whiteBg"}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
