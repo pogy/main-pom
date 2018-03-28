@@ -185,7 +185,7 @@ public class StyleChannelService {
         if (bo.getCid() != null) {
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getCid()));
         } else if (bo.getPid() != null) {
-            cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
+            cids.addAll(styleSearchCat(bo.getWebSite(),bo.getPid()).stream().map(SubStyleCateNavVO::getCid).collect(Collectors.toList()));
         }
         if (cids.size() > 0) {
             goodsSearchBO.setCids(cids);

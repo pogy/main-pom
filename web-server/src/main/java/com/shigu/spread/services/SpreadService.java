@@ -244,31 +244,31 @@ public class SpreadService {
                 HomeCateMenu hzMarkets=new HomeCateMenu();
                 hzMarkets.setId(1L);
                 hzMarkets.setText("男装市场");
-                hzMarkets.setListitems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/maarket.htm?mid=1"),
-                        new HomeCateItem("精品男装","http://www.571xz.com/maarket.htm?mid=2"),
-                        new HomeCateItem("四季星座","http://www.571xz.com/maarket.htm?mid=3"),
-                        new HomeCateItem("钱塘大厦","http://www.571xz.com/maarket.htm?mid=5"),
-                        new HomeCateItem("新杭派","http://www.571xz.com/maarket.htm?mid=12"),
-                        new HomeCateItem("置地国际","http://www.571xz.com/maarket.htm?mid=8"),
-                        new HomeCateItem("之江服饰","http://www.571xz.com/maarket.htm?mid=10"),
-                        new HomeCateItem("优品基地","http://www.571xz.com/maarket.htm?mid=76")
+                hzMarkets.setListitems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
+                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
+                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
+                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
+                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
+                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
+                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
+                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76")
                 ));
                 ThreeCateMenu threeCateMenu=new ThreeCateMenu();
                 threeCateMenu.setText("男装市场");
-                threeCateMenu.setItems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/maarket.htm?mid=1"),
-                        new HomeCateItem("精品男装","http://www.571xz.com/maarket.htm?mid=2"),
-                        new HomeCateItem("四季星座","http://www.571xz.com/maarket.htm?mid=3"),
-                        new HomeCateItem("钱塘大厦","http://www.571xz.com/maarket.htm?mid=5"),
-                        new HomeCateItem("新杭派","http://www.571xz.com/maarket.htm?mid=12"),
-                        new HomeCateItem("置地国际","http://www.571xz.com/maarket.htm?mid=8"),
-                        new HomeCateItem("之江服饰","http://www.571xz.com/maarket.htm?mid=10"),
-                        new HomeCateItem("男鞋基地","http://www.571xz.com/maarket.htm?mid=18"),
-                        new HomeCateItem("石狮工厂店","http://www.571xz.com/maarket.htm?mid=20"),
-                        new HomeCateItem("优品基地","http://www.571xz.com/maarket.htm?mid=76"),
-                        new HomeCateItem("原创男装","http://www.571xz.com/maarket.htm?mid=16"),
-                        new HomeCateItem("九天国际","http://www.571xz.com/maarket.htm?mid=11"),
-                        new HomeCateItem("潮牌基地","http://www.571xz.com/maarket.htm?mid=9"),
-                        new HomeCateItem("周边市场","http://www.571xz.com/maarket.htm?mid=19")
+                threeCateMenu.setItems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
+                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
+                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
+                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
+                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
+                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
+                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
+                        new HomeCateItem("男鞋基地","http://www.571xz.com/market.htm?mid=18"),
+                        new HomeCateItem("石狮工厂店","http://www.571xz.com/market.htm?mid=20"),
+                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76"),
+                        new HomeCateItem("原创男装","http://www.571xz.com/market.htm?mid=16"),
+                        new HomeCateItem("九天国际","http://www.571xz.com/market.htm?mid=11"),
+                        new HomeCateItem("潮牌基地","http://www.571xz.com/market.htm?mid=9"),
+                        new HomeCateItem("周边市场","http://www.571xz.com/market.htm?mid=19")
                 ));
                 hzMarkets.setDetailitems(Collections.singletonList(threeCateMenu));
 

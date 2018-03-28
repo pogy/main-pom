@@ -21,6 +21,8 @@ public class OnsaleItemBO extends GhsGet{
 
     private Integer pageSize=10;
 
+    private Long goodsStyle;
+
 
     public Integer getPage() {
         if(page==null||page<=0){
@@ -73,5 +75,13 @@ public class OnsaleItemBO extends GhsGet{
     @Override
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
+    }
+
+    public Long getGoodsStyle() {
+        return this.goodsStyle;
+    }
+
+    public void setGoodsStyle(Long goodsStyle) {
+        this.goodsStyle = goodsStyle;
     }
 }
