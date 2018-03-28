@@ -89,18 +89,13 @@ public class UserAccountService {
     public boolean redPackApply(Long userId, Long money) {
 
         try {
-            for(int i =0;i<10;i++ ){
-                System.err.println(i);
-                new Thread(() -> {
-                    RedPackPayRequest request = new RedPackPayRequest();
-                    request.setXzUserId(userId);
-                    request.setPayAmount(money);
-                    RedPackPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
-                }).start();
+            RedPackPayRequest request = new RedPackPayRequest();
+            request.setXzUserId(userId);
+            request.setPayAmount(money);
+            RedPackPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
+            if (!response.isSuccess()) {
+                return false;
             }
-//            if (!response.isSuccess()) {
-//                return false;
-//            }
         } catch (Exception e) {
             return false;
         }
