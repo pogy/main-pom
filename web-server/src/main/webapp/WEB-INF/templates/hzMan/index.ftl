@@ -200,7 +200,6 @@ if(pageType == 'W'){
     <a class="wbtn" href="/" xzclick="gotoWomanPage">女装</a>
     <a class="mbtn" href="/" xzclick="gotoManPage">男装</a>
 </div>
-<div class="sideNavbar" id="sideNavbar"></div>
 <div class="firstScreenContent layout">
     <div class="leftbox">
 <div class="catemenu" id="catemenu">
@@ -500,6 +499,7 @@ if(pageType == 'W'){
         </div>
     </div>
 </div>
+<div class="sideNavbar" id="sideNavbar"></div>
 <#list [{"bg":"whiteBg"}] as $it>
 <#include "/common/xz__footer.ftl">
 </#list>
