@@ -85,11 +85,14 @@ public class OnsaleItem implements Serializable {
     /**
      * 风格id
      *
-     * @return
      */
     // TODO: 18-1-22 暂时先用Integer类型,兼容线上接口,等上线之后准备去除,使用styleId
     @Deprecated
     private Integer goodsStyleId;
+    /**
+     * 风格名
+     */
+    private String goodsStyleName;
     /**
      * 风格id
      *
@@ -247,5 +250,19 @@ public class OnsaleItem implements Serializable {
 
     public void setStyleId(Long styleId) {
         this.styleId = styleId;
+    }
+
+    /**
+     * 获取 风格名
+     */
+    public String getGoodsStyleName() {
+        return this.goodsStyleName;
+    }
+
+    /**
+     * 设置 风格名
+     */
+    public void setGoodsStyleName(String goodsStyleName) {
+        this.goodsStyleName = goodsStyleName;
     }
 }

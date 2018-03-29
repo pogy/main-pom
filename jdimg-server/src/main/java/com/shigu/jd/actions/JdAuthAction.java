@@ -41,7 +41,7 @@ public class JdAuthAction {
      * @throws IOException
      */
     @RequestMapping("callback")
-    public String jdCallback(String code, String state) {
+    public String jdCallback(String code, String state) throws JdAuthFailureException {
         if (StringUtils.isBlank(code) || StringUtils.isBlank(state)) {
             return "redirect:http://www.571xz.com";
         }
@@ -52,7 +52,10 @@ public class JdAuthAction {
         } catch (AppNotBuyException e) {
             return "redirect:https://fw.jd.com/591601.html";
         }
-        SdkJdVasSubscribe subscribeVO = null;
+        if(jdAuthedInfoVO==null){
+            throw new JdAuthFailureException("授权失败");
+        }
+        SdkJdVasSubscribe subscribeVO;
         try {
             subscribeVO = JdParseStateUtil.parseState(state);
             if (subscribeVO == null || subscribeVO.getEndDate().after(new Date())) {
@@ -61,14 +64,14 @@ public class JdAuthAction {
             }
         } catch (Exception ignored) {
         }
-        try {
-            //保存订购信息
-            subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
-            jdServiceMarketService.saveSubscribe(subscribeVO);
-        } catch (JdAuthFailureException e) {
-            e.printStackTrace();
-            return "redirect:http://www.571xz.com";
-        }
+//        try {
+//            //保存订购信息
+//            subscribeVO.setJdUid(jdAuthedInfoVO.getUid());
+//            jdServiceMarketService.saveSubscribe(subscribeVO);
+//        } catch (JdAuthFailureException e) {
+//            e.printStackTrace();
+//            return "redirect:http://www.571xz.com";
+//        }
 
         /************获取用户登陆信息**********/
         JdAuthedInfoResponse res=new JdAuthedInfoResponse();

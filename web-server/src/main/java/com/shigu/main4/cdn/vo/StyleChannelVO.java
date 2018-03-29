@@ -20,6 +20,8 @@ public class StyleChannelVO implements Serializable {
     //风格图片
     private String imgsrc;
 
+    private String href;
+
     public Long getSpid() {
         return spid;
     }
@@ -50,5 +52,13 @@ public class StyleChannelVO implements Serializable {
 
     public void setImgsrc(String imgsrc) {
         this.imgsrc = imgsrc;
+    }
+
+    public String getHref() {
+        return this.href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
     }
 }

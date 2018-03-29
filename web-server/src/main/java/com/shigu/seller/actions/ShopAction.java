@@ -521,7 +521,13 @@ public class ShopAction {
             StoreGoodsListSearchBO search = new StoreGoodsListSearchBO();
             search.setKeyword(bo.getKeyword());
             search.setGoodsNo(bo.getGoodsNo());
-            search.setState(bo.getState());
+            if(bo.getState()!=null){
+                search.setState(bo.getState());
+                if(bo.getState()==5||bo.getState()==1){
+                    bo.setGoodsStyle(null);
+                }
+            }
+            search.setStyleId(bo.getGoodsStyle());
             ShiguPager<OnsaleItem> pager = shopsItemService.selOnsaleItems(shopSession.getShopId(), shopSession.getWebSite(), search, bo.getPage(), bo.getPageSize());
             model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list = pager.getContent();
@@ -541,6 +547,7 @@ public class ShopAction {
             }
             //极限词过滤
             model.addAttribute("goodslist", goodsList.stream().peek(onsaleItemVO -> onsaleItemVO.setTitle(KeyWordsUtil.duleKeyWords(onsaleItemVO.getTitle()))).collect(Collectors.toList()));
+            model.addAttribute("goodsStyles",JSONArray.fromObject(shopItemModService.getSubStyleVO()).toString());
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId=" + shopSession.getShopId(), e);
         }

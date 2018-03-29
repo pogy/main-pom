@@ -26,10 +26,7 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.*;
-import com.shigu.main4.vo.HomeCateMenu;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.StoreRelation;
+import com.shigu.main4.vo.*;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.TodayNewGoodsService;
@@ -199,10 +196,21 @@ public class CdnAction {
             //风格频道
             ObjFromCache<List<StyleChannelVO>> styleList = indexShowService.selStyleChannelInfo();
             List<StyleChannelVO> styleChannelVOS= (List<StyleChannelVO>) selFromCache(styleList);
+            //获取风格频道广告信息
+            List<ImgBannerVO> stylePics= (List<ImgBannerVO>) selFromCache(spreadService.selImgBanners(SpreadEnum.MAN_STYLE_PICS));
+            styleChannelVOS.forEach(styleChannelVO -> {
+                stylePics.forEach(imgBannerVO -> {
+                    if(styleChannelVO.getSpid().toString().equals(imgBannerVO.getText())){
+                        styleChannelVO.setImgsrc(imgBannerVO.getImgsrc());
+                        styleChannelVO.setHref(imgBannerVO.getHref());
+                    }
+                });
+            });
+
             model.addAttribute("styleList", styleChannelVOS);
-            //todo 类目导航
-            List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
-            model.addAttribute("catemenu",catemenu);
+            //类目导航
+            ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu();
+            model.addAttribute("catemenu",selFromCache(catemenu));
             //人气商品
             List<HzManIndexHotItemsVO> hzManIndexHotItemsVOS=new ArrayList<>();
             for(StyleChannelVO styleChannelVO:styleChannelVOS){
@@ -213,8 +221,7 @@ public class CdnAction {
                 hzManIndexHotItemsVOS.add((HzManIndexHotItemsVO) selFromCache(hot));
             }
             model.addAttribute("popularGoodsList", hzManIndexHotItemsVOS);
-            //实时新品 todo 需要确认是不是用异步
-            model.addAttribute("intimeGoodsList",indexShowService.realTimeItems(Collections.singletonList(30L),"hz"));
+
 
             return "hzMan/index";
         } else {
@@ -242,8 +249,14 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(sz));
             loves.add((LoveGoodsList) selFromCache(xz));
             model.addAttribute("loveGoodslist", loves);
-            return "index/hzWoman";
+            return "index/index";
         }
+    }
+
+    @RequestMapping("getIntimeGoodsList")
+    @ResponseBody
+    public JSONObject getIntimeGoodsList(){
+        return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(30L,"hz"));
     }
 
     /**

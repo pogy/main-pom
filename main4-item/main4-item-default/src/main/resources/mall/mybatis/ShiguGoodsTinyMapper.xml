@@ -27,23 +27,13 @@
 
     <sql id="onsaleGoodsInfoSql">
         from shigu_goods_tiny_${webSite} a
-        <if test="bo.state!=null">
-
+        <if test="bo.state!=null or bo.styleId!=null">
             <choose>
-                <when test="bo.state==1">
+                <when test="bo.state!=null and bo.state==1">
                     LEFT JOIN shigu_goods_modified b ON a.goods_id = b.item_id
                 </when>
-                <when test="bo.state==2">
+                <when test="(bo.state!=null and bo.state!=1) or bo.styleId!=null">
                     LEFT JOIN goods_count_forsearch b ON  a.goods_id=b.goods_id
-                </when>
-                <when test="bo.state==3">
-                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
-                </when>
-                <when test="bo.state==4">
-                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
-                </when>
-                <when test="bo.state==5">
-                    LEFT JOIN goods_count_forsearch b ON a.goods_id=b.goods_id
                 </when>
             </choose>
         </if>
@@ -54,6 +44,9 @@
         </if>
         <if test="bo.keyword!=null">
             AND a.title like concat('%',#{bo.keyword},'%')
+        </if>
+        <if test="bo.styleId!=null">
+            AND b.style_id=${bo.styleId}
         </if>
         <if test="bo.state!=null">
             <choose>

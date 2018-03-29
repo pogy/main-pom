@@ -683,9 +683,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
         shiguGoodsModified.setItemId(tiny.getGoodsId());
-        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
-            shiguGoodsModified.setHasSetPrice(1);
-        }
+//        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
+//            shiguGoodsModified.setHasSetPrice(1);
+//        }
         shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据

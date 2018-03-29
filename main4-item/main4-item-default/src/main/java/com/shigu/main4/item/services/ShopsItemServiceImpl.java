@@ -472,6 +472,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     //设置材质时必须设置面料为必填项
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
+                    if(!StringUtils.isBlank(otherInfo.getFabric())){
+                        item.setConstituentType(2);
+                    }
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
                     item.setGoodsVideoUrl(otherInfo.getVideoUrl());
@@ -479,6 +482,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     item.setStyleId(otherInfo.getStyleId());
                     // TODO: 18-1-23 兼容旧版，等新版风格上线后去掉goodsStyleId
                     item.setGoodsStyleId(otherInfo.getGoodsStyleId());
+                    item.setGoodsStyleName(otherInfo.getGoodsStyleName());
                 }
                 onsaleItems.add(item);
             });
@@ -645,6 +649,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         updateVal.setStyleSearchScore(0L);
         updateVal.setStyleSearchScoreAdded(0L);
         updateVal.setParentStyleId(shiguStyle.getParentStyleId());
+        updateVal.setStyleName(shiguStyle.getStyleName());
         GoodsCountForsearchExample updateExample = new GoodsCountForsearchExample();
         updateExample.createCriteria().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdIsNull().or().andGoodsIdIn(new ArrayList<>(goodsIds)).andStyleIdNotEqualTo(styleId);
         goodsCountForsearchMapper.updateByExampleSelective(updateVal,updateExample);
