@@ -229,7 +229,7 @@ $$.domready('#goodsStyle', function(){
         </li>
         <li class="fiveSetAttr">
             <div>
-                <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
+                <b jhand="openEditGoodsStyleWindow" data-oneset="1" data-goodsstyleid="${item.goodsStyleId!}">
                     <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
                     <#if item.goodsStyleType == 2>
                     风格:${item.goodsStyleName!}
@@ -390,7 +390,7 @@ $$.domready('#goodsStyle', function(){
                             </b>
                         </li>
                         <li>
-                            <b jhand="openEditGoodsStyleWindow" data-goodsstyleid="${item.goodsStyleId!}">
+                            <b jhand="openEditGoodsStyleWindow" data-oneset="1" data-goodsstyleid="${item.goodsStyleId!}">
                                 <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
                                 <#if item.goodsStyleType == 2>
                                 风格:${item.goodsStyleName!}
