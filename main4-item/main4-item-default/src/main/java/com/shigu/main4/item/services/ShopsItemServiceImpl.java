@@ -472,6 +472,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
                     //设置材质时必须设置面料为必填项
                     item.setGoodsUpNum(otherInfo.getGoodsUpNum());
                     item.setSaleCount(otherInfo.getSaleCount());
+                    if(!StringUtils.isBlank(otherInfo.getFabric())){
+                        item.setConstituentType(2);
+                    }
                     item.setFabric(otherInfo.getFabric());
                     item.setInFabric(otherInfo.getInFabric());
                     item.setGoodsVideoUrl(otherInfo.getVideoUrl());
