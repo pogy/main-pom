@@ -10,7 +10,7 @@ import java.util.Date;
  * 出售中的商品
  * Created by zhaohongbo on 17/3/2.
  */
-public class OnsaleItem implements Serializable{
+public class OnsaleItem implements Serializable {
     /**
      * 商品ID
      */
@@ -84,9 +84,21 @@ public class OnsaleItem implements Serializable{
 
     /**
      * 风格id
+     *
+     */
+    // TODO: 18-1-22 暂时先用Integer类型,兼容线上接口,等上线之后准备去除,使用styleId
+    @Deprecated
+    private Integer goodsStyleId;
+    /**
+     * 风格名
+     */
+    private String goodsStyleName;
+    /**
+     * 风格id
+     *
      * @return
      */
-    private Integer goodsStyleId;
+    private Long styleId;
 
     public Integer getGoodsStyleId() {
         return goodsStyleId;
@@ -230,5 +242,27 @@ public class OnsaleItem implements Serializable{
 
     public void setGoodsVideoUrl(String goodsVideoUrl) {
         this.goodsVideoUrl = goodsVideoUrl;
+    }
+
+    public Long getStyleId() {
+        return styleId;
+    }
+
+    public void setStyleId(Long styleId) {
+        this.styleId = styleId;
+    }
+
+    /**
+     * 获取 风格名
+     */
+    public String getGoodsStyleName() {
+        return this.goodsStyleName;
+    }
+
+    /**
+     * 设置 风格名
+     */
+    public void setGoodsStyleName(String goodsStyleName) {
+        this.goodsStyleName = goodsStyleName;
     }
 }

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.opentae.data.mall.interfaces.GoodsCountForsearchMapper" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoodsCountForsearchMapper">
 
-	<insert id="insertOrUpdate" parameterType="com.opentae.data.mall.beans.GoodsCountForsearch">
-		INSERT INTO goods_count_forsearch (goods_id, web_site, click, click_ip, up, up_man)
-		VALUES
-		<foreach collection="list" separator="," item="search">
-			(#{search.goodsId}, #{search.webSite}, #{search.click}, #{search.clickIp}, #{search.up}, #{search.upMan})
-		</foreach>
-		ON DUPLICATE KEY UPDATE click=values(click),click_ip=values(click_ip),up=values(up),up_man=values(up_man);
-	</insert>
+    <insert id="insertOrUpdate" parameterType="com.opentae.data.mall.beans.GoodsCountForsearch">
+        INSERT INTO goods_count_forsearch (goods_id, web_site, click, click_ip, up, up_man)
+        VALUES
+        <foreach collection="list" separator="," item="search">
+            (#{search.goodsId}, #{search.webSite}, #{search.click}, #{search.clickIp}, #{search.up}, #{search.upMan})
+        </foreach>
+        ON DUPLICATE KEY UPDATE click=values(click),click_ip=values(click_ip),up=values(up),up_man=values(up_man);
+    </insert>
 
-	<insert id="insertOrUpdateForAdd" parameterType="com.opentae.data.mall.beans.GoodsCountForsearch">
-		INSERT INTO goods_count_forsearch (goods_id, web_site, click, click_ip)
-		VALUES
-		<foreach collection="list" separator="," item="search">
-			(#{search.goodsId}, #{search.webSite}, #{search.click}, #{search.clickIp})
-		</foreach>
-		ON DUPLICATE KEY UPDATE click = values(click) + click,click_ip= values(click_ip) + click_ip;
-	</insert>
+    <insert id="insertOrUpdateForAdd" parameterType="com.opentae.data.mall.beans.GoodsCountForsearch">
+        INSERT INTO goods_count_forsearch (goods_id, web_site, click, click_ip, style_search_score)
+        VALUES
+        <foreach collection="list" separator="," item="search">
+            (#{search.goodsId}, #{search.webSite}, #{search.click}, #{search.clickIp},0)
+        </foreach>
+        ON DUPLICATE KEY UPDATE click = values(click) + click,click_ip= values(click_ip) + click_ip,
+        style_search_score=values(style_search_score)+click+click_ip;
+    </insert>
 </mapper>

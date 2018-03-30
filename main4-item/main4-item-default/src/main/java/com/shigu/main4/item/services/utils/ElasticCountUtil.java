@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Created by wxc on 2017/3/13.
- *
+ * <p>
  * Es 搜索引擎 聚合搜索公用方法工具箱
  *
  * @author wxc
@@ -48,6 +48,7 @@ public class ElasticCountUtil {
 
     /**
      * 统计 架上商品的一键上传数量
+     *
      * @param tinies 商品集合
      * @return
      */
@@ -63,19 +64,19 @@ public class ElasticCountUtil {
             }
 
             //把增量数据补上
-            List<Long> goodsIdsList=new ArrayList<>(goodsIds);
-            GoodsupNorealExample example=new GoodsupNorealExample();
+            List<Long> goodsIdsList = new ArrayList<>(goodsIds);
+            GoodsupNorealExample example = new GoodsupNorealExample();
             example.createCriteria().andItemIdIn(goodsIdsList);
             for (GoodsupNoreal gn : goodsupNorealMapper.selectByExample(example)) {
                 Integer value = goodsupLongTerms.get(gn.getItemId().toString());
                 int count = gn.getAddNum() + (value == null ? 0 : value);
-                goodsupLongTerms.put(gn.getItemId().toString(),count);
+                goodsupLongTerms.put(gn.getItemId().toString(), count);
             }
         }
         return goodsupLongTerms;
     }
 
-    public GoodsupLongTerms<GoodsAggsVO> selItemCountData(List<Long> goodsIds){
+    public GoodsupLongTerms<GoodsAggsVO> selItemCountData(List<Long> goodsIds) {
         GoodsupLongTerms<GoodsAggsVO> itemResult = new GoodsupLongTerms<>();
         if (!CollectionUtils.isEmpty(goodsIds)) {
             GoodsCountForsearchExample example = new GoodsCountForsearchExample();
@@ -87,8 +88,14 @@ public class ElasticCountUtil {
                 goodsAggsVO.setFabric(goodsCountForsearch.getFabric());
                 goodsAggsVO.setInFabric(goodsCountForsearch.getInfabric());
                 goodsAggsVO.setVideoUrl(goodsCountForsearch.getVideoUrl());
-                goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid());
-                itemResult.put(goodsCountForsearch.getGoodsId().toString(),goodsAggsVO);
+                goodsAggsVO.setStyleId(goodsCountForsearch.getStyleId());
+                goodsAggsVO.setGoodsStyleName(goodsCountForsearch.getStyleName());
+                // TODO: 18-1-23 兼容旧版，等新版风格上线后去掉goodsStyleId
+                if (goodsCountForsearch.getSid() != null) {
+                    goodsAggsVO.setGoodsStyleId(goodsCountForsearch.getSid().intValue());
+                }
+
+                itemResult.put(goodsCountForsearch.getGoodsId().toString(), goodsAggsVO);
             }
             GoodsupNorealExample norealExample = new GoodsupNorealExample();
             norealExample.createCriteria().andItemIdIn(goodsIds);
@@ -96,7 +103,7 @@ public class ElasticCountUtil {
                 GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.getItemId().toString());
                 if (goodsAggsVO == null) {
                     goodsAggsVO = new GoodsAggsVO();
-                    itemResult.put(goodsupNoreal.getItemId().toString(),goodsAggsVO);
+                    itemResult.put(goodsupNoreal.getItemId().toString(), goodsAggsVO);
                 }
                 goodsAggsVO.addGoodsupNum(goodsupNoreal.getAddNum());
             }
@@ -107,7 +114,7 @@ public class ElasticCountUtil {
                 GoodsAggsVO goodsAggsVO = itemResult.get(shiguGoodsModified.getItemId().toString());
                 if (goodsAggsVO == null) {
                     goodsAggsVO = new GoodsAggsVO();
-                    itemResult.put(shiguGoodsModified.getItemId().toString(),goodsAggsVO);
+                    itemResult.put(shiguGoodsModified.getItemId().toString(), goodsAggsVO);
                 }
                 goodsAggsVO.setHasRetailPriceSet(shiguGoodsModified.getHasSetPrice());
             }

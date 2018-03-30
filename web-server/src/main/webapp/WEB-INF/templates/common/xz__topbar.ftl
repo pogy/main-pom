@@ -107,7 +107,7 @@
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
                 <li>
                     <div class="cnBox pr">
-                        <a class="cgcom pr noRig"><em>手机版</em><i class="downArrow"></i></a>
+                        <a class="cgcom pr noRig"><em>手机APP</em><i class="downArrow"></i></a>
                         <div class="appQr cnBoxCon pa">
                             <ul>
                                 <li>

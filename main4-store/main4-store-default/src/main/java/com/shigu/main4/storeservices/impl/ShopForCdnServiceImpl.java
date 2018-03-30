@@ -7,16 +7,15 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.bo.OnsaleItemQueryBO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.OpenItemVo;
 import com.shigu.main4.item.vo.SearchGoodsVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
-import com.shigu.main4.vo.CatPolymerization;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBaseForCdn;
-import com.shigu.main4.vo.ShopCat;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.vo.*;
 import com.shigu.opensearchsdk.OpenSearch;
 import com.shigu.opensearchsdk.builder.AggsBuilder;
 import com.shigu.opensearchsdk.builder.FilterBuilder;
@@ -31,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +67,23 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Resource(name = "tae_mall_shiguGoodsTinyMapper")
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+    @Autowired
+    private ShiguShopStyleRelationMapper shiguShopStyleRelationMapper;
+
+    @Autowired
+    private ShiguStyleMapper shiguStyleMapper;
+
     @Resource
     private OpenSearch openSearch;
 
     @Resource
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
+
+    @Autowired
+    private RedisIO redisIO;
+
+    // 店铺风格处理队列redis标签
+    private static final String SHOP_STYLE_HANDLER_QUEUE_INDEX = "shop_style_handler_queue_";
 
     private static final String SEARCH_APP = "goods_search_";
     /**
@@ -438,6 +450,18 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return shiguPager;
     }
 
+
+    @Override
+    public ShiguPager<ItemShowBlock> searchItemOnsaleByBO(OnsaleItemQueryBO onsaleItemQueryBO, String webSite, int paggeNo, int pageSize) {
+        ShiguPager<ItemShowBlock> pager = new ShiguPager<>();
+        ShopForCdnBo bo = BeanMapper.map(onsaleItemQueryBO, ShopForCdnBo.class);
+        bo.setIsOff(0);
+        bo.setPageNo(paggeNo);
+        bo.setPageSize(pageSize);
+        selectItemShowBlockByBo(bo,pager,webSite);
+        return pager;
+    }
+
     /**
      * 查询店内仓库中的商品
      *
@@ -557,6 +581,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         String orderBy = shopForCdnBo.getOrderBy();
         if (StringUtils.isEmpty(orderBy)) {
             requestBuilder.addSort(new SortField("created", Order.DECREASE));
+            if (shopForCdnBo.getParentStyleId() != null) {
+                requestBuilder.addSort(new SortField("style_search_score",Order.DECREASE));
+            }
         } else {
             switch (orderBy) {
                 case "price-asc":
@@ -617,6 +644,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
             requestBuilder.addFilter(FilterBuilder.number("store_id", shopId));
+        }
+        if (shopForCdnBo.getParentStyleId() != null) {
+            requestBuilder.addFilter(FilterBuilder.number("parent_style_id", shopForCdnBo.getParentStyleId()));
         }
         List<Long> goodsIds = shopForCdnBo.getGoodsIds();
         if (goodsIds != null ) {
@@ -809,5 +839,63 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         goodsNewList = searchItemOnsale(null, shopId, webSite, "time_down", 1, 4).getContent();
         goodsNewCache.put(shopId,goodsNewList);
         return goodsNewList;
+    }
+
+    /**
+     * 获取店内商品风格（风格频道）
+     * @param shopId
+     * @return
+     */
+    @Override
+    public List<ShiguStyleShowVO> selShopStyleById(Long shopId) {
+        if (shopId == null) {
+            // 没有输入店铺id，直接返回不可修改的空list
+            return Collections.EMPTY_LIST;
+        }
+        ShiguShopStyleRelation shiguShopStyleRelation = new ShiguShopStyleRelation();
+        shiguShopStyleRelation.setShopId(shopId);
+        shiguShopStyleRelation = shiguShopStyleRelationMapper.selectOne(shiguShopStyleRelation);
+        if (shiguShopStyleRelation == null) {
+            ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
+            // 没查到对应的店铺，或店铺状态不是开店，直接返回
+            if (shiguShop == null || !Objects.equals(0,shiguShop.getShopStatus())) {
+                return Collections.EMPTY_LIST;
+            }
+            //是正常店铺，且在店铺风格索引表中还没有记录，添加记录
+            shiguShopStyleRelation = new ShiguShopStyleRelation();
+            shiguShopStyleRelation.setShopId(shopId);
+            shiguShopStyleRelation.setWebSite(shiguShop.getWebSite());
+            shiguShopStyleRelation.setShopParentStyleIds(",");
+            shiguShopStyleRelationMapper.insertSelective(shiguShopStyleRelation);
+            // 推送到redis，交给定时项目处理店铺内风格数据
+            redisIO.rpush(SHOP_STYLE_HANDLER_QUEUE_INDEX,shopId);
+        }
+        //去掉头尾id区分标志用符号,
+        String parentStyleIdsStr = shiguShopStyleRelation.getShopParentStyleIds().replaceFirst("^,", "").replaceAll(",$", "");
+        // 没有设置过商品风格标签
+        if (StringUtils.isBlank(parentStyleIdsStr)) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Long> parentStyleIdList = new ArrayList<>();
+        for (String idStr : parentStyleIdsStr.split(",")) {
+            parentStyleIdList.add(Long.parseLong(idStr));
+        }
+        if (parentStyleIdList.size() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        ShiguStyleExample example = new ShiguStyleExample();
+        // 目前只提供父级风格搜索
+        example.createCriteria().andIdIn(parentStyleIdList).andIsParentEqualTo(1);
+        List<ShiguStyle> shiguStyles = shiguStyleMapper.selectByExample(example);
+        List<ShiguStyleShowVO> list = new ArrayList<>(shiguStyles.size());
+        for (ShiguStyle shiguStyle : shiguStyles) {
+            ShiguStyleShowVO styleShowVO = new ShiguStyleShowVO();
+            styleShowVO.setSpid(shiguStyle.getId());
+            styleShowVO.setName(shiguStyle.getStyleName());
+            styleShowVO.setSort(shiguStyle.getSort());
+            list.add(styleShowVO);
+        }
+        Collections.sort(list);
+        return list;
     }
 }

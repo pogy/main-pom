@@ -1,7 +1,43 @@
 <div class="J_TModule clearfix ui-droppable">
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161216" />
+    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20180131" />
     <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
+
     <div class="js-module" data-not-edit="" data-not-del="">
+        <#assign sortparam="id="+shop.shopId/>
+        <#if shopStyles??>
+            <div class="clearfix diyStyle">
+                <#list shopStyles as cate>
+                    <a class="styleItem
+                        <#if cate.spid == 1>
+                            green
+                        <#elseif cate.spid == 2>
+                            purple
+                        <#elseif cate.spid == 3>
+                            blue
+                        <#elseif cate.spid == 4>
+                            pink
+                        <#elseif cate.spid == 5>
+                            yellow
+                        <#elseif cate.spid == 6>
+                            orange
+                        </#if>
+                        <#if cate.spid == bo.spid>
+                            selected
+                        <#elseif cate.spid == bo.spid>
+                            selected
+                        <#elseif cate.spid == bo.spid>
+                            selected
+                        <#elseif cate.spid == bo.spid>
+                            selected
+                        <#elseif cate.spid == bo.spid>
+                            selected
+                        <#elseif cate.spid == bo.spid>
+                            selected
+                        </#if>
+                        " href="/shop/search.htm?${sortparam}&amp;spid=${cate.spid}">${cate.name!}</a>
+                </#list>
+            </div>
+        </#if>
         <div class="mr-title">
             <a>所有宝贝</a>
             <a href="javascript:;" style="">
@@ -25,7 +61,7 @@
                                 <#--<a href="/shop/search.htm?id=${shop.shopId}&cid=${poly.cid}">全部</a>-->
                                 <#--</li>-->
                                     <#list poly.subPolymerizations as subpoly>
-                                        <li class="">
+                                        <li <#if subpoly.cid == bo.cid>class="on"</#if>>
                                             <a href="/shop/search.htm?id=${shop.shopId}&cid=${subpoly.cid}">${subpoly.name}(${subpoly.number})</a>
                                         </li>
                                     </#list>
@@ -64,8 +100,10 @@
                     <#--<li class="sort">-->
                     <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
                     <#--</li>-->
-                    <#assign sortparam="id="+shop.shopId/>
                     <#if bo??>
+                        <#if bo.spid??>
+                            <#assign sortparam=sortparam+"&spid="+bo.spid/>
+                        </#if>
                         <#if bo.pstring??>
                             <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
                         </#if>
@@ -287,6 +325,9 @@
         </#if>
         <#if bo.endDate??>
             <#assign pageparam=pageparam+"&endDate="+bo.endDate/>
+        </#if>
+        <#if bo.spid??>
+            <#assign pageparam=pageparam+"&spid="+bo.spid/>
         </#if>
     </#if>
     <#assign href = "/shop/search.htm?${pageparam}&pageNo=">

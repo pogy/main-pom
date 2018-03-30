@@ -1,4 +1,4 @@
-<div class="footer">
+<div class="footer ${$it.bg!}">
     <div class="inner">
         <p class="sitemap">
             <a href="${mainHost!}/" target="_blank">首页</a>
