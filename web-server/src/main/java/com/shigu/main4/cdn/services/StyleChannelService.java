@@ -669,7 +669,7 @@ public class StyleChannelService {
             return new ArrayList<>();
         }
         List<StyleSpreadShopVO> shops = selSpreadShop(channel).selObj();
-        Collections.shuffle(shops);
+//        Collections.shuffle(shops);
         return shops;
     }
 
