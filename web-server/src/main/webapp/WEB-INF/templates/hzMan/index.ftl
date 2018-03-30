@@ -292,12 +292,12 @@ if(pageType == 'W'){
         <div class="tabCon">
             <ul>
                 <#list notices as item>
-                    <li><a href="${item.href!}" target="_blank">${item.text!}</a></li>
+                    <li><a href="${item.href!}" target="_blank" title="${item.text!}">${item.text!}</a></li>
                 </#list>
             </ul>
             <ul>
                 <#list rules as item>
-                    <li><a href="${item.href!}" target="_blank">${item.text!}</a></li>
+                    <li><a href="${item.href!}" target="_blank" title="${item.text!}">${item.text!}</a></li>
                 </#list>
             </ul>
         </div>

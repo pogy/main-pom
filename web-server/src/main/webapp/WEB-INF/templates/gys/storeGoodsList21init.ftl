@@ -411,10 +411,10 @@ $$.domready('#goodsStyle', function(){
             <li class="saleCount">${item.saleCount!}</li>
             <li class="upcount">${item.count!}</li>
             <li class="control">
-                <#if item.goodsSource == 1>
-                <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
-                <#elseif item.goodsSource == 2>
-                <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+                <#if session_user_redis__.logshop.type == 1>
+                    <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
+                <#else>
+                    <p><em class="xjgoods" jhand="downGoods">下架</em></p>
                 </#if>
             </li>
         </ul>
