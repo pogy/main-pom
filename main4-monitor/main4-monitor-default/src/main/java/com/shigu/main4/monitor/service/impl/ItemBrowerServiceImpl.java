@@ -74,47 +74,54 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
      */
     @Override
     public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
-        int multiple = 13;//倍数
+        try {
+            int multiple = 13;//倍数
+            Long real = selItemIP(itemId);
+            real=real==0L?1L:real;//防止为0
+            Long x_py=1L;
+            Long y_py=0L;
+            if(real>=2&&real<4){
+                multiple=2;
+            }else if(real>=4&&real<8){
+                multiple=3;
+                x_py=4L;
+                y_py=8L;//4x2
+            }else if(real>=8&&real<16){
+                multiple=4;
+                x_py=8L;
+                y_py=20L;//4x2+(8-4)x3
+            }else if(real>=16&&real<32){
+                multiple=5;
+                x_py=16L;
+                y_py=52L;//4x2+(8-4)x3+(16-8)x4
+            }else if(real>=32&&real<64){
+                multiple=7;
+                x_py=32L;
+                y_py=132L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5
+            }else if(real>=64&&real<128){
+                multiple=9;
+                x_py=64L;
+                y_py=356L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5+(64-32)x7
+            }else if(real>=128){
+                multiple=12;
+                x_py=128L;
+                y_py=932L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5+(64-32)x7+(128-64)x9
+            }
+            Long realPV = selItemBrower(itemId);
 
-        Long real = selItemIP(itemId);
-        real=real==0L?1L:real;//防止为0
-        Long x_py=1L;
-        Long y_py=0L;
-        if(real>=2&&real<4){
-            multiple=2;
-        }else if(real>=4&&real<8){
-            multiple=3;
-            x_py=4L;
-            y_py=8L;//4x2
-        }else if(real>=8&&real<16){
-            multiple=4;
-            x_py=8L;
-            y_py=20L;//4x2+(8-4)x3
-        }else if(real>=16&&real<32){
-            multiple=5;
-            x_py=16L;
-            y_py=52L;//4x2+(8-4)x3+(16-8)x4
-        }else if(real>=32&&real<64){
-            multiple=7;
-            x_py=32L;
-            y_py=132L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5
-        }else if(real>=64&&real<128){
-            multiple=9;
-            x_py=64L;
-            y_py=356L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5+(64-32)x7
-        }else if(real>=128){
-            multiple=12;
-            x_py=128L;
-            y_py=932L;//4x2+(8-4)x3+(16-8)x4+(32-16)x5+(64-32)x7+(128-64)x9
+            ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
+            vo.setVersion(unrealVersion);
+            vo.setNumber((real-x_py) * multiple + y_py + realPV);
+            vo.setMakeTime(new Date());
+            redisIO.putTemp("item_flow_" + itemId, vo, 200);
+            return vo;
+        } catch (Exception e) {
+            ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
+            vo.setVersion(unrealVersion);
+            vo.setNumber(0);
+            vo.setMakeTime(new Date());
+            return vo;
         }
-        Long realPV = selItemBrower(itemId);
-
-        ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
-        vo.setVersion(unrealVersion);
-        vo.setNumber((real-x_py) * multiple + y_py + realPV);
-        vo.setMakeTime(new Date());
-        redisIO.putTemp("item_flow_" + itemId, vo, 200);
-        return vo;
     }
 
     /**
