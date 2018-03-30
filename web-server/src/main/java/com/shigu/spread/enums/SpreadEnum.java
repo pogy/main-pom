@@ -8,6 +8,10 @@ public enum SpreadEnum {
     QZGG("全站公告", "QZGG"), QZRULE("全站规则", "QZRULE"),
     MAN_STYLE_PICS("杭州男装风格图","MAN_STYLE_PICS"),
 
+    // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
+    MAN_DT_NEW("男装大图新版2018-04","MAN-DT-NEW-201804"),MAN_XT_NEW("男装小图新版2018-04","MAN-XT-NEW-201804"),
+
+
     MAN_DT("男装大图", "MAN-DT"), MAN_XT("男装小图", "MAN-XT"),
     MAN_RM("热卖广告", "MAN-RM"), MAN_FG("风格", "MAN-FG"), MAN_YS("元素", "MAN-YS"),
     MAN_TJDK("推荐档口", "MAN-TJDK"), MAN_XHTX("喜欢T恤", "MAN-XHTX"), MAN_XHNZ("喜欢牛仔", "MAN-XHNZ"),
