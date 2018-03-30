@@ -74,7 +74,7 @@
                         <div class="storeGoods">
                             <ul>
                                 <#list store.goodsList as goods>
-                                    <li><a href="item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgsrc!}"></a></li>
+                                    <li><a href="item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgsrc!}_200x200.jpg"></a></li>
                                 </#list>
                             </ul>
                         </div>
@@ -106,6 +106,8 @@
         <a href="styleGoodsList.htm?spid=${query.spid!}" class="shopMore yahei" target="_blank">查看全部 ${sname!} 商品<i class="icon-rightarrow"></i></a>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 </body>
 <#include "/common/cnzz.ftl">
