@@ -143,9 +143,6 @@ public class OpenShopAction {
         if(ps.getLogshop()!=null){
             throw new JsonErrException("账号已经开过店");
         }
-        if(StringUtils.isBlank(bo.getTbNick())){
-            throw new JsonErrException("请先进行淘宝绑定");
-        }
         ShopRegister shopRegister=new ShopRegister();
         shopRegister.setIp(request.getRemoteHost());
         shopRegister.setUserId(ps.getUserId());
