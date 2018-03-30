@@ -412,21 +412,25 @@ public class TaoOrderServiceImpl implements TaoOrderService {
      * @return
      */
     private List<TinyIdMapVO> selFromEs(List<Long> numIids){
-        SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
-                .setQuery(QueryBuilders.termsQuery("fenNumiid",numIids)).execute().actionGet();
-        SearchHits hits=response.getHits();
-        SearchHit[] hitArr=hits.getHits();
-        List<TinyIdMapVO> results=new ArrayList<>();
-        for(int i=0;i<hitArr.length;i++){
-            SearchHit hit=hitArr[i];
-            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-            TinyIdMapVO tinyIdMapVO=new TinyIdMapVO();
-            tinyIdMapVO.setWebSite(shiguGoodsUp.getWebSite());
-            tinyIdMapVO.setGoodsId(shiguGoodsUp.getSupperGoodsId());
-            tinyIdMapVO.setNumIid(shiguGoodsUp.getFenNumiid());
-            results.add(tinyIdMapVO);
+        try {
+            SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
+                    .setQuery(QueryBuilders.termsQuery("fenNumiid",numIids)).execute().actionGet();
+            SearchHits hits=response.getHits();
+            SearchHit[] hitArr=hits.getHits();
+            List<TinyIdMapVO> results=new ArrayList<>();
+            for(int i=0;i<hitArr.length;i++){
+                SearchHit hit=hitArr[i];
+                ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+                TinyIdMapVO tinyIdMapVO=new TinyIdMapVO();
+                tinyIdMapVO.setWebSite(shiguGoodsUp.getWebSite());
+                tinyIdMapVO.setGoodsId(shiguGoodsUp.getSupperGoodsId());
+                tinyIdMapVO.setNumIid(shiguGoodsUp.getFenNumiid());
+                results.add(tinyIdMapVO);
+            }
+            return results;
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        return results;
     }
 
 
