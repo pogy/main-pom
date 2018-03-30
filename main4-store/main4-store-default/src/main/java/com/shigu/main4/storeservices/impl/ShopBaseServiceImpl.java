@@ -151,7 +151,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShopUpdate.setShopId(shopId);
         shiguShopUpdate.setDomain(domain);
         result = shiguShopMapper.updateByPrimaryKeySelective(shiguShopUpdate);
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
         if(result == 0){
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getMessage());
@@ -242,52 +242,52 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             shiguShop.setCloseReason(reason.toString());
         }
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
 
         shiguGoodsTinyMapper.updateGoodsTinyByClose(shiguShop.getWebSite(), 0, 1, shopId);
 
         // 更新es数据
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        srb.setSize(5000);
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
-        boleanQueryBuilder.must(queryBuilder);
-        QueryBuilder queryBuilderIsOff = QueryBuilders.termQuery("is_off" ,0);
-        boleanQueryBuilder.must(queryBuilderIsOff);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null || hits.length == 0){
-            return;
-        }
-        // 批量更新
-        Client client = ElasticConfiguration.client;
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-
-        for (SearchHit hit : hits) {
-            if (hit == null) {
-                continue;
-            }
-            String source = hit.getSourceAsString();
-            if (StringUtils.isEmpty(source)) {
-                continue;
-            }
-            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
-            if (esGoods == null) {
-                continue;
-            }
-            esGoods.setIs_off(1L);
-            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
-            bulkRequest.add(client.prepareIndex("goods"
-                    , hit.getType()
-                    , hit.getId()).setSource(source));
-        }
-        try {
-            bulkRequest.execute().actionGet();
-        } catch (Exception e) {
-            logger.error("更新商品es数据关闭状态为1>>发生异常>>批量更新es数据>>error:" + e.toString());
-            e.printStackTrace();
-        }
+//        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
+//        srb.setSize(5000);
+//        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+//        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
+//        boleanQueryBuilder.must(queryBuilder);
+//        QueryBuilder queryBuilderIsOff = QueryBuilders.termQuery("is_off" ,0);
+//        boleanQueryBuilder.must(queryBuilderIsOff);
+//        srb.setQuery(boleanQueryBuilder);
+//        SearchResponse response = srb.execute().actionGet();
+//        SearchHit[] hits = response.getHits().getHits();
+//        if(hits == null || hits.length == 0){
+//            return;
+//        }
+//        // 批量更新
+//        Client client = ElasticConfiguration.client;
+//        BulkRequestBuilder bulkRequest = client.prepareBulk();
+//
+//        for (SearchHit hit : hits) {
+//            if (hit == null) {
+//                continue;
+//            }
+//            String source = hit.getSourceAsString();
+//            if (StringUtils.isEmpty(source)) {
+//                continue;
+//            }
+//            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
+//            if (esGoods == null) {
+//                continue;
+//            }
+//            esGoods.setIs_off(1L);
+//            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
+//            bulkRequest.add(client.prepareIndex("goods"
+//                    , hit.getType()
+//                    , hit.getId()).setSource(source));
+//        }
+//        try {
+//            bulkRequest.execute().actionGet();
+//        } catch (Exception e) {
+//            logger.error("更新商品es数据关闭状态为1>>发生异常>>批量更新es数据>>error:" + e.toString());
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -330,7 +330,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setDomain("");
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
 
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
         shiguGoodsTinyMapper.updateGoodsTinyByClose(shiguShop.getWebSite(), 1, 0, shopId);
 
         // 修改二级域名
@@ -346,47 +346,47 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         }
 
         // 更新es数据
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        srb.setSize(5000);
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
-        boleanQueryBuilder.must(queryBuilder);
-        QueryBuilder queryBuilderIsOff = QueryBuilders.termQuery("is_off" ,1);
-        boleanQueryBuilder.must(queryBuilderIsOff);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null || hits.length == 0){
-            return;
-        }
-        // 批量更新
-        Client client = ElasticConfiguration.client;
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-
-        for (SearchHit hit : hits) {
-            if (hit == null) {
-                continue;
-            }
-            String source = hit.getSourceAsString();
-            if (StringUtils.isEmpty(source)) {
-                continue;
-            }
-            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
-            if (esGoods == null) {
-                continue;
-            }
-            esGoods.setIs_off(0L);
-            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
-            bulkRequest.add(client.prepareIndex("goods"
-                    , hit.getType()
-                    , hit.getId()).setSource(source));
-        }
-        try {
-            bulkRequest.execute().actionGet();
-        } catch (Exception e) {
-            logger.error("更新商品es数据关闭状态为1>>发生异常>>批量更新es数据>>error:" + e.toString());
-            e.printStackTrace();
-        }
+//        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
+//        srb.setSize(5000);
+//        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+//        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
+//        boleanQueryBuilder.must(queryBuilder);
+//        QueryBuilder queryBuilderIsOff = QueryBuilders.termQuery("is_off" ,1);
+//        boleanQueryBuilder.must(queryBuilderIsOff);
+//        srb.setQuery(boleanQueryBuilder);
+//        SearchResponse response = srb.execute().actionGet();
+//        SearchHit[] hits = response.getHits().getHits();
+//        if(hits == null || hits.length == 0){
+//            return;
+//        }
+//        // 批量更新
+//        Client client = ElasticConfiguration.client;
+//        BulkRequestBuilder bulkRequest = client.prepareBulk();
+//
+//        for (SearchHit hit : hits) {
+//            if (hit == null) {
+//                continue;
+//            }
+//            String source = hit.getSourceAsString();
+//            if (StringUtils.isEmpty(source)) {
+//                continue;
+//            }
+//            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
+//            if (esGoods == null) {
+//                continue;
+//            }
+//            esGoods.setIs_off(0L);
+//            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
+//            bulkRequest.add(client.prepareIndex("goods"
+//                    , hit.getType()
+//                    , hit.getId()).setSource(source));
+//        }
+//        try {
+//            bulkRequest.execute().actionGet();
+//        } catch (Exception e) {
+//            logger.error("更新商品es数据关闭状态为1>>发生异常>>批量更新es数据>>error:" + e.toString());
+//            e.printStackTrace();
+//        }
         // TODO:如果授权正常，此处需要全店同步
 
     }
@@ -410,7 +410,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setDataPacketUrl(shopBase.getDataPackageUrl());
         shiguShop.setShopId(shopId);
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
         // 去除缓存
         cacheManager.getCache("shopBaseCache").evict(shopId);
     }
@@ -459,7 +459,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setFloorId(toFloorId);
         shiguShop.setShopNum(shopNum);
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
 
         try{
             updateDomain(shopId, shiguShop.getDomain());
@@ -468,52 +468,52 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             logger.error("档口迁移，迁移二级域名发生错误>>error:" + e.getMsg());
             shiguShop.setDomain(null);
             shiguShopMapper.updateByPrimaryKey(shiguShop);
-            shopToEsService.addToEs(shiguShop.getShopId());
+//            shopToEsService.addToEs(shiguShop.getShopId());
         }
 
 
         shiguGoodsTinyMapper.updateFloorMarketByShopId(shopId, shiguShop.getWebSite(), toMarketId, toFloorId);
 
         // 更新es数据
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        srb.setSize(5000);
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
-        boleanQueryBuilder.must(queryBuilder);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null || hits.length == 0){
-            return;
-        }
-        // 批量更新
-        Client client = ElasticConfiguration.client;
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (SearchHit hit : hits) {
-            if (hit == null) {
-                continue;
-            }
-            String source = hit.getSourceAsString();
-            if (StringUtils.isEmpty(source)) {
-                continue;
-            }
-            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
-            if (esGoods == null) {
-                continue;
-            }
-            esGoods.setMarketId(toFloorId);
-            esGoods.setParentMarketId(toMarketId);
-            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
-            bulkRequest.add(client.prepareIndex("goods"
-                    , hit.getType()
-                    , hit.getId()).setSource(source));
-        }
-        try {
-            bulkRequest.execute().actionGet();
-        } catch (Exception e) {
-            logger.error("更新商品es数据档口迁移>>发生异常>>批量更新es数据>>error:" + e.toString());
-            e.printStackTrace();
-        }
+//        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
+//        srb.setSize(5000);
+//        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+//        QueryBuilder queryBuilder = QueryBuilders.termQuery("storeId" ,shopId);
+//        boleanQueryBuilder.must(queryBuilder);
+//        srb.setQuery(boleanQueryBuilder);
+//        SearchResponse response = srb.execute().actionGet();
+//        SearchHit[] hits = response.getHits().getHits();
+//        if(hits == null || hits.length == 0){
+//            return;
+//        }
+//        // 批量更新
+//        Client client = ElasticConfiguration.client;
+//        BulkRequestBuilder bulkRequest = client.prepareBulk();
+//        for (SearchHit hit : hits) {
+//            if (hit == null) {
+//                continue;
+//            }
+//            String source = hit.getSourceAsString();
+//            if (StringUtils.isEmpty(source)) {
+//                continue;
+//            }
+//            ESGoods esGoods = JSON.parseObject(source,ESGoods.class);
+//            if (esGoods == null) {
+//                continue;
+//            }
+//            esGoods.setMarketId(toFloorId);
+//            esGoods.setParentMarketId(toMarketId);
+//            source = JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss");
+//            bulkRequest.add(client.prepareIndex("goods"
+//                    , hit.getType()
+//                    , hit.getId()).setSource(source));
+//        }
+//        try {
+//            bulkRequest.execute().actionGet();
+//        } catch (Exception e) {
+//            logger.error("更新商品es数据档口迁移>>发生异常>>批量更新es数据>>error:" + e.toString());
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -595,7 +595,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setUserId(userId);
         shiguShopMapper.updateByPrimaryKey(shiguShop);
 
-        shopToEsService.addToEs(shiguShop.getShopId());
+//        shopToEsService.addToEs(shiguShop.getShopId());
     }
 
     /**
