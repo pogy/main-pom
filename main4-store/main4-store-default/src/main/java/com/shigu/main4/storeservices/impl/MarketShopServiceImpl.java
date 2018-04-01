@@ -191,6 +191,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                 List<Long> shopIdList = new ArrayList<Long>();
                 String[] shops = addedShops.split(";");
                 Map<Long, ShopShow> map = new HashMap<>();
+                Map<Long,Integer> isSort=new HashMap<>();
                 for (String shop : shops) {
                     String[] shopInfos = shop.split(",");
                     ShopShow shopShow = new ShopShow();
@@ -204,6 +205,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                     if (shopInfos.length >= 2) {
                         shopShow.setShopNum(shopInfos[1]);
                         shopShow.setSortOrderKey(shopInfos[1]);
+                        isSort.put(shopShow.getShopId(),1);
                     }
                     if (shopInfos.length >= 3) {
                         shopShow.setShopName(shopInfos[2]);
@@ -220,13 +222,17 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                     }
                     String context = shiguShop.getShopTagsContexts();
                     s.setTags(selTags(context));
-                    s.setSortOrderKey(shiguShop.getSortOrderKey());
+                    s.setFloorId(shiguShop.getFloorId());
+                    if(isSort.get(shiguShop.getShopId())==null){
+                        s.setSortOrderKey(shiguShop.getSortOrderKey());
+                    }else{
+                        s.setFloorId(floorId);
+                    }
                     if (!StringUtils.isEmpty(shiguShop.getSystemRecommon())) {
                         s.setSystemComment(shiguShop.getSystemRecommon());
                     }
                     s.setCreateDate(shiguShop.getCreateDate());
                     s.setMainBus(shiguShop.getMainBus());
-                    s.setFloorId(shiguShop.getFloorId());
                 }
             }
         }
