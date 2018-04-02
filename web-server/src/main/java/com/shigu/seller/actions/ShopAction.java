@@ -1388,18 +1388,18 @@ public class ShopAction {
      */
     @RequestMapping("seller/setGoodsStyle")
     @ResponseBody
-    public JSONObject setGoodsStyle(Long goodsId, Long styleId, Boolean relativeIs, HttpSession session) {
+    public JSONObject setGoodsStyle(String goodsIds, Long styleId, Boolean relativeIs, HttpSession session) {
         ShopSession shopSession = getShopSession(session);
         if (shopSession.getShopId() == null || StringUtils.isBlank(shopSession.getWebSite())) {
             return JsonResponseUtil.error("只有档口用户可以修改商品风格");
         }
-        if (goodsId == null) {
+        if (goodsIds == null && goodsIds == "") {
             return JsonResponseUtil.error("请指点要修改的商品");
         }
         if (styleId == null) {
             return JsonResponseUtil.error("请指定风格");
         }
-        JSONObject result = shopItemModService.setStyle(goodsId, styleId, shopSession.getShopId(), shopSession.getWebSite(), Objects.equals(true, relativeIs));
+        JSONObject result = shopItemModService.setStyle(goodsIds, styleId, shopSession.getShopId(), shopSession.getWebSite(), Objects.equals(true, relativeIs));
         shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_STYLE_INDEX_);
         return result;
     }

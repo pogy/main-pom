@@ -351,39 +351,49 @@ public class ShopItemModService {
 
     /**
      * 设置商品风格
-     * @param goodsId
+     * @param goodsIds
      * @param styleId
      * @param shopId
      * @param webSite
      * @param sameGoodsNoSet 是否关联相同货号
      * @return
      */
-    public JSONObject setStyle(Long goodsId, Long styleId, Long shopId, String webSite, boolean sameGoodsNoSet) {
-        if (goodsId == null || styleId == null || shopId == null || StringUtils.isBlank(webSite)) {
+    public JSONObject setStyle(String goodsIds, Long styleId, Long shopId, String webSite, boolean sameGoodsNoSet) {
+
+        String[] gis = goodsIds.split(",");
+        List<Long> goodsIdList = new ArrayList<>();
+        for (String goodsId : gis) {
+            goodsIdList.add(Long.valueOf(goodsId));
+        }
+
+        Set<Long> goodsIdSet = new HashSet<>();
+
+        if (goodsIdList == null || goodsIdList.size() <= 0 || styleId == null || shopId == null || StringUtils.isBlank(webSite)) {
             return JsonResponseUtil.error("非法的请求参数");
         }
-        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
-        tiny.setGoodsId(goodsId);
-        tiny.setWebSite(webSite);
-        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
-        if (tiny == null) {
-            return JsonResponseUtil.error("商品不存在或已下架");
-        }
-        if (!shopId.equals(tiny.getStoreId())) {
-            return JsonResponseUtil.error("只能操作本店鋪的商品");
-        }
-        Set<Long> goodsIds = new HashSet<>();
-        goodsIds.add(goodsId);
-        if (sameGoodsNoSet && StringUtils.isNotBlank(tiny.getGoodsNo())) {
-            ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-            example.setWebSite(webSite);
-            example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
-            List<ShiguGoodsTiny> goodsList = shiguGoodsTinyMapper.selectFieldsByExample(example, "goods_id");
-            for (ShiguGoodsTiny shiguGoodsTiny : goodsList) {
-                goodsIds.add(shiguGoodsTiny.getGoodsId());
+        for (Long goodsId : goodsIdList){
+            ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+            tiny.setGoodsId(goodsId);
+            tiny.setWebSite(webSite);
+            tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+            if (tiny == null) {
+                return JsonResponseUtil.error("商品不存在或已下架");
+            }
+            if (!shopId.equals(tiny.getStoreId())) {
+                return JsonResponseUtil.error("只能操作本店鋪的商品");
+            }
+            goodsIdSet.add(goodsId);
+            if (sameGoodsNoSet && StringUtils.isNotBlank(tiny.getGoodsNo())) {
+                ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+                example.setWebSite(webSite);
+                example.createCriteria().andStoreIdEqualTo(shopId).andGoodsNoEqualTo(tiny.getGoodsNo());
+                List<ShiguGoodsTiny> goodsList = shiguGoodsTinyMapper.selectFieldsByExample(example, "goods_id");
+                for (ShiguGoodsTiny shiguGoodsTiny : goodsList) {
+                    goodsIdSet.add(shiguGoodsTiny.getGoodsId());
+                }
             }
         }
-        String result = shopsItemService.setGoodsStyle(goodsIds, styleId, webSite);
+        String result = shopsItemService.setGoodsStyle(goodsIdSet, styleId, webSite);
         if ("success".equals(result)) {
             redisIO.rpush(SHOP_STYLE_HANDLER_QUEUE_INDEX,shopId);
             return JsonResponseUtil.success();

@@ -237,7 +237,7 @@ public class SpreadService {
 
 
     public ObjFromCache<List<HomeCateMenu>> castedHomeCateMenu(){
-        return new ObjFromCache<List<HomeCateMenu>>(redisForIndexPage,"NEW_HZ_HomeCateMenu",HzManIndexHotItemsVO.class){
+        return new ObjFromCache<List<HomeCateMenu>>(redisForIndexPage,"NEW_HZ_HomeCateMenu",HomeCateMenu.class){
             @Override
             public List<HomeCateMenu> selReal() {
                 //todo 类目导航,市场暂时写死
