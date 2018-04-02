@@ -58,6 +58,36 @@ public class UserBaseServiceImpl implements UserBaseService {
     @Autowired
     UserLicenseService userLicenseService;
 
+    @Override
+    public PersonalSession selUserForSessionByUserIdAndNick(Long userId,String tbNick) {
+        //查用户子表,如果有,再查出用户主表包装PersonalSession
+        MemberUserSubExample subExample=new MemberUserSubExample();
+        MemberUserSubExample.Criteria cri=subExample.createCriteria();
+        cri.andUserIdEqualTo(userId).andAccountTypeEqualTo(LoginFromType.TAOBAO.getAccountType());
+        if (StringUtils.isNotBlank(tbNick)) {
+            cri.andSubUserNameEqualTo(tbNick);
+        }
+
+        subExample.setStartIndex(0);
+        subExample.setEndIndex(1);
+        List<MemberUserSub> subs=memberUserSubMapper.selectFieldsByConditionList(subExample,
+                FieldUtil.codeFields("user_id,sub_user_id,sub_user_name"));
+        if(subs.size()>0){
+            MemberUserSub mus=subs.get(0);
+            MemberUser memberUser=memberUserMapper.selectFieldsByPrimaryKey(mus.getUserId(),
+                    FieldUtil.codeFields("user_id,user_nick,portrait_url"));
+            if(memberUser==null){//数据异常
+                logger.error(mus.getUserId()+"此用户,分表里有,主表里不存在!!!!!!!");
+                return null;
+            }
+            PersonalSession ps=parseToPersonal(memberUser,mus);
+            ps.setLoginFromType(LoginFromType.TAOBAO);
+            ps.setLoginName(mus.getSubUserName());
+            return ps;
+        }
+        return null;
+    }
+
     /**
      * 按用户名查用户基准信息
      * @param userName
