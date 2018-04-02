@@ -1,5 +1,7 @@
 package com.shigu.main4.monitor.service.impl;
 
+import com.opentae.data.mall.beans.GoodsCountForsearch;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.vo.ItemBrowerFlowVO;
@@ -36,6 +38,9 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     /**
      * 真实浏览
@@ -154,10 +159,21 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         if(itemId == null){
             return 0L;
         }
-        return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
-                .setTypes("item").setSearchType(SearchType.COUNT)
-                .setQuery(QueryBuilders.termQuery("itemId", itemId))
-                .execute().actionGet().getHits().getTotalHits();
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(itemId);
+        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (goodsCountForsearch == null) {
+            return 0L;
+        }
+        Long click = goodsCountForsearch.getClick();
+        if (click == null) {
+            return 0L;
+        }
+        return click;
+        //return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+        //        .setTypes("item").setSearchType(SearchType.COUNT)
+        //        .setQuery(QueryBuilders.termQuery("itemId", itemId))
+        //        .execute().actionGet().getHits().getTotalHits();
     }
 
     @Override
@@ -165,15 +181,26 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         if (itemId == null) {
             return 0L;
         }
-        SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
-                .setTypes("item")
-                .setSearchType(SearchType.COUNT)
-                .setQuery(QueryBuilders.termQuery("itemId", itemId))
-                .addAggregation(AggregationBuilders.cardinality("countClient").field("clientMsg.clientIp"))
-                .execute().actionGet();
-
-        Cardinality countClient = response.getAggregations().get("countClient");
-        return countClient.getValue();
+        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+        goodsCountForsearch.setGoodsId(itemId);
+        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+        if (goodsCountForsearch == null) {
+            return 0L;
+        }
+        Long clickIp = goodsCountForsearch.getClickIp();
+        if (clickIp == null) {
+            return 0L;
+        }
+        return clickIp;
+        //SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+        //        .setTypes("item")
+        //        .setSearchType(SearchType.COUNT)
+        //        .setQuery(QueryBuilders.termQuery("itemId", itemId))
+        //        .addAggregation(AggregationBuilders.cardinality("countClient").field("clientMsg.clientIp"))
+        //        .execute().actionGet();
+        //
+        //Cardinality countClient = response.getAggregations().get("countClient");
+        //return countClient.getValue();
     }
 
     /**

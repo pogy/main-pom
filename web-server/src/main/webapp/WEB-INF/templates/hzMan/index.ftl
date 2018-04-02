@@ -459,7 +459,7 @@ if(pageType == 'W'){
             <ul>
                 <li>
                     <h5>四季星座网</h5>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=78" target="_blank">关于我们</a></p>
+                    <p><a href="http://www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
                     <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
                 </li>
                 <li>
