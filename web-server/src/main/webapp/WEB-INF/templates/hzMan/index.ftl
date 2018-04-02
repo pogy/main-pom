@@ -318,7 +318,7 @@ if(pageType == 'W'){
                 <ul>
                     <li><a href="/styleGoodsList.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>全部商品</li>
                     <li><a href="/styleMarket.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>市场列表</li>
-                    <li><a href="/styleRecommd.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>推荐商品</li>
+                    <#--<li><a href="/styleRecommd.htm?spid=${item.spid!}" target="_blank"><i class="icon-s-addr"></i>推荐商品</li>-->
                 </ul>
                 <a href="${item.href!}" target="_blank"><img src="${item.imgsrc!}"></a>
             </div>
