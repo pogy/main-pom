@@ -175,7 +175,7 @@ public class CdnAction {
         //页面类型：男装/女装
         model.addAttribute("page", page);
         //顶部广告数据
-        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(SpreadEnum.INDEX_TOP);
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ?SpreadEnum.INDEX_TOP_WOMAN:SpreadEnum.INDEX_TOP);
         model.addAttribute("topPic", selFromCache(selImgBannerTops));
         // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
         //轮播广告大图
