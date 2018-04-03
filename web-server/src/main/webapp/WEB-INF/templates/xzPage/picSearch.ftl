@@ -41,7 +41,6 @@
                <p>
                    <span class="title">支持输入:</span>
                    <span class="imgUrl">复制图片链接，粘贴 ( Ctrl+v ) 到输入框</span>
-                   <span class="imgUpload">上传图片</span>
                </p>
            </div>
        </div>
@@ -58,5 +57,7 @@
         </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
