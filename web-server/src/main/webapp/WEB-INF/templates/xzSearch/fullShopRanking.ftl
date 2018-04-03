@@ -24,7 +24,7 @@
 <#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
 <#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
-<#list [{"fields":[{"name":"id","value":""+query.id},{"name":"page","value":""+query.page}]}] as $it>
+<#list [{"fields":[{"name":"id","value":""+query.id}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
