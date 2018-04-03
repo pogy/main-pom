@@ -178,7 +178,7 @@ public class SpreadService {
      */
     public ObjFromCache<List<NewHzManIndexItemGoatVO>> castedItemGoatList(String webSite,SpreadEnum spread) {
         //为了兼容线上商品广告字段
-        return new ObjFromCache<List<NewHzManIndexItemGoatVO>>(redisForIndexPage,"CASTED_" + spread.getCode(),NewHzManIndexItemGoatVO.class) {
+        return new ObjFromCache<List<NewHzManIndexItemGoatVO>>(redisForIndexPage,spread.getCode(),NewHzManIndexItemGoatVO.class) {
             @Override
             public List<NewHzManIndexItemGoatVO> selReal() {
                 List<ItemSpreadVO> itemSpreadVOS = selItemGoatList(webSite, spread);
