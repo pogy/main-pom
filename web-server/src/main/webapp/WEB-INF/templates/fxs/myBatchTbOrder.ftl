@@ -737,7 +737,7 @@
             id=""
         </#if>
 >
-        暂未关联
+        立即关联
     <#if $it.href??>
     </a>
     <#else>
@@ -863,4 +863,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
