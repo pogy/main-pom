@@ -124,7 +124,7 @@ public class MemberAction {
 
     private final static String MEMBER_PATH = "member";
 
-    private final  static String SELLER_PATH = "seller";
+    private final static String SELLER_PATH = "seller";
 
 
     /**
@@ -205,12 +205,12 @@ public class MemberAction {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
-                bo.getPage(),bo.getRows());
-        if(pager.getContent() !=null) {
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(), bo.getKeyword(), bo.getWebsite(),
+                bo.getPage(), bo.getRows());
+        if (pager.getContent() != null) {
             //极限词过滤
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
-            model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
+            model.addAttribute("goodslist", BeanMapper.mapList(pager.getContent(), GoodsCollectVO.class));
         }
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         model.addAttribute("query", bo);
@@ -251,13 +251,13 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
         //极限词过滤
-        if(pager.getContent()!=null){
+        if (pager.getContent() != null) {
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
         }
 
-        model.addAttribute("goodsList",pager.getContent());
-        model.addAttribute("query",bo);
-        model.addAttribute("pageOption",pager.selPageOption(size));
+        model.addAttribute("goodsList", pager.getContent());
+        model.addAttribute("query", bo);
+        model.addAttribute("pageOption", pager.selPageOption(size));
         return "fxs/goodsCollectOriginal";
     }
 
@@ -296,25 +296,25 @@ public class MemberAction {
      * @return
      */
     @RequestMapping("member/goodsDataPackageinit")
-    public String goodsDataPackageinit(DataPackageBO bo,HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
+    public String goodsDataPackageinit(DataPackageBO bo, HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
         List<PackageVO> goodslist = new ArrayList<>();
-        for(DataPackage dp:pager.getContent()){
-            if(dp.getGoods()!=null)
+        for (DataPackage dp : pager.getContent()) {
+            if (dp.getGoods() != null)
                 goodslist.add(new PackageVO(dp));
         }
         //极限词过滤
         goodslist.forEach(packageVO -> {
-            if(packageVO.getGoods()!=null){
+            if (packageVO.getGoods() != null) {
                 packageVO.getGoods().forEach(packageItemVO -> packageItemVO.setTitle(KeyWordsUtil.duleKeyWords(packageItemVO.getTitle())));
             }
         });
-        model.addAttribute("goodslist",goodslist);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("query",bo);
-        model.addAttribute("page",bo.getPage());
+        model.addAttribute("goodslist", goodslist);
+        model.addAttribute("website", bo.getWebsite());
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("query", bo);
+        model.addAttribute("page", bo.getPage());
         return "fxs/goodsDataPackageinit";
     }
 
@@ -368,10 +368,10 @@ public class MemberAction {
         //极限词过滤
         pager.getContent().forEach(onekeyRecoreVO -> onekeyRecoreVO.setTitle(KeyWordsUtil.duleKeyWords(onekeyRecoreVO.getTitle())));
 
-        model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
-        model.addAttribute("query",bo);
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodsList",pager.getContent());
+        model.addAttribute("shopDownNum", goodsupRecordSimpleService.shopDownNum(ps.getUserId(), nick));
+        model.addAttribute("query", bo);
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("goodsList", pager.getContent());
         return "fxs/shiguOnekeyRecordinit";
     }
 
@@ -1105,6 +1105,7 @@ public class MemberAction {
 
     /**
      * 红包余额
+     *
      * @param identity
      * @param session
      * @param model
@@ -1374,6 +1375,7 @@ public class MemberAction {
 
     /**
      * 绑定成功跳转页
+     *
      * @param identity
      * @return
      * @throws Main4Exception
@@ -1405,15 +1407,16 @@ public class MemberAction {
             return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double)10) * 0.01));
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double) 10) * 0.01));
     }
 
     /**
      * 获取免费提现及限制信息
+     *
      * @param session
      * @return
      */
-    @RequestMapping({"member/getFreeWithdrawAndLimitInfo","seller/getFreeWithdrawAndLimitInfo"})
+    @RequestMapping({"member/getFreeWithdrawAndLimitInfo", "seller/getFreeWithdrawAndLimitInfo"})
     @ResponseBody
     public JSONObject getFreeWithdrawAndLimitInfo(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

@@ -66,7 +66,7 @@ public class SameItemUtil {
         sgt.setGoodsId(item.getItemId());
         shiguGoodsTinyMapper.updateByPrimaryKeySelective(sgt);
         //修改ES里的数据
-        changeEs(item.getItemId(),item.getWebSite(),sgt.getRelationLevelId(),flag);
+//        changeEs(item.getItemId(),item.getWebSite(),sgt.getRelationLevelId(),flag);
         return flag;
     }
 
@@ -99,7 +99,7 @@ public class SameItemUtil {
             bsgt.setWebSite(item.getWebSite());
             shiguGoodsTinyMapper.updateByPrimaryKeySelective(bsgt);
             //修改ES
-            changeEs(item.getItemId(),item.getWebSite(),bsgt.getGoodsId(),bsgt.getGoodsLevel());
+//            changeEs(item.getItemId(),item.getWebSite(),bsgt.getGoodsId(),bsgt.getGoodsLevel());
             ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
             example.setWebSite(item.getWebSite());
             example.createCriteria().andRelationLevelIdEqualTo(item.getRelationLevelId());
@@ -152,27 +152,27 @@ public class SameItemUtil {
      * @param relationLevelId
      * @param flag
      */
-    public void changeEs(Long itemId,String webSite,Long relationLevelId,String flag){
-        Client client = ElasticConfiguration.client;
-        GetRequestBuilder request = client.prepareGet("goods", webSite, itemId.toString())
-                .setOperationThreaded(false);
-        GetResponse response = request.get();
-        Map<String,Object> record=response.getSourceAsMap();
-        if(record==null)return;
-        int flagint=flag.equals("a")?0:1;
-        //有变化再去更新
-        if(record.get("goods_level")==null||
-                !record.get("goods_level").toString().equals(flagint+"")||
-                record.get("relation_level_id")==null||
-                !record.get("relation_level_id").toString().equals(relationLevelId.toString())){
-            record.put("goods_level",flagint);
-            record.put("relation_level_id",flagint==0?0:relationLevelId);
-            ElasticRepository elasticRepository=new ElasticRepository();
-
-            elasticRepository.updateByKey(new SimpleElaBean("goods",webSite,
-                    itemId.toString(), JSONObject.fromObject(record).toString()));
-        }
-    }
+//    public void changeEs(Long itemId,String webSite,Long relationLevelId,String flag){
+//        Client client = ElasticConfiguration.client;
+//        GetRequestBuilder request = client.prepareGet("goods", webSite, itemId.toString())
+//                .setOperationThreaded(false);
+//        GetResponse response = request.get();
+//        Map<String,Object> record=response.getSourceAsMap();
+//        if(record==null)return;
+//        int flagint=flag.equals("a")?0:1;
+//        //有变化再去更新
+//        if(record.get("goods_level")==null||
+//                !record.get("goods_level").toString().equals(flagint+"")||
+//                record.get("relation_level_id")==null||
+//                !record.get("relation_level_id").toString().equals(relationLevelId.toString())){
+//            record.put("goods_level",flagint);
+//            record.put("relation_level_id",flagint==0?0:relationLevelId);
+//            ElasticRepository elasticRepository=new ElasticRepository();
+//
+//            elasticRepository.updateByKey(new SimpleElaBean("goods",webSite,
+//                    itemId.toString(), JSONObject.fromObject(record).toString()));
+//        }
+//    }
 
     /**
      * 取8点至次日8点的段内商品

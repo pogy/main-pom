@@ -22,6 +22,7 @@ public class RedisForIndexPage {
     private static String INDEX_PAGE_REDIS_PRE = "index_page_redis_pre_";   //首页redis缓存key的前缀
 
 
+
     /**
      * 取缓存
      * @param key

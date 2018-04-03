@@ -1216,7 +1216,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             if(goodsCountForsearch != null) {
                 goodsCountForsearch.setGoodsId(goodsId);
                 goodsCountForsearch.setHadStyle(1);
-                goodsCountForsearch.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1230,7 +1232,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
                 goodsCountForsearch1.setGoodsId(goodsId);
                 goodsCountForsearch1.setHadStyle(1);
-                goodsCountForsearch1.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch1.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1331,7 +1335,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
         shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
-        if (shiguCustomerStyles.size()>0&&shiguCustomerStyles!=null){
+        if (shiguCustomerStyles!=null&&shiguCustomerStyles.size()>0){
             ShiguCustomerStyle shiguCustomerStyle =shiguCustomerStyles.get(0);
             int sort1=shiguCustomerStyle.getSort();//调整前的序号
             int sort=shiguCustomerStyle.getSort()+sortType;//调整后的序号
@@ -1339,7 +1343,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguCustomerStyleExample1.createCriteria().andSortEqualTo(sort);
             List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample1);
             //调换序号
-            if(shiguCustomerStyles1.size()>0&&shiguCustomerStyles1!=null){
+            if(shiguCustomerStyles1!=null&&shiguCustomerStyles1.size()>0){
                 shiguCustomerStyle.setSort(sort);
                 shiguCustomerStyles1.get(0).setSort(sort1);
                 shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
@@ -1347,4 +1351,5 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             }
         }
     }
+
 }

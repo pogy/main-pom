@@ -96,7 +96,22 @@ public class GoodsCountForsearch implements Serializable {
     /**
      * 风格id 
      */
-	private Integer sid;
+	private Long sid;
+
+    /**
+     * 具体商品风格id，shigu_style中具体风格id
+     */
+	private Long styleId;
+
+    /**
+     * 
+     */
+	private Long parentStyleId;
+
+    /**
+     * 商品风格频道搜索权重
+     */
+	private Long styleSearchScore;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -234,12 +249,36 @@ public class GoodsCountForsearch implements Serializable {
 		return this.styleName;
 	}
 
-	public void setSid(Integer sid) {
+	public void setSid(Long sid) {
 		this.sid = sid;
 	}
 
-	public Integer getSid() {
+	public Long getSid() {
 		return this.sid;
+	}
+
+	public void setStyleId(Long styleId) {
+		this.styleId = styleId;
+	}
+
+	public Long getStyleId() {
+		return this.styleId;
+	}
+
+	public void setParentStyleId(Long parentStyleId) {
+		this.parentStyleId = parentStyleId;
+	}
+
+	public Long getParentStyleId() {
+		return this.parentStyleId;
+	}
+
+	public void setStyleSearchScore(Long styleSearchScore) {
+		this.styleSearchScore = styleSearchScore;
+	}
+
+	public Long getStyleSearchScore() {
+		return this.styleSearchScore;
 	}
 
 }
