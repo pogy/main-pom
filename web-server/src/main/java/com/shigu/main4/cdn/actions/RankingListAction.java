@@ -1,5 +1,6 @@
 package com.shigu.main4.cdn.actions;
 
+import com.shigu.main4.cdn.bo.FullShopRankingBO;
 import com.shigu.main4.cdn.services.RankingListShowService;
 import com.shigu.main4.cdn.vo.RankingVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -30,13 +31,13 @@ public class RankingListAction {
     RankingListShowService rankingListShowService;
 
     @RequestMapping("fullShopRanking")
-    public String fullShopRanking(Long id, Integer page, Model model) throws Main4Exception {
+    public String fullShopRanking(FullShopRankingBO bo, Model model) throws Main4Exception {
         //todo:具体实现
-        CidMarketIdMapEnum cidMarketIdMapEnum = CidMarketIdMapEnum.cidMarketIdMap(id);
-        if (page == null) {
-            page = 1;
+        CidMarketIdMapEnum cidMarketIdMapEnum = CidMarketIdMapEnum.cidMarketIdMap(bo.getId());
+        if (bo.getPage() == null) {
+            bo.setPage(1);
         }
-        ShiguPager<RankingShopVO> rankingShopVOPager = rankingListShowService.getRankingShopVOPager(cidMarketIdMapEnum, page, 20);
+        ShiguPager<RankingShopVO> rankingShopVOPager = rankingListShowService.getRankingShopVOPager(cidMarketIdMapEnum, bo.getPage(), 20);
         RankingVO shopRanking = new RankingVO();
         shopRanking.setRankingId(cidMarketIdMapEnum.cid);
         shopRanking.setRankingTitle(cidMarketIdMapEnum.title);
@@ -44,6 +45,7 @@ public class RankingListAction {
         model.addAttribute("rankingId",shopRanking.getRankingId());
         model.addAttribute("shopRanking", shopRanking);
         model.addAttribute("pageOption",rankingShopVOPager.selPageOption(20));
+        model.addAttribute("query",bo);
         return "xzSearch/fullShopRanking";
     }
 
