@@ -155,6 +155,9 @@ public class ItemHelper {
                 }
                 this.goodsExtends.setImages(StringUtils.join(synItem.getImageList(), ","));
                 this.goodsExtends.setSellPromise(synItem.getSellPoint());
+                if(StringUtils.isBlank(this.tiny.getPicUrl())){
+                    this.tiny.setPicUrl(synItem.getImageList().get(0));
+                }
             }
 
         }
