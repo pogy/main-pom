@@ -235,10 +235,12 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             t.setReceiverAddress(getSecurityClient().decrypt(t.getReceiverAddress(), "simple", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverMobile())) {
+            System.out.println("m:"+t.getReceiverMobile());
             t.setReceiverMobile(getSecurityClient().decrypt(t.getReceiverMobile(), "phone", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverPhone())) {
-            t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "phone", session));
+            System.out.println("p:"+t.getReceiverPhone());
+            t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "search", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             t.setReceiverName(getSecurityClient().decrypt(t.getReceiverName(), "search", session));
@@ -255,11 +257,11 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             address+=t.getReceiverName();
         }
-        if (!StringUtils.isEmpty(t.getReceiverPhone())){
-            address+=","+t.getReceiverPhone();
-        }else if (!StringUtils.isEmpty(t.getReceiverMobile())){
+        if (!StringUtils.isEmpty(t.getReceiverMobile())){
             address+=","+t.getReceiverMobile();
             tbOrderVO.setReceiverPhone(t.getReceiverMobile());
+        }else if (!StringUtils.isEmpty(t.getReceiverPhone())){
+            address+=","+t.getReceiverPhone();
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())){
             address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "
