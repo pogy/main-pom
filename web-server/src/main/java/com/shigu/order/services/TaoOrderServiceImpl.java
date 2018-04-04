@@ -235,11 +235,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             t.setReceiverAddress(getSecurityClient().decrypt(t.getReceiverAddress(), "simple", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverMobile())) {
-            System.out.println("m:"+t.getReceiverMobile());
             t.setReceiverMobile(getSecurityClient().decrypt(t.getReceiverMobile(), "phone", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverPhone())) {
-            System.out.println("p:"+t.getReceiverPhone());
             t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "search", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverName())) {
