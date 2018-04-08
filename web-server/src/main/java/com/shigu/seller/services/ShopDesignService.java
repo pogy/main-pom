@@ -258,6 +258,9 @@ public class ShopDesignService {
             mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));
         } else if (module instanceof ItemPromoteModule) {//推荐需要查数据
             ShiguPager<ItemShowBlock> promotePage = shopFitmentService.selItemByPromote(shopId, shop.getWebSite(), (ItemPromoteModule) module);
+            if(promotePage.getTotalCount()==0){
+                ((ItemPromoteModule)module).setTitleShow(1);
+            }
             mv.getData().put("promotes", promotePage);
         } else if (module instanceof SearchItemsModule) {//搜索
             //栏目,+搜索条件
