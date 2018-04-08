@@ -2,6 +2,9 @@ package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.exceptions.IsOldException;
+
+import java.util.List;
 
 /**
  * @类编号
@@ -155,10 +158,44 @@ public interface SaleAfterProcess {
     void saleInStock(Long orderId,String stockLocktion,String sendPhone) throws DaifaException;
 
     /**
+     * 批量售后入库
+     * @param orderIds
+     * @param stockLocktion
+     * @param workerId
+     * @throws DaifaException
+     */
+    void saleInStocks(List<Long> orderIds, String stockLocktion,Long workerId) throws DaifaException;
+    /**
+     * 批量售后出库
+     * @param stockIds
+     * @param workerId
+     * @throws DaifaException
+     */
+    String saleOutStocks(List<Long> stockIds,Long workerId) throws DaifaException;
+    /**
+     * 退货失败扫描入库
+     * @param notIds:失败的ID集合
+     * @param yesIds:成功的id集合
+     * @param workerId
+     */
+    void notReturnInStocks(List<Long> notIds,List<Long> yesIds,Long workerId);
+
+    /**
      * 换货完成
      * @param refundId
      */
     void changeEnt(Long refundId) throws DaifaException;
 
-
+    /**
+     * 获取当前的库存状态
+     * @param dfOrderId
+     * @return
+     */
+    int selNowStockStatus(Long dfOrderId) throws IsOldException;
+    /**
+     * 获取当前的库存状态
+     * @param stockId
+     * @return
+     */
+    int selNowStockStatusByStockId(Long stockId);
 }

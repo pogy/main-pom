@@ -395,12 +395,10 @@
             <artifactId>httpclient</artifactId>
             <version>4.4</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-tools</artifactId>
-            <version>4.2.4-SNAPSHOT</version>
+            <version>${main4-tools.version}</version>
         </dependency>
-        -->
     </dependencies>
 </project>

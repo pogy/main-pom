@@ -17,8 +17,11 @@ import com.shigu.main4.daifa.bo.SaleAfterRemarkerBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.vo.ExpressRelevanceSubVO;
 import com.shigu.main4.daifa.vo.ExpressRelevanceVO;
+import com.shigu.main4.daifa.vo.PrintTagVO;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,10 @@ public class DaifaSaleAfterService {
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
     @Autowired
     private DaifaSendService daifaSendService;
+    @Autowired
+    private DaifaGgoodsMapper daifaGgoodsMapper;
+    @Autowired
+    private TakeGoodsIssueProcess takeGoodsIssueProcess;
 
 
 
@@ -664,4 +671,21 @@ public class DaifaSaleAfterService {
         return pager;
     }
 
+
+    public List<PrintGoodsTagVO> afterSalePrintTab(List<Long> oids,Long sellerId){
+        DaifaGgoodsExample example=new DaifaGgoodsExample();
+        example.createCriteria().andSellerIdEqualTo(sellerId).andDfOrderIdIn(oids);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
+        Map<Long,List<DaifaGgoods>> map=gs.stream().collect(Collectors.groupingBy(DaifaGgoods::getDfOrderId));
+        List<Long> ids=map.values().stream().map(daifaGgoods -> daifaGgoods.get(0).getTakeGoodsId()).collect(Collectors.toList());
+        List<PrintTagVO> printTagVOS=takeGoodsIssueProcess.printTags(ids);
+        List<PrintGoodsTagVO> vos=new ArrayList<>();
+        printTagVOS.forEach(printTagVO -> {
+            PrintGoodsTagVO vo= BeanMapper.map(printTagVO,PrintGoodsTagVO.class);
+            vo.setDateIncBatch(null);
+            vo.setSpecialStr(null);
+            vos.add(vo);
+        });
+        return vos;
+    }
 }
