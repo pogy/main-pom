@@ -108,7 +108,7 @@
     </div>
 </div>
         <div class="saveTempBtnBox">
-            <button type="button" class="fmButton fmButton-lighter-b" data-tempid="${tempId!}" jhand="saveTemp">保存</button>
+            <button type="button" class="fmButton fmButton-lighter-b" data-webtype="2" data-tempid="${tempId!}" jhand="saveTemp">保存</button>
         </div>
     </div>
 </div>
