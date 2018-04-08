@@ -199,8 +199,8 @@ public class UserBaseServiceImpl implements UserBaseService {
         ps.setUserId(memberUserSub.getUserId());
         ps.setUserNick(memberUser.getUserNick());
         String url=memberUser.getPortraitUrl();
-        if(url != null && url.startsWith("/SGimg/")){
-            url="//sgimage.571xz.com/new_image_site"+url;
+        if(StringUtils.isBlank(url)||(!url.contains("imgs.571xz.net")&&!url.contains("shigu.oss-cn-hangzhou.aliyuncs.com"))){
+            url="//imgs.571xz.net/mall/default_head.jpg";
         }
         ps.setHeadUrl(url);
         String bindPhone=selBindPhone(memberUser.getUserId());
