@@ -4,6 +4,7 @@ package com.shigu.main4.order.process;
 import com.shigu.main4.order.vo.ExpressCompanyVo;
 import com.shigu.main4.order.vo.ExpressProv;
 import com.shigu.main4.order.vo.ShowTempVo;
+import com.shigu.main4.order.vo.editExpressTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -104,6 +105,6 @@ public interface TemplateProcess {
      * @param templateId 模版id
      * @return 模版集合
      */
-    Map<String,Object> selectEditTemplate(Long templateId);
+    editExpressTemplate selectEditTemplate(Long templateId);
 
 }

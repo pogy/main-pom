@@ -42,7 +42,7 @@ public class TemplateProcessImpl implements TemplateProcess{
     public Long addExpressTemplate(){
         ExpressTemplate expressTemplate = new ExpressTemplate();
         expressTemplate.setFree(0);
-        expressTemplate.setEnabled(1);
+        expressTemplate.setEnabled(0);
         expressTemplate.setTemplateStatus(1);
         expressTemplateMapper.insertSelective(expressTemplate);
         return expressTemplate.getTId();
@@ -161,7 +161,11 @@ public class TemplateProcessImpl implements TemplateProcess{
     @Override
     public Integer EditExpressTemplate(String expressTemplate) {
         JSONObject jsonObject = JSONObject.fromObject(expressTemplate);
-        ExpressTemplateSaveVo expressTemplateSaveVo = (ExpressTemplateSaveVo) JSONObject.toBean(jsonObject,ExpressTemplateSaveVo.class);
+        Map<String,Class> map = new HashMap<>();
+        map.put("freightList",defaultRule.class);
+        map.put("groupList",RuleGroupVo.class);
+        map.put("costFeeList",CostFeeRuleVo.class);
+        ExpressTemplateSaveVo expressTemplateSaveVo = (ExpressTemplateSaveVo) JSONObject.toBean(jsonObject,ExpressTemplateSaveVo.class,map);
         ExpressTemplate template = new ExpressTemplate();
         template.setTId(expressTemplateSaveVo.getTempId());
         template.setExpressCompanyId(expressTemplateSaveVo.getCourierId());
@@ -217,6 +221,9 @@ public class TemplateProcessImpl implements TemplateProcess{
                 }
             }
         }
+        if (expressRuleList == null || expressRuleList.size() <= 0){
+            return 1;
+        }
         b = expressRuleMapper.insertListNoId(expressRuleList);
         return b;
     }
@@ -224,7 +231,11 @@ public class TemplateProcessImpl implements TemplateProcess{
     @Override
     public Integer saveExpressTemplate(String expressTemplate) {
         JSONObject jsonObject = JSONObject.fromObject(expressTemplate);
-        ExpressTemplateSaveVo expressTemplateSaveVo = (ExpressTemplateSaveVo) JSONObject.toBean(jsonObject,ExpressTemplateSaveVo.class);
+        Map<String,Class> map = new HashMap<>();
+        map.put("freightList",defaultRule.class);
+        map.put("groupList",RuleGroupVo.class);
+        map.put("costFeeList",CostFeeRuleVo.class);
+        ExpressTemplateSaveVo expressTemplateSaveVo = (ExpressTemplateSaveVo) JSONObject.toBean(jsonObject,ExpressTemplateSaveVo.class,map);
         ExpressTemplate template = new ExpressTemplate();
         template.setTId(expressTemplateSaveVo.getTempId());
         template.setExpressCompanyId(expressTemplateSaveVo.getCourierId());
@@ -288,7 +299,7 @@ public class TemplateProcessImpl implements TemplateProcess{
         ExpressRuleExample expressRuleExample = new ExpressRuleExample();
         expressRuleExample.createCriteria().andRuleStatusEqualTo(1).andThresholdEqualTo(number).andEtIdEqualTo(templateId);
         List<ExpressRule> expressRules = expressRuleMapper.selectByExample(expressRuleExample);
-        if (expressRules == null && expressRules.size() >0){
+        if (expressRules != null && expressRules.size() >0){
             ExpressRule expressRule = null;
             for (int i = 0; i <expressRules.size() ; i++) {
                 expressRule = new ExpressRule();
@@ -344,13 +355,14 @@ public class TemplateProcessImpl implements TemplateProcess{
         }
 
         for (int i = 0; i <expressTemplateList.size() ; i++) {
+            showTempVo = new ShowTempVo();
             showTempVo.setTempId(expressTemplateList.get(i).getTId());
             showTempVo.setCourierId(expressTemplateList.get(i).getExpressCompanyId());
             showTempVo.setCourierName(expressTemplateList.get(i).getTemplateTitle());
             if (expressTemplateList.get(i).getEnabled() ==1){
                 showTempVo.setInitiateIs(true);
             }else {
-                showTempVo.setInitiateIs(false);
+                showTempVo.setInitiateIs(null);
             }
             List<CourierRuleVo> courierRuleVoList = new ArrayList<>();
             CourierRuleVo courierRuleVo = null;
@@ -371,13 +383,15 @@ public class TemplateProcessImpl implements TemplateProcess{
                     courierRuleVo = new CourierRuleVo();
                     List<CourierShowVo> courierShowVoList = new ArrayList<>();
                     CourierShowVo courierShowVo = null;
-                    provs.deleteCharAt(provs.length()-1);
+                    if (provs != null && provs.length() > 0) {
+                        provs.deleteCharAt(provs.length() - 1);
+                    }
                     courierRuleVo.setProvs(provs.toString());
                     ExpressRuleExample expressRuleExample = new ExpressRuleExample();
                     expressRuleExample.createCriteria().andRuleStatusEqualTo(1).andParentRuleIdEqualTo(expressRuleList.get(j).getRId());
                     List<ExpressRule> ruleList = expressRuleMapper.selectByExample(expressRuleExample);
                     ExpressRuleExample expressRuleExample1 = new ExpressRuleExample();
-                    expressRuleExample1.createCriteria().andRuleStatusEqualTo(1).andEtIdEqualTo(expressTemplateList.get(i).getTId());
+                    expressRuleExample1.createCriteria().andRuleStatusEqualTo(1).andEtIdEqualTo(expressTemplateList.get(i).getTId()).andIsDefaultEqualTo(1);
                     List<ExpressRule> defaultRuleList = expressRuleMapper.selectByExample(expressRuleExample1);
                     if (ruleList.size() > 0){
                         for (int k = 0; k < ruleList.size(); k++) {
@@ -402,7 +416,7 @@ public class TemplateProcessImpl implements TemplateProcess{
     }
 
     @Override
-    public Map<String,Object> selectEditTemplate(Long templateId) {
+    public editExpressTemplate selectEditTemplate(Long templateId) {
         ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
         expressTemplateExample.createCriteria().andTemplateStatusEqualTo(1).andTIdEqualTo(templateId);
         List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
@@ -415,7 +429,7 @@ public class TemplateProcessImpl implements TemplateProcess{
         if (expressTemplate.getEnabled() == 1){
             initiateIs = true;
         }else {
-            initiateIs = false;
+            initiateIs = null;
         }
         ExpressRuleExample expressRuleExample = new ExpressRuleExample();
         expressRuleExample.createCriteria().andEtIdEqualTo(templateId).andRuleStatusEqualTo(1).andIsDefaultEqualTo(1);
@@ -428,6 +442,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                defaultRuleVo.setFreightId(defaultRules.get(i).getRId());
                defaultRuleVo.setText(defaultRules.get(i).getRuleTile());
                defaultRuleVo.setCostFee(defaultRules.get(i).getThresholdFree());
+               defaultRuleVo.setThreshold(defaultRules.get(i).getThreshold());
                editDefaultRuleVos.add(defaultRuleVo);
            }
        }
@@ -449,6 +464,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                         provs.append(expressTemplateProvList.get(j).getProvName()+",");
                     }
                 }
+                parentRuleGroup = new ParentRuleGroup();
                 parentRuleGroup.setGroupId(expressRuleList.get(i).getRId());
                 parentRuleGroup.setProvIds(provIds.deleteCharAt(provIds.length()-1).toString());
                 parentRuleGroup.setProvs(provs.deleteCharAt(provs.length()-1).toString());
@@ -471,12 +487,12 @@ public class TemplateProcessImpl implements TemplateProcess{
                 parentRuleGroups.add(parentRuleGroup);
             }
         }
-        Map<String,Object> map = new HashMap<>();
-        map.put("courierId",courierId);
-        map.put("initiateIs",initiateIs);
-        map.put("freightList",editDefaultRuleVos);
-        map.put("groupList",parentRuleGroups);
-        return map;
+        editExpressTemplate template = new editExpressTemplate();
+        template.setCourierId(courierId);
+        template.setInitiateIs(initiateIs);
+        template.setEditDefaultRuleVos(editDefaultRuleVos);
+        template.setParentRuleGroups(parentRuleGroups);
+        return template;
     }
 
 

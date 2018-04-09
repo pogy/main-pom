@@ -3,10 +3,9 @@ package com.shigu.admin.actions;
 
 
 import com.shigu.main4.order.process.TemplateProcess;
-import com.shigu.main4.order.vo.ExpressCompanyVo;
-import com.shigu.main4.order.vo.ExpressProv;
-import com.shigu.main4.order.vo.ShowTempVo;
+import com.shigu.main4.order.vo.*;
 import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,12 +33,13 @@ public class ExpressTemplateAction {
     * 返回模版id
     * 返回快递公司列表
     */
-    @RequestMapping("addCourierTemp")
+    @RequestMapping("/daifa/addCourierTemp")
     public String addCourierTemp(Model model){
         Long tempId = templateProcess.addExpressTemplate();
         List<ExpressCompanyVo> courierList = templateProcess.selectExpressCompany();
+        JSONArray json = JSONArray.fromObject(courierList);
         model.addAttribute("tempId",tempId);
-        model.addAttribute("courierList",courierList);
+        model.addAttribute("courierList",json.toString());
         return "daifa/addCourierTemp";
     }
 
@@ -48,15 +48,14 @@ public class ExpressTemplateAction {
      * 返回模版id
      * 返回快递公司列表
      */
-    @RequestMapping("addTempGroup")
+    @RequestMapping("/daifa/addTempGroup")
     @ResponseBody
     public JSONObject addTempGroup(Long tempId,Model model){
         Long groupId = templateProcess.addExpressParentRule(tempId);
         if (groupId == null || groupId < 0){
             return JsonResponseUtil.error("添加失败，请重试");
         }
-        model.addAttribute("groupId",groupId);
-        return  JsonResponseUtil.success();
+        return  JsonResponseUtil.success().element("groupId",groupId);
     }
 
     /*
@@ -64,7 +63,7 @@ public class ExpressTemplateAction {
      * 返回模版id
      * 返回快递公司列表
      */
-    @RequestMapping("addFreightBar")
+    @RequestMapping("/daifa/addFreightBar")
     @ResponseBody
     public JSONObject addFreightBar(Long tempId,String freightText,Integer threshold,Model model){
         Long freightId = templateProcess.addExpressdefaultRule(tempId,threshold,freightText);
@@ -72,10 +71,10 @@ public class ExpressTemplateAction {
             return JsonResponseUtil.error("添加失败，请重试");
         }
         model.addAttribute("freightId",freightId);
-        return  JsonResponseUtil.success();
+        return  JsonResponseUtil.success().element("freightId",freightId);
     }
 
-    @RequestMapping("deleteFreightBar")
+    @RequestMapping("/daifa/deleteFreightBar")
     @ResponseBody
     public JSONObject deleteFreightBar(Long tempId,Integer threshold){
         Integer b = templateProcess.deleteExpressdefaultRule(tempId,threshold);
@@ -85,18 +84,17 @@ public class ExpressTemplateAction {
         return  JsonResponseUtil.success();
     }
 
-    @RequestMapping("getProvsData")
+    @RequestMapping("/daifa/getProvsData")
     @ResponseBody
     public JSONObject getProvsData(Model model){
         List<ExpressProv> expressProvList = templateProcess.selectProvList();
         if (expressProvList == null || expressProvList.size() <= 0){
             return JsonResponseUtil.error("获取失败，请重试");
         }
-        model.addAttribute("expressProvList",expressProvList);
-        return  JsonResponseUtil.success();
+        return  JsonResponseUtil.success().element("provList",expressProvList);
     }
 
-    @RequestMapping("setGroupProvsData")
+    @RequestMapping("/daifa/setGroupProvsData")
     @ResponseBody
     public JSONObject setGroupProvsData(Long tempId,String provIds,Long groupId,Model model){
         Integer b = templateProcess.insertExpressProv(tempId,groupId,provIds);
@@ -106,7 +104,7 @@ public class ExpressTemplateAction {
         return  JsonResponseUtil.success();
     }
 
-    @RequestMapping("deleteGroupData")
+    @RequestMapping("/daifa/deleteGroupData")
     @ResponseBody
     public JSONObject deleteGroupData(Long groupId,Model model){
         Integer b = templateProcess.deleteParentRule(groupId);
@@ -116,10 +114,15 @@ public class ExpressTemplateAction {
         return  JsonResponseUtil.success();
     }
 
-    @RequestMapping("saveCourierTemp")
+    @RequestMapping("/daifa/saveCourierTemp")
     @ResponseBody
-    public JSONObject saveCourierTemp(String expressTemplate,Model model){
-        Integer b = templateProcess.saveExpressTemplate(expressTemplate);
+    public JSONObject saveCourierTemp(Integer webType, String courierTemp, Model model){
+        Integer b = null;
+        if (webType == 1){
+          b = templateProcess.EditExpressTemplate(courierTemp);
+        }else {
+          b = templateProcess.saveExpressTemplate(courierTemp);
+        }
         if (b == null || b <= 0){
             return JsonResponseUtil.error("添加失败，请重试");
         }
@@ -131,33 +134,44 @@ public class ExpressTemplateAction {
      * 返回模版信息
      * 返回快递公司列表
      */
-    @RequestMapping("editCourierTemp")
+    @RequestMapping("/daifa/editCourierTemp")
     public String editCourierTemp(Long tempId,Model model){
-        Map<String,Object> editTemplate = templateProcess.selectEditTemplate(tempId);
+        editExpressTemplate editTemplate = templateProcess.selectEditTemplate(tempId);
         List<ExpressCompanyVo> courierList = templateProcess.selectExpressCompany();
+        JSONArray json = JSONArray.fromObject(courierList);
         model.addAttribute("tempId",tempId);
-        model.addAttribute("courierId",editTemplate.get("courierId"));
-        model.addAttribute("initiateIs",editTemplate.get("initiateIs"));
-        model.addAttribute("freightList",editTemplate.get("freightList"));
-        model.addAttribute("groupList",editTemplate.get("groupList"));
-        model.addAttribute("courierList",courierList);
+        model.addAttribute("courierId",editTemplate.getCourierId());
+        model.addAttribute("initiateIs",editTemplate.getInitiateIs());
+        model.addAttribute("freightList",editTemplate.getEditDefaultRuleVos());
+        model.addAttribute("groupList",editTemplate.getParentRuleGroups());
+        model.addAttribute("courierList",json.toString());
         return  "daifa/editCourierTemp";
     }
 
-    @RequestMapping("saveEditCourierTemp")
-    @ResponseBody
-    public JSONObject saveEditCourierTemp(String expressTemplate,Model model){
-        Integer b = templateProcess.EditExpressTemplate(expressTemplate);
-        if (b == null || b <= 0){
-            return JsonResponseUtil.error("添加失败，请重试");
-        }
-        return  JsonResponseUtil.success();
-    }
+//    @RequestMapping("/daifa/saveEditCourierTemp")
+//    @ResponseBody
+//    public JSONObject saveEditCourierTemp(String expressTemplate,Model model){
+//        Integer b = templateProcess.EditExpressTemplate(expressTemplate);
+//        if (b == null || b <= 0){
+//            return JsonResponseUtil.error("添加失败，请重试");
+//        }
+//        return  JsonResponseUtil.success();
+//    }
 
-    @RequestMapping("showCourierTemp")
+    @RequestMapping("/daifa/showCourierTemp")
     public String showCourierTemp(Model model){
         List<ShowTempVo> courierTempList = templateProcess.selectTemplateAll();
         model.addAttribute("courierTempList",courierTempList);
         return  "daifa/showCourierTemp";
+    }
+
+    @RequestMapping("/daifa/setInitiateOrStopTemp")
+    @ResponseBody
+    public JSONObject deleteGroupData(Long tempId,Boolean checkedIs,Model model){
+        Integer b = templateProcess.templateEnabled(tempId,checkedIs);
+        if (b == null || b <= 0){
+            return JsonResponseUtil.error("删除失败，请重试");
+        }
+        return  JsonResponseUtil.success();
     }
 }

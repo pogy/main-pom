@@ -13,6 +13,7 @@ public class editDefaultRuleVo implements Serializable{
     private Long freightId;
     private String text;
     private Integer costFee;
+    private Integer threshold;
 
     public Long getFreightId() {
         return freightId;
@@ -36,5 +37,13 @@ public class editDefaultRuleVo implements Serializable{
 
     public void setCostFee(Integer costFee) {
         this.costFee = costFee;
+    }
+
+    public Integer getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(Integer threshold) {
+        this.threshold = threshold;
     }
 }

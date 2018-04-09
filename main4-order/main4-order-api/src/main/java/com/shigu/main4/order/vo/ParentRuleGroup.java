@@ -1,5 +1,6 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @Author: sy
  * @CreateDate: 2018/4/4 0004 17:13
  */
-public class ParentRuleGroup {
+public class ParentRuleGroup implements Serializable{
     private Long groupId;
     private String provs;
     private String provIds;
