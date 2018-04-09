@@ -501,7 +501,6 @@ public class TemplateProcessImpl implements TemplateProcess{
                 }else{
                     for (int j = 0; j <editDefaultRuleVos.size() ; j++) {
                         costFeeRuleVo = new CostFeeRuleVo();
-                        costFeeRuleVo.setFreightChildId(expressRuleList.get(i).getRId());
                         costFeeRuleVo.setThreshold(editDefaultRuleVos.get(j).getThreshold());
                         costFeeRuleVoList.add(costFeeRuleVo);
                     }
