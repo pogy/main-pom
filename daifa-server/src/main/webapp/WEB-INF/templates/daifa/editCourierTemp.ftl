@@ -106,7 +106,7 @@
         <div class="rightBox fr">
             <span>默认运费：</span>
             <#list freightList as fre>
-            <span data-freightid="${fre.freightId!}" class="defaultFre">${fre.text!} <input type="number" value="${fre.costFee!}" placeholder="暂无">元，</span>
+            <span data-freightid="${fre.freightId!}" data-threshold="${fre.threshold!}" class="defaultFre">${fre.text!} <input type="number" value="${fre.costFee!}" placeholder="暂无">元，</span>
             </#list>
         </div>
     </div>
