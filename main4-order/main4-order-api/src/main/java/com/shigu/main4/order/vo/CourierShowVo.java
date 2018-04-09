@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class CourierShowVo implements Serializable{
     private String text;
-    private Integer freight;
+    private Double freight;
 
     public String getText() {
         return text;
@@ -21,11 +21,11 @@ public class CourierShowVo implements Serializable{
         this.text = text;
     }
 
-    public Integer getFreight() {
+    public Double getFreight() {
         return freight;
     }
 
-    public void setFreight(Integer freight) {
+    public void setFreight(Double freight) {
         this.freight = freight;
     }
 }

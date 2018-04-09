@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.ExpressRuleExample;
 import com.opentae.data.mall.examples.ExpressTemplateExample;
 import com.opentae.data.mall.examples.ExpressTemplateProvExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.order.utils.MoneyUtil;
 import com.shigu.main4.order.vo.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,7 +190,7 @@ public class TemplateProcessImpl implements TemplateProcess{
             for (int i = 0; i < expressTemplateSaveVo.getFreightList().size(); i++) {
                 expressRule = new ExpressRule();
                 expressRule.setRId(expressTemplateSaveVo.getFreightList().get(i).getFreightId());
-                expressRule.setThresholdFree(expressTemplateSaveVo.getFreightList().get(i).getCostFee());
+                expressRule.setThresholdFree(MoneyUtil.moneyToCent(expressTemplateSaveVo.getFreightList().get(i).getCostFee()));
                 expressRuleMapper.updateByPrimaryKeySelective(expressRule);
             }
         }
@@ -202,7 +203,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                         expressRule = new ExpressRule();
                         expressRule.setRId(costFeeRuleVoList.get(j).getFreightChildId());
                         expressRule.setThreshold(costFeeRuleVoList.get(j).getThreshold());
-                        expressRule.setThresholdFree(costFeeRuleVoList.get(j).getCostFee());
+                        expressRule.setThresholdFree(MoneyUtil.moneyToCent(costFeeRuleVoList.get(j).getCostFee()));
                         expressRule.setParentRuleId(expressTemplateSaveVo.getGroupList().get(i).getGroupId());
                         expressRule.setEtId(expressTemplateSaveVo.getTempId());
                         expressRule.setRuleType(0);
@@ -259,7 +260,7 @@ public class TemplateProcessImpl implements TemplateProcess{
             for (int i = 0; i < expressTemplateSaveVo.getFreightList().size(); i++) {
                 expressRule = new ExpressRule();
                 expressRule.setRId(expressTemplateSaveVo.getFreightList().get(i).getFreightId());
-                expressRule.setThresholdFree(expressTemplateSaveVo.getFreightList().get(i).getCostFee());
+                expressRule.setThresholdFree(MoneyUtil.moneyToCent(expressTemplateSaveVo.getFreightList().get(i).getCostFee()));
                 expressRuleMapper.updateByPrimaryKeySelective(expressRule);
             }
         }
@@ -271,7 +272,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                     for (int j = 0; j < costFeeRuleVoList.size(); j++) {
                         expressRule = new ExpressRule();
                         expressRule.setThreshold(costFeeRuleVoList.get(j).getThreshold());
-                        expressRule.setThresholdFree(costFeeRuleVoList.get(j).getCostFee());
+                        expressRule.setThresholdFree(MoneyUtil.moneyToCent(costFeeRuleVoList.get(j).getCostFee()));
                         expressRule.setParentRuleId(expressTemplateSaveVo.getGroupList().get(i).getGroupId());
                         expressRule.setEtId(expressTemplateSaveVo.getTempId());
                         expressRule.setRuleType(0);
@@ -399,7 +400,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                                 if (ruleList.get(k).getThreshold() == defaultRuleList.get(l).getThreshold()){
                                     courierShowVo = new CourierShowVo();
                                     courierShowVo.setText(defaultRuleList.get(l).getRuleTile());
-                                    courierShowVo.setFreight(ruleList.get(k).getThresholdFree());
+                                    courierShowVo.setFreight(MoneyUtil.moneyToDollar(ruleList.get(k).getThresholdFree()));
                                 }
                             }
                             courierShowVoList.add(courierShowVo);
@@ -441,7 +442,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                defaultRuleVo = new editDefaultRuleVo();
                defaultRuleVo.setFreightId(defaultRules.get(i).getRId());
                defaultRuleVo.setText(defaultRules.get(i).getRuleTile());
-               defaultRuleVo.setCostFee(defaultRules.get(i).getThresholdFree());
+               defaultRuleVo.setCostFee(MoneyUtil.moneyToDollar(defaultRules.get(i).getThresholdFree()));
                defaultRuleVo.setThreshold(defaultRules.get(i).getThreshold());
                editDefaultRuleVos.add(defaultRuleVo);
            }
@@ -478,7 +479,7 @@ public class TemplateProcessImpl implements TemplateProcess{
                     for (int j = 0; j < expressRules.size(); j++) {
                         costFeeRuleVo = new CostFeeRuleVo();
                         costFeeRuleVo.setFreightChildId(expressRules.get(j).getRId());
-                        costFeeRuleVo.setCostFee(expressRules.get(j).getThresholdFree());
+                        costFeeRuleVo.setCostFee(MoneyUtil.moneyToDollar(expressRules.get(j).getThresholdFree()));
                         costFeeRuleVo.setThreshold(expressRules.get(j).getThreshold());
                         costFeeRuleVoList.add(costFeeRuleVo);
                     }

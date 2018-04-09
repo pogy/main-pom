@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class CostFeeRuleVo implements Serializable{
 
     private Long freightChildId;
-    private Integer costFee;
+    private Double costFee;
     private Integer threshold;
 
     public Long getFreightChildId() {
@@ -23,11 +23,11 @@ public class CostFeeRuleVo implements Serializable{
         this.freightChildId = freightChildId;
     }
 
-    public Integer getCostFee() {
+    public Double getCostFee() {
         return costFee;
     }
 
-    public void setCostFee(Integer costFee) {
+    public void setCostFee(Double costFee) {
         this.costFee = costFee;
     }
 
