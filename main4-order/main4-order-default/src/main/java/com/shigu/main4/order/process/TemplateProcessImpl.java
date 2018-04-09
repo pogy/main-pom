@@ -103,25 +103,36 @@ public class TemplateProcessImpl implements TemplateProcess{
             return 0;
         }
         List<ExpressTemplateProv> expressProvList = new ArrayList<>();
+        ExpressTemplateProvExample expressTemplateProvExample = new ExpressTemplateProvExample();
+        expressTemplateProvExample.createCriteria().andEtpStatusEqualTo(1).andRuleIdEqualTo(parentRuleId);
+        List<ExpressTemplateProv> expressTemplateProvs = expressTemplateProvMapper.selectByExample(expressTemplateProvExample);
         ExpressTemplateProv expressProv = null;
-        for (int i = 0; i <provs.length ; i++) {
-            OrderProv orderProv = new OrderProv();
-            orderProv.setProvId(Long.valueOf(provs[i]));
-            expressProv = new ExpressTemplateProv();
-            expressProv.setProvId(Long.valueOf(provs[i]));
-            expressProv.setProvName(orderProvMapper.selectByPrimaryKey(orderProv).getProvName());
-            expressProv.setRuleId(parentRuleId);
-            expressProv.setEtId(templateId);
-            expressProv.setEtpStatus(1);
-            expressProvList.add(expressProv);
-        }
+        if (expressTemplateProvs != null && expressTemplateProvs.size() > 0) {
+                for (int i = 0; i <expressTemplateProvs.size() ; i++) {
+                    expressProv = new ExpressTemplateProv();
+                    expressProv.setEtpId(expressTemplateProvs.get(i).getEtpId());
+                    expressProv.setEtpStatus(-1);
+                    expressTemplateProvMapper.updateByPrimaryKeySelective(expressProv);
+                }
+            }
+        for (int i = 0; i < provs.length; i++) {
+             OrderProv orderProv = new OrderProv();
+             orderProv.setProvId(Long.valueOf(provs[i]));
+             expressProv = new ExpressTemplateProv();
+             expressProv.setProvId(Long.valueOf(provs[i]));
+             expressProv.setProvName(orderProvMapper.selectByPrimaryKey(orderProv).getProvName());
+             expressProv.setRuleId(parentRuleId);
+             expressProv.setEtId(templateId);
+             expressProv.setEtpStatus(1);
+             expressProvList.add(expressProv);
+         }
         return expressTemplateProvMapper.insertListNoId(expressProvList);
     }
 
     @Override
     public Integer deleteParentRule(Long parentRuleId) {
         ExpressTemplateProvExample expressTemplateProvExample = new ExpressTemplateProvExample();
-        expressTemplateProvExample.createCriteria().andRuleIdEqualTo(parentRuleId);
+        expressTemplateProvExample.createCriteria().andRuleIdEqualTo(parentRuleId).andEtpStatusEqualTo(1);
         List<ExpressTemplateProv> expressTemplateProvList = expressTemplateProvMapper.selectByExample(expressTemplateProvExample);
         int b;
         if (expressTemplateProvList != null && expressTemplateProvList.size()>0) {
