@@ -478,9 +478,13 @@ public class TemplateProcessImpl implements TemplateProcess{
                 }
                 parentRuleGroup = new ParentRuleGroup();
                 parentRuleGroup.setGroupId(expressRuleList.get(i).getRId());
-                parentRuleGroup.setProvIds(provIds.deleteCharAt(provIds.length()-1).toString());
-                parentRuleGroup.setProvs(provs.deleteCharAt(provs.length()-1).toString());
-
+                if (provIds.length() > 0) {
+                    parentRuleGroup.setProvIds(provIds.deleteCharAt(provIds.length() - 1).toString());
+                    parentRuleGroup.setProvs(provs.deleteCharAt(provs.length() - 1).toString());
+                }else {
+                    parentRuleGroup.setProvIds(provIds.toString());
+                    parentRuleGroup.setProvs(provs.toString());
+                }
                 ExpressRuleExample rExample = new ExpressRuleExample();
                 rExample.createCriteria().andParentRuleIdEqualTo(expressRuleList.get(i).getRId()).andRuleStatusEqualTo(1);
                 List<ExpressRule> expressRules = expressRuleMapper.selectByExample(rExample);
@@ -492,6 +496,13 @@ public class TemplateProcessImpl implements TemplateProcess{
                         costFeeRuleVo.setFreightChildId(expressRules.get(j).getRId());
                         costFeeRuleVo.setCostFee(MoneyUtil.moneyToDollar(expressRules.get(j).getThresholdFree()));
                         costFeeRuleVo.setThreshold(expressRules.get(j).getThreshold());
+                        costFeeRuleVoList.add(costFeeRuleVo);
+                    }
+                }else{
+                    for (int j = 0; j <editDefaultRuleVos.size() ; j++) {
+                        costFeeRuleVo = new CostFeeRuleVo();
+                        costFeeRuleVo.setFreightChildId(expressRuleList.get(i).getRId());
+                        costFeeRuleVo.setThreshold(editDefaultRuleVos.get(j).getThreshold());
                         costFeeRuleVoList.add(costFeeRuleVo);
                     }
                 }
