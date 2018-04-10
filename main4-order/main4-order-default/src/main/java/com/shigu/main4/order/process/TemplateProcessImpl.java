@@ -357,9 +357,9 @@ public class TemplateProcessImpl implements TemplateProcess{
     }
 
     @Override
-    public List<ShowTempVo> selectTemplateAll() {
+    public List<ShowTempVo> selectTemplateAll(Long senderId) {
         ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
-        expressTemplateExample.createCriteria().andTemplateStatusEqualTo(1);
+        expressTemplateExample.createCriteria().andTemplateStatusEqualTo(1).andSenderIdEqualTo(senderId);
         List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
         List<ShowTempVo> showTempVoList = new ArrayList<>();
         ShowTempVo showTempVo = null;

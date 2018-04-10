@@ -167,7 +167,9 @@ public class ExpressTemplateAction {
 
     @RequestMapping("/daifa/showCourierTemp")
     public String showCourierTemp(Model model){
-        List<ShowTempVo> courierTempList = templateProcess.selectTemplateAll();
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<ShowTempVo> courierTempList = templateProcess.selectTemplateAll(daifaUser.getDaifaSellerId());
         model.addAttribute("courierTempList",courierTempList);
         return  "daifa/showCourierTemp";
     }
