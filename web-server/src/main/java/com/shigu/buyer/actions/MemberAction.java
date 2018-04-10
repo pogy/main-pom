@@ -19,6 +19,7 @@ import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -122,6 +123,9 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
+    @Autowired
+    private RedisIO redisIO;
+
     private final static String MEMBER_PATH = "member";
 
     private final  static String SELLER_PATH = "seller";
@@ -150,6 +154,10 @@ public class MemberAction {
         // 用户红包余额
         Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
+        // 红包活动详情
+        BonusBtnInfo bonusBtnInfo = redisIO.get("bonus_btn_info", BonusBtnInfo.class);
+        model.addAttribute("bonusBtnInfo",bonusBtnInfo);
+        model.addAttribute("bonusTips",bonusBtnInfo == null ? "" : bonusBtnInfo.getBonusTips());
         return "fxs/index";
     }
 
