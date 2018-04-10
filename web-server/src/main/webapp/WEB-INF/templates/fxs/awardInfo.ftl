@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <#if (phase.awardList?size) gt 1>
+                            <#if (phase.awardList?size) gt 2>
                                 <div class="awardList clearfix">
                                     <ul>
                                         <#list phase.awardList as award>
@@ -132,4 +132,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
