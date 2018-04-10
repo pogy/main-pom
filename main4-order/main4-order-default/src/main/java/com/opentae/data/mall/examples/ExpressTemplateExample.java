@@ -11,6 +11,7 @@ public class ExpressTemplateExample extends SgExample<ExpressTemplateExample.Cri
     public static final Class<ExpressTemplate> beanClass = ExpressTemplate.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn templateStatus;
+    public static EntityColumn senderId;
     public static EntityColumn fromTownId;
     public static EntityColumn fromCityId;
     public static EntityColumn fromProvId;
@@ -27,6 +28,7 @@ public class ExpressTemplateExample extends SgExample<ExpressTemplateExample.Cri
             listMap.put(column.getProperty(), column);
         }
         templateStatus = listMap.get("templateStatus");
+        senderId = listMap.get("senderId");
         fromTownId = listMap.get("fromTownId");
         fromCityId = listMap.get("fromCityId");
         fromProvId = listMap.get("fromProvId");
@@ -103,6 +105,53 @@ public class ExpressTemplateExample extends SgExample<ExpressTemplateExample.Cri
 
         public ExpressTemplateExample.Criteria andTemplateStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(templateStatus, value1, value2);
+        }
+        public ExpressTemplateExample.Criteria andSenderIdIsNull() {
+            return isNull(senderId);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdIsNotNull() {
+            return isNotNull(senderId);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdEqualTo(Long value) {
+            return equalTo(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdNotEqualTo(Long value) {
+            return notEqualTo(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdGreaterThan(Long value) {
+            return greaterThan(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdLessThan(Long value) {
+            return lessThan(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(senderId, value);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdIn(List<Long> values) {
+            return in(senderId, values);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdNotIn(List<Long> values) {
+            return notIn(senderId, values);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdBetween(Long value1, Long value2) {
+            return between(senderId, value1, value2);
+        }
+
+        public ExpressTemplateExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
+            return notBetween(senderId, value1, value2);
         }
         public ExpressTemplateExample.Criteria andFromTownIdIsNull() {
             return isNull(fromTownId);

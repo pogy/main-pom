@@ -18,6 +18,11 @@ public class ExpressTemplate implements Serializable {
 	private String templateTitle;
 
     /**
+     * 代发机构id
+     */
+	private Long senderId;
+
+    /**
      * 发货省份
      */
 	private Long fromProvId;
@@ -71,6 +76,14 @@ public class ExpressTemplate implements Serializable {
 
 	public String getTemplateTitle() {
 		return this.templateTitle;
+	}
+
+	public void setSenderId(Long senderId) {
+		this.senderId = senderId;
+	}
+
+	public Long getSenderId() {
+		return this.senderId;
 	}
 
 	public void setFromProvId(Long fromProvId) {

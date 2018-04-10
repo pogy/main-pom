@@ -22,7 +22,7 @@ public interface TemplateProcess {
      * 插入模版对象
      * @return 模版id
      */
-    Long addExpressTemplate();
+    Long addExpressTemplate(Long senderId);
 
     /**
      * 插入父规则对象

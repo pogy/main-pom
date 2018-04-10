@@ -2,17 +2,22 @@ package com.shigu.admin.actions;
 
 
 
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.order.process.TemplateProcess;
 import com.shigu.main4.order.vo.*;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +39,10 @@ public class ExpressTemplateAction {
     * 返回快递公司列表
     */
     @RequestMapping("/daifa/addCourierTemp")
-    public String addCourierTemp(Model model){
-        Long tempId = templateProcess.addExpressTemplate();
+    public String addCourierTemp(HttpServletRequest request,Model model){
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Long tempId = templateProcess.addExpressTemplate(daifaUser.getDaifaSellerId());
         List<ExpressCompanyVo> courierList = templateProcess.selectExpressCompany();
         JSONArray json = JSONArray.fromObject(courierList);
         model.addAttribute("tempId",tempId);

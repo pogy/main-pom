@@ -40,8 +40,9 @@ public class TemplateProcessImpl implements TemplateProcess{
     ExpressCompanyMapper expressCompanyMapper;
 
     @Override
-    public Long addExpressTemplate(){
+    public Long addExpressTemplate(Long senderId){
         ExpressTemplate expressTemplate = new ExpressTemplate();
+        expressTemplate.setSenderId(senderId);
         expressTemplate.setFree(0);
         expressTemplate.setEnabled(0);
         expressTemplate.setTemplateStatus(1);
