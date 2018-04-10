@@ -152,7 +152,7 @@
             <div class="tipTest pa"><em></em><b></b>${bonusTips!}</div>
         </div>
     </div>
-    <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display === false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
+    <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display == false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
 </div>
 </div>
 <div class="tradeCounts">
