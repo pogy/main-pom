@@ -212,6 +212,10 @@
             <#if childOrder_index == 0>
                 <p>未发货</p>
                 <p>${order.expressName!}</p>
+                <#if order.expressCode??>
+                    获得的快递号
+                    <p>（${order.expressCode!}）</p>
+                </#if>
             </#if>
         </li>
     </ul>
