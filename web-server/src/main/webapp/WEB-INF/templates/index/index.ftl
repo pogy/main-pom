@@ -175,7 +175,7 @@ if(pageType == 'W'){
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+    <a href="http://so.571xz.com/newgoods.htm?cid=3&amp;webSite=hz" target="_blank">
         今日新品
     </a>
 </li>
@@ -212,6 +212,7 @@ if(pageType == 'W'){
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
+        <#elseif webSite == 'qz'>
         </#if>
     </ul>
 </div>
