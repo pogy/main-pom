@@ -22,6 +22,25 @@
 <#include "/__style_torrent__/index__index_js.ftl">
 </head>
 <body>
+<script modulepath="index/common#forIps">
+var hreflocation = window.location.href;
+if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('http://571xz.com') == 0){//仅首页
+    var province = '' ;
+    var city = '' ;
+    jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
+        province = remote_ip_info["province"];
+        if(province == '福建'){
+            window.location.href = "http://ss.571xz.com";
+        }else if(province == '江苏'){
+            window.location.href = "http://cs.571xz.com";
+        }else if(province == '广东'){
+            window.location.href = "http://gz.571xz.com";
+        }else if(province == '吉林'){
+            window.location.href = "http://wa.571xz.com";
+        }
+    }) ;
+}
+</script>
 <div class="fixedSearchBar" id="fixedSearchBar">
     <div class="innner">
         <a class="logo" href="http://www.571xz.com"><img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
@@ -101,7 +120,7 @@ if(pageType == 'W'){
             </#if>
         >
             <#if searchType == 'shop'><input class="searchWeb" type="hidden" name="webSite" value="${webSite!}"> </#if>
-            <input type="text" class="searchCon fl" name="keyword" placeholder="<#if searchType == 'shop'>输入店铺名称<#else>输入商品名称</#if>" <#if $pageid == 'search' || $pageid == 'storenum'>value="${query.keyword!}"</#if>>
+            <input type="text" class="searchCon fl" name="keyword" placeholder="<#if searchType == 'shop'>输入店铺名称<#else>输入商品名称</#if>" <#if $pageid == 'search' || $pageid == 'storenum'>value="${query.keyword!}"</#if> autofocus="autofocus">
             <button type="submit" class="searchBtn fs14">搜索</button>
             <div class="myOrderBox fl">
             <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
@@ -149,14 +168,14 @@ if(pageType == 'W'){
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+    <a href="http://so.571xz.com/hzgoods.htm?pid=16" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+    <a href="http://so.571xz.com/newgoods.htm?cid=3&amp;webSite=hz" target="_blank">
         今日新品
     </a>
 </li>
@@ -193,6 +212,7 @@ if(pageType == 'W'){
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
+        <#elseif webSite == 'qz'>
         </#if>
     </ul>
 </div>
