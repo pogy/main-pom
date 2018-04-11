@@ -103,7 +103,7 @@ public interface SaleAfterModel {
      * ====================================================================================
      * 
      */
-    String refundFailInStock(Long orderId,Integer inStockType,String stockLocktion,String sendPhone)throws DaifaException;
+    String refundFailInStock(Long orderId,Integer inStockType,String stockLocktion,String sendPhone,boolean isChecked)throws DaifaException;
 
     /**
      * 写入库存

@@ -491,7 +491,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public String refundFailInStock(Long orderId, Integer inStockType, String stockLocktion,String sendPhone) throws DaifaException {
+    public String refundFailInStock(Long orderId, Integer inStockType, String stockLocktion,String sendPhone,boolean isChecked) throws DaifaException {
         DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
         tmp.setDfOrderId(orderId);
         tmp = daifaAfterSaleSubMapper.selectOne(tmp);
@@ -507,7 +507,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         sub.setAfterSaleSubId(tmp.getAfterSaleSubId());
         sub.setInStock(inStockType);
         sub.setStockLocation(stockLocktion);
-        daifaAfterSaleSubMapper.updateByPrimaryKeySelective(sub);
+        if(!isChecked){
+            daifaAfterSaleSubMapper.updateByPrimaryKeySelective(sub);
+        }
         if(inStockType==1){
             if(StringUtils.isEmpty(tmp.getApplyExpressCode())){
                 throw new DaifaException("非法请求,售后订单未设置申请的快递,无法入库",DaifaException.DEBUG);
@@ -518,7 +520,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             stock.setStockLocation(stockLocktion);
             DaifaAfterReceiveExpresStockExample daifaAfterReceiveExpresStockExample=new DaifaAfterReceiveExpresStockExample();
             daifaAfterReceiveExpresStockExample.createCriteria().andDfOrderIdEqualTo(orderId);
-            daifaAfterReceiveExpresStockMapper.updateByExampleSelective(stock,daifaAfterReceiveExpresStockExample);
+            if(!isChecked){
+                daifaAfterReceiveExpresStockMapper.updateByExampleSelective(stock,daifaAfterReceiveExpresStockExample);
+            }
         }
         return null;
     }

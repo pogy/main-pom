@@ -101,6 +101,65 @@ public class DaifaStockService {
         if(vos.size()==0){
             throw new DaifaException("未匹配到订单");
         }else{
+            //验证是否可用
+            if(!isOut){
+                List<Long> oids= Collections.singletonList(orderId);
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaAfterSaleSub> orders=daifaAfterSaleSubMapper.selectByExample(daifaOrderExample);
+                if(orders.size()==0){
+                    throw new DaifaException("条码不匹配");
+                }
+                oids=orders.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+                DaifaStockExample daifaStockExample=new DaifaStockExample();
+                daifaStockExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaStock> stocks=daifaStockMapper.selectByExample(daifaStockExample);
+                if(stocks.size()>0){
+                    List<Long> stockOids=stocks.stream().map(DaifaStock::getDfOrderId).collect(Collectors.toList());
+                    List<Long> tmpOids=new ArrayList<>(oids);
+                    tmpOids.removeIf(stockOids::contains);
+                    if(tmpOids.size()!=0&&tmpOids.size()!=oids.size()){
+                        throw new DaifaException("退货入库和退货失败入库不能同时进行");
+                    }
+                    //走失败入库路线
+                    List<WorkerStock> allOutStock=daifaStockMapper.selectWorkerOutStock(null,2);
+                    List<WorkerStock> workerOutStock=daifaStockMapper.selectWorkerOutStock(workerId,2);
+                    List<Long> workerOutOrderIds=workerOutStock.stream().map(WorkerStock::getDfOrderId).collect(Collectors.toList());
+                    List<Long> otherOutOrderIds=allOutStock.stream().map(WorkerStock::getDfOrderId).filter(aLong -> !workerOutOrderIds.contains(aLong)).collect(Collectors.toList());
+                    for(Long oid:stockOids){
+                        if(otherOutOrderIds.contains(oid)){
+                            throw new DaifaException("存在不是自己出库的商品");
+                        }
+                    }
+                }else{
+                    //走退货入库路线
+                    saleAfterProcess.saleInStocks(oids,"售后库存",workerId,true);
+                }
+            }else{
+                List<Long> oids=Collections.singletonList(orderId);
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaAfterSaleSub> orders=daifaAfterSaleSubMapper.selectByExample(daifaOrderExample);
+                if(orders.size()==0){
+                    throw new DaifaException("条码不匹配");
+                }
+                oids=orders.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+                DaifaStockExample daifaStockExample=new DaifaStockExample();
+                daifaStockExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaStock> stocks=daifaStockMapper.selectByExample(daifaStockExample);
+                List<Long> stockOids=stocks.stream().map(DaifaStock::getDfOrderId).collect(Collectors.toList());
+                List<Long> tmpOids=new ArrayList<>(oids);
+                tmpOids.removeIf(stockOids::contains);
+                if(tmpOids.size()!=0){
+                    throw new DaifaException("操作失败,部分扫描的商品未入库");
+                }
+                for(DaifaStock stock:stocks){
+                    int inOutType=saleAfterProcess.selNowStockStatusByStockId(stock.getStockId());
+                    if(inOutType!=1){
+                        throw new DaifaException("操作失败,部分扫描的商品非入库状态");
+                    }
+                }
+            }
             redisIO.put(key+workerId,os);
             return vos.stream().filter(inOutDaifaStockVO -> Objects.equals(inOutDaifaStockVO.getChildOrderId(), orderId)).findFirst().get();
         }
@@ -202,7 +261,7 @@ public class DaifaStockService {
             saleAfterProcess.notReturnInStocks(notStockIds,yesStockIds,workerId);
         }else{
             //走退货入库路线
-            saleAfterProcess.saleInStocks(oids,"售后库存",workerId);
+            saleAfterProcess.saleInStocks(oids,"售后库存",workerId,false);
         }
         afreshPutInInventory(workerId,false);
     }

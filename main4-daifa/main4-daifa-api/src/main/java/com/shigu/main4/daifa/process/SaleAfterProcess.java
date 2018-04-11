@@ -164,7 +164,16 @@ public interface SaleAfterProcess {
      * @param workerId
      * @throws DaifaException
      */
+    @Deprecated
     void saleInStocks(List<Long> orderIds, String stockLocktion,Long workerId) throws DaifaException;
+    /**
+     * 批量售后入库
+     * @param orderIds
+     * @param stockLocktion
+     * @param workerId
+     * @throws DaifaException
+     */
+    void saleInStocks(List<Long> orderIds, String stockLocktion,Long workerId,boolean isChecked) throws DaifaException;
     /**
      * 批量售后出库
      * @param stockIds

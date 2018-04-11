@@ -127,7 +127,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
         sub.setDfOrderId(orderId);
         sub=daifaAfterSaleSubMapper.selectOne(sub);
         if(sub.getInStock()!=null){
-            model.refundFailInStock(orderId,2,stockLocktion,null);
+            model.refundFailInStock(orderId,2,stockLocktion,null,false);
         }
         return null;
     }
@@ -223,7 +223,7 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
      */
     @Override
     public void saleInStock(Long orderId, String stockLocktion, String sendPhone) throws DaifaException {
-        SpringBeanFactory.getBean(SaleAfterModel.class).refundFailInStock(orderId,1,stockLocktion,sendPhone);
+        SpringBeanFactory.getBean(SaleAfterModel.class).refundFailInStock(orderId,1,stockLocktion,sendPhone,false);
     }
     /**
      * 批量售后入库
@@ -235,13 +235,20 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void saleInStocks(List<Long> orderIds,String stockLocktion,Long workerId) throws DaifaException {
+        saleInStocks(orderIds,stockLocktion,workerId,false);
+    }
+
+    @Override
+    public void saleInStocks(List<Long> orderIds, String stockLocktion, Long workerId, boolean isChecked) throws DaifaException {
         DaifaAfterSaleSubExample daifaAfterSaleSubExample  = new DaifaAfterSaleSubExample();
         daifaAfterSaleSubExample.createCriteria().andDfOrderIdIn(orderIds);
         List<DaifaAfterSaleSub> daifaAfterSaleSubs = daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
         SaleAfterModel saleAfterModel=SpringBeanFactory.getBean(SaleAfterModel.class);
         for(DaifaAfterSaleSub daifaAfterSaleSub:daifaAfterSaleSubs) {
-            saleAfterModel.refundFailInStock(daifaAfterSaleSub.getDfOrderId(),1,stockLocktion,daifaAfterSaleSub.getBuyerTelephone());
-            saleAfterModel.insertDaifaStock(daifaAfterSaleSub.getAfterSaleSubId(),workerId);
+            saleAfterModel.refundFailInStock(daifaAfterSaleSub.getDfOrderId(),1,stockLocktion,daifaAfterSaleSub.getBuyerTelephone(),isChecked);
+            if(!isChecked){
+                saleAfterModel.insertDaifaStock(daifaAfterSaleSub.getAfterSaleSubId(),workerId);
+            }
         }
     }
 
