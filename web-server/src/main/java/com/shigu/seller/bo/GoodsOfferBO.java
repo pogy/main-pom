@@ -1,6 +1,7 @@
 package com.shigu.seller.bo;
 
 import com.shigu.main4.item.vo.SynItem;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -261,6 +262,9 @@ public class GoodsOfferBO implements Serializable{
         synItem.setInputStr(this.getInputStr());
         synItem.setProps(this.getParamstr());
         synItem.setPropertyAlias(this.getPropertyAlias());
+        if (StringUtils.isBlank(this.buynow)) {
+            this.buynow = this.getPiPrice();
+        }
         synItem.setPriceString(this.getBuynow());
         synItem.setPiPriceString(this.getPiPrice());
         synItem.setSellPoint(this.getSellPoint());
