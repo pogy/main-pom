@@ -486,7 +486,7 @@ public class ImportCsvFileService {
                 taobaoItemPropExample.createCriteria().andCidEqualTo(record.getCid()).andIsSalePropEqualTo(1).andIsColorPropEqualTo(1);
                 List<TaobaoItemProp> colorItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
                 String colorAlias = replaceProps(record, sge, colorItemProps);
-                if ("null".equals(propAlias)) {
+                if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
                     propAlias = colorAlias;
                 }else {
                     if (!propAlias.endsWith(";")) {
@@ -500,7 +500,7 @@ public class ImportCsvFileService {
                 List<TaobaoItemProp> sizeItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
                 String sizeAlias = replaceProps(record, sge, sizeItemProps);
 
-                if ("null".equals(propAlias)) {
+                if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
                     propAlias = sizeAlias;
                 }else {
                     if (!propAlias.endsWith(";")) {
@@ -656,63 +656,61 @@ public class ImportCsvFileService {
 
         String[] propItems = props.split(";");
         if (propItems != null && propItems.length > 0) {
+            List<Long> propVausIds = new ArrayList<>();
             for (String propItem : propItems) {
                 if (!propItem.contains(pid)) {
                     continue;
                 }
                 String[] propVaus = propItem.split(":");
                 if (propVaus != null && propVaus.length > 0) {
-                    List<Long> propVausIds = new ArrayList<>();
                     for(String propVau : propVaus){
                         if (propVau.equals(pid)) {
                             continue;
                         }
                         propVausIds.add(Long.parseLong(propVau));
                     }
+                }
+            }
+            TaobaoPropValueExample taobaoPropValueExample  = new TaobaoPropValueExample();
+            taobaoPropValueExample.createCriteria()
+                    .andCidEqualTo(record.getCid())
+                    .andPidEqualTo(taobaoItemProp.getPid());
+            List<TaobaoPropValue> taobaoPropValues = taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
 
-                    TaobaoPropValueExample taobaoPropValueExample  = new TaobaoPropValueExample();
-                    taobaoPropValueExample.createCriteria()
-                            .andCidEqualTo(record.getCid())
-                            .andPidEqualTo(taobaoItemProp.getPid());
-                    List<TaobaoPropValue> taobaoPropValues = taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+            List<Long> vids = BeanMapper.getFieldList(taobaoPropValues, "vid", Long.class);
+            Map<Long, TaobaoPropValue> taobaoPropValueMap = BeanMapper.list2Map(taobaoPropValues, "vid", Long.class);
+            List<Long> copyPropVausIds = new ArrayList<>(propVausIds);//已经使用的系统vid
+            List<Long> customizeVausIds = new ArrayList<>(propVausIds);//自定义的vid
+            copyPropVausIds.retainAll(vids);
+            customizeVausIds.removeAll(copyPropVausIds);
 
-                    List<Long> vids = BeanMapper.getFieldList(taobaoPropValues, "vid", Long.class);
-                    Map<Long, TaobaoPropValue> taobaoPropValueMap = BeanMapper.list2Map(taobaoPropValues, "vid", Long.class);
-                    List<Long> copyPropVausIds = new ArrayList<>(propVausIds);//已经使用的系统vid
-                    List<Long> customizeVausIds = new ArrayList<>(propVausIds);//自定义的vid
-                    copyPropVausIds.retainAll(vids);
-                    customizeVausIds.removeAll(copyPropVausIds);
-
-                    if (copyPropVausIds.size() == vids.size()) {
-                        //颜色已经用完，直接抛弃
-                        for (Long customizeVausId : customizeVausIds){
-                            props = props.replace(pid + ":" + customizeVausId.toString(),"");
-                        }
-                    }else{
-                        List<Long> leftVausIds = new ArrayList<>(vids);//没有使用的vid
-                        leftVausIds.removeAll(copyPropVausIds);
-                        int leftVausIdsSize = leftVausIds.size();
-                        int customizeVausIdsSize =  customizeVausIds.size();
-                        if (leftVausIdsSize < customizeVausIdsSize) {//剩余的vid 没有自定义的多，抛弃多余的
-                            List<Long> left = customizeVausIds.subList(0, leftVausIdsSize);
-                            List<Long> right = customizeVausIds.subList(leftVausIdsSize, customizeVausIdsSize);
-                            for (Long customizeVausId : right){
-                                props = props.replace(pid + ":" + customizeVausId.toString(),"");
-                            }
-                            customizeVausIds = left;
-                        }
-                        for (int ii = 0 ;ii< customizeVausIds.size();ii++){
-                            String customizeVausIdStr = customizeVausIds.get(ii).toString();
-                            props = props.replace(customizeVausIdStr,leftVausIds.get(ii).toString());
-                            stringBuilder.append(pid)
-                                    .append(":")
-                                    .append(leftVausIds.get(ii).toString())
-                                    .append(":")
-                                    .append(taobaoPropValueMap.get(leftVausIds.get(ii)).getName())
-                                    .append(";");
-                        }
+            if (copyPropVausIds.size() == vids.size()) {
+                //颜色已经用完，直接抛弃
+                for (Long customizeVausId : customizeVausIds){
+                    props = props.replace(pid + ":" + customizeVausId.toString(),"");
+                }
+            }else{
+                List<Long> leftVausIds = new ArrayList<>(vids);//没有使用的vid
+                leftVausIds.removeAll(copyPropVausIds);
+                int leftVausIdsSize = leftVausIds.size();
+                int customizeVausIdsSize =  customizeVausIds.size();
+                if (leftVausIdsSize < customizeVausIdsSize) {//剩余的vid 没有自定义的多，抛弃多余的
+                    List<Long> left = customizeVausIds.subList(0, leftVausIdsSize);
+                    List<Long> right = customizeVausIds.subList(leftVausIdsSize, customizeVausIdsSize);
+                    for (Long customizeVausId : right){
+                        props = props.replace(pid + ":" + customizeVausId.toString(),"");
                     }
-
+                    customizeVausIds = left;
+                }
+                for (int ii = 0 ;ii< customizeVausIds.size();ii++){
+                    String customizeVausIdStr = customizeVausIds.get(ii).toString();
+                    props = props.replace(customizeVausIdStr,leftVausIds.get(ii).toString());
+                    stringBuilder.append(pid)
+                            .append(":")
+                            .append(leftVausIds.get(ii).toString())
+                            .append(":")
+                            .append(taobaoPropValueMap.get(leftVausIds.get(ii)).getName())
+                            .append(";");
                 }
             }
         }
