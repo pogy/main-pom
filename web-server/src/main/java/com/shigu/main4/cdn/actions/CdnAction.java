@@ -1207,4 +1207,9 @@ public class CdnAction {
         model.addAttribute("webSite","hz");
         return "xzSearch/daifaIndex";
     }
+
+    @RequestMapping("bonus")
+    public String bonusPage(Model model){
+        return "xzPage/bonus";
+    }
 }
