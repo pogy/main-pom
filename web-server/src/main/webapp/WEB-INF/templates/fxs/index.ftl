@@ -148,8 +148,8 @@
                 0.00
             </#if>
         </span>
-        <div class="tips fc3 pa">红包可领取代金券<i class="icon-warn fcF40" id="bonusTipIcon"></i>
-            <div class="tipTest pa"><em></em><b></b>${bonusTips!}</div>
+        <div class="tips fc3 pa">红包使用方式 <i class="icon-warn fcF40 pr" id="bonusTipIcon"><em></em><b></b></i>
+            <div class="tipTest pa">${bonusTips!}</div>
         </div>
     </div>
     <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display == false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
