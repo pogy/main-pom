@@ -1,22 +1,22 @@
 package com.shigu.seller.vo;
 
 public class ShiguStyleVo {
-    private Long styleId;
-    private String styleName;
+    private Long scid;
+    private String scname;
 
-    public Long getStyleId() {
-        return styleId;
+    public Long getScid() {
+        return scid;
     }
 
-    public void setStyleId(Long styleId) {
-        this.styleId = styleId;
+    public void setScid(Long scid) {
+        this.scid = scid;
     }
 
-    public String getStyleName() {
-        return styleName;
+    public String getScname() {
+        return scname;
     }
 
-    public void setStyleName(String styleName) {
-        this.styleName = styleName;
+    public void setScname(String scname) {
+        this.scname = scname;
     }
 }

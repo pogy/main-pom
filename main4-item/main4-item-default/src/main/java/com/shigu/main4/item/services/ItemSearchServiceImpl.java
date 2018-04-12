@@ -12,6 +12,7 @@ import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.GoodsSearchBO;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
@@ -73,7 +74,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Override
     public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
-        return searchItem(keyword,webSite,mid,null,cids,shouldStoreIds,sid,priceFrom,priceTo,timeForm,timeTo,orderCase,page,pageSize,aggs);
+        return searchItem(keyword, webSite, mid, null, cids, shouldStoreIds, sid, priceFrom, priceTo, timeForm, timeTo, orderCase, page, pageSize, aggs);
     }
 
     /**
@@ -93,13 +94,36 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid,List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+        GoodsSearchBO bo = new GoodsSearchBO();
+        bo.setKeyword(keyword);
+        bo.setWebSite(webSite);
+        bo.setMid(mid);
+        bo.setCheckds(checkds);
+        bo.setCids(cids);
+        bo.setShouldStoreIds(shouldStoreIds);
+        bo.setSid(sid);
+        bo.setPriceFrom(priceFrom);
+        bo.setPriceTo(priceTo);
+        bo.setTimeForm(timeForm);
+        bo.setTimeTo(timeTo);
+        bo.setOrderCase(orderCase);
+        bo.setPage(page);
+        bo.setPageSize(pageSize);
+        bo.setAggs(aggs);
+        return searchItem(bo);
+    }
+
+    @Override
+    public ShiguAggsPager searchItem(GoodsSearchBO bo) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setCats(Collections.<AggsCount>emptyList());
         pager.setMarkets(Collections.<AggsCount>emptyList());
         pager.setParentCats(Collections.<AggsCount>emptyList());
+        Integer page = bo.getPage();
         pager.setNumber(page);
         // 最大5000
+        Integer pageSize = bo.getPageSize();
         int start = (page - 1) * pageSize;
         int realSize = pageSize;
         if (start > 5000) {
@@ -107,20 +131,21 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         } else if (start + pageSize > 5000) {
             realSize = 5000 - start;
         }
-
+        String webSite = bo.getWebSite();
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
-                = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
+                = openSearch.searchFrom(SEARCH_APP + webSite, OpenItemVo.class).from(start).size(realSize)
                 .setRank("rough_project_c", "project_c", 2000);
 
         SearchQuery searchQuery = null;
+        String keyword = bo.getKeyword();
         if (StringUtils.isNotEmpty(keyword)) {
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
 //            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
 //            if (StringUtils.isNotEmpty(keywordChina)) {
-                searchQuery = QueryBuilder.search("title", keyword).or(QueryBuilder.termSearch("style_name",keyword));
-                requestBuilder.addSummary(SummaryBuild.field("title").length(120));
+            searchQuery = QueryBuilder.search("title", keyword).or(QueryBuilder.termSearch("style_name", keyword));
+            requestBuilder.addSummary(SummaryBuild.field("title").length(120));
 //            }
-            if (StringUtils.isNotEmpty(keywordNum)&&keywordNum.equals(keyword)) {//非中文的才匹配货号
+            if (StringUtils.isNotEmpty(keywordNum) && keywordNum.equals(keyword)) {//非中文的才匹配货号
                 SearchQuery goodsNoQuery = QueryBuilder.search("goods_no", keyword);
                 if (searchQuery == null) {
                     searchQuery = goodsNoQuery;
@@ -130,7 +155,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 requestBuilder.addSummary(SummaryBuild.field("goods_no").length(50));
             }
         }
-
+        String sid = bo.getSid();
         if (StringUtils.isNotEmpty(sid)) {
             SearchQuery sidsQuery = QueryBuilder.search("sids", sid);
             if (searchQuery != null) {
@@ -144,46 +169,62 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
 
         NumberFilter filters = FilterBuilder.number("is_closed", 0).and(FilterBuilder.number("pi_price").gt(0));
+        List<Long> cids = bo.getCids();
         if (cids != null && !cids.isEmpty()) {
             filters.and(FilterBuilder.termsIn("cid", cids.toArray(new Long[cids.size()])));
         }
-
+        Long mid = bo.getMid();
         if (mid != null) {
             filters.and(FilterBuilder.number("parent_market_id", mid));
         }
-
+        Double priceFrom = bo.getPriceFrom();
         if (priceFrom != null) {
             filters.and(FilterBuilder.number("pi_price").gte(((Double) (priceFrom * 100)).longValue()));
         }
-
+        Double priceTo = bo.getPriceTo();
         if (priceTo != null) {
             filters.and(FilterBuilder.number("pi_price").lte(((Double) (priceTo * 100)).longValue()));
         }
-
+        Date timeForm = bo.getTimeForm();
         if (timeForm != null) {
             filters.and(FilterBuilder.number("created").gte(timeForm.getTime()));
         }
-
+        Date timeTo = bo.getTimeTo();
         if (timeTo != null) {
             filters.and(FilterBuilder.number("created").lte(timeTo.getTime()));
         }
-
-        if ("hz".equalsIgnoreCase(webSite)&&checkds!=null) {//只有杭州的有checkeds
-            for(SearchCheckd sc:checkds){
-                switch (sc){
-                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));break;
-                    case VIDEO:filters.and(FilterBuilder.number("had_video",1));break;
+        List<SearchCheckd> checkds = bo.getCheckds();
+        if ("hz".equalsIgnoreCase(webSite) && checkds != null) {//只有杭州的有checkeds
+            for (SearchCheckd sc : checkds) {
+                switch (sc) {
+                    case BIGZIP:
+                        filters.and(FilterBuilder.number("had_bigzip", 1));
+                        break;
+                    case VIDEO:
+                        filters.and(FilterBuilder.number("had_video", 1));
+                        break;
                 }
 
             }
         }
+        //风格频道商品风格
+        Long parentStyleId = bo.getParentStyleId();
+        if (parentStyleId != null) {
+            filters.and(FilterBuilder.number("parent_style_id", parentStyleId));
+        }
         requestBuilder.addFilter(filters);
-
         // 6. 排序规则
+        SearchOrderBy orderCase = bo.getOrderCase();
         switch (orderCase) {
             case NEW:
                 requestBuilder.addSort(new SortField("created", Order.DECREASE));
                 break;
+            case STYLE_CHANNEL:
+                //风格频道，商品风格分排序，只有在选中了风格类型时才有效，否则使用默认排序
+                if (parentStyleId != null) {
+                    requestBuilder.setRank("rough_style_channel", "style_channel", 2000);
+                    break;
+                }
             case COMMON:
                 requestBuilder.setRank("search_project", "search_jp", 2000);
                 break;
@@ -209,9 +250,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             case USER_LOVE:
                 requestBuilder.setRank("rough_user_love", "user_love", 2000);
                 break;
-
         }
-
+        boolean aggs = bo.isAggs();
         if (aggs) {
             requestBuilder.addAggs(AggsBuilder.count("cid").size(100))
                     .addAggs(AggsBuilder.count("parent_market_id").size(100));
@@ -229,11 +269,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 searchItem.setItemId(vo.getGoodsId());
                 if (vo.getGoodsNo().contains("<em>")) {
                     searchItem.setHighLightGoodsNo(vo.getGoodsNo());
-                    searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
+                    searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>", "").replace("</em>", ""));
                 } else {
                     searchItem.setGoodsNo(null);
                     searchItem.setHighLightTitle(vo.getTitle());
-                    searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
+                    searchItem.setTitle(vo.getTitle().replace("<em>", "").replace("</em>", ""));
                 }
                 pager.getContent().add(searchItem);
             }
@@ -266,7 +306,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
 
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
-                = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
+                = openSearch.searchFrom(SEARCH_APP + webSite, OpenItemVo.class).from(start).size(realSize)
                 .setRank("rough_project_c", "project_c", 2000);
 
         SearchQuery searchQuery = null;
@@ -275,7 +315,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             searchQuery = QueryBuilder.search("title", keyword);
             requestBuilder.addSummary(SummaryBuild.field("title").length(120));
 //            }
-            if (StringUtils.isNotEmpty(keywordNum)&&keywordNum.equals(keyword)) {//非中文的才匹配货号
+            if (StringUtils.isNotEmpty(keywordNum) && keywordNum.equals(keyword)) {//非中文的才匹配货号
                 SearchQuery goodsNoQuery = QueryBuilder.search("goods_no", keyword);
                 if (searchQuery == null) {
                     searchQuery = goodsNoQuery;
@@ -343,11 +383,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 searchItem.setItemId(vo.getGoodsId());
                 if (vo.getGoodsNo().contains("<em>")) {
                     searchItem.setHighLightGoodsNo(vo.getGoodsNo());
-                    searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
+                    searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>", "").replace("</em>", ""));
                 } else {
                     searchItem.setGoodsNo(null);
                     searchItem.setHighLightTitle(vo.getTitle());
-                    searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
+                    searchItem.setTitle(vo.getTitle().replace("<em>", "").replace("</em>", ""));
                 }
                 pager.getContent().add(searchItem);
             }
@@ -422,7 +462,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     }
 
 
-
     /**
      * 按ID查询
      *
@@ -434,23 +473,23 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      */
     @Override
     public ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize) {
-        ShiguPager<SearchItem> pager=new ShiguAggsPager();
-        if (ids == null||ids.size()==0) {
+        ShiguPager<SearchItem> pager = new ShiguAggsPager();
+        if (ids == null || ids.size() == 0) {
             pager.setNumber(page);
             pager.setTotalCount(0);
             pager.setContent(new ArrayList<>());
             return pager;
         }
-        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
         example.createCriteria().andGoodsIdIn(ids);
         example.setWebSite(webSite);
         example.setStartIndex((page - 1) * pageSize);
         example.setEndIndex(pageSize);
-        List<ShiguGoodsTiny> tinies=shiguGoodsTinyMapper.selectFieldsByConditionList(example,
+        List<ShiguGoodsTiny> tinies = shiguGoodsTinyMapper.selectFieldsByConditionList(example,
                 "pic_url,title,goods_id,pi_price_string,store_id,created,goods_no");
-        List<SearchItem> items=new ArrayList<>();
-        for (ShiguGoodsTiny sgt:tinies){
-            SearchItem si=new SearchItem();
+        List<SearchItem> items = new ArrayList<>();
+        for (ShiguGoodsTiny sgt : tinies) {
+            SearchItem si = new SearchItem();
             si.setItemId(sgt.getGoodsId());
             si.setCreated(sgt.getCreated());
             si.setGoodsNo(sgt.getGoodsNo());

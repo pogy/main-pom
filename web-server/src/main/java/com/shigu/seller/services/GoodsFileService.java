@@ -434,7 +434,7 @@ public class GoodsFileService extends OssIO {
         }
         String path=getHomeDir(shopId)+fileKey;
         itemPicRelationService.removeFileRelation(path,fileType);
-        return ossIO.deleteFile(path);
+        return super.deleteFile(path);
     }
 
     /**

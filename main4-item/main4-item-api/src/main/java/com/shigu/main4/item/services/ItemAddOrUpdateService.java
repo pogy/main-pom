@@ -6,6 +6,7 @@ import com.shigu.main4.item.exceptions.SystemSynItemException;
 import com.shigu.main4.item.vo.SynItem;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 商品添加或更新服务类
@@ -122,12 +123,16 @@ public interface ItemAddOrUpdateService {
      * @param webSite 分站
      * @param sids 风格ID
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
     void addGoodsStyle(Long goodsId, String webSite, String sids) throws ItemUpdateException;
     /**
      * 设置商品风格
      * @param goodsId 商品ID
      * @param webSite
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
    void setCustomStyle(Long goodsId, Integer sid, String webSite);
 
 
@@ -139,6 +144,8 @@ public interface ItemAddOrUpdateService {
      * @param userId
      * @return
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
    Long addCustomerStyle(Long categoryId, String goodsStyleName, Long userId);
 
     /**
@@ -148,6 +155,8 @@ public interface ItemAddOrUpdateService {
      * @param userId
      *
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
    Long updateCustomerStyle(Long categoryId, Long goodsStyleId, String goodsStyleName, Long userId);
 
     /**
@@ -157,6 +166,8 @@ public interface ItemAddOrUpdateService {
      * @param website
      * @param shopId
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
     void deleteCustomerStyle(Long goodsStyleId, Long userId, String website, Long shopId);
 
     /**
@@ -164,5 +175,9 @@ public interface ItemAddOrUpdateService {
      * @param goodsStyleId
      * @param sortType
      */
+    @Deprecated
+    // TODO: 18-1-23 准备撤掉
     void moveSortCustomerStyle(Long goodsStyleId, Integer sortType);
+
+
 }

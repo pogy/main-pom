@@ -1,6 +1,7 @@
 package com.shigu.main4.storeservices;
 
 import com.shigu.main4.vo.CateMenu;
+import com.shigu.main4.vo.HomeCateMenu;
 
 import java.util.List;
 
@@ -16,5 +17,12 @@ public interface SearchCategoryService {
      * @return
      */
     List<CateMenu> getMarketCateShow();
+
+    /**
+     * 获取首页导航栏展示类目
+     *
+     * @return
+     */
+    List<HomeCateMenu> getHomeCateShow();
 
 }
