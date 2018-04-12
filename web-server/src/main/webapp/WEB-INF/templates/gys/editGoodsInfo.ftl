@@ -84,6 +84,7 @@ var deschtml = '${goodsInfo.deschtml}';
         </div>
     </div>
 </div>
+<#if webSite != 'qz'>
 <div class="goodsFabric clearfix">
     <label class="formKey"><i>*</i>材料成分：</label>
     <div class="goodsFabricInfoCon clearfix fl">
@@ -101,6 +102,7 @@ var deschtml = '${goodsInfo.deschtml}';
         </div>
     </div>
 </div>
+</#if>
 <div class="formPicks formAttribute">
     <label class="formKey">宝贝属性：</label>
     <div class="formData">
@@ -166,6 +168,7 @@ var deschtml = '${goodsInfo.deschtml}';
     <div class="formData">
         <p class="tips">图片大小不能超过3M；700*700 以上的图片可以在宝贝详情页主图提供图片放大功能 </p>
         <ul class="clearfix">
+            <#if goodsInfo.picPath??>
             <li class="active">
                 <i class="iconfont bg icon-plus"></i>
                 <span class="mainText"><i>*</i>宝贝主图</span>
@@ -176,15 +179,12 @@ var deschtml = '${goodsInfo.deschtml}';
                 </div>
                 <div class="imgbox">
                     <img src="${goodsInfo.picPath!}" class="showDefaultPic">
-                <#list goodsInfo.allimg as img>
-                    <#if img_index == -1 >
-                    <img src="${img!}" class="showDefaultPic">
-                    </#if>
-                </#list>
                 </div>
                 <div class="waitgif"></div>
             </li>
-            <li >
+            </#if>
+            <#list goodsInfo.allimg as img>
+            <li>
                 <i class="iconfont bg icon-plus"></i>
                 <div class="ctBox">
                     <i class="iconfont toleft icon-leftarrow"></i>
@@ -192,64 +192,18 @@ var deschtml = '${goodsInfo.deschtml}';
                     <i class="iconfont delete icon-close"></i>
                 </div>
                 <div class="imgbox">
-                <#list goodsInfo.allimg as img>
-                    <#if img_index == 0 >
                     <img src="${img!}" class="showDefaultPic">
-                    </#if>
-                </#list>
                 </div>
                 <div class="waitgif"></div>
             </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont tori ght icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                <#list goodsInfo.allimg as img>
-                    <#if img_index == 1 >
-                    <img src="${img!}" class="showDefaultPic">
-                    </#if>
-                </#list>
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont tori ght icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                <#list goodsInfo.allimg as img>
-                    <#if img_index == 2 >
-                    <img src="${img!}" class="showDefaultPic">
-                    </#if>
-                </#list>
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont tori ght icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                <#list goodsInfo.allimg as img>
-                    <#if img_index == 3 >
-                    <img src="${img!}" class="showDefaultPic">
-                    </#if>
-                </#list>
-                </div>
-                <div class="waitgif"></div>
-            </li>
+            </#list>
         </ul>
     </div>
+</div>
+<div class="moreMainImgUpload">
+    <#if webSite == 'qz'>
+    <b class="showMoreMainImgWindowBtn">选择要上传的主图</b>
+    </#if>
 </div>
 <div class="formInput formEditor">
     <label class="formKey">宝贝描述：</label>
@@ -293,4 +247,6 @@ var deschtml = '${goodsInfo.deschtml}';
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
