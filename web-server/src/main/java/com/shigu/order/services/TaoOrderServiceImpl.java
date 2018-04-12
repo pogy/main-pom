@@ -238,7 +238,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             t.setReceiverMobile(getSecurityClient().decrypt(t.getReceiverMobile(), "phone", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverPhone())) {
-            t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "phone", session));
+            t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "search", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             t.setReceiverName(getSecurityClient().decrypt(t.getReceiverName(), "search", session));
@@ -255,11 +255,11 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             address+=t.getReceiverName();
         }
-        if (!StringUtils.isEmpty(t.getReceiverPhone())){
-            address+=","+t.getReceiverPhone();
-        }else if (!StringUtils.isEmpty(t.getReceiverMobile())){
+        if (!StringUtils.isEmpty(t.getReceiverMobile())){
             address+=","+t.getReceiverMobile();
             tbOrderVO.setReceiverPhone(t.getReceiverMobile());
+        }else if (!StringUtils.isEmpty(t.getReceiverPhone())){
+            address+=","+t.getReceiverPhone();
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())){
             address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "
@@ -412,21 +412,25 @@ public class TaoOrderServiceImpl implements TaoOrderService {
      * @return
      */
     private List<TinyIdMapVO> selFromEs(List<Long> numIids){
-        SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
-                .setQuery(QueryBuilders.termsQuery("fenNumiid",numIids)).execute().actionGet();
-        SearchHits hits=response.getHits();
-        SearchHit[] hitArr=hits.getHits();
-        List<TinyIdMapVO> results=new ArrayList<>();
-        for(int i=0;i<hitArr.length;i++){
-            SearchHit hit=hitArr[i];
-            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-            TinyIdMapVO tinyIdMapVO=new TinyIdMapVO();
-            tinyIdMapVO.setWebSite(shiguGoodsUp.getWebSite());
-            tinyIdMapVO.setGoodsId(shiguGoodsUp.getSupperGoodsId());
-            tinyIdMapVO.setNumIid(shiguGoodsUp.getFenNumiid());
-            results.add(tinyIdMapVO);
+        try {
+            SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
+                    .setQuery(QueryBuilders.termsQuery("fenNumiid",numIids)).execute().actionGet();
+            SearchHits hits=response.getHits();
+            SearchHit[] hitArr=hits.getHits();
+            List<TinyIdMapVO> results=new ArrayList<>();
+            for(int i=0;i<hitArr.length;i++){
+                SearchHit hit=hitArr[i];
+                ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+                TinyIdMapVO tinyIdMapVO=new TinyIdMapVO();
+                tinyIdMapVO.setWebSite(shiguGoodsUp.getWebSite());
+                tinyIdMapVO.setGoodsId(shiguGoodsUp.getSupperGoodsId());
+                tinyIdMapVO.setNumIid(shiguGoodsUp.getFenNumiid());
+                results.add(tinyIdMapVO);
+            }
+            return results;
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        return results;
     }
 
 

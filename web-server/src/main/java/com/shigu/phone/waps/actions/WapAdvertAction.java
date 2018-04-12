@@ -5,6 +5,7 @@ import com.shigu.phone.waps.service.WapAdvertService;
 import com.shigu.phone.waps.vo.ImgSpreadVO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,8 @@ public class WapAdvertAction {
             return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode).element("success",false);
         }
         List<ImgSpreadVO> imgSpreadVOS = wapAdvertService.imgSpread(spread);
-
+        //极限词过滤
+        imgSpreadVOS.forEach(appImgBanner -> appImgBanner.setText(KeyWordsUtil.duleKeyWords(appImgBanner.getText())));
         return  JsonResponseUtil.success().element("success",true).element("spreads",imgSpreadVOS);
     }
 
@@ -73,6 +75,9 @@ public class WapAdvertAction {
             return JsonResponseUtil.error("缺少错误:spreadCode="+spreadCode).element("success",false);
         }
         List<AppItemSpread> appItemSpreads = wapAdvertService.itemSpread(webSite, spread);
+        //极限词过滤
+        appItemSpreads.forEach(appImgBanner -> appImgBanner.setTitle(KeyWordsUtil.duleKeyWords(appImgBanner.getTitle())));
+
         return JsonResponseUtil.success().element("success",true).element("spreads",appItemSpreads);
     }
 }

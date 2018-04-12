@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * 价格分模型，计算
  * Created by bugzy on 2017/5/27 0027.
  */
-@Service("priceCalculateService")
+//@Service("priceCalculateService")
 public class ModPriceCalculateServiceImpl implements PriceCalculateService {
 
     @Autowired
@@ -67,6 +67,11 @@ public class ModPriceCalculateServiceImpl implements PriceCalculateService {
             return ModHandle.modOf(mod).handle(matchPrice(c, strs), price);
         }
         return price;
+    }
+
+    @Override
+    public Long pickPipriceFromTitle(Long shopId,String webSite, Long itemId, Long numIid, Long price, String... strs) {
+        return null;
     }
 
     interface ModH {

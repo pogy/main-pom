@@ -26,6 +26,11 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.8.v20171121</version>
+                <configuration>
+                    <httpConnector>
+                        <port>80</port>
+                    </httpConnector>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -39,6 +44,31 @@
         </plugins>
     </build>
     <dependencies>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>jdimg-sdk</artifactId>
+            <version>${jdimg-sdk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>shigu_goods_id_generator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>daifa_gift_goods</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.taobao</groupId>
+                    <artifactId>taobao-sdk-java-21720662</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -200,27 +230,27 @@
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-spring</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-ehcache</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-quartz</artifactId>
-        <version>${shiro.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-quartz</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
-        <groupId>com.shiro</groupId>
-        <artifactId>shiro-freemarker-tags</artifactId>
-        <version>0.1</version>
+            <groupId>com.shiro</groupId>
+            <artifactId>shiro-freemarker-tags</artifactId>
+            <version>0.1</version>
         </dependency>
 
         <!--freemarker-->
@@ -432,10 +462,10 @@
             <artifactId>zookeeper</artifactId>
             <version>3.4.6</version>
             <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>io.netty</groupId>-->
-                    <!--<artifactId>netty</artifactId>-->
-                <!--</exclusion>-->
+            <!--<exclusion>-->
+            <!--<groupId>io.netty</groupId>-->
+            <!--<artifactId>netty</artifactId>-->
+            <!--</exclusion>-->
             <!--</exclusions>-->
         </dependency>
 
@@ -455,7 +485,7 @@
             <artifactId>wxpay-scanpay-java-sdk</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
-<!--查淘宝店内信息-->
+        <!--查淘宝店内信息-->
         <!--支付的对接-->
         <dependency>
             <groupId>webs.pay_site</groupId>
@@ -471,8 +501,8 @@
                     <artifactId>xinzuo_mybatis</artifactId>
                 </exclusion>
                 <!--<exclusion>-->
-                    <!--<groupId>com.openJar</groupId>-->
-                    <!--<artifactId>open_order_endsdk</artifactId>-->
+                <!--<groupId>com.openJar</groupId>-->
+                <!--<artifactId>open_order_endsdk</artifactId>-->
                 <!--</exclusion>-->
             </exclusions>
         </dependency>
@@ -500,7 +530,7 @@
             <artifactId>mail</artifactId>
             <version>1.0</version>
         </dependency>
-<!--阿里登陆用-->
+        <!--阿里登陆用-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>alibaba_zhb</artifactId>
@@ -517,7 +547,7 @@
             <artifactId>aliyun-sdk-opensearch</artifactId>
             <version>3.1.3</version>
         </dependency>
-<!--微信包-->
+        <!--微信包-->
         <dependency>
             <groupId>org.sword</groupId>
             <artifactId>wechat4j</artifactId>
@@ -557,7 +587,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-app-sdk</artifactId>
-            <version>4.2.0-SNAPSHOT</version>
+            <version>${main4-app-sdk.version}</version>
         </dependency>
 
         <dependency>
@@ -566,12 +596,26 @@
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!--JD API Dependencies Start-->
+        <dependency>
+            <groupId>com.jd</groupId>
+            <artifactId>open-api-sdk</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>sites.activity</groupId>
+            <artifactId>activity-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -583,7 +627,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -598,12 +642,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

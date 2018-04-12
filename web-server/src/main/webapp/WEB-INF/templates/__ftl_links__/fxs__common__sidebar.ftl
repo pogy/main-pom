@@ -129,6 +129,9 @@
                         <#if 'withdraw5Apply' == $pageid >
                             class="selected"
                         </#if>
+                        <#if 'userBonus' == $pageid >
+                            class="selected"
+                        </#if>
                     href="/member/userBalance.htm"
             >我的资金</a>
         </li>
@@ -139,6 +142,20 @@
                 </#if>
                     href="/member/capStatistic.htm"
             >资金明细</a>
+        </li>
+        <li>
+            <a
+                <#if 'bindAlipayUser' == $pageid >
+                    class="selected"
+                </#if>
+                        <#if 'bindAlipayUserOpe' == $pageid >
+                            class="selected"
+                        </#if>
+                        <#if 'bindAlipaySuccess' == $pageid >
+                            class="selected"
+                        </#if>
+                    href="/member/bindAlipayUser.htm"
+            >绑定设置</a>
         </li>
     </ul>
     <#elseif $it.type == 'safecenter'>

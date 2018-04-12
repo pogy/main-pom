@@ -17,6 +17,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,13 @@ public class MyOrderAction {
             }
         }
         ShiguPager<MyOrderVO> pager = myOrderService.selectMyOrderPager(bo, ps.getUserId());
+        //过滤极限词
+        pager.getContent().forEach(myOrderVO -> {
+            if (myOrderVO.getChildOrders() != null) {
+                myOrderVO.getChildOrders().forEach(subMyOrderVO -> subMyOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subMyOrderVO.getTitle())));
+            }
+        });
+
         model.addAttribute("query", bo);//返回查询条件
         model.addAttribute("orders", pager.getContent());
         model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
@@ -202,6 +210,11 @@ public class MyOrderAction {
         } else {
 
             MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId,ps.getUserId());
+            //极限词过滤
+            if (detailVo.getChildOrders() != null) {
+                detailVo.getChildOrders().forEach(subMyOrderVO -> subMyOrderVO.setTitle(KeyWordsUtil.duleKeyWords(subMyOrderVO.getTitle())));
+            }
+
             model.addAttribute("orderDetailVO", detailVo);
             model.addAttribute("orderStateText", detailVo.getOrderStateText());
             model.addAttribute("orderCreateTime", detailVo.getOrderCreateTime());

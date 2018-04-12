@@ -15,85 +15,96 @@ import java.io.Serializable;
  */
 public class ShiguOuterMarket implements Serializable{
 
-    /** 主键 */
-    @Id
-    @GeneratedValue(
-            generator = "JDBC"
-    )
-    private Long ruleId;
+	/** 主键 */
+	@Id
+	@GeneratedValue(
+			generator = "JDBC"
+	)
+	private Long ruleId;
 
-    /** 分站标识 */
-    private String webSite;
+	/** 分站标识 */
+	private String webSite;
 
-    /** 市场ID */
-    private Long marketId;
+	/** 市场ID */
+	private Long marketId;
 
-    /** 排序号，越小排越前 */
-    private Integer sortOrder;
+	/** 排序号，越小排越前 */
+	private Integer sortOrder;
 
-    /** 显示市场名 */
-    private String marketName;
+	/** 显示市场名 */
+	private String marketName;
 
-    /** 外部楼层ID串，中间用,分开 */
-    private String outerFloorIds;
+	/** 外部楼层ID串，中间用,分开 */
+	private String outerFloorIds;
 
-    /** 指向市场名称 */
-    @Transient
-    private String pointMarketName;
+	/** 是否显示市场 */
+	private Integer markerShow;
 
-    public Long getRuleId() {
-        return ruleId;
-    }
+	/** 指向市场名称 */
+	@Transient
+	private String pointMarketName;
 
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
-    }
+	public Long getRuleId() {
+		return ruleId;
+	}
 
-    public String getWebSite() {
-        return webSite;
-    }
+	public void setRuleId(Long ruleId) {
+		this.ruleId = ruleId;
+	}
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
+	public String getWebSite() {
+		return webSite;
+	}
 
-    public Long getMarketId() {
-        return marketId;
-    }
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
 
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
+	public Long getMarketId() {
+		return marketId;
+	}
 
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
+	public void setMarketId(Long marketId) {
+		this.marketId = marketId;
+	}
 
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
-    }
+	public Integer getSortOrder() {
+		return sortOrder;
+	}
 
-    public String getMarketName() {
-        return marketName;
-    }
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 
-    public void setMarketName(String marketName) {
-        this.marketName = marketName;
-    }
+	public String getMarketName() {
+		return marketName;
+	}
 
-    public String getOuterFloorIds() {
-        return outerFloorIds;
-    }
+	public void setMarketName(String marketName) {
+		this.marketName = marketName;
+	}
 
-    public void setOuterFloorIds(String outerFloorIds) {
-        this.outerFloorIds = outerFloorIds;
-    }
+	public String getOuterFloorIds() {
+		return outerFloorIds;
+	}
 
-    public String getPointMarketName() {
-        return pointMarketName;
-    }
+	public void setOuterFloorIds(String outerFloorIds) {
+		this.outerFloorIds = outerFloorIds;
+	}
 
-    public void setPointMarketName(String pointMarketName) {
-        this.pointMarketName = pointMarketName;
-    }
+	public String getPointMarketName() {
+		return pointMarketName;
+	}
+
+	public void setPointMarketName(String pointMarketName) {
+		this.pointMarketName = pointMarketName;
+	}
+
+	public Integer getMarkerShow() {
+		return markerShow;
+	}
+
+	public void setMarkerShow(Integer markerShow) {
+		this.markerShow = markerShow;
+	}
 }

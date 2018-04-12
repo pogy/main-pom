@@ -25,6 +25,9 @@ public class FileUtil {
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
+            if (children == null) {
+                return false;
+            }
             //递归删除目录中的子目录下
             for (int i=0; i<children.length; i++) {
                 boolean success = deleteDir(new File(dir, children[i]));
@@ -182,7 +185,7 @@ public class FileUtil {
         byte[] bytes = new byte[fileInputStream.available()];
         fileInputStream.read(bytes,0,bytes.length);
         String fileType = getFileType(bytes);
-        System.out.println(fileType);
+        //System.out.println(fileType);
 
     }
 

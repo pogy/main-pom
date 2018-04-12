@@ -14,6 +14,10 @@ public class LoginRecord  implements Serializable {
     private Long userId;
     private String subUserName;
     /**
+     * 1：供应商 0 分销商
+     */
+    private Integer userType;
+    /**
      * 存的时候，存它的value
      */
     private LoginFromType loginFromType;
@@ -50,6 +54,14 @@ public class LoginRecord  implements Serializable {
 
     public void setSubUserName(String subUserName) {
         this.subUserName = subUserName;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 
     public Date getTime() {

@@ -113,7 +113,7 @@ public class PhoneUserService {
             currentUser.login(token);
             //返回需要数据
             PersonalSession personalSession = userBaseService.selUserForSessionByUserName(request.getNickname(), bo.getKey(),LoginFromType.WX);
-            Long userId = personalSession.getUserId();
+//            Long userId = personalSession.getUserId();
             //token
             String uuid=createToken(personalSession.getUserId(),"phone_login_token");
             uuid = TokenUtil.str2HexStr(uuid);
@@ -149,7 +149,7 @@ public class PhoneUserService {
         CaptchaUsernamePasswordToken token=null;
         //这里用了老的代码
         String usernamezhong = bo.getNick();
-        Map<String,String> map=new HashMap<String, String>();
+//        Map<String,String> map=new HashMap<String, String>();
         try {//为什么decode来decode去,不知道,返回照做
             usernamezhong= URLDecoder.decode(URLDecoder.decode(bo.getNick(),"utf-8"),"utf-8");
             bo.setNick(URLEncoder.encode(URLEncoder.encode(usernamezhong, "utf-8"), "utf-8"));
@@ -251,8 +251,12 @@ public class PhoneUserService {
         //把token存入redis,设置存活时间30分钟
         // redisIO.putFixedTemp("phone_login_token",uuid,1800);会提前转译一次json,
         Jedis jedis = redisIO.getJedis();
-        jedis.setex(key+userId, 604800, inRedisToken);
-        return uuid;
+        try {
+            jedis.setex(key + userId, 604800, inRedisToken);
+            return uuid;
+        }finally {
+            redisIO.returnJedis(jedis);
+        }
     }
 
     /**

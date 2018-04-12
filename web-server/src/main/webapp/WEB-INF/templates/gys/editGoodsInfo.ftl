@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>编辑宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
@@ -32,6 +32,9 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
+<script modulepath="gys/editGoodsInfo#config">
+var deschtml = '${goodsInfo.deschtml}';
+</script>
 <script modulepath="gys/editGoodsInfo#config">
 var deschtml = '${goodsInfo.deschtml}';
 </script>

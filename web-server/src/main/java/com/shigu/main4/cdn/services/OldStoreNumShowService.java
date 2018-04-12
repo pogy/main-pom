@@ -25,6 +25,10 @@ public class OldStoreNumShowService {
      * @return
      */
     public Long selShopId(Long numIid){
-        return shiguStoreNumShowMapper.selectFieldsByPrimaryKey(numIid,"store_id").getStoreId();
+        ShiguStoreNumShow shiguStoreNumShow = shiguStoreNumShowMapper.selectFieldsByPrimaryKey(numIid, "store_id");
+        if (shiguStoreNumShow == null) {
+            return null;
+        }
+        return shiguStoreNumShow.getStoreId();
     }
 }

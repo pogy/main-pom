@@ -4,6 +4,7 @@ import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,10 @@ public class OutShopGoodsAction {
         shopIdList.add (shopId);
 
         ShiguAggsPager shopGoods=itemSearchService.searchItem (null, "hz", null, null, shopIdList, null, null, null, null, null, SearchOrderBy.NEW, page, pageSize, true);
+
+        //极限词过滤
+        shopGoods.getContent().forEach(searchItem -> searchItem.setTitle(KeyWordsUtil.duleKeyWords(searchItem.getTitle())));
+
 
         return JSONObject.fromObject (shopGoods);
 

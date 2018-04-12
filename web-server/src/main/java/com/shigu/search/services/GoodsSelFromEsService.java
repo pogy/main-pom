@@ -11,6 +11,7 @@ import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.search.bo.PageInSearchBO;
+import com.shigu.search.utils.TimeParseUtil;
 import com.shigu.search.vo.GoodsInSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,10 +76,6 @@ public class GoodsSelFromEsService {
                 storeIds.add(si.getStoreId());
             }
             List<SearchShopSimple> shops=shopSearchService.selShopByIds(new ArrayList<Long>(storeIds),website);
-//            System.out.println(storeIds);
-//            System.out.println("storeIds "+storeIds.size());
-//            System.out.println(shops);
-//            System.out.println("shops "+shops.size());
             Map<Long,SearchShopSimple> shopMap=new HashMap<>();
             for(SearchShopSimple sss:shops){
                 shopMap.put(sss.getShopId(),sss);
@@ -93,7 +90,7 @@ public class GoodsSelFromEsService {
                 g.setGoodsNo(si.getGoodsNo());
                 g.setHighLightGoodsNo(si.getHighLightGoodsNo());
                 g.setHighLightTitle(si.getHighLightTitle());
-                g.setPostTimeText(timeParse(si.getCreated()));
+                g.setPostTimeText(TimeParseUtil.timeParse(si.getCreated()));
                 SearchShopSimple shop=shopMap.get(si.getStoreId());
                 if (shop != null) {
                     g.setAliww(shop.getImAliww());
@@ -131,26 +128,4 @@ public class GoodsSelFromEsService {
         }
         return pager;
     }
-
-    /**
-     * 时间转化
-     * @param t
-     * @return
-     */
-    public String timeParse(Date t){
-        Long time=System.currentTimeMillis();
-        Long tt=t.getTime();
-        long jiange=300000;//5分钟
-        long cha=(time-tt)/jiange;//多少个5分钟
-        if(cha==0){
-            return "刚刚";
-        }
-        if(cha>=12){
-            return cha/12+"小时前";
-        }else{
-            return cha*5+"分钟前";
-        }
-    }
-
-
 }

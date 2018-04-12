@@ -27,7 +27,7 @@
 <div class="mainBox layout">
     <h3 class="infoTitle fs16 yahei">填写并核对订单信息</h3>
     <div class="orderInfoEdit">
-<div id="serviceList">
+<div id="serviceList" style="display:none">
 <#list [{"choiceCon":sender}] as $it>
 <div class="radioList marBottom deliMethod">
     <h3 class="fs14 yahei">
@@ -232,7 +232,7 @@ var code = '${code!}'
     </div>
     <b class="openEditAddressForm" id="openEditAddressForm">更改地址</b>
 </div>
-<input id="provId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden">
+<input id="provText" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden">
 <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
         </div>
 <div id="postList">

@@ -24,6 +24,7 @@ import com.shigu.order.vo.SenderInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,13 +110,15 @@ public class ConfirmOrderAction {
             senderInfoVO.setChecked(true);
         }
 
-        model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
-
         // 商品信息
         List<CartOrderVO> vos = cartService.packCartProductVo(orderSubmitVo.getProducts()).getOrders();
+        //极限词过滤
+        vos.forEach(cartOrderVO -> cartOrderVO.getChildOrders().forEach(cartChildOrderVO -> cartChildOrderVO.setTitle(KeyWordsUtil.duleKeyWords(cartChildOrderVO.getTitle()))));
+
         // 商品服务信息
         model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, bo.getSenderId())));
         model.addAttribute("goodsOrders", vos);
+        model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
         model.addAttribute("webSite", "hz");//站点
         model.addAttribute("code", bo.getCode());
         model.addAttribute("tbOrderAddressInfo",orderSubmitVo.getTbOrderAddressInfo());

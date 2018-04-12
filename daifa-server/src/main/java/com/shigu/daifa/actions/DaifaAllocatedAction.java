@@ -98,9 +98,9 @@ public class DaifaAllocatedAction {
     @RequestMapping("daifa/getUserList")
     @ResponseBody
     public JSONObject workerList(){
-        Session session = SecurityUtils.getSubject().getSession();
-        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        Long sellerId=daifaUser.getDaifaSellerId();
+//        Session session = SecurityUtils.getSubject().getSession();
+//        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+//        Long sellerId=daifaUser.getDaifaSellerId();
         List<DaifaWorkerVO> vos=daifaAllOrderIndexService.getUserList();
         JSONObject obj=JsonResponseUtil.success();
         obj.put("userList",vos);

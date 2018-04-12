@@ -57,7 +57,7 @@ public class RegistAction {
      */
     @RequestMapping(value = "regedit", method = RequestMethod.GET)
     public String regedit() {
-        return "buyer/regedit";
+        return "login/regedit";
     }
 
     /**
@@ -95,7 +95,7 @@ public class RegistAction {
         }
         String code=RedomUtil.redomNumber(6);
         sendMsgService.sendVerificationCode(bo.getTelephone(),code);
-//        System.out.println(code);
+//        //System.out.println(code);
         session.setAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue(),new PhoneVerify(bo.getTelephone(),code));
         return JsonResponseUtil.success();
     }
@@ -147,7 +147,7 @@ public class RegistAction {
     @RequestMapping("privacy")
     public String privacy(Model model){
         model.addAttribute("webSite", "hz");
-        return "buyer/privacy";
+        return "login/privacy";
     }
 
     /**
@@ -156,7 +156,7 @@ public class RegistAction {
     @RequestMapping("contract")
     public String contract(Model model){
         model.addAttribute("webSite", "hz");
-        return "buyer/contract";
+        return "login/contract";
     }
 
 }

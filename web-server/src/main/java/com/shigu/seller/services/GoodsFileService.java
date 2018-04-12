@@ -260,8 +260,6 @@ public class GoodsFileService extends OssIO {
                 if (vo != null) {
                     vo.setHasLinkGoods(true);
                     vo.setLinkFileId(gf.getFileKey().replace(getHomeDir(shopId),""));
-                }else{
-                    vo.setHasLinkGoods(false);
                 }
             }
         }
@@ -318,6 +316,9 @@ public class GoodsFileService extends OssIO {
      * @return
      */
     public boolean hasDatu(Long goodsId){
+        if (goodsId == null) {
+            return false;
+        }
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andGoodsIdEqualTo(goodsId);
         return goodsFileMapper.countByExample(example)>0;
@@ -433,7 +434,7 @@ public class GoodsFileService extends OssIO {
         }
         String path=getHomeDir(shopId)+fileKey;
         itemPicRelationService.removeFileRelation(path,fileType);
-        return ossIO.deleteFile(path);
+        return super.deleteFile(path);
     }
 
     /**

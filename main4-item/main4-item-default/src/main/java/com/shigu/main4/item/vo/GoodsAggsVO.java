@@ -1,7 +1,5 @@
 package com.shigu.main4.item.vo;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.io.Serializable;
 
 /**
@@ -25,18 +23,14 @@ public class GoodsAggsVO implements Serializable {
     private Integer hasRetailPriceSet;
     //商品主图视频
     private String videoUrl;
-
     //风格id
+    private Long styleId;
+    //风格id
+    // TODO: 18-1-22 暂时留下,兼容线上版本
+    @Deprecated
     private Integer goodsStyleId;
-
-
-    public Integer getGoodsStyleId() {
-        return goodsStyleId;
-    }
-
-    public void setGoodsStyleId(Integer goodsStyleId) {
-        this.goodsStyleId = goodsStyleId;
-    }
+    //风格名
+    private String goodsStyleName;
 
     /**
      * 增加上传量
@@ -100,5 +94,29 @@ public class GoodsAggsVO implements Serializable {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public Long getStyleId() {
+        return styleId;
+    }
+
+    public void setStyleId(Long styleId) {
+        this.styleId = styleId;
+    }
+
+    public Integer getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId(Integer goodsStyleId) {
+        this.goodsStyleId = goodsStyleId;
+    }
+
+    public String getGoodsStyleName() {
+        return this.goodsStyleName;
+    }
+
+    public void setGoodsStyleName(String goodsStyleName) {
+        this.goodsStyleName = goodsStyleName;
     }
 }

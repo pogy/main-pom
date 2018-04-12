@@ -44,6 +44,10 @@ public class ShopCdnBO implements Serializable{
      */
     private String pstring;
     /**
+     * 父类风格id
+     */
+    private Long spid;
+    /**
      * 排序条件
      */
     private String order;
@@ -157,6 +161,14 @@ public class ShopCdnBO implements Serializable{
         if(pstring!=null){
             this.pstring= EncodeParamter.iosToUtf8(pstring);
         }
+    }
+
+    public Long getSpid() {
+        return spid;
+    }
+
+    public void setSpid(Long spid) {
+        this.spid = spid;
     }
 
     public Double getBeginPrice() {

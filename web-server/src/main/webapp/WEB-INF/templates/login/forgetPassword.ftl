@@ -1,10 +1,10 @@
-<#assign $pageid>forgetPassword</#assign>
+<#assign $pageid="forgetPassword">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>忘记密码 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -46,9 +46,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -58,7 +56,6 @@
          fmButton-lg
          fmButton-orange
          netxStep"
-        jbtn="click"
         <#if $it.disabled == true>disabled="disabled"</#if>
         <#if $it.dataId??>
             data-id="${$it.dataId!}"
@@ -86,9 +83,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -131,9 +126,7 @@
             </div>
         </div>
         <div class="pwdValItems">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>

@@ -147,7 +147,7 @@ public class GoodsupRecordSimpleService {
 
     public ShiguPager<OnekeyRecoreVO> selOnekeyRecore(Long userId, String tbNick, OnekeyRecordBO bo) {
         if (userId == null) {
-            return new ShiguPager<OnekeyRecoreVO>();
+            return new ShiguPager<>();
         }
         if (bo == null) {
             bo = new OnekeyRecordBO();
@@ -161,7 +161,12 @@ public class GoodsupRecordSimpleService {
         searchRequestBuilder.addSort(SortBuilders.fieldSort("daiTime").order(SortOrder.DESC));
         searchRequestBuilder.setFrom((bo.getPage() - 1) * bo.getRows());
         searchRequestBuilder.setSize(bo.getRows());
-        SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = searchRequestBuilder.execute().actionGet();
+        } catch (Exception e) {
+            return new ShiguPager<>();
+        }
         Long totalHits = searchResponse.getHits().getTotalHits();
         List<OnekeyRecoreVO> recoreList = new ArrayList<>(bo.getRows());
         SearchHit[] hits = searchResponse.getHits().getHits();

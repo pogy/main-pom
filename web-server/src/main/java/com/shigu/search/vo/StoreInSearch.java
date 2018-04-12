@@ -35,7 +35,7 @@ public class StoreInSearch implements Serializable{
     /**
      * 档口信用分
      */
-    private String xy;
+    private Long xy;
     /**
      * 档口阿里旺旺
      */
@@ -100,11 +100,11 @@ public class StoreInSearch implements Serializable{
         this.marketName = marketName;
     }
 
-    public String getXy() {
+    public Long getXy() {
         return xy;
     }
 
-    public void setXy(String xy) {
+    public void setXy(Long xy) {
         this.xy = xy;
     }
 

@@ -11,6 +11,7 @@ import com.shigu.phone.waps.service.WapPhoneStoreService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,13 @@ public class WapItemAction {
         if (StringUtil.isNull(webSite))webSite = null;
         try {
             BaseCollectItemVO baseCollectItemVO = wapItemService.selItemCollect(ps.getUserId(), index, size,webSite);
+            //极限词过滤
+            if (baseCollectItemVO.getItems() != null) {
+                baseCollectItemVO.getItems().forEach(appGoodsBlock -> {
+                    appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+                    appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+                });
+            }
             return JsonResponseUtil
                     .success()
                     .element("success",true)

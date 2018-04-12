@@ -68,10 +68,16 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             throw new DaifaException("此条码对应的订单编号不存在",DaifaException.DEBUG);
         }
         DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
+        if (trade == null) {
+            throw new DaifaException("此条码对应的订单不是代发订单",DaifaException.DEBUG);
+        }
         if(trade.getSendStatus()==2){
             DaifaSend send=new DaifaSend();
             send.setDfTradeId(order.getDfTradeId());
             send=daifaSendMapper.selectOne(send);
+            if (send == null) {
+                throw new DaifaException("此条码对应的订单尚未发货",DaifaException.DEBUG);
+            }
             PackResultVO print = new PackResultVO();
             print.setSendId(send.getSendId());
             print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
@@ -446,7 +452,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
 
 
             } catch (DaifaException e) {
-                // System.out.println("11111@@@"+e.getMessage ());
+                // //System.out.println("11111@@@"+e.getMessage ());
 
                 assertTrue (true);
             }

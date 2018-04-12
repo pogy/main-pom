@@ -223,30 +223,31 @@ public class BasePhoneUserService {
         //发送短信
         sendMsgService.sendVerificationCode(telephone, code);
         //客户状态
-        if(type==1){
-            //登录
-            Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_login_type_msg_"+telephone,600, code);
-            //存入redis,保存10分钟
-            return redisIO.get("phone_login_type_msg_"+telephone);
-        }else if(type==2){
-            //注册
-            Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_regist_type_msg_"+telephone,600, code);
-            return redisIO.get("phone_regist_type_msg_"+telephone);
-        }else if(type==3){
-            //忘记密码
-            Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_forget_type_msg_"+telephone,600, code);
-            return redisIO.get("phone_forget_type_msg_"+telephone);
-        }else if(type==4){
-            //绑定
-            Jedis jedis = redisIO.getJedis();
-            jedis.setex("phone_bind_type_msg_"+telephone,600, code);
-            return redisIO.get("phone_bind_type_msg_"+telephone);
-        }else{
-            openException.setErrMsg("客户状态错误");
-            throw openException;
+        Jedis jedis = redisIO.getJedis();
+        try {
+            if (type == 1) {
+                //登录
+                jedis.setex("phone_login_type_msg_" + telephone, 600, code);
+                //存入redis,保存10分钟
+                return redisIO.get("phone_login_type_msg_" + telephone);
+            } else if (type == 2) {
+                //注册
+                jedis.setex("phone_regist_type_msg_" + telephone, 600, code);
+                return redisIO.get("phone_regist_type_msg_" + telephone);
+            } else if (type == 3) {
+                //忘记密码
+                jedis.setex("phone_forget_type_msg_" + telephone, 600, code);
+                return redisIO.get("phone_forget_type_msg_" + telephone);
+            } else if (type == 4) {
+                //绑定
+                jedis.setex("phone_bind_type_msg_" + telephone, 600, code);
+                return redisIO.get("phone_bind_type_msg_" + telephone);
+            } else {
+                openException.setErrMsg("客户状态错误");
+                throw openException;
+            }
+        }finally {
+            redisIO.returnJedis(jedis);
         }
     }
 

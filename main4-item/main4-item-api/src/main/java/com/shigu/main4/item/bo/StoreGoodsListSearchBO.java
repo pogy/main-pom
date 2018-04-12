@@ -18,6 +18,8 @@ public class StoreGoodsListSearchBO implements Serializable {
     //1无最低零售价 2无大图 3无材料成分 null全部商品,4无主图视频，5无风格标签
     private Integer state;
 
+    private Long styleId;
+
     public String getKeyword() {
         return keyword;
     }
@@ -40,5 +42,13 @@ public class StoreGoodsListSearchBO implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Long getStyleId() {
+        return this.styleId;
+    }
+
+    public void setStyleId(Long styleId) {
+        this.styleId = styleId;
     }
 }

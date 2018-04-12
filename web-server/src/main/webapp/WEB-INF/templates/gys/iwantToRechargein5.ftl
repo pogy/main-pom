@@ -1,10 +1,10 @@
-<#assign $pageid>iwantToRechargein5</#assign>
+<#assign $pageid="iwantToRechargein5">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>充值 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -20,21 +20,20 @@
 <#include "/__style_torrent__/gys__iwantToRechargein5_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
+<ul class="pageTabs clearfix">
+    <li class="tabbutton selected"><a>我的资金 &gt; 充值</a></li>
+</ul>
 <div class="remainSum">
     <div class="remainSumTop">
         <div class="myRemain">
@@ -49,11 +48,11 @@
     <input type="hidden" id="tempCode" value="${tempCode!}">
 </div>
 <hr class="splitLine">
-<div class="validateForm">
+<div class="validateForm rechargeForm">
     <div class="validateItem">
         <div class="formGroup">
             <label>充值金额：</label>
-            <input type="text" class="fmInput" name="money" placeholder="请输入充值金额"> 元</p>
+            <input type="text" name="money" class="fmInput" placeholder="请输入充值金额">元
         </div>
     </div>
     <div class="validateItem">
@@ -63,17 +62,33 @@
         </div>
     </div>
     <div class="validateItem">
-        <div class="formGroup">
+        <div class="formGroup payType clearfix">
             <label>充值方式：</label>
-            <input type="text" class="fmInput" value="支付宝" readonly="readonly">
+<#list [{}] as $it>
+<label class="fmRadio clearfix
+        checked
+">
+    <input
+        type="radio"
+        autocomplete="off"
+            name="payMode"
+            value="1"
+            checked
+    >
+    <i class="before"></i>
+    <span>
+        <#if $it.text??>
+            ${$it.text!}
+        </#if>
+        <i class="icon-s-alipay alipay"></i>支付宝
+    </span>
+</label>
+</#list>
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
-            <label></label>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -90,9 +105,7 @@
         <#if $it.title??>
             title=""
         </#if>
-        <#if $it.id??>
-            id=""
-        </#if>
+        id="czBtn"
 >
         确认充值
     <#if $it.href??>

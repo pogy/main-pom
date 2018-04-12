@@ -5,6 +5,7 @@ package com.shigu.main4.common.util;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -589,7 +590,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            return s;
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
        return date2;
    }
@@ -617,7 +618,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            return s;
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
        return date2;
    }
@@ -642,7 +643,7 @@ public static ArrayList getWeekListByMonth(int year, int month) {
            l2 = sdf.parse(date2).getTime();
        }catch(ParseException ex){
            ex.printStackTrace();
-           System.out.println("Parse DATE String ERROR!"+ex.getMessage());
+           //System.out.println("Parse DATE String ERROR!"+ex.getMessage());
        }
 
        return (l2-l1)/1000;
@@ -735,19 +736,21 @@ public static ArrayList getWeekListByMonth(int year, int month) {
      */
     public static int daysOfTwo(Date fDate, Date oDate) {
 
-        Calendar aCalendar = Calendar.getInstance();
-
-        aCalendar.setTime(fDate);
-
-        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
-
-        aCalendar.setTime(oDate);
-
-        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
-
-        return day2 - day1;
+//        Calendar aCalendar = Calendar.getInstance();
+//
+//        aCalendar.setTime(fDate);
+//
+//        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+//
+//        aCalendar.setTime(oDate);
+//
+//        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+//
+//        return day2 - day1;
+        return new Long(ChronoUnit.DAYS.between(fDate.toInstant(), oDate.toInstant())).intValue();
 
     }
+
     /**
      * 当天0点
      *

@@ -24,7 +24,9 @@
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserShopService" id="userShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserBaseService" id="userBaseService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.UserCollectService" id="userCollectService" timeout="10000">
+        <dubbo:method name="createDataPackageByCoolectIds" timeout="300000"/>
+    </dubbo:reference>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
 
@@ -37,6 +39,7 @@
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopSearchService" id="shopSearchService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.MarketShopService" id="marketShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.SearchCategoryService" id="searchCategoryService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
@@ -70,4 +73,7 @@
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
+
+    <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.activity.process.StrengthMemberService" id="strengthMemberService" retries="0" timeout="20000"/>
 </beans>

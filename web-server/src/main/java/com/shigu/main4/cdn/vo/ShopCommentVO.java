@@ -48,6 +48,14 @@ public class ShopCommentVO implements Serializable{
      */
     private Long starNum = 0L;
 
+    public Long getStarNum() {
+        return starNum;
+    }
+
+    public void setStarNum(Long starNum) {
+        this.starNum = starNum;
+    }
+
     public ShiguPager<Discus> getDiscus() {
         return discus;
     }

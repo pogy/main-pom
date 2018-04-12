@@ -1,10 +1,10 @@
-<#assign $pageid>daifaIndex</#assign>
+<#assign $pageid="daifaIndex">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>一件代发，您身边的服务</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,15 +18,13 @@
 <#include "/__style_torrent__/xzSearch__daifaIndex_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
 <div class="banner">
     <div class="layout pr">
 <div class="notice pa yahei">
@@ -41,9 +39,7 @@
     </ul>
     <p class="serviceTime">服务时间 :  9:00-18:00  （周六，周日不休息）</p>
     <p class="tac tel"><i class="icon-s-phone"></i><span>0571-86070380</span></p>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -140,15 +136,15 @@
                 <div class="">
                     <ul>
                         <li>
-                            <p class="question">1、星座代发什么时候截单？</p>
+                            <p class="question">1、星座网代发什么时候截单？</p>
                             <p class="answer">每天16:00截单，如有特殊情况会提前截单。为了保证您的发货时效，请尽早下单。</p>
                         </li>
                         <li>
-                            <p class="question">2、星座代发什么时候拿货？</p>
+                            <p class="question">2、星座网代发什么时候拿货？</p>
                             <p class="answer">每日11时起，会有专门的配货员为您配货，直至截单后最后一单配货完成。</p>
                         </li>
                         <li>
-                            <p class="question">3、星座代发什么时候发货？</p>
+                            <p class="question">3、星座网代发什么时候发货？</p>
                             <p class="answer">当天配齐订单，保证当天发货，物流信息以快递公司揽件后更新为准。</p>
                         </li>
                         <li>

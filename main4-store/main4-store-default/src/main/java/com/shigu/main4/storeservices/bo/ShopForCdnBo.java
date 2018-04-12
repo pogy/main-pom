@@ -53,6 +53,11 @@ public class ShopForCdnBo implements Serializable{
     /** shop id */
     private Long shopId;
 
+    /**
+     * 父类风格id
+     */
+    private Long parentStyleId;
+
     /** 分页参数 */
     private int pageSize;
 
@@ -177,5 +182,13 @@ public class ShopForCdnBo implements Serializable{
 
     public void setSoldDateTo(Date soldDateTo) {
         this.soldDateTo = soldDateTo;
+    }
+
+    public Long getParentStyleId() {
+        return parentStyleId;
+    }
+
+    public void setParentStyleId(Long parentStyleId) {
+        this.parentStyleId = parentStyleId;
     }
 }

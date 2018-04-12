@@ -26,7 +26,7 @@ public class MoneyUtil {
 
     public static void main(String[] args) {
 
-        System.out.println(StringToLong("4.15"));
+        //System.out.println(StringToLong("4.15"));
 
 
     }

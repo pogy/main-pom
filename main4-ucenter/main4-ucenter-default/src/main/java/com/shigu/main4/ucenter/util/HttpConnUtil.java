@@ -33,7 +33,7 @@ public class HttpConnUtil {
     public static JSONArray selJsonArrGet(String path) {
         Connection conn = getConn(path);
         try {
-//			System.out.println(conn.execute().body());
+//			//System.out.println(conn.execute().body());
 //			Document dom=conn.get();
 
             String arrstr = conn.execute().body();//JSON数组的字符串形式
@@ -51,7 +51,7 @@ public class HttpConnUtil {
     public static String selGet(String path) {
         Connection conn = getConn(path);
         try {
-//			System.out.println(conn.execute().body());
+//			//System.out.println(conn.execute().body());
 //			Document dom=conn.get();
 
             String arrstr = conn.execute().body();//JSON数组的字符串形式

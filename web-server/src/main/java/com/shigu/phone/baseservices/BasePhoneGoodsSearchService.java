@@ -286,7 +286,7 @@ public class BasePhoneGoodsSearchService {
 //                " <scripts></scripts" +
 //                " </body>\n" +
 //                "</html>";
-//        System.out.println(replacelazyLoadImg(str));
+//        //System.out.println(replacelazyLoadImg(str));
 //    }
 
 }

@@ -1,10 +1,10 @@
-<#assign $pageid>shManaOrder</#assign>
+<#assign $pageid="shManaOrder">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>售后管理 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,24 +18,18 @@
 <#include "/__style_torrent__/fxs__shManaOrder_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
-<#assign text>{"fields":[{"name":"shStatus","value":""+query.shStatus}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"shStatus","value":""+query.shStatus}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -72,9 +66,9 @@
                 <#list order.childOrders as childOrder>
 <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
     <li class="goods goodsDetail">
-        <div class="imgBox fl">
+        <a class="imgBox fl" href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}">
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
-        </div>
+        </a>
         <div class="goodsCon">
             <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
@@ -99,7 +93,7 @@
         <#if order.mainState == 3 || order.mainState == 4>
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
-                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 </#if>
                 <#list childOrder.afterSales as afterSale>
                     <#if afterSale.type == 1>
@@ -170,9 +164,13 @@
                 </#list>
             <#else>
                 <#if order.mainState == 3>
-                <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
                 <#elseif order.mainState == 4>
-                ——
+                    <#if childOrder.restoreSaleAfterServiceIs == true>
+                    <p><a href="refund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                    <#else>
+                    ——
+                    </#if>
                 </#if>
             </#if>
         </#if>
@@ -208,9 +206,7 @@
     <#else>
         <p class="fs20 fc6 tac noOrder">暂无订单！</p>
     </#if>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -218,9 +214,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

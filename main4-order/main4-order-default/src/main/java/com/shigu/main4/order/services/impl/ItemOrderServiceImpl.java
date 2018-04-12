@@ -110,49 +110,58 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 判定是否禁止发快递
+     *
      * @param companyId
      * @param townId
      * @return
      */
-    public boolean someAreaCantSend(Long companyId,Long townId,Long cityId,Long provId){
-         List<CantSendVO> cantSendVOS=redisIO.getList("CANT_SEND_AREAS",CantSendVO.class);
+    public boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId) {
+        List<CantSendVO> cantSendVOS = redisIO.getList("CANT_SEND_AREAS", CantSendVO.class);
         if (cantSendVOS == null) {
             return false;
         }
-         CantSendVO vo=null;
-         for(CantSendVO c:cantSendVOS){
-             if (c.getCompanyId().equals(companyId)) {
-                 vo=c;
-                 break;
-             }
-         }
+        CantSendVO vo = null;
+        for (CantSendVO c : cantSendVOS) {
+            if (c.getCompanyId().equals(companyId)) {
+                vo = c;
+                break;
+            }
+        }
         if (vo == null) {
             return false;
         }
         //得到地区ID
-        if (townId != null&&vo.getAreaIds() != null) {
-            for(Long twid:vo.getAreaIds()){
-                if (twid.equals(townId)) {
+        if (townId != null && vo.getAreaIds() != null) {
+            if (vo.getAreaIds().contains(townId)) {
+                return true;
+            }
+        }
+        if (townId == null) {
+            if (vo.getAreaIds() == null || vo.getAreaIds().size() == 0) {
+                if (vo.getCityIds() != null && vo.getCityIds().contains(cityId)) {
                     return true;
+                }else{
+                    if (provId != null && vo.getProvIds() != null) {
+                        if (vo.getProvIds().contains(provId)) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
-        if (cityId != null&&vo.getCityIds() != null) {
-            for(Long tcid:vo.getCityIds()){
-                if (tcid.equals(cityId)) {
-                    return true;
-                }
+        if (cityId != null && vo.getCityIds() != null) {
+            if (vo.getCityIds().contains(cityId)) {
+                return true;
             }
         }
-        if (provId != null&&vo.getProvIds() != null) {
-            for(Long tpid:vo.getProvIds()){
-                if (tpid.equals(provId)) {
-                    return true;
-                }
+        if (provId != null && vo.getProvIds() != null) {
+            if (vo.getProvIds().contains(provId)) {
+                return true;
             }
         }
         return false;
     }
+
     /**
      * 创建订单
      *
@@ -166,7 +175,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setOid(idGenerator(OrderType.XZ));
         //判断订单是淘宝订单还是星座订单
-        order.setType(StringUtils.isNotBlank(orderBO.getOuterId())?OrderType.TB.type:OrderType.XZ.type);
+        order.setType(StringUtils.isNotBlank(orderBO.getOuterId()) ? OrderType.TB.type : OrderType.XZ.type);
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
@@ -189,19 +198,19 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             numBO.setPid(subItemOrderBO.getPid());
             numBO.setNum(subItemOrderBO.getNum());
             numBO.setWeight(subItemOrderBO.getWeight());
-            SubOrderBO vo = BeanMapper.map(subItemOrderBO,SubOrderBO.class);
+            SubOrderBO vo = BeanMapper.map(subItemOrderBO, SubOrderBO.class);
             vo.setNumber(subItemOrderBO.getNum());
             subOrders.add(vo);
         }
-        itemOrder.addSubOrder(subOrders,false);
+        itemOrder.addSubOrder(subOrders, false);
 
-        if(itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType()==1){//查询一下是否代发用户
-            ItemOrderSubExample subExample=new ItemOrderSubExample();
+        if (itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType() == 1) {//查询一下是否代发用户
+            ItemOrderSubExample subExample = new ItemOrderSubExample();
             subExample.createCriteria().andOidEqualTo(order.getOid());
-            List<ItemOrderSub> orderSubs=itemOrderSubMapper.selectByExample(subExample);
-            for(ItemOrderSub sub:orderSubs){//如果是代发的单子，要加代发费
-                itemOrder.addDfService(orderConstantService.selDfService(orderBO.getSenderId(),sub.getMarketId()),
-                        sub.getSoid(),sub.getNum(),false);
+            List<ItemOrderSub> orderSubs = itemOrderSubMapper.selectByExample(subExample);
+            for (ItemOrderSub sub : orderSubs) {//如果是代发的单子，要加代发费
+                itemOrder.addDfService(orderConstantService.selDfService(orderBO.getSenderId(), sub.getMarketId()),
+                        sub.getSoid(), sub.getNum(), false);
             }
         }
 
@@ -214,7 +223,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-        Long companyId = new Long(logistics.getCompanyId());
+        Long companyId = Long.parseLong(logistics.getCompanyId());
 //        ExpressCompany company = new ExpressCompany();
 //        company.setRemark2(companyId);
 //        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
@@ -226,26 +235,29 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             buyerAddress.setAddress(buyerAddress.getAddress());
         } catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
+            if (buyerAddressVO == null) {
+                throw new OrderException("下单失败，未查询到收货地址");
+            }
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
             buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
-        if (buyerAddress.getTownId()!=null&&someAreaCantSend(companyId,buyerAddress.getTownId(),
-                buyerAddress.getCityId(),buyerAddress.getProvId())) {
+        if (someAreaCantSend(companyId, buyerAddress.getTownId(),
+                buyerAddress.getCityId(), buyerAddress.getProvId())) {
             throw new OrderException("下单失败，该地区快递暂时无法送达");
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(companyId);
         logistic.setAddress(buyerAddress.getAddress());
         logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
-        itemOrder.addLogistics(null, logistic,true);//最后一步才重怎么价格
+        itemOrder.addLogistics(null, logistic, true);//最后一步才重怎么价格
         return order.getOid();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<Long> createOrders(List<ItemOrderBO> orderBO) throws OrderException {
-        List<Long> oids=new ArrayList<>();
-        for(ItemOrderBO bo:orderBO){
+        List<Long> oids = new ArrayList<>();
+        for (ItemOrderBO bo : orderBO) {
             oids.add(createOrder(bo));
         }
         return oids;
@@ -397,6 +409,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 根据expressId查询订单物流信息
+     *
      * @param expressId
      * @return
      * @throws Main4Exception
@@ -407,6 +420,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
         if (itemOrderLogistics == null) {
             throw new Main4Exception("快递信息不存在");
+        }
+        if (StringUtils.isBlank(itemOrderLogistics.getCourierNumber())) {
+            return new ArrayList<>();
         }
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
@@ -427,9 +443,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         List<ExpressLogVO> logVOList = new ArrayList<>();
         String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         Calendar cal = Calendar.getInstance();
-        if (resultVO.getTraces().size() > 0) {
-            for (int i=resultVO.getTraces().size()-1;i>=0;i--) {
-                SingleMsgVO msg =resultVO.getTraces().get(i);
+        if (resultVO.getTraces() != null && resultVO.getTraces().size() > 0) {
+            for (int i = resultVO.getTraces().size() - 1; i >= 0; i--) {
+                SingleMsgVO msg = resultVO.getTraces().get(i);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date time = format.parse(msg.getAcceptTime());
                 cal.setTime(time);
@@ -460,7 +476,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return expressCompany;
     }
 
-
     /**
      * 订单日志
      *
@@ -489,6 +504,5 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public ItemOrderVO orderInfo(Long orderId) {
         return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId).orderInfo();
     }
-
 
 }

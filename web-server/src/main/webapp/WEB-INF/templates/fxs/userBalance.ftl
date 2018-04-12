@@ -1,10 +1,10 @@
-<#assign $pageid>userBalance</#assign>
+<#assign $pageid="userBalance">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>我的资金 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -19,23 +19,20 @@
 <#include "/__style_torrent__/fxs__userBalance_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>mybag</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="mybag">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
 <ul class="pageTabs clearfix">
     <li class="select"><a>我的资金</a></li>
+    <li><a href="userBonus.htm">红包余额</a></li>
 </ul>
 <div class="remainSum">
     <div class="remainSumTop">
@@ -49,11 +46,8 @@
         </div>
     </div>
     <div class="remainSumBtom">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="iwantToRechargein5.htm"
-        target="_blank"
     class="fmButton
          fmButton-orange
         "
@@ -69,9 +63,7 @@
         充值
     </a>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="withdraw5Apply.htm"
     class="fmButton
          fmButton-lighter-o

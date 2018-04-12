@@ -1,10 +1,10 @@
-<#assign $pageid>item</#assign>
+<#assign $pageid="item">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>${goodsInfo.title!}-${shopInfo.marketName!}${shopInfo.shopNo!}-四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -23,15 +23,13 @@
 <#include "/__style_torrent__/goodsDetail__item_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://${webSite!}.571xz.com">
+            <a href="/">
                 <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
@@ -43,22 +41,14 @@
                 <#if shopInfo.domain??>
                     onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
                 <#else>
-                    onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
+                    onclick="jumpShopLink('/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
-<#assign text>{"id":shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-</#if>
+<#list [{"id":shopInfo.imWw}] as $it>
+<#include "/common/xz__imAliww.ftl">
 </#list>
-<#assign text>{"id":""+shopInfo.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
 </#list>
                 <i class="ti icon-downarrow"></i>
             </div>
@@ -104,8 +94,6 @@
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
@@ -115,9 +103,7 @@
     </div>
 </div>
             <div class="storeXybox">
-<#assign text>{"num":shopInfo.starNum}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"num":shopInfo.starNum}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
             </div>
@@ -163,8 +149,6 @@
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
@@ -189,9 +173,11 @@
 var shopId = '${shopInfo.shopId!}';
 var goodsId = '${goodsInfo.goodsId!}';
 </script>
-<#assign text>{"fields":[]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<script modulepath="goodsDetail/item#config">
+var shopId = '${shopInfo.shopId!}';
+var goodsId = '${goodsInfo.goodsId!}';
+</script>
+<#list [{"fields":[]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -214,16 +200,18 @@ ${userShopHdHtml}
                 href="javascript:;"
                 </#if>
             >
+                <span class="imgBox">
                 <img src="${imgUrl!}_400x400.jpg">
 <span id="scaleTipsLayer"></span>
-<span id="scaleImgbox"></span>
+                </span>
+                <span id="scaleImgbox"></span>
             </a>
             </#if>
         </#list>
+        <#if goodsInfo.goodsVideoUrl??><i class="buttonIcon smallPlayButton"></i></#if>
 <#if goodsInfo.goodsVideoUrl??>
 <div id="goodsVideo" class="goodsVideo">
-    <video class="video" controls="controls" loop="loop" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
-    <i class="buttonIcon smallPlayButton"></i>
+    <video class="video" controls="controls" webkit-playsinline="webkit-playsinline" playsinline="playsinline" autoplay="true" poster="" src="${goodsInfo.goodsVideoUrl!}" type="video/mp4"></video>
     <i class="buttonIcon bigPlayButton"></i>
     <i class="buttonIcon closeButton"></i>
 </div>
@@ -238,7 +226,7 @@ ${userShopHdHtml}
     </div>
     <div class="shareBox">
         <a class="store" xzclick="collectGoods" href="javascript:;"  data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
-        <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
+        <a class="find_error" href="/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
     </div>
 </div>
     </div>
@@ -332,9 +320,7 @@ var colorsMeta = ${goodsInfo.colorsMeta!};
 var sizesMeta = ${goodsInfo.sizesMeta!};
 var piPrice = '${goodsInfo.piPrice!}';
 </script>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 </#list>
 <div class="goodsOperateButtons clearfix">
     <b class="btn btn-lg pr btn-orange <#if goodsInfo.onlineSale == true>addGwc<#else>notAddGwc</#if>" id="addGoodsToCart">加入进货车
@@ -360,7 +346,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
  <div class="goodsPayMode">
     <label class="fc9">支付方式</label>
     <span class="alipay">支付宝</span>
-    <span class="weixin">微信</span>
+    <!--<span class="weixin">微信</span>-->
 </div>
     </#if>
 </div>
@@ -386,21 +372,15 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
             <div class="shopName" >
                 <a class="nameDetails" href='http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
                 <span>
-<#assign text>{"id":""+shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-</#if>
-</#list></span>
+<#list [{"id":"${shopInfo.imWw!}"}] as $it>
+<#include "/common/xz__imAliww.ftl">
+</#list>
+</span>
                 <span>
-<#assign text>{"id":""+shopInfo.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
-</#list></span>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
+</#list>
+</span>
                 <i class="ti icon-downarrow"></i>
 <div class="storeDetailInfobox">
     <div class="p1 clearfix">
@@ -444,8 +424,6 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
-        <#else>
-        <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop??>
             <em class="b3 disabled">收藏档口</em>
@@ -515,33 +493,24 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <div class="grewLine"></div>
         <div class="contactbox">
             <h3>联系档口</h3>
-            <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
-<#assign text>{"id":""+shopInfo.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-</#if>
-</#list></p></#if>
-            <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
-<#assign text>{"id":""+shopInfo.imQQ}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
-<#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-</#if>
-</#list></p></#if>
+            <#if shopInfo.imWw??>
+                <p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
+<#list [{"id":"${shopInfo.imWw!}"}] as $it>
+<#include "/common/xz__imAliww.ftl">
+</#list>
+</p>
+            </#if>
+            <#if shopInfo.imQq?? && shopInfo.imQq != "">
+                <p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
+<#list [{"id":"${shopInfo.imQq!}"}] as $it>
+<#include "/common/xz__imQQ.ftl">
+</#list>
+</p>
+            </#if>
         </div>
     </div>
 </div>
         </div>
-    </div>
-</div>
-<div class="recommendShop">
-    <h3 class="fcF40">推荐档口</h3>
-    <div class="shopCon">
-        <ul class="clearfix">
-        </ul>
     </div>
 </div>
 <#include "/common/xz__rightbar.ftl">

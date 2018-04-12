@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="headerContainer  layout950  clearfix">
+    <div class="headerContainer <#if $pageid=='login'> layout <#else> layout950 </#if> clearfix">
         <a href="index.html" class="logo"></a>
         <span class="pageTag">
             <#if $pageid =='login'>

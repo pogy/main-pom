@@ -94,7 +94,7 @@ public class AfterSaleShowAction {
      * @param model model
      * @return  返回页面
      */
-//    @RequestMapping(value = "exchange", method = RequestMethod.GET)
+    @RequestMapping(value = "exchange", method = RequestMethod.GET)
     public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
             , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
@@ -103,15 +103,15 @@ public class AfterSaleShowAction {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
             map.put("exchangeDesc",stateList);
             model.addAllAttributes(map);
-            return "trade/exchange";
+            return "order/exchange";
         }
-        return "trade/exchange";
+        return "order/exchange";
     }
 
     /**

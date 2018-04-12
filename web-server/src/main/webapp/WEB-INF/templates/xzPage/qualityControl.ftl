@@ -1,10 +1,10 @@
-<#assign $pageid>qualityControl</#assign>
+<#assign $pageid="qualityControl">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>源头质检 - 我的产品我知道 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -16,9 +16,7 @@
 <#include "/__style_torrent__/xzPage__qualityControl_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner">

@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
@@ -63,7 +64,12 @@ public class ItemBrowerFixedTest {
 
     @Test
     public void testInPage() {
-        redisIO.getJedis().del("item_flow_test");
+        Jedis jedis = redisIO.getJedis();
+        try {
+            jedis.del("item_flow_test");
+        }finally {
+            redisIO.returnJedis(jedis);
+        }
         StringBuilder redisKeySb = new StringBuilder();
         redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         String redisKey = redisKeySb.toString();

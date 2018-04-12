@@ -1,10 +1,10 @@
-<#assign $pageid>safeindex</#assign>
+<#assign $pageid="safeindex">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>安全设置 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,18 +17,14 @@
 <#include "/__style_torrent__/gys__safeindex_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>safecenter</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="safecenter">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -60,6 +56,28 @@
         </li>
         <li class="d3">
             <a href="safexgmm.htm">修改密码</a>
+        </li>
+    </ul>
+    <ul class="clearfix">
+        <li class="d1"><i class="icon-paypwd paypwd"></i></li>
+        <li class="d2">
+            <p>
+                支付密码
+                <#if info_payPwd == true>
+                <em class="yes"><i class="icon-c-checked"></i>已设置</em>
+                <#else>
+                <em class="no"><i class="icon-c-warn"></i>未设置</em>
+                </#if>
+            </p>
+            <p class="desc">使用余额支付时需要输入的密码。</p>
+        </li>
+        <li class="d3">
+            <#if info_payPwd == true>
+            <a href="safeXgPaymm.htm?type=3">找回密码</a>
+            <a href="safeXgPaymm.htm?type=2">修改密码</a>
+            <#else>
+            <a href="safeXgPaymm.htm?type=1">立即设置</a>
+            </#if>
         </li>
     </ul>
     <ul class="clearfix">

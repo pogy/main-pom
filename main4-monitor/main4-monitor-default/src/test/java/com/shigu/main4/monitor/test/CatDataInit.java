@@ -165,9 +165,13 @@ public class CatDataInit {
                 itemUpRecordVOS.add(itemUpRecordVO);
             }
             for (String webSite : webSiteItemUpMap.keySet()) {
+                List<Long> goodsIds = webSiteItemUpMap.get(webSite).stream().filter(item -> item != null && item.getSupperGoodsId() != null).map(ItemUpRecordVO::getSupperGoodsId).collect(Collectors.toList());
+                if (goodsIds.isEmpty()) {
+                    continue;
+                }
                 ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
                 example.setWebSite(webSite);
-                example.createCriteria().andGoodsIdIn(webSiteItemUpMap.get(webSite).stream().map(ItemUpRecordVO::getSupperGoodsId).collect(Collectors.toList()));
+                example.createCriteria().andGoodsIdIn(goodsIds);
                 for (ShiguGoodsTiny shiguGoodsTiny : shiguGoodsTinyMapper.selectByExample(example)) {
                     String index = formatPrefix + shiguGoodsTiny.getCid();
                     Long aLong = redisIO.get(index, Long.class);

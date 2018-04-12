@@ -8,6 +8,7 @@ import com.openJar.responses.app.GoodsCollectResponse;
 import com.openJar.responses.app.ItemCollectResponse;
 import com.shigu.phone.apps.services.AppItemService;
 import com.shigu.phone.wrapper.WrapperUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,15 @@ public class AppItemAction {
         }
         if (request.getIndex() == null)request.setIndex(1);
         if (request.getSize() == null)request.setSize(30);
-        return JSONObject.fromObject(appItemService.collectItem(request));
+        ItemCollectResponse itemCollectResponse = appItemService.collectItem(request);
+        //极限词过滤
+        if (itemCollectResponse.getItems() != null) {
+            itemCollectResponse.getItems().forEach(appGoodsBlock -> {
+                appGoodsBlock.setTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getTitle()));
+                appGoodsBlock.setHighLightTitle(KeyWordsUtil.duleKeyWords(appGoodsBlock.getHighLightTitle()));
+            });
+        }
+        return JSONObject.fromObject(itemCollectResponse);
     }
 
     @RequestMapping("delItemCollect")

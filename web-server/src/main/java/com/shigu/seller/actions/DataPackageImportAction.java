@@ -12,6 +12,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -122,7 +123,7 @@ public class DataPackageImportAction {
     public String uploadPackageList(String msg,HttpSession session, Model model) throws Main4Exception {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShopSession logshop = ps.getLogshop();
+//        ShopSession logshop = ps.getLogshop();
         if(msg==null){
             throw new Main4Exception("参数msg不能为空！");
         }
@@ -135,7 +136,8 @@ public class DataPackageImportAction {
                 vo.setGoodsId (goodsVO.getGoodsId ());
                 vo.setPiPrice (goodsVO.getPiPriceString ());
                 vo.setShopCode (goodsVO.getOuterId ());
-                vo.setTitle (goodsVO.getTitle ());
+                //极限词过滤
+                vo.setTitle (KeyWordsUtil.duleKeyWords(goodsVO.getTitle()));
                 voList.add (vo);
             }
 

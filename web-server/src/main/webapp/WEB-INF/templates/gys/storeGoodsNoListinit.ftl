@@ -1,10 +1,10 @@
-<#assign $pageid>storeGoodsNoListinit</#assign>
+<#assign $pageid="storeGoodsNoListinit">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>批量修改货号 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,18 +18,14 @@
 <#include "/__style_torrent__/gys__storeGoodsNoListinit_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -56,10 +52,19 @@
         <tbody>
                 <#list dataList as goods>
                 <tr>
-                    <td class="goodsImg"><input type="hidden" class="goodsId" value="${goods.itemId!}"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.itemId!}" target="_blank"><img src="${goods.picUrl!}_80x80.jpg" width=80 height=80 /></a></td>
-                    <td class="hh"><input type="text" class="goodsno" value="${goods.goodsNo!}"></td>
-                    <td class="lsj"><input type="text" class="priceit" value="${goods.price!}"></td>
-                    <td class="pfj"><input type="text" class="pipriceit" value="${goods.piPrice!}"></td>
+                    <td class="goodsImg"><input type="hidden" class="goodsId" value="${goods.itemId!}"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.itemId!}" target="_blank"><img src="${goods.picUrl!}_80x80.jpg" width="80" height="80" /></a></td>
+                    <td class="hh">
+                        <input type="text" class="goodsno" value="${goods.goodsNo!}" maxlength="15">
+                        <div class="error">字数过长</div>
+                    </td>
+                    <td class="lsj">
+                        <input type="text" class="priceit" value="${goods.price!}">
+                        <div class="error">最高只能设置999999</div>
+                    </td>
+                    <td class="pfj">
+                        <input type="text" class="pipriceit" value="${goods.piPrice!}">
+                        <div class="error">最高只能设置999999</div>
+                    </td>
                     <td class="sxsj">${goods.created!}</td>
                 </tr>
                </#list>
@@ -68,9 +73,7 @@
     <#else>
 <p class="goodsListIsEmpty">找不到结果</p>
    </#if>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination blue" id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -78,9 +81,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

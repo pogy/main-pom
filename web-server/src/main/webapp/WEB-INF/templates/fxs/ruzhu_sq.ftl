@@ -1,10 +1,10 @@
-<#assign $pageid>ruzhu_sq</#assign>
+<#assign $pageid="ruzhu_sq">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>申请审核中 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,9 +17,7 @@
 <#include "/__style_torrent__/fxs__ruzhu_sq_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
@@ -51,7 +49,7 @@
         <p>审核时间需要 2 个工作日，请留意您的账户。</p>
         <p>请扫描左侧二维码点击关注    审核通过立刻通知！您也可以在【个人中心】—【店铺申请】中查看进度！</p>
         <p>如您希望快速审核，请把编号 ${userCode!} 发给客服。</p>
-        <p class="tosearch"><a href="storeIn.htm">立即查看</a></p>
+        <p class="tosearch"><a href="/member/storeIn.htm">立即查看</a></p>
     </div>
 </div>
 </div>

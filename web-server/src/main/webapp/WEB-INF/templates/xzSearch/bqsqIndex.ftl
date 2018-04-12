@@ -1,10 +1,10 @@
-<#assign $pageid>bqsqIndex</#assign>
+<#assign $pageid="bqsqIndex">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>专业知识产权服务平台 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -19,24 +19,20 @@
 <#include "/__style_torrent__/xzSearch__bqsqIndex_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
 <div class="banner yahei">
     <div class="layout pr">
         <h2></h2>
         <a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank" class="consultBtn fs16 tac">立即咨询</a>
 <div class="consultForm pa">
     <div class="pr">
-<#assign text>{"name":"type"}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"name":"type"}] as $it>
 <div class="fmSelect" id="registType">
     <span class="text">请选择</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -50,9 +46,7 @@
         <input class="fmInput nameInput fl" placeholder="您的姓名">
         <input class="fmInput telInput" placeholder="您的联系电话">
         <textarea class="detailText" placeholder="请填写您的详细说明"></textarea>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -181,7 +175,7 @@
                     </div>
                     <div class="registHover">
                         <h2>加急登记</h2>
-                        <p>专业顾问分析，最快流程办理。</p>
+                        <p>专业顾问分析，高效流程办理。</p>
                         <div class="price"><em>&yen;</em>1000</div>
                         <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.30.6403c6c4dAGPor&amp;id=560129154701" target="_blank" class="contactBtn">立即办理</a>
                     </div>

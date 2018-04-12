@@ -159,9 +159,23 @@ public class ItemHelper {
         private void parseGoodsExtends(SynItem synItem) {
             this.goodsExtends = BeanMapper.map(synItem, ShiguGoodsExtends.class);
             // 商品图
-            if (synItem.getImageList() != null)
+            if (synItem.getImageList() != null){
+                for(int i=0;i<synItem.getImageList().size();i++){
+                    if(StringUtils.isBlank(synItem.getImageList().get(i))){
+                        synItem.getImageList().remove(i);
+                        i--;
+                    }
+                }
+                if(synItem.getImageList().size()==0){
+                    synItem.getImageList().add("");
+                }
                 this.goodsExtends.setImages(StringUtils.join(synItem.getImageList(), ","));
-            this.goodsExtends.setSellPromise(synItem.getSellPoint());
+                this.goodsExtends.setSellPromise(synItem.getSellPoint());
+                if(StringUtils.isBlank(this.tiny.getPicUrl())){
+                    this.tiny.setPicUrl(synItem.getImageList().get(0));
+                }
+            }
+
         }
 
         /**
