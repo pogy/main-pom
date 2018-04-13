@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <#if (phase.awardList?size) gt 1>
+                            <#if (phase.awardList?size) gt 2>
                                 <div class="awardList clearfix">
                                     <ul>
                                         <#list phase.awardList as award>
@@ -103,14 +103,14 @@
                                                         </#if>
                                                     </li>
                                                     <li>
-                                                        <#if phase.uploadNum??>上传商品个数：
+                                                        <#if award.uploadNum??>上传商品个数：
                                                             <#if award.state == 3>
-                                                                <span class="fcF40">${phase.uploadNum!}</span>
+                                                                <span class="fcF40">${award.uploadNum!}</span>
                                                             <#else>
-                                                                ${phase.uploadNum!}
+                                                                ${award.uploadNum!}
                                                             </#if>
                                                         <#else>
-                                                        使用期限：以短信通知日期为准
+                                                        类型：摄影代金券
                                                         </#if>
                                                     </li>
                                                     <li>领取地点：置地国际电商基地1楼</li>
@@ -132,4 +132,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
