@@ -16,6 +16,9 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.ActiveForShowVO;
@@ -26,6 +29,7 @@ import com.shigu.seller.services.ActivityService;
 import com.shigu.seller.vo.GfGoodsStyleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
@@ -62,6 +66,9 @@ public class ActivityAction {
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private GoatDubboService goatDubboService;
 
     /**
      * 秋装新品发布会0811临时使用
@@ -450,7 +457,24 @@ public class ActivityAction {
      * @return
      */
     @RequestMapping("xznzMerchants")
-    public String xznzMerchants() {
+    public String xznzMerchants(Model model) {
+        List<ImgGoatVO> goats = null;
+        List<String> imgSrcs = new ArrayList<>();
+        try {
+            goats = goatDubboService.selGoatsFromLocalCode(SpreadEnum.XZNV_MERCHANTS.getCode());
+            if (goats != null && !goats.isEmpty()) {
+                for(ImgGoatVO vo : goats){
+                    if (org.apache.commons.lang3.StringUtils.isBlank(vo.getPicUrl())) {
+                        continue;
+                    }
+                    imgSrcs.add(vo.getPicUrl());
+                }
+            }
+        } catch (GoatException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("openImgs", imgSrcs);
+
         return "xzPage/xznzMerchants";
     }
 
