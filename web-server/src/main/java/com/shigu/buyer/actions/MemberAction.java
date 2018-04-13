@@ -288,8 +288,12 @@ public class MemberAction {
     @RequestMapping("member/mk_mydp")
     @ResponseBody
     public JSONObject mk_mydp(String ids, HttpSession session) throws JsonErrException {
+        List<Long> packegeIds = parseIds(ids);
+        if (packegeIds == null || packegeIds.size() > 12) {
+            return JsonResponseUtil.error("ids参数异常");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), parseIds(ids));
+        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
         return JsonResponseUtil.success();
     }
 
