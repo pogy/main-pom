@@ -32,7 +32,7 @@
 		<div class="bd">
 			<ul>
 				<#list openImgs as img>
-				<li><a><img src="${img.imgsrc!}"></a></li>
+				<li><a><img src="${img!}"></a></li>
 				</#list>
 			</ul>
 		</div>
