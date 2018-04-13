@@ -498,7 +498,29 @@ public class ShopsItemServiceImpl implements ShopsItemService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void setConstituent(Long goodsId, Long shopId, String webSite, String fabricStr, String inFabricStr) throws JsonErrException {
+    public void setConstituent(Long goodsId, Long shopId,Boolean isChecked, String webSite, String fabricStr, String inFabricStr) throws JsonErrException {
+//        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+//        shiguGoodsTiny.setWebSite(webSite);
+//        shiguGoodsTiny.setGoodsId(goodsId);
+//        shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
+//        if (shiguGoodsTiny == null || !shopId.equals(shiguGoodsTiny.getStoreId())) {
+//            throw new JsonErrException("只能操作自己店内的商品");
+//        }
+//        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+//        goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+//        GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+//        if (searchResult != null) {
+//            goodsCountForsearch = searchResult;
+//        }
+//        goodsCountForsearch.setFabric(fabricStr);
+//        goodsCountForsearch.setInfabric(inFabricStr);
+//        if (searchResult == null) {
+//            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+//        } else {
+//            goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+//        }
+//        itemCache.cleanItemCache(goodsId);
+
         ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
         shiguGoodsTiny.setWebSite(webSite);
         shiguGoodsTiny.setGoodsId(goodsId);
@@ -506,20 +528,45 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         if (shiguGoodsTiny == null || !shopId.equals(shiguGoodsTiny.getStoreId())) {
             throw new JsonErrException("只能操作自己店内的商品");
         }
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
-        GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-        if (searchResult != null) {
-            goodsCountForsearch = searchResult;
+        if (isChecked){
+            ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+            shiguGoodsTinyExample.setWebSite(webSite);
+            shiguGoodsTinyExample.createCriteria().andGoodsNoEqualTo(shiguGoodsTiny.getGoodsNo()).andStoreIdEqualTo(shopId);
+            List<ShiguGoodsTiny> shiguGoodsTinyList = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
+            if (shiguGoodsTinyList.size() >0){
+                for (int i = 0; i < shiguGoodsTinyList.size(); i++) {
+                    GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                    goodsCountForsearch.setGoodsId(shiguGoodsTinyList.get(i).getGoodsId());
+                    GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                    if (searchResult != null) {
+                        goodsCountForsearch = searchResult;
+                    }
+                    goodsCountForsearch.setFabric(fabricStr);
+                    goodsCountForsearch.setInfabric(inFabricStr);
+                    if (searchResult == null) {
+                        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+                    } else {
+                        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                    }
+                    itemCache.cleanItemCache(shiguGoodsTinyList.get(i).getGoodsId());
+                }
+            }
+        }else {
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(shiguGoodsTiny.getGoodsId());
+            GoodsCountForsearch searchResult = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+            if (searchResult != null) {
+                goodsCountForsearch = searchResult;
+            }
+            goodsCountForsearch.setFabric(fabricStr);
+            goodsCountForsearch.setInfabric(inFabricStr);
+            if (searchResult == null) {
+                goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
+            } else {
+                goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+            }
+            itemCache.cleanItemCache(goodsId);
         }
-        goodsCountForsearch.setFabric(fabricStr);
-        goodsCountForsearch.setInfabric(inFabricStr);
-        if (searchResult == null) {
-            goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
-        } else {
-            goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
-        }
-        itemCache.cleanItemCache(goodsId);
     }
 
     /**

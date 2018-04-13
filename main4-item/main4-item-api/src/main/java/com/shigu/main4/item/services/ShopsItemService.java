@@ -89,7 +89,7 @@ public interface ShopsItemService {
      * @param inFabricStr
      * @throws JsonErrException
      */
-    void setConstituent(Long goodsId,Long shopId,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
+    void setConstituent(Long goodsId,Long shopId,Boolean isChecked,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
 
     /**
      * 清除店铺商品统计数据缓存
