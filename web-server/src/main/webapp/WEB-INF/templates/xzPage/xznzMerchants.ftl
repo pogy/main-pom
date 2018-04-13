@@ -21,7 +21,7 @@
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner"></div>
-<#if (openImgs?size) gt 0>
+<#if openImgs?? && (openImgs?size) gt 0>
 <div class="content layout">
     <h3></h3>
     <div class="slideBox" id="slideBox">
@@ -31,7 +31,7 @@
 		<div class="bd">
 			<ul>
 				<#list openImgs as img>
-				<li><a><img src="${img.imgsrc!}"></a></li>
+				<li><a><img src="${img!}"></a></li>
 				</#list>
 			</ul>
 		</div>
