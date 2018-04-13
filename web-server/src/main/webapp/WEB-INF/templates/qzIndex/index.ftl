@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300">
-    <title>四季星座网</title>
+    <title>[四季星座网]泉州站-四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
@@ -229,10 +229,6 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 </li>
         </#if>
     </ul>
-</div>
-<div class="choosePageType yahei">
-    <a class="wbtn" href="/" xzclick="gotoWomanPage">女装</a>
-    <a class="mbtn" href="/" xzclick="gotoManPage">男装</a>
 </div>
 <div class="firstScreenContent layout">
     <div class="leftbox">
