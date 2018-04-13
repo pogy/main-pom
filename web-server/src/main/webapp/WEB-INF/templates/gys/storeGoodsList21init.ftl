@@ -415,9 +415,7 @@ $$.domready('#goodsStyle', function(){
                 <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
                 <#else>
                 <p><em class="xjgoods" jhand="downGoods">下架</em></p>
-                    <#if webSite == 'qz'>
-                    <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
-                    </#if>
+                <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
                 </#if>
             </li>
         </ul>
