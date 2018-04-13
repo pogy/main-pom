@@ -73,6 +73,9 @@ public class ExpressTemplateAction {
     @RequestMapping("/daifa/addFreightBar")
     @ResponseBody
     public JSONObject addFreightBar(Long tempId,String freightText,Integer threshold,Model model){
+        if (threshold <= 0){
+            return JsonResponseUtil.error("添加失败，阈值不能为负数");
+        }
         Long freightId = templateProcess.addExpressdefaultRule(tempId,threshold,freightText);
         if (freightId == null || freightId < 0){
             return JsonResponseUtil.error("添加失败，请重试");
@@ -179,7 +182,7 @@ public class ExpressTemplateAction {
     public JSONObject deleteGroupData(Long tempId,Boolean checkedIs,Model model){
         Integer b = templateProcess.templateEnabled(tempId,checkedIs);
         if (b == null || b <= 0){
-            return JsonResponseUtil.error("删除失败，请重试");
+            return JsonResponseUtil.error("设置失败，请重试");
         }
         return  JsonResponseUtil.success();
     }

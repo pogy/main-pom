@@ -237,7 +237,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
         // 包邮？
         ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
-        expressTemplateExample.createCriteria().andEnabledEqualTo(1).andSenderIdEqualTo(senderId).andTemplateStatusEqualTo(1).andExpressCompanyIdEqualTo(companyId);
+        expressTemplateExample.createCriteria().andEnabledEqualTo(0).andSenderIdEqualTo(senderId).andTemplateStatusEqualTo(1).andExpressCompanyIdEqualTo(companyId);
         List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
         ExpressTemplate expressTemplate = null;
         if (expressTemplateList != null && expressTemplateList.size() > 0){
@@ -252,31 +252,53 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         expressTemplateProvExample.createCriteria().andEtIdEqualTo(expressTemplate.getTId()).andProvIdEqualTo(provId).andEtpStatusEqualTo(1);
         List<ExpressTemplateProv> expressTemplateProvList = expressTemplateProvMapper.selectByExample(expressTemplateProvExample);
         Long cost = 0L;
+        Integer a = null;
         if (expressTemplateProvList != null && expressTemplateProvList.size() > 0 ){
             ExpressRuleExample expressRuleExample = new ExpressRuleExample();
             expressRuleExample.createCriteria().andRuleStatusEqualTo(1).andParentRuleIdEqualTo(expressTemplateProvList.get(0).getRuleId());
             List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
             if (expressRuleList.size() > 0){
                 expressRuleList.sort((o1, o2) -> o1.getThreshold()-o2.getThreshold());
-                for (int i = 0; i <expressRuleList.size() ; i++) {
-                    if (expressRuleList.get(i).getThreshold()< goodsNumber){
-                        if (i<1){
-                            cost = expressRuleList.get(i).getThresholdFree().longValue();
-                        }else if (i == 1 ){
-                            cost = cost + (expressRuleList.get(i).getThreshold() - expressRuleList.get(i-1).getThreshold())*0;
-                            if (i == expressRuleList.size()-1){
-                             cost = cost + (goodsNumber - expressRuleList.get(i).getThreshold())*expressRuleList.get(i).getThresholdFree();
-                            }
-                        }else if (i > 1 ){
-                            cost = cost + (expressRuleList.get(i).getThreshold() - expressRuleList.get(i-1).getThreshold())*expressRuleList.get(i-1).getThresholdFree();
-                            if (i == expressRuleList.size()-1){
-                                cost = cost + (goodsNumber - expressRuleList.get(i).getThreshold())*expressRuleList.get(i).getThresholdFree();
+                Integer b = expressRuleList.size()-1;
+                bgm:for (int i = 0; i <= b ; i++) {
+                    a = b-i;
+                    if (a >= 0){
+                        if((goodsNumber - expressRuleList.get(a).getThreshold()) >= 0){
+                            for (int j = 0; j <= a ; j++) {
+                                if (j == 0) {
+                                    if (j == a){
+                                        cost += expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                    cost += expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j == 1){
+                                    cost += 0;
+                                    System.out.println(cost);
+                                    if (j == a){
+                                        cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                }
+                                if (j >1 && j != a){
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j >1 && j == a) {
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                    break bgm;
+                                }
                             }
                         }
-                    }else{
-                        cost = cost + (goodsNumber -expressRuleList.get(i-1).getThreshold())*expressRuleList.get(i-1).getThresholdFree();
                     }
                 }
+
+
             }
         }else {
             ExpressRuleExample expressRuleExample = new ExpressRuleExample();
@@ -284,23 +306,42 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
             if (expressRuleList.size() > 0){
                 expressRuleList.sort((o1, o2) -> o1.getThreshold()-o2.getThreshold());
-                for (int i = 0; i <expressRuleList.size() ; i++) {
-                    if (expressRuleList.get(i).getThreshold()< goodsNumber){
-                        if (i<1){
-                            cost = expressRuleList.get(i).getThresholdFree().longValue();
-                        }else if (i == 1 ){
-                            cost = cost + (expressRuleList.get(i).getThreshold() - expressRuleList.get(i-1).getThreshold())*0;
-                            if (i == expressRuleList.size()-1){
-                                cost = cost + (goodsNumber - expressRuleList.get(i).getThreshold())*expressRuleList.get(i).getThresholdFree();
-                            }
-                        }else if (i > 1 ){
-                            cost = cost + (expressRuleList.get(i).getThreshold() - expressRuleList.get(i-1).getThreshold())*expressRuleList.get(i-1).getThresholdFree();
-                            if (i == expressRuleList.size()-1){
-                                cost = cost + (goodsNumber - expressRuleList.get(i).getThreshold())*expressRuleList.get(i).getThresholdFree();
+                Integer b = expressRuleList.size()-1;
+                bgm:for (int i = 0; i <= b ; i++) {
+                    a = b-i;
+                    if (a >= 0){
+                        if((goodsNumber - expressRuleList.get(a).getThreshold()) >= 0){
+                            for (int j = 0; j <= a ; j++) {
+                                if (j == 0) {
+                                    if (j == a){
+                                        cost += expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                    cost += expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j == 1){
+                                    cost += 0;
+                                    System.out.println(cost);
+                                    if (j == a){
+                                        cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                }
+                                if (j >1 && j != a){
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j >1 && j == a) {
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                    break bgm;
+                                }
                             }
                         }
-                    }else{
-                        cost = cost + (goodsNumber -expressRuleList.get(i-1).getThreshold())*expressRuleList.get(i-1).getThresholdFree();
                     }
                 }
             }
@@ -349,7 +390,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 //        return postVOS;
 
         ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
-        expressTemplateExample.createCriteria().andSenderIdEqualTo(senderId).andTemplateStatusEqualTo(1).andEnabledEqualTo(1);
+        expressTemplateExample.createCriteria().andSenderIdEqualTo(senderId).andTemplateStatusEqualTo(1).andEnabledEqualTo(0);
         List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
         if(expressTemplateList ==null || expressTemplateList.size() <= 0){
             return new ArrayList<PostVO>();

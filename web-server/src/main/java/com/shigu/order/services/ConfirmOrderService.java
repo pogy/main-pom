@@ -239,7 +239,8 @@ public class ConfirmOrderService {
             List<Long> shopIds = orders.stream().map(CartOrderVO::getShopId).distinct().collect(Collectors.toList());
             ShiguShopExample shopExample = new ShiguShopExample();
             shopExample.createCriteria().andShopIdIn(shopIds);
-            shopMarketMap = shiguShopMapper.selectByExample(shopExample).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
+            List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shopExample);
+            shopMarketMap = shiguShops.stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
         }
 
 //        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);

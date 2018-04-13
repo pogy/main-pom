@@ -44,7 +44,7 @@ public class TemplateProcessImpl implements TemplateProcess{
         ExpressTemplate expressTemplate = new ExpressTemplate();
         expressTemplate.setSenderId(senderId);
         expressTemplate.setFree(0);
-        expressTemplate.setEnabled(0);
+        expressTemplate.setEnabled(1);
         expressTemplate.setTemplateStatus(1);
         expressTemplateMapper.insertSelective(expressTemplate);
         return expressTemplate.getTId();
@@ -346,6 +346,16 @@ public class TemplateProcessImpl implements TemplateProcess{
 
     @Override
     public Integer templateEnabled(Long templateId, Boolean b) {
+        ExpressRuleExample expressRuleExample = new ExpressRuleExample();
+        expressRuleExample.createCriteria().andIsDefaultEqualTo(1).andEtIdEqualTo(templateId).andRuleStatusEqualTo(1);
+        List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
+        if (expressRuleList.size() <= 0){
+            return 0;
+        }else {
+            if (expressRuleList.get(0).getThresholdFree() == null){
+                return 0;
+            }
+        }
         ExpressTemplate expressTemplate = new ExpressTemplate();
         expressTemplate.setTId(templateId);
         if (b){
