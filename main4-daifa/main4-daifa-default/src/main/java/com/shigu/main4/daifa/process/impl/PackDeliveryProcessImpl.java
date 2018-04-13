@@ -170,7 +170,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         for (DaifaSendOrder sendOrder : sendOrders) {
             if (sendOrder.getTakeGoodsStatus()!=null&&sendOrder.getTakeGoodsStatus()==1) {
                 orderSize++;
-                String key = sendOrder.getStoreNum() + "-" + sendOrder.getGoodsCode() + "-" + sendOrder.getPropStr();
+                String pr=sendOrder.getSinglePiPrice().split("\\.")[0];
+                String gn=sendOrder.getGoodsCode().replace("p"+pr,"").replace("P"+pr,"");
+                String key = sendOrder.getStoreNum() + "-" + gn + "-" + sendOrder.getPropStr();
                 skumap.merge(key, sendOrder.getGoodsNum(), (a, b) -> a + b);
             }
         }

@@ -259,7 +259,11 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             vo.setRemarks(subDays + "");
 
             String market = ggoodsForPrint.getStoreGoodsCode().split("_")[0];
-            vo.setGoodsSku(market + "-" + ggoodsForPrint.getStoreNum() + "-" + ggoodsForPrint.getGoodsCode()
+            String pr=ggoodsForPrint.getSinglePiPrice().split("\\.")[0];
+            String gn=ggoodsForPrint.getGoodsCode().replace("p"+pr,"").replace("P"+pr,"");
+
+
+            vo.setGoodsSku(market + "-" + ggoodsForPrint.getStoreNum() + "-" + gn
                     + "-" + ggoodsForPrint.getPropStr());
             vo.setPostName(Pingyin.getPinYinHeadChar(ggoodsForPrint.getExpressName()).toUpperCase());
             pvos.add(vo);
