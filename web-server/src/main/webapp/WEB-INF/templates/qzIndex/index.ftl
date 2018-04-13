@@ -203,7 +203,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://qz.571xz.com/market.htm?mid=100" target="_blank">
+    <a href="http://qz.571xz.com/market.htm?mid=82" target="_blank">
         逛市场
     </a>
 </li>
