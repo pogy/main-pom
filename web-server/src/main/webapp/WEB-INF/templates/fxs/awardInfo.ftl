@@ -89,7 +89,7 @@
                                             <div class="awardMoney" style="background-image:url(${award.img!})"></div>
                                             <div class="awardInfo">
                                                 <ul>
-                                                    <li>中奖情况：
+                                                    <li>状态：
                                                         <#if award.state == 1>
                                                             等待抽奖
                                                         <#elseif award.state == 2>
