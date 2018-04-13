@@ -22,7 +22,7 @@ public interface TemplateProcess {
      * 插入模版对象
      * @return 模版id
      */
-    Long addExpressTemplate();
+    Long addExpressTemplate(Long senderId);
 
     /**
      * 插入父规则对象
@@ -98,7 +98,7 @@ public interface TemplateProcess {
      * 查询所有快递模版
      * @return 模版集合
      */
-    List<ShowTempVo> selectTemplateAll();
+    List<ShowTempVo> selectTemplateAll(Long senderId);
 
     /**
      * 编辑递模版

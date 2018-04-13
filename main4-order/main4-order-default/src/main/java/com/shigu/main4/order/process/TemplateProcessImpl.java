@@ -40,10 +40,11 @@ public class TemplateProcessImpl implements TemplateProcess{
     ExpressCompanyMapper expressCompanyMapper;
 
     @Override
-    public Long addExpressTemplate(){
+    public Long addExpressTemplate(Long senderId){
         ExpressTemplate expressTemplate = new ExpressTemplate();
+        expressTemplate.setSenderId(senderId);
         expressTemplate.setFree(0);
-        expressTemplate.setEnabled(0);
+        expressTemplate.setEnabled(1);
         expressTemplate.setTemplateStatus(1);
         expressTemplateMapper.insertSelective(expressTemplate);
         return expressTemplate.getTId();
@@ -345,6 +346,16 @@ public class TemplateProcessImpl implements TemplateProcess{
 
     @Override
     public Integer templateEnabled(Long templateId, Boolean b) {
+        ExpressRuleExample expressRuleExample = new ExpressRuleExample();
+        expressRuleExample.createCriteria().andIsDefaultEqualTo(1).andEtIdEqualTo(templateId).andRuleStatusEqualTo(1);
+        List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
+        if (expressRuleList.size() <= 0){
+            return 0;
+        }else {
+            if (expressRuleList.get(0).getThresholdFree() == null){
+                return 0;
+            }
+        }
         ExpressTemplate expressTemplate = new ExpressTemplate();
         expressTemplate.setTId(templateId);
         if (b){
@@ -356,9 +367,9 @@ public class TemplateProcessImpl implements TemplateProcess{
     }
 
     @Override
-    public List<ShowTempVo> selectTemplateAll() {
+    public List<ShowTempVo> selectTemplateAll(Long senderId) {
         ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
-        expressTemplateExample.createCriteria().andTemplateStatusEqualTo(1);
+        expressTemplateExample.createCriteria().andTemplateStatusEqualTo(1).andSenderIdEqualTo(senderId);
         List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
         List<ShowTempVo> showTempVoList = new ArrayList<>();
         ShowTempVo showTempVo = null;

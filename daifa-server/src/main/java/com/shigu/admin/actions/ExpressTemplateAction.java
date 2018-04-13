@@ -2,17 +2,22 @@ package com.shigu.admin.actions;
 
 
 
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.main4.order.process.TemplateProcess;
 import com.shigu.main4.order.vo.*;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +39,10 @@ public class ExpressTemplateAction {
     * 返回快递公司列表
     */
     @RequestMapping("/daifa/addCourierTemp")
-    public String addCourierTemp(Model model){
-        Long tempId = templateProcess.addExpressTemplate();
+    public String addCourierTemp(HttpServletRequest request,Model model){
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Long tempId = templateProcess.addExpressTemplate(daifaUser.getDaifaSellerId());
         List<ExpressCompanyVo> courierList = templateProcess.selectExpressCompany();
         JSONArray json = JSONArray.fromObject(courierList);
         model.addAttribute("tempId",tempId);
@@ -66,6 +73,9 @@ public class ExpressTemplateAction {
     @RequestMapping("/daifa/addFreightBar")
     @ResponseBody
     public JSONObject addFreightBar(Long tempId,String freightText,Integer threshold,Model model){
+        if (threshold <= 0){
+            return JsonResponseUtil.error("添加失败，阈值不能为负数");
+        }
         Long freightId = templateProcess.addExpressdefaultRule(tempId,threshold,freightText);
         if (freightId == null || freightId < 0){
             return JsonResponseUtil.error("添加失败，请重试");
@@ -160,7 +170,9 @@ public class ExpressTemplateAction {
 
     @RequestMapping("/daifa/showCourierTemp")
     public String showCourierTemp(Model model){
-        List<ShowTempVo> courierTempList = templateProcess.selectTemplateAll();
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<ShowTempVo> courierTempList = templateProcess.selectTemplateAll(daifaUser.getDaifaSellerId());
         model.addAttribute("courierTempList",courierTempList);
         return  "daifa/showCourierTemp";
     }
@@ -170,7 +182,7 @@ public class ExpressTemplateAction {
     public JSONObject deleteGroupData(Long tempId,Boolean checkedIs,Model model){
         Integer b = templateProcess.templateEnabled(tempId,checkedIs);
         if (b == null || b <= 0){
-            return JsonResponseUtil.error("删除失败，请重试");
+            return JsonResponseUtil.error("设置失败，请重试");
         }
         return  JsonResponseUtil.success();
     }
