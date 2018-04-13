@@ -426,6 +426,7 @@
         <!--    <div  style="display: none"></div>-->
         <div>
             <p id="tip_default">
+                <img src="http://upload.571xz.com/public/images/loading.gif" align="absmiddle">
                 正在上传中,请稍后
                 <#--<img src="public/images/loading.gif" align="absmiddle"/>
                 <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张-->
