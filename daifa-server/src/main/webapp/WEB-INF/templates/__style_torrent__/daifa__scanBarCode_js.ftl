@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/scanBarCode_v20171208_100411.js"></script>
+<script src="http://style.571xz.com/v6/daifa/js/scanBarCode_v20180413_131412.js"></script>
