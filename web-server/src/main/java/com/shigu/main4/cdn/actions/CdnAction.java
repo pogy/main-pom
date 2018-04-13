@@ -529,7 +529,7 @@ public class CdnAction {
 
 
     /**
-     * 杭州首页动态页面
+     * 泉州首页动态页面
      *
      * @return
      */
@@ -584,7 +584,7 @@ public class CdnAction {
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
-            return "hzMan/index";
+            return "qzIndex/index";
         } else {
             return "index/index";
         }
