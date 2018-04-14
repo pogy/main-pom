@@ -330,6 +330,7 @@ public class ShopAction {
             historyCatVOS.add(historyCatVO);
         }
         model.addAttribute("historyCategory", historyCatVOS);
+        model.addAttribute("webSite",shop.getWebSite());
         return "gys/releaseGoodsinit";
     }
 
