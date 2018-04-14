@@ -627,6 +627,7 @@ public class ShopAction {
         model.addAttribute("cateId",synItem.getCid());
         model.addAttribute("goodsInfo",goodsInfoVO);
         model.addAttribute("query",bo);
+        model.addAttribute("webSite",shopSession.getWebSite());
         return "gys/editGoodsInfo";
     }
 
