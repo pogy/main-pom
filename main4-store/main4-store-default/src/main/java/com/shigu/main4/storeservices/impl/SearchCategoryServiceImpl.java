@@ -19,11 +19,11 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Override
     public List<CateMenu> getMarketCateShow() {
-        return getMarketCateShow("hz",1);
+        return getMarketCateShow("hz");
     }
 
     @Override
-    public List<CateMenu> getMarketCateShow(String webSite, Integer sex) {
+    public List<CateMenu> getMarketCateShow(String webSite) {
         ShiguSiteSearchCategoryExample ssscOneExample = new ShiguSiteSearchCategoryExample();
         ssscOneExample.createCriteria()
                 .andTypeEqualTo(3)
@@ -31,7 +31,6 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                 .andDisplayEqualTo(1)
                 .andPageTypeEqualTo(1)
                 .andWebSiteEqualTo(webSite)
-                .andSexEqualTo(sex)
                 .andInfoTypeEqualTo(1);
         List<ShiguSiteSearchCategory> ssscOneList = shiguSiteSearchCategoryMapper.selectByExample(ssscOneExample);
         if (ssscOneList == null){

@@ -19,7 +19,7 @@ public interface SearchCategoryService {
     @Deprecated
     List<CateMenu> getMarketCateShow();
 
-    List<CateMenu> getMarketCateShow(String webSite,Integer sex);
+    List<CateMenu> getMarketCateShow(String webSite);
 
     /**
      * 获取首页导航栏展示类目
