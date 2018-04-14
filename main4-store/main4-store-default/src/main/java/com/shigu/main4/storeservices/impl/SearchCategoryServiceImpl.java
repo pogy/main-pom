@@ -119,7 +119,8 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             List<HomeCateItem> hots=new ArrayList<>();
             List<HomeCateItem> alls=new ArrayList<>();
             map.get(shiguSiteSearchCategory.getId()).forEach(shiguSiteSearchCategory1 -> {
-                HomeCateItem homeCateItem = new HomeCateItem(shiguSiteSearchCategory1.getCname(), "http://www.571xz.com/market.htm?mid=" + shiguSiteSearchCategory1.getCid());
+                HomeCateItem homeCateItem = new HomeCateItem(shiguSiteSearchCategory1.getCname(),
+                        (infoType==3?"http://www.571xz.com/styleGoodsList.htm?spid=":"http://www.571xz.com/market.htm?mid=") + shiguSiteSearchCategory1.getCid());
                 if(shiguSiteSearchCategory1.getHot()==1){
                     hots.add(homeCateItem);
                 }
