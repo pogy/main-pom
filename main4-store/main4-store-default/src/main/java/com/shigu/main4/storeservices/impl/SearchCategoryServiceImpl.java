@@ -183,9 +183,9 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                             homeCateItem = new HomeCateItem();
                             homeCateItem.setName(ssscList3.get(k).getCname());
                             if (ssscList3.get(k).getKeyword() == null || ssscList3.get(k).getKeyword() =="") {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
                             }else {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
                             }
                             if (ssscList3.get(k).getHot() == 1){
                                 hotItemList.add(homeCateItem);
