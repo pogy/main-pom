@@ -388,7 +388,7 @@ public class ShopAction {
         if (StringUtils.isNotEmpty(openflag)) {
             model.addAttribute("showMoreImgBtnIs", openflag.contains(shopSession.getWebSite()));
         } else {
-            model.addAttribute("showMoreImgBtnIs", "kx".equals(shopSession.getWebSite()));
+            model.addAttribute("showMoreImgBtnIs", "kx,qz".contains(shopSession.getWebSite()));
         }
         return "gys/releaseGoodsSend";
     }
@@ -620,7 +620,7 @@ public class ShopAction {
         if (StringUtils.isNotEmpty(openflag)) {
             model.addAttribute("showMoreImgBtnIs",openflag.contains(shopSession.getWebSite()));
         }else{
-            model.addAttribute("showMoreImgBtnIs","kx".equals(shopSession.getWebSite()));
+            model.addAttribute("showMoreImgBtnIs","kx,qz".contains(shopSession.getWebSite()));
         }
         goodsInfoVO.setSkuAttribute(skuAttribute);//SKU列表
         //  SKU列表
