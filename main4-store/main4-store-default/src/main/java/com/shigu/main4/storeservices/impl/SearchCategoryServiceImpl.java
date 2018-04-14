@@ -19,11 +19,11 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Override
     public List<CateMenu> getMarketCateShow() {
-        return getMarketCateShow("hz",1);
+        return getMarketCateShow("hz");
     }
 
     @Override
-    public List<CateMenu> getMarketCateShow(String webSite, Integer sex) {
+    public List<CateMenu> getMarketCateShow(String webSite) {
         ShiguSiteSearchCategoryExample ssscOneExample = new ShiguSiteSearchCategoryExample();
         ssscOneExample.createCriteria()
                 .andTypeEqualTo(3)
@@ -31,7 +31,6 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                 .andDisplayEqualTo(1)
                 .andPageTypeEqualTo(1)
                 .andWebSiteEqualTo(webSite)
-                .andSexEqualTo(sex)
                 .andInfoTypeEqualTo(1);
         List<ShiguSiteSearchCategory> ssscOneList = shiguSiteSearchCategoryMapper.selectByExample(ssscOneExample);
         if (ssscOneList == null){
@@ -120,7 +119,8 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             List<HomeCateItem> hots=new ArrayList<>();
             List<HomeCateItem> alls=new ArrayList<>();
             map.get(shiguSiteSearchCategory.getId()).forEach(shiguSiteSearchCategory1 -> {
-                HomeCateItem homeCateItem = new HomeCateItem(shiguSiteSearchCategory1.getCname(), "http://www.571xz.com/market.htm?mid=" + shiguSiteSearchCategory1.getCid());
+                HomeCateItem homeCateItem = new HomeCateItem(shiguSiteSearchCategory1.getCname(),
+                        (infoType==3?"http://www.571xz.com/styleGoodsList.htm?spid=":"http://www.571xz.com/market.htm?mid=") + shiguSiteSearchCategory1.getCid());
                 if(shiguSiteSearchCategory1.getHot()==1){
                     hots.add(homeCateItem);
                 }
@@ -183,9 +183,9 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                             homeCateItem = new HomeCateItem();
                             homeCateItem.setName(ssscList3.get(k).getCname());
                             if (ssscList3.get(k).getKeyword() == null || ssscList3.get(k).getKeyword() =="") {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
                             }else {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
                             }
                             if (ssscList3.get(k).getHot() == 1){
                                 hotItemList.add(homeCateItem);
