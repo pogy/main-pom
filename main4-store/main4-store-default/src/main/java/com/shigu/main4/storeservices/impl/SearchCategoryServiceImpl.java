@@ -76,7 +76,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Override
     public List<HomeCateMenu> getHomeCateShow(String webSite,Integer sex) {
-        return getHomeCateShow("hz",1,false);
+        return getHomeCateShow(webSite,sex,false);
     }
 
     private List<HomeCateMenu> getHomeCateShow(String webSite,Integer sex,boolean isOld){
