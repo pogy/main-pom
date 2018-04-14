@@ -68,6 +68,8 @@
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -123,6 +125,8 @@
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -404,6 +408,8 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
