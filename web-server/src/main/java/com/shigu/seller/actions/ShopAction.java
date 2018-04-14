@@ -77,6 +77,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.fieldstats.FieldStats;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -526,9 +527,11 @@ public class ShopAction {
         goodsInfoVO.setGoodsTitle(synItem.getTitle());//标题
         goodsInfoVO.setFabric(synItem.getFabric());//面料
         String goodsDesc = synItem.getGoodsDesc();
+        goodsDesc= Jsoup.parse(goodsDesc).body().html();
         if(goodsDesc != null){
-            goodsDesc=goodsDesc.replace(">\n<","><");
+            goodsDesc=goodsDesc.replace("\n","");
         }
+
         goodsInfoVO.setDeschtml(goodsDesc);//商品详情
         List<String> imageList = synItem.getImageList();
         imageList.remove(synItem.getPicUrl());
