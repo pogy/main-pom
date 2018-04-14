@@ -288,6 +288,7 @@ public class ShopAction {
             get.setFeedback(2);
         }
         model.addAttribute("query", get);
+        model.addAttribute("webSite",shopSession.getWebSite());
         return "gys/createGoods21init";
     }
 
@@ -381,6 +382,7 @@ public class ShopAction {
         model.addAttribute("skuAttribute", skuAttribute);
         model.addAttribute("query", bo);
         ShopSession shopSession = getShopSession(session);//暂时都开放
+        model.addAttribute("webSite",shopSession.getWebSite());
         String openflag = redisIO.get("open_more_pic");
         if (StringUtils.isNotEmpty(openflag)) {
             model.addAttribute("showMoreImgBtnIs", openflag.contains(shopSession.getWebSite()));
