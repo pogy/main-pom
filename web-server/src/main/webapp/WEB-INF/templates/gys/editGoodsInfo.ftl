@@ -208,7 +208,7 @@ var deschtml = '${goodsInfo.deschtml}';
 <div class="formInput formEditor">
     <label class="formKey">宝贝描述：</label>
     <div class="formData">
-        <textarea id="J_ItemDescTextarea_newer" name="_fma.pu._0.d" style="width:745px; height:450px;"></textarea>
+        <textarea id="J_ItemDescTextarea_newer" name="_fma.pu._0.d" style="width:745px; height:450px;">${goodsInfo.deschtml}</textarea>
     </div>
 </div>
 <div class="moreImgUpload">
