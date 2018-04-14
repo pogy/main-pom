@@ -94,7 +94,7 @@ public class GoodsOfferBO implements Serializable{
     /**
      * 面料
      */
-    @NotNull(message = "面料成分为必填选项")
+//    @NotNull(message = "面料成分为必填选项")
     private String fabric;
     /**
      * 里料
