@@ -68,6 +68,8 @@
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -123,6 +125,8 @@
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -218,11 +222,17 @@ ${userShopHdHtml}
 </#if>
     </div>
     <div class="imgTabBox">
-        <ul class="clearfix">
-        <#list goodsInfo.imgUrls as imgUrl>
-            <li data-img='${imgUrl!}' <#if img_index == 0 >class="selected"</#if>><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
-        </#list>
-        </ul>
+        <div class="<#if (goodsInfo.imgUrls?size) gt 6>imgScroll</#if>">
+            <ul class="clearfix">
+            <#list goodsInfo.imgUrls as imgUrl>
+                <li data-img='${imgUrl!}' <#if img_index == 0 >class="selected"</#if>><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
+            </#list>
+            </ul>
+        </div>
+        <#if (goodsInfo.imgUrls?size) gt 6>
+            <b class="prevBtn disabled"><i class="icon-leftarrow"></i></b>
+            <b class="nextBtn"><i class="icon-rightarrow"></i></b>
+        </#if>
     </div>
     <div class="shareBox">
         <a class="store" xzclick="collectGoods" href="javascript:;"  data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
@@ -398,6 +408,8 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
                     北京
                 <#elseif webSite == "jx">
                     濮院
+                <#elseif webSite == "qz">
+                    泉州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -514,5 +526,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     </div>
 </div>
 <#include "/common/xz__rightbar.ftl">
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

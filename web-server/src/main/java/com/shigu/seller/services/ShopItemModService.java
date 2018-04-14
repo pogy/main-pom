@@ -1,5 +1,6 @@
 package com.shigu.seller.services;
 
+import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
@@ -11,9 +12,13 @@ import com.shigu.main4.cdn.vo.StyleChannelVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
+import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.vo.*;
+import com.shigu.session.main4.ShopSession;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.ShiguStyleVo;
 import com.shigu.seller.vo.ShopStyleGoodsAggrVO;
@@ -56,6 +61,15 @@ public class ShopItemModService {
 
     @Autowired
     ShiguCustomerStyleMapper shiguCustomerStyleMapper;
+
+    @Autowired
+    GoodsSendService goodsSendService;
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
+    @Autowired
+    ItemSearchService itemSearchService;
+    @Autowired
+    ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
 
     @Autowired
     ShiguStyleMapper shiguStyleMapper;
@@ -478,5 +492,20 @@ public class ShopItemModService {
         shopsItemService.delGoodsStyle(goodsId, shopId);
         return JsonResponseUtil.success();
     }
+    /**
+     * 查店内需要编辑的商品的具体内容
+     */
+    public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
+        SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
+//        synItem.getInputStr();// 自定义值串   '用户自行输入的子属性名和属性值@所有属性别名加起来不能超过 3999字节。',
+//        synItem.getInputPids();//自定义pid串  '用户自行输入的类目属性ID串',
+//
+//        synItem.getSellPoint();//卖点
+//        synItem.getNum();//总量
+//
+//        synItem.getCid();//淘宝叶子类目ID
+//        synItem.getCidAll();//商家编号
 
+        return synItem;
+    }
 }
