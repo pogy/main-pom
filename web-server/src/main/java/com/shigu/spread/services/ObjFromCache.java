@@ -51,7 +51,6 @@ public abstract class ObjFromCache<T>{
 //                return (T) e.getObj();
 //            }
         }
-//        return null;
     }
 
     public SpreadCacheException.CacheType getType() {

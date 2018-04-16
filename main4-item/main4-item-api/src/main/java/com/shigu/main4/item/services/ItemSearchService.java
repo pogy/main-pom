@@ -37,6 +37,7 @@ public interface ItemSearchService {
     ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
+
     /**
      * 搜索主方法
      * @param keyword 关键词
@@ -85,7 +86,8 @@ public interface ItemSearchService {
      * @param pageSize
      * @return
      */
-    ShiguPager<SearchItem> searchItemByIds(List<Long> ids,String webSite,Integer page,Integer pageSize);
+    ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize);
+
     /**
      * 查询搜索类目
      * @param category

@@ -236,67 +236,68 @@ public class SpreadService {
     }
 
 
-    public ObjFromCache<List<HomeCateMenu>> castedHomeCateMenu(){
-        return new ObjFromCache<List<HomeCateMenu>>(redisForIndexPage,"NEW_HZ_HomeCateMenu",HomeCateMenu.class){
+    public ObjFromCache<List<HomeCateMenu>> castedHomeCateMenu(String webSite,Integer sex,final SpreadEnum spread){
+        return new ObjFromCache<List<HomeCateMenu>>(redisForIndexPage,spread.getCode(),HomeCateMenu.class){
             @Override
             public List<HomeCateMenu> selReal() {
-                //todo 类目导航,市场暂时写死
-                HomeCateMenu hzMarkets=new HomeCateMenu();
-                hzMarkets.setId(1L);
-                hzMarkets.setText("男装市场");
-                hzMarkets.setListitems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
-                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
-                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
-                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
-                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
-                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
-                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
-                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76")
-                ));
-                ThreeCateMenu threeCateMenu=new ThreeCateMenu();
-                threeCateMenu.setText("男装市场");
-                threeCateMenu.setItems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
-                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
-                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
-                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
-                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
-                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
-                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
-                        new HomeCateItem("男鞋基地","http://www.571xz.com/market.htm?mid=18"),
-                        new HomeCateItem("石狮工厂店","http://www.571xz.com/market.htm?mid=20"),
-                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76"),
-                        new HomeCateItem("原创男装","http://www.571xz.com/market.htm?mid=16"),
-                        new HomeCateItem("九天国际","http://www.571xz.com/market.htm?mid=11"),
-                        new HomeCateItem("潮牌基地","http://www.571xz.com/market.htm?mid=9"),
-                        new HomeCateItem("周边市场","http://www.571xz.com/market.htm?mid=19")
-                ));
-                hzMarkets.setDetailitems(Collections.singletonList(threeCateMenu));
-
-                //todo 类目导航,风格暂时写死
-                HomeCateMenu hzMarketStyle=new HomeCateMenu();
-                hzMarketStyle.setId(11L);
-                hzMarketStyle.setText("时尚风格");
-                hzMarketStyle.setListitems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
-                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
-                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3")
-                ));
-                ThreeCateMenu threeMenu=new ThreeCateMenu();
-                threeMenu.setText("时尚风格");
-                threeMenu.setItems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
-                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
-                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3"),
-                        new HomeCateItem("国潮/情侣","http://www.571xz.com/styleGoodsList.htm?spid=4"),
-                        new HomeCateItem("外景/商城","http://www.571xz.com/styleGoodsList.htm?spid=5"),
-                        new HomeCateItem("鞋包/其他","http://www.571xz.com/styleGoodsList.htm?spid=6")
-                ));
-                hzMarketStyle.setDetailitems(Collections.singletonList(threeMenu));
-
-                List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
-                List<HomeCateMenu> c=new ArrayList<>();
-                c.add(hzMarkets);
-                c.addAll(catemenu);
-                c.add(hzMarketStyle);
-                return c;
+//                //todo 类目导航,市场暂时写死
+//                HomeCateMenu hzMarkets=new HomeCateMenu();
+//                hzMarkets.setId(1L);
+//                hzMarkets.setText("男装市场");
+//                hzMarkets.setListitems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
+//                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
+//                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
+//                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
+//                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
+//                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
+//                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
+//                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76")
+//                ));
+//                ThreeCateMenu threeCateMenu=new ThreeCateMenu();
+//                threeCateMenu.setText("男装市场");
+//                threeCateMenu.setItems(Arrays.asList(new HomeCateItem("电商基地","http://www.571xz.com/market.htm?mid=1"),
+//                        new HomeCateItem("精品男装","http://www.571xz.com/market.htm?mid=2"),
+//                        new HomeCateItem("四季星座","http://www.571xz.com/market.htm?mid=3"),
+//                        new HomeCateItem("钱塘大厦","http://www.571xz.com/market.htm?mid=5"),
+//                        new HomeCateItem("新杭派","http://www.571xz.com/market.htm?mid=12"),
+//                        new HomeCateItem("置地国际","http://www.571xz.com/market.htm?mid=8"),
+//                        new HomeCateItem("之江服饰","http://www.571xz.com/market.htm?mid=10"),
+//                        new HomeCateItem("男鞋基地","http://www.571xz.com/market.htm?mid=18"),
+//                        new HomeCateItem("石狮工厂店","http://www.571xz.com/market.htm?mid=20"),
+//                        new HomeCateItem("优品基地","http://www.571xz.com/market.htm?mid=76"),
+//                        new HomeCateItem("原创男装","http://www.571xz.com/market.htm?mid=16"),
+//                        new HomeCateItem("九天国际","http://www.571xz.com/market.htm?mid=11"),
+//                        new HomeCateItem("潮牌基地","http://www.571xz.com/market.htm?mid=9"),
+//                        new HomeCateItem("周边市场","http://www.571xz.com/market.htm?mid=19")
+//                ));
+//                hzMarkets.setDetailitems(Collections.singletonList(threeCateMenu));
+//
+//                //todo 类目导航,风格暂时写死
+//                HomeCateMenu hzMarketStyle=new HomeCateMenu();
+//                hzMarketStyle.setId(11L);
+//                hzMarketStyle.setText("时尚风格");
+//                hzMarketStyle.setListitems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
+//                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+//                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3")
+//                ));
+//                ThreeCateMenu threeMenu=new ThreeCateMenu();
+//                threeMenu.setText("时尚风格");
+//                threeMenu.setItems(Arrays.asList(new HomeCateItem("港风","http://www.571xz.com/styleGoodsList.htm?spid=1"),
+//                        new HomeCateItem("日系/中国风","http://www.571xz.com/styleGoodsList.htm?spid=2"),
+//                        new HomeCateItem("英伦/型男","http://www.571xz.com/styleGoodsList.htm?spid=3"),
+//                        new HomeCateItem("国潮/情侣","http://www.571xz.com/styleGoodsList.htm?spid=4"),
+//                        new HomeCateItem("外景/商城","http://www.571xz.com/styleGoodsList.htm?spid=5"),
+//                        new HomeCateItem("鞋包/其他","http://www.571xz.com/styleGoodsList.htm?spid=6")
+//                ));
+//                hzMarketStyle.setDetailitems(Collections.singletonList(threeMenu));
+//
+//                List<HomeCateMenu> catemenu = searchCategoryService.getHomeCateShow();
+//                List<HomeCateMenu> c=new ArrayList<>();
+//                c.add(hzMarkets);
+//                c.addAll(catemenu);
+//                c.add(hzMarketStyle);
+//                return c;
+                return searchCategoryService.getHomeCateShow(webSite,sex);
             }
         };
     }
