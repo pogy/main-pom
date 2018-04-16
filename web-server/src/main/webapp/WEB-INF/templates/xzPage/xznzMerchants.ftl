@@ -21,8 +21,6 @@
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner"></div>
-<div class="sowlj"></div>
-<#if (openImgs?size) gt 0>
 <div class="content layout">
     <h3></h3>
     <div class="slideBox" id="slideBox">
@@ -31,14 +29,14 @@
 		</div>
 		<div class="bd">
 			<ul>
-				<#list openImgs as img>
-				<li><a><img src="${img!}"></a></li>
-				</#list>
+				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb1.jpg"></a></li>
+				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb2.jpg"></a></li>
+				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb3.jpg"></a></li>
+				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb4.jpg"></a></li>
 			</ul>
 		</div>
     </div>
 </div>
-</#if>
 <div class="bgContent"></div>
 <#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
