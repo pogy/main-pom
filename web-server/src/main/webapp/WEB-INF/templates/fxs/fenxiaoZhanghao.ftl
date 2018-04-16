@@ -103,6 +103,29 @@
             </div>
         </li>
         </#if>
+        <#if outer_jingdong??>
+        <li class="bd">
+            <div class="iconApplication">
+                <i class="icon${outer_jingdong.from!} iconApp"></i>
+                <i class="iconBd"></i>
+                <p>${outer_jingdong.name!}</p>
+            </div>
+            <div class="status">
+                <b class="unBind" jbtn="${outer_jingdong.from!}" data-id="${outer_jingdong.id!}">解绑</b>
+            </div>
+        </li>
+        <#else>
+        <li class="noBd">
+            <div class="iconApplication">
+                <i class="iconjingdong iconApp"></i>
+                <i class="iconBd"></i>
+                <p>京东</p>
+            </div>
+            <div class="status">
+                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+            </div>
+        </li>
+        </#if>
     </ul>
 </div>
             </div>
