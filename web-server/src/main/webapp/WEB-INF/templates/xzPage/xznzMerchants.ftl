@@ -21,7 +21,6 @@
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner"></div>
-<#if (openImgs?size) gt 0>
 <div class="content layout">
     <h3></h3>
     <div class="slideBox" id="slideBox">
@@ -38,7 +37,6 @@
 		</div>
     </div>
 </div>
-</#if>
 <div class="bgContent"></div>
 <#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
