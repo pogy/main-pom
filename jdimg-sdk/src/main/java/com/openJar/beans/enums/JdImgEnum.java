@@ -7,8 +7,8 @@ import java.io.Serializable;
  * Created by zhaohongbo on 16/12/20.
  */
 public enum JdImgEnum implements Serializable{
-//    TEST("http://zs.571xz.com:8082/"),REST("http://zs.571xz.com/");
-    TEST("http://zs.571xz.com:8082/"),REST("http://zs.571xz.com:8082/");
+    TEST("http://zs.571xz.com:8082/"),REST("http://zs.571xz.com/");
+//    TEST("http://zs.571xz.com:8082/"),REST("http://zs.571xz.com:8082/");
 
     JdImgEnum(String url) {
         this.url = url;
