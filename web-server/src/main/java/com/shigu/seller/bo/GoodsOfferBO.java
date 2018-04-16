@@ -23,7 +23,7 @@ public class GoodsOfferBO implements Serializable{
     @SafeHtml(message = "首图包含非法页面标签")
     private String picPath;
     /**
-     * 5张图,不包含首图
+     * 不包含首图
      */
     @SafeHtml(message = "5张图包含非法页面标签")
     private String allimg;
@@ -57,6 +57,12 @@ public class GoodsOfferBO implements Serializable{
      */
     @SafeHtml(message = "零售价包含非法页面标签")
     private String buynow;
+
+    /**
+     * 最低零售价
+     */
+    @SafeHtml(message = "零售价包含非法页面标签")
+    private String lowestLiPrice;
     /**
      * 卖点
      */
@@ -88,7 +94,7 @@ public class GoodsOfferBO implements Serializable{
     /**
      * 面料
      */
-    @NotNull(message = "面料成分为必填选项")
+//    @NotNull(message = "面料成分为必填选项")
     private String fabric;
     /**
      * 里料
@@ -99,6 +105,19 @@ public class GoodsOfferBO implements Serializable{
      */
     @NotNull(message = "货号为必填选项")
     private String goodsNo;
+
+    /**
+     * 商品id
+     */
+    private String goodsId;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getPicPath() {
         return picPath;
@@ -154,6 +173,14 @@ public class GoodsOfferBO implements Serializable{
 
     public void setPiPrice(String piPrice) {
         this.piPrice = piPrice;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
     }
 
     public String getBuynow() {

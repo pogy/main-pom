@@ -412,9 +412,10 @@ $$.domready('#goodsStyle', function(){
             <li class="upcount">${item.count!}</li>
             <li class="control">
                 <#if session_user_redis__.logshop.type == 1>
-                    <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
+                <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
                 <#else>
-                    <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+                <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+                <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
                 </#if>
             </li>
         </ul>

@@ -39,7 +39,7 @@ public class MarketListAction {
     @RequestMapping("market")
     public String marketIndex(MarketBO bo, Model model){
         MarketVO marketVO=marketListService.selMarketData(bo.getMid(),bo.getCid());
-        List<CateMenu> catemenu = searchCategoryService.getMarketCateShow();
+        List<CateMenu> catemenu = searchCategoryService.getMarketCateShow(marketVO.getWebSite());
         model.addAttribute("marketName", marketVO.getMarketName());
         model.addAttribute("markets", marketVO.getMarketTags());
         model.addAttribute("marketList",marketVO.getFloorVOs());

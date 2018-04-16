@@ -129,7 +129,7 @@ public class GoodsSearchAction {
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
-        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav());
+        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav(bo.getWebSite()));
         if (bo.getCid() != null) {
             model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }

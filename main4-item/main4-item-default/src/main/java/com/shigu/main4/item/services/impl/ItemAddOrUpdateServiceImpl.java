@@ -21,13 +21,11 @@ import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
-import org.omg.CosNaming.NamingContextPackage.NotFoundReasonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -925,6 +923,31 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguPropImgsMapper.updateByExampleSelective(shiguPropImgs, propImgsExample);
         }
 
+
+        GoodsCountForsearch goodsCountForsearch = container.getGoodsCountForsearch();
+        if (objectIsNotBlank(goodsCountForsearch)) {
+            GoodsCountForsearchExample example= new GoodsCountForsearchExample();
+            example.createCriteria().andGoodsIdEqualTo(synItem.getGoodsId());
+
+            GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
+            goodsCountForsearch1.setGoodsId(synItem.getGoodsId());
+            if (goodsCountForsearchMapper.selectOne(goodsCountForsearch1) == null){
+                goodsCountForsearch1.setClick(0L);
+                goodsCountForsearch1.setClickIp(0L);
+                goodsCountForsearch1.setTrade(0L);
+                goodsCountForsearch1.setUp(0L);
+                goodsCountForsearch1.setUpMan(0L);
+                goodsCountForsearch1.setHadGoat(0);
+                goodsCountForsearch1.setWebSite(synItem.getWebSite());
+                goodsCountForsearch1.setHadBigzip(0);
+                goodsCountForsearch1.setHadVideo(0);
+                goodsCountForsearchMapper.insert(goodsCountForsearch1);
+            }
+            goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch, example);
+
+        }
+
+
         //4、更新es中对应goods数据，以上所有，需要在1个事务中进行
         ShiguGoodsTiny tiny = new ShiguGoodsTiny();
         tiny.setWebSite(goodsTiny.getWebSite());
@@ -1104,8 +1127,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 ShiguPropImgs propImgs = new ShiguPropImgs();
                 propImgs.setItemId(tiny.getGoodsId());
                 propImgs = shiguPropImgsMapper.selectOne(propImgs);
-
-                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs);
+                //查goods_count_forsearch表
+                GoodsCountForsearch goodsCountForsearch= new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+                goodsCountForsearch=goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs, goodsCountForsearch);
             }
         }
         return null;
@@ -1129,7 +1155,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 propImgs.setItemId(tiny.getGoodsId());
                 propImgs = shiguPropImgsMapper.selectOne(propImgs);
 
-                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs);
+                //查goods_count_forsearch表
+                GoodsCountForsearch goodsCountForsearch= new GoodsCountForsearch();
+                goodsCountForsearch.setWebSite(webSite);
+                goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+                goodsCountForsearch=goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs,goodsCountForsearch);
             }
         }
         return null;
