@@ -39,7 +39,7 @@
             </li>
             <li>
                 <em class="icon3"></em>
-                <p>浙江省检科院是官方的CNAS、CMA认证的第三方权威检测机构，出具的检测报告，天猫、京东、苏宁、1号店、拍拍等100%认可。自2011年加入淘宝电商平台品控淘拍档以来，一直是电商平台的金牌淘拍档。</p>
+                <p>浙江省检科院是官方的CNAS、CMA认证的第三方权威检测机构，出具的检测报告，天猫、京东、苏宁、1号店、拍拍等均认可。自2011年加入淘宝电商平台品控淘拍档以来，一直是电商平台的金牌淘拍档。</p>
             </li>
         </ul>
     </div>
@@ -92,5 +92,7 @@
         <img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/clab2.jpg">
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
