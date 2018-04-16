@@ -26,10 +26,10 @@ public interface MemberUserMapper extends Mapper<MemberUser> {
     Long userXzbAccount(@Param("userId") Long userId);
 
     /** 用户红包余额 */
-    Long getUserBonusBalance(String thirdId);
+    List<Long> getUserBonusBalance(@Param("userId") Long userId);
 
     /** 用户红包记录 */
-    List<ShiguBonusRecord> getUserBonusRecord(String thirdId);
+    List<ShiguBonusRecord> getUserBonusRecord(@Param("userId") Long userId);
 
     /**
      * 用户余额信息

@@ -1,14 +1,10 @@
 package com.shigu.buyer.services;
 
-import com.opentae.data.mall.beans.MemberAlipayBind;
-import com.opentae.data.mall.beans.OrderPay;
-import com.opentae.data.mall.beans.OrderPayApply;
-import com.opentae.data.mall.beans.OrderPayRelationship;
+import com.openJar.requests.sgpay.RedPackPayRequest;
+import com.openJar.responses.sgpay.RedPackPayResponse;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.MemberAlipayBindExample;
-import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
-import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
-import com.opentae.data.mall.interfaces.OrderPayMapper;
-import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.bo.TixianBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
@@ -27,6 +23,7 @@ import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -66,6 +63,9 @@ public class UserAccountService {
     @Autowired
     private OrderPayRelationshipMapper orderPayRelationshipMapper;
 
+    @Autowired
+    private XzSdkClient xzSdkClient;
+
     /**
      * 充值申请
      *
@@ -76,6 +76,30 @@ public class UserAccountService {
      */
     public PayApplyVO rechargeApply(Long userId, Long money) throws PayApplyException {
         return payProcess.rechargeApply(userId, PayType.ALI, money);
+    }
+
+    /**
+     * 红包充值申请
+     *
+     * @param userId
+     * @param money
+     * @return
+     * @throws PayApplyException
+     */
+    public boolean redPackApply(Long userId, Long money) {
+
+        try {
+            RedPackPayRequest request = new RedPackPayRequest();
+            request.setXzUserId(userId);
+            request.setPayAmount(money);
+            RedPackPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
+            if (!response.isSuccess()) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
