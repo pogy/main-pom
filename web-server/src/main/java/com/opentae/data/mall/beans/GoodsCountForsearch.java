@@ -94,7 +94,7 @@ public class GoodsCountForsearch implements Serializable {
 	private String styleName;
 
     /**
-     * 风格id 
+     * 风格id
      */
 	private Long sid;
 

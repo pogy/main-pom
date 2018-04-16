@@ -17,6 +17,8 @@
                             广州
                         <#elseif webSite == 'jx'>
                             濮院
+                        <#elseif webSite == 'qz'>
+                            泉州
                         <#else>
                             杭州
                         </#if>
