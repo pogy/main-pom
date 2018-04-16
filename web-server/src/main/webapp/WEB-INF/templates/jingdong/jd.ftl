@@ -283,13 +283,15 @@
                         <em>*</em>开始时间</label>
                     <div class="field-content fl">
                         <div id="startTime.startType" class="checkbox-wrap">
+                            <#if (allData.props.color)??>
+                                <label>
+                                    <input type="radio" class="radio" name="approve_status" value="onsale"
+                                           checked="checked">
+                                    <label for="_now0">立刻</label>
+                                </label>
+                            </#if>
                             <label>
-                                <input type="radio" class="radio" name="approve_status" value="onsale"
-                                       checked="checked">
-                                <label for="_now0">立刻</label>
-                            </label>
-                            <label>
-                                <input type="radio" class="radio" name="approve_status" value="instock">
+                                <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
                                 <label for="inStock">放入仓库</label>
                             </label>
                         </div>
