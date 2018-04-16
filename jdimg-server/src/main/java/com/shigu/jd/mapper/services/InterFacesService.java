@@ -15,7 +15,9 @@ import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class InterFacesService {
@@ -30,6 +32,7 @@ public class InterFacesService {
     public List<JdItemProp> selJdItemProps(Long jdCid) {
         JdItemPropExample jdItemPropExample=new JdItemPropExample();
         jdItemPropExample.createCriteria().andCidEqualTo(jdCid);
+//        test1();
         return BeanMapper.mapList(jdItemPropMapper.selectByExample(jdItemPropExample),JdItemProp.class);
     }
 
@@ -49,6 +52,27 @@ public class InterFacesService {
     public ShiguJdcat selShiguJdcat(Long cid){
         return BeanMapper.map(shiguJdcatMapper.selectByPrimaryKey(cid),ShiguJdcat.class);
     }
+
+    public void test1(){
+
+        List<Long> notHave = new ArrayList<>();
+
+        JdItemPropExample example = new JdItemPropExample();
+        example.createCriteria().andIsSalePropEqualTo(1).andIsColorPropEqualTo(1);
+        List<com.opentae.data.jd.beans.JdItemProp> jdItemProps = jdItemPropMapper.selectByExample(example);
+        for(com.opentae.data.jd.beans.JdItemProp item : jdItemProps){
+            com.opentae.data.jd.beans.JdPropValue jdPropValue = new com.opentae.data.jd.beans.JdPropValue();
+            jdPropValue.setCid(item.getCid());
+            jdPropValue.setPid(item.getPid());
+            List<com.opentae.data.jd.beans.JdPropValue> jdPropValueList = jdPropValueMapper.select(jdPropValue);
+            if (jdPropValueList == null || jdPropValueList.isEmpty()) {
+                notHave.add(item.getPid());
+            }
+
+        }
+        System.err.println(notHave);
+    }
+
 }
 
 

@@ -283,13 +283,15 @@
                         <em>*</em>开始时间</label>
                     <div class="field-content fl">
                         <div id="startTime.startType" class="checkbox-wrap">
+                            <#if (allData.props.color)??>
+                                <label>
+                                    <input type="radio" class="radio" name="approve_status" value="onsale"
+                                           checked="checked">
+                                    <label for="_now0">立刻</label>
+                                </label>
+                            </#if>
                             <label>
-                                <input type="radio" class="radio" name="approve_status" value="onsale"
-                                       checked="checked">
-                                <label for="_now0">立刻</label>
-                            </label>
-                            <label>
-                                <input type="radio" class="radio" name="approve_status" value="instock">
+                                <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
                                 <label for="inStock">放入仓库</label>
                             </label>
                         </div>
@@ -426,6 +428,7 @@
         <!--    <div  style="display: none"></div>-->
         <div>
             <p id="tip_default">
+                <img src="http://upload.571xz.com/public/images/loading.gif" align="absmiddle">
                 正在上传中,请稍后
                 <#--<img src="public/images/loading.gif" align="absmiddle"/>
                 <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张-->

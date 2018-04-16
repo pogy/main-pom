@@ -16,6 +16,8 @@ public class JdShowDataVO implements Serializable{
     private List storeCats;
     private List deliveyList;
     private String token;
+    private Long erverDyTemplateId;//此前用过的快递模板ID
+
     public String getGoodsCat() {
         return this.goodsCat;
     }
@@ -71,5 +73,14 @@ public class JdShowDataVO implements Serializable{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+
+    public Long getErverDyTemplateId() {
+        return erverDyTemplateId;
+    }
+
+    public void setErverDyTemplateId(Long erverDyTemplateId) {
+        this.erverDyTemplateId = erverDyTemplateId;
     }
 }

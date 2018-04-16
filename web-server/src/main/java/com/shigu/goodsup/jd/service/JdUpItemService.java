@@ -1,14 +1,14 @@
 package com.shigu.goodsup.jd.service;
 
 import com.openJar.beans.*;
-import com.openJar.requests.api.JdCategoryAttrValueJosRequest;
+import com.openJar.requests.api.JdCategoryAttrValueRequest;
 import com.openJar.requests.api.JdPostTemplateRequest;
 import com.openJar.requests.api.JdShopCategoryRequest;
 import com.openJar.requests.interfaces.SelJdItemPropsRequest;
 import com.openJar.requests.interfaces.SelJdPropValuesRequest;
 import com.openJar.requests.interfaces.SelJdTbBindsRequest;
 import com.openJar.requests.interfaces.SelShiguJdCatRequest;
-import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
+import com.openJar.responses.api.JdCategoryAttrValueResponse;
 import com.openJar.responses.api.JdPostTemplateResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
 import com.openJar.responses.interfaces.SelJdItemPropsResponse;
@@ -239,6 +239,9 @@ public class JdUpItemService {
         tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
                 .getInputStr(),item.getInputPids());
         PropsVO prop=find(item,jdUserId,jdCid,brands);
+//        if (prop.getColor() == null) {
+//            throw new CustomException("获取颜色信息失败");
+//        }
         fillPropValue(prop.getColor(),tbPropsVO.getColor());
         fillProp(prop.getSaleProps(),tbPropsVO.getSaleProps());
         fillProp(prop.getProperties(),tbPropsVO.getProperties());
@@ -258,9 +261,9 @@ public class JdUpItemService {
     private PropsVO find(Item item,Long jdUserId,Long jdCid,List<JdVenderBrandPubInfo> brands) throws AuthOverException, CustomException {
         Cache cache=ehCacheManager.getCache("jdProps");
         PropsVO prop=cache.get("jdprop_"+jdUserId+"_"+item.getCid(),PropsVO.class);
-        if(prop!=null){
-            return prop;
-        }
+//        if(prop!=null){
+//            return prop;
+//        }
         prop=new PropsVO();
         SelJdItemPropsRequest selJdItemPropsRequest=new SelJdItemPropsRequest();
         selJdItemPropsRequest.setJdCid(jdCid);
@@ -282,14 +285,14 @@ public class JdUpItemService {
             List<JdPropValue> values=jdPropValueMap.get(jdItemProp.getPid());
             if((jdItemProp.getIsEnumProp()==1&&(values==null||values.size()==0))||jdItemProp.getIsSaleProp()==1){
                 //TODO  循环请求改造
-                JdCategoryAttrValueJosRequest request = new JdCategoryAttrValueJosRequest();
+                JdCategoryAttrValueRequest request = new JdCategoryAttrValueRequest();
                 request.setJdUid(jdUserId);
                 request.setPid(jdItemProp.getPid());
-                JdCategoryAttrValueJosResponse response = xzJdSdkSend.send(request);
+                JdCategoryAttrValueResponse response = xzJdSdkSend.send(request);
                 if (!response.isSuccess()) {
                     continue;
                 }
-                List<JdCategoryAttrValueJos> values1 = response.getJdCategoryAttrValueJos();
+                List<JdCategoryAttrValue> values1 = response.getJdCategoryAttrValue();
                 values=values1.stream().map(jdCategoryAttrValueJosVO -> {
                     JdPropValue v=new JdPropValue();
                     v.setCid(jdItemProp.getCid());
@@ -408,6 +411,9 @@ public class JdUpItemService {
         }
     }
     private void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
+        if (jdV == null) {
+            return;
+        }
         List<PropertyValueVO> jdValues=jdV.getValues();
         Map<Long,PropertyValueVO> tbMap=new HashMap<>();
         Set<Long> removeKey=new HashSet<>();

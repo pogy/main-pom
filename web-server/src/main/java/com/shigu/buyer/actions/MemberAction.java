@@ -172,6 +172,9 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
         for (OuterUser ou : outerUsers) {
+            if (ou == null || ou.getLoginFromType() == null) {
+                continue;
+            }
             OuterUserVO vo = new OuterUserVO(ou);
             model.addAttribute("outer_" + vo.getFrom(), vo);
         }

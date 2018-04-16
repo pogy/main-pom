@@ -1,29 +1,31 @@
 <div class="field clearfix">
     <div id="J_SellProperties" class="sku-style">
         <div>
-            <#include "/jingdong/parts/color.ftl">
-            <#assign color=allData.props.color>
-            <#assign selected_color={}>
-            <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">
-                <label class="sku-lable">${color.name}：</label>
-                <div class="sku-box sku-color" id="sku-color-wrap">
-                    <ul class="sku-list">
-                        <#list color.values as c>
-                            <li class="sku-item <#if c.selected>edit</#if>">
-                                <input type="checkbox" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
-                                       id="prop_${color.pid}_${c.vid}" name="cp[]"
-                                       class="J_Checkbox colorCheckbox" value="${color.pid}:${c.vid}"
-                                       data-color="${colorMap["${c.vid}"]}" <#if c.selected>checked</#if>/>
-                                <label class="color-lump" style="background-color:#${colorMap["${c.vid}"]};" for=""
-                                       prop_${color.pid}_${c.vid}"></label>
-                                <label class="labelname" for="prop_${color.pid}_${c.vid}" title="${c.name}" <#if c.selected>style="display: none;" </#if>>${c.name}</label>
-                                <input type="text" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
-                                       id="J_Alias_${color.pid}-${c.vid}" class="editbox text" maxlength=15
-                                       value="${c.name}" <#if !c.selected>style="display: none;"</#if>/>
-                            </li>
-                        </#list>
-                    </ul>
-                </div>
+            <#if (allData.props.color)??>
+                <#include "/jingdong/parts/color.ftl">
+                    <#assign color=allData.props.color>
+                    <#assign selected_color={}>
+                    <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">
+                        <label class="sku-lable">${color.name}：</label>
+                        <div class="sku-box sku-color" id="sku-color-wrap">
+                            <ul class="sku-list">
+                                <#list color.values as c>
+                                    <li class="sku-item <#if c.selected>edit</#if>">
+                                        <input type="checkbox" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
+                                               id="prop_${color.pid}_${c.vid}" name="cp[]"
+                                               class="J_Checkbox colorCheckbox" value="${color.pid}:${c.vid}"
+                                               data-color="${colorMap["${c.vid}"]}" <#if c.selected>checked</#if>/>
+                                        <label class="color-lump" style="background-color:#${colorMap["${c.vid}"]};" for=""
+                                               prop_${color.pid}_${c.vid}"></label>
+                                        <label class="labelname" for="prop_${color.pid}_${c.vid}" title="${c.name}" <#if c.selected>style="display: none;" </#if>>${c.name}</label>
+                                        <input type="text" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
+                                               id="J_Alias_${color.pid}-${c.vid}" class="editbox text" maxlength=15
+                                               value="${c.name}" <#if !c.selected>style="display: none;"</#if>/>
+                                    </li>
+                                </#list>
+                            </ul>
+                        </div>
+                </#if>
             </div>
             <div id="J_SKUColorWrapper" class="sku-wrapper">
 

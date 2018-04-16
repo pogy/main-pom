@@ -1,6 +1,6 @@
 package com.openJar.beans;
 
-import com.openJar.responses.api.JdFeatureCateAttrValueJosResponse;
+import com.openJar.responses.api.JdFeatureCateAttrValueResponse;
 import com.openJar.utils.OpenBean;
 
 import java.io.Serializable;
@@ -9,13 +9,13 @@ import java.util.Set;
 /**
  * Created By admin on 2018/1/16/15:38
  */
-public class JdCategoryAttrValueJos  extends OpenBean implements Serializable {
+public class JdCategoryAttrValue  extends OpenBean implements Serializable {
     private Long attrValueId;
     private Integer attrValueIndexId;
     private String attrValue;
-    private Set<JdFeatureCateAttrValueJosResponse> attrValueFeatures;
+    private Set<JdFeatureCateAttrValueResponse> attrValueFeatures;
 
-    public JdCategoryAttrValueJos() {
+    public JdCategoryAttrValue() {
     }
 
     public Long getAttrValueId() {
@@ -42,11 +42,11 @@ public class JdCategoryAttrValueJos  extends OpenBean implements Serializable {
         this.attrValue = attrValue;
     }
 
-    public Set<JdFeatureCateAttrValueJosResponse> getAttrValueFeatures() {
+    public Set<JdFeatureCateAttrValueResponse> getAttrValueFeatures() {
         return attrValueFeatures;
     }
 
-    public void setAttrValueFeatures(Set<JdFeatureCateAttrValueJosResponse> attrValueFeatures) {
+    public void setAttrValueFeatures(Set<JdFeatureCateAttrValueResponse> attrValueFeatures) {
         this.attrValueFeatures = attrValueFeatures;
     }
 }

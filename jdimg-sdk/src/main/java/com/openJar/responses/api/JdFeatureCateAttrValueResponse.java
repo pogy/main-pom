@@ -5,13 +5,13 @@ import com.openJar.responses.Response;
 /**
  * Created By admin on 2017/12/14/16:23
  */
-public class JdFeatureCateAttrValueJosResponse extends Response {
+public class JdFeatureCateAttrValueResponse extends Response {
 
     private String attrValueFeatureCn;
     private String attrValueFeatureKey;
     private String attrValueFeatureValue;
 
-    public JdFeatureCateAttrValueJosResponse() {
+    public JdFeatureCateAttrValueResponse() {
     }
 
     public String getAttrValueFeatureCn() {

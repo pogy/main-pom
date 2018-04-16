@@ -2,14 +2,14 @@ package com.openJar.requests.api;
 
 import com.openJar.beans.enums.JdImgEnum;
 import com.openJar.requests.Request;
-import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
+import com.openJar.responses.api.JdCategoryAttrValueResponse;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * Created By admin on 2018/1/16/15:35
  */
-public class JdCategoryAttrValueJosRequest extends Request<JdCategoryAttrValueJosResponse> {
+public class JdCategoryAttrValueRequest extends Request<JdCategoryAttrValueResponse> {
     @NotNull(message = "非法参数")
     private Long jdUid;
 
