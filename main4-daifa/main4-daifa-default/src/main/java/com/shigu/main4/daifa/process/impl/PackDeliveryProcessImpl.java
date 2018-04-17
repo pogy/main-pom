@@ -390,7 +390,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             bo.setReceiverAddress (dt.getReceiverAddress ());//地址
              expressId=dt.getExpressId ();
             sellerId=dt.getSellerId ();
-            String stradeId = "8" + dt.getDfTradeId ();
+            String stradeId = DateUtil.dateToString(new Date(),"HHmmss") + dt.getDfTradeId ();
             bo.setTid (new Long (stradeId));//修改后的交易号
 
             DaifaOrderExample example = new DaifaOrderExample ();
@@ -422,6 +422,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
                 express.setExpressCode (vo.getExpressCode ());
                 express.setPackageName (vo.getPackageName ());
                 express.setPackageCode (vo.getPackageCode ());
+                express.setSortingCode(vo.getSortingCode());
                 express.setMarkDestination (vo.getMarkDestination ());
 
                 DaifaCallExpress dce1= daifaCallExpressMapper.selectByPrimaryKey (new Long (stradeId));
