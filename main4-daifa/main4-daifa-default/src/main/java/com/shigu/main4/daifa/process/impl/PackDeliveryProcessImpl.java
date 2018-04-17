@@ -149,6 +149,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     public PrintExpressVO printExpress(Long sendId) {
         DaifaSend send=daifaSendMapper.selectByPrimaryKey(sendId);
         DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(send.getDfTradeId());
+        DaifaCallExpress daifaCallExpress=daifaCallExpressMapper.selectByPrimaryKey(send.getDfTradeId());
         DaifaSendOrder tmpSo=new DaifaSendOrder();
         tmpSo.setSendId(send.getSendId());
         List<DaifaSendOrder> sendOrders=daifaSendOrderMapper.select(tmpSo);
@@ -188,7 +189,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
         print.setPostName(send.getExpressName());
-        print.setMarkDestination(send.getMarkDestination());
+        print.setMarkDestination(send.getMarkDestination()+(daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
         print.setPackageCode (send.getPackageCode ());
         print.setSendNum(orderSize>=1?goodsnum:null);

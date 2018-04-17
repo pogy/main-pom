@@ -157,6 +157,7 @@ public class ExpressModelImpl implements ExpressModel {
                     dce1.setSellerId (sellerId);
                     dce1.setJsonData (qvo.getJsonData ());
                     dce1.setPackageCode (qvo.getPackageCode ());
+                    dce1.setSortingCode(qvo.getSortingCode());
                     daifaCallExpressMapper.insertSelective (dce1);
 
                     DaifaWaitSend send1=new DaifaWaitSend ();
