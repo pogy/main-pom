@@ -49,7 +49,7 @@
 <#include "/common/xz__nav.ftl">
         <div class="regShopButton">
             <i class="icon-user"></i>
-            <a href="/menber/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">商家入驻</a>
         </div>
     </div>
 </div>
@@ -65,7 +65,7 @@
                             <li <#if market.id == marketId>class="selected"</#if>><a href="?mid=${market.id!}">${market.name!}</a></li>
                         </#list>
                     </ul>
-                    <i class="iconfont showmore">&#xe60b;</i>
+                    <i class="iconfont showmore icon-downarrow"></i>
                 </div>
             </div>
             <div class="innerbox splitline"></div>
@@ -78,7 +78,7 @@
                             <li <#if cate.id == cateId>class="selected"</#if>><a href="?mid=${marketId!}&cid=${cate.id!}">${cate.name!}</a></li>
                         </#list>
                     </ul>
-                    <i class="iconfont showmore">&#xe60b;</i>
+                    <i class="iconfont showmore icon-downarrow"></i>
                 </div>
             </div>
         </div>
@@ -147,6 +147,8 @@ $$.reloadFilterbar(); // 重新生成顶部浮动条
 $$.setBg();  // 重新生成背景
 </script>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 </body>
 <#include "/common/cnzz.ftl">

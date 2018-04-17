@@ -14,7 +14,9 @@ public enum SearchOrderBy {
     PRICEDOWN("价格降序","price-desc"),
     POPULAR("人气","popular"),
     GOODSUP("商品上传量","goods_up"),
-    USER_LOVE("按用户喜欢程度","user_love");
+    USER_LOVE("按用户喜欢程度","user_love"),
+    STYLE_CHANNEL("风格频道","style_channel")
+    ;
 
     SearchOrderBy(String title, String value) {
         this.title = title;

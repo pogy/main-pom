@@ -1,8 +1,8 @@
 package com.shigu.buyer.actions;
 
 import com.opentae.data.mall.beans.ShiguBonusRecord;
-import com.opentae.data.mall.custombeans.BalanceVO;
 import com.shigu.buyer.bo.*;
+import com.shigu.buyer.enums.BonusRecordTypeEnum;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
@@ -19,6 +19,7 @@ import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -43,7 +44,6 @@ import com.shigu.tools.*;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -57,6 +57,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -73,7 +75,6 @@ import java.util.Objects;
  */
 @Controller
 public class MemberAction {
-    private static final Logger logger = Logger.getLogger(UserLoginAction.class);
 
     @Autowired
     PaySdkClientService paySdkClientService;
@@ -122,9 +123,12 @@ public class MemberAction {
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
+    @Autowired
+    private RedisIO redisIO;
+
     private final static String MEMBER_PATH = "member";
 
-    private final  static String SELLER_PATH = "seller";
+    private final static String SELLER_PATH = "seller";
 
 
     /**
@@ -148,12 +152,12 @@ public class MemberAction {
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
         // 用户红包余额
-        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
-        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
-        if (bonusBalance == null) {
-            bonusBalance = 0L;
-        }
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
+        // 红包活动详情
+        BonusBtnInfo bonusBtnInfo = redisIO.get("bonus_btn_info", BonusBtnInfo.class);
+        model.addAttribute("bonusBtnInfo",bonusBtnInfo);
+        model.addAttribute("bonusTips",bonusBtnInfo == null ? "" : bonusBtnInfo.getBonusTips());
         return "fxs/index";
     }
 
@@ -168,6 +172,9 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
         for (OuterUser ou : outerUsers) {
+            if (ou == null || ou.getLoginFromType() == null) {
+                continue;
+            }
             OuterUserVO vo = new OuterUserVO(ou);
             model.addAttribute("outer_" + vo.getFrom(), vo);
         }
@@ -205,12 +212,12 @@ public class MemberAction {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
-                bo.getPage(),bo.getRows());
-        if(pager.getContent() !=null) {
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(ps.getUserId(), bo.getKeyword(), bo.getWebsite(),
+                bo.getPage(), bo.getRows());
+        if (pager.getContent() != null) {
             //极限词过滤
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
-            model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
+            model.addAttribute("goodslist", BeanMapper.mapList(pager.getContent(), GoodsCollectVO.class));
         }
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         model.addAttribute("query", bo);
@@ -251,13 +258,13 @@ public class MemberAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShiguPager<NewGoodsCollectVO> pager = userCollectSimpleService.selNewGoodsCollect(ps.getUserId(), bo.getWebsite(), page, size);
         //极限词过滤
-        if(pager.getContent()!=null){
+        if (pager.getContent() != null) {
             pager.getContent().forEach(itemCollectVO -> itemCollectVO.setTitle(KeyWordsUtil.duleKeyWords(itemCollectVO.getTitle())));
         }
 
-        model.addAttribute("goodsList",pager.getContent());
-        model.addAttribute("query",bo);
-        model.addAttribute("pageOption",pager.selPageOption(size));
+        model.addAttribute("goodsList", pager.getContent());
+        model.addAttribute("query", bo);
+        model.addAttribute("pageOption", pager.selPageOption(size));
         return "fxs/goodsCollectOriginal";
     }
 
@@ -284,8 +291,12 @@ public class MemberAction {
     @RequestMapping("member/mk_mydp")
     @ResponseBody
     public JSONObject mk_mydp(String ids, HttpSession session) throws JsonErrException {
+        List<Long> packegeIds = parseIds(ids);
+        if (packegeIds == null || packegeIds.size() > 12) {
+            return JsonResponseUtil.error("ids参数异常");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), parseIds(ids));
+        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
         return JsonResponseUtil.success();
     }
 
@@ -296,25 +307,25 @@ public class MemberAction {
      * @return
      */
     @RequestMapping("member/goodsDataPackageinit")
-    public String goodsDataPackageinit(DataPackageBO bo,HttpSession session,Model model){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(),bo.getPage(),bo.getRows());
+    public String goodsDataPackageinit(DataPackageBO bo, HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
         List<PackageVO> goodslist = new ArrayList<>();
-        for(DataPackage dp:pager.getContent()){
-            if(dp.getGoods()!=null)
+        for (DataPackage dp : pager.getContent()) {
+            if (dp.getGoods() != null)
                 goodslist.add(new PackageVO(dp));
         }
         //极限词过滤
         goodslist.forEach(packageVO -> {
-            if(packageVO.getGoods()!=null){
+            if (packageVO.getGoods() != null) {
                 packageVO.getGoods().forEach(packageItemVO -> packageItemVO.setTitle(KeyWordsUtil.duleKeyWords(packageItemVO.getTitle())));
             }
         });
-        model.addAttribute("goodslist",goodslist);
-        model.addAttribute("website",bo.getWebsite());
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("query",bo);
-        model.addAttribute("page",bo.getPage());
+        model.addAttribute("goodslist", goodslist);
+        model.addAttribute("website", bo.getWebsite());
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("query", bo);
+        model.addAttribute("page", bo.getPage());
         return "fxs/goodsDataPackageinit";
     }
 
@@ -368,10 +379,10 @@ public class MemberAction {
         //极限词过滤
         pager.getContent().forEach(onekeyRecoreVO -> onekeyRecoreVO.setTitle(KeyWordsUtil.duleKeyWords(onekeyRecoreVO.getTitle())));
 
-        model.addAttribute("shopDownNum",goodsupRecordSimpleService.shopDownNum(ps.getUserId(),nick));
-        model.addAttribute("query",bo);
-        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodsList",pager.getContent());
+        model.addAttribute("shopDownNum", goodsupRecordSimpleService.shopDownNum(ps.getUserId(), nick));
+        model.addAttribute("query", bo);
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("goodsList", pager.getContent());
         return "fxs/shiguOnekeyRecordinit";
     }
 
@@ -927,6 +938,8 @@ public class MemberAction {
             throw new Main4Exception("路径非法");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
+        model.addAttribute("envelopeBalance", String.format("%.2f", bonusBalance * 0.01));
         if (SELLER_PATH.equals(identity)) {
             return "gys/iwantToRechargein5";
         }
@@ -1105,6 +1118,7 @@ public class MemberAction {
 
     /**
      * 红包余额
+     *
      * @param identity
      * @param session
      * @param model
@@ -1118,34 +1132,18 @@ public class MemberAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 用户红包余额
-        String taobaoNick = memberSimpleService.getTaobaoNick(ps.getUserId());
-        Long bonusBalance = memberSimpleService.getUserBonusBalance(taobaoNick);
-        if (bonusBalance == null) {
-            bonusBalance = 0L;
-        }
+        Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
         // 用户红包记录
         List<BonusRecordVo> bonusRecordVoList = new ArrayList<>();
-        List<ShiguBonusRecord> bonusRecordList = memberSimpleService.getUserBonusRecord(taobaoNick);
+        List<ShiguBonusRecord> bonusRecordList = memberSimpleService.getUserBonusRecord(ps.getUserId());
         if (bonusRecordList != null && !bonusRecordList.isEmpty()) {
             for (ShiguBonusRecord bonusRecord : bonusRecordList) {
                 BonusRecordVo bonusRecordVo = new BonusRecordVo();
-                int type = bonusRecord.getType();
-                if (type == 1) { // 系统充值
-                    bonusRecordVo.setPayText("四季星座网平台赠送");
-                    bonusRecordVo.setPayCodeText("充值编号");
-                } else if (type == 2) { // 用户使用
-                    bonusRecordVo.setMoney("-" + String.format("%.2f", bonusRecord.getAmount() * 0.01));
-                    bonusRecordVo.setPayText("订单支付");
-                    bonusRecordVo.setPayCodeText("交易编号");
-                } else { // 其它
-                    bonusRecordVo.setPayText("其它");
-                    bonusRecordVo.setPayCodeText("编号");
+                bonusRecordVo = BonusRecordTypeEnum.fillBonusRecordVo(bonusRecordVo,bonusRecord);
+                if (bonusRecordVo == null) {//未知类型不展示
+                    continue;
                 }
-                bonusRecordVo.setMoney(String.format("%.2f", bonusRecord.getAmount() * 0.01));
-                bonusRecordVo.setPayState(type);
-                bonusRecordVo.setPayCode(bonusRecord.getSerialNumber());
-                bonusRecordVo.setTime(DateFormatUtils.format(bonusRecord.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 bonusRecordVoList.add(bonusRecordVo);
             }
         }
@@ -1316,13 +1314,26 @@ public class MemberAction {
      */
     @RequestMapping({"member/userRecharge", "seller/userRecharge"})
     @ResponseBody
-    public JSONObject userRecharge(Double money, Integer type, HttpSession session) throws PayApplyException {
+    public JSONObject userRecharge(Double money, Integer type, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws PayApplyException, IOException {
         if (money == null || money <= 0) {
             return JsonResponseUtil.error("请输入正确的金额");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        PayApplyVO payApplyVO = userAccountService.rechargeApply(ps.getUserId(), (long) (money * 100));
-        return JsonResponseUtil.success().element("href", "/order/alipayByApplyId.htm?applyId=" + payApplyVO.getApplyId()).element("applyId", payApplyVO.getApplyId());
+        String servletPath = request.getServletPath();
+        if (servletPath.contains("member") && type == 3) {//分销商不能红包充值  1支付宝充值 2微信充值 3红包充值
+            return JsonResponseUtil.error("供应商不能进行红包充值");
+        }
+
+        if (type == 3) {
+            boolean success = userAccountService.redPackApply(ps.getUserId(), (long) (money * 100));
+            if (success) {
+                return JsonResponseUtil.success();
+            }
+            return JsonResponseUtil.error("充值失败");
+        }else {
+            PayApplyVO payApplyVO = userAccountService.rechargeApply(ps.getUserId(), (long) (money * 100));
+            return JsonResponseUtil.success().element("href", "/order/alipayByApplyId.htm?applyId=" + payApplyVO.getApplyId()).element("applyId", payApplyVO.getApplyId());
+        }
     }
 
     /**
@@ -1374,6 +1385,7 @@ public class MemberAction {
 
     /**
      * 绑定成功跳转页
+     *
      * @param identity
      * @return
      * @throws Main4Exception
@@ -1405,15 +1417,16 @@ public class MemberAction {
             return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", 1.0 * userWirteMoney));
         }
         //单位 元->分，然后计算出手续费 目前为0.6%，不足1分部分由用户补齐 applyMoney(元) *100 * 994 /1000
-        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double)10) * 0.01));
+        return JsonResponseUtil.success().element("userRealWithdrawMoney", String.format("%.2f", (userWirteMoney * 994 / (double) 10) * 0.01));
     }
 
     /**
      * 获取免费提现及限制信息
+     *
      * @param session
      * @return
      */
-    @RequestMapping({"member/getFreeWithdrawAndLimitInfo","seller/getFreeWithdrawAndLimitInfo"})
+    @RequestMapping({"member/getFreeWithdrawAndLimitInfo", "seller/getFreeWithdrawAndLimitInfo"})
     @ResponseBody
     public JSONObject getFreeWithdrawAndLimitInfo(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

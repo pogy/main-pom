@@ -20,6 +20,7 @@ import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -30,6 +31,7 @@ import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -44,6 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -78,6 +81,8 @@ public class JdGoodsupAction {
 
     @Autowired
     private JdCategoryService jdCategoryService;
+    @Autowired
+    private RedisIO redisIO;
 
     public static final String IMG_CATEGORY = "571xz";
 
@@ -240,39 +245,28 @@ public class JdGoodsupAction {
     /**
      * 更新运费模板
      */
-    @RequestMapping("updatePostModel")
-    @ResponseBody
-    public JSONObject updatePostModel(HttpSession session) {
+    @RequestMapping("express-update")
+    public String updatePostModel(HttpSession session,Model model) throws AuthOverException, CustomException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<DeliveryTemplate> deliveryTemplates;
-        try {
-            deliveryTemplates = jdUpItemService.updatePostModel(Long.valueOf(jdUid));
-        } catch (AuthOverException e) {
-            return JsonResponseUtil.error("授权失效");
-        } catch (CustomException e) {
-            return JsonResponseUtil.error(e.getMessage());
+        model.addAttribute("deliveyList",jdUpItemService.updatePostModel(Long.valueOf(jdUid)));
+
+        String templateId = redisIO.get("jd_postageId_" + jdUid);
+        if (StringUtils.isNotBlank(templateId)) {
+            model.addAttribute("erverDyTemplateId",Long.valueOf(templateId));
         }
-        return  JsonResponseUtil.success().element("deliveryTemplates",deliveryTemplates);
+        return "jingdong/parts/deliver";
     }
 
     /**
      * 更新店内类目
      */
-    @RequestMapping("updateShopCats")
-    @ResponseBody
-    public JSONObject updateShopCats(HttpSession session)  {
+    @RequestMapping("shop-cat-update")
+    public String updateShopCats(HttpSession session,Model model) throws AuthOverException, CustomException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String jdUid = jdUserInfoService.getJdUidBySubUid(ps.getSubUserId());
-        List<StoreCatVO> storeCatVOS = null;
-        try {
-            storeCatVOS = jdUpItemService.selShopCats(Long.valueOf(jdUid));
-        } catch (AuthOverException e) {
-            return JsonResponseUtil.error("授权失效");
-        } catch (CustomException e) {
-            return JsonResponseUtil.error(e.getMessage());
-        }
-        return  JsonResponseUtil.success().element("storeCatVOS",storeCatVOS);
+        model.addAttribute("cats",jdUpItemService.selShopCats(Long.valueOf(jdUid)));
+        return  "jingdong/parts/storecat";
     }
 
 
@@ -281,10 +275,10 @@ public class JdGoodsupAction {
      * @return
      */
     @RequestMapping("publish")
-    public String publish(Long itemId, Integer yesrepeat,HttpServletRequest request, HttpSession session, Model model) throws ClassNotFoundException, CloneNotSupportedException, IOException {
+    public String publish(Long itemId, Integer yesrepeat,HttpServletRequest request, HttpSession session, Model model) {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            if(ps==null){
+            if(ps==null || ps.getLoginFromType() != LoginFromType.JD){
                 String queryString = request.getQueryString();
                 return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
                         (queryString == null ? "" : ("?" + queryString)), "utf-8");
@@ -299,16 +293,15 @@ public class JdGoodsupAction {
             }
             /********************************查上传记录********************************/
 
-            if (yesrepeat == null || yesrepeat != 1) {
-                LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
-                if (lastup != null) {
-                    model.addAttribute("lastup", lastup);
-                    model.addAttribute("goodsId", itemId);
-                    return "jingdong/hasuped";
-                }
-            }
-            List<JdVenderBrandPubInfo> allBrand = null;
-            allBrand = jdCategoryService.getAllBrand(jdUserId);
+//            if (yesrepeat == null || yesrepeat != 1) {
+//                LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),itemId);
+//                if (lastup != null) {
+//                    model.addAttribute("lastup", lastup);
+//                    model.addAttribute("goodsId", itemId);
+//                    return "jingdong/hasuped";
+//                }
+//            }
+            List<JdVenderBrandPubInfo> allBrand = jdCategoryService.getAllBrand(jdUserId);
             if(allBrand==null){
                 throw new CustomException("不是京东商家");
             }
@@ -347,20 +340,32 @@ public class JdGoodsupAction {
             String tokenStr=Opt3Des.encryptPlainData(JSONObject.fromObject(token).toString());
             allData.setToken(tokenStr);
 
+            String templateId = redisIO.get("jd_postageId_" + jdUserId.toString());
+            if (StringUtils.isNotBlank(templateId)) {
+                allData.setErverDyTemplateId(Long.valueOf(templateId));
+            }
+
+
             model.addAttribute("allData", allData);
             model.addAttribute("id",itemId);
-            model.addAttribute("jd_yj_zh_session",null);
+            model.addAttribute("jd_yj_zh_session",ps);
 
             return "jingdong/jd";
 
-
-        } catch (CustomException e) {
-            model.addAttribute("errmsg", e.getMessage());
-            return "jingdong/uperror";
         } catch (AuthOverException e) {
             String queryString = request.getQueryString();
-            return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
-                    (queryString == null ? "" : ("?" + queryString)), "utf-8");
+            try {
+                return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
+                        (queryString == null ? "" : ("?" + queryString)), "utf-8");
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("errmsg", "该商品暂不支持上传");
+            return "jingdong/uperror";
         }
+        model.addAttribute("errmsg", "该商品暂不支持上传");
+        return "jingdong/uperror";
     }
 }

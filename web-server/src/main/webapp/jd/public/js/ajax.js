@@ -467,7 +467,7 @@ function ready_publish(){
             if(is_show_full==0){
                 is_show_full=1;
                 $('#tip_content').html('您的京东图片空间容量不足，请进入京东图片空间进行删除或订购！' +
-                    '<br/><br/>前往图片空间：<a href="https://tadget.taobao.com/redaction/manager.htm" target="_blank">https://tadget.taobao.com/redaction/manager.htm</a>');
+                    '<br/><br/>前往图片空间：<a href="https://imgzone.shop.jd.com/imginfo/main.html" target="_blank">https://imgzone.shop.jd.com/imginfo/main.html</a>');
                 $('#tip_content').show();
                 $('#tip_default').hide();
             }

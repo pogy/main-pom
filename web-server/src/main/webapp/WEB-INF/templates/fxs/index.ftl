@@ -140,16 +140,19 @@
 </div>
 <div class="fl userBouns">
     <h4 class="fs14 fc3">红包余额（元）</h4>
-    <p class="money"><em>
-        <#if bonusBalance??>
-            ${bonusBalance!}
-        <#else>
-            0.00
-        </#if>
-    </em></p>
-    <div class="tips fc3 pr">红包余额不可提现<i class="icon-doubt fcF40" id="bonusTipIcon"></i>
-        <div class="tipTest pa"><em></em><b></b>提示：红包可直接在订单中减扣金额，功能开发中敬请期待·········</div>
+    <div class="bounsMoney pr">
+        <span>
+            <#if bonusBalance??>
+                ${bonusBalance!}
+            <#else>
+                0.00
+            </#if>
+        </span>
+        <div class="tips fc3 pa">红包使用方式 <i class="icon-warn fcF40 pr" id="bonusTipIcon"><em></em><b></b></i>
+            <div class="tipTest pa">${bonusTips!}</div>
+        </div>
     </div>
+    <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display == false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
 </div>
 </div>
 <div class="tradeCounts">
@@ -196,4 +199,6 @@ var tHref = '${tHref!}';
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

@@ -201,27 +201,38 @@ public class MemberSimpleService {
     /**
      * 获取用户红包余额
      *
-     * @param thirdId
+     * @param userId
      * @return
      */
-    public Long getUserBonusBalance(String thirdId) {
-        if (StringUtils.isBlank(thirdId)) {
+    public Long getUserBonusBalance(Long userId) {
+        if (userId == null) {
             return null;
         }
-        return memberUserMapper.getUserBonusBalance(thirdId);
+        List<Long> userBonusBalance = memberUserMapper.getUserBonusBalance(userId);
+        if (userBonusBalance == null || userBonusBalance.isEmpty()) {
+            return 0L;
+        }
+        Long total = 0L;
+        for (Long item : userBonusBalance){
+            if (item == null) {
+                continue;
+            }
+            total += item;
+        }
+        return total;
     }
 
     /**
      * 获取用户红包明细
      *
-     * @param thirdId
+     * @param userId
      * @return
      */
-    public List<ShiguBonusRecord> getUserBonusRecord(String thirdId) {
-        if (StringUtils.isBlank(thirdId)) {
+    public List<ShiguBonusRecord> getUserBonusRecord(Long userId) {
+        if (userId == null) {
             return null;
         }
-        return memberUserMapper.getUserBonusRecord(thirdId);
+        return memberUserMapper.getUserBonusRecord(userId);
     }
 
     /**

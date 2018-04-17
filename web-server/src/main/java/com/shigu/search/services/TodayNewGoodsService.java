@@ -35,6 +35,10 @@ public class TodayNewGoodsService {
      */
     private List<IconCateNav> iconCateNavs;
     /**
+     * 泉州图标类目
+     */
+    private List<IconCateNav> iconCateNavsQz;
+    /**
      * 风格
      */
     private List<StyleCateNav> styleCateNavs;
@@ -69,6 +73,23 @@ public class TodayNewGoodsService {
                 styleCateNav.setId(i+1+"");
                 styleCateNav.setText(stylecate[i]);
                 styleCateNavs.add(styleCateNav);
+            }
+        }
+        if(iconCateNavsQz==null){
+            iconCateNavsQz=new ArrayList<>();
+            String[] iconcate=iconcatestr.split(",");
+            for(int i=0;i<iconcate.length;i++){
+                if(!iconcate[i].contains("鞋")){
+                    continue;
+                }
+                String icon=iconcate[i];
+                String[] iconarr=icon.split("\\|");
+                IconCateNav nav=new IconCateNav();
+                nav.setId(i+1+"");
+                nav.setText(iconarr[0]);
+                nav.setName(iconarr[1]);
+                nav.setIcon(iconarr[2]);
+                iconCateNavsQz.add(nav);
             }
         }
         String iconcateIdstr="30,50011740,16,50006843,50008165,50006842,50010404,大码,情侣,1625";
@@ -129,7 +150,10 @@ public class TodayNewGoodsService {
      * 查搜索顶类目选择
      * @return
      */
-    public List<IconCateNav> selIconCateNav(){
+    public List<IconCateNav> selIconCateNav(String webSite){
+        if("qz".equals(webSite)){
+            return iconCateNavsQz;
+        }
         return iconCateNavs;
     }
 

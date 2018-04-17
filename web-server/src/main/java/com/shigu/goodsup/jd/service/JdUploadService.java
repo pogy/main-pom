@@ -38,7 +38,7 @@ public class JdUploadService {
     JdGoodsUpService jdGoodsUpService;
     static List<Integer> cdnIndexs = Arrays.asList(10, 11, 12, 13, 14);
 
-    public Long upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
+    public SdkJdWareAdd upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
         JdWareAddRequest request = new JdWareAddRequest();
         JdUpGoods req = new JdUpGoods();
         req.setCid(tbo.getCid().toString());
@@ -158,7 +158,7 @@ public class JdUploadService {
         }
         Map<String, JdImgInfo> imgMap = jdUpImgResponse.getJdImgInfos();
 
-        int cdnIndex = cdnIndexs.get((int) (Math.random() * cdnIndexs.size()));
+//        int cdnIndex = cdnIndexs.get((int) (Math.random() * cdnIndexs.size()));
 //        for (String descImg : descImgUrls) {
 //            JdImgInfo img = imgMap.get(descImg);
 //            doc.getElementsByAttributeValue("src", descImg).attr("src", "//img" + cdnIndex + ".360buyimg.com/imgzone/" + img.getPictureUrl());
@@ -249,7 +249,7 @@ public class JdUploadService {
         vo.setFlag("jd");
         vo.setSupperGoodsId(tbo.getMid());
         jdGoodsUpService.saveRecord(vo);
-        return jdGoods.getGoodsId();
+        return jdGoods;
     }
 
     public static void main(String[] args) {

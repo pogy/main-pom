@@ -1,6 +1,7 @@
 package com.shigu.spread.vo;
 
 import com.opentae.data.mall.beans.ItemForList;
+import com.shigu.tools.KeyWordsUtil;
 
 import java.io.Serializable;
 
@@ -50,7 +51,7 @@ public class ItemSpreadVO implements Serializable{
         setStoreNum(item.getStoreNum());
         setMarketText(item.getMarket());
         setStoreText(getMarketText()+" "+getStoreNum());
-        setTitle(item.getTitle());
+        setTitle(KeyWordsUtil.duleKeyWords(item.getTitle()));
     }
 
     public String getMarketText() {
