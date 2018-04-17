@@ -390,7 +390,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             bo.setReceiverAddress (dt.getReceiverAddress ());//地址
              expressId=dt.getExpressId ();
             sellerId=dt.getSellerId ();
-            String stradeId = DateUtil.dateToString(new Date(),"HHmmss") + dt.getDfTradeId ();
+            String stradeId = DateUtil.dateToString(new Date(),"ss") + dt.getDfTradeId ();
             bo.setTid (new Long (stradeId));//修改后的交易号
 
             DaifaOrderExample example = new DaifaOrderExample ();
