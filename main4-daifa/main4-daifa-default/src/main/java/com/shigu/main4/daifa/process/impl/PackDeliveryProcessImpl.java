@@ -189,7 +189,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
         print.setPostName(send.getExpressName());
-        print.setMarkDestination(send.getMarkDestination()+(daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
+        print.setMarkDestination(send.getMarkDestination()+(trade.getExpressName().contains("百世")&&daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
         print.setPackageCode (send.getPackageCode ());
         print.setSendNum(orderSize>=1?goodsnum:null);
