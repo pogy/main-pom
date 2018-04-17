@@ -25,6 +25,7 @@ public class HtmlImgsLazyLoad {
     private static final Pattern IMG_TAG = Pattern.compile("<img[^>]*>");
     private static final String LOADING_IMG = "src=\"http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif\" data-original=";
 
+
     public static String replaceLazyLoad(String desc) {
         Matcher matcher = IMG_TAG.matcher(desc);
         while (matcher.find()) {
@@ -33,7 +34,21 @@ public class HtmlImgsLazyLoad {
                 desc = desc.replace(tag, lazying(tag));
             }
         }
-        return desc;
+        Document d=Jsoup.parse(desc);
+        Elements es=d.select("img[style*=height]");
+        for(Element e:es){
+            String style=e.attr("style");
+            String[] styles=style.split(";");
+            StringBuilder str= new StringBuilder();
+            for(String s:styles){
+                if(s.startsWith("height")||s.startsWith("margin-top")){
+                    continue;
+                }
+                str.append(s).append(";");
+            }
+            e.attr("style",str.toString());
+        }
+        return d.body().html();
     }
 
     public static String lazying(String imgTag) {
