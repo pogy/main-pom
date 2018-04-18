@@ -121,7 +121,7 @@ public class ImportCsvFileService {
 
                 String input_custom_cpv="";//扩展属性
                 String propAlias="";
-
+                String imgStr = "";
                 for(int k=0;k<v_title.size();k++){
                     //if(v_title.get(k).equals("q1")){
 
@@ -331,8 +331,7 @@ public class ImportCsvFileService {
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
                                // Date tpic=new Date();
-
-                                getImgs((String)v11.get(k), record,sge,image_save_path,map);
+                                imgStr = (String)v11.get(k);
                                // Date tpicend=new Date();
                                // long timepic=tpicend.getTime()-tpic.getTime();
                                // //System.out.println(i+"执行图片处理"+timepic);
@@ -485,33 +484,35 @@ public class ImportCsvFileService {
                 TaobaoItemPropExample taobaoItemPropExample = new TaobaoItemPropExample();
                 taobaoItemPropExample.createCriteria().andCidEqualTo(record.getCid()).andIsSalePropEqualTo(1).andIsColorPropEqualTo(1);
                 List<TaobaoItemProp> colorItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
-                String colorAlias = replaceProps(record, sge, colorItemProps);
+                LinkedList<String> colorAliasList = replaceProps(record, sge, colorItemProps,imgStr);
                 if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
-                    propAlias = colorAlias;
+                    propAlias = colorAliasList.get(0);
                 }else {
                     if (!propAlias.endsWith(";")) {
                         propAlias += ";";
                     }
-                    propAlias += colorAlias;
+                    propAlias += colorAliasList.get(0);
                 }
 
                 taobaoItemPropExample.clear();
                 taobaoItemPropExample.createCriteria().andCidEqualTo(record.getCid()).andIsSalePropEqualTo(1).andIsColorPropEqualTo(0);
                 List<TaobaoItemProp> sizeItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
-                String sizeAlias = replaceProps(record, sge, sizeItemProps);
+                LinkedList<String> sizeAliasList = replaceProps(record, sge, sizeItemProps,imgStr);
 
                 if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
-                    propAlias = sizeAlias;
+                    propAlias = sizeAliasList.get(0);
                 }else {
                     if (!propAlias.endsWith(";")) {
                         propAlias += ";";
                     }
-                    propAlias += sizeAlias;
+                    propAlias += sizeAliasList.get(0);
                 }
 
 
+                getImgs(imgStr,record,sge,image_save_path,map);
+
                 String sgoodsId= getgoodsId(storeId,i);
-               Long goodsId=new Long(sgoodsId);
+                Long goodsId=new Long(sgoodsId);
                 record.setGoodsId(goodsId);
                 record.setStoreId(storeId);
                 record.setCreated(new Date());
@@ -644,7 +645,7 @@ public class ImportCsvFileService {
     /**
      * 替换自定义的尺码、颜色属性
      */
-    private String  replaceProps(ShiguGoodsTinyVO record,ShiguGoodsExtendsVO sge,List<TaobaoItemProp> taobaoItemProps){
+    private LinkedList<String>  replaceProps(ShiguGoodsTinyVO record,ShiguGoodsExtendsVO sge,List<TaobaoItemProp> taobaoItemProps,String imgStr){
         if (taobaoItemProps == null || taobaoItemProps.isEmpty()) {
             return null;
         }
@@ -711,11 +712,17 @@ public class ImportCsvFileService {
                             .append(":")
                             .append(taobaoPropValueMap.get(leftVausIds.get(ii)).getName())
                             .append(";");
+
+                    imgStr = imgStr.replace(customizeVausIdStr, leftVausIds.get(ii).toString());
                 }
+
             }
         }
         sge.setProps(props);
-        return stringBuilder.toString();
+        LinkedList<String> result = new LinkedList<>();
+        result.add(stringBuilder.toString());
+        result.add(imgStr);
+        return result;
     }
 
 
