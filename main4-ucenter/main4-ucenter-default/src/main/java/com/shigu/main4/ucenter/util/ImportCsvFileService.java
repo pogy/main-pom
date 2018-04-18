@@ -9,7 +9,7 @@ import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.vo.PriceDataGrid;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -49,11 +50,11 @@ public class ImportCsvFileService {
     @Autowired
     private ShiguTaobaocatMapper shiguTaobaocatMapper;
     @Autowired
-    private TaobaoPropValueMapper taobaoPropValueMapper;
-    @Autowired
-    private TaobaoItemPropMapper taobaoItemPropMapper;
-    @Autowired
     PriceErrorService priceErrorService;
+    @Autowired
+    TaobaoItemPropMapper taobaoItemPropMapper;
+    @Autowired
+    TaobaoPropValueMapper taobaoPropValueMapper;
     @Autowired
     OssIO oss;
 
@@ -114,14 +115,135 @@ public class ImportCsvFileService {
                 if(i==11){
                    // //System.out.println(i);
                 }
+
                 Vector v_title=vector_h.get(0);
                 Vector v11=vector_h.get(i);
+                //先处理一波自定义颜色尺码
+                Map<String,Integer> codeMap=new HashMap<>();
+                Map<String,Object> codeValueMap=new HashMap<>();
+                for(int k=0;k<v_title.size();k++){
+                    String tt=(String)v_title.get(k);
+                    codeMap.put(tt,k);
+                    switch (tt){
+                        case "input_custom_cpv":
+                        case "skuProps":
+                        case "propAlias":
+                        case "picture":
+                        case "cateProps":
+                        case "cid":{
+                            codeMap.put(tt,k);
+                            codeValueMap.put(tt,v11.get(k));
+                            break;
+                        }
+                        default:
+                    }
+                }
+                if(codeValueMap.get("input_custom_cpv")!=null&& StringUtils.isNotBlank((String)codeValueMap.get("input_custom_cpv"))){
+                    TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                    taobaoItemPropExample.createCriteria().andIsSalePropEqualTo(1).andCidEqualTo(new Long(codeValueMap.get("cid").toString()));
+                    List<TaobaoItemProp> taobaoItemProps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+
+                    List<String> als= Arrays.stream(((String) codeValueMap.get("propAlias")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> inputList=Arrays.stream(((String) codeValueMap.get("input_custom_cpv")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+
+
+                    for(TaobaoItemProp prop:taobaoItemProps){
+                        TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                        taobaoPropValueExample.createCriteria().andCidEqualTo(new Long(codeValueMap.get("cid").toString())).andPidEqualTo(prop.getPid());
+                        List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                        LinkedHashMap<Long,TaobaoPropValue> pvMap=new LinkedHashMap<>();
+                        pvs.sort(Comparator.comparingInt(o -> o.getVid().intValue()));
+                        for(TaobaoPropValue pv:pvs){
+                            pvMap.put(pv.getVid(),pv);
+                        }
+                        for(String hasProp:hasProps){
+                            if(hasProp.startsWith(prop.getPid()+":")){
+                                Long hasVid=new Long(hasProp.split(":")[1]);
+                                pvMap.remove(hasVid);
+                            }
+                        }
+                        List<InputBean> inputBeans=new ArrayList<>();
+                        for(int inpi=0;inpi<inputList.size();inpi++){
+                            String inp=inputList.get(inpi);
+                            if(inp.startsWith(prop.getPid()+":")){
+                                inputList.remove(inpi);
+                                inpi--;
+
+                                String[] ssx=inp.split(":");
+                                String key=ssx[0]+":"+ssx[1];
+                                InputBean inputBean=new InputBean();
+                                //准备图片
+                                for(int imgi=0;imgi<imgs.size();imgi++){
+                                    String img=imgs.get(imgi);
+                                    if(img.contains(":"+key+"|")){
+                                        imgs.remove(imgi);
+                                        inputBean.getImg().put(img,img);
+                                        break;
+                                    }
+                                }
+                                //准备prop
+                                for(int propi=0;propi<hasProps.size();propi++){
+                                    String hasProp=hasProps.get(propi);
+                                    if(hasProp.startsWith(key)){
+                                        hasProps.remove(propi);
+                                        inputBean.getProp().put(hasProp,hasProp);
+                                        break;
+                                    }
+                                }
+                                //准备sku
+                                for(int skui=0;skui<skus.size();skui++){
+                                    String sku=skus.get(skui);
+                                    if(sku.endsWith(":"+key)){
+                                        skus.remove(skui);
+                                        inputBean.getSku().put(sku,sku);
+                                        break;
+                                    }
+                                }
+                                //准备input
+                                inputBean.getInput().put(inp,inp);
+                                inputBeans.add(inputBean);
+                            }
+                        }
+                        for(InputBean inputBean:inputBeans){
+                            if(pvMap.size()>0){
+                                TaobaoPropValue taobaoPropValue = pvMap.values().stream().findFirst().get();
+                                Long newVid=taobaoPropValue.getVid();
+                                pvMap.remove(newVid);
+                                String[] keyStrs=inputBean.getInput().getKey().split(":");
+                                String key=keyStrs[0]+":"+keyStrs[1];
+                                String newKey=keyStrs[0]+":"+newVid;
+                                String newProp=inputBean.getProp().getValue().replace(key,newKey);
+                                String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
+                                String newals=newKey+":"+keyStrs[2];
+                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
+                                als.add(newals);
+                                imgs.add(newImg);
+                                hasProps.add(newProp);
+                                skus.add(newsku);
+                            }
+                        }
+                    }
+                    String img=StringUtils.join(imgs,";");
+                    String prop=StringUtils.join(hasProps,";");
+                    String input=StringUtils.join(inputList,";");
+                    String al=StringUtils.join(als,";");
+                    String sku=StringUtils.join(skus,";");
+                    v11.set(codeMap.get("input_custom_cpv"),input);
+                    v11.set(codeMap.get("cateProps"),prop);
+                    v11.set(codeMap.get("propAlias"),al);
+                    v11.set(codeMap.get("picture"),img);
+                    v11.set(codeMap.get("skuProps"),sku);
+                }
+
                 record=new ShiguGoodsTinyVO();
                 sge=new ShiguGoodsExtendsVO();
 
                 String input_custom_cpv="";//扩展属性
                 String propAlias="";
-                String imgStr = "";
+
                 for(int k=0;k<v_title.size();k++){
                     //if(v_title.get(k).equals("q1")){
 
@@ -331,7 +453,8 @@ public class ImportCsvFileService {
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
                                // Date tpic=new Date();
-                                imgStr = (String)v11.get(k);
+
+                                getImgs((String)v11.get(k), record,sge,image_save_path,map);
                                // Date tpicend=new Date();
                                // long timepic=tpicend.getTime()-tpic.getTime();
                                // //System.out.println(i+"执行图片处理"+timepic);
@@ -479,40 +602,11 @@ public class ImportCsvFileService {
                         case "taoschema_extend"://taoschema扩展字段//taoschema_extend
                             break;
                     }
+
                 }
 
-                TaobaoItemPropExample taobaoItemPropExample = new TaobaoItemPropExample();
-                taobaoItemPropExample.createCriteria().andCidEqualTo(record.getCid()).andIsSalePropEqualTo(1).andIsColorPropEqualTo(1);
-                List<TaobaoItemProp> colorItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
-                LinkedList<String> colorAliasList = replaceProps(record, sge, colorItemProps,imgStr);
-                if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
-                    propAlias = colorAliasList.get(0);
-                }else {
-                    if (!propAlias.endsWith(";")) {
-                        propAlias += ";";
-                    }
-                    propAlias += colorAliasList.get(0);
-                }
-
-                taobaoItemPropExample.clear();
-                taobaoItemPropExample.createCriteria().andCidEqualTo(record.getCid()).andIsSalePropEqualTo(1).andIsColorPropEqualTo(0);
-                List<TaobaoItemProp> sizeItemProps = taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
-                LinkedList<String> sizeAliasList = replaceProps(record, sge, sizeItemProps,imgStr);
-
-                if ("null".equals(propAlias)||StringUtils.isBlank(propAlias)) {
-                    propAlias = sizeAliasList.get(0);
-                }else {
-                    if (!propAlias.endsWith(";")) {
-                        propAlias += ";";
-                    }
-                    propAlias += sizeAliasList.get(0);
-                }
-
-
-                getImgs(imgStr,record,sge,image_save_path,map);
-
-                String sgoodsId= getgoodsId(storeId,i);
-                Long goodsId=new Long(sgoodsId);
+               String sgoodsId= getgoodsId(storeId,i);
+               Long goodsId=new Long(sgoodsId);
                 record.setGoodsId(goodsId);
                 record.setStoreId(storeId);
                 record.setCreated(new Date());
@@ -556,9 +650,8 @@ public class ImportCsvFileService {
                // sge.setPropsName(cs.getPn());
 
                // //sge.setPropertyAlias(cs.getPnc());
-                if(StringUtils.isNotBlank(propAlias)){
-                    sge.setPropertyAlias (propAlias);
-                }
+                if(propAlias!=null&&!"".equals (propAlias))
+                sge.setPropertyAlias (propAlias);
                 /*if(cs.getGoodsNo()!=null&&!"".equals(cs.getGoodsNo())){
                     record.setGoodsNo(cs.getGoodsNo());
                 }*/
@@ -632,7 +725,7 @@ public class ImportCsvFileService {
             //=================================================================================================
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             throw new Main4Exception (e.getMessage ());
         }
         //Date t2=new Date();
@@ -640,89 +733,6 @@ public class ImportCsvFileService {
        // //System.out.println ("全部执行时间为：" + dr1);
 
         return goodsList;
-    }
-
-    /**
-     * 替换自定义的尺码、颜色属性
-     */
-    private LinkedList<String>  replaceProps(ShiguGoodsTinyVO record,ShiguGoodsExtendsVO sge,List<TaobaoItemProp> taobaoItemProps,String imgStr){
-        if (taobaoItemProps == null || taobaoItemProps.isEmpty()) {
-            return null;
-        }
-        String props = sge.getProps();
-        StringBuilder stringBuilder = new StringBuilder();
-
-        TaobaoItemProp taobaoItemProp = taobaoItemProps.get(0);
-        String pid = taobaoItemProp.getPid().toString();
-
-        String[] propItems = props.split(";");
-        if (propItems != null && propItems.length > 0) {
-            List<Long> propVausIds = new ArrayList<>();
-            for (String propItem : propItems) {
-                if (!propItem.contains(pid)) {
-                    continue;
-                }
-                String[] propVaus = propItem.split(":");
-                if (propVaus != null && propVaus.length > 0) {
-                    for(String propVau : propVaus){
-                        if (propVau.equals(pid)) {
-                            continue;
-                        }
-                        propVausIds.add(Long.parseLong(propVau));
-                    }
-                }
-            }
-            TaobaoPropValueExample taobaoPropValueExample  = new TaobaoPropValueExample();
-            taobaoPropValueExample.createCriteria()
-                    .andCidEqualTo(record.getCid())
-                    .andPidEqualTo(taobaoItemProp.getPid());
-            List<TaobaoPropValue> taobaoPropValues = taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
-
-            List<Long> vids = BeanMapper.getFieldList(taobaoPropValues, "vid", Long.class);
-            Map<Long, TaobaoPropValue> taobaoPropValueMap = BeanMapper.list2Map(taobaoPropValues, "vid", Long.class);
-            List<Long> copyPropVausIds = new ArrayList<>(propVausIds);//已经使用的系统vid
-            List<Long> customizeVausIds = new ArrayList<>(propVausIds);//自定义的vid
-            copyPropVausIds.retainAll(vids);
-            customizeVausIds.removeAll(copyPropVausIds);
-
-            if (copyPropVausIds.size() == vids.size()) {
-                //颜色已经用完，直接抛弃
-                for (Long customizeVausId : customizeVausIds){
-                    props = props.replace(pid + ":" + customizeVausId.toString(),"");
-                }
-            }else{
-                List<Long> leftVausIds = new ArrayList<>(vids);//没有使用的vid
-                leftVausIds.removeAll(copyPropVausIds);
-                int leftVausIdsSize = leftVausIds.size();
-                int customizeVausIdsSize =  customizeVausIds.size();
-                if (leftVausIdsSize < customizeVausIdsSize) {//剩余的vid 没有自定义的多，抛弃多余的
-                    List<Long> left = customizeVausIds.subList(0, leftVausIdsSize);
-                    List<Long> right = customizeVausIds.subList(leftVausIdsSize, customizeVausIdsSize);
-                    for (Long customizeVausId : right){
-                        props = props.replace(pid + ":" + customizeVausId.toString(),"");
-                    }
-                    customizeVausIds = left;
-                }
-                for (int ii = 0 ;ii< customizeVausIds.size();ii++){
-                    String customizeVausIdStr = customizeVausIds.get(ii).toString();
-                    props = props.replace(customizeVausIdStr,leftVausIds.get(ii).toString());
-                    stringBuilder.append(pid)
-                            .append(":")
-                            .append(leftVausIds.get(ii).toString())
-                            .append(":")
-                            .append(taobaoPropValueMap.get(leftVausIds.get(ii)).getName())
-                            .append(";");
-
-                    imgStr = imgStr.replace(customizeVausIdStr, leftVausIds.get(ii).toString());
-                }
-
-            }
-        }
-        sge.setProps(props);
-        LinkedList<String> result = new LinkedList<>();
-        result.add(stringBuilder.toString());
-        result.add(imgStr);
-        return result;
     }
 
 
