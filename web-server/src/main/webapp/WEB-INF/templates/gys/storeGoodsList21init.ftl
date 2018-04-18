@@ -246,7 +246,6 @@ $$.domready('#goodsStyle', function(){
     <div class="goodsList" id="goodsList">
         <ul class="head clearfix">
             <li class="name">
-                <#if session_user_redis__.logshop.type == 1 || query.state == 5>
 <#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
@@ -287,9 +286,6 @@ $$.domready('#goodsStyle', function(){
 </label>
 </#list>
                 <!--<label><input type="checkbox" class="checkbox">全选</label>-->
-                <#else>
-                    <span style="display:block; text-align:center;">商品名称</span>
-                </#if>
             </li>
             <li class="price">批发价</li>
             <li class="lowestPrice">最低零售价</li>
@@ -305,6 +301,8 @@ $$.domready('#goodsStyle', function(){
                 <#if session_user_redis__.logshop.type == 1>
                 <button class="tbGoods" jhand="syncMultiTbGoods">批量同步商品</button>
                 <button class="tbGoods" jhand="syncAllTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
+                <#else>
+                <button class="tbGoods" jhand="downGoods" data-multi="1">批量下架商品</button>
                 </#if>
                 <span>&nbsp;</span>
                 <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
@@ -314,7 +312,6 @@ $$.domready('#goodsStyle', function(){
         <#list goodslist as item>
         <ul class="body clearfix" data-id="${item.id!}">
             <li class="name">
-                <#if session_user_redis__.logshop.type == 1 || query.state == 5>
 <#list [{"value":item.id}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
@@ -355,7 +352,6 @@ $$.domready('#goodsStyle', function(){
 </label>
 </#list>
                 <!--<input type="checkbox" class="checkbox" value="${item.id!}">-->
-                </#if>
                 <a class="piclink" href="${item.href!}" title="查看宝贝详情" target="_blank">
                     <img src="${item.imgsrc!}_80x80.jpg">
                 </a>
@@ -412,10 +408,17 @@ $$.domready('#goodsStyle', function(){
             <li class="upcount">${item.count!}</li>
             <li class="control">
                 <#if session_user_redis__.logshop.type == 1>
-                <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
+                    <#if item.goodsSource == 1>
+                    <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
+                    <#elseif item.goodsSource == 2>
+                    <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+                    <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
+                    </#if>
                 <#else>
-                <p><em class="xjgoods" jhand="downGoods">下架</em></p>
-                <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
+                    <p><em class="xjgoods" jhand="downGoods">下架</em></p>
+                    <#if item.goodsSource == 2>
+                    <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
+                    </#if>
                 </#if>
             </li>
         </ul>
