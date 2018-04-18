@@ -86,6 +86,13 @@ public interface ItemAddOrUpdateService {
      * @return
      */
     int userUpdateItem(SynItem item) throws ItemModifyException;
+    /**
+     * 用户更新一款商品
+     * 暂时不用
+     * @param item
+     * @return
+     */
+    int userUpdateItem(SynItem item,Boolean updatePrice) throws ItemModifyException;
 
     /**
      * 按淘宝numIid查商品

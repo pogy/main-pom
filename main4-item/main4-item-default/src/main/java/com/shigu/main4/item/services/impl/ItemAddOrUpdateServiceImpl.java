@@ -1027,6 +1027,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(SynItem item) throws ItemModifyException {
+        return userUpdateItem(item,false);
+    }
+
+    @Override
+    public int userUpdateItem(SynItem item, Boolean updatePrice) throws ItemModifyException {
         if (item == null || item.getGoodsId() == null || item.getWebSite() == null || item.getShopId() == null)
             throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException, null);
         SynItem synItem = selItemByGoodsId(item.getGoodsId(), item.getWebSite());
@@ -1050,7 +1055,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             for (Field field : item.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 Object o = field.get(item);//所有比较过程中，null默认跳过，空字条串认为有内容
-                if (o != null && !o.equals(field.get(synItem))) {
+                if (o != null && (!o.equals(field.get(synItem))||updatePrice)) {
                     if (field.getName().equals("picUrl")) {
                         picModifild = true;
                     }

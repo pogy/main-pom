@@ -867,7 +867,11 @@ public class ShopAction {
         }
         synItem.setWebSite(shopSession.getWebSite());
         try {
-            itemAddOrUpdateService.userUpdateItem(synItem);
+            if(bo.getType()==1){
+                itemAddOrUpdateService.userUpdateItem(synItem,true);
+            }else{
+                itemAddOrUpdateService.userUpdateItem(synItem);
+            }
             shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败", e);
