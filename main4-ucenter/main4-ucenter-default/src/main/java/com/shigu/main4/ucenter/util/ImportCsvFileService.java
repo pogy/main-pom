@@ -216,13 +216,15 @@ public class ImportCsvFileService {
                                 String key=keyStrs[0]+":"+keyStrs[1];
                                 String newKey=keyStrs[0]+":"+newVid;
                                 String newProp=inputBean.getProp().getValue().replace(key,newKey);
-                                String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
                                 String newals=newKey+":"+keyStrs[2];
                                 String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
                                 als.add(newals);
-                                imgs.add(newImg);
-                                hasProps.add(newProp);
                                 skus.add(newsku);
+                                hasProps.add(newProp);
+                                if(StringUtils.isNotBlank(inputBean.getImg().getValue())){
+                                    String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
+                                    imgs.add(newImg);
+                                }
                             }
                         }
                     }
