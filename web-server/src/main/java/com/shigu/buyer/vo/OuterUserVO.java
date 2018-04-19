@@ -37,12 +37,32 @@ public class OuterUserVO implements Serializable{
 
     public OuterUserVO(OuterUser user) {
         this.id = user.getSubUserId();
-        setFrom(user.getLoginFromType()== LoginFromType.TAOBAO?"taobao":
-                user.getLoginFromType()==LoginFromType.ALI?"ali":
-                        user.getLoginFromType()==LoginFromType.WX?"weixin":"");
-        setName(user.getLoginFromType()== LoginFromType.TAOBAO?"淘宝":
-                user.getLoginFromType()==LoginFromType.ALI?"阿里":
-                        user.getLoginFromType()==LoginFromType.WX?"微信":"");
+        switch (user.getLoginFromType()){
+            case JD:{
+                setFrom("jingdong");
+                setName("京东");
+                break;
+            }
+            case WX: {
+                setFrom("weixin");
+                setName("微信");
+                break;
+            }
+            case TAOBAO:{
+                setFrom("taobao");
+                setName("淘宝");
+                break;
+            }
+            case ALI:{
+                setFrom("ali");
+                setName("阿里");
+                break;
+            }
+            default:{
+                setFrom("");
+                setName("");
+            }
+        }
         this.setNick(user.getOuterNick());
         this.setCreated(DateParseUtil.parseDate("yyyy-MM-dd",user.getCreateTime()));
     }

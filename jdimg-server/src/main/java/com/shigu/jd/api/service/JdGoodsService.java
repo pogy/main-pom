@@ -92,11 +92,10 @@ public class JdGoodsService {
         request.setWareLocation(bo.getWareLocation());
         request.setWrap(bo.getWrap());
         request.setWareImage(DownImage.downImgFile(bo.getWareImageUrl()));
-        WareAddResponse response;
-        response = jdClientService.execute(request,authedInfo.getAccessToken());
+        WareAddResponse response = jdClientService.execute(request,authedInfo.getAccessToken());
         SdkJdWareAdd goods=new SdkJdWareAdd();
         goods.setGoodsId(response.getWareId());
-        goods.setJdSkuInfoVOS(response.getSkuInfo().stream().map(skuInfo -> BeanMapper.map(authedInfo,JdSkuInfoResponse.class)).collect(Collectors.toList()));
+        goods.setJdSkuInfoVOS(response.getSkuInfo().stream().map(skuInfo -> BeanMapper.map(skuInfo,JdSkuInfoResponse.class)).collect(Collectors.toList()));
         return goods;
     }
 

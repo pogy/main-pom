@@ -6,18 +6,14 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.ShiguOuterFloor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 public class ShiguOuterFloorExample extends SgExample<ShiguOuterFloorExample.Criteria> {
     public static final Class<ShiguOuterFloor> beanClass = ShiguOuterFloor.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn addedShop;
     public static EntityColumn showName;
     public static EntityColumn outerFloorId;
-    public static EntityColumn floorNames;
+    public static EntityColumn parentStyleIds;
     public static EntityColumn sortOrder;
     public static EntityColumn floorIds;
     static {
@@ -29,7 +25,7 @@ public class ShiguOuterFloorExample extends SgExample<ShiguOuterFloorExample.Cri
         addedShop = listMap.get("addedShop");
         showName = listMap.get("showName");
         outerFloorId = listMap.get("outerFloorId");
-        floorNames = listMap.get("floorNames");
+        parentStyleIds = listMap.get("parentStyleIds");
         sortOrder = listMap.get("sortOrder");
         floorIds = listMap.get("floorIds");
         }
@@ -44,8 +40,8 @@ public class ShiguOuterFloorExample extends SgExample<ShiguOuterFloorExample.Cri
     }
 
     @Override
-    protected Criteria createCriteriaInternal() {
-        return new Criteria(this);
+    protected ShiguOuterFloorExample.Criteria createCriteriaInternal() {
+        return new ShiguOuterFloorExample.Criteria(this);
     }
 
     public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
@@ -53,318 +49,318 @@ public class ShiguOuterFloorExample extends SgExample<ShiguOuterFloorExample.Cri
             super(example);
         }
 
-        public Criteria andAddedShopIsNull() {
+        public ShiguOuterFloorExample.Criteria andAddedShopIsNull() {
             return isNull(addedShop);
         }
 
-        public Criteria andAddedShopIsNotNull() {
+        public ShiguOuterFloorExample.Criteria andAddedShopIsNotNull() {
             return isNotNull(addedShop);
         }
 
-        public Criteria andAddedShopEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopEqualTo(String value) {
             return equalTo(addedShop, value);
         }
 
-        public Criteria andAddedShopNotEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopNotEqualTo(String value) {
             return notEqualTo(addedShop, value);
         }
 
-        public Criteria andAddedShopGreaterThan(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopGreaterThan(String value) {
             return greaterThan(addedShop, value);
         }
 
-        public Criteria andAddedShopGreaterThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(addedShop, value);
         }
 
-        public Criteria andAddedShopLessThan(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopLessThan(String value) {
             return lessThan(addedShop, value);
         }
 
-        public Criteria andAddedShopLessThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(addedShop, value);
         }
 
-        public Criteria andAddedShopLike(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopLike(String value) {
             return like(addedShop, value);
         }
 
-        public Criteria andAddedShopNotLike(String value) {
+        public ShiguOuterFloorExample.Criteria andAddedShopNotLike(String value) {
             return notLike(addedShop, value);
         }
 
-        public Criteria andAddedShopIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andAddedShopIn(List<String> values) {
             return in(addedShop, values);
         }
 
-        public Criteria andAddedShopNotIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andAddedShopNotIn(List<String> values) {
             return notIn(addedShop, values);
         }
 
-        public Criteria andAddedShopBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andAddedShopBetween(String value1, String value2) {
             return between(addedShop, value1, value2);
         }
 
-        public Criteria andAddedShopNotBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andAddedShopNotBetween(String value1, String value2) {
             return notBetween(addedShop, value1, value2);
         }
-        public Criteria andShowNameIsNull() {
+        public ShiguOuterFloorExample.Criteria andShowNameIsNull() {
             return isNull(showName);
         }
 
-        public Criteria andShowNameIsNotNull() {
+        public ShiguOuterFloorExample.Criteria andShowNameIsNotNull() {
             return isNotNull(showName);
         }
 
-        public Criteria andShowNameEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameEqualTo(String value) {
             return equalTo(showName, value);
         }
 
-        public Criteria andShowNameNotEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameNotEqualTo(String value) {
             return notEqualTo(showName, value);
         }
 
-        public Criteria andShowNameGreaterThan(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameGreaterThan(String value) {
             return greaterThan(showName, value);
         }
 
-        public Criteria andShowNameGreaterThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(showName, value);
         }
 
-        public Criteria andShowNameLessThan(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameLessThan(String value) {
             return lessThan(showName, value);
         }
 
-        public Criteria andShowNameLessThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(showName, value);
         }
 
-        public Criteria andShowNameLike(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameLike(String value) {
             return like(showName, value);
         }
 
-        public Criteria andShowNameNotLike(String value) {
+        public ShiguOuterFloorExample.Criteria andShowNameNotLike(String value) {
             return notLike(showName, value);
         }
 
-        public Criteria andShowNameIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andShowNameIn(List<String> values) {
             return in(showName, values);
         }
 
-        public Criteria andShowNameNotIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andShowNameNotIn(List<String> values) {
             return notIn(showName, values);
         }
 
-        public Criteria andShowNameBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andShowNameBetween(String value1, String value2) {
             return between(showName, value1, value2);
         }
 
-        public Criteria andShowNameNotBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andShowNameNotBetween(String value1, String value2) {
             return notBetween(showName, value1, value2);
         }
-        public Criteria andOuterFloorIdIsNull() {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNull() {
             return isNull(outerFloorId);
         }
 
-        public Criteria andOuterFloorIdIsNotNull() {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNotNull() {
             return isNotNull(outerFloorId);
         }
 
-        public Criteria andOuterFloorIdEqualTo(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdEqualTo(Long value) {
             return equalTo(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdNotEqualTo(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotEqualTo(Long value) {
             return notEqualTo(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdGreaterThan(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThan(Long value) {
             return greaterThan(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdGreaterThanOrEqualTo(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdLessThan(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThan(Long value) {
             return lessThan(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdLessThanOrEqualTo(Long value) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(outerFloorId, value);
         }
 
-        public Criteria andOuterFloorIdIn(List<Long> values) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIn(List<Long> values) {
             return in(outerFloorId, values);
         }
 
-        public Criteria andOuterFloorIdNotIn(List<Long> values) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotIn(List<Long> values) {
             return notIn(outerFloorId, values);
         }
 
-        public Criteria andOuterFloorIdBetween(Long value1, Long value2) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdBetween(Long value1, Long value2) {
             return between(outerFloorId, value1, value2);
         }
 
-        public Criteria andOuterFloorIdNotBetween(Long value1, Long value2) {
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotBetween(Long value1, Long value2) {
             return notBetween(outerFloorId, value1, value2);
         }
-        public Criteria andFloorNamesIsNull() {
-            return isNull(floorNames);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsIsNull() {
+            return isNull(parentStyleIds);
         }
 
-        public Criteria andFloorNamesIsNotNull() {
-            return isNotNull(floorNames);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsIsNotNull() {
+            return isNotNull(parentStyleIds);
         }
 
-        public Criteria andFloorNamesEqualTo(String value) {
-            return equalTo(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsEqualTo(String value) {
+            return equalTo(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesNotEqualTo(String value) {
-            return notEqualTo(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsNotEqualTo(String value) {
+            return notEqualTo(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesGreaterThan(String value) {
-            return greaterThan(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsGreaterThan(String value) {
+            return greaterThan(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesLessThan(String value) {
-            return lessThan(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsLessThan(String value) {
+            return lessThan(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesLike(String value) {
-            return like(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsLike(String value) {
+            return like(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesNotLike(String value) {
-            return notLike(floorNames, value);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsNotLike(String value) {
+            return notLike(parentStyleIds, value);
         }
 
-        public Criteria andFloorNamesIn(List<String> values) {
-            return in(floorNames, values);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsIn(List<String> values) {
+            return in(parentStyleIds, values);
         }
 
-        public Criteria andFloorNamesNotIn(List<String> values) {
-            return notIn(floorNames, values);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsNotIn(List<String> values) {
+            return notIn(parentStyleIds, values);
         }
 
-        public Criteria andFloorNamesBetween(String value1, String value2) {
-            return between(floorNames, value1, value2);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsBetween(String value1, String value2) {
+            return between(parentStyleIds, value1, value2);
         }
 
-        public Criteria andFloorNamesNotBetween(String value1, String value2) {
-            return notBetween(floorNames, value1, value2);
+        public ShiguOuterFloorExample.Criteria andParentStyleIdsNotBetween(String value1, String value2) {
+            return notBetween(parentStyleIds, value1, value2);
         }
-        public Criteria andSortOrderIsNull() {
+        public ShiguOuterFloorExample.Criteria andSortOrderIsNull() {
             return isNull(sortOrder);
         }
 
-        public Criteria andSortOrderIsNotNull() {
+        public ShiguOuterFloorExample.Criteria andSortOrderIsNotNull() {
             return isNotNull(sortOrder);
         }
 
-        public Criteria andSortOrderEqualTo(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderEqualTo(Integer value) {
             return equalTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderNotEqualTo(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderNotEqualTo(Integer value) {
             return notEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderGreaterThan(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderGreaterThan(Integer value) {
             return greaterThan(sortOrder, value);
         }
 
-        public Criteria andSortOrderGreaterThanOrEqualTo(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderLessThan(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderLessThan(Integer value) {
             return lessThan(sortOrder, value);
         }
 
-        public Criteria andSortOrderLessThanOrEqualTo(Integer value) {
+        public ShiguOuterFloorExample.Criteria andSortOrderLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andSortOrderIn(List<Integer> values) {
+        public ShiguOuterFloorExample.Criteria andSortOrderIn(List<Integer> values) {
             return in(sortOrder, values);
         }
 
-        public Criteria andSortOrderNotIn(List<Integer> values) {
+        public ShiguOuterFloorExample.Criteria andSortOrderNotIn(List<Integer> values) {
             return notIn(sortOrder, values);
         }
 
-        public Criteria andSortOrderBetween(Integer value1, Integer value2) {
+        public ShiguOuterFloorExample.Criteria andSortOrderBetween(Integer value1, Integer value2) {
             return between(sortOrder, value1, value2);
         }
 
-        public Criteria andSortOrderNotBetween(Integer value1, Integer value2) {
+        public ShiguOuterFloorExample.Criteria andSortOrderNotBetween(Integer value1, Integer value2) {
             return notBetween(sortOrder, value1, value2);
         }
-        public Criteria andFloorIdsIsNull() {
+        public ShiguOuterFloorExample.Criteria andFloorIdsIsNull() {
             return isNull(floorIds);
         }
 
-        public Criteria andFloorIdsIsNotNull() {
+        public ShiguOuterFloorExample.Criteria andFloorIdsIsNotNull() {
             return isNotNull(floorIds);
         }
 
-        public Criteria andFloorIdsEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsEqualTo(String value) {
             return equalTo(floorIds, value);
         }
 
-        public Criteria andFloorIdsNotEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotEqualTo(String value) {
             return notEqualTo(floorIds, value);
         }
 
-        public Criteria andFloorIdsGreaterThan(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThan(String value) {
             return greaterThan(floorIds, value);
         }
 
-        public Criteria andFloorIdsGreaterThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(floorIds, value);
         }
 
-        public Criteria andFloorIdsLessThan(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsLessThan(String value) {
             return lessThan(floorIds, value);
         }
 
-        public Criteria andFloorIdsLessThanOrEqualTo(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(floorIds, value);
         }
 
-        public Criteria andFloorIdsLike(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsLike(String value) {
             return like(floorIds, value);
         }
 
-        public Criteria andFloorIdsNotLike(String value) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotLike(String value) {
             return notLike(floorIds, value);
         }
 
-        public Criteria andFloorIdsIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsIn(List<String> values) {
             return in(floorIds, values);
         }
 
-        public Criteria andFloorIdsNotIn(List<String> values) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotIn(List<String> values) {
             return notIn(floorIds, values);
         }
 
-        public Criteria andFloorIdsBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsBetween(String value1, String value2) {
             return between(floorIds, value1, value2);
         }
 
-        public Criteria andFloorIdsNotBetween(String value1, String value2) {
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotBetween(String value1, String value2) {
             return notBetween(floorIds, value1, value2);
         }
     }

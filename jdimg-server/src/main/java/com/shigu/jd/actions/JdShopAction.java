@@ -1,14 +1,14 @@
 package com.shigu.jd.actions;
 
-import com.openJar.beans.JdCategoryAttrValueJos;
+import com.openJar.beans.JdCategoryAttrValue;
 import com.openJar.beans.SdkJdImgzoneCategory;
 import com.openJar.beans.SdkJdShopCategory;
 import com.openJar.commons.ResponseUtil;
-import com.openJar.requests.api.JdCategoryAttrValueJosRequest;
+import com.openJar.requests.api.JdCategoryAttrValueRequest;
 import com.openJar.requests.api.JdImgzoneCategoryAddRequest;
 import com.openJar.requests.api.JdImgzoneCategoryRequest;
 import com.openJar.requests.api.JdShopCategoryRequest;
-import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
+import com.openJar.responses.api.JdCategoryAttrValueResponse;
 import com.openJar.responses.api.JdImgzoneCategoryAddResponse;
 import com.openJar.responses.api.JdImgzoneCategoryResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
@@ -56,13 +56,13 @@ public class JdShopAction {
     @RequestMapping("jdCategoryAttrValueJos")
     @ResponseBody
     public JSONObject goodsCanbeUploadedToJdResponse (
-            @Valid JdCategoryAttrValueJosRequest request, BindingResult bindingResult) throws OtherCustomException, JdAuthOverdueException {
+            @Valid JdCategoryAttrValueRequest request, BindingResult bindingResult) throws OtherCustomException, JdAuthOverdueException {
         if (bindingResult.hasErrors()) {
             throw new OtherCustomException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
-        List<JdCategoryAttrValueJos> datas=jdCategoryService.getCategoryReadFindValuesByAttrId(request.getJdUid(),request.getPid());
-        JdCategoryAttrValueJosResponse res=new JdCategoryAttrValueJosResponse();
-        res.setJdCategoryAttrValueJos(datas);
+        List<JdCategoryAttrValue> datas=jdCategoryService.getCategoryReadFindValuesByAttrId(request.getJdUid(),request.getPid());
+        JdCategoryAttrValueResponse res=new JdCategoryAttrValueResponse();
+        res.setJdCategoryAttrValue(datas);
         res.setSuccess(true);
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }

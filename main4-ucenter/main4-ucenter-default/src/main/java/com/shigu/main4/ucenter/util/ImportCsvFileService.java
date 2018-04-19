@@ -5,18 +5,18 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguSiteExample;
 import com.opentae.data.mall.examples.ShiguTaobaocatExample;
+import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.opentae.data.mall.interfaces.ShiguSiteMapper;
-import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
-import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.vo.PriceDataGrid;
 import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.ucenter.vo.ShiguPropImg;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -49,9 +50,11 @@ public class ImportCsvFileService {
     @Autowired
     private ShiguTaobaocatMapper shiguTaobaocatMapper;
     @Autowired
-    private TaobaoPropValueMapper taobaoPropValueMapper;
-    @Autowired
     PriceErrorService priceErrorService;
+    @Autowired
+    TaobaoItemPropMapper taobaoItemPropMapper;
+    @Autowired
+    TaobaoPropValueMapper taobaoPropValueMapper;
     @Autowired
     OssIO oss;
 
@@ -112,8 +115,129 @@ public class ImportCsvFileService {
                 if(i==11){
                    // //System.out.println(i);
                 }
+
                 Vector v_title=vector_h.get(0);
                 Vector v11=vector_h.get(i);
+                //先处理一波自定义颜色尺码
+                Map<String,Integer> codeMap=new HashMap<>();
+                Map<String,Object> codeValueMap=new HashMap<>();
+                for(int k=0;k<v_title.size();k++){
+                    String tt=(String)v_title.get(k);
+                    codeMap.put(tt,k);
+                    switch (tt){
+                        case "input_custom_cpv":
+                        case "skuProps":
+                        case "propAlias":
+                        case "picture":
+                        case "cateProps":
+                        case "cid":{
+                            codeMap.put(tt,k);
+                            codeValueMap.put(tt,v11.get(k));
+                            break;
+                        }
+                        default:
+                    }
+                }
+                if(codeValueMap.get("input_custom_cpv")!=null&& StringUtils.isNotBlank((String)codeValueMap.get("input_custom_cpv"))){
+                    TaobaoItemPropExample taobaoItemPropExample=new TaobaoItemPropExample();
+                    taobaoItemPropExample.createCriteria().andIsSalePropEqualTo(1).andCidEqualTo(new Long(codeValueMap.get("cid").toString()));
+                    List<TaobaoItemProp> taobaoItemProps=taobaoItemPropMapper.selectByExample(taobaoItemPropExample);
+
+                    List<String> als= Arrays.stream(((String) codeValueMap.get("propAlias")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> inputList=Arrays.stream(((String) codeValueMap.get("input_custom_cpv")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+
+
+                    for(TaobaoItemProp prop:taobaoItemProps){
+                        TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
+                        taobaoPropValueExample.createCriteria().andCidEqualTo(new Long(codeValueMap.get("cid").toString())).andPidEqualTo(prop.getPid());
+                        List<TaobaoPropValue> pvs=taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
+                        LinkedHashMap<Long,TaobaoPropValue> pvMap=new LinkedHashMap<>();
+                        pvs.sort(Comparator.comparingInt(o -> o.getVid().intValue()));
+                        for(TaobaoPropValue pv:pvs){
+                            pvMap.put(pv.getVid(),pv);
+                        }
+                        for(String hasProp:hasProps){
+                            if(hasProp.startsWith(prop.getPid()+":")){
+                                Long hasVid=new Long(hasProp.split(":")[1]);
+                                pvMap.remove(hasVid);
+                            }
+                        }
+                        List<InputBean> inputBeans=new ArrayList<>();
+                        for(int inpi=0;inpi<inputList.size();inpi++){
+                            String inp=inputList.get(inpi);
+                            if(inp.startsWith(prop.getPid()+":")){
+                                inputList.remove(inpi);
+                                inpi--;
+
+                                String[] ssx=inp.split(":");
+                                String key=ssx[0]+":"+ssx[1];
+                                InputBean inputBean=new InputBean();
+                                //准备图片
+                                for(int imgi=0;imgi<imgs.size();imgi++){
+                                    String img=imgs.get(imgi);
+                                    if(img.contains(":"+key+"|")){
+                                        imgs.remove(imgi);
+                                        inputBean.getImg().put(img,img);
+                                        break;
+                                    }
+                                }
+                                //准备prop
+                                for(int propi=0;propi<hasProps.size();propi++){
+                                    String hasProp=hasProps.get(propi);
+                                    if(hasProp.startsWith(key)){
+                                        hasProps.remove(propi);
+                                        inputBean.getProp().put(hasProp,hasProp);
+                                        break;
+                                    }
+                                }
+                                //准备sku
+                                for(int skui=0;skui<skus.size();skui++){
+                                    String sku=skus.get(skui);
+                                    if(sku.endsWith(":"+key)){
+                                        skus.remove(skui);
+                                        inputBean.getSku().put(sku,sku);
+                                        break;
+                                    }
+                                }
+                                //准备input
+                                inputBean.getInput().put(inp,inp);
+                                inputBeans.add(inputBean);
+                            }
+                        }
+                        for(InputBean inputBean:inputBeans){
+                            if(pvMap.size()>0){
+                                TaobaoPropValue taobaoPropValue = pvMap.values().stream().findFirst().get();
+                                Long newVid=taobaoPropValue.getVid();
+                                pvMap.remove(newVid);
+                                String[] keyStrs=inputBean.getInput().getKey().split(":");
+                                String key=keyStrs[0]+":"+keyStrs[1];
+                                String newKey=keyStrs[0]+":"+newVid;
+                                String newProp=inputBean.getProp().getValue().replace(key,newKey);
+                                String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
+                                String newals=newKey+":"+keyStrs[2];
+                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
+                                als.add(newals);
+                                imgs.add(newImg);
+                                hasProps.add(newProp);
+                                skus.add(newsku);
+                            }
+                        }
+                    }
+                    String img=StringUtils.join(imgs,";");
+                    String prop=StringUtils.join(hasProps,";");
+                    String input=StringUtils.join(inputList,";");
+                    String al=StringUtils.join(als,";");
+                    String sku=StringUtils.join(skus,";");
+                    v11.set(codeMap.get("input_custom_cpv"),input);
+                    v11.set(codeMap.get("cateProps"),prop);
+                    v11.set(codeMap.get("propAlias"),al);
+                    v11.set(codeMap.get("picture"),img);
+                    v11.set(codeMap.get("skuProps"),sku);
+                }
+
                 record=new ShiguGoodsTinyVO();
                 sge=new ShiguGoodsExtendsVO();
 
@@ -601,7 +725,7 @@ public class ImportCsvFileService {
             //=================================================================================================
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             throw new Main4Exception (e.getMessage ());
         }
         //Date t2=new Date();

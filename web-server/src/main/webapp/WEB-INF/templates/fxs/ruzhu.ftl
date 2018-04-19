@@ -88,7 +88,7 @@
     </div>
     <div class="validateItem">
         <div class="formGroup">
-            <label><i>*</i>淘宝绑定：</label>
+            <label><i></i>淘宝绑定：</label>
             <span class="noTaobaoBind">
                 <#if tbNick??>
                     ${tbNick!}

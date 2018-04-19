@@ -48,6 +48,9 @@
     <input type="hidden" id="tempCode" value="${tempCode!}">
 </div>
 <hr class="splitLine">
+<script modulepath="gys/iwantToRechargein5#form1">
+var envelopeBalance = '${envelopeBalance!}'
+</script>
 <div class="validateForm rechargeForm">
     <div class="validateItem">
         <div class="formGroup">
@@ -84,10 +87,35 @@
     </span>
 </label>
 </#list>
+<#list [{}] as $it>
+<label class="fmRadio clearfix
+        <#if $it.checked??>
+            checked
+        </#if>
+">
+    <input
+        type="radio"
+        autocomplete="off"
+            name="payMode"
+            value="3"
+            <#if $it.checked??>
+                checked
+            </#if>
+    >
+    <i class="before"></i>
+    <span>
+        红包
+        <#if $it.html??>
+            ${$it.html}
+        </#if>
+    </span>
+</label>
+</#list>
         </div>
     </div>
     <div class="validateItem">
         <div class="formGroup">
+            <p class="lastEnvelope">提示：红包余额 ${envelopeBalance!} 元，<a href="userBonus.htm" target="_blank">查看详情</a></p>
 <#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"

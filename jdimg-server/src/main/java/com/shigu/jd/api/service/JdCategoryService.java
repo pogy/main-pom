@@ -2,28 +2,25 @@ package com.shigu.jd.api.service;
 
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.domain.category.Category;
-import com.jd.open.api.sdk.domain.list.CategoryAttrReadService.CategoryAttrJos;
-import com.jd.open.api.sdk.domain.list.CategoryAttrValueReadService.CategoryAttrValueJos;
+import com.jd.open.api.sdk.domain.list.CategoryAttrValueReadService.CategoryAttrValue;
 import com.jd.open.api.sdk.domain.list.CategoryReadService.Feature;
 import com.jd.open.api.sdk.domain.sellercat.ShopCategory;
 import com.jd.open.api.sdk.request.category.CategorySearchRequest;
-import com.jd.open.api.sdk.request.list.CategoryReadFindAttrsByCategoryIdJosRequest;
-import com.jd.open.api.sdk.request.list.CategoryReadFindByPIdRequest;
-import com.jd.open.api.sdk.request.list.CategoryReadFindValuesByAttrIdJosRequest;
-import com.jd.open.api.sdk.request.list.PopVenderCenerVenderBrandQueryRequest;
+import com.jd.open.api.sdk.request.list.*;
 import com.jd.open.api.sdk.request.sellercat.SellerCatsGetRequest;
 import com.jd.open.api.sdk.response.category.CategorySearchResponse;
 import com.jd.open.api.sdk.response.list.*;
 import com.jd.open.api.sdk.response.sellercat.SellerCatsGetResponse;
 import com.openJar.beans.*;
-import com.openJar.exceptions.imgs.JdApiException;
 import com.openJar.responses.api.*;
+import com.opentae.data.jd.beans.JdPropValue;
 import com.opentae.data.jd.beans.JdShopCategory;
+import com.opentae.data.jd.examples.JdPropValueExample;
 import com.opentae.data.jd.examples.JdShopCategoryExample;
+import com.opentae.data.jd.interfaces.JdPropValueMapper;
 import com.opentae.data.jd.interfaces.JdShopCategoryMapper;
 import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
-import com.shigu.jd.api.exceptions.JdAuthFailureException;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +44,10 @@ public class JdCategoryService {
 
     @Autowired
     private JdShopCategoryMapper jdShopCategoryMapper;
+
+    @Autowired
+    private JdPropValueMapper jdPropValueMapper;
+
 
     /**
      * 京东自定义店内分类
@@ -95,65 +96,6 @@ public class JdCategoryService {
         return addShopCatgorys(jdUid);
     }
 
-    /**
-     * 京东 获取类目属性列表
-     * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
-     *
-     * @param jdUid
-     * @throws JdException
-     */
-    public List<JdCategoryAttrJos> getJdCategoryAttrJos(Long jdUid, Long cid, Integer type) throws JdAuthOverdueException, OtherCustomException {
-        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        CategoryReadFindAttrsByCategoryIdJosRequest request = new CategoryReadFindAttrsByCategoryIdJosRequest();
-        request.setCid(cid);
-        request.setAttributeType(type);
-        CategoryReadFindAttrsByCategoryIdJosResponse response = jdClientService.execute(request, authedInfo.getAccessToken());
-        List<CategoryAttrJos> shopCatList = response.getCategoryAttrs();
-        return shopCatList.stream().map(categoryAttrJos -> {
-            JdCategoryAttrJos vo = new JdCategoryAttrJos();
-            vo.setAttName(categoryAttrJos.getAttName());
-            vo.setAttributeType(categoryAttrJos.getAttributeType());
-            vo.setAttrIndexId(categoryAttrJos.getAttrIndexId());
-            vo.setCategoryAttrId(categoryAttrJos.getCategoryAttrId());
-            vo.setCategoryId(categoryAttrJos.getCategoryId());
-            vo.setInputType(categoryAttrJos.getInputType());
-            if (categoryAttrJos.getAttrFeatures() != null) {
-                Set<JdFeatureCateAttrJosResponse> jdFeatureCateAttrJosVOS = categoryAttrJos.getAttrFeatures().stream()
-                        .map(featureCateAttrJos -> BeanMapper.map(featureCateAttrJos, JdFeatureCateAttrJosResponse.class)).collect(Collectors.toSet());
-                vo.setAttrFeatures(jdFeatureCateAttrJosVOS);
-            }
-            if (categoryAttrJos.getCategoryAttrGroup() != null) {
-                JdCategoryAttrGroupJosResponse jdCategoryAttrGroupJosVO = new JdCategoryAttrGroupJosResponse();
-                jdCategoryAttrGroupJosVO.setAttrGroupIndexId(categoryAttrJos.getCategoryAttrGroup().getAttrGroupIndexId());
-                jdCategoryAttrGroupJosVO.setGroupId(categoryAttrJos.getCategoryAttrGroup().getGroupId());
-                jdCategoryAttrGroupJosVO.setGroupName(categoryAttrJos.getCategoryAttrGroup().getGroupName());
-                if (categoryAttrJos.getCategoryAttrGroup().getAttrGroupfeatures() != null) {
-                    Set<JdFeatureCateAttrGroupJosResponse> jdFeatureCateAttrGroupJosVOS = categoryAttrJos.getCategoryAttrGroup().getAttrGroupfeatures().stream()
-                            .map(featureCateAttrGroupJos -> BeanMapper.map(featureCateAttrGroupJos, JdFeatureCateAttrGroupJosResponse.class)).collect(Collectors.toSet());
-                    jdCategoryAttrGroupJosVO.setAttrGroupfeatures(jdFeatureCateAttrGroupJosVOS);
-                }
-                vo.setCategoryAttrGroup(jdCategoryAttrGroupJosVO);
-            }
-            if (categoryAttrJos.getAttrValueList() != null) {
-                List<JdCategoryAttrValueJos> jdCategoryAttrValueJosVOS = categoryAttrJos.getAttrValueList().stream()
-                        .map(categoryAttrValueJos -> {
-                            JdCategoryAttrValueJos jdCategoryAttrValueJosVO = new JdCategoryAttrValueJos();
-                            jdCategoryAttrValueJosVO.setAttrValue(categoryAttrValueJos.getAttrValue());
-                            jdCategoryAttrValueJosVO.setAttrValueId(categoryAttrValueJos.getAttrValueId());
-                            jdCategoryAttrValueJosVO.setAttrValueIndexId(categoryAttrValueJos.getAttrValueIndexId());
-                            if (categoryAttrValueJos.getAttrValueFeatures() != null) {
-                                Set<JdFeatureCateAttrValueJosResponse> jdFeatureCateAttrValueJosVOS = categoryAttrValueJos.getAttrValueFeatures().stream()
-                                        .map(featureCateAttrValueJos -> BeanMapper.map(featureCateAttrValueJos, JdFeatureCateAttrValueJosResponse.class))
-                                        .collect(Collectors.toSet());
-                                jdCategoryAttrValueJosVO.setAttrValueFeatures(jdFeatureCateAttrValueJosVOS);
-                            }
-                            return jdCategoryAttrValueJosVO;
-                        }).collect(Collectors.toList());
-                vo.setAttrValueList(jdCategoryAttrValueJosVOS);
-            }
-            return vo;
-        }).collect(Collectors.toList());
-    }
 
     /**
      * 获取商家类目信息
@@ -225,26 +167,47 @@ public class JdCategoryService {
      * @param pid
      * @return
      */
-    public List<JdCategoryAttrValueJos> getCategoryReadFindValuesByAttrId(Long jdUid, Long pid) throws JdAuthOverdueException, OtherCustomException {
+    public List<JdCategoryAttrValue> getCategoryReadFindValuesByAttrId(Long jdUid, Long pid) throws JdAuthOverdueException, OtherCustomException {
         JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
-        CategoryReadFindValuesByAttrIdJosRequest req = new CategoryReadFindValuesByAttrIdJosRequest();
+
+        CategoryReadFindValuesByAttrIdRequest req = new CategoryReadFindValuesByAttrIdRequest();
         req.setCategoryAttrId(pid);
-        CategoryReadFindValuesByAttrIdJosResponse res = jdClientService.execute(req, authedInfo.getAccessToken());
-        List<CategoryAttrValueJos> vos = res.getCategoryAttrValues();
-        return vos.stream()
-                .map(categoryAttrValueJos -> {
-                    JdCategoryAttrValueJos jdCategoryAttrValueJosVO = new JdCategoryAttrValueJos();
-                    jdCategoryAttrValueJosVO.setAttrValue(categoryAttrValueJos.getValue());
-                    jdCategoryAttrValueJosVO.setAttrValueId(categoryAttrValueJos.getId());
-                    jdCategoryAttrValueJosVO.setAttrValueIndexId(categoryAttrValueJos.getIndexId());
-                    if (categoryAttrValueJos.getFeatures() != null) {
-                        Set<JdFeatureCateAttrValueJosResponse> jdFeatureCateAttrValueJosVOS = categoryAttrValueJos.getFeatures().stream()
-                                .map(featureCateAttrValueJos -> BeanMapper.map(featureCateAttrValueJos, JdFeatureCateAttrValueJosResponse.class))
+        CategoryReadFindValuesByAttrIdResponse res = jdClientService.execute(req, authedInfo.getAccessToken());
+        List<CategoryAttrValue> vos = res.getCategoryAttrValues();
+//        List<JdPropValue> jdPropValues = new ArrayList<>();
+
+        List<JdCategoryAttrValue> collect = vos.stream()
+                .map(categoryAttrValue -> {
+//                    JdPropValue jdPropValue = new JdPropValue();
+//                    jdPropValue.setCid(categoryAttrValue.getCategoryId());
+//                    jdPropValue.setPid(pid);
+//                    jdPropValue.setPropName("颜色");
+//                    jdPropValue.setVid(categoryAttrValue.getId());
+//                    jdPropValue.setName(categoryAttrValue.getValue());
+//                    jdPropValue.setSortOrder(categoryAttrValue.getIndexId().longValue());
+//
+//                    jdPropValue.setIsParent(0);
+//                    jdPropValue.setStatus("1");
+//                    jdPropValues.add(jdPropValue);
+
+                    JdCategoryAttrValue jdCategoryAttrValueVO = new JdCategoryAttrValue();
+                    jdCategoryAttrValueVO.setAttrValue(categoryAttrValue.getValue());
+                    jdCategoryAttrValueVO.setAttrValueId(categoryAttrValue.getId());
+                    jdCategoryAttrValueVO.setAttrValueIndexId(categoryAttrValue.getIndexId());
+                    if (categoryAttrValue.getFeatures() != null) {
+                        Set<JdFeatureCateAttrValueResponse> jdFeatureCateAttrValueVOS = categoryAttrValue.getFeatures().stream()
+                                .map(featureCateAttrValueJos -> BeanMapper.map(featureCateAttrValueJos, JdFeatureCateAttrValueResponse.class))
                                 .collect(Collectors.toSet());
-                        jdCategoryAttrValueJosVO.setAttrValueFeatures(jdFeatureCateAttrValueJosVOS);
+                        jdCategoryAttrValueVO.setAttrValueFeatures(jdFeatureCateAttrValueVOS);
                     }
-                    return jdCategoryAttrValueJosVO;
+                    return jdCategoryAttrValueVO;
                 }).collect(Collectors.toList());
+//
+//        if (jdPropValues != null && !jdPropValues.isEmpty()) {
+//            jdPropValueMapper.insertListNoId(jdPropValues);
+//        }
+
+        return collect;
     }
 
     /**

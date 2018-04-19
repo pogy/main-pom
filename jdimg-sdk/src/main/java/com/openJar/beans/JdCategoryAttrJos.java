@@ -1,7 +1,6 @@
 package com.openJar.beans;
 
 import com.openJar.responses.api.JdCategoryAttrGroupJosResponse;
-import com.openJar.responses.api.JdCategoryAttrValueJosResponse;
 import com.openJar.responses.api.JdFeatureCateAttrJosResponse;
 import com.openJar.utils.OpenBean;
 
@@ -21,7 +20,7 @@ public class JdCategoryAttrJos extends OpenBean implements Serializable {
     private Integer attributeType;
     private Set<JdFeatureCateAttrJosResponse> attrFeatures;
     private JdCategoryAttrGroupJosResponse categoryAttrGroup;
-    private List<JdCategoryAttrValueJos> attrValueList;
+    private List<JdCategoryAttrValue> attrValueList;
 
     public JdCategoryAttrJos() {
     }
@@ -90,11 +89,11 @@ public class JdCategoryAttrJos extends OpenBean implements Serializable {
         this.categoryAttrGroup = categoryAttrGroup;
     }
 
-    public List<JdCategoryAttrValueJos> getAttrValueList() {
+    public List<JdCategoryAttrValue> getAttrValueList() {
         return attrValueList;
     }
 
-    public void setAttrValueList(List<JdCategoryAttrValueJos> attrValueList) {
+    public void setAttrValueList(List<JdCategoryAttrValue> attrValueList) {
         this.attrValueList = attrValueList;
     }
 }

@@ -48,6 +48,16 @@ public class ShiguSiteSearchCategory implements Serializable {
 	private String keyword;
 
     /**
+     * 是否热卖 1：热卖，2：非热卖
+     */
+	private Integer hot;
+
+    /**
+     * 所属页面 1：市场页，2：首页
+     */
+	private Integer pageType;
+
+    /**
      * 是否显示  1：显示，2：不显示
      */
 	private Integer display;
@@ -81,6 +91,21 @@ public class ShiguSiteSearchCategory implements Serializable {
      * 备用4
      */
 	private String remark4;
+
+    /**
+     * hz
+     */
+	private String webSite;
+
+    /**
+     * 
+     */
+	private Integer sex;
+
+    /**
+     * 
+     */
+	private Integer infoType;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -146,6 +171,22 @@ public class ShiguSiteSearchCategory implements Serializable {
 		return this.keyword;
 	}
 
+	public void setHot(Integer hot) {
+		this.hot = hot;
+	}
+
+	public Integer getHot() {
+		return this.hot;
+	}
+
+	public void setPageType(Integer pageType) {
+		this.pageType = pageType;
+	}
+
+	public Integer getPageType() {
+		return this.pageType;
+	}
+
 	public void setDisplay(Integer display) {
 		this.display = display;
 	}
@@ -200,6 +241,30 @@ public class ShiguSiteSearchCategory implements Serializable {
 
 	public String getRemark4() {
 		return this.remark4;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+
+	public String getWebSite() {
+		return this.webSite;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public Integer getSex() {
+		return this.sex;
+	}
+
+	public void setInfoType(Integer infoType) {
+		this.infoType = infoType;
+	}
+
+	public Integer getInfoType() {
+		return this.infoType;
 	}
 
 }
