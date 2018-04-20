@@ -377,9 +377,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         orderExample.isDistinct();
         orderExample.createCriteria().andStoreIdEqualTo(bo.getShopId());
         List<DaifaOrder> osx=daifaOrderMapper.selectFieldsByExample(orderExample,FieldUtil.codeFields("goods_id"));
-        System.out.println(osx.size());
         Set<Long> goodsIds=osx.stream().map(DaifaOrder::getGoodsId).collect(Collectors.toSet());
-        System.out.println(goodsIds);
         for(Long goodsId:goodsIds){
             DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
             daifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
