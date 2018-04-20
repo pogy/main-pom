@@ -528,6 +528,9 @@ public class ShopsItemServiceImpl implements ShopsItemService {
         if (shiguGoodsTiny == null || !shopId.equals(shiguGoodsTiny.getStoreId())) {
             throw new JsonErrException("只能操作自己店内的商品");
         }
+        if (shiguGoodsTiny.getGoodsNo() == null || shiguGoodsTiny.getGoodsNo() == ""){
+            isChecked = false;
+        }
         if (isChecked){
             ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
             shiguGoodsTinyExample.setWebSite(webSite);
