@@ -203,7 +203,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://qz.571xz.com/market.htm?mid=82" target="_blank">
+    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
         逛市场
     </a>
 </li>
@@ -218,6 +218,34 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
     <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
+        <#elseif webSite == 'zl'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/zlgoods.htm" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl" target="_blank">
         今日新品
     </a>
 </li>

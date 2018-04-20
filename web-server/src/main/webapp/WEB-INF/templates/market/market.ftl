@@ -62,7 +62,7 @@
                     <label><i class="iconfont marketIcon"></i>市场：</label>
                     <ul>
                         <#list markets as market>
-                            <li <#if market.id == marketId>class="selected"</#if>><a href="?mid=${market.id!}">${market.name!}</a></li>
+                            <li <#if market.id == marketId>class="selected"</#if>><a class="ellip" href="?mid=${market.id!}" title="${market.name!}">${market.name!}</a></li>
                         </#list>
                     </ul>
                     <i class="iconfont showmore icon-downarrow"></i>
