@@ -757,12 +757,12 @@ public class ShopAction {
      */
     @RequestMapping("seller/setConstituent")
     @ResponseBody
-    public JSONObject setConstituent(@Valid ModifyConstituentBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,Boolean isChecked,BindingResult result,HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopsItemService.setConstituent(bo.getGoodsId(), shopSession.getShopId(), shopSession.getWebSite(), bo.getFabricStr(), bo.getInFabricStr());
+        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),isChecked,shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
         shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
         return JsonResponseUtil.success();
     }

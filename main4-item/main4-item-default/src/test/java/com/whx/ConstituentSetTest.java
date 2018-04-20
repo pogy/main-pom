@@ -24,6 +24,6 @@ public class ConstituentSetTest extends BaseSpringTest{
      */
     @Test
     public void Name() throws Exception {
-        shopsItemService.setConstituent(21742907l,43429l,"hz","面料","里料");
+//        shopsItemService.setConstituent(21742907l,43429l,"hz","面料","里料");
     }
 }
