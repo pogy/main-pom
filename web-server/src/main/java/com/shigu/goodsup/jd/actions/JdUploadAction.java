@@ -1,6 +1,7 @@
 package com.shigu.goodsup.jd.actions;
 
 import com.openJar.beans.JdVenderBrandPubInfo;
+import com.openJar.beans.SdkJdWareAdd;
 import com.shigu.goodsup.jd.bo.JdUploadBO;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.bo.JdUploadTmpBO;
@@ -13,6 +14,7 @@ import com.shigu.goodsup.jd.service.JdUserInfoService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONArray;
@@ -44,6 +46,8 @@ public class JdUploadAction {
     JdUploadService jdUploadService;
     @Autowired
     JdUserInfoService jdUserInfoService;
+    @Autowired
+    RedisIO redisIO;
 
     @RequestMapping("jd/index")
     public String uploadJd(HttpSession session, JdUploadBO bo, String skus,
@@ -95,7 +99,14 @@ public class JdUploadAction {
                 throw new CustomException("商品信息异常");
             }
 
-            numIid=jdUploadService.upload(prop, tbo, jdUserId);
+            SdkJdWareAdd upload = jdUploadService.upload(prop, tbo, jdUserId);
+            //淘宝商品地址 https://item.jd.com/${skuId}.html  任意一skuId 都可以访问
+            numIid = upload.getJdSkuInfoVOS().get(0).getSkuId();
+            if (bo.getPostage_id() == null) {
+                redisIO.del("jd_postageId_"+jdUserId.toString());
+            }else{
+                redisIO.put("jd_postageId_"+jdUserId.toString(),bo.getPostage_id());
+            }
         } catch (AuthOverException e) {
             String queryString = request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +

@@ -557,7 +557,6 @@ var webSite = '${webSite!}';
         </div>
         
         <div class="topBanner">
-            
             <div class="slides" id="slides"> 
                 <div class="ulDiv">
                     <ul>

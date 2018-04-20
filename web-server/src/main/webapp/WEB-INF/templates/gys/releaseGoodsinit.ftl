@@ -39,6 +39,16 @@
     </select>
 </div>
 <div class="categoryList clearfix">
+    <#if webSite == 'qz'>
+    <div class="categoryContainer" data-level="0">
+<ul>
+    <li data-cid="50011740" data-child="1">流行男鞋<i class="icon-rightarrow"></i></li>
+    <li data-cid="50006843" data-child="1">女鞋<i class="icon-rightarrow"></i></li>
+</ul>
+    </div>
+    <div class="categoryContainer" data-level="1">
+    </div>
+    <#else>
     <div class="categoryContainer" data-level="0">
 <ul>
     <li data-cid="30" data-child="1">男装<i class="icon-rightarrow"></i></li>
@@ -79,6 +89,7 @@
     <li data-cid="124730001" data-child="1">套装<i class="icon-rightarrow"></i></li>
 </ul>
     </div>
+    </#if>
     <div class="categoryContainer" data-level="2"></div>
     <div class="categoryContainer" data-level="3"></div>
 </div>
@@ -120,4 +131,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

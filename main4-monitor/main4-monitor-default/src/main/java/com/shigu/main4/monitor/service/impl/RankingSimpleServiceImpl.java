@@ -48,7 +48,7 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
     @Override
     public List<RankingCateLineVO> getRankingCateLinesByCids(Long cid, RankingPeriodEnum periodEnum) throws Main4Exception {
         List<RankingCateLineVO> list = redisIO.getList(CidMapEnum.map(cid) + getPeriodTimeStamp(0, periodEnum), RankingCateLineVO.class);
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             list = redisIO.getList(CidMapEnum.map(cid) + getPeriodTimeStamp(1, periodEnum), RankingCateLineVO.class);
         }
         return list;
@@ -63,7 +63,7 @@ public class RankingSimpleServiceImpl implements RankingSimpleService {
     public List<RankingShopVO> selRankingShopBy(CidMarketIdMapEnum cat) {
         String key = cat.getIndexPrefix() + getPeriodTimeStamp(0, cat.periodEnum);
         List<RankingShopVO> list = redisIO.getList(key, RankingShopVO.class);
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             //如果当前期数据还不存在（还在计算过程中），则返回上一期数据
             key = cat.getIndexPrefix() + getPeriodTimeStamp(1, cat.periodEnum);
             list = redisIO.getList(key, RankingShopVO.class);

@@ -79,8 +79,10 @@ public class MyTbOrderService {
 
     @Autowired
     private OrderCityMapper orderCityMapper;
-
-
+    @Autowired
+    ItemTradeForbidMapper itemTradeForbidMapper;
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
 
     private static SimilarityMap<OrderProv> similarityProvMap;
     private static SimilarityMap<OrderCity> similarityCityMap;
@@ -155,6 +157,14 @@ public class MyTbOrderService {
                 .andTypeEqualTo(1)).where(marketExample.createCriteria().andIsParentEqualTo(1L).andWebSiteEqualTo(webSite),forbidExample.createCriteria().andForbidIdIsNull()).build();
         List<OnsaleMarket> onsaleMarkets=multipleMapper.selectFieldsByMultipleExample(multipleExample,OnsaleMarket.class);
         List<Long> mids=onsaleMarkets.stream().map(OnsaleMarket::getMarketId).collect(Collectors.toList());
+        ItemTradeForbidExample storeItemTradeForbidExample=new ItemTradeForbidExample();
+        storeItemTradeForbidExample.createCriteria().andTypeEqualTo(2).andCanSaleEqualTo(1);
+        List<ItemTradeForbid> stores=itemTradeForbidMapper.selectByExample(storeItemTradeForbidExample);
+        List<Long> storeIds=stores.stream().map(ItemTradeForbid::getTargetId).collect(Collectors.toList());
+        ShiguShopExample shiguShopExample=new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopIdIn(storeIds);
+        List<ShiguShop> shiguShops = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,market_id"));
+        mids.addAll(shiguShops.stream().map(ShiguShop::getMarketId).collect(Collectors.toSet()));
         ShiguAggsPager pager= itemSearchService.searchForTbItem(keyword,webSite,mids, SearchOrderBy.COMMON,page,size);
         ShiguPager<GoodsVO> vo=new ShiguPager<>();
         List<GoodsVO> gs=new ArrayList<>();

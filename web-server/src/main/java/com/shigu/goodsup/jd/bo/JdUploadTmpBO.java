@@ -114,12 +114,15 @@ public class JdUploadTmpBO extends JdUploadBO{
         for(JdUploadPropInputBO p:props){
             pstr.append(p.getPid()).append(":").append(p.getVid()).append("|");
         }
-        for(JdUploadSkuBO s:skus){
-            pstr.append(s.getPid()).append(":").append(s.getVid()).append("|");
+        if (skus != null && !skus.isEmpty()) {
+            for(JdUploadSkuBO s:skus){
+                pstr.append(s.getPid()).append(":").append(s.getVid()).append("|");
+            }
+            for(JdUploadSkuBO s:skus.get(0).getSizes()){
+                pstr.append(s.getPid()).append(":").append(s.getVid()).append("|");
+            }
         }
-        for(JdUploadSkuBO s:skus.get(0).getSizes()){
-            pstr.append(s.getPid()).append(":").append(s.getVid()).append("|");
-        }
+
         if(pstr.length()>0){
             pstr = new StringBuilder(pstr.substring(0, pstr.length() - 1));
             return pstr.toString();
@@ -129,6 +132,9 @@ public class JdUploadTmpBO extends JdUploadBO{
     }
 
     public String selAlias(List<PropertyItemVO> sales,PropertyItemVO color){
+        if (color == null) {
+            return null;
+        }
         StringBuilder str= new StringBuilder();
         for(JdUploadSkuBO s:skus){
             PropertyValueVO v= color.getPropValueByVid(s.getVid());

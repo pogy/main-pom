@@ -1131,6 +1131,7 @@ ol,ul{list-style: none}.clearfix:after {content: ".";display: block;height: 0;cl
     top: 150px;
     right: 0;
     width: 250px;
+    z-index: 9;
 }
 .r-box .opt-btn{
     position: absolute;
@@ -1139,7 +1140,7 @@ ol,ul{list-style: none}.clearfix:after {content: ".";display: block;height: 0;cl
     color: #0063DC;
 }
 .r-box .list-box{
-    background: none;
+    background: #fff;
     height: 250px;
     border: 1px solid #ccc;
     padding: 10px 10px;

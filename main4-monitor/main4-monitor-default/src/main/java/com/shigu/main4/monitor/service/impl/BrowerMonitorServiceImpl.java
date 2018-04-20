@@ -52,14 +52,13 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
      * @return
      */
     public String inPage(String type, Long userId, PageInfoBO pageInfo, ClientMsg client) {
-
-        BrowerRecord browerRecord = makeRecord(userId, pageInfo, client);
         SimpleElaBean bean = new SimpleElaBean();
-        bean.setIndex("shigupagerecode");
-        bean.setType(type);
-        bean.setPk(browerRecord.getKeyId());
-        bean.setSource(JSON.toJSONStringWithDateFormat(browerRecord, "yyyy-MM-dd HH:mm:ss"));
         try {
+            BrowerRecord browerRecord = makeRecord(userId, pageInfo, client);
+            bean.setIndex("shigupagerecode");
+            bean.setType(type);
+            bean.setPk(browerRecord.getKeyId());
+            bean.setSource(JSON.toJSONStringWithDateFormat(browerRecord, "yyyy-MM-dd HH:mm:ss"));
 //            ElasticRepository elasticRepository = new ElasticRepository();
 //            elasticRepository.insert(bean);
             redisIO.rpush("bulk_flow_to_es", bean);
@@ -85,7 +84,7 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
         return bean.getPk();
     }
 
-    public BrowerRecord makeRecord(Long userId, PageInfoBO pageInfo, ClientMsg client) {
+    private BrowerRecord makeRecord(Long userId, PageInfoBO pageInfo, ClientMsg client) {
         BrowerRecord browerRecord = new BrowerRecord();
         browerRecord.setClientMsg(client);
         browerRecord.setUrl(pageInfo.getUrl());
@@ -129,39 +128,46 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
      * @return
      */
     public boolean outPage(String idKey) {
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
-        QueryBuilder qb = QueryBuilders.termQuery("keyId", idKey);
-        srb.setQuery(qb);
-        SearchResponse response = srb.execute().actionGet();
-
-        SimpleElaBean seb;
-
-        SearchHit[] hits = response.getHits().getHits();
-        if (hits != null && hits.length > 0){
-            SearchHit hit = hits[0];
-            seb=new SimpleElaBean();
-            seb.setPk(hit.getId());
-            seb.setIndex(hit.getIndex());
-            seb.setType(hit.getType());
-            seb.setSource(hit.getSourceAsString());
-        }else{//还在redis
-            seb=redisIO.get(idKey,SimpleElaBean.class);
-            if(seb==null){
-                return false;
-            }
-            redisIO.del(idKey);
-        }
-
-        BrowerRecord browerRecord = JSON.parseObject(seb.getSource(), BrowerRecord.class);
-        if(browerRecord == null){
+        if(idKey==null){
             return false;
         }
-        browerRecord.setOutTime(new Date());
-        SimpleElaBean bean = new SimpleElaBean();
-        bean.setIndex(seb.getIndex());
-        bean.setType(seb.getType());
-        bean.setPk(seb.getPk());
-        bean.setSource(JSON.toJSONStringWithDateFormat(browerRecord, "yyyy-MM-dd HH:mm:ss"));
+        SimpleElaBean seb;
+        SearchHit[] hits;
+        try {
+            SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
+            QueryBuilder qb = QueryBuilders.termQuery("keyId", idKey);
+            srb.setQuery(qb);
+            SearchResponse response = srb.execute().actionGet();
+
+            hits = response.getHits().getHits();
+        } catch (Exception e) {
+            return false;
+        }
+        if (hits != null && hits.length > 0){
+                SearchHit hit = hits[0];
+                seb=new SimpleElaBean();
+                seb.setPk(hit.getId());
+                seb.setIndex(hit.getIndex());
+                seb.setType(hit.getType());
+                seb.setSource(hit.getSourceAsString());
+            }else{//还在redis
+                seb=redisIO.get(idKey,SimpleElaBean.class);
+                if(seb==null){
+                    return false;
+                }
+                redisIO.del(idKey);
+            }
+
+            BrowerRecord browerRecord = JSON.parseObject(seb.getSource(), BrowerRecord.class);
+            if(browerRecord == null){
+                return false;
+            }
+            browerRecord.setOutTime(new Date());
+            SimpleElaBean bean = new SimpleElaBean();
+            bean.setIndex(seb.getIndex());
+            bean.setType(seb.getType());
+            bean.setPk(seb.getPk());
+            bean.setSource(JSON.toJSONStringWithDateFormat(browerRecord, "yyyy-MM-dd HH:mm:ss"));
         try {
 //                ElasticRepository elasticRepository = new ElasticRepository();
 //                elasticRepository.insert(bean);
