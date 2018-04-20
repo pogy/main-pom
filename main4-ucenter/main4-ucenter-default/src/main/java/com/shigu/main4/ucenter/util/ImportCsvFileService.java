@@ -126,7 +126,7 @@ public class ImportCsvFileService {
                     codeMap.put(tt,k);
                     switch (tt){
                         case "input_custom_cpv":
-                        case "skuProps":
+//                        case "skuProps":
                         case "propAlias":
                         case "picture":
                         case "cateProps":
@@ -147,7 +147,7 @@ public class ImportCsvFileService {
                     List<String> inputList=Arrays.stream(((String) codeValueMap.get("input_custom_cpv")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+//                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
 
 
                     for(TaobaoItemProp prop:taobaoItemProps){
@@ -193,15 +193,15 @@ public class ImportCsvFileService {
                                         break;
                                     }
                                 }
-                                //准备sku
-                                for(int skui=0;skui<skus.size();skui++){
-                                    String sku=skus.get(skui);
-                                    if(sku.endsWith(":"+key)){
-                                        skus.remove(skui);
-                                        inputBean.getSku().put(sku,sku);
-                                        break;
-                                    }
-                                }
+//                                //准备sku
+//                                for(int skui=0;skui<skus.size();skui++){
+//                                    String sku=skus.get(skui);
+//                                    if(sku.endsWith(":"+key)){
+//                                        skus.remove(skui);
+//                                        inputBean.getSku().put(sku,sku);
+//                                        break;
+//                                    }
+//                                }
                                 //准备input
                                 inputBean.getInput().put(inp,inp);
                                 inputBeans.add(inputBean);
@@ -217,9 +217,9 @@ public class ImportCsvFileService {
                                 String newKey=keyStrs[0]+":"+newVid;
                                 String newProp=inputBean.getProp().getValue().replace(key,newKey);
                                 String newals=newKey+":"+keyStrs[2];
-                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
+//                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
                                 als.add(newals);
-                                skus.add(newsku);
+//                                skus.add(newsku);
                                 hasProps.add(newProp);
                                 if(StringUtils.isNotBlank(inputBean.getImg().getValue())){
                                     String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
@@ -232,12 +232,12 @@ public class ImportCsvFileService {
                     String prop=StringUtils.join(hasProps,";");
                     String input=StringUtils.join(inputList,";");
                     String al=StringUtils.join(als,";");
-                    String sku=StringUtils.join(skus,";");
+//                    String sku=StringUtils.join(skus,";");
                     v11.set(codeMap.get("input_custom_cpv"),input);
                     v11.set(codeMap.get("cateProps"),prop);
                     v11.set(codeMap.get("propAlias"),al);
                     v11.set(codeMap.get("picture"),img);
-                    v11.set(codeMap.get("skuProps"),sku);
+//                    v11.set(codeMap.get("skuProps"),sku);
                 }
 
                 record=new ShiguGoodsTinyVO();
