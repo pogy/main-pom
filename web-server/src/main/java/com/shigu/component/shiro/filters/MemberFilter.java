@@ -49,7 +49,7 @@ public class MemberFilter implements Filter {
             }else if(currentUser.hasRole(RoleEnum.STORE.getValue())&&uri.startsWith("/order/")&&uri.endsWith(".htm")
                     &&!uri.contains("order/alipayByApplyId")){//支付页面除外
                 HttpServletResponse response= (HttpServletResponse) servletResponse;
-                response.sendRedirect("http://xb.571xz.com/daili/userIndex.htm");
+                response.sendRedirect("/seller/index.htm");
             }else{
                 filterChain.doFilter(servletRequest,servletResponse);
             }
