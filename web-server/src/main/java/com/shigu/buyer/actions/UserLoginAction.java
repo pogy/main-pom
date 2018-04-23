@@ -49,9 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
@@ -157,7 +155,7 @@ public class UserLoginAction {
 
     @ResponseBody
     @RequestMapping("passwordLogin")
-    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException {
+    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException,IOException {
         String url = request.getHeader("Referer");
         if(url.equals("http://www.571xz.com/universalLogin.htm")){
             Subject currentUser = SecurityUtils.getSubject();
@@ -168,6 +166,14 @@ public class UserLoginAction {
             try {
                 currentUser.login(token);
                 currentUser.hasRole(RoleEnum.STORE.getValue());
+                File file = new File(System.getProperty("user.dir") +"/universal.log");
+                if(!file.exists()){
+                    file.createNewFile();
+                }
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+                bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername());
+                bufferedWriter.flush();
+                bufferedWriter.close();
                 return JsonResponseUtil.success();
             } catch (AuthenticationException e) {
                 //登陆失败
