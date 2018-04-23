@@ -4,7 +4,6 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
-import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.bo.SearchBO;
@@ -13,7 +12,6 @@ import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.services.StoreSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
-import com.shigu.search.vo.SearchNav;
 import com.shigu.search.vo.SearchVO;
 import com.shigu.tools.EncodeParamter;
 import com.shigu.tools.JsonResponseUtil;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +65,7 @@ public class GoodsSearchAction {
             webSite="hz";
         }
         model.addAttribute("webSite",webSite);
-        return "search/picSearch";
+        return "xzPage/picSearch";
     }
 
     /**
@@ -130,7 +129,7 @@ public class GoodsSearchAction {
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
-        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav());
+        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav(bo.getWebSite()));
         if (bo.getCid() != null) {
             model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }
@@ -182,11 +181,15 @@ public class GoodsSearchAction {
         maxTotalSizeOrPage(pager, bo.getRows());
         //得到聚合后的结果
 //        CateNavsInSearch cateNavsInSearch=goodsSearchService.selCateAfterAggs(bo);
-        model.addAttribute("markets", goodsSearchService.aggOneCate(categoryInSearchService.selMarkets(bo.getWebSite()),
-                vo.getMarkets()));
+//        model.addAttribute("markets", goodsSearchService.aggOneCate(categoryInSearchService.selMarkets(bo.getWebSite()),
+//                vo.getMarkets()));
+        model.addAttribute("markets", categoryInSearchService.selMarkets(website));
+
         //查顶级类目
-        model.addAttribute("cates", goodsSearchService.aggOneCate(categoryInSearchService.selCates(bo.getWebSite()),
-                vo.getParentCats()));
+//        model.addAttribute("cates", goodsSearchService.aggOneCate(categoryInSearchService.selCates(bo.getWebSite()),
+//                vo.getParentCats()));
+        model.addAttribute("cates", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
+
         //查匹配店铺
         if (bo.getPage() == 1) {
             model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
@@ -257,8 +260,11 @@ public class GoodsSearchAction {
         bo.setFrom("goods");
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
+        if(pager==null){
+             pager=new ShiguPager<GoodsInSearch>();
+        }
         //极限词过滤
-        if (pager.getContent() != null) {
+        if (pager.getContent() != null&&pager.getContent().size()>0) {
             pager.getContent().forEach(goodsInSearch -> {
                 goodsInSearch.setTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getTitle()));
                 goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));

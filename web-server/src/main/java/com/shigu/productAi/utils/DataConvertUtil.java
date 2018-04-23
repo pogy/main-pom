@@ -28,7 +28,7 @@ public class DataConvertUtil {
 
     public File convert(List<AiImageInfo> list) {
         String propath = System.getProperty("user.dir");
-        System.out.println(propath);
+        //System.out.println(propath);
         Long id = new Date().getTime();
         path = propath + "/" + type + "AiGoods" + id + ".csv";
         File file = new File(path);

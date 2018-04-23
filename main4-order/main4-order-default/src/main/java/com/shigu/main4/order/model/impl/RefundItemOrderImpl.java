@@ -67,11 +67,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private SubOrderSoidpsMapper subOrderSoidpsMapper;
-
-    @Autowired
-    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
     @Autowired
     private RedisIO redisIO;
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -90,7 +89,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @PostConstruct
     public void init() {
-        if (refundApplyBO != null || fromUser != null) {
+        if (refundApplyBO != null && fromUser != null) {
             //可以进行多次退款的另外处理
             if (refundApplyBO.getType() == 5) {
                 multiRefundApply(refundApplyBO, fromUser);
@@ -332,8 +331,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     @Transactional
-    public void buyerNoReprice() {
-        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE, null);
+    public void buyerNoReprice(){
+        RefundVO refundInfo = refundinfo();
+        refundStateChangeAndLog(refundInfo,RefundStateEnum.BUYER_NOREPRICE, null);
     }
 
     /**
@@ -504,7 +504,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         }
         for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
             if (payedVO.getMoney() - payedVO.getRefundMoney() >= refundMoney) {
-                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(),"RF_"+refundId, refundMoney);
+                SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(),"RF_"+refundId+"_"+psoid, refundMoney);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, String.format("拆单%d退款成功，退款金额%.2f元", psoid, refundMoney * 0.01)+(refundLogistics?String.format("含快递费%.2f",(refundMoney-money)*0.01):""));
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundinfo.getRefundId());

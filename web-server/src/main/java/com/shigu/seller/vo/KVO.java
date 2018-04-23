@@ -12,6 +12,24 @@ public class KVO {
     private String value;
     private Long pid;
     private Long vid;
+    private  Boolean selected;
+    private  Boolean checked;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
+    }
 
     public String getText() {
         return text;
@@ -22,6 +40,9 @@ public class KVO {
     }
 
     public String getValue() {
+        return this.pid + ":" + this.vid;
+    }
+    public String getName() {
         return this.pid + ":" + this.vid;
     }
 

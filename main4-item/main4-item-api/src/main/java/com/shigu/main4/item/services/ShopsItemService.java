@@ -9,6 +9,8 @@ import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.vo.*;
 
+import java.util.Set;
+
 /**
  * 店内宝贝服务
  * Created by zhaohongbo on 17/3/2.
@@ -89,7 +91,7 @@ public interface ShopsItemService {
      * @param inFabricStr
      * @throws JsonErrException
      */
-    void setConstituent(Long goodsId,Long shopId,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
+    void setConstituent(Long goodsId,Long shopId,Boolean isChecked,String webSite,String fabricStr,String inFabricStr) throws JsonErrException;
 
     /**
      * 清除店铺商品统计数据缓存
@@ -116,5 +118,21 @@ public interface ShopsItemService {
      * @param linkSameGoodsNo 是否关联同货号商品 false否 true是
      */
     void setGoodsVideo(Long shopId,String webSite,Long goodsId,String goodsVideoUrl,boolean linkSameGoodsNo) throws JsonErrException;
+
+    /**
+     * 设置商品风格
+     * @param goodsIds
+     * @param styleId
+     * @param webSite
+     * @return
+     */
+    String setGoodsStyle(Set<Long> goodsIds, Long styleId, String webSite);
+
+    /**
+     * 删除商品风格
+     * @param goodsId
+     * @param shopId
+     */
+    void delGoodsStyle(Long goodsId, Long shopId);
 
 }

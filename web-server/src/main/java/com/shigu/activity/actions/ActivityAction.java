@@ -3,6 +3,7 @@ package com.shigu.activity.actions;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
+import com.opentae.data.mall.beans.ShiguNewActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
@@ -15,6 +16,9 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.ActiveForShowVO;
@@ -25,10 +29,12 @@ import com.shigu.seller.services.ActivityService;
 import com.shigu.seller.vo.GfGoodsStyleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +66,9 @@ public class ActivityAction {
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private GoatDubboService goatDubboService;
 
     /**
      * 秋装新品发布会0811临时使用
@@ -162,8 +171,9 @@ public class ActivityAction {
     public String awardInfo(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean vipIs = Objects.equals(true, ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
-        List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs);
-        model.addAttribute("actList",actList);
+        activityWebService.getActivityAwardInfo(ps.getUserId(),model); // 上传发现金活动奖品
+        // List<ActiveForShowVO> actList = activityWebService.getAwardInfo(ps.getUserId(), vipIs); // 其它活动奖品，暂停
+        // activityAwardInfoList.addAll(actList);
         return "fxs/awardInfo";
     }
 
@@ -331,7 +341,9 @@ public class ActivityAction {
         int actState;
         ShiguActivityVO vo = activityService.activityInfo(id);
         long current = System.currentTimeMillis();
-        if (vo.getStartApply().getTime() > current) {
+        if (vo == null || vo.getStartApply() == null || vo.getEndApply() == null) {
+            actState = 2;
+        }else if (vo.getStartApply().getTime() > current) {
             actState = 0;
         } else if (vo.getEndApply().getTime() > current) {
             actState = 1;
@@ -339,15 +351,17 @@ public class ActivityAction {
             actState = 2;
         }
 
-        //极限词过滤
-        vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        if (vo != null) {
+            //极限词过滤
+            vo.setTitle(KeyWordsUtil.duleKeyWords(vo.getTitle()));
+        }
 
         model.addAttribute("actState", actState);
         model.addAttribute("id", id);
         return "activity/apply";
     }
 
-    final String flag = "autumn_new5";
+    final static String flag = "autumn_new5";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
@@ -371,7 +385,7 @@ public class ActivityAction {
             model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpApply";
+        return "xzSearch/qzxpApply";
     }
 
     /**
@@ -380,7 +394,7 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpShop")
     public String qzxpShop(Model model) {
         model.addAttribute("webSite", "hz");
-        return "activity/qzxpShop";
+        return "xzSearch/qzxpShop";
     }
 
     /**
@@ -407,7 +421,7 @@ public class ActivityAction {
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
         model.addAttribute("lettoryNumber", lotteryNum);
-        return "activity/lottery";
+        return "xzSearch/lottery";
     }
 
     @RequestMapping("activity/getAwards")
@@ -439,6 +453,32 @@ public class ActivityAction {
     }
 
     /**
+     * 保太和招商宣传页
+     * @return
+     */
+    @RequestMapping("xznzMerchants")
+    public String xznzMerchants(Model model) {
+        List<ImgGoatVO> goats = null;
+        List<String> imgSrcs = new ArrayList<>();
+        try {
+            goats = goatDubboService.selGoatsFromLocalCode(SpreadEnum.XZNV_MERCHANTS.getCode());
+            if (goats != null && !goats.isEmpty()) {
+                for(ImgGoatVO vo : goats){
+                    if (org.apache.commons.lang3.StringUtils.isBlank(vo.getPicUrl())) {
+                        continue;
+                    }
+                    imgSrcs.add(vo.getPicUrl());
+                }
+            }
+        } catch (GoatException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("openImgs", imgSrcs);
+
+        return "xzPage/xznzMerchants";
+    }
+
+    /**
      *
      */
     @RequestMapping("qualityControl")
@@ -452,5 +492,30 @@ public class ActivityAction {
     @RequestMapping("xzPage/about")
     public String about() {
         return "xzPage/about";
+    }
+
+    /**
+     *
+     */
+    @RequestMapping("redEnvelopeIntro")
+    public String redEnvelopeIntro() {
+        return "xzPage/redEnvelopeIntro";
+    }
+
+    /**
+     * 上传得现金活动介绍页面
+     */
+    @RequestMapping("activity/getCash")
+    public String activityGetCash(Model model) {
+        ShiguNewActivity activity = activityWebService.getActivityNow();
+        if (activity != null) {
+            model.addAttribute("bannerImg", StringUtils.isEmpty(activity.getBannerImgUrl()) ? "http://style.571xz.com/v6/xzPage/css/img/cash/banner.jpg" : activity.getBannerImgUrl());
+            model.addAttribute("actNumber", activity.getId());
+            model.addAttribute("actPeriod", DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
+                    + "—" + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
+            model.addAttribute("actEndTime", activity.getEndTime().getTime());
+            model.addAttribute("actNowTime", System.currentTimeMillis());
+        }
+        return "xzPage/cash";
     }
 }

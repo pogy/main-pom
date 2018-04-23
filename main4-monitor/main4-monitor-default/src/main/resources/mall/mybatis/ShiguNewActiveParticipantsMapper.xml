@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguNewActiveParticipantsMapper" >
+
+	<update id="increaseUploadNum">
+		UPDATE shigu_new_active_participants
+		SET goods_upload_num = goods_upload_num + 1
+		WHERE member_id = #{memberId}
+			AND new_active_id = #{activeId}
+	</update>
+
+	<update id="increaseUploadStoreNum">
+		UPDATE shigu_new_active_participants
+		SET goods_upload_store_num = goods_upload_store_num + 1
+		WHERE member_id = #{memberId}
+		AND new_active_id = #{activeId}
+	</update>
+</mapper>

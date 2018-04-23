@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>发布宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
@@ -78,6 +78,7 @@
         </div>
     </div>
 </div>
+<#if webSite != 'qz'>
 <div class="goodsFabric clearfix">
     <label class="formKey"><i>*</i>材料成分：</label>
     <div class="goodsFabricInfoCon clearfix fl">
@@ -95,6 +96,7 @@
         </div>
     </div>
 </div>
+</#if>
 <div class="formPicks formAttribute">
     <label class="formKey">宝贝属性：</label>
     <div class="formData">
@@ -219,6 +221,11 @@
         </ul>
     </div>
 </div>
+<div class="moreMainImgUpload">
+    <#if webSite == 'qz'>
+    <b class="showMoreMainImgWindowBtn">选择要上传的主图</b>
+    </#if>
+</div>
 <div class="formInput formEditor">
     <label class="formKey">宝贝描述：</label>
     <div class="formData">
@@ -261,4 +268,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

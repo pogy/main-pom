@@ -74,7 +74,7 @@ public class KdHttpUtil {
      * @return 远程资源的响应结果
      */
 	@SuppressWarnings("unused")
-	public static String sendPost(String url, Map<String, String> params) {
+	public static String sendPost(String url, Map<String, String> params){
         OutputStreamWriter out = null;
         BufferedReader in = null;        
         StringBuilder result = new StringBuilder();
@@ -136,6 +136,6 @@ public class KdHttpUtil {
                 ex.printStackTrace();
             }
         }
-        return result.toString();
+		return result.toString();
     }
 }

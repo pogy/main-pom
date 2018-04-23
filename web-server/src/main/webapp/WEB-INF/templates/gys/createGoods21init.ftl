@@ -1,10 +1,10 @@
-<#assign $pageid>createGoods21init</#assign>
+<#assign $pageid="createGoods21init">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>发布宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -14,25 +14,20 @@
 <#include "/__style_torrent__/gys__createGoods21init_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
 <#include "/__style_torrent__/gys__createGoods21init_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -49,9 +44,7 @@
         <div class="clickButton beOpenStatus">
             <#if query.feedback?? && query.feedback gt 0>
                 <#if query.feedback == 1>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="ghTongbu.htm"
     class="fmButton
          fmButton-blue
@@ -86,9 +79,7 @@
         <div class="clickButton" data-id="${session_user_redis__.logshop.shopId!}">
             <#if query.feedback?? && query.feedback gt 0>
                 <#if query.feedback == 1>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -116,9 +107,7 @@
     </button>
     </#if>
 </#list>
-<#assign text>{"jid":"toSq","options":[{"name":"tipConText","value":"您未授权淘宝店铺"},{"name":"href_","value":"/seller/ghTongbu.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"立即授权"}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"jid":"toSq","options":[{"name":"tipConText","value":"您未授权淘宝店铺"},{"name":"href_","value":"/seller/ghTongbu.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"立即授权"}]}] as $it>
 <div jid="${$it.jid!}">
     <#list $it.options as option>
     <input type="hidden" name="${option.name!}" value="${option.value!}" />
@@ -126,9 +115,7 @@
 </div>
 </#list>
                 <#elseif query.feedback == 2>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -156,9 +143,7 @@
     </button>
     </#if>
 </#list>
-<#assign text>{"jid":"againSq","options":[{"name":"tipConText","value":"您的淘宝店授权过期"},{"name":"href_","value":"/ortherLogin.htm?ortherLoginType=1&backUrl=/seller/createGoods21init.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"重新授权"}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"jid":"againSq","options":[{"name":"tipConText","value":"您的淘宝店授权过期"},{"name":"href_","value":"/ortherLogin.htm?ortherLoginType=1&backUrl=/seller/createGoods21init.htm"},{"name":"tipIcon","value":"errorTipIcon"},{"name":"btText","value":"重新授权"}]}] as $it>
 <div jid="${$it.jid!}">
     <#list $it.options as option>
     <input type="hidden" name="${option.name!}" value="${option.value!}" />
@@ -167,9 +152,7 @@
 </#list>
                 </#if>
             <#else>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -208,9 +191,7 @@
             <p class="fcF40">*注：添加的数据包必须为zip格式的压缩包（压缩包中必须包含对应csv格式文件和对应图片文件夹），否则系统无法解析！</p>
         </div>
         <div class="clickButton">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -243,9 +224,7 @@
             <p>您也可以手动发布非淘宝店铺中出售的商品到四季星座网店铺中！</p>
         </div>
         <div class="clickButton">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <a href="releaseGoodsinit.htm"
     class="fmButton
          fmButton-blue

@@ -21,13 +21,11 @@ import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
-import org.omg.CosNaming.NamingContextPackage.NotFoundReasonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.*;
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException;
@@ -212,7 +211,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 }
             }
             if (price != null) {
-                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(), price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
+                tiny.setPiPrice(priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(),generator.getWebSite(),itemId,null, price, tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));
                 tiny.setPiPriceString(String.format("%.2f", tiny.getPiPrice() * .01));
             }
         }
@@ -305,9 +304,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if ((tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny)) == null) {
             throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.ITEM_DOES_NOT_EXIST, itemId);
         }
-        if (tiny.getIsExcelImp() == 0) {
-            throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.TB_ITEM_NOT_ALLOW_DOWN, itemId);
-        }
+//        if (tiny.getIsExcelImp() == 0) {
+//            throw new ItemDownException(ItemDownException.ItemDownExceptionEnum.TB_ITEM_NOT_ALLOW_DOWN, itemId);
+//        }
         downItem(itemId);
         // 设置has_mod_instock=1
         setGoodsModifiedHasModInstock(itemId, 1);
@@ -590,7 +589,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if (item == null || StringUtils.isEmpty(item.getWebSite()) || item.getShopId() == null)
             throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.IllegalArgumentException, null);
         //1.添加shigu_goods_id_generator  //下面简称generator
-
+        if(item.getListTime()==null){
+            item.setListTime(item.getModified());
+        }
+        if(item.getDelistTime()==null){
+            item.setDelistTime(item.getModified());
+        }
         // 更新批发价 只有系统添加才会自动应用批发价
         if (isSys && item.getPriceString() != null) {
             updatePiPrice(item, item.getTitle(), item.getGoodsNo(), item.getOuterId());
@@ -677,9 +681,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
         ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
         shiguGoodsModified.setItemId(tiny.getGoodsId());
-        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
-            shiguGoodsModified.setHasSetPrice(1);
-        }
+//        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
+//            shiguGoodsModified.setHasSetPrice(1);
+//        }
         shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
 
         //5.添加es中goods数据
@@ -705,6 +709,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      */
     @Override
     public void systemSynSomeItems(List<SynItem> items) throws SystemSynItemException {
+        items = items.stream().filter(item -> item != null).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(items)) {
             String webSite = items.get(0).getWebSite();
             Client client = ElasticConfiguration.client;
@@ -851,6 +856,47 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         }
         return 0;
     }
+    /**
+     * 系统后台更新一款商品,操作和userUpdateItem一样,就是取消shigu_goods_modify的修改
+     * @param item
+     * @return
+     */
+    @Override
+    public int officeUpdateItem(SynItem item) throws ItemModifyException {
+        if (item == null || item.getGoodsId() == null || item.getWebSite() == null || item.getShopId() == null)
+            throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException, null);
+        SynItem synItem = selItemByGoodsId(item.getGoodsId(), item.getWebSite());
+        if (synItem == null)
+            throw new ItemUpdateException(ITEM_DOES_NOT_EXIST, item.getGoodsId());
+        // 商品无(false)修改
+        boolean modify = false;
+        // 主图更新？
+        boolean picModifild = false;
+        // 比较
+        try {
+            for (Field field : item.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                Object o = field.get(item);//所有比较过程中，null默认跳过，空字条串认为有内容
+                if (o != null && !o.equals(field.get(synItem))) {
+                    if (field.getName().equals("picUrl")) {
+                        picModifild = true;
+                    }
+                    modify = true;
+                }
+            }
+        } catch (IllegalAccessException e) {
+            logger.error("商品更新操作->对象比较失败.字段无法访问.", e);
+        }
+        // 商品修改
+        if (modify) {
+            // shigu_goods_modified 中的字段修改
+            if (picModifild) {
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(),item.getPicUrl(), 1);
+            }
+            return updateItem(item);
+        }
+        return 0;
+    }
 
     /**
      * 更新数据库，更新ES
@@ -876,6 +922,31 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             propImgsExample.createCriteria().andItemIdEqualTo(synItem.getGoodsId());
             shiguPropImgsMapper.updateByExampleSelective(shiguPropImgs, propImgsExample);
         }
+
+
+        GoodsCountForsearch goodsCountForsearch = container.getGoodsCountForsearch();
+        if (objectIsNotBlank(goodsCountForsearch)) {
+            GoodsCountForsearchExample example= new GoodsCountForsearchExample();
+            example.createCriteria().andGoodsIdEqualTo(synItem.getGoodsId());
+
+            GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
+            goodsCountForsearch1.setGoodsId(synItem.getGoodsId());
+            if (goodsCountForsearchMapper.selectOne(goodsCountForsearch1) == null){
+                goodsCountForsearch1.setClick(0L);
+                goodsCountForsearch1.setClickIp(0L);
+                goodsCountForsearch1.setTrade(0L);
+                goodsCountForsearch1.setUp(0L);
+                goodsCountForsearch1.setUpMan(0L);
+                goodsCountForsearch1.setHadGoat(0);
+                goodsCountForsearch1.setWebSite(synItem.getWebSite());
+                goodsCountForsearch1.setHadBigzip(0);
+                goodsCountForsearch1.setHadVideo(0);
+                goodsCountForsearchMapper.insert(goodsCountForsearch1);
+            }
+            goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch, example);
+
+        }
+
 
         //4、更新es中对应goods数据，以上所有，需要在1个事务中进行
         ShiguGoodsTiny tiny = new ShiguGoodsTiny();
@@ -956,6 +1027,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(SynItem item) throws ItemModifyException {
+        return userUpdateItem(item,false);
+    }
+
+    @Override
+    public int userUpdateItem(SynItem item, Boolean updatePrice) throws ItemModifyException {
         if (item == null || item.getGoodsId() == null || item.getWebSite() == null || item.getShopId() == null)
             throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException, null);
         SynItem synItem = selItemByGoodsId(item.getGoodsId(), item.getWebSite());
@@ -979,7 +1055,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             for (Field field : item.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 Object o = field.get(item);//所有比较过程中，null默认跳过，空字条串认为有内容
-                if (o != null && !o.equals(field.get(synItem))) {
+                if (o != null && (!o.equals(field.get(synItem))||updatePrice)) {
                     if (field.getName().equals("picUrl")) {
                         picModifild = true;
                     }
@@ -1056,8 +1132,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 ShiguPropImgs propImgs = new ShiguPropImgs();
                 propImgs.setItemId(tiny.getGoodsId());
                 propImgs = shiguPropImgsMapper.selectOne(propImgs);
-
-                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs);
+                //查goods_count_forsearch表
+                GoodsCountForsearch goodsCountForsearch= new GoodsCountForsearch();
+                goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+                goodsCountForsearch=goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs, goodsCountForsearch);
             }
         }
         return null;
@@ -1081,7 +1160,12 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 propImgs.setItemId(tiny.getGoodsId());
                 propImgs = shiguPropImgsMapper.selectOne(propImgs);
 
-                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs);
+                //查goods_count_forsearch表
+                GoodsCountForsearch goodsCountForsearch= new GoodsCountForsearch();
+                goodsCountForsearch.setWebSite(webSite);
+                goodsCountForsearch.setGoodsId(tiny.getGoodsId());
+                goodsCountForsearch=goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                return ItemHelper.toSynItem(tiny, goodsExtends, propImgs,goodsCountForsearch);
             }
         }
         return null;
@@ -1117,6 +1201,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         Long price = new Double(Double.valueOf(item.getPriceString()) * 100).longValue();
         Long piPrice = priceCalculateService.pickPipriceFromTitle(
                 item.getShopId(),
+                item.getWebSite(),
+                null,
+                item.getNumIid(),
                 price,
                 strs
         );
@@ -1165,7 +1252,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             if(goodsCountForsearch != null) {
                 goodsCountForsearch.setGoodsId(goodsId);
                 goodsCountForsearch.setHadStyle(1);
-                goodsCountForsearch.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1179,7 +1268,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 GoodsCountForsearch goodsCountForsearch1 = new GoodsCountForsearch();
                 goodsCountForsearch1.setGoodsId(goodsId);
                 goodsCountForsearch1.setHadStyle(1);
-                goodsCountForsearch1.setSid(sid);
+                if (sid != null) {
+                    goodsCountForsearch1.setSid(sid.longValue());
+                }
                 if(sid<=2000){
                     SearchCategorySub searchCategorySub = new SearchCategorySub();
                     searchCategorySub.setSubId(Long.valueOf(sid));
@@ -1280,7 +1371,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ShiguCustomerStyleExample shiguCustomerStyleExample = new ShiguCustomerStyleExample();
         shiguCustomerStyleExample.createCriteria().andStyleIdEqualTo(goodsStyleId);
         List<ShiguCustomerStyle> shiguCustomerStyles = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample);
-        if (shiguCustomerStyles.size()>0&&shiguCustomerStyles!=null){
+        if (shiguCustomerStyles!=null&&shiguCustomerStyles.size()>0){
             ShiguCustomerStyle shiguCustomerStyle =shiguCustomerStyles.get(0);
             int sort1=shiguCustomerStyle.getSort();//调整前的序号
             int sort=shiguCustomerStyle.getSort()+sortType;//调整后的序号
@@ -1288,7 +1379,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguCustomerStyleExample1.createCriteria().andSortEqualTo(sort);
             List<ShiguCustomerStyle> shiguCustomerStyles1 = shiguCustomerStyleMapper.selectByExample(shiguCustomerStyleExample1);
             //调换序号
-            if(shiguCustomerStyles1.size()>0&&shiguCustomerStyles1!=null){
+            if(shiguCustomerStyles1!=null&&shiguCustomerStyles1.size()>0){
                 shiguCustomerStyle.setSort(sort);
                 shiguCustomerStyles1.get(0).setSort(sort1);
                 shiguCustomerStyleMapper.updateByPrimaryKey(shiguCustomerStyle);
@@ -1296,4 +1387,5 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             }
         }
     }
+
 }

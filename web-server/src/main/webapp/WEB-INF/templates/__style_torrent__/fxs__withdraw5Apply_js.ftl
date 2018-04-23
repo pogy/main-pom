@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/fxs/js/withdraw5Apply_v20180108_111832.js"></script>
+<script src="http://style.571xz.com/v6/fxs/js/withdraw5Apply_v20180115_132220.js"></script>

@@ -769,7 +769,7 @@ if(session_shopId != ""){
 <div class="loveGoodslist advs layout">
     <a class="sideNavbarDot" name="loveGoods" data-text="喜欢"></a>
     <h3><i class="iconLove"></i>猜您喜欢</h3>
-    <p class="title">实时推荐 最适合你的商品</p>
+    <p class="title">实时推荐 为你寻觅档口好货</p>
     <div class="clearfix goodslist">
         
         <#list loveGoodslist as pitem>
@@ -807,7 +807,7 @@ if(session_shopId != ""){
             <li>
                 <i class="iconServer manDp"></i>
                 <p>15,000多家档口</p>
-                <span>集合最优质货源</span>
+                <span>精选货源 一网打尽</span>
             </li>
             <li>
                 <i class="iconServer manUp"></i>

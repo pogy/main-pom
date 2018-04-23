@@ -105,7 +105,7 @@ public class MemberUserService {
      */
     public void memberUserLoginPhoneRepeat(){
         List<MemberUserPhoneRepeatVo> memberUserPhoneRepeatVoList = memberUserCopy2Mapper.selLoginPhoneRepeat();
-        List<Long> userIdList = new ArrayList<Long>();
+//        List<Long> userIdList = new ArrayList<Long>();
         for(int i = 0;i<memberUserPhoneRepeatVoList.size();i++){
             MemberUserPhoneRepeatVo memberUserPhoneRepeatVo = memberUserPhoneRepeatVoList.get(i);
             String [] userIds = memberUserPhoneRepeatVo.getUserIds().split(",");

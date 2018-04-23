@@ -1,5 +1,8 @@
 package com.shigu.tools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -19,6 +22,9 @@ import java.net.URL;
  * @commonents:
  */
 public class SmsClientAccessTool {
+
+    private Logger logger = LoggerFactory.getLogger(SmsClientAccessTool.class);
+
     private static SmsClientAccessTool smsClientToolInstance;
 
     /**
@@ -52,6 +58,7 @@ public class SmsClientAccessTool {
 
         StringBuffer receive = new StringBuffer();
         BufferedWriter wr = null;
+        DataOutputStream dos = null;
         try {
             if (backEncodType == null || backEncodType.equals("")) {
                 backEncodType = "UTF-8";
@@ -74,8 +81,7 @@ public class SmsClientAccessTool {
             URLConn.setRequestProperty("Content-Length", String
                     .valueOf(sendParam.getBytes().length));
 
-            DataOutputStream dos = new DataOutputStream(URLConn
-                                                                .getOutputStream());
+            dos = new DataOutputStream(URLConn.getOutputStream());
             dos.writeBytes(sendParam);
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(
@@ -92,10 +98,20 @@ public class SmsClientAccessTool {
             if (wr != null) {
                 try {
                     wr.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
                 }
-                wr = null;
+            }
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",e);
+                    }
+                }
             }
         }
 
@@ -135,10 +151,10 @@ public class SmsClientAccessTool {
                 try {
                     in.close();
                 } catch (java.io.IOException ex) {
-                    ex.printStackTrace();
+                    if (logger.isErrorEnabled()) {
+                        logger.error("关闭流失败",ex);
+                    }
                 }
-                in = null;
-
             }
         }
 

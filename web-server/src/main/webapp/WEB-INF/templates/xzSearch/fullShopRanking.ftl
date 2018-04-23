@@ -1,10 +1,10 @@
-<#assign $pageid>fullShopRanking</#assign>
+<#assign $pageid="fullShopRanking">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>${shopRanking.rankingTitle!} - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,17 +17,14 @@
 <#include "/__style_torrent__/xzSearch__fullShopRanking_js.ftl">
 </head>
 <body>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
-<#assign headerTitle></#assign>
-<#assign searchType>goods</#assign>
+<#assign headerTitle=null>
+<#assign searchType="goods">
 <#include "/common/xz__searchHeader.ftl">
-<#assign text>{"fields":[{"name":"id","value":""+rankingId}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#include "/__ftl_links__/xzSearch__common__pageNav.ftl">
+<#list [{"fields":[{"name":"id","value":""+query.id}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -36,7 +33,6 @@
 </form>
 </#if>
 </#list>
-<#include "/__ftl_links__/xzSearch__common__nav.ftl">
 <div class="layout shopRanking">
     <h3 class="title">${shopRanking.rankingTitle!}</h3>
     <div class="tableBox">
@@ -56,9 +52,7 @@
                         <span class="rank-num"><#if shopItem.rank gt 3>${shopItem.rank!}</#if></span>
                         <a class="place" href="/shop.htm?id=${shopItem.shopId!}">${shopItem.fullShopName!}</a>
                         <span class="honor">
-<#assign text>{"num":shopItem.shopLevel}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"num":shopItem.shopLevel}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
 </span>
@@ -90,9 +84,7 @@
             <tbody>
         </table>
     </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -100,9 +92,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -113,5 +103,7 @@
 </#list>
 </#list>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

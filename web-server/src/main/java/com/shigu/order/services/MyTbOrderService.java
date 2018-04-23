@@ -79,8 +79,10 @@ public class MyTbOrderService {
 
     @Autowired
     private OrderCityMapper orderCityMapper;
-
-
+    @Autowired
+    ItemTradeForbidMapper itemTradeForbidMapper;
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
 
     private static SimilarityMap<OrderProv> similarityProvMap;
     private static SimilarityMap<OrderCity> similarityCityMap;
@@ -155,6 +157,14 @@ public class MyTbOrderService {
                 .andTypeEqualTo(1)).where(marketExample.createCriteria().andIsParentEqualTo(1L).andWebSiteEqualTo(webSite),forbidExample.createCriteria().andForbidIdIsNull()).build();
         List<OnsaleMarket> onsaleMarkets=multipleMapper.selectFieldsByMultipleExample(multipleExample,OnsaleMarket.class);
         List<Long> mids=onsaleMarkets.stream().map(OnsaleMarket::getMarketId).collect(Collectors.toList());
+        ItemTradeForbidExample storeItemTradeForbidExample=new ItemTradeForbidExample();
+        storeItemTradeForbidExample.createCriteria().andTypeEqualTo(2).andCanSaleEqualTo(1);
+        List<ItemTradeForbid> stores=itemTradeForbidMapper.selectByExample(storeItemTradeForbidExample);
+        List<Long> storeIds=stores.stream().map(ItemTradeForbid::getTargetId).collect(Collectors.toList());
+        ShiguShopExample shiguShopExample=new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopIdIn(storeIds);
+        List<ShiguShop> shiguShops = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,market_id"));
+        mids.addAll(shiguShops.stream().map(ShiguShop::getMarketId).collect(Collectors.toSet()));
         ShiguAggsPager pager= itemSearchService.searchForTbItem(keyword,webSite,mids, SearchOrderBy.COMMON,page,size);
         ShiguPager<GoodsVO> vo=new ShiguPager<>();
         List<GoodsVO> gs=new ArrayList<>();
@@ -275,9 +285,9 @@ public class MyTbOrderService {
         SimilarityMap<OrderProv> provmap = similarityProvMap();
         SimilarityMap<OrderCity> citymap = similarityCityMap();
         SimilarityMap<OrderTown> townmap = similarityTownMap();
-        OrderProv prov=provmap.get(provName);
-        OrderCity city=citymap.get(cityName);
-        OrderTown town= org.apache.commons.lang3.StringUtils.isNotEmpty(townName)?townmap.get(townName):null;
+        OrderProv prov=provmap.get(provName,0L);
+        OrderCity city=citymap.get(cityName,prov.getProvId());
+        OrderTown town= org.apache.commons.lang3.StringUtils.isNotEmpty(townName)?townmap.get(townName,city.getCityId()):null;
         BuyerAddressVO buyerAddress = new BuyerAddressVO();
         buyerAddress.setAddress(simpleAddress);
         if (city != null) {
@@ -434,9 +444,9 @@ public class MyTbOrderService {
             SimilarityMap<OrderProv> provmap = similarityProvMap();
             SimilarityMap<OrderCity> citymap = similarityCityMap();
             SimilarityMap<OrderTown> townmap = similarityTownMap();
-            OrderProv prov=provmap.get(order.getProv());
-            OrderCity city=citymap.get(order.getCity());
-            OrderTown town=townmap.get(order.getTown());
+            OrderProv prov=provmap.get(order.getProv(),0L);
+            OrderCity city=citymap.get(order.getCity(),prov.getProvId());
+            OrderTown town=townmap.get(order.getTown(),city.getCityId());
             BuyerAddressVO buyerAddress = new BuyerAddressVO();
             if (prov != null && !fdlProvIds.contains(prov.getProvId())) {
                 buyerAddress.setProvId(prov.getProvId());
@@ -589,7 +599,7 @@ public class MyTbOrderService {
             similarityCityMap=new SimilarityMap<OrderCity>();
             OrderCityMapper orderCityMapper=SpringBeanFactory.getBean(OrderCityMapper.class);
             OrderCityExample example2 = new OrderCityExample();
-            List<OrderCity> citys = orderCityMapper.selectFieldsByExample(example2, FieldUtil.codeFields("city_id,city_name"));
+            List<OrderCity> citys = orderCityMapper.selectFieldsByExample(example2, FieldUtil.codeFields("city_id,city_name,prov_id"));
             for (OrderCity c : citys) {
                 similarityCityMap.put(c.getCityName(), c);
             }
@@ -601,7 +611,7 @@ public class MyTbOrderService {
             similarityTownMap=new SimilarityMap<OrderTown>();
             OrderTownMapper orderTownMapper=SpringBeanFactory.getBean(OrderTownMapper.class);
             OrderTownExample example2 = new OrderTownExample();
-            List<OrderTown> towns = orderTownMapper.selectFieldsByExample(example2, FieldUtil.codeFields("town_id,town_name"));
+            List<OrderTown> towns = orderTownMapper.selectFieldsByExample(example2, FieldUtil.codeFields("town_id,town_name,city_id"));
             for (OrderTown t : towns) {
                 similarityTownMap.put(t.getTownName(), t);
             }

@@ -1,10 +1,10 @@
-<#assign $pageid>fenxiaoZhanghao</#assign>
+<#assign $pageid="fenxiaoZhanghao">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>第三方绑定 - 分销商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -17,18 +17,14 @@
 <#include "/__style_torrent__/fxs__fenxiaoZhanghao_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isFxs":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isFxs":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/fxs__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>safecenter</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="safecenter">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/fxs__common__sidebar.ftl">
 </#list>
             <div class="rightBox">
@@ -104,6 +100,29 @@
             </div>
             <div class="status">
                 <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=4&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+            </div>
+        </li>
+        </#if>
+        <#if outer_jingdong??>
+        <li class="bd">
+            <div class="iconApplication">
+                <i class="icon${outer_jingdong.from!} iconApp"></i>
+                <i class="iconBd"></i>
+                <p>${outer_jingdong.name!}</p>
+            </div>
+            <div class="status">
+                <b class="unBind" jbtn="${outer_jingdong.from!}" data-id="${outer_jingdong.id!}">解绑</b>
+            </div>
+        </li>
+        <#else>
+        <li class="noBd">
+            <div class="iconApplication">
+                <i class="iconjingdong iconApp"></i>
+                <i class="iconBd"></i>
+                <p>京东</p>
+            </div>
+            <div class="status">
+                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
             </div>
         </li>
         </#if>

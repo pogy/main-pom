@@ -6,7 +6,7 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    <link href="http://style.571xz.com/indexV6/css/hzWoman.css?t=1515389370427" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV6/css/hzWoman.css?t=1515389370428" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV6/js/jquery.cookie.js"></script>
 <script>/*============ indexV6/page#layoutHeader BEGIN ============*/
@@ -164,7 +164,7 @@
                 </li>
                 <li>
                     <div class="cnBox">
-                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <a class="cgcom"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
@@ -193,7 +193,24 @@
                         </div>
                     </div>    
                 </li>
-                    
+                <li class="noDown">
+                    <a href="http://www.571xz.com/helpCenter/queIndex.htm" target="_blank">帮助中心</a>
+                </li>
+                <#if !session_user_redis__ ||  !session_user_redis__.logshop>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><em>手机版</em><i class="downArrow"></i></a>
+                        <div class="appQr cnBoxCon pa">
+                            <ul>
+                                <li>
+                                    <p><img src="http://style.571xz.com/v6/common/img/AppDownloadQr.png" width="80" hieght="80"></p>
+                                    <p class="fwb tac fs14" style="font-weight:bold; text-align:center; font-size:14px;">分销商App</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                </#if>
             </ul>
         </div>
     </div>
@@ -540,7 +557,6 @@ var webSite = '${webSite!}';
         </div>
         
         <div class="topBanner">
-            
             <div class="slides" id="slides"> 
                 <div class="ulDiv">
                     <ul>
@@ -772,7 +788,7 @@ if(session_shopId != ""){
 <div class="loveGoodslist advs layout">
     <a class="sideNavbarDot" name="loveGoods" data-text="喜欢"></a>
     <h3><i class="iconLove"></i>猜您喜欢</h3>
-    <p class="title">实时推荐 最适合你的商品</p>
+    <p class="title">实时推荐 为你寻觅档口好货</p>
     <div class="clearfix goodslist">
         
         <#list loveGoodslist as pitem>
@@ -808,7 +824,7 @@ if(session_shopId != ""){
             <li>
                 <i class="iconServer manDp"></i>
                 <p>15,000多家档口</p>
-                <span>集合最优质货源</span>
+                <span>精选货源 一网打尽</span>
             </li>
             <li>
                 <i class="iconServer manUp"></i>

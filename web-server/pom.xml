@@ -28,7 +28,7 @@
                 <version>9.4.8.v20171121</version>
                 <configuration>
                     <httpConnector>
-                        <port>9999</port>
+                        <port>80</port>
                     </httpConnector>
                 </configuration>
             </plugin>
@@ -44,6 +44,31 @@
         </plugins>
     </build>
     <dependencies>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>jdimg-sdk</artifactId>
+            <version>${jdimg-sdk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>shigu_goods_id_generator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>daifa_gift_goods</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.taobao</groupId>
+                    <artifactId>taobao-sdk-java-21720662</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -571,12 +596,26 @@
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!--JD API Dependencies Start-->
+        <dependency>
+            <groupId>com.jd</groupId>
+            <artifactId>open-api-sdk</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>sites.activity</groupId>
+            <artifactId>activity-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -588,7 +627,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -603,12 +642,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

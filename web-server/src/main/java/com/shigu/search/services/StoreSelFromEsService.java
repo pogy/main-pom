@@ -96,7 +96,7 @@ public class StoreSelFromEsService {
                 sis.setTel(s.getTelephone());
                 sis.setHighMarketName(s.getHighLightMarket());
                 sis.setHighName(s.getHighLightShopNum());
-                sis.setXy(shopForCdnService.selShopStarById(s.getShopId()).toString());
+                sis.setXy(shopForCdnService.selShopStarById(s.getShopId()));
                 ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,s.getShopId(),bo.getWebSite(),"common",1,4);
                 sis.setGoodsCount(itemPager.getTotalCount());
                 List<ItemShowBlock> simples=itemPager.getContent();

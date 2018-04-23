@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguHelpcenterLevel1Mapper">
+
+
+    <delete id="del" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterLevel1">
+        delete from shigu_helpcenter_level1 where pid = #{pid,jdbcType=INTEGER}
+    </delete>
+    <insert id="save" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterLevel1">
+        insert into shigu_helpcenter_level1(pid,name)
+        VALUES (#{pid},#{name})
+    </insert>
+    <update id="updata" parameterType="com.opentae.data.mall.beans.ShiguHelpcenterLevel1">
+        update shigu_helpcenter_level1
+        <set>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="name != null">name = #{name},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

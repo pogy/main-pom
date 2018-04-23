@@ -8,7 +8,7 @@ import java.io.IOException;
 public class JsoupUtil {
 
     public synchronized static Document getHtml(String url) throws IOException {
-        System.out.println(url);
+        //System.out.println(url);
         return getHtml(url,0);
     }
     public static Document getHtml(String url,int num) throws IOException {

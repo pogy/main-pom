@@ -150,7 +150,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations-java5</artifactId>
-            <version>RELEASE</version>
+            <version>15.0</version>
         </dependency>
 
         <!-- 微信支付包，默认配置公司微信账户为收款 -->

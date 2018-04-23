@@ -112,11 +112,11 @@ public class DataPackageUtil {
 
             return true;
         } catch (IOException e) {
-            //System.out.println("error: " + e.getMessage());
+            ////System.out.println("error: " + e.getMessage());
             e.printStackTrace();
             return false;
         } catch (Exception es) {
-            //System.out.println(es.getMessage());
+            ////System.out.println(es.getMessage());
             return false;
         } finally {// 关闭资源
             if (writer != null) {
@@ -170,11 +170,11 @@ public class DataPackageUtil {
 
 
         } catch (IOException e) {
-            //System.out.println("error: " + e.getMessage());
+            ////System.out.println("error: " + e.getMessage());
             e.printStackTrace();
 
         } catch (Exception es) {
-            //System.out.println(es.getMessage());
+            ////System.out.println(es.getMessage());
 
         } finally {// 关闭资源
             fileOut.close();
@@ -236,8 +236,8 @@ public class DataPackageUtil {
      */
     private static String savePic(String savepicPath, String url) {
         String result = "";
-        String picnameString[] = url.split("/");
-        String picname = picnameString[picnameString.length - 1];
+//        String picnameString[] = url.split("/");
+//        String picname = picnameString[picnameString.length - 1];
 
         Connection con = HttpConnUtil.getConnection(url);
         if (con != null) {
@@ -437,15 +437,15 @@ public class DataPackageUtil {
      */
     public static void zip(String inputFileName, String zipFileName) throws Exception {
         //zipFileName = "D:/tomcat6.0/webapps/main_site/upload/1/a59f4c07016e45308ede98581b13ef69.zip"; //打包后文件名字
-        //System.out.println("inputFileName="+inputFileName);
-        // System.out.println(zipFileName);
+        ////System.out.println("inputFileName="+inputFileName);
+        // //System.out.println(zipFileName);
         zip(zipFileName, new File(inputFileName));
     }
 
     private static void zip(String zipFileName, File inputFile) throws Exception {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
         zip(out, inputFile, "");
-        //System.out.println("zip done");
+        ////System.out.println("zip done");
         out.finish();
         out.close();
         out = null;
@@ -463,7 +463,7 @@ public class DataPackageUtil {
             out.putNextEntry(new org.apache.tools.zip.ZipEntry(base));
             FileInputStream in = new FileInputStream(f);
             int b;
-            // System.out.println(base);
+            // //System.out.println(base);
             while ((b = in.read()) != -1) {
                 out.write(b);
             }
@@ -494,7 +494,7 @@ public class DataPackageUtil {
                 in.close();
             }
             out.close();
-            //System.out.println("压缩完成.");
+            ////System.out.println("压缩完成.");
         } catch (IOException e) {
             e.printStackTrace();
         }

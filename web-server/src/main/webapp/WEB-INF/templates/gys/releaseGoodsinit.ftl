@@ -1,10 +1,10 @@
-<#assign $pageid>releaseGoodsinit</#assign>
+<#assign $pageid="releaseGoodsinit">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>发布商品 - 供应商后台 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -18,18 +18,14 @@
 <#include "/__style_torrent__/gys__releaseGoodsinit_js.ftl">
 </head>
 <body>
-<#assign text>{"disabledChooseCity":true,"isGys":true}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"disabledChooseCity":true,"isGys":true}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
 <#include "/__ftl_links__/gys__common__header.ftl">
 <div class="wrapper">
     <div class="layout">
-            <#assign sidebarType>index</#assign>
-<#assign text>{"type":sidebarType}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <#assign sidebarType="index">
+<#list [{"type":sidebarType}] as $it>
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
@@ -43,6 +39,16 @@
     </select>
 </div>
 <div class="categoryList clearfix">
+    <#if webSite == 'qz'>
+    <div class="categoryContainer" data-level="0">
+<ul>
+    <li data-cid="50011740" data-child="1">流行男鞋<i class="icon-rightarrow"></i></li>
+    <li data-cid="50006843" data-child="1">女鞋<i class="icon-rightarrow"></i></li>
+</ul>
+    </div>
+    <div class="categoryContainer" data-level="1">
+    </div>
+    <#else>
     <div class="categoryContainer" data-level="0">
 <ul>
     <li data-cid="30" data-child="1">男装<i class="icon-rightarrow"></i></li>
@@ -83,6 +89,7 @@
     <li data-cid="124730001" data-child="1">套装<i class="icon-rightarrow"></i></li>
 </ul>
     </div>
+    </#if>
     <div class="categoryContainer" data-level="2"></div>
     <div class="categoryContainer" data-level="3"></div>
 </div>
@@ -95,9 +102,7 @@
     </div>
 </div>
 <div class="category-submit">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -126,4 +131,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

@@ -64,7 +64,7 @@ public class DaifaWorkerService {
 
         DaifaWorkerExample example = new DaifaWorkerExample();
         example.setOrderByClause("daifa_worker_id desc");
-        DaifaWorkerExample.Criteria ce = example.createCriteria();
+//        DaifaWorkerExample.Criteria ce = example.createCriteria();
         //if (bo.getRoleName()!=null&& StringUtils.hasText(bo.getRoleName()+"")) {//
            // ce.andRoleNameEqualTo (bo.getRoleName());
             //ce.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());

@@ -1,5 +1,6 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.cdn.services.SimpleVideoService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.seller.bo.GoodsVideoLinkBO;
 import com.shigu.seller.services.SellerGoodsSimpleModifiedService;
@@ -29,12 +30,22 @@ public class SellerGoodsSimpleModifiedAction {
 
     @Autowired
     SellerGoodsSimpleModifiedService sellerGoodsSimpleModifiedService;
+    @Autowired
+    SimpleVideoService simpleVideoService;
 
     @RequestMapping("seller/setGoodsVideo")
     @ResponseBody
     public JSONObject setGoodsVideo(GoodsVideoLinkBO bo, HttpSession session, BindingResult bindingResult) throws JsonErrException {
         if (bindingResult.hasErrors()) {
-            throw new JsonErrException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        String tbUrl = bo.getGoodsVideoUrl();
+        if (!simpleVideoService.isTbUrl(tbUrl)){
+            return JsonResponseUtil.error("只支持使用淘宝视频地址的主图视频");
+        }
+        String videoUrl = bo.getGoodsVideoUrl();
+        if (!simpleVideoService.isVideoUrl(videoUrl)) {
+            return JsonResponseUtil.error("只支持使用mp4,webm和ogg格式的视频");
         }
         //只有供应商能修改商品视频
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/fxs/js/capStatistic_v20171213_144456.js"></script>
+<script src="http://style.571xz.com/v6/fxs/js/capStatistic_v20180301_153210.js"></script>

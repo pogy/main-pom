@@ -79,24 +79,44 @@ public class GoodsCountForsearch implements Serializable {
 	private String videoUrl;
 
     /**
-     * 是否设置了视频链接，给opensearch提供搜索项
+     * 是否设置了视频链接 0没有 1有 是否设置了视频链接，给opensearch提供搜索项
      */
 	private Integer hadVideo;
 
     /**
-     * 0是没有 1是有
+     * 是否有风格0没有 1有
      */
 	private Integer hadStyle;
 
     /**
-     * 风格名称  应对商品库风格查询
+     * 固定风格名称
      */
 	private String styleName;
 
     /**
-     * 风格id 
+     * 风格id
      */
-	private Integer sid;
+	private Long sid;
+
+    /**
+     * 具体商品风格id，shigu_style中具体风格id
+     */
+	private Long styleId;
+
+    /**
+     * 
+     */
+	private Long parentStyleId;
+
+    /**
+     * 商品风格频道搜索权重
+     */
+	private Long styleSearchScore;
+
+    /**
+     * 商品风格权重人工调整值
+     */
+	private Long styleSearchScoreAdded;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -234,12 +254,44 @@ public class GoodsCountForsearch implements Serializable {
 		return this.styleName;
 	}
 
-	public void setSid(Integer sid) {
+	public void setSid(Long sid) {
 		this.sid = sid;
 	}
 
-	public Integer getSid() {
+	public Long getSid() {
 		return this.sid;
+	}
+
+	public void setStyleId(Long styleId) {
+		this.styleId = styleId;
+	}
+
+	public Long getStyleId() {
+		return this.styleId;
+	}
+
+	public void setParentStyleId(Long parentStyleId) {
+		this.parentStyleId = parentStyleId;
+	}
+
+	public Long getParentStyleId() {
+		return this.parentStyleId;
+	}
+
+	public void setStyleSearchScore(Long styleSearchScore) {
+		this.styleSearchScore = styleSearchScore;
+	}
+
+	public Long getStyleSearchScore() {
+		return this.styleSearchScore;
+	}
+
+	public void setStyleSearchScoreAdded(Long styleSearchScoreAdded) {
+		this.styleSearchScoreAdded = styleSearchScoreAdded;
+	}
+
+	public Long getStyleSearchScoreAdded() {
+		return this.styleSearchScoreAdded;
 	}
 
 }

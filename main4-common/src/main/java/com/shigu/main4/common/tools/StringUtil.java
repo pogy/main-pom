@@ -1,9 +1,12 @@
 package com.shigu.main4.common.tools;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -31,6 +34,9 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class StringUtil {
+
+	public static Logger logger = LoggerFactory.getLogger(StringUtil.class);
+
 	// ~ 静态对象初始化
 	// ----------------------------------------------------------------
 
@@ -388,7 +394,7 @@ public class StringUtil {
 		String returnStr = null;
 
 		byte[] bt = str.getBytes();
-		System.out.println("Length of this String ===>" + bt.length);
+		//System.out.println("Length of this String ===>" + bt.length);
 		if (byteNum > 1) {
 			if (bt[byteNum] < 0) {
 				returnStr = new String(bt, 0, --byteNum);
@@ -403,7 +409,7 @@ public class StringUtil {
 					returnStr = new String(bt, 0, byteNum);
 				}
 			} else {
-				System.out.println("输入错误！！！请输入大于零的整数：");
+				//System.out.println("输入错误！！！请输入大于零的整数：");
 			}
 		}
 
@@ -786,6 +792,7 @@ public class StringUtil {
 	 * 设置prop文件的配置文件,读取配置文件中的map的映射对应关系,保存到infos对象中
 	 */
 	public static HashMap getPropertiesInfos(File propFile) {
+
 		// 对象为空,对象不存在,直接返回
 		if ((propFile == null) || !propFile.exists()) {
 			return null;
@@ -797,8 +804,18 @@ public class StringUtil {
 			fProp = new FileInputStream(propFile);
 			prop.load(fProp);
 		} catch (Exception ex) {
-			System.out.println(ex);
+			//System.out.println(ex);
 			return null;
+		}finally {
+			if (fProp != null) {
+				try {
+					fProp.close();
+				} catch (IOException e) {
+					if (logger.isErrorEnabled()) {
+						logger.error("关闭流失败",e);
+					}
+				}
+			}
 		}
 
 		HashMap infos = new HashMap();
@@ -886,7 +903,7 @@ public class StringUtil {
 	 *            DOCUMENT ME!
 	 */
 	public static void println(int i) {
-		System.out.println(i);
+		//System.out.println(i);
 	}
 
 	/**
@@ -896,7 +913,7 @@ public class StringUtil {
 	 *            DOCUMENT ME!
 	 */
 	public static void println(float f) {
-		System.out.println(f);
+		//System.out.println(f);
 	}
 
 	/**
@@ -906,7 +923,7 @@ public class StringUtil {
 	 *            DOCUMENT ME!
 	 */
 	public static void println(String str) {
-		System.out.println(str);
+		//System.out.println(str);
 	}
 
 	/**
@@ -917,7 +934,7 @@ public class StringUtil {
 	 */
 	public static void println(Object[] strs) {
 		for (int i = 0; i < strs.length; i++) {
-			System.out.println(strs[i]);
+			//System.out.println(strs[i]);
 		}
 	}
 
@@ -929,7 +946,7 @@ public class StringUtil {
 	 */
 	public static void println(List list) {
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+			//System.out.println(list.get(i));
 		}
 	}
 
@@ -946,10 +963,10 @@ public class StringUtil {
 		for (int i = 0; i < s.length; i++) {
 			Object val = map.get(s[i]);
 			if (val instanceof Map) {
-				System.out.println();
+				//System.out.println();
 				StringUtil.println((Map) val);
 			} else {
-				System.out.println(s[i] + "=" + val);
+				//System.out.println(s[i] + "=" + val);
 			}
 		}
 	}

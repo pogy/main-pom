@@ -6,9 +6,9 @@
     <title>逛市场 - 四季星座网</title>
     <meta name="keywords" content="四季星座网,四季星座论坛,杭州网店之家,网店代理货源,淘宝货源,男装货源,女装货源,一件代发,一键上传。">
     
-    <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
+    <meta name="description" content="发现好货-发现好货，每天实时推荐档口热卖好货！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=2017112301" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=2017112302" rel="stylesheet">
     
   </head>
 <body>
@@ -141,7 +141,7 @@
                 </li>
                 <li>
                     <div class="cnBox">
-                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <a class="cgcom"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
@@ -170,7 +170,24 @@
                         </div>
                     </div>    
                 </li>
-                    
+                <li class="noDown">
+                    <a href="http://www.571xz.com/helpCenter/queIndex.htm" target="_blank">帮助中心</a>
+                </li>
+                <#if !session_user_redis__ ||  !session_user_redis__.logshop>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><em>手机版</em><i class="downArrow"></i></a>
+                        <div class="appQr cnBoxCon pa">
+                            <ul>
+                                <li>
+                                    <p><img src="http://style.571xz.com/v6/common/img/AppDownloadQr.png" width="80" hieght="80"></p>
+                                    <p class="fwb tac fs14" style="font-weight:bold; text-align:center; font-size:14px;">分销商App</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                </#if>
             </ul>
         </div>
     </div>

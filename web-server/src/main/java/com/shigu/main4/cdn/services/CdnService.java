@@ -37,6 +37,7 @@ import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.ModuleVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
 
 import com.shigu.tools.KeyWordsUtil;
@@ -112,7 +113,11 @@ public class CdnService {
      * @return
      */
     public String bannerHtml(Long shopId,String webSite) throws IOException, TemplateException {
-        return shopDesignService.selHeadModuleWithData(shopId,webSite,false).getHtml();
+        ModuleVO moduleVO = shopDesignService.selHeadModuleWithData(shopId, webSite, false);
+        if (moduleVO == null) {
+            return "";
+        }
+        return moduleVO.getHtml();
     }
 
     /**
@@ -121,7 +126,10 @@ public class CdnService {
      * @return
      */
     public List<CatPolymerization> formatCatPoly(Long shopId){
-        List<CatPolymerization> cats=shopForCdnService.selCatRolymerizations(shopId);
+        List<CatPolymerization> cats = shopForCdnService.selCatRolymerizations(shopId);
+        if (cats == null || 0 == cats.size()) {
+            cats = new ArrayList<>();
+        }
         List<CatPolyFormatVO> polys=new ArrayList<>();
         for(CatPolymerization c:cats){
             polys.add(new CatPolyFormatVO(c));
@@ -224,6 +232,9 @@ public class CdnService {
      */
     public ShopShowVO shopSimpleVo(Long shopId){
         ShopShowVO shopShowVO=new ShopShowVO();
+        if (shopId == null) {
+            return shopShowVO;
+        }
         shopShowVO.setOther(shopForCdnService.selShopBase(shopId));
         shopShowVO.setDomain(shopBaseService.selDomain(shopId));
         shopShowVO.setHasAuth(shopBaseService.shopAuthState(shopId));
@@ -232,9 +243,15 @@ public class CdnService {
         //查商品
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
-        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
-        Long starNum=shopForCdnService.selShopStarById(shopId);
-        starNum=starNum==null?0:starNum;
+        StoreRelation storeRelation = shopShowVO.getStoreRelation();
+        if (storeRelation != null) {
+            String webSite = storeRelation.getWebSite();
+            shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId, webSite));
+        }
+        Long starNum = shopForCdnService.selShopStarById(shopId);
+        if (starNum == null) {
+            starNum = 0L;
+        }
         shopShowVO.setStarNum(starNum);
         return shopShowVO;
     }
@@ -323,7 +340,7 @@ public class CdnService {
         vo.setTitle(cdnItem.getTitle());
         vo.setTbGoodsId(cdnItem.getTbNumIid());
         vo.setGoodsVideoUrl(cdnItem.getGoodsVideoUrl());
-        vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+        //vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
         vo.setFabric(cdnItem.getFabric());
         vo.setInFabric(cdnItem.getInFabric());
 
@@ -336,12 +353,15 @@ public class CdnService {
         }
         List<NormalProp> nps=cdnItem.getNormalProps();
         List<CdnGoodsPropVO> props=new ArrayList<>();
-        for(NormalProp np:nps){
-            CdnGoodsPropVO prop=new CdnGoodsPropVO();
-            prop.setName(np.getPname());
-            prop.setValue(np.getValue());
-            props.add(prop);
+        if (nps != null && !nps.isEmpty()) {
+            for(NormalProp np:nps){
+                CdnGoodsPropVO prop=new CdnGoodsPropVO();
+                prop.setName(np.getPname());
+                prop.setValue(np.getValue());
+                props.add(prop);
+            }
         }
+
         vo.setNormalAttrs(props);
         if (shopsItemService.checkHasLowestLiPriceSet(goodsId)) {
             vo.setLowestLiPrice(vo.getLiPrice());
@@ -399,8 +419,10 @@ public class CdnService {
         vo.setShopNo(shop.getStoreNum());
         vo.setMobile(shop.getTelephone());
         //星星数
-        Long starNum=shopForCdnService.selShopStarById(shopId);
-        starNum=starNum==null?0:starNum;
+        Long starNum = shopForCdnService.selShopStarById(shopId);
+        if (starNum == null) {
+            starNum = 0L;
+        }
         vo.setStarNum(starNum);
         //其他信息
         ShopBaseForCdn other=shopForCdnService.selShopBase(shopId);
@@ -434,7 +456,6 @@ public class CdnService {
         List<CdnShopCatVO> cdnCats= BeanMapper.mapList(cats,CdnShopCatVO.class);
         return cdnCats;
     }
-
     /**
      * 看了有看
      * @param shopId

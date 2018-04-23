@@ -6,14 +6,20 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
+import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.services.UserShopService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
+import com.shigu.main4.ucenter.vo.LoginRecord;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.IpUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -24,9 +30,13 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +53,12 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 
     @Autowired
     UserLicenseService userLicenseService;
+
+    @Autowired
+    RegisterAndLoginService registerAndLoginService;
+
+    @Autowired
+    HttpServletRequest request;
 
     public MemberRealm() {
         super();
@@ -93,7 +109,50 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //                        +tokens.getLoginFromType().getAccountType(),ufs);
             }
 //        }
-		saInfo = new SimpleAuthenticationInfo(ufs, tokens.getPassword(), getName());
+
+        //验证登陆密码，验证通过则记录登陆记录
+            try {
+                boolean flag = true;
+                if (ufs.getLoginFromType() == LoginFromType.XZ) {//只有星座登陆要验证
+                    String pwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
+                    if (pwd != null) {
+                        String utf8Pwd = new String(new String(tokens.getPassword()).getBytes("utf-8"));
+                        String defaultPwd = new String(tokens.getPassword());
+                        //不管编码了
+                        if (! (EncryptUtil.encrypt(utf8Pwd).equals(pwd) || EncryptUtil.encrypt(defaultPwd).equals(pwd))) {
+                            flag = false;
+                        }
+                    }
+                }
+
+                if (flag) {
+                    Date now = new Date();
+                    //添加登陆记录
+                    LoginRecord loginRecord = new LoginRecord();
+                    loginRecord.setUserId(ufs.getUserId());
+                    loginRecord.setSubUserId(ufs.getSubUserId());
+                    loginRecord.setSubUserName(ufs.getLoginName());
+                    loginRecord.setLoginFromType(ufs.getLoginFromType());
+
+                    loginRecord.setTime(now);
+                    //随时随地获取当前request
+                    //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+                    loginRecord.setIp(IpUtil.getIpFromRequest(request));
+
+                    registerAndLoginService.loginRecord(loginRecord);
+
+                    //修改MemberUser表最后登录时间
+                    UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+                    userInfoUpdate.setUserId(ufs.getUserId());
+                    userInfoUpdate.setLastTime(now);
+                    userBaseService.updateUserInfo(userInfoUpdate);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        saInfo = new SimpleAuthenticationInfo(ufs, tokens.getPassword(), getName());
         return saInfo;
     }
 
@@ -102,12 +161,13 @@ public class MemberRealm extends ShiguAuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //System.out.println("授权判断--------------------------------------------------");
+        ////System.out.println("授权判断--------------------------------------------------");
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //查出用户所有的权限
         info.addRole(UserType.MEMBER.getValue());
 
-        Session session = SecurityUtils.getSubject().getSession();
+        Subject subject = SecurityUtils.getSubject();
+        Session session = subject.getSession();
 
         PersonalSession auth = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
@@ -135,6 +195,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //		}
 //		info.addRoles(roleStrings);
 //		info.addObjectPermissions(allPermissions);
+
         return info;
     }
 

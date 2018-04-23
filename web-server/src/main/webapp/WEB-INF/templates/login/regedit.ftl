@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>注册 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -91,16 +91,18 @@
     <p>你也可以用以下方式登录：</p>
     <ul>
         <li><a href="ortherLogin.htm?ortherLoginType=1&backUrl=${backUrl!}" target="_blank" alt="淘宝账号登陆" title="淘宝账号登陆"><i class="icon-s-taobao"></i><span>淘宝账号</span></a></li>
-        <li><a href="ortherLogin.htm?ortherLoginType=2&backUrl=${backUrl!}" target="_blank"  alt="阿里账号登陆" title="阿里账号登陆"><i class="icon-s-alibaba"></i><span>阿里巴巴账号</span></a></li>
+        <li><a href="ortherLogin.htm?ortherLoginType=2&backUrl=${backUrl!}" target="_blank"  alt="阿里账号登陆" title="阿里账号登陆"><i class="icon-s-alibaba"></i><span>阿里巴巴</span></a></li>
         <li><a href="ortherLogin.htm?ortherLoginType=4&backUrl=${backUrl!}" target="_blank"  alt="微信登陆" title="微信登陆"><i class="icon-s-weixin"></i><span>微信</span></a></li>
+        <li><a href="ortherLogin.htm?ortherLoginType=6&backUrl=${backUrl!}" target="_blank"  alt="京东登陆" title="京东登陆"><i class="icon-s-jingdong"></i><span>京东</span></a></li>
     </ul>
 </div>
     </div>
 </div>
-<div class="footer">
+<#list [{}] as $it>
+<div class="footer ${$it.bg!}">
     <div class="inner">
         <p class="sitemap">
-            <a href="/" target="_blank">首页</a>
+            <a href="${mainHost!}/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
             <a href="http://gz.571xz.com" target="_blank">广州站</a>
@@ -130,4 +132,5 @@
         </p>
     </div>
 </div>
+</#list>
 <#include "/common/cnzz.ftl">

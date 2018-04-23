@@ -455,7 +455,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
 
 
             } catch (DaifaException e) {
-                // System.out.println("11111@@@"+e.getMessage ());
+                // //System.out.println("11111@@@"+e.getMessage ());
 
                 assertTrue (true);
             }

@@ -265,19 +265,6 @@
             >广告展示管理</a>
         </li>
         </#if>
-        <#if 'http://www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
-        <li>
-            <a
-                class="
-                    <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
-                            selected
-                    </#if>
-                "
-                    href="http://www.571xz.com/qualityControl.htm"
-                    target="_blank"
-            >我要质检</a>
-        </li>
-        </#if>
         <#if 'actRegister' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -305,6 +292,9 @@
                                     selected
                             </#if>
                             <#if 'iwantToRechargein5' == $pageid >
+                                    selected
+                            </#if>
+                            <#if 'userBonus' == $pageid >
                                     selected
                             </#if>
                 "

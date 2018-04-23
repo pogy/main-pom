@@ -5,17 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.TaobaoSessionMap;
-import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -48,6 +40,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -92,6 +85,18 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     @Autowired
     ProducerBean producer;
 
+    @Autowired
+    private ShiguNewActivityMapper shiguNewActivityMapper;
+
+    @Autowired
+    private ShiguNewActiveParticipantsMapper shiguNewActiveParticipantsMapper;
+
+    @Autowired
+    private ShiguNewActivityUpRecordMapper shiguNewActivityUpRecordMapper;
+
+    @Autowired
+    private ShiguTaobaocatMapper shiguTaobaocatMapper;
+
     //上传类目统计前缀
     String CAT_UP_COUNT_INDEX = "count_upload_for_cat_cid_index_";
 
@@ -108,6 +113,14 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         }
         itemUpRecordVO.setStatus(0L);
 
+        // 充值送现金活动上传统计
+        try {
+            countUploadForCash(itemUpRecordVO);
+        } catch (Exception e) {
+            logger.error("充值送现金活动上传统计发生异常。", e);
+        }
+
+
         JSONObject goodsUp = JSON.parseObject(JSON.toJSONString(itemUpRecordVO));
         Object supperPiPrice = goodsUp.get("supperPiPrice");
         if (supperPiPrice != null) {
@@ -121,9 +134,14 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 //        ElasticRepository elasticRepository = new ElasticRepository();
 //        elasticRepository.insert(bean);
         redisIO.rpush(goodslistName,bean);
+
         //推送消息
-        pushAddMessage(itemUpRecordVO);
+        try {
+            pushAddMessage(itemUpRecordVO);
 //        producer.sendAsync(new Message());
+        } catch (Exception e) {
+            logger.error("推送消息失败", e);
+        }
 
         //每周类目上传统计
         RankingPeriodEnum periodEnum = RankingPeriodEnum.RANKING_BY_WEEK;
@@ -143,6 +161,127 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 logger.error("上传后重算星星数失败",e);
             }
         }
+    }
+
+    /**
+     * 充值送现金活动上传统计（只统计上传到出售中的男装）
+     * @param itemUpRecordVO
+     */
+    public void countUploadForCash(ItemUpRecordVO itemUpRecordVO) {
+        if ("web-tb".equals(itemUpRecordVO.getFlag()) || "tb".equals(itemUpRecordVO.getFlag())) { // pc端或app端上传到淘宝
+            if ("onsale".equals(itemUpRecordVO.getApproveStatus()) || "instock".equals(itemUpRecordVO.getApproveStatus())
+                    || "onsale_clock".equals(itemUpRecordVO.getApproveStatus())) {
+                Date now = new Date();
+                ShiguNewActivity activity = getActivityNow(now); // 获取当前活动
+                if (activity != null) {
+                    if (isMan(itemUpRecordVO.getCid())) { // 男装
+                        int type = 1; // 上传到出售中
+                        if ("instock".equals(itemUpRecordVO.getApproveStatus())) {
+                            type = 2; // 上传到仓库中
+                        }
+                        // 先保存上传记录，再增加上传数
+                        if (saveActivityUpRecord(itemUpRecordVO.getFenUserId(), itemUpRecordVO.getSupperGoodsId(), activity.getId(), now, type)) {
+                            increaseUploadNum(itemUpRecordVO.getFenUserId(), activity.getId(), now, type);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 保存活动期间的上传记录
+     * @return
+     */
+    private boolean saveActivityUpRecord(Long memberId, Long goodsId, Long activityId, Date now, int type) {
+        ShiguNewActivityUpRecordExample example = new ShiguNewActivityUpRecordExample();
+        ShiguNewActivityUpRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andNewActiveIdEqualTo(activityId).andMemberIdEqualTo(memberId).andGoodsIdEqualTo(goodsId);
+        if (type == 1) {
+            criteria.andTypeEqualTo(type);
+        }
+        List list = shiguNewActivityUpRecordMapper.selectByExample(example);
+        if (list == null || list.isEmpty()) {
+            // 没记录的时候保存
+            int count = 0;
+            ShiguNewActivityUpRecord record = new ShiguNewActivityUpRecord();
+            record.setMemberId(memberId);
+            record.setGoodsId(goodsId);
+            record.setNewActiveId(activityId);
+            record.setType(type);
+            record.setGmtCreate(now);
+            record.setGmtModify(now);
+            try {
+                count = shiguNewActivityUpRecordMapper.insert(record);
+            } catch (DuplicateKeyException e) {
+                // 唯一索引冲突，无需处理
+                System.out.println("ShiguNewActivityUpRecord唯一索引冲突，记录一下看看，无需处理: " + record);
+            }
+            return count == 1; // 等于1表示保存成功
+        }
+        return false;
+    }
+
+    /**
+     * 增加用户的上传记录数
+     */
+    private void increaseUploadNum(Long memberId, Long activityId, Date now, int type) {
+        int count;
+        if (type == 1) {
+            count = shiguNewActiveParticipantsMapper.increaseUploadNum(memberId, activityId);
+        } else {
+            count = shiguNewActiveParticipantsMapper.increaseUploadStoreNum(memberId, activityId);
+        }
+        if (count < 1) {
+            // 数据库中不存在记录，则新增
+            ShiguNewActiveParticipants participants = new ShiguNewActiveParticipants();
+            participants.setMemberId(memberId);
+            participants.setNewActiveId(activityId);
+            if (type == 1) {
+                participants.setGoodsUploadNum(1L);
+                participants.setGoodsUploadStoreNum(0L);
+            } else {
+                participants.setGoodsUploadNum(0L);
+                participants.setGoodsUploadStoreNum(1L);
+            }
+            participants.setWinningStatus(1);
+            participants.setGmtCreate(now);
+            participants.setGmtModify(now);
+            try {
+                shiguNewActiveParticipantsMapper.insert(participants);
+            } catch (DuplicateKeyException e) {
+                // 唯一索引冲突，无需处理
+                System.out.println("ShiguNewActiveParticipants唯一索引冲突，记录一下看看，无需处理: " + participants);
+            }
+        }
+    }
+
+    /**
+     * 获取当前进行的上传得现金活动
+     * @return
+     */
+    private ShiguNewActivity getActivityNow(Date now) {
+        ShiguNewActivity activity = null;
+        ShiguNewActivityExample example = new ShiguNewActivityExample();
+        example.setEndIndex(0);
+        example.setEndIndex(1);
+        ShiguNewActivityExample.Criteria criteria = example.createCriteria();
+        criteria.andStartTimeLessThanOrEqualTo(now).andEndTimeGreaterThanOrEqualTo(now);
+        List<ShiguNewActivity> activityList = shiguNewActivityMapper.selectFieldsByExample(example, "id,title");
+        if (activityList != null && !activityList.isEmpty()) {
+            activity = activityList.get(0);
+        }
+        return activity;
+    }
+
+    /**
+     * 是否男装
+     * @param cid
+     * @return
+     */
+    private boolean isMan(Long cid) {
+        ShiguTaobaocat cat = shiguTaobaocatMapper.selectByPrimaryKey(cid);
+        return cat != null && (cat.getParentCid() == 30L || cat.getCid() == 30L);
     }
 
     @Override
@@ -188,35 +327,39 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         if(userId == null || supperGoodsId == null){
             return null;
         }
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
-        boleanQueryBuilder.must(query);
-        BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
-        QueryBuilder flagQuery=QueryBuilders.termQuery("flag","web-tb");
-        flagbool.should(flagQuery);
-        flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
-        flagbool.minimumNumberShouldMatch(1);
-        boleanQueryBuilder.must(flagbool);
-        QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
-        boleanQueryBuilder.must(queryGoods);
-        QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
-        boleanQueryBuilder.must(stautsQuery);
-        srb.addSort("daiTime", SortOrder.DESC);
-        srb.setSize(1);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if (hits == null || hits.length == 0) {
+        try {
+            SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+            BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+            BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
+            QueryBuilder flagQuery=QueryBuilders.termQuery("flag","web-tb");
+            flagbool.should(flagQuery);
+            flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
+            flagbool.minimumNumberShouldMatch(1);
+            boleanQueryBuilder.must(flagbool);
+            QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
+            boleanQueryBuilder.must(queryGoods);
+            QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
+            boleanQueryBuilder.must(stautsQuery);
+            srb.addSort("daiTime", SortOrder.DESC);
+            srb.setSize(1);
+            srb.setQuery(boleanQueryBuilder);
+            SearchResponse response = srb.execute().actionGet();
+            SearchHit[] hits = response.getHits().getHits();
+            if (hits == null || hits.length == 0) {
+                return null;
+            }
+            SearchHit hit = hits[0];
+            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+            Date daitime = DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD);
+            LastUploadedVO vo=new LastUploadedVO();
+            vo.setLastTime(daitime);
+            vo.setNumIid(shiguGoodsUp.getFenNumiid());
+            return vo;
+        } catch (Exception e) {
             return null;
         }
-        SearchHit hit = hits[0];
-        ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-        Date daitime = DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD);
-        LastUploadedVO vo=new LastUploadedVO();
-        vo.setLastTime(daitime);
-        vo.setNumIid(shiguGoodsUp.getFenNumiid());
-        return vo;
     }
 
     /**
@@ -523,7 +666,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             idsBoolQuery.should(queryId);
         }
         boleanQueryBuilder.must(idsBoolQuery);
-        System.out.println(boleanQueryBuilder);
+        //System.out.println(boleanQueryBuilder);
         srb.setQuery(boleanQueryBuilder);
         SearchResponse response = srb.execute().actionGet();
         SearchHit[] hits = response.getHits().getHits();
@@ -581,9 +724,18 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             Map<String, Object> source = hit.getSource();
             HotUpItem hotUpItem = new HotUpItem();
             hotUpItems.add(hotUpItem);
-            hotUpItem.setGoodsId(Long.valueOf(source.get("supperGoodsId").toString()));
-            hotUpItem.setPrice(source.get("supperPrice").toString());
-            hotUpItem.setImgUrl(source.get("supperImage").toString());
+            Object supperGoodsId = source.get("supperGoodsId");
+            if (supperGoodsId != null) {
+                hotUpItem.setGoodsId(Long.valueOf(supperGoodsId.toString()));
+            }
+            Object supperPrice = source.get("supperPrice");
+            if (supperPrice != null) {
+                hotUpItem.setPrice(supperPrice.toString());
+            }
+            Object supperImage = source.get("supperImage");
+            if (supperImage != null) {
+                hotUpItem.setImgUrl(supperImage.toString());
+            }
         }
         return hotUpItems;
     }

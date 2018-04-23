@@ -17,6 +17,7 @@ import com.shigu.main4.daifa.utils.KdConfig;
 import com.shigu.main4.daifa.utils.KdHttpUtil;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.QueryPostCodeVO;
+import com.sun.org.apache.bcel.internal.generic.IFNE;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

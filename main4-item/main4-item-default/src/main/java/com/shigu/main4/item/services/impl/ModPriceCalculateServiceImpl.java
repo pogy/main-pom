@@ -69,6 +69,11 @@ public class ModPriceCalculateServiceImpl implements PriceCalculateService {
         return price;
     }
 
+    @Override
+    public Long pickPipriceFromTitle(Long shopId,String webSite, Long itemId, Long numIid, Long price, String... strs) {
+        return null;
+    }
+
     interface ModH {
         Long handle(List<Long> prices, Long oldPrice);
     }

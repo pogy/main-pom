@@ -206,7 +206,7 @@ public class UserLoginAction {
                 }
                 break;
             case 2:
-                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=8E3A8CB1174177B346BEA3F67FABDF2678E07D71&redirect_uri=http://1688.571xz.com/offer/ali_redirect_auth.jsp&state=login&client_id=5684643";
+                url = "http://gw.open.1688.com/auth/authorize.htm?site=china&_aop_signature=84191BF522D37B802A5FB0AE596739C995A4A16C&redirect_uri=http://1688.571xz.com/offer/authorizeauth.htm&state=login&client_id=1022851";
                 break;
             case 3:
                 url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
@@ -220,14 +220,18 @@ public class UserLoginAction {
                         + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
                 break;
             }
-            case 5:
-                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
-                        +"redirect_auth.jsp&state=login&view=web";
+            case 5: {
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=" + xzSdkClient.getYjHost()
+                        + "redirect_auth.jsp&state=login&view=web";
 
-                    url=url.replace("&view=web","&view=wap");
-
-
-
+                url = url.replace("&view=web", "&view=wap");
+                break;
+            }
+            //京东授权
+            case 6:{
+                url = "http://www.571xz.com/jd/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
         return "redirect:"+url;
@@ -313,7 +317,20 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 手机号码登陆,无验证码
+     * @return
+     */
+    @RequestMapping("loginWindowGetMsgCode")
+    @ResponseBody
+    public JSONObject loginWindowGetMsgCode(String telephone, HttpSession session) {
+        String code= RedomUtil.redomNumber(6);
+        session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
         return JsonResponseUtil.success();
     }
 
@@ -413,7 +430,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JsonResponseUtil.success();
     }
 
@@ -477,7 +494,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(phone, code));
         sendMsgService.sendVerificationCode(phone, code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JSONObject.fromObject("{'result':'success'}");
     }
 
@@ -678,7 +695,7 @@ public class UserLoginAction {
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
         sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-//        System.out.println(code);
+//        //System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
@@ -722,7 +739,7 @@ public class UserLoginAction {
           // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
             String key= Opt3Des.encryptPlainData (shopId+"");
            String back=backUrl+"?key="+key;
-          // System.out.println (back);
+          // //System.out.println (back);
             return "redirect:"+back;
         }else{
             return "redirect:loginWindow.htm";

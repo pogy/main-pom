@@ -66,7 +66,7 @@ public class EncryptUtil {
 
     public static void main(String args[]) {
         String pwd =  encrypt("123456");
-        System.out.print(pwd);
+        //System.out.print(pwd);
     }
 
 }

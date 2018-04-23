@@ -24,6 +24,8 @@
         <module>daifa-server</module>
         <module>daifa-sdk</module>
         <module>main4-sdks</module>
+        <module>jdimg-server</module>
+        <module>jdimg-sdk</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -49,6 +51,9 @@
         <main4-daifa-default.version>${project.version}</main4-daifa-default.version>
         <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
         <daifa-sdk.version>${project.version}</daifa-sdk.version>
+        <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
+
+
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>
@@ -143,7 +148,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -155,7 +160,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
+            <url>http://192.168.1.193:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -170,12 +175,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.193:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

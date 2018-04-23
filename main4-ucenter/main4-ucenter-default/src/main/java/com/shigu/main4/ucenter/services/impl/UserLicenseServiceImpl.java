@@ -466,6 +466,12 @@ public class UserLicenseServiceImpl implements UserLicenseService {
         if (userId == null) {
             return "请先登陆";
         }
+        if (org.apache.commons.lang3.StringUtils.isEmpty(alipayName)) {
+            return "提示：对不起，请您填写真实姓名，真实姓名是您进行支付宝账户绑定时重要的信息。";
+        }
+        if (alipayName.length() > 150) {
+            return "提示：对不起，请您填写真实姓名，真实姓名是您进行支付宝账户绑定时重要的信息。";
+        }
         if (StringUtils.isBlank(alipayId) || StringUtils.isBlank(alipayName)) {
             return "请输入正确的支付宝帐号和姓名";
         }
