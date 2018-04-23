@@ -6,6 +6,7 @@ import com.shigu.main4.monitor.vo.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 宝贝上传记录服务
@@ -137,5 +138,21 @@ public interface ItemUpRecordService {
      * @return
      */
     List<DataLineVO> dailiSellerLevelLine(Long shopId);
+
+    /**
+     * 修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsId
+     * @param num
+     */
+    void updateGoodsUpCountForSearchNum(long goodsId,long num);
+
+    /**
+     * 批量修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsIds
+     * @param num
+     */
+    void updateGoodsUpCountForSearchNum(Set<Long> goodsIds, long num);
 
 }
