@@ -599,7 +599,7 @@ public class CdnAction {
     public String zlindex4show(HttpServletRequest request, Model model) {
         Cookie[] cookies = request.getCookies();
         String manOrWoman = "Man";
-        String webSite = "qz";
+        String webSite = "zl";
         IndexPageVO page = new IndexPageVO();
         page.setType("M");
         page.setTypeText("男童");
@@ -646,7 +646,7 @@ public class CdnAction {
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
-            return "zlIndex/index";
+            return "hzMan/zlIndex";
         } else {
             return "index/index";
         }
