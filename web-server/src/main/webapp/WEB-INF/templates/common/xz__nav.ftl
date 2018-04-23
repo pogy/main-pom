@@ -132,7 +132,7 @@
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm?webSite=zl" target="_blank">
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
         今日新品
     </a>
 </li>
