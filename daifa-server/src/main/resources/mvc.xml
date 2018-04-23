@@ -25,6 +25,24 @@
     </mvc:annotation-driven>
     <mvc:default-servlet-handler/>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*/submitAllocation.*"/><!--分配-->
+            <mvc:mapping path="/*/setIsGetGoodsJson.*"/><!--网页端已拿或缺货-->
+            <mvc:mapping path="/*/setTimeJson.*"/><!--拿货时间-->
+            <mvc:mapping path="/*/setTallyJson.*"/><!--标记下架-->
+            <mvc:mapping path="/*/toNotTake.*"/><!--已拿转缺货-->
+            <mvc:mapping path="/*/refuseAfterSale.*"/><!--拒绝受理-->
+            <mvc:mapping path="/*/agreeAfterSale.*"/><!--受理-->
+            <mvc:mapping path="/*/editRefund.*"/><!--议价该价格-->
+            <mvc:mapping path="/*/writeRefund.*"/><!--档口同意退货-->
+            <mvc:mapping path="/*/writeStockCode.*"/><!--档口拒绝退货-->
+            <mvc:mapping path="/*/noPostRefund.*"/><!--未发退款-->
+            <mvc:mapping path="/api/shortComplete.*/"/><!--手机提交拿货完成-->
+            <bean class="com.shigu.resolver.ActResolver"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
     <bean id="freemarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>

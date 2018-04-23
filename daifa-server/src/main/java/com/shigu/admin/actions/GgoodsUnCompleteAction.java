@@ -1,9 +1,17 @@
 package com.shigu.admin.actions;
 
 import com.shigu.admin.bo.GgoodsUmCompleteBO;
+import com.shigu.admin.bo.WorkerTakeGoodsBO;
 import com.shigu.admin.services.GgoodsUnCompleteService;
 import com.shigu.admin.vo.GgoodsUmCompleteVO;
 import com.shigu.config.DaifaSessionConfig;
+import com.shigu.daifa.bo.SelectDaifaGgoodsListBO;
+import com.shigu.daifa.services.DaifaAllOrderIndexService;
+import com.shigu.daifa.services.DaifaAllocatedService;
+import com.shigu.daifa.vo.DaifaAllocatedVO;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -15,8 +23,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -33,6 +45,10 @@ import java.util.concurrent.ExecutionException;
 public class GgoodsUnCompleteAction {
     @Autowired
     GgoodsUnCompleteService ggoodsUnCompleteService;
+    @Autowired
+    DaifaAllocatedService daifaAllocatedService;
+    @Autowired
+    DaifaAllOrderIndexService daifaAllOrderIndexService;
     /**
      * ====================================================================================
      * @方法名： listByPage
@@ -81,5 +97,26 @@ public class GgoodsUnCompleteAction {
             return JsonResponseUtil.error ("修改错误！");
         }
 
+    }
+
+    @RequestMapping("admin/workerTakeGoods")
+    public String workerTakeGoods(WorkerTakeGoodsBO bo, Model model){
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",0+","+10+","+1);
+        model.addAttribute("childOrders",new ArrayList<>());
+        model.addAttribute("workers",ggoodsUnCompleteService.getSellers().stream()
+            .map(seller -> daifaAllOrderIndexService.getUserList(seller.getId()))
+                .flatMap(Collection::stream).collect(Collectors.toList())
+        );
+        if(bo.getSearchWorkerId()==null){
+            return "admin/workerTakeGoods";
+        }
+        if(StringUtil.isNull(bo.getStartTime())){
+            bo.setStartTime(DateUtil.dateToString(new Date(),DateUtil.patternA));
+        }
+        ShiguPager<DaifaAllocatedVO> pager=ggoodsUnCompleteService.workerTakeGoods(bo.getSearchWorkerId(),bo.getStartTime(),bo.getPage());
+        model.addAttribute("childOrders",pager.getContent());
+        model.addAttribute("pageOption",pager.getTotalCount()+","+10+","+bo.getPage());
+        return "admin/workerTakeGoods";
     }
 }

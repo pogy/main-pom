@@ -118,7 +118,11 @@ public class OrderModelImpl implements OrderModel {
             }
             daifaTrade.setGoodsNum ((long) num);
             LogisticsBO logisticsBO = orderBO.getLogistics ().get (0);
-            daifaTrade.setReceiverName (logisticsBO.getName ());
+
+            String receiveName=logisticsBO.getName ().replaceAll ("\\+","");
+            daifaTrade.setReceiverName (receiveName);
+
+
             daifaTrade.setReceiverPhone (logisticsBO.getTelephone ());
             daifaTrade.setReceiverState (logisticsBO.getProv ());
             /////////////////////////==============地址处理start===========///////////////////////////
@@ -156,6 +160,7 @@ public class OrderModelImpl implements OrderModel {
             addrs=addrs.replaceAll (" ","");
             addrs=addrs.replaceAll (",","");
             addrs=addrs.replaceAll ("，","");
+            addrs=addrs.replaceAll ("\\+","");
             ////////////////////////===============地址处理end============/////////////////////////////
             if(logisticsBO.getTown ()!=null){
                 daifaTrade.setReceiverAddress (logisticsBO.getProv () + " " + logisticsBO.getCity () + " " + logisticsBO.getTown () + " " + addrs.trim ());
@@ -173,6 +178,7 @@ public class OrderModelImpl implements OrderModel {
             daifaTrade.setCreateTime (new Date ());
             daifaTrade.setLastDoTime (new Date ());
             daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
+
             daifaTrade.setBarCodeKey (daifaListDealUtil.queryListCode (DaifaListDealTypeEnum.TRADE_SORT, orderBO.getSenderId (), null));
             if (orderBO.getBuyer () != null) {
                 daifaTrade.setBuyerWw (orderBO.getBuyer ().getAliWw ());
@@ -212,9 +218,22 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setStoreNum (bo.getShopNum ());
                         subOrderModelBO.setGoodsId (bo.getGoodsId ());
                         subOrderModelBO.setGoodsCode (StringUtils.isEmpty (bo.getGoodsNo ()) ? null : bo.getGoodsNo ());
+                        String goodsNo=bo.getGoodsNo ();
+                        if(goodsNo!=null){
+                            goodsNo=goodsNo.replaceAll ("\\+","加");
+                            subOrderModelBO.setGoodsCode (goodsNo);
+                        }
+
+
                         subOrderModelBO.setTitle (bo.getTitle ());
+                        String title=subOrderModelBO.getTitle ().replaceAll ("\\+","加");
+                        subOrderModelBO.setTitle (title);
+
                         subOrderModelBO.setPicPath (bo.getPicUrl ());
                         subOrderModelBO.setStoreGoodsCode (Pingyin.getPinYinHeadChar (bo.getMarketName ()) + "_" + bo.getShopNum () + "_" + bo.getGoodsNo ());
+                        String StoreGoodsCode=subOrderModelBO.getStoreGoodsCode().replaceAll ("\\+","加");
+                        subOrderModelBO.setStoreGoodsCode (StoreGoodsCode);
+
                         subOrderModelBO.setOrderDiscountFee ("0.00");
                         subOrderModelBO.setPropStr (bo.getColor () + ":" + bo.getSize ());
                         String prop=subOrderModelBO.getPropStr ().replaceAll ("\\+","加");
