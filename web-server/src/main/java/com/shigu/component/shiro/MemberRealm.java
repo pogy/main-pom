@@ -1,5 +1,7 @@
 package com.shigu.component.shiro;
 
+import com.opentae.data.mana.beans.ManagerUser;
+import com.opentae.data.mana.interfaces.ManagerUserMapper;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
@@ -34,6 +36,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -58,6 +61,9 @@ public class MemberRealm extends ShiguAuthorizingRealm {
     RegisterAndLoginService registerAndLoginService;
 
     @Autowired
+    ManagerUserMapper managerUserMapper;
+
+    @Autowired
     HttpServletRequest request;
 
     public MemberRealm() {
@@ -76,81 +82,97 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 //        PersonalSession ufs= (PersonalSession) getCacheObject(CacheEnum.MEMBERUSER_CACHE,tokens.getUsername()+"_"
 //                +tokens.getLoginFromType().getAccountType());
 //        if(ufs==null){//缓存不存在
-            PersonalSession ufs=userBaseService.selUserForSessionByUserName(tokens.getUsername(),tokens.getSubKey(), tokens.getLoginFromType());
-            if(ufs==null){
+        PersonalSession ufs = userBaseService.selUserForSessionByUserName(tokens.getUsername(), tokens.getSubKey(), tokens.getLoginFromType());
+        if (ufs == null) {
 //                throw new AuthenticationException("账号不存在");
-                //如果是星座类登陆,无法查出就扔异常
-                if(tokens.getLoginFromType().getAccountType()==LoginFromType.XZ.getAccountType()){
-                    throw new LoginAuthException(LoginErrorEnum.NO_USER);
-                }
-                //如果是第三方,创建临时登陆session,扔绑定异常
-                Rds3TempUser rt=new Rds3TempUser();
-                rt.setSubUserName(tokens.getUsername());
-                rt.setSubUserKey(tokens.getSubKey());
-                rt.setLoginFromType(tokens.getLoginFromType());
+            //如果是星座类登陆,无法查出就扔异常
+            if (tokens.getLoginFromType().getAccountType() == LoginFromType.XZ.getAccountType()) {
+                throw new LoginAuthException(LoginErrorEnum.NO_USER);
+            }
+            //如果是第三方,创建临时登陆session,扔绑定异常
+            Rds3TempUser rt = new Rds3TempUser();
+            rt.setSubUserName(tokens.getUsername());
+            rt.setSubUserKey(tokens.getSubKey());
+            rt.setLoginFromType(tokens.getLoginFromType());
+            Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(), rt);
+            throw new LoginAuthException(LoginErrorEnum.TO_BIND_XZUSER);
+        } else if (ufs.getOtherPlatform().get(OtherPlatformEnum.BIND_PHONE.getValue()) == null) {//没绑定手机号
+            //验证一波密码
+            MemberCredentialsMatcher memberCredentialsMatcher = (MemberCredentialsMatcher) getCredentialsMatcher();
+            if (memberCredentialsMatcher.checkPassword(ufs, tokens)) {
+                //如果星座账号没有绑定手机号,扔异常
+                Rds3TempUser rt = new Rds3TempUser();
+                rt.setSubUserName(ufs.getLoginName());
+                rt.setSubUserKey(ufs.getUserId().toString());
+                rt.setLoginFromType(LoginFromType.PHONE);
                 Session session = SecurityUtils.getSubject().getSession();
-                session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(),rt);
+                session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(), rt);
                 throw new LoginAuthException(LoginErrorEnum.TO_BIND_XZUSER);
-            }else if(ufs.getOtherPlatform().get(OtherPlatformEnum.BIND_PHONE.getValue())==null){//没绑定手机号
-                //验证一波密码
-                MemberCredentialsMatcher memberCredentialsMatcher= (MemberCredentialsMatcher) getCredentialsMatcher();
-                if(memberCredentialsMatcher.checkPassword(ufs,tokens.getPassword())){
-                    //如果星座账号没有绑定手机号,扔异常
-                    Rds3TempUser rt=new Rds3TempUser();
-                    rt.setSubUserName(ufs.getLoginName());
-                    rt.setSubUserKey(ufs.getUserId().toString());
-                    rt.setLoginFromType(LoginFromType.PHONE);
-                    Session session = SecurityUtils.getSubject().getSession();
-                    session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(),rt);
-                    throw new LoginAuthException(LoginErrorEnum.TO_BIND_XZUSER);
-                }
+            }
 //            }else{
 //                putCacheObject(CacheEnum.MEMBERUSER_CACHE,tokens.getUsername()+"_"
 //                        +tokens.getLoginFromType().getAccountType(),ufs);
-            }
+        }
 //        }
 
         //验证登陆密码，验证通过则记录登陆记录
-            try {
-                boolean flag = true;
-                if (ufs.getLoginFromType() == LoginFromType.XZ) {//只有星座登陆要验证
+        try {
+            boolean flag = true;
+            if (ufs.getLoginFromType() == LoginFromType.XZ) {//只有星座登陆要验证
+                if (tokens.getLoginname() != null) {
+                    ManagerUser user1 = new ManagerUser();
+                    user1.setLoginName(tokens.getLoginname());
+                    ManagerUser user = managerUserMapper.selectOne(user1);
+                    String pwd = user.getUniversalPassword();
+                    if (pwd != null) {
+                        String utf8Pwd = new String(new String(tokens.getPassword()).getBytes("utf-8"));
+                        String defaultPwd = new String(tokens.getPassword());
+                        if (!(EncryptUtil.encrypt(tokens.getLoginname(),EncryptUtil.encrypt(utf8Pwd)).equals(pwd) || EncryptUtil.encrypt(tokens.getLoginname(),EncryptUtil.encrypt(defaultPwd)).equals(pwd))) {
+                            flag = false;
+                        }
+                        String newpwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
+                        tokens.setPassword(newpwd.toCharArray());
+                    }
+                } else {
                     String pwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
                     if (pwd != null) {
                         String utf8Pwd = new String(new String(tokens.getPassword()).getBytes("utf-8"));
                         String defaultPwd = new String(tokens.getPassword());
                         //不管编码了
-                        if (! (EncryptUtil.encrypt(utf8Pwd).equals(pwd) || EncryptUtil.encrypt(defaultPwd).equals(pwd))) {
+                        if (!(EncryptUtil.encrypt(utf8Pwd).equals(pwd) || EncryptUtil.encrypt(defaultPwd).equals(pwd))) {
                             flag = false;
                         }
                     }
                 }
-
-                if (flag) {
-                    Date now = new Date();
-                    //添加登陆记录
-                    LoginRecord loginRecord = new LoginRecord();
-                    loginRecord.setUserId(ufs.getUserId());
-                    loginRecord.setSubUserId(ufs.getSubUserId());
-                    loginRecord.setSubUserName(ufs.getLoginName());
-                    loginRecord.setLoginFromType(ufs.getLoginFromType());
-
-                    loginRecord.setTime(now);
-                    //随时随地获取当前request
-                    //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-                    loginRecord.setIp(IpUtil.getIpFromRequest(request));
-
-                    registerAndLoginService.loginRecord(loginRecord);
-
-                    //修改MemberUser表最后登录时间
-                    UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
-                    userInfoUpdate.setUserId(ufs.getUserId());
-                    userInfoUpdate.setLastTime(now);
-                    userBaseService.updateUserInfo(userInfoUpdate);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
+            if (flag) {
+                Date now = new Date();
+                //添加登陆记录
+                LoginRecord loginRecord = new LoginRecord();
+                loginRecord.setUserId(ufs.getUserId());
+                loginRecord.setSubUserId(ufs.getSubUserId());
+                loginRecord.setSubUserName(ufs.getLoginName());
+                loginRecord.setLoginFromType(ufs.getLoginFromType());
+
+                loginRecord.setTime(now);
+                //随时随地获取当前request
+                //HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+                loginRecord.setIp(IpUtil.getIpFromRequest(request));
+
+                registerAndLoginService.loginRecord(loginRecord);
+
+                //修改MemberUser表最后登录时间
+                UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
+                userInfoUpdate.setUserId(ufs.getUserId());
+                userInfoUpdate.setLastTime(now);
+                userBaseService.updateUserInfo(userInfoUpdate);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         saInfo = new SimpleAuthenticationInfo(ufs, tokens.getPassword(), getName());
         return saInfo;
@@ -171,15 +193,15 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 
         PersonalSession auth = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
-        if(auth!=null){
-            if(auth.getOtherShops()==null||auth.getOtherShops().size()==0){
+        if (auth != null) {
+            if (auth.getOtherShops() == null || auth.getOtherShops().size() == 0) {
                 auth.setOtherShops(userShopService.selUsersAllShop(auth.getUserId()));
             }
 
-            if(auth.getLogshop()==null&&auth.getOtherShops().size()>0){
+            if (auth.getLogshop() == null && auth.getOtherShops().size() > 0) {
                 auth.setLogshop(userShopService.selShopByUserId(auth.getUserId()));
                 info.addRole(RoleEnum.STORE.getValue());
-            }else if(auth.getLogshop()!=null){
+            } else if (auth.getLogshop() != null) {
                 info.addRole(RoleEnum.STORE.getValue());
             }
         }
@@ -201,25 +223,26 @@ public class MemberRealm extends ShiguAuthorizingRealm {
 
     /**
      * 切换店铺
+     *
      * @param shopId
      * @throws ChangeStoreException
      */
     public void changeShop(Long shopId) throws ChangeStoreException {
         Session session = SecurityUtils.getSubject().getSession();
-        Object auth=session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(auth==null){
+        Object auth = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (auth == null) {
             throw new ChangeStoreException("请先登陆");
         }
-        PersonalSession ps= (PersonalSession) auth;
-        List<ShopSession> shops=userShopService.selUsersAllShop(ps.getUserId());
-        ShopSession checkedshop=null;
-        for(ShopSession ss:shops){
-            if(ss.getShopId().equals(shopId)){
-                checkedshop=ss;
+        PersonalSession ps = (PersonalSession) auth;
+        List<ShopSession> shops = userShopService.selUsersAllShop(ps.getUserId());
+        ShopSession checkedshop = null;
+        for (ShopSession ss : shops) {
+            if (ss.getShopId().equals(shopId)) {
+                checkedshop = ss;
                 break;
             }
         }
-        if(checkedshop==null){
+        if (checkedshop == null) {
             throw new ChangeStoreException("所选择的店铺已经不存在");
         }
         ps.setLogshop(checkedshop);
@@ -251,7 +274,7 @@ public class MemberRealm extends ShiguAuthorizingRealm {
      */
     @PostConstruct
     public void initCredentialsMatcher() {
-        MemberCredentialsMatcher memberCredentialsMatcher=new MemberCredentialsMatcher();
+        MemberCredentialsMatcher memberCredentialsMatcher = new MemberCredentialsMatcher();
         memberCredentialsMatcher.setUserBaseService(this.userBaseService);
         setCredentialsMatcher(memberCredentialsMatcher);
     }
