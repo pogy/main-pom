@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoodsUpCountForsearchMapper">
+
+    <update id="updatList" >
+        <choose>
+            <when test="goodsIds != null and goodsIds.size() > 0 and goodsUpNum >= 0">
+                UPDATE
+                goods_up_count_forsearch
+                SET goods_up_num = #{goodsUpNum}
+                WHERE goods_id IN
+                <foreach collection="goodsIds" item="goodsId" open="(" close=")" separator=",">
+                    #{goodsId}
+                </foreach>
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </update>
+
+</mapper>

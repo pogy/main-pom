@@ -44,10 +44,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
 
@@ -76,7 +73,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     private StarCaculateService starCaculateService;
 
     @Autowired
-    private MemberUserSubMapper memberUserSubMapper;
+    private GoodsUpCountForsearchMapper goodsUpCountForsearchMapper;
 
     @Autowired
     RedisIO redisIO;
@@ -161,6 +158,50 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 logger.error("上传后重算星星数失败",e);
             }
         }
+
+        //商品对应上传数加 1
+        try {
+            this.updateGoodsUpCountForSearchNum(itemUpRecordVO.getSupperGoodsId(),1L);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("上传后商品对应上传数加失败",e);
+        }
+    }
+
+    /**
+     * 修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsId
+     * @param num
+     */
+    @Override
+    public void updateGoodsUpCountForSearchNum(long goodsId,long num){
+        GoodsUpCountForsearch goodsUpCountForsearch = new GoodsUpCountForsearch();
+        goodsUpCountForsearch.setGoodsId(goodsId);
+        goodsUpCountForsearch = goodsUpCountForsearchMapper.selectOne(goodsUpCountForsearch);
+        if (goodsUpCountForsearch == null) {
+            //新增记录
+            goodsUpCountForsearch = new GoodsUpCountForsearch();
+            goodsUpCountForsearch.setGoodsId(goodsId);
+            goodsUpCountForsearch.setGoodsUpNum(num);
+            goodsUpCountForsearchMapper.insertSelective(goodsUpCountForsearch);
+        }else {
+            //更新记录
+            long goodsUpNum = goodsUpCountForsearch.getGoodsUpNum() + num;
+            goodsUpCountForsearch.setGoodsUpNum(goodsUpNum);
+            goodsUpCountForsearchMapper.updateByPrimaryKeySelective(goodsUpCountForsearch);
+        }
+    }
+
+    /**
+     * 修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsIds
+     * @param num
+     */
+    @Override
+    public void updateGoodsUpCountForSearchNum(Set<Long> goodsIds, long num){
+        goodsUpCountForsearchMapper.updatList(goodsIds,num);
     }
 
     /**
