@@ -358,6 +358,19 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     }
 
     /**
+     * 删除地址
+     * @param addressIds
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void rmBuyerAddressByAddressIds(List<Long> addressIds,Long userId){
+        BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
+        buyerAddressExample.createCriteria().andUserIdEqualTo(userId).andAddressIdIn(addressIds);
+        buyerAddressMapper.deleteByExample(buyerAddressExample);
+    }
+
+
+    /**
      * 查询订单的物流信息
      *
      * @param orderId

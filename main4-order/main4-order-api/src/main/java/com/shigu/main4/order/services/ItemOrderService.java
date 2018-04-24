@@ -69,6 +69,12 @@ public interface ItemOrderService {
     void rmBuyerAddress(Long addressId);
 
     /**
+     * 删除地址
+     * @param addressIds
+     */
+    void rmBuyerAddressByAddressIds(List<Long> addressIds,Long userId);
+
+    /**
      * 查询订单的物流信息
      * @param orderId
      * @return
