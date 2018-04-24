@@ -102,7 +102,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         bo.setCheckds(checkds);
         bo.setCids(cids);
         bo.setShouldStoreIds(shouldStoreIds);
-        bo.setSid(sid);
         bo.setPriceFrom(priceFrom);
         bo.setPriceTo(priceTo);
         bo.setTimeForm(timeForm);
@@ -142,7 +141,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
 //            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
 //            if (StringUtils.isNotEmpty(keywordChina)) {
-            searchQuery = QueryBuilder.search("title", keyword).or(QueryBuilder.termSearch("style_name", keyword));
+            searchQuery = QueryBuilder.search("title", keyword);
             requestBuilder.addSummary(SummaryBuild.field("title").length(120));
 //            }
             if (StringUtils.isNotEmpty(keywordNum) && keywordNum.equals(keyword)) {//非中文的才匹配货号
@@ -153,15 +152,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     searchQuery.or(goodsNoQuery);
                 }
                 requestBuilder.addSummary(SummaryBuild.field("goods_no").length(50));
-            }
-        }
-        String sid = bo.getSid();
-        if (StringUtils.isNotEmpty(sid)) {
-            SearchQuery sidsQuery = QueryBuilder.search("sids", sid);
-            if (searchQuery != null) {
-                searchQuery.and(sidsQuery);
-            } else {
-                searchQuery = sidsQuery;
             }
         }
         if (searchQuery != null) {
