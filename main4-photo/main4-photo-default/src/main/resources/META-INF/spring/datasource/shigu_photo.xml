@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="photoDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+
+        <!--数据库驱动 连接-->
+        <property name="driverClassName" value="{photojdbc.driverClassName}"/>
+        <property name="url" value="{photojdbc.url}"/>
+        <property name="username" value="{photojdbc.username}"/>
+        <property name="password" value="{photojdbc.password}"/>
+
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="10"/>
+        <property name="maxWait" value="60000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <property name="filters" value="stat"/>
+    </bean>
+
+    <bean id="tae_photo_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="plugins">
+            <list>
+                <ref bean="mapperInterceptor"/>
+            </list>
+        </property>
+        <property name="dataSource" ref="photoDataSource"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
+        <property name="mapperLocations" value="/mybatis/photo/*.xml"/>
+        <property name="typeAliasesPackage" value="com.opentae.data.photo"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com/opentae/data/photo/interfaces"/>
+        <property name="sqlSessionFactoryBeanName" value="tae_photo_sqlSessionFactory"/>
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
+
+</beans>
