@@ -8,10 +8,10 @@
     <bean id="photoDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 
         <!--数据库驱动 连接-->
-        <property name="driverClassName" value="{photojdbc.driverClassName}"/>
-        <property name="url" value="{photojdbc.url}"/>
-        <property name="username" value="{photojdbc.username}"/>
-        <property name="password" value="{photojdbc.password}"/>
+        <property name="driverClassName" value="${photojdbc.driverClassName}"/>
+        <property name="url" value="${photojdbc.url}"/>
+        <property name="username" value="${photojdbc.username}"/>
+        <property name="password" value="${photojdbc.password}"/>
 
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
@@ -36,7 +36,7 @@
         </property>
         <property name="dataSource" ref="photoDataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="/mybatis/photo/*.xml"/>
+        <property name="mapperLocations" value="classpath*:/mybatis/photo/*.xml"/>
         <property name="typeAliasesPackage" value="com.opentae.data.photo"/>
     </bean>
 
