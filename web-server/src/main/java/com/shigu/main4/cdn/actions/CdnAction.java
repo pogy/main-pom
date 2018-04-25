@@ -261,7 +261,10 @@ public class CdnAction {
 
     @RequestMapping("getIntimeGoodsList")
     @ResponseBody
-    public JSONObject getIntimeGoodsList(){
+    public JSONObject getIntimeGoodsList(String webSite){
+        if ("zl".equalsIgnoreCase(webSite)){
+            return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(50008165L,"zl"));
+        }
         return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(30L,"hz"));
     }
 
@@ -637,7 +640,7 @@ public class CdnAction {
         model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
         //推荐
         ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_TJ:SpreadEnum.MAN_ZL_TJ);
-        model.addAttribute("weekPushGoodsList",selFromCache(weekPushGoodsList));
+        model.addAttribute("zhiliPopularGoodsList",selFromCache(weekPushGoodsList));
 
 
         //类目导航
