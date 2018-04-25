@@ -117,15 +117,15 @@
     </cache>
     <!--主类目对应子类目-->
     <cache name="cidSubCache" maxElementsInMemory="1000" eternal="false"
-           timeToIdleSeconds="864000" timeToLiveSeconds="10" overflowToDisk="true" >
+           timeToIdleSeconds="864000" timeToLiveSeconds="864000" overflowToDisk="true" >
     </cache>
     <!--搜索中主类目栏目-->
     <cache name="searchCatesCache" maxElementsInMemory="100" eternal="false"
-           timeToIdleSeconds="6000" timeToLiveSeconds="10" overflowToDisk="true" >
+           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
     </cache>
     <!--搜索中子类目栏目-->
     <cache name="searchSubCatesCache" maxElementsInMemory="100" eternal="false"
-           timeToIdleSeconds="6000" timeToLiveSeconds="10" overflowToDisk="true" >
+           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
     </cache>
 
     <!--首页长缓存-->
