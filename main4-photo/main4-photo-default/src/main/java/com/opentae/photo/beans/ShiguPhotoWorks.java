@@ -54,6 +54,11 @@ public class ShiguPhotoWorks implements Serializable {
 	private Boolean forbidSave;
 
     /**
+     * 封面图
+     */
+	private String picUrl;
+
+    /**
      * 
      */
 	private String images;
@@ -138,6 +143,14 @@ public class ShiguPhotoWorks implements Serializable {
 
 	public Boolean getForbidSave() {
 		return this.forbidSave;
+	}
+
+	public void setPicUrl(String picUrl) {
+		this.picUrl = picUrl;
+	}
+
+	public String getPicUrl() {
+		return this.picUrl;
 	}
 
 	public void setImages(String images) {

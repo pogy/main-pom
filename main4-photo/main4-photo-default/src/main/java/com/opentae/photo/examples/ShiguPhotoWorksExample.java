@@ -12,13 +12,14 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn removeIs;
     public static EntityColumn images;
-    public static EntityColumn havePrice;
+    public static EntityColumn title;
+    public static EntityColumn authorId;
+    public static EntityColumn picUrl;
     public static EntityColumn createTime;
+    public static EntityColumn havePrice;
     public static EntityColumn worksId;
     public static EntityColumn price;
     public static EntityColumn clicks;
-    public static EntityColumn title;
-    public static EntityColumn authorId;
     public static EntityColumn forbidSave;
     public static EntityColumn worksCid;
     public static EntityColumn lastModifyTme;
@@ -30,13 +31,14 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
         }
         removeIs = listMap.get("removeIs");
         images = listMap.get("images");
-        havePrice = listMap.get("havePrice");
+        title = listMap.get("title");
+        authorId = listMap.get("authorId");
+        picUrl = listMap.get("picUrl");
         createTime = listMap.get("createTime");
+        havePrice = listMap.get("havePrice");
         worksId = listMap.get("worksId");
         price = listMap.get("price");
         clicks = listMap.get("clicks");
-        title = listMap.get("title");
-        authorId = listMap.get("authorId");
         forbidSave = listMap.get("forbidSave");
         worksCid = listMap.get("worksCid");
         lastModifyTme = listMap.get("lastModifyTme");
@@ -163,52 +165,162 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
         public ShiguPhotoWorksExample.Criteria andImagesNotBetween(String value1, String value2) {
             return notBetween(images, value1, value2);
         }
-        public ShiguPhotoWorksExample.Criteria andHavePriceIsNull() {
-            return isNull(havePrice);
+        public ShiguPhotoWorksExample.Criteria andTitleIsNull() {
+            return isNull(title);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceIsNotNull() {
-            return isNotNull(havePrice);
+        public ShiguPhotoWorksExample.Criteria andTitleIsNotNull() {
+            return isNotNull(title);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceEqualTo(Boolean value) {
-            return equalTo(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleEqualTo(String value) {
+            return equalTo(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceNotEqualTo(Boolean value) {
-            return notEqualTo(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleNotEqualTo(String value) {
+            return notEqualTo(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceGreaterThan(Boolean value) {
-            return greaterThan(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleGreaterThan(String value) {
+            return greaterThan(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceGreaterThanOrEqualTo(Boolean value) {
-            return greaterThanOrEqualTo(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceLessThan(Boolean value) {
-            return lessThan(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleLessThan(String value) {
+            return lessThan(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceLessThanOrEqualTo(Boolean value) {
-            return lessThanOrEqualTo(havePrice, value);
+        public ShiguPhotoWorksExample.Criteria andTitleLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceIn(List<Boolean> values) {
-            return in(havePrice, values);
+        public ShiguPhotoWorksExample.Criteria andTitleLike(String value) {
+            return like(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceNotIn(List<Boolean> values) {
-            return notIn(havePrice, values);
+        public ShiguPhotoWorksExample.Criteria andTitleNotLike(String value) {
+            return notLike(title, value);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceBetween(Boolean value1, Boolean value2) {
-            return between(havePrice, value1, value2);
+        public ShiguPhotoWorksExample.Criteria andTitleIn(List<String> values) {
+            return in(title, values);
         }
 
-        public ShiguPhotoWorksExample.Criteria andHavePriceNotBetween(Boolean value1, Boolean value2) {
-            return notBetween(havePrice, value1, value2);
+        public ShiguPhotoWorksExample.Criteria andTitleNotIn(List<String> values) {
+            return notIn(title, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andTitleBetween(String value1, String value2) {
+            return between(title, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andTitleNotBetween(String value1, String value2) {
+            return notBetween(title, value1, value2);
+        }
+        public ShiguPhotoWorksExample.Criteria andAuthorIdIsNull() {
+            return isNull(authorId);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdIsNotNull() {
+            return isNotNull(authorId);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdEqualTo(Long value) {
+            return equalTo(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdNotEqualTo(Long value) {
+            return notEqualTo(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdGreaterThan(Long value) {
+            return greaterThan(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdLessThan(Long value) {
+            return lessThan(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(authorId, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdIn(List<Long> values) {
+            return in(authorId, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdNotIn(List<Long> values) {
+            return notIn(authorId, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdBetween(Long value1, Long value2) {
+            return between(authorId, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andAuthorIdNotBetween(Long value1, Long value2) {
+            return notBetween(authorId, value1, value2);
+        }
+        public ShiguPhotoWorksExample.Criteria andPicUrlIsNull() {
+            return isNull(picUrl);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlIsNotNull() {
+            return isNotNull(picUrl);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlEqualTo(String value) {
+            return equalTo(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlNotEqualTo(String value) {
+            return notEqualTo(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlGreaterThan(String value) {
+            return greaterThan(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlLessThan(String value) {
+            return lessThan(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlLike(String value) {
+            return like(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlNotLike(String value) {
+            return notLike(picUrl, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlIn(List<String> values) {
+            return in(picUrl, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlNotIn(List<String> values) {
+            return notIn(picUrl, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlBetween(String value1, String value2) {
+            return between(picUrl, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andPicUrlNotBetween(String value1, String value2) {
+            return notBetween(picUrl, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);
@@ -256,6 +368,53 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
 
         public ShiguPhotoWorksExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
+        }
+        public ShiguPhotoWorksExample.Criteria andHavePriceIsNull() {
+            return isNull(havePrice);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceIsNotNull() {
+            return isNotNull(havePrice);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceEqualTo(Boolean value) {
+            return equalTo(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceNotEqualTo(Boolean value) {
+            return notEqualTo(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceGreaterThan(Boolean value) {
+            return greaterThan(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceLessThan(Boolean value) {
+            return lessThan(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(havePrice, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceIn(List<Boolean> values) {
+            return in(havePrice, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceNotIn(List<Boolean> values) {
+            return notIn(havePrice, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceBetween(Boolean value1, Boolean value2) {
+            return between(havePrice, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andHavePriceNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(havePrice, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andWorksIdIsNull() {
             return isNull(worksId);
@@ -397,108 +556,6 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
 
         public ShiguPhotoWorksExample.Criteria andClicksNotBetween(Long value1, Long value2) {
             return notBetween(clicks, value1, value2);
-        }
-        public ShiguPhotoWorksExample.Criteria andTitleIsNull() {
-            return isNull(title);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleIsNotNull() {
-            return isNotNull(title);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleEqualTo(String value) {
-            return equalTo(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleNotEqualTo(String value) {
-            return notEqualTo(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleGreaterThan(String value) {
-            return greaterThan(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleLessThan(String value) {
-            return lessThan(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleLike(String value) {
-            return like(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleNotLike(String value) {
-            return notLike(title, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleIn(List<String> values) {
-            return in(title, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleNotIn(List<String> values) {
-            return notIn(title, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleBetween(String value1, String value2) {
-            return between(title, value1, value2);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andTitleNotBetween(String value1, String value2) {
-            return notBetween(title, value1, value2);
-        }
-        public ShiguPhotoWorksExample.Criteria andAuthorIdIsNull() {
-            return isNull(authorId);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdIsNotNull() {
-            return isNotNull(authorId);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdEqualTo(Long value) {
-            return equalTo(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdNotEqualTo(Long value) {
-            return notEqualTo(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdGreaterThan(Long value) {
-            return greaterThan(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdLessThan(Long value) {
-            return lessThan(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(authorId, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdIn(List<Long> values) {
-            return in(authorId, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdNotIn(List<Long> values) {
-            return notIn(authorId, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdBetween(Long value1, Long value2) {
-            return between(authorId, value1, value2);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andAuthorIdNotBetween(Long value1, Long value2) {
-            return notBetween(authorId, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andForbidSaveIsNull() {
             return isNull(forbidSave);
