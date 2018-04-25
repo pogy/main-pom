@@ -12,11 +12,15 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn modifyTime;
     public static EntityColumn authApplyId;
+    public static EntityColumn codeImg;
+    public static EntityColumn mainStyleId;
     public static EntityColumn authType;
+    public static EntityColumn userName;
     public static EntityColumn applyTime;
     public static EntityColumn userId;
     public static EntityColumn modifyLog;
     public static EntityColumn applyStatus;
+    public static EntityColumn showImg;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -25,11 +29,15 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
         }
         modifyTime = listMap.get("modifyTime");
         authApplyId = listMap.get("authApplyId");
+        codeImg = listMap.get("codeImg");
+        mainStyleId = listMap.get("mainStyleId");
         authType = listMap.get("authType");
+        userName = listMap.get("userName");
         applyTime = listMap.get("applyTime");
         userId = listMap.get("userId");
         modifyLog = listMap.get("modifyLog");
         applyStatus = listMap.get("applyStatus");
+        showImg = listMap.get("showImg");
         }
 
     public PhotoAuthApplyExample() {
@@ -145,6 +153,108 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
         public PhotoAuthApplyExample.Criteria andAuthApplyIdNotBetween(Long value1, Long value2) {
             return notBetween(authApplyId, value1, value2);
         }
+        public PhotoAuthApplyExample.Criteria andCodeImgIsNull() {
+            return isNull(codeImg);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgIsNotNull() {
+            return isNotNull(codeImg);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgEqualTo(String value) {
+            return equalTo(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgNotEqualTo(String value) {
+            return notEqualTo(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgGreaterThan(String value) {
+            return greaterThan(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgLessThan(String value) {
+            return lessThan(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgLike(String value) {
+            return like(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgNotLike(String value) {
+            return notLike(codeImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgIn(List<String> values) {
+            return in(codeImg, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgNotIn(List<String> values) {
+            return notIn(codeImg, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgBetween(String value1, String value2) {
+            return between(codeImg, value1, value2);
+        }
+
+        public PhotoAuthApplyExample.Criteria andCodeImgNotBetween(String value1, String value2) {
+            return notBetween(codeImg, value1, value2);
+        }
+        public PhotoAuthApplyExample.Criteria andMainStyleIdIsNull() {
+            return isNull(mainStyleId);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdIsNotNull() {
+            return isNotNull(mainStyleId);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdEqualTo(Long value) {
+            return equalTo(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdNotEqualTo(Long value) {
+            return notEqualTo(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdGreaterThan(Long value) {
+            return greaterThan(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdLessThan(Long value) {
+            return lessThan(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(mainStyleId, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdIn(List<Long> values) {
+            return in(mainStyleId, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdNotIn(List<Long> values) {
+            return notIn(mainStyleId, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdBetween(Long value1, Long value2) {
+            return between(mainStyleId, value1, value2);
+        }
+
+        public PhotoAuthApplyExample.Criteria andMainStyleIdNotBetween(Long value1, Long value2) {
+            return notBetween(mainStyleId, value1, value2);
+        }
         public PhotoAuthApplyExample.Criteria andAuthTypeIsNull() {
             return isNull(authType);
         }
@@ -191,6 +301,61 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
 
         public PhotoAuthApplyExample.Criteria andAuthTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(authType, value1, value2);
+        }
+        public PhotoAuthApplyExample.Criteria andUserNameIsNull() {
+            return isNull(userName);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameIsNotNull() {
+            return isNotNull(userName);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameEqualTo(String value) {
+            return equalTo(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameNotEqualTo(String value) {
+            return notEqualTo(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameGreaterThan(String value) {
+            return greaterThan(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameLessThan(String value) {
+            return lessThan(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameLike(String value) {
+            return like(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameNotLike(String value) {
+            return notLike(userName, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameIn(List<String> values) {
+            return in(userName, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameNotIn(List<String> values) {
+            return notIn(userName, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameBetween(String value1, String value2) {
+            return between(userName, value1, value2);
+        }
+
+        public PhotoAuthApplyExample.Criteria andUserNameNotBetween(String value1, String value2) {
+            return notBetween(userName, value1, value2);
         }
         public PhotoAuthApplyExample.Criteria andApplyTimeIsNull() {
             return isNull(applyTime);
@@ -387,6 +552,61 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
 
         public PhotoAuthApplyExample.Criteria andApplyStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(applyStatus, value1, value2);
+        }
+        public PhotoAuthApplyExample.Criteria andShowImgIsNull() {
+            return isNull(showImg);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgIsNotNull() {
+            return isNotNull(showImg);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgEqualTo(String value) {
+            return equalTo(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgNotEqualTo(String value) {
+            return notEqualTo(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgGreaterThan(String value) {
+            return greaterThan(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgLessThan(String value) {
+            return lessThan(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgLike(String value) {
+            return like(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgNotLike(String value) {
+            return notLike(showImg, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgIn(List<String> values) {
+            return in(showImg, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgNotIn(List<String> values) {
+            return notIn(showImg, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgBetween(String value1, String value2) {
+            return between(showImg, value1, value2);
+        }
+
+        public PhotoAuthApplyExample.Criteria andShowImgNotBetween(String value1, String value2) {
+            return notBetween(showImg, value1, value2);
         }
     }
 }

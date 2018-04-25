@@ -19,9 +19,29 @@ public class PhotoAuthApply implements Serializable {
 	private Long userId;
 
     /**
+     * 用户名
+     */
+	private String userName;
+
+    /**
      * 
      */
 	private Integer authType;
+
+    /**
+     * 个人展示封面
+     */
+	private String showImg;
+
+    /**
+     * 二维码
+     */
+	private String codeImg;
+
+    /**
+     * 主要风格id
+     */
+	private Long mainStyleId;
 
     /**
      * 申请状态:0:未处理 1:通过 2:驳回
@@ -59,12 +79,44 @@ public class PhotoAuthApply implements Serializable {
 		return this.userId;
 	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserName() {
+		return this.userName;
+	}
+
 	public void setAuthType(Integer authType) {
 		this.authType = authType;
 	}
 
 	public Integer getAuthType() {
 		return this.authType;
+	}
+
+	public void setShowImg(String showImg) {
+		this.showImg = showImg;
+	}
+
+	public String getShowImg() {
+		return this.showImg;
+	}
+
+	public void setCodeImg(String codeImg) {
+		this.codeImg = codeImg;
+	}
+
+	public String getCodeImg() {
+		return this.codeImg;
+	}
+
+	public void setMainStyleId(Long mainStyleId) {
+		this.mainStyleId = mainStyleId;
+	}
+
+	public Long getMainStyleId() {
+		return this.mainStyleId;
 	}
 
 	public void setApplyStatus(Integer applyStatus) {
