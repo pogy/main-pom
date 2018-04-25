@@ -125,7 +125,7 @@
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/zlgoods.htm" target="_blank">
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50011740" target="_blank">
         商品库
     </a>
 </li>
