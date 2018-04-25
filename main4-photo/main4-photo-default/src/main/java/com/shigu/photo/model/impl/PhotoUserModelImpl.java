@@ -7,6 +7,8 @@ import com.opentae.mall.interfaces.MemberUserMapper;
 import com.opentae.photo.beans.ShiguPhotoUser;
 import com.opentae.photo.interfaces.ShiguPhotoUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.photo.bo.PhotoAuthApplyBO;
+import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.vo.PhotoUserVO;
 import org.springframework.context.annotation.Scope;
@@ -73,7 +75,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
      */
     protected void updatePhotoUserType(Integer type) {
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
-        shiguPhotoUser.setPhotoUserId(getUserInfo().getPhotoUserId());
+        shiguPhotoUser.setPhotoUserId(photoUserInfo().getPhotoUserId());
         shiguPhotoUser.setUserType(type);
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
         MemberLicense memberLicense = new MemberLicense();
@@ -95,7 +97,28 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         }
     }
 
-    public PhotoUserVO getUserInfo() {
+    @Override
+    public void authApply(PhotoAuthApplyBO bo) {
+
+    }
+
+    @Override
+    public void applyPass() {
+
+    }
+
+    @Override
+    public void applyRefuse() {
+
+    }
+
+    @Override
+    public void editUserInfo(PhotoUserInfoEditBO bo) {
+
+    }
+
+    @Override
+    public PhotoUserVO photoUserInfo() {
         return userInfo;
     }
 }
