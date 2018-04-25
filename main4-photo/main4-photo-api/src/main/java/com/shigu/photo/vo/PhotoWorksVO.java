@@ -7,6 +7,8 @@ import java.util.Date;
  * 作品列表
  */
 public class PhotoWorksVO implements Serializable{
+
+    private Long worksId;
     /**
      * 封面图
      */
@@ -35,6 +37,14 @@ public class PhotoWorksVO implements Serializable{
      * 点赞数
      */
     private Integer praiseNum;
+    /**
+     * 作者类型
+     */
+    private Integer userType;
+    /**
+     * 描述
+     */
+    private String centent;
 
     /**
      * 获取 封面图
@@ -132,5 +142,27 @@ public class PhotoWorksVO implements Serializable{
      */
     public void setPraiseNum(Integer praiseNum) {
         this.praiseNum = praiseNum;
+    }
+
+    public Long getWorksId() {
+        return this.worksId;
+    }
+
+    public void setWorksId(Long worksId) {
+        this.worksId = worksId;
+    }
+
+    /**
+     * 获取 作者类型
+     */
+    public Integer getUserType() {
+        return this.userType;
+    }
+
+    /**
+     * 设置 作者类型
+     */
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 }

@@ -1,13 +1,13 @@
 package com.shigu.photo.model.impl;
 
-import com.opentae.mall.beans.MemberLicense;
-import com.opentae.mall.beans.MemberUser;
-import com.opentae.mall.interfaces.MemberLicenseMapper;
-import com.opentae.mall.interfaces.MemberUserMapper;
-import com.opentae.photo.beans.PhotoAuthApply;
-import com.opentae.photo.beans.ShiguPhotoUser;
-import com.opentae.photo.interfaces.PhotoAuthApplyMapper;
-import com.opentae.photo.interfaces.ShiguPhotoUserMapper;
+import com.opentae.data.mall.beans.MemberLicense;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.photo.beans.PhotoAuthApply;
+import com.opentae.data.photo.beans.ShiguPhotoUser;
+import com.opentae.data.photo.interfaces.PhotoAuthApplyMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.photo.bo.PhotoAuthApplyBO;

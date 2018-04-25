@@ -1,14 +1,14 @@
 package com.shigu.photo.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.photo.beans.ShiguPhotoUser;
-import com.opentae.photo.beans.ShiguPhotoWorksStyle;
-import com.opentae.photo.beans.ShiguPhotoWorks;
-import com.opentae.photo.examples.ShiguPhotoCatExample;
-import com.opentae.photo.examples.ShiguPhotoStyleExample;
-import com.opentae.photo.examples.ShiguPhotoUserExample;
-import com.opentae.photo.examples.ShiguPhotoWorksExample;
-import com.opentae.photo.interfaces.*;
+import com.opentae.data.photo.beans.ShiguPhotoUser;
+import com.opentae.data.photo.beans.ShiguPhotoWorksStyle;
+import com.opentae.data.photo.beans.ShiguPhotoWorks;
+import com.opentae.data.photo.examples.ShiguPhotoCatExample;
+import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
+import com.opentae.data.photo.examples.ShiguPhotoUserExample;
+import com.opentae.data.photo.examples.ShiguPhotoWorksExample;
+import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.MoneyUtil;
