@@ -3,7 +3,7 @@
 <mapper namespace="com.opentae.data.photo.interfaces.ShiguPhotoWorksMapper">
 
     <select id="" resultType="">
-        select t1.works_id,t1.pic_url,t1.title,t2.user_id,t2.user_name,t2.user_type,t2.address,t1.create_time from
+        select t1.works_id ,t1.pic_url,t1.title,t2.user_id,t2.user_name,t2.user_type,t2.address,t1.create_time from
         shigu_photo_works t1,shigu_photo_user t2
         <if test="styleId != null">
             ,shigu_photo_works_style t3

@@ -12,7 +12,6 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn removeIs;
     public static EntityColumn images;
-    public static EntityColumn centent;
     public static EntityColumn title;
     public static EntityColumn authorId;
     public static EntityColumn picUrl;
@@ -20,6 +19,7 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
     public static EntityColumn havePrice;
     public static EntityColumn worksId;
     public static EntityColumn price;
+    public static EntityColumn context;
     public static EntityColumn clicks;
     public static EntityColumn forbidSave;
     public static EntityColumn worksCid;
@@ -32,7 +32,6 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
         }
         removeIs = listMap.get("removeIs");
         images = listMap.get("images");
-        centent = listMap.get("centent");
         title = listMap.get("title");
         authorId = listMap.get("authorId");
         picUrl = listMap.get("picUrl");
@@ -40,6 +39,7 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
         havePrice = listMap.get("havePrice");
         worksId = listMap.get("worksId");
         price = listMap.get("price");
+        context = listMap.get("context");
         clicks = listMap.get("clicks");
         forbidSave = listMap.get("forbidSave");
         worksCid = listMap.get("worksCid");
@@ -166,61 +166,6 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
 
         public ShiguPhotoWorksExample.Criteria andImagesNotBetween(String value1, String value2) {
             return notBetween(images, value1, value2);
-        }
-        public ShiguPhotoWorksExample.Criteria andCententIsNull() {
-            return isNull(centent);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententIsNotNull() {
-            return isNotNull(centent);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententEqualTo(String value) {
-            return equalTo(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententNotEqualTo(String value) {
-            return notEqualTo(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententGreaterThan(String value) {
-            return greaterThan(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententLessThan(String value) {
-            return lessThan(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententLike(String value) {
-            return like(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententNotLike(String value) {
-            return notLike(centent, value);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententIn(List<String> values) {
-            return in(centent, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententNotIn(List<String> values) {
-            return notIn(centent, values);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententBetween(String value1, String value2) {
-            return between(centent, value1, value2);
-        }
-
-        public ShiguPhotoWorksExample.Criteria andCententNotBetween(String value1, String value2) {
-            return notBetween(centent, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andTitleIsNull() {
             return isNull(title);
@@ -566,6 +511,61 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
 
         public ShiguPhotoWorksExample.Criteria andPriceNotBetween(Long value1, Long value2) {
             return notBetween(price, value1, value2);
+        }
+        public ShiguPhotoWorksExample.Criteria andContextIsNull() {
+            return isNull(context);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextIsNotNull() {
+            return isNotNull(context);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextEqualTo(String value) {
+            return equalTo(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextNotEqualTo(String value) {
+            return notEqualTo(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextGreaterThan(String value) {
+            return greaterThan(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextLessThan(String value) {
+            return lessThan(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextLike(String value) {
+            return like(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextNotLike(String value) {
+            return notLike(context, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextIn(List<String> values) {
+            return in(context, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextNotIn(List<String> values) {
+            return notIn(context, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextBetween(String value1, String value2) {
+            return between(context, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andContextNotBetween(String value1, String value2) {
+            return notBetween(context, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andClicksIsNull() {
             return isNull(clicks);

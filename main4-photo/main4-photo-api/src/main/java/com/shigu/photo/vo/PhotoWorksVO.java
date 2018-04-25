@@ -44,7 +44,7 @@ public class PhotoWorksVO implements Serializable{
     /**
      * 描述
      */
-    private String centent;
+    private String content;
 
     /**
      * 获取 封面图
@@ -164,5 +164,19 @@ public class PhotoWorksVO implements Serializable{
      */
     public void setUserType(Integer userType) {
         this.userType = userType;
+    }
+
+    /**
+     * 获取 描述
+     */
+    public String getContent() {
+        return this.content;
+    }
+
+    /**
+     * 设置 描述
+     */
+    public void setContent(String content) {
+        this.content = content;
     }
 }

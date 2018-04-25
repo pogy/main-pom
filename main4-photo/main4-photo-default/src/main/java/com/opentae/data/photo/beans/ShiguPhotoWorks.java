@@ -76,7 +76,7 @@ public class ShiguPhotoWorks implements Serializable {
     /**
      * 描述
      */
-	private String centent;
+	private String context;
 
 	public void setWorksId(Long worksId) {
 		this.worksId = worksId;
@@ -182,12 +182,12 @@ public class ShiguPhotoWorks implements Serializable {
 		return this.clicks;
 	}
 
-	public void setCentent(String centent) {
-		this.centent = centent;
+	public void setContext(String context) {
+		this.context = context;
 	}
 
-	public String getCentent() {
-		return this.centent;
+	public String getContext() {
+		return this.context;
 	}
 
 }
