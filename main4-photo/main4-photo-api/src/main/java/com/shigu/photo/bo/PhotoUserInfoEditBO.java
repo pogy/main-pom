@@ -20,6 +20,9 @@ public class PhotoUserInfoEditBO implements Serializable {
     //地址
     private String address;
 
+    //联系手机号
+    private String contactPhone;
+
     public String getHeadImg() {
         return headImg;
     }
@@ -42,5 +45,13 @@ public class PhotoUserInfoEditBO implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 }

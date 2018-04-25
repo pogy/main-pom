@@ -48,6 +48,11 @@ public class ShiguPhotoUser implements Serializable {
 	private String userInfo;
 
     /**
+     * 联系方式
+     */
+	private String contactPhone;
+
+    /**
      * 个人展示封面
      */
 	private String showImg;
@@ -124,6 +129,14 @@ public class ShiguPhotoUser implements Serializable {
 
 	public String getUserInfo() {
 		return this.userInfo;
+	}
+
+	public void setContactPhone(String contactPhone) {
+		this.contactPhone = contactPhone;
+	}
+
+	public String getContactPhone() {
+		return this.contactPhone;
 	}
 
 	public void setShowImg(String showImg) {

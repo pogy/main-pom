@@ -18,6 +18,7 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
     public static EntityColumn sex;
     public static EntityColumn mainStyleId;
     public static EntityColumn userType;
+    public static EntityColumn contactPhone;
     public static EntityColumn userName;
     public static EntityColumn userId;
     public static EntityColumn showImg;
@@ -35,6 +36,7 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
         sex = listMap.get("sex");
         mainStyleId = listMap.get("mainStyleId");
         userType = listMap.get("userType");
+        contactPhone = listMap.get("contactPhone");
         userName = listMap.get("userName");
         userId = listMap.get("userId");
         showImg = listMap.get("showImg");
@@ -466,6 +468,61 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
 
         public ShiguPhotoUserExample.Criteria andUserTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(userType, value1, value2);
+        }
+        public ShiguPhotoUserExample.Criteria andContactPhoneIsNull() {
+            return isNull(contactPhone);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneIsNotNull() {
+            return isNotNull(contactPhone);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneEqualTo(String value) {
+            return equalTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotEqualTo(String value) {
+            return notEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneGreaterThan(String value) {
+            return greaterThan(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLessThan(String value) {
+            return lessThan(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLike(String value) {
+            return like(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotLike(String value) {
+            return notLike(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneIn(List<String> values) {
+            return in(contactPhone, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotIn(List<String> values) {
+            return notIn(contactPhone, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneBetween(String value1, String value2) {
+            return between(contactPhone, value1, value2);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotBetween(String value1, String value2) {
+            return notBetween(contactPhone, value1, value2);
         }
         public ShiguPhotoUserExample.Criteria andUserNameIsNull() {
             return isNull(userName);
