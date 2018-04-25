@@ -275,10 +275,10 @@ public class GoodsOfferBO implements Serializable{
      */
     public SynItem parseToSynItem(DataPackageImportService dataPackageImportService){
         SynItem synItem=new SynItem();
-        synItem.setPicUrl(this.picPath);
+        synItem.setPicUrl(dataPackageImportService.banjia(picPath));
         List<String> allImgUrl=new ArrayList<>();
         if(this.picPath!=null){
-            allImgUrl.add(dataPackageImportService.banjia(picPath));
+            allImgUrl.add(synItem.getPicUrl());
         }
         if(this.allimg!=null&&!"".equals(allimg)){
             List<String> images=Arrays.asList(allimg.split(","));
