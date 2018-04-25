@@ -240,7 +240,9 @@ public class GoodsSearchAction {
         if (bo.getPid() == null) {
             if ("kx".equalsIgnoreCase(website)) {//看鞋网的类目
                 bo.setPid(50011740L);
-            } else {
+            }else if ("zl".equalsIgnoreCase(website)){
+                bo.setPid(50008165L);
+            }else {
                 bo.setPid(30L);
             }
         }

@@ -86,6 +86,17 @@ public enum SpreadEnum {
     WOMAN_QZ_TOP_BANNER("顶部公告","WOMAN-QZ-TOP-BANNER"),
 
 
+    //织里
+    NEW_ZL_HomeCateMenu("织里首页左侧导航","NEW_ZL_HomeCateMenu"),
+    MAN_ZL_DT("首页轮播图","MAN-DT-ZL"),MAN_ZL_XT("首页轮播图下方小图","MAN-ZL-XT"),
+    MAN_ZL_RM("首页热卖","MAN-ZL-RM"),MAN_ZL_TJ("首页推荐商品","MAN-ZL-TJ"),
+    MAN_ZL_TOP_BANNER("顶部公告","MAN-ZL-TOP-BANNER"),
+
+    WOMAN_ZL_DT("首页轮播图","WOMAN-DT-ZL"),WOMAN_ZL_XT("首页轮播图下方小图","WOMAN-ZL-XT"),
+    WOMAN_ZL_RM("首页热卖","WOMAN-ZL-RM"),WOMAN_ZL_TJ("首页推荐商品","WOMAN-ZL-TJ"),
+    WOMAN_ZL_TOP_BANNER("顶部公告","WOMAN-ZL-TOP-BANNER"),
+
+
     //新增app端广告位
     HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP男装热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP男装推荐档口", "HZ-APP-MAN-TJDK"),
     HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP女装热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP女装推荐档口", "HZ-APP-WOMAN-TJDK"),

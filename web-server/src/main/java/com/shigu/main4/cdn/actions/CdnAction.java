@@ -261,7 +261,10 @@ public class CdnAction {
 
     @RequestMapping("getIntimeGoodsList")
     @ResponseBody
-    public JSONObject getIntimeGoodsList(){
+    public JSONObject getIntimeGoodsList(String webSite){
+        if ("zl".equalsIgnoreCase(webSite)){
+            return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(50008165L,"zl"));
+        }
         return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(30L,"hz"));
     }
 
@@ -585,6 +588,68 @@ public class CdnAction {
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
             return "qzIndex/index";
+        } else {
+            return "index/index";
+        }
+    }
+
+    /**
+     * 织里首页动态页面
+     *
+     * @return
+     */
+    @RequestMapping("zlindex4show")
+    public String zlindex4show(HttpServletRequest request, Model model) {
+        Cookie[] cookies = request.getCookies();
+        String manOrWoman = "Man";
+        String webSite = "zl";
+        IndexPageVO page = new IndexPageVO();
+        page.setType("M");
+        page.setTypeText("男童");
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
+                    manOrWoman = "Woman";
+                    page.setType("W");
+                    page.setTypeText("女童");
+                    break;
+                }
+            }
+        }
+        //****织里男女装公共数据
+        model.addAttribute("webSite", webSite);
+        //页面类型：男童/女童
+        model.addAttribute("page", page);
+        //顶部广告数据
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_TOP_BANNER:SpreadEnum.MAN_ZL_TOP_BANNER);
+        model.addAttribute("topPic", selFromCache(selImgBannerTops));
+        //轮播广告大图
+        ObjFromCache<List<ImgBannerVO>> imgBannerDts = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_DT : SpreadEnum.MAN_ZL_DT);
+        model.addAttribute("topBanner", selFromCache(imgBannerDts));
+        //轮播下方小图
+        ObjFromCache<List<ImgBannerVO>> imgBannerXts = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_XT : SpreadEnum.MAN_ZL_XT);
+        model.addAttribute("topStoread", selFromCache(imgBannerXts));
+        //全站公告
+        ObjFromCache<List<IndexNavVO>> navListObjFromCache = indexShowService.selNavVOs(SpreadEnum.QZGG);
+        model.addAttribute("notices", selFromCache(navListObjFromCache));
+        //商品数量
+        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
+        model.addAttribute("userCount", selFromCache(numListObjFromCache));
+        //热卖
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_RM:SpreadEnum.MAN_ZL_RM);
+        model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
+        //推荐
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_TJ:SpreadEnum.MAN_ZL_TJ);
+        model.addAttribute("zhiliPopularGoodsList",selFromCache(weekPushGoodsList));
+
+
+        //类目导航
+        ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu(webSite,manOrWoman.equals("Woman")?2:1,SpreadEnum.NEW_ZL_HomeCateMenu);
+        model.addAttribute("catemenu",selFromCache(catemenu));
+        //规则
+        model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
+        if ("Man".equals(manOrWoman)) {
+            return "hzMan/zlIndex";
         } else {
             return "index/index";
         }
