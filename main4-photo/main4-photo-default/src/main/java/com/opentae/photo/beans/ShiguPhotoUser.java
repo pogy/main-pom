@@ -6,10 +6,15 @@ import java.io.Serializable;
 
 public class ShiguPhotoUser implements Serializable {
     /**
-     * 用户ID
+     * 生成主键
      */
     @Id
     @GeneratedValue(generator = "JDBC")
+	private Long photoUserId;
+
+    /**
+     * 用户ID
+     */
 	private Long userId;
 
     /**
@@ -56,6 +61,14 @@ public class ShiguPhotoUser implements Serializable {
      * 主风格ID
      */
 	private Long mainStyleId;
+
+	public void setPhotoUserId(Long photoUserId) {
+		this.photoUserId = photoUserId;
+	}
+
+	public Long getPhotoUserId() {
+		return this.photoUserId;
+	}
 
 	public void setUserId(Long userId) {
 		this.userId = userId;

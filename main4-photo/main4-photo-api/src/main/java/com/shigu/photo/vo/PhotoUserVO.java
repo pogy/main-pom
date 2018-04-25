@@ -1,0 +1,156 @@
+package com.shigu.photo.vo;
+
+import java.io.Serializable;
+
+/**
+ * 路径: com.shigu.photo.vo.PhotoUserVO
+ * 工程: main-pom
+ * 时间: 18-4-25 下午3:04
+ * 创建人: wanghaoxiang
+ * 描述: 用户摄影基地信息
+ */
+public class PhotoUserVO implements Serializable {
+
+    /**
+     * 主键
+     */
+    private Long photoUserId;
+
+    /**
+     * 用户ID
+     */
+    private Long userId;
+
+    /**
+     * 用户名
+     */
+    private String userName;
+
+    /**
+     * 头像
+     */
+    private String headImg;
+
+    /**
+     *
+     */
+    private Integer userType;
+
+    /**
+     * 常用地址
+     */
+    private String address;
+
+    /**
+     * 性别
+     */
+    private Integer sex;
+
+    /**
+     * 个人简介
+     */
+    private String userInfo;
+
+    /**
+     * 个人展示封面
+     */
+    private String showImg;
+
+    /**
+     * 二维码
+     */
+    private String codeImg;
+
+    /**
+     * 主风格ID
+     */
+    private Long mainStyleId;
+
+    public void setPhotoUserId(Long photoUserId) {
+        this.photoUserId = photoUserId;
+    }
+
+    public Long getPhotoUserId() {
+        return this.photoUserId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getHeadImg() {
+        return this.headImg;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    public Integer getUserType() {
+        return this.userType;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Integer getSex() {
+        return this.sex;
+    }
+
+    public void setUserInfo(String userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public String getUserInfo() {
+        return this.userInfo;
+    }
+
+    public void setShowImg(String showImg) {
+        this.showImg = showImg;
+    }
+
+    public String getShowImg() {
+        return this.showImg;
+    }
+
+    public void setCodeImg(String codeImg) {
+        this.codeImg = codeImg;
+    }
+
+    public String getCodeImg() {
+        return this.codeImg;
+    }
+
+    public void setMainStyleId(Long mainStyleId) {
+        this.mainStyleId = mainStyleId;
+    }
+
+    public Long getMainStyleId() {
+        return this.mainStyleId;
+    }
+}

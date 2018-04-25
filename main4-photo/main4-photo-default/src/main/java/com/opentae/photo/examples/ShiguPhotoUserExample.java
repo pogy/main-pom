@@ -12,6 +12,7 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn userInfo;
     public static EntityColumn address;
+    public static EntityColumn photoUserId;
     public static EntityColumn headImg;
     public static EntityColumn codeImg;
     public static EntityColumn sex;
@@ -28,6 +29,7 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
         }
         userInfo = listMap.get("userInfo");
         address = listMap.get("address");
+        photoUserId = listMap.get("photoUserId");
         headImg = listMap.get("headImg");
         codeImg = listMap.get("codeImg");
         sex = listMap.get("sex");
@@ -166,6 +168,53 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
 
         public ShiguPhotoUserExample.Criteria andAddressNotBetween(String value1, String value2) {
             return notBetween(address, value1, value2);
+        }
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdIsNull() {
+            return isNull(photoUserId);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdIsNotNull() {
+            return isNotNull(photoUserId);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdEqualTo(Long value) {
+            return equalTo(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdNotEqualTo(Long value) {
+            return notEqualTo(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdGreaterThan(Long value) {
+            return greaterThan(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdLessThan(Long value) {
+            return lessThan(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(photoUserId, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdIn(List<Long> values) {
+            return in(photoUserId, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdNotIn(List<Long> values) {
+            return notIn(photoUserId, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdBetween(Long value1, Long value2) {
+            return between(photoUserId, value1, value2);
+        }
+
+        public ShiguPhotoUserExample.Criteria andPhotoUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(photoUserId, value1, value2);
         }
         public ShiguPhotoUserExample.Criteria andHeadImgIsNull() {
             return isNull(headImg);
