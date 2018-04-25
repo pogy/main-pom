@@ -44,7 +44,10 @@ public class DaifaWorkerService {
     public void setDaifaWorkerMapper(DaifaWorkerMapper daifaWorkerMapper) {
         this.daifaWorkerMapper = daifaWorkerMapper;
     }
-	
+
+    public DaifaWorker selectById(Long workerId){
+        return daifaWorkerMapper.selectByPrimaryKey(workerId);
+    }
 	
 	/**
      * ====================================================================================

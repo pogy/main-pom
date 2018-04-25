@@ -8,6 +8,7 @@ import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.bo.AutoRefundBo;
+import com.shigu.main4.daifa.bo.MoveShopDataBO;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.enums.DaifaTradeStatus;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
@@ -21,8 +22,12 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("orderManageProcess")
 public class OrderManageProcessImpl implements OrderManageProcess {
@@ -44,6 +49,10 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaSendOrderMapper daifaSendOrderMapper;
     @Autowired
     DaifaWaitSendMapper daifaWaitSendMapper;
+    @Autowired
+    DaifaSellerMapper daifaSellerMapper;
+    @Autowired
+    DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
 
     @Override
     public void newOrder(OrderBO order) {
@@ -118,6 +127,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      * @param subOrderId 子订单数据
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void markDown(Long subOrderId) throws DaifaException {
         SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, subOrderId);
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
@@ -144,17 +154,29 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void orderTimeout() {
         //查出超时的单子
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -3);
-        Date minTime = cal.getTime();
-        DaifaTradeExample example = new DaifaTradeExample();
-        example.createCriteria().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PAYED.getValue()).andIsOldEqualTo (0);
-        example.or().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PACKING.getValue()).andIsOldEqualTo (0);
-        List<DaifaTrade> timeoutTrades = daifaTradeMapper.selectFieldsByExample(example, FieldUtil.codeFields("df_trade_id"));
-        timeoutTrades.forEach(t -> {
-            OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, t.getDfTradeId());
-            orderModel.timeout();
-        });
+        DaifaSellerExample daifaSellerExample=new DaifaSellerExample();
+        daifaSellerExample.createCriteria().andStatusEqualTo(1);
+        List<DaifaSeller> sellers=daifaSellerMapper.selectByExample(daifaSellerExample);
+        for(DaifaSeller s:sellers){
+            if(s.getEndSpeed()!=null&&s.getEndSpeed()<1){
+                continue;
+            }
+            int endSpeed=s.getEndSpeed();
+            if(s.getEndSpeed()==null){
+                endSpeed=3;
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -endSpeed);
+            Date minTime = cal.getTime();
+            DaifaTradeExample example = new DaifaTradeExample();
+            example.createCriteria().andCreateTimeLessThan(minTime).andSellerIdEqualTo(s.getDfSellerId())
+                    .andTradeStatusIn(Arrays.asList(DaifaTradeStatus.PAYED.getValue(),DaifaTradeStatus.PACKING.getValue())).andIsOldEqualTo(0);
+            List<DaifaTrade> timeoutTrades = daifaTradeMapper.selectFieldsByExample(example, FieldUtil.codeFields("df_trade_id"));
+            timeoutTrades.forEach(t -> {
+                OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, t.getDfTradeId());
+                orderModel.timeout();
+            });
+        }
     }
 
     @Override
@@ -164,6 +186,11 @@ public class OrderManageProcessImpl implements OrderManageProcess {
 
     @Override
     public void autoRefund(Long refundId, List<AutoRefundBo> bos) throws DaifaException {
+        DaifaOrderExample daifaOrderExamplex=new DaifaOrderExample();
+        daifaOrderExamplex.createCriteria().andRefundIdEqualTo(refundId);
+        if(daifaOrderMapper.countByExample(daifaOrderExamplex)>0){
+            throw new DaifaException("退款申请已存在");
+        }
         List<Long> refundableIds=new ArrayList<>();
         List<String> soidps=new ArrayList<>();
         List<String> soidpsNum=new ArrayList<>();
@@ -344,5 +371,58 @@ public class OrderManageProcessImpl implements OrderManageProcess {
 
     }
 
+    @Override
+    public void storeMove(MoveShopDataBO bo) {
+        DaifaOrderExample orderExample=new DaifaOrderExample();
+        orderExample.isDistinct();
+        orderExample.createCriteria().andStoreIdEqualTo(bo.getShopId());
+        List<DaifaOrder> osx=daifaOrderMapper.selectFieldsByExample(orderExample,FieldUtil.codeFields("goods_id"));
+        Set<Long> goodsIds=osx.stream().map(DaifaOrder::getGoodsId).collect(Collectors.toSet());
+        for(Long goodsId:goodsIds){
+            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+            daifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaOrderExample.setStartIndex(0);
+            daifaOrderExample.setEndIndex(1);
+            List<DaifaOrder> os=daifaOrderMapper.selectByConditionList(daifaOrderExample);
+            if(os.size()==0){
+                continue;
+            }
+            DaifaOrder order=new DaifaOrder();
+            order.setStoreNum(bo.getShopNum());
+            order.setMarketName(bo.getMarketName());
+            order.setFloorName(bo.getFloorName());
+            order.setMarketId(bo.getMarketId());
+            order.setFloorId(bo.getFloorId());
+            order.setStoreGoodsCode ((Pingyin.getPinYinHeadChar (bo.getMarketName ()) + "_" + bo.getShopNum () + "_" + os.get(0).getGoodsCode()).replaceAll ("\\+","加"));
+            daifaOrderExample=new DaifaOrderExample();
+            daifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaOrderMapper.updateByExampleSelective(order,daifaOrderExample);
+
+            DaifaGgoodsTasks tasks=BeanMapper.map(order,DaifaGgoodsTasks.class);
+            DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+            daifaGgoodsTasksExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaGgoodsTasksMapper.updateByExampleSelective(tasks,daifaGgoodsTasksExample);
+
+            DaifaGgoods ggoods=BeanMapper.map(order,DaifaGgoods.class);
+            DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
+            daifaGgoodsExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaGgoodsMapper.updateByExampleSelective(ggoods,daifaGgoodsExample);
+
+            DaifaWaitSendOrder daifaWaitSendOrder=BeanMapper.map(order,DaifaWaitSendOrder.class);
+            DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+            daifaWaitSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
+
+            DaifaSendOrder daifaSendOrder=BeanMapper.map(order,DaifaSendOrder.class);
+            DaifaSendOrderExample daifaSendOrderExample=new DaifaSendOrderExample();
+            daifaSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaSendOrderMapper.updateByExampleSelective(daifaSendOrder,daifaSendOrderExample);
+
+            DaifaAfterSaleSub daifaAfterSaleSub=BeanMapper.map(order,DaifaAfterSaleSub.class);
+            DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
+            daifaAfterSaleSubExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            daifaAfterSaleSubMapper.updateByExampleSelective(daifaAfterSaleSub,daifaAfterSaleSubExample);
+        }
+    }
 
 }

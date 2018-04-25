@@ -70,6 +70,7 @@ public class DaifaWaitSend implements Serializable {
 	private String markDestination;
 	/**集包地*/
 	private String packageName;
+	private String packageCode;//集包地编码
 	/**备用1*/
 	private String remark1;
 	/**备用2*/
@@ -726,5 +727,13 @@ public class DaifaWaitSend implements Serializable {
 
 	public void setOrderDisplay (Integer orderDisplay) {
 		this.orderDisplay = orderDisplay;
+	}
+
+	public String getPackageCode () {
+		return packageCode;
+	}
+
+	public void setPackageCode (String packageCode) {
+		this.packageCode = packageCode;
 	}
 }

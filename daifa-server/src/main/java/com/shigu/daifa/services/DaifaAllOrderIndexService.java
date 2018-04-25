@@ -199,11 +199,13 @@ public class DaifaAllOrderIndexService {
         return JsonResponseUtil.success("备注成功");
     }
 
-    public  List<DaifaWorkerVO> getUserList() {
-        AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        Long sellerId = user.getDaifaSellerId();
+    public  List<DaifaWorkerVO> getUserList(Long dfSellerId) {
+        if(dfSellerId==null){
+            AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+            dfSellerId = user.getDaifaSellerId();
+        }
         DaifaWorkerExample daifaWorkerExample = new DaifaWorkerExample();
-        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(sellerId).andUseStatusEqualTo(1).andWorkTypeEqualTo (5);
+        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(dfSellerId).andUseStatusEqualTo(1).andWorkTypeEqualTo (5);
         List<DaifaWorker> workers = daifaWorkerMapper.selectFieldsByExample(daifaWorkerExample
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker,user_name,phone"));
 

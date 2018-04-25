@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.model;
 
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.exceptions.IsOldException;
 
 import java.util.List;
 
@@ -102,7 +103,24 @@ public interface SaleAfterModel {
      * ====================================================================================
      * 
      */
-    String refundFailInStock(Long orderId,Integer inStockType,String stockLocktion,String sendPhone)throws DaifaException;
+    String refundFailInStock(Long orderId,Integer inStockType,String stockLocktion,String sendPhone,boolean isChecked)throws DaifaException;
+
+    /**
+     * 写入库存
+     * @param afterSubId
+     * @param workerId
+     */
+    void insertDaifaStock(Long afterSubId,Long workerId);
+
+    /**
+     * 写入出入库
+     * @param stockStatus
+     * @param stockId
+     * @param workerId
+     */
+    void insertDaifaStockRecord(int stockStatus,Long stockId,Long workerId,String piCode);
+
+
     //============================客户不同意退回的金额的处理=====================================================
     /**
      * ====================================================================================
@@ -143,5 +161,18 @@ public interface SaleAfterModel {
      * @return
      */
     String changeEnt() throws DaifaException;
+
+    /**
+     * 获取当前的库存状态
+     * @param dfOrderId
+     * @return
+     */
+    int selNowStockStatus(Long dfOrderId) throws IsOldException;
+    /**
+     * 获取当前的库存状态
+     * @param stockId
+     * @return
+     */
+    int selNowStockStatusByStockId(Long stockId);
 
 }

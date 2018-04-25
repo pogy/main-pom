@@ -90,7 +90,7 @@
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://qz.571xz.com/market.htm?mid=82" target="_blank">
+    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
         逛市场
     </a>
 </li>

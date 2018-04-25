@@ -14,15 +14,27 @@ $(function(){
 		var user_v=$(".j_userN").val();
 		var pass_v=$(".j_passW").val();
 		if(user_v==""||user_v==null){
-			$(".j_userError").css("display","block");
-		}else{
-			$(".j_userError").css("display","none");
+			$("#err_msg_div").css("display","block");
+            $("#err_msg_div").text("请输入账号");
+            return;
+        }else{
+			$("#err_msg_div").css("display","none");
 		}
 
 		if(pass_v==""||pass_v==null){
-			$(".j_passError").css("display","block");
-		}else{
-			$(".j_passError").css("display","none");
+			$("#err_msg_div").css("display","block");
+            $("#err_msg_div").text("请输入密码");
+            return;
+        }else{
+			$("#err_msg_div").css("display","none");
 		}
+		$.post(daifa_host + "init/daifa/login.json",$("#login_form").serialize(),function (result) {
+			if(!result.success){
+                $("#err_msg_div").css("display","block");
+                $("#err_msg_div").text(result.msg);
+			}else {
+                location.href = daifa_host + "init/login.htm"
+            }
+        })
 	})
 })

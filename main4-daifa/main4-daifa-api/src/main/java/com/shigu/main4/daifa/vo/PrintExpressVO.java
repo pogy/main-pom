@@ -18,7 +18,8 @@ public class PrintExpressVO implements Serializable {
     private String specialStr;//特殊标注符
     private String postName;
     private String markDestination;//三段码
-    private String packageName;//集中
+    private String packageName;//集包地
+    private String packageCode;//集包码
 
     public String getReceiverName() {
         return receiverName;
@@ -138,5 +139,13 @@ public class PrintExpressVO implements Serializable {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getPackageCode () {
+        return packageCode;
+    }
+
+    public void setPackageCode (String packageCode) {
+        this.packageCode = packageCode;
     }
 }

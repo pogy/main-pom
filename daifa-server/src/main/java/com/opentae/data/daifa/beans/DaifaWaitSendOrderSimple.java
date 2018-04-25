@@ -27,6 +27,7 @@ public class DaifaWaitSendOrderSimple implements Serializable{
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
     private Integer refundStatus;
     private String storeGoodsCode; //商家编码
+    private String barCodeKey;
 
 
     public static long getSerialVersionUID() {
@@ -175,5 +176,13 @@ public class DaifaWaitSendOrderSimple implements Serializable{
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public String getBarCodeKey() {
+        return this.barCodeKey;
+    }
+
+    public void setBarCodeKey(String barCodeKey) {
+        this.barCodeKey = barCodeKey;
     }
 }
