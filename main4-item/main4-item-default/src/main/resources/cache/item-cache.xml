@@ -8,4 +8,13 @@
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
     <cache name="taobaoSessionCache" maxElementsInMemory="1000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
+
+    <!-- 商品基本属性一级 -->
+    <cache name="yj2prop.cache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="86000"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LFU"/>
 </ehcache>

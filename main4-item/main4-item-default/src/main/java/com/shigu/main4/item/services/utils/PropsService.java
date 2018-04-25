@@ -42,7 +42,7 @@ public class PropsService {
      * @param cid 类目ID
      * @return
      */
-    @Cacheable(value = "yj2prop.cache",key = "#cid")
+//    @Cacheable(value = "yj2prop.cache",key = "#cid")
     public PropsVO selProps(Long cid) throws ApiException, TbException {
         PropsVO propsVO=new PropsVO();
         propsVO.setCid(cid);
