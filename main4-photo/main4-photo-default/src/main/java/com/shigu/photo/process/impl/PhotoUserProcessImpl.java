@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * 创建人: wanghaoxiang
  * 描述:
  */
-@Service
+@Service("photoUserProcess")
 public class PhotoUserProcessImpl implements PhotoUserProcess {
 
     @Autowired

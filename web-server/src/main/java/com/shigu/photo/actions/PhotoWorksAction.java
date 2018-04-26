@@ -5,10 +5,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.photo.bo.*;
 import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.service.PhotoWorksService;
-import com.shigu.photo.vo.PhotoCatVO;
-import com.shigu.photo.vo.PhotoStyleVO;
-import com.shigu.photo.vo.PhotoWorksDetailWebVO;
-import com.shigu.photo.vo.PhotoWorksVO;
+import com.shigu.photo.vo.*;
 import com.shigu.search.actions.PageErrAction;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -24,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("photo/")
@@ -38,23 +37,29 @@ public class PhotoWorksAction {
     @Autowired
     PageErrAction pageErrAction;
 
-    @RequestMapping("wokes")
-    public String wokes(PhotoWorksSearchBO bo, Model model) {
-        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(bo.toPhotoWorksBO(null));
+    @RequestMapping("photoWorks")
+    public String wokes(PhotoWorksSearchBO query, Model model) {
+        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO(1L,"模特"),new PhotoCateVO(2L,"摄影机构"),new PhotoCateVO(3L,"场地")));
+        model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
+                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid(),photoCatVO.getCname())).collect(Collectors.toList()));
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId(),photoStyleVO.getStyleName())).collect(Collectors.toList()));
+
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
-        model.addAttribute("query", bo);
+        model.addAttribute("query", query);
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
-        return "wokes";
+        return "photo/photoWorks";
     }
 
-    @RequestMapping("authorWokes")
-    public String authorWokes(HttpSession session, PhotoWorksSearchBO bo, Model model) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(bo.toPhotoWorksBO(ps.getUserId()));
+    @RequestMapping("userHomePage")
+    public String authorWokes(PhotoWorksSearchBO query, Model model) {
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
-        model.addAttribute("query", bo);
+        model.addAttribute("query", query);
+        model.addAttribute("userInfo", photoWorksService.totalAuthInfo(query.getId(), null));
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
-        return "authorWokes";
+        return "photo/userHomePage";
     }
 
 

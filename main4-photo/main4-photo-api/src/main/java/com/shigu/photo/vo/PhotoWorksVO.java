@@ -41,10 +41,8 @@ public class PhotoWorksVO implements Serializable{
      * 作者类型
      */
     private Integer userType;
-    /**
-     * 性别,只有在作者类型是1的情况下可用
-     */
-    private Integer sex;
+
+    private Integer subUserType;
     /**
      * 描述
      */
@@ -156,19 +154,6 @@ public class PhotoWorksVO implements Serializable{
         this.worksId = worksId;
     }
 
-    /**
-     * 获取 作者类型
-     */
-    public Integer getUserType() {
-        return this.userType;
-    }
-
-    /**
-     * 设置 作者类型
-     */
-    public void setUserType(Integer userType) {
-        this.userType = userType;
-    }
 
     /**
      * 获取 描述
@@ -185,16 +170,24 @@ public class PhotoWorksVO implements Serializable{
     }
 
     /**
-     * 获取 性别,只有在作者类型是1的情况下可用
+     * 获取 作者类型
      */
-    public Integer getSex() {
-        return this.sex;
+    public Integer getUserType() {
+        return this.userType;
     }
 
     /**
-     * 设置 性别,只有在作者类型是1的情况下可用
+     * 设置 作者类型
      */
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    public Integer getSubUserType() {
+        return this.subUserType;
+    }
+
+    public void setSubUserType(Integer subUserType) {
+        this.subUserType = subUserType;
     }
 }
