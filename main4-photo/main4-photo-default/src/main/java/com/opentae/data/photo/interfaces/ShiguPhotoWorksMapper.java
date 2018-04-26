@@ -22,6 +22,7 @@ public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
     List<PhotoWorksVO> selectShiguPhotoWorks(@Param("styleId")Long styleId,
                                              @Param("userType")Integer userType,
                                              @Param("subUserType")Integer subUserType,
+                                             @Param("sort")String sort,
                                              @Param("start")Integer start,
                                              @Param("end")Integer end);
 

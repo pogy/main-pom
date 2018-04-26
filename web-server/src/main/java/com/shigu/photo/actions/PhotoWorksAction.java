@@ -36,7 +36,7 @@ public class PhotoWorksAction {
 
     @RequestMapping("wokes")
     public String wokes(PhotoWorksSearchBO bo, Model model){
-        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(null);
+        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(bo.toPhotoWorksBO(null));
         model.addAttribute("list",photoWorksVOShiguPager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",photoWorksVOShiguPager.selPageOption(10));
@@ -46,16 +46,12 @@ public class PhotoWorksAction {
     @RequestMapping("authorWokes")
     public String authorWokes(HttpSession session,PhotoWorksSearchBO bo,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(null);
+        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(bo.toPhotoWorksBO(ps.getUserId()));
         model.addAttribute("list",photoWorksVOShiguPager.getContent());
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",photoWorksVOShiguPager.selPageOption(10));
         return "authorWokes";
     }
-
-
-
-
 
 
     //上传作品页

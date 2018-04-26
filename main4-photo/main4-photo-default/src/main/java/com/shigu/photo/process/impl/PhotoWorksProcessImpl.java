@@ -1,6 +1,9 @@
 package com.shigu.photo.process.impl;
 
-import com.opentae.data.photo.beans.*;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.photo.beans.ShiguPhotoUser;
+import com.opentae.data.photo.beans.ShiguPhotoWorksStyle;
+import com.opentae.data.photo.beans.ShiguPhotoWorks;
 import com.opentae.data.photo.examples.ShiguPhotoCatExample;
 import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
 import com.opentae.data.photo.interfaces.*;
@@ -45,56 +48,63 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         if (userId != null) {
             userIds.add(userId);
         }
-        ShiguPhotoStyleExample shiguPhotoStyleExample = new ShiguPhotoStyleExample();
+        ShiguPhotoStyleExample shiguPhotoStyleExample=new ShiguPhotoStyleExample();
         shiguPhotoStyleExample.createCriteria().andUserIdIn(userIds);
         shiguPhotoStyleExample.setOrderByClause("user_id asc,style_id asc");
-        return BeanMapper.mapList(shiguPhotoStyleMapper.selectByExample(shiguPhotoStyleExample), PhotoStyleVO.class);
+        return BeanMapper.mapList(shiguPhotoStyleMapper.selectByExample(shiguPhotoStyleExample),PhotoStyleVO.class);
     }
 
     @Override
     public List<PhotoCatVO> selPhotoCatVos() {
-        return BeanMapper.mapList(shiguPhotoCatMapper.selectByExample(new ShiguPhotoCatExample()), PhotoCatVO.class);
+        return BeanMapper.mapList(shiguPhotoCatMapper.selectByExample(new ShiguPhotoCatExample()),PhotoCatVO.class);
     }
 
     @Override
     public void uploadWorks(SynPhotoUploadBO bo) {
-        ShiguPhotoWorks shiguPhotoWorks = new ShiguPhotoWorks();
+        ShiguPhotoWorks shiguPhotoWorks=new ShiguPhotoWorks();
         shiguPhotoWorks.setAuthorId(bo.getUserId());
         shiguPhotoWorks.setClicks(0L);
         shiguPhotoWorks.setCreateTime(new Date());
-        shiguPhotoWorks.setForbidSave(bo.getForbidSave() == 1);
-        shiguPhotoWorks.setHavePrice(bo.getHavePrice() == 1);
+        shiguPhotoWorks.setForbidSave(bo.getForbidSave()==1);
+        shiguPhotoWorks.setHavePrice(bo.getHavePrice()==1);
         shiguPhotoWorks.setLastModifyTme(shiguPhotoWorks.getCreateTime());
-        shiguPhotoWorks.setPrice(shiguPhotoWorks.getHavePrice() ? MoneyUtil.StringToLong(bo.getPriceString()) : null);
+        shiguPhotoWorks.setPrice(shiguPhotoWorks.getHavePrice()? MoneyUtil.StringToLong(bo.getPriceString()):null);
         shiguPhotoWorks.setRemoveIs(false);
         shiguPhotoWorks.setTitle(bo.getTitle());
         shiguPhotoWorks.setWorksCid(bo.getCid());
         shiguPhotoWorks.setPicUrl(bo.getPicUtl());
-        String images = StringUtils.join(bo.getImages().stream()
+        String images= StringUtils.join(bo.getImages().stream()
                 .map(s -> photoImgProcess.moveImg(s)).collect(Collectors.toList()), ",");
         shiguPhotoWorks.setImages(images);
         shiguPhotoWorksMapper.insertSelective(shiguPhotoWorks);
-        List<ShiguPhotoWorksStyle> shiguPhotoWorksStyles = new ArrayList<>();
-        for (Long styleId : bo.getStyleId()) {
-            ShiguPhotoWorksStyle shiguPhotoWorksStyle = new ShiguPhotoWorksStyle();
+        List<ShiguPhotoWorksStyle> shiguPhotoWorksStyles=new ArrayList<>();
+        for(Long styleId:bo.getStyleId()){
+            ShiguPhotoWorksStyle shiguPhotoWorksStyle=new ShiguPhotoWorksStyle();
             shiguPhotoWorksStyle.setStyleId(styleId);
             shiguPhotoWorksStyle.setWorksId(shiguPhotoWorks.getWorksId());
             shiguPhotoWorksStyles.add(shiguPhotoWorksStyle);
         }
-        if (shiguPhotoWorksStyles.size() > 0) {
+        if(shiguPhotoWorksStyles.size()>0){
             shiguPhotoWorksStyleMapper.insertListNoId(shiguPhotoWorksStyles);
         }
     }
 
     @Override
     public ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo) {
-        ShiguPager<PhotoWorksVO> pager = new ShiguPager<>();
+        ShiguPager<PhotoWorksVO> pager=new ShiguPager<>();
         pager.setNumber(bo.getPage());
-        int count = shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getStyleId(), bo.getUserType(), bo.getSubUserType());
-        if (count > 0) {
-            pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getStyleId(), bo.getUserType(), bo.getSubUserType(), (bo.getPage() - 1) * bo.getPageSize(), bo.getPageSize()));
+        int count=shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getStyleId(),
+                bo.getUserType(),
+                bo.getSubUserType());
+        if(count>0){
+            pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getStyleId(),
+                    bo.getUserType(),
+                    bo.getSubUserType(),
+                    bo.getSort().getSql(),
+                    (bo.getPage()-1)*bo.getPageSize(),
+                    bo.getPageSize()));
         }
-        pager.calPages(count, bo.getPageSize());
+        pager.calPages(count,bo.getPageSize());
         return pager;
     }
 

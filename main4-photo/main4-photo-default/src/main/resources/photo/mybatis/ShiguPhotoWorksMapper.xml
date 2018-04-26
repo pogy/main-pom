@@ -28,6 +28,9 @@
                 and t3.style_id=${styleId}
                 and t1.works_id=t3.works_id
             </if>
+        <if test="sort != null">
+            order by ${sort}
+        </if>
         limit ${start},${end}
     </select>
 
