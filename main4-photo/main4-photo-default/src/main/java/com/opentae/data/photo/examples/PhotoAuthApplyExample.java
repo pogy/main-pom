@@ -1,10 +1,10 @@
 package com.opentae.data.photo.examples;
 
-import com.opentae.data.photo.beans.PhotoAuthApply;
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.EntityColumn;
 import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.photo.beans.PhotoAuthApply;
 
 import java.util.*;
 public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Criteria> {
@@ -15,6 +15,7 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
     public static EntityColumn codeImg;
     public static EntityColumn mainStyleId;
     public static EntityColumn authType;
+    public static EntityColumn authPhone;
     public static EntityColumn userName;
     public static EntityColumn applyTime;
     public static EntityColumn userId;
@@ -32,6 +33,7 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
         codeImg = listMap.get("codeImg");
         mainStyleId = listMap.get("mainStyleId");
         authType = listMap.get("authType");
+        authPhone = listMap.get("authPhone");
         userName = listMap.get("userName");
         applyTime = listMap.get("applyTime");
         userId = listMap.get("userId");
@@ -301,6 +303,61 @@ public class PhotoAuthApplyExample extends SgExample<PhotoAuthApplyExample.Crite
 
         public PhotoAuthApplyExample.Criteria andAuthTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(authType, value1, value2);
+        }
+        public PhotoAuthApplyExample.Criteria andAuthPhoneIsNull() {
+            return isNull(authPhone);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneIsNotNull() {
+            return isNotNull(authPhone);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneEqualTo(String value) {
+            return equalTo(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneNotEqualTo(String value) {
+            return notEqualTo(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneGreaterThan(String value) {
+            return greaterThan(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneLessThan(String value) {
+            return lessThan(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneLike(String value) {
+            return like(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneNotLike(String value) {
+            return notLike(authPhone, value);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneIn(List<String> values) {
+            return in(authPhone, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneNotIn(List<String> values) {
+            return notIn(authPhone, values);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneBetween(String value1, String value2) {
+            return between(authPhone, value1, value2);
+        }
+
+        public PhotoAuthApplyExample.Criteria andAuthPhoneNotBetween(String value1, String value2) {
+            return notBetween(authPhone, value1, value2);
         }
         public PhotoAuthApplyExample.Criteria andUserNameIsNull() {
             return isNull(userName);

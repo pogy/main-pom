@@ -5,6 +5,7 @@ import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.bo.SynPhotoUploadBO;
 import com.shigu.photo.vo.PhotoCatVO;
 import com.shigu.photo.vo.PhotoStyleVO;
+import com.shigu.photo.vo.PhotoWorkDetailVO;
 import com.shigu.photo.vo.PhotoWorksVO;
 
 import java.util.List;
@@ -34,4 +35,11 @@ public interface PhotoWorksProcess {
      * @return
      */
     ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo);
+
+    /**
+     * 获取作品详情
+     * @param worksId 作品id
+     * @return
+     */
+    PhotoWorkDetailVO selPhotoWorkDetail(Long worksId);
 }

@@ -20,9 +20,6 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
     // 图片集
     private String imgs;
 
-    // 点击量
-    private Long clicks;
-
     // 作者头像
     private String authHeadImg;
 
@@ -32,8 +29,11 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
     // 作者联系手机号
     private String authContactPhone;
 
+    //根据user_type字段决定含义,当user_type=0或1时,该字段代表性别(0:未知,1:男,2:女),当user_type=2时,该字段代表机构类型(1:摄影公司,2:摄影师)
+    private Integer authSubUserType;
+
     // 作者作品数量
-    private Long worksCount;
+    private Integer worksCount;
 
     public String getPriceStr() {
         return priceStr;
@@ -57,14 +57,6 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
 
     public void setImgs(String imgs) {
         this.imgs = imgs;
-    }
-
-    public Long getClicks() {
-        return clicks;
-    }
-
-    public void setClicks(Long clicks) {
-        this.clicks = clicks;
     }
 
     public String getAuthHeadImg() {
@@ -91,11 +83,19 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
         this.authContactPhone = authContactPhone;
     }
 
-    public Long getWorksCount() {
+    public Integer getWorksCount() {
         return worksCount;
     }
 
-    public void setWorksCount(Long worksCount) {
+    public void setWorksCount(Integer worksCount) {
         this.worksCount = worksCount;
+    }
+
+    public Integer getAuthSubUserType() {
+        return authSubUserType;
+    }
+
+    public void setAuthSubUserType(Integer authSubUserType) {
+        this.authSubUserType = authSubUserType;
     }
 }

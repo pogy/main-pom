@@ -63,7 +63,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
             shiguPhotoUser.setUserId(userId);
             //默认普通用户，性别未知
             shiguPhotoUser.setUserType(0);
-            shiguPhotoUser.setSex(0);
+            shiguPhotoUser.setSubUserType(0);
             MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
             if (memberUser != null) {
                 shiguPhotoUser.setUserName(memberUser.getLoginPhone());
@@ -122,6 +122,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         }
         apply.setUserName(bo.getUserName());
         apply.setAuthType(bo.getAuthType());
+        apply.setAuthPhone(bo.getAuthPhone());
         apply.setShowImg(bo.getShowImg());
         apply.setCodeImg(bo.getCodeImg());
         apply.setMainStyleId(bo.getMainStyleId());
@@ -140,6 +141,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
         shiguPhotoUser.setPhotoUserId(photoUserId);
         shiguPhotoUser.setUserName(apply.getUserName());
+        shiguPhotoUser.setContactPhone(apply.getAuthPhone());
         shiguPhotoUser.setShowImg(apply.getShowImg());
         shiguPhotoUser.setHeadImg(apply.getShowImg());
         shiguPhotoUser.setCodeImg(apply.getCodeImg());
@@ -189,7 +191,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     public void editUserInfo(PhotoUserInfoEditBO bo) {
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
         shiguPhotoUser.setPhotoUserId(photoUserInfo().getPhotoUserId());
-        shiguPhotoUser.setSex(bo.getSex());
+        shiguPhotoUser.setSubUserType(bo.getSubUserType());
         shiguPhotoUser.setAddress(bo.getAddress());
         shiguPhotoUser.setHeadImg(bo.getHeadImg());
         shiguPhotoUser.setContactPhone(bo.getContactPhone());

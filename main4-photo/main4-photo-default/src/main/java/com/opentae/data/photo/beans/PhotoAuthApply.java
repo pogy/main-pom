@@ -29,6 +29,11 @@ public class PhotoAuthApply implements Serializable {
 	private Integer authType;
 
     /**
+     * 认证手机号
+     */
+	private String authPhone;
+
+    /**
      * 个人展示封面
      */
 	private String showImg;
@@ -93,6 +98,14 @@ public class PhotoAuthApply implements Serializable {
 
 	public Integer getAuthType() {
 		return this.authType;
+	}
+
+	public void setAuthPhone(String authPhone) {
+		this.authPhone = authPhone;
+	}
+
+	public String getAuthPhone() {
+		return this.authPhone;
 	}
 
 	public void setShowImg(String showImg) {

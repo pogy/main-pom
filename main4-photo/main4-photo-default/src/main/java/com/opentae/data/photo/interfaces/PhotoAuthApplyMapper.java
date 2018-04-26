@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
  * 
  * Created by exampleCreater.
  */
-@MyBatisRepository("tae_com.opentae.photo_photoAuthApplyMapper")
+@MyBatisRepository("tae_photo_photoAuthApplyMapper")
 @Scope("singleton")
 @Lazy(true)
 public interface PhotoAuthApplyMapper extends Mapper<PhotoAuthApply> {

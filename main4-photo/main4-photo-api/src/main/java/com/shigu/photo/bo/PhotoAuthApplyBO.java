@@ -17,6 +17,9 @@ public class PhotoAuthApplyBO implements Serializable {
     //身份认证类型 1:模特,2:摄影机构,3:场地
     private Integer authType;
 
+    //认证手机号（只用以认证确实使用该手机号，之后可以修改)
+    private String authPhone;
+
     //个人展示封面
     private String showImg;
 
@@ -64,5 +67,13 @@ public class PhotoAuthApplyBO implements Serializable {
 
     public void setMainStyleId(Long mainStyleId) {
         this.mainStyleId = mainStyleId;
+    }
+
+    public String getAuthPhone() {
+        return authPhone;
+    }
+
+    public void setAuthPhone(String authPhone) {
+        this.authPhone = authPhone;
     }
 }
