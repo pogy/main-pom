@@ -14,6 +14,7 @@ import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.vo.PhotoUserVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +32,16 @@ import java.util.Date;
 @Scope("prototype")
 public class PhotoUserModelImpl implements PhotoUserModel {
 
+    @Autowired
     private ShiguPhotoUserMapper shiguPhotoUserMapper;
 
+    @Autowired
     private MemberUserMapper memberUserMapper;
 
+    @Autowired
     private MemberLicenseMapper memberLicenseMapper;
 
+    @Autowired
     private PhotoAuthApplyMapper photoAuthApplyMapper;
 
     //用户id,必传，非空
@@ -62,6 +67,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
             MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
             if (memberUser != null) {
                 shiguPhotoUser.setUserName(memberUser.getLoginPhone());
+                shiguPhotoUser.setContactPhone(memberUser.getLoginPhone());
             }
             try {
                 shiguPhotoUserMapper.insertSelective(shiguPhotoUser);
@@ -135,6 +141,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setPhotoUserId(photoUserId);
         shiguPhotoUser.setUserName(apply.getUserName());
         shiguPhotoUser.setShowImg(apply.getShowImg());
+        shiguPhotoUser.setHeadImg(apply.getShowImg());
         shiguPhotoUser.setCodeImg(apply.getCodeImg());
         shiguPhotoUser.setMainStyleId(apply.getMainStyleId());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
@@ -185,6 +192,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setSex(bo.getSex());
         shiguPhotoUser.setAddress(bo.getAddress());
         shiguPhotoUser.setHeadImg(bo.getHeadImg());
+        shiguPhotoUser.setContactPhone(bo.getContactPhone());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
     }
 

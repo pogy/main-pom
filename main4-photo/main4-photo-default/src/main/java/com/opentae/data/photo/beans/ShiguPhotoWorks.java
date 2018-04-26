@@ -76,7 +76,7 @@ public class ShiguPhotoWorks implements Serializable {
     /**
      * 描述
      */
-	private String context;
+	private String content;
 
 	public void setWorksId(Long worksId) {
 		this.worksId = worksId;
@@ -182,12 +182,12 @@ public class ShiguPhotoWorks implements Serializable {
 		return this.clicks;
 	}
 
-	public void setContext(String context) {
-		this.context = context;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public String getContext() {
-		return this.context;
+	public String getContent() {
+		return this.content;
 	}
 
 }
