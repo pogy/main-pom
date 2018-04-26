@@ -102,6 +102,24 @@ public class PhotoWorksSearchBO {
     public void setPage(Integer page) {
         this.page = page;
     }
+    /**
+     * 作者子类型
+     * 当userType=1时,1:男模,2:女模
+     * 当userType=2时,1:摄影公司,2:摄影师
+     */
+    public Integer getSubUserType() {
+        return this.subUserType;
+    }
+
+    /**
+     * 作者子类型
+     * 当userType=1时,1:男模,2:女模
+     * 当userType=2时,1:摄影公司,2:摄影师
+     */
+    public void setSubUserType(Integer subUserType) {
+        this.subUserType = subUserType;
+    }
+
 
     public PhotoWorksBO toPhotoWorksBO(Long userId){
         if(getPage()==null){
@@ -113,7 +131,17 @@ public class PhotoWorksSearchBO {
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);
         photoWorksBO.setStyleId(getStyleId());
-
+        photoWorksBO.setUserType(getUserType());
+        if(getUserType()!=null&&getUserType()!=3){
+            photoWorksBO.setSubUserType(getSubUserType());
+        }
+        if(getSort()!=null){
+            photoWorksBO.setSort("default".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
+        }else{
+            photoWorksBO.setSort(WorksListSortEnum.defaults);
+        }
         return photoWorksBO;
     }
+
+
 }

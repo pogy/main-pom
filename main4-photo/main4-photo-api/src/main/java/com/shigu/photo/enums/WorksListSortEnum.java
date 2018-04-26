@@ -1,7 +1,7 @@
 package com.shigu.photo.enums;
 
 public enum WorksListSortEnum {
-    create_asc("create_time asc"),create_desc("create_time desc"),defaults(null);
+    create_asc("t1.create_time asc"),create_desc("t1.create_time desc"),defaults(null);
     String sql;
     WorksListSortEnum(String sql){
         this.sql=sql;
