@@ -11,13 +11,14 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
     public static final Class<ShiguPhotoUser> beanClass = ShiguPhotoUser.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn userInfo;
+    public static EntityColumn subUserType;
     public static EntityColumn address;
     public static EntityColumn photoUserId;
     public static EntityColumn headImg;
     public static EntityColumn codeImg;
-    public static EntityColumn sex;
     public static EntityColumn mainStyleId;
     public static EntityColumn userType;
+    public static EntityColumn contactPhone;
     public static EntityColumn userName;
     public static EntityColumn userId;
     public static EntityColumn showImg;
@@ -28,13 +29,14 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
             listMap.put(column.getProperty(), column);
         }
         userInfo = listMap.get("userInfo");
+        subUserType = listMap.get("subUserType");
         address = listMap.get("address");
         photoUserId = listMap.get("photoUserId");
         headImg = listMap.get("headImg");
         codeImg = listMap.get("codeImg");
-        sex = listMap.get("sex");
         mainStyleId = listMap.get("mainStyleId");
         userType = listMap.get("userType");
+        contactPhone = listMap.get("contactPhone");
         userName = listMap.get("userName");
         userId = listMap.get("userId");
         showImg = listMap.get("showImg");
@@ -113,6 +115,53 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
 
         public ShiguPhotoUserExample.Criteria andUserInfoNotBetween(String value1, String value2) {
             return notBetween(userInfo, value1, value2);
+        }
+        public ShiguPhotoUserExample.Criteria andSubUserTypeIsNull() {
+            return isNull(subUserType);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeIsNotNull() {
+            return isNotNull(subUserType);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeEqualTo(Integer value) {
+            return equalTo(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeNotEqualTo(Integer value) {
+            return notEqualTo(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeGreaterThan(Integer value) {
+            return greaterThan(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeLessThan(Integer value) {
+            return lessThan(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(subUserType, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeIn(List<Integer> values) {
+            return in(subUserType, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeNotIn(List<Integer> values) {
+            return notIn(subUserType, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeBetween(Integer value1, Integer value2) {
+            return between(subUserType, value1, value2);
+        }
+
+        public ShiguPhotoUserExample.Criteria andSubUserTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(subUserType, value1, value2);
         }
         public ShiguPhotoUserExample.Criteria andAddressIsNull() {
             return isNull(address);
@@ -326,53 +375,6 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
         public ShiguPhotoUserExample.Criteria andCodeImgNotBetween(String value1, String value2) {
             return notBetween(codeImg, value1, value2);
         }
-        public ShiguPhotoUserExample.Criteria andSexIsNull() {
-            return isNull(sex);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexIsNotNull() {
-            return isNotNull(sex);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexEqualTo(Integer value) {
-            return equalTo(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexNotEqualTo(Integer value) {
-            return notEqualTo(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexGreaterThan(Integer value) {
-            return greaterThan(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexLessThan(Integer value) {
-            return lessThan(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(sex, value);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexIn(List<Integer> values) {
-            return in(sex, values);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexNotIn(List<Integer> values) {
-            return notIn(sex, values);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexBetween(Integer value1, Integer value2) {
-            return between(sex, value1, value2);
-        }
-
-        public ShiguPhotoUserExample.Criteria andSexNotBetween(Integer value1, Integer value2) {
-            return notBetween(sex, value1, value2);
-        }
         public ShiguPhotoUserExample.Criteria andMainStyleIdIsNull() {
             return isNull(mainStyleId);
         }
@@ -466,6 +468,61 @@ public class ShiguPhotoUserExample extends SgExample<ShiguPhotoUserExample.Crite
 
         public ShiguPhotoUserExample.Criteria andUserTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(userType, value1, value2);
+        }
+        public ShiguPhotoUserExample.Criteria andContactPhoneIsNull() {
+            return isNull(contactPhone);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneIsNotNull() {
+            return isNotNull(contactPhone);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneEqualTo(String value) {
+            return equalTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotEqualTo(String value) {
+            return notEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneGreaterThan(String value) {
+            return greaterThan(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLessThan(String value) {
+            return lessThan(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneLike(String value) {
+            return like(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotLike(String value) {
+            return notLike(contactPhone, value);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneIn(List<String> values) {
+            return in(contactPhone, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotIn(List<String> values) {
+            return notIn(contactPhone, values);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneBetween(String value1, String value2) {
+            return between(contactPhone, value1, value2);
+        }
+
+        public ShiguPhotoUserExample.Criteria andContactPhoneNotBetween(String value1, String value2) {
+            return notBetween(contactPhone, value1, value2);
         }
         public ShiguPhotoUserExample.Criteria andUserNameIsNull() {
             return isNull(userName);

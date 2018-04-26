@@ -95,28 +95,11 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
     public ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo) {
         ShiguPager<PhotoWorksVO> pager=new ShiguPager<>();
         pager.setNumber(bo.getPage());
-        ShiguPhotoWorksExample shiguPhotoWorksExample=new ShiguPhotoWorksExample();
-        if(bo.getSort()!=null&&bo.getSort().getSql()!=null){
-            shiguPhotoWorksExample.setOrderByClause(bo.getSort().getSql());
+        int count=shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getStyleId(),bo.getUserType());
+        if(count>0){
+            pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getStyleId(),bo.getUserType(),(bo.getPage()-1)*bo.getPageSize(),bo.getPageSize()));
         }
-        ShiguPhotoWorksExample.Criteria criteria = shiguPhotoWorksExample.createCriteria();
-        if(bo.getAuthorId()!=null){
-            criteria.andAuthorIdEqualTo(bo.getAuthorId());
-        }else{
-            if(bo.getStyleId()!=null){
-                ShiguPhotoUserExample shiguPhotoUserExample=new ShiguPhotoUserExample();
-                shiguPhotoUserExample.createCriteria().andUserTypeEqualTo(bo.getUserType());
-                List<ShiguPhotoUser> us=shiguPhotoUserMapper.selectFieldsByExample(shiguPhotoUserExample, FieldUtil.codeFields("photo_user_id,user_id"));
-                if(us.size()==0){
-                    pager.calPages(0,10);
-                    pager.setContent(new ArrayList<>());
-                    return pager;
-                }
-                criteria.andAuthorIdIn(BeanMapper.getFieldList(us,"userId",Long.class));
-            }
-        }
-
-
-        return null;
+        pager.calPages(count,bo.getPageSize());
+        return pager;
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
  * 
  * Created by exampleCreater.
  */
-@MyBatisRepository("tae_com.opentae.photo_shiguPhotoUserMapper")
+@MyBatisRepository("tae_photo_shiguPhotoUserMapper")
 @Scope("singleton")
 @Lazy(true)
 public interface ShiguPhotoUserMapper extends Mapper<ShiguPhotoUser> {

@@ -33,19 +33,24 @@ public class ShiguPhotoUser implements Serializable {
 	private Integer userType;
 
     /**
+     * 
+     */
+	private Integer subUserType;
+
+    /**
      * 常用地址
      */
 	private String address;
 
     /**
-     * 
-     */
-	private Integer sex;
-
-    /**
      * 个人简介
      */
 	private String userInfo;
+
+    /**
+     * 联系方式
+     */
+	private String contactPhone;
 
     /**
      * 个人展示封面
@@ -102,6 +107,14 @@ public class ShiguPhotoUser implements Serializable {
 		return this.userType;
 	}
 
+	public void setSubUserType(Integer subUserType) {
+		this.subUserType = subUserType;
+	}
+
+	public Integer getSubUserType() {
+		return this.subUserType;
+	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -110,20 +123,20 @@ public class ShiguPhotoUser implements Serializable {
 		return this.address;
 	}
 
-	public void setSex(Integer sex) {
-		this.sex = sex;
-	}
-
-	public Integer getSex() {
-		return this.sex;
-	}
-
 	public void setUserInfo(String userInfo) {
 		this.userInfo = userInfo;
 	}
 
 	public String getUserInfo() {
 		return this.userInfo;
+	}
+
+	public void setContactPhone(String contactPhone) {
+		this.contactPhone = contactPhone;
+	}
+
+	public String getContactPhone() {
+		return this.contactPhone;
 	}
 
 	public void setShowImg(String showImg) {

@@ -2,21 +2,14 @@ package com.shigu.photo.bo;
 
 import com.shigu.photo.enums.WorksListSortEnum;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
-/**
- * 作品列表BO
- */
-public class PhotoWorksBO implements Serializable{
+public class PhotoWorksSearchBO {
     /**
      * 排序
      */
-    private WorksListSortEnum sort;
-    /**
-     * 作者ID
-     */
-    private Long authorId;
+    private String sort;
     /**
      * 风格ID
      */
@@ -30,29 +23,27 @@ public class PhotoWorksBO implements Serializable{
      */
     private Integer userType;
     /**
-     * 子作者类型
-     */
-    private Integer subUserType;
-    /**
      * 页码
      */
     private Integer page;
     /**
-     * 页长
+     * 作者子类型
+     * 当userType=1时,1:男模,2:女模
+     * 当userType=2时,1:摄影公司,2:摄影师
      */
-    private Integer pageSize;
+    private Integer subUserType;
 
     /**
      * 获取 排序
      */
-    public WorksListSortEnum getSort() {
+    public String getSort() {
         return this.sort;
     }
 
     /**
      * 设置 排序
      */
-    public void setSort(WorksListSortEnum sort) {
+    public void setSort(String sort) {
         this.sort = sort;
     }
 
@@ -112,45 +103,17 @@ public class PhotoWorksBO implements Serializable{
         this.page = page;
     }
 
-    /**
-     * 获取 作者ID
-     */
-    public Long getAuthorId() {
-        return this.authorId;
-    }
+    public PhotoWorksBO toPhotoWorksBO(Long userId){
+        if(getPage()==null){
+            setPage(1);
+        }
+        PhotoWorksBO photoWorksBO=new PhotoWorksBO();
+        photoWorksBO.setAuthorId(userId);
+        photoWorksBO.setCid(getCid());
+        photoWorksBO.setPage(getPage());
+        photoWorksBO.setPageSize(10);
+        photoWorksBO.setStyleId(getStyleId());
 
-    /**
-     * 设置 作者ID
-     */
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    /**
-     * 获取 页长
-     */
-    public Integer getPageSize() {
-        return this.pageSize;
-    }
-
-    /**
-     * 设置 页长
-     */
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * 获取 子作者类型
-     */
-    public Integer getSubUserType() {
-        return this.subUserType;
-    }
-
-    /**
-     * 设置 子作者类型
-     */
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
+        return photoWorksBO;
     }
 }

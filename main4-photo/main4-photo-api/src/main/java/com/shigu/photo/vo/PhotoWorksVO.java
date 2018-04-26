@@ -42,6 +42,10 @@ public class PhotoWorksVO implements Serializable{
      */
     private Integer userType;
     /**
+     * 性别,只有在作者类型是1的情况下可用
+     */
+    private Integer sex;
+    /**
      * 描述
      */
     private String content;
@@ -178,5 +182,19 @@ public class PhotoWorksVO implements Serializable{
      */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    /**
+     * 获取 性别,只有在作者类型是1的情况下可用
+     */
+    public Integer getSex() {
+        return this.sex;
+    }
+
+    /**
+     * 设置 性别,只有在作者类型是1的情况下可用
+     */
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 }

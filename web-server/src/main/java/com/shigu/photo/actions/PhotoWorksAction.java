@@ -1,11 +1,15 @@
 package com.shigu.photo.actions;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.photo.bo.PhotoUploadBO;
+import com.shigu.photo.bo.PhotoWorksBO;
+import com.shigu.photo.bo.PhotoWorksSearchBO;
 import com.shigu.photo.bo.SynPhotoUploadBO;
 import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.vo.PhotoCatVO;
 import com.shigu.photo.vo.PhotoStyleVO;
+import com.shigu.photo.vo.PhotoWorksVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -30,9 +34,25 @@ public class PhotoWorksAction {
 
 
 
-    public String wokes(){
-        return "";
+    @RequestMapping("wokes")
+    public String wokes(PhotoWorksSearchBO bo, Model model){
+        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(null);
+        model.addAttribute("list",photoWorksVOShiguPager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",photoWorksVOShiguPager.selPageOption(10));
+        return "wokes";
     }
+
+    @RequestMapping("authorWokes")
+    public String authorWokes(HttpSession session,PhotoWorksSearchBO bo,Model model){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(null);
+        model.addAttribute("list",photoWorksVOShiguPager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",photoWorksVOShiguPager.selPageOption(10));
+        return "authorWokes";
+    }
+
 
 
 
