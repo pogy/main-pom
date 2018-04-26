@@ -63,7 +63,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
      * @param worksId
      */
     @Override
-    public void PraiseWork(Long userId, Long worksId) {
+    public void praiseWork(Long userId, Long worksId) {
         changeUserPraise(userId, worksId, 1);
     }
 
@@ -74,7 +74,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
      * @param worksId
      */
     @Override
-    public void PraiseWorkCancel(Long userId, Long worksId) {
+    public void praiseWorkCancel(Long userId, Long worksId) {
         changeUserPraise(userId, worksId, 0);
     }
 

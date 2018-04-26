@@ -128,5 +128,9 @@ public class PhotoWorksService {
         return authInfo;
     }
 
+    public void getWorksClick(Long worksId) {
+
+    }
+
 
 }

@@ -3,10 +3,7 @@ package com.shigu.photo.process;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.bo.SynPhotoUploadBO;
-import com.shigu.photo.vo.PhotoCatVO;
-import com.shigu.photo.vo.PhotoStyleVO;
-import com.shigu.photo.vo.PhotoWorkDetailVO;
-import com.shigu.photo.vo.PhotoWorksVO;
+import com.shigu.photo.vo.*;
 
 import java.util.List;
 
@@ -42,4 +39,10 @@ public interface PhotoWorksProcess {
      * @return
      */
     PhotoWorkDetailVO selPhotoWorkDetail(Long worksId);
+
+    PhotoWorksClickVO getClicks(Long worksId);
+
+    PhotoWorksClickVO incrementClicks(Long worksId);
+
+    void fixClicks();
 }
