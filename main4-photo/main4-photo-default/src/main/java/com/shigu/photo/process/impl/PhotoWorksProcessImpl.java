@@ -1,9 +1,6 @@
 package com.shigu.photo.process.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.photo.beans.ShiguPhotoUser;
-import com.opentae.data.photo.beans.ShiguPhotoWorksStyle;
-import com.opentae.data.photo.beans.ShiguPhotoWorks;
+import com.opentae.data.photo.beans.*;
 import com.opentae.data.photo.examples.ShiguPhotoCatExample;
 import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
 import com.opentae.data.photo.interfaces.*;
