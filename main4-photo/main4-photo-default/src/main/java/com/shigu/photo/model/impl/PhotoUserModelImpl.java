@@ -6,13 +6,16 @@ import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.photo.beans.PhotoAuthApply;
 import com.opentae.data.photo.beans.ShiguPhotoUser;
+import com.opentae.data.photo.beans.ShiguPhotoWorks;
 import com.opentae.data.photo.interfaces.PhotoAuthApplyMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoWorksMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
+import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -43,6 +46,9 @@ public class PhotoUserModelImpl implements PhotoUserModel {
 
     @Autowired
     private PhotoAuthApplyMapper photoAuthApplyMapper;
+
+    @Autowired
+    private ShiguPhotoWorksMapper shiguPhotoWorksMapper;
 
     //用户id,必传，非空
     private Long userId;
@@ -201,5 +207,14 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     @Override
     public PhotoUserVO photoUserInfo() {
         return userInfo;
+    }
+
+    @Override
+    public PhotoUserStatisticVO photoUserTotalInfo() {
+        PhotoUserStatisticVO totalUserInfo = BeanMapper.map(photoUserInfo(), PhotoUserStatisticVO.class);
+        ShiguPhotoWorks authCountQuery = new ShiguPhotoWorks();
+        authCountQuery.setAuthorId(userId);
+        totalUserInfo.setWorksCount(shiguPhotoWorksMapper.selectCount(authCountQuery));
+        return totalUserInfo;
     }
 }

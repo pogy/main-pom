@@ -3,6 +3,7 @@ package com.shigu.photo.model;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 
 /**
@@ -48,5 +49,11 @@ public interface PhotoUserModel {
      * @param bo
      */
     void editUserInfo(PhotoUserInfoEditBO bo);
+
+    /**
+     * 用户全部信息
+     * @return
+     */
+    PhotoUserStatisticVO photoUserTotalInfo();
 
 }

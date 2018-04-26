@@ -132,27 +132,6 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             vo.setStylesStr(StringUtils.join(styleNames, "、"));
         }
 
-        ShiguPhotoUser auth = new ShiguPhotoUser();
-        if (works.getAuthorId() != null) {
-            auth.setUserId(works.getAuthorId());
-            auth = shiguPhotoUserMapper.selectOne(auth);
-            if (auth != null) {
-                //作者信息
-                vo.setAuthorName(auth.getUserName());
-                vo.setAddress(auth.getAddress());
-                vo.setUserType(auth.getUserType());
-                vo.setAuthHeadImg(auth.getHeadImg());
-                vo.setAuthCodeImg(auth.getCodeImg());
-                vo.setAuthContactPhone(auth.getContactPhone());
-                if (new Integer(1).equals(auth.getUserType())) {
-                    vo.setSex(auth.getSubUserType());
-                }
-                vo.setAuthSubUserType(auth.getSubUserType());
-            }
-            ShiguPhotoWorks authCountQuery = new ShiguPhotoWorks();
-            authCountQuery.setAuthorId(works.getAuthorId());
-            vo.setWorksCount(shiguPhotoWorksMapper.selectCount(authCountQuery));
-        }
         //有效点赞数值
         ShiguPhotoUserPraise praiseCountQuery = new ShiguPhotoUserPraise();
         praiseCountQuery.setWorksId(worksId);
