@@ -31,14 +31,14 @@ public interface PhotoUserProcess {
      * @param userId
      * @param worksId
      */
-    void PraiseWork(Long userId, Long worksId);
+    void praiseWork(Long userId, Long worksId);
 
     /**
      * 取消点赞
      * @param userId
      * @param worksId
      */
-    void PraiseWorkCancel(Long userId, Long worksId);
+    void praiseWorkCancel(Long userId, Long worksId);
 
     /**
      * 用户是否已关注作者

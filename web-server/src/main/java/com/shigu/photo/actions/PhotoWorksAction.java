@@ -3,6 +3,7 @@ package com.shigu.photo.actions;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.photo.bo.*;
+import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.service.PhotoWorksService;
 import com.shigu.photo.vo.*;
@@ -33,6 +34,9 @@ public class PhotoWorksAction {
 
     @Autowired
     PhotoWorksService photoWorksService;
+
+    @Autowired
+    PhotoUserProcess photoUserProcess;
 
     @Autowired
     PageErrAction pageErrAction;
@@ -113,7 +117,52 @@ public class PhotoWorksAction {
         model.addAttribute("worksData", workDetail);
         model.addAttribute("userInfo", photoWorksService.totalAuthInfo(workDetail.getAuthorId(), userId));
         model.addAttribute("query", bo);
+        // TODO: 18-4-26 模版地址
         return "";
     }
 
+    /**
+     * 作品点赞 需要登陆
+     * @param worksId
+     * @param session
+     * @return
+     */
+    @RequestMapping("addThumbUpCount")
+    @ResponseBody
+    public JSONObject addThumbUpCount(Long worksId, HttpSession session) {
+        if (worksId == null) {
+            return JsonResponseUtil.error("非法的参数");
+        }
+        Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
+        photoUserProcess.praiseWork(userId,worksId);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 取消点赞 需要登陆
+     * @param worksId
+     * @param session
+     * @return
+     */
+    @RequestMapping("removeThumbUpCount")
+    @ResponseBody
+    public JSONObject removeThumbUpCount(Long worksId, HttpSession session) {
+        if (worksId == null) {
+            return JsonResponseUtil.error("非法的参数");
+        }
+        Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
+        photoUserProcess.praiseWorkCancel(userId,worksId);
+        return JsonResponseUtil.success();
+    }
+
+    ///**
+    // * 获取点击量
+    // * @param worksId
+    // * @return
+    // */
+    //@RequestMapping("getReadCount")
+    //@ResponseBody
+    //public JSONObject getReadCount(Long worksId) {
+    //
+    //}
 }

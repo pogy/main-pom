@@ -157,4 +157,9 @@ public class PhotoWorksService {
         return authType;
     }
 
+    public void getWorksClick(Long worksId) {
+
+    }
+
+
 }
