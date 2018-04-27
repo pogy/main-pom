@@ -80,13 +80,16 @@
         </ul>
     </div>
 </div>
-<div class="workList layout">
-    <div class="worksBox">
-        <#list workList as item>
+<#if (workList?size) gt 0>
+    <div class="workList layout">
+        <div class="worksBox">
+            <#list workList as item>
 <#include "/__ftl_links__/photo__common__coverItem.ftl">
-        </#list>
+            </#list>
+        </div>
     </div>
-</div>
 <#include "/__ftl_links__/photo__common__pagenation.ftl">
+<#else>
+</#if>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">
