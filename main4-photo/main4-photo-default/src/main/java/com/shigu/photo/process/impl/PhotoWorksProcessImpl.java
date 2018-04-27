@@ -1,6 +1,10 @@
 package com.shigu.photo.process.impl;
 
-import com.opentae.data.photo.beans.*;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.photo.beans.ShiguPhotoStyle;
+import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
+import com.opentae.data.photo.beans.ShiguPhotoWorks;
+import com.opentae.data.photo.beans.ShiguPhotoWorksStyle;
 import com.opentae.data.photo.examples.ShiguPhotoCatExample;
 import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
 import com.opentae.data.photo.interfaces.*;
@@ -164,7 +168,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             clickVO.setTotalClick(works.getClicks());
             clickVO.setAddClick(0);
         }
-        redisIO.putTemp(worksFlag, clickVO, 60 * 15);
+        redisIO.put(worksFlag, clickVO);
         return clickVO;
     }
 
@@ -175,45 +179,56 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         clickVO.setTotalClick(clickVO.getTotalClick() + 1);
         clickVO.setAddClick(clickVO.getAddClick() + 1);
         // 缓存15分钟
-        redisIO.putTemp(worksFlag, clickVO, 60 * 15);
+        redisIO.put(worksFlag, clickVO);
         // 将作品加入处理队列
+        Jedis jedis = null;
         try {
-            Jedis jedis = redisIO.getJedis();
+            jedis = redisIO.getJedis();
             jedis.sadd(CLICKED_WORKS_FLAG, worksFlag);
         } catch (Exception e) {
-
         } finally {
-
+            if (jedis != null) {
+                redisIO.returnJedis(jedis);
+            }
         }
-
         return clickVO;
     }
 
-    //固化点击量
+    /**
+     * 固化点击量
+     */
     public void fixClicks() {
+        Jedis jedis = null;
+        Set<String> clickedWorksIds = null;
         try {
-            Jedis jedis = redisIO.getJedis();
-            Set<String> clickedWorksIds = jedis.smembers(CLICKED_WORKS_FLAG);
-            String[] worksIds = clickedWorksIds.toArray(new String[0]);
-            jedis.rpush(CLICKED_WORKS_FLAG+"_temp",worksIds);
-            jedis.del(CLICKED_WORKS_FLAG);
-            redisIO.returnJedis(jedis);
             jedis = redisIO.getJedis();
-
-            //所有未处理的点击量
-            Set<String> totalClickedWorksIds = jedis.smembers(CLICKED_WORKS_FLAG + "_temp");
-
-            if (totalClickedWorksIds == null || totalClickedWorksIds.size()==0) {
-
-            }
-
-        } catch (Exception e) {
-
+            clickedWorksIds = jedis.smembers(CLICKED_WORKS_FLAG);
+            jedis.del(CLICKED_WORKS_FLAG);
+        } catch (Exception ignore) {
         } finally {
-
+            if (redisIO != null) {
+                redisIO.returnJedis(jedis);
+            }
         }
-
+        if (clickedWorksIds == null || clickedWorksIds.size() == 0) {
+            return;
+        }
+        PhotoWorksClickVO click = null;
+        ShiguPhotoWorks works = null;
+        for (String key : clickedWorksIds) {
+            try {
+                Long worksId = Long.valueOf(key.replace(WORKS_CLICK_TEMP_RESTORE_PREFIX, ""));
+                click = redisIO.get(key, PhotoWorksClickVO.class);
+                if (click != null) {
+                    works = shiguPhotoWorksMapper.selectFieldsByPrimaryKey(worksId, FieldUtil.codeFields("works_id,clicks"));
+                    if (works != null) {
+                        works.setClicks((works.getClicks() == null ? 0 : works.getClicks()) + click.getAddClick());
+                        shiguPhotoWorksMapper.updateByPrimaryKeySelective(works);
+                    }
+                }
+            } catch (Exception ignore) {
+            }
+            redisIO.del(key);
+        }
     }
-
-
 }

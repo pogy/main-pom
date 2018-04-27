@@ -10,6 +10,7 @@ import java.util.List;
 public interface PhotoWorksProcess {
     /**
      * 获取公共风格
+     *
      * @param userId 用户ID,传递了该值时,会额外查出用户自定义的风格
      * @return
      */
@@ -17,24 +18,28 @@ public interface PhotoWorksProcess {
 
     /**
      * 获取类目
+     *
      * @return
      */
     List<PhotoCatVO> selPhotoCatVos();
 
     /**
      * 上传作品
+     *
      * @param bo
      */
     void uploadWorks(SynPhotoUploadBO bo);
 
     /**
      * 获取作品列表
+     *
      * @return
      */
     ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo);
 
     /**
      * 获取作品详情
+     *
      * @param worksId 作品id
      * @return
      */
@@ -44,5 +49,8 @@ public interface PhotoWorksProcess {
 
     PhotoWorksClickVO incrementClicks(Long worksId);
 
+    /**
+     * 固化点击量
+     */
     void fixClicks();
 }
