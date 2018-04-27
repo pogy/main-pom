@@ -232,34 +232,62 @@ public class TaobaoAuthProcessImpl implements TaobaoAuthProcess {
         }
     }
 
+//    @Override
+//    public SessionVO getSession(String appkey, String nick) {
+//        Cache sessionCache = cacheManager.getCache("taobaoSessionCache");
+//        SessionVO sessionVO= sessionCache.get(nick,SessionVO.class);
+//        if(sessionVO==null){
+//            TaobaoSessionMapExample example=new TaobaoSessionMapExample();
+//            example.createCriteria().andAppkeyEqualTo(appkey).andNickEqualTo(nick);
+//            example.setStartIndex(0);
+//            example.setEndIndex(1);
+//            example.setOrderByClause("fresh_time desc");
+//            List<TaobaoSessionMap> list=taobaoSessionMapMapper.selectByConditionList(example);
+//            if(list.size()>0){
+//                TaobaoSessionMap tsm=list.get(0);
+//                if(tsm.getSubTaobaoUserId()!=null){
+//                    for(TaobaoSessionMap t:list){
+//                        if(t.getSubTaobaoUserId()==null&&System.currentTimeMillis()-t.getFreshTime().getTime()<86400000L){
+//                            tsm=t;
+//                            break;
+//                        }
+//                    }
+//                }
+//                sessionVO=new SessionVO();
+//                sessionVO.setAppkey(tsm.getAppkey());
+//                sessionVO.setSession(tsm.getSession());
+//                sessionVO.setNick(tsm.getNick());
+//                sessionVO.setTbUserId(tsm.getUserId());
+//                sessionCache.put(nick,sessionVO);
+//            }
+//        }
+//        return sessionVO;
+//    }
+
     @Override
     public SessionVO getSession(String appkey, String nick) {
-        Cache sessionCache = cacheManager.getCache("taobaoSessionCache");
-        SessionVO sessionVO= sessionCache.get(nick,SessionVO.class);
-        if(sessionVO==null){
-            TaobaoSessionMapExample example=new TaobaoSessionMapExample();
-            example.createCriteria().andAppkeyEqualTo(appkey).andNickEqualTo(nick);
-            example.setStartIndex(0);
-            example.setEndIndex(1);
-            example.setOrderByClause("fresh_time desc");
-            List<TaobaoSessionMap> list=taobaoSessionMapMapper.selectByConditionList(example);
-            if(list.size()>0){
-                TaobaoSessionMap tsm=list.get(0);
-                if(tsm.getSubTaobaoUserId()!=null){
-                    for(TaobaoSessionMap t:list){
-                        if(t.getSubTaobaoUserId()==null&&System.currentTimeMillis()-t.getFreshTime().getTime()<86400000L){
-                            tsm=t;
-                            break;
-                        }
+        TaobaoSessionMapExample example=new TaobaoSessionMapExample();
+        example.createCriteria().andAppkeyEqualTo(appkey).andNickEqualTo(nick);
+        example.setStartIndex(0);
+        example.setEndIndex(1);
+        example.setOrderByClause("fresh_time desc");
+        List<TaobaoSessionMap> list=taobaoSessionMapMapper.selectByConditionList(example);
+        SessionVO sessionVO = null;
+        if(list.size()>0){
+            TaobaoSessionMap tsm=list.get(0);
+            if(tsm.getSubTaobaoUserId()!=null){
+                for(TaobaoSessionMap t:list){
+                    if(t.getSubTaobaoUserId()==null&&System.currentTimeMillis()-t.getFreshTime().getTime()<86400000L){
+                        tsm=t;
+                        break;
                     }
                 }
-                sessionVO=new SessionVO();
-                sessionVO.setAppkey(tsm.getAppkey());
-                sessionVO.setSession(tsm.getSession());
-                sessionVO.setNick(tsm.getNick());
-                sessionVO.setTbUserId(tsm.getUserId());
-                sessionCache.put(nick,sessionVO);
             }
+            sessionVO=new SessionVO();
+            sessionVO.setAppkey(tsm.getAppkey());
+            sessionVO.setSession(tsm.getSession());
+            sessionVO.setNick(tsm.getNick());
+            sessionVO.setTbUserId(tsm.getUserId());
         }
         return sessionVO;
     }
