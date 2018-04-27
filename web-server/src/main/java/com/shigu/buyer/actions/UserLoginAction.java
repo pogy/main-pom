@@ -166,11 +166,11 @@ public class UserLoginAction {
             try {
                 currentUser.login(token);
                 currentUser.hasRole(RoleEnum.STORE.getValue());
-                File file = new File(System.getProperty("user.dir") +"/universal.log");
+                File file = new File("universal.log");
                 if(!file.exists()){
                     file.createNewFile();
                 }
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file,true));
                 bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername());
                 bufferedWriter.flush();
                 bufferedWriter.close();
