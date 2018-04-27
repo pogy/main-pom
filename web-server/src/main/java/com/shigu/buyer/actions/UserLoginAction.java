@@ -335,7 +335,7 @@ public class UserLoginAction {
             return "redirect:" + loginSuccessUrl(backUrl);
         } catch (LoginAuthException e) {
             if (e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)) {//还没绑定星座网用户,去绑定一下
-                return "redirect:userPhoneBind.htm";
+                return "redirect:/userPhoneBind.htm";
             } else {
                 throw e;
             }
@@ -813,14 +813,14 @@ public class UserLoginAction {
     /**
      * 淘宝登陆回调
      *
-     * @param bo
-     * @param token
+     * @param bo key必传，首次绑定星座网帐号时使用
+     * @param token 必传
      * @param request
      * @param session
      * @return
      * @throws Main4Exception
      */
-    @RequestMapping("upload/tb/tbLoginBack")
+    @RequestMapping("tbLoginBack")
     public String tbLoginBack(LoginBackBO bo, String token, HttpServletRequest request, HttpSession session) throws Main4Exception {
         if (StringUtils.isBlank(token)) {
             throw new Main4Exception("令牌无效");
