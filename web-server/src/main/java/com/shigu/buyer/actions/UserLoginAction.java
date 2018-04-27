@@ -813,8 +813,8 @@ public class UserLoginAction {
     /**
      * 淘宝登陆回调
      *
-     * @param bo key必传，首次绑定星座网帐号时使用
-     * @param token 必传
+     * @param bo      传入key，type和使用key,type,userName进行md5加密的签名sign
+     * @param token   必传
      * @param request
      * @param session
      * @return
@@ -829,14 +829,21 @@ public class UserLoginAction {
         if (StringUtils.isBlank(tbUserNick)) {
             throw new Main4Exception("无效用户");
         }
-        Subject subject = SecurityUtils.getSubject();
-        CaptchaUsernamePasswordToken shiroToken = new CaptchaUsernamePasswordToken(
-                tbUserNick, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
-        //选择登陆方式
-        shiroToken.setLoginFromType(LoginFromType.TAOBAO);
-        shiroToken.setRememberMe(true);
-        shiroToken.setSubKey(bo.getKey());
-        return tryLogin(subject, shiroToken, session);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userName", tbUserNick);
+        map.put("key", bo.getKey());
+        map.put("type", bo.getType());
+        if (MD5Attestation.unsignParamString(map, bo.getSign())) {
+            Subject subject = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken shiroToken = new CaptchaUsernamePasswordToken(
+                    tbUserNick, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //选择登陆方式
+            shiroToken.setLoginFromType(LoginFromType.TAOBAO);
+            shiroToken.setRememberMe(true);
+            shiroToken.setSubKey(bo.getKey());
+            return tryLogin(subject, shiroToken, session);
+        }
+        return "redirect:" + memberFilter.getSuccessUrl();
     }
 
 }
