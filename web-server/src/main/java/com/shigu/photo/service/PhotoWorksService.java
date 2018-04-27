@@ -1,17 +1,19 @@
 package com.shigu.photo.service;
 
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.photo.bo.PhotoWorksBO;
+import com.shigu.photo.bo.PhotoWorksSearchBO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
-import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
-import com.shigu.photo.vo.PhotoUserStatisticVO;
-import com.shigu.photo.vo.PhotoWorkDetailVO;
-import com.shigu.photo.vo.PhotoWorksDetailWebVO;
+import com.shigu.photo.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.service.PhotoWorksService
@@ -31,6 +33,8 @@ public class PhotoWorksService {
     private PhotoUserProcess photoUserProcess;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
 
     /**
      * 作品详情信息
@@ -91,34 +95,7 @@ public class PhotoWorksService {
             authInfo.setAddress(totalAuthInfo.getAddress());
             authInfo.setWxQrImgSrc(totalAuthInfo.getCodeImg());
             authInfo.setWorksCount(totalAuthInfo.getWorksCount());
-            Integer subUserType = totalAuthInfo.getSubUserType();
-            if (subUserType == null) {
-                subUserType = 0;
-            }
-            // 根据情况区分作者身份
-            switch (totalAuthInfo.getUserType()) {
-                //模特
-                case 1:
-                    authType = "模特";
-                    if (subUserType == 1) {
-                        authType = "男模";
-                    } else if (subUserType == 2) {
-                        authType = "女模";
-                    }
-                    break;
-                //摄影机构
-                case 2:
-                    if (subUserType == 1) {
-                        authType = "摄影师";
-                    } else if (subUserType == 2) {
-                        authType = "摄影公司";
-                    }
-                    break;
-                //摄影场地
-                case 3:
-                    authType = "场地";
-                    break;
-            }
+            authType=selAuthType(totalAuthInfo.getUserType(),totalAuthInfo.getSubUserType());
         }
         authInfo.setTypeName(authType);
         authInfo.setFocusOnIs(false);
@@ -126,6 +103,58 @@ public class PhotoWorksService {
             authInfo.setFocusOnIs(photoUserProcess.isFollowed(userId, authorId));
         }
         return authInfo;
+    }
+
+    public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query){
+        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(photoWorksBO);
+        ShiguPager<PhotoWorksSearchVO> pager=new ShiguPager<>();
+        pager.setNumber(pager.getNumber());
+        pager.calPages(pager.getTotalCount(),photoWorksBO.getPageSize());
+        pager.setContent(photoWorksVOShiguPager.getContent().stream()
+            .map(photoWorksVO -> {
+                PhotoWorksSearchVO vo=new PhotoWorksSearchVO();
+                vo.setId(photoWorksVO.getAuthorId());
+                vo.setAddress(photoWorksVO.getAddress());
+                vo.setImgsrc(photoWorksVO.getPicUrl());
+                vo.setNick(photoWorksVO.getAuthorName());
+                vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(),DateUtil.patternA));
+                vo.setTypeName(selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSubUserType()));
+                vo.setWorksId(photoWorksVO.getWorksId());
+                return vo;
+            }).collect(Collectors.toList()));
+        return pager;
+    }
+
+    private String selAuthType(Integer userType,Integer subUserType){
+        String authType = "未知";
+        if (subUserType == null) {
+            subUserType = 0;
+        }
+        switch (userType) {
+            //模特
+            case 1:
+                authType = "模特";
+                if (subUserType == 1) {
+                    authType = "男模";
+                } else if (subUserType == 2) {
+                    authType = "女模";
+                }
+                break;
+            //摄影机构
+            case 2:
+                if (subUserType == 1) {
+                    authType = "摄影师";
+                } else if (subUserType == 2) {
+                    authType = "摄影公司";
+                }
+                break;
+            //摄影场地
+            case 3:
+                authType = "场地";
+                break;
+        }
+        return authType;
     }
 
     public void getWorksClick(Long worksId) {

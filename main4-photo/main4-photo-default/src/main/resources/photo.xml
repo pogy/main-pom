@@ -5,5 +5,8 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-
+    <dubbo:service interface="com.shigu.photo.process.PhotoWorksProcess" ref="photoWorksProcess" timeout="20000" retries="0"/>
+    <dubbo:service interface="com.shigu.photo.process.PhotoImgProcess" ref="photoImgProcess" timeout="20000" retries="0"/>
+    <dubbo:service interface="com.shigu.photo.process.PhotoUserProcess" ref="photoUserProcess" timeout="20000" retries="0"/>
+    
 </beans>

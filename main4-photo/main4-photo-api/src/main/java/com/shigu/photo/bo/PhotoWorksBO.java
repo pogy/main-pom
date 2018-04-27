@@ -41,6 +41,10 @@ public class PhotoWorksBO implements Serializable{
      * 页长
      */
     private Integer pageSize;
+    /**
+     * 标题
+     */
+    private String title;
 
     /**
      * 获取 排序
@@ -152,5 +156,19 @@ public class PhotoWorksBO implements Serializable{
      */
     public void setSubUserType(Integer subUserType) {
         this.subUserType = subUserType;
+    }
+
+    /**
+     * 获取 标题
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * 设置 标题
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

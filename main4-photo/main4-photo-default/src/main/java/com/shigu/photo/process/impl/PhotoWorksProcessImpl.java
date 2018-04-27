@@ -101,12 +101,14 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
     public ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo) {
         ShiguPager<PhotoWorksVO> pager = new ShiguPager<>();
         pager.setNumber(bo.getPage());
-        int count = shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getStyleId(),
+        int count=shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getAuthorId(),bo.getStyleId(),
                 bo.getUserType(),
+                bo.getTitle(),
                 bo.getSubUserType());
-        if (count > 0) {
-            pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getStyleId(),
+        if(count>0){
+            pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getAuthorId(),bo.getStyleId(),
                     bo.getUserType(),
+                    bo.getTitle(),
                     bo.getSubUserType(),
                     bo.getSort().getSql(),
                     (bo.getPage() - 1) * bo.getPageSize(),

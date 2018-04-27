@@ -19,14 +19,18 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
 
-    List<PhotoWorksVO> selectShiguPhotoWorks(@Param("styleId")Long styleId,
+    List<PhotoWorksVO> selectShiguPhotoWorks(@Param("authorId")Long authorId,
+                                             @Param("styleId")Long styleId,
                                              @Param("userType")Integer userType,
+                                             @Param("title")String title,
                                              @Param("subUserType")Integer subUserType,
                                              @Param("sort")String sort,
                                              @Param("start")Integer start,
                                              @Param("end")Integer end);
 
-    Integer selectShiguPhotoWorksCount(@Param("styleId")Long styleId,
+    Integer selectShiguPhotoWorksCount(@Param("authorId")Long authorId,
+                                       @Param("styleId")Long styleId,
                                        @Param("userType")Integer userType,
+                                       @Param("title")String title,
                                        @Param("subUserType")Integer subUserType);
 }

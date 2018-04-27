@@ -1,6 +1,7 @@
 package com.shigu.photo.bo;
 
 import com.shigu.photo.enums.WorksListSortEnum;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,11 +18,11 @@ public class PhotoWorksSearchBO {
     /**
      * 类目
      */
-    private Long cid;
+    private Long pid;
     /**
      * 作者类型
      */
-    private Integer userType;
+    private Integer rid;
     /**
      * 页码
      */
@@ -32,6 +33,12 @@ public class PhotoWorksSearchBO {
      * 当userType=2时,1:摄影公司,2:摄影师
      */
     private Integer subUserType;
+    /**
+     * 关键词
+     */
+    private String keyword;
+
+    private Long id;
 
     /**
      * 获取 排序
@@ -61,33 +68,6 @@ public class PhotoWorksSearchBO {
         this.styleId = styleId;
     }
 
-    /**
-     * 获取 类目
-     */
-    public Long getCid() {
-        return this.cid;
-    }
-
-    /**
-     * 设置 类目
-     */
-    public void setCid(Long cid) {
-        this.cid = cid;
-    }
-
-    /**
-     * 获取 作者类型
-     */
-    public Integer getUserType() {
-        return this.userType;
-    }
-
-    /**
-     * 设置 作者类型
-     */
-    public void setUserType(Integer userType) {
-        this.userType = userType;
-    }
 
     /**
      * 获取 页码
@@ -121,27 +101,76 @@ public class PhotoWorksSearchBO {
     }
 
 
-    public PhotoWorksBO toPhotoWorksBO(Long userId){
+    public PhotoWorksBO toPhotoWorksBO(){
         if(getPage()==null){
             setPage(1);
         }
         PhotoWorksBO photoWorksBO=new PhotoWorksBO();
-        photoWorksBO.setAuthorId(userId);
-        photoWorksBO.setCid(getCid());
+        photoWorksBO.setAuthorId(getId());
+        photoWorksBO.setCid(getPid());
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);
         photoWorksBO.setStyleId(getStyleId());
-        photoWorksBO.setUserType(getUserType());
-        if(getUserType()!=null&&getUserType()!=3){
+        photoWorksBO.setUserType(getRid());
+        photoWorksBO.setTitle(getKeyword());
+        if(getRid()!=null&&getRid()!=3){
             photoWorksBO.setSubUserType(getSubUserType());
         }
         if(getSort()!=null){
-            photoWorksBO.setSort("default".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
+            photoWorksBO.setSort("def".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
         }else{
             photoWorksBO.setSort(WorksListSortEnum.defaults);
         }
         return photoWorksBO;
     }
 
+    /**
+     * 获取 类目
+     */
+    public Long getPid() {
+        return this.pid;
+    }
 
+    /**
+     * 设置 类目
+     */
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    /**
+     * 获取 作者类型
+     */
+    public Integer getRid() {
+        return this.rid;
+    }
+
+    /**
+     * 设置 作者类型
+     */
+    public void setRid(Integer rid) {
+        this.rid = rid;
+    }
+
+    /**
+     * 获取 关键词
+     */
+    public String getKeyword() {
+        return this.keyword;
+    }
+
+    /**
+     * 设置 关键词
+     */
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
