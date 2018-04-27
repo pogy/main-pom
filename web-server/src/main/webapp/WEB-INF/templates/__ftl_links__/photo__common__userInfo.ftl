@@ -1,4 +1,4 @@
-<div class="userInfo layout clearfix">
+<div class="userInfo layout clearfix yahei">
     <div class="leftInfoBox fl clearfix">
         <div class="imgBox fl">
             <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png" class="fl">

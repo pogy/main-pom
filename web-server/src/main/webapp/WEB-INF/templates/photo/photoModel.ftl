@@ -61,27 +61,13 @@
     <div class="modelList layout">
         <div class="listItems">
             <#list modelList as item>
-<div class="coverItem pr yahei <#if $pageid == 'userHomePage' || $pageid == 'userWorkList'>smallMar</#if>">
-    <a href="photoDetail.htm?id=${item.worksId!}" target="_blank" class="imgBox">
-        <img src="${item.imgsrc!}_300x300.jpg" />
-    </a>
-    <div class="infoBox">
-        <a href="photoDetail.htm?id=${item.worksId!}" target="_blank" title="${item.title!}" class="ellip title">${item.title!}</a>
-        <p class="fc9"><span>${item.typeName!}：${item.nick!}</span> <span class="fr">${item.address!}</span></p>
-        <p class="fc9 fs14"><span class="publishedTime"><i class="icon-time"></i>${item.publishedTime!}</span> <span class="fr"><i class="icon-store"></i>${item.thumbUpCount!}</span></p>
-    </div>
-    <#if $pageid == 'userWorkList'>
-    <div class="opeBtnBox pa">
-        <a href="uploadWork.htm?id=${item.worksId!}" target="_blank"><i></i></a>
-        <b class="removeWorks" data-id="${item.worksId!}"><i></i></b>
-    </div>
-    </#if>
-</div>
+<#include "/__ftl_links__/photo__common__coverItem.ftl">
             </#list>
         </div>
     </div>
 <#include "/__ftl_links__/photo__common__pagenation.ftl">
 <#else>
+<#include "/__ftl_links__/photo__common__noDataTips.ftl">
 </#if>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">
