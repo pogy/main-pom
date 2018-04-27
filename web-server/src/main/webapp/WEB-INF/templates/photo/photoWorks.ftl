@@ -90,6 +90,7 @@
     </div>
 <#include "/__ftl_links__/photo__common__pagenation.ftl">
 <#else>
+<#include "/__ftl_links__/photo__common__noDataTips.ftl">
 </#if>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">
