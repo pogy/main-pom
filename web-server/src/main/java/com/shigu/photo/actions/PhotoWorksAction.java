@@ -2,9 +2,13 @@ package com.shigu.photo.actions;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.photo.bo.*;
+import com.shigu.photo.bo.PhotoUploadBO;
+import com.shigu.photo.bo.PhotoWorkDetailViewBO;
+import com.shigu.photo.bo.PhotoWorksSearchBO;
+import com.shigu.photo.bo.SynPhotoUploadBO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
+import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
 import com.shigu.photo.vo.*;
 import com.shigu.search.actions.PageErrAction;
@@ -36,6 +40,9 @@ public class PhotoWorksAction {
     PhotoWorksService photoWorksService;
 
     @Autowired
+    PhotoUserService photoUserService;
+
+    @Autowired
     PhotoUserProcess photoUserProcess;
 
     @Autowired
@@ -43,11 +50,11 @@ public class PhotoWorksAction {
 
     @RequestMapping("photoWorks")
     public String wokes(PhotoWorksSearchBO query, Model model) {
-        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO(1L,"模特"),new PhotoCateVO(2L,"摄影机构"),new PhotoCateVO(3L,"场地")));
+        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO(1L, "模特"), new PhotoCateVO(2L, "摄影机构"), new PhotoCateVO(3L, "场地")));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
-                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid(),photoCatVO.getCname())).collect(Collectors.toList()));
+                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid(), photoCatVO.getCname())).collect(Collectors.toList()));
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
-                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId(),photoStyleVO.getStyleName())).collect(Collectors.toList()));
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
 
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
@@ -61,7 +68,7 @@ public class PhotoWorksAction {
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
-        model.addAttribute("userInfo", photoWorksService.totalAuthInfo(query.getId(), null));
+        model.addAttribute("userInfo", photoUserService.totalAuthInfo(query.getId(), null));
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
         return "photo/userHomePage";
     }
@@ -113,9 +120,9 @@ public class PhotoWorksAction {
         if (ps != null) {
             userId = ps.getUserId();
         }
-        PhotoWorksDetailWebVO workDetail = photoWorksService.photoWorksDetail(bo.getId(), userId);
+        PhotoWorksDetailWebVO workDetail = photoWorksService.photoWorksDetailForUser(bo.getId(), userId);
         model.addAttribute("worksData", workDetail);
-        model.addAttribute("userInfo", photoWorksService.totalAuthInfo(workDetail.getAuthorId(), userId));
+        model.addAttribute("userInfo", photoUserService.totalAuthInfo(workDetail.getAuthorId(), userId));
         model.addAttribute("query", bo);
         // TODO: 18-4-26 模版地址
         return "";
@@ -123,6 +130,7 @@ public class PhotoWorksAction {
 
     /**
      * 作品点赞 需要登陆
+     *
      * @param worksId
      * @param session
      * @return
@@ -134,12 +142,13 @@ public class PhotoWorksAction {
             return JsonResponseUtil.error("非法的参数");
         }
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
-        photoUserProcess.praiseWork(userId,worksId);
+        photoUserProcess.praiseWork(userId, worksId);
         return JsonResponseUtil.success();
     }
 
     /**
      * 取消点赞 需要登陆
+     *
      * @param worksId
      * @param session
      * @return
@@ -151,18 +160,26 @@ public class PhotoWorksAction {
             return JsonResponseUtil.error("非法的参数");
         }
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
-        photoUserProcess.praiseWorkCancel(userId,worksId);
+        photoUserProcess.praiseWorkCancel(userId, worksId);
         return JsonResponseUtil.success();
     }
 
-    ///**
-    // * 获取点击量
-    // * @param worksId
-    // * @return
-    // */
-    //@RequestMapping("getReadCount")
-    //@ResponseBody
-    //public JSONObject getReadCount(Long worksId) {
-    //
-    //}
+    /**
+     * 获取点击量
+     *
+     * @param worksId
+     * @return
+     */
+    @RequestMapping("getReadCount")
+    @ResponseBody
+    public JSONObject getReadCount(Long worksId) {
+        if (worksId == null) {
+            return JsonResponseUtil.error("作品不存在");
+        }
+        PhotoWorksClickVO clicks = photoWorksProcess.incrementClicks(worksId);
+        if (clicks == null) {
+            return JsonResponseUtil.error("作品不存在");
+        }
+        return JsonResponseUtil.success().element("readCount", clicks.getTotalClick());
+    }
 }
