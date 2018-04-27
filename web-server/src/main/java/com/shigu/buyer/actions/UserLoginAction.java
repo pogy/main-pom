@@ -171,7 +171,7 @@ public class UserLoginAction {
                     file.createNewFile();
                 }
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file,true));
-                bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername());
+                bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername()+"/r/n");
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 return JsonResponseUtil.success();

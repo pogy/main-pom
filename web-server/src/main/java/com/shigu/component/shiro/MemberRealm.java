@@ -131,8 +131,10 @@ public class MemberRealm extends ShiguAuthorizingRealm {
                         if (!(EncryptUtil.encrypt(tokens.getLoginname(),EncryptUtil.encrypt(utf8Pwd)).equals(pwd) || EncryptUtil.encrypt(tokens.getLoginname(),EncryptUtil.encrypt(defaultPwd)).equals(pwd))) {
                             flag = false;
                         }
-                        String newpwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
-                        tokens.setPassword(newpwd.toCharArray());
+                        if(flag) {
+                            String newpwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
+                            tokens.setPassword(newpwd.toCharArray());
+                        }
                     }
                 } else {
                     String pwd = userBaseService.selUserPwdByUserId(ufs.getUserId());
