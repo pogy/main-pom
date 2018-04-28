@@ -73,12 +73,17 @@ public class PhotoWorksAction {
 
     //作者主页
     @RequestMapping("userHomePage")
-    public String authorWokes(PhotoWorksSearchBO query, Model model) throws PhotoException {
+    public String authorWokes(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
-        model.addAttribute("list", photoWorksVOShiguPager.getContent());
+        PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
+        model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
-        model.addAttribute("userInfo", photoUserService.totalAuthInfo(query.getId(), null));
+        model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(ps!=null&&photoAuthWorkUserInfoWebVO.getUserId().equals(ps.getUserId())){
+            return "photo/userWorkList";
+        }
         return "photo/userHomePage";
     }
 
