@@ -38,13 +38,13 @@
             <div class="formGroup clearfix">
                 <label></label>
                 <ul class="pics clearfix fl">
-                    <#if cover??>
-<#list [{"img":cover}] as $it>
+                    <#if worksData.cover??>
+<#list [{"img":worksData.cover}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     </#if>
-                    <#if imgs??>
-                        <#list imgs as img>
+                    <#if worksData.imgs??>
+                        <#list worksData.imgs as img>
 <#list [{"img":cover,"changeId":"changeWorks${img_index+2!}"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
@@ -59,15 +59,15 @@
         <div class="validateItem">
             <div class="formGroup">
                 <label><i>*</i>作品标题：</label>
-                <input class="fmInput title yahei" id="workTitle" name="title" maxlength="19" <#if title??>value="${title!}"</#if>>
-                <span class="lastNumber"><em><#if title??>${(title?size)!}<#else>0</#if></em>/19</span>
+                <input class="fmInput title yahei" id="workTitle" name="title" maxlength="19" <#if worksData.title??>value="${worksData.title!}"</#if>>
+                <span class="lastNumber"><em><#if worksData.title??>${(worksData.title?size)!}<#else>0</#if></em>/19</span>
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label><i></i>作品描述：</label>
-                <textarea class="desc yahei" id="workDesc" maxlength="200"><#if desc??>${desc!}</#if></textarea>
-                <span class="lastNumber"><em><#if desc??>${(desc?size)!}<#else>0</#if></em>/200</span>
+                <textarea class="desc yahei" id="workDesc" maxlength="200"><#if worksData.desc??>${worksData.desc!}</#if></textarea>
+                <span class="lastNumber"><em><#if worksData.desc??>${(worksData.desc?size)!}<#else>0</#if></em>/200</span>
             </div>
         </div>
         <div class="validateItem">
@@ -195,7 +195,7 @@
             <div class="formGroup clearfix">
                 <label>禁止右键保存：</label>
                 <div class="radioWrap">
-                    <#if saveType == 0>
+                    <#if worksData.saveType == 0>
 <#list [{}] as $it>
 <label class="fmRadio clearfix
         <#if $it.checked??>

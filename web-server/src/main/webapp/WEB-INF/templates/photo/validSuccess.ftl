@@ -23,7 +23,10 @@
 <#include "/__ftl_links__/photo__common__userInfo.ftl">
 <#include "/__ftl_links__/photo__common__userNav.ftl">
 <div class="validSuccess yahei layout">
-    <p>您已认证成功！</p>
+    <p class="fc3"><i class="tick"></i>认证已提交，正在审核中，请耐心等待......</p>
+    <p class="fc9 timeBox"><span class="time fcF40">5s</span> <span>后，自动跳转主页</span></p>
+    <p class="toLinkBox"><a href="userWorkList.htm?id=${userId!}">去主页</a></p>
+    <input type="hidden" id="userId" value="${userId!}">
 </div>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">

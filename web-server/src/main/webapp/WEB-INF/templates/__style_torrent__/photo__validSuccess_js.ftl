@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/photo/js/validSuccess_v20180427_192722.js"></script>
+<script src="http://style.571xz.com/v6/photo/js/validSuccess_v20180428_174841.js"></script>

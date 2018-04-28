@@ -70,7 +70,7 @@
         </p>
     </div>
     <div class="wxQrCodeBox">
-        <p><img src="${userInfo.wxQrImgSrc!}"></p>
+        <p><img src="${userInfo.wxQrCode!}"></p>
         <p>扫一扫 加微信</p>
         <p><i class="icon-s-phone2"></i>${userInfo.tele!}</p>
     </div>
