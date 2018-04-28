@@ -7,6 +7,7 @@ import com.opentae.data.photo.interfaces.ShiguPhotoUserPraiseMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
+import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
@@ -153,6 +154,11 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
     @Override
     public void applyRefuse(Long userId, String logMessage) {
         getUserModel(userId).applyRefuse(logMessage);
+    }
+
+    @Override
+    public void editUserInfo(Long userId, PhotoUserInfoEditBO bo) {
+        getUserModel(userId).editUserInfo(bo);
     }
 
     /**

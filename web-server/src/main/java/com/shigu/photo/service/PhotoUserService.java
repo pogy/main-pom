@@ -1,13 +1,19 @@
 package com.shigu.photo.service;
 
+import com.opentae.data.mall.beans.OrderCity;
+import com.opentae.data.mall.beans.OrderProv;
+import com.opentae.data.mall.interfaces.OrderCityMapper;
+import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
+import com.shigu.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
 import com.shigu.photo.process.PhotoImgProcess;
 import com.shigu.photo.process.PhotoUserProcess;
-import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
-import com.shigu.photo.vo.PhotoUserStatisticVO;
+import com.shigu.photo.vo.*;
 import com.shigu.services.SendMsgService;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.RedomUtil;
@@ -15,6 +21,11 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.service.PhotoUserService
@@ -36,6 +47,12 @@ public class PhotoUserService {
     private PhotoImgProcess photoImgProcess;
 
     @Autowired
+    private OrderProvMapper orderProvMapper;
+
+    @Autowired
+    private OrderCityMapper orderCityMapper;
+
+    @Autowired
     private RedisIO redisIO;
 
     // 摄影基地用户认证验证码前缀
@@ -54,7 +71,7 @@ public class PhotoUserService {
             userInfo.setImgSrc(totalAuthInfo.getHeadImg());
             userInfo.setTele(totalAuthInfo.getContactPhone());
             userInfo.setAddress(totalAuthInfo.getAddress());
-            userInfo.setWxQrImgSrc(totalAuthInfo.getCodeImg());
+            userInfo.setWxQrCode(totalAuthInfo.getCodeImg());
             userInfo.setProfile(totalAuthInfo.getUserInfo());
             userInfo.setWorksCount(totalAuthInfo.getWorksCount());
             authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSex());
@@ -174,4 +191,147 @@ public class PhotoUserService {
         return JsonResponseUtil.success();
     }
 
+    /**
+     * 解析用户地址信息
+     *
+     * @param baseUserInfo
+     * @param areaInfo
+     * @return
+     */
+    public PhotoAuthWorkUserInfoWebVO resolveUserAddrInfo(PhotoAuthWorkUserInfoWebVO baseUserInfo, PhotoAreaVO areaInfo) {
+        if (baseUserInfo == null) {
+            return null;
+        }
+        String address = baseUserInfo.getAddress();
+        if (StringUtils.isBlank(address)) {
+            return baseUserInfo;
+        }
+        PhotoUserInfoForEditVO vo = BeanMapper.map(baseUserInfo, PhotoUserInfoForEditVO.class);
+        if (StringUtils.isNotBlank(address)) {
+            String[] addressInfoStrs = address.split("-");
+            String provStr = addressInfoStrs[0];
+            String cityStr = null;
+            if (addressInfoStrs.length > 1) {
+                cityStr = addressInfoStrs[1];
+            }
+            for (PhotoProv photoProv : areaInfo.getProvs()) {
+                if (photoProv.getProvText().equals(provStr)) {
+                    vo.setProvId(photoProv.getProvId());
+                    for (PhotoCity photoCity : photoProv.getCitys()) {
+                        if (photoCity.getCityText().equals(cityStr)) {
+                            vo.setCityId(photoCity.getCityId());
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return vo;
+    }
+
+    /**
+     * 获取省市地址数据
+     *
+     * @return
+     */
+    public PhotoAreaVO provsAndCitys() {
+        OrderCity cityQuery = new OrderCity();
+        //市信息
+        Map<Long, List<PhotoCity>> provCityVOsMap = orderCityMapper.select(cityQuery).stream()
+                .collect(Collectors.groupingBy(OrderCity::getProvId,
+                        Collectors.mapping(city -> {
+                                    PhotoCity cityVO = new PhotoCity();
+                                    cityVO.setCityId(city.getCityId());
+                                    cityVO.setCityText(city.getCityName());
+                                    return cityVO;
+                                }, Collectors.toList()
+                        )
+                ));
+        OrderProv provQuery = new OrderProv();
+        //省信息
+        List<PhotoProv> provsVOs = orderProvMapper.select(provQuery).stream().map(prov -> {
+            PhotoProv provVO = new PhotoProv();
+            provVO.setProvId(prov.getProvId());
+            provVO.setProvText(prov.getProvName());
+            provVO.setCitys(provCityVOsMap.get(prov.getProvId()));
+            return provVO;
+        }).collect(Collectors.toList());
+        PhotoAreaVO areaVO = new PhotoAreaVO();
+        areaVO.setProvs(provsVOs);
+        return areaVO;
+    }
+
+    /**
+     * 提交用户编辑信息
+     *
+     * @param userId
+     * @param bo
+     * @return
+     */
+    public JSONObject submitProfileInfo(Long userId, PhotoUserProfileEditBO bo) {
+        PhotoUserInfoEditBO editBO = new PhotoUserInfoEditBO();
+        // 有变更手机号验证码，进行手机号校验
+        if (StringUtils.isNotBlank(bo.getMsgValidate())) {
+            if (!bo.getMsgValidate().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + bo.getTele()))) {
+                return JsonResponseUtil.error("验证码错误");
+            }
+            editBO.setContactPhone(bo.getTele());
+        }
+        editBO.setSex(bo.getSex());
+        editBO.setShowImg(bo.getCover());
+        editBO.setCodeImg(bo.getWxQrcode());
+        editBO.setUserInfo(bo.getProfile());
+        editBO.setAddress(genAddr(bo.getProvId(), bo.getCityId()));
+        photoUserProcess.editUserInfo(userId, editBO);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 根据传入的省市生成地址信息
+     *
+     * @param provId
+     * @param cityId
+     * @return
+     */
+    public String genAddr(Long provId, Long cityId) {
+        if (provId == null) {
+            return null;
+        }
+        OrderProv prov = orderProvMapper.selectByPrimaryKey(provId);
+        if (prov == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(prov.getProvName().trim());
+        if (sb.length() == 0) {
+            return null;
+        }
+        if (cityId != null) {
+            OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
+            if (city != null) {
+                sb.append('-').append(city.getCityName().trim());
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 更改用户头像
+     *
+     * @param userId
+     * @param imgSrc
+     * @return
+     */
+    public JSONObject saveHeadPortrait(Long userId, String imgSrc) {
+        if (userId == null) {
+            return JsonResponseUtil.error("请先登陆");
+        }
+        if (StringUtils.isBlank(imgSrc)) {
+            return JsonResponseUtil.error("请上传头像");
+        }
+        PhotoUserInfoEditBO bo = new PhotoUserInfoEditBO();
+        bo.setHeadImg(imgSrc);
+        photoUserProcess.editUserInfo(userId, bo);
+        return JsonResponseUtil.success();
+    }
 }

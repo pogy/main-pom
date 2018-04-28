@@ -30,7 +30,7 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     private String address;
 
     //用户微信二维码图片
-    private String wxQrImgSrc;
+    private String wxQrCode;
 
     //个人简介
     private String profile;
@@ -89,12 +89,12 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
         this.address = address;
     }
 
-    public String getWxQrImgSrc() {
-        return wxQrImgSrc;
+    public String getWxQrCode() {
+        return wxQrCode;
     }
 
-    public void setWxQrImgSrc(String wxQrImgSrc) {
-        this.wxQrImgSrc = wxQrImgSrc;
+    public void setWxQrCode(String wxQrCode) {
+        this.wxQrCode = wxQrCode;
     }
 
     public String getProfile() {

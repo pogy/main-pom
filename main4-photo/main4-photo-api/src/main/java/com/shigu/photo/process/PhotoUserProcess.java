@@ -2,6 +2,7 @@ package com.shigu.photo.process;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
+import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 
@@ -87,4 +88,11 @@ public interface PhotoUserProcess {
      * @param logMessage
      */
     void applyRefuse(Long userId, String logMessage);
+
+    /**
+     * 编辑用户信息，为空的字段忽略
+     * @param userId
+     * @param bo
+     */
+    void editUserInfo(Long userId, PhotoUserInfoEditBO bo);
 }

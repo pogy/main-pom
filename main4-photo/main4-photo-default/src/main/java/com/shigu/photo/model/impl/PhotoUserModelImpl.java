@@ -17,6 +17,7 @@ import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -199,7 +200,16 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setAuthorId(photoUserInfo().getAuthorId());
         shiguPhotoUser.setSex(bo.getSex());
         shiguPhotoUser.setAddress(bo.getAddress());
-        shiguPhotoUser.setHeadImg(bo.getHeadImg());
+        if (StringUtils.isNotBlank(bo.getHeadImg())) {
+            shiguPhotoUser.setHeadImg(bo.getHeadImg());
+        }
+        if (StringUtils.isNotBlank(bo.getShowImg())) {
+            shiguPhotoUser.setShowImg(bo.getShowImg());
+        }
+        if (StringUtils.isNotBlank(bo.getCodeImg())) {
+            shiguPhotoUser.setCodeImg(bo.getCodeImg());
+        }
+        shiguPhotoUser.setUserInfo(bo.getUserInfo());
         shiguPhotoUser.setContactPhone(bo.getContactPhone());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
     }

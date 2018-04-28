@@ -1,10 +1,13 @@
 package com.shigu.photo.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
+import com.shigu.photo.vo.PhotoAreaVO;
+import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
 import com.shigu.photo.vo.PhotoUserVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -49,13 +52,19 @@ public class PhotoUserAction {
     public String userValidate(HttpSession session, Model model) {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
         model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
-        //风格
         model.addAttribute("styleList", photoWorksService.selStyleListWithUser(userId));
         return "photo/userValidate";
     }
 
-
-    @RequestMapping("getUserValidMsgCode")
+    /**
+     * getUserValidMsgCode.json 获取用户认证短信验证码
+     * changePhotoTeleGetMsgCode.json 获取更换手机短信验证码
+     *
+     * @param telephone 手机号码
+     * @param session
+     * @return
+     */
+    @RequestMapping({"getUserValidMsgCode", "changePhotoTeleGetMsgCode"})
     @ResponseBody
     public JSONObject getUserValidMsgCode(String telephone, HttpSession session) {
         if (StringUtils.isBlank(telephone)) {
@@ -72,7 +81,15 @@ public class PhotoUserAction {
         return JsonResponseUtil.success();
     }
 
-
+    /**
+     * 提交用户认证申请
+     *
+     * @param bo
+     * @param session
+     * @param bindingResult
+     * @return
+     * @throws JsonErrException
+     */
     @RequestMapping("userValidSubmit")
     @ResponseBody
     public JSONObject userValidSubmit(@Valid PhotoUserValidBO bo, HttpSession session, BindingResult bindingResult) throws JsonErrException {
@@ -83,4 +100,51 @@ public class PhotoUserAction {
         Long userId = ps.getUserId();
         return photoUserService.submitUserValid(userId, bo);
     }
+
+    /**
+     * 用户信息编辑页面
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("userProfileEdit")
+    public String userProfileEdit(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        PhotoAuthWorkUserInfoWebVO baseInfo = photoUserService.baseUserInfo(userId);
+        PhotoAreaVO provsAndCitys = photoUserService.provsAndCitys();
+        model.addAttribute("userInfo", photoUserService.resolveUserAddrInfo(baseInfo, provsAndCitys));
+        model.addAttribute("provsAndCitys", provsAndCitys);
+        return "photo/userProfileEdit";
+    }
+
+    /**
+     * 提交修改用户信息结果
+     *
+     * @param bo
+     * @param session
+     * @return
+     */
+    @RequestMapping("submitProfileInfo")
+    @ResponseBody
+    public JSONObject submitProfileInfo(PhotoUserProfileEditBO bo, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return photoUserService.submitProfileInfo(ps.getUserId(), bo);
+    }
+
+    /**
+     * 修改用户头像
+     *
+     * @param imgSrc
+     * @param session
+     * @return
+     */
+    @RequestMapping("saveHeadPortrait")
+    @ResponseBody
+    public JSONObject saveHeadPortrait(String imgSrc, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return photoUserService.saveHeadPortrait(ps.getUserId(), imgSrc);
+    }
+
 }
