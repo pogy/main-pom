@@ -62,7 +62,8 @@ public class PropsService {
             if(tip.getPid().equals(20000L)){
                 //如果是品牌,取出前20个,其余存数据库(如果数据库没有)
                 piv.addPropValueList(parseTaobaoPropValueToVO(tip.getPropValues().subList(0, 20)));
-                updatePropValueService.updatePropValue(cid, tip.getPid(), tip.getName(), tip.getPropValues());
+                // 不存库
+//                updatePropValueService.updatePropValue(cid, tip.getPid(), tip.getName(), tip.getPropValues());
             }else if(!piv.getType().equals(PropType.INPUT)){//不是输入框的情况下
                 piv.addPropValueList(parseTaobaoPropValueToVO(tip.getPropValues()));
             }
