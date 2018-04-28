@@ -90,11 +90,11 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     /**
      * 更新用户摄影基地类型
      *
-     * @param type,摄影身份认证类型，不能为空，0:普通用户,1:模特,2:摄影机构,3:场地
+     * @param type,摄影身份认证类型，不能为空，0:普通用户,1:模特,2:摄影师 3.摄影公司,4:场地
      */
     protected void updatePhotoUserType(Integer type) {
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
-        shiguPhotoUser.setPhotoUserId(photoUserInfo().getPhotoUserId());
+        shiguPhotoUser.setAuthorId(photoUserInfo().getAuthorId());
         shiguPhotoUser.setUserType(type);
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
         MemberLicense memberLicense = new MemberLicense();
@@ -119,7 +119,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     @Override
     public void authApply(PhotoAuthApplyBO bo) throws JsonErrException {
         PhotoAuthApply apply = new PhotoAuthApply();
-        apply.setUserId(userId);
+        apply.setAuthId(getAuthId());
         //查找该用户是否有未处理完成的申请
         apply.setApplyStatus(0);
         if (photoAuthApplyMapper.selectOne(apply) != null) {
@@ -143,9 +143,9 @@ public class PhotoUserModelImpl implements PhotoUserModel {
             return;
         }
         // 更新用户认证信息
-        Long photoUserId = photoUserInfo().getPhotoUserId();
+        Long photoUserId = photoUserInfo().getAuthorId();
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
-        shiguPhotoUser.setPhotoUserId(photoUserId);
+        shiguPhotoUser.setAuthorId(photoUserId);
         shiguPhotoUser.setUserName(apply.getUserName());
         shiguPhotoUser.setContactPhone(apply.getAuthPhone());
         shiguPhotoUser.setShowImg(apply.getShowImg());
@@ -188,7 +188,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
      */
     private PhotoAuthApply unResolvedApply() {
         PhotoAuthApply apply = new PhotoAuthApply();
-        apply.setUserId(userId);
+        apply.setAuthId(getAuthId());
         apply.setApplyStatus(0);
         return photoAuthApplyMapper.selectOne(apply);
     }
@@ -196,7 +196,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     @Override
     public void editUserInfo(PhotoUserInfoEditBO bo) {
         ShiguPhotoUser shiguPhotoUser = new ShiguPhotoUser();
-        shiguPhotoUser.setPhotoUserId(photoUserInfo().getPhotoUserId());
+        shiguPhotoUser.setAuthorId(photoUserInfo().getAuthorId());
         shiguPhotoUser.setSex(bo.getSex());
         shiguPhotoUser.setAddress(bo.getAddress());
         shiguPhotoUser.setHeadImg(bo.getHeadImg());
@@ -216,5 +216,10 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         authCountQuery.setAuthorId(userId);
         totalUserInfo.setWorksCount(shiguPhotoWorksMapper.selectCount(authCountQuery));
         return totalUserInfo;
+    }
+
+    @Override
+    public long getAuthId() {
+        return photoUserInfo().getAuthorId();
     }
 }

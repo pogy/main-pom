@@ -62,7 +62,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         List<Long> authorIds = Collections.singletonList(-1L);
         if (userId != null) {
             PhotoUserVO photoUserVO = photoUserProcess.userBaseInfo(userId);
-            authorIds.add(photoUserVO.getPhotoUserId());
+            authorIds.add(photoUserVO.getAuthorId());
         }
         ShiguPhotoStyleExample shiguPhotoStyleExample = new ShiguPhotoStyleExample();
         shiguPhotoStyleExample.createCriteria().andAuthorIdIn(authorIds);
@@ -88,12 +88,12 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             if(shiguPhotoWorks==null){
                 throw new PhotoException("作品不存在");
             }
-            if(!shiguPhotoWorks.getAuthorId().equals(photoUserVO.getPhotoUserId())){
+            if(!shiguPhotoWorks.getAuthorId().equals(photoUserVO.getAuthorId())){
                 throw new PhotoException("作品所属错误");
             }
         }
         ShiguPhotoWorks shiguPhotoWorks = new ShiguPhotoWorks();
-        shiguPhotoWorks.setAuthorId(photoUserVO.getPhotoUserId());
+        shiguPhotoWorks.setAuthorId(photoUserVO.getAuthorId());
         shiguPhotoWorks.setClicks(0L);
         shiguPhotoWorks.setCreateTime(new Date());
         shiguPhotoWorks.setForbidSave(bo.getForbidSave() == 1);
@@ -142,7 +142,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             if(photoUserVO==null){
                 throw new PhotoException("作者信息不存在");
             }
-            authorId=photoUserVO.getPhotoUserId();
+            authorId=photoUserVO.getAuthorId();
         }
         ShiguPager<PhotoWorksVO> pager = new ShiguPager<>();
         pager.setNumber(bo.getPage());

@@ -91,8 +91,9 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         if (userId == null || worksId == null || status == null) {
             return;
         }
+        long authId = getUserModel(userId).getAuthId();
         ShiguPhotoUserPraise praise = new ShiguPhotoUserPraise();
-        praise.setUserId(userId);
+        praise.setAuthorId(authId);
         praise.setWorksId(worksId);
         ShiguPhotoUserPraise record = shiguPhotoUserPraiseMapper.selectOne(praise);
         if (record != null) {
@@ -115,9 +116,13 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         if (userId == null || authId == null) {
             return false;
         }
+        //用户摄影系统id
+        long userPhotoId = getUserModel(userId).getAuthId();
+        //作者摄影系统id
+        long authPhotoId = getUserModel(authId).getAuthId();
         ShiguPhotoUserFollow query = new ShiguPhotoUserFollow();
-        query.setUserId(userId);
-        query.setFollowUserId(authId);
+        query.setAuthorId(userPhotoId);
+        query.setFollowAuthorId(authPhotoId);
         query.setStatus(1);
         return shiguPhotoUserFollowMapper.selectCount(query) > 0;
     }
@@ -127,8 +132,9 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         if (userId == null || worksId == null) {
             return false;
         }
+        long userPhotoId = getUserModel(userId).getAuthId();
         ShiguPhotoUserPraise query = new ShiguPhotoUserPraise();
-        query.setUserId(userId);
+        query.setAuthorId(userPhotoId);
         query.setWorksId(worksId);
         query.setStatus(1);
         return shiguPhotoUserPraiseMapper.selectCount(query) > 0;

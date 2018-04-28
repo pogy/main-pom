@@ -12,9 +12,9 @@ import java.io.Serializable;
 public class PhotoUserVO implements Serializable {
 
     /**
-     *
+     * 用户摄影系统id
      */
-    private Long photoUserId;
+    private Long authorId;
 
     /**
      * 用户ID
@@ -71,12 +71,12 @@ public class PhotoUserVO implements Serializable {
      */
     private Long mainStyleId;
 
-    public void setPhotoUserId(Long photoUserId) {
-        this.photoUserId = photoUserId;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public Long getPhotoUserId() {
-        return this.photoUserId;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public void setUserId(Long userId) {

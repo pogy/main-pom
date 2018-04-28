@@ -56,4 +56,10 @@ public interface PhotoUserModel {
      */
     PhotoUserStatisticVO photoUserTotalInfo();
 
+    /**
+     * 获取用户作者id
+     * @return
+     */
+    long getAuthId();
+
 }

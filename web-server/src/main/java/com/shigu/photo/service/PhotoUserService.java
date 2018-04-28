@@ -133,11 +133,13 @@ public class PhotoUserService {
     public void sendValidCodeMsg(Long userId, String telephone) {
         String code = RedomUtil.redomNumber(6);
         //验证码有效期10分钟
+        sendMsgService.sendVerificationCode(telephone, code);
         redisIO.putTemp(PHOTO_USER_VALID_MSG_PREFIX + userId + telephone, code, 10 * 60);
     }
 
     /**
      * 提交身份认证申请
+     *
      * @param userId
      * @param validBO
      * @return
@@ -152,7 +154,7 @@ public class PhotoUserService {
                 || !validBO.getMsgCode().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + validBO.getWorkphone()))) {
             return JsonResponseUtil.error("验证码错误");
         }
-        if (validBO.getRoleStyle() == null|| validBO.getRoleStyle() < 1) {
+        if (validBO.getRoleStyle() == null || validBO.getRoleStyle() < 1) {
             return JsonResponseUtil.error("无效的身份");
         }
         PhotoAuthApplyBO bo = new PhotoAuthApplyBO();
