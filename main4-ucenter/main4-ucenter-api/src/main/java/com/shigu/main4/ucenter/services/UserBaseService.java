@@ -27,13 +27,6 @@ public interface UserBaseService {
     PersonalSession selUserForSessionByUserIdAndNick(Long userId,String tbNick);
 
     /**
-     * 按用户ID和tbNick查用户淘宝相关基准信息
-     * @param userId
-     * @return
-     */
-    PersonalSession selUserForSessionByUserIdAndNick(Long userId,String tbNick);
-
-    /**
      * 按用户名查用户基准信息
      * @param userName
      * @return
