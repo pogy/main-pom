@@ -1,5 +1,7 @@
 package com.shigu.photo.actions;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.photo.bo.PhotoUserValidBO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
@@ -12,10 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * 路径: com.shigu.photo.actions.PhotoUserAction
@@ -35,6 +40,7 @@ public class PhotoUserAction {
 
     /**
      * 用户认证页面
+     *
      * @param session
      * @param model
      * @return
@@ -44,7 +50,7 @@ public class PhotoUserAction {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
         model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
         //风格
-        model.addAttribute("styleList",photoWorksService.selStyleListWithUser(userId));
+        model.addAttribute("styleList", photoWorksService.selStyleListWithUser(userId));
         return "photo/userValidate";
     }
 
@@ -62,14 +68,19 @@ public class PhotoUserAction {
         if (ps.getUserId() == null) {
             return JsonResponseUtil.error("请先绑定星座网帐号");
         }
-        photoUserService.sendValidCodeMsg(ps.getUserId(),telephone);
+        photoUserService.sendValidCodeMsg(ps.getUserId(), telephone);
         return JsonResponseUtil.success();
     }
 
 
     @RequestMapping("userValidSubmit")
     @ResponseBody
-    public JSONObject userValidSubmit() {
-        return null;
+    public JSONObject userValidSubmit(@Valid PhotoUserValidBO bo, HttpSession session, BindingResult bindingResult) throws JsonErrException {
+        if (bindingResult.hasErrors()) {
+            return JsonResponseUtil.error(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        return photoUserService.submitUserValid(userId, bo);
     }
 }
