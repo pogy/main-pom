@@ -34,14 +34,15 @@
         <constructor-arg index="2" value="${host}"/>
     </bean>
 
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ItemCatService" ref="itemCatService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ItemPicRelationService" ref="itemPicRelationService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ItemSearchService" ref="itemSearchService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ItemShowCaseService" ref="itemShowCaseService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.PriceCalculateService" ref="priceCalculateService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" retries="0" timeout="20000" />-->
-    <!--<dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" retries="0" timeout="20000" />-->
+    <dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemCatService" ref="itemCatService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemPicRelationService" ref="itemPicRelationService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemSearchService" ref="itemSearchService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemShowCaseService" ref="itemShowCaseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.PriceCalculateService" ref="priceCalculateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" retries="0" timeout="20000" />
+
     <dubbo:service interface="com.shigu.main4.item.processes.TaobaoAuthProcess" ref="taobaoAuthProcess" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.processes.TaobaoItemSelProcess" ref="taobaoItemSelProcess" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.processes.TaobaoItemSynProcess" ref="taobaoItemSynProcess" retries="0" timeout="20000" />
