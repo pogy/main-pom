@@ -115,7 +115,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @param townId
      * @return
      */
-    public boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId) {
+    @Override
+    public Boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId) {
         List<CantSendVO> cantSendVOS = redisIO.getList("CANT_SEND_AREAS", CantSendVO.class);
         if (cantSendVOS == null) {
             return false;

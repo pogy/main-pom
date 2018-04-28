@@ -25,11 +25,22 @@ public interface ItemOrderService {
      * @return
      */
     Long idGenerator(OrderType type);
+
     /**
-     * 创建订单
-     * @param orderBO
+     * 根据省市县以及快递id判断该区域是否支持改快递
+     * @param companyId
+     * @param townId
+     * @param cityId
+     * @param provId
      * @return
      */
+    Boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId);
+
+        /**
+         * 创建订单
+         * @param orderBO
+         * @return
+         */
     Long createOrder(ItemOrderBO orderBO) throws OrderException;
 
     /**
