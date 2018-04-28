@@ -23,7 +23,7 @@
 <#include "/__ftl_links__/photo__common__userInfo.ftl">
 <#include "/__ftl_links__/photo__common__userNav.ftl">
 <div class="userWorkList layout">
-    <#if (userWorkList?size) gt 0>
+    <#if (userWorksList?size) gt 0>
     <div class="worksBox clearfix">
         <div class="coverItem smallMar addWorksBtn">
             <a href="uploadWork.htm">
@@ -32,7 +32,7 @@
             </a>
         </div>
         <div class="clearfix worksList">
-            <#list userWorkList as item>
+            <#list userWorksList as item>
 <#include "/__ftl_links__/photo__common__coverItem.ftl">
             </#list>
         </div>

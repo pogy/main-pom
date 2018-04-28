@@ -48,7 +48,7 @@
     <div class="placeList layout">
         <div class="listItems">
             <#list placeList as item>
-<#include "/__ftl_links__/photo__common__coverItem.ftl">
+<#include "/__ftl_links__/photo__common__roleItem.ftl">
             </#list>
         </div>
     </div>
