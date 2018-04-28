@@ -81,6 +81,17 @@ public class SubOrderModelImpl implements SubOrderModel {
 
     @Override
     public void init() {
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andGoodsIdEqualTo(subOrderBO.getGoodsId());
+        daifaOrderExample.setStartIndex(0);
+        daifaOrderExample.setEndIndex(1);
+        daifaOrderExample.setOrderByClause("create_time desc");
+        List<DaifaOrder> tmpOs=daifaOrderMapper.selectByExample(daifaOrderExample);
+        if(tmpOs.size()>0){
+            subOrderBO.setStoreGoodsCode(tmpOs.get(0).getStoreGoodsCode());
+            subOrderBO.setGoodsCode(tmpOs.get(0).getGoodsCode());
+        }
+
         DaifaOrder order=BeanMapper.map(subOrderBO,DaifaOrder.class);
         order.setCreateTime(new Date());
         order.setLastDoTime(order.getCreateTime());

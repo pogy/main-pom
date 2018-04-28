@@ -12,6 +12,7 @@ public class PackResultVO implements Serializable {
     private String goodsInfo;
     private String expressName;
     private String expressCode;
+    private String packageCode;
 
     public String getExpressName() {
         return expressName;
@@ -43,5 +44,13 @@ public class PackResultVO implements Serializable {
 
     public void setGoodsInfo(String goodsInfo) {
         this.goodsInfo = goodsInfo;
+    }
+
+    public String getPackageCode () {
+        return packageCode;
+    }
+
+    public void setPackageCode (String packageCode) {
+        this.packageCode = packageCode;
     }
 }

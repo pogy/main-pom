@@ -101,7 +101,7 @@ public class DaifaAllOrderIndexAction {
     @RequestMapping(value = "daifa/getUserList", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject getUserList() {
-        List<DaifaWorkerVO> workers = daifaAllOrderIndexService.getUserList();
+        List<DaifaWorkerVO> workers = daifaAllOrderIndexService.getUserList(null);
         return JsonResponseUtil.success().element("userList", workers);
     }
 

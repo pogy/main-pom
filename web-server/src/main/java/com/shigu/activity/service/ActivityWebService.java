@@ -124,10 +124,10 @@ public class ActivityWebService {
         Date now = new Date();
         ShiguNewActivityExample example = new ShiguNewActivityExample();
         example.setStartIndex(0);
-        example.setEndIndex(2);
+        example.setEndIndex(1);
         example.setOrderByClause("id desc");
         ShiguNewActivityExample.Criteria criteria = example.createCriteria();
-        criteria.andStartTimeLessThanOrEqualTo(now);
+        criteria.andStartTimeLessThanOrEqualTo(now).andIdLessThan(11L);
         return shiguNewActivityMapper.selectByConditionList(example);
     }
 

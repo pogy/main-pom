@@ -1,9 +1,12 @@
 package com.shigu.seller.bo;
 
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.services.DataPackageImportService;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -22,7 +25,7 @@ public class GoodsOfferBO implements Serializable{
     @SafeHtml(message = "首图包含非法页面标签")
     private String picPath;
     /**
-     * 5张图,不包含首图
+     * 不包含首图
      */
     @SafeHtml(message = "5张图包含非法页面标签")
     private String allimg;
@@ -56,6 +59,12 @@ public class GoodsOfferBO implements Serializable{
      */
     @SafeHtml(message = "零售价包含非法页面标签")
     private String buynow;
+
+    /**
+     * 最低零售价
+     */
+    @SafeHtml(message = "零售价包含非法页面标签")
+    private String lowestLiPrice;
     /**
      * 卖点
      */
@@ -87,7 +96,7 @@ public class GoodsOfferBO implements Serializable{
     /**
      * 面料
      */
-    @NotNull(message = "面料成分为必填选项")
+//    @NotNull(message = "面料成分为必填选项")
     private String fabric;
     /**
      * 里料
@@ -98,6 +107,19 @@ public class GoodsOfferBO implements Serializable{
      */
     @NotNull(message = "货号为必填选项")
     private String goodsNo;
+
+    /**
+     * 商品id
+     */
+    private String goodsId;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getPicPath() {
         return picPath;
@@ -153,6 +175,14 @@ public class GoodsOfferBO implements Serializable{
 
     public void setPiPrice(String piPrice) {
         this.piPrice = piPrice;
+    }
+
+    public String getLowestLiPrice() {
+        return lowestLiPrice;
+    }
+
+    public void setLowestLiPrice(String lowestLiPrice) {
+        this.lowestLiPrice = lowestLiPrice;
     }
 
     public String getBuynow() {
@@ -243,15 +273,18 @@ public class GoodsOfferBO implements Serializable{
      * 转化成标准对象
      * @return
      */
-    public SynItem parseToSynItem(){
+    public SynItem parseToSynItem(DataPackageImportService dataPackageImportService){
         SynItem synItem=new SynItem();
-        synItem.setPicUrl(this.picPath);
+        synItem.setPicUrl(dataPackageImportService.banjia(picPath));
         List<String> allImgUrl=new ArrayList<>();
         if(this.picPath!=null){
-            allImgUrl.add(picPath);
+            allImgUrl.add(synItem.getPicUrl());
         }
         if(this.allimg!=null&&!"".equals(allimg)){
             List<String> images=Arrays.asList(allimg.split(","));
+            for(int i=0;i<images.size();i++){
+                images.set(i,dataPackageImportService.banjia(images.get(i)));
+            }
             allImgUrl.addAll(images);
             synItem.setImageList(allImgUrl);
         }else{
@@ -261,12 +294,20 @@ public class GoodsOfferBO implements Serializable{
         synItem.setInputStr(this.getInputStr());
         synItem.setProps(this.getParamstr());
         synItem.setPropertyAlias(this.getPropertyAlias());
+        if (StringUtils.isBlank(this.buynow)) {
+            this.buynow = this.getPiPrice();
+        }
         synItem.setPriceString(this.getBuynow());
         synItem.setPiPriceString(this.getPiPrice());
         synItem.setSellPoint(this.getSellPoint());
         synItem.setNum(this.getQuantity());
         synItem.setTitle(this.getTitle());
-        synItem.setGoodsDesc(this.getDeschtml());
+        Document d=Jsoup.parse(this.getDeschtml());
+        Elements imgs=d.select("img");
+        imgs.forEach(element -> {
+            element.attr("src",dataPackageImportService.banjia(element.attr("src")));
+        });
+        synItem.setGoodsDesc(d.body().html());
         synItem.setCidAll(this.getSellerids());
         synItem.setCid(this.getCid());
         synItem.setFabric(this.getFabric());

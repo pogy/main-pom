@@ -83,6 +83,8 @@ public class OnsaleItemVO {
 
     private String goodsStyleName;
 
+    private Integer goodsSource;
+
     public Integer getGoodsStyleType() {
         return goodsStyleType;
     }
@@ -151,9 +153,11 @@ public class OnsaleItemVO {
         this.setGoodsStyleType(styleId == null ? 1 : 2);
         this.setGoodsStyleId(styleId);
         this.setGoodsStyleName(onsaleItem.getGoodsStyleName());
+        this.setGoodsSource("taobao".equals(onsaleItem.getItemFrom().getValue())?1:2);
         if (onsaleItem.getHasRetailPriceSet()) {
             this.setLowestLiPrice(onsaleItem.getPrice());
         }
+
     }
 
     public Integer getIsShowcase() {
@@ -437,5 +441,13 @@ public class OnsaleItemVO {
 
     public void setGoodsStyleName(String goodsStyleName) {
         this.goodsStyleName = goodsStyleName;
+    }
+
+    public Integer getGoodsSource() {
+        return this.goodsSource;
+    }
+
+    public void setGoodsSource(Integer goodsSource) {
+        this.goodsSource = goodsSource;
     }
 }

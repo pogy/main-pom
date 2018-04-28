@@ -20,6 +20,8 @@ public class ExpressVO implements Serializable {
     private String expressCode;//快递单号
     private String markDestination;//三段码
     private String packageName;//集包地
+    private String packageCode;//集包码
+    private String sortingCode;//菜鸟提货码
 
     public Long getTid () {
         return tid;
@@ -59,5 +61,21 @@ public class ExpressVO implements Serializable {
 
     public void setPackageName (String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getPackageCode () {
+        return packageCode;
+    }
+
+    public void setPackageCode (String packageCode) {
+        this.packageCode = packageCode;
+    }
+
+    public String getSortingCode() {
+        return this.sortingCode;
+    }
+
+    public void setSortingCode(String sortingCode) {
+        this.sortingCode = sortingCode;
     }
 }

@@ -7,6 +7,12 @@ package com.shigu.spread.enums;
 public enum SpreadEnum {
     QZGG("全站公告", "QZGG"), QZRULE("全站规则", "QZRULE"),
     MAN_STYLE_PICS("杭州男装风格图","MAN_STYLE_PICS"),
+    NEW_HZ_HomeCateMenu("杭州首页左侧导航","NEW_HZ_HomeCateMenu"),
+
+
+    // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
+    MAN_DT_NEW("男装大图新版2018-04","MAN-DT-NEW-201804"),MAN_XT_NEW("男装小图新版2018-04","MAN-XT-NEW-201804"),
+
 
     MAN_DT("男装大图", "MAN-DT"), MAN_XT("男装小图", "MAN-XT"),
     MAN_RM("热卖广告", "MAN-RM"), MAN_FG("风格", "MAN-FG"), MAN_YS("元素", "MAN-YS"),
@@ -29,6 +35,9 @@ public enum SpreadEnum {
     LOGIN_GT("登录页", "LOGIN_GT"),
     BACK_SHOP("供应商后台", "BACK_SHOP"), BACK_MEMBER("分销商后台", "BACK_MEMBER"),
     MAN_GXT("男装小图","MAN-GXT"),
+
+
+    XZNV_MERCHANTS("星座女装开业广告","XZNV_MERCHANTS"),
 
 //    HZ_MAN_STYLE_BANNER_GANGFENG_QINGLV("风格频道港风情侣频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_GANGFENG_QINGLV"),
 //    HZ_MAN_STYLE_BANNER_RIXI_DAMA("风格频道日系大码频道Banner轮播大图","STYLE_CHANNEL_BANNER_HZ_MAN_RIXI_DAMA"),
@@ -64,6 +73,29 @@ public enum SpreadEnum {
     CS_WOMAN_XHXZ("喜欢鞋子", "CS-WOMAN-XHXZ"),
 
     KX_MAN_DT("男鞋大图", "KX-MAN-DT"),  KX_MAN_XT("看鞋首页大图轮播下方", "KX-MAN-XT"),  KX_GOODS_RIGHT("看鞋商品库右侧", "KX-GOODS-RIGHT"), KX_MAN_RM("热卖广告", "KX-MAN-RM"), KX_MAN_XH("看鞋猜你喜欢", "KX-MAN-XH"),
+
+
+    //泉州
+    NEW_QZ_HomeCateMenu("泉州首页左侧导航","NEW_QZ_HomeCateMenu"),
+    MAN_QZ_DT("首页轮播图","MAN-DT-QZ"),MAN_QZ_XT("首页轮播图下方小图","MAN-QZ-XT"),
+    MAN_QZ_RM("首页热卖","MAN-QZ-RM"),MAN_QZ_TJ("首页推荐商品","MAN-QZ-TJ"),
+    MAN_QZ_TOP_BANNER("顶部公告","MAN-QZ-TOP-BANNER"),
+
+    WOMAN_QZ_DT("首页轮播图","WOMAN-DT-QZ"),WOMAN_QZ_XT("首页轮播图下方小图","WOMAN-QZ-XT"),
+    WOMAN_QZ_RM("首页热卖","WOMAN-QZ-RM"),WOMAN_QZ_TJ("首页推荐商品","WOMAN-QZ-TJ"),
+    WOMAN_QZ_TOP_BANNER("顶部公告","WOMAN-QZ-TOP-BANNER"),
+
+
+    //织里
+    NEW_ZL_HomeCateMenu("织里首页左侧导航","NEW_ZL_HomeCateMenu"),
+    MAN_ZL_DT("首页轮播图","MAN-DT-ZL"),MAN_ZL_XT("首页轮播图下方小图","MAN-ZL-XT"),
+    MAN_ZL_RM("首页热卖","MAN-ZL-RM"),MAN_ZL_TJ("首页推荐商品","MAN-ZL-TJ"),
+    MAN_ZL_TOP_BANNER("顶部公告","MAN-ZL-TOP-BANNER"),
+
+    WOMAN_ZL_DT("首页轮播图","WOMAN-DT-ZL"),WOMAN_ZL_XT("首页轮播图下方小图","WOMAN-ZL-XT"),
+    WOMAN_ZL_RM("首页热卖","WOMAN-ZL-RM"),WOMAN_ZL_TJ("首页推荐商品","WOMAN-ZL-TJ"),
+    WOMAN_ZL_TOP_BANNER("顶部公告","WOMAN-ZL-TOP-BANNER"),
+
 
     //新增app端广告位
     HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP男装热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP男装推荐档口", "HZ-APP-MAN-TJDK"),

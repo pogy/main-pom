@@ -129,7 +129,7 @@ public class GoodsSearchAction {
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
-        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav());
+        model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav(bo.getWebSite()));
         if (bo.getCid() != null) {
             model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }
@@ -240,7 +240,9 @@ public class GoodsSearchAction {
         if (bo.getPid() == null) {
             if ("kx".equalsIgnoreCase(website)) {//看鞋网的类目
                 bo.setPid(50011740L);
-            } else {
+            }else if ("zl".equalsIgnoreCase(website)){
+                bo.setPid(50008165L);
+            }else {
                 bo.setPid(30L);
             }
         }

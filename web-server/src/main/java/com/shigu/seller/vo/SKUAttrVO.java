@@ -88,6 +88,19 @@ public class SKUAttrVO {
     private String checkboxName;
     private Long pid;
     private Long vid;
+    private Boolean checked;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public static Map<String, String> getColorsMap() {
+        return colorsMap;
+    }
 
     public String getCnname() {
         return cnname;

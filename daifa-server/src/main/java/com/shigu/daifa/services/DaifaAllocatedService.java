@@ -58,8 +58,16 @@ public class DaifaAllocatedService {
             if(status!=null){
                 ce.andPrintBarcodeStatusEqualTo(status);
             }
+            if(searchWorkerId!=null){
+                ce.andDaifaWorkerIdEqualTo(searchWorkerId);
+            }
         }else{
-            ce.andCreateDateEqualTo(DateUtil.dateToString(new Date(), DateUtil.patternB));
+            if(startDate==null){
+                ce.andCreateDateEqualTo(DateUtil.dateToString(new Date(), DateUtil.patternB));
+            }else{
+                ce.andCreateDateEqualTo(DateUtil.dateToString(DateUtil.stringToDate(startDate, DateUtil.patternA), DateUtil.patternB));
+            }
+            ce.andDaifaWorkerIdEqualTo(workerId);
         }
         daifaGgoodsExample.setOrderByClause("create_time desc");
         if (lastOrderId != null) {
@@ -76,9 +84,7 @@ public class DaifaAllocatedService {
             String et = DateUtil.dateToString(DateUtil.stringToDate(endDate, DateUtil.patternA), DateUtil.patternB);
             ce.andCreateDateLessThanOrEqualTo(et);
         }
-        if(searchWorkerId!=null){
-            ce.andDaifaWorkerIdEqualTo(searchWorkerId);
-        }
+
 
         Integer count = daifaGgoodsMapper.countByExample(daifaGgoodsExample);
         List<DaifaAllocatedVO> vos = new ArrayList<>();

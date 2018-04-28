@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.bo.AutoRefundBo;
+import com.shigu.main4.daifa.bo.MoveShopDataBO;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
@@ -73,4 +74,9 @@ public interface OrderManageProcess {
 
 
     void dealWaitSendOrderDisplay(Long dfTradeId,Integer orderDisplay)throws DaifaException;
+
+    /**
+     * 档口迁移,修改所有订单数据
+     */
+    void storeMove(MoveShopDataBO bo);
 }

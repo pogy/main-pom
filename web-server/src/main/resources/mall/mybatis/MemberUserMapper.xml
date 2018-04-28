@@ -29,17 +29,20 @@
         WHERE xz_user_id=#{userId}
     </select>
 
-    <select id="getUserBonusBalance" parameterType="java.lang.String" resultType="long">
+    <select id="getUserBonusBalance"   resultType="long">
         SELECT balance
         FROM shigu_bonus
-        WHERE third_id = #{thirdId}
+        WHERE user_id = #{userId}
         AND status = 1
     </select>
 
-    <select id="getUserBonusRecord" parameterType="java.lang.String" resultMap="BonusRecordMap">
+    <select id="getUserBonusRecord" resultMap="BonusRecordMap">
         SELECT *
         FROM shigu_bonus_record
-        WHERE third_id = #{thirdId}
+        WHERE
+          from_user_id = #{userId}
+        OR
+          to_user_id = #{userId}
         AND status = 1
         ORDER BY id desc
     </select>

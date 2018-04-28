@@ -16,7 +16,7 @@ public class AfterSaleBO {
     /**
      * 下单人id
      */
-    private Long buyerId;
+    private String buyerPhone;
     /**
      * 收货人
      */
@@ -39,13 +39,6 @@ public class AfterSaleBO {
         this.orderId = orderId;
     }
 
-    public Long getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(Long buyerId) {
-        this.buyerId = buyerId;
-    }
 
     public String getReceiver() {
         return receiver;
@@ -69,5 +62,19 @@ public class AfterSaleBO {
 
     public void setPage(String page) {
         this.page = page;
+    }
+
+    /**
+     * 获取 下单人id
+     */
+    public String getBuyerPhone() {
+        return this.buyerPhone;
+    }
+
+    /**
+     * 设置 下单人id
+     */
+    public void setBuyerPhone(String buyerPhone) {
+        this.buyerPhone = buyerPhone;
     }
 }

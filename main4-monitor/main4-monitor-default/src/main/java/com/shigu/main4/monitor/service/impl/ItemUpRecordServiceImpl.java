@@ -44,10 +44,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.shigu.main4.monitor.service.impl.RankingSimpleServiceImpl.getPeriodTimeStamp;
 
@@ -76,7 +73,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     private StarCaculateService starCaculateService;
 
     @Autowired
-    private MemberUserSubMapper memberUserSubMapper;
+    private GoodsUpCountForsearchMapper goodsUpCountForsearchMapper;
 
     @Autowired
     RedisIO redisIO;
@@ -161,6 +158,50 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 logger.error("上传后重算星星数失败",e);
             }
         }
+
+        //商品对应上传数加 1
+        try {
+            this.updateGoodsUpCountForSearchNum(itemUpRecordVO.getSupperGoodsId(),1L);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("上传后商品对应上传数加失败",e);
+        }
+    }
+
+    /**
+     * 修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsId
+     * @param num
+     */
+    @Override
+    public void updateGoodsUpCountForSearchNum(long goodsId,long num){
+        GoodsUpCountForsearch goodsUpCountForsearch = new GoodsUpCountForsearch();
+        goodsUpCountForsearch.setGoodsId(goodsId);
+        goodsUpCountForsearch = goodsUpCountForsearchMapper.selectOne(goodsUpCountForsearch);
+        if (goodsUpCountForsearch == null) {
+            //新增记录
+            goodsUpCountForsearch = new GoodsUpCountForsearch();
+            goodsUpCountForsearch.setGoodsId(goodsId);
+            goodsUpCountForsearch.setGoodsUpNum(num);
+            goodsUpCountForsearchMapper.insertSelective(goodsUpCountForsearch);
+        }else {
+            //更新记录
+            long goodsUpNum = goodsUpCountForsearch.getGoodsUpNum() + num;
+            goodsUpCountForsearch.setGoodsUpNum(goodsUpNum);
+            goodsUpCountForsearchMapper.updateByPrimaryKeySelective(goodsUpCountForsearch);
+        }
+    }
+
+    /**
+     * 修改 商品对应上传数
+     * 不存在记录则会新建记录
+     * @param goodsIds
+     * @param num
+     */
+    @Override
+    public void updateGoodsUpCountForSearchNum(Set<Long> goodsIds, long num){
+        goodsUpCountForsearchMapper.updatList(goodsIds,num);
     }
 
     /**
@@ -327,35 +368,39 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         if(userId == null || supperGoodsId == null){
             return null;
         }
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
-        boleanQueryBuilder.must(query);
-        BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
-        QueryBuilder flagQuery=QueryBuilders.termQuery("flag","web-tb");
-        flagbool.should(flagQuery);
-        flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
-        flagbool.minimumNumberShouldMatch(1);
-        boleanQueryBuilder.must(flagbool);
-        QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
-        boleanQueryBuilder.must(queryGoods);
-        QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
-        boleanQueryBuilder.must(stautsQuery);
-        srb.addSort("daiTime", SortOrder.DESC);
-        srb.setSize(1);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if (hits == null || hits.length == 0) {
+        try {
+            SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+            BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+            BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
+            QueryBuilder flagQuery=QueryBuilders.termQuery("flag","web-tb");
+            flagbool.should(flagQuery);
+            flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
+            flagbool.minimumNumberShouldMatch(1);
+            boleanQueryBuilder.must(flagbool);
+            QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
+            boleanQueryBuilder.must(queryGoods);
+            QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
+            boleanQueryBuilder.must(stautsQuery);
+            srb.addSort("daiTime", SortOrder.DESC);
+            srb.setSize(1);
+            srb.setQuery(boleanQueryBuilder);
+            SearchResponse response = srb.execute().actionGet();
+            SearchHit[] hits = response.getHits().getHits();
+            if (hits == null || hits.length == 0) {
+                return null;
+            }
+            SearchHit hit = hits[0];
+            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+            Date daitime = DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD);
+            LastUploadedVO vo=new LastUploadedVO();
+            vo.setLastTime(daitime);
+            vo.setNumIid(shiguGoodsUp.getFenNumiid());
+            return vo;
+        } catch (Exception e) {
             return null;
         }
-        SearchHit hit = hits[0];
-        ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-        Date daitime = DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD);
-        LastUploadedVO vo=new LastUploadedVO();
-        vo.setLastTime(daitime);
-        vo.setNumIid(shiguGoodsUp.getFenNumiid());
-        return vo;
     }
 
     /**

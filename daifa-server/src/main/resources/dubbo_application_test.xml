@@ -14,9 +14,13 @@
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" id="scanSaleAfterExpressProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.DaifaActProcess" id="daifaActProcess" timeout="10000"/>
+
 
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
+
+
 
 </beans>

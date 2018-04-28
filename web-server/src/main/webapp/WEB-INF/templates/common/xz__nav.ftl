@@ -56,8 +56,91 @@
     </a>
 </li>
     <#elseif webSite == 'cs'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://cs.571xz.com/market.htm?mid=43" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/csgoods.htm" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=cs" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
     <#elseif webSite == 'ss'>
     <#elseif webSite == 'bj'>
     <#elseif webSite == 'gz'>
+    <#elseif webSite == 'qz'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
+    <#elseif webSite == 'zl'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
     </#if>
 </ul>

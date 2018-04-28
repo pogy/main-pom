@@ -1,43 +1,47 @@
+<#assign $pageid>noGoodsnoOrder</#assign>
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=1300px">
     <title>无货号订单 - 星帮后台管理 - 四季星座网</title>
-    <#include "/common/host_config.ftl">
-    <link href="http://style.571xz.com/v2/dfgl/css/noGoodsnoOrder.css" rel="stylesheet">
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-    <script src="http://style.571xz.com/v2/dfgl/js/noGoodsnoOrder.js"></script>
-    <script src="${daifa_host!}js/daifa/menudeal/menu.js"></script>
+<#include "/common/base__config.ftl">
+    <#include "/__style_torrent__/common__base_css.ftl">
+<#include "/__style_torrent__/common__xz_css.ftl">
+<#include "/__style_torrent__/common__form_css.ftl">
+<#include "/__style_torrent__/daifa__common_css.ftl">
+<#include "/__style_torrent__/daifa__noGoodsnoOrder_css.ftl">
+    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <#include "/__style_torrent__/common__base_js.ftl">
+<#include "/__style_torrent__/common__xz_js.ftl">
+<#include "/__style_torrent__/daifa__common_js.ftl">
+<#include "/__style_torrent__/daifa__noGoodsnoOrder_js.ftl">
 </head>
 <body>
-<div class="pageHeader yahei">
-    <h1 class="fl">代发后台管理</h1>
-    <div class="xbUser fr">
-        <#if userIcon??>
-        <img src="${userIcon!}">
-        <#else>
-        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
-        </#if>
-        <span class="fcBlue fs16">${userName!}</span>
-        <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
-            <input id="menus" type="hidden" value="${menu}"/>
-    </div>
-</div>
-
+<#include "/__ftl_links__/daifa__common__header.ftl">
 <div class="mainContent">
     <div class="sideBarBox">
-    <#include "/common/menu_daifa.ftl">
+<#include "/__ftl_links__/daifa__common__sidebar.ftl">
     </div>
     <div class="contentBox">
-        <div class="printTypeTabs">
+<#assign text>{}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
+<div class="pageTabs">
     <ul>
         <li ><a href="orderAll.htm">全部订单</a></li>
         <li class="select"><a href="noGoodsnoOrder.htm">无货号订单</a></li>
     </ul>
 </div>
-
 <div class="noGoodsnoOrderCon">
     <div class="theadCon">
         <ul class="">
@@ -49,7 +53,7 @@
     </div>
     <#list childOrders as childOrder>
     <div class="orderItemCon">
-        <div class="childOrderItem" data-id="${childOrder.childOrderId!}">
+<div class="childOrderItem" data-id="${childOrder.childOrderId!}">
     <ul class="clearfix">
         <li class="childOrderId">${childOrder.childOrderId!}</li>
         <li class="goodsInfo">
@@ -67,45 +71,41 @@
         </li>
     </ul>
 </div>
-
     </div>
     </#list>
 </div>
-    
-
 <#assign text>{}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
-
-<div class="jqPagination " id="jqPagination0" 
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
+<#assign text>{}</#assign>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
+<div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
-        data-option="${$it.pageOption!}" 
+        data-option="${$it.pageOption!}"
     <#else>
         data-option="${pageOption!}"
     </#if>
 ></div>
-
-</#list>
 <#assign text>{}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
+<#assign moduleJsonStr=text?eval />
+<#list [moduleJsonStr] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-        <#if field.timeFormat??>
-            <#if field.value??>
-            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
-            <#else>
-            <input type=hidden name="${field.name!}" value="${field.value!}">
-            </#if>
-        <#else>
-            <input type=hidden name="${field.name!}" value="${field.value!}">
-        </#if>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
     </#list>
 </form>
 </#if>
-
 </#list>
-
+</#list>
     </div>
 </div>

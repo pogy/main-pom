@@ -8,8 +8,8 @@ import com.shigu.main4.vo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("searchCategoryService")
 public class SearchCategoryServiceImpl implements SearchCategoryService{
@@ -19,8 +19,19 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Override
     public List<CateMenu> getMarketCateShow() {
+        return getMarketCateShow("hz");
+    }
+
+    @Override
+    public List<CateMenu> getMarketCateShow(String webSite) {
         ShiguSiteSearchCategoryExample ssscOneExample = new ShiguSiteSearchCategoryExample();
-        ssscOneExample.createCriteria().andTypeEqualTo(3).andCStatusEqualTo(1).andDisplayEqualTo(1).andPageTypeEqualTo(1);
+        ssscOneExample.createCriteria()
+                .andTypeEqualTo(3)
+                .andCStatusEqualTo(1)
+                .andDisplayEqualTo(1)
+                .andPageTypeEqualTo(1)
+                .andWebSiteEqualTo(webSite)
+                .andInfoTypeEqualTo(1);
         List<ShiguSiteSearchCategory> ssscOneList = shiguSiteSearchCategoryMapper.selectByExample(ssscOneExample);
         if (ssscOneList == null){
             return new ArrayList<>();
@@ -59,13 +70,89 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
 
     @Override
     public List<HomeCateMenu> getHomeCateShow() {
+        return getHomeCateShow("hz",1,true);
+    }
+
+    @Override
+    public List<HomeCateMenu> getHomeCateShow(String webSite,Integer sex) {
+        return getHomeCateShow(webSite,sex,false);
+    }
+
+    private List<HomeCateMenu> getHomeCateShow(String webSite,Integer sex,boolean isOld){
+        List<HomeCateMenu> list=new ArrayList<>();
+        if(!isOld){
+            list.addAll(getOthers(webSite,sex,2));
+        }
+        list.addAll(getCates(webSite,sex));
+        if(!isOld){
+            list.addAll(getOthers(webSite,sex,3));
+        }
+        return list;
+    }
+    private List<HomeCateMenu> getOthers(String webSite,Integer sex,Integer infoType){
         ShiguSiteSearchCategoryExample ssscExample1 = new ShiguSiteSearchCategoryExample();
-        ssscExample1.createCriteria().andCStatusEqualTo(1).andDisplayEqualTo(1).andTypeEqualTo(3).andPageTypeEqualTo(2);
+        ssscExample1.createCriteria()
+                .andCStatusEqualTo(1)
+                .andDisplayEqualTo(1)
+                .andTypeEqualTo(3)
+                .andPageTypeEqualTo(2)
+                .andWebSiteEqualTo(webSite)
+                .andSexEqualTo(sex)
+                .andInfoTypeEqualTo(infoType);
+        ssscExample1.setOrderByClause("id asc");
+        List<ShiguSiteSearchCategory> ssscList1 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample1);
+        if(ssscList1.size()==0){
+            return new ArrayList<>();
+        }
+        List<Long> ssscids=ssscList1.stream().map(ShiguSiteSearchCategory::getId).collect(Collectors.toList());
+        ShiguSiteSearchCategoryExample ssscExampleSub = new ShiguSiteSearchCategoryExample();
+        ssscExampleSub.createCriteria().andParentCidIn(ssscids);
+        ssscExampleSub.setOrderByClause("id asc");
+        List<ShiguSiteSearchCategory> ssscSubList = shiguSiteSearchCategoryMapper.selectByExample(ssscExampleSub);
+        Map<Long,List<ShiguSiteSearchCategory>> map=ssscSubList.stream().collect(Collectors.groupingBy(ShiguSiteSearchCategory::getParentCid));
+
+        List<HomeCateMenu> list=new ArrayList<>();
+        ssscList1.forEach(shiguSiteSearchCategory -> {
+            HomeCateMenu m=new HomeCateMenu();
+            m.setId(shiguSiteSearchCategory.getId());
+            m.setText(shiguSiteSearchCategory.getCname());
+            List<HomeCateItem> hots=new ArrayList<>();
+            List<HomeCateItem> alls=new ArrayList<>();
+            if (map != null && map.size() > 0) {
+                map.get(shiguSiteSearchCategory.getId()).forEach(shiguSiteSearchCategory1 -> {
+                    HomeCateItem homeCateItem = new HomeCateItem(shiguSiteSearchCategory1.getCname(),
+                            (infoType == 3 ? "http://www.571xz.com/styleGoodsList.htm?spid=" : "http://www.571xz.com/market.htm?mid=") + shiguSiteSearchCategory1.getCid());
+                    if (shiguSiteSearchCategory1.getHot() == 1) {
+                        hots.add(homeCateItem);
+                    }
+                    alls.add(homeCateItem);
+                });
+            }
+            m.setListitems(hots);
+            ThreeCateMenu threeCateMenu=new ThreeCateMenu();
+            threeCateMenu.setText(shiguSiteSearchCategory.getCname());
+            threeCateMenu.setItems(alls);
+            m.setDetailitems(Collections.singletonList(threeCateMenu));
+            list.add(m);
+        });
+        return list;
+    }
+
+
+    private List<HomeCateMenu> getCates(String webSite,Integer sex){
+        ShiguSiteSearchCategoryExample ssscExample1 = new ShiguSiteSearchCategoryExample();
+        ssscExample1.createCriteria()
+                .andCStatusEqualTo(1)
+                .andDisplayEqualTo(1)
+                .andTypeEqualTo(3)
+                .andPageTypeEqualTo(2)
+                .andWebSiteEqualTo(webSite)
+                .andSexEqualTo(sex)
+                .andInfoTypeEqualTo(1);
         List<ShiguSiteSearchCategory> ssscList1 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample1);
         if (ssscList1 == null){
             return new ArrayList<>();
         }
-
         HomeCateMenu homeCateMenu;
         List<ShiguSiteSearchCategory> ssscList2;
         HomeCateItem homeCateItem;
@@ -98,9 +185,9 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                             homeCateItem = new HomeCateItem();
                             homeCateItem.setName(ssscList3.get(k).getCname());
                             if (ssscList3.get(k).getKeyword() == null || ssscList3.get(k).getKeyword() =="") {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid="+ssscList3.get(k).getTopCid()+"&cid="+ssscList3.get(k).getCid());
                             }else {
-                                homeCateItem.setHref("http://so.571xz.com/hzgoods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
+                                homeCateItem.setHref("http://so.571xz.com/"+webSite+"goods.htm?pid=" + ssscList3.get(k).getTopCid() + "&keyword=" + ssscList3.get(k).getKeyword());
                             }
                             if (ssscList3.get(k).getHot() == 1){
                                 hotItemList.add(homeCateItem);

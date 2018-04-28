@@ -105,9 +105,9 @@ public class KdHttpUtil {
 		        	  param.append(entry.getKey());
 		        	  param.append("=");
 		        	  param.append(entry.getValue());		        	  
-////System.out.println(entry.getKey()+":"+entry.getValue());
+//System.out.println(entry.getKey()+":"+entry.getValue());
 		          }
-////System.out.println("param:"+param.toString());
+//System.out.println("param:"+param.toString());
 		          out.write(param.toString());
             }
             // flush输出流的缓冲
@@ -119,9 +119,9 @@ public class KdHttpUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-        } catch (Exception e) {
+        }  catch (Exception e) {
 			e.printStackTrace();
-        }
+		}
         //使用finally块来关闭输出流、输入流
         finally{
             try{
