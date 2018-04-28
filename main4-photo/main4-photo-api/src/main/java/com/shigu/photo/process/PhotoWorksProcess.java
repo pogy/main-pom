@@ -3,6 +3,7 @@ package com.shigu.photo.process;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.bo.SynPhotoUploadBO;
+import com.shigu.photo.exceptions.PhotoException;
 import com.shigu.photo.vo.*;
 
 import java.util.List;
@@ -31,22 +32,14 @@ public interface PhotoWorksProcess {
      *
      * @param bo
      */
-    void uploadWorks(SynPhotoUploadBO bo);
-
-    /**
-     * 修改作品
-     *
-     * @param bo
-     */
-    void updateWorks(SynPhotoUploadBO bo);
-
+    void uploadWorks(SynPhotoUploadBO bo) throws PhotoException;
 
     /**
      * 获取作品列表
      *
      * @return
      */
-    ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo);
+    ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo) throws PhotoException;
 
     /**
      * 获取作品详情

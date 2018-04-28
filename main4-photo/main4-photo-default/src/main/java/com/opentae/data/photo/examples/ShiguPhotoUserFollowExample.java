@@ -1,18 +1,18 @@
 package com.opentae.data.photo.examples;
 
-import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.EntityColumn;
 import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
 
 import java.util.*;
 public class ShiguPhotoUserFollowExample extends SgExample<ShiguPhotoUserFollowExample.Criteria> {
     public static final Class<ShiguPhotoUserFollow> beanClass = ShiguPhotoUserFollow.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn followId;
-    public static EntityColumn followUserId;
-    public static EntityColumn userId;
+    public static EntityColumn authorId;
+    public static EntityColumn followAuthorId;
     public static EntityColumn status;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -21,8 +21,8 @@ public class ShiguPhotoUserFollowExample extends SgExample<ShiguPhotoUserFollowE
             listMap.put(column.getProperty(), column);
         }
         followId = listMap.get("followId");
-        followUserId = listMap.get("followUserId");
-        userId = listMap.get("userId");
+        authorId = listMap.get("authorId");
+        followAuthorId = listMap.get("followAuthorId");
         status = listMap.get("status");
         }
 
@@ -92,99 +92,99 @@ public class ShiguPhotoUserFollowExample extends SgExample<ShiguPhotoUserFollowE
         public ShiguPhotoUserFollowExample.Criteria andFollowIdNotBetween(Long value1, Long value2) {
             return notBetween(followId, value1, value2);
         }
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdIsNull() {
-            return isNull(followUserId);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdIsNull() {
+            return isNull(authorId);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdIsNotNull() {
-            return isNotNull(followUserId);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdIsNotNull() {
+            return isNotNull(authorId);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdEqualTo(Long value) {
-            return equalTo(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdEqualTo(Long value) {
+            return equalTo(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdNotEqualTo(Long value) {
-            return notEqualTo(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdNotEqualTo(Long value) {
+            return notEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdGreaterThan(Long value) {
-            return greaterThan(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdGreaterThan(Long value) {
+            return greaterThan(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdLessThan(Long value) {
-            return lessThan(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdLessThan(Long value) {
+            return lessThan(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(followUserId, value);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdIn(List<Long> values) {
-            return in(followUserId, values);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdIn(List<Long> values) {
+            return in(authorId, values);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdNotIn(List<Long> values) {
-            return notIn(followUserId, values);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdNotIn(List<Long> values) {
+            return notIn(authorId, values);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdBetween(Long value1, Long value2) {
-            return between(followUserId, value1, value2);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdBetween(Long value1, Long value2) {
+            return between(authorId, value1, value2);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andFollowUserIdNotBetween(Long value1, Long value2) {
-            return notBetween(followUserId, value1, value2);
+        public ShiguPhotoUserFollowExample.Criteria andAuthorIdNotBetween(Long value1, Long value2) {
+            return notBetween(authorId, value1, value2);
         }
-        public ShiguPhotoUserFollowExample.Criteria andUserIdIsNull() {
-            return isNull(userId);
-        }
-
-        public ShiguPhotoUserFollowExample.Criteria andUserIdIsNotNull() {
-            return isNotNull(userId);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdIsNull() {
+            return isNull(followAuthorId);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdEqualTo(Long value) {
-            return equalTo(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdIsNotNull() {
+            return isNotNull(followAuthorId);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdNotEqualTo(Long value) {
-            return notEqualTo(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdEqualTo(Long value) {
+            return equalTo(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdGreaterThan(Long value) {
-            return greaterThan(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdNotEqualTo(Long value) {
+            return notEqualTo(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdGreaterThan(Long value) {
+            return greaterThan(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdLessThan(Long value) {
-            return lessThan(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(userId, value);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdLessThan(Long value) {
+            return lessThan(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdIn(List<Long> values) {
-            return in(userId, values);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(followAuthorId, value);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdNotIn(List<Long> values) {
-            return notIn(userId, values);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdIn(List<Long> values) {
+            return in(followAuthorId, values);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            return between(userId, value1, value2);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdNotIn(List<Long> values) {
+            return notIn(followAuthorId, values);
         }
 
-        public ShiguPhotoUserFollowExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            return notBetween(userId, value1, value2);
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdBetween(Long value1, Long value2) {
+            return between(followAuthorId, value1, value2);
+        }
+
+        public ShiguPhotoUserFollowExample.Criteria andFollowAuthorIdNotBetween(Long value1, Long value2) {
+            return notBetween(followAuthorId, value1, value2);
         }
         public ShiguPhotoUserFollowExample.Criteria andStatusIsNull() {
             return isNull(status);

@@ -6,7 +6,7 @@ import java.util.List;
 public class SynPhotoUploadBO implements Serializable{
     private Long worksId;
 
-    private String picUtl;
+    private String picUrl;
     /**
      * 照片
      */
@@ -170,13 +170,6 @@ public class SynPhotoUploadBO implements Serializable{
         this.userId = userId;
     }
 
-    public String getPicUtl() {
-        return this.picUtl;
-    }
-
-    public void setPicUtl(String picUtl) {
-        this.picUtl = picUtl;
-    }
 
     public Long getWorksId() {
         return this.worksId;
@@ -184,5 +177,13 @@ public class SynPhotoUploadBO implements Serializable{
 
     public void setWorksId(Long worksId) {
         this.worksId = worksId;
+    }
+
+    public String getPicUrl() {
+        return this.picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }

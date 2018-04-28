@@ -12,7 +12,7 @@ public class ShiguPhotoStyleExample extends SgExample<ShiguPhotoStyleExample.Cri
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn styleId;
     public static EntityColumn styleName;
-    public static EntityColumn userId;
+    public static EntityColumn authorId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -21,7 +21,7 @@ public class ShiguPhotoStyleExample extends SgExample<ShiguPhotoStyleExample.Cri
         }
         styleId = listMap.get("styleId");
         styleName = listMap.get("styleName");
-        userId = listMap.get("userId");
+        authorId = listMap.get("authorId");
         }
 
     public ShiguPhotoStyleExample() {
@@ -145,52 +145,52 @@ public class ShiguPhotoStyleExample extends SgExample<ShiguPhotoStyleExample.Cri
         public ShiguPhotoStyleExample.Criteria andStyleNameNotBetween(String value1, String value2) {
             return notBetween(styleName, value1, value2);
         }
-        public ShiguPhotoStyleExample.Criteria andUserIdIsNull() {
-            return isNull(userId);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdIsNull() {
+            return isNull(authorId);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdIsNotNull() {
-            return isNotNull(userId);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdIsNotNull() {
+            return isNotNull(authorId);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdEqualTo(Long value) {
-            return equalTo(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdEqualTo(Long value) {
+            return equalTo(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdNotEqualTo(Long value) {
-            return notEqualTo(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdNotEqualTo(Long value) {
+            return notEqualTo(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdGreaterThan(Long value) {
-            return greaterThan(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdGreaterThan(Long value) {
+            return greaterThan(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdLessThan(Long value) {
-            return lessThan(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdLessThan(Long value) {
+            return lessThan(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(userId, value);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdIn(List<Long> values) {
-            return in(userId, values);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdIn(List<Long> values) {
+            return in(authorId, values);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdNotIn(List<Long> values) {
-            return notIn(userId, values);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdNotIn(List<Long> values) {
+            return notIn(authorId, values);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            return between(userId, value1, value2);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdBetween(Long value1, Long value2) {
+            return between(authorId, value1, value2);
         }
 
-        public ShiguPhotoStyleExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            return notBetween(userId, value1, value2);
+        public ShiguPhotoStyleExample.Criteria andAuthorIdNotBetween(Long value1, Long value2) {
+            return notBetween(authorId, value1, value2);
         }
     }
 }

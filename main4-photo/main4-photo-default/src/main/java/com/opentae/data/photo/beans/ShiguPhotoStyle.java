@@ -20,7 +20,7 @@ public class ShiguPhotoStyle implements Serializable {
     /**
      * 
      */
-	private Long userId;
+	private Long authorId;
 
 	public void setStyleId(Long styleId) {
 		this.styleId = styleId;
@@ -38,12 +38,12 @@ public class ShiguPhotoStyle implements Serializable {
 		return this.styleName;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setAuthorId(Long authorId) {
+		this.authorId = authorId;
 	}
 
-	public Long getUserId() {
-		return this.userId;
+	public Long getAuthorId() {
+		return this.authorId;
 	}
 
 }

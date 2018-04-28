@@ -4,6 +4,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
+import com.shigu.photo.exceptions.PhotoException;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.vo.*;
@@ -88,7 +89,7 @@ public class PhotoWorksService {
     }
 
 
-    public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query){
+    public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query) throws PhotoException {
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
         ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(photoWorksBO);
         ShiguPager<PhotoWorksSearchVO> pager=new ShiguPager<>();
@@ -122,5 +123,28 @@ public class PhotoWorksService {
             return vo;
         }).collect(Collectors.toList());
     }
+
+    /**
+     * 获取编辑坐票用的信息
+     * @param worksId
+     * @return
+     */
+    public PhotoWorksChangeVO selUpdateBean(Long worksId){
+        PhotoWorksUpdateVO photoWorksUpdateVO = photoWorksProcess.selPhotoSingel(worksId);
+        if(photoWorksUpdateVO==null){
+            return null;
+        }
+        PhotoWorksChangeVO vo=new PhotoWorksChangeVO();
+        vo.setCate(photoWorksUpdateVO.getWorksCid());
+        vo.setCover(photoWorksUpdateVO.getPicUrl());
+        vo.setDesc(photoWorksUpdateVO.getContent());
+        vo.setImgs(Arrays.asList(photoWorksUpdateVO.getImages().split(",")));
+        vo.setPrice(photoWorksUpdateVO.getHavePrice()?0:1);
+        vo.setSaveType(photoWorksUpdateVO.getForbidSave()?1:0);
+        vo.setTitle(photoWorksUpdateVO.getTitle());
+        vo.setWorksId(photoWorksUpdateVO.getWorksId());
+        return vo;
+    }
+
 
 }

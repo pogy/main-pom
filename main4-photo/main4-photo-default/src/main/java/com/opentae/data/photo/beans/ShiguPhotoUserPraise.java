@@ -13,9 +13,9 @@ public class ShiguPhotoUserPraise implements Serializable {
 	private Long praiseId;
 
     /**
-     * 用户ID
+     * 作者Id
      */
-	private Long userId;
+	private Long authorId;
 
     /**
      * 作品ID
@@ -35,12 +35,12 @@ public class ShiguPhotoUserPraise implements Serializable {
 		return this.praiseId;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setAuthorId(Long authorId) {
+		this.authorId = authorId;
 	}
 
-	public Long getUserId() {
-		return this.userId;
+	public Long getAuthorId() {
+		return this.authorId;
 	}
 
 	public void setWorksId(Long worksId) {

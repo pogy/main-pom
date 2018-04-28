@@ -1,10 +1,10 @@
 package com.opentae.data.photo.examples;
 
-import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.EntityColumn;
 import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
 
 import java.util.*;
 public class ShiguPhotoUserPraiseExample extends SgExample<ShiguPhotoUserPraiseExample.Criteria> {
@@ -12,7 +12,7 @@ public class ShiguPhotoUserPraiseExample extends SgExample<ShiguPhotoUserPraiseE
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn worksId;
     public static EntityColumn praiseId;
-    public static EntityColumn userId;
+    public static EntityColumn authorId;
     public static EntityColumn status;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -22,7 +22,7 @@ public class ShiguPhotoUserPraiseExample extends SgExample<ShiguPhotoUserPraiseE
         }
         worksId = listMap.get("worksId");
         praiseId = listMap.get("praiseId");
-        userId = listMap.get("userId");
+        authorId = listMap.get("authorId");
         status = listMap.get("status");
         }
 
@@ -139,52 +139,52 @@ public class ShiguPhotoUserPraiseExample extends SgExample<ShiguPhotoUserPraiseE
         public ShiguPhotoUserPraiseExample.Criteria andPraiseIdNotBetween(Long value1, Long value2) {
             return notBetween(praiseId, value1, value2);
         }
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdIsNull() {
-            return isNull(userId);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdIsNull() {
+            return isNull(authorId);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdIsNotNull() {
-            return isNotNull(userId);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdIsNotNull() {
+            return isNotNull(authorId);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdEqualTo(Long value) {
-            return equalTo(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdEqualTo(Long value) {
+            return equalTo(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdNotEqualTo(Long value) {
-            return notEqualTo(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdNotEqualTo(Long value) {
+            return notEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdGreaterThan(Long value) {
-            return greaterThan(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdGreaterThan(Long value) {
+            return greaterThan(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdLessThan(Long value) {
-            return lessThan(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdLessThan(Long value) {
+            return lessThan(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(userId, value);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(authorId, value);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdIn(List<Long> values) {
-            return in(userId, values);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdIn(List<Long> values) {
+            return in(authorId, values);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdNotIn(List<Long> values) {
-            return notIn(userId, values);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdNotIn(List<Long> values) {
+            return notIn(authorId, values);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            return between(userId, value1, value2);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdBetween(Long value1, Long value2) {
+            return between(authorId, value1, value2);
         }
 
-        public ShiguPhotoUserPraiseExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            return notBetween(userId, value1, value2);
+        public ShiguPhotoUserPraiseExample.Criteria andAuthorIdNotBetween(Long value1, Long value2) {
+            return notBetween(authorId, value1, value2);
         }
         public ShiguPhotoUserPraiseExample.Criteria andStatusIsNull() {
             return isNull(status);

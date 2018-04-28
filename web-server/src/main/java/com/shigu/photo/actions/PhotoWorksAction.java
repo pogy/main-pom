@@ -6,6 +6,8 @@ import com.shigu.photo.bo.PhotoUploadBO;
 import com.shigu.photo.bo.PhotoWorkDetailViewBO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
 import com.shigu.photo.bo.SynPhotoUploadBO;
+import com.shigu.photo.exceptions.PhotoException;
+import com.shigu.photo.process.PhotoImgProcess;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.service.PhotoUserService;
@@ -27,8 +29,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -48,9 +52,12 @@ public class PhotoWorksAction {
 
     @Autowired
     PageErrAction pageErrAction;
+    @Autowired
+    PhotoImgProcess photoImgProcess;
 
+    //作品列表
     @RequestMapping("photoWorks")
-    public String wokes(PhotoWorksSearchBO query, Model model) {
+    public String wokes(PhotoWorksSearchBO query, Model model) throws PhotoException {
         model.addAttribute("roleList", Arrays.asList(new PhotoCateVO("1", "模特"), new PhotoCateVO("2,3", "摄影机构"), new PhotoCateVO("4", "场地")));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
                 .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
@@ -64,8 +71,9 @@ public class PhotoWorksAction {
         return "photo/photoWorks";
     }
 
+    //作者主页
     @RequestMapping("userHomePage")
-    public String authorWokes(PhotoWorksSearchBO query, Model model) {
+    public String authorWokes(PhotoWorksSearchBO query, Model model) throws PhotoException {
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
@@ -98,24 +106,35 @@ public class PhotoWorksAction {
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
                 .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
         model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
-        PhotoWorksDetailWebVO photoWorksDetailWebVO = photoWorksService.photoWorksDetail(id);
-
+        PhotoWorksChangeVO photoWorksChangeVO = photoWorksService.selUpdateBean(id);
+        model.addAttribute("worksData",photoWorksChangeVO);
         return "photo/uploadWork";
     }
 
-
-
-    @RequestMapping("uploadWorkAction")
+    //提交作品添加或修改
+    @RequestMapping("uploadWorkSubmit")
     @ResponseBody
-    public JSONObject uploadWorkAction(@Valid PhotoUploadBO bo, BindingResult result) {
+    public JSONObject uploadWorkAction(@Valid PhotoUploadBO bo, BindingResult result,HttpSession session) {
         if (result.hasErrors()) {
             return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
-        if (bo.getHavePrice() == 1 && StringUtils.isBlank(bo.getPriceString())) {
-            return JsonResponseUtil.error("请填写价格");
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        SynPhotoUploadBO synPhotoUploadBO = new SynPhotoUploadBO();
+        synPhotoUploadBO.setCid(bo.getCate());
+        synPhotoUploadBO.setContent(bo.getDesc());
+        synPhotoUploadBO.setForbidSave(bo.getSaveType());
+        synPhotoUploadBO.setHavePrice(bo.getPrice()==1?0:1);
+        synPhotoUploadBO.setImages(bo.getImgs());
+        synPhotoUploadBO.setPicUrl(bo.getCover());
+        synPhotoUploadBO.setStyleId(bo.getStyles());
+        synPhotoUploadBO.setTitle(bo.getTitle());
+        synPhotoUploadBO.setUserId(ps.getUserId());
+        synPhotoUploadBO.setWorksId(bo.getWorksId());
+        try {
+            photoWorksProcess.uploadWorks(synPhotoUploadBO);
+        } catch (PhotoException e) {
+            return JsonResponseUtil.error(e.getMessage());
         }
-        SynPhotoUploadBO synPhotoUploadBO = BeanMapper.map(bo, SynPhotoUploadBO.class);
-        photoWorksProcess.uploadWorks(synPhotoUploadBO);
         return JsonResponseUtil.success();
     }
 

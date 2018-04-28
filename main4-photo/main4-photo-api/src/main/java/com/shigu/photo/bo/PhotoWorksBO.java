@@ -14,9 +14,9 @@ public class PhotoWorksBO implements Serializable{
      */
     private WorksListSortEnum sort;
     /**
-     * 作者ID
+     * 用户ID
      */
-    private Long authorId;
+    private Long userId;
     /**
      * 风格ID
      */
@@ -117,20 +117,6 @@ public class PhotoWorksBO implements Serializable{
     }
 
     /**
-     * 获取 作者ID
-     */
-    public Long getAuthorId() {
-        return this.authorId;
-    }
-
-    /**
-     * 设置 作者ID
-     */
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    /**
      * 获取 页长
      */
     public Integer getPageSize() {
@@ -170,5 +156,19 @@ public class PhotoWorksBO implements Serializable{
      */
     public void setSex(Integer sex) {
         this.sex = sex;
+    }
+
+    /**
+     * 获取 用户ID
+     */
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    /**
+     * 设置 用户ID
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

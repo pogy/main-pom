@@ -13,14 +13,14 @@ public class ShiguPhotoUserFollow implements Serializable {
 	private Long followId;
 
     /**
-     * 用户ID
+     * 作者ID
      */
-	private Long userId;
+	private Long authorId;
 
     /**
      * 作者ID
      */
-	private Long followUserId;
+	private Long followAuthorId;
 
     /**
      * 
@@ -35,20 +35,20 @@ public class ShiguPhotoUserFollow implements Serializable {
 		return this.followId;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setAuthorId(Long authorId) {
+		this.authorId = authorId;
 	}
 
-	public Long getUserId() {
-		return this.userId;
+	public Long getAuthorId() {
+		return this.authorId;
 	}
 
-	public void setFollowUserId(Long followUserId) {
-		this.followUserId = followUserId;
+	public void setFollowAuthorId(Long followAuthorId) {
+		this.followAuthorId = followAuthorId;
 	}
 
-	public Long getFollowUserId() {
-		return this.followUserId;
+	public Long getFollowAuthorId() {
+		return this.followAuthorId;
 	}
 
 	public void setStatus(Integer status) {

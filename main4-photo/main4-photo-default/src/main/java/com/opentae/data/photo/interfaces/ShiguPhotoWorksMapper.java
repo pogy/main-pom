@@ -18,7 +18,6 @@ import java.util.List;
 @Scope("singleton")
 @Lazy(true)
 public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
-
     List<PhotoWorksVO> selectShiguPhotoWorks(@Param("authorId")Long authorId,
                                              @Param("styleId")Long styleId,
                                              @Param("userTypes")String userTypes,

@@ -9,12 +9,12 @@ import java.util.List;
 
 public class PhotoUploadBO {
     @NotEmpty(message = "请选择封面图")
-    private String picUtl;
+    private String cover;
     /**
      * 照片
      */
     @NotEmpty(message = "请上传图片")
-    private List<String> images;
+    private List<String> imgs;
     /**
      * 标题
      */
@@ -24,44 +24,51 @@ public class PhotoUploadBO {
      * 描述
      */
     @Length(max=200,message = "描述信息不能超过200个字")
-    private String content;
+    private String desc;
     /**
      * 风格ID集合
      */
     @Size(min=1,max=3,message = "请选择1-3个风格")
-    private List<Long> styleId;
+    private List<Long> styles;
     /**
      * 类目集合
      */
     @NotNull(message = "请选择一个类目")
-    private Long cid;
+    private Long cate;
     /**
      * 0:可保存,1:禁止保存
      */
     @NotNull(message = "请选择是否禁止右键保存")
-    private Integer forbidSave;
+    private Integer saveType;
     /**
-     * 0:私聊,1:定价
+     * 1:私聊
      */
     @NotNull(message = "请选择价格模式")
-    private Integer havePrice;
-    /**
-     * 自定义价格,如果havePrice为1,则必传
-     */
-    private String priceString;
+    private Integer price;
+
+
+    private Long worksId;
+
+    public String getCover() {
+        return this.cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 
     /**
      * 获取 照片
      */
-    public List<String> getImages() {
-        return this.images;
+    public List<String> getImgs() {
+        return this.imgs;
     }
 
     /**
      * 设置 照片
      */
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImgs(List<String> imgs) {
+        this.imgs = imgs;
     }
 
     /**
@@ -81,94 +88,78 @@ public class PhotoUploadBO {
     /**
      * 获取 描述
      */
-    public String getContent() {
-        return this.content;
+    public String getDesc() {
+        return this.desc;
     }
 
     /**
      * 设置 描述
      */
-    public void setContent(String content) {
-        this.content = content;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     /**
      * 获取 风格ID集合
      */
-    public List<Long> getStyleId() {
-        return this.styleId;
+    public List<Long> getStyles() {
+        return this.styles;
     }
 
     /**
      * 设置 风格ID集合
      */
-    public void setStyleId(List<Long> styleId) {
-        this.styleId = styleId;
+    public void setStyles(List<Long> styles) {
+        this.styles = styles;
     }
 
     /**
      * 获取 类目集合
      */
-    public Long getCid() {
-        return this.cid;
+    public Long getCate() {
+        return this.cate;
     }
 
     /**
      * 设置 类目集合
      */
-    public void setCid(Long cid) {
-        this.cid = cid;
+    public void setCate(Long cate) {
+        this.cate = cate;
     }
 
     /**
      * 获取 0:可保存,1:禁止保存
      */
-    public Integer getForbidSave() {
-        return this.forbidSave;
+    public Integer getSaveType() {
+        return this.saveType;
     }
 
     /**
      * 设置 0:可保存,1:禁止保存
      */
-    public void setForbidSave(Integer forbidSave) {
-        this.forbidSave = forbidSave;
+    public void setSaveType(Integer saveType) {
+        this.saveType = saveType;
     }
 
     /**
-     * 获取 0:私聊,1:定价
+     * 获取 1:私聊
      */
-    public Integer getHavePrice() {
-        return this.havePrice;
+    public Integer getPrice() {
+        return this.price;
     }
 
     /**
-     * 设置 0:私聊,1:定价
+     * 设置 1:私聊
      */
-    public void setHavePrice(Integer havePrice) {
-        this.havePrice = havePrice;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    /**
-     * 获取 自定义价格,如果havePrice为1,则必传
-     */
-    public String getPriceString() {
-        return this.priceString;
+    public Long getWorksId() {
+        return this.worksId;
     }
 
-    /**
-     * 设置 自定义价格,如果havePrice为1,则必传
-     */
-    public void setPriceString(String priceString) {
-        this.priceString = priceString;
-    }
-
-    @NotEmpty(message = "请选择封面图")
-    public String getPicUtl() {
-        return this.picUtl;
-    }
-
-    @NotEmpty(message = "请选择封面图")
-    public void setPicUtl(String picUtl) {
-        this.picUtl = picUtl;
+    public void setWorksId(Long worksId) {
+        this.worksId = worksId;
     }
 }
