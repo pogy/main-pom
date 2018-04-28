@@ -6,10 +6,7 @@ import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.process.PhotoWorksProcess;
-import com.shigu.photo.vo.PhotoWorkDetailVO;
-import com.shigu.photo.vo.PhotoWorksDetailWebVO;
-import com.shigu.photo.vo.PhotoWorksSearchVO;
-import com.shigu.photo.vo.PhotoWorksVO;
+import com.shigu.photo.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,11 +102,25 @@ public class PhotoWorksService {
                 vo.setImgsrc(photoWorksVO.getPicUrl());
                 vo.setNick(photoWorksVO.getAuthorName());
                 vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(),DateUtil.patternA));
-                vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSubUserType()));
+                vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSex()));
                 vo.setWorksId(photoWorksVO.getWorksId());
                 return vo;
             }).collect(Collectors.toList()));
         return pager;
+    }
+
+    /**
+     * 获取风格列表，传入userId时，会额外取出该用户自定义风格
+     * @param userId
+     * @return
+     */
+    public List<PhotoWorksStyleVO> selStyleListWithUser(Long userId) {
+        return photoWorksProcess.selPhotoStyleVos(userId).stream().map(o -> {
+            PhotoWorksStyleVO vo = new PhotoWorksStyleVO();
+            vo.setId(o.getStyleId());
+            vo.setText(o.getStyleName());
+            return vo;
+        }).collect(Collectors.toList());
     }
 
 }

@@ -4,7 +4,9 @@ import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
 import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserFollowMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserPraiseMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
@@ -39,7 +41,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         if (userId == null) {
             return null;
         }
-        return SpringBeanFactory.getBean(PhotoUserModel.class, userId).photoUserInfo();
+        return getUserModel(userId).photoUserInfo();
     }
 
     /**
@@ -53,7 +55,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         if (userId == null) {
             return null;
         }
-        return SpringBeanFactory.getBean(PhotoUserModel.class, userId).photoUserTotalInfo();
+        return getUserModel(userId).photoUserTotalInfo();
     }
 
     /**
@@ -130,5 +132,34 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         query.setWorksId(worksId);
         query.setStatus(1);
         return shiguPhotoUserPraiseMapper.selectCount(query) > 0;
+    }
+
+    @Override
+    public void authApply(Long userId, PhotoAuthApplyBO bo) throws JsonErrException {
+        getUserModel(userId).authApply(bo);
+    }
+
+    @Override
+    public void applyPass(Long userId, String logMessage) {
+        getUserModel(userId).applyPass(logMessage);
+    }
+
+    @Override
+    public void applyRefuse(Long userId, String logMessage) {
+        getUserModel(userId).applyRefuse(logMessage);
+    }
+
+    /**
+     * 获取用户处理对象
+     *
+     * @param userId
+     * @return
+     */
+    public PhotoUserModel getUserModel(Long userId) {
+        // 实际userId为null状态状况下不应该走到这一步，这里可以换成抛出异常
+        if (userId == null) {
+            return null;
+        }
+        return SpringBeanFactory.getBean(PhotoUserModel.class, userId);
     }
 }

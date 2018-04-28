@@ -14,8 +14,8 @@ public class PhotoUserInfoEditBO implements Serializable {
     //用户头像
     private String headImg;
 
-    //根据user_type字段决定含义,当user_type=0或1时,该字段代表性别(0:未知,1:男,2:女),当user_type=2时,该字段代表机构类型(1:摄影公司,2:摄影师)
-    private Integer subUserType;
+    // 性别 0:未知,1:男,2:女
+    private Integer sex;
 
     //地址
     private String address;
@@ -31,12 +31,12 @@ public class PhotoUserInfoEditBO implements Serializable {
         this.headImg = headImg;
     }
 
-    public Integer getSubUserType() {
-        return subUserType;
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public String getAddress() {

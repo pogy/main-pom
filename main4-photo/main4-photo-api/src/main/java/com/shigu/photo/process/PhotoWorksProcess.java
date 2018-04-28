@@ -45,8 +45,20 @@ public interface PhotoWorksProcess {
      */
     PhotoWorkDetailVO selPhotoWorkDetail(Long worksId);
 
+    /**
+     * 获取单作品点击量
+     *
+     * @param worksId
+     * @return
+     */
     PhotoWorksClickVO getClicks(Long worksId);
 
+    /**
+     * 增加并获取单作品点击量
+     *
+     * @param worksId
+     * @return
+     */
     PhotoWorksClickVO incrementClicks(Long worksId);
 
     /**

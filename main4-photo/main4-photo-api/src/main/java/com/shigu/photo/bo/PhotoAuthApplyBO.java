@@ -14,7 +14,7 @@ public class PhotoAuthApplyBO implements Serializable {
     //用户名
     private String userName;
 
-    //身份认证类型 1:模特,2:摄影机构,3:场地
+    //身份认证类型 1:模特,2:摄影师,3.摄影公司,4:场地
     private Integer authType;
 
     //认证手机号（只用以认证确实使用该手机号，之后可以修改)

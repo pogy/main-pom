@@ -1,5 +1,7 @@
 package com.shigu.photo.process;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 
@@ -14,6 +16,7 @@ public interface PhotoUserProcess {
 
     /**
      * 用户基础信息
+     *
      * @param userId
      * @return
      */
@@ -21,6 +24,7 @@ public interface PhotoUserProcess {
 
     /**
      * 作者详细信息，包括统计数据
+     *
      * @param userId
      * @return
      */
@@ -28,6 +32,7 @@ public interface PhotoUserProcess {
 
     /**
      * 点赞
+     *
      * @param userId
      * @param worksId
      */
@@ -35,6 +40,7 @@ public interface PhotoUserProcess {
 
     /**
      * 取消点赞
+     *
      * @param userId
      * @param worksId
      */
@@ -42,6 +48,7 @@ public interface PhotoUserProcess {
 
     /**
      * 用户是否已关注作者
+     *
      * @param userId 用户id
      * @param authId 作者用户id
      * @return
@@ -50,9 +57,34 @@ public interface PhotoUserProcess {
 
     /**
      * 用户是否已点赞作品
-     * @param userId 用户id
+     *
+     * @param userId  用户id
      * @param worksId 作品id
      * @return
      */
     boolean isPraised(Long userId, Long worksId);
+
+    /**
+     * 申请身份认证
+     *
+     * @param userId
+     * @param bo
+     */
+    void authApply(Long userId, PhotoAuthApplyBO bo) throws JsonErrException;
+
+    /**
+     * 身份认证通过
+     *
+     * @param userId
+     * @param logMessage
+     */
+    void applyPass(Long userId, String logMessage);
+
+    /**
+     * 拒绝身份认证
+     *
+     * @param userId
+     * @param logMessage
+     */
+    void applyRefuse(Long userId, String logMessage);
 }

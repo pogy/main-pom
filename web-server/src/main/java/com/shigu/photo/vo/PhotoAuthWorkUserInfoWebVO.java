@@ -32,6 +32,9 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     //用户微信二维码图片
     private String wxQrImgSrc;
 
+    //个人简介
+    private String profile;
+
     //作品总数 无为0
     private Integer worksCount;
 
@@ -92,6 +95,14 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
 
     public void setWxQrImgSrc(String wxQrImgSrc) {
         this.wxQrImgSrc = wxQrImgSrc;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     public Integer getWorksCount() {

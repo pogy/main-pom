@@ -4,6 +4,8 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.photo.process.PhotoUserProcess;
 import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
+import com.shigu.services.SendMsgService;
+import com.shigu.tools.RedomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class PhotoUserService {
 
     @Autowired
     private PhotoUserProcess photoUserProcess;
+
+    @Autowired
+    private SendMsgService sendMsgService;
 
     @Autowired
     private RedisIO redisIO;
@@ -40,8 +45,9 @@ public class PhotoUserService {
             userInfo.setTele(totalAuthInfo.getContactPhone());
             userInfo.setAddress(totalAuthInfo.getAddress());
             userInfo.setWxQrImgSrc(totalAuthInfo.getCodeImg());
+            userInfo.setProfile(totalAuthInfo.getUserInfo());
             userInfo.setWorksCount(totalAuthInfo.getWorksCount());
-            authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSubUserType());
+            authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSex());
         }
         userInfo.setTypeName(authType);
         return userInfo;
@@ -74,13 +80,13 @@ public class PhotoUserService {
      * 分析用户类型
      *
      * @param userType
-     * @param subUserType
+     * @param sex
      * @return
      */
-    public static String selAuthType(Integer userType, Integer subUserType) {
+    public static String selAuthType(Integer userType, Integer sex) {
         String authType = "未知";
-        if (subUserType == null) {
-            subUserType = 0;
+        if (sex == null) {
+            sex = 0;
         }
         switch (userType) {
             case 0:
@@ -89,27 +95,35 @@ public class PhotoUserService {
             //模特
             case 1:
                 authType = "模特";
-                if (subUserType == 1) {
+                if (sex == 1) {
                     authType = "男模";
-                } else if (subUserType == 2) {
+                } else if (sex == 2) {
                     authType = "女模";
                 }
                 break;
-            //摄影机构
+            //摄影机构 2 摄影师 3 摄影公司
             case 2:
-                if (subUserType == 1) {
-                    authType = "摄影师";
-                } else if (subUserType == 2) {
-                    authType = "摄影公司";
-                }
+                authType = "摄影师";
+                break;
+
+            case 3:
+                authType = "摄影公司";
                 break;
             //摄影场地
-            case 3:
+            case 4:
                 authType = "场地";
                 break;
         }
         return authType;
     }
 
+    /**
+     * 发送短信验证码
+     */
+    public void sendValidCodeMsg(Long userId, String telephone) {
+        String code = RedomUtil.redomNumber(6);
+        //验证码有效期10分钟
+        redisIO.putTemp(PHOTO_USER_VALID_MSG_PREFIX + userId + telephone, code, 10 * 60);
+    }
 
 }

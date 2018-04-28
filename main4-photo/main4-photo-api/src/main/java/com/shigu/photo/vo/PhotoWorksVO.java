@@ -42,7 +42,11 @@ public class PhotoWorksVO implements Serializable{
      */
     private Integer userType;
 
-    private Integer subUserType;
+    /**
+     * 性别
+     */
+    private Integer sex;
+
     /**
      * 描述
      */
@@ -183,11 +187,11 @@ public class PhotoWorksVO implements Serializable{
         this.userType = userType;
     }
 
-    public Integer getSubUserType() {
-        return this.subUserType;
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 }

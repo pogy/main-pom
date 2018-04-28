@@ -30,12 +30,12 @@ public class ShiguPhotoUser implements Serializable {
     /**
      * 
      */
-	private Integer userType;
+	private Integer sex;
 
     /**
      * 
      */
-	private Integer subUserType;
+	private Integer userType;
 
     /**
      * 常用地址
@@ -99,20 +99,20 @@ public class ShiguPhotoUser implements Serializable {
 		return this.headImg;
 	}
 
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public Integer getSex() {
+		return this.sex;
+	}
+
 	public void setUserType(Integer userType) {
 		this.userType = userType;
 	}
 
 	public Integer getUserType() {
 		return this.userType;
-	}
-
-	public void setSubUserType(Integer subUserType) {
-		this.subUserType = subUserType;
-	}
-
-	public Integer getSubUserType() {
-		return this.subUserType;
 	}
 
 	public void setAddress(String address) {

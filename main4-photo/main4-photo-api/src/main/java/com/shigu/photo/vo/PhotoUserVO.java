@@ -32,14 +32,14 @@ public class PhotoUserVO implements Serializable {
     private String headImg;
 
     /**
-     * 0:普通用户,1:模特,2:摄影机构,3:场地
+     * 性别: 0未知 1男 2女
      */
-    private Integer userType;
+    private Integer sex;
 
     /**
-     * 根据user_type字段决定含义,当user_type=0或1时,该字段代表性别(0:未知,1:男,2:女),当user_type=2时,该字段代表机构类型(1:摄影公司,2:摄影师)
+     * 0:普通用户,1:模特,2:摄影师,3.摄影公司,4:场地
      */
-    private Integer subUserType;
+    private Integer userType;
 
     /**
      * 常用地址
@@ -111,12 +111,12 @@ public class PhotoUserVO implements Serializable {
         return this.userType;
     }
 
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
+    public Integer getSex() {
+        return sex;
     }
 
-    public Integer getSubUserType() {
-        return this.subUserType;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public void setAddress(String address) {
