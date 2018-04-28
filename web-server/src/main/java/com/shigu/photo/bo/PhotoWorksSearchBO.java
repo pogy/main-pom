@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class PhotoWorksSearchBO {
     /**
@@ -22,17 +23,11 @@ public class PhotoWorksSearchBO {
     /**
      * 作者类型
      */
-    private Integer rid;
+    private List<Integer> rid;
     /**
      * 页码
      */
     private Integer page;
-    /**
-     * 作者子类型
-     * 当userType=1时,1:男模,2:女模
-     * 当userType=2时,1:摄影公司,2:摄影师
-     */
-    private Integer subUserType;
     /**
      * 关键词
      */
@@ -82,23 +77,6 @@ public class PhotoWorksSearchBO {
     public void setPage(Integer page) {
         this.page = page;
     }
-    /**
-     * 作者子类型
-     * 当userType=1时,1:男模,2:女模
-     * 当userType=2时,1:摄影公司,2:摄影师
-     */
-    public Integer getSubUserType() {
-        return this.subUserType;
-    }
-
-    /**
-     * 作者子类型
-     * 当userType=1时,1:男模,2:女模
-     * 当userType=2时,1:摄影公司,2:摄影师
-     */
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
-    }
 
 
     public PhotoWorksBO toPhotoWorksBO(){
@@ -111,11 +89,8 @@ public class PhotoWorksSearchBO {
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);
         photoWorksBO.setStyleId(getStyleId());
-        photoWorksBO.setUserType(getRid());
+        photoWorksBO.setUserTypes(getRid());
         photoWorksBO.setTitle(getKeyword());
-        if(getRid()!=null&&getRid()!=3){
-            photoWorksBO.setSubUserType(getSubUserType());
-        }
         if(getSort()!=null){
             photoWorksBO.setSort("def".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
         }else{
@@ -138,19 +113,6 @@ public class PhotoWorksSearchBO {
         this.pid = pid;
     }
 
-    /**
-     * 获取 作者类型
-     */
-    public Integer getRid() {
-        return this.rid;
-    }
-
-    /**
-     * 设置 作者类型
-     */
-    public void setRid(Integer rid) {
-        this.rid = rid;
-    }
 
     /**
      * 获取 关键词
@@ -172,5 +134,19 @@ public class PhotoWorksSearchBO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取 作者类型
+     */
+    public List<Integer> getRid() {
+        return this.rid;
+    }
+
+    /**
+     * 设置 作者类型
+     */
+    public void setRid(List<Integer> rid) {
+        this.rid = rid;
     }
 }

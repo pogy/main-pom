@@ -10,7 +10,7 @@
             t2.user_id authorId,
             t2.user_name authorName,
             t2.user_type userType,
-            t2.sub_user_type subUserType,
+            t2.sex sex,
             t2.address address,
             t1.create_time createTime
         from
@@ -19,17 +19,18 @@
                 ,shigu_photo_works_style t3
             </if>
         where t1.author_id=t2.user_id
+            and t1.remove_is =0
             <if test="authorId">
                 t1.author_id=${authorId}
             </if>
-            <if test="userType != null">
-                and t2.user_type=${userType}
+            <if test="userTypes != null">
+                and t2.user_type in(${userTypes})
             </if>
             <if test="title != null">
                 and t1.title like("%${title}%")
             </if>
-            <if test="subUserType != null">
-                and t2.subUserType=${subUserType}
+            <if test="sex != null">
+                and t2.sex=${sex}
             </if>
             <if test="styleId != null">
                 and t3.style_id=${styleId}
@@ -50,17 +51,18 @@
                 ,shigu_photo_works_style t3
             </if>
         where t1.author_id=t2.user_id
+            and t1.remove_is =0
             <if test="authorId">
                 t1.author_id=${authorId}
             </if>
-            <if test="userType != null">
-                and t2.user_type=${userType}
+            <if test="userTypes != null">
+                and t2.user_type in(${userTypes})
             </if>
             <if test="title != null">
                 and t1.title like("%${title}%")
             </if>
-            <if test="subUserType != null">
-                and t2.subUserType=${subUserType}
+            <if test="sex != null">
+                and t2.sex=${sex}
             </if>
             <if test="styleId != null">
                 and t3.style_id=${styleId}

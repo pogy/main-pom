@@ -21,16 +21,16 @@ public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
 
     List<PhotoWorksVO> selectShiguPhotoWorks(@Param("authorId")Long authorId,
                                              @Param("styleId")Long styleId,
-                                             @Param("userType")Integer userType,
+                                             @Param("userTypes")String userTypes,
                                              @Param("title")String title,
-                                             @Param("subUserType")Integer subUserType,
+                                             @Param("sex")Integer sex,
                                              @Param("sort")String sort,
                                              @Param("start")Integer start,
                                              @Param("end")Integer end);
 
     Integer selectShiguPhotoWorksCount(@Param("authorId")Long authorId,
                                        @Param("styleId")Long styleId,
-                                       @Param("userType")Integer userType,
+                                       @Param("userTypes")String userTypes,
                                        @Param("title")String title,
-                                       @Param("subUserType")Integer subUserType);
+                                       @Param("sex")Integer sex);
 }

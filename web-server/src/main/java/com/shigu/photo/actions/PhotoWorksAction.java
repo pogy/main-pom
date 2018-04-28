@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -50,11 +51,11 @@ public class PhotoWorksAction {
 
     @RequestMapping("photoWorks")
     public String wokes(PhotoWorksSearchBO query, Model model) {
-        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO(1L, "模特"), new PhotoCateVO(2L, "摄影机构"), new PhotoCateVO(3L, "场地")));
+        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO("1", "模特"), new PhotoCateVO("2,3", "摄影机构"), new PhotoCateVO("4", "场地")));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
-                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid(), photoCatVO.getCname())).collect(Collectors.toList()));
+                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
-                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
 
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("list", photoWorksVOShiguPager.getContent());
@@ -79,13 +80,30 @@ public class PhotoWorksAction {
     public String uploadWork(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //准备风格
-        List<PhotoStyleVO> photoStyleVOS = photoWorksProcess.selPhotoStyleVos(ps.getUserId());
-        //准备类目
-        List<PhotoCatVO> photoCatVOS = photoWorksProcess.selPhotoCatVos();
-        model.addAttribute("styles", photoStyleVOS);
-        model.addAttribute("cats", photoCatVOS);
-        return "uploadWork";
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+        model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
+                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
+        model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
+        return "photo/uploadWork";
     }
+
+    //修改作品页
+    @RequestMapping(value = "uploadWork",params = "id")
+    public String uploadWork(HttpSession session,Long id, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        //准备风格
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+        model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
+                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
+        model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
+        PhotoWorksDetailWebVO photoWorksDetailWebVO = photoWorksService.photoWorksDetail(id);
+
+        return "photo/uploadWork";
+    }
+
+
 
     @RequestMapping("uploadWorkAction")
     @ResponseBody

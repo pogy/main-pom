@@ -23,12 +23,23 @@ public interface PhotoWorksProcess {
      */
     List<PhotoCatVO> selPhotoCatVos();
 
+
+    PhotoWorksUpdateVO selPhotoSingel(Long worksId);
+
     /**
      * 上传作品
      *
      * @param bo
      */
     void uploadWorks(SynPhotoUploadBO bo);
+
+    /**
+     * 修改作品
+     *
+     * @param bo
+     */
+    void updateWorks(SynPhotoUploadBO bo);
+
 
     /**
      * 获取作品列表

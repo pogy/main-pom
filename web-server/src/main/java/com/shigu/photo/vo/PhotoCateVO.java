@@ -1,19 +1,19 @@
 package com.shigu.photo.vo;
 
 public class PhotoCateVO {
-    private Long id;
+    private String id;
     private String text;
 
-    public PhotoCateVO(Long id, String text) {
+    public PhotoCateVO(String id, String text) {
         this.id = id;
         this.text = text;
     }
 
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

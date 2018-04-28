@@ -68,6 +68,11 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
     }
 
     @Override
+    public PhotoWorksUpdateVO selPhotoSingel(Long worksId) {
+        return BeanMapper.map(shiguPhotoWorksMapper.selectByPrimaryKey(worksId),PhotoWorksUpdateVO.class);
+    }
+
+    @Override
     public void uploadWorks(SynPhotoUploadBO bo) {
         ShiguPhotoWorks shiguPhotoWorks = new ShiguPhotoWorks();
         shiguPhotoWorks.setAuthorId(bo.getUserId());
@@ -98,18 +103,23 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
     }
 
     @Override
+    public void updateWorks(SynPhotoUploadBO bo) {
+
+    }
+
+    @Override
     public ShiguPager<PhotoWorksVO> selPhotoWorksVos(PhotoWorksBO bo) {
         ShiguPager<PhotoWorksVO> pager = new ShiguPager<>();
         pager.setNumber(bo.getPage());
         int count=shiguPhotoWorksMapper.selectShiguPhotoWorksCount(bo.getAuthorId(),bo.getStyleId(),
-                bo.getUserType(),
+                bo.getUserTypes()!=null?StringUtils.join(bo.getUserTypes(),","):null,
                 bo.getTitle(),
-                bo.getSubUserType());
+                bo.getSex());
         if(count>0){
             pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(bo.getAuthorId(),bo.getStyleId(),
-                    bo.getUserType(),
+                    bo.getUserTypes()!=null?StringUtils.join(bo.getUserTypes(),","):null,
                     bo.getTitle(),
-                    bo.getSubUserType(),
+                    bo.getSex(),
                     bo.getSort().getSql(),
                     (bo.getPage() - 1) * bo.getPageSize(),
                     bo.getPageSize()));

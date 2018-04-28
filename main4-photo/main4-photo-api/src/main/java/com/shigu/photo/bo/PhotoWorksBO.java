@@ -28,11 +28,11 @@ public class PhotoWorksBO implements Serializable{
     /**
      * 作者类型
      */
-    private Integer userType;
+    private List<Integer> userTypes;
     /**
-     * 子作者类型
+     * 性别1:男,2:女
      */
-    private Integer subUserType;
+    private Integer sex;
     /**
      * 页码
      */
@@ -91,15 +91,15 @@ public class PhotoWorksBO implements Serializable{
     /**
      * 获取 作者类型
      */
-    public Integer getUserType() {
-        return this.userType;
+    public List<Integer> getUserTypes() {
+        return this.userTypes;
     }
 
     /**
      * 设置 作者类型
      */
-    public void setUserType(Integer userType) {
-        this.userType = userType;
+    public void setUserTypes(List<Integer> userTypes) {
+        this.userTypes = userTypes;
     }
 
     /**
@@ -145,20 +145,6 @@ public class PhotoWorksBO implements Serializable{
     }
 
     /**
-     * 获取 子作者类型
-     */
-    public Integer getSubUserType() {
-        return this.subUserType;
-    }
-
-    /**
-     * 设置 子作者类型
-     */
-    public void setSubUserType(Integer subUserType) {
-        this.subUserType = subUserType;
-    }
-
-    /**
      * 获取 标题
      */
     public String getTitle() {
@@ -170,5 +156,19 @@ public class PhotoWorksBO implements Serializable{
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * 获取 性别1:男,2:女
+     */
+    public Integer getSex() {
+        return this.sex;
+    }
+
+    /**
+     * 设置 性别1:男,2:女
+     */
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 }
