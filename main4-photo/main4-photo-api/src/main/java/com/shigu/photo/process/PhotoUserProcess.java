@@ -3,11 +3,16 @@ package com.shigu.photo.process;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.photo.bo.AuthApplySearchBO;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.vo.AuthApplyInfoVO;
+import com.shigu.photo.bo.PhotoWorksBO;
+import com.shigu.photo.vo.PhotoAuthorVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
+
+import java.util.List;
 
 /**
  * 路径: com.shigu.photo.process.PhotoUserProcess
@@ -100,6 +105,13 @@ public interface PhotoUserProcess {
      * @param bo
      */
     void editUserInfo(Long userId, PhotoUserInfoEditBO bo);
+
+    /**
+     * 获取作者列表
+     * @param bo
+     * @return
+     */
+    ShiguPager<PhotoAuthorVO> selAuthors(PhotoWorksBO bo);
 
     /**
      * 查询身份认证申请列表
