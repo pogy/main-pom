@@ -2,14 +2,14 @@ package com.shigu.main4.photo.process;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.photo.vo.PhotoAuthorVO;
-import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
-import com.shigu.main4.photo.vo.PhotoUserVO;
 import com.shigu.main4.photo.bo.AuthApplySearchBO;
 import com.shigu.main4.photo.bo.PhotoAuthApplyBO;
 import com.shigu.main4.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.vo.AuthApplyInfoVO;
+import com.shigu.main4.photo.vo.PhotoAuthorVO;
+import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
+import com.shigu.main4.photo.vo.PhotoUserVO;
 
 /**
  * 路径: PhotoUserProcess

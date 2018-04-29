@@ -1,10 +1,10 @@
 package com.shigu.main4.photo.model;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
-import com.shigu.main4.photo.vo.PhotoUserVO;
 import com.shigu.main4.photo.bo.PhotoAuthApplyBO;
 import com.shigu.main4.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
+import com.shigu.main4.photo.vo.PhotoUserVO;
 
 /**
  * 路径: PhotoUserModel

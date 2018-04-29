@@ -6,7 +6,6 @@ import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.photo.process.PhotoGoatProcess;
 import com.shigu.main4.photo.vo.*;
-import com.shigu.photo.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

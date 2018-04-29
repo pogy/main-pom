@@ -1,11 +1,10 @@
 package com.shigu.main4.photo.process;
 
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.photo.exceptions.PhotoException;
-import com.shigu.main4.photo.vo.*;
 import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.bo.SynPhotoUploadBO;
-import com.shigu.photo.vo.*;
+import com.shigu.main4.photo.exceptions.PhotoException;
+import com.shigu.main4.photo.vo.*;
 
 import java.util.List;
 
