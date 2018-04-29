@@ -35,7 +35,7 @@ public class PhotoUserValidBO implements Serializable {
     private String wxQrCode;
 
     //作者主要风格
-    private Long styles;
+    private String styles;
 
     public String getUsername() {
         return username;
@@ -85,11 +85,11 @@ public class PhotoUserValidBO implements Serializable {
         this.wxQrCode = wxQrCode;
     }
 
-    public Long getStyles() {
+    public String getStyles() {
         return styles;
     }
 
-    public void setStyles(Long styles) {
+    public void setStyles(String styles) {
         this.styles = styles;
     }
 }

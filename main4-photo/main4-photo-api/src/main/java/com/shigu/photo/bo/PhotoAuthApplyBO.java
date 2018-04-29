@@ -1,6 +1,7 @@
 package com.shigu.photo.bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 路径: com.shigu.photo.bo.PhotoAuthApplyBO
@@ -27,7 +28,7 @@ public class PhotoAuthApplyBO implements Serializable {
     private String codeImg;
 
     //主风格ID
-    private Long mainStyleId;
+    private List<Long> mainStyleIds;
 
     public String getUserName() {
         return userName;
@@ -61,12 +62,12 @@ public class PhotoAuthApplyBO implements Serializable {
         this.codeImg = codeImg;
     }
 
-    public Long getMainStyleId() {
-        return mainStyleId;
+    public List<Long> getMainStyleIds() {
+        return mainStyleIds;
     }
 
-    public void setMainStyleId(Long mainStyleId) {
-        this.mainStyleId = mainStyleId;
+    public void setMainStyleIds(List<Long> mainStyleIds) {
+        this.mainStyleIds = mainStyleIds;
     }
 
     public String getAuthPhone() {

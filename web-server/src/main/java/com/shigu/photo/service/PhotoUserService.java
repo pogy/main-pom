@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collector;
@@ -186,7 +187,18 @@ public class PhotoUserService {
             String showImg = photoImgProcess.moveImg(validBO.getUserCover());
             bo.setShowImg(showImg);
         }
-        bo.setMainStyleId(validBO.getStyles());
+        ArrayList<Long> styleList = new ArrayList<>();
+        String stylesStr = validBO.getStyles();
+        if (StringUtils.isNotBlank(stylesStr)) {
+            String[] styleIdStrArray = StringUtils.split(stylesStr, ',');
+            for (String styleIdStr : styleIdStrArray) {
+                try {
+                    styleList.add(Long.parseLong(styleIdStr));
+                } catch (Exception ignore) {
+                }
+            }
+        }
+        bo.setMainStyleIds(styleList);
         photoUserProcess.authApply(userId, bo);
         return JsonResponseUtil.success();
     }

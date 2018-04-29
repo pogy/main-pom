@@ -6,9 +6,12 @@ import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.photo.beans.PhotoAuthApply;
 import com.opentae.data.photo.beans.ShiguPhotoUser;
+import com.opentae.data.photo.beans.ShiguPhotoUserSelectedStyleRelation;
 import com.opentae.data.photo.beans.ShiguPhotoWorks;
+import com.opentae.data.photo.examples.ShiguPhotoUserSelectedStyleRelationExample;
 import com.opentae.data.photo.interfaces.PhotoAuthApplyMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoUserSelectedStyleRelationMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoWorksMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -24,6 +27,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.model.impl.PhotoUserModelImpl
@@ -50,6 +56,9 @@ public class PhotoUserModelImpl implements PhotoUserModel {
 
     @Autowired
     private ShiguPhotoWorksMapper shiguPhotoWorksMapper;
+
+    @Autowired
+    private ShiguPhotoUserSelectedStyleRelationMapper shiguPhotoUserSelectedStyleRelationMapper;
 
     //用户id,必传，非空
     private Long userId;
@@ -120,7 +129,8 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     @Override
     public void authApply(PhotoAuthApplyBO bo) throws JsonErrException {
         PhotoAuthApply apply = new PhotoAuthApply();
-        apply.setAuthId(getAuthId());
+        long authId = getAuthId();
+        apply.setAuthId(authId);
         //查找该用户是否有未处理完成的申请
         apply.setApplyStatus(0);
         if (photoAuthApplyMapper.selectOne(apply) != null) {
@@ -132,10 +142,25 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         apply.setAuthPhone(bo.getAuthPhone());
         apply.setShowImg(bo.getShowImg());
         apply.setCodeImg(bo.getCodeImg());
-        apply.setMainStyleId(bo.getMainStyleId());
         apply.setApplyTime(new Date());
         photoAuthApplyMapper.insertSelective(apply);
+
+        List<Long> styleIds = bo.getMainStyleIds();
+        //清除原有申请风格类型
+        clearOldStyleRelations(0);
+        //重新生成作者风格申请
+        if (styleIds != null && styleIds.size() > 0) {
+            List<ShiguPhotoUserSelectedStyleRelation> newStyleRelations = styleIds.stream().filter(Objects::nonNull).map(styleId -> {
+                ShiguPhotoUserSelectedStyleRelation relation = new ShiguPhotoUserSelectedStyleRelation();
+                relation.setAuthId(authId);
+                relation.setStyleId(styleId);
+                relation.setEffected(0);
+                return relation;
+            }).collect(Collectors.toList());
+            shiguPhotoUserSelectedStyleRelationMapper.insertListNoId(newStyleRelations);
+        }
     }
+
 
     @Override
     public void applyPass(String logMessage) {
@@ -157,12 +182,21 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         // 更新用户身份标记
         updatePhotoUserType(apply.getAuthType());
         // 更新用户身份认证申请状态
-        applyResolve(1,logMessage);
+        applyResolve(1, logMessage);
+
+        //清除原有生效风格并使新申请的作者风格生效
+        clearOldStyleRelations(1);
+        ShiguPhotoUserSelectedStyleRelationExample applyStyleExample = new ShiguPhotoUserSelectedStyleRelationExample();
+        applyStyleExample.createCriteria().andAuthIdEqualTo(photoUserId);
+        ShiguPhotoUserSelectedStyleRelation effectedRelation = new ShiguPhotoUserSelectedStyleRelation();
+        effectedRelation.setEffected(1);
+        shiguPhotoUserSelectedStyleRelationMapper.updateByExampleSelective(effectedRelation,applyStyleExample);
     }
 
     @Override
     public void applyRefuse(String logMessage) {
         applyResolve(2, logMessage);
+        clearOldStyleRelations(0);
     }
 
     /**
@@ -180,6 +214,19 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         apply.setModifyLog(logMessage);
         apply.setModifyTime(new Date());
         photoAuthApplyMapper.updateByPrimaryKeySelective(apply);
+    }
+
+    /**
+     * 清除原有设定作者风格
+     *
+     * @param status 0 未生效状态风格 1 已生效状态风格
+     */
+    protected void clearOldStyleRelations(int status) {
+        long authId = getAuthId();
+        ShiguPhotoUserSelectedStyleRelation styleRelation = new ShiguPhotoUserSelectedStyleRelation();
+        styleRelation.setAuthId(authId);
+        styleRelation.setEffected(status);
+        shiguPhotoUserSelectedStyleRelationMapper.delete(styleRelation);
     }
 
     /**
