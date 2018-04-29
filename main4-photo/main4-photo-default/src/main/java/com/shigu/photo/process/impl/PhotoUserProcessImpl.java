@@ -1,22 +1,11 @@
 package com.shigu.photo.process.impl;
 
-import com.opentae.data.photo.beans.PhotoAuthApply;
-import com.opentae.data.photo.beans.ShiguPhotoUser;
-import com.opentae.data.photo.beans.ShiguPhotoUser;
-import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
-import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
-import com.opentae.data.photo.beans.ShiguPhotoUserSelectedStyleRelation;
-import com.opentae.data.photo.examples.ShiguPhotoUserExample;
-import com.opentae.data.photo.examples.ShiguPhotoUserSelectedStyleRelationExample;
+import com.opentae.data.photo.beans.*;
 import com.opentae.data.photo.examples.PhotoAuthApplyExample;
 import com.opentae.data.photo.examples.ShiguPhotoUserExample;
-import com.opentae.data.photo.interfaces.PhotoAuthApplyMapper;
-import com.opentae.data.photo.interfaces.ShiguPhotoUserFollowMapper;
-import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
-import com.opentae.data.photo.interfaces.ShiguPhotoUserPraiseMapper;
-import com.opentae.data.photo.interfaces.ShiguPhotoUserSelectedStyleRelationMapper;
+import com.opentae.data.photo.examples.ShiguPhotoUserSelectedStyleRelationExample;
+import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -26,8 +15,8 @@ import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.process.PhotoUserProcess;
-import com.shigu.photo.vo.PhotoAuthorVO;
 import com.shigu.photo.vo.AuthApplyInfoVO;
+import com.shigu.photo.vo.PhotoAuthorVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 import org.apache.commons.lang3.StringUtils;
@@ -35,11 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -63,9 +51,6 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
 
     @Autowired
     private ShiguPhotoUserMapper shiguPhotoUserMapper;
-
-    @Autowired
-    ShiguPhotoUserMapper shiguPhotoUserMapper;
 
     @Autowired
     ShiguPhotoUserSelectedStyleRelationMapper shiguPhotoUserSelectedStyleRelationMapper;
