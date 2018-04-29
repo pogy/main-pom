@@ -1,11 +1,14 @@
 package com.shigu.photo.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.photo.bo.PhotoAuthorListBO;
 import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
 import com.shigu.photo.process.PhotoUserProcess;
+import com.shigu.photo.process.PhotoWorksProcess;
 import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
+import com.shigu.photo.vo.PhotoCateVO;
 import com.shigu.photo.vo.PhotoAreaVO;
 import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
 import com.shigu.photo.vo.PhotoUserVO;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.actions.PhotoUserAction
@@ -40,6 +45,8 @@ public class PhotoUserAction {
 
     @Autowired
     private PhotoWorksService photoWorksService;
+    @Autowired
+    PhotoWorksProcess photoWorksProcess;
 
     /**
      * 用户认证页面
@@ -99,6 +106,28 @@ public class PhotoUserAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         return photoUserService.submitUserValid(userId, bo);
+    }
+
+
+
+    public void photoModel(PhotoAuthorListBO bo,Model model){
+        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+        model.addAttribute("childRoleList",Arrays.asList(new PhotoCateVO("1", "男模"), new PhotoCateVO("2", "女模")));
+
+
+    }
+
+    public void photoOrg(PhotoAuthorListBO bo,Model model){
+        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+        model.addAttribute("childRoleList",Arrays.asList(new PhotoCateVO("1", "摄影师"), new PhotoCateVO("2", "摄影公司")));
+    }
+
+    public void photoPlace(PhotoAuthorListBO bo,Model model){
+        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
+
     }
 
     /**

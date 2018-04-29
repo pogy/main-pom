@@ -84,7 +84,7 @@ public class PhotoWorksSearchBO {
             setPage(1);
         }
         PhotoWorksBO photoWorksBO=new PhotoWorksBO();
-        photoWorksBO.setAuthorId(getId());
+        photoWorksBO.setUserId(getId());
         photoWorksBO.setCid(getPid());
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);

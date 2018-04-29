@@ -89,6 +89,9 @@ public interface PhotoUserProcess {
      */
     void applyRefuse(Long userId, String logMessage);
 
+
+
+
     /**
      * 编辑用户信息，为空的字段忽略
      * @param userId

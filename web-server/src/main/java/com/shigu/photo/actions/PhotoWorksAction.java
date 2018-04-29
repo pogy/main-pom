@@ -72,7 +72,7 @@ public class PhotoWorksAction {
     }
 
     //作者主页
-    @RequestMapping("userHomePage")
+    @RequestMapping(value={"userHomePage","userWorkList"})
     public String authorWokes(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);

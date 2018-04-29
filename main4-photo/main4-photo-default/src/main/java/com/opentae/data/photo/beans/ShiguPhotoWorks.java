@@ -2,8 +2,8 @@ package com.opentae.data.photo.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class ShiguPhotoWorks implements Serializable {
     /**

@@ -69,4 +69,7 @@ public interface PhotoWorksProcess {
      * 固化点击量
      */
     void fixClicks();
+
+
+
 }

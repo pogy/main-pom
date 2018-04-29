@@ -6,10 +6,15 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.photo.beans.ShiguPhotoGoatPlace;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class ShiguPhotoGoatPlaceExample extends SgExample<ShiguPhotoGoatPlaceExample.Criteria> {
     public static final Class<ShiguPhotoGoatPlace> beanClass = ShiguPhotoGoatPlace.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn pageGuide;
     public static EntityColumn worksId;
     public static EntityColumn goatId;
     public static EntityColumn place;
@@ -19,6 +24,7 @@ public class ShiguPhotoGoatPlaceExample extends SgExample<ShiguPhotoGoatPlaceExa
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        pageGuide = listMap.get("pageGuide");
         worksId = listMap.get("worksId");
         goatId = listMap.get("goatId");
         place = listMap.get("place");
@@ -43,6 +49,53 @@ public class ShiguPhotoGoatPlaceExample extends SgExample<ShiguPhotoGoatPlaceExa
             super(example);
         }
 
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideIsNull() {
+            return isNull(pageGuide);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideIsNotNull() {
+            return isNotNull(pageGuide);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideEqualTo(Integer value) {
+            return equalTo(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideNotEqualTo(Integer value) {
+            return notEqualTo(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideGreaterThan(Integer value) {
+            return greaterThan(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideLessThan(Integer value) {
+            return lessThan(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(pageGuide, value);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideIn(List<Integer> values) {
+            return in(pageGuide, values);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideNotIn(List<Integer> values) {
+            return notIn(pageGuide, values);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideBetween(Integer value1, Integer value2) {
+            return between(pageGuide, value1, value2);
+        }
+
+        public ShiguPhotoGoatPlaceExample.Criteria andPageGuideNotBetween(Integer value1, Integer value2) {
+            return notBetween(pageGuide, value1, value2);
+        }
         public ShiguPhotoGoatPlaceExample.Criteria andWorksIdIsNull() {
             return isNull(worksId);
         }

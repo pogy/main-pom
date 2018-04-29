@@ -96,18 +96,20 @@ public class PhotoWorksService {
         pager.setNumber(pager.getNumber());
         pager.calPages(pager.getTotalCount(),photoWorksBO.getPageSize());
         pager.setContent(photoWorksVOShiguPager.getContent().stream()
-            .map(photoWorksVO -> {
-                PhotoWorksSearchVO vo=new PhotoWorksSearchVO();
-                vo.setId(photoWorksVO.getAuthorId());
-                vo.setAddress(photoWorksVO.getAddress());
-                vo.setImgsrc(photoWorksVO.getPicUrl());
-                vo.setNick(photoWorksVO.getAuthorName());
-                vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(),DateUtil.patternA));
-                vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSex()));
-                vo.setWorksId(photoWorksVO.getWorksId());
-                return vo;
-            }).collect(Collectors.toList()));
+            .map(PhotoWorksService::toSearchVO).collect(Collectors.toList()));
         return pager;
+    }
+
+    public static PhotoWorksSearchVO toSearchVO(PhotoWorksVO photoWorksVO){
+        PhotoWorksSearchVO vo=new PhotoWorksSearchVO();
+        vo.setId(photoWorksVO.getAuthorId());
+        vo.setAddress(photoWorksVO.getAddress());
+        vo.setImgsrc(photoWorksVO.getPicUrl());
+        vo.setNick(photoWorksVO.getAuthorName());
+        vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(),DateUtil.patternA));
+        vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSex()));
+        vo.setWorksId(photoWorksVO.getWorksId());
+        return vo;
     }
 
     /**
