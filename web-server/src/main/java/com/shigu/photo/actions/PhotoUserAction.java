@@ -1,6 +1,7 @@
 package com.shigu.photo.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
 import com.shigu.photo.process.PhotoUserProcess;
@@ -8,7 +9,6 @@ import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
 import com.shigu.photo.vo.PhotoAreaVO;
 import com.shigu.photo.vo.PhotoAuthWorkUserInfoWebVO;
-import com.shigu.photo.vo.PhotoUserVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,6 +39,9 @@ public class PhotoUserAction {
 
     @Autowired
     private PhotoWorksService photoWorksService;
+
+    @Autowired
+    private PhotoUserProcess photoUserProcess;
 
     /**
      * 用户认证页面
@@ -98,7 +100,13 @@ public class PhotoUserAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        return photoUserService.submitUserValid(userId, bo);
+        JSONObject result = photoUserService.submitUserValid(userId, bo);
+
+        //若不需要审核，直接通过，进行以下步骤
+        photoUserProcess.applyPass(userId, "认证通过（暂时不需要审核，自动通过时）");
+        ps.getOtherPlatform().put(OtherPlatformEnum.PHOTO_AUTH.getValue(), photoUserProcess.userBaseInfo(userId).getUserType());
+        session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
+        return result;
     }
 
     /**
