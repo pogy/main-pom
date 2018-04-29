@@ -1,10 +1,8 @@
 package com.shigu.photo.bo;
 
-import com.shigu.photo.enums.WorksListSortEnum;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.shigu.main4.photo.bo.PhotoWorksBO;
+import com.shigu.main4.photo.enums.WorksListSortEnum;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class PhotoWorksSearchBO {

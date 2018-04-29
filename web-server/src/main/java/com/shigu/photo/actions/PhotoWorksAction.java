@@ -1,15 +1,15 @@
 package com.shigu.photo.actions;
 
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.photo.vo.PhotoWorksClickVO;
 import com.shigu.photo.bo.PhotoUploadBO;
 import com.shigu.photo.bo.PhotoWorkDetailViewBO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
-import com.shigu.photo.bo.SynPhotoUploadBO;
-import com.shigu.photo.exceptions.PhotoException;
-import com.shigu.photo.process.PhotoImgProcess;
-import com.shigu.photo.process.PhotoUserProcess;
-import com.shigu.photo.process.PhotoWorksProcess;
+import com.shigu.main4.photo.bo.SynPhotoUploadBO;
+import com.shigu.main4.photo.exceptions.PhotoException;
+import com.shigu.main4.photo.process.PhotoImgProcess;
+import com.shigu.main4.photo.process.PhotoUserProcess;
+import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.photo.service.PhotoUserService;
 import com.shigu.photo.service.PhotoWorksService;
 import com.shigu.photo.vo.*;
@@ -18,21 +18,16 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller

@@ -1,6 +1,6 @@
 package com.shigu.photo.actions;
 
-import com.shigu.photo.process.PhotoImgProcess;
+import com.shigu.main4.photo.process.PhotoImgProcess;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;

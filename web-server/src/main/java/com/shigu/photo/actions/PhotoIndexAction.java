@@ -1,18 +1,12 @@
 package com.shigu.photo.actions;
 
-import com.shigu.photo.process.PhotoGoatProcess;
-import com.shigu.photo.process.PhotoWorksProcess;
+import com.shigu.main4.photo.process.PhotoGoatProcess;
 import com.shigu.photo.service.PhotoWorksService;
-import com.shigu.photo.vo.GoatAuthorVO;
-import com.shigu.photo.vo.GoatBannerVO;
-import com.shigu.photo.vo.GoatMenuVO;
-import com.shigu.photo.vo.PhotoWorksSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller

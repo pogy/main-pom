@@ -1,5 +1,7 @@
 package com.shigu.photo.bo;
 
+import com.shigu.main4.photo.bo.PhotoWorksBO;
+
 import java.util.Arrays;
 import java.util.Collections;
 

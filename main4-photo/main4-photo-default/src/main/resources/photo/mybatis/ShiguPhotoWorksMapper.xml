@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.photo.interfaces.ShiguPhotoWorksMapper">
 
-    <select id="selectShiguPhotoWorks" resultType="com.shigu.photo.vo.PhotoWorksVO">
+    <select id="selectShiguPhotoWorks" resultType="com.shigu.main4.photo.vo.PhotoWorksVO">
         select
             t1.works_id worksId,
             t1.pic_url picUrl,

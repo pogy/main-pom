@@ -6,13 +6,14 @@ import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.photo.bo.PhotoAuthApplyBO;
-import com.shigu.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.main4.photo.bo.PhotoAuthApplyBO;
+import com.shigu.main4.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
-import com.shigu.photo.process.PhotoImgProcess;
-import com.shigu.photo.process.PhotoUserProcess;
+import com.shigu.main4.photo.process.PhotoImgProcess;
+import com.shigu.main4.photo.process.PhotoUserProcess;
 import com.shigu.photo.vo.*;
 import com.shigu.services.SendMsgService;
 import com.shigu.tools.JsonResponseUtil;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**

@@ -2,11 +2,14 @@ package com.shigu.photo.service;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.photo.bo.PhotoWorksBO;
+import com.shigu.main4.photo.bo.PhotoWorksBO;
+import com.shigu.main4.photo.vo.PhotoWorkDetailVO;
+import com.shigu.main4.photo.vo.PhotoWorksUpdateVO;
+import com.shigu.main4.photo.vo.PhotoWorksVO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
-import com.shigu.photo.exceptions.PhotoException;
-import com.shigu.photo.process.PhotoUserProcess;
-import com.shigu.photo.process.PhotoWorksProcess;
+import com.shigu.main4.photo.exceptions.PhotoException;
+import com.shigu.main4.photo.process.PhotoUserProcess;
+import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.photo.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ package com.opentae.data.photo.interfaces;
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.photo.beans.ShiguPhotoWorks;
-import com.shigu.photo.vo.PhotoWorksVO;
+import com.shigu.main4.photo.vo.PhotoWorksVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
