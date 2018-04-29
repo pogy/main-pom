@@ -7,6 +7,7 @@ import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.photo.beans.ShiguPhotoWorks;
 
 import java.util.*;
+
 public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Criteria> {
     public static final Class<ShiguPhotoWorks> beanClass = ShiguPhotoWorks.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);

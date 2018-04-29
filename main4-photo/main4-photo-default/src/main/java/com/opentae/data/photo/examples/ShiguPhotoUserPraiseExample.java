@@ -6,7 +6,11 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class ShiguPhotoUserPraiseExample extends SgExample<ShiguPhotoUserPraiseExample.Criteria> {
     public static final Class<ShiguPhotoUserPraise> beanClass = ShiguPhotoUserPraise.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);

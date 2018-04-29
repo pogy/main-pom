@@ -42,11 +42,6 @@ public class ShiguPhotoGoatNav implements Serializable {
      */
 	private Long targetId;
 
-    /**
-     * 
-     */
-	private Integer type;
-
 	public void setNavId(Long navId) {
 		this.navId = navId;
 	}
@@ -101,14 +96,6 @@ public class ShiguPhotoGoatNav implements Serializable {
 
 	public Long getTargetId() {
 		return this.targetId;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
-	public Integer getType() {
-		return this.type;
 	}
 
 }

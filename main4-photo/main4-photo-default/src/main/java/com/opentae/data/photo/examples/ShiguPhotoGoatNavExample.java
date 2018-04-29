@@ -6,7 +6,11 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.photo.beans.ShiguPhotoGoatNav;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class ShiguPhotoGoatNavExample extends SgExample<ShiguPhotoGoatNavExample.Criteria> {
     public static final Class<ShiguPhotoGoatNav> beanClass = ShiguPhotoGoatNav.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -16,7 +20,6 @@ public class ShiguPhotoGoatNavExample extends SgExample<ShiguPhotoGoatNavExample
     public static EntityColumn parentNavName;
     public static EntityColumn navName;
     public static EntityColumn hot;
-    public static EntityColumn type;
     public static EntityColumn parentNavId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -30,7 +33,6 @@ public class ShiguPhotoGoatNavExample extends SgExample<ShiguPhotoGoatNavExample
         parentNavName = listMap.get("parentNavName");
         navName = listMap.get("navName");
         hot = listMap.get("hot");
-        type = listMap.get("type");
         parentNavId = listMap.get("parentNavId");
         }
 
@@ -350,53 +352,6 @@ public class ShiguPhotoGoatNavExample extends SgExample<ShiguPhotoGoatNavExample
 
         public ShiguPhotoGoatNavExample.Criteria andHotNotBetween(Boolean value1, Boolean value2) {
             return notBetween(hot, value1, value2);
-        }
-        public ShiguPhotoGoatNavExample.Criteria andTypeIsNull() {
-            return isNull(type);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeIsNotNull() {
-            return isNotNull(type);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeEqualTo(Integer value) {
-            return equalTo(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeNotEqualTo(Integer value) {
-            return notEqualTo(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeGreaterThan(Integer value) {
-            return greaterThan(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeLessThan(Integer value) {
-            return lessThan(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(type, value);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeIn(List<Integer> values) {
-            return in(type, values);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeNotIn(List<Integer> values) {
-            return notIn(type, values);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeBetween(Integer value1, Integer value2) {
-            return between(type, value1, value2);
-        }
-
-        public ShiguPhotoGoatNavExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            return notBetween(type, value1, value2);
         }
         public ShiguPhotoGoatNavExample.Criteria andParentNavIdIsNull() {
             return isNull(parentNavId);

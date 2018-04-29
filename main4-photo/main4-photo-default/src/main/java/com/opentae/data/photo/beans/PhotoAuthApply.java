@@ -2,8 +2,8 @@ package com.opentae.data.photo.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class PhotoAuthApply implements Serializable {
     /**
@@ -16,7 +16,7 @@ public class PhotoAuthApply implements Serializable {
     /**
      * 申请用户id
      */
-	private Long authId;
+	private Long userId;
 
     /**
      * 用户名
@@ -76,12 +76,12 @@ public class PhotoAuthApply implements Serializable {
 		return this.authApplyId;
 	}
 
-	public void setAuthId(Long authId) {
-		this.authId = authId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Long getAuthId() {
-		return this.authId;
+	public Long getUserId() {
+		return this.userId;
 	}
 
 	public void setUserName(String userName) {

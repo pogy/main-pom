@@ -22,6 +22,11 @@ public class ShiguPhotoGoatPlace implements Serializable {
      */
 	private Integer place;
 
+    /**
+     * 
+     */
+	private Integer pageGuide;
+
 	public void setGoatId(Long goatId) {
 		this.goatId = goatId;
 	}
@@ -44,6 +49,14 @@ public class ShiguPhotoGoatPlace implements Serializable {
 
 	public Integer getPlace() {
 		return this.place;
+	}
+
+	public void setPageGuide(Integer pageGuide) {
+		this.pageGuide = pageGuide;
+	}
+
+	public Integer getPageGuide() {
+		return this.pageGuide;
 	}
 
 }
