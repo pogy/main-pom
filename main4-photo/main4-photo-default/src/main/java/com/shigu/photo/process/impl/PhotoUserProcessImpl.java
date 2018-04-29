@@ -1,19 +1,34 @@
 package com.shigu.photo.process.impl;
 
+import com.opentae.data.photo.beans.ShiguPhotoUser;
 import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
 import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
+import com.opentae.data.photo.beans.ShiguPhotoUserSelectedStyleRelation;
+import com.opentae.data.photo.examples.ShiguPhotoUserExample;
+import com.opentae.data.photo.examples.ShiguPhotoUserSelectedStyleRelationExample;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserFollowMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserPraiseMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoUserSelectedStyleRelationMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.photo.bo.PhotoWorksBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.process.PhotoUserProcess;
+import com.shigu.photo.vo.PhotoAuthorVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.process.impl.PhotoUserProcessImpl
@@ -30,6 +45,12 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
 
     @Autowired
     private ShiguPhotoUserPraiseMapper shiguPhotoUserPraiseMapper;
+
+    @Autowired
+    ShiguPhotoUserMapper shiguPhotoUserMapper;
+
+    @Autowired
+    ShiguPhotoUserSelectedStyleRelationMapper shiguPhotoUserSelectedStyleRelationMapper;
 
     /**
      * 基本用户信息
@@ -159,6 +180,54 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
     @Override
     public void editUserInfo(Long userId, PhotoUserInfoEditBO bo) {
         getUserModel(userId).editUserInfo(bo);
+    }
+
+    @Override
+    public ShiguPager<PhotoAuthorVO> selAuthors(PhotoWorksBO bo) {
+        ShiguPager<PhotoAuthorVO> pager=new ShiguPager<>();
+        pager.setContent(new ArrayList<>());
+        pager.setNumber(bo.getPage());
+
+        ShiguPhotoUserExample shiguPhotoUserExample=new ShiguPhotoUserExample();
+        ShiguPhotoUserExample.Criteria criteria = shiguPhotoUserExample.createCriteria();
+        if(bo.getStyleId()!=null){
+            ShiguPhotoUserSelectedStyleRelationExample shiguPhotoUserSelectedStyleRelationExample=new ShiguPhotoUserSelectedStyleRelationExample();
+            shiguPhotoUserSelectedStyleRelationExample.createCriteria().andEffectedEqualTo(1).andStyleIdEqualTo(bo.getStyleId());
+            List<ShiguPhotoUserSelectedStyleRelation> list=shiguPhotoUserSelectedStyleRelationMapper.selectByExample(shiguPhotoUserSelectedStyleRelationExample);
+            if(list.size()==0){
+                pager.calPages(0,bo.getPageSize());
+                return pager;
+            }
+            criteria.andAuthorIdIn(BeanMapper.getFieldList(list,"authId",Long.class));
+        }
+        if(bo.getSex()!=null){
+            criteria.andSexEqualTo(bo.getSex());
+        }
+        if(StringUtils.isNotBlank(bo.getTitle())){
+            criteria.andUserNameLike("%"+bo.getTitle()+"%");
+        }
+        if(bo.getUserTypes()!=null&&bo.getUserTypes().size()>0){
+            criteria.andUserTypeIn(bo.getUserTypes());
+        }
+        int count=shiguPhotoUserMapper.countByExample(shiguPhotoUserExample);
+        if(count>0){
+            shiguPhotoUserExample.setStartIndex((bo.getPage()-1)*bo.getPageSize());
+            shiguPhotoUserExample.setEndIndex(bo.getPageSize());
+            shiguPhotoUserExample.setOrderByClause("author_id desc");
+            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByExample(shiguPhotoUserExample);
+            List<PhotoAuthorVO> photoAuthorVOS = shiguPhotoUsers.stream().map(shiguPhotoUser -> {
+                PhotoAuthorVO vo = new PhotoAuthorVO();
+                vo.setAddress(shiguPhotoUser.getAddress());
+                vo.setHeadImgSrc(shiguPhotoUser.getHeadImg());
+                vo.setImgsrc(shiguPhotoUser.getShowImg());
+                vo.setUserId(shiguPhotoUser.getUserId());
+                vo.setUserNick(shiguPhotoUser.getUserName());
+                return vo;
+            }).collect(Collectors.toList());
+            pager.setContent(photoAuthorVOS);
+        }
+        pager.calPages(count,bo.getPageSize());
+        return pager;
     }
 
     /**
