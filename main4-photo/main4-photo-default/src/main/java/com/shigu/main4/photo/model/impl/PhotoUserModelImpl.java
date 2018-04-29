@@ -175,7 +175,6 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setUserName(apply.getUserName());
         shiguPhotoUser.setContactPhone(apply.getAuthPhone());
         shiguPhotoUser.setShowImg(apply.getShowImg());
-        shiguPhotoUser.setHeadImg(apply.getShowImg());
         shiguPhotoUser.setCodeImg(apply.getCodeImg());
         shiguPhotoUser.setMainStyleId(apply.getMainStyleId());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
