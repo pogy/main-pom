@@ -1,8 +1,11 @@
 package com.shigu.photo.process;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.photo.bo.AuthApplySearchBO;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
+import com.shigu.photo.vo.AuthApplyInfoVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
 
@@ -90,12 +93,21 @@ public interface PhotoUserProcess {
     void applyRefuse(Long userId, String logMessage);
 
 
-
-
     /**
      * 编辑用户信息，为空的字段忽略
+     *
      * @param userId
      * @param bo
      */
     void editUserInfo(Long userId, PhotoUserInfoEditBO bo);
+
+    /**
+     * 查询身份认证申请列表
+     *
+     * @param bo 查询条件
+     * @param pageNo 页码
+     * @param size 分页大小
+     * @return
+     */
+    ShiguPager<AuthApplyInfoVO> selApplyInfo(AuthApplySearchBO bo, int pageNo, int size);
 }

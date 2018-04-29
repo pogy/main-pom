@@ -1,19 +1,33 @@
 package com.shigu.photo.process.impl;
 
+import com.opentae.data.photo.beans.PhotoAuthApply;
+import com.opentae.data.photo.beans.ShiguPhotoUser;
 import com.opentae.data.photo.beans.ShiguPhotoUserFollow;
 import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
+import com.opentae.data.photo.examples.PhotoAuthApplyExample;
+import com.opentae.data.photo.examples.ShiguPhotoUserExample;
+import com.opentae.data.photo.interfaces.PhotoAuthApplyMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserFollowMapper;
+import com.opentae.data.photo.interfaces.ShiguPhotoUserMapper;
 import com.opentae.data.photo.interfaces.ShiguPhotoUserPraiseMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.photo.bo.AuthApplySearchBO;
 import com.shigu.photo.bo.PhotoAuthApplyBO;
 import com.shigu.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.photo.model.PhotoUserModel;
 import com.shigu.photo.process.PhotoUserProcess;
+import com.shigu.photo.vo.AuthApplyInfoVO;
 import com.shigu.photo.vo.PhotoUserStatisticVO;
 import com.shigu.photo.vo.PhotoUserVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 路径: com.shigu.photo.process.impl.PhotoUserProcessImpl
@@ -30,6 +44,12 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
 
     @Autowired
     private ShiguPhotoUserPraiseMapper shiguPhotoUserPraiseMapper;
+
+    @Autowired
+    private PhotoAuthApplyMapper photoAuthApplyMapper;
+
+    @Autowired
+    private ShiguPhotoUserMapper shiguPhotoUserMapper;
 
     /**
      * 基本用户信息
@@ -173,5 +193,97 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
             return null;
         }
         return SpringBeanFactory.getBean(PhotoUserModel.class, userId);
+    }
+
+    @Override
+    public ShiguPager<AuthApplyInfoVO> selApplyInfo(AuthApplySearchBO bo, int pageNo, int size) {
+        if (bo == null) {
+            return new ShiguPager<>();
+        }
+        if (pageNo < 1) {
+            pageNo = 1;
+        }
+        if (size < 1) {
+            size = 30;
+        }
+        ShiguPager<AuthApplyInfoVO> pager = new ShiguPager<>();
+        List<AuthApplyInfoVO> vos = new ArrayList<>();
+        pager.setContent(vos);
+        // 查询的授权状态
+        Integer status = bo.getStatus();
+        PhotoAuthApplyExample example = new PhotoAuthApplyExample();
+        PhotoAuthApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andApplyStatusEqualTo(status);
+        if (bo.getAuthType() != null) {
+            criteria.andAuthTypeEqualTo(bo.getAuthType());
+        }
+        if (StringUtils.isNotBlank(bo.getConcatPhone())) {
+            criteria.andAuthPhoneEqualTo(bo.getConcatPhone());
+        }
+        if (StringUtils.isNotBlank(bo.getPhotoUserName())) {
+            criteria.andUserNameLike("concat('%'," + bo.getPhotoUserName() + ",'%')");
+        }
+        int totalNum = photoAuthApplyMapper.countByExample(example);
+        pager.calPages(totalNum, size);
+        pager.setNumber(pageNo);
+        int startRow = (pageNo - 1) * size;
+        example.setStartIndex(startRow);
+        example.setEndIndex(size);
+        List<PhotoAuthApply> photoAuthApplies = photoAuthApplyMapper.selectByConditionList(example);
+        // 摄影基地帐号与主站用户对应,dubbo模块外部只知道主站帐号信息
+        Map<Long, Long> authIdUserIdMap = new HashMap<>();
+        List<Long> authIds = photoAuthApplies.stream().map(PhotoAuthApply::getAuthId).collect(Collectors.toList());
+        if (authIds.size() > 0) {
+            ShiguPhotoUserExample userExample = new ShiguPhotoUserExample();
+            userExample.createCriteria().andAuthorIdIn(authIds);
+            authIdUserIdMap = shiguPhotoUserMapper.selectByExample(userExample).stream().collect(Collectors.toMap(ShiguPhotoUser::getAuthorId, ShiguPhotoUser::getUserId));
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (PhotoAuthApply apply : photoAuthApplies) {
+            AuthApplyInfoVO vo = new AuthApplyInfoVO();
+            vo.setPhotoAuthApplyId(apply.getAuthApplyId());
+            vo.setUserId(authIdUserIdMap.get(apply.getAuthId()));
+            vo.setPhotoUserName(apply.getUserName());
+            vo.setUserType(parseAuthType(apply.getAuthType()));
+            vo.setConcatPhone(apply.getAuthPhone());
+            vo.setShowImgUrl(apply.getShowImg());
+            vo.setCodeImgUrl(apply.getCodeImg());
+            vo.setLogMessage(apply.getModifyLog());
+            vo.setApplyTime(sdf.format(apply.getApplyTime()));
+            if (apply.getModifyTime() != null) {
+                vo.setModifyTime(sdf.format(apply.getModifyTime()));
+            }
+            // 风格的先不管，有需要时再加
+            vos.add(vo);
+        }
+        return pager;
+    }
+
+    /**
+     * 解析身份类型
+     * @param authType
+     * @return
+     */
+    private static String parseAuthType(Integer authType) {
+        //用户申请不应该出现这种类型
+        String typeName = "一般用户";
+        if (authType == null) {
+            authType = 0;
+        }
+        switch (authType) {
+            case 1:
+                typeName = "模特";
+                break;
+            case 2:
+                typeName = "摄影师";
+                break;
+            case 3:
+                typeName = "摄影公司";
+                break;
+            case 4:
+                typeName = "场地";
+                break;
+        }
+        return typeName;
     }
 }
