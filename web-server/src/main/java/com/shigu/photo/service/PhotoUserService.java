@@ -123,9 +123,9 @@ public class PhotoUserService {
             //模特
             case 1:
                 authType = "模特";
-                if (sex == 1) {
+                if (sex == 0) {
                     authType = "男模";
-                } else if (sex == 2) {
+                } else if (sex == 1) {
                     authType = "女模";
                 }
                 break;
@@ -169,7 +169,7 @@ public class PhotoUserService {
         }
         if (StringUtils.isBlank(validBO.getMsgCode())
                 || StringUtils.isBlank(validBO.getWorkphone())
-                || !validBO.getMsgCode().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + validBO.getWorkphone()))) {
+                || !validBO.getMsgCode().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + validBO.getWorkphone(), String.class))) {
             return JsonResponseUtil.error("验证码错误");
         }
         if (validBO.getRoleStyle() == null || validBO.getRoleStyle() < 1) {
