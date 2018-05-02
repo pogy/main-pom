@@ -20,6 +20,7 @@ import java.util.List;
 public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
     List<PhotoWorksVO> selectShiguPhotoWorks(@Param("authorId")Long authorId,
                                              @Param("styleId")Long styleId,
+                                             @Param("cid")Long cid,
                                              @Param("userTypes")String userTypes,
                                              @Param("title")String title,
                                              @Param("sex")Integer sex,
@@ -29,6 +30,7 @@ public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
 
     Integer selectShiguPhotoWorksCount(@Param("authorId")Long authorId,
                                        @Param("styleId")Long styleId,
+                                       @Param("cid")Long cid,
                                        @Param("userTypes")String userTypes,
                                        @Param("title")String title,
                                        @Param("sex")Integer sex);

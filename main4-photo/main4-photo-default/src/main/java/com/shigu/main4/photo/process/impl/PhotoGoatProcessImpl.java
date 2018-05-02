@@ -44,7 +44,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         //准备风格数据
         List<Long> styleIds=subShiguPhotoGoatNavs.stream().filter(shiguPhotoGoatNav -> shiguPhotoGoatNav.getPageGuide()==1)
                 .map(ShiguPhotoGoatNav::getTargetId).collect(Collectors.toList());
-        Map<Long,String> styleMap=new HashMap<>();
+        Map<Long,Object> styleMap=new HashMap<>();
         if(styleIds.size()>0){
             ShiguPhotoStyleExample shiguPhotoStyleExample=new ShiguPhotoStyleExample();
             shiguPhotoStyleExample.createCriteria().andStyleIdIn(styleIds);
@@ -54,12 +54,12 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         //准备作者数据
         List<Long> authorIds=subShiguPhotoGoatNavs.stream().filter(shiguPhotoGoatNav -> shiguPhotoGoatNav.getPageGuide()==2)
                 .map(ShiguPhotoGoatNav::getTargetId).collect(Collectors.toList());
-        Map<Long,String> userMap=new HashMap<>();
+        Map<Long,Object> userMap=new HashMap<>();
         if(authorIds.size()>0){
             ShiguPhotoUserExample shiguPhotoUserExample=new ShiguPhotoUserExample();
             shiguPhotoUserExample.createCriteria().andAuthorIdIn(authorIds);
             List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByExample(shiguPhotoUserExample);
-            userMap=shiguPhotoUsers.stream().collect(Collectors.toMap(ShiguPhotoUser::getAuthorId,ShiguPhotoUser::getUserName));
+            userMap=shiguPhotoUsers.stream().collect(Collectors.toMap(ShiguPhotoUser::getAuthorId,o->o));
         }
 
 
@@ -93,7 +93,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         }
         return goatMenuVOS;
     }
-    private void toMenuVOS(List<GoatMenuVO> goatMenuVOS, List<ShiguPhotoGoatNav> list, Map<Long, String> finalMap, Map<Long,List<ShiguPhotoGoatNav>> subMap){
+    private void toMenuVOS(List<GoatMenuVO> goatMenuVOS, List<ShiguPhotoGoatNav> list, Map<Long, Object> finalMap, Map<Long,List<ShiguPhotoGoatNav>> subMap){
         list.forEach(shiguPhotoGoatNav -> {
             List<ShiguPhotoGoatNav> subs=subMap.get(shiguPhotoGoatNav.getNavId());
             if(subs==null||subs.size()==0){
@@ -107,9 +107,10 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
                 if(finalMap.get(sub.getTargetId())==null){
                     continue;
                 }
+                Object o=finalMap.get(sub.getTargetId());
                 GoatMenuSubVO goatMenuSubVO=new GoatMenuSubVO();
-                goatMenuSubVO.setId(sub.getTargetId());
-                goatMenuSubVO.setText(finalMap.get(sub.getTargetId()));
+                goatMenuSubVO.setId(shiguPhotoGoatNav.getPageGuide()==1?sub.getTargetId():((ShiguPhotoUser)o).getUserId());
+                goatMenuSubVO.setText(shiguPhotoGoatNav.getPageGuide()==1?((String)o):((ShiguPhotoUser)o).getUserName());
                 vo.getItems().add(goatMenuSubVO);
             }
             goatMenuVOS.add(vo);

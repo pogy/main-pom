@@ -20,8 +20,11 @@
             </if>
         where t1.author_id=t2.author_id
             and t1.remove_is =0
-            <if test="authorId">
+            <if test="authorId != null">
                 and t1.author_id=${authorId}
+            </if>
+            <if test="cid != null">
+                and t1.works_cid=${cid}
             </if>
             <if test="userTypes != null">
                 and t2.user_type in(${userTypes})
@@ -52,8 +55,11 @@
             </if>
         where t1.author_id=t2.author_id
             and t1.remove_is =0
-            <if test="authorId">
+            <if test="authorId != null">
                 and t1.author_id=${authorId}
+            </if>
+            <if test="cid != null">
+                and t1.works_cid=${cid}
             </if>
             <if test="userTypes != null">
                 and t2.user_type in(${userTypes})

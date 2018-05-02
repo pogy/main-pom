@@ -15,7 +15,7 @@ public class PhotoWorksSearchBO {
     /**
      * 风格ID
      */
-    private Long styleId;
+    private Long sid;
     /**
      * 类目
      */
@@ -49,19 +49,6 @@ public class PhotoWorksSearchBO {
         this.sort = sort;
     }
 
-    /**
-     * 获取 风格ID
-     */
-    public Long getStyleId() {
-        return this.styleId;
-    }
-
-    /**
-     * 设置 风格ID
-     */
-    public void setStyleId(Long styleId) {
-        this.styleId = styleId;
-    }
 
 
     /**
@@ -88,7 +75,7 @@ public class PhotoWorksSearchBO {
         photoWorksBO.setCid(getPid());
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);
-        photoWorksBO.setStyleId(getStyleId());
+        photoWorksBO.setStyleId(getSid());
         photoWorksBO.setUserTypes(getRid()!=null&&getRid()==2? Arrays.asList(2,3): getRid()!=null?Collections.singletonList(getRid()):null);
         photoWorksBO.setTitle(getKeyword());
         if(getSort()!=null){
@@ -148,5 +135,19 @@ public class PhotoWorksSearchBO {
      */
     public void setRid(Integer rid) {
         this.rid = rid;
+    }
+
+    /**
+     * 获取 风格ID
+     */
+    public Long getSid() {
+        return this.sid;
+    }
+
+    /**
+     * 设置 风格ID
+     */
+    public void setSid(Long sid) {
+        this.sid = sid;
     }
 }
