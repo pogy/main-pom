@@ -18,9 +18,9 @@ public class PhotoWorksVO implements Serializable{
      */
     private String title;
     /**
-     * 作者ID
+     * 作者外部ID
      */
-    private Long authorId;
+    private Long userId;
     /**
      * 作者
      */
@@ -80,19 +80,6 @@ public class PhotoWorksVO implements Serializable{
         this.title = title;
     }
 
-    /**
-     * 获取 作者ID
-     */
-    public Long getAuthorId() {
-        return this.authorId;
-    }
-
-    /**
-     * 设置 作者ID
-     */
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
 
     /**
      * 获取 作者
@@ -193,5 +180,19 @@ public class PhotoWorksVO implements Serializable{
 
     public void setSex(Integer sex) {
         this.sex = sex;
+    }
+
+    /**
+     * 获取 作者外部ID
+     */
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    /**
+     * 设置 作者外部ID
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

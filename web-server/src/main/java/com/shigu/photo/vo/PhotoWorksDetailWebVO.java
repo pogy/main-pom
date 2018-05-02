@@ -45,6 +45,8 @@ public class PhotoWorksDetailWebVO implements Serializable {
     //作者id
     private Long authorId;
 
+    private Long userId;
+
     public String getTitle() {
         return title;
     }
@@ -131,5 +133,13 @@ public class PhotoWorksDetailWebVO implements Serializable {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

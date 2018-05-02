@@ -44,6 +44,24 @@ public class PhotoWorksService {
 
 
     /**
+     * 作品详情信息，包含已登陆用户相关状态
+     *
+     * @param worksId
+     * @param userId
+     * @return
+     */
+    public PhotoWorksDetailWebVO photoWorksDetailForUser(Long worksId, Long userId) {
+        PhotoWorksDetailWebVO vo = photoWorksDetail(worksId);
+        if (vo == null) {
+            return null;
+        }
+        if (userId != null) {
+            vo.setUserThumbUpIs(photoUserProcess.isPraised(userId, worksId));
+        }
+        return vo;
+    }
+
+    /**
      * 作品详情信息
      *
      * @param worksId
@@ -80,24 +98,6 @@ public class PhotoWorksService {
         return worksDetail;
     }
 
-    /**
-     * 作品详情信息，包含已登陆用户相关状态
-     *
-     * @param worksId
-     * @param userId
-     * @return
-     */
-    public PhotoWorksDetailWebVO photoWorksDetailForUser(Long worksId, Long userId) {
-        PhotoWorksDetailWebVO vo = photoWorksDetail(worksId);
-        if (vo == null) {
-            return null;
-        }
-        if (userId != null) {
-            vo.setUserThumbUpIs(photoUserProcess.isPraised(userId, worksId));
-        }
-        return vo;
-    }
-
 
     public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query) throws PhotoException {
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
@@ -112,7 +112,7 @@ public class PhotoWorksService {
 
     public static PhotoWorksSearchVO toSearchVO(PhotoWorksVO photoWorksVO) {
         PhotoWorksSearchVO vo = new PhotoWorksSearchVO();
-        vo.setId(photoWorksVO.getAuthorId());
+        vo.setId(photoWorksVO.getUserId());
         vo.setAddress(photoWorksVO.getAddress());
         vo.setImgsrc(photoWorksVO.getPicUrl());
         vo.setNick(photoWorksVO.getAuthorName());

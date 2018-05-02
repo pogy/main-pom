@@ -227,7 +227,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
             ShiguPhotoUser u=userMap.get(w.getAuthorId());
             vo.setAddress(u.getAddress());
             vo.setWorksId(w.getWorksId());
-            vo.setAuthorId(u.getAuthorId());
+            vo.setUserId(u.getUserId());
             vo.setAuthorName(u.getUserName());
             vo.setContent(w.getContent());
             vo.setCreateTime(w.getCreateTime());

@@ -7,7 +7,7 @@
             t1.works_id worksId,
             t1.pic_url picUrl,
             t1.title title,
-            t2.user_id authorId,
+            t2.user_id userId,
             t2.user_name authorName,
             t2.user_type userType,
             t2.sex sex,
