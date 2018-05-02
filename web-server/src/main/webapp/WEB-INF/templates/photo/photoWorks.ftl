@@ -72,11 +72,12 @@
     <div class="filterItem">
         <label>排序：</label>
         <ul>
-            <#list sortList as sort>
-                <li <#if query.sort?? && query.sort == sort.type>class="selected"</#if>>
-                    <a href="?webSite=${query.webSite!}&sort=${sort.type!}<#if query.rid??>&rid=${query.rid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if>">${sort.text!}</a>
+                <li <#if query.sort?? && query.sort == 'def'>class="selected"</#if>>
+                    <a href="?webSite=${query.webSite!}&sort=def<#if query.rid??>&rid=${query.rid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if>">默认排序</a>
                 </li>
-            </#list>
+                <li <#if query.sort?? && query.sort == 'new'>class="selected"</#if>>
+                    <a href="?webSite=${query.webSite!}&sort=new<#if query.rid??>&rid=${query.rid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if>">最新发布</a>
+                </li>
         </ul>
     </div>
 </div>
