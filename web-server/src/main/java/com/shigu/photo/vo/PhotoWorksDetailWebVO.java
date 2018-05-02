@@ -36,6 +36,9 @@ public class PhotoWorksDetailWebVO implements Serializable {
     //图片列表
     private List<String> imgList;
 
+    //是否允许右键保存 0允许，1禁止
+    private Integer saveType;
+
     //用户是否已点赞 true是 false否
     private Boolean userThumbUpIs;
 
@@ -104,6 +107,14 @@ public class PhotoWorksDetailWebVO implements Serializable {
 
     public void setImgList(List<String> imgList) {
         this.imgList = imgList;
+    }
+
+    public Integer getSaveType() {
+        return saveType;
+    }
+
+    public void setSaveType(Integer saveType) {
+        this.saveType = saveType;
     }
 
     public Boolean getUserThumbUpIs() {

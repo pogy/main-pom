@@ -20,6 +20,9 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
     // 图片集
     private String imgs;
 
+    // 是否禁止保存图片 false可保存,true禁止保存
+    private Boolean forbidSave;
+
     public String getPriceStr() {
         return priceStr;
     }
@@ -44,4 +47,11 @@ public class PhotoWorkDetailVO extends PhotoWorksVO implements Serializable {
         this.imgs = imgs;
     }
 
+    public Boolean getForbidSave() {
+        return forbidSave;
+    }
+
+    public void setForbidSave(Boolean forbidSave) {
+        this.forbidSave = forbidSave;
+    }
 }

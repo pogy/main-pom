@@ -43,7 +43,6 @@ public class PhotoWorksService {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-
     /**
      * 作品详情信息
      *
@@ -68,6 +67,10 @@ public class PhotoWorksService {
         worksDetail.setPublishedTime(sdf.format(photoWorkDetailVO.getCreateTime()));
         worksDetail.setThumbUpCount(photoWorkDetailVO.getPraiseNum());
         worksDetail.setAuthorId(photoWorkDetailVO.getAuthorId());
+        worksDetail.setSaveType(0);
+        if (photoWorkDetailVO.getForbidSave() != null && photoWorkDetailVO.getForbidSave()) {
+            worksDetail.setSaveType(1);
+        }
         String imgsStr = photoWorkDetailVO.getImgs();
         if (StringUtils.isNotBlank(imgsStr)) {
             List<String> imgList = Arrays.asList(imgsStr.split(","));
@@ -79,6 +82,7 @@ public class PhotoWorksService {
 
     /**
      * 作品详情信息，包含已登陆用户相关状态
+     *
      * @param worksId
      * @param userId
      * @return
@@ -98,28 +102,29 @@ public class PhotoWorksService {
     public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query) throws PhotoException {
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
         ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(photoWorksBO);
-        ShiguPager<PhotoWorksSearchVO> pager=new ShiguPager<>();
+        ShiguPager<PhotoWorksSearchVO> pager = new ShiguPager<>();
         pager.setNumber(pager.getNumber());
-        pager.calPages(pager.getTotalCount(),photoWorksBO.getPageSize());
+        pager.calPages(pager.getTotalCount(), photoWorksBO.getPageSize());
         pager.setContent(photoWorksVOShiguPager.getContent().stream()
-            .map(PhotoWorksService::toSearchVO).collect(Collectors.toList()));
+                .map(PhotoWorksService::toSearchVO).collect(Collectors.toList()));
         return pager;
     }
 
-    public static PhotoWorksSearchVO toSearchVO(PhotoWorksVO photoWorksVO){
-        PhotoWorksSearchVO vo=new PhotoWorksSearchVO();
+    public static PhotoWorksSearchVO toSearchVO(PhotoWorksVO photoWorksVO) {
+        PhotoWorksSearchVO vo = new PhotoWorksSearchVO();
         vo.setId(photoWorksVO.getAuthorId());
         vo.setAddress(photoWorksVO.getAddress());
         vo.setImgsrc(photoWorksVO.getPicUrl());
         vo.setNick(photoWorksVO.getAuthorName());
-        vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(),DateUtil.patternA));
-        vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(),photoWorksVO.getSex()));
+        vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(), DateUtil.patternA));
+        vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(), photoWorksVO.getSex()));
         vo.setWorksId(photoWorksVO.getWorksId());
         return vo;
     }
 
     /**
      * 获取风格列表，传入userId时，会额外取出该用户自定义风格
+     *
      * @param userId
      * @return
      */
@@ -134,21 +139,22 @@ public class PhotoWorksService {
 
     /**
      * 获取编辑坐票用的信息
+     *
      * @param worksId
      * @return
      */
-    public PhotoWorksChangeVO selUpdateBean(Long worksId){
+    public PhotoWorksChangeVO selUpdateBean(Long worksId) {
         PhotoWorksUpdateVO photoWorksUpdateVO = photoWorksProcess.selPhotoSingel(worksId);
-        if(photoWorksUpdateVO==null){
+        if (photoWorksUpdateVO == null) {
             return null;
         }
-        PhotoWorksChangeVO vo=new PhotoWorksChangeVO();
+        PhotoWorksChangeVO vo = new PhotoWorksChangeVO();
         vo.setCate(photoWorksUpdateVO.getWorksCid());
         vo.setCover(photoWorksUpdateVO.getPicUrl());
         vo.setDesc(photoWorksUpdateVO.getContent());
         vo.setImgs(Arrays.asList(photoWorksUpdateVO.getImages().split(",")));
-        vo.setPrice(photoWorksUpdateVO.getHavePrice()?0:1);
-        vo.setSaveType(photoWorksUpdateVO.getForbidSave()?1:0);
+        vo.setPrice(photoWorksUpdateVO.getHavePrice() ? 0 : 1);
+        vo.setSaveType(photoWorksUpdateVO.getForbidSave() ? 1 : 0);
         vo.setTitle(photoWorksUpdateVO.getTitle());
         vo.setWorksId(photoWorksUpdateVO.getWorksId());
         return vo;
