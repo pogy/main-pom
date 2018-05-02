@@ -16,7 +16,7 @@
             </p>
             <#if $pageid != "userHomePage" && $pageid != "userProfileEdit">
             <div class="userInfoEditBtnBox">
-                <a href="member/userProfileEdit.htm">编辑</a>
+                <a href="/photo/member/userProfileEdit.htm">编辑</a>
             </div>
             </#if>
         </div>

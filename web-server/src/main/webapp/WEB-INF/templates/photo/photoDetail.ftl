@@ -66,7 +66,7 @@
             <span class="fcF40 worksCount"><i></i>${userInfo.worksCount!}个作品</span>
         </p>
         <p class="btnBox">
-            <a href="userHomePage.htm?id=${userInfo.userId!}" target="_blank">全部作品</a>
+            <a href="/photo/userHomePage.htm?id=${userInfo.userId!}" target="_blank">全部作品</a>
         </p>
     </div>
     <div class="wxQrCodeBox">

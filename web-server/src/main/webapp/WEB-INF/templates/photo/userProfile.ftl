@@ -28,7 +28,7 @@
     <div class="userBaseInfo clearfix">
         <div class="userInfoTit clearfix">
             <h2 class="fc3 fl">基本资料</h2>
-            <a href="userProfileEdit.htm" class="fr">编 辑</a>
+            <a href="/photo/member/userProfileEdit.htm" class="fr">编 辑</a>
         </div>
         <div class="userInfoList fl validateForm">
             <div class="validateItem clearfix">

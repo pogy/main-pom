@@ -28,21 +28,21 @@
         <div class="menuItems <#if menu.menuId == 'userHomePage'>lastone</#if>">
             <h3>${menu.menuText!}
             <#if menu.menuId == 'userHomePage'>
-                <a href="photoPlace.htm" target="_blank" class="fr">更多&gt;</a>
+                <a href="/photo/photoPlace.htm" target="_blank" class="fr">更多&gt;</a>
             <#else>
-                <a href="${menu.menuId!}.htm" target="_blank" class="fr">更多&gt;</a>
+                <a href="/photo/${menu.menuId!}.htm" target="_blank" class="fr">更多&gt;</a>
             </#if>
             </h3>
             <div class="menuItem">
                 <#list menu.items as item>
                     <#if menu.menuId == 'photoWorks'>
-                        <a href="${menu.menuId!}.htm?sid=${item.id!}" target="_blank">${item.text!}</a>
+                        <a href="/photo/${menu.menuId!}.htm?sid=${item.id!}" target="_blank">${item.text!}</a>
                     <#elseif menu.menuId == 'photoOrg'>
-                        <a href="${menu.menuId!}.htm?coid=${item.id!}" target="_blank">${item.text!}</a>
+                        <a href="/photo/${menu.menuId!}.htm?coid=${item.id!}" target="_blank">${item.text!}</a>
                     <#elseif menu.menuId == 'photoModel'>
-                        <a href="${menu.menuId!}.htm?crid=${item.id!}" target="_blank">${item.text!}</a>
+                        <a href="/photo/${menu.menuId!}.htm?crid=${item.id!}" target="_blank">${item.text!}</a>
                     <#else>
-                        <a href="${menu.menuId!}.htm?id=${item.id!}" target="_blank">${item.text!}</a>
+                        <a href="/photo/${menu.menuId!}.htm?id=${item.id!}" target="_blank">${item.text!}</a>
                     </#if>
                 </#list>
             </div>

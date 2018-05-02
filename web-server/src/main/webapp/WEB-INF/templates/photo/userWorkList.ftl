@@ -26,7 +26,7 @@
     <#if (userWorksList?size) gt 0>
     <div class="worksBox clearfix">
         <div class="coverItem smallMar addWorksBtn">
-            <a href="auth/uploadWork.htm">
+            <a href="/photo/auth/uploadWork.htm">
                 <i></i>
                 点击上传作品
             </a>
@@ -43,7 +43,7 @@
         <div class="noWork yahei">
             <div class="noWorkIcon"></div>
             <p>您还没有上传过任何作品</p>
-            <a href="auth/uploadWork.htm" class="uploadBtn">立即上传作品</a>
+            <a href="/photo/auth/uploadWork.htm" class="uploadBtn">立即上传作品</a>
         </div>
     </#if>
     </div>
