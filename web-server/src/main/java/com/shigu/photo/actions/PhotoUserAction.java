@@ -65,7 +65,7 @@ public class PhotoUserAction {
     public String userValidate(HttpSession session, Model model) {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
         model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
-        model.addAttribute("styleList", photoWorksService.selStyleListWithUser(userId));
+        model.addAttribute("styleList", photoWorksService.selStyleListWithUser(null));
         return "photo/userValidate";
     }
 
