@@ -175,44 +175,14 @@
         <div class="userRelatePics pa fr">
             <ul>
                 <li>
-<#list [{}] as $it>
-<div class="imgUploadBox  showPic ">
-    <input type="hidden" value="<#if $it.img??>${$it.img!}</#if>" name="userCover" class="picUrl">
-    <b class="addPicBtn" id="uploadUserCover">
-        <i></i>
-        添加图片
-    </b>
-    <div class="imgBox">
-        <b class="changeWorks" id="changeUserCover"></b>
-        <b class="setCover">设为封面</b>
-        <span class="cover">封面</span>
-        <img src="<#if $it.img??>${$it.img!}</#if>">
-    </div>
-    <div class="removeBox">
-        <b class="removePic"><i></i></b>
-    </div>
-</div>
+<#list [{"isShowPic":true,"img":userInfo.coverImgSrc,"uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover"}] as $it>
+<#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     <p>展示封面</p>
                 </li>
                 <li class="wxQrcode">
-<#list [{}] as $it>
-<div class="imgUploadBox  showPic ">
-    <input type="hidden" value="<#if $it.img??>${$it.img!}</#if>" name="wxQrCode" class="picUrl">
-    <b class="addPicBtn" id="uploadWxQrCode">
-        <i></i>
-        添加图片
-    </b>
-    <div class="imgBox">
-        <b class="changeWorks" id="changeWxQrCode"></b>
-        <b class="setCover">设为封面</b>
-        <span class="cover">封面</span>
-        <img src="<#if $it.img??>${$it.img!}</#if>">
-    </div>
-    <div class="removeBox">
-        <b class="removePic"><i></i></b>
-    </div>
-</div>
+<#list [{"isShowPic":true,"img":userInfo.wxQrCode,"uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode"}] as $it>
+<#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     <p>微信二维码</p>
                 </li>

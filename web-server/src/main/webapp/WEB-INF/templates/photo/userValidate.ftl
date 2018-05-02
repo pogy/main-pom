@@ -164,13 +164,13 @@
             <div class="uploadPics">
                 <ul class="clearfix">
                     <li>
-<#list [{}] as $it>
+<#list [{"uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover","isAdd":true}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                         <span class="textTitle">展示封面</span>
                     </li>
                     <li>
-<#list [{}] as $it>
+<#list [{"uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode","isAdd":true}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                         <span class="textTitle">微信二维码</span>
