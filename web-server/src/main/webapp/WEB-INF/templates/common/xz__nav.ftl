@@ -8,7 +8,6 @@
 >
     <a href="http://hz.571xz.com/market.htm" target="_blank">
         逛市场
-        <i class="hot"></i>
     </a>
 </li>
 <li
@@ -31,7 +30,6 @@
 >
     <a href="/shopRanking.htm" target="_blank">
         排行榜
-        <i class="hot"></i>
     </a>
 </li>
 <li
@@ -53,6 +51,13 @@
 >
     <a href="http://zixun.571xz.com/index" target="_blank">
         资讯
+    </a>
+</li>
+<li
+>
+    <a href="http://www.571xz.com/photo/photoIndex.htm" target="_blank">
+        摄影基地
+        <i class="new"></i>
     </a>
 </li>
     <#elseif webSite == 'cs'>
@@ -105,6 +110,34 @@
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
     <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
+    <#elseif webSite == 'zl'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
         今日新品
     </a>
 </li>

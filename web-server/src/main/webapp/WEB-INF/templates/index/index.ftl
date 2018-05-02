@@ -208,11 +208,73 @@ if(pageType == 'W'){
         资讯
     </a>
 </li>
+<li
+>
+    <a href="http://www.571xz.com/photo/photoIndex.htm" target="_blank">
+        摄影基地
+        <i class="new"></i>
+    </a>
+</li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
         <#elseif webSite == 'qz'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
+        <#elseif webSite == 'zl'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
         </#if>
     </ul>
 </div>
@@ -472,7 +534,7 @@ if(pageType == 'W'){
         <div class="p2 clearfix" id="goBackstageButtonBox">
             <a class="first" href="/login.htm">登录</a>
             <a href="/regedit.htm">注册</a>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
     <div class="userCount">
@@ -692,24 +754,24 @@ if(pageType == 'W'){
             <li>
                 <h5>四季星座网</h5>
                 <p><a href="http://www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
             </li>
             <li>
                 <h5>代理商</h5>
-                <p><a href="http://zixun.571xz.com/article?id=45" target="_blank">一键上传</a></p>
-                <p><a href="http://daifa.571xz.com" target="_blank">一件代发</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=99" target="_blank">一键上传</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=106" target="_blank">一件代发</a></p>
             </li>
             <li>
                 <h5>供应商</h5>
-                <p><a href="/ruzhu.htm" target="_blank">商家入驻</a></p>
-                <p><a href="/seller/memberghs.htm" target="_blank">档口后台</a></p>
-                <p><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=653157838&amp;site=qq&amp;menu=yes" target="_blank">广告投放</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queIndex.htm?cid=41" target="_blank">发布商品</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=90" target="_blank">账户安全</a></p>
+                <p><a href="http://www.571xz.com/seller/indexgglist.htm" target="_blank">广告投放</a></p>
             </li>
             <li>
                 <h5>帮助中心</h5>
-                <p><a href="http://zixun.571xz.com/article?id=14" target="_blank">新手入门</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=71" target="_blank">成为代理</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=72" target="_blank">成为供货商</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=80" target="_blank">新手入门</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=97" target="_blank">成为代理</a></p>
+                <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=81" target="_blank">成为供货商</a></p>
             </li>
         </ul>
     </div>
