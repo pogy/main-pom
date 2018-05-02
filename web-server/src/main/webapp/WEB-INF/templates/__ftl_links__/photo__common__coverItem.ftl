@@ -9,7 +9,7 @@
     </div>
     <#if $pageid == 'userWorkList'>
     <div class="opeBtnBox pa">
-        <a href="uploadWork.htm?id=${item.worksId!}" target="_blank"><i class="icon-s-edit fs16 fc9"></i></a>
+        <a href="auth/uploadWork.htm?id=${item.worksId!}" target="_blank"><i class="icon-s-edit fs16 fc9"></i></a>
         <b class="removeWorks" data-id="${item.worksId!}"><i class="icon-delete fs16 fc9"></i></b>
     </div>
     </#if>
