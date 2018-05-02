@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GoatMenuVO implements Serializable{
-    private Long menuId;
+    private String menuId;
     private String menuText;
     private List<GoatMenuSubVO> items;
 
-    public Long getMenuId() {
+    public String getMenuId() {
         return this.menuId;
     }
 
-    public void setMenuId(Long menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 

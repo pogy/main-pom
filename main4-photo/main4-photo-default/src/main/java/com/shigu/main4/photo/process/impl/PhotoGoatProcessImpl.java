@@ -71,7 +71,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         }
         //2.手动添加摄影机构
         GoatMenuVO vo=new GoatMenuVO();
-        vo.setMenuId(0L);
+        vo.setMenuId("photoOrg");
         vo.setMenuText("摄影机构");
         vo.setItems(new ArrayList<>());
         vo.getItems().add(new GoatMenuSubVO(2L,"摄影师"));
@@ -79,7 +79,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         goatMenuVOS.add(vo);
         //3.手动添加模特
         GoatMenuVO vo1=new GoatMenuVO();
-        vo1.setMenuId(0L);
+        vo1.setMenuId("photoModel");
         vo1.setMenuText("网红模特");
         vo1.setItems(new ArrayList<>());
         vo1.getItems().add(new GoatMenuSubVO(1L,"男模"));
@@ -100,7 +100,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
                 return;
             }
             GoatMenuVO vo=new GoatMenuVO();
-            vo.setMenuId(shiguPhotoGoatNav.getNavId());
+            vo.setMenuId(shiguPhotoGoatNav.getPageGuide()==1?"photoWorks0":"userHomePage");
             vo.setMenuText(shiguPhotoGoatNav.getNavName());
             vo.setItems(new ArrayList<>());
             for(ShiguPhotoGoatNav sub:subs){

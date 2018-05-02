@@ -141,6 +141,11 @@
             <artifactId>main4-tools</artifactId>
             <version>${main4-tools.version}</version>
         </dependency>
+        <dependency>
+            <groupId>opentae-beans</groupId>
+            <artifactId>common</artifactId>
+            <version>${opentae-common.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
