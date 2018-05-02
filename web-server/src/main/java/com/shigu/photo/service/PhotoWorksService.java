@@ -84,7 +84,8 @@ public class PhotoWorksService {
         worksDetail.setStyle(photoWorkDetailVO.getStylesStr());
         worksDetail.setPublishedTime(sdf.format(photoWorkDetailVO.getCreateTime()));
         worksDetail.setThumbUpCount(photoWorkDetailVO.getPraiseNum());
-        worksDetail.setAuthorId(photoWorkDetailVO.getAuthorId());
+        //作者userId  外层一律使用userId,隐藏实际authId
+        worksDetail.setAuthorId(photoWorkDetailVO.getUserId());
         worksDetail.setSaveType(0);
         if (photoWorkDetailVO.getForbidSave() != null && photoWorkDetailVO.getForbidSave()) {
             worksDetail.setSaveType(1);

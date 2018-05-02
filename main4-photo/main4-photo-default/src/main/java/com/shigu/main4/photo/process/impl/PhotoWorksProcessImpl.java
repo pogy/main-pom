@@ -1,10 +1,7 @@
 package com.shigu.main4.photo.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.photo.beans.ShiguPhotoStyle;
-import com.opentae.data.photo.beans.ShiguPhotoUserPraise;
-import com.opentae.data.photo.beans.ShiguPhotoWorks;
-import com.opentae.data.photo.beans.ShiguPhotoWorksStyle;
+import com.opentae.data.photo.beans.*;
 import com.opentae.data.photo.examples.ShiguPhotoCatExample;
 import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
 import com.opentae.data.photo.examples.ShiguPhotoWorksStyleExample;
@@ -181,6 +178,8 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             vo.setPriceStr(String.format("%.2f", works.getPrice() * 0.01));
         }
         vo.setStylesStr("");
+        ShiguPhotoUser author = shiguPhotoUserMapper.selectByPrimaryKey(works.getAuthorId());
+        vo.setUserId(author.getUserId());
         ShiguPhotoWorksStyle worksStylequery = new ShiguPhotoWorksStyle();
         worksStylequery.setWorksId(worksId);
         List<ShiguPhotoWorksStyle> worksStyles = shiguPhotoWorksStyleMapper.select(worksStylequery);

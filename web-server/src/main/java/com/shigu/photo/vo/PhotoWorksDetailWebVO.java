@@ -42,10 +42,9 @@ public class PhotoWorksDetailWebVO implements Serializable {
     //用户是否已点赞 true是 false否
     private Boolean userThumbUpIs;
 
-    //作者id
+    //作者userId
     private Long authorId;
 
-    private Long userId;
 
     public String getTitle() {
         return title;
@@ -133,13 +132,5 @@ public class PhotoWorksDetailWebVO implements Serializable {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
-    }
-
-    public Long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }
