@@ -4,20 +4,22 @@ import com.openJar.beans.JdItemProp;
 import com.openJar.beans.JdPropValue;
 import com.openJar.beans.JdTbBind;
 import com.openJar.beans.ShiguJdcat;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.examples.JdItemPropExample;
 import com.opentae.data.jd.examples.JdPropValueExample;
+import com.opentae.data.jd.examples.JdSessionMapExample;
 import com.opentae.data.jd.examples.JdTbBindExample;
-import com.opentae.data.jd.interfaces.JdItemPropMapper;
-import com.opentae.data.jd.interfaces.JdPropValueMapper;
-import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
+import com.opentae.data.jd.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InterFacesService {
@@ -29,6 +31,9 @@ public class InterFacesService {
     JdTbBindMapper jdTbBindMapper;
     @Autowired
     ShiguJdcatMapper shiguJdcatMapper;
+    @Autowired
+    JdSessionMapMapper jdSessionMapMapper;
+
     public List<JdItemProp> selJdItemProps(Long jdCid) {
         JdItemPropExample jdItemPropExample=new JdItemPropExample();
         jdItemPropExample.createCriteria().andCidEqualTo(jdCid);
@@ -73,6 +78,20 @@ public class InterFacesService {
         System.err.println(notHave);
     }
 
+    /**
+     * 根据京东登陆名模糊查询
+     * @param jdUserNick
+     * @return
+     */
+    public List<Long> selJdUidsByFuzzyJdLoginName(String jdUserNick) {
+        JdSessionMapExample example = new JdSessionMapExample();
+        example.createCriteria().andJdUserNickLike("%"+jdUserNick+"%");
+        List<JdSessionMap> jdUids = jdSessionMapMapper.selectFieldsByExample(example, FieldUtil.codeFields("jd_uid"));
+        if (jdUids == null || jdUids.isEmpty()) {
+            return null;
+        }
+        return jdUids.stream().map(JdSessionMap::getJdUid).collect(Collectors.toList());
+    }
 }
 
 
