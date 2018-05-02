@@ -182,6 +182,13 @@ public class ItemCartImpl implements Cart {
             ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info();
             CartVO cartVO = BeanMapper.map(info, CartVO.class);
             cartVO.setCartId(itemCart.getCartId());
+            cartVO.setGoodsId(info.getGoodsId());
+            cartVO.setPicUrl(info.getPicUrl());
+            cartVO.setTitle(info.getTitle());
+            cartVO.setGoodsNo(info.getGoodsNo());
+            cartVO.setPrice(info.getPrice());
+            cartVO.setSelectiveSku(info.getSelectiveSku());
+
             cartVO.setNum(itemCart.getNum());
             cartVO.setUserId(userId);
             cartVO.setLastModify(itemCart.getLastModify());
