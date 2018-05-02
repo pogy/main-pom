@@ -75,7 +75,7 @@
             <img src="http://style.571xz.com/v6/photo/css/img/userDefault.png" />
         </div>
         <p>您好 ，请登录！</p>
-        <a href="/login.htm">用户主页</a>
+        <a href="/photo/member/userWorkList.htm">用户主页</a>
     </div>
     <img src="${littleBannerSrc!}" class="littleBanner" />
 </div>
