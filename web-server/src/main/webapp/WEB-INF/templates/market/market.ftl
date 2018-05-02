@@ -49,7 +49,7 @@
 <#include "/common/xz__nav.ftl">
         <div class="regShopButton">
             <i class="icon-user"></i>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
 </div>
