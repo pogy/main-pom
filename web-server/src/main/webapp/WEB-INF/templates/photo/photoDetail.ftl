@@ -16,7 +16,7 @@
 <#include "/__style_torrent__/photo__common_js.ftl">
 <#include "/__style_torrent__/photo__photoDetail_js.ftl">
 </head>
-<body>
+<body <#if worksData.saveType == 1>oncontextmenu='return false' ondragstart='return false' onselectstart ='return false' onselect='document.selection.empty()' oncopy='document.selection.empty()' onbeforecopy='return false'</#if>>
 <#include "/__ftl_links__/photo__common__topbar.ftl">
 <#include "/__ftl_links__/photo__common__nav.ftl">
 <div class="photoDetail layout">
@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="rightUserInfoBox fr yahei">
-    <div class="userInfo">
+    <div class="detailUserInfo">
         <p class="imgBox"><img src="${userInfo.imgSrc!}"></p>
         <p class="fs14">${userInfo.typeName!}：${userInfo.nick!}</p>
         <p>
