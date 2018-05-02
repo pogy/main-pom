@@ -82,8 +82,8 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
         vo1.setMenuId("photoModel");
         vo1.setMenuText("网红模特");
         vo1.setItems(new ArrayList<>());
-        vo1.getItems().add(new GoatMenuSubVO(1L,"男模"));
-        vo1.getItems().add(new GoatMenuSubVO(2L,"女模"));
+        vo1.getItems().add(new GoatMenuSubVO(0L,"男模"));
+        vo1.getItems().add(new GoatMenuSubVO(1L,"女模"));
         goatMenuVOS.add(vo1);
 
         //4.添加作者

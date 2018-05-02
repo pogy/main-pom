@@ -131,7 +131,7 @@ public class PhotoUserAction {
     public String photoModel(PhotoAuthorListBO bo, Model model) {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("1", "男模"), new PhotoCateVO("2", "女模")));
+        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("0", "男模"), new PhotoCateVO("1", "女模")));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(1));
         model.addAttribute("modelList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);

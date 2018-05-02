@@ -44,6 +44,9 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     //是否已关注,暂无用
     private Boolean focusOnIs;
 
+    //封面
+    private String coverImgSrc;
+
     public Long getUserId() {
         return userId;
     }
@@ -130,5 +133,15 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
 
     public void setFocusOnIs(Boolean focusOnIs) {
         this.focusOnIs = focusOnIs;
+    }
+
+    //封面
+    public String getCoverImgSrc() {
+        return this.coverImgSrc;
+    }
+
+    //封面
+    public void setCoverImgSrc(String coverImgSrc) {
+        this.coverImgSrc = coverImgSrc;
     }
 }

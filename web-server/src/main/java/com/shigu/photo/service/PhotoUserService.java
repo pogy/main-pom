@@ -69,13 +69,14 @@ public class PhotoUserService {
         String authType = "未知";
         if (totalAuthInfo != null) {
             userInfo.setNick(totalAuthInfo.getUserName());
-            userInfo.setImgSrc(totalAuthInfo.getHeadImg());
+            userInfo.setImgSrc(StringUtils.isNotBlank(totalAuthInfo.getHeadImg())?totalAuthInfo.getHeadImg():totalAuthInfo.getShowImg());
             userInfo.setTele(totalAuthInfo.getContactPhone());
             userInfo.setAddress(totalAuthInfo.getAddress());
             userInfo.setWxQrCode(totalAuthInfo.getCodeImg());
             userInfo.setProfile(totalAuthInfo.getUserInfo());
             userInfo.setWorksCount(totalAuthInfo.getWorksCount());
             userInfo.setSex(totalAuthInfo.getSex());
+            userInfo.setCoverImgSrc(totalAuthInfo.getShowImg());
             authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSex());
         }
         userInfo.setTypeName(authType);
@@ -292,8 +293,14 @@ public class PhotoUserService {
             editBO.setContactPhone(bo.getTele());
         }
         editBO.setSex(bo.getSex());
-        editBO.setShowImg(bo.getCover());
-        editBO.setCodeImg(bo.getWxQrcode());
+        if (StringUtils.isNotBlank(bo.getWxQrcode())) {
+            String wxCodeImg = photoImgProcess.moveImg(bo.getWxQrcode());
+            bo.setWxQrcode(wxCodeImg);
+        }
+        if (StringUtils.isNotBlank(bo.getCover())) {
+            String showImg = photoImgProcess.moveImg(bo.getCover());
+            bo.setCover(showImg);
+        }
         editBO.setUserInfo(bo.getProfile());
         editBO.setAddress(genAddr(bo.getProvId(), bo.getCityId()));
         photoUserProcess.editUserInfo(userId, editBO);
