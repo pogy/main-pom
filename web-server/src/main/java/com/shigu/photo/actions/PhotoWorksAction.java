@@ -162,7 +162,7 @@ public class PhotoWorksAction {
         model.addAttribute("userInfo", photoUserService.totalAuthInfo(workDetail.getAuthorId(), userId));
         model.addAttribute("query", bo);
         // TODO: 18-4-26 模版地址
-        return "";
+        return "photo/photoDetail";
     }
 
     /**
