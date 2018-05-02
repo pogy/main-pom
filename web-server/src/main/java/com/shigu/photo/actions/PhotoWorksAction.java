@@ -84,7 +84,7 @@ public class PhotoWorksAction {
 
 
     //上传作品页
-    @RequestMapping("uploadWork")
+    @RequestMapping("auth/uploadWork")
     public String uploadWork(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //准备风格
@@ -97,7 +97,7 @@ public class PhotoWorksAction {
     }
 
     //修改作品页
-    @RequestMapping(value = "uploadWork",params = "id")
+    @RequestMapping(value = "auth/uploadWork",params = "id")
     public String uploadWork(HttpSession session,Long id, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //准备风格
@@ -112,7 +112,7 @@ public class PhotoWorksAction {
     }
 
     //提交作品添加或修改
-    @RequestMapping("uploadWorkSubmit")
+    @RequestMapping("auth/uploadWorkSubmit")
     @ResponseBody
     public JSONObject uploadWorkAction(@Valid PhotoUploadBO bo, BindingResult result,HttpSession session) {
         if (result.hasErrors()) {
@@ -161,7 +161,6 @@ public class PhotoWorksAction {
         model.addAttribute("worksData", workDetail);
         model.addAttribute("userInfo", photoUserService.totalAuthInfo(workDetail.getAuthorId(), userId));
         model.addAttribute("query", bo);
-        // TODO: 18-4-26 模版地址
         return "photo/photoDetail";
     }
 
@@ -172,7 +171,7 @@ public class PhotoWorksAction {
      * @param session
      * @return
      */
-    @RequestMapping("addThumbUpCount")
+    @RequestMapping("member/addThumbUpCount")
     @ResponseBody
     public JSONObject addThumbUpCount(Long worksId, HttpSession session) {
         if (worksId == null) {
@@ -190,7 +189,7 @@ public class PhotoWorksAction {
      * @param session
      * @return
      */
-    @RequestMapping("removeThumbUpCount")
+    @RequestMapping("member/removeThumbUpCount")
     @ResponseBody
     public JSONObject removeThumbUpCount(Long worksId, HttpSession session) {
         if (worksId == null) {

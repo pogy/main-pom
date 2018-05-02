@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
  * 描述:
  */
 @Controller
+@RequestMapping("photo/")
 public class PhotoUserAction {
 
     @Autowired
@@ -59,7 +60,7 @@ public class PhotoUserAction {
      * @param model
      * @return
      */
-    @RequestMapping("userValidate")
+    @RequestMapping("member/userValidate")
     public String userValidate(HttpSession session, Model model) {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
         model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
@@ -75,7 +76,7 @@ public class PhotoUserAction {
      * @param session
      * @return
      */
-    @RequestMapping({"getUserValidMsgCode", "changePhotoTeleGetMsgCode"})
+    @RequestMapping({"member/getUserValidMsgCode", "member/changePhotoTeleGetMsgCode"})
     @ResponseBody
     public JSONObject getUserValidMsgCode(String telephone, HttpSession session) {
         if (StringUtils.isBlank(telephone)) {
@@ -101,7 +102,7 @@ public class PhotoUserAction {
      * @return
      * @throws JsonErrException
      */
-    @RequestMapping("userValidSubmit")
+    @RequestMapping("member/userValidSubmit")
     @ResponseBody
     public JSONObject userValidSubmit(@Valid PhotoUserValidBO bo, HttpSession session, BindingResult bindingResult) throws JsonErrException {
         if (bindingResult.hasErrors()) {
@@ -118,31 +119,54 @@ public class PhotoUserAction {
         return result;
     }
 
+    /**
+     * 模特列表
+     *
+     * @param bo
+     * @param model
+     * @return
+     */
     @RequestMapping("photoModel")
-    public String photoModel(PhotoAuthorListBO bo,Model model){
-        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+    public String photoModel(PhotoAuthorListBO bo, Model model) {
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("childRoleList",Arrays.asList(new PhotoCateVO("1", "男模"), new PhotoCateVO("2", "女模")));
+        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("1", "男模"), new PhotoCateVO("2", "女模")));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(1));
         model.addAttribute("list", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
         return "photo/photoModel";
     }
+
+    /**
+     * 摄影机构列表
+     *
+     * @param bo
+     * @param model
+     * @return
+     */
     @RequestMapping("photoOrg")
-    public String photoOrg(PhotoAuthorListBO bo,Model model){
-        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+    public String photoOrg(PhotoAuthorListBO bo, Model model) {
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("childRoleList",Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
+        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(2));
         model.addAttribute("list", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
         return "photo/photoOrg";
     }
+
+    /**
+     * 摄影场地列表
+     *
+     * @param bo
+     * @param model
+     * @return
+     */
     @RequestMapping("photoPlace")
-    public String photoPlace(PhotoAuthorListBO bo,Model model){
-        model.addAttribute("styleList",photoWorksProcess.selPhotoStyleVos(null)
+    public String photoPlace(PhotoAuthorListBO bo, Model model) {
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(null));
         model.addAttribute("list", photoAuthorVOShiguPager.getContent());
@@ -158,7 +182,7 @@ public class PhotoUserAction {
      * @param model
      * @return
      */
-    @RequestMapping("userProfileEdit")
+    @RequestMapping("member/userProfileEdit")
     public String userProfileEdit(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
@@ -176,7 +200,7 @@ public class PhotoUserAction {
      * @param session
      * @return
      */
-    @RequestMapping("submitProfileInfo")
+    @RequestMapping("member/submitProfileInfo")
     @ResponseBody
     public JSONObject submitProfileInfo(PhotoUserProfileEditBO bo, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -190,7 +214,7 @@ public class PhotoUserAction {
      * @param session
      * @return
      */
-    @RequestMapping("saveHeadPortrait")
+    @RequestMapping("member/saveHeadPortrait")
     @ResponseBody
     public JSONObject saveHeadPortrait(String imgSrc, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
