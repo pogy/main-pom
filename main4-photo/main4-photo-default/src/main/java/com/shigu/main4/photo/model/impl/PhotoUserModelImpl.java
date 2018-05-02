@@ -87,13 +87,12 @@ public class PhotoUserModelImpl implements PhotoUserModel {
             }
             try {
                 shiguPhotoUserMapper.insertSelective(shiguPhotoUser);
-                updatePhotoUserType(0);
             } catch (Exception e) {
                 // TODO: 18-4-25 log
             }
-
         }
         userInfo = BeanMapper.map(shiguPhotoUser, PhotoUserVO.class);
+        updatePhotoUserType(0);
     }
 
 
