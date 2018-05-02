@@ -17,6 +17,7 @@ import com.shigu.photo.vo.PhotoCateVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +176,22 @@ public class PhotoUserAction {
         return "photo/photoPlace";
     }
 
+
+    /**
+     * 个人主页
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("member/userProfile")
+    public String userProfile(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
+        return "photo/userProfile";
+    }
+
     /**
      * 用户信息编辑页面
      *
@@ -189,7 +206,7 @@ public class PhotoUserAction {
         PhotoAuthWorkUserInfoWebVO baseInfo = photoUserService.baseUserInfo(userId);
         PhotoAreaVO provsAndCitys = photoUserService.provsAndCitys();
         model.addAttribute("userInfo", photoUserService.resolveUserAddrInfo(baseInfo, provsAndCitys));
-        model.addAttribute("provsAndCitys", provsAndCitys);
+        model.addAttribute("provsAndCitys", JSONArray.fromObject(provsAndCitys.getProvs()).toString());
         return "photo/userProfileEdit";
     }
 
