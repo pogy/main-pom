@@ -44,17 +44,19 @@
             </div>
             <div class="thumbUpBox">
                 <#if worksData.userThumbUpIs == true>
-                <b jhand="removeThumbUp" class="removeThumbUp fs14"><i class="icon-store"></i>取消赞</b>
+                <b jhand="removeThumbUp" class="removeThumbUp"><i class="icon-store"></i>取消赞</b>
                 <#else>
-                <b jhand="thumbUp" class="fs14"><i class="icon-s-store"></i>点赞</b>
+                <b jhand="thumbUp"><i class="icon-s-store"></i>点赞</b>
                 </#if>
             </div>
         </div>
     </div>
     <div class="morePhotoDetail">
-        <#list imgList as img>
-        <p><img src="${img!}"></p>
-        </#list>
+        <#if (worksData.imgList?size) gt 0>
+            <#list worksData.imgList as img>
+            <p><img src="${img!}"></p>
+            </#list>
+        </#if>
     </div>
 </div>
 <div class="rightUserInfoBox fr yahei">
