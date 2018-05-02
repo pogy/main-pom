@@ -96,7 +96,6 @@ public class PhotoUserModelImpl implements PhotoUserModel {
             }
         }
         userInfo = BeanMapper.map(shiguPhotoUser, PhotoUserVO.class);
-        updatePhotoUserType(0);
     }
 
 
