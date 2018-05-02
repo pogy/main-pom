@@ -290,7 +290,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
                 </ul>
             </div>
             <div class="rzbox"> 
-                <a target="_blank" href="http://www.571xz.com/ruzhu.htm">商家入驻</a> 
+                <a target="_blank" href="http://www.571xz.com/ruzhu.htm">供应商</a>
                 <p>已入驻档口<span>${hasStore!}</span>家 </p> 
             </div>
             <div class="goodscount"> 
@@ -481,7 +481,6 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </ul>
             <ul>
                 <li><h4>供货商</h4></li>
-                <li><a target="_blank" href="http://www.571xz.com/ruzhu.htm">商家入驻</a></li>
                 <li><a target="_blank" href="http://www.571xz.com//member/memberghs.htm">档口后台</a></li>
                 <li><a target="_blank" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝授权</a></li>
             </ul>
