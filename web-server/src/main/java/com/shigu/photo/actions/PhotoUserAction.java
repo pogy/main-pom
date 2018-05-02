@@ -133,7 +133,7 @@ public class PhotoUserAction {
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
         model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("1", "男模"), new PhotoCateVO("2", "女模")));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(1));
-        model.addAttribute("list", photoAuthorVOShiguPager.getContent());
+        model.addAttribute("modelList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
         return "photo/photoModel";
@@ -152,7 +152,7 @@ public class PhotoUserAction {
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
         model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(2));
-        model.addAttribute("list", photoAuthorVOShiguPager.getContent());
+        model.addAttribute("orgList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
         return "photo/photoOrg";
@@ -170,7 +170,7 @@ public class PhotoUserAction {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(null));
-        model.addAttribute("list", photoAuthorVOShiguPager.getContent());
+        model.addAttribute("placeList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
         return "photo/photoPlace";

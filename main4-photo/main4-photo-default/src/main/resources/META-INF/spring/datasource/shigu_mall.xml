@@ -46,7 +46,7 @@
         </property>
         <property name="dataSource" ref="mallDataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath*:/mybatis/mall/*.xml" />
+        <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.mall"/>
     </bean>
 

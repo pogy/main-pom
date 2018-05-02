@@ -36,7 +36,7 @@
         </property>
         <property name="dataSource" ref="photoDataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath*:/mybatis/photo/*.xml"/>
+        <property name="mapperLocations" value="classpath*:/photo/mybatis/*.xml"/>
         <property name="typeAliasesPackage" value="com.opentae.data.photo"/>
     </bean>
 

@@ -100,7 +100,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
                 return;
             }
             GoatMenuVO vo=new GoatMenuVO();
-            vo.setMenuId(shiguPhotoGoatNav.getPageGuide()==1?"photoWorks0":"userHomePage");
+            vo.setMenuId(shiguPhotoGoatNav.getPageGuide()==1?"photoWorks":"userHomePage");
             vo.setMenuText(shiguPhotoGoatNav.getNavName());
             vo.setItems(new ArrayList<>());
             for(ShiguPhotoGoatNav sub:subs){

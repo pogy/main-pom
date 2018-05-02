@@ -53,22 +53,29 @@ public class PhotoWorksAction {
     //作品列表
     @RequestMapping("photoWorks")
     public String wokes(PhotoWorksSearchBO query, Model model) throws PhotoException {
-        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO("1", "模特"), new PhotoCateVO("2,3", "摄影机构"), new PhotoCateVO("4", "场地")));
+        model.addAttribute("roleList", Arrays.asList(new PhotoCateVO("1", "模特"), new PhotoCateVO("2", "摄影机构"), new PhotoCateVO("4", "场地")));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
                 .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
 
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
-        model.addAttribute("list", photoWorksVOShiguPager.getContent());
+        model.addAttribute("workList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
         return "photo/photoWorks";
     }
 
     //作者主页
-    @RequestMapping(value={"userHomePage","userWorkList"})
-    public String authorWokes(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
+    @RequestMapping("member/userWorkList")
+    public String userWorkList(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        query.setId(ps.getUserId());
+        return userHomePage(query,model,session);
+    }
+
+    @RequestMapping("userHomePage")
+    public String userHomePage(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());

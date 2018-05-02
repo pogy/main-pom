@@ -21,7 +21,7 @@
         where t1.author_id=t2.user_id
             and t1.remove_is =0
             <if test="authorId">
-                t1.author_id=${authorId}
+                and t1.author_id=${authorId}
             </if>
             <if test="userTypes != null">
                 and t2.user_type in(${userTypes})
@@ -53,7 +53,7 @@
         where t1.author_id=t2.user_id
             and t1.remove_is =0
             <if test="authorId">
-                t1.author_id=${authorId}
+                and t1.author_id=${authorId}
             </if>
             <if test="userTypes != null">
                 and t2.user_type in(${userTypes})

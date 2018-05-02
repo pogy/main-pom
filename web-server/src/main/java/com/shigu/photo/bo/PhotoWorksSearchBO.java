@@ -3,6 +3,8 @@ package com.shigu.photo.bo;
 import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.enums.WorksListSortEnum;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PhotoWorksSearchBO {
@@ -21,7 +23,7 @@ public class PhotoWorksSearchBO {
     /**
      * 作者类型
      */
-    private List<Integer> rid;
+    private Integer rid;
     /**
      * 页码
      */
@@ -87,7 +89,7 @@ public class PhotoWorksSearchBO {
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(10);
         photoWorksBO.setStyleId(getStyleId());
-        photoWorksBO.setUserTypes(getRid());
+        photoWorksBO.setUserTypes(getRid()!=null&&getRid()==2? Arrays.asList(2,3): getRid()!=null?Collections.singletonList(getRid()):null);
         photoWorksBO.setTitle(getKeyword());
         if(getSort()!=null){
             photoWorksBO.setSort("def".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
@@ -137,14 +139,14 @@ public class PhotoWorksSearchBO {
     /**
      * 获取 作者类型
      */
-    public List<Integer> getRid() {
+    public Integer getRid() {
         return this.rid;
     }
 
     /**
      * 设置 作者类型
      */
-    public void setRid(List<Integer> rid) {
+    public void setRid(Integer rid) {
         this.rid = rid;
     }
 }

@@ -59,7 +59,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
 
     @Override
     public List<PhotoStyleVO> selPhotoStyleVos(Long userId) {
-        List<Long> authorIds = Collections.singletonList(-1L);
+        List<Long> authorIds = new ArrayList<>(Collections.singletonList(-1L));
         if (userId != null) {
             PhotoUserVO photoUserVO = photoUserProcess.userBaseInfo(userId);
             authorIds.add(photoUserVO.getAuthorId());

@@ -29,7 +29,9 @@ public class PhotoFilter extends MemberFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         // 先进行登陆拦截
-        super.doFilter(servletRequest, servletResponse, filterChain);
+        if(!super.checkedLogin(servletRequest, servletResponse, filterChain)){
+            return;
+        }
         Integer photoAuth = getPhotoAuth();
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -66,9 +68,9 @@ public class PhotoFilter extends MemberFilter implements Filter {
     public Integer getPhotoAuth() {
         Integer photoAuthType = null;
         Session session = SecurityUtils.getSubject().getSession();
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //来到这里的都是进行过登陆判断的，所以实际session不会为空
-        if (session != null) {
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null) {
             photoAuthType = (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue());
         }
         return photoAuthType;
