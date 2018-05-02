@@ -30,14 +30,21 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
     var city = '' ;
     jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
         province = remote_ip_info["province"];
-        if(province == '福建'){
+        city = remote_ip_info["city"];
+        if(city == '石狮'){
             window.location.href = "http://ss.571xz.com";
-        }else if(province == '江苏'){
+        }else if(city == '常熟'){
             window.location.href = "http://cs.571xz.com";
-        }else if(province == '广东'){
+        }else if(city == '广州'){
             window.location.href = "http://gz.571xz.com";
-        }else if(province == '吉林'){
+        }else if(city == '辽源'){
             window.location.href = "http://wa.571xz.com";
+        }else if(city == '泉州'){
+            window.location.href = "http://qz.571xz.com";
+        }else if(city == '北京'){
+            window.location.href = "http://bj.571xz.com";
+        }else if(city == '湖州'){
+            window.location.href = "http://zl.571xz.com";
         }
     }) ;
 }
@@ -208,10 +215,73 @@ if(pageType == 'W'){
         资讯
     </a>
 </li>
+<li
+>
+    <a href="http://www.571xz.com/photo/photoIndex.htm" target="_blank">
+        摄影基地
+        <i class="new"></i>
+    </a>
+</li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
+        <#elseif webSite == 'qz'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
+        <#elseif webSite == 'zl'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
+        今日新品
+    </a>
+</li>
+<li
+>
+    <a href="http://zixun.571xz.com/index" target="_blank">
+        资讯
+    </a>
+</li>
         </#if>
     </ul>
 </div>
@@ -293,7 +363,7 @@ if(pageType == 'W'){
         <div class="btnLinks clearfix" id="goBackstageButtonBox">
             <a class="first" href="/login.htm">登录</a>
             <a href="/regedit.htm">注册</a>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
     <div class="userCount">
