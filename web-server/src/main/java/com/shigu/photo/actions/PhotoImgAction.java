@@ -18,7 +18,7 @@ public class PhotoImgAction {
     @Autowired
     PhotoImgProcess photoImgProcess;
 
-    @RequestMapping("member/getAccessForPhotoWorks")
+    @RequestMapping({"member/getAccessForPhotoWorks","auth/getAccessForPhotoWorks"})
     @ResponseBody
     public JSONObject selPhotoToken(HttpSession session) throws UnsupportedEncodingException {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

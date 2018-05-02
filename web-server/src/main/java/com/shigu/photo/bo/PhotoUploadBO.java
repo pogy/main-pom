@@ -28,7 +28,7 @@ public class PhotoUploadBO {
     /**
      * 风格ID集合
      */
-    @Size(min=1,max=3,message = "请选择1-3个风格")
+    @Size(min=1,max=5,message = "请选择1-5个风格")
     private List<Long> styles;
     /**
      * 类目集合

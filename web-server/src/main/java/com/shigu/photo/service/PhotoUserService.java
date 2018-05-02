@@ -293,14 +293,8 @@ public class PhotoUserService {
             editBO.setContactPhone(bo.getTele());
         }
         editBO.setSex(bo.getSex());
-        if (StringUtils.isNotBlank(bo.getWxQrcode())) {
-            String wxCodeImg = photoImgProcess.moveImg(bo.getWxQrcode());
-            bo.setWxQrcode(wxCodeImg);
-        }
-        if (StringUtils.isNotBlank(bo.getCover())) {
-            String showImg = photoImgProcess.moveImg(bo.getCover());
-            bo.setCover(showImg);
-        }
+        editBO.setCodeImg(bo.getWxQrcode());
+        editBO.setShowImg(bo.getCover());
         editBO.setUserInfo(bo.getProfile());
         editBO.setAddress(genAddr(bo.getProvId(), bo.getCityId()));
         photoUserProcess.editUserInfo(userId, editBO);

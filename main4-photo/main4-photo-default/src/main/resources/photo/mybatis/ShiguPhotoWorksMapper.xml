@@ -18,7 +18,7 @@
             <if test="styleId != null">
                 ,shigu_photo_works_style t3
             </if>
-        where t1.author_id=t2.user_id
+        where t1.author_id=t2.author_id
             and t1.remove_is =0
             <if test="authorId">
                 and t1.author_id=${authorId}
@@ -50,7 +50,7 @@
             <if test="styleId != null">
                 ,shigu_photo_works_style t3
             </if>
-        where t1.author_id=t2.user_id
+        where t1.author_id=t2.author_id
             and t1.remove_is =0
             <if test="authorId">
                 and t1.author_id=${authorId}
