@@ -67,7 +67,7 @@ public class PhotoWorksAction {
     }
 
     //作者主页
-    @RequestMapping("member/userWorkList")
+    @RequestMapping({"auth/userWorkList","member/userWorkList"})
     public String userWorkList(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         query.setId(ps.getUserId());
