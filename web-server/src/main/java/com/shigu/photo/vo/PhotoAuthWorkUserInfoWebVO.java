@@ -20,6 +20,9 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     //用户昵称
     private String nick;
 
+    // 用户性别 0男 1女
+    private Integer sex;
+
     //作者类型 男模 女模 摄影师 摄影机构 场地
     private String typeName;
 
@@ -63,6 +66,14 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
 
     public void setNick(String nick) {
         this.nick = nick;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public String getTypeName() {

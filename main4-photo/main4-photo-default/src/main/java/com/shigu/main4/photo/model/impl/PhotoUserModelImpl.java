@@ -18,6 +18,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.photo.bo.PhotoAuthApplyBO;
 import com.shigu.main4.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.main4.photo.model.PhotoUserModel;
+import com.shigu.main4.photo.process.PhotoImgProcess;
 import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
 import com.shigu.main4.photo.vo.PhotoUserVO;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,9 @@ public class PhotoUserModelImpl implements PhotoUserModel {
 
     @Autowired
     private ShiguPhotoUserSelectedStyleRelationMapper shiguPhotoUserSelectedStyleRelationMapper;
+
+    @Autowired
+    private PhotoImgProcess photoImgProcess;
 
     //用户id,必传，非空
     private Long userId;
@@ -173,8 +177,12 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setAuthorId(photoUserId);
         shiguPhotoUser.setUserName(apply.getUserName());
         shiguPhotoUser.setContactPhone(apply.getAuthPhone());
-        shiguPhotoUser.setShowImg(apply.getShowImg());
-        shiguPhotoUser.setCodeImg(apply.getCodeImg());
+        if (StringUtils.isNotBlank(apply.getShowImg())) {
+            shiguPhotoUser.setShowImg(photoImgProcess.moveImg(apply.getShowImg()));
+        }
+        if (StringUtils.isNotBlank(apply.getCodeImg())) {
+            shiguPhotoUser.setCodeImg(photoImgProcess.moveImg(apply.getCodeImg()));
+        }
         shiguPhotoUser.setMainStyleId(apply.getMainStyleId());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
         // 更新用户身份标记
@@ -188,7 +196,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         applyStyleExample.createCriteria().andAuthIdEqualTo(photoUserId);
         ShiguPhotoUserSelectedStyleRelation effectedRelation = new ShiguPhotoUserSelectedStyleRelation();
         effectedRelation.setEffected(1);
-        shiguPhotoUserSelectedStyleRelationMapper.updateByExampleSelective(effectedRelation,applyStyleExample);
+        shiguPhotoUserSelectedStyleRelationMapper.updateByExampleSelective(effectedRelation, applyStyleExample);
     }
 
     @Override
@@ -246,13 +254,13 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setSex(bo.getSex());
         shiguPhotoUser.setAddress(bo.getAddress());
         if (StringUtils.isNotBlank(bo.getHeadImg())) {
-            shiguPhotoUser.setHeadImg(bo.getHeadImg());
+            shiguPhotoUser.setHeadImg(photoImgProcess.moveImg(bo.getHeadImg()));
         }
         if (StringUtils.isNotBlank(bo.getShowImg())) {
-            shiguPhotoUser.setShowImg(bo.getShowImg());
+            shiguPhotoUser.setShowImg(photoImgProcess.moveImg(bo.getShowImg()));
         }
         if (StringUtils.isNotBlank(bo.getCodeImg())) {
-            shiguPhotoUser.setCodeImg(bo.getCodeImg());
+            shiguPhotoUser.setCodeImg(photoImgProcess.moveImg(bo.getCodeImg()));
         }
         shiguPhotoUser.setUserInfo(bo.getUserInfo());
         shiguPhotoUser.setContactPhone(bo.getContactPhone());

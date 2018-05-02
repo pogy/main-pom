@@ -75,6 +75,7 @@ public class PhotoUserService {
             userInfo.setWxQrCode(totalAuthInfo.getCodeImg());
             userInfo.setProfile(totalAuthInfo.getUserInfo());
             userInfo.setWorksCount(totalAuthInfo.getWorksCount());
+            userInfo.setSex(totalAuthInfo.getSex());
             authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSex());
         }
         userInfo.setTypeName(authType);
@@ -180,7 +181,7 @@ public class PhotoUserService {
         bo.setAuthPhone(validBO.getWorkphone());
         bo.setAuthType(validBO.getRoleStyle());
         if (StringUtils.isNotBlank(validBO.getWxQrCode())) {
-            String wxCodeImg = photoImgProcess.moveImg(validBO.getMsgCode());
+            String wxCodeImg = photoImgProcess.moveImg(validBO.getWxQrCode());
             bo.setCodeImg(wxCodeImg);
         }
         if (StringUtils.isNotBlank(validBO.getUserCover())) {
@@ -285,7 +286,7 @@ public class PhotoUserService {
         PhotoUserInfoEditBO editBO = new PhotoUserInfoEditBO();
         // 有变更手机号验证码，进行手机号校验
         if (StringUtils.isNotBlank(bo.getMsgValidate())) {
-            if (!bo.getMsgValidate().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + bo.getTele()))) {
+            if (!bo.getMsgValidate().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + bo.getTele(), String.class))) {
                 return JsonResponseUtil.error("验证码错误");
             }
             editBO.setContactPhone(bo.getTele());
