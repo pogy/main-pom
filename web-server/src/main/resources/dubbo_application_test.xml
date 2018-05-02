@@ -78,5 +78,6 @@
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoUserProcess" id="photoUserProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoImgProcess" id="photoImgProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoWorksProcess" id="photoWorksProcess" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.main4.photo.process.PhotoGoatProcess" id="photoGoatProcess" retries="0" timeout="20000"/>
 
 </beans>
