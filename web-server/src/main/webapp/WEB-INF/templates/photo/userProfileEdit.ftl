@@ -168,7 +168,7 @@
                 <div class="formGroup">
                     <label>个人简介：</label>
                     <textarea class="profile">${userInfo.profile!}</textarea>
-                    <span class="lastNumber"><em><#if userInfo.profile??>${(userInfo.profile?size)!}<#else>0</#if></em>/200</span>
+                    <span class="lastNumber"><em><#if userInfo.profile??>${(userInfo.profile)?length!}<#else>0</#if></em>/200</span>
                 </div>
             </div>
         </div>

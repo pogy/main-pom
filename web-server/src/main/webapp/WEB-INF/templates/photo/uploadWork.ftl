@@ -60,14 +60,14 @@
             <div class="formGroup">
                 <label><i>*</i>作品标题：</label>
                 <input class="fmInput title yahei" id="workTitle" name="title" maxlength="19" <#if worksData.title??>value="${worksData.title!}"</#if>>
-                <span class="lastNumber"><em><#if worksData.title??>${(worksData.title?size)!}<#else>0</#if></em>/19</span>
+                <span class="lastNumber"><em><#if worksData.title??>${(worksData.title)?length!}<#else>0</#if></em>/19</span>
             </div>
         </div>
         <div class="validateItem">
             <div class="formGroup">
                 <label><i></i>作品描述：</label>
                 <textarea class="desc yahei" id="workDesc" maxlength="200"><#if worksData.desc??>${worksData.desc!}</#if></textarea>
-                <span class="lastNumber"><em><#if worksData.desc??>${(worksData.desc?size)!}<#else>0</#if></em>/200</span>
+                <span class="lastNumber"><em><#if worksData.desc??>${(worksData.desc?length)!}<#else>0</#if></em>/200</span>
             </div>
         </div>
         <div class="validateItem">
