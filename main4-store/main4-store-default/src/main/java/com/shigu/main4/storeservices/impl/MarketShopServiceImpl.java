@@ -226,7 +226,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                     if(isSort.get(shiguShop.getShopId())==null){
                         s.setSortOrderKey(shiguShop.getSortOrderKey());
                     }else{
-                        s.setFloorId(floorId);
+                        s.setFloorId(floorId!=-1?floorId:shiguShop.getFloorId());
                     }
                     if (!StringUtils.isEmpty(shiguShop.getSystemRecommon())) {
                         s.setSystemComment(shiguShop.getSystemRecommon());

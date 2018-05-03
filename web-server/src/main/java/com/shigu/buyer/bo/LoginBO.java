@@ -14,9 +14,21 @@ public class LoginBO {
      */
     private String password;
     /**
+     * 管理名
+     */
+    private String loginname;
+    /**
      * 回调用地址
      */
     private String backUrl;
+
+    public String getLoginname() {
+        return loginname;
+    }
+
+    public void setLoginname(String loginname) {
+        this.loginname = loginname;
+    }
 
     public String getBackUrl() {
         return backUrl;

@@ -336,7 +336,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
         <div class="btnLinks clearfix" id="goBackstageButtonBox">
             <a class="first" href="/login.htm">登录</a>
             <a href="/regedit.htm">注册</a>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
     <div class="userCount">

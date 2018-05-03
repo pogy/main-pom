@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/csMan.js?t=1498441471787"></script>
+    <script src="http://style.571xz.com/indexV4/js/csMan.js?t=1498441471788"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -595,7 +595,7 @@ var webSite = '${webSite!}';
                 <div class="p2 clearfix">
                     <a class="first" onclick="loginBack()">登录</a>
                     <a href="${main_host!}regedit.htm">注册</a>
-                    <a href="${main_host!}ruzhu.htm">商家入驻</a>
+                    <a href="${main_host!}ruzhu.htm">供应商</a>
                 </div>
             </div>
             
@@ -841,7 +841,6 @@ if(session_shopId != ""){
             </li>
             <li>
                 <h5>供应商</h5>
-                <p><a href="${main_host!}ruzhu.htm" target="_blank">商家入驻</a></p>
                 <p><a href="${main_host!}seller/memberghs.htm" target="_blank">档口后台</a></p>
                 <p><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=653157838&amp;site=qq&amp;menu=yes" target="_blank">广告投放</a></p>
             </li>

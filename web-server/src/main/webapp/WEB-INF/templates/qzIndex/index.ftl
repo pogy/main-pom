@@ -238,14 +238,14 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/zlgoods.htm" target="_blank">
+    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm?webSite=zl" target="_blank">
+    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
         今日新品
     </a>
 </li>
@@ -332,7 +332,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
         <div class="btnLinks clearfix" id="goBackstageButtonBox">
             <a class="first" href="/login.htm">登录</a>
             <a href="/regedit.htm">注册</a>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
     <div class="userCount">

