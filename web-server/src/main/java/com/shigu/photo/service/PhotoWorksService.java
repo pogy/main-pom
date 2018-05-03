@@ -100,8 +100,7 @@ public class PhotoWorksService {
     }
 
 
-    public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksSearchBO query) throws PhotoException {
-        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+    public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksBO photoWorksBO) throws PhotoException {
         ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(photoWorksBO);
         ShiguPager<PhotoWorksSearchVO> pager = new ShiguPager<>();
         pager.setNumber(pager.getNumber());

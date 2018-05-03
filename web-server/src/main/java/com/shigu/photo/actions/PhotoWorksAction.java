@@ -1,6 +1,7 @@
 package com.shigu.photo.actions;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.bo.SynPhotoUploadBO;
 import com.shigu.main4.photo.exceptions.PhotoException;
 import com.shigu.main4.photo.process.PhotoImgProcess;
@@ -61,11 +62,11 @@ public class PhotoWorksAction {
                 .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-
-        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("workList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/photoWorks";
     }
 
@@ -75,11 +76,12 @@ public class PhotoWorksAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
-        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/userWorkList";
     }
     @RequestMapping("member/userWorkList")
@@ -91,11 +93,12 @@ public class PhotoWorksAction {
         }
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
-        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/userWorkList";
     }
     @RequestMapping("userHomePage")
@@ -110,11 +113,12 @@ public class PhotoWorksAction {
                 return "redirect:/photo/member/userWorkList.htm";
             }
         }
-        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/userHomePage";
     }
 

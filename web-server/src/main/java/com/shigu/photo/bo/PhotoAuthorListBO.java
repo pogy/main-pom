@@ -36,7 +36,7 @@ public class PhotoAuthorListBO {
         }
         bo.setTitle(keyword);
         bo.setPage(page);
-        bo.setPageSize(10);
+        bo.setPageSize(20);
         bo.setStyleId(sid);
         return bo;
     }

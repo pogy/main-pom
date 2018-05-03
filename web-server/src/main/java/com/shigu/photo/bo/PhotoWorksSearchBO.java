@@ -74,7 +74,7 @@ public class PhotoWorksSearchBO {
         photoWorksBO.setUserId(getId());
         photoWorksBO.setCid(getPid());
         photoWorksBO.setPage(getPage());
-        photoWorksBO.setPageSize(10);
+        photoWorksBO.setPageSize(20);
         photoWorksBO.setStyleId(getSid());
         photoWorksBO.setUserTypes(getRid()!=null&&getRid()==2? Arrays.asList(2,3): getRid()!=null?Collections.singletonList(getRid()):null);
         photoWorksBO.setTitle(getKeyword());
