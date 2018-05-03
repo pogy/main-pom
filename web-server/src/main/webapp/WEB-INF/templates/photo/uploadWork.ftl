@@ -45,7 +45,7 @@
                     </#if>
                     <#if worksData.imgs??>
                         <#list worksData.imgs as img>
-<#list [{"isShowPic":true,"img":cover,"name":"picUrl","changeId":"changeWorks${img_index+2}"}] as $it>
+<#list [{"isShowPic":true,"img":img,"name":"picUrl","changeId":"changeWorks${img_index+2}"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                         </#list>
