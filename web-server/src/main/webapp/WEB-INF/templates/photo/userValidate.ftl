@@ -71,7 +71,7 @@
         </div>
         <div class="validateItem">
             <div class="formGroup styleType">
-                <label>风格：</label>
+                <label><i>*</i>风格：</label>
                 <p>（多选，最多可选5项）</p>
             </div>
         </div>
