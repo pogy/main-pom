@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.photo.beans.*;
 import com.opentae.data.photo.examples.ShiguPhotoCatExample;
 import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
+import com.opentae.data.photo.examples.ShiguPhotoWorksExample;
 import com.opentae.data.photo.examples.ShiguPhotoWorksStyleExample;
 import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -74,7 +75,12 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
 
     @Override
     public PhotoWorksUpdateVO selPhotoSingel(Long worksId) {
-        return BeanMapper.map(shiguPhotoWorksMapper.selectByPrimaryKey(worksId),PhotoWorksUpdateVO.class);
+        PhotoWorksUpdateVO vo = BeanMapper.map(shiguPhotoWorksMapper.selectByPrimaryKey(worksId), PhotoWorksUpdateVO.class);
+        ShiguPhotoWorksStyleExample shiguPhotoWorksStyleExample = new ShiguPhotoWorksStyleExample();
+        shiguPhotoWorksStyleExample.createCriteria().andWorksIdEqualTo(worksId);
+        List<ShiguPhotoWorksStyle> shiguPhotoWorksStyles = shiguPhotoWorksStyleMapper.selectByExample(shiguPhotoWorksStyleExample);
+        vo.setStyleIds(shiguPhotoWorksStyles.stream().map(ShiguPhotoWorksStyle::getStyleId).collect(Collectors.toList()));
+        return vo;
     }
 
     @Override
@@ -118,6 +124,17 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             }
         }
     }
+
+    @Override
+    public void removeWorks(Long worksId,Long userId) {
+        PhotoUserVO photoUserVO = photoUserProcess.userBaseInfo(userId);
+        ShiguPhotoWorksExample shiguPhotoWorksExample=new ShiguPhotoWorksExample();
+        shiguPhotoWorksExample.createCriteria().andWorksIdEqualTo(worksId).andAuthorIdEqualTo(photoUserVO.getAuthorId());
+        ShiguPhotoWorks w=new ShiguPhotoWorks();
+        w.setRemoveIs(true);
+        shiguPhotoWorksMapper.updateByExampleSelective(w,shiguPhotoWorksExample);
+    }
+
     private void insertWorksStyles(List<Long> styles,Long worksId){
         List<ShiguPhotoWorksStyle> shiguPhotoWorksStyles = new ArrayList<>();
         for (Long styleId : styles) {

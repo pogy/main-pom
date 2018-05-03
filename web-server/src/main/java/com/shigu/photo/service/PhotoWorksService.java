@@ -158,6 +158,7 @@ public class PhotoWorksService {
         vo.setSaveType(photoWorksUpdateVO.getForbidSave() ? 1 : 0);
         vo.setTitle(photoWorksUpdateVO.getTitle());
         vo.setWorksId(photoWorksUpdateVO.getWorksId());
+        vo.setStyleIds(photoWorksUpdateVO.getStyleIds());
         return vo;
     }
 

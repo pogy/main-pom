@@ -1,6 +1,7 @@
 package com.shigu.main4.photo.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 作品列表
@@ -34,6 +35,8 @@ public class PhotoWorksUpdateVO implements Serializable{
     private Boolean forbidSave;
 
     private String images;
+
+    private List<Long> styleIds;
 
     public Long getWorksId() {
         return this.worksId;
@@ -133,5 +136,13 @@ public class PhotoWorksUpdateVO implements Serializable{
 
     public void setImages(String images) {
         this.images = images;
+    }
+
+    public List<Long> getStyleIds() {
+        return this.styleIds;
+    }
+
+    public void setStyleIds(List<Long> styleIds) {
+        this.styleIds = styleIds;
     }
 }

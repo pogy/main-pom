@@ -24,7 +24,11 @@ public interface PhotoWorksProcess {
      */
     List<PhotoCatVO> selPhotoCatVos();
 
-
+    /**
+     * 查询单个作品,用于编辑
+     * @param worksId
+     * @return
+     */
     PhotoWorksUpdateVO selPhotoSingel(Long worksId);
 
     /**
@@ -33,6 +37,12 @@ public interface PhotoWorksProcess {
      * @param bo
      */
     void uploadWorks(SynPhotoUploadBO bo) throws PhotoException;
+
+    /**
+     * 删除作品
+     * @param worksId
+     */
+    void removeWorks(Long worksId,Long userId);
 
     /**
      * 获取作品列表

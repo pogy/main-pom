@@ -11,6 +11,7 @@ public class PhotoWorksChangeVO {
     private String cover;
     private List<String> imgs;
     private Long worksId;
+    private List<Long> styleIds;
 
     public String getTitle() {
         return this.title;
@@ -74,5 +75,13 @@ public class PhotoWorksChangeVO {
 
     public void setWorksId(Long worksId) {
         this.worksId = worksId;
+    }
+
+    public List<Long> getStyleIds() {
+        return this.styleIds;
+    }
+
+    public void setStyleIds(List<Long> styleIds) {
+        this.styleIds = styleIds;
     }
 }
