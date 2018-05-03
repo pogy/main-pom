@@ -70,8 +70,8 @@ public class PhotoWorksAction {
     }
 
     //作者主页
-    @RequestMapping({"auth/userWorkList", "member/userWorkList"})
-    public String userWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
+    @RequestMapping("auth/userWorkList")
+    public String authuserWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
@@ -82,7 +82,22 @@ public class PhotoWorksAction {
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
         return "photo/userWorkList";
     }
-
+    @RequestMapping("member/userWorkList")
+    public String memberuserWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Integer n;
+        if((n= (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue()))!=null&&n>0){
+            return "redirect:/photo/auth/userWorkList.htm";
+        }
+        query.setId(ps.getUserId());
+        PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
+        model.addAttribute("query", query);
+        model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        return "photo/userWorkList";
+    }
     @RequestMapping("userHomePage")
     public String userHomePage(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
@@ -90,9 +105,9 @@ public class PhotoWorksAction {
         if (ps != null && photoAuthWorkUserInfoWebVO.getUserId().equals(ps.getUserId())) {
             Integer n;
             if((n= (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue()))!=null&&n>0){
-                return "redirect:auth/userWorkList.htm";
+                return "redirect:/photo/auth/userWorkList.htm";
             }else{
-                return "redirect:member/userWorkList.htm";
+                return "redirect:/photo/member/userWorkList.htm";
             }
         }
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
