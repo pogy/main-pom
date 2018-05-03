@@ -113,10 +113,10 @@ public class PhotoUserAction {
         Long userId = ps.getUserId();
         JSONObject result = photoUserService.submitUserValid(userId, bo);
 
-        //若不需要审核，直接通过，进行以下步骤
-        photoUserProcess.applyPass(userId, "认证通过（暂时不需要审核，自动通过时）");
-        ps.getOtherPlatform().put(OtherPlatformEnum.PHOTO_AUTH.getValue(), photoUserProcess.userBaseInfo(userId).getUserType());
-        session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
+        ////若不需要审核，直接通过，进行以下步骤
+        //photoUserProcess.applyPass(userId, "认证通过（暂时不需要审核，自动通过时）");
+        //ps.getOtherPlatform().put(OtherPlatformEnum.PHOTO_AUTH.getValue(), photoUserProcess.userBaseInfo(userId).getUserType());
+        //session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
         return result;
     }
 

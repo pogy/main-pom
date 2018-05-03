@@ -273,7 +273,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
             criteria.andAuthPhoneEqualTo(bo.getConcatPhone());
         }
         if (StringUtils.isNotBlank(bo.getPhotoUserName())) {
-            criteria.andUserNameLike("concat('%'," + bo.getPhotoUserName() + ",'%')");
+            criteria.andUserNameLike("concat('%','" + bo.getPhotoUserName() + "','%')");
         }
         int totalNum = photoAuthApplyMapper.countByExample(example);
         pager.calPages(totalNum, size);
