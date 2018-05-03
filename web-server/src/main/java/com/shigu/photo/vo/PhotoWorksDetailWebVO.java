@@ -1,6 +1,7 @@
 package com.shigu.photo.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,6 +104,9 @@ public class PhotoWorksDetailWebVO implements Serializable {
     }
 
     public List<String> getImgList() {
+        if (imgList == null) {
+            imgList = new ArrayList<>();
+        }
         return imgList;
     }
 
