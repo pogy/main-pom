@@ -7,6 +7,7 @@ import com.shigu.main4.photo.process.PhotoImgProcess;
 import com.shigu.main4.photo.process.PhotoUserProcess;
 import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.main4.photo.vo.PhotoWorksClickVO;
+import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.photo.bo.PhotoUploadBO;
 import com.shigu.photo.bo.PhotoWorkDetailViewBO;
 import com.shigu.photo.bo.PhotoWorksSearchBO;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -67,28 +70,38 @@ public class PhotoWorksAction {
     }
 
     //作者主页
-    @RequestMapping({"auth/userWorkList","member/userWorkList"})
-    public String userWorkList(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
+    @RequestMapping({"auth/userWorkList", "member/userWorkList"})
+    public String userWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         query.setId(ps.getUserId());
-        return userHomePage(query,model,session);
-    }
-
-    @RequestMapping("userHomePage")
-    public String userHomePage(PhotoWorksSearchBO query, Model model,HttpSession session) throws PhotoException {
-        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps!=null&&photoAuthWorkUserInfoWebVO.getUserId().equals(ps.getUserId())){
-            return "photo/userWorkList";
-        }
-        return "photo/userHomePage";
+        return "photo/userWorkList";
     }
 
+    @RequestMapping("userHomePage")
+    public String userHomePage(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
+        PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null && photoAuthWorkUserInfoWebVO.getUserId().equals(ps.getUserId())) {
+            Integer n;
+            if((n= (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue()))!=null&&n>0){
+                return "redirect:auth/userWorkList.htm";
+            }else{
+                return "redirect:member/userWorkList.htm";
+            }
+        }
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(query);
+        model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
+        model.addAttribute("query", query);
+        model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
+        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(10));
+        return "photo/userHomePage";
+    }
 
     //上传作品页
     @RequestMapping("auth/uploadWork")
@@ -104,24 +117,30 @@ public class PhotoWorksAction {
     }
 
     //修改作品页
-    @RequestMapping(value = "auth/uploadWork",params = "id")
-    public String uploadWork(HttpSession session,Long id, Model model) {
+    @RequestMapping(value = "auth/uploadWork", params = "id")
+    public String uploadWork(HttpSession session, Long id, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        //准备风格
-        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
-                .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
-                .stream().map(photoCatVO -> new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname())).collect(Collectors.toList()));
-        model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
         PhotoWorksChangeVO photoWorksChangeVO = photoWorksService.selUpdateBean(id);
-        model.addAttribute("worksData",photoWorksChangeVO);
+        model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
+                .stream().map(photoStyleVO ->
+                        new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName(), photoWorksChangeVO.getStyleIds().contains(photoStyleVO.getStyleId()))
+                ).collect(Collectors.toList()));
+        model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
+                .stream().map(photoCatVO ->
+                        new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname(), photoWorksChangeVO.getCate().equals(photoCatVO.getCid()))
+                ).collect(Collectors.toList()));
+        model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
+        Map<String,Long> query=new HashMap<>();
+        query.put("id",id);
+        model.addAttribute("query",query);
+        model.addAttribute("worksData", photoWorksChangeVO);
         return "photo/uploadWork";
     }
 
     //提交作品添加或修改
     @RequestMapping("auth/uploadWorkSubmit")
     @ResponseBody
-    public JSONObject uploadWorkAction(@Valid PhotoUploadBO bo, BindingResult result,HttpSession session) {
+    public JSONObject uploadWorkAction(@Valid PhotoUploadBO bo, BindingResult result, HttpSession session) {
         if (result.hasErrors()) {
             return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -130,7 +149,7 @@ public class PhotoWorksAction {
         synPhotoUploadBO.setCid(bo.getCate());
         synPhotoUploadBO.setContent(bo.getDesc());
         synPhotoUploadBO.setForbidSave(bo.getSaveType());
-        synPhotoUploadBO.setHavePrice(bo.getPrice()==1?0:1);
+        synPhotoUploadBO.setHavePrice(bo.getPrice() == 1 ? 0 : 1);
         synPhotoUploadBO.setImages(bo.getImgs());
         synPhotoUploadBO.setPicUrl(bo.getCover());
         synPhotoUploadBO.setStyleId(bo.getStyles());
@@ -144,6 +163,16 @@ public class PhotoWorksAction {
         }
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("auth/removeWorks")
+    @ResponseBody
+    public JSONObject removeWorks(Long id, HttpSession session){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        photoWorksProcess.removeWorks(id,ps.getUserId());
+        return JsonResponseUtil.success();
+    }
+
+
 
     /**
      * 作品详情页
