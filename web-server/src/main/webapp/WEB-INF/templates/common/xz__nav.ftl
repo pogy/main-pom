@@ -55,7 +55,7 @@
 </li>
 <li
 >
-    <a href="http://www.571xz.com/photo/photoIndex.htm" target="_blank">
+    <a href="http://photo.571xz.com" target="_blank">
         摄影基地
         <i class="new"></i>
     </a>
