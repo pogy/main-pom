@@ -19,7 +19,7 @@ public class PhotoAuthorListBO {
             if(superType==1){
                 bo.setUserTypes(Collections.singletonList(1));
                 if(crid!=null){
-                    bo.setSex(coid);
+                    bo.setSex(crid);
                 }
             }else{
                 if(coid==null){
