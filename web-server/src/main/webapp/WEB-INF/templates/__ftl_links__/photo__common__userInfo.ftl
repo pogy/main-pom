@@ -1,14 +1,16 @@
 <div class="userInfo layout clearfix yahei">
     <div class="leftInfoBox fl clearfix">
         <div class="imgBox pr fl">
-            <#if userInfo.imgSrc??>
-            <img src="${userInfo.imgSrc!}">
-            <#else>
-            <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png">
-            </#if>
-            <#if $pageid == 'userProfileEdit'>
-            <b class="changeHeadPortrait" id="changeHeadPortrait">更换头像</b>
-            </#if>
+            <div class="imgBoxOh">
+                <#if userInfo.imgSrc??>
+                <img src="${userInfo.imgSrc!}">
+                <#else>
+                <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png">
+                </#if>
+                <#if $pageid == 'userProfileEdit'>
+                <b class="changeHeadPortrait" id="changeHeadPortrait">更换头像</b>
+                </#if>
+            </div>
         </div>
         <div class="infoBox fl">
             <p class="userNick">
