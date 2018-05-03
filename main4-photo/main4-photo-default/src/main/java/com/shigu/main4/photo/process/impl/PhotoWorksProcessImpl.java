@@ -107,6 +107,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         shiguPhotoWorks.setTitle(bo.getTitle());
         shiguPhotoWorks.setWorksCid(bo.getCid());
         shiguPhotoWorks.setPicUrl(bo.getPicUrl());
+        shiguPhotoWorks.setContent(bo.getContent());
         String images = StringUtils.join(bo.getImages().stream()
                 .map(s -> photoImgProcess.moveImg(s)).collect(Collectors.toList()), ",");
         shiguPhotoWorks.setImages(images);

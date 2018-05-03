@@ -152,7 +152,7 @@ public class PhotoUserAction {
     public String photoOrg(PhotoAuthorListBO bo, Model model) {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
+        model.addAttribute("childOrgList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
         PhotoWorksBO photoWorksBO = bo.toPhotoWorksBO(2);
         ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(photoWorksBO);
         model.addAttribute("orgList", photoAuthorVOShiguPager.getContent());
