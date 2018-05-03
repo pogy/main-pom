@@ -221,7 +221,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
             List<PhotoAuthorVO> photoAuthorVOS = shiguPhotoUsers.stream().map(shiguPhotoUser -> {
                 PhotoAuthorVO vo = new PhotoAuthorVO();
                 vo.setAddress(shiguPhotoUser.getAddress());
-                vo.setHeadImgSrc(shiguPhotoUser.getHeadImg());
+                vo.setHeadImgSrc(shiguPhotoUser.getHeadImg()==null?"http://style.571xz.com/v6/photo/css/img/headImg.png":shiguPhotoUser.getHeadImg());
                 vo.setImgsrc(shiguPhotoUser.getShowImg());
                 vo.setUserId(shiguPhotoUser.getUserId());
                 vo.setUserNick(shiguPhotoUser.getUserName());

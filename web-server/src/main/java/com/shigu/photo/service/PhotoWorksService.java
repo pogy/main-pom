@@ -120,6 +120,7 @@ public class PhotoWorksService {
         vo.setPublishedTime(DateUtil.dateToString(photoWorksVO.getCreateTime(), DateUtil.patternA));
         vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(), photoWorksVO.getSex()));
         vo.setWorksId(photoWorksVO.getWorksId());
+        vo.setTitle(photoWorksVO.getTitle());
         return vo;
     }
 
