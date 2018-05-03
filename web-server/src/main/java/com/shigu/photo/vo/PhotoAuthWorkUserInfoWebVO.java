@@ -26,6 +26,9 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     //作者类型 男模 女模 摄影师 摄影机构 场地
     private String typeName;
 
+    //作者类型 1：模特 2：摄影师 3：摄影机构 4：场地
+    private Integer authType;
+
     //用户手机号
     private String tele;
 
@@ -85,6 +88,14 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public Integer getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(Integer authType) {
+        this.authType = authType;
     }
 
     public String getTele() {

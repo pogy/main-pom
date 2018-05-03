@@ -77,6 +77,7 @@ public class PhotoUserService {
             userInfo.setWorksCount(totalAuthInfo.getWorksCount());
             userInfo.setSex(totalAuthInfo.getSex());
             userInfo.setCoverImgSrc(totalAuthInfo.getShowImg());
+            userInfo.setAuthType(totalAuthInfo.getUserType());
             authType = selAuthType(totalAuthInfo.getUserType(), totalAuthInfo.getSex());
         }
         userInfo.setTypeName(authType);

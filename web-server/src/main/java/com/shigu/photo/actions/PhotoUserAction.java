@@ -4,8 +4,8 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.photo.process.PhotoUserProcess;
 import com.shigu.main4.photo.process.PhotoWorksProcess;
+import com.shigu.main4.photo.vo.AuthApplyInfoVO;
 import com.shigu.main4.photo.vo.PhotoAuthorVO;
-import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.photo.bo.PhotoAuthorListBO;
 import com.shigu.photo.bo.PhotoUserProfileEditBO;
 import com.shigu.photo.bo.PhotoUserValidBO;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +65,18 @@ public class PhotoUserAction {
     @RequestMapping("member/userValidate")
     public String userValidate(HttpSession session, Model model) {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
-        model.addAttribute("userInfo", photoUserService.baseUserInfo(userId));
+        PhotoAuthWorkUserInfoWebVO userInfo = photoUserService.baseUserInfo(userId);
+        Integer authType = userInfo.getAuthType();
+        if (authType != null && authType > 0) {
+            return "redirect:/photo/member/userWorkList.htm";
+        }
+        List<AuthApplyInfoVO> applyInfo = photoUserProcess.userAuthApplyInfo(userId, 0);
+        //一个用户只会存在一条未审核的身份认证信息，若信息存在，说明已经有申请了，进行跳转
+        if (applyInfo.size() > 0) {
+            return "redirect:/photo/member/userWorkList.htm";
+        }
+        //普通用户且没有未审核的申请，可以进行申请
+        model.addAttribute("userInfo", userInfo);
         model.addAttribute("styleList", photoWorksService.selStyleListWithUser(null));
         return "photo/userValidate";
     }

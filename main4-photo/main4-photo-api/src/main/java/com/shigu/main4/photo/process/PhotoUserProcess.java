@@ -11,6 +11,8 @@ import com.shigu.main4.photo.vo.PhotoAuthorVO;
 import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
 import com.shigu.main4.photo.vo.PhotoUserVO;
 
+import java.util.List;
+
 /**
  * 路径: PhotoUserProcess
  * 工程: main-pom
@@ -105,6 +107,7 @@ public interface PhotoUserProcess {
 
     /**
      * 获取作者列表
+     *
      * @param bo
      * @return
      */
@@ -113,10 +116,19 @@ public interface PhotoUserProcess {
     /**
      * 查询身份认证申请列表
      *
-     * @param bo 查询条件
+     * @param bo     查询条件
      * @param pageNo 页码
-     * @param size 分页大小
+     * @param size   分页大小
      * @return
      */
     ShiguPager<AuthApplyInfoVO> selApplyInfo(AuthApplySearchBO bo, int pageNo, int size);
+
+    /**
+     * 查询用户身份审核信息
+     *
+     * @param userId
+     * @param applyStatus 审核状态 0：未审核 1：审核通过， 2：驳回
+     * @return
+     */
+    List<AuthApplyInfoVO> userAuthApplyInfo(Long userId, int applyStatus);
 }

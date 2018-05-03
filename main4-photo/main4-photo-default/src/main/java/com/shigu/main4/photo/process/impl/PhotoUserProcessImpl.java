@@ -55,6 +55,8 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
     @Autowired
     ShiguPhotoUserSelectedStyleRelationMapper shiguPhotoUserSelectedStyleRelationMapper;
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /**
      * 基本用户信息
      *
@@ -187,41 +189,41 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
 
     @Override
     public ShiguPager<PhotoAuthorVO> selAuthors(PhotoWorksBO bo) {
-        ShiguPager<PhotoAuthorVO> pager=new ShiguPager<>();
+        ShiguPager<PhotoAuthorVO> pager = new ShiguPager<>();
         pager.setContent(new ArrayList<>());
         pager.setNumber(bo.getPage());
 
-        ShiguPhotoUserExample shiguPhotoUserExample=new ShiguPhotoUserExample();
+        ShiguPhotoUserExample shiguPhotoUserExample = new ShiguPhotoUserExample();
         ShiguPhotoUserExample.Criteria criteria = shiguPhotoUserExample.createCriteria();
-        if(bo.getStyleId()!=null){
-            ShiguPhotoUserSelectedStyleRelationExample shiguPhotoUserSelectedStyleRelationExample=new ShiguPhotoUserSelectedStyleRelationExample();
+        if (bo.getStyleId() != null) {
+            ShiguPhotoUserSelectedStyleRelationExample shiguPhotoUserSelectedStyleRelationExample = new ShiguPhotoUserSelectedStyleRelationExample();
             shiguPhotoUserSelectedStyleRelationExample.createCriteria().andEffectedEqualTo(1).andStyleIdEqualTo(bo.getStyleId());
-            List<ShiguPhotoUserSelectedStyleRelation> list=shiguPhotoUserSelectedStyleRelationMapper.selectByExample(shiguPhotoUserSelectedStyleRelationExample);
-            if(list.size()==0){
-                pager.calPages(0,bo.getPageSize());
+            List<ShiguPhotoUserSelectedStyleRelation> list = shiguPhotoUserSelectedStyleRelationMapper.selectByExample(shiguPhotoUserSelectedStyleRelationExample);
+            if (list.size() == 0) {
+                pager.calPages(0, bo.getPageSize());
                 return pager;
             }
-            criteria.andAuthorIdIn(BeanMapper.getFieldList(list,"authId",Long.class));
+            criteria.andAuthorIdIn(BeanMapper.getFieldList(list, "authId", Long.class));
         }
-        if(bo.getSex()!=null){
+        if (bo.getSex() != null) {
             criteria.andSexEqualTo(bo.getSex());
         }
-        if(StringUtils.isNotBlank(bo.getTitle())){
-            criteria.andUserNameLike("%"+bo.getTitle()+"%");
+        if (StringUtils.isNotBlank(bo.getTitle())) {
+            criteria.andUserNameLike("%" + bo.getTitle() + "%");
         }
-        if(bo.getUserTypes()!=null&&bo.getUserTypes().size()>0){
+        if (bo.getUserTypes() != null && bo.getUserTypes().size() > 0) {
             criteria.andUserTypeIn(bo.getUserTypes());
         }
-        int count=shiguPhotoUserMapper.countByExample(shiguPhotoUserExample);
-        if(count>0){
-            shiguPhotoUserExample.setStartIndex((bo.getPage()-1)*bo.getPageSize());
+        int count = shiguPhotoUserMapper.countByExample(shiguPhotoUserExample);
+        if (count > 0) {
+            shiguPhotoUserExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
             shiguPhotoUserExample.setEndIndex(bo.getPageSize());
             shiguPhotoUserExample.setOrderByClause("author_id desc");
             List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByExample(shiguPhotoUserExample);
             List<PhotoAuthorVO> photoAuthorVOS = shiguPhotoUsers.stream().map(shiguPhotoUser -> {
                 PhotoAuthorVO vo = new PhotoAuthorVO();
                 vo.setAddress(shiguPhotoUser.getAddress());
-                vo.setHeadImgSrc(shiguPhotoUser.getHeadImg()==null?"http://style.571xz.com/v6/photo/css/img/headImg.png":shiguPhotoUser.getHeadImg());
+                vo.setHeadImgSrc(shiguPhotoUser.getHeadImg() == null ? "http://style.571xz.com/v6/photo/css/img/headImg.png" : shiguPhotoUser.getHeadImg());
                 vo.setImgsrc(shiguPhotoUser.getShowImg());
                 vo.setUserId(shiguPhotoUser.getUserId());
                 vo.setUserNick(shiguPhotoUser.getUserName());
@@ -229,7 +231,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
             }).collect(Collectors.toList());
             pager.setContent(photoAuthorVOS);
         }
-        pager.calPages(count,bo.getPageSize());
+        pager.calPages(count, bo.getPageSize());
         return pager;
     }
 
@@ -290,29 +292,17 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
             userExample.createCriteria().andAuthorIdIn(authIds);
             authIdUserIdMap = shiguPhotoUserMapper.selectByExample(userExample).stream().collect(Collectors.toMap(ShiguPhotoUser::getAuthorId, ShiguPhotoUser::getUserId));
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         for (PhotoAuthApply apply : photoAuthApplies) {
-            AuthApplyInfoVO vo = new AuthApplyInfoVO();
-            vo.setPhotoAuthApplyId(apply.getAuthApplyId());
-            vo.setUserId(authIdUserIdMap.get(apply.getAuthId()));
-            vo.setPhotoUserName(apply.getUserName());
-            vo.setUserType(parseAuthType(apply.getAuthType()));
-            vo.setConcatPhone(apply.getAuthPhone());
-            vo.setShowImgUrl(apply.getShowImg());
-            vo.setCodeImgUrl(apply.getCodeImg());
-            vo.setLogMessage(apply.getModifyLog());
-            vo.setApplyTime(sdf.format(apply.getApplyTime()));
-            if (apply.getModifyTime() != null) {
-                vo.setModifyTime(sdf.format(apply.getModifyTime()));
-            }
             // 风格的先不管，有需要时再加
-            vos.add(vo);
+            vos.add(mapApplyToApplyVO(authIdUserIdMap.get(apply.getAuthId()), apply));
         }
         return pager;
     }
 
     /**
      * 解析身份类型
+     *
      * @param authType
      * @return
      */
@@ -337,5 +327,51 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
                 break;
         }
         return typeName;
+    }
+
+    @Override
+    public List<AuthApplyInfoVO> userAuthApplyInfo(Long userId, int applyStatus) {
+        List<AuthApplyInfoVO> result = new ArrayList<>();
+        if (userId == null) {
+            return result;
+        }
+        ShiguPhotoUser user = new ShiguPhotoUser();
+        user.setUserId(userId);
+        user = shiguPhotoUserMapper.selectOne(user);
+        if (user == null) {
+            return result;
+        }
+        Long authorId = user.getAuthorId();
+        PhotoAuthApply apply = new PhotoAuthApply();
+        apply.setAuthId(authorId);
+        apply.setApplyStatus(applyStatus);
+        List<PhotoAuthApply> applyList = photoAuthApplyMapper.select(apply);
+        for (PhotoAuthApply authApply : applyList) {
+            result.add(mapApplyToApplyVO(userId, authApply));
+        }
+        return result;
+    }
+
+    /**
+     * 申请信息处理
+     * @param userId
+     * @param apply
+     * @return
+     */
+    private AuthApplyInfoVO mapApplyToApplyVO(Long userId, PhotoAuthApply apply) {
+        AuthApplyInfoVO vo = new AuthApplyInfoVO();
+        vo.setPhotoAuthApplyId(apply.getAuthApplyId());
+        vo.setUserId(userId);
+        vo.setPhotoUserName(apply.getUserName());
+        vo.setUserType(parseAuthType(apply.getAuthType()));
+        vo.setConcatPhone(apply.getAuthPhone());
+        vo.setShowImgUrl(apply.getShowImg());
+        vo.setCodeImgUrl(apply.getCodeImg());
+        vo.setLogMessage(apply.getModifyLog());
+        vo.setApplyTime(sdf.format(apply.getApplyTime()));
+        if (apply.getModifyTime() != null) {
+            vo.setModifyTime(sdf.format(apply.getModifyTime()));
+        }
+        return vo;
     }
 }
