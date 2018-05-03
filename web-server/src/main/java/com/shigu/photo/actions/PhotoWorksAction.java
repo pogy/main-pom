@@ -138,11 +138,13 @@ public class PhotoWorksAction {
         PhotoWorksChangeVO photoWorksChangeVO = photoWorksService.selUpdateBean(id);
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO ->
-                        new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName(), photoWorksChangeVO.getStyleIds().contains(photoStyleVO.getStyleId()))
+                        new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName(),
+                                photoWorksChangeVO.getStyleIds().contains(photoStyleVO.getStyleId())?true:null)
                 ).collect(Collectors.toList()));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
                 .stream().map(photoCatVO ->
-                        new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname(), photoWorksChangeVO.getCate().equals(photoCatVO.getCid()))
+                        new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname(),
+                                photoWorksChangeVO.getCate().equals(photoCatVO.getCid())?true:null)
                 ).collect(Collectors.toList()));
         model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
         Map<String,Long> query=new HashMap<>();
