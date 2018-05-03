@@ -2,6 +2,7 @@ package com.shigu.photo.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.process.PhotoUserProcess;
 import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.main4.photo.vo.AuthApplyInfoVO;
@@ -144,10 +145,11 @@ public class PhotoUserAction {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
         model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("0", "男模"), new PhotoCateVO("1", "女模")));
-        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(1));
+        PhotoWorksBO photoWorksBO = bo.toPhotoWorksBO(1);
+        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(photoWorksBO);
         model.addAttribute("modelList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
-        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/photoModel";
     }
 
@@ -162,11 +164,12 @@ public class PhotoUserAction {
     public String photoOrg(PhotoAuthorListBO bo, Model model) {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        model.addAttribute("childRoleList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
-        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(2));
+        model.addAttribute("childOrgList", Arrays.asList(new PhotoCateVO("2", "摄影师"), new PhotoCateVO("3", "摄影公司")));
+        PhotoWorksBO photoWorksBO = bo.toPhotoWorksBO(2);
+        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(photoWorksBO);
         model.addAttribute("orgList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
-        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/photoOrg";
     }
 
@@ -181,10 +184,11 @@ public class PhotoUserAction {
     public String photoPlace(PhotoAuthorListBO bo, Model model) {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO -> new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName())).collect(Collectors.toList()));
-        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(bo.toPhotoWorksBO(null));
+        PhotoWorksBO photoWorksBO = bo.toPhotoWorksBO(null);
+        ShiguPager<PhotoAuthorVO> photoAuthorVOShiguPager = photoUserProcess.selAuthors(photoWorksBO);
         model.addAttribute("placeList", photoAuthorVOShiguPager.getContent());
         model.addAttribute("query", bo);
-        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(10));
+        model.addAttribute("pageOption", photoAuthorVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/photoPlace";
     }
 

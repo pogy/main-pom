@@ -19,7 +19,7 @@ public class PhotoAuthorListBO {
             if(superType==1){
                 bo.setUserTypes(Collections.singletonList(1));
                 if(crid!=null){
-                    bo.setSex(coid);
+                    bo.setSex(crid);
                 }
             }else{
                 if(coid==null){
@@ -36,7 +36,7 @@ public class PhotoAuthorListBO {
         }
         bo.setTitle(keyword);
         bo.setPage(page);
-        bo.setPageSize(10);
+        bo.setPageSize(20);
         bo.setStyleId(sid);
         return bo;
     }
