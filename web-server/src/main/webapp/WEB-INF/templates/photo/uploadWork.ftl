@@ -72,7 +72,7 @@
         </div>
         <div class="validateItem">
             <div class="formGroup styleType">
-                <label>风格：</label>
+                <label><i>*</i>风格：</label>
                 <p>（多选，最多可选5项）</p>
             </div>
         </div>
@@ -228,9 +228,7 @@
         type="radio"
         autocomplete="off"
             name="saveChoice"
-            <#if $it.value??>
-                value="${$it.value!}"
-            </#if>
+            value="0"
             checked
     >
     <i class="before"></i>
@@ -273,9 +271,7 @@
         type="radio"
         autocomplete="off"
             name="saveChoice"
-            <#if $it.value??>
-                value="${$it.value!}"
-            </#if>
+            value="0"
             <#if $it.checked??>
                 checked
             </#if>

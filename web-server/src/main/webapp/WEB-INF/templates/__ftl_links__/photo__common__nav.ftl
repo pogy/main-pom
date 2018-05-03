@@ -17,7 +17,7 @@
                     场地
                 </a>
         </div>
-        <a href="/photo/auth/uploadWork.htm" class="p-uploadBtn fr">上传作品</a>
+        <a href="/photo/auth/uploadWork.htm" class="p-uploadBtn fr"><i class="icon-upload"></i>上传作品</a>
         <div class="p-search fr">
             <div class="p-currentText" data-type="works"><span>作品</span><i class="icon-downarrow down"></i><i class="icon-uparrow up none"></i></div>
             <div class="p-searchType">
