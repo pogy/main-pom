@@ -727,4 +727,9 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             daifaGgoodsReturnFeeMapper.updateByPrimaryKeySelective(update);
         }
     }
+
+    @Override
+    public List<String> selTasksShopPhone(Long sellerId) {
+        return daifaGgoodsTasksMapper.selectTodayShopPhone(sellerId);
+    }
 }

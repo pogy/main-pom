@@ -169,4 +169,16 @@
 				t1.remark1,
 				t1.remark2
 		</sql>
+
+    <select id="selectTodayShopPhone" resultType="java.lang.String">
+        select if(t3.login_phone is null or t3.login_phone="",t2.telephone,t3.login_phone) from
+        daifa_ggoods_tasks t1,
+        shigu_mall.shigu_shop t2,
+        shigu_mall.member_user t3
+        where (t1.allocat_date=date_format(create_time, "%Y%m%d") =now() or t1.use_status=1)
+        and t1.seller_id=${sellerId}
+        and t1.store_id=t2.shop_id
+        and t2.user_id=t3.user_id
+        GROUP BY t3.user_id
+    </select>
 </mapper>
