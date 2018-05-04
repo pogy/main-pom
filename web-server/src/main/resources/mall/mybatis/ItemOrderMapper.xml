@@ -169,7 +169,64 @@
     </resultMap>
 
 
+    <resultMap id="dfOrder" type="com.shigu.seller.vo.DfOrderVo">
+        <id column="oid" property="oid"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="size" property="size"/>
+        <result column="color" property="color"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="num" property="num"/>
+        <result column="in_stok" property="inStok"/>
+        <result column="price" property="price"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="create_time" property="createTime"/>
+        <result column="title" property="title"/>
+    </resultMap>
 
+    <resultMap id="dfGoods" type="com.shigu.seller.vo.DfGoodsVo">
+        <id column="goods_id" property="goodsId"/>
+        <result column="size" property="size"/>
+        <result column="color" property="color"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="num" property="num"/>
+        <result column="price" property="price"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="title" property="title"/>
+    </resultMap>
+
+    <select id="getDropShippingOrder" resultMap="dfOrder">
+        SELECT io.oid ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,ios.goods_id,
+        ios.price,ios.pic_url,ios.title,sgt.goods_no,io.create_time
+        FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
+        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
+        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
+        <if test="oId != null">
+            AND io.oid=#{oId}
+        </if>
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
+        </if>
+        <if test="shopId != null">
+            AND ios.shop_id=#{shopId}
+        </if>
+        GROUP BY ios.sku_id,ios.goods_id
+    </select>
+
+
+    <select id="getDropShippingGoods" resultMap="dfGoods">
+        SELECT ios.goods_id ,ios.size,ios.color,SUM(ios.num) AS num,
+        ios.price,ios.pic_url,ios.title,sgt.goods_no
+        FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
+        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
+        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
+        </if>
+        <if test="shopId != null">
+            AND ios.shop_id=#{shopId}
+        </if>
+        GROUP BY ios.sku_id,ios.goods_id
+    </select>
 
 
 </mapper>
