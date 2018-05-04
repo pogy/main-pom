@@ -49,6 +49,11 @@
             <artifactId>opensearch</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-store-default</artifactId>
+            <version>4.2.4-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

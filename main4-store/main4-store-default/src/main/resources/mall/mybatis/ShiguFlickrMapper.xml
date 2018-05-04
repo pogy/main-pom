@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguFlickrMapper" >
+    <select id="countFlickrPicture" resultType="int">
+        select count(1) from shigu_flickr_picture sfp where sfp.f_id=#{fId} GROUP BY sfp.f_id
+    </select>
+
+    <resultMap id="Flickr" type="com.shigu.main4.vo.FlickrShow">
+        <id property="fId" column="f_id"/>
+        <result property="name" column="f_name"/>
+        <result property="cover" column="f_cover"/>
+        <result property="number" column="count(1)"/>
+        <result property="createTime" column="create_time"/>
+        <result property="clicks" column="clicks"/>
+    </resultMap>
+    <select id="selectFlickrByCategory" resultMap="Flickr">
+        select sf.f_name,sf.f_id,sf.create_time,sf.f_cover,sf.clicks,count(1) from shigu_flickr sf LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id
+        where
+        <if test="cId!=null">
+            sf.c_id=#{cId} AND
+        </if>
+        <if test="webSite!=null and webSite!=''">
+            sf.web_site=#{webSite} AND
+        </if>
+        sfp.pic_status=#{status} AND sfp.pic_status=sf.f_status GROUP BY sf.f_id
+    </select>
+
+    <resultMap id="FlickrDetails" type="com.shigu.main4.vo.FlickrDetails">
+        <id property="fId" column="f_id"/>
+        <result property="name" column="f_name"/>
+        <result property="desc" column="f_desc"/>
+        <result property="number" column="number"/>
+        <result property="picUrls" column="urls"/>
+        <result property="shopQQ" column="im_qq"/>
+        <result property="shopAliww" column="im_aliww"/>
+        <result property="storeId" column="shop_id"/>
+        <result property="storeName" column="shop_name"/>
+    </resultMap>
+    <select id="selectFlickrPictureByfId" resultMap="FlickrDetails">
+        SELECT ss.im_qq,ss.im_aliww,ss.shop_name,ss.shop_id,sf.f_id,sf.f_name,COUNT(sfp.pic_url) AS number,sf.f_desc,GROUP_CONCAT(sfp.pic_url) AS urls
+        FROM shigu_flickr AS sf LEFT JOIN shigu_flickr_picture AS sfp ON sf.f_id=sfp.f_id LEFT JOIN shigu_shop AS ss ON sf.store_id=ss.shop_id
+        WHERE
+        <if test="fId!=null">
+        sf.f_id=#{fId} AND
+        </if>
+        sf.f_status=#{status}
+    </select>
+</mapper>
