@@ -1,5 +1,7 @@
 package com.shigu.photo.vo;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -59,6 +61,10 @@ public class PhotoAuthWorkUserInfoWebVO implements Serializable {
     }
 
     public String getImgSrc() {
+        // 默认头像
+        if (StringUtils.isBlank(imgSrc)) {
+            imgSrc = "http://style.571xz.com/v6/photo/css/img/userHomePage/userDefault.png";
+        }
         return imgSrc;
     }
 
