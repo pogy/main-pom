@@ -4,6 +4,7 @@ import com.openJar.commons.MD5Attestation;
 import com.openJar.utils.JsonUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.TbUploadService;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.LoginMsgVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
@@ -86,28 +87,32 @@ public class UserLoginAction {
     @Autowired
     UserAccountService userAccountService;
 
+    @Autowired
+    private TbUploadService tbUploadService;
+
     @RequestMapping("frameLogin")
-    public String frameLogin( HttpSession session, Model model,String backUrl){
+    public String frameLogin(HttpSession session, Model model, String backUrl) {
         model.addAttribute("backUrl", backUrl);
         return "login/loginWindow";
     }
 
     /**
      * 登陆
-     * @param bo 登陆参数
+     *
+     * @param bo    登陆参数
      * @param model
      * @return
      */
     @RequestMapping("login")
-    public String login(LoginBO bo, HttpSession session, Model model){
+    public String login(LoginBO bo, HttpSession session, Model model) {
         //验证一下,是否已经登陆
         Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.isAuthenticated()&&currentUser.hasRole(UserType.MEMBER.getValue())
-                &&session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())!=null) {//如果已经登陆，去登陆页面
-            return "redirect:"+loginSuccessUrl(bo.getBackUrl());
+        if (currentUser.isAuthenticated() && currentUser.hasRole(UserType.MEMBER.getValue())
+                && session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue()) != null) {//如果已经登陆，去登陆页面
+            return "redirect:" + loginSuccessUrl(bo.getBackUrl());
         }
         //把回调放到参数去
-        if(bo.getBackUrl()!=null&&!"".equals(bo.getBackUrl())){
+        if (bo.getBackUrl() != null && !"".equals(bo.getBackUrl())) {
             model.addAttribute("backUrl", bo.getBackUrl());
         }
         //加广告
@@ -208,15 +213,15 @@ public class UserLoginAction {
     public void jsonplogin(@Valid JsonpLoginBO bo, BindingResult result, HttpServletRequest request
             , HttpServletResponse response) throws IOException {
         //验证数据
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
 //            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'"+result.getAllErrors().get(0).getDefaultMessage()+"'}",response);
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'002'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'OK':false,'msg':'002'}", response);
             return;
         }
         //jsonp登陆
         Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.isAuthenticated()&&currentUser.hasRole(UserType.MEMBER.getValue())) {//如果已经登陆，去登陆页面
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':true}",response);
+        if (currentUser.isAuthenticated() && currentUser.hasRole(UserType.MEMBER.getValue())) {//如果已经登陆，去登陆页面
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'OK':true}", response);
             return;
         }
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
@@ -227,35 +232,36 @@ public class UserLoginAction {
         try {
             currentUser.login(token);
             currentUser.hasRole(RoleEnum.STORE.getValue());
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':true}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'OK':true}", response);
         } catch (AuthenticationException e) {
-            if(e instanceof LoginAuthException){
-                LoginAuthException ex= (LoginAuthException) e;
-                if(ex.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//需要绑定手机号
+            if (e instanceof LoginAuthException) {
+                LoginAuthException ex = (LoginAuthException) e;
+                if (ex.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)) {//需要绑定手机号
 //                    ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'需要绑定手机号','bindUrl':'"+xzSdkClient.getMainHost()+"userPhoneBind.htm'}",response);
-                    ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'003','bindUrl':'"+xzSdkClient.getMainHost()+"userPhoneBind.htm'}",response);
+                    ResultRetUtil.returnJsonp(bo.getCallback(), "{'OK':false,'msg':'003','bindUrl':'" + xzSdkClient.getMainHost() + "userPhoneBind.htm'}", response);
                     return;
                 }
             }
 //            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'账号或密码错误'}",response);
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'OK':false,'msg':'001'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'OK':false,'msg':'001'}", response);
         }
     }
 
 
     /**
      * 其它第三方登陆
+     *
      * @return
      */
     @RequestMapping("ortherLogin")
-    public String ortherLogin(int ortherLoginType,String backUrl,HttpServletRequest request,HttpSession session){
-        String url="";
-        switch(ortherLoginType) {
+    public String ortherLogin(int ortherLoginType, String backUrl, HttpServletRequest request, HttpSession session) {
+        String url = "";
+        switch (ortherLoginType) {
             case 1:
-                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri="+xzSdkClient.getYjHost()
-                        +"redirect_auth.jsp&state=login&view=web";
-                if(HttpRequestUtil.checkAgentIsMobile(request)){
-                    url=url.replace("&view=web","&view=wap");
+                url = "https://oauth.taobao.com/authorize?response_type=code&client_id=21720662&redirect_uri=" + xzSdkClient.getYjHost()
+                        + "redirect_auth.jsp&state=login&view=web";
+                if (HttpRequestUtil.checkAgentIsMobile(request)) {
+                    url = url.replace("&view=web", "&view=wap");
                 }
                 break;
             case 2:
@@ -265,12 +271,12 @@ public class UserLoginAction {
                 url = "http://fuwu.paipai.com/my/app/authorizeGetAccessToken.xhtml?responseType=access_token&appOAuthID=700224255";
                 break;
             case 4: {
-                HashMap e = new HashMap ();
-                e.put ("state", "wx591514a902a6280d__snsapi_userinfo");
-                e.put ("date", TypeConvert.formatDate (new Date ()));
-                String sign = MD5Attestation.signParamString (e);
+                HashMap e = new HashMap();
+                e.put("state", "wx591514a902a6280d__snsapi_userinfo");
+                e.put("date", TypeConvert.formatDate(new Date()));
+                String sign = MD5Attestation.signParamString(e);
                 url = "http://wx.571xz.com/shigu_weixin/wxoauth2toOauth2WzPage.action?state=wx591514a902a6280d__snsapi_userinfo&date="
-                        + TypeConvert.formatDate (new Date ()) + "&sign=" + sign;
+                        + TypeConvert.formatDate(new Date()) + "&sign=" + sign;
                 break;
             }
             case 5: {
@@ -281,93 +287,127 @@ public class UserLoginAction {
                 break;
             }
             //京东授权
-            case 6:{
+            case 6: {
                 url = "http://www.571xz.com/jd/login.htm";
                 break;
             }
         }
-        session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
-        return "redirect:"+url;
+        session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
+        return "redirect:" + url;
     }
 
     /**
      * 第三方登陆回调
      * http://127.0.0.1:8080/loginback.htm?userName=de55&key=5745&type=tb
+     *
      * @return
      */
     @RequestMapping("loginback")
     public String loginback(@Valid LoginBackBO bo, BindingResult result, HttpServletRequest request,
                             HttpSession session) throws Main4Exception {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
         //这里用了老的代码
         String usernamezhong = bo.getUserName();
-        Map<String,String> map=new HashMap<String, String>();
+        Map<String, String> map = new HashMap<String, String>();
         try {//为什么decode来decode去,不知道,返回照做
-            usernamezhong= URLDecoder.decode(URLDecoder.decode(bo.getUserName(),"utf-8"),"utf-8");
+            usernamezhong = URLDecoder.decode(URLDecoder.decode(bo.getUserName(), "utf-8"), "utf-8");
             bo.setUserName(URLEncoder.encode(URLEncoder.encode(usernamezhong, "utf-8"), "utf-8"));
         } catch (UnsupportedEncodingException e1) {
-            logger.error("用户名转义出错",e1);
+            logger.error("用户名转义出错", e1);
         }
         map.put("userName", bo.getUserName());
         map.put("key", bo.getKey());
         map.put("type", bo.getType());
-        if(MD5Attestation.unsignParamString (map, bo.getSign())){//去登陆
+        if (MD5Attestation.unsignParamString(map, bo.getSign())) {//去登陆
             Subject currentUser = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                     usernamezhong, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
             //选择登陆方式
             LoginFromType loginFromType;
-            if(bo.getType().equals("ali")){
-                loginFromType= LoginFromType.ALI;
-            }else if(bo.getType().equals("tb")){
-                loginFromType= LoginFromType.TAOBAO;
-            }else if(bo.getType().equals("qq")){
-                loginFromType= LoginFromType.QQ;
-            }else if(bo.getType().equals("wx")){
-                loginFromType= LoginFromType.WX;
-            }else{
+            if (bo.getType().equals("ali")) {
+                loginFromType = LoginFromType.ALI;
+            } else if (bo.getType().equals("tb")) {
+                loginFromType = LoginFromType.TAOBAO;
+            } else if (bo.getType().equals("qq")) {
+                loginFromType = LoginFromType.QQ;
+            } else if (bo.getType().equals("wx")) {
+                loginFromType = LoginFromType.WX;
+            } else {
                 throw new Main4Exception("登陆方式传入有错");
             }
             token.setLoginFromType(loginFromType);
             token.setRememberMe(true);
             token.setSubKey(bo.getKey());
-            try {
-                currentUser.login(token);
-                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType== LoginFromType.TAOBAO){//有店铺
-                    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-                    if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
-                        memberSimpleService.updateShopNick(ps.getLogshop().getShopId(),usernamezhong);
-                    }
-                }
-                //得到回调用地址
-                String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                return "redirect:"+loginSuccessUrl(backUrl);
-            } catch (LoginAuthException e) {
-                if(e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//还没绑定星座网用户,去绑定一下
-                    return "redirect:userPhoneBind.htm";
-                }else{
-                    throw e;
+            tryLogin(currentUser, token, session);
+            // TODO: 18-4-27 原具体登陆，提取为tryLogin方法，先保留一段时间，确认稳定后移除
+            //try {
+            //    currentUser.login(token);
+            //    if (currentUser.hasRole(RoleEnum.STORE.getValue()) && loginFromType == LoginFromType.TAOBAO) {//有店铺
+            //        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            //        if (StringUtils.isEmpty(ps.getLogshop().getTbNick())) {//需要绑定一下淘宝到店
+            //            memberSimpleService.updateShopNick(ps.getLogshop().getShopId(), usernamezhong);
+            //        }
+            //    }
+            //    //得到回调用地址
+            //    String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            //    session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            //    return "redirect:" + loginSuccessUrl(backUrl);
+            //} catch (LoginAuthException e) {
+            //    if (e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)) {//还没绑定星座网用户,去绑定一下
+            //        return "redirect:userPhoneBind.htm";
+            //    } else {
+            //        throw e;
+            //    }
+            //}
+        }
+        return "redirect:" + memberFilter.getSuccessUrl();
+    }
+
+    /**
+     * 尝试登陆
+     *
+     * @param currentUser
+     * @param token
+     * @param session
+     * @return
+     */
+    public String tryLogin(Subject currentUser, CaptchaUsernamePasswordToken token, HttpSession session) {
+        try {
+            currentUser.login(token);
+            if (currentUser.hasRole(RoleEnum.STORE.getValue()) && token.getLoginFromType() == LoginFromType.TAOBAO) {//有店铺
+                PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+                if (StringUtils.isEmpty(ps.getLogshop().getTbNick())) {//需要绑定一下淘宝到店
+                    memberSimpleService.updateShopNick(ps.getLogshop().getShopId(), token.getUsername());
                 }
             }
+            //得到回调用地址
+            String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            return "redirect:" + loginSuccessUrl(backUrl);
+        } catch (LoginAuthException e) {
+            if (e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)) {//还没绑定星座网用户,去绑定一下
+                return "redirect:/userPhoneBind.htm";
+            } else {
+                throw e;
+            }
         }
-        return "redirect:"+memberFilter.getSuccessUrl();
     }
 
     /**
      * 手机号码登陆,验证码
+     *
      * @return
      */
     @RequestMapping("loginGetMsgCode")
     @ResponseBody
     public JSONObject loginPhoneVerification(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
-        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+        String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if (imgcode == null || !imgcode.equals(imgValidate)) {//图片验证通不过
             throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
         }
-        String code= RedomUtil.redomNumber(6);
+        String code = RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
 //        //System.out.println(code);
@@ -376,12 +416,13 @@ public class UserLoginAction {
 
     /**
      * 手机号码登陆,无验证码
+     *
      * @return
      */
     @RequestMapping("loginWindowGetMsgCode")
     @ResponseBody
     public JSONObject loginWindowGetMsgCode(String telephone, HttpSession session) {
-        String code= RedomUtil.redomNumber(6);
+        String code = RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
         return JsonResponseUtil.success();
@@ -390,13 +431,13 @@ public class UserLoginAction {
     @ResponseBody
     @RequestMapping("telephoneLogin")
     public JSONObject telephoneLogin(String telephone, String msgValidate, HttpSession session, HttpServletRequest request) throws JsonErrException {
-        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue());
-        if(phoneCode==null||!phoneCode.getVerify().equals(msgValidate)
-                ||!phoneCode.getPhone().equals(telephone)){//验证不通过
+        PhoneVerify phoneCode = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue());
+        if (phoneCode == null || !phoneCode.getVerify().equals(msgValidate)
+                || !phoneCode.getPhone().equals(telephone)) {//验证不通过
             throw new JsonErrException("验证码错误");
-        }else {
+        } else {
             try {
-                phoneLogin(request.getRemoteAddr(),telephone);
+                phoneLogin(request.getRemoteAddr(), telephone);
             } catch (Main4LoginException e) {
                 throw new JsonErrException(e.getMessage());
             } catch (Main4Exception e) {
@@ -409,6 +450,7 @@ public class UserLoginAction {
 
     /**
      * 忘记密码
+     *
      * @return
      */
     @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
@@ -422,8 +464,8 @@ public class UserLoginAction {
         if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
             throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
         }
-        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+        String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if (imgcode == null || !imgcode.equals(imgValidate)) {//图片验证通不过
             throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
         }
         session.setAttribute("forgotStep", 1);
@@ -435,7 +477,7 @@ public class UserLoginAction {
     @RequestMapping("forgetPasswordStepTwo")
     public JSONObject forgetPasswordStepTwo(String msgValidate, HttpServletRequest request, HttpSession session) throws Main4Exception {
         varForgotStep(session, 2);
-        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        PhoneVerify phoneCode = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
         if (phoneCode == null || !phoneCode.getVerify().equals(msgValidate)) {//验证不通过
             throw new JsonErrException("您输入的验证码不正确").addErrMap("ele", "msgValidate");
         }
@@ -459,7 +501,7 @@ public class UserLoginAction {
         }
         session.removeAttribute("telephone");
         session.removeAttribute("forgotStep");
-        phoneLogin(request.getRemoteAddr(),telephone);
+        phoneLogin(request.getRemoteAddr(), telephone);
         return JsonResponseUtil.success();
     }
 
@@ -475,12 +517,12 @@ public class UserLoginAction {
         if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
             throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
         }
-        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+        String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if (imgcode == null || !imgcode.equals(imgValidate)) {//图片验证通不过
             throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
         }
         session.setAttribute("forgotStep", 2);
-        String code= RedomUtil.redomNumber(6);
+        String code = RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
         sendMsgService.sendVerificationCode(telephone, code);
 //        //System.out.println(code);
@@ -490,20 +532,20 @@ public class UserLoginAction {
     @ResponseBody
     @RequestMapping(value = "forgetPassword", method = RequestMethod.POST)
     public JSONObject doForgetPassword(String telephone, String imgValidate, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception {
-        if(imgValidate !=null){
+        if (imgValidate != null) {
             session.setAttribute("gotPassStep", 1);
             //是提交
-            PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
-            if(phoneCode==null||!phoneCode.getVerify().equals(imgValidate)
-                    ||!phoneCode.getPhone().equals(telephone)){//验证不通过
-                model.addAttribute("errorString","您输入的验证码不正确");
-            }else{//跳修改密码页面
+            PhoneVerify phoneCode = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+            if (phoneCode == null || !phoneCode.getVerify().equals(imgValidate)
+                    || !phoneCode.getPhone().equals(telephone)) {//验证不通过
+                model.addAttribute("errorString", "您输入的验证码不正确");
+            } else {//跳修改密码页面
                 try {
-                    phoneLogin(request.getRemoteAddr(),telephone);
-                    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+                    phoneLogin(request.getRemoteAddr(), telephone);
+                    PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                     phoneCode.setUserId(ps.getUserId());
                 } catch (Main4LoginException e) {
-                    model.addAttribute("errorString",e.getMessage());
+                    model.addAttribute("errorString", e.getMessage());
                 }
             }
         }
@@ -512,11 +554,12 @@ public class UserLoginAction {
 
     /**
      * 手机号码登陆
+     *
      * @param remoteAddr
      * @param phone
      * @throws Main4Exception
      */
-    private void phoneLogin(String remoteAddr,String phone) throws Main4Exception {
+    private void phoneLogin(String remoteAddr, String phone) throws Main4Exception {
         Subject currentUser = SecurityUtils.getSubject();
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                 phone, null, false, remoteAddr, "", UserType.MEMBER);
@@ -528,23 +571,25 @@ public class UserLoginAction {
             currentUser.hasRole(RoleEnum.STORE.getValue());
         } catch (LoginAuthException e) {
             //如果手机账号不存在
-            if(e.getMsgback().equals(LoginErrorEnum.NO_USER)){//用户不存在
-                throw new Main4LoginException("账号["+phone+"]暂未注册!");
-            }else{
-                logger.error(phone+"用户数据有问题",e);
-                throw new Main4Exception(phone+"用户数据有问题");
+            if (e.getMsgback().equals(LoginErrorEnum.NO_USER)) {//用户不存在
+                throw new Main4LoginException("账号[" + phone + "]暂未注册!");
+            } else {
+                logger.error(phone + "用户数据有问题", e);
+                throw new Main4Exception(phone + "用户数据有问题");
             }
         }
     }
+
     /**
      * 发送忘记密码短信
+     *
      * @param phone
      * @return
      */
     @RequestMapping("forgetPhoneVerification")
     @ResponseBody
-    public JSONObject forgetPhoneVerification(String phone,HttpSession session){
-        String code= RedomUtil.redomNumber(6);
+    public JSONObject forgetPhoneVerification(String phone, HttpSession session) {
+        String code = RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(phone, code));
         sendMsgService.sendVerificationCode(phone, code);
 //        //System.out.println(code);
@@ -553,31 +598,32 @@ public class UserLoginAction {
 
     /**
      * 获取登陆状态
+     *
      * @return
      */
     @RequestMapping("jsonislogin")
     @ResponseBody
-    public JSONObject islogin(String callback,HttpServletResponse response, HttpSession session) throws IOException {
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        JSONObject obj=JSONObject.fromObject("{}");
-        if(ps!=null){
-            obj.element("OK","OK");
-            obj.element("userNick",ps.getUserNick());
-            obj.element("userName",ps.getLoginName());
-            obj.element("loginName",ps.getLoginName());
-            obj.element("userId",ps.getUserId());
-            obj.element("memberVipIs",ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
+    public JSONObject islogin(String callback, HttpServletResponse response, HttpSession session) throws IOException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        JSONObject obj = JSONObject.fromObject("{}");
+        if (ps != null) {
+            obj.element("OK", "OK");
+            obj.element("userNick", ps.getUserNick());
+            obj.element("userName", ps.getLoginName());
+            obj.element("loginName", ps.getLoginName());
+            obj.element("userId", ps.getUserId());
+            obj.element("memberVipIs", ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
             if (ps.getLogshop() != null) {
-                obj.element("userType","gys");
-            }else{
-                obj.element("userType","fxs");
+                obj.element("userType", "gys");
+            } else {
+                obj.element("userType", "fxs");
             }
-        }else{
-            obj.element("OK","error");
-            obj.element("result", URLEncoder.encode(URLEncoder.encode("没有登陆","utf-8"),"utf-8"));
+        } else {
+            obj.element("OK", "error");
+            obj.element("result", URLEncoder.encode(URLEncoder.encode("没有登陆", "utf-8"), "utf-8"));
         }
-        PrintWriter pw=response.getWriter();
-        pw.write(callback+"("+obj+")");
+        PrintWriter pw = response.getWriter();
+        pw.write(callback + "(" + obj + ")");
         pw.flush();
         pw.close();
         return null;
@@ -585,73 +631,78 @@ public class UserLoginAction {
 
     /**
      * 代发拿UID
+     *
      * @param session
      * @return
      */
     @RequestMapping("selLoginUid")
     @ResponseBody
-    public Long selLoginUid(HttpSession session){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps==null){
+    public Long selLoginUid(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null) {
             return -1L;
-        }else{
+        } else {
             return ps.getUserId();
         }
     }
 
     /**
      * 外站查询登陆信息
+     *
      * @param session
      * @return
      */
     @RequestMapping("selLoginTbNick")
     @ResponseBody
     public JSONObject selLoginTbNick(HttpSession session) throws JsonErrException {
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps==null){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null) {
             throw new JsonErrException("没有登陆");
         }
-        LoginMsgVO vo=new LoginMsgVO();
+        LoginMsgVO vo = new LoginMsgVO();
         vo.setUserId(ps.getUserId());
-        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
+        if (ps.getLoginFromType().equals(LoginFromType.TAOBAO)) {
             vo.setFromTaobao(true);
             vo.setTbNick(ps.getLoginName());
-        }else{
+        } else {
             vo.setFromTaobao(false);
         }
-        if (ps.getLogshop()!=null) {
+        if (ps.getLogshop() != null) {
             vo.setImSeller(true);
         }
-        return JSONObject.fromObject(vo).element("result","success");
+        return JSONObject.fromObject(vo).element("result", "success");
     }
+
     /**
      * 代发拿UID
+     *
      * @param session
      * @return
      */
     @RequestMapping("selLoginSubUid")
     @ResponseBody
-    public Long selLoginSubUid(HttpSession session){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps==null){
+    public Long selLoginSubUid(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps == null) {
             return -1L;
-        }else{
+        } else {
             return ps.getSubUserId();
         }
     }
 
     /**
      * 一键,拿nick
+     *
      * @param session
      * @return
      */
     @RequestMapping("selLoginNick")
     @ResponseBody
-    public String selLoginNick(HttpSession session){
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps!=null&&ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
+    public String selLoginNick(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null && ps.getLoginFromType().equals(LoginFromType.TAOBAO)) {
             return ps.getLoginName();
-        }else{
+        } else {
             return "";
         }
     }
@@ -660,44 +711,46 @@ public class UserLoginAction {
      * 登出
      */
     @RequestMapping("membertc")
-    public String logout(String backUrl,HttpServletRequest request){
+    public String logout(String backUrl, HttpServletRequest request) {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
-        String loginUrl=memberFilter.getLoginUrl();
-        if(backUrl!=null&&!"".equals(backUrl)){
+        String loginUrl = memberFilter.getLoginUrl();
+        if (backUrl != null && !"".equals(backUrl)) {
             try {
-                loginUrl+="?backUrl="+URLEncoder.encode(backUrl,"utf-8");
+                loginUrl += "?backUrl=" + URLEncoder.encode(backUrl, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                logger.error("登出时backUrl  Encode失败",e);
+                logger.error("登出时backUrl  Encode失败", e);
             }
-        }else{//自己计算backUrl
+        } else {//自己计算backUrl
 //            String queryString=request.getQueryString();
-            String url=request.getHeader("Referer");
-            if(url!=null){
+            String url = request.getHeader("Referer");
+            if (url != null) {
                 try {
-                    backUrl=URLEncoder.encode(url, "utf-8");
-                    loginUrl+="?backUrl="+backUrl;
+                    backUrl = URLEncoder.encode(url, "utf-8");
+                    loginUrl += "?backUrl=" + backUrl;
                 } catch (UnsupportedEncodingException e) {
-                    logger.error("退出计算回调地址错误",e);
+                    logger.error("退出计算回调地址错误", e);
                 }
             }
         }
-        return "redirect:"+loginUrl;
+        return "redirect:" + loginUrl;
     }
 
     /**
      * 手机号绑定
+     *
      * @return
      */
     @RequestMapping("userPhoneBind")
-    public String userPhoneBind(String backUrl,Model model) throws Main4Exception {
+    public String userPhoneBind(String backUrl, Model model) throws Main4Exception {
         model.addAttribute("backUrl", backUrl);
         return "login/userPhoneBind";
     }
 
     /**
      * 手机号绑定
-     * @param bo bind message send.
+     *
+     * @param bo      bind message send.
      * @param session session
      * @return data
      */
@@ -707,13 +760,13 @@ public class UserLoginAction {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "telephone");
         }
-        PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
-        if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
-                ||!bo.getMsgValidate().equals(phoneVerify.getVerify())){
+        PhoneVerify phoneVerify = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
+        if (phoneVerify == null || !bo.getTelephone().equals(phoneVerify.getPhone())
+                || !bo.getMsgValidate().equals(phoneVerify.getVerify())) {
             throw new JsonErrException("短信验证码错误").addErrMap("ele", "msgValidate");
-        }else {
-            String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-            if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+        } else {
+            String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+            if (imgcode == null || !imgcode.equals(bo.getImgValidate())) {//图片验证通不过
                 throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
             }
             //把第三方账号绑给现在这个手机号
@@ -729,75 +782,121 @@ public class UserLoginAction {
             return JsonResponseUtil.success().element("backUrl", backUrl);
         }
     }
+
     /**
      * 发送手机号绑定的短信
-     * @param bo bind message send.
+     *
+     * @param bo      bind message send.
      * @param session session
      * @return data
      */
     @RequestMapping("bindPhoneVerification")
     @ResponseBody
     public JSONObject bindPhoneVerification(@Valid RegistVerifyBO bo, BindingResult result, HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "msgValidate");
         }
-        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-        if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+        String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if (imgcode == null || !imgcode.equals(bo.getImgValidate())) {//图片验证通不过
             throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
         }
-        String code= RedomUtil.redomNumber(6);
+        String code = RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
         sendMsgService.sendVerificationCode(bo.getTelephone(), code);
 //        //System.out.println(code);
         return JsonResponseUtil.success();
     }
+
     /**
      * 得到登陆成功链接
+     *
      * @param backUrl
      * @return
      */
-    private String loginSuccessUrl(String backUrl){
+    private String loginSuccessUrl(String backUrl) {
         String toUrl;
-        if(backUrl!=null&&!"http://www.571xz.com/".equals(backUrl)){//TODO 首页的,等页面改好,这里再去掉
-            toUrl=backUrl;
-        }else{
+        if (backUrl != null && !"http://www.571xz.com/".equals(backUrl)) {//TODO 首页的,等页面改好,这里再去掉
+            toUrl = backUrl;
+        } else {
             //如果个人,跳到这个,如果商户跳到seller
-            toUrl=memberFilter.getSuccessUrl();
+            toUrl = memberFilter.getSuccessUrl();
         }
         return toUrl;
     }
+
     /**
      * ====================================================================================
+     *
      * @方法名： loginortherSystem
      * @user gzy 2017/10/17 16:15
      * @功能：其他系统登录后的跳转
      * @param: [backUrl, model, session]
      * @return: java.lang.String
-     * @exception:
-     * ====================================================================================
-     *
+     * @exception: ====================================================================================
      */
     @RequestMapping("loginortherSystem")
-    public String loginortherSystem(String backUrl,Model model,HttpSession session) throws Main4Exception {
+    public String loginortherSystem(String backUrl, Model model, HttpSession session) throws Main4Exception {
         /*if(!SecurityUtils.getSubject().hasRole(RoleEnum.STORE.getValue())){
 
         }*/
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(ps!=null) {
-            Long shopId=0L;
-            if(ps.getLogshop ()!=null){
-                shopId= ps.getLogshop ().getShopId ();
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null) {
+            Long shopId = 0L;
+            if (ps.getLogshop() != null) {
+                shopId = ps.getLogshop().getShopId();
             }
 
-          // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
-            String key= Opt3Des.encryptPlainData (shopId+"");
-           String back=backUrl+"?key="+key;
-          // //System.out.println (back);
-            return "redirect:"+back;
-        }else{
+            // String key= Opt3Des.encryptPlainData (ps.getUserId ()+"&"+shopId);
+            String key = Opt3Des.encryptPlainData(shopId + "");
+            String back = backUrl + "?key=" + key;
+            // //System.out.println (back);
+            return "redirect:" + back;
+        } else {
             return "redirect:loginWindow.htm";
         }
 
+    }
+
+    @RequestMapping("genTbToken")
+    @ResponseBody
+    public JSONObject genTbToken(String nick) {
+        return tbUploadService.getToken(nick);
+    }
+
+    /**
+     * 淘宝登陆回调
+     *
+     * @param bo      传入key，type和使用key,type,userName进行md5加密的签名sign
+     * @param token   必传
+     * @param request
+     * @param session
+     * @return
+     * @throws Main4Exception
+     */
+    @RequestMapping("tbLoginBack")
+    public String tbLoginBack(LoginBackBO bo, String token, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        if (StringUtils.isBlank(token)) {
+            throw new Main4Exception("令牌无效");
+        }
+        String tbUserNick = tbUploadService.tbTokenResolve(token);
+        if (StringUtils.isBlank(tbUserNick)) {
+            throw new Main4Exception("无效用户");
+        }
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userName", tbUserNick);
+        map.put("key", bo.getKey());
+        map.put("type", bo.getType());
+        if (MD5Attestation.unsignParamString(map, bo.getSign())) {
+            Subject subject = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken shiroToken = new CaptchaUsernamePasswordToken(
+                    tbUserNick, null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //选择登陆方式
+            shiroToken.setLoginFromType(LoginFromType.TAOBAO);
+            shiroToken.setRememberMe(true);
+            shiroToken.setSubKey(bo.getKey());
+            return tryLogin(subject, shiroToken, session);
+        }
+        return "redirect:" + memberFilter.getSuccessUrl();
     }
 
 }
