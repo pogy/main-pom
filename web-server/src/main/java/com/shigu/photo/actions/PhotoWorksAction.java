@@ -72,7 +72,7 @@ public class PhotoWorksAction {
 
     //作者主页
     @RequestMapping("auth/userWorkList")
-    public String authuserWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
+    public String authuserWorkList(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
@@ -84,11 +84,12 @@ public class PhotoWorksAction {
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/userWorkList";
     }
+
     @RequestMapping("member/userWorkList")
-    public String memberuserWorkList(PhotoWorksSearchBO query,Model model, HttpSession session) throws PhotoException {
+    public String memberuserWorkList(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Integer n;
-        if((n= (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue()))!=null&&n>0){
+        if ((n = (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue())) != null && n > 0) {
             return "redirect:/photo/auth/userWorkList.htm";
         }
         query.setId(ps.getUserId());
@@ -101,15 +102,16 @@ public class PhotoWorksAction {
         model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
         return "photo/userWorkList";
     }
+
     @RequestMapping("userHomePage")
     public String userHomePage(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps != null && photoAuthWorkUserInfoWebVO.getUserId().equals(ps.getUserId())) {
             Integer n;
-            if((n= (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue()))!=null&&n>0){
+            if ((n = (Integer) ps.getOtherPlatform().get(OtherPlatformEnum.PHOTO_AUTH.getValue())) != null && n > 0) {
                 return "redirect:/photo/auth/userWorkList.htm";
-            }else{
+            } else {
                 return "redirect:/photo/member/userWorkList.htm";
             }
         }
@@ -143,17 +145,17 @@ public class PhotoWorksAction {
         model.addAttribute("styleList", photoWorksProcess.selPhotoStyleVos(null)
                 .stream().map(photoStyleVO ->
                         new PhotoCateVO(photoStyleVO.getStyleId().toString(), photoStyleVO.getStyleName(),
-                                photoWorksChangeVO.getStyleIds().contains(photoStyleVO.getStyleId())?true:null)
+                                photoWorksChangeVO.getStyleIds().contains(photoStyleVO.getStyleId()) ? true : null)
                 ).collect(Collectors.toList()));
         model.addAttribute("cateList", photoWorksProcess.selPhotoCatVos()
                 .stream().map(photoCatVO ->
                         new PhotoCateVO(photoCatVO.getCid().toString(), photoCatVO.getCname(),
-                                photoWorksChangeVO.getCate().equals(photoCatVO.getCid())?true:null)
+                                photoWorksChangeVO.getCate().equals(photoCatVO.getCid()) ? true : null)
                 ).collect(Collectors.toList()));
         model.addAttribute("userInfo", photoUserService.totalAuthInfo(ps.getUserId(), null));
-        Map<String,Long> query=new HashMap<>();
-        query.put("id",id);
-        model.addAttribute("query",query);
+        Map<String, Long> query = new HashMap<>();
+        query.put("id", id);
+        model.addAttribute("query", query);
         model.addAttribute("worksData", photoWorksChangeVO);
         return "photo/uploadWork";
     }
@@ -187,12 +189,11 @@ public class PhotoWorksAction {
 
     @RequestMapping("auth/removeWorks")
     @ResponseBody
-    public JSONObject removeWorks(Long id, HttpSession session){
+    public JSONObject removeWorks(Long id, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        photoWorksProcess.removeWorks(id,ps.getUserId());
+        photoWorksProcess.removeWorks(id, ps.getUserId());
         return JsonResponseUtil.success();
     }
-
 
 
     /**
@@ -274,5 +275,15 @@ public class PhotoWorksAction {
             return JsonResponseUtil.error("作品不存在");
         }
         return JsonResponseUtil.success().element("readCount", clicks.getTotalClick());
+    }
+
+    /**
+     * 作品审核（发布）成功
+     *
+     * @return
+     */
+    @RequestMapping("auth/validSuccess")
+    public String validSuccess() {
+        return "photo/validSuccess";
     }
 }
