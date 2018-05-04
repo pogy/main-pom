@@ -1,5 +1,32 @@
 <div class="sidebar shadowBox yahei">
     <#if $it.type == 'index'>
+    <h2>交易管理</h2>
+    <ul>
+        <#if 'myOrder' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'myOrder' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="myOrder.htm"
+            >我的订单</a>
+        </li>
+        </#if>
+        <#if 'distributionOrder' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'distributionOrder' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="distributionOrder.htm"
+            >配货订单</a>
+        </li>
+        </#if>
+    </ul>
     <h2>商品管理</h2>
     <ul>
         <#if 'createGoods21init' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
@@ -265,6 +292,19 @@
             >广告展示管理</a>
         </li>
         </#if>
+        <#if 'http://www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
+                            selected
+                    </#if>
+                "
+                    href="http://www.571xz.com/qualityControl.htm"
+                    target="_blank"
+            >我要质检</a>
+        </li>
+        </#if>
         <#if 'actRegister' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
@@ -352,6 +392,25 @@
                 "
                     href="sysSetsindex.htm"
             >个人信息</a>
+        </li>
+        </#if>
+    </ul>
+    <#elseif $it.type == 'goodsAblum'>
+    <h2>相册管理</h2>
+    <ul>
+        <#if 'photoAlbumManagement' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <li>
+            <a
+                class="
+                    <#if 'photoAlbumManagement' == $pageid >
+                            selected
+                    </#if>
+                            <#if 'photoAlbumItem' == $pageid >
+                                    selected
+                            </#if>
+                "
+                    href="photoAlbumManagement.htm"
+            >商品相册</a>
         </li>
         </#if>
     </ul>
