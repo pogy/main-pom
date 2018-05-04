@@ -602,7 +602,7 @@ var webSite = '${webSite!}';
             <div class="userCount">
                 <div class="p1">
                     <ul class="clearfix">
-                        <#list userCount as num>
+                        <#list goodsCount as num>
                         <li>${num!}</li>
                         </#list>
                     </ul>
