@@ -187,6 +187,8 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+    @Autowired
+    DataPackageImportService dataPackageImportService;
 
 
     /**
@@ -472,7 +474,7 @@ public class ShopAction {
         Long itemId;
         //包装bo
         try {
-            SynItem synItem = bo.getOffer().parseToSynItem();
+            SynItem synItem = bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(), synItem.getProps(), synItem.getInputStr(),
                     synItem.getInputPids(), synItem.getPropertyAlias()));
@@ -655,7 +657,7 @@ public class ShopAction {
         }
         //包装bo
         try {
-            SynItem synItem=bo.getOffer().parseToSynItem();
+            SynItem synItem=bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setGoodsId(Long.valueOf(bo.getOffer().getGoodsId()));
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
@@ -672,6 +674,15 @@ public class ShopAction {
         }
         return JsonResponseUtil.success().element("webSite",shopSession.getWebSite());
     }
+
+
+    @RequestMapping("seller/getAccessInfoItemEdit")
+    @ResponseBody
+    public JSONObject getAccessInfoItemEdit(HttpSession session) throws UnsupportedEncodingException {
+        ShopSession shopSession = getShopSession(session);
+        return JSONObject.fromObject(ossIO.createPostSignInfo("itemImgs/temp/"+ shopSession.getShopId() + "/")).element("result", "success");
+    }
+
 
     @RequestMapping("seller/getAccessInfoForImgUpload")
     @ResponseBody

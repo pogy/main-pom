@@ -1,6 +1,7 @@
 package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
+import com.openJar.utils.JsonUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.UserAccountService;
@@ -48,9 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
@@ -126,23 +125,77 @@ public class UserLoginAction {
         return "login/login";
     }
 
+    /**
+     * 管理登陆
+     * @param bo 登陆参数
+     * @param model
+     * @return
+     */
+    @RequestMapping("universalLogin")
+    public String ulogin(LoginBO bo, HttpSession session, Model model){
+        model.addAttribute("backUrl", "http://www.571xz.com/");
+        ObjFromCache<List<ImgBannerVO>> listObjFromCache = spreadService.selImgBanners(SpreadEnum.LOGIN_GT);
+        List<ImgBannerVO> vos = listObjFromCache.selObj();
+        if (!vos.isEmpty()) {
+//            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+//                spreadService.createBySync(listObjFromCache);
+            //极限词过滤
+            vos.get(0).setText(KeyWordsUtil.duleKeyWords(vos.get(0).getText()));
+
+            model.addAttribute("index_goat", vos.get(0));
+        }
+        return "login/universalLogin";
+    }
+
+//    @RequestMapping("universalPasswordLogin")
+//    @ResponseBody
+//    public JSONObject universalPasswordLogin(){
+//
+//    }
+
     @ResponseBody
     @RequestMapping("passwordLogin")
-    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException {
-        Subject currentUser = SecurityUtils.getSubject();
-        CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
-        //星座用户登陆
-        token.setLoginFromType(LoginFromType.XZ);
-        token.setRememberMe(true);
-        try {
-            currentUser.login(token);
-            currentUser.hasRole(RoleEnum.STORE.getValue());
-            return JsonResponseUtil.success();
-        } catch (AuthenticationException e) {
-            //登陆失败
-            token.clear();
-            throw new JsonErrException("账号或密码错误");
+    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException,IOException {
+        String url = request.getHeader("Referer");
+        if(url.equals("http://www.571xz.com/universalLogin.htm")){
+            Subject currentUser = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(bo.getLoginname(),
+                    bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
+            token.setLoginFromType(LoginFromType.XZ);
+            token.setRememberMe(true);
+            try {
+                currentUser.login(token);
+                currentUser.hasRole(RoleEnum.STORE.getValue());
+                File file = new File("universal.log");
+                if(!file.exists()){
+                    file.createNewFile();
+                }
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file,true));
+                bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername()+"/r/n");
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                return JsonResponseUtil.success();
+            } catch (AuthenticationException e) {
+                //登陆失败
+                token.clear();
+                throw new JsonErrException("账号或密码错误");
+            }
+        }else {
+            Subject currentUser = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                    bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
+            //星座用户登陆
+            token.setLoginFromType(LoginFromType.XZ);
+            token.setRememberMe(true);
+            try {
+                currentUser.login(token);
+                currentUser.hasRole(RoleEnum.STORE.getValue());
+                return JsonResponseUtil.success();
+            } catch (AuthenticationException e) {
+                //登陆失败
+                token.clear();
+                throw new JsonErrException("账号或密码错误");
+            }
         }
     }
 

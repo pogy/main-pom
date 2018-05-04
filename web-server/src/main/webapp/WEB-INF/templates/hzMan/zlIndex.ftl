@@ -1,40 +1,46 @@
-<#assign $pageid="index">
+<#assign $pageid="zlIndex">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300">
-    <title>[四季星座网]泉州站-四季星座网</title>
+    <title>[四季星座网]织里站-四季星座网</title>
 <#include "/common/base__config.ftl">
+<#assign searchType="goods">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
-<#include "/__style_torrent__/qzIndex__index_css.ftl">
+<#include "/__style_torrent__/hzMan__zlIndex_css.ftl">
     <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="http://style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
-<#include "/__style_torrent__/qzIndex__index_js.ftl">
+<#include "/__style_torrent__/hzMan__zlIndex_js.ftl">
 </head>
 <body>
-<script modulepath="qzIndex/common#forIps">
+<script modulepath="hzMan/common#forIps">
 var hreflocation = window.location.href;
 if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('http://571xz.com') == 0){//仅首页
     var province = '' ;
     var city = '' ;
     jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
         province = remote_ip_info["province"];
-        if(province == '福建'){
+        city = remote_ip_info["city"];
+        if(city == '石狮'){
             window.location.href = "http://ss.571xz.com";
-        }else if(province == '江苏'){
+        }else if(city == '常熟'){
             window.location.href = "http://cs.571xz.com";
-        }else if(province == '广东'){
+        }else if(city == '广州'){
             window.location.href = "http://gz.571xz.com";
-        }else if(province == '吉林'){
+        }else if(city == '辽源'){
             window.location.href = "http://wa.571xz.com";
-        }else if(province == '泉州'){
+        }else if(city == '泉州'){
             window.location.href = "http://qz.571xz.com";
+        }else if(city == '北京'){
+            window.location.href = "http://bj.571xz.com";
+        }else if(city == '湖州'){
+            window.location.href = "http://zl.571xz.com";
         }
     }) ;
 }
@@ -76,9 +82,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
         </div>
     </#list>
 </#if>
-<#assign searchType="goods">
 <#assign disabledIndexNav=false>
-<#assign searchType="goods">
 <div class="searchHeaderV2">
     <div class="layout">
         <div class="logoLeft">
@@ -324,7 +328,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
     <div class="rightbox">
 <div class="topInfoBox yahei">
     <div class="userbox tac">
-        <img class="userIcon" src="http://style.571xz.com/v6/qzIndex/css/img/touxiang.png">
+        <img class="userIcon" src="http://style.571xz.com/v6/hzMan/css/img/touxiang.png">
         <div class="wellcom">
             <p class="s1" id="wellcomUserInfo">Hi，欢迎来到</p>
             <p>www.571xz.com</p>
@@ -363,25 +367,6 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 </div>
     </div>
 </div>
-<div class="intimeGoods layout">
-<div class="commonTitle">
-    <a class="sideNavbarDot" name="intimeGoods" data-text="周推"></a>
-    <h3><span class="yahei">本周推荐</span>每周推荐 掌握潮流优款</h3>
-</div>
-    <div class="goodsList">
-        <#list weekPushGoodsList as goods>
-<div class="goodsItem">
-    <a class="imgBox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">
-        <img src="${goods.imgSrc!}_300x300.jpg">
-    </a>
-    <div class="goodsInfo">
-        <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
-        <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr">${goods.marketName!} ${goods.shopNo!}</a>
-    </div>
-</div>
-        </#list>
-    </div>
-</div>
 <div class="hotSaleGoods layout">
 <div class="commonTitle">
     <a class="sideNavbarDot" name="hotsaleGoods" data-text="热卖"></a>
@@ -399,6 +384,33 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
     </div>
 </div>
         </#list>
+    </div>
+</div>
+<div class="popularGoods layout">
+<div class="commonTitle">
+    <a class="sideNavbarDot" name="popularGoods" data-text="人气"></a>
+    <h3><span class="yahei">人气商品</span>人气爆款 0点更新</h3>
+</div>
+    <div class="goodsList">
+        <#list zhiliPopularGoodsList as goods>
+<div class="goodsItem">
+    <a class="imgBox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">
+        <img src="${goods.imgSrc!}_300x300.jpg">
+    </a>
+    <div class="goodsInfo">
+        <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
+        <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr">${goods.marketName!} ${goods.shopNo!}</a>
+    </div>
+</div>
+        </#list>
+    </div>
+</div>
+<div class="intimeGoods layout">
+<div class="commonTitle">
+    <a class="sideNavbarDot" name="intimeGoods" data-text="实时"></a>
+    <h3><span class="yahei">实时新品</span>实时更新 店内引流好款</h3>
+</div>
+    <div class="goodsList" id="intimeGoodsList">
     </div>
 </div>
 <div class="serverIntro">
@@ -425,6 +437,57 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
                 <span>可支持无条件退换货</span>
             </li>
         </ul>
+    </div>
+</div>
+<div class="siteInfo">
+    <div class="layout">
+        <div class="logoInfo fl">
+            <i></i>
+            <p>400-076-1116</p>
+            <span>工作时间：9:00 — 17:30</span>
+        </div>
+        <div class="siteCon">
+            <ul>
+                <li>
+                    <h5>四季星座网</h5>
+                    <p><a href="http://www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
+                </li>
+                <li>
+                    <h5>代理商</h5>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=99" target="_blank">一键上传</a></p>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=106" target="_blank">一件代发</a></p>
+                </li>
+                <li>
+                    <h5>供应商</h5>
+                    <p><a href="http://www.571xz.com/helpCenter/queIndex.htm?cid=41" target="_blank">发布商品</a></p>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=90" target="_blank">账户安全</a></p>
+                    <p><a href="http://www.571xz.com/seller/indexgglist.htm" target="_blank">广告投放</a></p>
+                </li>
+                <li>
+                    <h5>帮助中心</h5>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=80" target="_blank">新手入门</a></p>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=97" target="_blank">成为代理</a></p>
+                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=81" target="_blank">成为供货商</a></p>
+                </li>
+            </ul>
+        </div>
+        <div class="ewm fr">
+            <ul>
+                <li>
+                    <i class="gzh"></i>
+                    <p>公众号</p>
+                </li>
+                <li>
+                    <i class="cApp"></i>
+                    <p>代理商APP</p>
+                </li>
+                <li>
+                    <i class="bApp"></i>
+                    <p>供货商APP</p>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="sideNavbar" id="sideNavbar"></div>
