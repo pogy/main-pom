@@ -180,7 +180,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
+        if (orderBO.getOrderFrom() != null ) {
+            order.setOrderFrom(orderBO.getOrderFrom().getFrom());
+        }
         order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
+
         itemOrderMapper.insertSelective(order);
 
         // 获取订单操作接口

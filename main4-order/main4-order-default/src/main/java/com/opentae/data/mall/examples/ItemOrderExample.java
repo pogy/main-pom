@@ -27,6 +27,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn createTime;
     public static EntityColumn totalFee;
     public static EntityColumn outerId;
+    public static EntityColumn orderFrom;
     public static EntityColumn mark;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -51,6 +52,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         createTime = listMap.get("createTime");
         totalFee = listMap.get("totalFee");
         outerId = listMap.get("outerId");
+        orderFrom = listMap.get("orderFrom");
         mark = listMap.get("mark");
         }
 
@@ -895,6 +897,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
 
         public ItemOrderExample.Criteria andOuterIdNotBetween(String value1, String value2) {
             return notBetween(outerId, value1, value2);
+        }
+        public ItemOrderExample.Criteria andOrderFromIsNull() {
+            return isNull(orderFrom);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromIsNotNull() {
+            return isNotNull(orderFrom);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromEqualTo(Integer value) {
+            return equalTo(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromNotEqualTo(Integer value) {
+            return notEqualTo(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromGreaterThan(Integer value) {
+            return greaterThan(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromLessThan(Integer value) {
+            return lessThan(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(orderFrom, value);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromIn(List<Integer> values) {
+            return in(orderFrom, values);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromNotIn(List<Integer> values) {
+            return notIn(orderFrom, values);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromBetween(Integer value1, Integer value2) {
+            return between(orderFrom, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andOrderFromNotBetween(Integer value1, Integer value2) {
+            return notBetween(orderFrom, value1, value2);
         }
         public ItemOrderExample.Criteria andMarkIsNull() {
             return isNull(mark);

@@ -1,6 +1,8 @@
 package com.shigu.main4.order.bo;
 
 
+import com.shigu.main4.order.enums.OrderFrom;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -35,6 +37,10 @@ public class ItemOrderBO implements Serializable{
      * 是否代发
      */
     private Boolean daifaOrder;
+    /**
+     * 订单终端来源
+     */
+    private OrderFrom orderFrom;
 
     public Long getUserId() {
         return userId;
@@ -114,5 +120,13 @@ public class ItemOrderBO implements Serializable{
 
     public void setDaifaOrder(Boolean daifaOrder) {
         this.daifaOrder = daifaOrder;
+    }
+
+    public OrderFrom getOrderFrom() {
+        return orderFrom;
+    }
+
+    public void setOrderFrom(OrderFrom orderFrom) {
+        this.orderFrom = orderFrom;
     }
 }
