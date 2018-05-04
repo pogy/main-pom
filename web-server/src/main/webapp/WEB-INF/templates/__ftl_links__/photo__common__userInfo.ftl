@@ -30,6 +30,7 @@
     <#if userInfo.wxQrCode??>
     <div class="rightInfoBox fr">
         <img src="${userInfo.wxQrCode!}">
+        <p><i class="icon-s-weixin"></i>微信二维码</p>
     </div>
     </#if>
 </div>
