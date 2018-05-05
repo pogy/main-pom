@@ -340,7 +340,7 @@ public class UserLoginAction {
             token.setLoginFromType(loginFromType);
             token.setRememberMe(true);
             token.setSubKey(bo.getKey());
-            tryLogin(currentUser, token, session);
+            return tryLogin(currentUser, token, session);
             // TODO: 18-4-27 原具体登陆，提取为tryLogin方法，先保留一段时间，确认稳定后移除
             //try {
             //    currentUser.login(token);
