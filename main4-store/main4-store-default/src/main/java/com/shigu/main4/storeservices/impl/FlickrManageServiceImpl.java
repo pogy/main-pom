@@ -272,7 +272,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         String[] pics = flickrDetails.getPicUrls().split(",");
         List<String> picList = new ArrayList<>();
         Jedis jedis = redisIO.getJedis();
-        jedis.incrBy("Flickr",1);
+        jedis.incrBy("flickr_page_redis_temporary_"+flickrDetails.getfId(),1);
         if (pics == null || pics.length <= 0){
             vo.setPictures(picList);
             return vo;

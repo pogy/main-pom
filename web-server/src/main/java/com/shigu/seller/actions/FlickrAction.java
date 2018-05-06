@@ -2,9 +2,11 @@ package com.shigu.seller.actions;
 
 import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.vo.FlickrVo;
+import com.shigu.seller.services.FlickrService;
 import com.shigu.seller.vo.PhotoAlbumVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.spread.services.ObjFormFlickrRedis;
 import com.shigu.spread.services.ObjFromCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -27,6 +29,8 @@ public class FlickrAction {
 
     @Autowired
     private FlickrManageService flickrManageService;
+    @Autowired
+    private FlickrService flickrService;
 
     @RequestMapping("flickrBackground")
     public String flickrBackground(HttpSession session, Model model){
@@ -42,7 +46,7 @@ public class FlickrAction {
                 vo.setImgSrc(flickrVo.getCover());
                 vo.setPicCount(flickrVo.getNumber());
                 vo.setTitle(flickrVo.getName());
-                vo.setReadCount(selFromCache());
+                vo.setReadCount(Long.valueOf(selFromCache(flickrService.selreadCount(flickrVo.getfId().toString(),flickrVo.getClicks())).toString())+flickrService.temporaryClicks(flickrVo.getfId().toString()));
             });
 
         }
@@ -55,9 +59,9 @@ public class FlickrAction {
     /**
      * 创建缓存
      *
-     * @param fromCache
+     * @param flickrRedis
      */
-    private Object selFromCache(ObjFromCache fromCache) {
-        return fromCache.selObj();
+    private Object selFromCache(ObjFormFlickrRedis flickrRedis) {
+        return flickrRedis.selObj();
     }
 }
