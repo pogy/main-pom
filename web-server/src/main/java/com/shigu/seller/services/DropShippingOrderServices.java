@@ -38,7 +38,7 @@ public class DropShippingOrderServices {
             goodsIds.add(goodsId);
         });
         List<Long> oidList = new ArrayList<>(new HashSet<>(oids));
-        List<Long> goodsIdList =goodsIds;
+        List<Long> goodsIdList = new ArrayList<>(new HashSet<>(goodsIds));
         List<OrdersVo> ordersVos = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         oidList.forEach(oid ->{
@@ -52,24 +52,25 @@ public class DropShippingOrderServices {
             for (int i = 0; i <goodsIdList.size() ; i++) {
                 ChildOrdersVo coVo = new ChildOrdersVo();
                 List<SkusVo> skusVoList = new ArrayList<>();
+                boolean a = true;
                 for (int j = 0; j <dfOrderVoList.size() ; j++) {
                     SkusVo skusVo = new SkusVo();
                     if (oid ==dfOrderVoList.get(j).getOid()){
-
                         if (b){
                             orderId = oid;
                             ordertime = format.format(dfOrderVoList.get(j).getCreateTime());
                             b=false;
                         }
-                        if (goodsIdList.get(i)==dfOrderVoList.get(j).getGoodsId()){
-
+                        if (goodsIdList.get(i).equals(dfOrderVoList.get(j).getGoodsId())){
+                            if (a) {
                                 coVo.setGoodsId(dfOrderVoList.get(j).getGoodsId());
                                 coVo.setGoodsNo(dfOrderVoList.get(j).getGoodsNo());
                                 coVo.setImgsrc(dfOrderVoList.get(j).getPicUrl());
-                                p = dfOrderVoList.get(j).getPrice().doubleValue()/100;
+                                p = dfOrderVoList.get(j).getPrice().doubleValue() / 100;
                                 coVo.setPrice(p.toString());
                                 coVo.setTitle(dfOrderVoList.get(j).getTitle());
-
+                                a=false;
+                            }
                             skusVo.setColor(dfOrderVoList.get(j).getColor());
                             skusVo.setNum(dfOrderVoList.get(j).getNum());
                             skusVo.setHaveTakeGoodsNum(dfOrderVoList.get(j).getInStok());
@@ -110,24 +111,25 @@ public class DropShippingOrderServices {
             List<SkusGoodsVo> sgVos = new ArrayList<>();
             Integer totalCount = 0;
             for (int i = 0; i <dfGoodsVoList.size() ; i++) {
-                if(goodsId == dfGoodsVoList.get(i).getGoodsId() && b){
-                    ogVo.setGoodsId(dfGoodsVoList.get(i).getGoodsId());
-                    ogVo.setGoodsNo(dfGoodsVoList.get(i).getGoodsNo());
-                    ogVo.setImgsrc(dfGoodsVoList.get(i).getPicUrl());
-                    Double price = dfGoodsVoList.get(i).getPrice().doubleValue()/100;
-                    ogVo.setPrice(price.toString());
-                    ogVo.setTitle(dfGoodsVoList.get(i).getTitle());
-                    ogVo.setXzPrice(price.toString());
-                    b=false;
-                }
-                SkusGoodsVo skusGoodsVo = new SkusGoodsVo();
-                if (goodsId == dfGoodsVoList.get(i).getGoodsId()){
+                if(goodsId.equals(dfGoodsVoList.get(i).getGoodsId())){
+                    if (b){
+                        ogVo.setGoodsId(dfGoodsVoList.get(i).getGoodsId());
+                        ogVo.setGoodsNo(dfGoodsVoList.get(i).getGoodsNo());
+                        ogVo.setImgsrc(dfGoodsVoList.get(i).getPicUrl());
+                        Double price = dfGoodsVoList.get(i).getPrice().doubleValue()/100;
+                        ogVo.setPrice(price.toString());
+                        ogVo.setTitle(dfGoodsVoList.get(i).getTitle());
+                        ogVo.setXzPrice(price.toString());
+                        b=false;
+                    }
+                    SkusGoodsVo skusGoodsVo = new SkusGoodsVo();
                     skusGoodsVo.setColor(dfGoodsVoList.get(i).getColor());
                     skusGoodsVo.setNum(dfGoodsVoList.get(i).getNum());
                     skusGoodsVo.setSize(dfGoodsVoList.get(i).getSize());
                     sgVos.add(skusGoodsVo);
                     totalCount += dfGoodsVoList.get(i).getNum();
                 }
+
             }
             Double tradePay = totalCount * Double.valueOf(ogVo.getPrice());
             ogVo.setTotalCount(totalCount);
