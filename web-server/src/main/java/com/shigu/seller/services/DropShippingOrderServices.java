@@ -6,6 +6,7 @@ import com.shigu.seller.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,43 +38,51 @@ public class DropShippingOrderServices {
             goodsIds.add(goodsId);
         });
         List<Long> oidList = new ArrayList<>(new HashSet<>(oids));
-        List<Long> goodsIdList = new ArrayList<>(new HashSet<>(goodsIds));
+        List<Long> goodsIdList =goodsIds;
         List<OrdersVo> ordersVos = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         oidList.forEach(oid ->{
             Boolean b = true;
             OrdersVo ordersVo = new OrdersVo();
             Long orderId = null;
             String ordertime = "";
             Long tradePay = 0l;
+            Double p = null;
             List<ChildOrdersVo> covos = new ArrayList<>();
             for (int i = 0; i <goodsIdList.size() ; i++) {
                 ChildOrdersVo coVo = new ChildOrdersVo();
-                Boolean a = true;
                 List<SkusVo> skusVoList = new ArrayList<>();
                 for (int j = 0; j <dfOrderVoList.size() ; j++) {
                     SkusVo skusVo = new SkusVo();
-                    if (oid ==dfOrderVoList.get(j).getOid() && goodsIdList.get(i)==dfOrderVoList.get(j).getGoodsId()){
+                    if (oid ==dfOrderVoList.get(j).getOid()){
+
                         if (b){
                             orderId = oid;
-                            ordertime = dfOrderVoList.get(j).getCreateTime().toString();
+                            ordertime = format.format(dfOrderVoList.get(j).getCreateTime());
                             b=false;
                         }
-                        if (a){
-                            coVo.setGoodsId(dfOrderVoList.get(j).getGoodsId());
-                            coVo.setGoodsNo(dfOrderVoList.get(j).getGoodsNo());
-                            coVo.setImgsrc(dfOrderVoList.get(j).getPicUrl());
-                            coVo.setPrice(dfOrderVoList.get(j).getPrice());
-                            coVo.setTitle(dfOrderVoList.get(j).getTitle());
+                        if (goodsIdList.get(i)==dfOrderVoList.get(j).getGoodsId()){
+
+                                coVo.setGoodsId(dfOrderVoList.get(j).getGoodsId());
+                                coVo.setGoodsNo(dfOrderVoList.get(j).getGoodsNo());
+                                coVo.setImgsrc(dfOrderVoList.get(j).getPicUrl());
+                                p = dfOrderVoList.get(j).getPrice().doubleValue()/100;
+                                coVo.setPrice(p.toString());
+                                coVo.setTitle(dfOrderVoList.get(j).getTitle());
+
+                            skusVo.setColor(dfOrderVoList.get(j).getColor());
+                            skusVo.setNum(dfOrderVoList.get(j).getNum());
+                            skusVo.setHaveTakeGoodsNum(dfOrderVoList.get(j).getInStok());
+                            skusVo.setSize(dfOrderVoList.get(j).getSize());
+                            skusVoList.add(skusVo);
+                            tradePay += dfOrderVoList.get(j).getNum()*dfOrderVoList.get(j).getPrice();
                         }
-                        skusVo.setColor(dfOrderVoList.get(j).getColor());
-                        skusVo.setNum(dfOrderVoList.get(j).getNum());
-                        skusVo.setHaveTakeGoodsNum(dfOrderVoList.get(j).getInStok());
-                        skusVo.setSize(dfOrderVoList.get(j).getSize());
-                        skusVoList.add(skusVo);
-                        tradePay += dfOrderVoList.get(j).getNum()*dfOrderVoList.get(j).getPrice();
                     }
                 }
-                coVo.setSkus(skusVoList);
+                if (skusVoList.size()>0) {
+                    coVo.setSkus(skusVoList);
+                    covos.add(coVo);
+                }
             }
             ordersVo.setOrderId(orderId);
             ordersVo.setTradeTime(ordertime);
@@ -120,9 +129,10 @@ public class DropShippingOrderServices {
                     totalCount += dfGoodsVoList.get(i).getNum();
                 }
             }
-            Double tradePay = totalCount * Double.valueOf(ogVo.getPrice())/100;
+            Double tradePay = totalCount * Double.valueOf(ogVo.getPrice());
             ogVo.setTotalCount(totalCount);
             ogVo.setTradePay(tradePay.toString());
+            ogVo.setSkus(sgVos);
             ogVos.add(ogVo);
         });
         return ogVos;

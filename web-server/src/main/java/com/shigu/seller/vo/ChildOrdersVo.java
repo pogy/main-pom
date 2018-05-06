@@ -16,7 +16,7 @@ public class ChildOrdersVo implements Serializable{
     private Long goodsId;
     private String title;
     private String goodsNo;
-    private Long price;
+    private String price;
     private List<SkusVo> skus;
 
     public String getImgsrc() {
@@ -51,11 +51,11 @@ public class ChildOrdersVo implements Serializable{
         this.goodsNo = goodsNo;
     }
 
-    public Long getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

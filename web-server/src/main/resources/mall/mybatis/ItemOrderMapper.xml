@@ -196,7 +196,7 @@
 
     <select id="getDropShippingOrder" resultMap="dfOrder">
         SELECT io.oid ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,ios.goods_id,
-        ios.price,ios.pic_url,ios.title,sgt.goods_no,io.create_time
+        ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no),io.create_time
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
         WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
@@ -209,7 +209,7 @@
         <if test="shopId != null">
             AND ios.shop_id=#{shopId}
         </if>
-        GROUP BY ios.sku_id,ios.goods_id
+        AND ios.goods_id>0 GROUP BY ios.sku_id,ios.goods_id
     </select>
 
 
@@ -225,7 +225,7 @@
         <if test="shopId != null">
             AND ios.shop_id=#{shopId}
         </if>
-        GROUP BY ios.sku_id,ios.goods_id
+        AND ios.goods_id>0 GROUP BY ios.sku_id,ios.goods_id
     </select>
 
 
