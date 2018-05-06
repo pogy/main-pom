@@ -9,6 +9,7 @@ import com.shigu.seller.vo.OrdersVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @Author: sy
  * @CreateDate: 2018/5/4 0004 16:08
  */
-
+@Controller
 @RequestMapping("seller/")
 public class DropShippingAction {
 
@@ -35,7 +36,7 @@ public class DropShippingAction {
         List<OrdersVo> ordersVos = dropShippingOrderServices.shopDropShippingOrder(ps.getLogshop().getShopId(),query.getOrderId(),query.getGoodsNo());
         model.addAttribute("orders",ordersVos);
         model.addAttribute("query",query);
-        return null;
+        return "gys/myOrder";
     }
 
     @RequestMapping("distributionOrder")
@@ -44,6 +45,6 @@ public class DropShippingAction {
         List<OrderGoodsVo> orderGoods = dropShippingOrderServices.shopDropShippingGoods(ps.getLogshop().getShopId(),query.getGoodsNo());
         model.addAttribute("orderGoods",orderGoods);
         model.addAttribute("query",query);
-        return null;
+        return "gys/distributionOrder";
     }
 }
