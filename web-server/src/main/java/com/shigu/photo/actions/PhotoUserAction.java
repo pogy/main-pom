@@ -74,7 +74,7 @@ public class PhotoUserAction {
         List<AuthApplyInfoVO> applyInfo = photoUserProcess.userAuthApplyInfo(userId, 0);
         //一个用户只会存在一条未审核的身份认证信息，若信息存在，说明已经有申请了，进行跳转
         if (applyInfo.size() > 0) {
-            return "redirect:/photo/member/userWorkList.htm";
+            return "photo/validSuccess";
         }
         //普通用户且没有未审核的申请，可以进行申请
         model.addAttribute("userInfo", userInfo);
