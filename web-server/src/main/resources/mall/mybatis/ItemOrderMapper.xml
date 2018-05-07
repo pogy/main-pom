@@ -192,6 +192,7 @@
         <result column="price" property="price"/>
         <result column="goods_no" property="goodsNo"/>
         <result column="title" property="title"/>
+        <result column="in_stok" property="inStok"/>
     </resultMap>
 
     <select id="getDropShippingOrder" resultMap="dfOrder">
@@ -214,7 +215,7 @@
 
 
     <select id="getDropShippingGoods" resultMap="dfGoods">
-        SELECT ios.goods_id ,ios.size,ios.color,SUM(ios.num) AS num,
+        SELECT ios.goods_id ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,
         ios.price,ios.pic_url,ios.title,sgt.goods_no
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id

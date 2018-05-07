@@ -19,6 +19,7 @@ public class DfGoodsVo implements Serializable {
     private Long price;
     private String title;
     private String goodsNo;
+    private Integer inStok;
 
     public Long getGoodsId() {
         return goodsId;
@@ -82,5 +83,13 @@ public class DfGoodsVo implements Serializable {
 
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
+    }
+
+    public Integer getInStok() {
+        return inStok;
+    }
+
+    public void setInStok(Integer inStok) {
+        this.inStok = inStok;
     }
 }

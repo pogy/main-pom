@@ -127,7 +127,8 @@ public class DropShippingOrderServices {
                     skusGoodsVo.setNum(dfGoodsVoList.get(i).getNum());
                     skusGoodsVo.setSize(dfGoodsVoList.get(i).getSize());
                     sgVos.add(skusGoodsVo);
-                    totalCount += dfGoodsVoList.get(i).getNum();
+                    Integer n = dfGoodsVoList.get(i).getNum() - dfGoodsVoList.get(i).getInStok();
+                    totalCount += n;
                 }
 
             }
@@ -137,6 +138,11 @@ public class DropShippingOrderServices {
             ogVo.setSkus(sgVos);
             ogVos.add(ogVo);
         });
+        for (int i = 0; i <ogVos.size() ; i++) {
+            if (ogVos.get(i).getTotalCount() == 0){
+                ogVos.remove(i);
+            }
+        }
         return ogVos;
     }
 
