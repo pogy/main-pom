@@ -1,15 +1,9 @@
 package com.shigu.seller.services;
 
-import com.shigu.main4.cdn.vo.IndexNavVO;
-import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.vo.TextGoatVO;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFormFlickrRedis;
-import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForFlickrPage;
-import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.tools.KeyWordsUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +44,22 @@ public class FlickrService {
             return 0l;
         }
         return Long.valueOf(clickstr);
+    }
+
+    public String banjia(String url){
+        String targetUrl=url;
+        if (StringUtils.isNotBlank(url)&&url.contains(URL_FLAG)) {
+            String srcFilePath=url.substring(url.indexOf(URL_FLAG),url.length());
+            String targetFilePath=srcFilePath.replace(URL_FLAG,URL_NORMAL);
+            if (srcFilePath.length()>0) {
+                srcFilePath=srcFilePath.substring(1,srcFilePath.length());
+            }
+            if (targetFilePath.length()>0) {
+                targetFilePath=targetFilePath.substring(1,targetFilePath.length());
+            }
+            targetUrl=url.replace(URL_FLAG,URL_NORMAL);
+            ossIO.moveFile(srcFilePath,targetFilePath);
+        }
+        return targetUrl;
     }
 }
