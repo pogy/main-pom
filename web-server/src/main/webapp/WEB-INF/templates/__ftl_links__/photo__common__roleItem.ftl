@@ -6,6 +6,6 @@
         <a href="/photo/userHomePage.htm?id=${item.userId!}" target="_blank" title="${item.userNick!}">
             <img src="${item.headImgSrc!}" /><span class="ellip">${item.userNick!}</span>
         </a>
-        <span class="fr userAddr"><i class="icon-s-addr"></i>${item.address!}</span>
+        <span class="fr userAddr ellip"><i class="icon-s-addr"></i>${item.address!}</span>
     </div>
 </div>
