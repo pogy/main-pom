@@ -22,12 +22,22 @@
 <div class="userWorks yahei">
 <#include "/__ftl_links__/photo__common__userTheme.ftl">
 <#include "/__ftl_links__/photo__common__userInfo.ftl">
-<div class="worksList layout">
-    <#list userWorksList as item>
+<#if (userWorksList?size) gt 0>
+    <div class="worksList layout">
+        <#list userWorksList as item>
 <#include "/__ftl_links__/photo__common__coverItem.ftl">
-    </#list>
-</div>
+        </#list>
+    </div>
 <#include "/__ftl_links__/photo__common__worksPage.ftl">
+<#else>
+    <div class="worksList clearfix layout">
+        <div class="noWork yahei">
+            <div class="noWorkIcon"></div>
+            <p>暂无作品信息！</p>
+            <a href="/photo/photoIndex.htm" class="uploadBtn">去首页看看</a>
+        </div>
+    </div>
+</#if>
 </div>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">

@@ -45,8 +45,8 @@
             <p>您还没有上传过任何作品</p>
             <a href="/photo/auth/uploadWork.htm" class="uploadBtn">立即上传作品</a>
         </div>
-    </#if>
     </div>
+    </#if>
 </div>
 <#include "/__ftl_links__/photo__common__footer.ftl">
 <#include "/common/cnzz.ftl">
