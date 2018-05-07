@@ -39,7 +39,7 @@
                     <li data-type='place'>场地</li>
                 </ul>
             </div>
-            <input type="text" name='keywords' class="p-searchIpt" <#if query.keyword??> value="${query.keyword!}" </#if> />
+            <input type="text" name='keywords' class="p-searchIpt" <#if query?? && query.keyword??> value="${query.keyword!}" </#if> />
             <div class="p-searchBtn"><i class="icon-search"></i></div>
         </div>
     </div>
