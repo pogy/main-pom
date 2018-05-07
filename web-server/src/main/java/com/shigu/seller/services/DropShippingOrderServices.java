@@ -124,10 +124,10 @@ public class DropShippingOrderServices {
                     }
                     SkusGoodsVo skusGoodsVo = new SkusGoodsVo();
                     skusGoodsVo.setColor(dfGoodsVoList.get(i).getColor());
-                    skusGoodsVo.setNum(dfGoodsVoList.get(i).getNum());
+                    Integer n = dfGoodsVoList.get(i).getNum() - dfGoodsVoList.get(i).getInStok();
+                    skusGoodsVo.setNum(n);
                     skusGoodsVo.setSize(dfGoodsVoList.get(i).getSize());
                     sgVos.add(skusGoodsVo);
-                    Integer n = dfGoodsVoList.get(i).getNum() - dfGoodsVoList.get(i).getInStok();
                     totalCount += n;
                 }
 
@@ -141,6 +141,11 @@ public class DropShippingOrderServices {
         for (int i = 0; i <ogVos.size() ; i++) {
             if (ogVos.get(i).getTotalCount() == 0){
                 ogVos.remove(i);
+            }
+            for (int j = 0; j <ogVos.get(i).getSkus().size() ; j++) {
+                if (ogVos.get(i).getSkus().get(j).getNum() == 0){
+                    ogVos.get(i).getSkus().remove(j);
+                }
             }
         }
         return ogVos;
