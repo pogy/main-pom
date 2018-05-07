@@ -4,6 +4,7 @@ import com.opentae.data.photo.beans.*;
 import com.opentae.data.photo.examples.PhotoAuthApplyExample;
 import com.opentae.data.photo.examples.ShiguPhotoUserExample;
 import com.opentae.data.photo.examples.ShiguPhotoUserSelectedStyleRelationExample;
+import com.opentae.data.photo.examples.ShiguPhotoWorksExample;
 import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -216,10 +217,11 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         }
         int count = shiguPhotoUserMapper.countByExample(shiguPhotoUserExample);
         if (count > 0) {
+            List<Long> aids=new ArrayList<>();
             shiguPhotoUserExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
             shiguPhotoUserExample.setEndIndex(bo.getPageSize());
             shiguPhotoUserExample.setOrderByClause("author_id desc");
-            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByExample(shiguPhotoUserExample);
+            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByConditionList(shiguPhotoUserExample);
             List<PhotoAuthorVO> photoAuthorVOS = shiguPhotoUsers.stream().map(shiguPhotoUser -> {
                 PhotoAuthorVO vo = new PhotoAuthorVO();
                 vo.setAddress(shiguPhotoUser.getAddress());
@@ -227,8 +229,18 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
                 vo.setImgsrc(shiguPhotoUser.getShowImg());
                 vo.setUserId(shiguPhotoUser.getUserId());
                 vo.setUserNick(shiguPhotoUser.getUserName());
+                if(StringUtils.isBlank(shiguPhotoUser.getShowImg())){
+                    aids.add(shiguPhotoUser.getAuthorId());
+                }
                 return vo;
             }).collect(Collectors.toList());
+            if(aids.size()>0){
+                ShiguPhotoWorksExample shiguPhotoWorksExample=new ShiguPhotoWorksExample();
+                shiguPhotoWorksExample.createCriteria().andAuthorIdIn(aids);
+                shiguPhotoWorksExample.setOrderByClause("");
+            }
+
+
             pager.setContent(photoAuthorVOS);
         }
         pager.calPages(count, bo.getPageSize());
