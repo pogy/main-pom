@@ -39,6 +39,12 @@ public class MemberFilter implements Filter {
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        if(checkedLogin(servletRequest,servletResponse,filterChain)){
+            filterChain.doFilter(servletRequest,servletResponse);
+        }
+    }
+
+    public boolean checkedLogin(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         if(hasLogin((HttpServletRequest)servletRequest,(HttpServletResponse)servletResponse)){
             //如果是店家,跳店家首页
             String uri=((HttpServletRequest) servletRequest).getRequestURI();
@@ -46,15 +52,19 @@ public class MemberFilter implements Filter {
             if(currentUser.hasRole(RoleEnum.STORE.getValue())&&uri.startsWith("/member/")&&uri.endsWith(".htm")){
                 HttpServletResponse response= (HttpServletResponse) servletResponse;
                 response.sendRedirect("/seller/index.htm");
+                return false;
             }else if(currentUser.hasRole(RoleEnum.STORE.getValue())&&uri.startsWith("/order/")&&uri.endsWith(".htm")
                     &&!uri.contains("order/alipayByApplyId")){//支付页面除外
                 HttpServletResponse response= (HttpServletResponse) servletResponse;
                 response.sendRedirect("/seller/index.htm");
+                return false;
             }else{
-                filterChain.doFilter(servletRequest,servletResponse);
+                return true;
             }
         }
+        return false;
     }
+
 
     /**
      * 登陆判断

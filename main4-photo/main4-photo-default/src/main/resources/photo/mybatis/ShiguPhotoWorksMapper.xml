@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.photo.interfaces.ShiguPhotoWorksMapper">
+
+    <select id="selectShiguPhotoWorks" resultType="com.shigu.main4.photo.vo.PhotoWorksVO">
+        select
+            t1.works_id worksId,
+            t1.pic_url picUrl,
+            t1.title title,
+            t2.user_id userId,
+            t2.user_name authorName,
+            t2.user_type userType,
+            t2.sex sex,
+            t2.address address,
+            t1.create_time createTime
+        from
+            shigu_photo_works t1,shigu_photo_user t2
+            <if test="styleId != null">
+                ,shigu_photo_works_style t3
+            </if>
+        where t1.author_id=t2.author_id
+            and t1.remove_is =0
+            <if test="authorId != null">
+                and t1.author_id=${authorId}
+            </if>
+            <if test="cid != null">
+                and t1.works_cid=${cid}
+            </if>
+            <if test="userTypes != null">
+                and t2.user_type in(${userTypes})
+            </if>
+            <if test="title != null">
+                and t1.title like("%${title}%")
+            </if>
+            <if test="sex != null">
+                and t2.sex=${sex}
+            </if>
+            <if test="styleId != null">
+                and t3.style_id=${styleId}
+                and t1.works_id=t3.works_id
+            </if>
+        <if test="sort != null">
+            order by ${sort}
+        </if>
+        limit ${start},${end}
+    </select>
+
+    <select id="selectShiguPhotoWorksCount" resultType="java.lang.Integer">
+        select
+          count(*)
+        from
+            shigu_photo_works t1,shigu_photo_user t2
+            <if test="styleId != null">
+                ,shigu_photo_works_style t3
+            </if>
+        where t1.author_id=t2.author_id
+            and t1.remove_is =0
+            <if test="authorId != null">
+                and t1.author_id=${authorId}
+            </if>
+            <if test="cid != null">
+                and t1.works_cid=${cid}
+            </if>
+            <if test="userTypes != null">
+                and t2.user_type in(${userTypes})
+            </if>
+            <if test="title != null">
+                and t1.title like("%${title}%")
+            </if>
+            <if test="sex != null">
+                and t2.sex=${sex}
+            </if>
+            <if test="styleId != null">
+                and t3.style_id=${styleId}
+                and t1.works_id=t3.works_id
+            </if>
+    </select>
+</mapper>
