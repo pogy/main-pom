@@ -20,9 +20,11 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguFlickrMapper extends Mapper<ShiguFlickr> {
 
-    Integer countFlickrPicture(@Param("status") Integer status);
+    Integer countFlickrPicture(@Param("fId") Long fId,@Param("status") Integer status);
 
     List<FlickrShow> selectFlickrByCategory(@Param("cId") Long cId,@Param("webSite") String webSite,@Param("status") Integer status,@Param("start") Integer start,@Param("size") Integer size);
 
     FlickrDetails selectFlickrPictureByfId(@Param("fId") Long fId, @Param("status") Integer status);
+
+    Integer countFlickr(@Param("status") Integer status);
 }

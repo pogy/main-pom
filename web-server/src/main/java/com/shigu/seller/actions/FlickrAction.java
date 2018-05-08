@@ -6,6 +6,7 @@ import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.FlickrDetailsVo;
 import com.shigu.main4.vo.FlickrVo;
+import com.shigu.seller.bo.ShopFlickrBo;
 import com.shigu.seller.services.FlickrService;
 import com.shigu.seller.vo.PhotoAlbumInfoVo;
 import com.shigu.seller.vo.PhotoAlbumVo;
@@ -204,7 +205,7 @@ public class FlickrAction {
         return "";
     }
 
-    public String photoShop(Long id,Long cid){
+    public String photoShop(ShopFlickrBo bo ,Model model){
 
         return "";
     }
