@@ -1,5 +1,6 @@
 package com.shigu.seller.services;
 
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.spread.services.ObjFormFlickrRedis;
 import com.shigu.spread.services.RedisForFlickrPage;
@@ -25,8 +26,13 @@ public class FlickrService {
     private RedisForFlickrPage redisForFlickrPage;
     @Autowired
     private RedisIO redisIO;
+    @Autowired
+    private OssIO ossIO;
 
     private String FLICKR_PAGE_REDIS_TEMPORARY = "flickr_page_redis_temporary_";   //相册redis缓存key的前缀  Temporary click
+
+    final String URL_FLAG="/flickrImgs/temp/";//临时图片地址标志
+    final String URL_NORMAL="/flickrImgs/";//正式图片地址
 
     public ObjFormFlickrRedis<Long> selreadCount(String suffix,Long readNumber) {
         return new ObjFormFlickrRedis<Long>(redisForFlickrPage,suffix,Long.class) {
@@ -46,6 +52,19 @@ public class FlickrService {
         return Long.valueOf(clickstr);
     }
 
+    public Boolean isUpload(Long shopId){
+     Long useSize = ossIO.getFileAllSizeInfo(URL_NORMAL+shopId+"/");
+     Long lsSize = ossIO.getFileAllSizeInfo(URL_FLAG+shopId+"/");
+     Long allSize = 1073741824l;
+     if ((allSize-useSize) < lsSize){
+         return false;
+     }
+        return true;
+    }
+
+    /**
+     * 移动图片
+     */
     public String banjia(String url){
         String targetUrl=url;
         if (StringUtils.isNotBlank(url)&&url.contains(URL_FLAG)) {
@@ -62,4 +81,6 @@ public class FlickrService {
         }
         return targetUrl;
     }
+
+
 }

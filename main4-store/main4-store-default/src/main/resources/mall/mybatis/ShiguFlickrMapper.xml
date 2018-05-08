@@ -22,7 +22,7 @@
         <if test="webSite!=null and webSite!=''">
             sf.web_site=#{webSite} AND
         </if>
-        sfp.pic_status=#{status} AND sfp.pic_status=sf.f_status GROUP BY sf.f_id
+        sfp.pic_status=#{status} AND sfp.pic_status=sf.f_status GROUP BY sf.f_id LIMIT #{start}, #{size}
     </select>
 
     <resultMap id="FlickrDetails" type="com.shigu.main4.vo.FlickrDetails">
@@ -31,18 +31,19 @@
         <result property="desc" column="f_desc"/>
         <result property="number" column="number"/>
         <result property="picUrls" column="urls"/>
-        <result property="shopQQ" column="im_qq"/>
-        <result property="shopAliww" column="im_aliww"/>
-        <result property="storeId" column="shop_id"/>
-        <result property="storeName" column="shop_name"/>
+        <result property="storeId" column="store_id"/>
     </resultMap>
     <select id="selectFlickrPictureByfId" resultMap="FlickrDetails">
-        SELECT ss.im_qq,ss.im_aliww,ss.shop_name,ss.shop_id,sf.f_id,sf.f_name,COUNT(sfp.pic_url) AS number,sf.f_desc,GROUP_CONCAT(sfp.pic_url) AS urls
-        FROM shigu_flickr AS sf LEFT JOIN shigu_flickr_picture AS sfp ON sf.f_id=sfp.f_id LEFT JOIN shigu_shop AS ss ON sf.store_id=ss.shop_id
+        SELECT sf.f_id,sf.store_id,sf.f_id,sf.f_name,COUNT(sfp.pic_url) AS number,sf.f_desc,GROUP_CONCAT(sfp.pic_url) AS urls
+        FROM shigu_flickr AS sf LEFT JOIN shigu_flickr_picture AS sfp ON sf.f_id=sfp.f_id
         WHERE
         <if test="fId!=null">
         sf.f_id=#{fId} AND
         </if>
         sf.f_status=#{status}
+    </select>
+
+    <select id="countFlickr" resultType="java.lang.Integer">
+        SELECT COUNT (*) FROM shigu_flickr WHERE f_status=#{status}
     </select>
 </mapper>

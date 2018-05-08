@@ -4,10 +4,13 @@ import com.opentae.data.mall.beans.ShiguFlickr;
 import com.opentae.data.mall.beans.ShiguFlickrPicture;
 import com.opentae.data.mall.interfaces.ShiguFlickrMapper;
 import com.opentae.data.mall.interfaces.ShiguFlickrPictureMapper;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -175,7 +178,6 @@ public class FlickrManageServiceImpl implements FlickrManageService {
             shiguFlickrPicture.setPicStatus(1);
             shiguFlickrPicture.setFId(fId);
             shiguFlickrPicture.setPicUrl(picUrlList.get(i));
-            shiguFlickrPicture.setSortOrder(i);//暂时默认排序
             shiguFlickrPictures.add(shiguFlickrPicture);
         }
         ShiguFlickr shiguFlickr = new ShiguFlickr();
@@ -229,24 +231,37 @@ public class FlickrManageServiceImpl implements FlickrManageService {
      * @return
      */
     @Override
-    public List<FlickrVo> getFlickrbyCategory(Long cId) {
-        List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1);
-        if (showList.size() <=0 ){
-            return null;
+    public ShiguPager<ShopFlickrsVo> getFlickrbyCategory(Long cId,Integer pageNo, Integer pageSize) {
+        ShiguPager<ShopFlickrsVo> pager = new ShiguPager<>();
+        if (pageNo < 1)
+            pageNo = 1;
+        if (pageSize < 1)
+            pageSize = 10;
+        pager.setNumber(pageNo);
+        int count = shiguFlickrMapper.countFlickrPicture(1);
+        pager.calPages(count, pageSize);
+        if (count > 0) {
+            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageNo,pageSize);
+            if (showList.size() <=0 ){
+                return null;
+            }
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
+            List<ShopFlickrsVo> flickrVos = new ArrayList<>();
+            showList.forEach(flickrShow -> {
+                ShopFlickrsVo flickrVo = new ShopFlickrsVo();
+                flickrVo.setId(flickrShow.getfId());
+                flickrVo.setTitle(flickrShow.getName());
+                flickrVo.setReadCount(flickrShow.getClicks());
+                flickrVo.setCover(flickrShow.getCover());
+                flickrVo.setPicCount(flickrShow.getNumber());
+                flickrVo.setCreated(time.format(flickrShow.getCreateTime()));
+                flickrVos.add(flickrVo);
+            });
+            pager.setContent(BeanMapper.mapList(flickrVos, ShopFlickrsVo.class));
         }
-        SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
-        List<FlickrVo> flickrVos = new ArrayList<>();
-        showList.forEach(flickrShow -> {
-            FlickrVo flickrVo = new FlickrVo();
-            flickrVo.setfId(flickrShow.getfId());
-            flickrVo.setName(flickrShow.getName());
-            flickrVo.setClicks(flickrShow.getClicks());
-            flickrVo.setCover(flickrShow.getCover());
-            flickrVo.setNumber(flickrShow.getNumber());
-            flickrVo.setCreateTime(time.format(flickrShow.getCreateTime()));
-            flickrVos.add(flickrVo);
-        });
-        return flickrVos;
+
+
+        return pager;
     }
 
     /**
@@ -261,14 +276,10 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         }
         FlickrDetails flickrDetails = shiguFlickrMapper.selectFlickrPictureByfId(fId,1);
         FlickrDetailsVo vo = new FlickrDetailsVo();
-        vo.setfId(flickrDetails.getfId());
         vo.setName(flickrDetails.getName());
         vo.setDesc(flickrDetails.getDesc());
         vo.setNumber(flickrDetails.getNumber());
         vo.setStoreId(flickrDetails.getStoreId());
-        vo.setShopAliww(flickrDetails.getShopAliww());
-        vo.setStoreName(flickrDetails.getStoreName());
-        vo.setShopQQ(flickrDetails.getShopQQ());
         String[] pics = flickrDetails.getPicUrls().split(",");
         List<String> picList = new ArrayList<>();
         Jedis jedis = redisIO.getJedis();

@@ -17,10 +17,7 @@ public class FlickrDetailsVo implements Serializable{
     private String desc;
     private Long number;
     private Long storeId;
-    private String storeName;
     private List<String> pictures;
-    private String shopQQ;
-    private String shopAliww;
 
     public Long getfId() {
         return fId;
@@ -62,14 +59,6 @@ public class FlickrDetailsVo implements Serializable{
         this.storeId = storeId;
     }
 
-    public String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
     public List<String> getPictures() {
         return pictures;
     }
@@ -78,19 +67,4 @@ public class FlickrDetailsVo implements Serializable{
         this.pictures = pictures;
     }
 
-    public String getShopQQ() {
-        return shopQQ;
-    }
-
-    public void setShopQQ(String shopQQ) {
-        this.shopQQ = shopQQ;
-    }
-
-    public String getShopAliww() {
-        return shopAliww;
-    }
-
-    public void setShopAliww(String shopAliww) {
-        this.shopAliww = shopAliww;
-    }
 }
