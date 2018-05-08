@@ -74,13 +74,13 @@ public class InterFacesService {
     }
 
     /**
-     * 根据京东登陆名模糊查询
+     * 根据京东登陆名精确查询
      * @param jdUserNick
      * @return
      */
     public List<JdSession> selJdUidsByFuzzyJdLoginName(String jdUserNick) {
         JdSessionMapExample example = new JdSessionMapExample();
-        example.createCriteria().andJdUserNickLike("%"+jdUserNick+"%");
+        example.createCriteria().andJdUserNickEqualTo(jdUserNick);
         List<JdSessionMap> jdSessionMaps = jdSessionMapMapper.selectFieldsByExample(example, FieldUtil.codeFields("jd_uid,jd_user_nick"));
         if (jdSessionMaps == null || jdSessionMaps.isEmpty()) {
             return null;

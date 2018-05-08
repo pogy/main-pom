@@ -73,7 +73,7 @@ public class InterFacesAction {
     }
 
     /**
-     * 根据京东登陆名模糊查询
+     * 根据京东登陆名精确查询
      * @param request
      * @return
      */
