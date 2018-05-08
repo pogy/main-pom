@@ -1,6 +1,7 @@
 package com.shigu.jd.mapper.actions;
 
 import com.openJar.beans.JdItemProp;
+import com.openJar.beans.JdSession;
 import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.interfaces.*;
@@ -86,7 +87,7 @@ public class InterFacesAction {
             response.setException(openException);
             return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
         }
-        List<Long> jdUids = null;
+        List<JdSession> jdUids = null;
         try {
             jdUids = interFacesService.selJdUidsByFuzzyJdLoginName(request.getJdUserNick());
         } catch (Exception e) {

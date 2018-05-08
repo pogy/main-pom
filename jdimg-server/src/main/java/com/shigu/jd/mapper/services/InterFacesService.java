@@ -1,9 +1,6 @@
 package com.shigu.jd.mapper.services;
 
-import com.openJar.beans.JdItemProp;
-import com.openJar.beans.JdPropValue;
-import com.openJar.beans.JdTbBind;
-import com.openJar.beans.ShiguJdcat;
+import com.openJar.beans.*;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.examples.JdItemPropExample;
@@ -13,12 +10,10 @@ import com.opentae.data.jd.examples.JdTbBindExample;
 import com.opentae.data.jd.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,14 +78,20 @@ public class InterFacesService {
      * @param jdUserNick
      * @return
      */
-    public List<Long> selJdUidsByFuzzyJdLoginName(String jdUserNick) {
+    public List<JdSession> selJdUidsByFuzzyJdLoginName(String jdUserNick) {
         JdSessionMapExample example = new JdSessionMapExample();
         example.createCriteria().andJdUserNickLike("%"+jdUserNick+"%");
-        List<JdSessionMap> jdUids = jdSessionMapMapper.selectFieldsByExample(example, FieldUtil.codeFields("jd_uid"));
-        if (jdUids == null || jdUids.isEmpty()) {
+        List<JdSessionMap> jdSessionMaps = jdSessionMapMapper.selectFieldsByExample(example, FieldUtil.codeFields("jd_uid,jd_user_nick"));
+        if (jdSessionMaps == null || jdSessionMaps.isEmpty()) {
             return null;
         }
-        return jdUids.stream().map(JdSessionMap::getJdUid).collect(Collectors.toList());
+        return jdSessionMaps.stream().map(item->{
+            JdSession jdSession = new JdSession();
+            jdSession.setJdUid(item.getJdUid());
+            jdSession.setJdUserNick(item.getJdUserNick());
+
+            return jdSession;
+        }).collect(Collectors.toList());
     }
 }
 

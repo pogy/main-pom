@@ -1,5 +1,6 @@
 package com.openJar.responses.interfaces;
 
+import com.openJar.beans.JdSession;
 import com.openJar.responses.Response;
 
 import java.util.List;
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public class SelJdUidsByFuzzyJdLoginNameResponse extends Response {
 
-    private List<Long> jdUids;
+    private List<JdSession> jdUids;
 
-    public List<Long> getJdUids() {
+    public List<JdSession> getJdUids() {
         return jdUids;
     }
 
-    public void setJdUids(List<Long> jdUids) {
+    public void setJdUids(List<JdSession> jdUids) {
         this.jdUids = jdUids;
     }
 }
