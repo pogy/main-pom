@@ -2,6 +2,7 @@ package com.shigu.seller.actions;
 
 
 import com.shigu.helpcenter.vo.Query;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.seller.services.DropShippingOrderServices;
 import com.shigu.seller.vo.DfQuery;
 import com.shigu.seller.vo.OrderGoodsVo;
@@ -33,17 +34,27 @@ public class DropShippingAction {
     @RequestMapping("myOrder")
     public String myOrder(DfQuery query , HttpSession session, Model model){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<OrdersVo> ordersVos = dropShippingOrderServices.shopDropShippingOrder(ps.getLogshop().getShopId(),query.getOrderId(),query.getGoodsNo());
-        model.addAttribute("orders",ordersVos);
+        if(query.getPage()==null){
+            query.setPage(1);
+        }
+        Integer pageSize=10;
+        ShiguPager<OrdersVo> pager = dropShippingOrderServices.shopDropShippingOrder(ps.getLogshop().getShopId(),query.getOrderId(),query.getGoodsNo(),query.getPage(),pageSize);
+        model.addAttribute("orders",pager.getContent());
+        model.addAttribute("pageOption",pager.selPageOption(pageSize));
         model.addAttribute("query",query);
         return "gys/myOrder";
     }
 
     @RequestMapping("distributionOrder")
     public String distributionOrder(DfQuery query , HttpSession session, Model model){
+        if(query.getPage()==null){
+            query.setPage(1);
+        }
+        Integer pageSize=10;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<OrderGoodsVo> orderGoods = dropShippingOrderServices.shopDropShippingGoods(ps.getLogshop().getShopId(),query.getGoodsNo());
-        model.addAttribute("orderGoods",orderGoods);
+        ShiguPager<OrderGoodsVo> pager = dropShippingOrderServices.shopDropShippingGoods(ps.getLogshop().getShopId(),query.getGoodsNo(),query.getPage(),pageSize);
+        model.addAttribute("orderGoods",pager.getContent());
+        model.addAttribute("pageOption",pager.selPageOption(pageSize));
         model.addAttribute("query",query);
         return "gys/distributionOrder";
     }

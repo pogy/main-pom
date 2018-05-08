@@ -42,7 +42,9 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
      */
     List<MyOrderVO> selectMyOrderList(@Param("userId") Long userId, @Param("bo") OrderBO bo,@Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex);
 
-    List<OrdersVo> getDropShippingOrder(@Param("shopId") Long shopId, @Param("oId") Long oId, @Param("goodsNo") String goodsNo);
+    List<OrdersVo> getDropShippingOrder(@Param("shopId") Long shopId, @Param("oid") Long oid, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
+    Integer getDropShippingOrderCount(@Param("shopId") Long shopId, @Param("oid") Long oid, @Param("goodsNo") String goodsNo);
+    List<DfGoodsVo> getDropShippingGoods(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
+    Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
 
-    List<DfGoodsVo> getDropShippingGoods(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
 }

@@ -13,6 +13,7 @@ public class DfQuery implements Serializable{
 
     private Long orderId;
     private String goodsNo;
+    private Integer page;
 
     public Long getOrderId() {
         return orderId;
@@ -28,5 +29,13 @@ public class DfQuery implements Serializable{
 
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
+    }
+
+    public Integer getPage() {
+        return this.page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 }
