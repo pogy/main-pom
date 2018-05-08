@@ -279,135 +279,78 @@
 
     <select id="getDropShippingGoods" resultMap="dfGoods">
         SELECT
-            t.*
-        FROM(
-		SELECT
-			ios.goods_id,
-			ios.size,
-			ios.color,
-			SUM(ios.num) AS num,
-			SUM(ios.in_stok) AS in_stok,
-			ios.price,
-			ios.pic_url,
-			ios.title,
-			IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,
-			io.create_time
-		FROM
-			(
-				SELECT
-					io.oid,
-					io.create_time,
-					ios.num,
-					ios.in_stok
-				FROM
-					item_order io,
-					(
-						SELECT
-							ios.oid,
-							ios.num,
-							ios.in_stok,
-							IFNULL(SUM(iof.number), 0) AS refund_num
-						FROM
-							(
-								SELECT
-									ios.oid,
-									ios.soid,
-									ios.num,
-									ios.in_stok
-								FROM
-									item_order_sub AS ios,
-									shigu_goods_tiny_hz AS sgt
-								WHERE
-									ios. STATUS = 0
-                                <if test="goodsNo != null and goodsNo != ''">
-                                    AND sgt.goods_no=#{goodsNo}
-                                </if>
-								AND ios.goods_id > 0
-								AND ios.goods_id = sgt.goods_id
-                                <if test="shopId != null">
-                                    AND ios.shop_id=#{shopId}
-                                </if>
-							) AS ios
-						LEFT JOIN item_order_refund AS iof ON ios.soid = iof.soid
-						GROUP BY
-							ios.soid
-						HAVING
-							ios.num > ios.in_stok + refund_num
-					) AS ios
-				WHERE
-					io.order_status = 2
-				AND io.web_site = 'hz'
-				AND io.sender_id = 999999990
-				AND io.oid = ios.oid
-				GROUP BY
-					io.oid
-				ORDER BY
-					io.create_time DESC
-				limit ${start},${end}
-			) AS io
-		LEFT JOIN item_order_sub AS ios ON io.oid = ios.oid
-		LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id = sgt.goods_id and ios.goods_id>0
-        <if test="goodsNo != null and goodsNo != ''">
-            AND sgt.goods_no=#{goodsNo}
-        </if>
-		GROUP BY
-			ios.sku_id,
-			ios.goods_id
-        ORDER BY io.create_time DESC
-	) t
-    </select>
-    <select id="getDropShippingGoodsCount" resultType="java.lang.Integer">
-        select count(*) from
-        (
-        SELECT
-        io.oid,
-        io.create_time,
-        ios.num,
-        ios.in_stok
+        ios.goods_id,
+        ios.size,
+        ios.color,
+        SUM(ios.num) AS num,
+        SUM(ios.in_stok) AS in_stok,
+        IFNULL(SUM(iof.number), 0) AS refund_num,
+        ios.price,
+        ios.pic_url,
+        ios.title,
+        IFNULL(sgt.goods_no, ios.goods_no) AS goods_no
         FROM
-        item_order io,
-        (
-        SELECT
-        ios.oid,
-        ios.num,
-        ios.in_stok,
-        IFNULL(SUM(iof.number), 0) AS refund_num
-        FROM
-        (
-        SELECT
-        ios.oid,
-        ios.soid,
-        ios.num,
-        ios.in_stok
-        FROM
-        item_order_sub AS ios,
-        shigu_goods_tiny_hz AS sgt
-        WHERE
-        ios. STATUS = 0
-        <if test="goodsNo != null and goodsNo != ''">
-            AND sgt.goods_no=#{goodsNo}
-        </if>
-        AND ios.goods_id > 0
-        AND ios.goods_id = sgt.goods_id
-        <if test="shopId != null">
-            AND ios.shop_id=#{shopId}
-        </if>
-        ) AS ios
+        item_order AS io
+        LEFT JOIN item_order_sub AS ios ON io.oid = ios.oid
         LEFT JOIN item_order_refund AS iof ON ios.soid = iof.soid
-        GROUP BY
-        ios.soid
-        HAVING
-        ios.num > ios.in_stok + refund_num
-        ) AS ios
+        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id = sgt.goods_id
         WHERE
         io.order_status = 2
         AND io.web_site = 'hz'
         AND io.sender_id = 999999990
-        AND io.oid = ios.oid
+        <if test="shopId != null">
+            AND ios.shop_id=#{shopId}
+        </if>
+        AND ios.goods_id > 0
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
+        </if>
         GROUP BY
-        io.oid
+        ios.sku_id,
+        ios.goods_id
+        HAVING
+        num > in_stok + refund_num
         ORDER BY
-        io.create_time DESC
+        create_time DESC
+        limit ${start},${end}
+    </select>
+    <select id="getDropShippingGoodsCount" resultType="java.lang.Integer">
+        select count(*) from
+        (
+        select DISTINCT t.goods_id from(
+        SELECT
+        ios.goods_id,
+        ios.size,
+        ios.color,
+        SUM(ios.num) AS num,
+        SUM(ios.in_stok) AS in_stok,
+        IFNULL(SUM(iof.number), 0) AS refund_num,
+        ios.price,
+        ios.pic_url,
+        ios.title,
+        IFNULL(sgt.goods_no, ios.goods_no) AS goods_no
+        FROM
+        item_order AS io
+        LEFT JOIN item_order_sub AS ios ON io.oid = ios.oid
+        LEFT JOIN item_order_refund AS iof ON ios.soid = iof.soid
+        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id = sgt.goods_id
+        WHERE
+        io.order_status = 2
+        AND io.web_site = 'hz'
+        AND io.sender_id = 999999990
+        <if test="shopId != null">
+            AND ios.shop_id=#{shopId}
+        </if>
+        AND ios.goods_id > 0
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
+        </if>
+        GROUP BY
+        ios.sku_id,
+        ios.goods_id
+        HAVING
+        num > in_stok + refund_num
+        )t
         ) AS io
     </select>
 
