@@ -13,6 +13,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 public class CaptchaUsernamePasswordToken extends UsernamePasswordToken {
 	/** 描述 */
 	private static final long serialVersionUID = -3178260335127476542L;
+
+	private String loginname;
 	/**
 	 * 验证码
 	 */
@@ -30,6 +32,15 @@ public class CaptchaUsernamePasswordToken extends UsernamePasswordToken {
 	 * 如果是第三方登陆，传个key
 	 */
 	private String subKey;
+
+	public String getLoginname() {
+		return loginname;
+	}
+
+	public void setLoginname(String loginname) {
+		this.loginname = loginname;
+	}
+
 	public String getSubKey() {
 		return subKey;
 	}
@@ -86,6 +97,13 @@ public class CaptchaUsernamePasswordToken extends UsernamePasswordToken {
 
 	public CaptchaUsernamePasswordToken(String username, String password, boolean rememberMe, String host, String captcha, UserType loginType) {
 		super(username, password, rememberMe, host);
+		this.captcha = captcha;
+		this.loginType = loginType;
+	}
+
+	public CaptchaUsernamePasswordToken(String loginname,String username, String password, boolean rememberMe, String host, String captcha, UserType loginType) {
+		super(username, password, rememberMe, host);
+		this.loginname = loginname;
 		this.captcha = captcha;
 		this.loginType = loginType;
 	}

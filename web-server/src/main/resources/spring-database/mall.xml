@@ -50,6 +50,18 @@
         <property name="typeAliasesPackage" value="com.opentae.data.mall"/>
     </bean>
 
+    <bean id="tae_mana_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+        <property name="plugins">
+            <list>
+                <ref bean="mapperInterceptor"/>
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
+        <property name="typeAliasesPackage" value="com.opentae.data.mana"/>
+    </bean>
+
     <bean id="main_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
@@ -64,6 +76,16 @@
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage" value= "com/opentae/core/mybatis/mapper" />
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
+    <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name= "basePackage" value= "com/opentae/data/mana/interfaces" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_mana_sqlSessionFactory" />
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
+    <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name= "basePackage" value= "com/opentae/core/mybatis/mapper" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_mana_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
 </beans>

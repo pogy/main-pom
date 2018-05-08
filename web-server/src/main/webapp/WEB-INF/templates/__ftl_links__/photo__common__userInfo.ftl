@@ -17,8 +17,10 @@
                 ${userInfo.typeName!}：${userInfo.nick!}
             </p>
             <p class="generalInfo">
-                <span><i class="icon-s-addr"></i>${userInfo.address!}</span>
                 <span><i class="icon-s-phone2"></i>${userInfo.tele!}</span>
+                <#if userInfo.address??>
+                    <span><i class="icon-s-addr"></i>${userInfo.address!}</span>
+                </#if>
             </p>
             <#if $pageid != "userHomePage" && $pageid != "userProfileEdit">
             <div class="userInfoEditBtnBox">
@@ -30,6 +32,7 @@
     <#if userInfo.wxQrCode??>
     <div class="rightInfoBox fr">
         <img src="${userInfo.wxQrCode!}">
+        <p><i class="icon-s-weixin"></i>微信二维码</p>
     </div>
     </#if>
 </div>

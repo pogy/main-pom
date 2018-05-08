@@ -82,7 +82,7 @@
     </div>
 </div>
 <div class="coverList yahei layout modelList">
-    <h2 class="listTitle">网红模特 <a href="photoModel.htm">更多 &gt;</a></h2>
+    <h2 class="listTitle">网红模特 <a href="/photo/photoModel.htm">更多 &gt;</a></h2>
     <div class="listContent">
         <div class="itemWrap">
             <#list modelCoverList as item>
@@ -92,7 +92,7 @@
     </div>
 </div>
 <div class="coverList yahei layout">
-    <h2 class="listTitle">摄影机构<a href="photoOrg.htm">更多 &gt;</a></h2>
+    <h2 class="listTitle">摄影机构<a href="/photo/photoOrg.htm">更多 &gt;</a></h2>
     <div class="listContent">
         <div class="itemWrap">
             <#list orgCoverList as item>
@@ -102,7 +102,7 @@
     </div>
 </div>
 <div class="coverList yahei layout">
-    <h2 class="listTitle">热门作品 <a href="photoWorks.htm">更多 &gt;</a></h2>
+    <h2 class="listTitle">热门作品 <a href="/photo/photoWorks.htm">更多 &gt;</a></h2>
     <div class="popWorks layout">
         <div class="worksBox">
             <#list workList as item>

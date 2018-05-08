@@ -126,11 +126,6 @@ public class PhotoUserService {
             //模特
             case 1:
                 authType = "模特";
-                if (sex == 0) {
-                    authType = "男模";
-                } else if (sex == 1) {
-                    authType = "女模";
-                }
                 break;
             //摄影机构 2 摄影师 3 摄影公司
             case 2:

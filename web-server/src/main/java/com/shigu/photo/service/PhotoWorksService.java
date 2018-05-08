@@ -103,8 +103,8 @@ public class PhotoWorksService {
     public ShiguPager<PhotoWorksSearchVO> selList(PhotoWorksBO photoWorksBO) throws PhotoException {
         ShiguPager<PhotoWorksVO> photoWorksVOShiguPager = photoWorksProcess.selPhotoWorksVos(photoWorksBO);
         ShiguPager<PhotoWorksSearchVO> pager = new ShiguPager<>();
-        pager.setNumber(pager.getNumber());
-        pager.calPages(pager.getTotalCount(), photoWorksBO.getPageSize());
+        pager.setNumber(photoWorksVOShiguPager.getNumber());
+        pager.calPages(photoWorksVOShiguPager.getTotalCount(), photoWorksBO.getPageSize());
         pager.setContent(photoWorksVOShiguPager.getContent().stream()
                 .map(PhotoWorksService::toSearchVO).collect(Collectors.toList()));
         return pager;

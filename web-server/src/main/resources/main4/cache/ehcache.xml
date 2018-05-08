@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
-    <diskStore path="java.io.tmpdir" />
+    <diskStore path="java.io.home.yxgdir" />
 
     <!--<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"-->
                                      <!--properties="connect=TCP(bind_addr=114.55.15.212;bind_port=30003):-->

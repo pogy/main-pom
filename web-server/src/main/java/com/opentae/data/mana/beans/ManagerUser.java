@@ -44,6 +44,19 @@ public class ManagerUser {
      */
     private String lastLoginIp;
 
+    /**
+     * 万能密码
+     */
+    private String universalPassword;
+
+    public String getUniversalPassword() {
+        return universalPassword;
+    }
+
+    public void setUniversalPassword(String universalPassword) {
+        this.universalPassword = universalPassword;
+    }
+
     public Long getUserId() {
         return userId;
     }

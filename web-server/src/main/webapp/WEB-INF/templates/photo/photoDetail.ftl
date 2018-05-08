@@ -54,7 +54,7 @@
     <div class="morePhotoDetail">
         <#if (worksData.imgList?size) gt 0>
             <#list worksData.imgList as img>
-            <p><img src="${img!}"></p>
+            <p><img src="${img!}_w750.jpg"></p>
             </#list>
         </#if>
     </div>

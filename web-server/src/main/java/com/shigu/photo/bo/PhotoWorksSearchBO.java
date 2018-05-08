@@ -2,6 +2,7 @@ package com.shigu.photo.bo;
 
 import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.enums.WorksListSortEnum;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,6 +40,9 @@ public class PhotoWorksSearchBO {
      * 获取 排序
      */
     public String getSort() {
+        if (StringUtils.isBlank(this.sort)) {
+            this.sort = "def";
+        }
         return this.sort;
     }
 
