@@ -1,5 +1,6 @@
 <div class="sidebar shadowBox yahei">
     <#if $it.type == 'index'>
+    <#if webSite == 'hz'>
     <h2>交易管理</h2>
     <ul>
         <#if 'myOrder' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
@@ -27,6 +28,7 @@
         </li>
         </#if>
     </ul>
+    </#if>
     <h2>商品管理</h2>
     <ul>
         <#if 'createGoods21init' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
