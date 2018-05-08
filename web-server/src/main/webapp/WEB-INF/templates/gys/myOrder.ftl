@@ -104,8 +104,8 @@
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </a>
         <div class="goodsCon">
-            <p>货号：${childOrder.goodsNo!}</p>
-            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <p class="fc3">货号：${childOrder.goodsNo!}</p>
+            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle fc9" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="fcF40">&yen;${childOrder.price!}</p>
         </div>
     </div>
