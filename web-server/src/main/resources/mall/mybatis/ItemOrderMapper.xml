@@ -226,7 +226,7 @@
         ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,io.create_time
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
-        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
+        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990 AND ios.status=0
         <if test="oId != null">
             AND io.oid=#{oId}
         </if>
@@ -250,7 +250,7 @@
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
         LEFT JOIN item_order_refund AS iof ON ios.soid=iof.soid
-        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
+        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990 AND ios.status=0
         <if test="goodsNo != null and goodsNo != ''">
             AND sgt.goods_no=#{goodsNo}
         </if>

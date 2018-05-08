@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @ProjectName: main-pom
@@ -38,6 +35,7 @@ public class DropShippingOrderServices {
                 childOrdersVo.setPrice(MoneyUtil.dealPrice(childOrdersVo.getPriceLong()));
             });
         });
+//        List<DfOrderVo> dfOrderVoList = itemOrderMapper.getDropShippingOrder(shopId,oId,goodsNo);
 //        List<Long> oids = new ArrayList<>();
 //        List<Long> goodsIds = new ArrayList<>();
 //        dfOrderVoList.forEach(dfOrderVo -> {
@@ -64,7 +62,7 @@ public class DropShippingOrderServices {
 //                boolean a = true;
 //                for (int j = 0; j <dfOrderVoList.size() ; j++) {
 //                    SkusVo skusVo = new SkusVo();
-//                    if (oid ==dfOrderVoList.get(j).getOid()){
+//                    if (oid.equals(dfOrderVoList.get(j).getOid())){
 //                        if (b){
 //                            orderId = oid;
 //                            ordertime = format.format(dfOrderVoList.get(j).getCreateTime());
@@ -148,13 +146,20 @@ public class DropShippingOrderServices {
             ogVos.add(ogVo);
         });
         for (int i = 0; i <ogVos.size() ; i++) {
-            if (ogVos.get(i).getTotalCount() == 0){
-                ogVos.remove(i);
-            }
             for (int j = 0; j <ogVos.get(i).getSkus().size() ; j++) {
                 if (ogVos.get(i).getSkus().get(j).getNum() == 0){
                     ogVos.get(i).getSkus().remove(j);
                 }
+            }
+            if (ogVos.get(i).getTotalCount() == 0){
+                ogVos.remove(i);
+            }
+        }
+        Iterator<OrderGoodsVo> it = ogVos.iterator();
+        while(it.hasNext()){
+            OrderGoodsVo x = it.next();
+            if(x.getTotalCount()==0){
+                it.remove();
             }
         }
         return ogVos;
