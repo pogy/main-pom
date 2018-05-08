@@ -253,7 +253,7 @@
             AND sgt.goods_no=#{goodsNo}
         </if>
         GROUP BY ios.sku_id,ios.goods_id
-
+        ORDER BY io.create_time DESC
 
     </select>
     <select id="getDropShippingOrderCount" resultType="java.lang.Integer">
@@ -353,6 +353,7 @@
 		GROUP BY
 			ios.sku_id,
 			ios.goods_id
+        ORDER BY io.create_time DESC
 	) t
     </select>
     <select id="getDropShippingGoodsCount" resultType="java.lang.Integer">
