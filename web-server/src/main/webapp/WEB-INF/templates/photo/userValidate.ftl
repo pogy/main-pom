@@ -30,7 +30,7 @@
         <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png" class="fl">
         <div class="userWords">
             <h3 class="fc3 fs16">认证身份后才能上传作品哦~</h3>
-            <p class="fcF40">身份认证后无法修改，请认证填写~</p>
+            <p class="fcF40">身份认证后无法修改，请认真填写~</p>
         </div>
     </div>
     <div class="validateForm userFormWrap">
