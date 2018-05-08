@@ -18,6 +18,7 @@ public class ChildOrdersVo implements Serializable{
     private String goodsNo;
     private String price;
     private List<SkusVo> skus;
+    private Long priceLong;
 
     public String getImgsrc() {
         return imgsrc;
@@ -65,5 +66,13 @@ public class ChildOrdersVo implements Serializable{
 
     public void setSkus(List<SkusVo> skus) {
         this.skus = skus;
+    }
+
+    public Long getPriceLong() {
+        return this.priceLong;
+    }
+
+    public void setPriceLong(Long priceLong) {
+        this.priceLong = priceLong;
     }
 }

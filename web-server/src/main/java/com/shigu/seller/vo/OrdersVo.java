@@ -1,6 +1,7 @@
 package com.shigu.seller.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class OrdersVo implements Serializable{
 
     private Long orderId;
     private String tradeTime;
+    private Date createTime;
     private String tradePay;
     private List<ChildOrdersVo> childOrders;
 
@@ -47,5 +49,13 @@ public class OrdersVo implements Serializable{
 
     public void setChildOrders(List<ChildOrdersVo> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public Date getCreateTime() {
+        return this.createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

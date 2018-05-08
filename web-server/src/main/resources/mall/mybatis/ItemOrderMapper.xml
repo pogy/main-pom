@@ -195,7 +195,33 @@
         <result column="in_stok" property="inStok"/>
     </resultMap>
 
-    <select id="getDropShippingOrder" resultMap="dfOrder">
+
+
+    <resultMap id="dfOrdersVO" type="com.shigu.seller.vo.OrdersVo">
+        <id column="oid" property="orderId"/>
+        <result column="create_time" property="createTime"/>
+        <collection property="childOrders" ofType="com.shigu.seller.vo.ChildOrdersVo" resultMap="dfChildOrdersVO" javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="dfChildOrdersVO" type="com.shigu.seller.vo.ChildOrdersVo">
+        <result column="goods_id" property="goodsId"/>
+        <result column="pic_url" property="imgsrc"/>
+        <result column="price" property="priceLong"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="title" property="title"/>
+        <collection property="skus" ofType="com.shigu.seller.vo.SkusVo" resultMap="dfChildOrdersSkuVO" javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="dfChildOrdersSkuVO" type="com.shigu.seller.vo.SkusVo">
+        <result column="size" property="size"/>
+        <result column="color" property="color"/>
+        <result column="num" property="num"/>
+        <result column="in_stok" property="haveTakeGoodsNum"/>
+    </resultMap>
+
+
+
+    <select id="getDropShippingOrder" resultMap="dfOrdersVO">
         SELECT io.oid ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,ios.goods_id,
         ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,io.create_time
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
@@ -211,14 +237,19 @@
             AND ios.shop_id=#{shopId}
         </if>
         AND ios.goods_id>0 GROUP BY ios.sku_id,ios.goods_id
+        ORDER BY io.create_time DESC
     </select>
 
 
     <select id="getDropShippingGoods" resultMap="dfGoods">
-        SELECT ios.goods_id ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,
-        ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no) AS goods_no
+        SELECT t.* FROM(
+        SELECT ios.goods_id ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS
+        in_stok,IFNULL(SUM(iof.number),0) AS refund_num,
+        ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,
+        io.create_time
         FROM item_order AS io LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id
+        LEFT JOIN item_order_refund AS iof ON ios.soid=iof.soid
         WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990
         <if test="goodsNo != null and goodsNo != ''">
             AND sgt.goods_no=#{goodsNo}
@@ -227,6 +258,9 @@
             AND ios.shop_id=#{shopId}
         </if>
         AND ios.goods_id>0 GROUP BY ios.sku_id,ios.goods_id
+        )t
+        WHERE t.num>t.in_stok+t.refund_num
+        ORDER BY t.create_time DESC
     </select>
 
 

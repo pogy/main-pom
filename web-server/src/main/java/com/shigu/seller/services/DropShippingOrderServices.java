@@ -2,6 +2,8 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.seller.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,71 +30,78 @@ public class DropShippingOrderServices {
     private ItemOrderSubMapper itemOrderSubMapper;
 
     public List<OrdersVo> shopDropShippingOrder(Long shopId,Long oId,String goodsNo){
-        List<DfOrderVo> dfOrderVoList = itemOrderMapper.getDropShippingOrder(shopId,oId,goodsNo);
-        List<Long> oids = new ArrayList<>();
-        List<Long> goodsIds = new ArrayList<>();
-        dfOrderVoList.forEach(dfOrderVo -> {
-            Long oid = dfOrderVo.getOid();
-            Long goodsId = dfOrderVo.getGoodsId();
-            oids.add(oid);
-            goodsIds.add(goodsId);
+        List<OrdersVo> dfOrderVoList = itemOrderMapper.getDropShippingOrder(shopId,oId,goodsNo);
+        dfOrderVoList.forEach(ordersVo -> {
+            ordersVo.setTradeTime(DateUtil.dateToString(ordersVo.getCreateTime(),DateUtil.patternD));
+            ordersVo.setTradePay(MoneyUtil.dealPrice(ordersVo.getChildOrders().stream().mapToLong(value -> value.getPriceLong()*value.getSkus().stream().mapToInt(SkusVo::getNum).sum()).sum()));
+            ordersVo.getChildOrders().forEach(childOrdersVo -> {
+                childOrdersVo.setPrice(MoneyUtil.dealPrice(childOrdersVo.getPriceLong()));
+            });
         });
-        List<Long> oidList = new ArrayList<>(new HashSet<>(oids));
-        List<Long> goodsIdList = new ArrayList<>(new HashSet<>(goodsIds));
-        List<OrdersVo> ordersVos = new ArrayList<>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        oidList.forEach(oid ->{
-            Boolean b = true;
-            OrdersVo ordersVo = new OrdersVo();
-            Long orderId = null;
-            String ordertime = "";
-            Long tradePay = 0l;
-            Double p = null;
-            List<ChildOrdersVo> covos = new ArrayList<>();
-            for (int i = 0; i <goodsIdList.size() ; i++) {
-                ChildOrdersVo coVo = new ChildOrdersVo();
-                List<SkusVo> skusVoList = new ArrayList<>();
-                boolean a = true;
-                for (int j = 0; j <dfOrderVoList.size() ; j++) {
-                    SkusVo skusVo = new SkusVo();
-                    if (oid ==dfOrderVoList.get(j).getOid()){
-                        if (b){
-                            orderId = oid;
-                            ordertime = format.format(dfOrderVoList.get(j).getCreateTime());
-                            b=false;
-                        }
-                        if (goodsIdList.get(i).equals(dfOrderVoList.get(j).getGoodsId())){
-                            if (a) {
-                                coVo.setGoodsId(dfOrderVoList.get(j).getGoodsId());
-                                coVo.setGoodsNo(dfOrderVoList.get(j).getGoodsNo());
-                                coVo.setImgsrc(dfOrderVoList.get(j).getPicUrl());
-                                p = dfOrderVoList.get(j).getPrice().doubleValue() / 100;
-                                coVo.setPrice(p.toString());
-                                coVo.setTitle(dfOrderVoList.get(j).getTitle());
-                                a=false;
-                            }
-                            skusVo.setColor(dfOrderVoList.get(j).getColor());
-                            skusVo.setNum(dfOrderVoList.get(j).getNum());
-                            skusVo.setHaveTakeGoodsNum(dfOrderVoList.get(j).getInStok());
-                            skusVo.setSize(dfOrderVoList.get(j).getSize());
-                            skusVoList.add(skusVo);
-                            tradePay += dfOrderVoList.get(j).getNum()*dfOrderVoList.get(j).getPrice();
-                        }
-                    }
-                }
-                if (skusVoList.size()>0) {
-                    coVo.setSkus(skusVoList);
-                    covos.add(coVo);
-                }
-            }
-            ordersVo.setOrderId(orderId);
-            ordersVo.setTradeTime(ordertime);
-            ordersVo.setChildOrders(covos);
-            Double sumPrice = tradePay.doubleValue()/100;
-            ordersVo.setTradePay(sumPrice.toString());
-            ordersVos.add(ordersVo);
-        });
-        return ordersVos;
+//        List<Long> oids = new ArrayList<>();
+//        List<Long> goodsIds = new ArrayList<>();
+//        dfOrderVoList.forEach(dfOrderVo -> {
+//            Long oid = dfOrderVo.getOid();
+//            Long goodsId = dfOrderVo.getGoodsId();
+//            oids.add(oid);
+//            goodsIds.add(goodsId);
+//        });
+//        List<Long> oidList = new ArrayList<>(new HashSet<>(oids));
+//        List<Long> goodsIdList = new ArrayList<>(new HashSet<>(goodsIds));
+//        List<OrdersVo> ordersVos = new ArrayList<>();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        oidList.forEach(oid ->{
+//            Boolean b = true;
+//            OrdersVo ordersVo = new OrdersVo();
+//            Long orderId = null;
+//            String ordertime = "";
+//            Long tradePay = 0l;
+//            Double p = null;
+//            List<ChildOrdersVo> covos = new ArrayList<>();
+//            for (int i = 0; i <goodsIdList.size() ; i++) {
+//                ChildOrdersVo coVo = new ChildOrdersVo();
+//                List<SkusVo> skusVoList = new ArrayList<>();
+//                boolean a = true;
+//                for (int j = 0; j <dfOrderVoList.size() ; j++) {
+//                    SkusVo skusVo = new SkusVo();
+//                    if (oid ==dfOrderVoList.get(j).getOid()){
+//                        if (b){
+//                            orderId = oid;
+//                            ordertime = format.format(dfOrderVoList.get(j).getCreateTime());
+//                            b=false;
+//                        }
+//                        if (goodsIdList.get(i).equals(dfOrderVoList.get(j).getGoodsId())){
+//                            if (a) {
+//                                coVo.setGoodsId(dfOrderVoList.get(j).getGoodsId());
+//                                coVo.setGoodsNo(dfOrderVoList.get(j).getGoodsNo());
+//                                coVo.setImgsrc(dfOrderVoList.get(j).getPicUrl());
+//                                p = dfOrderVoList.get(j).getPrice().doubleValue() / 100;
+//                                coVo.setPrice(p.toString());
+//                                coVo.setTitle(dfOrderVoList.get(j).getTitle());
+//                                a=false;
+//                            }
+//                            skusVo.setColor(dfOrderVoList.get(j).getColor());
+//                            skusVo.setNum(dfOrderVoList.get(j).getNum());
+//                            skusVo.setHaveTakeGoodsNum(dfOrderVoList.get(j).getInStok());
+//                            skusVo.setSize(dfOrderVoList.get(j).getSize());
+//                            skusVoList.add(skusVo);
+//                            tradePay += dfOrderVoList.get(j).getNum()*dfOrderVoList.get(j).getPrice();
+//                        }
+//                    }
+//                }
+//                if (skusVoList.size()>0) {
+//                    coVo.setSkus(skusVoList);
+//                    covos.add(coVo);
+//                }
+//            }
+//            ordersVo.setOrderId(orderId);
+//            ordersVo.setTradeTime(ordertime);
+//            ordersVo.setChildOrders(covos);
+//            Double sumPrice = tradePay.doubleValue()/100;
+//            ordersVo.setTradePay(sumPrice.toString());
+//            ordersVos.add(ordersVo);
+//        });
+        return dfOrderVoList;
     }
 
     public List<OrderGoodsVo> shopDropShippingGoods(Long shopId,String goodsNo){
