@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,9 +82,27 @@ public class PhotoWorksAction {
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
+        model.addAttribute("totalPage", photoWorksVOShiguPager.getTotalCount());
         return "photo/userWorkList";
     }
+
+    @RequestMapping("getWorksList")
+    @ResponseBody
+    public JSONObject getWorksList(Long id,Integer page) throws PhotoException {
+        if(id==null){
+            return JsonResponseUtil.success().element("userWorksList",new ArrayList());
+        }
+        if(page==null||page<1){
+            page=1;
+        }
+        PhotoWorksBO photoWorksBO = new PhotoWorksBO();
+        photoWorksBO.setPage(page);
+        photoWorksBO.setPageSize(20);
+        photoWorksBO.setUserId(id);
+        ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
+        return JsonResponseUtil.success().element("userWorksList",photoWorksVOShiguPager.getContent());
+    }
+
 
     @RequestMapping("member/userWorkList")
     public String memberuserWorkList(PhotoWorksSearchBO query, Model model, HttpSession session) throws PhotoException {
