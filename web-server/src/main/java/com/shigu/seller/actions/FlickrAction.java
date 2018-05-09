@@ -1,21 +1,21 @@
 package com.shigu.seller.actions;
 
 import com.shigu.main4.cdn.services.CdnService;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
 import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.FlickrDetailsVo;
+import com.shigu.main4.vo.FlickrHomeVo;
 import com.shigu.main4.vo.FlickrVo;
+import com.shigu.main4.vo.ShopFlickrsVo;
 import com.shigu.seller.bo.ShopFlickrBo;
 import com.shigu.seller.services.FlickrService;
-import com.shigu.seller.vo.PhotoAlbumInfoVo;
-import com.shigu.seller.vo.PhotoAlbumVo;
-import com.shigu.seller.vo.PicVo;
+import com.shigu.seller.vo.*;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.services.ObjFormFlickrRedis;
-import com.shigu.spread.services.ObjFromCache;
 import com.shigu.tools.JsonResponseUtil;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
@@ -50,6 +50,12 @@ public class FlickrAction {
     @Autowired
     private CdnService cdnService;
 
+    /**
+     * 相册后台首页
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("flickrBackground")
     public String flickrBackground(HttpSession session, Model model){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -183,6 +189,14 @@ public class FlickrAction {
         return obj;
     }
 
+    /**
+     * 图片详情页面
+     * @param id
+     * @param model
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
     @RequestMapping("photoItem")
     public String photoItem(Long id,Model model) throws IOException, TemplateException {
         FlickrDetailsVo fVo = flickrManageService.getFlickrShow(id);
@@ -194,7 +208,8 @@ public class FlickrAction {
         if (fVo.getPictures() != null && fVo.getPictures().size() > 0){
             for (int i = 0; i <fVo.getPictures().size() ; i++) {
                 PicVo picVo = new PicVo();
-                picVo.setImgSrc(fVo.getPictures().get(i));
+                picVo.setImgSrc(fVo.getPictures().get(i).getPicUrl());
+                picVo.setUploadTime(fVo.getPictures().get(i).getCreateTime());
                 picVos.add(picVo);
             }
         }
@@ -205,8 +220,49 @@ public class FlickrAction {
         return "";
     }
 
-    public String photoShop(ShopFlickrBo bo ,Model model){
+    /**
+     * 店铺相册页面
+     * @param bo
+     * @param model
+     * @return
+     */
+    public String photoShop(ShopFlickrBo bo ,Model model) throws IOException, TemplateException {
+        ShiguPager<ShopFlickrsVo> shiguPager = flickrManageService.getFlickrbyShop(bo.getId(),bo.getCid(),bo.getPage(),bo.getRows());
+        if (shiguPager.getContent() != null){
+            List<ShopFlickrsVo> svoList = shiguPager.getContent();
+            for (int i = 0; i < svoList.size(); i++) {
+                ShopFlickrsVo shopFlickrsVo = svoList.get(i);
+                shopFlickrsVo.setReadCount(Long.valueOf(selFromCache(flickrService.selreadCount(shopFlickrsVo.getId().toString(),shopFlickrsVo.getReadCount())).toString())+flickrService.temporaryClicks(shopFlickrsVo.getId().toString()));
+            }
+            model.addAttribute("photoAlbums",svoList);
+        }
+        List<CategoryVo> categroyVos = flickrService.getCategroy();
+        CdnShopInfoVO shop = cdnService.cdnShopInfo(bo.getId());
+        model.addAttribute("shopInfo",shop);
+        model.addAttribute("cates",categroyVos);
+        model.addAttribute("pageOption", shiguPager.selPageOption(bo.getRows()));
+        return "";
+    }
 
+    /**
+     * 图片库
+     * @param bo
+     * @param model
+     * @return
+     */
+    public String photoPics(ShopFlickrBo bo,Model model){
+        ShiguPager<FlickrHomeVo> pager = flickrManageService.getFlickrByCategory(bo.getCid(),bo.getPage(),bo.getRows());
+        if (pager.getContent() != null){
+            List<FlickrHomeVo> flickrHomeVos = pager.getContent();
+            for (int i = 0; i <flickrHomeVos.size() ; i++) {
+                FlickrHomeVo flickrHomeVo = flickrHomeVos.get(i);
+                flickrHomeVo.setReadCount(Long.valueOf(selFromCache(flickrService.selreadCount(flickrHomeVo.getId().toString(),flickrHomeVo.getReadCount())).toString())+flickrService.temporaryClicks(flickrHomeVo.getId().toString()));
+            }
+            model.addAttribute("photoAlbums",flickrHomeVos);
+        }
+        List<CategoryVo> categroyVos = flickrService.getCategroy();
+        model.addAttribute("cates",categroyVos);
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         return "";
     }
 

@@ -75,11 +75,11 @@ public interface FlickrManageService {
     FlickrInfoVo getFlickrEditInfo(Long fId);
 
     /**
-     * 获取图片库类目相册
+     * 获取店铺展示相册
      * @param cId
      * @return
      */
-    ShiguPager<ShopFlickrsVo> getFlickrbyCategory(Long cId,Integer pageNo, Integer pageSize);
+    ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize);
 
     /**
      * 获取相册的展示信息
@@ -87,5 +87,11 @@ public interface FlickrManageService {
      * @return
      */
     FlickrDetailsVo getFlickrShow(Long fId);
+
+    /**
+     * 获取图片库展示信息
+     * @return
+     */
+    ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize);
 
 }

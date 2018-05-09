@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class PicturesVo implements Serializable{
     private String picUrl;
-    private Date createTime;
+    private String createTime;
 
     public String getPicUrl() {
         return picUrl;
@@ -22,11 +22,11 @@ public class PicturesVo implements Serializable{
         this.picUrl = picUrl;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

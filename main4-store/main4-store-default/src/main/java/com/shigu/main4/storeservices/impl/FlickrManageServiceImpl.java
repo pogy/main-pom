@@ -6,6 +6,7 @@ import com.opentae.data.mall.interfaces.ShiguFlickrMapper;
 import com.opentae.data.mall.interfaces.ShiguFlickrPictureMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
@@ -17,6 +18,7 @@ import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -226,12 +228,12 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     }
 
     /**
-     * 获取图片库类目相册
+     * 获取店铺展示相册
      * @param cId
      * @return
      */
     @Override
-    public ShiguPager<ShopFlickrsVo> getFlickrbyCategory(Long cId,Integer pageNo, Integer pageSize) {
+    public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize) {
         ShiguPager<ShopFlickrsVo> pager = new ShiguPager<>();
         if (pageNo < 1)
             pageNo = 1;
@@ -241,7 +243,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageNo,pageSize);
+            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageNo,pageSize);
             if (showList.size() <=0 ){
                 return null;
             }
@@ -259,8 +261,6 @@ public class FlickrManageServiceImpl implements FlickrManageService {
             });
             pager.setContent(BeanMapper.mapList(flickrVos, ShopFlickrsVo.class));
         }
-
-
         return pager;
     }
 
@@ -278,10 +278,28 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         ShiguFlickrPicture shiguFlickrPicture = new ShiguFlickrPicture();
         shiguFlickrPicture.setFId(fId);
         shiguFlickrPicture.setPicStatus(1);
-        List<ShiguFlickrPicture> shiguFlickrPictureList =
-
-
-
+        List<ShiguFlickrPicture> shiguFlickrPictureList = shiguFlickrPictureMapper.select(shiguFlickrPicture);
+        FlickrDetailsVo vo = new FlickrDetailsVo();
+        vo.setfId(shiguFlickr.getFId());
+        vo.setName(shiguFlickr.getFName());
+        vo.setDesc(shiguFlickr.getFDesc());
+        vo.setStoreId(shiguFlickr.getStoreId());
+        List<PicturesVo> picVos = new ArrayList<>();
+        if (shiguFlickrPictureList.size() > 0){
+            vo.setNumber(Long.valueOf(shiguFlickrPictureList.size()));
+            for (int i = 0; i <shiguFlickrPictureList.size() ; i++) {
+                PicturesVo p = new PicturesVo();
+                p.setCreateTime(DateUtil.dateToString(shiguFlickrPictureList.get(i).getCreateTime(),DateUtil.patternD));
+                p.setPicUrl(shiguFlickrPictureList.get(i).getPicUrl());
+                picVos.add(p);
+            }
+        }else {
+            vo.setNumber(0l);
+        }
+        vo.setPictures(picVos);
+        Jedis jedis = redisIO.getJedis();
+        jedis.incrBy("flickr_page_redis_temporary_"+vo.getfId(),1);
+        return vo;
 //        FlickrDetails flickrDetails = shiguFlickrMapper.selectFlickrPictureByfId(fId,1);
 //        FlickrDetailsVo vo = new FlickrDetailsVo();
 //        vo.setName(flickrDetails.getName());
@@ -300,5 +318,24 @@ public class FlickrManageServiceImpl implements FlickrManageService {
 //            picList.add(pics[i]);
 //        }
 //        return vo;
+    }
+
+    public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize) {
+        ShiguPager<FlickrHomeVo> pager = new ShiguPager<>();
+        if (pageNo < 1)
+            pageNo = 1;
+        if (pageSize < 1)
+            pageSize = 10;
+        pager.setNumber(pageNo);
+        int count = shiguFlickrMapper.countFlickr(1);
+        pager.calPages(count, pageSize);
+        if (count > 0) {
+            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageNo,pageSize);
+            if (showList.size() <=0 ){
+                return null;
+            }
+            pager.setContent(BeanMapper.mapList(showList, FlickrHomeVo.class));
+        }
+        return pager;
     }
 }

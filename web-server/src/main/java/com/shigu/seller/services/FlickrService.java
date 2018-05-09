@@ -2,6 +2,7 @@ package com.shigu.seller.services;
 
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.seller.vo.CategoryVo;
 import com.shigu.spread.services.ObjFormFlickrRedis;
 import com.shigu.spread.services.RedisForFlickrPage;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,35 @@ public class FlickrService {
          return false;
      }
         return true;
+    }
+
+    public List<CategoryVo> getCategroy(){
+        List<CategoryVo> categoryVoList = new ArrayList<>();
+        CategoryVo c1 = new CategoryVo();
+        c1.setCategoryId(30L);
+        c1.setCategoryName("男装");
+        categoryVoList.add(c1);
+        CategoryVo c2 = new CategoryVo();
+        c2.setCategoryId(16L);
+        c2.setCategoryName("女装");
+        categoryVoList.add(c2);
+        CategoryVo c3 = new CategoryVo();
+        c3.setCategoryId(50011740L);
+        c3.setCategoryName("男鞋");
+        categoryVoList.add(c3);
+        CategoryVo c4 = new CategoryVo();
+        c4.setCategoryId(50010404L);
+        c4.setCategoryName("配饰");
+        categoryVoList.add(c4);
+        CategoryVo c5 = new CategoryVo();
+        c5.setCategoryId(50006843L);
+        c5.setCategoryName("女鞋");
+        categoryVoList.add(c5);
+        CategoryVo c6 = new CategoryVo();
+        c6.setCategoryId(50006842L);
+        c6.setCategoryName("箱包");
+        categoryVoList.add(c6);
+        return categoryVoList;
     }
 
     /**

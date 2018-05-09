@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class PicVo implements Serializable{
 
     private String imgSrc;
+    private String uploadTime;
 
     public String getImgSrc() {
         return imgSrc;
@@ -19,5 +20,13 @@ public class PicVo implements Serializable{
 
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
+    }
+
+    public String getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(String uploadTime) {
+        this.uploadTime = uploadTime;
     }
 }
