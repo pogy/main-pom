@@ -167,7 +167,7 @@
             <div class="validateItem clearfix">
                 <div class="formGroup">
                     <label>个人简介：</label>
-                    <textarea class="profile">${userInfo.profile!}</textarea>
+                    <textarea class="profile" maxlength="200">${userInfo.profile!}</textarea>
                     <span class="lastNumber"><em><#if userInfo.profile??>${(userInfo.profile)?length!}<#else>0</#if></em>/200</span>
                 </div>
             </div>
@@ -175,15 +175,17 @@
         <div class="userRelatePics pa fr">
             <ul>
                 <li>
-<#list [{"isShowPic":true,"img":userInfo.coverImgSrc,"uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover"}] as $it>
+<#list [{"isShowPic":true,"img":"${userInfo.coverImgSrc!}_j200x200.jpg","imgData":userInfo.coverImgSrc,"uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
+                    <span>更换图片</span>
                     <p>展示封面</p>
                 </li>
                 <li class="wxQrcode">
-<#list [{"isShowPic":true,"img":userInfo.wxQrCode,"uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode"}] as $it>
+<#list [{"isShowPic":true,"img":"${userInfo.wxQrCode!}_j200x200.jpg","imgData":userInfo.wxQrCode,"uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
+                    <span>更换图片</span>
                     <p>微信二维码</p>
                 </li>
             </ul>

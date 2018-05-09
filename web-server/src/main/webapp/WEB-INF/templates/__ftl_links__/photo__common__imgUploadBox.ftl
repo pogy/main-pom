@@ -1,5 +1,5 @@
 <div class="imgUploadBox <#if $it.isAdd??>addBox</#if> <#if $it.isShowPic??>showPic</#if> <#if $it.isCover??>isCover</#if>">
-    <input type="hidden" value="<#if $it.img??>${$it.img!}</#if>" <#if $it.name??>name="${$it.name!}"</#if> class="picUrl">
+    <input type="hidden" value="<#if $it.imgData??>${$it.imgData!}</#if>" <#if $it.name??>name="${$it.name!}"</#if> class="picUrl">
     <b class="addPicBtn" id="${$it.uploadBtn!}">
         <i></i>
         添加图片

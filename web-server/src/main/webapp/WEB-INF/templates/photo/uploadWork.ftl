@@ -39,13 +39,13 @@
                 <label></label>
                 <ul class="pics clearfix fl">
                     <#if worksData.cover??>
-<#list [{"isShowPic":true,"isCover":true,"img":worksData.cover,"name":"picUrl","changeId":"changeWorks1"}] as $it>
+<#list [{"isShowPic":true,"isCover":true,"img":worksData.cover,"imgData":worksData.cover,"name":"picUrl","changeId":"changeWorks1"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     </#if>
                     <#if worksData.imgs??>
                         <#list worksData.imgs as img>
-<#list [{"isShowPic":true,"img":img,"name":"picUrl","changeId":"changeWorks${img_index+2}"}] as $it>
+<#list [{"isShowPic":true,"img":img,"imgData":img,"name":"picUrl","changeId":"changeWorks${img_index+2}"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                         </#list>
