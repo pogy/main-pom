@@ -342,6 +342,6 @@ public class PhotoUserService {
         PhotoUserInfoEditBO bo = new PhotoUserInfoEditBO();
         bo.setHeadImg(imgSrc);
         photoUserProcess.editUserInfo(userId, bo);
-        return JsonResponseUtil.success();
+        return JsonResponseUtil.success().element("imgSrc",photoUserProcess.userBaseInfo(userId).getHeadImg());
     }
 }
