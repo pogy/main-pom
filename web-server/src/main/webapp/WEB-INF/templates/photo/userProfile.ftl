@@ -72,7 +72,7 @@
             <ul>
                 <li>
                     <#if userInfo.coverImgSrc??>
-                        <img src="${userInfo.coverImgSrc!}" />
+                        <img src="${userInfo.coverImgSrc!}_j200x200.jpg" />
                     <#else>
                         <img src="http://style.571xz.com/v6/photo/css/img/noCoverImg.png" />
                     </#if>
@@ -80,7 +80,7 @@
                 </li>
                 <li class="wxQrcode">
                     <#if userInfo.wxQrCode??>
-                        <img src="${userInfo.wxQrCode!}" />
+                        <img src="${userInfo.wxQrCode!}_j200x200.jpg" />
                     <#else>
                         <img src="http://style.571xz.com/v6/photo/css/img/noQrcode.png" />
                     </#if>

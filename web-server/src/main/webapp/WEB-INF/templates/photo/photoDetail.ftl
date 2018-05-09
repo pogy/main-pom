@@ -61,7 +61,7 @@
 </div>
 <div class="rightUserInfoBox fr yahei">
     <div class="detailUserInfo">
-        <p class="imgBox"><img src="${userInfo.imgSrc!}"></p>
+        <p class="imgBox"><img src="${userInfo.imgSrc!}_j200x200.jpg"></p>
         <p class="fs14">${userInfo.typeName!}：${userInfo.nick!}</p>
         <p>
             <span class="addr"><i class="icon-s-addr"></i>${userInfo.address!}</span>
@@ -72,7 +72,7 @@
         </p>
     </div>
     <div class="wxQrCodeBox">
-        <p><img src="${userInfo.wxQrCode!}"></p>
+        <p><img src="${userInfo.wxQrCode!}_j200x200.jpg"></p>
         <p>扫一扫 加微信</p>
         <p><i class="icon-s-phone2"></i>${userInfo.tele!}</p>
     </div>
