@@ -3,7 +3,7 @@
         <div class="imgBox pr fl">
             <div class="imgBoxOh">
                 <#if userInfo.imgSrc??>
-                <img src="${userInfo.imgSrc!}">
+                <img src="${userInfo.imgSrc!}_j200x200.jpg">
                 <#else>
                 <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png">
                 </#if>
@@ -31,7 +31,7 @@
     </div>
     <#if userInfo.wxQrCode??>
     <div class="rightInfoBox fr">
-        <img src="${userInfo.wxQrCode!}">
+        <img src="${userInfo.wxQrCode!}_j200x200.jpg">
         <p><i class="icon-s-weixin"></i>微信二维码</p>
     </div>
     </#if>
