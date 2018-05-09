@@ -276,6 +276,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         PhotoUserStatisticVO totalUserInfo = BeanMapper.map(photoUserInfo(), PhotoUserStatisticVO.class);
         ShiguPhotoWorks authCountQuery = new ShiguPhotoWorks();
         authCountQuery.setAuthorId(getAuthId());
+        authCountQuery.setRemoveIs(false);
         totalUserInfo.setWorksCount(shiguPhotoWorksMapper.selectCount(authCountQuery));
         return totalUserInfo;
     }
