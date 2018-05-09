@@ -3,6 +3,7 @@ package com.shigu.photo.actions;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.photo.bo.PhotoWorksBO;
 import com.shigu.main4.photo.bo.SynPhotoUploadBO;
+import com.shigu.main4.photo.enums.WorksListSortEnum;
 import com.shigu.main4.photo.exceptions.PhotoException;
 import com.shigu.main4.photo.process.PhotoImgProcess;
 import com.shigu.main4.photo.process.PhotoUserProcess;
@@ -78,11 +79,12 @@ public class PhotoWorksAction {
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        photoWorksBO.setSort(WorksListSortEnum.create_desc);
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("totalPage", photoWorksVOShiguPager.getTotalCount());
+        model.addAttribute("totalPage", photoWorksVOShiguPager.getTotalPages());
         return "photo/userWorkList";
     }
 
@@ -99,6 +101,7 @@ public class PhotoWorksAction {
         photoWorksBO.setPage(page);
         photoWorksBO.setPageSize(20);
         photoWorksBO.setUserId(id);
+        photoWorksBO.setSort(WorksListSortEnum.create_desc);
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         return JsonResponseUtil.success().element("userWorksList",photoWorksVOShiguPager.getContent());
     }
@@ -114,11 +117,12 @@ public class PhotoWorksAction {
         query.setId(ps.getUserId());
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        photoWorksBO.setSort(WorksListSortEnum.create_desc);
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
+        model.addAttribute("totalPage", photoWorksVOShiguPager.getTotalPages());
         return "photo/userWorkList";
     }
 
@@ -135,11 +139,12 @@ public class PhotoWorksAction {
             }
         }
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
+        photoWorksBO.setSort(WorksListSortEnum.create_desc);
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);
         model.addAttribute("userInfo", photoAuthWorkUserInfoWebVO);
-        model.addAttribute("pageOption", photoWorksVOShiguPager.selPageOption(photoWorksBO.getPageSize()));
+        model.addAttribute("totalPage", photoWorksVOShiguPager.getTotalPages());
         return "photo/userHomePage";
     }
 
