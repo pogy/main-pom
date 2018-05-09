@@ -175,14 +175,14 @@
         <div class="userRelatePics pa fr">
             <ul>
                 <li>
-<#list [{"isShowPic":true,"img":"${userInfo.coverImgSrc!}_j200x200.jpg","uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover"}] as $it>
+<#list [{"isShowPic":true,"img":"${userInfo.coverImgSrc!}_j200x200.jpg","imgData":userInfo.coverImgSrc,"uploadBtn":"uploadUserCover","changeId":"changeUserCover","name":"userCover"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     <span>更换图片</span>
                     <p>展示封面</p>
                 </li>
                 <li class="wxQrcode">
-<#list [{"isShowPic":true,"img":"${userInfo.wxQrCode!}_j200x200.jpg","uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode"}] as $it>
+<#list [{"isShowPic":true,"img":"${userInfo.wxQrCode!}_j200x200.jpg","imgData":userInfo.wxQrCode,"uploadBtn":"uploadWxQrCode","changeId":"changeWxQrCode","name":"wxQrCode"}] as $it>
 <#include "/__ftl_links__/photo__common__imgUploadBox.ftl">
 </#list>
                     <span>更换图片</span>
