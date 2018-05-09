@@ -225,55 +225,120 @@
 
 
     <select id="getDropShippingOrder" resultMap="dfOrdersVO">
-        SELECT io.oid ,ios.size,ios.color,SUM(ios.num) AS num,SUM(ios.in_stok) AS in_stok,ios.goods_id,
-        ios.price,ios.pic_url,ios.title,IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,io.create_time
+        SELECT
+        io.oid,
+        ios.size,
+        ios.color,
+        SUM(ios.num) - sum(ifnull(iof.number, 0)) AS num,
+        SUM(ios.in_stok) AS in_stok,
+        ios.goods_id,
+        ios.price,
+        ios.pic_url,
+        ios.title,
+        IFNULL(sgt.goods_no, ios.goods_no) AS goods_no,
+        io.create_time
         FROM
         (
-        SELECT io.* FROM item_order AS io,item_order_sub AS ios,shigu_goods_tiny_hz AS sgt
-        WHERE io.order_status=2 AND io.web_site='hz' AND io.sender_id=999999990 AND ios.status=0
-        AND io.oid=ios.oid
-        AND ios.goods_id>0
-        AND ios.goods_id=sgt.goods_id
-        <if test="goodsNo != null and goodsNo != ''">
-            AND sgt.goods_no=#{goodsNo}
+        SELECT DISTINCT
+        io.oid,
+        io.create_time
+        FROM
+        (
+        SELECT
+        io.*, sum(io.snum) snumx,
+        sum(ifnull(iof.number, 0)) rnumx
+        FROM
+        (
+        SELECT
+        io.*, ios.num snum,
+        ios.soid
+        FROM
+        item_order AS io,
+        item_order_sub AS ios,
+        shigu_goods_tiny_hz AS sgt
+        WHERE
+        io.order_status = 2
+        AND ios. STATUS = 0
+        AND io.oid = ios.oid
+        AND ios.goods_id > 0
+        AND ios.goods_id = sgt.goods_id
+        <if test="oid != null">
+            AND io.oid=#{oid}
         </if>
         <if test="shopId != null">
             AND ios.shop_id=#{shopId}
         </if>
-        <if test="oid != null">
-            AND io.oid=#{oid}
-        </if>
-        group by io.oid
-        ORDER BY io.create_time DESC
-        limit ${start},${end}
-        )AS io
-        LEFT JOIN item_order_sub AS ios ON io.oid=ios.oid
-        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id=sgt.goods_id AND ios.goods_id>0
         <if test="goodsNo != null and goodsNo != ''">
             AND sgt.goods_no=#{goodsNo}
         </if>
-        GROUP BY ios.sku_id,ios.goods_id
-        ORDER BY io.create_time DESC
+        ) io
+        LEFT JOIN item_order_refund iof ON io.soid = iof.soid
+        GROUP BY
+        io.soid
+        HAVING
+        snumx - rnumx > 0
+        ) io
+        limit ${start},${end}
+        ) AS io
+        LEFT JOIN item_order_sub AS ios ON io.oid = ios.oid
+        LEFT JOIN item_order_refund iof ON ios.soid = iof.soid
+        LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id = sgt.goods_id
+        where ios.goods_id > 0
+        <if test="shopId != null">
+            AND ios.shop_id=#{shopId}
+        </if>
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
+        </if>
+        GROUP BY
+        ios.soid
+        ORDER BY
+        io.create_time DESC;
 
     </select>
     <select id="getDropShippingOrderCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM(
-        SELECT DISTINCT io.oid FROM item_order AS io,item_order_sub AS ios,shigu_goods_tiny_hz AS sgt WHERE io.order_status=2 AND io.web_site='hz' AND
-        io.sender_id=999999990 AND ios.status=0
-        AND io.oid=ios.oid
-        AND ios.goods_id>0
-        AND ios.goods_id=sgt.goods_id
-        <if test="goodsNo != null and goodsNo != ''">
-            AND sgt.goods_no=#{goodsNo}
+        SELECT DISTINCT
+        io.oid,
+        io.create_time
+        FROM
+        (
+        SELECT
+        io.*, sum(io.snum) snumx,
+        sum(ifnull(iof.number, 0)) rnumx
+        FROM
+        (
+        SELECT
+        io.*, ios.num snum,
+        ios.soid
+        FROM
+        item_order AS io,
+        item_order_sub AS ios,
+        shigu_goods_tiny_hz AS sgt
+        WHERE
+        io.order_status = 2
+        AND ios. STATUS = 0
+        AND io.oid = ios.oid
+        AND ios.goods_id > 0
+        AND ios.goods_id = sgt.goods_id
+        <if test="oid != null">
+            AND io.oid=#{oid}
         </if>
         <if test="shopId != null">
             AND ios.shop_id=#{shopId}
         </if>
-        <if test="oid != null">
-            AND io.oid=#{oid}
+        <if test="goodsNo != null and goodsNo != ''">
+            AND sgt.goods_no=#{goodsNo}
         </if>
-        )AS io
+        ) io
+        LEFT JOIN item_order_refund iof ON io.soid = iof.soid
+        GROUP BY
+        io.soid
+        HAVING
+        snumx - rnumx > 0
+        ) io
+        )
     </select>
 
 
