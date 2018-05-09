@@ -1,6 +1,6 @@
 <div class="coverItem pr yahei <#if $pageid == 'userHomePage' || $pageid == 'userWorkList'>smallMar</#if>">
     <a href="/photo/photoDetail.htm?id=${item.worksId!}" target="_blank" class="imgBox">
-        <img src="${item.imgsrc!}_300x300.jpg" />
+        <img src="${item.imgsrc!}_j300x300.jpg" />
     </a>
     <div class="infoBox">
         <a href="/photo/photoDetail.htm?id=${item.worksId!}" target="_blank" title="${item.title!}" class="ellip title">${item.title!}</a>

@@ -22,7 +22,7 @@
 <div class="photoDetail layout">
 <div class="leftDetailBox fl" data-id="${query.id!}">
     <div class="photoInfo clearfix">
-        <div class="imgBox fl"><img src="${worksData.coverImgSrc!}_300x300.jpg"></div>
+        <div class="imgBox fl"><img src="${worksData.coverImgSrc!}_j300x300.jpg"></div>
         <div class="clearfix fl photoInfoDetail yahei">
             <h3 class="title">${worksData.title!}</h3>
             <p class="worksDesc fc6">${worksData.desc!}</p>
