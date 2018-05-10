@@ -9,7 +9,7 @@
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            <a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a>
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
