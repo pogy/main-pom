@@ -12,8 +12,8 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__photoAlbumItem_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
@@ -44,7 +44,7 @@
         <#if photoAlbumInfo.cover??>
         <img src="${photoAlbumInfo.cover!}_100x100.jpg" alt>
         <#else>
-        <img src="http://style.571xz.com/v6/gys/css/img/defaultPic.png" alt>
+        <img src="//style.571xz.com/v6/gys/css/img/defaultPic.png" alt>
         </#if>
     </div>
     <div class="info fl">
@@ -55,7 +55,7 @@
 <#list [{}] as $it>
 </#list>
 <div class="goodsPicBox">
-    <input type="hidden" id="defaultCover" value="http://style.571xz.com/v6/gys/css/img/defaultPic.png">
+    <input type="hidden" id="defaultCover" value="//style.571xz.com/v6/gys/css/img/defaultPic.png">
     <div class="goodsPicList clearfix">
         <#if (photoAlbumInfo.goodsPics?size) gt 0>
             <#list photoAlbumInfo.goodsPics as item>

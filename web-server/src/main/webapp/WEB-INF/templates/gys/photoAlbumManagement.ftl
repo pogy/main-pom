@@ -12,9 +12,9 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__photoAlbumManagement_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/plugin/sort/Sortable.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/plugin/sort/Sortable.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
@@ -76,7 +76,7 @@
         <#if item.imgSrc??>
         <img src="${item.imgSrc!}_300x300.jpg">
         <#else>
-        <img src="http://style.571xz.com/v6/gys/css/img/defaultPic.png" alt>
+        <img src="//style.571xz.com/v6/gys/css/img/defaultPic.png" alt>
         </#if>
     </a>
     <p><a href="photoAlbumItem.htm?id=${item.id!}" class="title ellip" title="${item.title!}">${item.title!}</a><span class="fr">(${item.picCount!})</span></p>

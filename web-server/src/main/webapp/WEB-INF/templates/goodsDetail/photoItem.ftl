@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/goodsDetail__common_css.ftl">
 <#include "/__style_torrent__/goodsDetail__photoItem_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/goodsDetail__common_js.ftl">
@@ -25,7 +25,7 @@
     <div class="layout">
         <div class="logoBox">
             <a href="/">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
+                <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
@@ -34,7 +34,7 @@
             <div class="storeNamebox">
                 <h3
                 <#if shopInfo.domain??>
-                    onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
+                    onclick="jumpShopLink('//${shopInfo.domain!}.571xz.com')"
                 <#else>
                     onclick="jumpShopLink('/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
@@ -88,7 +88,7 @@
         </ul>
     </div>
     <div class="p2 clearfix">
-        <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
         </#if>
@@ -145,7 +145,7 @@
         </ul>
     </div>
     <div class="p2 clearfix">
-        <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
         </#if>
@@ -165,7 +165,7 @@
             </ul>
         </div>
         <#else>
-        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="//so.571xz.com/${webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">
