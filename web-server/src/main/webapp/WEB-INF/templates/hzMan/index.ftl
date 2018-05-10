@@ -215,6 +215,13 @@ if(pageType == 'W'){
         资讯
     </a>
 </li>
+<li
+>
+    <a href="http://photo.571xz.com" target="_blank">
+        摄影基地
+        <i class="new"></i>
+    </a>
+</li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
@@ -542,7 +549,7 @@ if(pageType == 'W'){
                 <li>
                     <h5>四季星座网</h5>
                     <p><a href="http://www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
+                    <p><a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a></p>
                 </li>
                 <li>
                     <h5>代理商</h5>

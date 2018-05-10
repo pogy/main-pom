@@ -9,6 +9,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -72,6 +73,12 @@ public class ItemProductImpl implements ItemProduct {
             color = info.getSelectiveSku().getColor();
             size = info.getSelectiveSku().getSize();
             return;
+        }
+        if(StringUtils.isBlank(color)){
+            color="-1";
+        }
+        if(StringUtils.isBlank(size)){
+            size="-1";
         }
         ItemProductInfo productInfo = createProduct(goodsId, color, size);
         pid = productInfo.getPid();

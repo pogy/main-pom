@@ -196,11 +196,13 @@
                     </ul>
                 </div>
                 <div class="none">
-                    <p>目前开通市场： 电商基地，四季星座，钱塘大厦</p>
+                    <p>目前开通市场： 电商基地，四季星座，钱塘大厦，保太和（星座女装），好四季</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

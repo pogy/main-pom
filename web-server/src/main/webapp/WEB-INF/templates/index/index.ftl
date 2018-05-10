@@ -208,6 +208,13 @@ if(pageType == 'W'){
         资讯
     </a>
 </li>
+<li
+>
+    <a href="http://photo.571xz.com" target="_blank">
+        摄影基地
+        <i class="new"></i>
+    </a>
+</li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>

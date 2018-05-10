@@ -8,7 +8,6 @@
 >
     <a href="http://hz.571xz.com/market.htm" target="_blank">
         逛市场
-        <i class="hot"></i>
     </a>
 </li>
 <li
@@ -31,7 +30,6 @@
 >
     <a href="/shopRanking.htm" target="_blank">
         排行榜
-        <i class="hot"></i>
     </a>
 </li>
 <li
@@ -53,6 +51,13 @@
 >
     <a href="http://zixun.571xz.com/index" target="_blank">
         资讯
+    </a>
+</li>
+<li
+>
+    <a href="http://photo.571xz.com" target="_blank">
+        摄影基地
+        <i class="new"></i>
     </a>
 </li>
     <#elseif webSite == 'cs'>

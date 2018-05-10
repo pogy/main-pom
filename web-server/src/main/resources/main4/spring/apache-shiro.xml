@@ -20,6 +20,8 @@
 				<entry key="shop" value-ref="shopFilter"/>
 				<entry key="sdk" value-ref="tae_apiRequestFilter"/>
                 <entry key="help" value-ref="tae_helpRequestFilter"/>
+                <entry key="photoMember" value-ref="photoMemberFilter"/>
+				<entry key="photoAuth" value-ref="photoFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -37,6 +39,8 @@
                 /helpCenter/queIndex.htm = anon
                 /helpCenter/queDetail.htm = anon
                 /helpCenter/** = help
+                /photo/member/** = photoMember
+                /photo/auth/** = photoAuth
 				/** = anon
 			</value>
 		</property>
@@ -121,5 +125,19 @@
 		<property name="loginUrl" value="/login.htm"/>
 		<property name="successUrl" value="/member/index.htm"/>
 	</bean>
-	
+
+    <!--摄影基地作者-->
+	<bean class="com.shigu.component.shiro.filters.PhotoFilter" id="photoFilter">
+		<property name="loginUrl" value="/login.htm"/>
+		<!-- 授权和工作url，确定后填入 -->
+		<property name="successUrl" value="/photo/member/userProfile.htm"/>
+		<property name="photoAuthenticationUrl" value="/photo/member/userValidate.htm"/>
+	</bean>
+
+    <!--摄影基地用户-->
+    <bean class="com.shigu.component.shiro.filters.MemberFilter" id="photoMemberFilter">
+        <property name="loginUrl" value="/login.htm"/>
+        <property name="successUrl" value="/photo/member/userProfile.htm"/>
+    </bean>
+
 </beans>
