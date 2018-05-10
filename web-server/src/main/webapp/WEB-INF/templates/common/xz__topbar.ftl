@@ -92,7 +92,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系我们</a>
                 </li>
                 <#if webSite?? && webSite != ''>
                 <li>
