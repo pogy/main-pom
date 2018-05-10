@@ -229,8 +229,8 @@
         io.oid,
         ios.size,
         ios.color,
-        SUM(ios.num) - sum(ifnull(iof.number, 0)) AS num,
-        SUM(ios.in_stok) AS in_stok,
+        ios.num - sum(ifnull(iof.number, 0)) AS num,
+        ios.in_stok AS in_stok,
         ios.goods_id,
         ios.price,
         ios.pic_url,
@@ -245,8 +245,7 @@
         FROM
         (
         SELECT
-        io.*, sum(io.snum) snumx,
-        sum(ifnull(iof.number, 0)) rnumx
+        io.*, sum(ifnull(iof.number, 0)) rnumx
         FROM
         (
         SELECT
@@ -276,15 +275,17 @@
         GROUP BY
         io.soid
         HAVING
-        snumx - rnumx > 0
-        ORDER BY io.create_time desc
+        io.snum - rnumx > 0
+        ORDER BY
+        io.create_time DESC
         ) io
         limit ${start},${end}
         ) AS io
         LEFT JOIN item_order_sub AS ios ON io.oid = ios.oid
         LEFT JOIN item_order_refund iof ON ios.soid = iof.soid
         LEFT JOIN shigu_goods_tiny_hz AS sgt ON ios.goods_id = sgt.goods_id
-        where ios.goods_id > 0
+        WHERE
+        ios.goods_id > 0
         <if test="shopId != null">
             AND ios.shop_id=#{shopId}
         </if>
@@ -293,10 +294,10 @@
         </if>
         GROUP BY
         ios.soid
-        HAVING num>0
+        HAVING
+        num > 0
         ORDER BY
         io.create_time DESC;
-
     </select>
     <select id="getDropShippingOrderCount" resultType="java.lang.Integer">
         SELECT count(*)
@@ -307,8 +308,7 @@
         FROM
         (
         SELECT
-        io.*, sum(io.snum) snumx,
-        sum(ifnull(iof.number, 0)) rnumx
+        io.*, sum(ifnull(iof.number, 0)) rnumx
         FROM
         (
         SELECT
@@ -338,7 +338,9 @@
         GROUP BY
         io.soid
         HAVING
-        snumx - rnumx > 0
+        io.snum - rnumx > 0
+        ORDER BY
+        io.create_time DESC
         ) io
         )io
     </select>
@@ -349,13 +351,21 @@
         t2.*
         FROM
         (
-        select
-        t1.goods_id,
-        sum(t1.num)-sum(ifnull(t2.number, 0)) num,
-        sum(t1.in_stok)in_stok
-        from (
+        SELECT DISTINCT
+        t1.goods_id
+        FROM
+        (
         SELECT
-        t1.goods_id,t1.soid,t1.num,t1.in_stok
+        t1.goods_id,
+        t1.num - sum(ifnull(t2.number, 0)) num,
+        t1.in_stok in_stok
+        FROM
+        (
+        SELECT
+        t1.goods_id,
+        t1.soid,
+        t1.num,
+        t1.in_stok
         FROM
         item_order_sub t1,
         item_order t2,
@@ -367,31 +377,43 @@
         <if test="shopId != null">
             AND t1.shop_id=#{shopId}
         </if>
-        AND t2.order_status = 2
-        AND t1.`status` = 0
         <if test="goodsNo != null and goodsNo != ''">
             AND t3.goods_no=#{goodsNo}
         </if>
-        ORDER BY t2.create_time desc)t1
+        AND t2.order_status = 2
+        AND t1.`status` = 0
+        ORDER BY
+        t2.create_time DESC
+        ) t1
         LEFT JOIN item_order_refund AS t2 ON t1.soid = t2.soid
-        GROUP BY t1.goods_id
-        HAVING num>in_stok
+        GROUP BY
+        t1.soid
+        HAVING
+        num > in_stok
+        ) t1
         limit ${start},${end}
         ) t1
         LEFT JOIN (
-        select
+        SELECT
+        t1.*
+        FROM
+        (
+        SELECT
         t1.goods_id,
-        sum(t1.num)-sum(ifnull(t2.number, 0)) num,
-        sum(t1.in_stok)in_stok,
+        t1.num - sum(ifnull(t2.number, 0)) num,
+        t1.in_stok,
         t1.size,
         t1.color,
         t1.price,
         t1.pic_url,
         t1.title,
-        IFNULL(t1.gno, t1.goods_no) AS goods_no
-        from (
+        IFNULL(t1.gno, t1.goods_no) AS goods_no,
+        t1.sku_id,
+        t1.soid
+        FROM
+        (
         SELECT
-        t1.*,t3.goods_no gno
+        t1.*, t3.goods_no gno
         FROM
         item_order_sub t1,
         item_order t2,
@@ -403,30 +425,43 @@
         <if test="shopId != null">
             AND t1.shop_id=#{shopId}
         </if>
-        AND t2.order_status = 2
-        AND t1.`status` = 0
         <if test="goodsNo != null and goodsNo != ''">
             AND t3.goods_no=#{goodsNo}
         </if>
-        ORDER BY t2.create_time desc)t1
+        AND t2.order_status = 2
+        AND t1.`status` = 0
+        ORDER BY
+        t2.create_time DESC
+        ) t1
         LEFT JOIN item_order_refund AS t2 ON t1.soid = t2.soid
-        GROUP BY t1.goods_id,t1.sku_id
-        HAVING num>in_stok
+        GROUP BY
+        t1.soid
+        HAVING
+        num > in_stok
+        ) t1
+        GROUP BY
+        t1.goods_id,
+        t1.sku_id
         ) t2 ON t1.goods_id = t2.goods_id
-
-
-
     </select>
     <select id="getDropShippingGoodsCount" resultType="java.lang.Integer">
         select count(*) from
         (
-        select
-        t1.goods_id,
-        sum(t1.num)-sum(ifnull(t2.number, 0)) num,
-        sum(t1.in_stok)in_stok
-        from (
+        SELECT DISTINCT
+        t1.goods_id
+        FROM
+        (
         SELECT
-        t1.goods_id,t1.soid,t1.num,t1.in_stok
+        t1.goods_id,
+        t1.num - sum(ifnull(t2.number, 0)) num,
+        t1.in_stok in_stok
+        FROM
+        (
+        SELECT
+        t1.goods_id,
+        t1.soid,
+        t1.num,
+        t1.in_stok
         FROM
         item_order_sub t1,
         item_order t2,
@@ -438,15 +473,20 @@
         <if test="shopId != null">
             AND t1.shop_id=#{shopId}
         </if>
-        AND t2.order_status = 2
-        AND t1.`status` = 0
         <if test="goodsNo != null and goodsNo != ''">
             AND t3.goods_no=#{goodsNo}
         </if>
-        ORDER BY t2.create_time desc)t1
+        AND t2.order_status = 2
+        AND t1.`status` = 0
+        ORDER BY
+        t2.create_time DESC
+        ) t1
         LEFT JOIN item_order_refund AS t2 ON t1.soid = t2.soid
-        GROUP BY t1.goods_id
-        HAVING num>in_stok
+        GROUP BY
+        t1.soid
+        HAVING
+        num > in_stok
+        ) t1
         ) AS io
     </select>
 
