@@ -101,7 +101,7 @@
                             <label class="control-label" for="content">自定义内容：</label>
                             <div class="control" id="design_main">
                                 <textarea id="content" name="storeImg.content"
-                                          style="width: 100%; min-height: 150px; max-width: 100%;">............................................</textarea>
+                                          style="width: 100%; min-height: 150px; max-width: 100%;">${moduleSet.storeImg.content}</textarea>
                             </div>
                         </div>
                     </div>
