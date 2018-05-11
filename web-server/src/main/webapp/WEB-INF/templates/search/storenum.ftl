@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/search__common_css.ftl">
 <#include "/__style_torrent__/search__storenum_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/search__common_js.ftl">
@@ -36,7 +36,8 @@
 </#list>
 <div class="layout">
 <#include "/__ftl_links__/search__common__catFilterBar.ftl">
-    <#if (storelist?size) gt 0>
+    <div class="listBox">
+        <#if (storelist?size) gt 0>
 <div class="storelist">
     <#list storelist as store>
     <div class="storeitem">
@@ -47,7 +48,7 @@
             <div class="p1">
                 <a class="title" href="${mainHost!}/shop.htm?id=${store.id!}" title="${store.marketName!} ${store.name!}" target="_blank"><em class="marketName">${store.highMarketName!}</em><em class="storeName">${store.highName!}</em></a>
                 <span class="xy">
-<#list [{"num":store.xy}] as $it>
+<#list [{"num":"${store.xy!}"}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
                 </span>
@@ -100,9 +101,12 @@
 </#if>
 </#list>
 </#list>
-    <#else>
+        <#else>
 <#include "/__ftl_links__/search__common__noDateTip.ftl">
-    </#if>
+        </#if>
+    </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
