@@ -17,6 +17,7 @@ import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
@@ -75,6 +76,8 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     private DaifaGgoodsReturnFeeMapper daifaGgoodsReturnFeeMapper;
     @Autowired
     private DaifaWorkerMapper daifaWorkerMapper;
+    @Autowired
+    PackDeliveryProcess packDeliveryProcess;
     @Override
     public String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException {
         CargoManModel cargoManModel = SpringBeanFactory.getBean(CargoManModel.class, wholeId);
@@ -290,7 +293,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
     @Override
     public void complete(Long issueId) throws DaifaException {
-        DaifaGgoods g = daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        DaifaGgoods g = daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,df_trade_id,use_status,operate_is,create_date"));
         if (g == null) {
             throw new DaifaException("未找到分配信息",DaifaException.DEBUG);
         }
@@ -303,6 +306,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         }
         SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, g.getDfOrderId());
         subOrderModel.haveTake();
+        packDeliveryProcess.queryExpressCode(g.getDfTradeId());
     }
 
     @Override
