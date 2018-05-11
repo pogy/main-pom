@@ -34,11 +34,7 @@
 <ul class="pageTabs clearfix">
     <li class="tabbutton selected"><a>商品相册</a></li>
 </ul>
-<div class="dilatation fr" id="goodsAblumSpaceSizeInfo">
-    <div class="allBar pr"><div class="bar" style="width:0%"></div></div>
-    <p class="infotext fl">0M/0M</p>
-    <p class="fr fc3">扩容功能即将上线</p>
-</div>
+<#include "/__ftl_links__/gys__common__dilatation.ftl">
 <div class="photoAlbumInfo clearfix">
     <div class="imgBox fl">
         <#if photoAlbumInfo.cover??>
