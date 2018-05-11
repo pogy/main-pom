@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/orderAll_v20180315_144555.js"></script>
+<script src="//style.571xz.com/v6/daifa/js/orderAll_v20180315_144555.js"></script>

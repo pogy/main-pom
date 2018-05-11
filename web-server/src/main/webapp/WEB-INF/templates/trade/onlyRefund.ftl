@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css?v=2017112401" rel="stylesheet">
+    <link href="//style.571xz.com/v2/order/css/onlyRefund.css?v=2017112401" rel="stylesheet">
     
 
     

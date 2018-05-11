@@ -2,13 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <title>页头编辑 - 旗舰店装修 - 星座网</title>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/option.css?t=20170419U" type="text/css"/>
-    <link rel="stylesheet" href="http://www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" type="text/css"/>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/option.css?t=20170419U" type="text/css"/>
+    <link rel="stylesheet" href="//www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" type="text/css"/>
     <link href="//cdn.bootcss.com/jquery-minicolors/2.2.4/jquery.minicolors.min.css" rel="stylesheet">
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/layer/layer.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/s/editor/kindeditor-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/shop_design.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/layer/layer.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/s/editor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/shop_design.js"></script>
     <script src="//cdn.bootcss.com/jquery-minicolors/2.2.4/jquery.minicolors.min.js"></script>
     <style type="text/css">
         .color-panel {

@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/parcelSearch_v20180315_144557.js"></script>
+<script src="//style.571xz.com/v6/daifa/js/parcelSearch_v20180315_144557.js"></script>

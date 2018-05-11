@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/daifa/css/orderAllocation_v20180413_131411.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/daifa/css/orderAllocation_v20180413_131411.css" rel="stylesheet">

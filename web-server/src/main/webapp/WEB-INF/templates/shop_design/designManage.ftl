@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>页面管理 - 店铺装修 - 星座网</title>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/page.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <link rel="stylesheet" href="http://www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/zclip/jquery.zeroclipboard.min.js"></script>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/page.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <link rel="stylesheet" href="//www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="//www.571xz.com/design/js/zclip/jquery.zeroclipboard.min.js"></script>
 
-    <script type="text/javascript" src="http://www.571xz.com/design/js/layer/layer.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/page.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/layer/layer.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/page.js"></script>
 </head>
 <body>
 <div class="page-main">

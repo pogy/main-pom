@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/orderAllocation_v20180413_131411.js"></script>
+<script src="//style.571xz.com/v6/daifa/js/orderAllocation_v20180413_131411.js"></script>

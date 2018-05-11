@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/daifa/css/parcelSearch_v20180315_144557.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/daifa/css/parcelSearch_v20180315_144557.css" rel="stylesheet">

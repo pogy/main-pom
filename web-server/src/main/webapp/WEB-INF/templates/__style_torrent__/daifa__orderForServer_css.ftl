@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/daifa/css/orderForServer_v20180315_144556.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/daifa/css/orderForServer_v20180315_144556.css" rel="stylesheet">
