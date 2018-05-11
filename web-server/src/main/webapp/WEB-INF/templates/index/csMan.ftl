@@ -519,10 +519,6 @@ var webSite = '${webSite!}';
 今日新品                    </a>
                 </li>
                 <li>
-                    <a href="http://daifa.571xz.com/" target="_blank">
-一件代发                    </a>
-                </li>
-                <li>
                     <a href="http://zixun.571xz.com/index" target="_blank">
 资讯                    </a>
                 </li>
