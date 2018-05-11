@@ -193,7 +193,7 @@
         <ul class="clearfix fl">
             <li><a href="photoShop.htm?id=${shopInfo.shopId!}" <#if !query.cid>class="selected"</#if>>全部</a></li>
             <#list cates as cate>
-            <li><a href="photoShop.htm?id=${shopInfo.shopId!}&cid=${cate.cid!}" <#if query.cid == cate.cid>class="selected"</#if>>${cate.cName!}</a></li>
+            <li><a href="photoShop.htm?id=${shopInfo.shopId!}&cid=${cate.cateId!}" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
             </#list>
         </ul>
     </div>

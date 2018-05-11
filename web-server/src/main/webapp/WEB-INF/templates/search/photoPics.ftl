@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/search__common_css.ftl">
 <#include "/__style_torrent__/search__photoPics_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/search__photoPics_js.ftl">
@@ -31,7 +31,7 @@
         <ul class="clearfix fl">
             <li><a href="photoPics.htm" <#if !query.cid>class="selected"</#if>>全部</a></li>
             <#list cates as cate>
-            <li><a href="photoPics.htm?cid=${cate.cid!}" <#if query.cid == cate.cid>class="selected"</#if>>${cate.cName!}</a></li>
+            <li><a href="photoPics.htm?cid=${cate.cateId!}" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
             </#list>
         </ul>
     </div>
