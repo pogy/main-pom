@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__goodsCollectinit_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -183,11 +183,11 @@
     </span>
 </label>
 </#list>
-                    <a class="piclink" href="http://${website!}.571xz.com/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">
+                    <a class="piclink" href="//${website!}.571xz.com/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">
                         <img src="${goods.imgsrc!}">
                     </a>
                     <p>
-                        <a class="title" href="http://${website!}.571xz.com/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a>
+                        <a class="title" href="//${website!}.571xz.com/item.htm?id=${goods.id!}" title="查看宝贝详情" target="_blank">标题：${goods.title!}</a>
                     </p>
                 </li>
                 <li class="price">${goods.piprice!}</li>
@@ -232,4 +232,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

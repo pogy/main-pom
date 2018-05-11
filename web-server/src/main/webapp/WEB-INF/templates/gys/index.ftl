@@ -11,9 +11,9 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__index_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/temp/echarts.js"></script>
+<script src="//style.571xz.com/v6/gys/temp/html5sup.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__index_js.ftl">
@@ -38,7 +38,7 @@
                 <#if session_user_redis__.headUrl??>
                 <img src="${session_user_redis__.headUrl!}" width="120" height="120">
                 <#else>
-                <img src="http://www.571xz.com/images/default160.jpg" width="120" height="120">
+                <img src="//www.571xz.com/images/default160.jpg" width="120" height="120">
                 </#if>
             </div>
         </div>
@@ -81,7 +81,7 @@
           </ul>
         </div>
         <div class="imglist_right fr">
-          <p><img src="http://www.571xz.com/jquery2015/imgTempindex/shaoma.jpg"></p>
+          <p><img src="//www.571xz.com/jquery2015/imgTempindex/shaoma.jpg"></p>
         </div>
     </div>
     <div class="c_agent">
@@ -96,4 +96,6 @@ var tHref = '${tHref!}';
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=1300">
     <title>编辑宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
-    <link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
+    <link rel=stylesheet href="//style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
 <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__editGoodsInfo_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__editGoodsInfo_js.ftl">
@@ -38,9 +38,9 @@ var deschtml = '${goodsInfo.deschtml}';
 <script modulepath="gys/editGoodsInfo#config">
 var deschtml = '${goodsInfo.deschtml}';
 </script>
-<link href="http://g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
-<script src="http://g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
-<script src="http://style.571xz.com/v6/gys/temp/deonkey.js"></script>
+<link href="//g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
+<script src="//g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
+<script src="//style.571xz.com/v6/gys/temp/deonkey.js"></script>
 <div class="releaseGoodsBox pr">
 <div class="categoryBox">
     <em class="fc6">类目：${cateText!}</em>

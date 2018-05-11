@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/fxs/js/userBalance_v20180301_153212.js"></script>
+<script src="http://style.571xz.com/v6/fxs/js/userBalance_v20180509_165049.js"></script>

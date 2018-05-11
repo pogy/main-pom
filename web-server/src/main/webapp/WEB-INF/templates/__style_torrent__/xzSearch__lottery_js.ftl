@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/xzSearch/js/lottery_v20180115_132426.js"></script>
+<script src="http://style.571xz.com/v6/xzSearch/js/lottery_v20180509_191054.js"></script>

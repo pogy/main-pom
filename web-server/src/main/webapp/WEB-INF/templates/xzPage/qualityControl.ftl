@@ -10,7 +10,7 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzPage__qualityControl_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzPage__qualityControl_js.ftl">
@@ -48,15 +48,15 @@
     <h2>公司荣誉</h2>
     <div class="honorList">
         <div class="fl listLeft">
-            <img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/1.jpg">
-            <img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/2.jpg">
+            <img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/1.jpg">
+            <img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/2.jpg">
         </div>
         <div class="fr listRight">
             <ul>
-                <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/ry1.jpg"></li>
-                <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/ry2.jpg"></li>
-                <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/ry3.jpg"></li>
-                <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/ry4.jpg"></li>
+                <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/ry1.jpg"></li>
+                <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/ry2.jpg"></li>
+                <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/ry3.jpg"></li>
+                <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/ry4.jpg"></li>
             </ul>
         </div>
     </div>
@@ -65,11 +65,11 @@
     <h2>各类资质</h2>
     <div class="aptitudeList">
         <ul>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/zz1.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/zz2.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/zz3.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/zz4.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/zz5.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/zz1.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/zz2.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/zz3.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/zz4.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/zz5.jpg"></li>
         </ul>
     </div>
 </div>
@@ -77,19 +77,19 @@
     <h2>五个国家重点实验室</h2>
     <div class="keyLabList">
         <ul>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/lab1.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/lab2.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/lab3.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/lab4.jpg"></li>
-            <li><img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/lab5.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/lab1.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/lab2.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/lab3.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/lab4.jpg"></li>
+            <li><img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/lab5.jpg"></li>
         </ul>
     </div>
 </div>
 <div class="centerLab yahei clearfix">
     <h2>五个区域中心实验室</h2>
     <div class="centerLabList">
-        <img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/clab1.jpg">
-        <img src="http://style.571xz.com/v6/xzPage/css/img/qualityControl/clab2.jpg">
+        <img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/clab1.jpg">
+        <img src="//style.571xz.com/v6/xzPage/css/img/qualityControl/clab2.jpg">
     </div>
 </div>
 <#list [{}] as $it>

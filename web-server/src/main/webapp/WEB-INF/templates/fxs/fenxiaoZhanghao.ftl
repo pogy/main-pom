@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__fenxiaoZhanghao_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/fxs__fenxiaoZhanghao_js.ftl">
@@ -53,7 +53,7 @@
                 <p>淘宝</p>
             </div>
             <div class="status">
-                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                <a href="//www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=//www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
             </div>
         </li>
         </#if>
@@ -76,7 +76,7 @@
                 <p>阿里巴巴</p>
             </div>
             <div class="status">
-                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=2&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                <a href="//www.571xz.com/ortherLogin.htm?ortherLoginType=2&backUrl=//www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
             </div>
         </li>
         </#if>
@@ -99,7 +99,7 @@
                 <p>微信</p>
             </div>
             <div class="status">
-                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=4&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                <a href="//www.571xz.com/ortherLogin.htm?ortherLoginType=4&backUrl=//www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
             </div>
         </li>
         </#if>
@@ -122,7 +122,7 @@
                 <p>京东</p>
             </div>
             <div class="status">
-                <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                <a href="//www.571xz.com/ortherLogin.htm?ortherLoginType=6&backUrl=//www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
             </div>
         </li>
         </#if>
@@ -131,4 +131,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

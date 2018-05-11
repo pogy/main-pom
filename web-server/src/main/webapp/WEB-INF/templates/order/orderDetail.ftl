@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>订单详情 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/order__common_css.ftl">
 <#include "/__style_torrent__/order__orderDetail_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/order__orderDetail_js.ftl">
@@ -164,9 +164,9 @@ var orderId = '${orderId!}'
         <#list childOrders as childOrder>
         <ul>
             <li class="goodsDesc">
-                <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
+                <a href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
                 <div class="goodsTitle pr fl">
-                    <h4><a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank">${childOrder.title!}</a></h4>
+                    <h4><a href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank">${childOrder.title!}</a></h4>
                     <p class="marketCode fwb pa">商品货号：${childOrder.goodsNo!}</p>
                 </div>
             </li>
@@ -245,5 +245,7 @@ var orderId = '${orderId!}'
         </p>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

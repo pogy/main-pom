@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__daifaIndex_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__daifaIndex_js.ftl">
@@ -33,9 +33,9 @@
     <p>四季星座网致力于为您提供高效、优质的服务。在使用过程中有任何问题、意见与建议，请与客服联系。我们会及时跟进解决。</p>
     <p>目前代发开通的市场：电商基地，四季星座，钱塘大厦。</p>
     <ul>
-        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
-        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
-        <li class="last"><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后慧慧&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺3</span></a></li>
+        <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
+        <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
+        <li class="last"><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后慧慧&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺3</span></a></li>
     </ul>
     <p class="serviceTime">服务时间 :  9:00-18:00  （周六，周日不休息）</p>
     <p class="tac tel"><i class="icon-s-phone"></i><span>0571-86070380</span></p>

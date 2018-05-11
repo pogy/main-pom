@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>进货车 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/order__common_css.ftl">
 <#include "/__style_torrent__/order__cart_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -164,7 +164,7 @@
 </#list>
 <#list [{"id":order.imQq}] as $it>
 <#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list>
 <#list [{"id":order.imWw}] as $it>
@@ -251,14 +251,14 @@
         <#if childOrder.disabled == true>
         <a href="javascript:;"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         <#else>
-        <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
+        <a href="//www.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         </#if>
         <div class="fl goodsTitle fc3">
             <h4>
                 <#if childOrder.disabled == true>
                 <a href="javascript:;" class="out">${childOrder.title!}</a>
                 <#else>
-                <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank">${childOrder.title!}</a>
+                <a href="//www.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank">${childOrder.title!}</a>
                 </#if>
             </h4>
             <p class="fwb">商品货号：${childOrder.goodsNo!}</p>
@@ -404,7 +404,7 @@
     </div>
     </#list>
 <#else>
-<p class="listIsEmpty tac fs16 fc6">进货车里空空的哦，先去<a href="http://www.571xz.com/">逛一逛</a>吧！</p>
+<p class="listIsEmpty tac fs16 fc6">进货车里空空的哦，先去<a href="//www.571xz.com/">逛一逛</a>吧！</p>
 </#if>
 </div>
 <#if (cart.orders?size) gt 0>
@@ -493,5 +493,7 @@
     </form>
 </div>
 </#if>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

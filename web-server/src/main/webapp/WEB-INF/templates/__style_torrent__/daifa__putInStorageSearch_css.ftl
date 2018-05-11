@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/daifa/css/putInStorageSearch_v20171208_100234.css" rel="stylesheet">
+<link href="http://style.571xz.com/v6/daifa/css/putInStorageSearch_v20180315_144558.css" rel="stylesheet">

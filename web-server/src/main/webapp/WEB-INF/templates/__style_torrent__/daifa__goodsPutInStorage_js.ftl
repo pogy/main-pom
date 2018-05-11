@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/goodsPutInStorage_v20171208_144505.js"></script>
+<script src="http://style.571xz.com/v6/daifa/js/goodsPutInStorage_v20180315_144554.js"></script>
