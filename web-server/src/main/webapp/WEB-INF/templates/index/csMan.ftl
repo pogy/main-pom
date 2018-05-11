@@ -515,6 +515,10 @@ var webSite = '${webSite!}';
 商品库                    </a>
                 </li>
                 <li>
+                    <a href="http://www.571xz.com/photoPics.htm" target="_blank">
+图片库                    </a>
+                </li>
+                <li>
                     <a href="http://so.571xz.com/newgoods.htm?webSite=cs" target="_blank">
 今日新品                    </a>
                 </li>
