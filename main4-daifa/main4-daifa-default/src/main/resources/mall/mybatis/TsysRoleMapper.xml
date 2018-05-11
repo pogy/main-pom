@@ -97,7 +97,7 @@
 				t1.remark1,
 				t1.remark2
 		</sql>
-    <select id="selectUserRoleTreeByExample" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.beans.TsysRoleExample" >
+    <select id="selectUserRoleTreeByExample" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.examples.TsysRoleExample" >
         select distinct  a.role_id,a.role_name,a.role_comment,
         <if test="endIndex != null" >
             c.user_id as create_user_id
