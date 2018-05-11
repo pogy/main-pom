@@ -35,7 +35,7 @@
     <li class="tabbutton selected"><a>商品相册</a></li>
 </ul>
 <#include "/__ftl_links__/gys__common__dilatation.ftl">
-<div class="photoAlbumInfo clearfix">
+<div class="photoAlbumInfo photoAlbumItem clearfix" data-id="${query.id!}">
     <div class="imgBox fl">
         <#if photoAlbumInfo.cover??>
         <img src="${photoAlbumInfo.cover!}_100x100.jpg" alt>
