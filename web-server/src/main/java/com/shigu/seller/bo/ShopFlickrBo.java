@@ -14,7 +14,7 @@ public class ShopFlickrBo implements Serializable{
     private Long id;
     private Long cid;
     private Integer page;
-    private Integer rows = 2;
+    private Integer rows = 60;
 
     public Long getId() {
         return id;

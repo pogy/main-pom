@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class CateFlickrBo implements Serializable{
     private Long cid;
     private Integer page;
-    private Integer rows = 3;
+    private Integer rows = 72;
 
     public Long getCid() {
         return cid;
