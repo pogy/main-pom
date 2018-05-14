@@ -146,9 +146,6 @@ public class FlickrSellerAction {
         if (title.length() > 30){
             return JsonResponseUtil.error("相册标题不能超过30个字符");
         }
-        if (StringUtils.isBlank(desc)){
-            return JsonResponseUtil.error("相册说明不能为空");
-        }
         if (desc.length()>500){
             return JsonResponseUtil.error("相册说明不能超过500个字符");
         }

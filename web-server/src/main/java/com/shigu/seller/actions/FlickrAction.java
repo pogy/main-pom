@@ -105,6 +105,7 @@ public class FlickrAction {
         model.addAttribute("shopInfo",shop);
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", shiguPager.selPageOption(bo.getRows()));
+        model.addAttribute("webSite","cs");
         return "goodsDetail/photoShop";
     }
 
@@ -135,6 +136,7 @@ public class FlickrAction {
         List<CategoryVo> categroyVos = flickrService.getCategroy();
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("webSite","cs");
         return "search/photoPics";
     }
 
