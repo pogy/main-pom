@@ -118,7 +118,9 @@ public class FlickrSellerAction {
         }
         List<String> imgList = new ArrayList<>();
         String[] imgStrs = imgs.split(",");
-        int picCount = flickrManageService.getFlickrPicCount(id);
+        Integer picCount = flickrManageService.getFlickrPicCount(id);
+        if (picCount == null)
+            picCount=0;
         if (imgStrs.length+picCount > 60){
             return JsonResponseUtil.error("相册最多60张张片");
         }
