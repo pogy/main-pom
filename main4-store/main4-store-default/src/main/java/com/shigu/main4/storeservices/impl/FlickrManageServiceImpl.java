@@ -121,7 +121,6 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         if (shiguFlickrList.size() <= 0){
             return null;
         }
-        SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
         List<FlickrVo> storeFlickrAllList = new ArrayList<>();
         shiguFlickrList.forEach(flickr -> {
             FlickrVo flickrAll = new FlickrVo();
@@ -162,13 +161,12 @@ public class FlickrManageServiceImpl implements FlickrManageService {
             flickrPicInfoVo.setGoodsPics(new ArrayList<>());
             return flickrPicInfoVo;
         }
-        SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
         List<FlickrPictureVo> flickrPictureVoList = new ArrayList<>();
         shiguFlickrPictureList.forEach(picture -> {
             FlickrPictureVo flickrPictureVo = new FlickrPictureVo();
             flickrPictureVo.setImgSrc(picture.getPicUrl());
             flickrPictureVo.setGoodsPicId(picture.getPicId());
-            flickrPictureVo.setCreated(time.format(picture.getCreateTime()));
+            flickrPictureVo.setCreated(DateUtil.formateDate(picture.getCreateTime()));
             flickrPictureVoList.add(flickrPictureVo);
         });
         flickrPicInfoVo.setPicCount(flickrPictureVoList.size());
