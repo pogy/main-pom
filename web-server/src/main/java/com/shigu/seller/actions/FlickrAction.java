@@ -87,7 +87,7 @@ public class FlickrAction {
     @RequestMapping("photoShop")
     public String photoShop(ShopFlickrBo bo ,Model model) throws IOException, TemplateException {
         ShiguPager<ShopFlickrsVo> shiguPager = flickrManageService.getFlickrbyShop(bo.getId(),bo.getCid(),bo.getPage(),bo.getRows());
-        if (shiguPager.getContent() != null){
+        if (shiguPager.getContent() != null && shiguPager.getContent().size()>0){
             List<ShopFlickrsVo> svoList = shiguPager.getContent();
             for (int i = 0; i < svoList.size(); i++) {
                 ShopFlickrsVo shopFlickrsVo = svoList.get(i);
