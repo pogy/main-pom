@@ -361,10 +361,15 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         if (count > 0) {
             List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
-                return null;
+                return pager;
             }
             pager.setContent(BeanMapper.mapList(showList, FlickrHomeVo.class));
         }
         return pager;
+    }
+
+    @Override
+    public Integer getFlickrPicCount(Long fId) {
+        return shiguFlickrMapper.countFlickrPicture(fId,1);
     }
 }

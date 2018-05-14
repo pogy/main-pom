@@ -92,4 +92,6 @@ public interface FlickrManageService {
      */
     ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize);
 
+    Integer getFlickrPicCount(Long fId);
+
 }

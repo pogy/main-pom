@@ -118,6 +118,10 @@ public class FlickrSellerAction {
         }
         List<String> imgList = new ArrayList<>();
         String[] imgStrs = imgs.split(",");
+        int picCount = flickrManageService.getFlickrPicCount(id);
+        if (imgStrs.length+picCount > 60){
+            return JsonResponseUtil.error("相册最多60张张片");
+        }
         String str = null;
         for (int i = 0; i <imgStrs.length ; i++) {
             str = flickrService.banjia(imgStrs[i]);
@@ -139,8 +143,14 @@ public class FlickrSellerAction {
         if (StringUtils.isBlank(title)){
             return JsonResponseUtil.error("相册标题不能为空");
         }
+        if (title.length() > 30){
+            return JsonResponseUtil.error("相册标题不能超过30个字符");
+        }
         if (StringUtils.isBlank(desc)){
             return JsonResponseUtil.error("相册说明不能为空");
+        }
+        if (desc.length()>500){
+            return JsonResponseUtil.error("相册说明不能超过500个字符");
         }
         if (cateId==null){
             return JsonResponseUtil.error("相册类别不能为空");

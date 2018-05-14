@@ -117,13 +117,15 @@ public class FlickrAction {
     @RequestMapping("photoPics")
     public String photoPics(CateFlickrBo bo, Model model){
         ShiguPager<FlickrHomeVo> pager = flickrManageService.getFlickrByCategory(bo.getCid(),bo.getPage(),bo.getRows());
-        if (pager.getContent() != null){
+        if (pager.getContent() != null && pager.getContent().size()>0){
             List<FlickrHomeVo> flickrHomeVos = pager.getContent();
             for (int i = 0; i <flickrHomeVos.size() ; i++) {
                 FlickrHomeVo flickrHomeVo = flickrHomeVos.get(i);
                 flickrHomeVo.setReadCount(Long.valueOf(selFromCache(flickrService.selreadCount(flickrHomeVo.getId().toString(),flickrHomeVo.getReadCount())).toString())+flickrService.temporaryClicks(flickrHomeVo.getId().toString()));
             }
             model.addAttribute("photoAlbums",flickrHomeVos);
+        }else {
+            model.addAttribute("photoAlbums",new ArrayList<>());
         }
         if (bo.getCid() != null) {
             QueryVo q = new QueryVo();
