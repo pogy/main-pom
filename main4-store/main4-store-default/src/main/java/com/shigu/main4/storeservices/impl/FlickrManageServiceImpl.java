@@ -273,7 +273,8 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         if (count > 0) {
             List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
-                return null;
+                pager.setContent(new ArrayList<>());
+                return pager;
             }
             SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
             List<ShopFlickrsVo> flickrVos = new ArrayList<>();

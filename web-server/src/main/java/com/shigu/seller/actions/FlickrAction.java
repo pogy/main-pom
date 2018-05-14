@@ -87,7 +87,7 @@ public class FlickrAction {
     @RequestMapping("photoShop")
     public String photoShop(ShopFlickrBo bo ,Model model) throws IOException, TemplateException {
         ShiguPager<ShopFlickrsVo> shiguPager = flickrManageService.getFlickrbyShop(bo.getId(),bo.getCid(),bo.getPage(),bo.getRows());
-        if (shiguPager.getContent() != null){
+        if (shiguPager.getContent() != null && shiguPager.getContent().size()>0){
             List<ShopFlickrsVo> svoList = shiguPager.getContent();
             for (int i = 0; i < svoList.size(); i++) {
                 ShopFlickrsVo shopFlickrsVo = svoList.get(i);
@@ -105,6 +105,7 @@ public class FlickrAction {
         model.addAttribute("shopInfo",shop);
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", shiguPager.selPageOption(bo.getRows()));
+        model.addAttribute("webSite","cs");
         return "goodsDetail/photoShop";
     }
 
@@ -135,6 +136,7 @@ public class FlickrAction {
         List<CategoryVo> categroyVos = flickrService.getCategroy();
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
+        model.addAttribute("webSite","cs");
         return "search/photoPics";
     }
 
