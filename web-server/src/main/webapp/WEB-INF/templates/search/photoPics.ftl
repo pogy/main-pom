@@ -43,7 +43,11 @@
             <#list photoAlbums as item>
             <li>
                 <a href="photoItem.htm?id=${item.id!}" target="_blank" class="imgBox">
+                    <#if item.cover?? && item.cover != "">
                     <img src="${item.cover!}_200x200.jpg" alt>
+                    <#else>
+                    <img src="//style.571xz.com/v6/search/css/img/defaultPic.png" alt>
+                    </#if>
                 </a>
                 <p><a href="photoItem.htm?id=${item.id!}" target="_blank" class="ellip title" title="${item.title!}">${item.title!}</a><span class="fr">(${item.picCount!})</span></p>
                 <p class="fc9 otherInfo"><span class="created">创建${item.created!}</span><span class="fr">浏览：${item.readCount!}</span></p>

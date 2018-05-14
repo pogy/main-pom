@@ -1,1 +1,1 @@
-<script src="//style.571xz.com/v6/gys/js/photoAlbumManagement_v20180511_153233.js"></script>
+<script src="//style.571xz.com/v6/gys/js/photoAlbumManagement_v20180514_144840.js"></script>

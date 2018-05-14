@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/gys/css/photoAlbumManagement_v20180509_140314.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/gys/css/photoAlbumManagement_v20180514_144840.css" rel="stylesheet">

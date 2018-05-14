@@ -69,7 +69,7 @@
             <#list photoAlbums as item>
 <div class="photoAlbumItem pr" data-id="${item.id!}">
     <a class="imgBox" href="photoAlbumItem.htm?id=${item.id!}">
-        <#if item.imgSrc?? && item.imgSrc!="">
+        <#if item.imgSrc?? && item.imgSrc != "">
         <img src="${item.imgSrc!}_300x300.jpg">
         <#else>
         <img src="//style.571xz.com/v6/gys/css/img/defaultPic.png" alt>

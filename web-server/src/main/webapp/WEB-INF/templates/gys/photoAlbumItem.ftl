@@ -60,7 +60,7 @@
                     <img src="${item.imgSrc!}_200x200.jpg">
                 </div>
                 <p>${item.created!}</p>
-                <div class="deleteGoodsPic">删除</div>
+                <div class="deleteGoodsPic"><i class="icon-delete fs16 fc9"></i></div>
             </div>
             </#list>
         <#else>
