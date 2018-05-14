@@ -25,7 +25,7 @@
         <if test="webSite!=null and webSite!=''">
             sf.web_site=#{webSite} AND
         </if>
-        sf.f_status=#{status} GROUP BY sf.f_id LIMIT #{start}, #{size}
+        sf.f_status=#{status} AND sfp.pic_status=1 GROUP BY sf.f_id LIMIT #{start}, #{size}
     </select>
 
     <resultMap id="Flickrshow" type="com.shigu.main4.vo.FlickrHomeVo">

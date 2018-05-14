@@ -285,7 +285,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
                 flickrVo.setReadCount(flickrShow.getClicks());
                 flickrVo.setCover(flickrShow.getCover());
                 flickrVo.setPicCount(flickrShow.getNumber());
-                flickrVo.setCreated(time.format(flickrShow.getCreateTime()));
+                flickrVo.setCreated(DateUtil.formateDate(flickrShow.getCreateTime()));
                 flickrVos.add(flickrVo);
             });
             pager.setContent(BeanMapper.mapList(flickrVos, ShopFlickrsVo.class));
