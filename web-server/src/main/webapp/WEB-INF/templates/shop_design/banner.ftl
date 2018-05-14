@@ -118,6 +118,13 @@
                             </li>
                         </#if>
                     </#if>
+                    <#if webSite == "cs">
+                        <li>
+                                <a href="//www.571xz.com/photoShop.htm?id=${shop.shopId}" style="color:${moduleSet.storeNav.color};">
+                                    相册
+                                </a>
+                        </li>
+                    </#if>
                     <#list checkedNavs as nav>
                         <li>
                             <a href="${nav.href!}" style="color:${moduleSet.storeNav.color!};">
