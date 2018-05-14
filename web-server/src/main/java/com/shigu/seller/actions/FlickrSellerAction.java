@@ -122,7 +122,7 @@ public class FlickrSellerAction {
         if (picCount == null)
             picCount=0;
         if (imgStrs.length+picCount > 60){
-            return JsonResponseUtil.error("相册最多60张张片");
+            return JsonResponseUtil.error("相册最多上传60张照片");
         }
         String str = null;
         for (int i = 0; i <imgStrs.length ; i++) {
