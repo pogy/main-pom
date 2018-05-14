@@ -11,31 +11,31 @@ import java.io.Serializable;
  */
 public class FlickrPictureVo implements Serializable {
 
-    private Long picId;
-    private String picUrl;
-    private String createtime;
+    private Long goodsPicId;
+    private String imgSrc;
+    private String created;
 
-    public String getPicUrl() {
-        return picUrl;
+    public Long getGoodsPicId() {
+        return goodsPicId;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
+    public void setGoodsPicId(Long goodsPicId) {
+        this.goodsPicId = goodsPicId;
     }
 
-    public String getCreatetime() {
-        return createtime;
+    public String getImgSrc() {
+        return imgSrc;
     }
 
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
-    public Long getPicId() {
-        return picId;
+    public String getCreated() {
+        return created;
     }
 
-    public void setPicId(Long picId) {
-        this.picId = picId;
+    public void setCreated(String created) {
+        this.created = created;
     }
 }

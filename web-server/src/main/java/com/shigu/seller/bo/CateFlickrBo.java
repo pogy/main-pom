@@ -5,24 +5,14 @@ import java.io.Serializable;
 /**
  * @ProjectName: main-pom
  * @Package: com.shigu.seller.bo
- * @ClassName: ShopFlickrBo
+ * @ClassName: CateFlickrBo
  * @Author: sy
- * @CreateDate: 2018/5/8 0008 9:36
+ * @CreateDate: 2018/5/11 0011 17:51
  */
-public class ShopFlickrBo implements Serializable{
-
-    private Long id;
+public class CateFlickrBo implements Serializable{
     private Long cid;
     private Integer page;
-    private Integer rows = 2;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Integer rows = 3;
 
     public Long getCid() {
         return cid;

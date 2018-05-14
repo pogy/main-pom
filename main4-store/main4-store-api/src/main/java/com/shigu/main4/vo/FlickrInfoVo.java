@@ -1,5 +1,7 @@
 package com.shigu.main4.vo;
 
+import java.io.Serializable;
+
 /**
  * @ProjectName: main-pom
  * @Package: com.shigu.main4.vo
@@ -7,7 +9,7 @@ package com.shigu.main4.vo;
  * @Author: sy
  * @CreateDate: 2018/5/1 0001 16:30
  */
-public class FlickrInfoVo {
+public class FlickrInfoVo implements Serializable{
 
     private Long fId;
     private String fName;

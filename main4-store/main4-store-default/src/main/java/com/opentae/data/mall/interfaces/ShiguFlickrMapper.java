@@ -30,4 +30,6 @@ public interface ShiguFlickrMapper extends Mapper<ShiguFlickr> {
     FlickrDetails selectFlickrPictureByfId(@Param("fId") Long fId, @Param("status") Integer status);
 
     Integer countFlickr(@Param("status") Integer status);
+
+   List<String> selectPicTwo(@Param("fId") Long fId, @Param("status") Integer status);
 }

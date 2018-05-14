@@ -37,7 +37,7 @@
 <#include "/__ftl_links__/gys__common__dilatation.ftl">
 <div class="photoAlbumInfo photoAlbumItem clearfix" data-id="${query.id!}">
     <div class="imgBox fl">
-        <#if photoAlbumInfo.cover??>
+        <#if photoAlbumInfo.cover?? && photoAlbumInfo.cover != "">
         <img src="${photoAlbumInfo.cover!}_100x100.jpg" alt>
         <#else>
         <img src="//style.571xz.com/v6/gys/css/img/defaultPic.png" alt>

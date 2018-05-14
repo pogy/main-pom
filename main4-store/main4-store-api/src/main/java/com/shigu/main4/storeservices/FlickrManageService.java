@@ -1,7 +1,5 @@
 package com.shigu.main4.storeservices;
 
-import com.opentae.data.mall.beans.ShiguFlickr;
-import com.shigu.main4.bo.FlickrAddBo;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.vo.*;
 
@@ -46,11 +44,11 @@ public interface FlickrManageService {
     List<FlickrVo> getStroeFlickrbyStoreId(Long storeId);
 
     /**
-     * 获取相册里的所有图片
+     * 店铺后台获取相册里的所有图片
      * @param fId
      * @return
      */
-    List<FlickrPictureVo> getFlickrPictureList(Long fId);
+    FlickrPicInfoVo getFlickrPictureList(Long fId);
 
     /**
      * 批量添加相册图片

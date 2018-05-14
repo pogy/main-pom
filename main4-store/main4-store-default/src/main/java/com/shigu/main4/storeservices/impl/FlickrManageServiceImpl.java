@@ -56,6 +56,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         shiguFlickr.setFName(name);
         shiguFlickr.setFDesc(desc);
         shiguFlickr.setFStatus(1);
+        shiguFlickr.setClicks(0l);
         shiguFlickr.setStoreId(storeId);
         shiguFlickr.setWebSite(webSite);
         return shiguFlickrMapper.insertSelective(shiguFlickr);
@@ -88,7 +89,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         shiguFlickrPicture.setPicStatus(1);
         shiguFlickrPicture.setFId(fId);
         List<ShiguFlickrPicture> pictureList = shiguFlickrPictureMapper.select(shiguFlickrPicture);
-        if (pictureList.size() <= 0){
+        if (pictureList.size() > 0){
             pictureList.forEach(picture ->{
                 String url = picture.getPicUrl().replaceAll("http://imgs.571xz.net/","");
                 boolean b = ossIO.deleteFile(url);
@@ -122,15 +123,19 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         }
         SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
         List<FlickrVo> storeFlickrAllList = new ArrayList<>();
-        Jedis jedis = redisIO.getJedis();
         shiguFlickrList.forEach(flickr -> {
             FlickrVo flickrAll = new FlickrVo();
             flickrAll.setfId(flickr.getFId());
             flickrAll.setCover(flickr.getFCover());
             flickrAll.setcId(flickr.getCId());
             flickrAll.setClicks(flickr.getClicks());
-            flickrAll.setNumber(shiguFlickrMapper.countFlickrPicture(flickr.getFId(),1));
-            flickrAll.setCreateTime(time.format(flickr.getCreateTime()));
+            flickrAll.setDesc(flickr.getFDesc());
+            if (shiguFlickrMapper.countFlickrPicture(flickr.getFId(),1)==null) {
+                flickrAll.setNumber(0);
+            }else {
+                flickrAll.setNumber(shiguFlickrMapper.countFlickrPicture(flickr.getFId(), 1));
+            }
+            flickrAll.setCreateTime(DateUtil.formateDate(flickr.getCreateTime()));
             flickrAll.setName(flickr.getFName());
             storeFlickrAllList.add(flickrAll);
         });
@@ -138,29 +143,37 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     }
 
     /**
-     * 获取相册里的所有图片
+     * 店铺后台获取相册里的所有图片
      * @param fId
      * @return
      */
     @Override
-    public List<FlickrPictureVo> getFlickrPictureList(Long fId) {
+    public FlickrPicInfoVo getFlickrPictureList(Long fId) {
+        ShiguFlickr shiguFlickr = shiguFlickrMapper.selectByPrimaryKey(fId);
+        FlickrPicInfoVo flickrPicInfoVo = new FlickrPicInfoVo();
+        flickrPicInfoVo.setTitle(shiguFlickr.getFName());
+        flickrPicInfoVo.setCover(shiguFlickr.getFCover());
+        flickrPicInfoVo.setPicCount(0);
         ShiguFlickrPicture shiguFlickrPicture = new ShiguFlickrPicture();
         shiguFlickrPicture.setFId(fId);
         shiguFlickrPicture.setPicStatus(1);
         List<ShiguFlickrPicture> shiguFlickrPictureList = shiguFlickrPictureMapper.select(shiguFlickrPicture);
         if (shiguFlickrPictureList.size() <= 0){
-            return null;
+            flickrPicInfoVo.setGoodsPics(new ArrayList<>());
+            return flickrPicInfoVo;
         }
         SimpleDateFormat time = new SimpleDateFormat("yyyy-mm-dd");
         List<FlickrPictureVo> flickrPictureVoList = new ArrayList<>();
         shiguFlickrPictureList.forEach(picture -> {
             FlickrPictureVo flickrPictureVo = new FlickrPictureVo();
-            flickrPictureVo.setPicUrl(picture.getPicUrl());
-            flickrPictureVo.setPicId(picture.getPicId());
-            flickrPictureVo.setCreatetime(time.format(picture.getCreateTime()));
+            flickrPictureVo.setImgSrc(picture.getPicUrl());
+            flickrPictureVo.setGoodsPicId(picture.getPicId());
+            flickrPictureVo.setCreated(time.format(picture.getCreateTime()));
             flickrPictureVoList.add(flickrPictureVo);
         });
-        return flickrPictureVoList;
+        flickrPicInfoVo.setPicCount(flickrPictureVoList.size());
+        flickrPicInfoVo.setGoodsPics(flickrPictureVoList);
+        return flickrPicInfoVo;
     }
 
     /**
@@ -182,12 +195,15 @@ public class FlickrManageServiceImpl implements FlickrManageService {
             shiguFlickrPicture.setPicUrl(picUrlList.get(i));
             shiguFlickrPictures.add(shiguFlickrPicture);
         }
-        ShiguFlickr shiguFlickr = new ShiguFlickr();
-        shiguFlickr.setFId(fId);
-        shiguFlickr.setFCover(shiguFlickrPictures.get(0).getPicUrl());
-        Integer b = shiguFlickrMapper.updateByPrimaryKeySelective(shiguFlickr);
-        if (b <= 0){
-            return b;
+        List<String> picUrl = shiguFlickrMapper.selectPicTwo(fId,1);
+        if (picUrl.size() <= 0) {
+            ShiguFlickr shiguFlickr = new ShiguFlickr();
+            shiguFlickr.setFId(fId);
+            shiguFlickr.setFCover(shiguFlickrPictures.get(0).getPicUrl());
+            Integer b = shiguFlickrMapper.updateByPrimaryKeySelective(shiguFlickr);
+            if (b <= 0) {
+                return b;
+            }
         }
         return shiguFlickrPictureMapper.insertListNoId(shiguFlickrPictures);
     }
@@ -204,6 +220,17 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         boolean b = ossIO.deleteFile(url);
         if (b == false){
             return -1;
+        }
+        List<String> picUrl = shiguFlickrMapper.selectPicTwo(picture.getFId(),1);
+        if (picture.getPicUrl().equalsIgnoreCase(picUrl.get(0))){
+            ShiguFlickr shiguFlickr = new ShiguFlickr();
+            shiguFlickr.setFId(picture.getFId());
+                if (picUrl.size() <= 1){
+                    shiguFlickr.setFCover("");
+                }else{
+                    shiguFlickr.setFCover(picUrl.get(1));
+                }
+            shiguFlickrMapper.updateByPrimaryKeySelective(shiguFlickr);
         }
         ShiguFlickrPicture shiguFlickrPicture = new ShiguFlickrPicture();
         shiguFlickrPicture.setPicId(picId);
@@ -235,15 +262,16 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     @Override
     public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize) {
         ShiguPager<ShopFlickrsVo> pager = new ShiguPager<>();
-        if (pageNo < 1)
+        if (pageNo==null || pageNo < 1)
             pageNo = 1;
-        if (pageSize < 1)
+        if (pageSize==null ||pageSize < 1)
             pageSize = 10;
         pager.setNumber(pageNo);
+        int pageno = (pageNo-1)*pageSize;
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageNo,pageSize);
+            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 return null;
             }
@@ -322,15 +350,16 @@ public class FlickrManageServiceImpl implements FlickrManageService {
 
     public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize) {
         ShiguPager<FlickrHomeVo> pager = new ShiguPager<>();
-        if (pageNo < 1)
+        if (pageNo==null || pageNo < 1)
             pageNo = 1;
-        if (pageSize < 1)
+        if (pageSize==null ||pageSize < 1)
             pageSize = 10;
         pager.setNumber(pageNo);
+        int pageno = (pageNo-1)*pageSize;
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageNo,pageSize);
+            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 return null;
             }

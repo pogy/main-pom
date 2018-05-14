@@ -18,6 +18,7 @@ public class FlickrVo implements Serializable {
     private String createTime;
     private Long clicks;
     private Long cId;
+    private String desc;
 
     public String getName() {
         return name;
@@ -73,5 +74,13 @@ public class FlickrVo implements Serializable {
 
     public void setcId(Long cId) {
         this.cId = cId;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

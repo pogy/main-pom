@@ -18,6 +18,7 @@ public class PhotoAlbumVo implements Serializable {
     private String created;
     private Long readCount;
     private Long cateId;
+    private String desc;
 
     public Long getId() {
         return Id;
@@ -73,5 +74,13 @@ public class PhotoAlbumVo implements Serializable {
 
     public void setCateId(Long cateId) {
         this.cateId = cateId;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
