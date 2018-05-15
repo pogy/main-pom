@@ -17,7 +17,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/cash.css" rel="stylesheet">
+    <link href="//style.571xz.com/v2/qzhd/css/cash.css" rel="stylesheet">
     
 
     
@@ -30,9 +30,9 @@
     
 
     
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/cash.js"></script>
+    <script src="//style.571xz.com/v2/qzhd/js/cash.js"></script>
     
 </head>
 <body>
@@ -70,13 +70,13 @@
                     <i class="downArrow"></i>
                 </span>
                 <ul>
-                    <li><a href="http://hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
-                    <li><a href="http://cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
-                    <li><a href="http://ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
-                    <li><a href="http://bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
-                    <li><a href="http://gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
-                    <li><a href="http://wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
-                    <li><a href="http://jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
+                    <li><a href="//hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
+                    <li><a href="//cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
+                    <li><a href="//ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
+                    <li><a href="//bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
+                    <li><a href="//gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
+                    <li><a href="//wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
+                    <li><a href="//jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
                 </ul>
             </div>
             
@@ -140,7 +140,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="//www.571xz.com/contact.htm" target="_blank">联系客服</a>
                 </li>
                 <#if webSite?? && webSite != ''>
                 <li>
@@ -150,26 +150,26 @@
                             <h4 class="fs14 fcF40">市场大全</h4>
                             
                             <ul>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=1">电商基地</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=2">精品男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=3">四季星座</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=4">星座女装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=6">好四季</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=8">置地国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=11">九天国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=12">新杭派</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=13">四季青</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=16">原创男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=17">大码男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=19">周边市场</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -204,8 +204,8 @@ var webSite = '${webSite!}';
 
 <div class="header layout">
     <div class="logoLeft fl">
-        <a href="http://${webSite!}.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+        <a href="//${webSite!}.571xz.com">
+            <img src="//style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
         </a>
         <em class="fs18 yahei"></em>
     </div>
@@ -227,7 +227,7 @@ var webSite = '${webSite!}';
         
         <form id="formSearch"
             
-                action="http://so.571xz.com/${webSite!}search.htm" 
+                action="//so.571xz.com/${webSite!}search.htm"
             
             
         >
@@ -258,7 +258,7 @@ var webSite = '${webSite!}';
     <ul class="clearfix">
     
         <li >
-            <a href="http://hz.571xz.com/market.htm" target="_blank">
+            <a href="//hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
                 
@@ -266,7 +266,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+            <a href="//so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
                 
@@ -274,7 +274,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+            <a href="//so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
                 
@@ -282,7 +282,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+            <a href="//www.571xz.com/shopRanking.htm" target="_blank">
                 排行榜
                 <i class="hot"></i>
                 
@@ -298,7 +298,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+            <a href="//www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
                 
@@ -306,7 +306,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://zixun.571xz.com/index" target="_blank">
+            <a href="//zixun.571xz.com/index" target="_blank">
                 资讯
                 
                 
@@ -349,17 +349,17 @@ var webSite = '${webSite!}';
     <div class="inner">
         <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
-            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-            <a href="http://bj.571xz.com" target="_blank">北京站</a>
-            <a href="http://gz.571xz.com" target="_blank">广州站</a>
-            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-            <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//hz.571xz.com" target="_blank">杭州站</a>
+            <a href="//bj.571xz.com" target="_blank">北京站</a>
+            <a href="//gz.571xz.com" target="_blank">广州站</a>
+            <a href="//ss.571xz.com" target="_blank">石狮站</a>
+            <a href="//cs.571xz.com" target="_blank">常熟站</a>
+            <a href="//wa.571xz.com" target="_blank">辽源站</a>
+            <a href="//jx.571xz.com" target="_blank">濮院站</a>
+            <a href="//zixun.571xz.com" target="_blank">资讯</a>
             
             
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
             
         </p>
         <p class="imgs">
@@ -371,12 +371,12 @@ var webSite = '${webSite!}';
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span>
-            <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
             | 
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
-                <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
+                <img src="//style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
                 浙公网安备 33010202000302号
             </a> 
         </p>
