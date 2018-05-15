@@ -10,7 +10,7 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/photo__common_css.ftl">
 <#include "/__style_torrent__/photo__userWorkList_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/photo__common_js.ftl">
@@ -29,6 +29,7 @@
             <a href="/photo/auth/uploadWork.htm">
                 <i></i>
                 点击上传作品
+                <p class="fcF40">(请勿重复上传作品！)</p>
             </a>
         </div>
         <div class="clearfix worksList">
