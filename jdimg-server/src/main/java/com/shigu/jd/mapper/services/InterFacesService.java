@@ -1,23 +1,20 @@
 package com.shigu.jd.mapper.services;
 
-import com.openJar.beans.JdItemProp;
-import com.openJar.beans.JdPropValue;
-import com.openJar.beans.JdTbBind;
-import com.openJar.beans.ShiguJdcat;
+import com.openJar.beans.*;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.jd.beans.JdSessionMap;
 import com.opentae.data.jd.examples.JdItemPropExample;
 import com.opentae.data.jd.examples.JdPropValueExample;
+import com.opentae.data.jd.examples.JdSessionMapExample;
 import com.opentae.data.jd.examples.JdTbBindExample;
-import com.opentae.data.jd.interfaces.JdItemPropMapper;
-import com.opentae.data.jd.interfaces.JdPropValueMapper;
-import com.opentae.data.jd.interfaces.JdTbBindMapper;
-import com.opentae.data.jd.interfaces.ShiguJdcatMapper;
+import com.opentae.data.jd.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InterFacesService {
@@ -29,6 +26,9 @@ public class InterFacesService {
     JdTbBindMapper jdTbBindMapper;
     @Autowired
     ShiguJdcatMapper shiguJdcatMapper;
+    @Autowired
+    JdSessionMapMapper jdSessionMapMapper;
+
     public List<JdItemProp> selJdItemProps(Long jdCid) {
         JdItemPropExample jdItemPropExample=new JdItemPropExample();
         jdItemPropExample.createCriteria().andCidEqualTo(jdCid);
@@ -73,6 +73,26 @@ public class InterFacesService {
         System.err.println(notHave);
     }
 
+    /**
+     * 根据京东登陆名精确查询
+     * @param jdUserNick
+     * @return
+     */
+    public List<JdSession> selJdUidsByFuzzyJdLoginName(String jdUserNick) {
+        JdSessionMapExample example = new JdSessionMapExample();
+        example.createCriteria().andJdUserNickEqualTo(jdUserNick);
+        List<JdSessionMap> jdSessionMaps = jdSessionMapMapper.selectFieldsByExample(example, FieldUtil.codeFields("jd_uid,jd_user_nick"));
+        if (jdSessionMaps == null || jdSessionMaps.isEmpty()) {
+            return null;
+        }
+        return jdSessionMaps.stream().map(item->{
+            JdSession jdSession = new JdSession();
+            jdSession.setJdUid(item.getJdUid());
+            jdSession.setJdUserNick(item.getJdUserNick());
+
+            return jdSession;
+        }).collect(Collectors.toList());
+    }
 }
 
 
