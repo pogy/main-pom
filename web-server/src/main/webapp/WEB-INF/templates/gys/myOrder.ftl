@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__myOrder_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
@@ -100,12 +100,12 @@
                     <#list order.childOrders as childOrder>
 <div class="childOrderItem fl">
     <div class="goods goodsDetail fl clearfix">
-        <a class="imgBox fl" href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}">
+        <a class="imgBox fl" href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}">
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </a>
         <div class="goodsCon">
             <p class="fc3">货号：${childOrder.goodsNo!}</p>
-            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle fc9" title="${childOrder.title!}">${childOrder.title!}</a>
+            <a href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle fc9" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="fcF40">&yen;${childOrder.price!}</p>
         </div>
     </div>

@@ -264,7 +264,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+            <a href="//so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
                 
@@ -272,7 +272,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+            <a href="//so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
                 
@@ -280,7 +280,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/shopRanking.htm" target="_blank">
+            <a href="//www.571xz.com/shopRanking.htm" target="_blank">
                 排行榜
                 <i class="hot"></i>
                 
@@ -296,7 +296,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+            <a href="//www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
                 
@@ -304,7 +304,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://zixun.571xz.com/index" target="_blank">
+            <a href="//zixun.571xz.com/index" target="_blank">
                 资讯
                 
                 
@@ -329,13 +329,13 @@ var webSite = '${webSite!}';
     <ul class="clearfix">
         <#list goodsList as goods>
             <li class="goodsItem" >
-    <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
+    <a href="//www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
         <img src="${goods.imgSrc!}_300x300.jpg" alt="${goods.title!}" >
     </a>
-    <h4 class="title"><a href="http://hz.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
+    <h4 class="title"><a href="//hz.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
     <div class="goodsInfo clearfix pr fcF40">
         <span class="goodsPrice"><i>&yen;</i>${goods.piPriceString!}</span>
-        <a class="goodAddr fc9" href="http://www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}"><i class="icon-list fcF40"></i>${goods.marketName!} ${goods.shopNum!}</a>
+        <a class="goodAddr fc9" href="//www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}"><i class="icon-list fcF40"></i>${goods.marketName!} ${goods.shopNum!}</a>
     </div>
 </li>
 
@@ -377,17 +377,17 @@ var webSite = '${webSite!}';
     <div class="inner">
         <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
-            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-            <a href="http://bj.571xz.com" target="_blank">北京站</a>
-            <a href="http://gz.571xz.com" target="_blank">广州站</a>
-            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-            <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//hz.571xz.com" target="_blank">杭州站</a>
+            <a href="//bj.571xz.com" target="_blank">北京站</a>
+            <a href="//gz.571xz.com" target="_blank">广州站</a>
+            <a href="//ss.571xz.com" target="_blank">石狮站</a>
+            <a href="//cs.571xz.com" target="_blank">常熟站</a>
+            <a href="//wa.571xz.com" target="_blank">辽源站</a>
+            <a href="//jx.571xz.com" target="_blank">濮院站</a>
+            <a href="//zixun.571xz.com" target="_blank">资讯</a>
             
             
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
             
         </p>
         <p class="imgs">
@@ -399,12 +399,12 @@ var webSite = '${webSite!}';
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span>
-            <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
             | 
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
-                <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
+                <img src="//style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
                 浙公网安备 33010202000302号
             </a> 
         </p>
