@@ -92,23 +92,24 @@ public class DataPackageImportService {
             item.setPicUrl(newPicUrl);
         }
         String desc = tiny.getExtendsGoods().getGoodsDesc();
+        String goodsDesc = desc;
         if (StringUtils.isNotBlank(desc)){
             Document doc = Jsoup.parseBodyFragment(desc);
             Elements elements = doc.getElementsByTag("img");
-            if (elements != null){
-                elements.forEach(element -> {
-                    String imgUrl = element.attr("src");
+            if (elements != null && elements.size() > 0){
+                for (int i = 0; i <elements.size() ; i++) {
+                    String imgUrl = elements.get(i).attr("src");
                     if (StringUtils.isNotBlank(imgUrl)) {
                         String newImgUrl = banjia(imgUrl);
                         if (imgUrl.equalsIgnoreCase(newImgUrl) == false){
-                            desc.replaceAll(imgUrl,newImgUrl);
+                            goodsDesc = goodsDesc.replaceAll(imgUrl,newImgUrl);
                         }
                     }
-                });
+                }
             }
 
         }
-        item.setGoodsDesc(desc);
+        item.setGoodsDesc(goodsDesc);
         List<ShiguPropImg> propImgs=BeanMapper.mapList(tiny.getExtendsGoods().getList_spi(), ShiguPropImg.class);
         for(ShiguPropImg img:propImgs){
             img.setUrl(banjia(img.getUrl()));
