@@ -13,7 +13,8 @@
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__photoAlbumItem_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/gys/plugin/sort/Sortable.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__common_js.ftl">
@@ -38,7 +39,7 @@
 <div class="photoAlbumInfo photoAlbumItem clearfix" data-id="${query.id!}">
     <div class="imgBox fl">
         <#if photoAlbumInfo.cover?? && photoAlbumInfo.cover != "">
-        <img src="${photoAlbumInfo.cover!}_100x100.jpg" alt>
+        <img src="${photoAlbumInfo.cover!}_j100x100.jpg" alt>
         <#else>
         <img src="//style.571xz.com/v6/gys/css/img/defaultPic.png" alt>
         </#if>
