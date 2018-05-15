@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=1300">
     <title>发布宝贝 - 供应商中心 - 四季星座网</title>
 <#include "/common/base__config.ftl">
-    <link rel=stylesheet href="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
+    <link rel=stylesheet href="//style.571xz.com/v6/gys/temp/webuploader/webuploader.css">
 <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__releaseGoodsSend_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__releaseGoodsSend_js.ftl">
@@ -32,9 +32,9 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
-<link href="http://g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
-<script src="http://g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
-<script src="http://style.571xz.com/v6/gys/temp/deonkey.js"></script>
+<link href="//g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
+<script src="//g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
+<script src="//style.571xz.com/v6/gys/temp/deonkey.js?v1"></script>
 <div class="releaseGoodsBox pr">
 <div class="categoryBox">
     <em class="fc6">类目：${category_text!}</em>
@@ -233,9 +233,7 @@
     </div>
 </div>
 <div class="moreImgUpload">
-    <#if showMoreImgBtnIs == true>
     <b class="showMoreImgWindowBtn">选择要上传的图片</b>
-    </#if>
 </div>
 <div class="form-submit pa">
 <#list [{}] as $it>
