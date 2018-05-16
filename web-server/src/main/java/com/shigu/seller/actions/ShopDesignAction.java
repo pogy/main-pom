@@ -327,7 +327,7 @@ public class ShopDesignAction {
     @RequestMapping("design/saveCustomOption")
     public String saveCustomOption(CustomModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         if (bo.getContent() != null) {
-            bo.setContent(bo.getContent().replace("网商园","").replace("wsy.com",""));
+            bo.setContent(bo.getContent().replaceAll("网商园","").replace("(?i)wsy.com","").replace("(?i)wsy",""));
         }
         return saveModuleOption(bo,session,model);
     }
