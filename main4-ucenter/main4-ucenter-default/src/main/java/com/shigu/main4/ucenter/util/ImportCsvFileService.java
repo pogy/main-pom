@@ -802,18 +802,22 @@ public class ImportCsvFileService {
                             map.put (imurlString, image_save_path + "/" + pics[0] + ".tbi");
                         }
                     }else{/////2
-                        if("2".equals (pics[1])) {
-                          String  propPicUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
-                            String spid=pics[3];
-                            String svid=pics[4];
-                            ShiguPropImg spi=new ShiguPropImg();
-                            spi.setPid (new Long(spid));
-                            spi.setVid (new Long(svid));
-                            spi.setUrl (propPicUrl);
+                        try {
+                            if("2".equals (pics[1])) {
+                              String  propPicUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                                String spid=pics[3];
+                                String svid=pics[4];
+                                ShiguPropImg spi=new ShiguPropImg();
+                                spi.setPid (new Long(spid));
+                                spi.setVid (new Long(svid));
+                                spi.setUrl (propPicUrl);
 
-                           List<ShiguPropImg> list_spi= sge.getList_spi ();
-                            list_spi.add (spi);
+                               List<ShiguPropImg> list_spi= sge.getList_spi ();
+                                list_spi.add (spi);
 
+                            }
+                        } catch (Exception e) {
+                            continue;
                         }
                     }
 
