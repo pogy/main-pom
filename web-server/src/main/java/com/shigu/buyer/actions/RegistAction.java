@@ -119,8 +119,10 @@ public class RegistAction {
         RegisterUser registerUser=new RegisterUser();
         registerUser.setPassword(bo.getPassword());
         registerUser.setTelephone(bo.getTelephone());
+        Long userId = null;
         try {
-            if(registerAndLoginService.registerByPhone(registerUser)==null){
+            userId = registerAndLoginService.registerByPhone(registerUser);
+            if(userId ==null){
                 throw new JsonErrException("用户已经存在");
             }
         } catch (Main4Exception e) {
@@ -138,7 +140,12 @@ public class RegistAction {
         } catch (LoginAuthException e) {
             logger.error("注册成功后,自动登陆失败",e);
         }
-        return JsonResponseUtil.success().element("OK","OK");
+        Long outUid = registerAndLoginService.selOutUidByUid(userId);
+        JSONObject jsonObject = JsonResponseUtil.success().element("OK", "OK");
+        if (outUid != null) {
+            jsonObject.element("id",outUid);
+        }
+        return jsonObject;
     }
 
     /**

@@ -4,12 +4,10 @@ package com.shigu.main4.ucenter.services.impl;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.UidOutIdReference;
 import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.MemberLicenseMapper;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -64,6 +62,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
 
+    @Resource(name = "tae_mall_uidOutIdReferenceMapper")
+    private UidOutIdReferenceMapper uidOutIdReferenceMapper;
+
 
     /**
      * 注册新用户
@@ -114,7 +115,34 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         userLicenseService.passwordSafeCheck(memberUser.getUserId() ,user.getPassword());
         // 手机号权益
         userLicenseService.bindNotUserCanRegist(memberUser.getUserId(), user.getTelephone());
+
+        //生成外部用户id
+        UidOutIdReference uidOutIdReference = new UidOutIdReference();
+        Date now = new Date();
+        uidOutIdReference.setUid(memberUser.getUserId());
+        uidOutIdReference.setGmtCreate(now);
+        uidOutIdReference.setGmtModify(now);
+        uidOutIdReferenceMapper.insertSelective(uidOutIdReference);
+
         return memberUser.getUserId();
+    }
+
+    /**
+     * 根据用户id获取用户外部id
+     * @param userId
+     * @return
+     */
+    public Long selOutUidByUid(Long userId){
+        if (userId == null) {
+            return null;
+        }
+        UidOutIdReference uidOutIdReference = new UidOutIdReference();
+        uidOutIdReference.setUid(userId);
+        uidOutIdReference = uidOutIdReferenceMapper.selectOne(uidOutIdReference);
+        if (uidOutIdReference == null) {
+            return null;
+        }
+        return uidOutIdReference.getId();
     }
 
     /**
