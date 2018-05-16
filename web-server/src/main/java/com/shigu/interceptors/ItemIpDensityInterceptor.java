@@ -17,7 +17,7 @@ public class ItemIpDensityInterceptor extends DensityInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ip = HttpRequestUtil.getIpAddr(request);
-        primaryKey = "item_added_ip";
+        primaryKey = "item_added_ip_" + ip;
         return super.preHandle(request, response, handler);
     }
 }
