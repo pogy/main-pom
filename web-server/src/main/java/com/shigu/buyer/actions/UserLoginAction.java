@@ -19,6 +19,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
+import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
@@ -89,6 +90,9 @@ public class UserLoginAction {
 
     @Autowired
     private TbUploadService tbUploadService;
+
+    @Autowired
+    private UserBaseService userBaseService;
 
     @RequestMapping("frameLogin")
     public String frameLogin(HttpSession session, Model model, String backUrl) {
@@ -779,7 +783,15 @@ public class UserLoginAction {
 //                return "redirect:"+memberFilter.getSuccessUrl();
             String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-            return JsonResponseUtil.success().element("backUrl", backUrl);
+
+            //返回需要数据
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
+            JSONObject jsonObject = JsonResponseUtil.success().element("backUrl", backUrl);
+            if (outUid != null) {
+                jsonObject.element("id",outUid);
+            }
+            return jsonObject;
         }
     }
 
