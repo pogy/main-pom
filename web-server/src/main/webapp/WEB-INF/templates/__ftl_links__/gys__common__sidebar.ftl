@@ -1,6 +1,6 @@
 <div class="sidebar shadowBox yahei">
     <#if $it.type == 'index'>
-    <#if webSite == 'hz'>
+    <#if session_user_redis__.logshop.webSite == 'hz'>
     <h2>交易管理</h2>
     <ul>
         <#if 'myOrder' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
@@ -109,15 +109,15 @@
     </ul>
     <h2>店铺管理</h2>
     <ul>
-        <#if 'http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' == $pageid >
+                    <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' == $pageid >
                             selected
                     </#if>
                 "
-                    href="http://www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"
+                    href="//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"
                     target="_blank"
             >查看我的店铺</a>
         </li>
@@ -294,15 +294,15 @@
             >广告展示管理</a>
         </li>
         </#if>
-        <#if 'http://www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
+        <#if '//www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' || session_user_redis__.logshop.type == 1>
         <li>
             <a
                 class="
-                    <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
+                    <#if '//www.571xz.com/qualityControl.htm' == $pageid >
                             selected
                     </#if>
                 "
-                    href="http://www.571xz.com/qualityControl.htm"
+                    href="//www.571xz.com/qualityControl.htm"
                     target="_blank"
             >我要质检</a>
         </li>
@@ -416,5 +416,7 @@
         </li>
         </#if>
     </ul>
+
     </#if>
+
 </div>
