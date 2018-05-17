@@ -78,7 +78,7 @@
 <li
         <#if 'photoPics' == $pageid>class="actived"</#if>
 >
-    <a href="//www.571xz.com/photoPics.htm" target="_blank">
+    <a href="//www.571xz.com/photoPics.htm?webSite=cs" target="_blank">
         图片库
     </a>
 </li>

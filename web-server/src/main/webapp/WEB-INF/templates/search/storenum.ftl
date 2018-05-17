@@ -63,7 +63,6 @@
             </div>
             <div class="p2">
                 <p>主营：${store.mainCate!}</p>
-                <p>市场：${store.fullMarketText!}</p>
                 <p>电话：${store.tel!}</p>
             </div>
             <div class="p3">

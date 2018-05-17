@@ -34,7 +34,7 @@
             <div class="rightBox shadowBox">
 <link href="//g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
 <script src="//g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
-<script src="//style.571xz.com/v6/gys/temp/deonkey.js"></script>
+<script src="//style.571xz.com/v6/gys/temp/deonkey.js?v1"></script>
 <div class="releaseGoodsBox pr">
 <div class="categoryBox">
     <em class="fc6">类目：${category_text!}</em>
@@ -233,9 +233,7 @@
     </div>
 </div>
 <div class="moreImgUpload">
-    <#if showMoreImgBtnIs == true>
     <b class="showMoreImgWindowBtn">选择要上传的图片</b>
-    </#if>
 </div>
 <div class="form-submit pa">
 <#list [{}] as $it>

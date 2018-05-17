@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
+import com.opentae.data.mall.interfaces.ShiguFlickrMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.store.test.BaseSpringTest;
 import com.shigu.main4.store.test.wxc.ShopForCdnServiceTest;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
+import com.shigu.main4.vo.FlickrHomeVo;
 import com.shigu.main4.vo.ItemShowBlock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +42,7 @@ public class ShopForCdnServiceImplTest extends AbstractJUnit4SpringContextTests 
 
     @Resource
     private ShopForCdnService shopForCdnService;
+
 
     // test public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, String orderBy, int pageNo, int pageSize)
     @Test
