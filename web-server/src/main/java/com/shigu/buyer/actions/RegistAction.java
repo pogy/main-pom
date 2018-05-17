@@ -143,7 +143,7 @@ public class RegistAction {
         Long outUid = registerAndLoginService.selOutUidByUid(userId);
         JSONObject jsonObject = JsonResponseUtil.success().element("OK", "OK");
         if (outUid != null) {
-            jsonObject.element("id",outUid);
+            jsonObject.element("id",outUid.toString());
         }
         return jsonObject;
     }

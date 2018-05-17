@@ -789,7 +789,7 @@ public class UserLoginAction {
             Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
             JSONObject jsonObject = JsonResponseUtil.success().element("backUrl", backUrl);
             if (outUid != null) {
-                jsonObject.element("id",outUid);
+                jsonObject.element("id",outUid.toString());
             }
             return jsonObject;
         }
