@@ -247,6 +247,8 @@ public class GoodsSearchAction {
                 bo.setPid(50011740L);
             }else if ("zl".equalsIgnoreCase(website)){
                 bo.setPid(50008165L);
+            }else if ("wa".equalsIgnoreCase(website)){
+                bo.setPid(1625L);
             }else {
                 bo.setPid(30L);
             }
