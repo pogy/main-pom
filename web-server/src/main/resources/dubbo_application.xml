@@ -40,6 +40,7 @@
     <dubbo:reference interface="com.shigu.main4.storeservices.MarketShopService" id="marketShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.SearchCategoryService" id="searchCategoryService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.FlickrManageService" id="FlickrManageService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
