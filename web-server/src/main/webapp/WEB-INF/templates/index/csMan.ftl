@@ -496,11 +496,7 @@ var webSite = '${webSite!}';
 今日新品                    </a>
                 </li>
                 <li>
-                    <a href="//daifa.571xz.com/" target="_blank">
-一件代发                    </a>
-                </li>
-                <li>
-                    <a href="//zixun.571xz.com/index" target="_blank">
+                    <a href="http://zixun.571xz.com/index" target="_blank">
 资讯                    </a>
                 </li>
             </ul>
@@ -890,7 +886,7 @@ $(".imgBox img").lazyload({
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a>
         </p>
     </div>
 </div>

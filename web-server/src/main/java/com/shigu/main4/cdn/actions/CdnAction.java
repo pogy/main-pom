@@ -142,6 +142,7 @@ public class CdnAction {
     @RequestMapping("contact")
     public String contact(Model model) {
         model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/contact";
     }
 
@@ -1120,6 +1121,7 @@ public class CdnAction {
         ShiguPager<ShopIconCopyrightVO> pager = cdnService.shopCopyrights(page, 100);
         model.addAttribute("pageOption", pager.selPageOption(100));
         model.addAttribute("copyrightList", pager.getContent());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/shopIconCopyright";
     }
 
@@ -1354,6 +1356,7 @@ public class CdnAction {
     @RequestMapping("daifaIndex")
     public String daifaIndex(Model model) {
         model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/daifaIndex";
     }
 
