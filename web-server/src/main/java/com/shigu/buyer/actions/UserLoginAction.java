@@ -764,11 +764,16 @@ public class UserLoginAction {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "telephone");
         }
+        //返回需要数据
+
         PhoneVerify phoneVerify = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
         if (phoneVerify == null || !bo.getTelephone().equals(phoneVerify.getPhone())
                 || !bo.getMsgValidate().equals(phoneVerify.getVerify())) {
             throw new JsonErrException("短信验证码错误").addErrMap("ele", "msgValidate");
         } else {
+            //根据手机号查询账号是否存在，不存在则统计
+            Long userIdByPhone = userLicenseService.findUserIdByPhone(bo.getTelephone());
+
             String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
             if (imgcode == null || !imgcode.equals(bo.getImgValidate())) {//图片验证通不过
                 throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
@@ -784,13 +789,15 @@ public class UserLoginAction {
             String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
 
-            //返回需要数据
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
             JSONObject jsonObject = JsonResponseUtil.success().element("backUrl", backUrl);
-            if (outUid != null) {
-                jsonObject.element("id",outUid.toString());
+            if (userIdByPhone == null) {
+                PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+                Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
+                if (outUid != null) {
+                    jsonObject.element("id",outUid.toString());
+                }
             }
+
             return jsonObject;
         }
     }
