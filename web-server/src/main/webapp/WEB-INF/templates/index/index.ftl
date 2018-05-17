@@ -653,7 +653,7 @@ if(pageType == 'W'){
 </div>
 </#list>
 </div>
-<div class="recommendShopList goodslistBox layout">
+<!--<div class="recommendShopList goodslistBox layout">
 <div class="goodslistTitleV1">
     <a class="sideNavbarDot" name="recommendShop" data-text="推荐"></a>
     <h3 class="fs20 fwb yahei">推荐档口 <span class="fs12 fc9">实力档口 源头好货</span></h3>
@@ -680,7 +680,7 @@ if(pageType == 'W'){
     </ul>
 </div>
 </#list>
-</div>
+</div>-->
 <div class="loveGoodslist goodslistBox layout">
 <div class="goodslistTitleV2">
     <a class="sideNavbarDot" name="loveGoods" data-text="喜欢"></a>
@@ -754,7 +754,7 @@ if(pageType == 'W'){
             <li>
                 <h5>四季星座网</h5>
                 <p><a href="//www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
-                <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
+                <p><a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a></p>
             </li>
             <li>
                 <h5>代理商</h5>
