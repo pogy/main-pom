@@ -25,7 +25,7 @@
         <div class="p-linkList fl">
             <h3>联系我们</h3>
             <ul>
-                <li><a href="//www.571xz.com/helpCenter/queDetail.htm?id=79">联系我们</a></li>
+                <li><a href="//571xz.com/contact.htm">联系我们</a></li>
             </ul>
         </div>
     </div>
