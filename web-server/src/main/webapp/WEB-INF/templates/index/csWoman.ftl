@@ -479,21 +479,21 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">流行元素</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=刺绣" target="_blank">刺绣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蕾丝" target="_blank">蕾丝</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=流苏" target="_blank">流苏</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=条纹" target="_blank">条纹</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=格子" target="_blank">格子</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波点" target="_blank">波点</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=印花" target="_blank">印花</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=拼接" target="_blank">拼接</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=牛仔" target="_blank">牛仔</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=破洞" target="_blank">破洞</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝶结" target="_blank">蝴蝶结</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=系带" target="_blank">系带</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=喇叭袖" target="_blank">喇叭袖</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=高腰" target="_blank">高腰</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝙蝠袖" target="_blank">蝙蝠袖</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=刺绣" target="_blank">刺绣</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蕾丝" target="_blank">蕾丝</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=流苏" target="_blank">流苏</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=条纹" target="_blank">条纹</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=格子" target="_blank">格子</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波点" target="_blank">波点</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=印花" target="_blank">印花</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=拼接" target="_blank">拼接</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=牛仔" target="_blank">牛仔</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=破洞" target="_blank">破洞</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝶结" target="_blank">蝴蝶结</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=系带" target="_blank">系带</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=喇叭袖" target="_blank">喇叭袖</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=高腰" target="_blank">高腰</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝙蝠袖" target="_blank">蝙蝠袖</a></li>
                             </ul>
                         </div>
 
@@ -510,23 +510,23 @@ var webSite = '${webSite!}';
         <div class="topNav">
             <ul class="clearfix">
                 <li>
-                    <a href="http://cs.571xz.com/market.htm?mid=53" target="_blank">
+                    <a href="//cs.571xz.com/market.htm?mid=53" target="_blank">
 逛市场<i class="hot"></i>                    </a>
                 </li>
                 <li>
-                    <a href="http://so.571xz.com/csgoods.htm?pid=16" target="_blank">
+                    <a href="//so.571xz.com/csgoods.htm?pid=16" target="_blank">
 商品库                    </a>
                 </li>
                 <li>
-                    <a href="http://www.571xz.com/photoPics.htm?webSite=cs" target="_blank">
-图片库                    </a>
-                </li>
-                <li>
-                    <a href="http://so.571xz.com/newgoods.htm?cid=3&amp;webSite=cs" target="_blank">
+                    <a href="//so.571xz.com/newgoods.htm?cid=3&amp;webSite=cs" target="_blank">
 今日新品                    </a>
                 </li>
                 <li>
-                    <a href="http://zixun.571xz.com/index" target="_blank">
+                    <a href="//daifa.571xz.com/" target="_blank">
+一件代发                    </a>
+                </li>
+                <li>
+                    <a href="//zixun.571xz.com/index" target="_blank">
 资讯                    </a>
                 </li>
             </ul>
@@ -586,7 +586,7 @@ var webSite = '${webSite!}';
                 
                 <div class="p1 clearfix">
                     <div class="userIcon">
-                        <img src="http://style.571xz.com/indexV4/css/img/touxiang.png">
+                        <img src="//style.571xz.com/indexV4/css/img/touxiang.png">
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
@@ -641,13 +641,13 @@ if(session_shopId != ""){
             
             <#list hotsaleGoodslist as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="//${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>
@@ -676,13 +676,13 @@ if(session_shopId != ""){
         <ul class="clearfix tle tleL">
             <#list styleGoodslist as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="//${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>
@@ -710,13 +710,13 @@ if(session_shopId != ""){
         <ul class="clearfix tle tleL">
             <#list elementGoodslist as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="//${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>
@@ -740,12 +740,12 @@ if(session_shopId != ""){
             <#list recommendShoplist as item>
             
             <li class="item2">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 <div class="gsOtInfo">
                     <div class="inSell">
-                        <a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">
+                        <a href="//${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">
                             <span class="s1">${item.marketText!}</span>
                             <span class="s2">${item.storeNum!}</span>
                         </a>
@@ -774,13 +774,13 @@ if(session_shopId != ""){
                 <ul class="clearfix tle <#if pitem_index % 2 ==0>tleL<#else>tleR</#if>">
                 <#list pitem.items as item>
                 <li class="item1">
-                    <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                        <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                        <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                     </a>
                     
                     <div class="gsOtInfo">
                         <span class="price">¥${item.piprice!}</span>
-                        <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                        <div class="storeNum" title="${item.storeText!}"><a href="//${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                     </div>
                     <#if item.styleText?? && item.styleText != "" >
                         <div class="tally">${item.styleText!}</div>
@@ -836,24 +836,24 @@ if(session_shopId != ""){
         <ul>
             <li>
                 <h5>四季星座网</h5>
-                <p><a href="http://zixun.571xz.com/article?id=67" target="_blank">关于我们</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a></p>
+                <p><a href="//zixun.571xz.com/article?id=67" target="_blank">关于我们</a></p>
+                <p><a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a></p>
             </li>
             <li>
                 <h5>代理商</h5>
-                <p><a href="http://zixun.571xz.com/article?id=45" target="_blank">一键上传</a></p>
-                <p><a href="http://www.571xz.com/daifaIndex.htm" target="_blank">一件代发</a></p>
+                <p><a href="//zixun.571xz.com/article?id=45" target="_blank">一键上传</a></p>
+                <p><a href="//www.571xz.com/daifaIndex.htm" target="_blank">一件代发</a></p>
             </li>
             <li>
                 <h5>供应商</h5>
                 <p><a href="${main_host!}seller/memberghs.htm" target="_blank">档口后台</a></p>
-                <p><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=653157838&amp;site=qq&amp;menu=yes" target="_blank">广告投放</a></p>
+                <p><a href="//wpa.qq.com/msgrd?v=3&amp;uin=653157838&amp;site=qq&amp;menu=yes" target="_blank">广告投放</a></p>
             </li>
             <li>
                 <h5>帮助中心</h5>
-                <p><a href="http://zixun.571xz.com/article?id=14" target="_blank">新手入门</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=71" target="_blank">成为代理</a></p>
-                <p><a href="http://zixun.571xz.com/article?id=72" target="_blank">成为供货商</a></p>
+                <p><a href="//zixun.571xz.com/article?id=14" target="_blank">新手入门</a></p>
+                <p><a href="//zixun.571xz.com/article?id=71" target="_blank">成为代理</a></p>
+                <p><a href="//zixun.571xz.com/article?id=72" target="_blank">成为供货商</a></p>
             </li>
         </ul>
     </div>
@@ -895,17 +895,17 @@ $(".imgBox img").lazyload({
     <div class="inner">
         <p class="sitemap" style="width:650px;">
             <a href="/" target="_blank">首页</a>
-            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-            <a href="http://bj.571xz.com" target="_blank">北京站</a>
-            <a href="http://gz.571xz.com" target="_blank">广州站</a>
-            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-            <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//hz.571xz.com" target="_blank">杭州站</a>
+            <a href="//bj.571xz.com" target="_blank">北京站</a>
+            <a href="//gz.571xz.com" target="_blank">广州站</a>
+            <a href="//ss.571xz.com" target="_blank">石狮站</a>
+            <a href="//cs.571xz.com" target="_blank">常熟站</a>
+            <a href="//wa.571xz.com" target="_blank">辽源站</a>
+            <a href="//jx.571xz.com" target="_blank">濮院站</a>
+            <a href="//zixun.571xz.com" target="_blank">资讯</a>
             
             
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
             
         </p>
         <p class="imgs">
@@ -916,9 +916,9 @@ $(".imgBox img").lazyload({
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
         </p>
     </div>
 </div>

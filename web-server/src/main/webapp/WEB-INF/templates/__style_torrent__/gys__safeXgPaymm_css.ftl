@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/gys/css/safeXgPaymm_v20180117_170924.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/gys/css/safeXgPaymm_v20180117_170924.css" rel="stylesheet">

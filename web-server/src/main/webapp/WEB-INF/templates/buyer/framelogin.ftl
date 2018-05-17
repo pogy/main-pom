@@ -7,11 +7,11 @@
     <title>登录 - 四季星座网</title>
   
     
-    <link href="http://style.571xz.com/loginV2/css/login.css" rel="stylesheet">
+    <link href="//style.571xz.com/loginV2/css/login.css" rel="stylesheet">
     
     
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/loginV2/js/login.js"></script>
+    <script src="//style.571xz.com/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/loginV2/js/login.js"></script>
       <style>
           .layout {
               width: 2px;
@@ -103,8 +103,8 @@
         <script>/*============ loginV2/login#loginForm BEGIN ============*/
 
         var backUrl = '${main_host!}loginortherSystem.htm?backUrl=${backUrl!}';
-        //var backUrl = 'http://local.571xz.net:9001/main4/';
-       // var backUrl = '${main_host!}loginortherSystem.htm?backUrl=http://www.baidu.com';
+        //var backUrl = '//local.571xz.net:9001/main4/';
+       // var backUrl = '${main_host!}loginortherSystem.htm?backUrl=//www.baidu.com';
 
 /*============ loginV2/login#loginForm END ============*/
 
