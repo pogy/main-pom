@@ -161,14 +161,16 @@ public class PhotoUserService {
      * @return
      * @throws JsonErrException
      */
-    public JSONObject submitUserValid(Long userId, PhotoUserValidBO validBO) throws JsonErrException {
+    public JSONObject submitUserValid(Long userId, PhotoUserValidBO validBO,boolean isUpdate) throws JsonErrException {
         if (userId == null) {
             return JsonResponseUtil.error("请先登陆");
         }
-        if (StringUtils.isBlank(validBO.getMsgCode())
-                || StringUtils.isBlank(validBO.getWorkphone())
-                || !validBO.getMsgCode().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + validBO.getWorkphone(), String.class))) {
-            return JsonResponseUtil.error("验证码错误");
+        if(!isUpdate){
+            if (StringUtils.isBlank(validBO.getMsgCode())
+                    || StringUtils.isBlank(validBO.getWorkphone())
+                    || !validBO.getMsgCode().equals(redisIO.get(PHOTO_USER_VALID_MSG_PREFIX + userId + validBO.getWorkphone(), String.class))) {
+                return JsonResponseUtil.error("验证码错误");
+            }
         }
         if (validBO.getRoleStyle() == null || validBO.getRoleStyle() < 1) {
             return JsonResponseUtil.error("无效的身份");
@@ -184,6 +186,10 @@ public class PhotoUserService {
         if (StringUtils.isNotBlank(validBO.getUserCover())) {
             String showImg = photoImgProcess.moveImg(validBO.getUserCover());
             bo.setShowImg(showImg);
+        }
+        if(StringUtils.isNotBlank(validBO.getHeadImg())){
+            String headImg = photoImgProcess.moveImg(validBO.getHeadImg());
+            bo.setHeadImg(headImg);
         }
         ArrayList<Long> styleList = new ArrayList<>();
         String stylesStr = validBO.getStyles();
@@ -279,7 +285,30 @@ public class PhotoUserService {
      * @param bo
      * @return
      */
-    public JSONObject submitProfileInfo(Long userId, PhotoUserProfileEditBO bo) {
+    public JSONObject submitProfileInfo(Long userId, PhotoUserProfileEditBO bo) throws JsonErrException {
+        PhotoAuthWorkUserInfoWebVO baseInfo = baseUserInfo(userId);
+        boolean isUpdateImg=false;
+        if(bo.getUserHeadImg()!=null&&!bo.getUserHeadImg().equals(baseInfo.getImgSrc())){
+            isUpdateImg=true;
+        }
+        if(bo.getCover()!=null&&!bo.getCover().equals(baseInfo.getCoverImgSrc())){
+            isUpdateImg=true;
+        }
+        if(bo.getWxQrcode()!=null&&!bo.getWxQrcode().equals(baseInfo.getWxQrCode())){
+            isUpdateImg=true;
+        }
+        if(isUpdateImg){
+            PhotoUserValidBO photoUserValidBO=new PhotoUserValidBO();
+            photoUserValidBO.setRoleStyle(baseInfo.getAuthType());
+            photoUserValidBO.setStyles(StringUtils.join(photoUserProcess.userStyles(baseInfo.getUserId()),","));
+            photoUserValidBO.setUserCover(bo.getCover());
+            photoUserValidBO.setUsername(baseInfo.getNick());
+            photoUserValidBO.setWorkphone(bo.getTele());
+            photoUserValidBO.setWxQrCode(bo.getWxQrcode());
+            photoUserValidBO.setHeadImg(bo.getUserHeadImg());
+            submitUserValid(baseInfo.getUserId(),photoUserValidBO,true);
+        }
+
         PhotoUserInfoEditBO editBO = new PhotoUserInfoEditBO();
         // 有变更手机号验证码，进行手机号校验
         if (StringUtils.isNotBlank(bo.getMsgValidate())) {
@@ -289,8 +318,6 @@ public class PhotoUserService {
             editBO.setContactPhone(bo.getTele());
         }
         editBO.setSex(bo.getSex());
-        editBO.setCodeImg(bo.getWxQrcode());
-        editBO.setShowImg(bo.getCover());
         editBO.setUserInfo(bo.getProfile());
         editBO.setAddress(genAddr(bo.getProvId(), bo.getCityId()));
         photoUserProcess.editUserInfo(userId, editBO);
@@ -332,16 +359,16 @@ public class PhotoUserService {
      * @param imgSrc
      * @return
      */
-    public JSONObject saveHeadPortrait(Long userId, String imgSrc) {
-        if (userId == null) {
-            return JsonResponseUtil.error("请先登陆");
-        }
-        if (StringUtils.isBlank(imgSrc)) {
-            return JsonResponseUtil.error("请上传头像");
-        }
-        PhotoUserInfoEditBO bo = new PhotoUserInfoEditBO();
-        bo.setHeadImg(imgSrc);
-        photoUserProcess.editUserInfo(userId, bo);
-        return JsonResponseUtil.success().element("imgSrc",photoUserProcess.userBaseInfo(userId).getHeadImg());
-    }
+//    public JSONObject saveHeadPortrait(Long userId, String imgSrc) {
+//        if (userId == null) {
+//            return JsonResponseUtil.error("请先登陆");
+//        }
+//        if (StringUtils.isBlank(imgSrc)) {
+//            return JsonResponseUtil.error("请上传头像");
+//        }
+//        PhotoUserInfoEditBO bo = new PhotoUserInfoEditBO();
+//        bo.setHeadImg(imgSrc);
+//        photoUserProcess.editUserInfo(userId, bo);
+//        return JsonResponseUtil.success().element("imgSrc",photoUserProcess.userBaseInfo(userId).getHeadImg());
+//    }
 }

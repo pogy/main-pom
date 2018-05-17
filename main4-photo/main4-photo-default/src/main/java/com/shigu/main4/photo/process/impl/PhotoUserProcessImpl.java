@@ -364,6 +364,11 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         return result;
     }
 
+    @Override
+    public List<Long> userStyles(Long userId) {
+        return getUserModel(userId).userStyles();
+    }
+
     /**
      * 申请信息处理
      * @param userId
@@ -378,6 +383,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         vo.setUserType(parseAuthType(apply.getAuthType()));
         vo.setConcatPhone(apply.getAuthPhone());
         vo.setShowImgUrl(apply.getShowImg());
+        vo.setHeadImgUrl(apply.getHeadImg());
         vo.setCodeImgUrl(apply.getCodeImg());
         vo.setLogMessage(apply.getModifyLog());
         vo.setApplyTime(sdf.format(apply.getApplyTime()));

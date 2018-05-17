@@ -39,6 +39,9 @@
                 and t3.style_id=${styleId}
                 and t1.works_id=t3.works_id
             </if>
+            <if test="isAuthor == false">
+                and t1.search_open=1
+            </if>
         <if test="sort != null">
             order by ${sort}
         </if>
@@ -73,6 +76,9 @@
             <if test="styleId != null">
                 and t3.style_id=${styleId}
                 and t1.works_id=t3.works_id
+            </if>
+            <if test="isAuthor == false">
+                and t1.search_open=1
             </if>
     </select>
 </mapper>

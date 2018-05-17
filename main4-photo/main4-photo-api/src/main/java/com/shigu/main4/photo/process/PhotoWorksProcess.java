@@ -80,6 +80,20 @@ public interface PhotoWorksProcess {
      */
     void fixClicks();
 
+    /**
+     * 获取申请列表
+     * @param pageNo
+     * @param size
+     * @param status 0：未审核 1：审核通过， 2：驳回
+     * @return
+     */
+    ShiguPager<PhotoWorksAuthVO> selWorksAuths(int pageNo, int size,Integer status);
 
+    /**
+     * 审核
+     * @param worksAuthId
+     * @param applyStatus 0：未审核 1：审核通过， 2：驳回
+     */
+    void useAuth(Long worksAuthId,String msg, int applyStatus);
 
 }

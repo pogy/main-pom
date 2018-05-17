@@ -131,4 +131,11 @@ public interface PhotoUserProcess {
      * @return
      */
     List<AuthApplyInfoVO> userAuthApplyInfo(Long userId, int applyStatus);
+
+    /**
+     * 获取作者风格
+     * @param userId
+     * @return
+     */
+    List<Long> userStyles(Long userId);
 }

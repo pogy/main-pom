@@ -77,6 +77,7 @@ public class PhotoWorksSearchBO {
         PhotoWorksBO photoWorksBO=new PhotoWorksBO();
         photoWorksBO.setUserId(getId());
         photoWorksBO.setCid(getPid());
+        photoWorksBO.setIsAuthor(false);
         photoWorksBO.setPage(getPage());
         photoWorksBO.setPageSize(20);
         photoWorksBO.setStyleId(getSid());

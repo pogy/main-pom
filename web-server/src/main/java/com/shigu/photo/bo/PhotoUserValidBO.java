@@ -34,6 +34,8 @@ public class PhotoUserValidBO implements Serializable {
     //微信二维码
     private String wxQrCode;
 
+    private String headImg;
+
     //作者主要风格
     private String styles;
 
@@ -91,5 +93,13 @@ public class PhotoUserValidBO implements Serializable {
 
     public void setStyles(String styles) {
         this.styles = styles;
+    }
+
+    public String getHeadImg() {
+        return this.headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 }

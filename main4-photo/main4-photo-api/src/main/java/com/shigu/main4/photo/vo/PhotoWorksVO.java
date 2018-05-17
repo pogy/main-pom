@@ -53,6 +53,11 @@ public class PhotoWorksVO implements Serializable{
     private String content;
 
     /**
+     * 0:审核中,1:已通过,2:未通过
+     */
+    private Integer authStatus;
+
+    /**
      * 获取 封面图
      */
     public String getPicUrl() {
@@ -194,5 +199,19 @@ public class PhotoWorksVO implements Serializable{
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取 0:审核中,1:已通过,2:未通过
+     */
+    public Integer getAuthStatus() {
+        return this.authStatus;
+    }
+
+    /**
+     * 设置 0:审核中,1:已通过,2:未通过
+     */
+    public void setAuthStatus(Integer authStatus) {
+        this.authStatus = authStatus;
     }
 }
