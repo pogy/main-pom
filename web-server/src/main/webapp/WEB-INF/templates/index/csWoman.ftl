@@ -462,15 +462,15 @@ var webSite = '${webSite!}';
                                 <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=原创" target="_blank">原创</a></li>
                                 <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=休闲" target="_blank">休闲</a></li>
                                 <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=运动" target="_blank">运动</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=情侣" target="_blank">情侣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=大码" target="_blank">大码</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=性感" target="_blank">性感</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=甜美" target="_blank">甜美</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=简约" target="_blank">简约</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=学院" target="_blank">学院</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=街" target="_blank">街头</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=小香风" target="_blank">小香风</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波西米亚" target="_blank">波西米亚</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=情侣" target="_blank">情侣</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=大码" target="_blank">大码</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=性感" target="_blank">性感</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=甜美" target="_blank">甜美</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=简约" target="_blank">简约</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=学院" target="_blank">学院</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=街" target="_blank">街头</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=小香风" target="_blank">小香风</a></li>
+                                <li><a href="//so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波西米亚" target="_blank">波西米亚</a></li>
                             </ul>
                         </div>
                     

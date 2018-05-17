@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.bo.SearchBO;
@@ -51,6 +52,8 @@ public class GoodsSearchAction {
 
     @Autowired
     StoreSelFromEsService storeSelFromEsService;
+    @Autowired
+    SearchCategoryService searchCategoryService;
 
     @Autowired
     OssIO ossIO;
@@ -146,6 +149,7 @@ public class GoodsSearchAction {
         model.addAttribute("goodslist", pager.getContent() == null ? new ArrayList<>() : pager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         return "search/newgoods";
     }
 
@@ -215,6 +219,7 @@ public class GoodsSearchAction {
 //        model.addAttribute("cateNav",searchNav);
         model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/search";
         } else  {
@@ -301,6 +306,7 @@ public class GoodsSearchAction {
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         if(website.equals("hz")&&bo.getPid().equals(30L))
         model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         if ("kx".equalsIgnoreCase(website)) {
