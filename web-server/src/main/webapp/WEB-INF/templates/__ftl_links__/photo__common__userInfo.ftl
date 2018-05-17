@@ -5,7 +5,7 @@
                 <#if userInfo.imgSrc??>
                 <img src="${userInfo.imgSrc!}_j200x200.jpg">
                 <#else>
-                <img src="http://style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png">
+                <img src="//style.571xz.com/v6/photo/css/img/userHomePage/defaultTx.png">
                 </#if>
                 <#if $pageid == 'userProfileEdit'>
                 <b class="changeHeadPortrait" id="changeHeadPortrait">更换头像</b>

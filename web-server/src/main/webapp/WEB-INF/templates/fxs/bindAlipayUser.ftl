@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__bindAlipayUser_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/fxs__bindAlipayUser_js.ftl">
@@ -48,4 +48,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/confirmOrder.css?v=2017121501" rel="stylesheet">
+    <link href="//style.571xz.com/v2/order/css/confirmOrder.css?v=2017121501" rel="stylesheet">
     
 
     
@@ -31,9 +31,9 @@
     
 
     
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/confirmOrder.js?v=2017121501"></script>
+    <script src="//style.571xz.com/v2/order/js/confirmOrder.js?v=2017121501"></script>
     
 </head>
 <body>
@@ -106,7 +106,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="//www.571xz.com/contact.htm" target="_blank">联系客服</a>
                 </li>
                 <#if webSite?? && webSite != ''>
                 <li>
@@ -116,19 +116,19 @@
                             <h4 class="fs14 fcF40">市场大全</h4>
                             
                             <ul>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=1">电商基地</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=2">精品男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=3">四季星座</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=4">星座女装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=6">好四季</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=8">置地国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=11">九天国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=12">新杭派</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=13">四季青</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>

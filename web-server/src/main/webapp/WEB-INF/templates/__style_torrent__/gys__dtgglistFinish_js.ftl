@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/dtgglistFinish_v20171123_140046.js"></script>
+<script src="//style.571xz.com/v6/gys/js/dtgglistFinish_v20171225_125923.js"></script>

@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/fxs/css/withdraw5Apply_v20180115_132220.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/fxs/css/withdraw5Apply_v20180115_132220.css" rel="stylesheet">

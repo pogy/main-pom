@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>模块编辑 - 星座网</title>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/s/editor/kindeditor-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/shop_design.js"></script>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/s/editor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/shop_design.js"></script>
 </head>
 <body>
 <form id="module-options">
@@ -35,7 +35,7 @@
                                             <div class="column column1">
                                                 <label>
                                                     <input class="J_ImgUrl" type="text" name="picUrl"
-                                                           value="<#if moduleSet.picUrl != 'http://img.alicdn.com/tps/TB1iG39KXXXXXbBXVXXXXXXXXXX-1920-540.png'>${moduleSet.picUrl!}</#if>" placeholder="请输入图片地址链接">
+                                                           value="<#if moduleSet.picUrl != '//img.alicdn.com/tps/TB1iG39KXXXXXbBXVXXXXXXXXXX-1920-540.png'>${moduleSet.picUrl!}</#if>" placeholder="请输入图片地址链接">
                                                 </label>
                                             </div>
                                             <div class="column column2">

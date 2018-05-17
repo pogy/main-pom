@@ -2,8 +2,8 @@
 <div class="header">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v4/common/css/img/xz/mtLogo.png" alt width=168 height=30 />
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v4/common/css/img/xz/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
         </div>
@@ -26,7 +26,7 @@
         
         <form id="formSearch"
             
-                action="http://so.571xz.com/${webSite!}search.htm" 
+                action="//so.571xz.com/${webSite!}search.htm"
             
             
         >

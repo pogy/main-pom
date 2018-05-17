@@ -12,9 +12,9 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/styleChannel__common_css.ftl">
 <#include "/__style_torrent__/styleChannel__styleMarket_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/styleChannel/plugin/jquery.pjax.js"></script>
-<script src="http://style.571xz.com/v6/styleChannel/plugin/nprogress.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/styleChannel/plugin/jquery.pjax.js"></script>
+<script src="//style.571xz.com/v6/styleChannel/plugin/nprogress.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/styleChannel__common_js.ftl">
@@ -122,6 +122,8 @@ $$.reloadFilterbar(); // 重新生成顶部浮动条
 $$.setBg();  // 重新生成背景
 </script>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 </body>
 <#include "/common/cnzz.ftl">

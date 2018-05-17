@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__withdraw5Apply_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -117,7 +117,7 @@
     </div>
     <!--<div class="ewmWk">
         <div class="imgewm">
-            <img src="http://wxpublish.hz.taeapp.com/otlink/qrcode.htm?secret_id=5&amp;outer_id=1000000808&amp;t=1483668924057&amp;sign=8533b1f836a9f1ffa6459abf1cc2572d" alt="" width="140" height="140">
+            <img src="//wxpublish.hz.taeapp.com/otlink/qrcode.htm?secret_id=5&amp;outer_id=1000000808&amp;t=1483668924057&amp;sign=8533b1f836a9f1ffa6459abf1cc2572d" alt="" width="140" height="140">
         </div>
         <p class="ewmtip fcF40">关注二维码，及时查收提现信息</p>
     </div>-->
@@ -125,4 +125,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__shManaOrder_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/fxs__common_js.ftl">
@@ -66,11 +66,11 @@
                 <#list order.childOrders as childOrder>
 <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
     <li class="goods goodsDetail">
-        <a class="imgBox fl" href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}">
+        <a class="imgBox fl" href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}">
             <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </a>
         <div class="goodsCon">
-            <a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <a href="//www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
             <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
@@ -228,4 +228,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
