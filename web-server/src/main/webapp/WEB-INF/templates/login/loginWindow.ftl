@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/login__common_css.ftl">
 <#include "/__style_torrent__/login__loginWindow_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
