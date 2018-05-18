@@ -24,19 +24,23 @@
 <body>
 <script modulepath="index/common#forIps">
 var hreflocation = window.location.href;
-if(hreflocation.indexOf('//www.571xz.com') == 0 || hreflocation.indexOf('//571xz.com') == 0){//仅首页
-    var province = '' ;
-    var city = '' ;
+if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
     jQuery.getScript("//int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
-        province = remote_ip_info["province"];
-        if(province == '福建'){
+        var city = remote_ip_info["city"];
+        if(city == '石狮'){
             window.location.href = "//ss.571xz.com";
-        }else if(province == '江苏'){
+        }else if(city == '常熟'){
             window.location.href = "//cs.571xz.com";
-        }else if(province == '广东'){
+        }else if(city == '广州'){
             window.location.href = "//gz.571xz.com";
-        }else if(province == '吉林'){
+        }else if(city == '辽源'){
             window.location.href = "//wa.571xz.com";
+        }else if(city == '泉州'){
+            window.location.href = "//qz.571xz.com";
+        }else if(city == '北京'){
+            window.location.href = "//bj.571xz.com";
+        }else if(city == '湖州'){
+            window.location.href = "//zl.571xz.com";
         }
     }) ;
 }
@@ -220,13 +224,6 @@ if(pageType == 'W'){
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
         <#elseif webSite == 'qz'>
-<li
-        <#if 'market' == $pageid>class="actived"</#if>
->
-    <a href="//qz.571xz.com/market.htm?mid=68" target="_blank">
-        逛市场
-    </a>
-</li>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
@@ -754,7 +751,7 @@ if(pageType == 'W'){
             <li>
                 <h5>四季星座网</h5>
                 <p><a href="//www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
-                <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
+                <p><a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a></p>
             </li>
             <li>
                 <h5>代理商</h5>
