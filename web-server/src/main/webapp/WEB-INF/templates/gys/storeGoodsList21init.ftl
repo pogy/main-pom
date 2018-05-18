@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__storeGoodsList21init_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -166,8 +166,8 @@ $$.domready('#goodsStyle', function(){
             </#if>
             <button class="tbGoods" jhand="openEditGoodsStyleWindow">批量设置风格</button>
             <span>&nbsp;</span>
-            <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
-            <a href="http://zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
+            <a href="//zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
+            <a href="//zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
         </li>
     </ul>
     <#list goodslist as item>
@@ -305,8 +305,8 @@ $$.domready('#goodsStyle', function(){
                 <button class="tbGoods" jhand="downGoods" data-multi="1">批量下架商品</button>
                 </#if>
                 <span>&nbsp;</span>
-                <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
-                <a href="http://zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
+                <a href="//zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
+                <a href="//zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
             </li>
         </ul>
         <#list goodslist as item>

@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/photo__common_css.ftl">
 <#include "/__style_torrent__/photo__userProfile_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -74,7 +74,7 @@
                     <#if userInfo.coverImgSrc??>
                         <img src="${userInfo.coverImgSrc!}_j200x200.jpg" />
                     <#else>
-                        <img src="http://style.571xz.com/v6/photo/css/img/noCoverImg.png" />
+                        <img src="//style.571xz.com/v6/photo/css/img/noCoverImg.png" />
                     </#if>
                     <p>展示封面</p>
                 </li>
@@ -82,7 +82,7 @@
                     <#if userInfo.wxQrCode??>
                         <img src="${userInfo.wxQrCode!}_j200x200.jpg" />
                     <#else>
-                        <img src="http://style.571xz.com/v6/photo/css/img/noQrcode.png" />
+                        <img src="//style.571xz.com/v6/photo/css/img/noQrcode.png" />
                     </#if>
                     <p>微信二维码</p>
                 </li>

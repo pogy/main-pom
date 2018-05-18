@@ -10,8 +10,8 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzPage__xznzMerchants_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzPage__xznzMerchants_js.ftl">
@@ -29,10 +29,10 @@
 		</div>
 		<div class="bd">
 			<ul>
-				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb1.jpg"></a></li>
-				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb2.jpg"></a></li>
-				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb3.jpg"></a></li>
-				<li><a><img src="http://style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb4.jpg"></a></li>
+				<li><a><img src="//style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb1.jpg"></a></li>
+				<li><a><img src="//style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb2.jpg"></a></li>
+				<li><a><img src="//style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb3.jpg"></a></li>
+				<li><a><img src="//style.571xz.com/v6/xzPage/css/img/xznzMerchants/lb4.jpg"></a></li>
 			</ul>
 		</div>
     </div>

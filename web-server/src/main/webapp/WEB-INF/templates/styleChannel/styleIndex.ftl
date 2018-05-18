@@ -12,9 +12,9 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/styleChannel__common_css.ftl">
 <#include "/__style_torrent__/styleChannel__styleIndex_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/styleChannel/plugin/ekoo.min.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/styleChannel/plugin/ekoo.min.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/styleChannel__common_js.ftl">

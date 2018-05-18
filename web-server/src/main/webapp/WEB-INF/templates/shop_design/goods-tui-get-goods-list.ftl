@@ -3,8 +3,8 @@
 <head>
     <title>商品推荐-模块编辑-星座网</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20161219" />
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/common/page-link.css?t=20161219" />
 </head>
 <body>
 <div>
@@ -117,7 +117,7 @@
     </div>
     </#if>
 </div>
-<script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
+<script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
 <script type="text/javascript">
     $(function(){
         $('.tj').click(function() {

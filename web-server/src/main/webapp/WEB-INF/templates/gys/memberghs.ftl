@@ -11,11 +11,11 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__memberghs_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/echarts.js"></script>
-<script src="http://style.571xz.com/v6/gys/temp/html5sup.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/gys/temp/echarts.js"></script>
+<script src="//style.571xz.com/v6/gys/temp/html5sup.js"></script>
+<script src="//style.571xz.com/v6/gys/temp/echarts.js"></script>
+<script src="//style.571xz.com/v6/gys/temp/html5sup.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__memberghs_js.ftl">
@@ -44,7 +44,7 @@
                 <#if session_user_redis__.headUrl??>
                 <img src="${session_user_redis__.headUrl!}" width="120" height="120">
                 <#else>
-                <img src="http://www.571xz.com/images/default160.jpg" width="120" height="120">
+                <img src="//www.571xz.com/images/default160.jpg" width="120" height="120">
                 </#if>
             </div>
         </div>
@@ -81,14 +81,14 @@
         <div class="imglist_left fl">
           <p class="c_title">热门宝贝<!--  <a href="javascript:;">查看更多> --></span></p>
           <ul class="hotGoods clearfix">
-          <!--<li><a href="http://www.571xz.com/item.htm?id=8431271" target="_blank"><img src="https://img.alicdn.com/bao/uploaded/http://img.alicdn.com/imgextra/i3/25771684245/TB2c4iAmXXXXXbzXXXXXXXXXXXX_!!25771684245.jpg" width="84" height="84"><p>￥29.00</p></a></li>-->
+          <!--<li><a href="//www.571xz.com/item.htm?id=8431271" target="_blank"><img src="https://img.alicdn.com/bao/uploaded/http://img.alicdn.com/imgextra/i3/25771684245/TB2c4iAmXXXXXbzXXXXXXXXXXXX_!!25771684245.jpg" width="84" height="84"><p>￥29.00</p></a></li>-->
           </ul>
           <p class="c_title">建议优化宝贝<!-- @<span>近30天未被上传 <a href="javascript:;">马上去优化></span> @--></p>
           <ul class="nothotGoods clearfix">
           </ul>
         </div>
         <div class="imglist_right fr">
-          <p><img src="http://www.571xz.com/jquery2015/imgTempindex/shaoma.jpg"></p>
+          <p><img src="//www.571xz.com/jquery2015/imgTempindex/shaoma.jpg"></p>
         </div>
     </div>
     <div class="c_agent">

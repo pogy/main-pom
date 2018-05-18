@@ -11,9 +11,9 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__lottery_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/xzSearch/js/rotate/jQueryRotate.2.2.js"></script>
-<script src="http://style.571xz.com/v6/xzSearch/js/rotate/jquery.easing.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/xzSearch/js/rotate/jQueryRotate.2.2.js"></script>
+<script src="//style.571xz.com/v6/xzSearch/js/rotate/jquery.easing.min.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__lottery_js.ftl">
@@ -29,10 +29,10 @@
 <div class="rotateContainer">
     <div class="layout pr">
         <div class="title"></div>
-        <a href="http://www.571xz.com/member/awardInfo.htm" class="toMyAward pa yahei">查看我的奖品</a></a>
+        <a href="//www.571xz.com/member/awardInfo.htm" class="toMyAward pa yahei">查看我的奖品</a></a>
         <div class="rotateBox pr" style="background-image:url(${rotateImgSrc!})">
             <div class="rotateBg pa"></div>
-            <div class="lotteryStar pa"><img src="http://style.571xz.com/v6/xzSearch/css/img/lottery/rotate.png" id="lotteryBtn"><img src="http://style.571xz.com/v6/xzSearch/css/img/lottery/go.png" class="go" id="goBtn"><p class="yahei fs14 pa">还有<span id="lettoryNum">${lettoryNumber!}</span>次机会</p></div>
+            <div class="lotteryStar pa"><img src="//style.571xz.com/v6/xzSearch/css/img/lottery/rotate.png" id="lotteryBtn"><img src="//style.571xz.com/v6/xzSearch/css/img/lottery/go.png" class="go" id="goBtn"><p class="yahei fs14 pa">还有<span id="lettoryNum">${lettoryNumber!}</span>次机会</p></div>
         </div>
         <div class="bottonSeat pr"></div>
         <div class="person pa"></div>
@@ -59,5 +59,7 @@
         </ol>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

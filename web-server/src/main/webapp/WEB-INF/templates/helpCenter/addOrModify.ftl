@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/helpCenter__common_css.ftl">
 <#include "/__style_torrent__/helpCenter__addOrModify_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/helpCenter__addOrModify_js.ftl">
@@ -56,14 +56,16 @@
         <p class="tac"><b class="save">保存</b></p>
     </div>
 </div>
-<link href="http://style.571xz.com/v6/helpCenter/temp/css/wangEditor.min.css" rel="stylesheet">
-<script src="http://style.571xz.com/v6/helpCenter/temp/wangEditor.min.js"></script>
-<script src="http://style.571xz.com/v6/helpCenter/temp/MyEditor.js"></script>
+<link href="//style.571xz.com/v6/helpCenter/temp/css/wangEditor.min.css" rel="stylesheet">
+<script src="//style.571xz.com/v6/helpCenter/temp/wangEditor.min.js"></script>
+<script src="//style.571xz.com/v6/helpCenter/temp/MyEditor.js"></script>
 <script modulepath="helpCenter/addOrModify#queDetail">
 var cid = '${cid!}';
 </script>
 </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

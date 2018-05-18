@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/distributionOrder_v20180504_180459.js"></script>
+<script src="//style.571xz.com/v6/gys/js/distributionOrder_v20180504_180459.js"></script>

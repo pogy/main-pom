@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/login/js/userPhoneBind_v20171227_124224.js"></script>
+<script src="//style.571xz.com/v6/login/js/userPhoneBind_v20171227_124224.js"></script>

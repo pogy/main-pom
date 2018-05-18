@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/fxs/js/myTbOrder_v20171211_142811.js"></script>
+<script src="//style.571xz.com/v6/fxs/js/myTbOrder_v20171225_102828.js"></script>

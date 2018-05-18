@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/xzSearch/css/bqsqIndex_v20180115_132425.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/xzSearch/css/bqsqIndex_v20180115_132425.css" rel="stylesheet">

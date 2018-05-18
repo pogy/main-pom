@@ -10,10 +10,10 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzPage__picSearch_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jq.form.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.form.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzPage__picSearch_js.ftl">
@@ -25,15 +25,15 @@
 <div class="headerPicSearch">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" width="168" height="30" />
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" width="168" height="30" />
             </a>
         </div>
        <div class="searchRight">
            <div class="searchInput">
                <input class="searchUrl" type="text" name="" placeholder="用图片找到你想要的商品" value=""/>
                 <div class="camera">
-                    <img src="http://style.571xz.com/v6/xzPage/css/img/picSearch/imgsearch_03.png" alt="" />
+                    <img src="//style.571xz.com/v6/xzPage/css/img/picSearch/imgsearch_03.png" alt="" />
                     <input type="file" name="file" accept=".jpg,.jpeg,.bmp,.gif,.png">
                 </div>
            </div>

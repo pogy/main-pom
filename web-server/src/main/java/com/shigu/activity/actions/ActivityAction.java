@@ -23,6 +23,7 @@ import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.ActiveForShowVO;
 import com.shigu.main4.spread.vo.active.draw.*;
+import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.seller.services.ActivityService;
@@ -78,10 +79,12 @@ public class ActivityAction {
 
     @Autowired
     private DrawQualification newAutumnDrawQualification;
+    @Autowired
+    SearchCategoryService  searchCategoryService;
     /**
      * 任性送现金活动
      */
-    @RequestMapping("activity/cash")
+//    @RequestMapping("activity/cash")
     public String cash(Model model){
         model.addAttribute("webSite", "hz");
         return "xzSearch/cash";
@@ -329,6 +332,7 @@ public class ActivityAction {
         model.addAttribute("bgColor", activity.getBkcolor());
         model.addAttribute("goodsStyle", goodsStyles);
         model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/popular";
     }
 
@@ -385,6 +389,7 @@ public class ActivityAction {
             model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/qzxpApply";
     }
 
@@ -394,6 +399,7 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpShop")
     public String qzxpShop(Model model) {
         model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/qzxpShop";
     }
 
@@ -421,6 +427,7 @@ public class ActivityAction {
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
         model.addAttribute("lettoryNumber", lotteryNum);
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/lottery";
     }
 

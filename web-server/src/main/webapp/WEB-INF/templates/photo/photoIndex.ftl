@@ -11,8 +11,8 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/photo__common_css.ftl">
 <#include "/__style_torrent__/photo__photoIndex_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/photo__common_js.ftl">
@@ -72,7 +72,7 @@
 <div class="rightSide fr">
     <div class="userLogin" id="userLoginInfo">
         <div class="userHeadImg">
-            <img src="http://style.571xz.com/v6/photo/css/img/userDefault.png" />
+            <img src="//style.571xz.com/v6/photo/css/img/userDefault.png" />
         </div>
         <p>您好 ，请登录！</p>
         <a href="/photo/member/userWorkList.htm">用户主页</a>
