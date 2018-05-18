@@ -100,13 +100,6 @@
     <#elseif webSite == 'gz'>
     <#elseif webSite == 'qz'>
 <li
-        <#if 'market' == $pageid>class="actived"</#if>
->
-    <a href="//qz.571xz.com/market.htm?mid=68" target="_blank">
-        逛市场
-    </a>
-</li>
-<li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
     <a href="//so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">

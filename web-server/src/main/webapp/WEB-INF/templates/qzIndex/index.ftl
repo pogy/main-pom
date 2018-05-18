@@ -18,7 +18,6 @@
 <#include "/__style_torrent__/qzIndex__index_js.ftl">
 </head>
 <body>
-
 <div class="fixedSearchBar" id="fixedSearchBar">
     <div class="innner">
         <a class="logo" href="//www.571xz.com"><img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
@@ -175,18 +174,18 @@
         资讯
     </a>
 </li>
+<li
+>
+    <a href="//photo.571xz.com" target="_blank">
+        摄影基地
+        <i class="new"></i>
+    </a>
+</li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
         <#elseif webSite == 'qz'>
-<li
-        <#if 'market' == $pageid>class="actived"</#if>
->
-    <a href="//qz.571xz.com/market.htm?mid=68" target="_blank">
-        逛市场
-    </a>
-</li>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
