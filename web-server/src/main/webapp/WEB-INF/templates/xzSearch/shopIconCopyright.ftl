@@ -11,8 +11,8 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__shopIconCopyright_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__shopIconCopyright_js.ftl">
@@ -35,10 +35,10 @@
         <ul>
             <#list copyrightList as item>
                 <li>
-                    <a href="http://www.571xz.com/shop.htm?id=${item.shopId!}" target="_blank">
+                    <a href="//www.571xz.com/shop.htm?id=${item.shopId!}" target="_blank">
                         <img class="lazyload" src="${item.imgSrc!}">
                     </a>
-                    <h3 class="yahei fs14 tac"><a href="http://www.571xz.com/shop.htm?id=${item.shopId!}" target="_blank">${item.shopName!}</a></h3>
+                    <h3 class="yahei fs14 tac"><a href="//www.571xz.com/shop.htm?id=${item.shopId!}" target="_blank">${item.shopName!}</a></h3>
                 </li>
             </#list>
         </ul>
@@ -64,5 +64,7 @@
 </#list>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

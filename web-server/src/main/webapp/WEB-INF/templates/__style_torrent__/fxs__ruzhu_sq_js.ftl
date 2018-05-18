@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/fxs/js/ruzhu_sq_v20171121_161211.js"></script>
+<script src="//style.571xz.com/v6/fxs/js/ruzhu_sq_v20171225_102829.js"></script>

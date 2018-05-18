@@ -37,7 +37,7 @@
                 </li>
             </#list>
             <#if moduleSet.showPage==1>
-                <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20170314" />
+                <link rel="stylesheet" href="//www.571xz.com/design/css/common/page-link.css?t=20170314" />
                 <#if promotes.content?size gt 0>
                     <div class="editpage clearfix" style="margin-top: 25px;">
                         <div class="page-link">

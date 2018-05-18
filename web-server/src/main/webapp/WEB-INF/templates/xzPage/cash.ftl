@@ -10,8 +10,9 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzPage__cash_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <#include "/__style_torrent__/common__base_js.ftl">
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
+<#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzPage__cash_js.ftl">
 </head>
@@ -32,6 +33,27 @@
         </div>
     </div>
 </div>
+<script modulepath="xzPage/cash#banner">
+var actNumber = '${actNumber!}';
+var awardActNumber = '${awardActNumber!}';
+</script>
+<#if (winnersList?size) gt 0>
+<div class="winnersList">
+    <div class="intrBox">
+        <h2></h2>
+        <p class="nper fs14 fcF40">( 第${awardActNumber!}期 )</p>
+        <div class="winners">
+            <ul class="infoList">
+                <li>
+                <#list winnersList as item>
+                    <span>${item.tbNick!}（${item.tel!}）</span><#if (item_index + 1) % 3 == 0 && item_index != ((winnersList?size) - 1)></li><li></#if>
+                </#list>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</#if>
 <div class="instruction">
     <div class="intrBox">
         <h2></h2>
@@ -70,5 +92,7 @@
     </div>
 </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

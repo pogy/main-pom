@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/photo__common_css.ftl">
 <#include "/__style_torrent__/photo__photoWorks_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/photo__common_js.ftl">
@@ -20,7 +20,7 @@
 <body>
 <#include "/__ftl_links__/photo__common__topbar.ftl">
 <#include "/__ftl_links__/photo__common__nav.ftl">
-<#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"rid","value":""+query.rid},{"name":"pid","value":""+query.pid},{"name":"sid","value":""+query.sid},{"name":"sort","value":""+query.sort},{"name":"keyword","value":""+query.keyword},{"name":"page","value":""+query.page}]}] as $it>
+<#list [{"fields":[{"name":"rid","value":""+query.rid},{"name":"pid","value":""+query.pid},{"name":"sid","value":""+query.sid},{"name":"sort","value":""+query.sort},{"name":"keyword","value":""+query.keyword},{"name":"page","value":""+query.page}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/xzSearch/css/lottery_v20180115_132426.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/xzSearch/css/lottery_v20180115_132426.css" rel="stylesheet">

@@ -1,8 +1,8 @@
 <div class="header">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
             </a>
             <em></em>
         </div>
@@ -19,9 +19,9 @@
     <div class="searchBox">
         <form id="formSearch"
             <#if searchType == 'shop'>
-                action="http://www.571xz.com/storenum.htm"
+                action="//www.571xz.com/storenum.htm"
             <#else>
-                action="http://so.571xz.com/${webSite!}search.htm"
+                action="//so.571xz.com/${webSite!}search.htm"
             </#if>
         >
             <#if searchType == 'shop'><input class="searchWeb" type="hidden" name="webSite" value="${webSite!}"> </#if>

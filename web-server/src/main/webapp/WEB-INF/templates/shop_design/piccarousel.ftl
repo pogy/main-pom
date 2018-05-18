@@ -1,5 +1,5 @@
 <div class=" J_TModule" data-title="图片轮播" data-id="${moduleSet.moduleId}">
-    <link rel="stylesheet" href="http://www.571xz.com/design/js/swiper/css/swiper.min.css">
+    <link rel="stylesheet" href="//www.571xz.com/design/js/swiper/css/swiper.min.css">
     <style>
         .swiper-container {
             width: 100%;
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/swiper/swiper.min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/swiper/swiper.min.js"></script>
     <script type="text/javascript">
         var swiper = new Swiper('#_${moduleSet.moduleId}', {
             pagination: '#_${moduleSet.moduleId} .swiper-pagination',

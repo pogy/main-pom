@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v4/xzSearch/js/bqsqIndex_v20171018_104652.js"></script>
+<script src="//style.571xz.com/v4/xzSearch/js/bqsqIndex_v20171018_104652.js"></script>

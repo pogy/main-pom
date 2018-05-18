@@ -18,7 +18,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css?v=2017112301" rel="stylesheet">
+    <link href="//style.571xz.com/v2/goodsDetail/css/item.css?v=2017112301" rel="stylesheet">
     
 
     
@@ -31,9 +31,9 @@
     
 
     
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?v=2017112301"></script>
+    <script src="//style.571xz.com/v2/goodsDetail/js/item.js?v=2017112301"></script>
     
 </head>
 <body>
@@ -71,13 +71,13 @@
                     <i class="downArrow"></i>
                 </span>
                 <ul>
-                    <li><a href="http://hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
-                    <li><a href="http://cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
-                    <li><a href="http://ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
-                    <li><a href="http://bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
-                    <li><a href="http://gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
-                    <li><a href="http://wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
-                    <li><a href="http://jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
+                    <li><a href="//hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
+                    <li><a href="//cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
+                    <li><a href="//ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
+                    <li><a href="//bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
+                    <li><a href="//gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
+                    <li><a href="//wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
+                    <li><a href="//jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
                 </ul>
             </div>
             
@@ -141,7 +141,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="//www.571xz.com/contact.htm" target="_blank">联系客服</a>
                 </li>
                 <#if webSite?? && webSite != ''>
                 <li>
@@ -151,26 +151,26 @@
                             <h4 class="fs14 fcF40">市场大全</h4>
                             
                             <ul>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=1">电商基地</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=2">精品男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=3">四季星座</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=4">星座女装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=6">好四季</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=8">置地国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=11">九天国际</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=12">新杭派</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=13">四季青</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=16">原创男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=17">大码男装</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=19">周边市场</a></li>
+                                <li><a href="//hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -206,8 +206,8 @@ var webSite = '${webSite!}';
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v2//xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v2//xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
@@ -218,9 +218,9 @@ var webSite = '${webSite!}';
             <div class="storeNamebox">
                 <h3 
                 <#if shopInfo.domain??>
-                    onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
+                    onclick="jumpShopLink('//${shopInfo.domain!}.571xz.com')"
                 <#else> 
-                    onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
+                    onclick="jumpShopLink('//${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
                 
@@ -228,7 +228,7 @@ var webSite = '${webSite!}';
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
 
@@ -238,7 +238,7 @@ var webSite = '${webSite!}';
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 <#if $it.id != "">
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 
 </#list>
@@ -273,7 +273,7 @@ var webSite = '${webSite!}';
     
     
     <div class="p2 clearfix">
-        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
@@ -441,7 +441,7 @@ var webSite = '${webSite!}';
     
     
     <div class="p2 clearfix">
-        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
@@ -491,7 +491,7 @@ var webSite = '${webSite!}';
             
         </div>
         
-        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="//so.571xz.com/${webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">
@@ -568,7 +568,7 @@ ${userShopHdHtml}
         <#else>
             <a xzclick="addCollGoodsData" href="javascript:;" class="store" data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
         </#if>
-        <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
+        <a class="find_error" href="//www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
         
     </div>
     
@@ -597,7 +597,7 @@ ${userShopHdHtml}
 <div class="goodsOrderBox" id="goodsOrderBox" data-goodsid="${goodsInfo.goodsId!}">
     <div class="goodsTitle">
         <#if goodsInfo.tbGoodsId??>
-        <h2 class="fs18 fc3 yahei"><a href="http://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
+        <h2 class="fs18 fc3 yahei"><a href="//item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
         <#else>
         <h2 class="fs18 fc3 yahei">${goodsInfo.title!}
         </#if>
@@ -822,7 +822,7 @@ var piPrice = '${goodsInfo.piPrice!}';
     <ul>
         <#list tjGoodsList as tjGoods>
         <Li>
-            <a href="http://${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgSrc!}_140x140.jpg" title="${tjGoods.title!}" /></a>
+            <a href="//${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgSrc!}_140x140.jpg" title="${tjGoods.title!}" /></a>
             <p class="text-size14"><em class="yahei">&yen;</em>${tjGoods.price!}</p>
         </Li>
         </#list>
@@ -848,7 +848,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata4=text?eval />
 <#list [moduledata4] as $it>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
 </span>
@@ -858,7 +858,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 <#assign moduledata5=text?eval />
 <#list [moduledata5] as $it>
 <#if $it.id != "">
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 
 </#list>
@@ -892,7 +892,7 @@ var piPrice = '${goodsInfo.piPrice!}';
     
     
     <div class="p2 clearfix">
-        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
@@ -1032,8 +1032,8 @@ var piPrice = '${goodsInfo.piPrice!}';
                 <div id="onkeyupFixbar" class="onkeyupFixbar">
     <div class="innerbox">
          <ul class="keybox">
-                <li><a href="http://upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
-                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
+                <li><a href="//upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                <li><a href="//1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
                 <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
                 <li class="addData"><b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 
@@ -1052,7 +1052,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 
                 <li class="imgDownload" id="picDownload" data-goodsid="${goodsInfo.goodsId!}"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
                 <li class="copyCode" id="copyCodeBtn">
-                    <script src="http://style.571xz.com/v2/xz/js/clipboard/jquery.zeroclipboard.min.js"></script>
+                    <script src="//style.571xz.com/v2/xz/js/clipboard/jquery.zeroclipboard.min.js"></script>
 
                     <b><i class="ii"></i><span>复制详情HTML代码</span></b>
                 </li>
@@ -1061,22 +1061,22 @@ var piPrice = '${goodsInfo.piPrice!}';
         <div class="grewLine"></div>
         <div class="contactbox">
             <h3>联系档口</h3>
-            <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
+            <#if shopInfo.imWw??><p class="wangwang"><a href="//www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
 
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata7=text?eval />
 <#list [moduledata7] as $it>
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+<a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
 </p></#if>
-            <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
+            <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="//wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
 
 <#assign text>{"id":"${(shopInfo.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata8=text?eval />
 <#list [moduledata8] as $it>
 <#if $it.id != "">
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 
 </#list>
@@ -1152,7 +1152,7 @@ var goodsId = '${goodsInfo.goodsId!}';
 
 </script>
 
-<script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>
+<script src="//style.571xz.com/v2/xz/js/rightbarV1.js"></script>
 
 
 
@@ -1161,17 +1161,17 @@ var goodsId = '${goodsInfo.goodsId!}';
     <div class="inner">
         <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
-            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-            <a href="http://bj.571xz.com" target="_blank">北京站</a>
-            <a href="http://gz.571xz.com" target="_blank">广州站</a>
-            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-            <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//hz.571xz.com" target="_blank">杭州站</a>
+            <a href="//bj.571xz.com" target="_blank">北京站</a>
+            <a href="//gz.571xz.com" target="_blank">广州站</a>
+            <a href="//ss.571xz.com" target="_blank">石狮站</a>
+            <a href="//cs.571xz.com" target="_blank">常熟站</a>
+            <a href="//wa.571xz.com" target="_blank">辽源站</a>
+            <a href="//jx.571xz.com" target="_blank">濮院站</a>
+            <a href="//zixun.571xz.com" target="_blank">资讯</a>
             
             
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
             
         </p>
         <p class="imgs">
@@ -1183,12 +1183,12 @@ var goodsId = '${goodsInfo.goodsId!}';
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span>
-            <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
             | 
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
-                <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
+                <img src="//style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
                 浙公网安备 33010202000302号
             </a> 
         </p>

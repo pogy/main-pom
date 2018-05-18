@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/daifa/js/common_v20180408_141758.js"></script>
+<script src="//style.571xz.com/v6/daifa/js/common_v20180413_131412.js"></script>

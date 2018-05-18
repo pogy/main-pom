@@ -2,11 +2,11 @@
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
+                <li class="first"><a href="//${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'hz'>
 <li
 >
-    <a href="http://hz.571xz.com/market.htm" target="_blank">
+    <a href="//hz.571xz.com/market.htm" target="_blank">
         逛市场
         <i class="hot"></i>
     </a>
@@ -14,14 +14,14 @@
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+    <a href="//so.571xz.com/hzgoods.htm" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+    <a href="//so.571xz.com/newgoods.htm" target="_blank">
         今日新品
     </a>
 </li>
@@ -51,7 +51,7 @@
 </li>
 <li
 >
-    <a href="http://zixun.571xz.com/index" target="_blank">
+    <a href="//zixun.571xz.com/index" target="_blank">
         资讯
     </a>
 </li>

@@ -1,9 +1,9 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <title>新建页面 - 店铺装修</title>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/page.css" type="text/css">
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/page.js"></script>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/page.css" type="text/css">
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/page.js"></script>
 </head>
 <body>
 
@@ -20,7 +20,7 @@
         <div class="control-group">
             <label class="control-label">页面地址：</label>
             <div class="control">
-                <span class="J_TUrl">http://www.571xz.com/shop/${shop}/${code}.htm</span>
+                <span class="J_TUrl">//www.571xz.com/shop/${shop}/${code}.htm</span>
                 <input type="hidden" id="page-address" value="${code}" name="alias">
                 <p class="tips" style="display: block">买家访问该页面的地址，可以直接在导航模块添加该链接</p>
             </div>
@@ -36,7 +36,7 @@
                                     <input type="radio" name="type" value="2" checked="checked" class="prepare">
                                 </div>
                                 <div class="thumb">
-                                    <img src="http://www.571xz.com/design/img/shop/rightleft60.jpg" alt="">
+                                    <img src="//www.571xz.com/design/img/shop/rightleft60.jpg" alt="">
                                 </div>
                                 <div class="detail">
                                     <h3>左右栏自定义页</h3>
@@ -48,7 +48,7 @@
                                     <input type="radio" name="type" value="1" class="prepare">
                                 </div>
                                 <div class="thumb">
-                                    <img src="http://www.571xz.com/design/img/shop/topbottom60.jpg" alt="">
+                                    <img src="//www.571xz.com/design/img/shop/topbottom60.jpg" alt="">
                                 </div>
                                 <div class="detail">
                                     <h3>通栏自定义页</h3>

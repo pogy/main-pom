@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/indexgglist_v20171123_140047.js"></script>
+<script src="//style.571xz.com/v6/gys/js/indexgglist_v20171225_125925.js"></script>

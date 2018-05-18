@@ -12,9 +12,9 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/search__common_css.ftl">
 <#include "/__style_torrent__/search__search_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -72,7 +72,7 @@
                     <#if goods_index lt 20>
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
                     <#else>
-                        <img class="lazyload img" src="http://style.571xz.com/v6/search/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
+                        <img class="lazyload img" src="//style.571xz.com/v6/search/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
                     </#if>
                 </a>
                 <p class="p1">
@@ -95,8 +95,8 @@
                         <em><i class="iconUp"></i>一键上传</em>
                         <div class="list">
                             <ul>
-                                <li><a href="http://upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><em class="iconUp"></em>上传淘宝</a></li>
-                                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><em class="iconUp"></em>上传阿里</a></li>
+                                <li><a href="//upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><em class="iconUp"></em>上传淘宝</a></li>
+                                <li><a href="//1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><em class="iconUp"></em>上传阿里</a></li>
                                 <li><a href="#" jbtn="showGoodsWx"><em class="iconUp"></em>分享朋友圈</a></li>
                                 <li><a href="javascript:;" xzclick="addGoodsPkg" data-goodsid="${goods.id!}"><em class="iconAdd"></em>加入数据包</a></li>
                             </ul>
@@ -149,5 +149,7 @@
     </#if>
 </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">
