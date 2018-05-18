@@ -325,7 +325,11 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         }
         vo.setPictures(picVos);
         Jedis jedis = redisIO.getJedis();
-        jedis.incrBy("flickr_page_redis_temporary_"+vo.getfId(),1);
+        try {
+            jedis.incrBy("flickr_page_redis_temporary_" + vo.getfId(), 1);
+        }finally {
+            redisIO.returnJedis(jedis);
+        }
         return vo;
 //        FlickrDetails flickrDetails = shiguFlickrMapper.selectFlickrPictureByfId(fId,1);
 //        FlickrDetailsVo vo = new FlickrDetailsVo();
