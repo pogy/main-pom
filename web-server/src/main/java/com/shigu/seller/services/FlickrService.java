@@ -46,7 +46,7 @@ public class FlickrService {
 
     public Long temporaryClicks(String suffix){
 
-        String clickstr = redisIO.get(FLICKR_PAGE_REDIS_TEMPORARY+suffix);
+        String clickstr = redisIO.get(FLICKR_PAGE_REDIS_TEMPORARY+suffix,String.class);
         if (clickstr == null || clickstr == ""){
             return 0l;
         }
