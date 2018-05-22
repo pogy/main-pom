@@ -462,7 +462,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShop.setTaobaoUrl(tbUrl);
         shiguShop.setMainBus(shiguShopApply.getMainBus());
         shiguShop.setEmail(shiguShopApply.getEmail());
-        shiguShop.setDomain(shiguShopApply.getShopNum());
+//        shiguShop.setDomain(shiguShopApply.getShopNum());
         shiguShop.setShopName(shiguShopApply.getShopNum());
         shiguShop.setSortOrderKey(shiguShopApply.getShopNum());
         shiguShop.setImAliww(shiguShopApply.getImAliww());
