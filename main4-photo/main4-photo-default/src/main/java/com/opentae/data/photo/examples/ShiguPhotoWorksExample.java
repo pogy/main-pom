@@ -7,7 +7,6 @@ import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.photo.beans.ShiguPhotoWorks;
 
 import java.util.*;
-
 public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Criteria> {
     public static final Class<ShiguPhotoWorks> beanClass = ShiguPhotoWorks.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -21,6 +20,7 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
     public static EntityColumn havePrice;
     public static EntityColumn worksId;
     public static EntityColumn price;
+    public static EntityColumn searchOpen;
     public static EntityColumn clicks;
     public static EntityColumn forbidSave;
     public static EntityColumn worksCid;
@@ -41,6 +41,7 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
         havePrice = listMap.get("havePrice");
         worksId = listMap.get("worksId");
         price = listMap.get("price");
+        searchOpen = listMap.get("searchOpen");
         clicks = listMap.get("clicks");
         forbidSave = listMap.get("forbidSave");
         worksCid = listMap.get("worksCid");
@@ -567,6 +568,53 @@ public class ShiguPhotoWorksExample extends SgExample<ShiguPhotoWorksExample.Cri
 
         public ShiguPhotoWorksExample.Criteria andPriceNotBetween(Long value1, Long value2) {
             return notBetween(price, value1, value2);
+        }
+        public ShiguPhotoWorksExample.Criteria andSearchOpenIsNull() {
+            return isNull(searchOpen);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenIsNotNull() {
+            return isNotNull(searchOpen);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenEqualTo(Integer value) {
+            return equalTo(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenNotEqualTo(Integer value) {
+            return notEqualTo(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenGreaterThan(Integer value) {
+            return greaterThan(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenLessThan(Integer value) {
+            return lessThan(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(searchOpen, value);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenIn(List<Integer> values) {
+            return in(searchOpen, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenNotIn(List<Integer> values) {
+            return notIn(searchOpen, values);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenBetween(Integer value1, Integer value2) {
+            return between(searchOpen, value1, value2);
+        }
+
+        public ShiguPhotoWorksExample.Criteria andSearchOpenNotBetween(Integer value1, Integer value2) {
+            return notBetween(searchOpen, value1, value2);
         }
         public ShiguPhotoWorksExample.Criteria andClicksIsNull() {
             return isNull(clicks);

@@ -11,8 +11,6 @@ import java.io.Serializable;
  */
 public class PhotoUserInfoEditBO implements Serializable {
 
-    //用户头像
-    private String headImg;
 
     // 性别 0:未知,1:男,2:女
     private Integer sex;
@@ -23,22 +21,9 @@ public class PhotoUserInfoEditBO implements Serializable {
     //联系手机号
     private String contactPhone;
 
-    // 封面
-    private String showImg;
-
-    // 微信二维码
-    private String codeImg;
-
     // 个人简介
     private String userInfo;
 
-    public String getHeadImg() {
-        return headImg;
-    }
-
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
 
     public Integer getSex() {
         return sex;
@@ -62,22 +47,6 @@ public class PhotoUserInfoEditBO implements Serializable {
 
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
-    }
-
-    public String getShowImg() {
-        return showImg;
-    }
-
-    public void setShowImg(String showImg) {
-        this.showImg = showImg;
-    }
-
-    public String getCodeImg() {
-        return codeImg;
-    }
-
-    public void setCodeImg(String codeImg) {
-        this.codeImg = codeImg;
     }
 
     public String getUserInfo() {

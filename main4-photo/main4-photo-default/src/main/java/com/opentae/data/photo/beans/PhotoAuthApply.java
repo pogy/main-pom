@@ -2,8 +2,8 @@ package com.opentae.data.photo.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class PhotoAuthApply implements Serializable {
     /**
@@ -32,6 +32,11 @@ public class PhotoAuthApply implements Serializable {
      * 认证手机号
      */
 	private String authPhone;
+
+    /**
+     * 
+     */
+	private String headImg;
 
     /**
      * 个人展示封面
@@ -106,6 +111,14 @@ public class PhotoAuthApply implements Serializable {
 
 	public String getAuthPhone() {
 		return this.authPhone;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
+
+	public String getHeadImg() {
+		return this.headImg;
 	}
 
 	public void setShowImg(String showImg) {

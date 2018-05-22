@@ -80,6 +80,7 @@ public class PhotoWorksAction {
         PhotoAuthWorkUserInfoWebVO photoAuthWorkUserInfoWebVO = photoUserService.totalAuthInfo(query.getId(), null);
         PhotoWorksBO photoWorksBO = query.toPhotoWorksBO();
         photoWorksBO.setSort(WorksListSortEnum.create_desc);
+        photoWorksBO.setIsAuthor(true);
         ShiguPager<PhotoWorksSearchVO> photoWorksVOShiguPager = photoWorksService.selList(photoWorksBO);
         model.addAttribute("userWorksList", photoWorksVOShiguPager.getContent());
         model.addAttribute("query", query);

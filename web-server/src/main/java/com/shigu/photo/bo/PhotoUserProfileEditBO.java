@@ -35,6 +35,8 @@ public class PhotoUserProfileEditBO implements Serializable {
     //短信验证
     private String msgValidate;
 
+    private String userHeadImg;
+
     public Integer getSex() {
         return sex;
     }
@@ -97,5 +99,13 @@ public class PhotoUserProfileEditBO implements Serializable {
 
     public void setMsgValidate(String msgValidate) {
         this.msgValidate = msgValidate;
+    }
+
+    public String getUserHeadImg() {
+        return this.userHeadImg;
+    }
+
+    public void setUserHeadImg(String userHeadImg) {
+        this.userHeadImg = userHeadImg;
     }
 }
