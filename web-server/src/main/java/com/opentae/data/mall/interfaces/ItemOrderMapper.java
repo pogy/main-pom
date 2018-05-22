@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,5 +47,6 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     Integer getDropShippingOrderCount(@Param("shopId") Long shopId, @Param("oid") Long oid, @Param("goodsNo") String goodsNo);
     List<DfGoodsVo> getDropShippingGoods(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
     Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
+
 
 }

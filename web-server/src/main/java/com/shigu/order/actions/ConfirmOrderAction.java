@@ -201,8 +201,9 @@ public class ConfirmOrderAction {
      */
     @ResponseBody
     @RequestMapping("getOtherCost")
-    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
-        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId);
+    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId,HttpSession session) throws JsonErrException, LogisticsRuleException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
@@ -265,7 +266,7 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId())));
+        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId(),sessionUser.getUserId())));
     }
 
     /**

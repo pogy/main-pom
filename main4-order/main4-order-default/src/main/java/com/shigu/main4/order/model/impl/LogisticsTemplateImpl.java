@@ -52,6 +52,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     @Autowired
     private ExpressCompanyMapper expressCompanyMapper;
 
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
+
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
     }
@@ -198,6 +201,11 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
      */
     @Override
     public Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight) throws LogisticsRuleException {
+       return calculate(null,null,provId,companyId,goodsNumber,weight,false);
+    }
+
+    @Override
+    public Long calculate(Long userId,Long oid, Long provId, Long companyId, Integer goodsNumber, Long weight,Boolean discounts) throws LogisticsRuleException {
         // 包邮？
         LogisticsTemplateVO logisticsTemplateVO = templateInfo();
         if (logisticsTemplateVO.getFree()) {
@@ -226,6 +234,12 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         }
         Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
                 : ((Double) (Math.ceil((unit - vo.getStartWeight()) * 1.0 / vo.getAddWeight()) * vo.getAddPrice())).longValue();
+
+        if (discounts) {
+            if (isMinusFreight(userId,oid)){
+                return vo.getStartPrice() + (add > 0 ? add : 0)-500;
+            }
+        }
         return vo.getStartPrice() + (add > 0 ? add : 0);
     }
 
@@ -297,5 +311,33 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                     return postVO;
                 }).collect(Collectors.toList());
     }
+
+    public Boolean isMinusFreight(Long userId,Long oid){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date toDay = calendar.getTime();
+        List<Long> ridList = itemOrderMapper.getRidListByOrderStatus(userId,toDay);
+        if (ridList != null && ridList.size() > 0)
+            return false;
+        List<Long> oidList = itemOrderMapper.getOidListByOrderStatus(userId,toDay);
+        if (oidList != null && oidList.size() > 0){
+            if (oidList.size() == 1){
+                if(oidList.get(0).equals(oid) && oid != null){
+                    return true;
+                }else {
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+//    if (isMinusFreight(userId))
+//    postPrice -= 500;
 
 }

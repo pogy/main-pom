@@ -83,6 +83,11 @@ public class ConfirmOrderService {
     @Autowired
     private ItemProductProcess itemProductProcess;
 
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
+
+    private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
+
     /**
      * 订单确认提交
      *
@@ -339,7 +344,7 @@ public class ConfirmOrderService {
      * @param totalWeight
      * @return
      */
-    public OtherCostVO getOtherCost(Long companyId, String provId, String eachShopNum, Long totalWeight, String senderId) throws JsonErrException, LogisticsRuleException {
+    public OtherCostVO getOtherCost(Long companyId, String provId, String eachShopNum, Long totalWeight, String senderId,Long userId) throws JsonErrException, LogisticsRuleException {
         ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
         boolean isDaifa = sender.getType() == 1;
 
@@ -365,9 +370,10 @@ public class ConfirmOrderService {
 //        if (expressCompany == null) {
 //            throw new JsonErrException("未查询到快递信息");
 //        }
-
-        Long postPrice = logisticsService.calculate(new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId));
-
+        Boolean discounts = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        if (discounts == null)
+            discounts = false;
+        Long postPrice = logisticsService.calculate(userId,new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId),discounts);
         OtherCostVO otherCostVO = new OtherCostVO();
         otherCostVO.setPostPrice(postPrice);//元转分
         List<ServiceInfosTextVO> serviceInfosText = new ArrayList<>();
@@ -434,14 +440,17 @@ public class ConfirmOrderService {
      * @return
      * @throws LogisticsRuleException
      */
-    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId) throws LogisticsRuleException {
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId,Long userId) throws LogisticsRuleException {
         long postPrice=0L;
+        Boolean discounts = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        if (discounts == null)
+            discounts = false;
         for (OrderSubmitVo t : tbTrades) {
             BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
-            postPrice += logisticsService.calculate(buyerAddress.getProvId(), postId,
+            postPrice += logisticsService.calculate(userId,buyerAddress.getProvId(), postId,
                     t.getProducts().stream().mapToInt(CartVO::getNum).sum(),
-                    null, senderId);
-
+                    null, senderId,discounts);
+            discounts = false;
         }
         return postPrice;
     }
@@ -490,4 +499,5 @@ public class ConfirmOrderService {
         redisIO.putTemp(uuid, oids, 600);
         return uuid;
     }
+
 }

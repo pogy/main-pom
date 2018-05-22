@@ -40,8 +40,10 @@ public interface LogisticsService {
      * @param weight 重量,克为单位
      * @return
      */
+    @Deprecated
     Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId) throws LogisticsRuleException;
 
+    Long calculate(Long userId,Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId,Boolean discounts) throws LogisticsRuleException;
     /**
      * 默认快递信息
      * @return

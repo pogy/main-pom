@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 
  * Created by exampleCreater.
@@ -16,4 +19,7 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ItemOrderMapper extends Mapper<ItemOrder> {
     int addRefundMoney(@Param("oid") Long oid, @Param("money") Long money);
+
+    List<Long> getOidListByOrderStatus(@Param("userId") Long userId, @Param("createTime") Date createTime);
+    List<Long> getRidListByOrderStatus(@Param("userId") Long userId,@Param("createTime") Date createTime);
 }

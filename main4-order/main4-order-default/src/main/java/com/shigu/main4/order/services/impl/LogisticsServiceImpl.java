@@ -53,7 +53,13 @@ public class LogisticsServiceImpl implements LogisticsService {
     @Override
     public Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId) throws LogisticsRuleException {
         LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
-        return logisticsTemplate.calculate(provId,companyId,goodsNumber,weight);
+        return logisticsTemplate.calculate(null,null,provId,companyId,goodsNumber,weight,false);
+    }
+
+    @Override
+    public Long calculate(Long userId,Long provId, Long companyId, Integer goodsNumber, Long weight,Long senderId,Boolean discounts) throws LogisticsRuleException {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        return logisticsTemplate.calculate(userId,null,provId,companyId,goodsNumber,weight,discounts);
     }
 
     @Override
