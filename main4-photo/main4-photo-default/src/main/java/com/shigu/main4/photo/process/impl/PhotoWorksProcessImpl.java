@@ -153,6 +153,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
                 shiguPhotoWorks.setImages(images);
                 shiguPhotoWorks.setPicUrl(picUrl);
             }else{
+                auth.setWorksId(bo.getWorksId());
                 insertAuth(auth,false);
             }
             shiguPhotoWorksMapper.updateByPrimaryKeySelective(shiguPhotoWorks);
