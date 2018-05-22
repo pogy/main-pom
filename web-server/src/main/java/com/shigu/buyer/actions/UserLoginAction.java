@@ -19,6 +19,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
+import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
@@ -89,6 +90,9 @@ public class UserLoginAction {
 
     @Autowired
     private TbUploadService tbUploadService;
+
+    @Autowired
+    private UserBaseService userBaseService;
 
     @RequestMapping("frameLogin")
     public String frameLogin(HttpSession session, Model model, String backUrl) {
@@ -760,11 +764,16 @@ public class UserLoginAction {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "telephone");
         }
+        //返回需要数据
+
         PhoneVerify phoneVerify = (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
         if (phoneVerify == null || !bo.getTelephone().equals(phoneVerify.getPhone())
                 || !bo.getMsgValidate().equals(phoneVerify.getVerify())) {
             throw new JsonErrException("短信验证码错误").addErrMap("ele", "msgValidate");
         } else {
+            //根据手机号查询账号是否存在，不存在则统计
+            Long userIdByPhone = userLicenseService.findUserIdByPhone(bo.getTelephone());
+
             String imgcode = (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
             if (imgcode == null || !imgcode.equals(bo.getImgValidate())) {//图片验证通不过
                 throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
@@ -779,7 +788,17 @@ public class UserLoginAction {
 //                return "redirect:"+memberFilter.getSuccessUrl();
             String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-            return JsonResponseUtil.success().element("backUrl", backUrl);
+
+            JSONObject jsonObject = JsonResponseUtil.success().element("backUrl", backUrl);
+            if (userIdByPhone == null) {
+                PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+                Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
+                if (outUid != null) {
+                    jsonObject.element("id",outUid.toString());
+                }
+            }
+
+            return jsonObject;
         }
     }
 
