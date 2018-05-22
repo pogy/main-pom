@@ -1213,15 +1213,9 @@ public class CdnAction {
             return JsonResponseUtil.error("非法的请求参数");
         }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
-        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
-
-        Object objFormCache = null;
-        if (instanOfWoman) {//父级或父父级cid=16的为女装
-            objFormCache = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.ITEM_GOAT_WOMAN));
-        } else {
-            objFormCache = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.ITEM_GOAT_MAN));
-        }
+        Object objFormCache = selFromCache(spreadService.selItemSpreads(website,
+                cdnService.getGoodsDetailSpreadSpreadEnum(itemGoatCidAndWebsiteVO.getCid(),website,1)));
         List<ItemGoatVO> goatLists = ItemGoatVO.copyListFromCache(objFormCache);
         Collections.shuffle(goatLists);//乱序
 
@@ -1243,15 +1237,9 @@ public class CdnAction {
             return JsonResponseUtil.error("非法的请求参数");
         }
         ItemGoatCidAndWebsiteVO itemGoatCidAndWebsiteVO = getCidAndWebsite(goodsId);
-        boolean instanOfWoman = itemCatService.instanOfWoman(itemGoatCidAndWebsiteVO.getCid());
         String website = itemGoatCidAndWebsiteVO.getWebsite();
-
-        Object objFormCache;
-        if (instanOfWoman) {//父级或父父级cid=16的为女装
-            objFormCache = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN));
-        } else {
-            objFormCache = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.ITEM_BOTTOM_GOAT_MAN));
-        }
+        Object objFormCache = selFromCache(spreadService.selItemSpreads(website,
+                cdnService.getGoodsDetailSpreadSpreadEnum(itemGoatCidAndWebsiteVO.getCid(),website,2)));
         List<ItemGoatVO> goatList = ItemGoatVO.copyListFromCache(objFormCache);
         //极限词过滤
         goatList.forEach(itemGoatVO -> itemGoatVO.setTitle(KeyWordsUtil.duleKeyWords(itemGoatVO.getTitle())));
