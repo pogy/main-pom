@@ -1,5 +1,6 @@
 package com.shigu.main4.cdn.services;
 
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguStyle;
 import com.opentae.data.mall.examples.ShiguGoodsIdGeneratorExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
@@ -25,6 +26,7 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.services.WebSiteGoodsCountService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import com.shigu.spread.vo.NewHzManIndexItemGoatVO;
 import com.shigu.tools.KeyWordsUtil;
@@ -63,6 +65,9 @@ public class IndexShowService {
     RedisForIndexPage redisForIndexPage;
 
     @Autowired
+    WebSiteGoodsCountService webSiteGoodsCountService;
+
+    @Autowired
     SpreadService spreadService;
 
     @Autowired
@@ -89,6 +94,32 @@ public class IndexShowService {
             @Override
             public List<Integer> selReal() {
                 int count = shiguGoodsIdGeneratorMapper.countByExample(new ShiguGoodsIdGeneratorExample());
+                List<Integer> list = new ArrayList<>();
+                while (count > 0) {
+                    if (count / 10 > 0) {
+                        list.add(count % 10);
+                    } else {
+                        list.add(count);
+                    }
+                    count = count / 10;
+                }
+                //反转
+                Collections.reverse(list);
+                return list;
+            }
+        };
+    }
+
+    public ObjFromCache<List<Integer>> selWebSiteGoodsCount(String webSite) {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setWebSite(webSite);
+        tiny.setIsClosed(0L);
+        tiny.setGoodsStatus(0);
+
+        return new ObjFromCache<List<Integer>>(webSiteGoodsCountService, "selWebSiteGoodsCount", Integer.class) {
+            @Override
+            public List<Integer> selReal() {
+                int count = shiguGoodsTinyMapper.selectCount(tiny);
                 List<Integer> list = new ArrayList<>();
                 while (count > 0) {
                     if (count / 10 > 0) {
@@ -307,14 +338,13 @@ public class IndexShowService {
                     vo.setSname(parentStyle.getStyleName());
                     vo.setImgsrc(parentStyle.getChannelImgUrl());
                     vo.setDesc(parentStyle.getDescription());
-                    vo.setHref("http://www.571xz.com/styleIndex.htm?spid="+parentStyle.getId());
+                    vo.setHref("http://www.571xz.com/styleIndex.htm?spid=" + parentStyle.getId());
                     list.add(vo);
                 }
                 return list;
             }
         };
     }
-
 
     private List<StyleCateNavVO> styleCateNavVOStatic = null;
 
@@ -362,19 +392,19 @@ public class IndexShowService {
     }
 
 
-    public List<NewHzManIndexItemGoatVO> realTimeItems(Long cid,String webSite){
-        List<Long> cids=null;
+    public List<NewHzManIndexItemGoatVO> realTimeItems(Long cid, String webSite) {
+        List<Long> cids = null;
         if (cid != null) {
-            cids=categoryInSearchService.selCidsFromCid(cid);
+            cids = categoryInSearchService.selCidsFromCid(cid);
         }
-        GoodsSearchBO bo=new GoodsSearchBO();
+        GoodsSearchBO bo = new GoodsSearchBO();
         bo.setCids(cids);
         bo.setPage(1);
         bo.setPageSize(10);
         bo.setOrderCase(SearchOrderBy.NEW);
         bo.setWebSite(webSite);
         ShiguAggsPager shiguAggsPager = itemSearchService.searchItem(bo);
-        Long time=System.currentTimeMillis();
+        Long time = System.currentTimeMillis();
         return shiguAggsPager.getContent().stream().map(searchItem -> {
             NewHzManIndexItemGoatVO vo = new NewHzManIndexItemGoatVO();
             vo.setId(searchItem.getItemId().toString());

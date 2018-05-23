@@ -191,8 +191,10 @@ public class CdnAction {
         ObjFromCache<List<IndexNavVO>> navListObjFromCache = indexShowService.selNavVOs(SpreadEnum.QZGG);
         model.addAttribute("notices", selFromCache(navListObjFromCache));
         //商品数量
-        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
-        model.addAttribute("userCount", selFromCache(numListObjFromCache));
+        ObjFromCache<List<Integer>> goodsCountCache = indexShowService.selWebSiteGoodsCount(webSite);
+        model.addAttribute("userCount", selCountCache(goodsCountCache));
+//        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
+//        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         if ("Man".equals(manOrWoman)) {
             //****男装首页数据
             //规则
@@ -281,17 +283,21 @@ public class CdnAction {
         // 商户总数
         int shopsNum = indexShowService.getShopAllCount(website);
         // 商品总数
-        ObjFromCache<List<Integer>> goodsNum = indexShowService.selNumList();
-        if (goodsNum != null) {
-            List<Integer> goodsNumList = (List<Integer>) goodsNum.selObj();
-            StringBuffer stringBuffer = new StringBuffer();
-            if (goodsNumList != null) {
-                for (Integer integer : goodsNumList) {
-                    stringBuffer.append(integer);
-                }
-                model.addAttribute("hasGoods", stringBuffer.toString());
-            }
-        }
+        ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(website);
+        model.addAttribute("goodsCount",selCountCache(goodsCount));
+        System.out.println(goodsCount);
+//        if (goodsNum != null) {
+//            List<Integer> goodsNumList = (List<Integer>) goodsNum.selGoodsObj();
+//            System.out.println(goodsNumList);
+//            StringBuffer stringBuffer = new StringBuffer();
+//            model.addAttribute("goodsNum",goodsNum);
+//            if (goodsNumList != null) {
+//                for (Integer integer : goodsNumList) {
+//                    stringBuffer.append(integer);
+//                }
+//                model.addAttribute("", stringBuffer.toString());
+//            }
+//        }
 
         // 今日新品
         NewGoodsBO newGoodsBO = new NewGoodsBO();
@@ -495,7 +501,8 @@ public class CdnAction {
 
         model.addAttribute("page", page);
         //商品数量
-        model.addAttribute("userCount", selFromCache(indexShowService.selNumList()));
+        ObjFromCache<List<Integer>> goodsCount=indexShowService.selWebSiteGoodsCount(webSite);
+        model.addAttribute("goodsCount", selCountCache(goodsCount));
         //全站公告
         model.addAttribute("notices", selFromCache(qzgg));
         //轮播下方小图
@@ -572,8 +579,10 @@ public class CdnAction {
         ObjFromCache<List<IndexNavVO>> navListObjFromCache = indexShowService.selNavVOs(SpreadEnum.QZGG);
         model.addAttribute("notices", selFromCache(navListObjFromCache));
         //商品数量
-        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
-        model.addAttribute("userCount", selFromCache(numListObjFromCache));
+        ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(webSite);
+        model.addAttribute("userCount", selFromCache(goodsCount));
+//        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
+//        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
         ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_QZ_RM:SpreadEnum.MAN_QZ_RM);
         model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
@@ -634,8 +643,10 @@ public class CdnAction {
         ObjFromCache<List<IndexNavVO>> navListObjFromCache = indexShowService.selNavVOs(SpreadEnum.QZGG);
         model.addAttribute("notices", selFromCache(navListObjFromCache));
         //商品数量
-        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
+        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selWebSiteGoodsCount(webSite);
         model.addAttribute("userCount", selFromCache(numListObjFromCache));
+//        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
+//        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
         ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_RM:SpreadEnum.MAN_ZL_RM);
         model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
@@ -659,7 +670,6 @@ public class CdnAction {
 
     /**
      * 创建缓存
-     *
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache) {
@@ -667,6 +677,9 @@ public class CdnAction {
 //        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //            spreadService.createBySync(fromCache);
         return fromCache.selObj();
+    }
+    private Object selCountCache(ObjFromCache fromCache){
+        return fromCache.selGoodsObj();
     }
 
 
@@ -678,6 +691,7 @@ public class CdnAction {
     @RequestMapping("/index.html")
     public String domainindex(HttpServletRequest request, Model model) throws ShopFitmentException, CdnException, IOException {
         String url = request.getRequestURL().toString();
+
         if (!url.contains(".571xz.com")) {
 //            return "redirect:"+xzSdkClient.getMainHost();
             if (url.contains("127.0.0.1")) {
@@ -687,7 +701,7 @@ public class CdnAction {
         }
         url = url.substring(7, url.indexOf(".571xz.com"));
         if ("www".equals(url) || "hz".equals(url) || "testwww".equals(url)) {
-            return hzindex4show(request, model);
+          return hzindex4show(request, model);
         }
         Long shopId = shopBaseService.selShopIdByDomain(url);
         if (shopId == null) {
