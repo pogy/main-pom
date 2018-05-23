@@ -40,7 +40,7 @@ public class ItemOrderBO implements Serializable{
     /**
      * 订单终端来源
      */
-    private OrderFrom orderFrom;
+    private Integer orderFrom;
 
     public Long getUserId() {
         return userId;
@@ -122,11 +122,11 @@ public class ItemOrderBO implements Serializable{
         this.daifaOrder = daifaOrder;
     }
 
-    public OrderFrom getOrderFrom() {
+    public Integer getOrderFrom() {
         return orderFrom;
     }
 
-    public void setOrderFrom(OrderFrom orderFrom) {
+    public void setOrderFrom(Integer orderFrom) {
         this.orderFrom = orderFrom;
     }
 }

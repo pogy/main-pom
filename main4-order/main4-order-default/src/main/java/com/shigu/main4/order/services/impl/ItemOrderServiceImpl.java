@@ -181,7 +181,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         order.setPayedFee(0L);
         order.setRefundFee(0L);
         if (orderBO.getOrderFrom() != null ) {
-            order.setOrderFrom(orderBO.getOrderFrom().getFrom());
+            order.setOrderFrom(orderBO.getOrderFrom());
         }
         order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
 

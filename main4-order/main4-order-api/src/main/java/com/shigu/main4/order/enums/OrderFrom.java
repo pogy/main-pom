@@ -24,6 +24,15 @@ public enum OrderFrom {
         this.description = description;
     }
 
+    public static OrderFrom valueOf(int form){
+        for (OrderFrom item : OrderFrom.values()){
+            if (item.getFrom() == form) {
+                return item;
+            }
+        }
+        throw new IllegalArgumentException("未知的订单来源");
+    }
+
     public int getFrom() {
         return from;
     }
