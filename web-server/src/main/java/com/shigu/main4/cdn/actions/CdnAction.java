@@ -284,20 +284,14 @@ public class CdnAction {
         int shopsNum = indexShowService.getShopAllCount(website);
         // 商品总数
         ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(website);
-        model.addAttribute("goodsCount",selCountCache(goodsCount));
-        System.out.println(goodsCount);
-//        if (goodsNum != null) {
-//            List<Integer> goodsNumList = (List<Integer>) goodsNum.selGoodsObj();
-//            System.out.println(goodsNumList);
-//            StringBuffer stringBuffer = new StringBuffer();
-//            model.addAttribute("goodsNum",goodsNum);
-//            if (goodsNumList != null) {
-//                for (Integer integer : goodsNumList) {
-//                    stringBuffer.append(integer);
-//                }
-//                model.addAttribute("", stringBuffer.toString());
-//            }
-//        }
+        List<Integer> goodsNumList= (List<Integer>) selCountCache(goodsCount);
+        StringBuffer stringBuffer = new StringBuffer();
+        if (goodsNumList != null) {
+            for (Integer integer : goodsNumList) {
+                stringBuffer.append(integer);
+            }
+            model.addAttribute("hasGoods", stringBuffer.toString());
+        }
 
         // 今日新品
         NewGoodsBO newGoodsBO = new NewGoodsBO();

@@ -116,7 +116,7 @@ public class IndexShowService {
         tiny.setIsClosed(0L);
         tiny.setGoodsStatus(0);
 
-        return new ObjFromCache<List<Integer>>(webSiteGoodsCountService, "selWebSiteGoodsCount", Integer.class) {
+        return new ObjFromCache<List<Integer>>(webSiteGoodsCountService, "selWebSiteGoodsCount_"+webSite, Integer.class) {
             @Override
             public List<Integer> selReal() {
                 int count = shiguGoodsTinyMapper.selectCount(tiny);
@@ -313,7 +313,7 @@ public class IndexShowService {
      * @return
      */
     public int getShopAllCount(String webSite) {
-        int shopcount = shiguShopMapper.selectShopCountByBo(null, null, null, null,
+        int shopcount = shiguShopMapper.selectShopCountByBo(webSite, null, null, null,
                 null, null, null, null, null);
         return shopcount;
     }
