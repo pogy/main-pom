@@ -236,6 +236,7 @@ public class PhotoGoatProcessImpl implements PhotoGoatProcess {
             vo.setSex(u.getSex());
             vo.setTitle(w.getTitle());
             vo.setUserType(u.getUserType());
+            vo.setAuthStatus(1);
             return vo;
         }).collect(Collectors.toList());
 
