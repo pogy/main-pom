@@ -1,16 +1,12 @@
 package com.shigu.jd.actions;
 
+import com.jd.open.api.sdk.request.ware.ImageWriteUpdateRequest;
+import com.jd.open.api.sdk.request.ware.WareWriteUpdateWareRequest;
 import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.OpenException;
 import com.openJar.exceptions.imgs.JdApiException;
-import com.openJar.requests.api.GoodsCanbeUploadedToJdRequest;
-import com.openJar.requests.api.JdImageWriteUpdateRequest;
-import com.openJar.requests.api.JdTransportWriteUpdateWareTransportIdRequest;
-import com.openJar.requests.api.JdWareAddRequest;
-import com.openJar.responses.api.GoodsCanbeUploadedToJdResponse;
-import com.openJar.responses.api.JdImageWriteUpdateResponse;
-import com.openJar.responses.api.JdTransportWriteUpdateWareTransportIdResponse;
-import com.openJar.responses.api.JdWareAddResponse;
+import com.openJar.requests.api.*;
+import com.openJar.responses.api.*;
 import com.shigu.exceptions.ImgDownloadException;
 import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
@@ -70,6 +66,7 @@ public class JdGoodsUpAction {
         res.setData(jdGoodsService.upToJd(request.getGoods(),request.getJdUid()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
+
     @RequestMapping("jdTransportWriteUpdateWareTransportId")
     @ResponseBody
     public JSONObject jdTransportWriteUpdateWareTransportId(JdTransportWriteUpdateWareTransportIdRequest request) throws JdAuthOverdueException, OtherCustomException {
@@ -83,6 +80,15 @@ public class JdGoodsUpAction {
     public JSONObject jdImageWriteUpdate(JdImageWriteUpdateRequest request) throws JdAuthOverdueException, OtherCustomException {
         jdGoodsService.jdImageUpdate(request.getBo(),request.getJdUid());
         JdImageWriteUpdateResponse res=new JdImageWriteUpdateResponse();
+        res.setSuccess(true);
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
+    }
+
+    @RequestMapping("jdWareMobileDesc")
+    @ResponseBody
+    public JSONObject jdWareMobileDesc(JdWareMobileDescRequest request) throws JdAuthOverdueException, OtherCustomException {
+        jdGoodsService.jdWareMobileDesc(request);
+        JdWareMobileDescResponse res=new JdWareMobileDescResponse();
         res.setSuccess(true);
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }

@@ -6,6 +6,7 @@ import com.openJar.commons.ResponseUtil;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.interfaces.*;
 import com.openJar.responses.interfaces.*;
+import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.mapper.services.InterFacesService;
 import net.sf.json.JSONObject;
@@ -36,6 +37,19 @@ public class InterFacesAction {
         res.setDatas(list);
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
+    @RequestMapping("api/selJdItemPropsNew")
+    @ResponseBody
+    public JSONObject selJdItemPropsNew(@Valid SelJdItemPropsNewRequest request, BindingResult error) throws OtherCustomException, JdAuthOverdueException {
+        if(error.hasErrors()){
+            throw new OtherCustomException(error.getAllErrors().get(0).getDefaultMessage());
+        }
+        SelJdItemPropsResponse res=new SelJdItemPropsResponse();
+        List<JdItemProp> list= interFacesService.selJdItemPropsNew(request.getJdUid(),request.getJdCid());
+        res.setSuccess(true);
+        res.setDatas(list);
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
+    }
+
     @RequestMapping("api/selJdPropValues")
     @ResponseBody
     public JSONObject selJdPropValues(@Valid SelJdPropValuesRequest request, BindingResult error) throws OtherCustomException {
