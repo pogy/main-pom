@@ -574,7 +574,7 @@ public class CdnAction {
         model.addAttribute("notices", selFromCache(navListObjFromCache));
         //商品数量
         ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(webSite);
-        model.addAttribute("userCount", selFromCache(goodsCount));
+        model.addAttribute("userCount", selCountCache(goodsCount));
 //        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
 //        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
@@ -638,7 +638,7 @@ public class CdnAction {
         model.addAttribute("notices", selFromCache(navListObjFromCache));
         //商品数量
         ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selWebSiteGoodsCount(webSite);
-        model.addAttribute("userCount", selFromCache(numListObjFromCache));
+        model.addAttribute("userCount", selCountCache(numListObjFromCache));
 //        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
 //        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
