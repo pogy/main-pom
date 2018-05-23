@@ -1,6 +1,7 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.openJar.utils.JsonUtil;
 import com.shigu.main4.bo.OnsaleItemQueryBO;
 import com.shigu.main4.cdn.bo.*;
 import com.shigu.main4.cdn.exceptions.CdnException;
@@ -46,9 +47,14 @@ import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.*;
 import com.shigu.tools.*;
 import com.shigu.vo.ItemGoatVO;
+import com.sun.mail.iap.Response;
 import freemarker.template.TemplateException;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.jsoup.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,12 +64,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import javax.validation.Valid;
+import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -174,8 +181,8 @@ public class CdnAction {
         model.addAttribute("webSite", webSite);
         //页面类型：男装/女装
         model.addAttribute("page", page);
-        //顶部广告数据
-        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ?SpreadEnum.INDEX_TOP_WOMAN:SpreadEnum.INDEX_TOP);
+        //顶部广告数据`
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.INDEX_TOP_WOMAN : SpreadEnum.INDEX_TOP);
         model.addAttribute("topPic", selFromCache(selImgBannerTops));
         // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
         //轮播广告大图
@@ -203,12 +210,12 @@ public class CdnAction {
             model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
             //风格频道
             ObjFromCache<List<StyleChannelVO>> styleList = indexShowService.selStyleChannelInfo();
-            List<StyleChannelVO> styleChannelVOS= (List<StyleChannelVO>) selFromCache(styleList);
+            List<StyleChannelVO> styleChannelVOS = (List<StyleChannelVO>) selFromCache(styleList);
             //获取风格频道广告信息
-            List<ImgBannerVO> stylePics= (List<ImgBannerVO>) selFromCache(spreadService.selImgBanners(SpreadEnum.MAN_STYLE_PICS));
+            List<ImgBannerVO> stylePics = (List<ImgBannerVO>) selFromCache(spreadService.selImgBanners(SpreadEnum.MAN_STYLE_PICS));
             styleChannelVOS.forEach(styleChannelVO -> {
                 stylePics.forEach(imgBannerVO -> {
-                    if(styleChannelVO.getSpid().toString().equals(imgBannerVO.getText())){
+                    if (styleChannelVO.getSpid().toString().equals(imgBannerVO.getText())) {
                         styleChannelVO.setImgsrc(imgBannerVO.getImgsrc());
                         styleChannelVO.setHref(imgBannerVO.getHref());
                     }
@@ -217,11 +224,11 @@ public class CdnAction {
 
             model.addAttribute("styleList", styleChannelVOS);
             //类目导航
-            ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu(webSite,1,SpreadEnum.NEW_HZ_HomeCateMenu);
-            model.addAttribute("catemenu",selFromCache(catemenu));
+            ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, 1, SpreadEnum.NEW_HZ_HomeCateMenu);
+            model.addAttribute("catemenu", selFromCache(catemenu));
             //人气商品
-            List<HzManIndexHotItemsVO> hzManIndexHotItemsVOS=new ArrayList<>();
-            for(StyleChannelVO styleChannelVO:styleChannelVOS){
+            List<HzManIndexHotItemsVO> hzManIndexHotItemsVOS = new ArrayList<>();
+            for (StyleChannelVO styleChannelVO : styleChannelVOS) {
                 StyleSpreadChannelVO styleSpreadChannel = styleChannelService.getStyleSpreadChannel(styleChannelVO.getSpid());
                 ObjFromCache<HzManIndexHotItemsVO> hot = spreadService.castedHotItemGoatList(styleSpreadChannel.getStyleId()
                         , styleChannelVO.getSname()
@@ -261,13 +268,31 @@ public class CdnAction {
         }
     }
 
+
+    /**
+     * 使用jsonp 跨域拿到商品量
+     * */
+    @RequestMapping(value = "/action/selGoodsCount")
+    @ResponseBody
+    public void getGoodsCount( HttpServletResponse response, String webSite,String callback) throws IOException {
+        ObjFromCache<List<Integer>> goodsCountCache = indexShowService.selWebSiteGoodsCount(webSite);
+        Object obj = selCountCache(goodsCountCache);
+        String jsonString = obj.toString();
+        response.setContentType("application/x-javascript");
+        String jsonp = callback +"(" +jsonString + ")";
+        PrintWriter pw = response.getWriter();
+//        System.out.println(jsonp);
+        pw.print(jsonp);
+    }
+
+    //实时新品
     @RequestMapping("getIntimeGoodsList")
     @ResponseBody
-    public JSONObject getIntimeGoodsList(String webSite){
-        if ("zl".equalsIgnoreCase(webSite)){
-            return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(50008165L,"zl"));
+    public JSONObject getIntimeGoodsList(String webSite) {
+        if ("zl".equalsIgnoreCase(webSite)) {
+            return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(50008165L, "zl"));
         }
-        return JsonResponseUtil.success().element("intimeGoodsList",indexShowService.realTimeItems(30L,"hz"));
+        return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(30L, "hz"));
     }
 
     /**
@@ -278,25 +303,24 @@ public class CdnAction {
     @RequestMapping(value = "jxindex4show", method = RequestMethod.GET)
     public String jxindex4show(HttpServletRequest request, Model model) {
         String website = "jx";
-
         // 商户总数
         int shopsNum = indexShowService.getShopAllCount(website);
         // 商品总数
-        ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(website);
-        model.addAttribute("goodsCount",selCountCache(goodsCount));
-        System.out.println(goodsCount);
-//        if (goodsNum != null) {
-//            List<Integer> goodsNumList = (List<Integer>) goodsNum.selGoodsObj();
-//            System.out.println(goodsNumList);
-//            StringBuffer stringBuffer = new StringBuffer();
-//            model.addAttribute("goodsNum",goodsNum);
-//            if (goodsNumList != null) {
-//                for (Integer integer : goodsNumList) {
-//                    stringBuffer.append(integer);
-//                }
-//                model.addAttribute("", stringBuffer.toString());
-//            }
-//        }
+        ObjFromCache<List<Integer>> goodsNum = indexShowService.selWebSiteGoodsCount(website);
+        model.addAttribute("goodsNum", selCountCache(goodsNum));
+        System.out.println(goodsNum);
+        if (goodsNum != null) {
+            List<Integer> goodsNumList = (List<Integer>) goodsNum.selGoodsObj();
+            System.out.println(goodsNumList);
+            StringBuffer stringBuffer = new StringBuffer();
+            model.addAttribute("goodsNum",goodsNum);
+            if (goodsNumList != null) {
+                for (Integer integer : goodsNumList) {
+                    stringBuffer.append(integer);
+                }
+                model.addAttribute("", stringBuffer.toString());
+            }
+        }
 
         // 今日新品
         NewGoodsBO newGoodsBO = new NewGoodsBO();
@@ -500,7 +524,7 @@ public class CdnAction {
 
         model.addAttribute("page", page);
         //商品数量
-        ObjFromCache<List<Integer>> goodsCount=indexShowService.selWebSiteGoodsCount(webSite);
+        ObjFromCache<List<Integer>> goodsCount = indexShowService.selWebSiteGoodsCount(webSite);
         model.addAttribute("goodsCount", selCountCache(goodsCount));
         //全站公告
         model.addAttribute("notices", selFromCache(qzgg));
@@ -537,7 +561,6 @@ public class CdnAction {
     }
 
 
-
     /**
      * 泉州首页动态页面
      *
@@ -566,7 +589,7 @@ public class CdnAction {
         //页面类型：男鞋/女鞋
         model.addAttribute("page", page);
         //顶部广告数据
-        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_QZ_TOP_BANNER:SpreadEnum.MAN_QZ_TOP_BANNER);
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_TOP_BANNER : SpreadEnum.MAN_QZ_TOP_BANNER);
         model.addAttribute("topPic", selFromCache(selImgBannerTops));
         //轮播广告大图
         ObjFromCache<List<ImgBannerVO>> imgBannerDts = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_DT : SpreadEnum.MAN_QZ_DT);
@@ -583,16 +606,16 @@ public class CdnAction {
 //        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
 //        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
-        ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_QZ_RM:SpreadEnum.MAN_QZ_RM);
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_RM : SpreadEnum.MAN_QZ_RM);
         model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
         //推荐
-        ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_QZ_TJ:SpreadEnum.MAN_QZ_TJ);
-        model.addAttribute("weekPushGoodsList",selFromCache(weekPushGoodsList));
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_TJ : SpreadEnum.MAN_QZ_TJ);
+        model.addAttribute("weekPushGoodsList", selFromCache(weekPushGoodsList));
 
 
         //类目导航
-        ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu(webSite,manOrWoman.equals("Woman")?2:1,SpreadEnum.NEW_QZ_HomeCateMenu);
-        model.addAttribute("catemenu",selFromCache(catemenu));
+        ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, manOrWoman.equals("Woman") ? 2 : 1, SpreadEnum.NEW_QZ_HomeCateMenu);
+        model.addAttribute("catemenu", selFromCache(catemenu));
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
@@ -630,7 +653,7 @@ public class CdnAction {
         //页面类型：男童/女童
         model.addAttribute("page", page);
         //顶部广告数据
-        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_TOP_BANNER:SpreadEnum.MAN_ZL_TOP_BANNER);
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_TOP_BANNER : SpreadEnum.MAN_ZL_TOP_BANNER);
         model.addAttribute("topPic", selFromCache(selImgBannerTops));
         //轮播广告大图
         ObjFromCache<List<ImgBannerVO>> imgBannerDts = spreadService.selImgBanners(manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_DT : SpreadEnum.MAN_ZL_DT);
@@ -647,16 +670,16 @@ public class CdnAction {
 //        ObjFromCache<List<Integer>> numListObjFromCache = indexShowService.selNumList();
 //        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
-        ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_RM:SpreadEnum.MAN_ZL_RM);
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_RM : SpreadEnum.MAN_ZL_RM);
         model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
         //推荐
-        ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ?SpreadEnum.WOMAN_ZL_TJ:SpreadEnum.MAN_ZL_TJ);
-        model.addAttribute("zhiliPopularGoodsList",selFromCache(weekPushGoodsList));
+        ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_ZL_TJ : SpreadEnum.MAN_ZL_TJ);
+        model.addAttribute("zhiliPopularGoodsList", selFromCache(weekPushGoodsList));
 
 
         //类目导航
-        ObjFromCache<List<HomeCateMenu>> catemenu=spreadService.castedHomeCateMenu(webSite,manOrWoman.equals("Woman")?2:1,SpreadEnum.NEW_ZL_HomeCateMenu);
-        model.addAttribute("catemenu",selFromCache(catemenu));
+        ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, manOrWoman.equals("Woman") ? 2 : 1, SpreadEnum.NEW_ZL_HomeCateMenu);
+        model.addAttribute("catemenu", selFromCache(catemenu));
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
@@ -669,6 +692,7 @@ public class CdnAction {
 
     /**
      * 创建缓存
+     *
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache) {
@@ -677,7 +701,8 @@ public class CdnAction {
 //            spreadService.createBySync(fromCache);
         return fromCache.selObj();
     }
-    private Object selCountCache(ObjFromCache fromCache){
+
+    private Object selCountCache(ObjFromCache fromCache) {
         return fromCache.selGoodsObj();
     }
 
@@ -688,7 +713,8 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("/index.html")
-    public String domainindex(HttpServletRequest request, Model model) throws ShopFitmentException, CdnException, IOException {
+    public String domainindex(HttpServletRequest request, Model model) throws
+            ShopFitmentException, CdnException, IOException {
         String url = request.getRequestURL().toString();
 
         if (!url.contains(".571xz.com")) {
@@ -700,7 +726,7 @@ public class CdnAction {
         }
         url = url.substring(7, url.indexOf(".571xz.com"));
         if ("www".equals(url) || "hz".equals(url) || "testwww".equals(url)) {
-          return hzindex4show(request, model);
+            return hzindex4show(request, model);
         }
         Long shopId = shopBaseService.selShopIdByDomain(url);
         if (shopId == null) {
@@ -757,7 +783,8 @@ public class CdnAction {
      */
     @RequestMapping({"jsonScAddGoods", "jsonScAdd"})
     @ResponseBody
-    public void jsonScAddGoods(@Valid ScGoodsBO bo, BindingResult result, HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
+    public void jsonScAddGoods(@Valid ScGoodsBO bo, BindingResult result, HttpServletResponse response, HttpSession
+            session) throws JsonErrException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
         if (result.hasErrors()) {
 //            throw new JsonErrException("2");//对前台说已经添加过了
@@ -788,7 +815,8 @@ public class CdnAction {
      */
     @RequestMapping("jsonStoreCollectAdd")
     @ResponseBody
-    public void jsonStoreCollectAdd(@Valid ScStoreBO bo, BindingResult result, HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
+    public void jsonStoreCollectAdd(@Valid ScStoreBO bo, BindingResult result, HttpServletResponse
+            response, HttpSession session) throws JsonErrException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
         if (result.hasErrors()) {
 //            throw new JsonErrException("2");
@@ -812,7 +840,8 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shop")
-    public String shop(@Valid ShopCdnBO bo, BindingResult result, Model model) throws CdnException, ShopFitmentException, IOException {
+    public String shop(@Valid ShopCdnBO bo, BindingResult result, Model model) throws
+            CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
         if (result != null && result.hasErrors()) {
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
@@ -889,7 +918,8 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shop/{shopId}/{pageKey}")
-    public String shopDefine(@PathVariable("shopId") Long shopId, @PathVariable("pageKey") Long pageKey, Model model) throws ShopFitmentException, IOException {
+    public String shopDefine(@PathVariable("shopId") Long shopId, @PathVariable("pageKey") Long pageKey, Model
+            model) throws ShopFitmentException, IOException {
         if (shopId == null || pageKey == null) {
             return "redirect:" + xzSdkClient.getMainHost();
         }
@@ -918,7 +948,8 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shop/search")
-    public String shopSearch(@Valid ShopCdnBO bo, BindingResult result, Model model) throws ShopFitmentException, IOException, CdnException {
+    public String shopSearch(@Valid ShopCdnBO bo, BindingResult result, Model model) throws
+            ShopFitmentException, IOException, CdnException {
         if (result != null && result.hasErrors()) {
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
@@ -931,20 +962,20 @@ public class CdnAction {
         ShiguPager<ItemShowBlock> pager;
         Date startDate;
         Date endDate;
-        if(bo.getDd()!=null&&bo.getDd()>0){
-            Calendar cal=Calendar.getInstance();
-            endDate=cal.getTime();
-            if(bo.getDd()==1){
-                cal.set(Calendar.HOUR_OF_DAY,0);
-                cal.set(Calendar.MINUTE,0);
-                cal.set(Calendar.SECOND,0);
-            }else{
-                cal.add(Calendar.DATE,-bo.getDd());
+        if (bo.getDd() != null && bo.getDd() > 0) {
+            Calendar cal = Calendar.getInstance();
+            endDate = cal.getTime();
+            if (bo.getDd() == 1) {
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+            } else {
+                cal.add(Calendar.DATE, -bo.getDd());
             }
-            startDate=cal.getTime();
-        }else{
-            startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
-            endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
+            startDate = cal.getTime();
+        } else {
+            startDate = DateUtil.stringToDate(bo.getStartDate(), "yyyy-MM-dd");
+            endDate = DateUtil.stringToDate(bo.getEndDate(), "yyyy-MM-dd");
         }
         OnsaleItemQueryBO queryBO = new OnsaleItemQueryBO();
         queryBO.setKeyword(bo.getPstring());
@@ -986,7 +1017,8 @@ public class CdnAction {
      * @throws ShopFitmentException
      * @throws IOException
      */
-    private ContainerVO shopData(Long shopId, Long pageId, String webSite, Model model) throws ShopFitmentException, IOException {
+    private ContainerVO shopData(Long shopId, Long pageId, String webSite, Model model) throws
+            ShopFitmentException, IOException {
         ContainerVO containerVO = shopDesignService.selPagePublishedById(pageId, shopDesignService.selShopForModule(shopId,
                 webSite));
         ShopShowVO shopShowVO = cdnService.shopSimpleVo(shopId);
@@ -1041,7 +1073,7 @@ public class CdnAction {
     public JSONObject smallPic(Long id) {
         try {
             String picUrl = shopsItemService.itemImgzipUrl(id);
-            return JsonResponseUtil.success().element("pic", picUrl.replace("#","%23"));
+            return JsonResponseUtil.success().element("pic", picUrl.replace("#", "%23"));
         } catch (Exception e) {
             return JsonResponseUtil.error("下载失败，请重试！");
         }
@@ -1054,7 +1086,8 @@ public class CdnAction {
     }
 
     @RequestMapping("downloadImg")
-    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, Integer type, HttpSession session) throws IOException {
+    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, Integer type, HttpSession
+            session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (personalSession == null) {
             ResultRetUtil.returnJsonp(callback, "{'result':'error','msg':'请登陆'}", response);
@@ -1348,7 +1381,8 @@ public class CdnAction {
     }
 
     @RequestMapping("getShopCollection")
-    public void getShopCollection(HttpSession session, HttpServletResponse response, String webSite, String callback) throws IOException {
+    public void getShopCollection(HttpSession session, HttpServletResponse response, String webSite, String
+            callback) throws IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<CdnCollectShopVO> vos = new ArrayList<>();
         if (ps != null) {
@@ -1372,7 +1406,7 @@ public class CdnAction {
     }
 
     @RequestMapping("bonus")
-    public String bonusPage(Model model){
+    public String bonusPage(Model model) {
         return "xzPage/bonus";
     }
 }
