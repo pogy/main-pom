@@ -27,6 +27,8 @@ public class PhotoAuthApplyBO implements Serializable {
     //二维码
     private String codeImg;
 
+    private String headImg;
+
     //主风格ID
     private List<Long> mainStyleIds;
 
@@ -76,5 +78,13 @@ public class PhotoAuthApplyBO implements Serializable {
 
     public void setAuthPhone(String authPhone) {
         this.authPhone = authPhone;
+    }
+
+    public String getHeadImg() {
+        return this.headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 }

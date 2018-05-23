@@ -9,6 +9,7 @@ public class PhotoWorksSearchVO {
     private String nick;
     private String address;
     private String publishedTime;
+    private Integer checkState;
 
     public Long getId() {
         return this.id;
@@ -72,5 +73,13 @@ public class PhotoWorksSearchVO {
 
     public void setPublishedTime(String publishedTime) {
         this.publishedTime = publishedTime;
+    }
+
+    public Integer getCheckState() {
+        return this.checkState;
+    }
+
+    public void setCheckState(Integer checkState) {
+        this.checkState = checkState;
     }
 }

@@ -124,7 +124,7 @@ public class PhotoUserAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        JSONObject result = photoUserService.submitUserValid(userId, bo);
+        JSONObject result = photoUserService.submitUserValid(userId, bo,false);
 
         ////若不需要审核，直接通过，进行以下步骤
         //photoUserProcess.applyPass(userId, "认证通过（暂时不需要审核，自动通过时）");
@@ -235,7 +235,7 @@ public class PhotoUserAction {
      */
     @RequestMapping("member/submitProfileInfo")
     @ResponseBody
-    public JSONObject submitProfileInfo(PhotoUserProfileEditBO bo, HttpSession session) {
+    public JSONObject submitProfileInfo(PhotoUserProfileEditBO bo, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return photoUserService.submitProfileInfo(ps.getUserId(), bo);
     }
@@ -247,11 +247,11 @@ public class PhotoUserAction {
      * @param session
      * @return
      */
-    @RequestMapping("member/saveHeadPortrait")
-    @ResponseBody
-    public JSONObject saveHeadPortrait(String imgSrc, HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return photoUserService.saveHeadPortrait(ps.getUserId(), imgSrc);
-    }
+//    @RequestMapping("member/saveHeadPortrait")
+//    @ResponseBody
+//    public JSONObject saveHeadPortrait(String imgSrc, HttpSession session) {
+//        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        return photoUserService.saveHeadPortrait(ps.getUserId(), imgSrc);
+//    }
 
 }

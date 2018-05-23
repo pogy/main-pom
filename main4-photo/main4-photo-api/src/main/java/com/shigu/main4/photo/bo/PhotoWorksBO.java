@@ -45,6 +45,10 @@ public class PhotoWorksBO implements Serializable{
      * 标题
      */
     private String title;
+    /**
+     * 是否是作者发起的请求
+     */
+    private Boolean isAuthor;
 
     /**
      * 获取 排序
@@ -170,5 +174,19 @@ public class PhotoWorksBO implements Serializable{
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取 是否是作者发起的请求
+     */
+    public Boolean getIsAuthor() {
+        return this.isAuthor;
+    }
+
+    /**
+     * 设置 是否是作者发起的请求
+     */
+    public void setIsAuthor(Boolean isAuthor) {
+        this.isAuthor = isAuthor;
     }
 }

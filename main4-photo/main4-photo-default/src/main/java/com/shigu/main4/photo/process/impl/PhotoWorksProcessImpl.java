@@ -2,10 +2,7 @@ package com.shigu.main4.photo.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.photo.beans.*;
-import com.opentae.data.photo.examples.ShiguPhotoCatExample;
-import com.opentae.data.photo.examples.ShiguPhotoStyleExample;
-import com.opentae.data.photo.examples.ShiguPhotoWorksExample;
-import com.opentae.data.photo.examples.ShiguPhotoWorksStyleExample;
+import com.opentae.data.photo.examples.*;
 import com.opentae.data.photo.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -18,6 +15,7 @@ import com.shigu.main4.photo.process.PhotoUserProcess;
 import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.main4.photo.vo.*;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.photo.utils.ImgUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +42,10 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
     ShiguPhotoUserPraiseMapper shiguPhotoUserPraiseMapper;
     @Autowired
     PhotoUserProcess photoUserProcess;
-
-
+    @Autowired
+    ShiguPhotoWorksAuthMapper shiguPhotoWorksAuthMapper;
+    @Autowired
+    ImgUtil imgUtil;
     @Autowired
     RedisIO redisIO;
 
@@ -106,16 +106,56 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         shiguPhotoWorks.setRemoveIs(false);
         shiguPhotoWorks.setTitle(bo.getTitle());
         shiguPhotoWorks.setWorksCid(bo.getCid());
-        shiguPhotoWorks.setPicUrl(photoImgProcess.moveImg(bo.getPicUrl()));
         shiguPhotoWorks.setContent(bo.getContent());
         String images = StringUtils.join(bo.getImages().stream()
                 .map(s -> photoImgProcess.moveImg(s)).collect(Collectors.toList()), ",");
-        shiguPhotoWorks.setImages(images);
+        String picUrl=photoImgProcess.moveImg(bo.getPicUrl());
+        ShiguPhotoWorksAuth auth=new ShiguPhotoWorksAuth();
+        auth.setAuthStatus(0);
+        auth.setImages(images);
+        auth.setPicUrl(picUrl);
+
         if(bo.getWorksId()==null){
+            shiguPhotoWorks.setImages(images);
+            shiguPhotoWorks.setPicUrl(picUrl);
+            shiguPhotoWorks.setSearchOpen(0);
             shiguPhotoWorksMapper.insertSelective(shiguPhotoWorks);
+            auth.setWorksId(shiguPhotoWorks.getWorksId());
+            insertAuth(auth,false);
             insertWorksStyles(bo.getStyleId(),shiguPhotoWorks.getWorksId());
         }else{
             shiguPhotoWorks.setWorksId(bo.getWorksId());
+            ShiguPhotoWorks tmp=shiguPhotoWorksMapper.selectByPrimaryKey(bo.getWorksId());
+            shiguPhotoWorks.setSearchOpen(tmp.getSearchOpen());
+            boolean isUpdateImage=false;
+            if(tmp.getSearchOpen()==0){
+                isUpdateImage=true;
+            }
+            List<String> newImgaes=new ArrayList<>(Arrays.asList(images.split(",")));
+            newImgaes.add(picUrl);
+            List<String> oldImages=new ArrayList<>(Arrays.asList(tmp.getImages().split(",")));
+            oldImages.add(tmp.getPicUrl());
+            newImgaes.removeIf(oldImages::contains);
+            if(newImgaes.size()>0){
+                isUpdateImage=true;
+            }else{
+                //获取本次修改中删除掉的图片
+                List<String> newImgaes1=new ArrayList<>(Arrays.asList(images.split(",")));
+                newImgaes1.add(picUrl);
+                List<String> oldImages1=new ArrayList<>(Arrays.asList(tmp.getImages().split(",")));
+                oldImages1.add(tmp.getPicUrl());
+                oldImages1.removeIf(newImgaes1::contains);
+                new HashSet<>(oldImages1).forEach(s -> {
+                    imgUtil.addRemove(s);
+                });
+            }
+            if(!isUpdateImage){
+                shiguPhotoWorks.setImages(images);
+                shiguPhotoWorks.setPicUrl(picUrl);
+            }else{
+                auth.setWorksId(bo.getWorksId());
+                insertAuth(auth,false);
+            }
             shiguPhotoWorksMapper.updateByPrimaryKeySelective(shiguPhotoWorks);
             if(bo.getStyleId()!=null&&bo.getStyleId().size()>0){
                 ShiguPhotoWorksStyleExample shiguPhotoWorksStyleExample=new ShiguPhotoWorksStyleExample();
@@ -134,6 +174,24 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         ShiguPhotoWorks w=new ShiguPhotoWorks();
         w.setRemoveIs(true);
         shiguPhotoWorksMapper.updateByExampleSelective(w,shiguPhotoWorksExample);
+    }
+
+    private void insertAuth(ShiguPhotoWorksAuth auth,boolean isThis){
+        ShiguPhotoWorksAuth a=new ShiguPhotoWorksAuth();
+        a.setWorksId(auth.getWorksId());
+        a=shiguPhotoWorksAuthMapper.selectOne(a);
+        if(a==null){
+            try {
+                shiguPhotoWorksAuthMapper.insertSelective(auth);
+            } catch (Exception e) {
+                if(!isThis){
+                    insertAuth(auth,true);
+                }
+            }
+        }else{
+            auth.setWorksAuthId(a.getWorksAuthId());
+            shiguPhotoWorksAuthMapper.updateByPrimaryKeySelective(auth);
+        }
     }
 
     private void insertWorksStyles(List<Long> styles,Long worksId){
@@ -165,15 +223,34 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
         int count=shiguPhotoWorksMapper.selectShiguPhotoWorksCount(authorId,bo.getStyleId(),bo.getCid(),
                 bo.getUserTypes()!=null?StringUtils.join(bo.getUserTypes(),","):null,
                 bo.getTitle(),
-                bo.getSex());
+                bo.getSex(),
+                bo.getIsAuthor());
         if(count>0){
             pager.setContent(shiguPhotoWorksMapper.selectShiguPhotoWorks(authorId,bo.getStyleId(),bo.getCid(),
                     bo.getUserTypes()!=null?StringUtils.join(bo.getUserTypes(),","):null,
                     bo.getTitle(),
                     bo.getSex(),
+                    bo.getIsAuthor(),
                     bo.getSort().getSql(),
                     (bo.getPage() - 1) * bo.getPageSize(),
                     bo.getPageSize()));
+
+            List<ShiguPhotoWorksAuth> auths=new ArrayList<>();
+            if(bo.getIsAuthor()){
+                List<Long> wids=pager.getContent().stream().map(PhotoWorksVO::getWorksId).collect(Collectors.toList());
+                if(wids.size()>0){
+                    ShiguPhotoWorksAuthExample shiguPhotoWorksAuthExample=new ShiguPhotoWorksAuthExample();
+                    shiguPhotoWorksAuthExample.createCriteria().andWorksIdIn(wids);
+                    auths=shiguPhotoWorksAuthMapper.selectByExample(shiguPhotoWorksAuthExample);
+                }
+            }
+            Map<Long,Integer> authMap=auths.stream().collect(Collectors.toMap(ShiguPhotoWorksAuth::getWorksId,ShiguPhotoWorksAuth::getAuthStatus));
+            pager.getContent().forEach(photoWorksVO -> {
+                photoWorksVO.setAuthStatus(authMap.get(photoWorksVO.getWorksId()));
+                if(photoWorksVO.getAuthStatus()==null){
+                    photoWorksVO.setAuthStatus(1);
+                }
+            });
         }
         pager.calPages(count, bo.getPageSize());
         return pager;
@@ -295,5 +372,50 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
             }
             redisIO.del(key);
         }
+    }
+
+    @Override
+    public ShiguPager<PhotoWorksAuthVO> selWorksAuths(int pageNo, int size, Integer status) {
+        ShiguPhotoWorksAuthExample shiguPhotoWorksAuthExample=new ShiguPhotoWorksAuthExample();
+        if(status!=null){
+            shiguPhotoWorksAuthExample.createCriteria().andAuthStatusEqualTo(status);
+        }
+        ShiguPager<PhotoWorksAuthVO> pager=new ShiguPager<>();
+        pager.setNumber(pageNo);
+        List<PhotoWorksAuthVO> list=new ArrayList<>();
+        int count=shiguPhotoWorksAuthMapper.countByExample(shiguPhotoWorksAuthExample);
+        if(count>0){
+            shiguPhotoWorksAuthExample.setStartIndex((pageNo-1)*size);
+            shiguPhotoWorksAuthExample.setEndIndex(size);
+            List<ShiguPhotoWorksAuth> shiguPhotoWorksAuths = shiguPhotoWorksAuthMapper.selectByConditionList(shiguPhotoWorksAuthExample);
+            list.addAll(shiguPhotoWorksAuths.stream().map(shiguPhotoWorksAuth -> BeanMapper.map(shiguPhotoWorksAuth,PhotoWorksAuthVO.class)).collect(Collectors.toList()));
+        }
+        pager.setContent(list);
+        pager.calPages(count,size);
+        return pager;
+    }
+
+    @Override
+    public void useAuth(Long worksAuthId, String msg, int applyStatus) {
+        ShiguPhotoWorksAuth a=shiguPhotoWorksAuthMapper.selectByPrimaryKey(worksAuthId);
+        if(applyStatus==1){
+            ShiguPhotoWorks w=shiguPhotoWorksMapper.selectByPrimaryKey(a.getWorksId());
+            List<String> newImgaes=new ArrayList<>(Arrays.asList(a.getImages().split(",")));
+            newImgaes.add(a.getPicUrl());
+            List<String> oldImages=new ArrayList<>(Arrays.asList(w.getImages().split(",")));
+            oldImages.add(w.getPicUrl());
+            oldImages.removeIf(newImgaes::contains);
+            new HashSet<>(oldImages).forEach(s -> {
+                imgUtil.addRemove(s);
+            });
+            w.setSearchOpen(1);
+            w.setPicUrl(a.getPicUrl());
+            w.setImages(a.getImages());
+            shiguPhotoWorksMapper.updateByPrimaryKeySelective(w);
+        }else{
+            a.setMsg(msg);
+        }
+        a.setAuthStatus(applyStatus);
+        shiguPhotoWorksAuthMapper.updateByPrimaryKeySelective(a);
     }
 }

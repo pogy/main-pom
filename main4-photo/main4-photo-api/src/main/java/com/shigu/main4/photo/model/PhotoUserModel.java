@@ -6,6 +6,8 @@ import com.shigu.main4.photo.bo.PhotoUserInfoEditBO;
 import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
 import com.shigu.main4.photo.vo.PhotoUserVO;
 
+import java.util.List;
+
 /**
  * 路径: PhotoUserModel
  * 工程: main-pom
@@ -61,5 +63,11 @@ public interface PhotoUserModel {
      * @return
      */
     long getAuthId();
+
+    /**
+     * 获取作者风格
+     * @return
+     */
+    List<Long> userStyles();
 
 }

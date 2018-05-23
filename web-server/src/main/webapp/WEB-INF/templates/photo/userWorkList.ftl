@@ -29,6 +29,7 @@
             <a href="/photo/auth/uploadWork.htm">
                 <i></i>
                 点击上传作品
+                <p class="fcF40">(请勿重复上传作品！)</p>
             </a>
         </div>
         <div class="clearfix worksList">

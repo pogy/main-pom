@@ -21,6 +21,7 @@ import com.shigu.main4.photo.model.PhotoUserModel;
 import com.shigu.main4.photo.process.PhotoImgProcess;
 import com.shigu.main4.photo.vo.PhotoUserStatisticVO;
 import com.shigu.main4.photo.vo.PhotoUserVO;
+import com.shigu.photo.utils.ImgUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -63,6 +64,8 @@ public class PhotoUserModelImpl implements PhotoUserModel {
 
     @Autowired
     private PhotoImgProcess photoImgProcess;
+    @Autowired
+    ImgUtil imgUtil;
 
     //用户id,必传，非空
     private Long userId;
@@ -144,6 +147,7 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         apply.setAuthPhone(bo.getAuthPhone());
         apply.setShowImg(bo.getShowImg());
         apply.setCodeImg(bo.getCodeImg());
+        apply.setHeadImg(bo.getHeadImg());
         apply.setApplyTime(new Date());
         photoAuthApplyMapper.insertSelective(apply);
 
@@ -176,11 +180,23 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setAuthorId(photoUserId);
         shiguPhotoUser.setUserName(apply.getUserName());
         shiguPhotoUser.setContactPhone(apply.getAuthPhone());
+        if (StringUtils.isNotBlank(apply.getHeadImg())) {
+            shiguPhotoUser.setHeadImg(photoImgProcess.moveImg(apply.getHeadImg()));
+            if(photoUserInfo().getHeadImg()!=null&&!photoUserInfo().getHeadImg().equals(shiguPhotoUser.getHeadImg())){
+                imgUtil.addRemove(photoUserInfo().getHeadImg());
+            }
+        }
         if (StringUtils.isNotBlank(apply.getShowImg())) {
             shiguPhotoUser.setShowImg(photoImgProcess.moveImg(apply.getShowImg()));
+            if(photoUserInfo().getShowImg()!=null&&!photoUserInfo().getShowImg().equals(shiguPhotoUser.getShowImg())){
+                imgUtil.addRemove(photoUserInfo().getShowImg());
+            }
         }
         if (StringUtils.isNotBlank(apply.getCodeImg())) {
             shiguPhotoUser.setCodeImg(photoImgProcess.moveImg(apply.getCodeImg()));
+            if(photoUserInfo().getCodeImg()!=null&&!photoUserInfo().getCodeImg().equals(shiguPhotoUser.getCodeImg())){
+                imgUtil.addRemove(photoUserInfo().getCodeImg());
+            }
         }
         shiguPhotoUser.setMainStyleId(apply.getMainStyleId());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
@@ -252,15 +268,6 @@ public class PhotoUserModelImpl implements PhotoUserModel {
         shiguPhotoUser.setAuthorId(photoUserInfo().getAuthorId());
         shiguPhotoUser.setSex(bo.getSex());
         shiguPhotoUser.setAddress(bo.getAddress());
-        if (StringUtils.isNotBlank(bo.getHeadImg())) {
-            shiguPhotoUser.setHeadImg(photoImgProcess.moveImg(bo.getHeadImg()));
-        }
-        if (StringUtils.isNotBlank(bo.getShowImg())) {
-            shiguPhotoUser.setShowImg(photoImgProcess.moveImg(bo.getShowImg()));
-        }
-        if (StringUtils.isNotBlank(bo.getCodeImg())) {
-            shiguPhotoUser.setCodeImg(photoImgProcess.moveImg(bo.getCodeImg()));
-        }
         shiguPhotoUser.setUserInfo(bo.getUserInfo());
         shiguPhotoUser.setContactPhone(bo.getContactPhone());
         shiguPhotoUserMapper.updateByPrimaryKeySelective(shiguPhotoUser);
@@ -284,5 +291,14 @@ public class PhotoUserModelImpl implements PhotoUserModel {
     @Override
     public long getAuthId() {
         return photoUserInfo().getAuthorId();
+    }
+
+    @Override
+    public List<Long> userStyles() {
+        long authId = getAuthId();
+        ShiguPhotoUserSelectedStyleRelation styleRelation = new ShiguPhotoUserSelectedStyleRelation();
+        styleRelation.setAuthId(authId);
+        styleRelation.setEffected(1);
+        return shiguPhotoUserSelectedStyleRelationMapper.select(styleRelation).stream().map(ShiguPhotoUserSelectedStyleRelation::getStyleId).collect(Collectors.toList());
     }
 }

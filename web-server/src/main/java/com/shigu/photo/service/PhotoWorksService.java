@@ -120,6 +120,9 @@ public class PhotoWorksService {
         vo.setTypeName(PhotoUserService.selAuthType(photoWorksVO.getUserType(), photoWorksVO.getSex()));
         vo.setWorksId(photoWorksVO.getWorksId());
         vo.setTitle(photoWorksVO.getTitle());
+        if(photoWorksVO.getAuthStatus()!=1){
+            vo.setCheckState(photoWorksVO.getAuthStatus()==0?1:2);
+        }
         return vo;
     }
 

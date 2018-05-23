@@ -24,6 +24,7 @@ public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
                                              @Param("userTypes")String userTypes,
                                              @Param("title")String title,
                                              @Param("sex")Integer sex,
+                                             @Param("isAuthor")Boolean isAuthor,
                                              @Param("sort")String sort,
                                              @Param("start")Integer start,
                                              @Param("end")Integer end);
@@ -33,5 +34,6 @@ public interface ShiguPhotoWorksMapper extends Mapper<ShiguPhotoWorks> {
                                        @Param("cid")Long cid,
                                        @Param("userTypes")String userTypes,
                                        @Param("title")String title,
-                                       @Param("sex")Integer sex);
+                                       @Param("sex")Integer sex,
+                                       @Param("isAuthor")Boolean isAuthor);
 }

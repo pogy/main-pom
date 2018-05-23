@@ -2,8 +2,8 @@ package com.opentae.data.photo.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 public class ShiguPhotoWorks implements Serializable {
     /**
@@ -77,6 +77,11 @@ public class ShiguPhotoWorks implements Serializable {
      * 描述
      */
 	private String content;
+
+    /**
+     * 
+     */
+	private Integer searchOpen;
 
 	public void setWorksId(Long worksId) {
 		this.worksId = worksId;
@@ -188,6 +193,14 @@ public class ShiguPhotoWorks implements Serializable {
 
 	public String getContent() {
 		return this.content;
+	}
+
+	public void setSearchOpen(Integer searchOpen) {
+		this.searchOpen = searchOpen;
+	}
+
+	public Integer getSearchOpen() {
+		return this.searchOpen;
 	}
 
 }

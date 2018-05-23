@@ -26,6 +26,8 @@ public class AuthApplyInfoVO implements Serializable {
     // 联系手机号
     private String concatPhone;
 
+    private String headImgUrl;
+
     // 封面图片地址
     private String showImgUrl;
 
@@ -130,5 +132,13 @@ public class AuthApplyInfoVO implements Serializable {
 
     public void setStyles(String styles) {
         this.styles = styles;
+    }
+
+    public String getHeadImgUrl() {
+        return this.headImgUrl;
+    }
+
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 }
