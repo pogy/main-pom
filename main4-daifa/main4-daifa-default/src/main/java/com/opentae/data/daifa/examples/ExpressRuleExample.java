@@ -1,10 +1,10 @@
-package com.opentae.data.mall.examples;
+package com.opentae.data.daifa.examples;
 
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.EntityColumn;
 import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
-import com.opentae.data.mall.beans.ExpressRule;
+import com.opentae.data.daifa.beans.ExpressRule;
 
 import java.util.*;
 public class ExpressRuleExample extends SgExample<ExpressRuleExample.Criteria> {

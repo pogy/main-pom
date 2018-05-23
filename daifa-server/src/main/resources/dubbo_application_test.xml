@@ -21,6 +21,6 @@
     <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
 
-
+    <dubbo:reference interface="com.shigu.main4.order.process.TemplateProcess" id="templateProcess" timeout="10000"/>
 
 </beans>
