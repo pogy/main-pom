@@ -16,7 +16,11 @@ public abstract class ObjFromCache<T>{
 
     RedisForIndexPage redisForIndexPage;
 
+    WebSiteGoodsCountService webSiteGoodsCountService;
+
     String key;
+
+    Class clazz;
 
     Class tclass;
 
@@ -24,6 +28,11 @@ public abstract class ObjFromCache<T>{
         this.redisForIndexPage = redisForIndexPage;
         this.key = key;
         this.tclass = tclass;
+    }
+    public ObjFromCache(WebSiteGoodsCountService webSiteGoodsCountService, String key, Class clazz) {
+        this.webSiteGoodsCountService = webSiteGoodsCountService;
+        this.key = key;
+        this.clazz = clazz;
     }
 
     /**
@@ -42,14 +51,21 @@ public abstract class ObjFromCache<T>{
             obj= (T) redisForIndexPage.getFromCache(key,tclass);
             return obj;
         } catch (SpreadCacheException e) {
-//            type=e.getType();
-//            if(type.equals(SpreadCacheException.CacheType.NONE)){
             obj=selReal();
             redisForIndexPage.putCache(key,obj);
             return obj;
-//            }else if(type.equals(SpreadCacheException.CacheType.LONG)){
-//                return (T) e.getObj();
-//            }
+        }
+    }
+
+    public T selGoodsObj(){
+        T obj;
+        try {
+            obj= (T) webSiteGoodsCountService.getGoodsCountFromCache(key,clazz);
+            return obj;
+        } catch (SpreadCacheException e) {
+            obj=selReal();
+            webSiteGoodsCountService.addCache(key,obj);
+            return obj;
         }
     }
 

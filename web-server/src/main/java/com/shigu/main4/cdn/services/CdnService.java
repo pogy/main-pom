@@ -16,6 +16,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
@@ -38,6 +39,7 @@ import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ModuleVO;
+import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.HtmlImgsLazyLoad;
 
 import com.shigu.tools.KeyWordsUtil;
@@ -100,7 +102,8 @@ public class CdnService {
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
-
+    @Autowired
+    ItemCatService itemCatService;
     /**
      * 禁止销售的
      */
@@ -564,6 +567,25 @@ public class CdnService {
             return tiny.getCid();
         }else{
             return null;
+        }
+    }
+
+    /**
+     *
+     * @param cid
+     * @param webSite
+     * @param type 1:商品详情左侧,2:下方
+     * @return
+     */
+    public SpreadEnum getGoodsDetailSpreadSpreadEnum(Long cid,String webSite,int type){
+        if("qz".equalsIgnoreCase(webSite)){
+            return type==1?SpreadEnum.QZ_ITEM_GOAT:SpreadEnum.QZ_BOTTOM_ITEM_GOAT;
+        }
+        boolean instanOfWoman = itemCatService.instanOfWoman(cid);
+        if (instanOfWoman) {//父级或父父级cid=16的为女装
+            return type==1?SpreadEnum.ITEM_GOAT_WOMAN:SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN;
+        } else {
+            return type==1?SpreadEnum.ITEM_GOAT_MAN:SpreadEnum.ITEM_BOTTOM_GOAT_MAN;
         }
     }
 }
