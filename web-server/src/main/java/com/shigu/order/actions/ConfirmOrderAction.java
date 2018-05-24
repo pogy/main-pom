@@ -206,7 +206,7 @@ public class ConfirmOrderAction {
         OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
         Long freePostCost=0l;
         if (logisticsService.isMinusFreight(ps.getUserId(),null))
-            freePostCost = otherCostVO.getPostPrice()>5?5:otherCostVO.getPostPrice();
+            freePostCost = otherCostVO.getPostPrice()>500?500:otherCostVO.getPostPrice();
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
