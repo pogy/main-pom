@@ -370,9 +370,7 @@ public class ConfirmOrderService {
 //        if (expressCompany == null) {
 //            throw new JsonErrException("未查询到快递信息");
 //        }
-        Boolean discounts = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
-        if (discounts == null)
-            discounts = false;
+        Boolean discounts = false;
         Long postPrice = logisticsService.calculate(userId,new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId),discounts);
         OtherCostVO otherCostVO = new OtherCostVO();
         otherCostVO.setPostPrice(postPrice);//元转分
@@ -442,9 +440,7 @@ public class ConfirmOrderService {
      */
     public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId,Long userId) throws LogisticsRuleException {
         long postPrice=0L;
-        Boolean discounts = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
-        if (discounts == null)
-            discounts = false;
+        Boolean discounts = false;
         for (OrderSubmitVo t : tbTrades) {
             BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
             postPrice += logisticsService.calculate(userId,buyerAddress.getProvId(), postId,

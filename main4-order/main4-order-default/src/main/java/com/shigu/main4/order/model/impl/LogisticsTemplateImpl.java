@@ -4,9 +4,7 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ExpressCompany;
-import com.opentae.data.mall.beans.LogisticsTemplateCompany;
-import com.opentae.data.mall.beans.LogisticsTemplateRule;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
@@ -54,6 +52,14 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private ExpressTemplateMapper expressTemplateMapper;
+
+    @Autowired
+    private ExpressTemplateProvMapper expressTemplateProvMapper;
+    @Autowired
+    private ExpressRuleMapper expressRuleMapper;
 
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
@@ -206,41 +212,149 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     @Override
     public Long calculate(Long userId,Long oid, Long provId, Long companyId, Integer goodsNumber, Long weight,Boolean discounts) throws LogisticsRuleException {
+        //        // 包邮？
+//        LogisticsTemplateVO logisticsTemplateVO = templateInfo();
+//        if (logisticsTemplateVO.getFree()) {
+//            return 0L;
+//        }
+//
+//        // 算钱
+//        List<BournRuleInfoVO> vos = rule(provId, companyId);
+//        if (vos == null || vos.isEmpty()) {
+//            throw new LogisticsRuleException(String.format("无默认快递规则; provId[%d],companyId[%d]", provId, companyId));
+//        }
+//
+//        //1按件，2按重量
+//        Long unit = vos.get(0).getType() == 1 ? goodsNumber.longValue() : vos.get(0).getType() == 2 ? weight : 0; // 计费单元
+//        Collections.sort(vos, new Comparator<BournRuleInfoVO>() {
+//            @Override
+//            public int compare(BournRuleInfoVO o1, BournRuleInfoVO o2) {
+//                return o1.getStartWeight() - o2.getStartWeight();
+//            }
+//        });
+//        BournRuleInfoVO vo = vos.get(0);
+//        for (BournRuleInfoVO item : vos) {
+//            if (unit >= item.getStartWeight()){
+//                vo = item;
+//            }
+//        }
+//        Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
+//                : ((Double) (Math.ceil((unit - vo.getStartWeight()) * 1.0 / vo.getAddWeight()) * vo.getAddPrice())).longValue();
+//        return vo.getStartPrice() + (add > 0 ? add : 0);
+
+
         // 包邮？
-        LogisticsTemplateVO logisticsTemplateVO = templateInfo();
-        if (logisticsTemplateVO.getFree()) {
-            return 0L;
+        ExpressTemplateExample expressTemplateExample = new ExpressTemplateExample();
+        expressTemplateExample.createCriteria().andEnabledEqualTo(0).andSenderIdEqualTo(senderId).andTemplateStatusEqualTo(1).andExpressCompanyIdEqualTo(companyId);
+        List<ExpressTemplate> expressTemplateList = expressTemplateMapper.selectByExample(expressTemplateExample);
+        ExpressTemplate expressTemplate = null;
+        if (expressTemplateList != null && expressTemplateList.size() > 0){
+            expressTemplate = expressTemplateList.get(0);
+            if (expressTemplate.getFree() == 1) {
+                return 0L;
+            }
         }
 
         // 算钱
-        List<BournRuleInfoVO> vos = rule(provId, companyId);
-        if (vos == null || vos.isEmpty()) {
-            throw new LogisticsRuleException(String.format("无默认快递规则; provId[%d],companyId[%d]", provId, companyId));
-        }
+        ExpressTemplateProvExample expressTemplateProvExample = new ExpressTemplateProvExample();
+        expressTemplateProvExample.createCriteria().andEtIdEqualTo(expressTemplate.getTId()).andProvIdEqualTo(provId).andEtpStatusEqualTo(1);
+        List<ExpressTemplateProv> expressTemplateProvList = expressTemplateProvMapper.selectByExample(expressTemplateProvExample);
+        Long cost = 0L;
+        Integer a = null;
+        if (expressTemplateProvList != null && expressTemplateProvList.size() > 0 ){
+            ExpressRuleExample expressRuleExample = new ExpressRuleExample();
+            expressRuleExample.createCriteria().andRuleStatusEqualTo(1).andParentRuleIdEqualTo(expressTemplateProvList.get(0).getRuleId());
+            List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
+            if (expressRuleList.size() > 0){
+                expressRuleList.sort((o1, o2) -> o1.getThreshold()-o2.getThreshold());
+                Integer b = expressRuleList.size()-1;
+                bgm:for (int i = 0; i <= b ; i++) {
+                    a = b-i;
+                    if (a >= 0){
+                        if((goodsNumber - expressRuleList.get(a).getThreshold()) >= 0){
+                            for (int j = 0; j <= a ; j++) {
+                                if (j == 0) {
+                                    if (j == a){
+                                        cost += expressRuleList.get(j).getThresholdFree();
+                                        break bgm;
+                                    }
+                                    cost += expressRuleList.get(j).getThresholdFree();
+                                }
+                                if (j == 1){
+                                    cost += 0;
+                                    if (j == a){
+                                        cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                        break bgm;
+                                    }
+                                }
+                                if (j >1 && j != a){
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                }
+                                if (j >1 && j == a) {
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                    break bgm;
+                                }
+                            }
+                        }
+                    }
+                }
 
-        //1按件，2按重量
-        Long unit = vos.get(0).getType() == 1 ? goodsNumber.longValue() : vos.get(0).getType() == 2 ? weight : 0; // 计费单元
-        Collections.sort(vos, new Comparator<BournRuleInfoVO>() {
-            @Override
-            public int compare(BournRuleInfoVO o1, BournRuleInfoVO o2) {
-                return o1.getStartWeight() - o2.getStartWeight();
+
             }
-        });
-        BournRuleInfoVO vo = vos.get(0);
-        for (BournRuleInfoVO item : vos) {
-            if (unit >= item.getStartWeight()){
-                vo = item;
+        }else {
+            ExpressRuleExample expressRuleExample = new ExpressRuleExample();
+            expressRuleExample.createCriteria().andRuleStatusEqualTo(1).andEtIdEqualTo(expressTemplate.getTId()).andIsDefaultEqualTo(1);
+            List<ExpressRule> expressRuleList = expressRuleMapper.selectByExample(expressRuleExample);
+            if (expressRuleList.size() > 0){
+                expressRuleList.sort((o1, o2) -> o1.getThreshold()-o2.getThreshold());
+                Integer b = expressRuleList.size()-1;
+                bgm:for (int i = 0; i <= b ; i++) {
+                    a = b-i;
+                    if (a >= 0){
+                        if((goodsNumber - expressRuleList.get(a).getThreshold()) >= 0){
+                            for (int j = 0; j <= a ; j++) {
+                                if (j == 0) {
+                                    if (j == a){
+                                        cost += expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                    cost += expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j == 1){
+                                    cost += 0;
+                                    System.out.println(cost);
+                                    if (j == a){
+                                        cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                        System.out.println(cost);
+                                        break bgm;
+                                    }
+                                }
+                                if (j >1 && j != a){
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    System.out.println(cost);
+                                }
+                                if (j >1 && j == a) {
+                                    cost += (expressRuleList.get(j).getThreshold()-expressRuleList.get(j-1).getThreshold())*expressRuleList.get(j-1).getThresholdFree();
+                                    cost += (goodsNumber - expressRuleList.get(j).getThreshold()) * expressRuleList.get(j).getThresholdFree();
+                                    System.out.println(cost);
+                                    break bgm;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-        Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
-                : ((Double) (Math.ceil((unit - vo.getStartWeight()) * 1.0 / vo.getAddWeight()) * vo.getAddPrice())).longValue();
 
         if (discounts) {
             if (isMinusFreight(userId,oid)){
-                return vo.getStartPrice() + (add > 0 ? add : 0)-500;
+                return (cost-500)>0?cost-500:0;
             }
         }
-        return vo.getStartPrice() + (add > 0 ? add : 0);
+        return cost;
     }
 
     /**
@@ -269,7 +383,6 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 .where(templateExample.createCriteria().andSenderIdEqualTo(senderId),
                         provExample.createCriteria().andProvIdEqualTo(provId)).build();
         multipleExample.setDistinct(true);
-        multipleExample.setOrderByClause("express_company.remark5 asc");
         List<PostInfoVO> postInfoVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, PostInfoVO.class);
         List<PostVO> postVOS = null;
         if (postInfoVOS != null && !postInfoVOS.isEmpty()) {
@@ -278,10 +391,6 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         if (postVOS == null) {
             postVOS = new ArrayList<>();
         }
-        List<String> postNames = BeanMapper.getFieldList(postVOS,"name",String.class);
-        List<PostVO> defaultPostVOS=defaultPost();
-        defaultPostVOS.removeIf(postVO -> postNames.contains(postVO.getName()));
-        postVOS.addAll(defaultPostVOS);
         return postVOS;
     }
 
@@ -324,13 +433,12 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             return false;
         List<Long> oidList = itemOrderMapper.getOidListByOrderStatus(userId,toDay);
         if (oidList != null && oidList.size() > 0){
-            if (oidList.size() == 1){
-                if(oidList.get(0).equals(oid) && oid != null){
-                    return true;
-                }else {
-                    return false;
-                }
-            }else {
+            if (oid == null){
+                return false;
+            }
+            if(oidList.get(0).equals(oid) && oid != null){
+                return true;
+             }else {
                 return false;
             }
         }

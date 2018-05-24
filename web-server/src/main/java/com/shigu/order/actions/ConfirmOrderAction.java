@@ -204,11 +204,15 @@ public class ConfirmOrderAction {
     public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId,HttpSession session) throws JsonErrException, LogisticsRuleException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
+        Long freePostCost=0l;
+        if (logisticsService.isMinusFreight(ps.getUserId(),null))
+            freePostCost = otherCostVO.getPostPrice()>5?5:otherCostVO.getPostPrice();
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
                     .element("servicePrice",otherCostVO.getServicePrice())
-                    .element("serviceInfosText",otherCostVO.getServiceInfosText());
+                    .element("serviceInfosText",otherCostVO.getServiceInfosText())
+                    .element("freePostCost",freePostCost);
     }
 
     /**
@@ -266,7 +270,11 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId(),sessionUser.getUserId())));
+        Double freePostCost=0.00;
+        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId(),sessionUser.getUserId()));
+        if (logisticsService.isMinusFreight(sessionUser.getUserId(),null))
+            freePostCost = Double.valueOf(postTotalPrice)>Double.valueOf(5.00)?Double.valueOf(5.00):Double.valueOf(postTotalPrice);
+        return JsonResponseUtil.success().element("postTotalPrice",postTotalPrice).element("freePostCost",freePostCost.toString());
     }
 
     /**

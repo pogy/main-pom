@@ -68,4 +68,10 @@ public class LogisticsServiceImpl implements LogisticsService {
         return logisticsTemplate.defaultPost();
     }
 
+    @Override
+    public Boolean isMinusFreight(Long userId, Long oid) {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, 9999999990l, null);
+        return logisticsTemplate.isMinusFreight(userId,null);
+    }
+
 }
