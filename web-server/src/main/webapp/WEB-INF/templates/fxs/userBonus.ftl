@@ -59,11 +59,7 @@
                     <ul class="clearfix">
                         <li class="time fc3">${item.time!}</li>
                         <li class="money">
-                            <#if item.payState == 1>
-                                <span class="green">+${item.money!}</span>
-                            <#elseif item.payState ==2>
-                                <span class="red">-${item.money!}</span>
-                            </#if>
+                            <span <#if item.payState == 1>class="green"<#elseif item.payState == 2>class="red"</#if>>${item.money!}</span>
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>

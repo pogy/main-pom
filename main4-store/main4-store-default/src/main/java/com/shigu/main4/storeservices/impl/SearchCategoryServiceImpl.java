@@ -106,7 +106,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
         }
         List<Long> ssscids=ssscList1.stream().map(ShiguSiteSearchCategory::getId).collect(Collectors.toList());
         ShiguSiteSearchCategoryExample ssscExampleSub = new ShiguSiteSearchCategoryExample();
-        ssscExampleSub.createCriteria().andParentCidIn(ssscids);
+        ssscExampleSub.createCriteria().andParentCidIn(ssscids).andCStatusEqualTo(1).andDisplayEqualTo(1);
         ssscExampleSub.setOrderByClause("id asc");
         List<ShiguSiteSearchCategory> ssscSubList = shiguSiteSearchCategoryMapper.selectByExample(ssscExampleSub);
         Map<Long,List<ShiguSiteSearchCategory>> map=ssscSubList.stream().collect(Collectors.groupingBy(ShiguSiteSearchCategory::getParentCid));

@@ -60,9 +60,9 @@
                         <li class="time fc3">${item.time!}</li>
                         <li class="money">
                             <#if item.payState == 1>
-                                <span class="green">+${item.money!}</span>
+                                <span class="green">${item.money!}</span>
                             <#elseif item.payState ==2>
-                                <span class="red">-${item.money!}</span>
+                                <span class="red">${item.money!}</span>
                             </#if>
                         </li>
                         <li class="type">
