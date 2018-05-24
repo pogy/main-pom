@@ -414,6 +414,7 @@ public class CdnService {
         if(shop==null){
             return null;
         }
+        vo.setMarketId(shop.getMarketId());
         vo.setFloor(shop.getFloor());
         vo.setImQq(shop.getImQq());
         vo.setImWw(shop.getImWw());

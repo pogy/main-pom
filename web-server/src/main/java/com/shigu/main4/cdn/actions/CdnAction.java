@@ -1272,9 +1272,9 @@ public class CdnAction {
      * @param webSite 站点
      * @return
      */
-    @RequestMapping("/shopAndItemGaot")
+    @RequestMapping("/getShopGoodsTopGoat")
     @ResponseBody
-    public Object shopAndItemGaot(HttpServletRequest request, Long marketId,String webSite){
+    public Object getShopGoodsTopGoat(HttpServletRequest request, Long marketId,String webSite){
         if (marketId == null) {
             return JsonResponseUtil.error("非法的请求参数");
         }
@@ -1282,7 +1282,7 @@ public class CdnAction {
             return JsonResponseUtil.error("非法的请求参数");
         }
         if ("hz".equals(webSite)){
-            return JsonResponseUtil.success().element("topGoat","");
+            return JsonResponseUtil.success().element("topGoat",new String[0]);
         }
         ObjFromCache<List<ImgBannerVO>> selImgBannerTops;
         if (marketId == 601 || marketId == 1462){
@@ -1291,7 +1291,7 @@ public class CdnAction {
         }else {
             selImgBannerTops = spreadService.selImgBanners(SpreadEnum.SHOP_DETAIL_TOP_MAN);
         }
-        return JsonResponseUtil.success().element("topGoat", selFromCache(selImgBannerTops));
+        return JsonResponseUtil.success().element("topGoats", selFromCache(selImgBannerTops));
     }
 
 
