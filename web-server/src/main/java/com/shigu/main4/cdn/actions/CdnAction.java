@@ -1281,7 +1281,7 @@ public class CdnAction {
         if (StringUtils.isBlank(webSite)) {
             return JsonResponseUtil.error("非法的请求参数");
         }
-        if ("hz".equals(webSite)){
+        if (!("hz".equals(webSite))){
             return JsonResponseUtil.success().element("topGoat",new String[0]);
         }
         ObjFromCache<List<ImgBannerVO>> selImgBannerTops;
