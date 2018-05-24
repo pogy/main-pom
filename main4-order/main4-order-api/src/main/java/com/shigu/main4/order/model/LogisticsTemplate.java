@@ -51,4 +51,12 @@ public interface LogisticsTemplate {
      */
     List<PostVO> defaultPost() throws LogisticsRuleException;
 
+    /**
+     * 判断是否进行首单减免
+     * @param userId
+     * @param oid
+     * @return
+     */
+    Boolean isMinusFreight(Long userId,Long oid);
+
 }

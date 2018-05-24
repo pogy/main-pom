@@ -351,7 +351,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
         if (discounts) {
             if (isMinusFreight(userId,oid)){
-                return cost-500;
+                return (cost-500)>0?cost-500:0;
             }
         }
         return cost;
@@ -433,13 +433,12 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             return false;
         List<Long> oidList = itemOrderMapper.getOidListByOrderStatus(userId,toDay);
         if (oidList != null && oidList.size() > 0){
-            if (oidList.size() == 1){
-                if(oidList.get(0).equals(oid) && oid != null){
-                    return true;
-                }else {
-                    return false;
-                }
-            }else {
+            if (oid == null){
+                return false;
+            }
+            if(oidList.get(0).equals(oid) && oid != null){
+                return true;
+             }else {
                 return false;
             }
         }
