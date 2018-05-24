@@ -17,7 +17,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -47,4 +49,21 @@ public class ActivityTest {
 
 
     }
+
+    @Test
+    public void test2() {
+
+        itemUpRecordService.updateGoodsUpCountForSearchNum(222L,1);
+        itemUpRecordService.updateGoodsUpCountForSearchNum(223L,4);
+        itemUpRecordService.updateGoodsUpCountForSearchNum(224L,2);
+
+    }
+
+    @Test
+    public void test3() {
+
+        itemUpRecordService.updateGoodsUpCountForSearchNum(null,10);
+
+    }
+
 }

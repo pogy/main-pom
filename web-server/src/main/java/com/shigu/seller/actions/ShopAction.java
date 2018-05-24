@@ -187,6 +187,8 @@ public class ShopAction {
 
     @Autowired
     RedisIO redisIO;
+    @Autowired
+    DataPackageImportService dataPackageImportService;
 
 
     /**
@@ -472,7 +474,7 @@ public class ShopAction {
         Long itemId;
         //包装bo
         try {
-            SynItem synItem = bo.getOffer().parseToSynItem();
+            SynItem synItem = bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(), synItem.getProps(), synItem.getInputStr(),
                     synItem.getInputPids(), synItem.getPropertyAlias()));
@@ -655,7 +657,7 @@ public class ShopAction {
         }
         //包装bo
         try {
-            SynItem synItem=bo.getOffer().parseToSynItem();
+            SynItem synItem=bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setGoodsId(Long.valueOf(bo.getOffer().getGoodsId()));
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
@@ -672,6 +674,15 @@ public class ShopAction {
         }
         return JsonResponseUtil.success().element("webSite",shopSession.getWebSite());
     }
+
+
+    @RequestMapping("seller/getAccessInfoItemEdit")
+    @ResponseBody
+    public JSONObject getAccessInfoItemEdit(HttpSession session) throws UnsupportedEncodingException {
+        ShopSession shopSession = getShopSession(session);
+        return JSONObject.fromObject(ossIO.createPostSignInfo("itemImgs/temp/"+ shopSession.getShopId() + "/")).element("result", "success");
+    }
+
 
     @RequestMapping("seller/getAccessInfoForImgUpload")
     @ResponseBody
@@ -757,12 +768,12 @@ public class ShopAction {
      */
     @RequestMapping("seller/setConstituent")
     @ResponseBody
-    public JSONObject setConstituent(@Valid ModifyConstituentBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+    public JSONObject setConstituent(@Valid ModifyConstituentBO bo,Boolean isChecked,BindingResult result,HttpSession session) throws JsonErrException {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        shopsItemService.setConstituent(bo.getGoodsId(), shopSession.getShopId(), shopSession.getWebSite(), bo.getFabricStr(), bo.getInFabricStr());
+        shopsItemService.setConstituent(bo.getGoodsId(),shopSession.getShopId(),isChecked,shopSession.getWebSite(),bo.getFabricStr(),bo.getInFabricStr());
         shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_CONSITUTUENT_INDEX_);
         return JsonResponseUtil.success();
     }
@@ -867,7 +878,11 @@ public class ShopAction {
         }
         synItem.setWebSite(shopSession.getWebSite());
         try {
-            itemAddOrUpdateService.userUpdateItem(synItem);
+            if(bo.getType()==1){
+                itemAddOrUpdateService.userUpdateItem(synItem,true);
+            }else{
+                itemAddOrUpdateService.userUpdateItem(synItem);
+            }
             shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败", e);

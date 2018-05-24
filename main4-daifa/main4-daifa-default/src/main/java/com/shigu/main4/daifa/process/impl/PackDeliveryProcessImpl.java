@@ -141,6 +141,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setExpressName(send.getExpressName());
         print.setExpressCode(send.getExpressCode());
 
+        print.setPackageCode(exvo.getPackageCode ());
         return print;
     }
 
@@ -148,6 +149,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     public PrintExpressVO printExpress(Long sendId) {
         DaifaSend send=daifaSendMapper.selectByPrimaryKey(sendId);
         DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(send.getDfTradeId());
+        DaifaCallExpress daifaCallExpress=daifaCallExpressMapper.selectByPrimaryKey(send.getDfTradeId());
         DaifaSendOrder tmpSo=new DaifaSendOrder();
         tmpSo.setSendId(send.getSendId());
         List<DaifaSendOrder> sendOrders=daifaSendOrderMapper.select(tmpSo);
@@ -164,11 +166,14 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setSenderName(seller.getName());
         print.setSenderPhone(seller.getTelephone());
         print.setSenderAddress(seller.getAddress());
+
         int orderSize=0;
         for (DaifaSendOrder sendOrder : sendOrders) {
             if (sendOrder.getTakeGoodsStatus()!=null&&sendOrder.getTakeGoodsStatus()==1) {
                 orderSize++;
-                String key = sendOrder.getStoreNum() + "-" + sendOrder.getGoodsCode() + "-" + sendOrder.getPropStr();
+                String pr=sendOrder.getSinglePiPrice().split("\\.")[0];
+                String gn=sendOrder.getGoodsCode().replace("p"+pr,"").replace("P"+pr,"");
+                String key = sendOrder.getStoreNum() + "-" + gn + "-" + sendOrder.getPropStr();
                 skumap.merge(key, sendOrder.getGoodsNum(), (a, b) -> a + b);
             }
         }
@@ -184,8 +189,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
         print.setPostName(send.getExpressName());
-        print.setMarkDestination(send.getMarkDestination());
+        print.setMarkDestination(send.getMarkDestination()+(trade.getExpressName().contains("百世")&&daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
+        print.setPackageCode (send.getPackageCode ());
         print.setSendNum(orderSize>=1?goodsnum:null);
 
         DaifaSend senduex=new DaifaSend();
@@ -228,7 +234,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
      */
     @Override
     public int dealSubOrderError(Long dfOrderId,String propStr,String goodsCode,String storeGoodsCode)throws DaifaException{
-
         DaifaOrder order=new DaifaOrder ();
         order.setDfOrderId (dfOrderId);
         order.setPropStr (propStr);
@@ -263,10 +268,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaWaitSendOrderExample example2=new DaifaWaitSendOrderExample ();
         example2.createCriteria ().andGoodsIdEqualTo (order.getGoodsId ());
         return daifaWaitSendOrderMapper.updateByExampleSelective (worder1,example2);
-
-
-
-
     }
 
     public void updateGoodsWeight(Long subOrderId,Long weight,Long sellerId){
@@ -389,7 +390,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             bo.setReceiverAddress (dt.getReceiverAddress ());//地址
              expressId=dt.getExpressId ();
             sellerId=dt.getSellerId ();
-            String stradeId = "8" + dt.getDfTradeId ();
+            String stradeId = DateUtil.dateToString(new Date(),"ss") + dt.getDfTradeId ();
             bo.setTid (new Long (stradeId));//修改后的交易号
 
             DaifaOrderExample example = new DaifaOrderExample ();
@@ -420,6 +421,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
                 express.setDfTradeId (dfTradeId);
                 express.setExpressCode (vo.getExpressCode ());
                 express.setPackageName (vo.getPackageName ());
+                express.setPackageCode (vo.getPackageCode ());
+                express.setSortingCode(vo.getSortingCode());
                 express.setMarkDestination (vo.getMarkDestination ());
 
                 DaifaCallExpress dce1= daifaCallExpressMapper.selectByPrimaryKey (new Long (stradeId));

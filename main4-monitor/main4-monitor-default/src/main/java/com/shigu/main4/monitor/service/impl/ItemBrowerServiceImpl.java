@@ -156,51 +156,77 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
      */
     @Override
     public Long selItemBrower(Long itemId) {
-        if(itemId == null){
-            return 0L;
+//        if(itemId == null){
+//            return 0L;
+//        }
+//        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+//        goodsCountForsearch.setGoodsId(itemId);
+//        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+//        if (goodsCountForsearch == null) {
+//            return 0L;
+//        }
+//        Long click = goodsCountForsearch.getClick();
+//        if (click == null) {
+//            return 0L;
+//        }
+//        return click;
+        try {
+            return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+                    .setTypes("item").setSearchType(SearchType.COUNT)
+                    .setQuery(QueryBuilders.termQuery("itemId", itemId)).setSize(0)
+                    .execute().actionGet().getHits().getTotalHits();
+        } catch (Exception e) {
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(itemId);
+            goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+            Long click;
+            if (goodsCountForsearch == null) {
+                click=0L;
+            }else{
+                click = goodsCountForsearch.getClick();
+            }
+            return click;
         }
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(itemId);
-        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-        if (goodsCountForsearch == null) {
-            return 0L;
-        }
-        Long click = goodsCountForsearch.getClick();
-        if (click == null) {
-            return 0L;
-        }
-        return click;
-        //return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
-        //        .setTypes("item").setSearchType(SearchType.COUNT)
-        //        .setQuery(QueryBuilders.termQuery("itemId", itemId))
-        //        .execute().actionGet().getHits().getTotalHits();
     }
 
     @Override
     public Long selItemIP(Long itemId) {
-        if (itemId == null) {
-            return 0L;
+//        if (itemId == null) {
+//            return 0L;
+//        }
+//        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+//        goodsCountForsearch.setGoodsId(itemId);
+//        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+//        if (goodsCountForsearch == null) {
+//            return 0L;
+//        }
+//        Long clickIp = goodsCountForsearch.getClickIp();
+//        if (clickIp == null) {
+//            return 0L;
+//        }
+//        return clickIp;
+        try {
+            SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+                    .setTypes("item")
+                    .setSearchType(SearchType.COUNT)
+                    .setQuery(QueryBuilders.termQuery("itemId", itemId)).setSize(0)
+                    .addAggregation(AggregationBuilders.cardinality("countClient").field("clientMsg.clientIp"))
+                    .execute().actionGet();
+
+            Cardinality countClient = response.getAggregations().get("countClient");
+            return countClient.getValue();
+        } catch (Exception e) {
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setGoodsId(itemId);
+            goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+            Long clickIp;
+            if (goodsCountForsearch == null) {
+                return 0L;
+            }else{
+                clickIp=goodsCountForsearch.getClickIp();
+            }
+            return clickIp;
         }
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(itemId);
-        goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-        if (goodsCountForsearch == null) {
-            return 0L;
-        }
-        Long clickIp = goodsCountForsearch.getClickIp();
-        if (clickIp == null) {
-            return 0L;
-        }
-        return clickIp;
-        //SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
-        //        .setTypes("item")
-        //        .setSearchType(SearchType.COUNT)
-        //        .setQuery(QueryBuilders.termQuery("itemId", itemId))
-        //        .addAggregation(AggregationBuilders.cardinality("countClient").field("clientMsg.clientIp"))
-        //        .execute().actionGet();
-        //
-        //Cardinality countClient = response.getAggregations().get("countClient");
-        //return countClient.getValue();
     }
 
     /**

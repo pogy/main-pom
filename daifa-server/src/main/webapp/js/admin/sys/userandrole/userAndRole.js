@@ -66,10 +66,10 @@ function saveUserAndRole(){
         {"userId":userId,roleIds:roleId.join(',')},//以'，'分隔
         function(data){
             if(data.result=="success"){
-                $$.alert(data.msg);
+                alert(data.msg);
                 location.reload();
             }else{
-                $$.alert(data.msg);
+                alert(data.msg);
             }
         });
 }

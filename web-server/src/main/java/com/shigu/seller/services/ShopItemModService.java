@@ -17,6 +17,7 @@ import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.seller.vo.*;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.main4.tools.RedisIO;
@@ -79,6 +80,9 @@ public class ShopItemModService {
 
     @Autowired
     private IndexShowService indexShowService;
+
+    @Autowired
+    private ItemUpRecordService itemUpRecordService;
 
     @Autowired
     RedisIO redisIO;
@@ -407,6 +411,16 @@ public class ShopItemModService {
                 }
             }
         }
+
+        //清除上传搜索数量
+        if (goodsIdSet != null && !goodsIdList.isEmpty()) {
+            try {
+                itemUpRecordService.updateGoodsUpCountForSearchNum(goodsIdSet,0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         String result = shopsItemService.setGoodsStyle(goodsIdSet, styleId, webSite);
         if ("success".equals(result)) {
             redisIO.rpush(SHOP_STYLE_HANDLER_QUEUE_INDEX,shopId);

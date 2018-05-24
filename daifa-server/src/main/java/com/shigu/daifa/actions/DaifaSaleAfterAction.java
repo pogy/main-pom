@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class DaifaSaleAfterAction {
@@ -227,15 +229,15 @@ public class DaifaSaleAfterAction {
      * ====================================================================================
      * @方法名： childOrderInStorage
      * @user gzy 2017/10/13 13:12
-     * @功能：子单入库
+     * @功能：子单入库(作废)
      * @param: [stockCode 库存编号, childOrderId 子单id]
      * @return: net.sf.json.JSONObject
      * @exception:DaifaException
      * ====================================================================================
      *
      */
-    @RequestMapping("daifa/childOrderInStorage")
-    @ResponseBody
+//    @RequestMapping("daifa/childOrderInStorage")
+//    @ResponseBody
     public JSONObject childOrderInStorage(String stockCode,Long childOrderId) throws DaifaException {
 
         daifaSaleAfterService.childOrderInStorage(stockCode,childOrderId);
@@ -294,8 +296,19 @@ public class DaifaSaleAfterAction {
         return JsonResponseUtil.success();
     }
 
-
-
+    /**
+     * 售后订单打印标签
+     * @param childOrderIds
+     * @return
+     */
+    @RequestMapping("daifa/afterSalePrintTab")
+    @ResponseBody
+    public JSONObject afterSalePrintTab(String childOrderIds){
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<Long> oids= Arrays.stream(childOrderIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
+        return JsonResponseUtil.success().element("tabList",daifaSaleAfterService.afterSalePrintTab(oids,auth.getDaifaSellerId()));
+    }
 
 
 

@@ -2,6 +2,7 @@ package com.shigu.daifa.actions;
 
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
+import com.shigu.daifa.services.DaifaScanService;
 import com.shigu.daifa.vo.PrintPostVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DaifaScanAction {
     @Autowired
     PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    DaifaScanService daifaScanService;
     /**
      * ====================================================================================
      * @方法名： scanBarCode
@@ -87,10 +90,18 @@ public class DaifaScanAction {
     public JSONObject printSinglePost(Long sendId){
 
         PrintPostVO vo= BeanMapper.map(packDeliveryProcess.printExpress(sendId),PrintPostVO.class);
+        if(vo.getPackageCode ()==null||"".equals(vo.getPackageCode ())){
+            //查询快递
+           String packageCode= daifaScanService.queryPackageCode (vo.getDfTradeId ());
+           vo.setPackageCode (packageCode);
+        }
+
         JSONObject obj= JsonResponseUtil.success();
         obj.put("printInfo",vo);
         return obj;
     }
+
+
 
     public JSONObject setGoodsWeight(String barCode,String weight) throws DaifaException {
         Session session = SecurityUtils.getSubject().getSession();

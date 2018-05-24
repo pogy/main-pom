@@ -118,10 +118,36 @@ public interface TakeGoodsIssueProcess {
      */
     void adminRefund(List<Long> dfOrderIds,Long tid,Long refundId,Long money) throws DaifaException;
 
-
-
-
-
+    /**
+     * 单店铺拿货完成
+     * @param wholeId
+     * @param shopId
+     * @param issueIds
+     * @param idIsCheck
+     * @return
+     * @throws DaifaException
+     */
     UnComleteAllVO uncompleteAllNew(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
+    /**
+     * @警告: 请确认需求再调该接口
+     * 该操作会修改下列表为缺货状态
+     * daifa_order,daifa_ggoods_tasks,daifa_ggoods,daifa_wait_send_order,daifa_send_order
+     * @param dfOrderId
+     * @return tasksId
+     */
+    Long toNotTake(Long dfOrderId);
+
+    /**
+     * 添加操作失误
+     * @param tasksId
+     */
+    void addMistake(Long tasksId);
+
+    /**
+     * 退回金额
+     * @param workerId
+     * @param refundFee
+     */
+    void userRefundedFee(String day,Long workerId,String refundFee) throws DaifaException;
 }

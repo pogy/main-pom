@@ -1,10 +1,12 @@
 package com.shigu.seller.bo;
 
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.seller.services.DataPackageImportService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -271,15 +273,18 @@ public class GoodsOfferBO implements Serializable{
      * 转化成标准对象
      * @return
      */
-    public SynItem parseToSynItem(){
+    public SynItem parseToSynItem(DataPackageImportService dataPackageImportService){
         SynItem synItem=new SynItem();
-        synItem.setPicUrl(this.picPath);
+        synItem.setPicUrl(dataPackageImportService.banjia(picPath));
         List<String> allImgUrl=new ArrayList<>();
         if(this.picPath!=null){
-            allImgUrl.add(picPath);
+            allImgUrl.add(synItem.getPicUrl());
         }
         if(this.allimg!=null&&!"".equals(allimg)){
             List<String> images=Arrays.asList(allimg.split(","));
+            for(int i=0;i<images.size();i++){
+                images.set(i,dataPackageImportService.banjia(images.get(i)));
+            }
             allImgUrl.addAll(images);
             synItem.setImageList(allImgUrl);
         }else{
@@ -297,7 +302,12 @@ public class GoodsOfferBO implements Serializable{
         synItem.setSellPoint(this.getSellPoint());
         synItem.setNum(this.getQuantity());
         synItem.setTitle(this.getTitle());
-        synItem.setGoodsDesc(this.getDeschtml());
+        Document d=Jsoup.parse(this.getDeschtml());
+        Elements imgs=d.select("img");
+        imgs.forEach(element -> {
+            element.attr("src",dataPackageImportService.banjia(element.attr("src")));
+        });
+        synItem.setGoodsDesc(d.body().html());
         synItem.setCidAll(this.getSellerids());
         synItem.setCid(this.getCid());
         synItem.setFabric(this.getFabric());
