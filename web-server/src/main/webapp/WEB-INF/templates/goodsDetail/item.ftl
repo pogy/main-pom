@@ -26,6 +26,7 @@
 <#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+<#include "/__ftl_links__/goodsDetail__common__topGoat.ftl">
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">

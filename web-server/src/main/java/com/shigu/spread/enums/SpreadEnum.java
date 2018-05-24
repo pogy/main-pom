@@ -33,6 +33,9 @@ public enum SpreadEnum {
 
     INDEX_TOP("首页顶部男装广告", "INDEX-TOP"),
     INDEX_TOP_WOMAN("首页顶部女装广告", "INDEX-TOP-WOMAN"),
+    SHOP_DETAIL_TOP_MAN("男装店铺和详情页顶部广告","SHOP_DETAIL_TOP_MAN"),
+    SHOP_DETAIL_TOP_WOMAN("女装店铺和详情页顶部广告","SHOP_DETAIL_TOP_WOMAN"),
+
 
     LOGIN_GT("登录页", "LOGIN_GT"),
     BACK_SHOP("供应商后台", "BACK_SHOP"), BACK_MEMBER("分销商后台", "BACK_MEMBER"),
