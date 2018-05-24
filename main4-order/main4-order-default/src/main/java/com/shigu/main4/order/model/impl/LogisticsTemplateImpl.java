@@ -267,6 +267,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 .where(templateExample.createCriteria().andSenderIdEqualTo(senderId),
                         provExample.createCriteria().andProvIdEqualTo(provId)).build();
         multipleExample.setDistinct(true);
+        multipleExample.setOrderByClause("express_company.remark5 asc");
         List<PostInfoVO> postInfoVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, PostInfoVO.class);
         List<PostVO> postVOS = null;
         if (postInfoVOS != null && !postInfoVOS.isEmpty()) {
@@ -275,6 +276,10 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         if (postVOS == null) {
             postVOS = new ArrayList<>();
         }
+        List<String> postNames = BeanMapper.getFieldList(postVOS,"name",String.class);
+        List<PostVO> defaultPostVOS=defaultPost();
+        defaultPostVOS.removeIf(postVO -> postNames.contains(postVO.getName()));
+        postVOS.addAll(defaultPostVOS);
         return postVOS;
     }
 
