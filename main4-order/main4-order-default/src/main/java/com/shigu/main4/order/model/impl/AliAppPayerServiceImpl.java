@@ -54,8 +54,9 @@ public class AliAppPayerServiceImpl extends PayerServiceAble {
         }
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         model.setSubject(title);
-        model.setOutTradeNo(apply.getApplyId().toString());
-        model.setTotalAmount(String.format("%.2f", money * .01));
+        model.setOutTradeNo("xzTest"+apply.getApplyId().toString());
+//        model.setTotalAmount(String.format("%.2f", money * .01));
+        model.setTotalAmount("0.01");
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
 
         alipayRequest.setBizModel(model);//填充业务参数
@@ -101,8 +102,9 @@ public class AliAppPayerServiceImpl extends PayerServiceAble {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 
         AlipayTradeRefundModel model = new AlipayTradeRefundModel();
-        model.setOutTradeNo(orderPayApply.getApplyId().toString());
-        model.setRefundAmount(String.format("%.2f", money * .01));
+        model.setOutTradeNo("xzTest"+orderPayApply.getApplyId());
+//        model.setRefundAmount(String.format("%.2f", money * .01));
+        model.setRefundAmount("0.01");
         model.setRefundReason("正常退款");
         model.setOutRequestNo(refundNo);
 

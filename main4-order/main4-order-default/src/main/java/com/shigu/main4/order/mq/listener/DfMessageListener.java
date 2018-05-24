@@ -75,6 +75,9 @@ public class DfMessageListener implements MessageListener {
         after_sale_accept(AfterSaleAcceptMessage.class),
 
         have_time(HaveTimeMessage.class),
+
+        mark_down(MarkDownMessage.class),
+
         ;
         public final Class<?> clazz;
 
@@ -128,8 +131,24 @@ public class DfMessageListener implements MessageListener {
             case have_time:
                 haveTime(baseMessage);
                 break;
+            case mark_down:
+                makeDown(baseMessage);
+                break;
+            default:{
+                logger.info(message.getTag()+">>>>>>>>>");
+            }
+
         }
         return Action.CommitMessage;
+    }
+
+    public void makeDown(BaseMessage<MarkDownMessage> baseMessage) {
+        logger.info("soidpid>>>>>>>"+baseMessage.getData().getOrderPartitionId());
+        //更新sub_order_soidps#down_is
+        SubOrderSoidps subOrderSoidps = new SubOrderSoidps();
+        subOrderSoidps.setDownIs(true);
+        subOrderSoidps.setSoidpId(baseMessage.getData().getOrderPartitionId());
+        subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
     }
 
     public synchronized void refundAgree(BaseMessage<RefundMessage> msg) {
