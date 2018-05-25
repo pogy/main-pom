@@ -64,6 +64,8 @@ public class ConfirmOrderAction {
     private OrderOptionSafeService orderOptionSafeService;
     @Autowired
     LogisticsService logisticsService;
+
+    private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
     /**
      * 订单确认提交
      * @param request
@@ -204,9 +206,12 @@ public class ConfirmOrderAction {
     public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId,HttpSession session) throws JsonErrException, LogisticsRuleException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
-        Long freePostCost=0l;
-        if (logisticsService.isMinusFreight(ps.getUserId(),null))
-            freePostCost = otherCostVO.getPostPrice()>500?500:otherCostVO.getPostPrice();
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        Long freePostCost = 0l;
+        if (activity) {
+            if (logisticsService.isMinusFreight(ps.getUserId(), null))
+                freePostCost = otherCostVO.getPostPrice() > 500 ? 500 : otherCostVO.getPostPrice();
+        }
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
@@ -271,9 +276,12 @@ public class ConfirmOrderAction {
             throw new OrderException("订单信息错误");
         }
         Double freePostCost=0.00;
-        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId(),sessionUser.getUserId()));
-        if (logisticsService.isMinusFreight(sessionUser.getUserId(),null))
-            freePostCost = Double.valueOf(postTotalPrice)>Double.valueOf(5.00)?Double.valueOf(5.00):Double.valueOf(postTotalPrice);
+        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades, bo.getSenderId(), bo.getPostId(), sessionUser.getUserId()));
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        if (activity) {
+            if (logisticsService.isMinusFreight(sessionUser.getUserId(), null))
+                freePostCost = Double.valueOf(postTotalPrice) > Double.valueOf(5.00) ? Double.valueOf(5.00) : Double.valueOf(postTotalPrice);
+        }
         return JsonResponseUtil.success().element("postTotalPrice",postTotalPrice).element("freePostCost",freePostCost.toString());
     }
 

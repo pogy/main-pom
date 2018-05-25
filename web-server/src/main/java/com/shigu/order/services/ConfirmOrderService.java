@@ -83,10 +83,7 @@ public class ConfirmOrderService {
     @Autowired
     private ItemProductProcess itemProductProcess;
 
-    @Autowired
-    private ItemOrderMapper itemOrderMapper;
 
-    private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
 
     /**
      * 订单确认提交
