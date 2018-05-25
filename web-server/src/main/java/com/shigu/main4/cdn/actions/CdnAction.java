@@ -1266,6 +1266,36 @@ public class CdnAction {
     }
 
     /**
+     * 获取商品详情页店铺页面顶部广告
+     *
+     * @param marketId 市场id
+     * @param webSite 站点
+     * @return
+     */
+    @RequestMapping("/getShopGoodsTopGoat")
+    @ResponseBody
+    public Object getShopGoodsTopGoat(HttpServletRequest request, Long marketId,String webSite){
+        if (marketId == null) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
+        if (StringUtils.isBlank(webSite)) {
+            return JsonResponseUtil.error("非法的请求参数");
+        }
+        if (!("hz".equals(webSite))){
+            return JsonResponseUtil.success().element("topGoat",new String[0]);
+        }
+        ObjFromCache<List<ImgBannerVO>> selImgBannerTops;
+        if (marketId == 601 || marketId == 1462){
+            //详情或店铺广告数据`
+            selImgBannerTops = spreadService.selImgBanners(SpreadEnum.SHOP_DETAIL_TOP_WOMAN);
+        }else {
+            selImgBannerTops = spreadService.selImgBanners(SpreadEnum.SHOP_DETAIL_TOP_MAN);
+        }
+        return JsonResponseUtil.success().element("topGoats", selFromCache(selImgBannerTops));
+    }
+
+
+    /**
      * 获取商品详情页底部广告  固定显示5条
      *
      * @param goodsId 当前访问商品Id

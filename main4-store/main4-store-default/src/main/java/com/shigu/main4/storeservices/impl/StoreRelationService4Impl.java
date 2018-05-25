@@ -72,6 +72,7 @@ public class StoreRelationService4Impl extends ShopServiceImpl implements StoreR
         if(shiguMarket != null){
             storeRelation.setMarketName(shiguMarket.getMarketName());
         }
+        storeRelation.setMarketId(shiguShop.getMarketId());
 
         ShiguMarket shiguMarketFloor = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getFloorId(),
                 FieldUtil.codeFields("market_id,market_name"));

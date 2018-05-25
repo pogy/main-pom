@@ -24,11 +24,11 @@
             <base href="${baseUrl!}">
         </#if>
     
-    <link href="//style.571xz.com/shopItemCopy/css/shop.css?t=1516693917873" rel="stylesheet">
+    <link href="//style.571xz.com/shopItemCopy/css/shopV20180524.css?t=1516693917873" rel="stylesheet">
     
     
     <script src="//style.571xz.com/global/js/jquery.js"></script>
-    <script src="//style.571xz.com/shopItemCopy/js/shop.js?t=1516693917873"></script>
+    <script src="//style.571xz.com/shopItemCopy/js/shopV20180524.js?t=1516693917873"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -201,6 +201,12 @@ var webSite = '${webSite!}';
 /*============ xz/page#topbar END ============*/
 
 
+</script>
+
+<div class="topGoatPic">
+</div>
+<script modulepath="goodsDetail/common#topGoat">
+    var marketId = '${vo.storeRelation.marketId!}';
 </script>
 <div class="headeV1">
     <div class="layout">
