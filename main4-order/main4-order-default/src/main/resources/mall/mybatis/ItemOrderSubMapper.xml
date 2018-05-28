@@ -6,5 +6,21 @@
 		UPDATE item_order_sub set refund_money=refund_money+${money} where soid=${soid}
 	</update>
 
+	<resultMap id="orderSubMoney" type="com.shigu.main4.order.vo.OrderSubMoney">
+		<result property="num" column="num"/>
+		<result property="price" column="price"/>
+	</resultMap>
+
+	<select id="selectOrderSubByOid" resultMap="orderSubMoney">
+		SELECT num,price FROM item_order_sub WHERE oid=#{oid}
+	</select>
+
+	<select id="selectRefundByOid" resultType="java.lang.Long">
+		SELECT SUM(refund_money) AS refund_money FROM item_order_refund WHERE oid=#{oid} AND `status` = 2
+	</select>
+
+	<select id="selectUserIdByOid" resultType="java.lang.Long">
+		SELECT user_id FROM item_order WHERE oid=#{oid}
+	</select>
 
 </mapper>

@@ -5,10 +5,15 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
+import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ShiguOrderCashback;
 import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.SubOrderSoidpsExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.interfaces.ShiguOrderCashbackMapper;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
@@ -19,10 +24,13 @@ import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
+import com.shigu.main4.order.vo.OrderSubMoney;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +66,20 @@ public class DfMessageListener implements MessageListener {
 
     @Autowired
     private OrderMessageProducter orderMessageProducter;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
+
+    @Autowired
+    private XzSdkClient xzSdkClient;
+
+    @Autowired
+    private RedisIO redisIO;
+
+    private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -145,6 +167,30 @@ public class DfMessageListener implements MessageListener {
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
             if (soidps == itemOrder.subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum()) {
                 itemOrder.finished();
+            }
+            Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK,String.class));
+            if (b != null && b){
+                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
+                request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(refundinfo.getOid()));
+                request.setCashbackOrderNo(refundinfo.getOid());
+                List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(refundinfo.getOid());
+                Long money = 0l;
+                if (orderSubMoneyList!=null||orderSubMoneyList.size()>0){
+                    for (int i = 0; i <orderSubMoneyList.size() ; i++) {
+                        money = orderSubMoneyList.get(i).getNum()*orderSubMoneyList.get(i).getPrice()+money;
+                    }
+                    money = money-itemOrderSubMapper.selectRefundByOid(refundinfo.getOid());
+                }
+                request.setCashbackAmount(money/100);
+
+                ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
+                shiguOrderCashback.setOId(refundinfo.getOid());
+                shiguOrderCashback.setCashback(money/100);
+                shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
+                OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                if (resp == null || !resp.isSuccess()) {
+                    throw new RefundException("订单返现失败：oid=" + refundinfo.getOid());
+                }
             }
         } catch (PayerException | RefundException e) {
             logger.error(e.getMessage(), e);

@@ -490,4 +490,8 @@
         ) AS io
     </select>
 
+    <select id="selectUserIdByOid" resultType="java.lang.Long">
+        SELECT user_id FROM item_order WHERE oid=#{oid}
+    </select>
+
 </mapper>
