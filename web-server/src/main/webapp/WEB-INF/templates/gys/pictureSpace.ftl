@@ -14,6 +14,7 @@
 <#include "/__style_torrent__/gys__pictureSpace_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/clipboard/clipboard.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
