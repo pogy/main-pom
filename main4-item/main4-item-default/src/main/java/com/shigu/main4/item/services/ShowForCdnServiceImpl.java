@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
@@ -435,13 +436,13 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                                 }
 
                                 // color & size or normal prop dispatcher
-                                if (isSale&&(isColorProp(pid, pname) || isSizeProp(pid, pname))) {
+                                if (isSale&&(SkuCheckUtil.isColorProp(pid, pname) || SkuCheckUtil.isSizeProp(pid, pname))) {
                                     SaleProp saleProp = new SaleProp();
                                     saleProp.setPid(Long.valueOf(pid));
                                     saleProp.setVid(Long.valueOf(vid));
                                     saleProp.setPname(pname);
                                     saleProp.setValue(value);
-                                    if (isColorProp(pid, pname)) {
+                                    if (SkuCheckUtil.isColorProp(pid, pname)) {
                                         // 只有颜色属性可能带图
                                         saleProp.setImgUrl(propImgMap.get(pvid));
                                         cdnItem.getColors().add(saleProp);
@@ -470,26 +471,6 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end
             return cdnItem;
-        }
-
-        /**
-         * 判断属性是否是颜色
-         * @param colorPid pid
-         * @param name pname
-         * @return is or not
-         */
-        public boolean isColorProp(String colorPid, String name) {
-            return "1627207,".contains(colorPid) || "颜色,颜色分类".contains(name);
-        }
-
-        /**
-         * 判断属性是否是尺码
-         * @param sizePid pid
-         * @param name pname
-         * @return is or not
-         */
-        public boolean isSizeProp(String sizePid, String name) {
-            return "20509,20518,20549,122216343".contains(sizePid) || "尺寸,尺码,鞋码,参考身高".contains(name);
         }
     }
 }
