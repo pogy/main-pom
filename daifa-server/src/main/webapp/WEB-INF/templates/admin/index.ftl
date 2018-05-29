@@ -19,6 +19,18 @@
             window.open("${daifa_host}admin/printExcel.htm?buyerNick="+nick);
         }
 
+        function orderFinish(oid){
+            if (confirm("确认完结订单?")==true){
+                $.post("${daifa_host}admin/orderFinish.json",{"oid":oid},function(data){
+                    if(data.result=="success"){
+                        alert("OK");
+                        location.reload();
+                    }else{
+                        alert(data.msg);
+                    }
+                })
+            }
+        }
     </script>
 </head>
 <body>
@@ -264,6 +276,7 @@
 
                                     <#elseif order.tradeState == 2>
                                         <p>已发货</p>
+                                        <a href="javascript:void(0)" onclick="orderFinish(${order.tradeCode})"></a>
                                     </#if>
                                     <p>${order.expressName!}</p>
                                     <#if order.tradeState == 2>

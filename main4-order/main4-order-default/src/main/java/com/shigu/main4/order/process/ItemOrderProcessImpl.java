@@ -2,12 +2,15 @@ package com.shigu.main4.order.process;
 
 import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.TaobaoSessionMap;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.TbSendException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SoidsModel;
@@ -48,6 +51,17 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
 
     @Override
     public void finish(Long oid) {
+        ItemOrder order= SpringBeanFactory.getBean(ItemOrder.class,oid);
+        order.finished();
+    }
+
+    @Override
+    public void sysFinish(Long oid) throws Main4Exception {
+        ItemOrderExample example = new ItemOrderExample();
+        example.createCriteria().andSendTimeIsNotNull().andFinishTimeIsNull().andDisenableEqualTo(false).andOrderStatusEqualTo(3).andOidEqualTo(oid);
+        if(itemOrderMapper.countByExample(example)==0){
+            throw new Main4Exception("订单不符合完成要求");
+        }
         ItemOrder order= SpringBeanFactory.getBean(ItemOrder.class,oid);
         order.finished();
     }
