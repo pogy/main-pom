@@ -57,6 +57,7 @@ public class OrderReturnMoneyAction {
             json.put("userId",userId);
             json.put("orderId",shiguOrderCashback.getOId());
             json.put("cashbackRate",10);
+            json.put("result",true);
         }
         return JsonResponseUtil.success().element("data",json.toJSONString());
     }
