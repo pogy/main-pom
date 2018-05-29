@@ -78,7 +78,7 @@ public class ItemOrderImpl implements ItemOrder {
     private RedisIO redisIO;
 
     @Autowired
-    private XzSdkClient xzSdkClient;
+    private  XzSdkClient xzSdkClient;
 
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
@@ -524,4 +524,5 @@ public class ItemOrderImpl implements ItemOrder {
             redisIO.rpush(TradeCountDTO.TRADE_COUNT_REDIS_QUEUE_,tradeCountDTO);
         }
     }
+
 }
