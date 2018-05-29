@@ -122,46 +122,48 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
                     boolean flags=false;
                     try {
 
-                        File file = new File(tempDir);
-                        String[] filelist = file.list();
-                        for (int k = 0; k < filelist.length; k++) {
-
-                            if(filelist[k].endsWith(".csv")&&!filelist[k].endsWith("_new.csv")){
-                                csvname=filelist[k];
-                                csvname= csvname.substring(0, csvname.length()-4);
-                                // //System.out.println("ssss="+filelist[k]);
-                                flags=true;
-                            }
-                        }
-                        if(!flags){
-                            //不是这一层的文件夹在他的下一层
-                            File[] ffiles= file.listFiles ();
-                            for(File ffile:ffiles){
-                                if(ffile.isDirectory ()){
-                                    tempDir=ffile.getAbsolutePath ();
-                                    String[] filelist0 = ffile.list();
-                                    for (int k = 0; k < filelist0.length; k++) {
-
-                                        if(filelist0[k].endsWith(".csv")&&!filelist0[k].endsWith("_new.csv")){
-                                            csvname=filelist0[k];
-                                            csvname= csvname.substring(0, csvname.length()-4);
-
-                                            flags=true;
-                                        }
-                                    }
-                                }else{
-                                    continue;
-                                }
-                            }
-                        }
+//                        File file = new File(tempDir);
+//                        String[] filelist = file.list();
+//                        for (int k = 0; k < filelist.length; k++) {
+//                            if(filelist[k].endsWith(".csv")&&!filelist[k].endsWith("_new.csv")){
+//                                csvname=filelist[k];
+//                                csvname= csvname.substring(0, csvname.length()-4);
+//                                // //System.out.println("ssss="+filelist[k]);
+//                                flags=true;
+//                            }
+//                        }
+//                        if(!flags){
+//                            //不是这一层的文件夹在他的下一层
+//                            File[] ffiles= file.listFiles ();
+//                            for(File ffile:ffiles){
+//                                if(ffile.isDirectory ()){
+//                                    tempDir=ffile.getAbsolutePath ();
+//                                    String[] filelist0 = ffile.list();
+//                                    for (int k = 0; k < filelist0.length; k++) {
+//
+//                                        if(filelist0[k].endsWith(".csv")&&!filelist0[k].endsWith("_new.csv")){
+//                                            csvname=filelist0[k];
+//                                            csvname= csvname.substring(0, csvname.length()-4);
+//
+//                                            flags=true;
+//                                        }
+//                                    }
+//                                }else{
+//                                    continue;
+//                                }
+//                            }
+//                        }
+                        csvname = getcsvName(folder,".csv",csvname);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    String image_save_path=tempDir+"/"+csvname;
-
-                    String csvFilepath=tempDir+"/"+csvname+".csv";
-                    String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
+//                    String image_save_path=tempDir+"/"+csvname;
+                    String image_save_path=csvname;
+//                    String csvFilepath=tempDir+"/"+csvname+".csv";
+//                    String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
+                    String csvFilepath=csvname+".csv";
+                    String newcsvFilepath=csvname+"_new.csv";
                     File csvFile = new File(csvFilepath);
 //                    File newcsvFile = new File(newcsvFilepath);
 
@@ -178,7 +180,7 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
                             // //System.out.println("商品转换失败！");
                             throw new Main4Exception (packageUrl+",商品转换失败！");
                         }else{
-                            deleteFileAndFolder( temppath);
+                            delFolder( temppath);
                             return goodsList;
                         }
 
@@ -207,21 +209,25 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
                 if(!"".equals(folder)){
                     String csvname="";
                     try {
-                        File file = new File(tempDir);
-                        String[] filelist = file.list();
-                        for (int k = 0; k < filelist.length; k++) {
-
-                            if(filelist[k].endsWith(".csv")){
-                                csvname=filelist[k];
-                                csvname= csvname.substring(0, csvname.length()-4);
-                            }
-                        }
+//                        File file = new File(tempDir);
+//                        String[] filelist = file.list();
+//                        for (int k = 0; k < filelist.length; k++) {
+//
+//                            if(filelist[k].endsWith(".csv")){
+//                                csvname=filelist[k];
+//                                csvname= csvname.substring(0, csvname.length()-4);
+//                            }
+//                        }
+                        csvname = getcsvName(folder,".csv",csvname);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    String image_save_path=tempDir+"/"+csvname;
-                    String csvFilePath=tempDir+"/"+csvname+".csv";
-                    String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
+//                    String image_save_path=tempDir+"/"+csvname;
+                    String image_save_path=csvname;
+//                    String csvFilePath=tempDir+"/"+csvname+".csv";
+//                    String newcsvFilepath=tempDir+"/"+csvname+"_new.csv";
+                    String csvFilePath=csvname+".csv";
+                    String newcsvFilepath=csvname+"_new.csv";
                     File csvFile = new File(csvFilePath);
 //                    File newcsvFile = new File(newcsvFilepath);
                     if(csvFile!=null&&csvFile.exists()){
@@ -232,7 +238,7 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
                                 ////System.out.println("商品转换失败！");
                                 throw new Main4Exception (packageUrl+",商品转换失败！");
                             }else{
-                                deleteFileAndFolder( temppath);
+                                delFolder( temppath);
                                 return goodsList;
                             }
                             //}
@@ -348,5 +354,71 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
             throw new Main4Exception("数据包解析失败");
         }
         return length;
+    }
+
+    private static String getcsvName(String tempDirName, String strName,String csvname){
+        String csvnamesStr=csvname;
+        File baseDir = new File(tempDirName);       // 创建一个File对象
+        if (!baseDir.exists() || !baseDir.isDirectory()) {  // 判断目录是否存在
+            System.out.println("文件查找失败：" + tempDirName + "不是一个目录！");
+        }
+        File tempFile;
+        File[] files = baseDir.listFiles();
+        if(files.length>0){//该文件夹下没有文件，为空文件夹
+            for (int i = 0; i < files.length; i++) {
+                tempFile = files[i];
+                String tempName = tempFile.getName();
+                if(tempName.endsWith(strName)&&!tempName.endsWith("_new.csv")){
+                    csvnamesStr = tempFile.getPath().substring(0,tempFile.getPath().length()-4);
+                    System.out.println(csvnamesStr);
+                    return csvnamesStr;
+                }
+                if (tempFile.isDirectory()){
+                    csvnamesStr = getcsvName(tempFile.getPath(),strName,csvnamesStr);
+                }
+            }
+        }
+        return csvnamesStr;
+    }
+
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); //删除完里面所有内容
+            String filePath = folderPath;
+            filePath = filePath.toString();
+            java.io.File myFilePath = new java.io.File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
     }
 }
