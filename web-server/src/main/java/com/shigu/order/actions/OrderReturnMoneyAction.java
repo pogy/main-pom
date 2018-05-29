@@ -29,8 +29,7 @@ public class OrderReturnMoneyAction {
     @RequestMapping("orderCashbackSuccessNotify")
     @ResponseBody
     public JSONObject orderCashbackSuccessNotify(String data){
-        String jsonStr = Opt3Des.decryptPlainData(data);
-        JSONObject json = JSONObject.fromObject(jsonStr);
+        JSONObject json = JSONObject.fromObject(data);
         Long oid = Long.valueOf(json.get("orderId").toString());
         ShiguOrderCashback shiguOrderCashback = orderReturnMoneyService.getOrderCashback(oid);
         if (shiguOrderCashback == null)
