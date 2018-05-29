@@ -443,7 +443,9 @@ public class ItemOrderImpl implements ItemOrder {
                 for (int i = 0; i <orderSubMoneyList.size() ; i++) {
                     money = orderSubMoneyList.get(i).getNum()*orderSubMoneyList.get(i).getPrice()+money;
                 }
-                money = money-itemOrderSubMapper.selectRefundByOid(oid);
+                Long refund = itemOrderSubMapper.selectRefundByOid(oid);
+                if (refund != null||refund > 0)
+                    money = money-refund;
             }
             request.setCashbackAmount(money/100);
 
