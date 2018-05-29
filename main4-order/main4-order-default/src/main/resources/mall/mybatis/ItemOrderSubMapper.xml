@@ -20,7 +20,7 @@
 	</select>
 
 	<select id="selectUserIdByOid" resultType="java.lang.Long">
-		SELECT user_id FROM item_order WHERE oid=#{oid}
+		SELECT user_id FROM item_order WHERE oid=#{oid} AND order_status=4
 	</select>
 
 </mapper>
