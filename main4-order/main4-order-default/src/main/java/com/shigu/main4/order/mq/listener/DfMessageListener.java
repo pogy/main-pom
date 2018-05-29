@@ -67,19 +67,6 @@ public class DfMessageListener implements MessageListener {
     @Autowired
     private OrderMessageProducter orderMessageProducter;
 
-    @Autowired
-    private ItemOrderSubMapper itemOrderSubMapper;
-
-    @Autowired
-    private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
-
-    @Autowired
-    private XzSdkClient xzSdkClient;
-
-    @Autowired
-    private RedisIO redisIO;
-
-    private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -167,30 +154,6 @@ public class DfMessageListener implements MessageListener {
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
             if (soidps == itemOrder.subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum()) {
                 itemOrder.finished();
-            }
-            Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK,String.class));
-            if (b != null && b){
-                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
-                request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(refundinfo.getOid()));
-                request.setCashbackOrderNo(refundinfo.getOid());
-                List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(refundinfo.getOid());
-                Long money = 0l;
-                if (orderSubMoneyList!=null||orderSubMoneyList.size()>0){
-                    for (int i = 0; i <orderSubMoneyList.size() ; i++) {
-                        money = orderSubMoneyList.get(i).getNum()*orderSubMoneyList.get(i).getPrice()+money;
-                    }
-                    money = money-itemOrderSubMapper.selectRefundByOid(refundinfo.getOid());
-                }
-                request.setCashbackAmount(money/100);
-
-                ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
-                shiguOrderCashback.setOId(refundinfo.getOid());
-                shiguOrderCashback.setCashback(money/100);
-                shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
-                OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
-                if (resp == null || !resp.isSuccess()) {
-                    throw new RefundException("订单返现失败：oid=" + refundinfo.getOid());
-                }
             }
         } catch (PayerException | RefundException e) {
             logger.error(e.getMessage(), e);
