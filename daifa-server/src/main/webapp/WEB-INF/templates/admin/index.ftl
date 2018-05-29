@@ -276,7 +276,7 @@
 
                                     <#elseif order.tradeState == 2>
                                         <p>已发货</p>
-                                        <a href="javascript:void(0)" onclick="orderFinish(${order.tradeCode})"></a>
+                                        <a href="javascript:void(0)" onclick="orderFinish(${order.tradeCode})">完成订单</a>
                                     </#if>
                                     <p>${order.expressName!}</p>
                                     <#if order.tradeState == 2>
