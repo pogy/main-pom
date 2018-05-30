@@ -153,7 +153,7 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
 //                                }
 //                            }
 //                        }
-                        csvname = getcsvName(folder,".csv",csvname);
+                        csvname = getcsvName(tempDir,".csv",csvname);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -218,7 +218,7 @@ public class PackageTask implements Callable<List<ShiguGoodsTinyVO>> {
 //                                csvname= csvname.substring(0, csvname.length()-4);
 //                            }
 //                        }
-                        csvname = getcsvName(folder,".csv",csvname);
+                        csvname = getcsvName(tempDir,".csv",csvname);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
