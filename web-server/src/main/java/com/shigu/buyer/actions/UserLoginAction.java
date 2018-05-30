@@ -1,7 +1,6 @@
 package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
-import com.openJar.utils.JsonUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.TbUploadService;
@@ -13,6 +12,8 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
+import com.shigu.configBean.MainSiteConfig;
+import com.shigu.configBean.UploadTbConfig;
 import com.shigu.exceptions.Main4LoginException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -38,6 +39,8 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,6 +93,12 @@ public class UserLoginAction {
     @Autowired
     private TbUploadService tbUploadService;
 
+    @Autowired
+    private MainSiteConfig mainSiteConfig;
+
+    @Autowired
+    private UploadTbConfig uploadTbConfig;
+
     @RequestMapping("frameLogin")
     public String frameLogin(HttpSession session, Model model, String backUrl) {
         model.addAttribute("backUrl", backUrl);
@@ -132,12 +141,13 @@ public class UserLoginAction {
 
     /**
      * 管理登陆
-     * @param bo 登陆参数
+     *
+     * @param bo    登陆参数
      * @param model
      * @return
      */
     @RequestMapping("universalLogin")
-    public String ulogin(LoginBO bo, HttpSession session, Model model){
+    public String ulogin(LoginBO bo, HttpSession session, Model model) {
         model.addAttribute("backUrl", "http://www.571xz.com/");
         ObjFromCache<List<ImgBannerVO>> listObjFromCache = spreadService.selImgBanners(SpreadEnum.LOGIN_GT);
         List<ImgBannerVO> vos = listObjFromCache.selObj();
@@ -160,9 +170,9 @@ public class UserLoginAction {
 
     @ResponseBody
     @RequestMapping("passwordLogin")
-    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException,IOException {
+    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException, IOException {
         String url = request.getHeader("Referer");
-        if(url.equals("http://www.571xz.com/universalLogin.htm")){
+        if (url.equals("http://www.571xz.com/universalLogin.htm")) {
             Subject currentUser = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(bo.getLoginname(),
                     bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
@@ -172,11 +182,11 @@ public class UserLoginAction {
                 currentUser.login(token);
                 currentUser.hasRole(RoleEnum.STORE.getValue());
                 File file = new File("universal.log");
-                if(!file.exists()){
+                if (!file.exists()) {
                     file.createNewFile();
                 }
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file,true));
-                bufferedWriter.write(new Date()+":"+bo.getLoginname()+"登入系统操作"+bo.getUsername()+"/r/n");
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+                bufferedWriter.write(new Date() + ":" + bo.getLoginname() + "登入系统操作" + bo.getUsername() + "/r/n");
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 return JsonResponseUtil.success();
@@ -185,7 +195,7 @@ public class UserLoginAction {
                 token.clear();
                 throw new JsonErrException("账号或密码错误");
             }
-        }else {
+        } else {
             Subject currentUser = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                     bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
@@ -340,7 +350,7 @@ public class UserLoginAction {
             token.setLoginFromType(loginFromType);
             token.setRememberMe(true);
             token.setSubKey(bo.getKey());
-            return tryLogin(currentUser, token, session);
+            return "redirect:" + tryLogin(currentUser, token, session);
             // TODO: 18-4-27 原具体登陆，提取为tryLogin方法，先保留一段时间，确认稳定后移除
             //try {
             //    currentUser.login(token);
@@ -385,10 +395,12 @@ public class UserLoginAction {
             //得到回调用地址
             String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
             session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-            return "redirect:" + loginSuccessUrl(backUrl);
+            String successUrl = loginSuccessUrl(backUrl);
+            return successUrl;
         } catch (LoginAuthException e) {
+            logger.error(e);
             if (e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)) {//还没绑定星座网用户,去绑定一下
-                return "redirect:/userPhoneBind.htm";
+                return mainSiteConfig.getPhoneBindUrl();
             } else {
                 throw e;
             }
@@ -863,6 +875,7 @@ public class UserLoginAction {
         return tbUploadService.getToken(nick);
     }
 
+
     /**
      * 淘宝登陆回调
      *
@@ -874,7 +887,7 @@ public class UserLoginAction {
      * @throws Main4Exception
      */
     @RequestMapping("tbLoginBack")
-    public String tbLoginBack(LoginBackBO bo, String token, HttpServletRequest request, HttpSession session) throws Main4Exception {
+    public String tbLoginBack(LoginBackBO bo, String token, String backUrl, String state, HttpServletRequest request, HttpSession session) throws Main4Exception {
         if (StringUtils.isBlank(token)) {
             throw new Main4Exception("令牌无效");
         }
@@ -883,9 +896,12 @@ public class UserLoginAction {
             throw new Main4Exception("无效用户");
         }
         HashMap<String, String> map = new HashMap<>();
-        map.put("userName", tbUserNick);
-        map.put("key", bo.getKey());
-        map.put("type", bo.getType());
+        try {
+            map.put("userName", URLEncoder.encode(tbUserNick,"UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error("未支持UTF-8字符集，检查环境");
+        }
+        map.put("token",token);
         if (MD5Attestation.unsignParamString(map, bo.getSign())) {
             Subject subject = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken shiroToken = new CaptchaUsernamePasswordToken(
@@ -894,9 +910,38 @@ public class UserLoginAction {
             shiroToken.setLoginFromType(LoginFromType.TAOBAO);
             shiroToken.setRememberMe(true);
             shiroToken.setSubKey(bo.getKey());
-            return tryLogin(subject, shiroToken, session);
+            String targetUrl = tryLogin(subject, shiroToken, session);
+            //登陆成功
+            //还未绑定星座网帐号,去绑定星座网帐号
+            //主站url还没提取成配置文件
+//            logger.error(targetUrl);
+            //没有传回调地址时，调转默认地址
+            if (StringUtils.isBlank(backUrl)) {
+                backUrl = targetUrl;
+            }
+            session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
+            if (targetUrl.equals(mainSiteConfig.getPhoneBindUrl())) {
+                return "redirect:" + targetUrl;
+            }
+            //已经绑定星座网帐号，且登陆成功，转发给上传站，上传站自行处理
+            Long userId = ((PersonalSession) subject.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
+            String xzUserToken = tbUploadService.genXzUserIdToken(userId);
+            return "redirect:" + backUrl + "?xzUserToken=" + xzUserToken + "&state=" + state;
         }
-        return "redirect:" + memberFilter.getSuccessUrl();
+        throw new Main4Exception("登陆失败");
+    }
+
+    /**
+     * 淘宝上传站进行星座网用户id获取
+     * 根据userIdToken获取des加密过的userId
+     *
+     * @param xzUserToken 淘宝登陆成功时回调给淘宝上传站的用来获取星座网用户id的临时token
+     * @return xzUserKey des加密过的星座网userId
+     */
+    @RequestMapping("uploadTbGetXzUser")
+    @ResponseBody
+    public JSONObject uploadTbGetXzUser(String xzUserToken) {
+        return tbUploadService.uploadTbGetXzUserId(xzUserToken);
     }
 
 }
