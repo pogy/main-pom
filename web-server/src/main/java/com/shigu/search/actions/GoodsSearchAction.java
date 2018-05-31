@@ -30,10 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -288,12 +286,13 @@ public class GoodsSearchAction {
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
         //查顶级类目
         model.addAttribute("navCate", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
-        if (bo.getPid() != null) {
+        if (bo.getPid() != null) {//分类
             model.addAttribute("cates", categoryInSearchService.selSubCates(bo.getPid().toString(),
                     SearchCategory.CATEGORY, website)
             );
             model.addAttribute("styles", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.STYLE, website));
             model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT, website));
+//            model.addAttribute("custom", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.CUSTOM, website));
         }
         //查匹配店铺
         model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));

@@ -13,9 +13,9 @@ public class SearchCategorySubExample extends SgExample<SearchCategorySubExample
     public static EntityColumn subId;
     public static EntityColumn webSite;
     public static EntityColumn sort;
-    public static EntityColumn type;
     public static EntityColumn parentCateValue;
     public static EntityColumn cateValue;
+    public static EntityColumn type;
     public static EntityColumn cateName;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -26,9 +26,9 @@ public class SearchCategorySubExample extends SgExample<SearchCategorySubExample
         subId = listMap.get("subId");
         webSite = listMap.get("webSite");
         sort = listMap.get("sort");
-        type = listMap.get("type");
         parentCateValue = listMap.get("parentCateValue");
         cateValue = listMap.get("cateValue");
+        type = listMap.get("type");
         cateName = listMap.get("cateName");
         }
 
@@ -200,53 +200,6 @@ public class SearchCategorySubExample extends SgExample<SearchCategorySubExample
         public SearchCategorySubExample.Criteria andSortNotBetween(Integer value1, Integer value2) {
             return notBetween(sort, value1, value2);
         }
-        public SearchCategorySubExample.Criteria andTypeIsNull() {
-            return isNull(type);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeIsNotNull() {
-            return isNotNull(type);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeEqualTo(Integer value) {
-            return equalTo(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeNotEqualTo(Integer value) {
-            return notEqualTo(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeGreaterThan(Integer value) {
-            return greaterThan(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeLessThan(Integer value) {
-            return lessThan(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(type, value);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeIn(List<Integer> values) {
-            return in(type, values);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeNotIn(List<Integer> values) {
-            return notIn(type, values);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeBetween(Integer value1, Integer value2) {
-            return between(type, value1, value2);
-        }
-
-        public SearchCategorySubExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            return notBetween(type, value1, value2);
-        }
         public SearchCategorySubExample.Criteria andParentCateValueIsNull() {
             return isNull(parentCateValue);
         }
@@ -356,6 +309,53 @@ public class SearchCategorySubExample extends SgExample<SearchCategorySubExample
 
         public SearchCategorySubExample.Criteria andCateValueNotBetween(String value1, String value2) {
             return notBetween(cateValue, value1, value2);
+        }
+        public SearchCategorySubExample.Criteria andTypeIsNull() {
+            return isNull(type);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
+        }
+
+        public SearchCategorySubExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
         public SearchCategorySubExample.Criteria andCateNameIsNull() {
             return isNull(cateName);
