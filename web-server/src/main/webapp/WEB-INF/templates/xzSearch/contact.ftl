@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__contact_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__contact_js.ftl">
@@ -27,7 +27,7 @@
 <div class="contactBanner pr">
     <div class="imgBox">
         <div class="imgInsertBox">
-            <img src="http://style.571xz.com/v6/xzSearch/css/img/contact/banner.png">
+            <img src="//style.571xz.com/v6/xzSearch/css/img/contact/banner.png">
         </div>
     </div>
     <div class="contactDesc pa">
@@ -41,7 +41,7 @@
             <div class="linkBox linkQQ">
                 <h3 class="title">官方QQ</h3>
                 <p class="desc">4000761116</p>
-                <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116" class="linkBtn">
+                <a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=4000761116&amp;aty=0&amp;a=0&amp;curl=&amp;ty=1" class="linkBtn">
                     <i class="icon-s-qq"></i>
                     在线咨询
                 </a>
@@ -97,20 +97,24 @@
 <div class="otherSelect">
    <h3 class="title">其他联系方式</h3>
    <div class="contactList">
-       <ul class="listBar clearfix">
-           <li data-item="addressBox">总部地址</li>
-           <li data-item="wechatBox" class="selected">官方微信</li>
+       <ul class="listBar clearfix none">
+           <li data-item="addressBox" class="selected">总部地址</li>
+           <!--<li data-item="wechatBox">官方微信</li>-->
        </ul>
-       <div class="addressBox showBox">
-           <p>浙江省杭州市上城区清江路136号</p>
-           <div id="dituContent"></div>
-       </div>
-       <div class="wechatBox showBox">
-           <p>关注公众号</p>
-           <img src="http://style.571xz.com/v6/xzSearch/css/img/contact/erweima.png">
+       <div class="contactBox">
+           <div class="addressBox fl">
+               <p>地址：浙江省杭州市上城区清江路136号</p>
+               <div id="dituContent"></div>
+           </div>
+           <div class="wechatBox fr">
+               <p>关注公众号</p>
+               <img src="//style.571xz.com/v6/xzSearch/css/img/contact/erweima.png">
+           </div>
        </div>
    </div>
 </div>
-<script src="http://api.map.baidu.com/api?key=&amp;v=1.1&amp;services=true"></script>
+<script src="//api.map.baidu.com/api?key=&amp;v=1.1&amp;services=true"></script>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

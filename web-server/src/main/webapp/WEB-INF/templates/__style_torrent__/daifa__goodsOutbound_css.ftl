@@ -1,1 +1,1 @@
-<link href="http://style.571xz.com/v6/daifa/css/goodsOutbound_v20171208_181428.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/daifa/css/goodsOutbound_v20180315_144554.css" rel="stylesheet">

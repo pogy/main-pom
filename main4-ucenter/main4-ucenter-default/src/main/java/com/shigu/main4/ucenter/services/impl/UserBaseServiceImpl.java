@@ -218,8 +218,38 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         ps.getOtherPlatform().put(OtherPlatformEnum.MORE_ORDER.getValue(),isMoreOrder);
         ps.getOtherPlatform().put(OtherPlatformEnum.MEMBER_VIP.getValue(),isMemberVip(memberUserSub.getUserId()));
+        // 摄影基地认证非强关联
+        try{
+            ps.getOtherPlatform().put(OtherPlatformEnum.PHOTO_AUTH.getValue(), getPhotoUserType(memberUserSub.getUserId()));
+        } catch (Exception ignore) {
+
+        }
         return ps;
     }
+
+    private Integer getPhotoUserType(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        MemberLicense photoAuthTypeLicense = new MemberLicense();
+        photoAuthTypeLicense.setUserId(userId);
+        //摄影基地认证授权
+        photoAuthTypeLicense.setLicenseType(8);
+        photoAuthTypeLicense = memberLicenseMapper.selectOne(photoAuthTypeLicense);
+        if (photoAuthTypeLicense == null) {
+            return null;
+        }
+        String photoAuthTypeStr = photoAuthTypeLicense.getContext();
+        if (photoAuthTypeStr == null) {
+            return null;
+        }
+        try {
+            return Integer.valueOf(photoAuthTypeStr);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     /**
      * 按用户Id查询密码密文
      * @param userId 不能为空

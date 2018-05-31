@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>确认订单 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/order__common_css.ftl">
 <#include "/__style_torrent__/order__confirmOrder_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -32,7 +32,7 @@
 <div class="radioList marBottom deliMethod">
     <h3 class="fs14 yahei">
         发货方式
-        <span>星帮代发是指从档口帮您拿到货物并且打包，送货到物流公司！</span>
+        <span>星座网代发是指从档口帮您拿到货物并且打包，送货到物流公司！</span>
     </h3>
     <div class="choiceBox clearfix">
         <ul>
@@ -266,7 +266,7 @@ var code = '${code!}'
                 <span class="orderStore">档口：${order.marketName!}  ${order.storeNum!}</span>
 <#list [{"id":order.imQq}] as $it>
 <#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list>
 <#list [{"id":order.imWw}] as $it>
@@ -405,6 +405,10 @@ var code = '${code!}'
                     <span>运费总计：</span>
                     <em class="fs14 yahei">&yen;<span id="postPrice">0.00</span></em>
                 </li>
+                <li class="freePostBox">
+                    <span>邮费已减免：</span>
+                    <em class="fs14 yahei fcF40">&yen;-<span class="freePostCost">0.00</span></em>
+                </li>
                 <li>
                     <span>服务费总计：</span>
                     <em class="fs14 yahei">&yen;<span id="servicePrice">0.00</span></em>
@@ -454,5 +458,7 @@ var code = '${code!}'
     </div>
 </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

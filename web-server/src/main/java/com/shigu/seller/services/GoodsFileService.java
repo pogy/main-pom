@@ -132,8 +132,13 @@ public class GoodsFileService extends OssIO {
         GoodsFileVO fileVO=new GoodsFileVO();
         fileVO.setFileId(fileId);
         fileVO.setFileType("picBkg");
+        String tmpId=fileId.toLowerCase();
         if (fileId.endsWith(".zip") || fileId.endsWith(".7z") || fileId.endsWith(".rar") ) {
             fileVO.setFileType("picBkg");
+        } else if (tmpId.endsWith(".jpg") || tmpId.endsWith(".jpeg") || tmpId.endsWith(".bmp") ||
+                tmpId.endsWith(".png") || tmpId.endsWith(".webp") || tmpId.endsWith(".gif") ||
+                tmpId.endsWith(".tiff") || tmpId.endsWith(".tga") || tmpId.endsWith(".ico")) {
+            fileVO.setFileType("img");
         } else if(fileId.endsWith("/")) {
             fileVO.setFileType("folder");
         } else {
@@ -184,14 +189,18 @@ public class GoodsFileService extends OssIO {
                 continue;
             }
 
-            if (item.getFileId().endsWith(".zip") || item.getFileId().endsWith(".7z") || item.getFileId().endsWith(".rar") ) {
+            String tmpId=item.getFileId().toLowerCase();
+            if (tmpId.endsWith(".zip") || tmpId.endsWith(".7z") || tmpId.endsWith(".rar")) {
                 item.setFileType("picBkg");
-            } else if(item.getFileId().endsWith("/")) {
+            } else if (tmpId.endsWith(".jpg") || tmpId.endsWith(".jpeg") || tmpId.endsWith(".bmp") ||
+                    tmpId.endsWith(".png") || tmpId.endsWith(".webp") || tmpId.endsWith(".gif") ||
+                    tmpId.endsWith(".tiff") || tmpId.endsWith(".tga") || tmpId.endsWith(".ico")) {
+                item.setFileType("img");
+            } else if (item.getFileId().endsWith("/")) {
                 item.setFileType("folder");
             } else {
                 item.setFileType("other");
             }
-
             double fileSize = Double.parseDouble(item.getFileSize());
             BeanMapper.map(sizeparseToShow(fileSize),item);
             newFiles.add(item);

@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__bqsqIndex_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -29,7 +29,7 @@
 <div class="banner yahei">
     <div class="layout pr">
         <h2></h2>
-        <a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank" class="consultBtn fs16 tac">立即咨询</a>
+        <a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank" class="consultBtn fs16 tac">立即咨询</a>
 <div class="consultForm pa">
     <div class="pr">
 <#list [{"name":"type"}] as $it>
@@ -79,8 +79,8 @@
     <div class="contactBox">
         <h3 class="fs12 tac">有疑问可以点击</h3>
         <ul>
-            <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a></li>
-            <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a></li>
+            <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a></li>
+            <li><a href="//wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a></li>
             <li><i class="icon-s-tel"></i><span>400-076-1116</span></li>
         </ul>
     </div>
@@ -95,7 +95,7 @@
     <div class="registList">
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark1.jpg">
+                    <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/trademark1.jpg">
                     <h3>普通注册</h3>
                     <p class="fs16 fc9">1288元/件</p>
                 </div>
@@ -108,7 +108,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark2.jpg">
+                    <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/trademark2.jpg">
                     <h3>加急注册</h3>
                     <p class="fs16 fc9">1398元/件</p>
                 </div>
@@ -121,7 +121,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark3.jpg">
+                    <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/trademark3.jpg">
                     <h3>担保注册</h3>
                     <p class="fs16 fc9">1680元/件</p>
                 </div>
@@ -134,7 +134,7 @@
             </div>
             <div class="registItem">
                 <div class="registDefault">
-                    <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/trademark4.jpg">
+                    <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/trademark4.jpg">
                     <h3>双享注册</h3>
                     <p class="fs16 fc9">1600元/件</p>
                 </div>
@@ -156,7 +156,7 @@
         <div class="registList">
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright1.jpg">
+                        <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/copyright1.jpg">
                         <h3>普通登记</h3>
                         <p class="fs16 fc9">800元/件</p>
                     </div>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright2.jpg">
+                        <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/copyright2.jpg">
                         <h3>加急登记</h3>
                         <p class="fs16 fc9">1000元/件</p>
                     </div>
@@ -182,7 +182,7 @@
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright3.jpg">
+                        <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/copyright3.jpg">
                         <h3>外观专利</h3>
                         <p class="fs16 fc9">1300元/件</p>
                     </div>
@@ -195,7 +195,7 @@
                 </div>
                 <div class="registItem">
                     <div class="registDefault">
-                        <img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/copyright4.jpg">
+                        <img src="//style.571xz.com/v6/xzSearch/css/img/trademark/copyright4.jpg">
                         <h3>设计稿作品</h3>
                         <p class="fs16 fc9">898元/件</p>
                     </div>
@@ -216,21 +216,23 @@
     </div>
     <div class="caseList">
         <ul>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case1.jpg"></li>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case2.jpg"></li>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case3.jpg"></li>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case4.jpg"></li>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case5.jpg"></li>
-               <li><img src="http://style.571xz.com/v6/xzSearch/css/img/trademark/case6.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case1.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case2.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case3.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case4.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case5.jpg"></li>
+               <li><img src="//style.571xz.com/v6/xzSearch/css/img/trademark/case6.jpg"></li>
         </ul>
     </div>
 </div>
 <div class="bottomContact yahei">
     <ul>
-        <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a><em></em></li>
-        <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a><em></em></li>
+        <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a><em></em></li>
+        <li><a href="//wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a><em></em></li>
         <li><i class="icon-s-tel"></i><span>400-076-1116</span></li>
     </ul>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

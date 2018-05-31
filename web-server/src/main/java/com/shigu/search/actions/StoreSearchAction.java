@@ -1,6 +1,7 @@
 package com.shigu.search.actions;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.services.StoreSelFromEsService;
@@ -24,6 +25,9 @@ public class StoreSearchAction {
 
     @Autowired
     CategoryInSearchService categoryInSearchService;
+
+    @Autowired
+    SearchCategoryService searchCategoryService;
     /**
      * 档口搜索
      * @return
@@ -43,6 +47,7 @@ public class StoreSearchAction {
         model.addAttribute("storelist",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite",bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         if ("kx".equalsIgnoreCase(bo.getWebSite())) {
             return "xieSearch/storenum";
         } else {

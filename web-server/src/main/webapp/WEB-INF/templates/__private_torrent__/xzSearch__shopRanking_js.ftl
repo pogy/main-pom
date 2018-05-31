@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v4/xzSearch/js/shopRanking_v20170927_095223.js"></script>
+<script src="//style.571xz.com/v4/xzSearch/js/shopRanking_v20170927_095223.js"></script>

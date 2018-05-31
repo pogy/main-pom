@@ -1189,7 +1189,7 @@ public class ShopAction {
     public String shiguStoreerjiyuming(String domain, HttpSession session, Model model) {
         ShopSession shopSession = getShopSession(session);
         String oldDomain = shopBaseService.selDomain(shopSession.getShopId());
-        if(oldDomain.equals(domain)){
+        if(domain==null||domain.equals(oldDomain)){
             model.addAttribute("domain",oldDomain);
         } else {
             if (StringUtils.isBlank(domain) || isContainChinese(domain)) {

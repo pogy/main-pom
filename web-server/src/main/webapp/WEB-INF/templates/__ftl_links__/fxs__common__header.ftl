@@ -1,7 +1,7 @@
 <div class="header">
     <div class="layout">
-        <a href="http://www.571xz.com" class="fl">
-            <img src="http://style.571xz.com/v6/common/css/img/xz/whiteLogo.png" width="168" height="28">
+        <a href="//www.571xz.com" class="fl">
+            <img src="//style.571xz.com/v6/common/css/img/xz/whiteLogo.png" width="168" height="28">
         </a>
         <ul class="fl fs16 yahei clearfix">
             <li><a href="/member/index.htm"  <#if $pageid == 'memberfxs' || $pageid == 'index'>class="selected"</#if>>首页</a></li>

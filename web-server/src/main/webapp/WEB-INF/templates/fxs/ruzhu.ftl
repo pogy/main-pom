@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__ruzhu_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -93,7 +93,7 @@
                 <#if tbNick??>
                     ${tbNick!}
                 <#else>
-                    您还未绑定淘宝，<a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http%3A%2F%2Fwww.571xz.com%2Fruzhu.htm" target="_blank" class="red">立即绑定</a>
+                    您还未绑定淘宝，<a href="//www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http%3A%2F%2Fwww.571xz.com%2Fruzhu.htm" target="_blank" class="red">立即绑定</a>
                 </#if>
             </span>
             <input name="tbNick" type="hidden" value="${tbNick!}">
@@ -324,4 +324,6 @@
 </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

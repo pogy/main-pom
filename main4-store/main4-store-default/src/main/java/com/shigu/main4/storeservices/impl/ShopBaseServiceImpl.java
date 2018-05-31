@@ -174,7 +174,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         }
         Cache cache = cacheManager.getCache("domainByShopIdCache");
         String domain=cache.get(shopId, String.class);
-        if(domain!=null){
+        if(StringUtils.isNotBlank(domain)){
             return domain;
         }
         ShiguShopExample example = new ShiguShopExample();
@@ -184,9 +184,10 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             return null;
         }
         ShiguShop shiguShop = shiguShopList.get(0);
-        if(shiguShop.getDomain()!=null){
-            cache.put(shopId,shiguShop.getDomain());
+        if(StringUtils.isBlank(shiguShop.getDomain())){
+            return null;
         }
+        cache.put(shopId,shiguShop.getDomain());
         return shiguShop.getDomain();
     }
 

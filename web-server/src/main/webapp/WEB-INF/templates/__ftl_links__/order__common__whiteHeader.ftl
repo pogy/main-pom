@@ -1,7 +1,7 @@
 <div class="whiteHeader layout">
     <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" width="168" height="30">
+        <a href="//www.571xz.com">
+            <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" width="168" height="30">
         </a>
         <em class="yahei">${headerTitle!}</em>
     </div>

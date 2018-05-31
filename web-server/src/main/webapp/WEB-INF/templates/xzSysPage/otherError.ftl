@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSysPage__common_css.ftl">
 <#include "/__style_torrent__/xzSysPage__otherError_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSysPage__otherError_js.ftl">
@@ -23,8 +23,8 @@
 <div class="header">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
             </a>
         </div>
     </div>
@@ -38,5 +38,7 @@
     </#if>
     <p class="tac"><a class="jumpUrl fs14">返回上一级</a></p>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

@@ -1,12 +1,14 @@
 package com.shigu.admin.actions;
 
 import com.shigu.admin.services.AdminOrderService;
-import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.services.DaifaAllOrderIndexService;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.order.process.ItemOrderProcess;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,6 +38,8 @@ import java.util.concurrent.ExecutionException;
 public class AdminOrderAction {
 
     private DaifaAllOrderIndexService daifaAllOrderIndexService;
+    @Autowired
+    ItemOrderProcess itemOrderProcess;
     @Autowired
     public void setDaifaAllOrderIndexService(DaifaAllOrderIndexService daifaAllOrderIndexService) {
         this.daifaAllOrderIndexService = daifaAllOrderIndexService;
@@ -70,5 +75,12 @@ public class AdminOrderAction {
         }
         adminOrderService.pushExcel(response,buyerNick);
         return null;
+    }
+
+    @RequestMapping("admin/orderFinish")
+    @ResponseBody
+    public JSONObject ent(Long oid) throws Main4Exception {
+        itemOrderProcess.sysFinish(oid);
+        return JsonResponseUtil.success();
     }
 }

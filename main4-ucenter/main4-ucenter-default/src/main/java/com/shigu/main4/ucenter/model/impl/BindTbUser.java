@@ -65,7 +65,7 @@ public class BindTbUser implements BindOuterRdUser {
 //                    shiguShop.setUserId(license.getUserId());
 //                    shiguShop.setShopStatus(0);
                 if (shiguShopMapper.countByExample(shopExample) > 0)
-                    throw new Main4Exception("该账号不符合账号准入机制");
+                    throw new Main4Exception("该手机号已绑定过档口");
             }
         }
     }

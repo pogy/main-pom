@@ -185,6 +185,9 @@ public class GoodsSearchService {
             case "ss":break;
             case "jx":break;
             case "gz":break;
+            case "qz":{
+                pEnum=SpreadEnum.QZ_MAN_GOODS_RIGHT;break;
+            }
         }
         return pEnum;
     }

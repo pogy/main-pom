@@ -172,6 +172,31 @@ public class OssIO {
         return totalSize;
     }
 
+    /**
+     * 获取文件夹下的所有文件大小总合
+     * @param filePath
+     * @return
+     */
+    public Long getFileAllSizeInfo(String filePath){
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        Long totalSize = 0L;
+        if(filePath.endsWith("/")) {//目录
+            ListObjectsRequest listObjectsRequest = new ListObjectsRequest(bucketName);
+            // 列出fun目录下的所有文件和文件夹
+            listObjectsRequest.setPrefix(filePath);
+            ObjectListing objectListing = ossClient.listObjects(listObjectsRequest);
+            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                totalSize += objectSummary.getSize();
+            }
+        } else {//单个文件
+            OSSObject ossObject = ossClient.getObject(bucketName, filePath);
+            ObjectMetadata metadata = ossObject.getObjectMetadata();
+            totalSize += metadata.getContentLength();
+        }
+
+        return totalSize;
+    }
+
 
     /**
      * 删除一个文件

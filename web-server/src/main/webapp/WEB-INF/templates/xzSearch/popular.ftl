@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__popular_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__popular_js.ftl">
@@ -46,10 +46,10 @@
                     <ul class="clearfix">
                         <#list item.goodsList as goods>
                             <li class="goodsItem" >
-                                <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
+                                <a href="//www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
                                     <img src="${goods.imgSrc!}_300x300.jpg" alt="${goods.title!}" >
                                 </a>
-                                <h4 class="title"><a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
+                                <h4 class="title"><a href="//www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
                                 <div class="goodsInfo clearfix pr fcF40">
                                     <span class="goodsPrice"><i>&yen;</i>${goods.piPriceString!}</span>
                                     <#if goods.shStatus == 0>
@@ -63,8 +63,8 @@
                                     </#if>
                                 </div>
                                 <div class="otherOpe clearfix">
-                                    <a class="goodAddr text-999" href="http://www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}">${goods.marketName!} ${goods.shopNum!}</a>
-                                    <a class="oneKeyUp" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}">一键上传 ></a>
+                                    <a class="goodAddr text-999" href="//www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}">${goods.marketName!} ${goods.shopNum!}</a>
+                                    <a class="oneKeyUp" href="//www.571xz.com/item.htm?id=${goods.goodsId!}">一键上传 ></a>
                                 </div>
                             </li>
                         </#list>
@@ -80,5 +80,7 @@
     </div>
     <div class="toTop">返回顶部<i class="topRow"></i></div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

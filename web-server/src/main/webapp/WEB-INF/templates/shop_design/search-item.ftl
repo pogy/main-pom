@@ -1,6 +1,6 @@
 <div class="J_TModule clearfix ui-droppable">
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/common/page-link.css?t=20180131" />
-    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/common/page-link.css?t=20180131" />
+    <script type="text/javascript" src="//www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
 
     <div class="js-module" data-not-edit="" data-not-del="">
         <#assign sortparam="id="+shop.shopId/>
@@ -274,11 +274,11 @@
                         </div>
 
                         <div class="btnview">
-                            <a href="http://upload.571xz.com/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
+                            <a href="//upload.571xz.com/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
                                 <i></i>
                                 淘宝
                             </a>
-                            <a href="http://1688.571xz.com/offer/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
+                            <a href="//1688.571xz.com/offer/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
                                 <i></i>
                                 阿里
                             </a>
@@ -291,7 +291,7 @@
                 </div>
             </#list>
             <#else>
-                <div style="background: url(http://style.571xz.com/xz/css/img/ku.png) no-repeat center 70px; padding: 200px 0">
+                <div style="background: url(//style.571xz.com/xz/css/img/ku.png) no-repeat center 70px; padding: 200px 0">
                     <p style="font-size: 18px; text-align: center;">Sorry, 未查询到相应商品~</p>
                 </div>
             </#if>

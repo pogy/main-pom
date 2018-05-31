@@ -1,4 +1,4 @@
-<meta http-equiv='refresh' content='2;url=http://www.571xz.com'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<meta http-equiv='refresh' content='2;url=//www.571xz.com'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>
 
 <title>四季星座网</title>
@@ -21,7 +21,7 @@
     <div class="title">系统提示</div>
     <div class="errTxtArea">
         <p class="txt_title"><span id="LabelText"><#if errmsg??>${errmsg}<#else>错误页面</#if></span></p></div><div class="errBtmArea">
-    <input type="button" class="btnFn1" value="返回首页" onclick="location.href=&#39;http://www.571xz.com/&#39;">
+    <input type="button" class="btnFn1" value="返回首页" onclick="location.href=&#39;//www.571xz.com/&#39;">
 </div>
 </div>
 </body>

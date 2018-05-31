@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguFlickrMapper" >
+    <select id="countFlickrPicture" resultType="java.lang.Integer">
+        select count(1) from shigu_flickr_picture sfp where sfp.f_id=#{fId} AND sfp.pic_status=#{status} GROUP BY sfp.f_id
+    </select>
+
+    <resultMap id="Flickr" type="com.shigu.main4.vo.FlickrShow">
+        <id property="fId" column="f_id"/>
+        <result property="name" column="f_name"/>
+        <result property="cover" column="f_cover"/>
+        <result property="number" column="count(1)"/>
+        <result property="createTime" column="create_time"/>
+        <result property="clicks" column="clicks"/>
+    </resultMap>
+    <select id="selectFlickrByShop" resultMap="Flickr">
+        select sf.f_name,sf.f_id,sf.create_time,sf.f_cover,sf.clicks,count(1) from shigu_flickr sf LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id
+        where
+        <if test="cId!=null">
+            sf.c_id=#{cId} AND
+        </if>
+        <if test="shopId!=null">
+            sf.store_id=#{shopId} AND
+        </if>
+        <if test="webSite!=null and webSite!=''">
+            sf.web_site=#{webSite} AND
+        </if>
+        sf.f_status=#{status} AND sfp.pic_status=1 GROUP BY sf.f_id LIMIT #{start}, #{size}
+    </select>
+
+    <resultMap id="Flickrshow" type="com.shigu.main4.vo.FlickrHomeVo">
+        <id column="f_id" property="id"/>
+        <result column="f_name" property="title"/>
+        <result column="create_time" property="created"/>
+        <result column="f_cover" property="cover"/>
+        <result column="clicks" property="readCount"/>
+        <result column="count(1)" property="picCount"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="shop_num" property="shopNo"/>
+        <result column="market_name" property="marketName"/>
+    </resultMap>
+    <select id="selectFlickrByCategory" resultMap="Flickrshow">
+        select sf.f_name,sf.f_id,DATE_FORMAT(sf.create_time,'%Y-%m-%d') AS create_time,sf.f_cover,sf.clicks,count(1),ss.shop_id,ss.shop_num,sm.market_name
+        from shigu_flickr sf LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id , (SELECT shop_id,shop_num,market_id FROM shigu_shop) ss ,
+        (SELECT market_id,market_name FROM shigu_market) sm
+        where
+        <if test="cId!=null">
+            sf.c_id=#{cId} AND
+        </if>
+        <if test="webSite!=null and webSite!=''">
+            sf.web_site=#{webSite} AND
+        </if>
+        sf.store_id=ss.shop_id AND sm.market_id=ss.market_id AND sfp.pic_status=1 AND sf.f_cover != '' AND sf.f_status=#{status} GROUP BY sf.f_id LIMIT #{start}, #{size}
+    </select>
+
+    <resultMap id="FlickrDetails" type="com.shigu.main4.vo.FlickrDetails">
+        <id property="fId" column="f_id"/>
+        <result property="name" column="f_name"/>
+        <result property="desc" column="f_desc"/>
+        <result property="number" column="number"/>
+        <result property="picUrls" column="urls"/>
+        <result property="storeId" column="store_id"/>
+    </resultMap>
+    <select id="selectFlickrPictureByfId" resultMap="FlickrDetails">
+        SELECT sf.f_id,sf.store_id,sf.f_id,sf.f_name,COUNT(sfp.pic_url) AS number,sf.f_desc,GROUP_CONCAT(sfp.pic_url) AS urls
+        FROM shigu_flickr AS sf LEFT JOIN shigu_flickr_picture AS sfp ON sf.f_id=sfp.f_id
+        WHERE
+        <if test="fId!=null">
+        sf.f_id=#{fId} AND
+        </if>
+        sf.f_status=#{status}
+    </select>
+
+    <select id="countFlickr" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM shigu_flickr WHERE f_status=#{status}
+    </select>
+
+    <select id="selectPicTwo" resultType="java.lang.String">
+        SELECT pic_url FROM shigu_flickr_picture WHERE f_id=#{fId} AND pic_status=#{status} LIMIT 2
+    </select>
+</mapper>

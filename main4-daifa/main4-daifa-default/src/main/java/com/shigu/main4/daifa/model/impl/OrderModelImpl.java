@@ -15,6 +15,7 @@ import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.utils.*;
 import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
@@ -75,6 +76,8 @@ public class OrderModelImpl implements OrderModel {
 
     @Autowired
     private DaifaListDealUtil daifaListDealUtil;
+    @Autowired
+    PackDeliveryProcess packDeliveryProcess;
     @Autowired
     private MQUtil mqUtil;
     @Value("${MQ_topic}")
@@ -488,7 +491,7 @@ public class OrderModelImpl implements OrderModel {
      * @param refundId
      * @param msg
      */
-    public void sendRefundMq(String refundId,String msg){
+    private void sendRefundMq(String refundId, String msg){
         JSONObject obj=new JSONObject();
         if(msg==null){
             JSONObject o1=new JSONObject();
@@ -503,6 +506,12 @@ public class OrderModelImpl implements OrderModel {
         mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageKey()+refundId,
                 DaifaSendMqEnum.refund.getMessageTag(),
                 obj.toString());
+
+        //判断当前订单是否未发货且处于可发货状态,如果是,则尝试获取快递单号
+        try {
+            packDeliveryProcess.queryExpressCode(tid);
+        } catch (DaifaException ignored) {
+        }
     }
 
     /**

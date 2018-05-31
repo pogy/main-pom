@@ -15,7 +15,7 @@ public class CustomModule extends TitleShowModule {
 
     public String getContent() {
         if (content != null) {
-            content=content.replace("网商园","").replace("wsy.com","");
+            content=content.replaceAll("网商园","").replaceAll("(?i)wsy.com","").replaceAll("(?i)wsy","");
         }
         return content;
     }

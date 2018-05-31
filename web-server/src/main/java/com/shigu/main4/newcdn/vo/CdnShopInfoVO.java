@@ -15,6 +15,10 @@ public class CdnShopInfoVO {
      */
     private String shopNo;
     /**
+     * 市场ID
+     */
+    private Long marketId;
+    /**
      * 市场名
      */
     private String marketName;
@@ -70,6 +74,14 @@ public class CdnShopInfoVO {
      * 店铺类型
      */
     private Integer type;
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
 
     /**
      * 获取 档口ID

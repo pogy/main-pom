@@ -5,6 +5,9 @@ import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.MyOrderVO;
+import com.shigu.seller.vo.DfGoodsVo;
+import com.shigu.seller.vo.DfOrderVo;
+import com.shigu.seller.vo.OrdersVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -38,4 +41,12 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
      * @return
      */
     List<MyOrderVO> selectMyOrderList(@Param("userId") Long userId, @Param("bo") OrderBO bo,@Param("startIndex") Integer startIndex,@Param("endIndex") Integer endIndex);
+
+    List<OrdersVo> getDropShippingOrder(@Param("shopId") Long shopId, @Param("oid") Long oid, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
+    Integer getDropShippingOrderCount(@Param("shopId") Long shopId, @Param("oid") Long oid, @Param("goodsNo") String goodsNo);
+    List<DfGoodsVo> getDropShippingGoods(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
+    Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
+
+    Long selectUserIdByOid(@Param("oid") Long oid);
+
 }

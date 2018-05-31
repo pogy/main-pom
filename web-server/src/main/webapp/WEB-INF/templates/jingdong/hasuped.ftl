@@ -19,7 +19,7 @@
     <p><a href="/publish.htm?id=${goodsId}&yesrepeat=1" class="sc">继续上传</a><a href="javascript:window.opener=null;window.open(&#39;&#39;,&#39;_self&#39;);window.close();" class="close">关闭页面</a></p>
 </div>
 <div style="display:none">
-    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255319538'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1255319538' type='text/javascript'%3E%3C/script%3E"));</script>
-    <script src="http://s6.cnzz.com/stat.php?id=1697486&amp;web_id=1697486" language="JavaScript"></script>
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " //");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255319538'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1255319538' type='text/javascript'%3E%3C/script%3E"));</script>
+    <script src="//s6.cnzz.com/stat.php?id=1697486&amp;web_id=1697486" language="JavaScript"></script>
 </div>
 </body></html>

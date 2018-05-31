@@ -2,6 +2,7 @@ package com.shigu.jd.api.service;
 
 import com.jd.open.api.sdk.JdException;
 import com.jd.open.api.sdk.domain.category.Category;
+import com.jd.open.api.sdk.domain.list.CategoryAttrReadService.CategoryAttrJos;
 import com.jd.open.api.sdk.domain.list.CategoryAttrValueReadService.CategoryAttrValue;
 import com.jd.open.api.sdk.domain.list.CategoryReadService.Feature;
 import com.jd.open.api.sdk.domain.sellercat.ShopCategory;
@@ -21,6 +22,7 @@ import com.opentae.data.jd.interfaces.JdPropValueMapper;
 import com.opentae.data.jd.interfaces.JdShopCategoryMapper;
 import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
+import com.shigu.jd.mapper.beans.*;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -228,6 +230,67 @@ public class JdCategoryService {
         }
         return BeanMapper.mapList(brandList, JdVenderBrandPubInfo.class);
     }
+
+    /**
+     * 京东 获取类目属性列表
+     * 属性类型:1.关键属性 2.不变属性 3.可变属性 4.销售属性
+     * @param jdUid
+     * @throws JdException
+     */
+    public List<JdCategoryAttrJosVO> getJdCategoryAttrJos(Long jdUid, Long cid, Integer type) throws OtherCustomException, JdAuthOverdueException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(jdUid);
+        CategoryReadFindAttrsByCategoryIdJosRequest request = new CategoryReadFindAttrsByCategoryIdJosRequest();
+        request.setCid(cid);
+        request.setAttributeType(type);
+        CategoryReadFindAttrsByCategoryIdJosResponse response = jdClientService.execute(request,authedInfo.getAccessToken());
+        List<CategoryAttrJos> shopCatList = response.getCategoryAttrs();
+        List<JdCategoryAttrJosVO> vos=shopCatList.stream().map(categoryAttrJos -> {
+            JdCategoryAttrJosVO vo=new JdCategoryAttrJosVO();
+            vo.setAttName(categoryAttrJos.getAttName());
+            vo.setAttributeType(categoryAttrJos.getAttributeType());
+            vo.setAttrIndexId(categoryAttrJos.getAttrIndexId());
+            vo.setCategoryAttrId(categoryAttrJos.getCategoryAttrId());
+            vo.setCategoryId(categoryAttrJos.getCategoryId());
+            vo.setInputType(categoryAttrJos.getInputType());
+            if(categoryAttrJos.getAttrFeatures()!=null){
+                Set<JdFeatureCateAttrJosVO> jdFeatureCateAttrJosVOS=categoryAttrJos.getAttrFeatures().stream()
+                        .map(featureCateAttrJos -> BeanMapper.map(featureCateAttrJos,JdFeatureCateAttrJosVO.class)).collect(Collectors.toSet());
+                vo.setAttrFeatures(jdFeatureCateAttrJosVOS);
+            }
+            if(categoryAttrJos.getCategoryAttrGroup()!=null){
+                JdCategoryAttrGroupJosVO jdCategoryAttrGroupJosVO=new JdCategoryAttrGroupJosVO();
+                jdCategoryAttrGroupJosVO.setAttrGroupIndexId(categoryAttrJos.getCategoryAttrGroup().getAttrGroupIndexId());
+                jdCategoryAttrGroupJosVO.setGroupId(categoryAttrJos.getCategoryAttrGroup().getGroupId());
+                jdCategoryAttrGroupJosVO.setGroupName(categoryAttrJos.getCategoryAttrGroup().getGroupName());
+                if(categoryAttrJos.getCategoryAttrGroup().getAttrGroupfeatures()!=null){
+                    Set<JdFeatureCateAttrGroupJosVO> jdFeatureCateAttrGroupJosVOS=categoryAttrJos.getCategoryAttrGroup().getAttrGroupfeatures().stream()
+                            .map(featureCateAttrGroupJos -> BeanMapper.map(featureCateAttrGroupJos,JdFeatureCateAttrGroupJosVO.class)).collect(Collectors.toSet());
+                    jdCategoryAttrGroupJosVO.setAttrGroupfeatures(jdFeatureCateAttrGroupJosVOS);
+                }
+                vo.setCategoryAttrGroup(jdCategoryAttrGroupJosVO);
+            }
+            if(categoryAttrJos.getAttrValueList()!=null){
+                List<JdCategoryAttrValueJosVO> jdCategoryAttrValueJosVOS=categoryAttrJos.getAttrValueList().stream()
+                        .map(categoryAttrValueJos -> {
+                            JdCategoryAttrValueJosVO jdCategoryAttrValueJosVO=new JdCategoryAttrValueJosVO();
+                            jdCategoryAttrValueJosVO.setAttrValue(categoryAttrValueJos.getAttrValue());
+                            jdCategoryAttrValueJosVO.setAttrValueId(categoryAttrValueJos.getAttrValueId());
+                            jdCategoryAttrValueJosVO.setAttrValueIndexId(categoryAttrValueJos.getAttrValueIndexId());
+                            if(categoryAttrValueJos.getAttrValueFeatures()!=null){
+                                Set<JdFeatureCateAttrValueJosVO> jdFeatureCateAttrValueJosVOS=categoryAttrValueJos.getAttrValueFeatures().stream()
+                                        .map(featureCateAttrValueJos -> BeanMapper.map(featureCateAttrValueJos,JdFeatureCateAttrValueJosVO.class))
+                                        .collect(Collectors.toSet());
+                                jdCategoryAttrValueJosVO.setAttrValueFeatures(jdFeatureCateAttrValueJosVOS);
+                            }
+                            return jdCategoryAttrValueJosVO;
+                        }).collect(Collectors.toList());
+                vo.setAttrValueList(jdCategoryAttrValueJosVOS);
+            }
+            return vo;
+        }).collect(Collectors.toList());
+        return vos;
+    }
+
 
     /**
      * 新增店内类目数据
