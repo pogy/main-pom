@@ -447,9 +447,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         SearchCategorySubExample subExample = new SearchCategorySubExample();
         SearchCategorySubExample.Criteria criteria=subExample.createCriteria();
+        SearchCategorySubExample.Criteria criteria1=subExample.createCriteria();
         int ss=category.getCategoryType();
         if (ss == 1){
-            criteria.andTypeEqualTo(5).or().andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
+            criteria1.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
+            criteria.andWebSiteEqualTo(website).andParentCateValueEqualTo(parentCateValue).andTypeEqualTo(5);
+            subExample.or(criteria1);
         }else {
             criteria.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
         }

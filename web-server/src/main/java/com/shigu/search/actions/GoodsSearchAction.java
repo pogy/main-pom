@@ -279,8 +279,6 @@ public class GoodsSearchAction {
                 goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
             });
         }
-
-
         maxTotalSizeOrPage(pager, bo.getRows());
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
