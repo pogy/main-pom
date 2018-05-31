@@ -67,29 +67,10 @@
 </div>
 <div class="marketList layout">
     <#list marketList as markets>
-        <#if marketId == '5'>
-            <#if markets.title == '8F'>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!} 石狮工厂店</span>
-                <i></i>
-            </h3>
-            <#elseif markets.title == '9F'>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!} 牛仔城</span>
-                <i></i>
-            </h3>
-            <#else>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!}</span>
-                <i></i>
-            </h3>
-            </#if>
-        <#else>
         <h3 data-lm='${markets.title!}'>
-            <span>${markets.title!}</span>
+            <span>${markets.title!} ${markets.smTitle!}</span>
             <i></i>
         </h3>
-        </#if>
         <ul class="storeList clearfix">
         <#list markets.stores as store>
             <li>

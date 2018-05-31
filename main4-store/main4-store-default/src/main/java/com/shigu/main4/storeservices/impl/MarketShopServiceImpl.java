@@ -166,6 +166,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         floorShow.setFloorIds(shiguOuterFloor.getFloorIds());
         floorShow.setOuterFloorId(outerFloor);
         floorShow.setShowName(shiguOuterFloor.getShowName());
+        floorShow.setOtherName(shiguOuterFloor.getOtherName());
         for (String floorIdStr : floorIds) {
             Long floorId = Long.valueOf(floorIdStr);
             List<ShiguShop> shiguShopList = new ArrayList<ShiguShop>();
