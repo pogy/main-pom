@@ -55,11 +55,11 @@
             <label>按市场：</label>
             <ul>
                 <li <#if !query.mid>class="selected"</#if>>
-                    <a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
+                    <a href="?webSite=${query.webSite!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cname??>&cname=${query.cname!}<#else><#if query.cid??>&cid=${query.cid!}</#if></#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
                 </li>
                 <#list markets as market>
                     <li <#if query.mid?? && query.mid == market.id>class="selected"</#if>>
-                        <a href="?webSite=${query.webSite!}&mid=${market.id!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${market.text!}</a>
+                        <a href="?webSite=${query.webSite!}&mid=${market.id!}<#if query.pid??>&pid=${query.pid!}</#if><#if query.cname??>&cname=${query.cname!}<#else><#if query.cid??>&cid=${query.cid!}</#if></#if><#if query.keyword??>&keyword=${query.keyword!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${market.text!}</a>
                     </li>
                 </#list>
             </ul>
@@ -70,11 +70,11 @@
             <label>按风格：</label>
             <ul>
                 <li <#if query.keyword??><#else>class="selected"</#if>>
-                    <a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
+                    <a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cname??>&cname=${query.cname!}<#else><#if query.cid??>&cid=${query.cid!}</#if></#if><#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">全部</a>
                 </li>
                 <#list styles as style>
                     <li <#if query.keyword?? && query.keyword == style.keyword>class="selected"</#if>>
-                        <a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cid??>&cid=${query.cid!}</#if>&keyword=${style.keyword!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${style.text!}</a>
+                        <a href="?webSite=${query.webSite!}<#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.cname??>&cname=${query.cname!}<#else><#if query.cid??>&cid=${query.cid!}</#if></#if>&keyword=${style.keyword!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.bpic?? && query.bpic == '1'>&bpic=1</#if><#if query.goodsVideo == '1'>&goodsVideo=1</#if>">${style.text!}</a>
                     </li>
                 </#list>
             </ul>
