@@ -20,6 +20,7 @@ import com.shigu.main4.daifa.utils.*;
 import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ import java.util.*;
 @Repository
 @Scope("prototype")
 public class OrderModelImpl implements OrderModel {
+    @Autowired
+    WorkerMan workerMan;
 
     private OrderBO orderBO;
 
@@ -78,6 +81,8 @@ public class OrderModelImpl implements OrderModel {
     private DaifaListDealUtil daifaListDealUtil;
     @Autowired
     PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    RedisIO redisIO;
     @Autowired
     private MQUtil mqUtil;
     @Value("${MQ_topic}")
@@ -508,10 +513,8 @@ public class OrderModelImpl implements OrderModel {
                 obj.toString());
 
         //判断当前订单是否未发货且处于可发货状态,如果是,则尝试获取快递单号
-        try {
-            packDeliveryProcess.queryExpressCode(tid);
-        } catch (DaifaException ignored) {
-        }
+        redisIO.rpush("QueryExpressCodeThread",tid);
+        workerMan.start();
     }
 
     /**
