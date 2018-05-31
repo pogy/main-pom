@@ -94,7 +94,7 @@ public class GoodsSelFromEsService {
                 SearchShopSimple shop=shopMap.get(si.getStoreId());
                 if (shop != null) {
                     g.setAliww(shop.getImAliww());
-                    if("qz".endsWith(website)){
+                    if("qz".equals(website)){
                         g.setFullStoreName(shop.getShopNum());
                     }else{
                         g.setFullStoreName(shop.getMarket()+" "+shop.getShopNum());
