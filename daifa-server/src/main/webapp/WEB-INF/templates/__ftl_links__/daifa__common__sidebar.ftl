@@ -216,5 +216,25 @@
                 </ul>
             </li>
                 </#if>
+                <#if isAdmin == true>
+            <li>
+                <a
+                    <#if '' == $pageid >
+                        class="current"
+                    </#if>
+                        href="javascript:;"
+                    >
+                    <i class="icon-allorders"></i>快递管理</a>
+                <ul>
+                    <li>
+                        <a
+                            <#if 'showCourierTemp' == $pageid >
+                                class="current"
+                            </#if>
+                            href="showCourierTemp.htm"><i></i>快递模板</a>
+                    </li>
+                </ul>
+            </li>
+                </#if>
     </ul>
 </div>

@@ -32,8 +32,10 @@ public interface LogisticsTemplate {
      * @param weight 重量,克为单位
      * @return
      */
+    @Deprecated
     Long calculate(Long provId,Long companyId,Integer goodsNumber,Long weight) throws LogisticsRuleException;
 
+    Long calculate(Long userId,Long oid,Long provId,Long companyId,Integer goodsNumber,Long weight,Boolean discounts) throws LogisticsRuleException;
     /**
      * 获取快递公司信息
      * @param provId    省份id
@@ -48,5 +50,13 @@ public interface LogisticsTemplate {
      * @throws LogisticsRuleException
      */
     List<PostVO> defaultPost() throws LogisticsRuleException;
+
+    /**
+     * 判断是否进行首单减免
+     * @param userId
+     * @param oid
+     * @return
+     */
+    Boolean isMinusFreight(Long userId,Long oid);
 
 }
