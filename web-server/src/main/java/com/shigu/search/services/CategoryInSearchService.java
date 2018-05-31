@@ -95,17 +95,17 @@ public class CategoryInSearchService {
      * @return
      */
     public List<CateNav> selSubCates(String cateValue,SearchCategory category, String webSite){
-//        Cache cache=cacheManager.getCache("searchSubCatesCache");
-//
-//        String key=webSite + cateValue+" is "+category.getValue();
-//        List<CateNav> cateNavs=cache.get(key,List.class);
-//        if(cateNavs!=null){
-//            if(cateNavs.size()==0){
-//                return null;
-//            }else{
-//                return cateNavs;
-//            }
-//        }
+        Cache cache=cacheManager.getCache("searchSubCatesCache");
+
+        String key=webSite + cateValue+" is "+category.getValue();
+        List<CateNav> cateNavs=cache.get(key,List.class);
+        if(cateNavs!=null){
+            if(cateNavs.size()==0){
+                return null;
+            }else{
+                return cateNavs;
+            }
+        }
         List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category, webSite);
         List<CategoryValue> returnCates = new ArrayList<>();
         List<String> keyWords = new ArrayList<>();
@@ -120,16 +120,17 @@ public class CategoryInSearchService {
         for(CategoryValue gv:returnCates){
             if(category.equals(SearchCategory.STYLE)){
                 navs.add(new CateNav(gv.getSubId()+"",gv.getCateName(),gv.getCateValue()));
-            }else{
-                if (gv.getType() == 5){
-                    navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue(),gv.getCateValue()));
+            }else {
+                if (gv.getType() == 5) {
+                    navs.add(new CateNav(gv.getCateValue(), gv.getCateName(), gv.getCateValue(), gv.getCateValue()));
                 }
-                if (gv.getType() == 1){}
-                navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
+                if (gv.getType() != 5) {
+                    navs.add(new CateNav(gv.getCateValue(), gv.getCateName(), gv.getCateValue()));
+                }
             }
         }
         if (navs != null) {
-            //cache.put(key,navs);
+            cache.put(key,navs);
         }
         return navs.size()==0?null:navs;
     }
