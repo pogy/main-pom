@@ -26,5 +26,11 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
     int updateFloorMarketByShopId(@Param("storeId") Long storeId, @Param("website") String website, @Param("marketId") Long marketId,
                                   @Param("floorId") Long floorId);
 
-
+    /**
+     * 获取店铺展示商品总数
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    Integer selectGoodsCountByShopId(@Param("shopId") Long shopId,@Param("webSite") String webSite);
 }
