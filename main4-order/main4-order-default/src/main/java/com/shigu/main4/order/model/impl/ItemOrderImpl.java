@@ -447,18 +447,19 @@ public class ItemOrderImpl implements ItemOrder {
                 if (refund != null && refund > 0)
                     money = money-refund;
             }
-            request.setCashbackAmount(money/100);
-
-            ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
-            shiguOrderCashback.setOId(oid);
-            shiguOrderCashback.setCashback(money/100);
-            shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
-            OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
-            if (resp == null || !resp.isSuccess()) {
-                try {
-                    throw new RefundException("订单返现失败：oid="+oid);
-                } catch (RefundException e) {
-                    e.printStackTrace();
+            if (money>0) {
+                request.setCashbackAmount(money / 100);
+                ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
+                shiguOrderCashback.setOId(oid);
+                shiguOrderCashback.setCashback(money / 100);
+                shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
+                OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                if (resp == null || !resp.isSuccess()) {
+                    try {
+                        throw new RefundException("订单返现失败：oid=" + oid);
+                    } catch (RefundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
