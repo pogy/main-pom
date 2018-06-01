@@ -33,6 +33,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -431,34 +434,36 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public void finished() {
         changeStatus(OrderStatus.TRADE_FINISHED);
-
-        Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK,String.class));
-        if (b != null && b){
-            OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
-            request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(oid));
-            request.setCashbackOrderNo(oid);
-            List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(oid);
-            Long money = 0l;
-            if (orderSubMoneyList!=null||orderSubMoneyList.size()>0){
-                for (int i = 0; i <orderSubMoneyList.size() ; i++) {
-                    money = orderSubMoneyList.get(i).getNum()*orderSubMoneyList.get(i).getPrice()+money;
+        Date date = itemOrderMapper.selectByPrimaryKey(oid).getPayTime();
+        if (date.getTime() - 1527782400000L < 0){
+            Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
+            if (b != null && b) {
+                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
+                request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(oid));
+                request.setCashbackOrderNo(oid);
+                List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(oid);
+                Long money = 0l;
+                if (orderSubMoneyList != null || orderSubMoneyList.size() > 0) {
+                    for (int i = 0; i < orderSubMoneyList.size(); i++) {
+                        money = orderSubMoneyList.get(i).getNum() * orderSubMoneyList.get(i).getPrice() + money;
+                    }
+                    Long refund = itemOrderSubMapper.selectRefundByOid(oid);
+                    if (refund != null && refund > 0)
+                        money = money - refund;
                 }
-                Long refund = itemOrderSubMapper.selectRefundByOid(oid);
-                if (refund != null && refund > 0)
-                    money = money-refund;
-            }
-            if (money>0) {
-                request.setCashbackAmount(money / 100);
-                ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
-                shiguOrderCashback.setOId(oid);
-                shiguOrderCashback.setCashback(money / 100);
-                shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
-                OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
-                if (resp == null || !resp.isSuccess()) {
-                    try {
-                        throw new RefundException("订单返现失败：oid=" + oid);
-                    } catch (RefundException e) {
-                        e.printStackTrace();
+                if (money > 0) {
+                    request.setCashbackAmount(money / 100);
+                    ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
+                    shiguOrderCashback.setOId(oid);
+                    shiguOrderCashback.setCashback(money / 100);
+                    shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
+                    OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                    if (resp == null || !resp.isSuccess()) {
+                        try {
+                            throw new RefundException("订单返现失败：oid=" + oid);
+                        } catch (RefundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
