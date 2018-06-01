@@ -1,6 +1,5 @@
 package com.shigu.search.services;
 
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -27,7 +26,6 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.tools.EncodeParamter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -272,16 +270,19 @@ public class GoodsSearchService {
         if (Objects.equals(1, bo.getGoodsVideo())) {
             checkds.add(SearchCheckd.VIDEO);
         }
-        String oo="";
-        if (StringUtils.isNotBlank(bo.getCname())){
-           String cname=bo.getCname();
-           oo+=cname;
+        String oo = "";
+        if (StringUtils.isNotBlank(bo.getCname())) {
+            String cname = bo.getCname();
+            oo += cname + " ";
         }
-        if (StringUtils.isNotBlank(bo.getKeyword())){
-            String keyword=bo.getKeyword();
-            oo+=keyword;
+        if (StringUtils.isNotBlank(bo.getKeyword())) {
+            String keyword = bo.getKeyword();
+            oo += keyword;
         }
-        oo.trim();
+        oo = oo.trim();
+        if (oo.length() == 0) {
+            oo = null;
+        }
         ShiguAggsPager pager;
         pager = itemSearchService.searchItem(oo, bo.getWebSite(), bo.getMid(),
                 checkds,//大图
