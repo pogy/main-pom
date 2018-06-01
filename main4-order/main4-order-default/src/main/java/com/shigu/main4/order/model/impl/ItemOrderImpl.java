@@ -435,7 +435,7 @@ public class ItemOrderImpl implements ItemOrder {
     public void finished() {
         changeStatus(OrderStatus.TRADE_FINISHED);
         Date date = itemOrderMapper.selectByPrimaryKey(oid).getPayTime();
-        if (date.getTime() - 1527782400000L < 0){
+        if (date.getTime() - 1527782400000L > 0){
             Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
             if (b != null && b) {
                 OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
