@@ -65,31 +65,59 @@
                                             </ul>
                                         </div>
                                     </li>
-                                <#list shopcats as cat>
-                                    <li class="f_con">
-                                        <a href="/shop/search.htm?id=${shop.shopId}&scid=${cat.cid!}">
-                                            ${cat.name!}
-                                            <span>
-                                                &gt;
-                                            </span>
-                                        </a>
-                                        <#if cat.subCats??>
-                                           <#if cat.subCats?size gt 0>
-                                            <div class="sec_con">
-                                                <ul class="second">
-                                                    <#list cat.subCats as subcat>
-                                                        <li>
-                                                            <a href="/shop/search.htm?id=${shop.shopId}&?scid=${subcat.cid!}">
-                                                                ${subcat.name!}
-                                                            </a>
-                                                        </li>
-                                                    </#list>
-                                                </ul>
-                                            </div>
-                                           </#if>
-                                        </#if>
-                                    </li>
-                                </#list>
+                                    <#if shopcats??>
+                                        <#list shopcats as cat>
+                                            <li class="f_con">
+                                                <a href="/shop/search.htm?id=${shop.shopId}&scid=${cat.cid!}">
+                                                    ${cat.name!}
+                                                    <span>
+                                                        &gt;
+                                                    </span>
+                                                </a>
+                                                <#if cat.subCats??>
+                                                   <#if cat.subCats?size gt 0>
+                                                    <div class="sec_con">
+                                                        <ul class="second">
+                                                            <#list cat.subCats as subcat>
+                                                                <li>
+                                                                    <a href="/shop/search.htm?id=${shop.shopId}&?scid=${subcat.cid!}">
+                                                                        ${subcat.name!}
+                                                                    </a>
+                                                                </li>
+                                                            </#list>
+                                                        </ul>
+                                                    </div>
+                                                   </#if>
+                                                </#if>
+                                            </li>
+                                        </#list>
+                                    <#elseif diyShopCats??>
+                                        <#list diyShopCats as cat>
+                                            <li class="f_con">
+                                                <a href="/shop/search.htm?id=${shop.shopId}&diyScid=${cat.cid!}">
+                                                ${cat.name!}
+                                                    <span>
+                                                        &gt;
+                                                    </span>
+                                                </a>
+                                                <#if cat.subCats??>
+                                                    <#if cat.subCats?size gt 0>
+                                                        <div class="sec_con">
+                                                            <ul class="second">
+                                                                <#list cat.subCats as subcat>
+                                                                    <li>
+                                                                        <a href="/shop/search.htm?id=${shop.shopId}&?diyScid=${subcat.cid!}">
+                                                                        ${subcat.name!}
+                                                                        </a>
+                                                                    </li>
+                                                                </#list>
+                                                            </ul>
+                                                        </div>
+                                                    </#if>
+                                                </#if>
+                                            </li>
+                                        </#list>
+                                    </#if>
                                 </ul>
                             </div>
                         </div>

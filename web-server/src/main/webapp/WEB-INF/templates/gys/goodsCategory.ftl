@@ -156,7 +156,7 @@
         </#if>
         <span class="tip fcF40">注：新设置的分类或分类商品有1-2小时的缓存时间，设置后不会立即出现</span>
     </div>
-    <div class="goodsList">
+    <div class="goodsList" <#if query.cnameId??>data-type="2"<#else>data-type="1"</#if>>
         <ul class="clearfix">
             <#list goodsList as item>
             <li data-id="${item.goodsId!}">
