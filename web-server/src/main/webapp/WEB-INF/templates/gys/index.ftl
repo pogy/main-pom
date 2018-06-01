@@ -58,7 +58,7 @@
             <div class="c_cb c_address clearfix">
                 <p>城市：
                     <i>
-                        <#if session_user_redis__.logshop.webSite == 'jx'>嘉兴<#elseif session_user_redis__.logshop.webSite == 'ss'>石狮<#elseif session_user_redis__.logshop.webSite == 'gz'>广州<#elseif session_user_redis__.logshop.webSite == 'cs'>常熟<#elseif session_user_redis__.logshop.webSite == 'bj'>北京<#else>杭州</#if>
+                        <#if session_user_redis__.logshop.webSite == 'jx'>嘉兴<#elseif session_user_redis__.logshop.webSite == 'ss'>石狮<#elseif session_user_redis__.logshop.webSite == 'gz'>广州<#elseif session_user_redis__.logshop.webSite == 'cs'>常熟<#elseif session_user_redis__.logshop.webSite == 'bj'>北京<#elseif session_user_redis__.logshop.webSite == 'qz'>泉州<#else>杭州</#if>
                     </i>
                 </p>
                 <p class="c_dkh">档口号：<i style="float:right; width: 80px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="${session_user_redis__.logshop.shopNum!}">${session_user_redis__.logshop.shopNum!}</i></p>
@@ -70,7 +70,7 @@
           <p>评价积分：<i>5.0</i> 高于 4.83179</p>
           <p>商家权重：<i>正常</i> 提升权重</p>
         </div>
-        <#if session_user_redis__.webSite == 'qz'>
+        <#if session_user_redis__.logshop.webSite == 'qz'>
         <div class="truthDataBox">
             <ul>
                 <#list eachAllDataList as item>
@@ -83,7 +83,7 @@
         </div>
         </#if>
     </div>
-    <#if session_user_redis__.webSite == 'qz'>
+    <#if session_user_redis__.logshop.webSite == 'qz'>
     <div class="c_dataBox">
         <div class="pdBdBox">
             <div class="readDownDataBox">
