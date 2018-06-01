@@ -86,7 +86,7 @@ public class ShopCategoryClassifyServiceImpl implements ShopCategoryClassifyServ
     }
 
     @Override
-    public Integer setCategoryForGoods(String ids, String cnameId,String zt) {
+    public Integer setCategoryForGoods(String ids, String cnameId,Integer zt) {
         return null;
     }
 }

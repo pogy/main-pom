@@ -42,5 +42,5 @@ public interface ShopCategoryClassifyService {
      * @param cnameId
      * @return
      */
-    Integer setCategoryForGoods(String ids,String cnameId,String zt);
+    Integer setCategoryForGoods(String ids,String cnameId,Integer zt);
 }
