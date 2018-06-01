@@ -30,6 +30,10 @@
 <#include "/__ftl_links__/gys__common__sidebar.ftl">
 </#list>
             <div class="rightBox shadowBox">
+<#if session_user_redis__.logshop.webSite??><#assign webSite='${session_user_redis__.logshop.webSite!}'><#else><#assign webSite='hz'></#if>
+<script modulepath="gys/index#config">
+var webSite = '${webSite!}';
+</script>
 <div class="bindRight fr">
     <div class="c_top clearfix">
         <div class="fl c_shop_logo">
