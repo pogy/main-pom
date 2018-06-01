@@ -124,8 +124,11 @@
            timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
     </cache>
     <!--搜索中子类目栏目-->
-    <cache name="searchSubCatesCache" maxElementsInMemory="100" eternal="false"
-           timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >
+    <!--<cache name="searchSubCatesCache" maxElementsInMemory="100" eternal="false"-->
+           <!--timeToIdleSeconds="6000" timeToLiveSeconds="12000" overflowToDisk="true" >-->
+    <!--</cache>-->
+    <cache name="searchSubCatesCache" maxElementsInMemory="10" eternal="false"
+           timeToIdleSeconds="6" timeToLiveSeconds="12" overflowToDisk="true" >
     </cache>
 
     <!--首页长缓存-->

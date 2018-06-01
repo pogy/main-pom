@@ -227,6 +227,7 @@ public class GoodsSearchService {
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
         }
 
+
         List<SearchShopSimple> shops = shopSearchService.selShopByShopNum(bo.getKeyword(), bo.getWebSite());
         List<Long> shouldShopId=new ArrayList<>();
         if(shops!=null&&shops.size()!=0){
@@ -257,12 +258,23 @@ public class GoodsSearchService {
         if (Objects.equals(1,bo.getGoodsVideo())) {
             checkds.add(SearchCheckd.VIDEO);
         }
-        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
+        String oo=bo.getCname()+" "+bo.getKeyword();
+        ShiguAggsPager pager;
+        if (bo.getCname() != null){
+            pager=itemSearchService.searchItem(oo,bo.getWebSite(),bo.getMid(),
+                    checkds,//大图
+                    cids.size()==0?null:cids,
+                    shouldShopId.size()==0?null:shouldShopId,null,
+                    bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
+            );
+        }else {
+        pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 checkds,//大图
                 cids.size()==0?null:cids,
                 shouldShopId.size()==0?null:shouldShopId,null,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
         );
+        }
         SearchVO vo = new SearchVO();
         if(pager!=null) {
             vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager, bo.getWebSite()));

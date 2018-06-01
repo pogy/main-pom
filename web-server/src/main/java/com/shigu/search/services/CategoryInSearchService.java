@@ -120,8 +120,13 @@ public class CategoryInSearchService {
         for(CategoryValue gv:returnCates){
             if(category.equals(SearchCategory.STYLE)){
                 navs.add(new CateNav(gv.getSubId()+"",gv.getCateName(),gv.getCateValue()));
-            }else{
-                navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
+            }else {
+                if (gv.getType() == 5) {
+                    navs.add(new CateNav(gv.getCateValue(), gv.getCateName(), gv.getCateValue(), gv.getCateValue()));
+                }
+                if (gv.getType() != 5) {
+                    navs.add(new CateNav(gv.getCateValue(), gv.getCateName(), gv.getCateValue()));
+                }
             }
         }
         if (navs != null) {
