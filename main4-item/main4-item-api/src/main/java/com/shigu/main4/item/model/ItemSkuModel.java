@@ -1,7 +1,7 @@
 package com.shigu.main4.item.model;
 
-import com.shigu.main4.item.bo.SingleSkuBO;
-import com.shigu.main4.item.vo.SingleSkuVO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 
 import java.util.List;
 

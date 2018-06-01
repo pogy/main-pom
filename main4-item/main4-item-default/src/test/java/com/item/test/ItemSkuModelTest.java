@@ -11,9 +11,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguSiteMapper;
 import com.shigu.main4.common.util.Jobs;
 import com.shigu.main4.item.model.ItemSkuModel;
-import com.shigu.main4.item.vo.SingleSkuVO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import net.sf.json.JSONArray;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

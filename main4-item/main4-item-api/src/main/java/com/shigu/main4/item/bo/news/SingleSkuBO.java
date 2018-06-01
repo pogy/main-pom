@@ -1,4 +1,4 @@
-package com.shigu.main4.item.bo;
+package com.shigu.main4.item.bo.news;
 
 import java.io.Serializable;
 

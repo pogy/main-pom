@@ -1,4 +1,4 @@
-package com.shigu.main4.item.vo;
+package com.shigu.main4.item.vo.news;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ public class SingleSkuVO implements Serializable {
     private Long goodsId;
 
     /**
-     * 颜色pid
+     * 颜色pid,如果该字段为null,则表示该商品没有颜色属性,默认colorVid为0,colorPropertyAlias为图片色',
      */
     private Long colorPid;
 
@@ -39,7 +39,7 @@ public class SingleSkuVO implements Serializable {
     private String colorInputStr;
 
     /**
-     * 尺码pid
+     * 尺码pid,如果该字段为null,则表示该商品没有颜色属性,默认sizeVid为0,sizePropertyAlias为均码',
      */
     private Long sizePid;
 

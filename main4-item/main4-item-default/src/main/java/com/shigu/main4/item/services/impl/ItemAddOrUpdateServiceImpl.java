@@ -397,7 +397,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param isNew add Or remove
      * @throws ItemModifyException
      */
-    private void sameItemUtilAddRemove(ShiguGoodsTiny tiny, boolean isNew)  {
+    protected void sameItemUtilAddRemove(ShiguGoodsTiny tiny, boolean isNew)  {
         NowItemInfo item = new NowItemInfo();
         item.setWebSite(tiny.getWebSite());
         item.setCid(tiny.getCid());
@@ -1196,7 +1196,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param item 商品
      * @param strs 批发价来源
      */
-    private void updatePiPrice(SynItem item, String ... strs) {
+    protected void updatePiPrice(SynItem item, String ... strs) {
         // 应用批发价
         Long price = new Double(Double.valueOf(item.getPriceString()) * 100).longValue();
         Long piPrice = priceCalculateService.pickPipriceFromTitle(

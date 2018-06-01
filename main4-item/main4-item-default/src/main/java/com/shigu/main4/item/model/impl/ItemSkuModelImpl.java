@@ -2,24 +2,21 @@ package com.shigu.main4.item.model.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ShiguGoodsSingleSkuExample;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.bo.SingleSkuBO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.dao.SingleSkuDao;
 import com.shigu.main4.item.exceptions.ItemNotFundException;
 import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.SinglePropVO;
-import com.shigu.main4.item.vo.SingleSkuVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

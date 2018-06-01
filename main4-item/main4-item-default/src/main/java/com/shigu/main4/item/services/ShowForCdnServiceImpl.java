@@ -10,6 +10,7 @@ import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.item.vo.news.NewCdnItem;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -240,12 +241,12 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
          */
         protected abstract E getItemSource(Long id, String webSite);
 
-        CdnItem selectItemById(Long id) {
+        NewCdnItem selectItemById(Long id) {
             if (id == null)
                 return null;
 
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
-            CdnItem cdnItem = cdnItemCache.get(id, CdnItem.class);
+            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
             if (cdnItem == null) {
                 ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);
                 if (shiguGoodsIdGenerator != null) {
@@ -267,8 +268,8 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
          * @param e
          * @return
          */
-        private CdnItem newCdnItem(E e) {
-            CdnItem cdnItem = new CdnItem();
+        private NewCdnItem newCdnItem(E e) {
+            NewCdnItem cdnItem = new NewCdnItem();
             Class<?> clazz = e.getClass();
             for (Field field : CdnItem.class.getDeclaredFields()) {
                 if (field.getModifiers() != Modifier.PRIVATE) {
@@ -320,12 +321,12 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
             return cdnItem;
         }
 
-        CdnItem selectItemById(Long id, String webSite) {
+        NewCdnItem selectItemById(Long id, String webSite) {
             if (id == null || StringUtils.isEmpty(webSite))
                 return null;
 
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
-            CdnItem cdnItem = cdnItemCache.get(id, CdnItem.class);
+            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
             if (cdnItem == null) {
                 E e = getItemSource(id, webSite);
 
