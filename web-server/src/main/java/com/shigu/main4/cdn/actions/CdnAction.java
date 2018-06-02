@@ -723,6 +723,9 @@ public class CdnAction {
         if ("www".equals(url) || "hz".equals(url) || "testwww".equals(url)) {
             return hzindex4show(request, model);
         }
+        if ("qz".equals(url)) {
+            return qzindex4show(request,model);
+        }
         Long shopId = shopBaseService.selShopIdByDomain(url);
         if (shopId == null) {
             return "redirect:" + xzSdkClient.getMainHost();
