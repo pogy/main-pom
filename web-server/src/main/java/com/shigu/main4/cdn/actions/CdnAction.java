@@ -983,6 +983,7 @@ public class CdnAction {
         queryBO.setParentStyleId(bo.getSpid());
         queryBO.setDateFrom(startDate);
         queryBO.setDateTo(endDate);
+        queryBO.setDiyScid(bo.getDiyScid());
         pager = shopForCdnService.searchItemOnsaleByBO(queryBO, webSite, bo.getPageNo(), bo.getPageSize());
         containerVO.getSearchModule().getData().put("goodsList", pager);
         containerVO.getSearchModule().getData().put("bo", bo);

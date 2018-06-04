@@ -21,11 +21,11 @@ import java.util.List;
 public interface ShiguGysCategoryGoodsMapper extends Mapper<ShiguGysCategoryGoods> {
     /**
      * 获取类目信息
-     * @param shopId
+     * @param cateId
      * @param webSite
      * @return
      */
-    List<CatesVo> getCateInfo(@Param("shopId") Long shopId,@Param("webSite") String webSite);
+    Integer getCateInfo(@Param("cateId") Long cateId,@Param("webSite") String webSite);
 
     /**
      * 获取商品列表
@@ -34,7 +34,7 @@ public interface ShiguGysCategoryGoodsMapper extends Mapper<ShiguGysCategoryGood
      * @param cateId
      * @return
      */
-    List<GoodsVo> selectGoodsByDiyCate(@Param("shopId") Long shopId, @Param("webSite") String webSite, @Param("cateId") Long cateId, @Param("pageNo") Integer pageNo, @Param("pageSite") Integer pageSite);
+    List<GoodsVo> selectGoodsByDiyCate(@Param("shopId") Long shopId, @Param("webSite") String webSite, @Param("cateId") Long cateId, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSite);
 
     /**
      * 分页查询条数
@@ -45,12 +45,5 @@ public interface ShiguGysCategoryGoodsMapper extends Mapper<ShiguGysCategoryGood
      */
     Integer selectGoodsCountByDiyCate(@Param("shopId") Long shopId,@Param("webSite") String webSite,@Param("cateId") Long cateId);
 
-    /**
-     * 根据商品id修改商品类目
-     * @param goodsId
-     * @param cateId
-     * @return
-     */
-    Integer updateGoodsCateByGoodsId(@Param("goodsId")Long goodsId,@Param("cateId")Long cateId);
 
 }

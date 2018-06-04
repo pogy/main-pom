@@ -18,7 +18,7 @@ public interface ShopCategoryClassifyService {
      * @param shopId
      * @return
      */
-    TabDatasVo getShopTabDatas(Long shopId);
+    TabDatasVo getShopTabDatas(Long shopId,String webSite);
 
     /**
      * 获取店铺自定义分类页面商品数据
@@ -26,7 +26,7 @@ public interface ShopCategoryClassifyService {
      * @param cnameId
      * @return
      */
-    ShiguPager<GoodsVo> getShopShowGoods(Long shopId,Long cnameId,Integer page,Integer size);
+    ShiguPager<GoodsVo> getShopShowGoods(Long shopId,Long cnameId,Integer page,Integer size,String webSite);
 
     /**
      * 添加店铺自定义类目
@@ -42,5 +42,12 @@ public interface ShopCategoryClassifyService {
      * @param cnameId
      * @return
      */
-    Integer setCategoryForGoods(String ids,String cnameId,Integer zt);
+    Integer setCategoryForGoods(String ids,Long cnameId,Integer zt,Long shopId);
+
+    /**
+     * 删除店铺自定义分类
+     * @param cateId
+     * @return
+     */
+    Integer deleCate(Long cateId);
 }

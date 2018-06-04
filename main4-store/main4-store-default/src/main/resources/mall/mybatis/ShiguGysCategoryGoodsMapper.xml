@@ -2,18 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.mall.interfaces.ShiguGysCategoryGoodsMapper" >
 
-    <resultMap id="cateInfo" type="com.shigu.main4.vo.CatesVo">
-        <result property="cnameId" column="gc_id"/>
-        <result property="cname" column="gc_name"/>
-        <result property="cnameNum" column="num"/>
-    </resultMap>
 
-    <select id="selectDiyCateInfo" resultMap="cateInfo">
-        SELECT gcg.gc_id,gc.gc_name,COUNT(gcg.goods_id) as num
-        FROM shigu_gys_category_goods AS gcg
-        LEFT JOIN shigu_goods_tiny_${webSite} AS sgt ON gcg.goods_id=sgt.goods_id
-        LEFT JOIN shigu_gys_custom_category AS gc ON gcg.gc_id=gc.gc_id
-        WHERE sgt.goods_status=0 AND sgt.is_closed=0 AND gcg.gcg_status=1 AND gcg.s_id=#{shopId} GROUP BY gcg.gc_id
+    <select id="getCateInfo" resultType="java.lang.Integer">
+       SELECT
+        COUNT( gcg.goods_id ) AS num
+       FROM
+        shigu_gys_category_goods AS gcg
+        LEFT JOIN shigu_goods_tiny_${webSite} AS sgt ON gcg.goods_id = sgt.goods_id
+       WHERE
+        sgt.goods_status = 0
+        AND sgt.is_closed = 0
+        AND gcg.gcg_status = 1
+        AND gcg.gc_id = #{cateId}
+      GROUP BY gcg.gc_id
     </select>
 
     <resultMap id="goodsVo" type="com.shigu.main4.vo.GoodsVo">
@@ -29,7 +30,9 @@
         FROM
           (
             SELECT
-              goods_id
+              goods_id,
+              goods_no,
+              pic_url
             FROM
               shigu_goods_tiny_${webSite}
             WHERE
@@ -100,7 +103,4 @@
         </choose>
     </select>
 
-    <update id="">
-        UPDATE shigu_gys_category_goods AS gcg SET gcg.gc_id = #{cateId} WHERE gcg.goods_id=#{goodsId}
-    </update>
 </mapper>

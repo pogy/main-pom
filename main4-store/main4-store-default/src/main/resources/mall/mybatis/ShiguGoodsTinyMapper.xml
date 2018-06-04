@@ -39,10 +39,6 @@
           store_id = #{storeId}
     </update>
 
-    <select id="selectGoodsCountByShopId" resultType="java.lang.Integer">
-        SELECT COUNT(qz.goods_id) AS goodsCount FROM shigu_goods_tiny_${webSite} AS qz
-        WHERE qz.store_id=#{shopId} AND qz.goods_status=0 AND qz.is_closed=0
-    </select>
 
 
 </mapper>
