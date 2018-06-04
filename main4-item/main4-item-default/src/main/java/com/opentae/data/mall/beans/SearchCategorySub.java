@@ -13,7 +13,7 @@ public class SearchCategorySub implements Serializable {
 	private Long subId;
 
     /**
-     * 种类，1、淘宝类目，2、市场，3、风格，4、元素
+     * 
      */
 	private Integer type;
 
