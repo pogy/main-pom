@@ -561,7 +561,7 @@ public class ShopIndexDataService {
 
         requestBuilder.setQuery(qb);
         requestBuilder.addAggregation(AggregationBuilders.dateHistogram("goodsReadStatistics")
-                .field("inTime").format("yyyy-MM-dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
         SearchResponse searchResponse = requestBuilder.execute().actionGet();
         MultiBucketsAggregation agg = searchResponse.getAggregations().get("goodsReadStatistics");
         List<DataListVO> goodsReadStatistics = agg.getBuckets().stream().map(o -> {
