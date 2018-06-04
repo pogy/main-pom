@@ -36,43 +36,45 @@ var webSite = '${webSite!}';
 </script>
 <div class="bindRight fr">
     <div class="c_top clearfix">
-        <div class="fl c_shop_logo">
-            <div class="c_default_logo"><span class="iconfont">&#xe604;</span></div>
-            <div class="c_own_logo">
-                <#if session_user_redis__.headUrl??>
-                <img src="${session_user_redis__.headUrl!}" width="120" height="120">
-                <#else>
-                <img src="//www.571xz.com/images/default160.jpg" width="120" height="120">
-                </#if>
-            </div>
-        </div>
-        <div class="fl clearfix c_shop_info">
-            <div class="clearfix c_name">
-                <strong class="fl">${session_user_redis__.userNick!}</strong>
-                <p class="fr">
-                    <#if session_user_redis__.logshop.tbNick??>
-                    <span class="iconfont c_ff7112 icon-c-shop" title="店铺授权" alt="店铺授权" ></span>
+        <div class="clearfix">
+            <div class="fl c_shop_logo">
+                <div class="c_default_logo"><span class="iconfont">&#xe604;</span></div>
+                <div class="c_own_logo">
+                    <#if session_user_redis__.headUrl??>
+                    <img src="${session_user_redis__.headUrl!}" width="120" height="120">
                     <#else>
-                    <span class="iconfont icon-c-shop" title="店铺未授权" alt="店铺未授权"></span>
+                    <img src="//www.571xz.com/images/default160.jpg" width="120" height="120">
                     </#if>
-                    <span class="iconfont c_22ca75 icon-c-user" title="实名认证" alt="实名认证"></span>
-                </p>
-                <p class="fr">店铺名称:<i>${session_user_redis__.logshop.shopName!}</i></p>
+                </div>
             </div>
-            <div class="c_cb c_address clearfix">
-                <p>城市：
-                    <i>
-                        <#if session_user_redis__.logshop.webSite == 'jx'>嘉兴<#elseif session_user_redis__.logshop.webSite == 'ss'>石狮<#elseif session_user_redis__.logshop.webSite == 'gz'>广州<#elseif session_user_redis__.logshop.webSite == 'cs'>常熟<#elseif session_user_redis__.logshop.webSite == 'bj'>北京<#elseif session_user_redis__.logshop.webSite == 'qz'>泉州<#else>杭州</#if>
-                    </i>
-                </p>
-                <p class="c_dkh">档口号：<i style="float:right; width: 80px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="${session_user_redis__.logshop.shopNum!}">${session_user_redis__.logshop.shopNum!}</i></p>
-                <p>市场：<i style="float:right; width: 70px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="${session_user_redis__.logshop.market!}">${session_user_redis__.logshop.market!}</i></p>
+            <div class="fl clearfix c_shop_info">
+                <div class="clearfix c_name">
+                    <strong class="fl">${session_user_redis__.userNick!}</strong>
+                    <p class="fr">
+                        <#if session_user_redis__.logshop.tbNick??>
+                        <span class="iconfont c_ff7112 icon-c-shop" title="店铺授权" alt="店铺授权" ></span>
+                        <#else>
+                        <span class="iconfont icon-c-shop" title="店铺未授权" alt="店铺未授权"></span>
+                        </#if>
+                        <span class="iconfont c_22ca75 icon-c-user" title="实名认证" alt="实名认证"></span>
+                    </p>
+                    <p class="fr">店铺名称:<i>${session_user_redis__.logshop.shopName!}</i></p>
+                </div>
+                <div class="c_cb c_address clearfix">
+                    <p>城市：
+                        <i>
+                            <#if session_user_redis__.logshop.webSite == 'jx'>嘉兴<#elseif session_user_redis__.logshop.webSite == 'ss'>石狮<#elseif session_user_redis__.logshop.webSite == 'gz'>广州<#elseif session_user_redis__.logshop.webSite == 'cs'>常熟<#elseif session_user_redis__.logshop.webSite == 'bj'>北京<#elseif session_user_redis__.logshop.webSite == 'qz'>泉州<#else>杭州</#if>
+                        </i>
+                    </p>
+                    <p class="c_dkh">档口号：<i style="float:right; width: 80px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="${session_user_redis__.logshop.shopNum!}">${session_user_redis__.logshop.shopNum!}</i></p>
+                    <p>市场：<i style="float:right; width: 70px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="${session_user_redis__.logshop.market!}">${session_user_redis__.logshop.market!}</i></p>
+                </div>
             </div>
-        </div>
-        <div class="fr c_index">
-          <p>关注指数：<i>5120</i> 排名 44</p>
-          <p>评价积分：<i>5.0</i> 高于 4.83179</p>
-          <p>商家权重：<i>正常</i> 提升权重</p>
+            <div class="fr c_index">
+              <p>关注指数：<i>5120</i> 排名 44</p>
+              <p>评价积分：<i>5.0</i> 高于 4.83179</p>
+              <p>商家权重：<i>正常</i> 提升权重</p>
+            </div>
         </div>
         <#if session_user_redis__.logshop.webSite == 'qz'>
         <div class="truthDataBox">
