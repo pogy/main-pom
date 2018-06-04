@@ -405,6 +405,10 @@ var code = '${code!}'
                     <span>运费总计：</span>
                     <em class="fs14 yahei">&yen;<span id="postPrice">0.00</span></em>
                 </li>
+                <li class="freePostBox">
+                    <span>邮费已减免：</span>
+                    <em class="fs14 yahei fcF40">&yen;-<span class="freePostCost">0.00</span></em>
+                </li>
                 <li>
                     <span>服务费总计：</span>
                     <em class="fs14 yahei">&yen;<span id="servicePrice">0.00</span></em>

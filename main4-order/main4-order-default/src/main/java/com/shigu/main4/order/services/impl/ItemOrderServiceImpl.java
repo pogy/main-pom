@@ -94,6 +94,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
 
+    private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
+
     /**
      * oid获取器
      *
@@ -248,7 +250,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(companyId);
         logistic.setAddress(buyerAddress.getAddress());
-        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
+        logistic.setMoney(calculateLogisticsFee(orderBO.getUserId(),order.getOid(),orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic, true);//最后一步才重怎么价格
         return order.getOid();
     }
@@ -272,17 +274,23 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @return
      */
     @Override
-    public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId, List<PidNumBO> pids) throws OrderException {
+    public Long calculateLogisticsFee(Long userId,Long oId,Long senderId, Long companyId, Long provId, List<PidNumBO> pids) throws OrderException {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
         templateExample.createCriteria().andEnabledEqualTo(true).andSenderIdEqualTo(senderId);
         logisticsTemplateMapper.selectByExample(templateExample);
         LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        Boolean discounts = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        if (discounts == null)
+            discounts = false;
         try {
             return logisticsTemplate.calculate(
+                    userId,
+                    oId,
                     provId,
                     companyId,
                     pids.stream().mapToInt(PidNumBO::getNum).sum(),
-                    pids.stream().mapToLong(PidNumBO::getWeight).sum()
+                    pids.stream().mapToLong(PidNumBO::getWeight).sum(),
+                    discounts
             );
         } catch (LogisticsRuleException e) {
             throw new OrderException(e.getMessage());
