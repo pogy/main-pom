@@ -4,7 +4,7 @@
     <h2>交易管理</h2>
     <ul>
         <#if 'myOrder' != 'xiufuGoods21init' && 'myOrder' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'myOrder' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'myOrder' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -18,7 +18,7 @@
             </#if>
         </#if>
         <#if 'distributionOrder' != 'xiufuGoods21init' && 'distributionOrder' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'distributionOrder' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'distributionOrder' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -36,7 +36,7 @@
     <h2>商品管理</h2>
     <ul>
         <#if 'createGoods21init' != 'xiufuGoods21init' && 'createGoods21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'createGoods21init' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'createGoods21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -59,7 +59,7 @@
             </#if>
         </#if>
         <#if 'storeGoodsList21init' != 'xiufuGoods21init' && 'storeGoodsList21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'storeGoodsList21init' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'storeGoodsList21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -79,7 +79,7 @@
             </#if>
         </#if>
         <#if 'storeGoodsListinit' != 'xiufuGoods21init' && 'storeGoodsListinit' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'storeGoodsListinit' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'storeGoodsListinit' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -93,7 +93,7 @@
             </#if>
         </#if>
         <#if 'storeGoodsNoListinit' != 'xiufuGoods21init' && 'storeGoodsNoListinit' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'storeGoodsNoListinit' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'storeGoodsNoListinit' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -107,7 +107,7 @@
             </#if>
         </#if>
         <#if 'xiufuGoods21init' != 'xiufuGoods21init' && 'xiufuGoods21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'xiufuGoods21init' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'xiufuGoods21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -121,7 +121,7 @@
             </#if>
         </#if>
         <#if 'goodsCategory' != 'xiufuGoods21init' && 'goodsCategory' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'goodsCategory' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'goodsCategory' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -138,7 +138,7 @@
     <h2>店铺管理</h2>
     <ul>
         <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' && '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -153,7 +153,7 @@
             </#if>
         </#if>
         <#if 'design' != 'xiufuGoods21init' && 'design' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'design' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'design' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -168,7 +168,7 @@
             </#if>
         </#if>
         <#if 'pictureSpace' != 'xiufuGoods21init' && 'pictureSpace' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'pictureSpace' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'pictureSpace' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -182,7 +182,7 @@
             </#if>
         </#if>
         <#if 'shiguStoreerjiyuming' != 'xiufuGoods21init' && 'shiguStoreerjiyuming' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'shiguStoreerjiyuming' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'shiguStoreerjiyuming' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -196,7 +196,7 @@
             </#if>
         </#if>
         <#if 'shiguStorebasicStore' != 'xiufuGoods21init' && 'shiguStorebasicStore' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'shiguStorebasicStore' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'shiguStorebasicStore' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -210,7 +210,7 @@
             </#if>
         </#if>
         <#if 'ghTongbu' != 'xiufuGoods21init' && 'ghTongbu' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'ghTongbu' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'ghTongbu' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -224,7 +224,7 @@
             </#if>
         </#if>
         <#if 'goodsStyleManager' != 'xiufuGoods21init' && 'goodsStyleManager' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'goodsStyleManager' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'goodsStyleManager' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -242,7 +242,7 @@
     <h2>营销管理</h2>
     <ul>
         <#if 'dtggapply' != 'xiufuGoods21init' && 'dtggapply' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'dtggapply' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'dtggapply' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -274,7 +274,7 @@
             </#if>
         </#if>
         <#if 'https://shop121675953.taobao.com' != 'xiufuGoods21init' && 'https://shop121675953.taobao.com' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'https://shop121675953.taobao.com' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'https://shop121675953.taobao.com' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -290,7 +290,7 @@
             </#if>
         </#if>
         <#if 'indexgglist' != 'xiufuGoods21init' && 'indexgglist' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'indexgglist' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'indexgglist' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -332,7 +332,7 @@
             </#if>
         </#if>
         <#if 'promotion' != 'xiufuGoods21init' && 'promotion' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'promotion' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'promotion' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -346,7 +346,7 @@
             </#if>
         </#if>
         <#if '//www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' && '//www.571xz.com/qualityControl.htm' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if '//www.571xz.com/qualityControl.htm' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if '//www.571xz.com/qualityControl.htm' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -361,7 +361,7 @@
             </#if>
         </#if>
         <#if 'actRegister' != 'xiufuGoods21init' && 'actRegister' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'actRegister' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'actRegister' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -380,7 +380,7 @@
     <h2>我的钱包</h2>
     <ul>
         <#if 'userBalance' != 'xiufuGoods21init' && 'userBalance' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'userBalance' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'userBalance' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -403,7 +403,7 @@
             </#if>
         </#if>
         <#if 'bindAlipayUser' != 'xiufuGoods21init' && 'bindAlipayUser' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'bindAlipayUser' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'bindAlipayUser' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -427,7 +427,7 @@
     <h2>安全中心</h2>
     <ul>
         <#if 'safeindex' != 'xiufuGoods21init' && 'safeindex' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'safeindex' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'safeindex' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -447,7 +447,7 @@
             </#if>
         </#if>
         <#if 'sysSetsindex' != 'xiufuGoods21init' && 'sysSetsindex' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'sysSetsindex' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'sysSetsindex' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
@@ -465,7 +465,7 @@
     <h2>相册管理</h2>
     <ul>
         <#if 'photoAlbumManagement' != 'xiufuGoods21init' && 'photoAlbumManagement' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'photoAlbumManagement' != 'goodsCategory' || session_user_redis__.logshop.type == 2>
+            <#if 'photoAlbumManagement' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
                     class="
