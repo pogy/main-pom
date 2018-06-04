@@ -408,53 +408,53 @@ public class ImportCsvFileService {
                                 /*if(desc.indexOf("hznzcn")!=-1||desc.indexOf("freep.cn")!=-1){
                                     desc=uploadImages(desc, storeId);
                                 }*/
-                                Document doc = Jsoup.parse(desc);
-                                Elements elements = doc.getElementsByTag("img");
-                                String goodsDesc = desc;
-                                if (elements != null && elements.size() > 0) {
-                                    for (int o = 0; o <elements.size() ; o++) {
-                                        String imgUrl = elements.get(o).attr("src");
-                                        if (StringUtils.isNotBlank(imgUrl) && imgUrl.indexOf("taobaocdn.com") == -1 && imgUrl.indexOf("alicdn.com") == -1 && imgUrl.indexOf("imgs.571xz.net") == -1) {
-                                            InputStream inputStream = null;
-                                            HttpURLConnection conn = null;
-                                            String newImgUrl = null;
-                                            for (int j = 0; j < 3; j++) {
-                                                try {
-                                                    URL url = new URL(imgUrl);
-                                                    conn = (HttpURLConnection) url.openConnection();
-                                                    conn.setRequestMethod("GET");
-                                                    conn.setConnectTimeout(5 * 1000);
-                                                    conn.setRequestProperty("Accept", "Accept text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                                                    conn.setRequestProperty("Connection", "Keep-Alive");
-                                                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
-                                                    conn.connect();
-                                                    inputStream = conn.getInputStream();
-                                                    byte[] bytes = getImgInputStream(inputStream);
-                                                    String filePath = "itemImgs/temp/" + url.getHost().toString().replaceAll("\\.", "") + imgUrl.replaceAll(".*\\/\\/([^:\\/\\/]*).*\\/", "");
-                                                    newImgUrl = oss.uploadFile(bytes, filePath);
-                                                    goodsDesc = goodsDesc.replace(imgUrl, newImgUrl);
-                                                    if (newImgUrl != null && newImgUrl.length() > 0){
-                                                        break;
-                                                    }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                } finally {
-                                                    conn.disconnect();
-                                                }
-                                                if (inputStream != null && StringUtils.isNotBlank(newImgUrl)) {
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        try {
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
+//                                Document doc = Jsoup.parse(desc);
+//                                Elements elements = doc.getElementsByTag("img");
+//                                String goodsDesc = desc;
+//                                if (elements != null && elements.size() > 0) {
+//                                    for (int o = 0; o <elements.size() ; o++) {
+//                                        String imgUrl = elements.get(o).attr("src");
+//                                        if (StringUtils.isNotBlank(imgUrl) && imgUrl.indexOf("taobaocdn.com") == -1 && imgUrl.indexOf("alicdn.com") == -1 && imgUrl.indexOf("imgs.571xz.net") == -1) {
+//                                            InputStream inputStream = null;
+//                                            HttpURLConnection conn = null;
+//                                            String newImgUrl = null;
+//                                            for (int j = 0; j < 3; j++) {
+//                                                try {
+//                                                    URL url = new URL(imgUrl);
+//                                                    conn = (HttpURLConnection) url.openConnection();
+//                                                    conn.setRequestMethod("GET");
+//                                                    conn.setConnectTimeout(5 * 1000);
+//                                                    conn.setRequestProperty("Accept", "Accept text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+//                                                    conn.setRequestProperty("Connection", "Keep-Alive");
+//                                                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
+//                                                    conn.connect();
+//                                                    inputStream = conn.getInputStream();
+//                                                    byte[] bytes = getImgInputStream(inputStream);
+//                                                    String filePath = "itemImgs/temp/" + url.getHost().toString().replaceAll("\\.", "") + imgUrl.replaceAll(".*\\/\\/([^:\\/\\/]*).*\\/", "");
+//                                                    newImgUrl = oss.uploadFile(bytes, filePath);
+//                                                    goodsDesc = goodsDesc.replace(imgUrl, newImgUrl);
+//                                                    if (newImgUrl != null && newImgUrl.length() > 0){
+//                                                        break;
+//                                                    }
+//                                                } catch (Exception e) {
+//                                                    e.printStackTrace();
+//                                                } finally {
+//                                                    conn.disconnect();
+//                                                }
+//                                                if (inputStream != null && StringUtils.isNotBlank(newImgUrl)) {
+//                                                    break;
+//                                                }
+//                                            }
+//                                        }
+//                                        try {
+//                                            Thread.sleep(100);
+//                                        } catch (InterruptedException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                }
 
-                                sge.setGoodsDesc(goodsDesc);
+                                sge.setGoodsDesc(desc);
                             }else{
                                 record.setError ("宝贝描述为空");
                             }

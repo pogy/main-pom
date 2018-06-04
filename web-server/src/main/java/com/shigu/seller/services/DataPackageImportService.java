@@ -91,25 +91,25 @@ public class DataPackageImportService {
             newPicUrl=banjia(tiny.getPicUrl());
             item.setPicUrl(newPicUrl);
         }
-        String desc = tiny.getExtendsGoods().getGoodsDesc();
-        String goodsDesc = desc;
-        if (StringUtils.isNotBlank(desc)){
-            Document doc = Jsoup.parseBodyFragment(desc);
-            Elements elements = doc.getElementsByTag("img");
-            if (elements != null && elements.size() > 0){
-                for (int i = 0; i <elements.size() ; i++) {
-                    String imgUrl = elements.get(i).attr("src");
-                    if (StringUtils.isNotBlank(imgUrl)) {
-                        String newImgUrl = banjia(imgUrl);
-                        if (imgUrl.equalsIgnoreCase(newImgUrl) == false){
-                            goodsDesc = goodsDesc.replaceAll(imgUrl,newImgUrl);
-                        }
-                    }
-                }
-            }
-
-        }
-        item.setGoodsDesc(goodsDesc);
+//        String desc = tiny.getExtendsGoods().getGoodsDesc();
+//        String goodsDesc = desc;
+//        if (StringUtils.isNotBlank(desc)){
+//            Document doc = Jsoup.parseBodyFragment(desc);
+//            Elements elements = doc.getElementsByTag("img");
+//            if (elements != null && elements.size() > 0){
+//                for (int i = 0; i <elements.size() ; i++) {
+//                    String imgUrl = elements.get(i).attr("src");
+//                    if (StringUtils.isNotBlank(imgUrl)) {
+//                        String newImgUrl = banjia(imgUrl);
+//                        if (imgUrl.equalsIgnoreCase(newImgUrl) == false){
+//                            goodsDesc = goodsDesc.replaceAll(imgUrl,newImgUrl);
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+        item.setGoodsDesc(tiny.getExtendsGoods().getGoodsDesc());
         List<ShiguPropImg> propImgs=BeanMapper.mapList(tiny.getExtendsGoods().getList_spi(), ShiguPropImg.class);
         for(ShiguPropImg img:propImgs){
             img.setUrl(banjia(img.getUrl()));
