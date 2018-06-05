@@ -186,9 +186,9 @@ var deschtml = '${goodsInfo.deschtml}';
                     <#list sku.sizes as size>
                     <tr>
                         <#if size_index == 0>
-                            <td rowspan="${(sku.sizes?size)!}" data-pvid="${sku.PVid!}" data-text="${sku.colorText!}" class="colorSpeces">${sku.colorText!}</td>
+                            <td rowspan="${(sku.sizes?size)!}" data-pvid="${sku.colorId!}" data-text="${sku.colorText!}" class="colorSpeces">${sku.colorText!}</td>
                         </#if>
-                        <td data-pvid="${size.PVid!}" data-text="${size.sizeText!}" class="sizeSpeces">${size.sizeText!}</td>
+                        <td data-pvid="${size.sizeId!}" data-text="${size.sizeText!}" class="sizeSpeces">${size.sizeText!}</td>
                         <td><input type="text" class="eachSkuPrice" value="${size.price!}"></td>
                         <td><input type="text" class="inventory" value="${size.num!}"></td>
                     </tr>
