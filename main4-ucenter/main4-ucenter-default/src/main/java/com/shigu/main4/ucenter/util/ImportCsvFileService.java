@@ -155,7 +155,29 @@ public class ImportCsvFileService {
                     List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
 //                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-
+                    List<String> hasInputVid=new ArrayList<>();
+                    for (String anInputList : inputList) {
+                        String[] inputs = anInputList.split(":");
+                        hasInputVid.add(inputs[1]);
+                    }
+                    Integer startIndex=null;
+                    if(hasInputVid.size()>0){
+                        hasInputVid.sort((o1, o2) -> new Integer(o2)-new Integer(o1));
+                        startIndex=new Integer(hasInputVid.get(0));
+                    }
+                    if(startIndex==null){
+                        startIndex=0;
+                    }
+                    for(int iv=0;iv<inputList.size();iv++){
+                        String[] inputs=inputList.get(iv).split(":");
+                        if(hasInputVid.contains(inputs[1])){
+                            hasInputVid.removeIf(inputs[1]::equals);
+                        }else{
+                            String newVid=(startIndex-(iv+1))+"";
+                            String input=inputs[0]+":"+newVid+":"+inputs[2];
+                            inputList.set(iv,input);
+                        }
+                    }
 
                     for(TaobaoItemProp prop:taobaoItemProps){
                         TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
@@ -200,15 +222,9 @@ public class ImportCsvFileService {
                                         break;
                                     }
                                 }
-//                                //准备sku
-//                                for(int skui=0;skui<skus.size();skui++){
-//                                    String sku=skus.get(skui);
-//                                    if(sku.endsWith(":"+key)){
-//                                        skus.remove(skui);
-//                                        inputBean.getSku().put(sku,sku);
-//                                        break;
-//                                    }
-//                                }
+                                if(inputBean.getProp().getKey()==null){
+                                    inputBean.getProp().put(key,key);
+                                }
                                 //准备input
                                 inputBean.getInput().put(inp,inp);
                                 inputBeans.add(inputBean);
@@ -222,11 +238,9 @@ public class ImportCsvFileService {
                                 String[] keyStrs=inputBean.getInput().getKey().split(":");
                                 String key=keyStrs[0]+":"+keyStrs[1];
                                 String newKey=keyStrs[0]+":"+newVid;
-                                String newProp=inputBean.getProp().getValue().replace(key,newKey);
+                                String newProp = inputBean.getProp().getValue().replace(key,newKey);
                                 String newals=newKey+":"+keyStrs[2];
-//                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
                                 als.add(newals);
-//                                skus.add(newsku);
                                 hasProps.add(newProp);
                                 if(StringUtils.isNotBlank(inputBean.getImg().getValue())){
                                     String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
@@ -239,12 +253,10 @@ public class ImportCsvFileService {
                     String prop=StringUtils.join(hasProps,";");
                     String input=StringUtils.join(inputList,";");
                     String al=StringUtils.join(als,";");
-//                    String sku=StringUtils.join(skus,";");
                     v11.set(codeMap.get("input_custom_cpv"),input);
                     v11.set(codeMap.get("cateProps"),prop);
                     v11.set(codeMap.get("propAlias"),al);
                     v11.set(codeMap.get("picture"),img);
-//                    v11.set(codeMap.get("skuProps"),sku);
                 }
 
                 record=new ShiguGoodsTinyVO();
@@ -254,18 +266,12 @@ public class ImportCsvFileService {
                 String propAlias="";
 
                 for(int k=0;k<v_title.size();k++){
-                    //if(v_title.get(k).equals("q1")){
-
-                    ////System.out.println("第"+i+"行第"+k+"列"+v_title.get(k)+"="+v11.get(k));
-                    //}
                     String tt=(String)v_title.get(k);
 
                     switch (tt) {//tt.hashCode()
                         case "title":record.setTitle((String)v11.get(k));break;//title//标题
                         case "cid"://宝贝类目
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
-                                ////System.out.println(((String)v11.get(k)).trim());
-                                ////System.out.println(k);
                                 Long cid=new Long(((String)v11.get(k)).trim());
 
                                 cidList.add (cid);
@@ -405,55 +411,6 @@ public class ImportCsvFileService {
                         case "description"://宝贝描述//description
                             if(v11.get(k)!=null){
                                 String desc=(String)v11.get(k);
-                                /*if(desc.indexOf("hznzcn")!=-1||desc.indexOf("freep.cn")!=-1){
-                                    desc=uploadImages(desc, storeId);
-                                }*/
-//                                Document doc = Jsoup.parse(desc);
-//                                Elements elements = doc.getElementsByTag("img");
-//                                String goodsDesc = desc;
-//                                if (elements != null && elements.size() > 0) {
-//                                    for (int o = 0; o <elements.size() ; o++) {
-//                                        String imgUrl = elements.get(o).attr("src");
-//                                        if (StringUtils.isNotBlank(imgUrl) && imgUrl.indexOf("taobaocdn.com") == -1 && imgUrl.indexOf("alicdn.com") == -1 && imgUrl.indexOf("imgs.571xz.net") == -1) {
-//                                            InputStream inputStream = null;
-//                                            HttpURLConnection conn = null;
-//                                            String newImgUrl = null;
-//                                            for (int j = 0; j < 3; j++) {
-//                                                try {
-//                                                    URL url = new URL(imgUrl);
-//                                                    conn = (HttpURLConnection) url.openConnection();
-//                                                    conn.setRequestMethod("GET");
-//                                                    conn.setConnectTimeout(5 * 1000);
-//                                                    conn.setRequestProperty("Accept", "Accept text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-//                                                    conn.setRequestProperty("Connection", "Keep-Alive");
-//                                                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
-//                                                    conn.connect();
-//                                                    inputStream = conn.getInputStream();
-//                                                    byte[] bytes = getImgInputStream(inputStream);
-//                                                    String filePath = "itemImgs/temp/" + url.getHost().toString().replaceAll("\\.", "") + imgUrl.replaceAll(".*\\/\\/([^:\\/\\/]*).*\\/", "");
-//                                                    newImgUrl = oss.uploadFile(bytes, filePath);
-//                                                    goodsDesc = goodsDesc.replace(imgUrl, newImgUrl);
-//                                                    if (newImgUrl != null && newImgUrl.length() > 0){
-//                                                        break;
-//                                                    }
-//                                                } catch (Exception e) {
-//                                                    e.printStackTrace();
-//                                                } finally {
-//                                                    conn.disconnect();
-//                                                }
-//                                                if (inputStream != null && StringUtils.isNotBlank(newImgUrl)) {
-//                                                    break;
-//                                                }
-//                                            }
-//                                        }
-//                                        try {
-//                                            Thread.sleep(100);
-//                                        } catch (InterruptedException e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
-//                                }
-
                                 sge.setGoodsDesc(desc);
                             }else{
                                 record.setError ("宝贝描述为空");
@@ -507,12 +464,7 @@ public class ImportCsvFileService {
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
-                               // Date tpic=new Date();
-
                                 getImgs((String)v11.get(k), record,sge,image_save_path,map);
-                               // Date tpicend=new Date();
-                               // long timepic=tpicend.getTime()-tpic.getTime();
-                               // //System.out.println(i+"执行图片处理"+timepic);
                             }else{
                                 record.setError ("没有主图");
                             }
