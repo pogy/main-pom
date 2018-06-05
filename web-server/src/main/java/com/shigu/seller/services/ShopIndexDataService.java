@@ -490,28 +490,29 @@ public class ShopIndexDataService {
             topWeekReadDataVOS = weekReadDataVOS.stream().limit(30).collect(Collectors.toList());
             Map<String, WeekReadDataVO> topDataVOMap = topWeekReadDataVOS.stream().collect(Collectors.toMap(WeekReadDataVO::getGoodsId, Function.identity(), (key1, key2) -> key2));
 
-            List<Long> longGoodsIds = topWeekReadDataVOS.stream().map(item->Long.parseLong(item.getGoodsId())).collect(Collectors.toList());
+            if (topDataVOMap != null && !topDataVOMap.isEmpty()) {
+                List<Long> longGoodsIds = topWeekReadDataVOS.stream().map(item -> Long.parseLong(item.getGoodsId())).collect(Collectors.toList());
 
-            ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-            shiguGoodsTinyExample.setWebSite(webSite);
-            shiguGoodsTinyExample.createCriteria().andGoodsIdIn(longGoodsIds);
-            List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,title"));
-            shiguGoodsTinies.stream().forEach(item->{
-                WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
-                weekReadDataVO.setTitle(item.getTitle());
-                weekReadDataVO.setImgSrc(item.getPicUrl());
-            });
+                ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+                shiguGoodsTinyExample.setWebSite(webSite);
+                shiguGoodsTinyExample.createCriteria().andGoodsIdIn(longGoodsIds);
+                List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,title"));
+                shiguGoodsTinies.stream().forEach(item -> {
+                    WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
+                    weekReadDataVO.setTitle(item.getTitle());
+                    weekReadDataVO.setImgSrc(item.getPicUrl());
+                });
 
-            ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
-            shiguGoodsSoldoutExample.setWebSite(webSite);
-            shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(longGoodsIds);
-            List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("goods_id,pic_url,title"));
-            shiguGoodsSoldouts.stream().forEach(item->{
-                WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
-                weekReadDataVO.setTitle(item.getTitle());
-                weekReadDataVO.setImgSrc(item.getPicUrl());
-            });
-
+                ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
+                shiguGoodsSoldoutExample.setWebSite(webSite);
+                shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(longGoodsIds);
+                List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("goods_id,pic_url,title"));
+                shiguGoodsSoldouts.stream().forEach(item -> {
+                    WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
+                    weekReadDataVO.setTitle(item.getTitle());
+                    weekReadDataVO.setImgSrc(item.getPicUrl());
+                });
+            }
 
 
         }
