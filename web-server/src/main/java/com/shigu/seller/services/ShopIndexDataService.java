@@ -549,20 +549,22 @@ public class ShopIndexDataService {
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.SECOND, 0);
         startTime.set(Calendar.MILLISECOND, 0);
-        startTime.add(Calendar.DAY_OF_MONTH,-10);
-        String startStrTime = DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss");
+        startTime.add(Calendar.DAY_OF_MONTH,-9);
+        String commonStartStrTime = DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss");
+        String startStrTime = DateFormatUtils.format(startTime, "yyyy/MM/dd");
+        String nowStrTime = DateFormatUtils.format(new Date(), "yyyy/MM/dd");
 
         //访问
         SearchRequestBuilder requestBuilder = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
         requestBuilder.setTypes("shop");
 
         BoolQueryBuilder qb = QueryBuilders.boolQuery();
-        qb.must(QueryBuilders.rangeQuery("inTime").gte(startStrTime));
+        qb.must(QueryBuilders.rangeQuery("inTime").from(commonStartStrTime));
         qb.must(QueryBuilders.termQuery("shop",shopId));
 
         requestBuilder.setQuery(qb);
         requestBuilder.addAggregation(AggregationBuilders.dateHistogram("goodsReadStatistics")
-                .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                .field("inTime").interval(DateHistogramInterval.DAY).format("yyyy/MM/dd").minDocCount(0).extendedBounds(startStrTime, nowStrTime));
         SearchResponse searchResponse = requestBuilder.execute().actionGet();
         MultiBucketsAggregation agg = searchResponse.getAggregations().get("goodsReadStatistics");
         List<DataListVO> goodsReadStatistics = agg.getBuckets().stream().map(o -> {
@@ -583,14 +585,14 @@ public class ShopIndexDataService {
             SearchRequestBuilder domainSrb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
             domainSrb.setTypes("other");
             BoolQueryBuilder domainQb= QueryBuilders.boolQuery();
-            domainQb.must(QueryBuilders.rangeQuery("inTime").gte(startStrTime));
+            domainQb.must(QueryBuilders.rangeQuery("inTime").from(commonStartStrTime));
             domainQb.must(QueryBuilders.termQuery("domain",domain));
 
             domainSrb.setQuery(domainQb);
             domainSrb.setSize(0);
             domainSrb.setFrom(1);
             domainSrb.addAggregation(AggregationBuilders.dateHistogram("domainReadStatistics")
-                    .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                    .field("inTime").interval(DateHistogramInterval.DAY).format("yyyy/MM/dd").minDocCount(0).extendedBounds(startStrTime, nowStrTime));
             org.elasticsearch.action.search.SearchResponse domainSearchResponse = domainSrb.execute()
                     .actionGet();
             MultiBucketsAggregation doaminAgg = domainSearchResponse.getAggregations().get("domainReadStatistics");
@@ -612,14 +614,14 @@ public class ShopIndexDataService {
                 SearchRequestBuilder itemSrb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
                 itemSrb.setTypes("item");
                 BoolQueryBuilder itemQb= QueryBuilders.boolQuery();
-                itemQb.must(QueryBuilders.rangeQuery("inTime").gte(startStrTime));
+                itemQb.must(QueryBuilders.rangeQuery("inTime").from(commonStartStrTime));
                 itemQb.must(QueryBuilders.termsQuery("itemId",ids.toArray(new Long[ids.size()])));
 
                 itemSrb.setQuery(itemQb);
                 itemSrb.setSize(0);
                 itemSrb.setFrom(1);
                 itemSrb.addAggregation(AggregationBuilders.dateHistogram("itemReadStatistics")
-                        .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                        .field("inTime").interval(DateHistogramInterval.DAY).format("yyyy/MM/dd").minDocCount(0).extendedBounds(startStrTime, nowStrTime));
                 org.elasticsearch.action.search.SearchResponse itemSearchResponse = itemSrb.execute()
                         .actionGet();
                 MultiBucketsAggregation itemAgg = itemSearchResponse.getAggregations().get("itemReadStatistics");
@@ -639,9 +641,9 @@ public class ShopIndexDataService {
         downloadBuilder.setQuery(QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("supperStoreId", shopId))
                         .must(QueryBuilders.termQuery("flag","imgzip"))
-                        .must(QueryBuilders.rangeQuery("daiTime").from("now-9d")))
+                        .must(QueryBuilders.rangeQuery("daiTime").from(commonStartStrTime)))
                 .addAggregation(AggregationBuilders.dateHistogram("goodsUploadStatistics")
-                        .field("daiTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                        .field("daiTime").interval(DateHistogramInterval.DAY).minDocCount(0).format("yyyy/MM/dd").extendedBounds(startStrTime, nowStrTime));
         SearchResponse downloadResponse = downloadBuilder.execute().actionGet();
         MultiBucketsAggregation downloadAgg = downloadResponse.getAggregations().get("goodsUploadStatistics");
         List<DataListVO> goodsUploadStatistics = downloadAgg.getBuckets().stream().map(o -> {
