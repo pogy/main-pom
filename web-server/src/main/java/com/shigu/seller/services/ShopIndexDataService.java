@@ -590,14 +590,46 @@ public class ShopIndexDataService {
             domainSrb.setSize(0);
             domainSrb.setFrom(1);
             domainSrb.addAggregation(AggregationBuilders.dateHistogram("domainReadStatistics")
-                    .field("inTime").format("yyyy-MM-dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                    .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
             org.elasticsearch.action.search.SearchResponse domainSearchResponse = domainSrb.execute()
                     .actionGet();
-            MultiBucketsAggregation doaminAgg = searchResponse.getAggregations().get("domainReadStatistics");
-            agg.getBuckets().stream().forEach(item->{
+            MultiBucketsAggregation doaminAgg = domainSearchResponse.getAggregations().get("domainReadStatistics");
+            doaminAgg.getBuckets().stream().forEach(item->{
                 DataListVO dataListVO = dataListVOMap.get(item.getKeyAsString());
                 dataListVO.setValue(dataListVO.getValue()+item.getDocCount());
             });
+        }
+
+        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+        example.setWebSite(webSite);
+        example.createCriteria().andStoreIdEqualTo(shopId);
+        List<ShiguGoodsTiny> goodsList = shiguGoodsTinyMapper.selectFieldsByExample(example, FieldUtil.codeFields("goods_id"));
+        if (goodsList != null && !goodsList.isEmpty()) {
+            List<Long> goodsIds = goodsList.stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList());
+            List<List<Long>> partition = Lists.partition(goodsIds, 500);
+
+            for (List<Long> ids : partition){
+                SearchRequestBuilder itemSrb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
+                itemSrb.setTypes("item");
+                BoolQueryBuilder itemQb= QueryBuilders.boolQuery();
+                itemQb.must(QueryBuilders.rangeQuery("inTime").gte(startStrTime));
+                itemQb.must(QueryBuilders.termsQuery("itemId",ids.toArray(new Long[ids.size()])));
+
+                itemSrb.setQuery(itemQb);
+                itemSrb.setSize(0);
+                itemSrb.setFrom(1);
+                itemSrb.addAggregation(AggregationBuilders.dateHistogram("itemReadStatistics")
+                        .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                org.elasticsearch.action.search.SearchResponse itemSearchResponse = itemSrb.execute()
+                        .actionGet();
+                MultiBucketsAggregation itemAgg = itemSearchResponse.getAggregations().get("itemReadStatistics");
+                itemAgg.getBuckets().stream().forEach(item->{
+                    DataListVO dataListVO = dataListVOMap.get(item.getKeyAsString());
+                    dataListVO.setValue(dataListVO.getValue()+item.getDocCount());
+                });
+
+            }
+
         }
 
         //下载
@@ -609,7 +641,7 @@ public class ShopIndexDataService {
                         .must(QueryBuilders.termQuery("flag","imgzip"))
                         .must(QueryBuilders.rangeQuery("daiTime").from("now-9d")))
                 .addAggregation(AggregationBuilders.dateHistogram("goodsUploadStatistics")
-                        .field("daiTime").format("yyyy-MM-dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                        .field("daiTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
         SearchResponse downloadResponse = downloadBuilder.execute().actionGet();
         MultiBucketsAggregation downloadAgg = downloadResponse.getAggregations().get("goodsUploadStatistics");
         List<DataListVO> goodsUploadStatistics = downloadAgg.getBuckets().stream().map(o -> {
