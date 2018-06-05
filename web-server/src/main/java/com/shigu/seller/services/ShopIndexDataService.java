@@ -561,7 +561,7 @@ public class ShopIndexDataService {
 
         requestBuilder.setQuery(qb);
         requestBuilder.addAggregation(AggregationBuilders.dateHistogram("goodsReadStatistics")
-                .field("inTime").format("yyyy/MM/dd").extendedBounds("now-10d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                .field("inTime").format("yyyy/MM/dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
         SearchResponse searchResponse = requestBuilder.execute().actionGet();
         MultiBucketsAggregation agg = searchResponse.getAggregations().get("goodsReadStatistics");
         List<DataListVO> goodsReadStatistics = agg.getBuckets().stream().map(o -> {
@@ -589,7 +589,7 @@ public class ShopIndexDataService {
             domainSrb.setSize(0);
             domainSrb.setFrom(1);
             domainSrb.addAggregation(AggregationBuilders.dateHistogram("domainReadStatistics")
-                    .field("inTime").format("yyyy-MM-dd").extendedBounds("now-10d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                    .field("inTime").format("yyyy-MM-dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
             org.elasticsearch.action.search.SearchResponse domainSearchResponse = domainSrb.execute()
                     .actionGet();
             MultiBucketsAggregation doaminAgg = searchResponse.getAggregations().get("domainReadStatistics");
@@ -608,7 +608,7 @@ public class ShopIndexDataService {
                         .must(QueryBuilders.termQuery("flag","imgzip"))
                         .must(QueryBuilders.rangeQuery("daiTime").from("now-9d")))
                 .addAggregation(AggregationBuilders.dateHistogram("goodsUploadStatistics")
-                        .field("daiTime").format("yyyy-MM-dd").extendedBounds("now-10d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
+                        .field("daiTime").format("yyyy-MM-dd").extendedBounds("now-9d", null).minDocCount(0).interval(DateHistogramInterval.DAY));
         SearchResponse downloadResponse = downloadBuilder.execute().actionGet();
         MultiBucketsAggregation downloadAgg = downloadResponse.getAggregations().get("goodsUploadStatistics");
         List<DataListVO> goodsUploadStatistics = downloadAgg.getBuckets().stream().map(o -> {
