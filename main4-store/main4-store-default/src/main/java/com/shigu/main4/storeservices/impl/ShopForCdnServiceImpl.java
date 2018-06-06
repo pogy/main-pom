@@ -663,7 +663,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             requestBuilder.setQuery(searchQuery);
         }
         if (shopId != null && shopForCdnBo.getDiyScid() != null){
-            requestBuilder.setQuery(QueryBuilder.termSearch("gc_id",shopForCdnBo.getDiyScid().toString()));
+//            requestBuilder.setQuery(QueryBuilder.termSearch("gc_id",shopForCdnBo.getDiyScid().toString()));
+            requestBuilder.addFilter(FilterBuilder.number("gc_id",shopForCdnBo.getDiyScid()));
         }
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
