@@ -72,6 +72,7 @@ import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品页面显示
@@ -602,10 +603,10 @@ public class CdnAction {
 //        model.addAttribute("userCount", selFromCache(numListObjFromCache));
         //热卖
         ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_RM : SpreadEnum.MAN_QZ_RM);
-        model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
+        model.addAttribute("hotSaleGoodsList", qzItemRemoveMarket(itemSpreadRms));
         //推荐
         ObjFromCache<List<NewHzManIndexItemGoatVO>> weekPushGoodsList = spreadService.castedItemGoatList(webSite, manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_QZ_TJ : SpreadEnum.MAN_QZ_TJ);
-        model.addAttribute("weekPushGoodsList", selFromCache(weekPushGoodsList));
+        model.addAttribute("weekPushGoodsList", qzItemRemoveMarket(weekPushGoodsList));
 
 
         //类目导航
@@ -618,6 +619,12 @@ public class CdnAction {
         } else {
             return "index/index";
         }
+    }
+
+    private List<NewHzManIndexItemGoatVO> qzItemRemoveMarket(ObjFromCache<List<NewHzManIndexItemGoatVO>> itemSpreadRms) {
+        return itemSpreadRms.selObj().stream()
+                .peek(newHzManIndexItemGoatVO -> newHzManIndexItemGoatVO.setMarketName(null))
+                .collect(Collectors.toList());
     }
 
     /**
