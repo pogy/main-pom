@@ -161,7 +161,7 @@
             <#list goodsList as item>
             <li data-id="${item.goodsId!}">
                 <div class="imgBox">
-                    <img src="${item.imgSrc!}_180x180.jpg">
+                    <img src="${item.imgSrc!}_200x200.jpg">
                 </div>
                 <div class="goodsInfoBox fc3">
 <#list [{}] as $it>
