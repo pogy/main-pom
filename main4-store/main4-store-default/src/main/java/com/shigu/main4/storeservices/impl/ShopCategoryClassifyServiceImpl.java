@@ -144,7 +144,7 @@ public class ShopCategoryClassifyServiceImpl implements ShopCategoryClassifyServ
         ShiguGysCustomCategory shiguGysCustomCategory = new ShiguGysCustomCategory();
         shiguGysCustomCategory.setGcId(cateId);
         shiguGysCustomCategory.setGcStatus(-1);
-        return shiguGysCustomCategoryMapper.updateByPrimaryKey(shiguGysCustomCategory);
+        return shiguGysCustomCategoryMapper.updateByPrimaryKeySelective(shiguGysCustomCategory);
     }
 
 }
