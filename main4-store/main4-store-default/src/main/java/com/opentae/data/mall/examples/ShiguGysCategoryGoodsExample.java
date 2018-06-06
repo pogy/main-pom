@@ -10,6 +10,7 @@ import java.util.*;
 public class ShiguGysCategoryGoodsExample extends SgExample<ShiguGysCategoryGoodsExample.Criteria> {
     public static final Class<ShiguGysCategoryGoods> beanClass = ShiguGysCategoryGoods.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
     public static EntityColumn goodsId;
     public static EntityColumn gcId;
     public static EntityColumn gcgId;
@@ -21,6 +22,7 @@ public class ShiguGysCategoryGoodsExample extends SgExample<ShiguGysCategoryGood
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        webSite = listMap.get("webSite");
         goodsId = listMap.get("goodsId");
         gcId = listMap.get("gcId");
         gcgId = listMap.get("gcgId");
@@ -47,6 +49,61 @@ public class ShiguGysCategoryGoodsExample extends SgExample<ShiguGysCategoryGood
             super(example);
         }
 
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteIsNull() {
+            return isNull(webSite);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
+        }
+
+        public ShiguGysCategoryGoodsExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
+        }
         public ShiguGysCategoryGoodsExample.Criteria andGoodsIdIsNull() {
             return isNull(goodsId);
         }

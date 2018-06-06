@@ -23,6 +23,11 @@ public class ShiguGysCategoryGoods implements Serializable {
 	private Long goodsId;
 
     /**
+     * 所属站点
+     */
+	private String webSite;
+
+    /**
      * 店铺id
      */
 	private Long sId;
@@ -56,12 +61,20 @@ public class ShiguGysCategoryGoods implements Serializable {
 		return this.goodsId;
 	}
 
-	public void setSId(Long sId) {
-		this.sId = sId;
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 
-	public Long getSId() {
-		return this.sId;
+	public String getWebSite() {
+		return this.webSite;
+	}
+
+	public Long getsId() {
+		return sId;
+	}
+
+	public void setsId(Long sId) {
+		this.sId = sId;
 	}
 
 	public void setGcgStatus(Integer gcgStatus) {

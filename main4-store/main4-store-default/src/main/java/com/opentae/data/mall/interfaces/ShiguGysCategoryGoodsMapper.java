@@ -3,7 +3,6 @@ package com.opentae.data.mall.interfaces;
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ShiguGysCategoryGoods;
-import com.shigu.main4.vo.CatesVo;
 import com.shigu.main4.vo.GoodsVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
@@ -19,13 +18,14 @@ import java.util.List;
 @Scope("singleton")
 @Lazy(true)
 public interface ShiguGysCategoryGoodsMapper extends Mapper<ShiguGysCategoryGoods> {
+
     /**
      * 获取类目信息
      * @param cateId
      * @param webSite
      * @return
      */
-    Integer getCateInfo(@Param("cateId") Long cateId,@Param("webSite") String webSite);
+    Integer getCateInfo(@Param("cateId") Long cateId, @Param("webSite") String webSite);
 
     /**
      * 获取商品列表
@@ -44,6 +44,5 @@ public interface ShiguGysCategoryGoodsMapper extends Mapper<ShiguGysCategoryGood
      * @return
      */
     Integer selectGoodsCountByDiyCate(@Param("shopId") Long shopId,@Param("webSite") String webSite,@Param("cateId") Long cateId);
-
 
 }

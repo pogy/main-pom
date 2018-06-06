@@ -42,7 +42,7 @@ public interface ShopCategoryClassifyService {
      * @param cnameId
      * @return
      */
-    Integer setCategoryForGoods(String ids,Long cnameId,Integer zt,Long shopId);
+    Integer setCategoryForGoods(String ids,Long cnameId,Integer zt,Long shopId,String webSite);
 
     /**
      * 删除店铺自定义分类

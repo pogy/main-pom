@@ -98,8 +98,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Override
     public List<ShopCat> selShopCatsById(Long shopId) {
         Cache shopCatCache = cacheManager.getCache("shopCatCache");
-        Integer syntaobao = shiguShopMapper.selectByPrimaryKey(shopId).getType();
-
+        Integer syntaobao = 1;
+        ShiguShop shop = shiguShopMapper.selectByPrimaryKey(shopId);
+        if ("qz".equals(shop.getWebSite()) || "hz".equals(shop.getWebSite())){
+            syntaobao = shop.getType();
+        }
         //确定该cache保存的类型正确
         @SuppressWarnings("unchecked")
         List<ShopCat> shopCats = (List<ShopCat>) shopCatCache.get(shopId, List.class);
@@ -660,7 +663,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             requestBuilder.setQuery(searchQuery);
         }
         if (shopId != null && shopForCdnBo.getDiyScid() != null){
-            requestBuilder.setQuery(QueryBuilder.termSearch("diyScid",shopForCdnBo.getDiyScid().toString()));
+            requestBuilder.setQuery(QueryBuilder.termSearch("gc_id",shopForCdnBo.getDiyScid().toString()));
         }
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {

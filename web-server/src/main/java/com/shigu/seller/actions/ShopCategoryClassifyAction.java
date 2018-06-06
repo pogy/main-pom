@@ -75,7 +75,9 @@ public class ShopCategoryClassifyAction {
     @ResponseBody
     public JSONObject setCateForGoods(Long cnameId, String ids,Integer type,HttpSession session){
         ShopSession shop = getShopSession(session);
-        Integer b = shopCategoryClassifyService.setCategoryForGoods(ids,cnameId,type,shop.getShopId());
+        Integer b = shopCategoryClassifyService.setCategoryForGoods(ids,cnameId,type,shop.getShopId(),shop.getWebSite());
+        if (b == -2)
+            return JsonResponseUtil.error("商品设置分类失败,请检查参数");
         if (b <= 0)
             return JsonResponseUtil.error("商品设置分类失败");
         return JsonResponseUtil.success();

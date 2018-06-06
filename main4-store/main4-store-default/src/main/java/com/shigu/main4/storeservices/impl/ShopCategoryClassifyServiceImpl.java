@@ -96,15 +96,21 @@ public class ShopCategoryClassifyServiceImpl implements ShopCategoryClassifyServ
     @Override
     public Integer addCustomCategory(String cname, Long shopId) {
         ShiguGysCustomCategory shiguGysCustomCategory = new ShiguGysCustomCategory();
-        shiguGysCustomCategory.setGcName(cname);
         shiguGysCustomCategory.setGcStatus(1);
         shiguGysCustomCategory.setSId(shopId);
+        List<ShiguGysCustomCategory> shiguGysCustomCategoryList = shiguGysCustomCategoryMapper.select(shiguGysCustomCategory);
+        if (shiguGysCustomCategoryList != null && shiguGysCustomCategoryList.size()>=6){
+            return -1;
+        }
+        shiguGysCustomCategory.setGcName(cname);
         return shiguGysCustomCategoryMapper.insertSelective(shiguGysCustomCategory);
     }
 
     @Override
-    public Integer setCategoryForGoods(String ids, Long cnameId,Integer zt,Long shopId) {
+    public Integer setCategoryForGoods(String ids, Long cnameId,Integer zt,Long shopId,String webSite) {
         if (ids==null||ids.length()<=0)
+            return -2;
+        if (cnameId == null)
             return -2;
         if (zt==2) {
             ShiguGysCategoryGoodsExample shiguGysCategoryGoodsExample = new ShiguGysCategoryGoodsExample();
@@ -117,9 +123,10 @@ public class ShopCategoryClassifyServiceImpl implements ShopCategoryClassifyServ
         String[] idstrs = ids.split(",");
         for (int i = 0; i <idstrs.length ; i++) {
             ShiguGysCategoryGoods shiguGysCategoryGoods = new ShiguGysCategoryGoods();
-            shiguGysCategoryGoods.setSId(shopId);
+            shiguGysCategoryGoods.setsId(shopId);
             shiguGysCategoryGoods.setGcId(cnameId);
             shiguGysCategoryGoods.setGcgStatus(1);
+            shiguGysCategoryGoods.setWebSite(webSite);
             shiguGysCategoryGoods.setGoodsId(Long.valueOf(idstrs[i]));
             gysCategoryGoods.add(shiguGysCategoryGoods);
         }
