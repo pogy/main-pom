@@ -27,6 +27,8 @@
         <module>jdimg-server</module>
         <module>jdimg-sdk</module>
         <module>main4-photo</module>
+        <module>sn-sdk</module>
+        <module>sn-server</module>
     </modules>
     <packaging>pom</packaging>
 
