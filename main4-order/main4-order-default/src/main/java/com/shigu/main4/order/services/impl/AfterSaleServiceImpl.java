@@ -181,9 +181,9 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         }
 
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
-        Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + (refundDesc == null? "" : refundDesc));
+        Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + (refundDesc == null? "" : ","+refundDesc));
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
-        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, refundCount, refundMoney, refundReason + "," + refundDesc, 1);
+        orderMessageProducter.orderRefundHasItem(refundId, itemOrderSub.getOid(), subOrderId, refundCount, refundMoney, refundReason + (refundDesc == null? "" : ","+refundDesc), 1);
         return refundId;
     }
 
