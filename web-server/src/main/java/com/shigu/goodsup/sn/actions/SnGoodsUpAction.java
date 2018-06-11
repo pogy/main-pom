@@ -1,5 +1,6 @@
 package com.shigu.goodsup.sn.actions;
 
+import com.openJar.beans.SnAuthInfo;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
@@ -28,7 +29,7 @@ public class SnGoodsUpAction {
     @Value("${sn.redirect_uri}")
     private String SN_redirect_uri;
 
-    private static final String SN_Outh_URL = "https://open.suning.com/api/oauth/authorize?response_type=code&client_id=SN_appkey&redirect_uri=SN_redirect_uri";
+    private static final String SN_Outh_URL = "https://open.suning.com/api/oauth/authorize?response_type=code&client_id=SN_appkey&redirect_uri=SN_redirect_uri&itemcode=1";
 
     /**
      * 上传页面
@@ -66,8 +67,8 @@ public class SnGoodsUpAction {
     }
 
     @RequestMapping("callback")
-    public String SnCallback(String code,HttpServletRequest request,HttpSession session){
-        System.out.println(code);
+    public String SnCallback(SnAuthInfo snAuthInfo, HttpServletRequest request, HttpSession session){
+//        System.out.println(code);
         String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
         session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
         return "redirect:"+loginSuccessUrl(backUrl);

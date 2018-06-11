@@ -57,6 +57,7 @@
         <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
         <daifa-sdk.version>${project.version}</daifa-sdk.version>
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
+        <sn-sdk.version>${project.version}</sn-sdk.version>
 
 
 

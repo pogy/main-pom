@@ -47,6 +47,12 @@
 
         <dependency>
             <groupId>sites.main</groupId>
+            <artifactId>sn-sdk</artifactId>
+            <version>${sn-sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
             <artifactId>jdimg-sdk</artifactId>
             <version>${jdimg-sdk.version}</version>
             <exclusions>
