@@ -198,6 +198,7 @@
 <ul class="childOrderItem<#if childOrder.disabled == true> disabled</#if>"
     data-id="${childOrder.childOrderId!}"
     data-price="${childOrder.price!}"
+    data-goodsid="${childOrder.goodsid!}"
 >
     <li class="checkBox">
         <#if childOrder.disabled == false>
@@ -264,16 +265,16 @@
             <p class="fwb">商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
-    <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb">${childOrder.price!}</span></li>
+    <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb priceText">${childOrder.price!}</span></li>
     <li class="goodsAttr fc9 pr">
         <div class="skuBox" data-colorid="${childOrder.color!}" data-sizeid="${childOrder.size!}">
             颜色：${childOrder.color!}<br>尺码：${childOrder.size!}
         </div>
         <#if childOrder.disabled == false>
-        <i class="edit" jhand="openEditWindow">修改</i>
+        <i class="edit" jhand="openEditWindow" data-curcolor="${childOrder.color!}" data-cursize="${childOrder.size!}">修改</i>
         <div class="attrInfo">
             <em></em>
-            <div class="attrItem clearfix">
+            <div class="attrItem clearfix colors">
                 <label class="fl">颜色：</label>
                 <ul class="fl">
                     <#list childOrder.colors as color>
@@ -281,7 +282,7 @@
                     </#list>
                 </ul>
             </div>
-            <div class="attrItem clearfix">
+            <div class="attrItem clearfix sizes">
                 <label class="fl">尺码：</label>
                 <ul class="fl">
                     <#list childOrder.sizes as size>
