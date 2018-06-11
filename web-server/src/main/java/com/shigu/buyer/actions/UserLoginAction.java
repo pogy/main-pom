@@ -303,6 +303,10 @@ public class UserLoginAction {
                 url = "http://www.571xz.com/jd/login.htm";
                 break;
             }
+            case 7: {
+                url="http://www.571xz.com/sn/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
         return "redirect:" + url;
