@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 @Controller
+@RequestMapping("sn")
 public class SnGoodsUpAction {
 
     @Autowired
@@ -34,7 +35,7 @@ public class SnGoodsUpAction {
     /**
      * 上传页面
      */
-    @RequestMapping("sn/publish")
+    @RequestMapping("publish")
     public String publish(Long itemId, HttpServletRequest request, HttpSession session, Map<String, Object> map) {
         try {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -57,7 +58,7 @@ public class SnGoodsUpAction {
      * @param request
      * @return
      */
-    @RequestMapping("sn/login")
+    @RequestMapping("login")
     public String login(HttpServletRequest request) {
         String url = SN_Outh_URL.replace("SN_appkey", SN_appkey).replace("SN_redirect_uri", SN_redirect_uri);
         if(HttpRequestUtil.checkAgentIsMobile(request)){
