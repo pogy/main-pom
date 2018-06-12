@@ -277,17 +277,11 @@
             <div class="attrItem clearfix colors">
                 <label class="fl">颜色：</label>
                 <ul class="fl">
-                    <#list childOrder.colors as color>
-                    <li <#if childOrder.color == color>class="selected"</#if>  jhand="selectedSku">${color!}</li>
-                    </#list>
                 </ul>
             </div>
             <div class="attrItem clearfix sizes">
                 <label class="fl">尺码：</label>
                 <ul class="fl">
-                    <#list childOrder.sizes as size>
-                    <li <#if childOrder.size == size>class="selected"</#if>  jhand="selectedSku">${size!}</li>
-                    </#list>
                 </ul>
             </div>
             <div class="btnsBox clearfix">
