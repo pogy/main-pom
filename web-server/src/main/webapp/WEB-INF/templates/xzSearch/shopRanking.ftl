@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzSearch__common_css.ftl">
 <#include "/__style_torrent__/xzSearch__shopRanking_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzSearch__shopRanking_js.ftl">
@@ -75,11 +75,11 @@
                                     </#if>
                                     </span>
                                     <#if shopItem.changeNum gt 0>
-                                    <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank1.png" alt="" />
+                                    <img src="//style.571xz.com/v6/xzSearch/css/img/rank/rank1.png" alt="" />
                                     <#elseif shopItem.changeNum lt 0>
-                                    <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank2.png" alt="" />
+                                    <img src="//style.571xz.com/v6/xzSearch/css/img/rank/rank2.png" alt="" />
                                     <#else>
-                                    <img src="http://style.571xz.com/v6/xzSearch/css/img/rank/rank3.png" alt="" />
+                                    <img src="//style.571xz.com/v6/xzSearch/css/img/rank/rank3.png" alt="" />
                                     </#if>
                                 </div>
                             </td>
@@ -131,5 +131,7 @@
     </#list>
 </div>
  </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

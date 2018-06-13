@@ -47,43 +47,43 @@
                         <ul class="module-list clearfix  js-module-list" data-size="-1">
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-tui" data-width="" data-type="2,3">
                                         <span class="pic">
-                                            <img title="宝贝推荐" src="http://www.571xz.com/design/img/shop/s_icon1.png">
+                                            <img title="宝贝推荐" src="//www.571xz.com/design/img/shop/s_icon1.png">
                                         </span>
                                 <span title="宝贝推荐" class="content">宝贝推荐</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-search" data-width="" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="宝贝搜索" src="http://www.571xz.com/design/img/shop/s_icon2.png">
+                                            <img title="宝贝搜索" src="//www.571xz.com/design/img/shop/s_icon2.png">
                                         </span>
                                 <span title="宝贝搜索" class="content">宝贝搜索</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="custom" data-width="" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="自定义" src="http://www.571xz.com/design/img/shop/s_icon3.png">
+                                            <img title="自定义" src="//www.571xz.com/design/img/shop/s_icon3.png">
                                         </span>
                                 <span title="自定义" class="content">自定义</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-cat" data-width="" data-type="1">
                                         <span class="pic">
-                                            <img title="宝贝分类" src="http://www.571xz.com/design/img/shop/s_icon6.png">
+                                            <img title="宝贝分类" src="//www.571xz.com/design/img/shop/s_icon6.png">
                                         </span>
                                 <span title="宝贝分类" class="content">宝贝分类</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigpic" data-width="" data-type="3,4">
                                         <span class="pic">
-                                            <img title="宽屏图片" src="http://www.571xz.com/design/img/shop/s_icon5.png">
+                                            <img title="宽屏图片" src="//www.571xz.com/design/img/shop/s_icon5.png">
                                         </span>
                                 <span title="宽屏图片" class="content">宽屏图片</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="piccarousel" data-width="" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="图片轮播" src="http://www.571xz.com/design/img/shop/s_icon4.png">
+                                            <img title="图片轮播" src="//www.571xz.com/design/img/shop/s_icon4.png">
                                         </span>
                                 <span title="图片轮播" class="content">图片轮播</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigcarousel" data-width="" data-type="3,4">
                                         <span class="pic">
-                                            <img title="全屏轮播" src="http://www.571xz.com/design/img/shop/s_icon7.png">
+                                            <img title="全屏轮播" src="//www.571xz.com/design/img/shop/s_icon7.png">
                                         </span>
                                 <span title="全屏轮播" class="content">全屏轮播</span>
                             </li>
@@ -91,13 +91,13 @@
                         <ul class="module-list clearfix  js-module-list" data-size="1920" style="display: none">
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigpic" data-type="3,4">
                                         <span class="pic">
-                                            <img title="宽屏图片" src="http://www.571xz.com/design/img/shop/s_icon5.png">
+                                            <img title="宽屏图片" src="//www.571xz.com/design/img/shop/s_icon5.png">
                                         </span>
                                 <span title="宽屏图片" class="content">宽屏图片</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigcarousel" data-type="3,4">
                                         <span class="pic">
-                                            <img title="全屏轮播" src="http://www.571xz.com/design/img/shop/s_icon7.png">
+                                            <img title="全屏轮播" src="//www.571xz.com/design/img/shop/s_icon7.png">
                                         </span>
                                 <span title="全屏轮播" class="content">全屏轮播</span>
                             </li>
@@ -106,37 +106,37 @@
                         <ul class="module-list clearfix  js-module-list" data-size="1190" style="display: none">
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-tui" data-type="2,3">
                                         <span class="pic">
-                                            <img title="宝贝推荐" src="http://www.571xz.com/design/img/shop/s_icon1.png">
+                                            <img title="宝贝推荐" src="//www.571xz.com/design/img/shop/s_icon1.png">
                                         </span>
                                 <span title="宝贝推荐" class="content">宝贝推荐</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-search" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="宝贝搜索" src="http://www.571xz.com/design/img/shop/s_icon2.png">
+                                            <img title="宝贝搜索" src="//www.571xz.com/design/img/shop/s_icon2.png">
                                         </span>
                                 <span title="宝贝搜索" class="content">宝贝搜索</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="custom" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="自定义" src="http://www.571xz.com/design/img/shop/s_icon3.png">
+                                            <img title="自定义" src="//www.571xz.com/design/img/shop/s_icon3.png">
                                         </span>
                                 <span title="自定义" class="content">自定义</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigpic" data-type="3,4">
                                         <span class="pic">
-                                            <img title="宽屏图片" src="http://www.571xz.com/design/img/shop/s_icon5.png">
+                                            <img title="宽屏图片" src="//www.571xz.com/design/img/shop/s_icon5.png">
                                         </span>
                                 <span title="宽屏图片" class="content">宽屏图片</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="piccarousel" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="图片轮播" src="http://www.571xz.com/design/img/shop/s_icon4.png">
+                                            <img title="图片轮播" src="//www.571xz.com/design/img/shop/s_icon4.png">
                                         </span>
                                 <span title="图片轮播" class="content">图片轮播</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="bigcarousel" data-type="3,4">
                                         <span class="pic">
-                                            <img title="全屏轮播" src="http://www.571xz.com/design/img/shop/s_icon7.png">
+                                            <img title="全屏轮播" src="//www.571xz.com/design/img/shop/s_icon7.png">
                                         </span>
                                 <span title="全屏轮播" class="content">全屏轮播</span>
                             </li>
@@ -144,25 +144,25 @@
                         <ul class="module-list clearfix  js-module-list" data-size="990" style="display: none">
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-tui" data-type="2,3">
                                         <span class="pic">
-                                            <img title="宝贝推荐" src="http://www.571xz.com/design/img/shop/s_icon1.png">
+                                            <img title="宝贝推荐" src="//www.571xz.com/design/img/shop/s_icon1.png">
                                         </span>
                                 <span title="宝贝推荐" class="content">宝贝推荐</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-search" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="宝贝搜索" src="http://www.571xz.com/design/img/shop/s_icon2.png">
+                                            <img title="宝贝搜索" src="//www.571xz.com/design/img/shop/s_icon2.png">
                                         </span>
                                 <span title="宝贝搜索" class="content">宝贝搜索</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="custom" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="自定义" src="http://www.571xz.com/design/img/shop/s_icon3.png">
+                                            <img title="自定义" src="//www.571xz.com/design/img/shop/s_icon3.png">
                                         </span>
                                 <span title="自定义" class="content">自定义</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="piccarousel" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="图片轮播" src="http://www.571xz.com/design/img/shop/s_icon4.png">
+                                            <img title="图片轮播" src="//www.571xz.com/design/img/shop/s_icon4.png">
                                         </span>
                                 <span title="图片轮播" class="content">图片轮播</span>
                             </li>
@@ -170,25 +170,25 @@
                         <ul class="module-list clearfix  js-module-list" data-size="190" style="display: none">
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-search" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="宝贝搜索" src="http://www.571xz.com/design/img/shop/s_icon2.png">
+                                            <img title="宝贝搜索" src="//www.571xz.com/design/img/shop/s_icon2.png">
                                         </span>
                                 <span title="宝贝搜索" class="content">宝贝搜索</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="custom" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="自定义" src="http://www.571xz.com/design/img/shop/s_icon3.png">
+                                            <img title="自定义" src="//www.571xz.com/design/img/shop/s_icon3.png">
                                         </span>
                                 <span title="自定义" class="content">自定义</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="goods-cat" data-type="1">
                                         <span class="pic">
-                                            <img title="宝贝分类" src="http://www.571xz.com/design/img/shop/s_icon6.png">
+                                            <img title="宝贝分类" src="//www.571xz.com/design/img/shop/s_icon6.png">
                                         </span>
                                 <span title="宝贝分类" class="content">宝贝分类</span>
                             </li>
                             <li class="J_NModule ui-draggable ui-draggable-handle" data-tpl="piccarousel" data-type="1,2,3">
                                         <span class="pic">
-                                            <img title="图片轮播" src="http://www.571xz.com/design/img/shop/s_icon4.png">
+                                            <img title="图片轮播" src="//www.571xz.com/design/img/shop/s_icon4.png">
                                         </span>
                                 <span title="图片轮播" class="content">图片轮播</span>
                             </li>

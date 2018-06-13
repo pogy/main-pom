@@ -17,12 +17,19 @@ import com.shigu.main4.ucenter.vo.ShiguGoodsExtendsVO;
 import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.ucenter.vo.ShiguPropImg;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -148,7 +155,33 @@ public class ImportCsvFileService {
                     List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
 //                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-
+                    List<Long> hasInputVid=new ArrayList<>();
+                    for (String anInputList : inputList) {
+                        String[] inputs = anInputList.split(":");
+                        Long nvid=new Long(inputs[1]);
+                        if(nvid>0){
+                            nvid=-nvid;
+                        }
+                        hasInputVid.add(nvid);
+                    }
+                    Long startIndex=null;
+                    if(hasInputVid.size()>0){
+                        hasInputVid.sort(Comparator.comparingLong(o -> o));
+                        startIndex= hasInputVid.get(0);
+                    }
+                    if(startIndex==null){
+                        startIndex=0L;
+                    }
+                    for(int iv=0;iv<inputList.size();iv++){
+                        String[] inputs=inputList.get(iv).split(":");
+                        if(hasInputVid.contains(new Long(inputs[1]))){
+                            hasInputVid.removeIf(new Long(inputs[1])::equals);
+                        }else{
+                            String newVid=(startIndex-(iv+1))+"";
+                            String input=inputs[0]+":"+newVid+":"+inputs[2];
+                            inputList.set(iv,input);
+                        }
+                    }
 
                     for(TaobaoItemProp prop:taobaoItemProps){
                         TaobaoPropValueExample taobaoPropValueExample=new TaobaoPropValueExample();
@@ -193,15 +226,9 @@ public class ImportCsvFileService {
                                         break;
                                     }
                                 }
-//                                //准备sku
-//                                for(int skui=0;skui<skus.size();skui++){
-//                                    String sku=skus.get(skui);
-//                                    if(sku.endsWith(":"+key)){
-//                                        skus.remove(skui);
-//                                        inputBean.getSku().put(sku,sku);
-//                                        break;
-//                                    }
-//                                }
+                                if(inputBean.getProp().getKey()==null){
+                                    inputBean.getProp().put(key,key);
+                                }
                                 //准备input
                                 inputBean.getInput().put(inp,inp);
                                 inputBeans.add(inputBean);
@@ -215,11 +242,9 @@ public class ImportCsvFileService {
                                 String[] keyStrs=inputBean.getInput().getKey().split(":");
                                 String key=keyStrs[0]+":"+keyStrs[1];
                                 String newKey=keyStrs[0]+":"+newVid;
-                                String newProp=inputBean.getProp().getValue().replace(key,newKey);
+                                String newProp = inputBean.getProp().getValue().replace(key,newKey);
                                 String newals=newKey+":"+keyStrs[2];
-//                                String newsku=inputBean.getSku().getValue().replace(":"+key,":"+newKey);
                                 als.add(newals);
-//                                skus.add(newsku);
                                 hasProps.add(newProp);
                                 if(StringUtils.isNotBlank(inputBean.getImg().getValue())){
                                     String newImg=inputBean.getImg().getValue().replace(":"+key+"|",":"+newKey+"|");
@@ -232,12 +257,10 @@ public class ImportCsvFileService {
                     String prop=StringUtils.join(hasProps,";");
                     String input=StringUtils.join(inputList,";");
                     String al=StringUtils.join(als,";");
-//                    String sku=StringUtils.join(skus,";");
                     v11.set(codeMap.get("input_custom_cpv"),input);
                     v11.set(codeMap.get("cateProps"),prop);
                     v11.set(codeMap.get("propAlias"),al);
                     v11.set(codeMap.get("picture"),img);
-//                    v11.set(codeMap.get("skuProps"),sku);
                 }
 
                 record=new ShiguGoodsTinyVO();
@@ -247,18 +270,12 @@ public class ImportCsvFileService {
                 String propAlias="";
 
                 for(int k=0;k<v_title.size();k++){
-                    //if(v_title.get(k).equals("q1")){
-
-                    ////System.out.println("第"+i+"行第"+k+"列"+v_title.get(k)+"="+v11.get(k));
-                    //}
                     String tt=(String)v_title.get(k);
 
                     switch (tt) {//tt.hashCode()
                         case "title":record.setTitle((String)v11.get(k));break;//title//标题
                         case "cid"://宝贝类目
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
-                                ////System.out.println(((String)v11.get(k)).trim());
-                                ////System.out.println(k);
                                 Long cid=new Long(((String)v11.get(k)).trim());
 
                                 cidList.add (cid);
@@ -398,9 +415,6 @@ public class ImportCsvFileService {
                         case "description"://宝贝描述//description
                             if(v11.get(k)!=null){
                                 String desc=(String)v11.get(k);
-                                /*if(desc.indexOf("hznzcn")!=-1||desc.indexOf("freep.cn")!=-1){
-                                    desc=uploadImages(desc, storeId);
-                                }*/
                                 sge.setGoodsDesc(desc);
                             }else{
                                 record.setError ("宝贝描述为空");
@@ -454,12 +468,7 @@ public class ImportCsvFileService {
                             if(v11.get(k)!=null&&!"".equals(v11.get(k))){
                                 //有图片空间是淘宝助理导入的
                                 record.setStoreId(storeId);
-                               // Date tpic=new Date();
-
                                 getImgs((String)v11.get(k), record,sge,image_save_path,map);
-                               // Date tpicend=new Date();
-                               // long timepic=tpicend.getTime()-tpic.getTime();
-                               // //System.out.println(i+"执行图片处理"+timepic);
                             }else{
                                 record.setError ("没有主图");
                             }
@@ -802,18 +811,22 @@ public class ImportCsvFileService {
                             map.put (imurlString, image_save_path + "/" + pics[0] + ".tbi");
                         }
                     }else{/////2
-                        if("2".equals (pics[1])) {
-                          String  propPicUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
-                            String spid=pics[3];
-                            String svid=pics[4];
-                            ShiguPropImg spi=new ShiguPropImg();
-                            spi.setPid (new Long(spid));
-                            spi.setVid (new Long(svid));
-                            spi.setUrl (propPicUrl);
+                        try {
+                            if("2".equals (pics[1])) {
+                              String  propPicUrl = imageurl (record.getStoreId (), image_save_path + "/" + pics[0] + ".tbi");
+                                String spid=pics[3];
+                                String svid=pics[4];
+                                ShiguPropImg spi=new ShiguPropImg();
+                                spi.setPid (new Long(spid));
+                                spi.setVid (new Long(svid));
+                                spi.setUrl (propPicUrl);
 
-                           List<ShiguPropImg> list_spi= sge.getList_spi ();
-                            list_spi.add (spi);
+                               List<ShiguPropImg> list_spi= sge.getList_spi ();
+                                list_spi.add (spi);
 
+                            }
+                        } catch (Exception e) {
+                            continue;
                         }
                     }
 
@@ -1359,5 +1372,25 @@ public class ImportCsvFileService {
             }
         }
         return true;
+    }
+
+    public byte[] getImgInputStream(InputStream inputStream){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        try {
+            while ((len = inputStream.read(buffer)) != -1){
+                outputStream.write(buffer,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return outputStream.toByteArray();
     }
 }

@@ -96,14 +96,14 @@ public class JdUploadService {
         Map<String, String> skuImgUrls = tbo.getPropImg().stream().collect(Collectors.toMap(JdUploadPropImgBO::getImg, jdUploadPropImgBO -> jdUploadPropImgBO.getPid() + ":" + jdUploadPropImgBO.getVid()));
 
         String html = tbo.getPcContent();
-//        Document doc = Jsoup.parse(html);
-//        Elements descImgs = doc.select("img");
-//        List<String> descImgUrls = descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).filter(s -> s.startsWith("http")).collect(Collectors.toList());
+        Document doc = Jsoup.parse(html);
+        Elements descImgs = doc.select("img");
+        List<String> descImgUrls = descImgs.stream().map(element -> element.attr("src")).filter(StringUtils::isNotEmpty).filter(s -> s.startsWith("http")).collect(Collectors.toList());
 
         List<String> allImgs = new ArrayList<>();
         allImgs.addAll(headImgUrls);
         allImgs.addAll(skuImgUrls.keySet());
-//        allImgs.addAll(descImgUrls);
+        allImgs.addAll(descImgUrls);
 
         //创建图片目录
         //查看星座上传图片类目是否存在
@@ -158,13 +158,16 @@ public class JdUploadService {
         }
         Map<String, JdImgInfo> imgMap = jdUpImgResponse.getJdImgInfos();
 
-//        int cdnIndex = cdnIndexs.get((int) (Math.random() * cdnIndexs.size()));
-//        for (String descImg : descImgUrls) {
-//            JdImgInfo img = imgMap.get(descImg);
-//            doc.getElementsByAttributeValue("src", descImg).attr("src", "//img" + cdnIndex + ".360buyimg.com/imgzone/" + img.getPictureUrl());
-//        }
-//        html = doc.body().html();
+        int cdnIndex = cdnIndexs.get((int) (Math.random() * cdnIndexs.size()));
+        for (String descImg : descImgUrls) {
+            JdImgInfo img = imgMap.get(descImg);
+            doc.getElementsByAttributeValue("src", descImg).attr("src", "//img" + cdnIndex + ".360buyimg.com/imgzone/" + img.getPictureUrl());
+        }
+        html = doc.body().html();
         req.setNotes(html);
+
+
+
 
         //上传商品
         request.setGoods(req);
@@ -177,6 +180,21 @@ public class JdUploadService {
         if (jdGoods == null) {
             throw new CustomException("商品上传失败");
         }
+
+        //获取手机详情
+        Document parse = Jsoup.parse(html);
+        Elements pDocs=new Elements();
+        parse.select("img").forEach(element -> {
+            element.attr("src",element.attr("src")+".dpg");
+            element.attr("width","750px");
+            element.removeAttr("class");
+            pDocs.add(element);
+        });
+        JdWareMobileDescRequest jdWareMobileDescRequest=new JdWareMobileDescRequest();
+        jdWareMobileDescRequest.setJdUid(jdUid);
+        jdWareMobileDescRequest.setMobileDesc(pDocs.toString());
+        jdWareMobileDescRequest.setTitle(tbo.getTitle());
+        jdWareMobileDescRequest.setWareId(jdGoods.getGoodsId());
         if (tbo.getPostage_id() != null && tbo.getPostage_id() != -1L) {
             JdTransportWriteUpdateWareTransportIdRequest jdTransportWriteUpdateWareTransportIdRequest = new JdTransportWriteUpdateWareTransportIdRequest();
             jdTransportWriteUpdateWareTransportIdRequest.setJdUid(jdUid);
@@ -189,6 +207,7 @@ public class JdUploadService {
             if(!jdTransportWriteUpdateWareTransportIdResponse.isCan()){
                 throw new CustomException("绑定运费模版失败");
             }
+            jdWareMobileDescRequest.setTransportId(tbo.getPostage_id());
         }
         //修改属性图
         SdkJdImageUpdate b = new SdkJdImageUpdate();
@@ -236,7 +255,6 @@ public class JdUploadService {
             b.setImgIndex(index.toString());
             jdImgService.bindGoodsImgs(b, jdUid);
         }
-
         ItemUpRecordVO vo = new ItemUpRecordVO();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         vo.setDaiTime(sdf.format(new Date()));
@@ -249,6 +267,11 @@ public class JdUploadService {
         vo.setFlag("jd");
         vo.setSupperGoodsId(tbo.getMid());
         jdGoodsUpService.saveRecord(vo);
+
+//        JdWareMobileDescResponse send = xzJdSdkSend.send(jdWareMobileDescRequest);
+//        if(!send.isSuccess()){
+//            throw new CustomException("生成手机详情失败:" + send.getException().getErrMsg());
+//        }
         return jdGoods;
     }
 

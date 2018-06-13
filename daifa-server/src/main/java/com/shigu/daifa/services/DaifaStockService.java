@@ -478,7 +478,7 @@ public class DaifaStockService {
             daifaStockExample.setStartIndex((bo.getPage() - 1) * 10);
             daifaStockExample.setEndIndex(10);
             daifaStockExample.setOrderByClause("stock_id desc");
-            List<DaifaStock> stocks = daifaStockMapper.selectByExample(daifaStockExample);
+            List<DaifaStock> stocks = daifaStockMapper.selectByConditionList(daifaStockExample);
             List<Long> oids = stocks.stream().map(DaifaStock::getDfOrderId).collect(Collectors.toList());
             DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
             daifaOrderExample.createCriteria().andDfOrderIdIn(oids);

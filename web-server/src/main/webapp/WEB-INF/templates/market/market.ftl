@@ -10,9 +10,9 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/market__market_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/market/plugin/jquery.pjax.js"></script>
-<script src="http://style.571xz.com/v6/market/plugin/nprogress.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/market/plugin/jquery.pjax.js"></script>
+<script src="//style.571xz.com/v6/market/plugin/nprogress.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/market__market_js.ftl">
@@ -26,30 +26,11 @@
 <#include "/common/xz__searchHeader.ftl">
 <div class="pageNav">
     <div class="layout">
-        <div class="allCateNavBox">
-            <div class="cateFication yahei fs14">全部商品分类 <i class="icon-downarrow"></i></div>
-            <div class="cateCon">
-                <ul>
-                    <#list catemenu as menu>
-                        <li>
-                            <em class="${menu.icon!}"></em>${menu.text!}<i class="icon-rightarrow"></i>
-                            <div class="cateDatail">
-                                <h3 class="yahei fs14 fc3">${menu.text!}</h3>
-                                <div class="dateItem">
-                                    <#list menu.submenu as item>
-                                        <a href="http://so.571xz.com/${webSite!}goods.htm?pid=${item.pid!}<#if item.cid??>&cid=${item.cid!}</#if><#if item.keyword??>&keyword=${item.keyword!}</#if>" target="_blank">${item.text!}</a>
-                                    </#list>
-                                </div>
-                            </div>
-                        </li>
-                    </#list>
-                </ul>
-            </div>
-        </div>
+<#include "/common/xz__cateNavList.ftl">
 <#include "/common/xz__nav.ftl">
-        <div class="regShopButton">
+        <div class="regShopButton none">
             <i class="icon-user"></i>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
 </div>
@@ -86,29 +67,10 @@
 </div>
 <div class="marketList layout">
     <#list marketList as markets>
-        <#if marketId == '5'>
-            <#if markets.title == '8F'>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!} 石狮工厂店</span>
-                <i></i>
-            </h3>
-            <#elseif markets.title == '9F'>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!} 牛仔城</span>
-                <i></i>
-            </h3>
-            <#else>
-            <h3 data-lm='${markets.title!}'>
-                <span>${markets.title!}</span>
-                <i></i>
-            </h3>
-            </#if>
-        <#else>
         <h3 data-lm='${markets.title!}'>
-            <span>${markets.title!}</span>
+            <span>${markets.title!} ${markets.smTitle!}</span>
             <i></i>
         </h3>
-        </#if>
         <ul class="storeList clearfix">
         <#list markets.stores as store>
             <li>

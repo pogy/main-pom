@@ -4,17 +4,11 @@ import com.openJar.beans.*;
 import com.openJar.requests.api.JdCategoryAttrValueRequest;
 import com.openJar.requests.api.JdPostTemplateRequest;
 import com.openJar.requests.api.JdShopCategoryRequest;
-import com.openJar.requests.interfaces.SelJdItemPropsRequest;
-import com.openJar.requests.interfaces.SelJdPropValuesRequest;
-import com.openJar.requests.interfaces.SelJdTbBindsRequest;
-import com.openJar.requests.interfaces.SelShiguJdCatRequest;
+import com.openJar.requests.interfaces.*;
 import com.openJar.responses.api.JdCategoryAttrValueResponse;
 import com.openJar.responses.api.JdPostTemplateResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
-import com.openJar.responses.interfaces.SelJdItemPropsResponse;
-import com.openJar.responses.interfaces.SelJdPropValuesResponse;
-import com.openJar.responses.interfaces.SelJdTbBindsResponse;
-import com.openJar.responses.interfaces.SelShiguJdCatResponse;
+import com.openJar.responses.interfaces.*;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguPropImgsExample;
 import com.opentae.data.mall.interfaces.*;
@@ -265,9 +259,10 @@ public class JdUpItemService {
 //            return prop;
 //        }
         prop=new PropsVO();
-        SelJdItemPropsRequest selJdItemPropsRequest=new SelJdItemPropsRequest();
-        selJdItemPropsRequest.setJdCid(jdCid);
-        SelJdItemPropsResponse selJdItemPropsRespone=xzJdSdkSend.send(selJdItemPropsRequest);
+        SelJdItemPropsNewRequest selJdItemPropsNewRequest=new SelJdItemPropsNewRequest();
+        selJdItemPropsNewRequest.setJdCid(jdCid);
+        selJdItemPropsNewRequest.setJdUid(jdUserId);
+        SelJdItemPropsNewResponse selJdItemPropsRespone=xzJdSdkSend.send(selJdItemPropsNewRequest);
         List<JdItemProp> jdItemProps=selJdItemPropsRespone.getDatas();
         jdItemProps.sort(Comparator.comparingLong(JdItemProp::getSortOrder));
 

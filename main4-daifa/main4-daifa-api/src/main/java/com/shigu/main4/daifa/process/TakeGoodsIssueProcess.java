@@ -150,4 +150,11 @@ public interface TakeGoodsIssueProcess {
      * @param refundFee
      */
     void userRefundedFee(String day,Long workerId,String refundFee) throws DaifaException;
+
+    /**
+     * 获取当前已分配未拿货的档口的手机号码
+     * @param sellerId
+     * @return
+     */
+    List<String> selTasksShopPhone(Long sellerId);
 }

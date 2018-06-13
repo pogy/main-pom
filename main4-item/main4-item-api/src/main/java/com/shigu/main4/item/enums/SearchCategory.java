@@ -9,7 +9,8 @@ public enum SearchCategory {
     MARKET("市场","market",2),
 //    SUBCATEGORY("分类","subcategory",-1),
     STYLE("风格","style",3),
-    ELEMENT("元素","element",4);
+    ELEMENT("元素","element",4),
+    CUSTOM("自定义","custom",5);
 
     SearchCategory(String title, String value, Integer categoryType) {
         this.title = title;
@@ -27,7 +28,7 @@ public enum SearchCategory {
     private String value;
     /**
      * 分类搜索类别
-     * 1、淘宝类目，2、市场，3、风格，4、元素
+     * 1、淘宝类目，2、市场，3、风格，4、元素 ,5 自定义
      */
     private Integer categoryType;
 

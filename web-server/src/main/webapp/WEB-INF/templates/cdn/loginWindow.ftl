@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/loginV2/css/loginWindow.css" rel="stylesheet">
+    <link href="//style.571xz.com/v2/loginV2/css/loginWindow.css" rel="stylesheet">
     
 
     
@@ -24,9 +24,9 @@
     
 
     
-    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/loginV2/js/loginWindow.js"></script>
+    <script src="//style.571xz.com/v2/loginV2/js/loginWindow.js"></script>
 </head>
 <body>
 

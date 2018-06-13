@@ -12,8 +12,8 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/hzMan__zlIndex_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jquery.SuperSlide.2.1.1.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/hzMan__zlIndex_js.ftl">
@@ -21,33 +21,33 @@
 <body>
 <script modulepath="hzMan/common#forIps">
 var hreflocation = window.location.href;
-if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('http://571xz.com') == 0){//仅首页
+if(hreflocation.indexOf('//www.571xz.com') == 0 || hreflocation.indexOf('//571xz.com') == 0){//仅首页
     var province = '' ;
     var city = '' ;
-    jQuery.getScript("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
+    jQuery.getScript("//int.dpool.sina.com.cn/iplookup/iplookup.php?format=js",function(){
         province = remote_ip_info["province"];
         city = remote_ip_info["city"];
         if(city == '石狮'){
-            window.location.href = "http://ss.571xz.com";
+            window.location.href = "//ss.571xz.com";
         }else if(city == '常熟'){
-            window.location.href = "http://cs.571xz.com";
+            window.location.href = "//cs.571xz.com";
         }else if(city == '广州'){
-            window.location.href = "http://gz.571xz.com";
+            window.location.href = "//gz.571xz.com";
         }else if(city == '辽源'){
-            window.location.href = "http://wa.571xz.com";
+            window.location.href = "//wa.571xz.com";
         }else if(city == '泉州'){
-            window.location.href = "http://qz.571xz.com";
+            window.location.href = "//qz.571xz.com";
         }else if(city == '北京'){
-            window.location.href = "http://bj.571xz.com";
+            window.location.href = "//bj.571xz.com";
         }else if(city == '湖州'){
-            window.location.href = "http://zl.571xz.com";
+            window.location.href = "//zl.571xz.com";
         }
     }) ;
 }
 </script>
 <div class="fixedSearchBar" id="fixedSearchBar">
     <div class="innner">
-        <a class="logo" href="http://www.571xz.com"><img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
+        <a class="logo" href="//www.571xz.com"><img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
          <div class="searchbar">
             <#if webSite == 'hz'>
             <div class="tabbox">
@@ -60,7 +60,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
             <#else>
             <div class="btnbox"><span>商品</span></div>
             </#if>
-            <form action="http://so.571xz.com/${webSite!}search.htm" target="_blank" id="searchgo3">
+            <form action="//so.571xz.com/${webSite!}search.htm" target="_blank" id="searchgo3">
                 <input type="hidden" name="cid" value="30">
                 <input style="text-indent:1em;" class="text-search" name="keyword" type="text">
                 <button class="btn-search">搜索</button>
@@ -86,8 +86,8 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <div class="searchHeaderV2">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/logo.png" width="168" height="103">
+            <a href="//${webSite!}.571xz.com">
+                <img src="//style.571xz.com/v6/common/css/img/xz/logo.png" width="168" height="103">
             </a>
         </div>
 <#include "/common/xz__siteList.ftl">
@@ -105,9 +105,9 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
     <div class="searchBox clearfix">
         <form id="formSearch"
             <#if searchType == 'shop'>
-                action="http://www.571xz.com/storenum.htm"
+                action="//www.571xz.com/storenum.htm"
             <#else>
-                action="http://so.571xz.com/${webSite!}search.htm"
+                action="//so.571xz.com/${webSite!}search.htm"
             </#if>
         >
             <#if searchType == 'shop'><input class="searchWeb" type="hidden" name="webSite" value="${webSite!}"> </#if>
@@ -116,7 +116,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
             <div class="myOrderBox fl">
             <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
 <#list [{}] as $it>
-    <a href="http://www.571xz.com/order/myOrder.htm"
+    <a href="//www.571xz.com/order/myOrder.htm"
         target="_blank"
     class="fmButton
          fmButton-white-o
@@ -146,27 +146,27 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <div class="navV2 yahei clearfix">
     <ul>
         <#if !disabledIndexNav>
-        <li class="actived"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
+        <li class="actived"><a href="//${webSite!}.571xz.com" target="_blank">首页</a></li>
         </#if>
         <#if webSite == 'hz'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://hz.571xz.com/market.htm" target="_blank">
+    <a href="//hz.571xz.com/market.htm" target="_blank">
         逛市场
     </a>
 </li>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+    <a href="//so.571xz.com/hzgoods.htm" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+    <a href="//so.571xz.com/newgoods.htm" target="_blank">
         今日新品
     </a>
 </li>
@@ -195,8 +195,15 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 </li>
 <li
 >
-    <a href="http://zixun.571xz.com/index" target="_blank">
+    <a href="//zixun.571xz.com/index" target="_blank">
         资讯
+    </a>
+</li>
+<li
+>
+    <a href="//photo.571xz.com" target="_blank">
+        摄影基地
+        <i class="new"></i>
     </a>
 </li>
         <#elseif webSite == 'cs'>
@@ -207,27 +214,27 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://qz.571xz.com/market.htm?mid=68" target="_blank">
+    <a href="//qz.571xz.com/market.htm?mid=68" target="_blank">
         逛市场
     </a>
 </li>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">
+    <a href="//so.571xz.com/qzgoods.htm?pid=50011740" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
+    <a href="//so.571xz.com/newgoods.htm?cid=2&amp;webSite=qz" target="_blank">
         今日新品
     </a>
 </li>
 <li
 >
-    <a href="http://zixun.571xz.com/index" target="_blank">
+    <a href="//zixun.571xz.com/index" target="_blank">
         资讯
     </a>
 </li>
@@ -235,27 +242,27 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="http://zl.571xz.com/market.htm?mid=82" target="_blank">
+    <a href="//zl.571xz.com/market.htm?mid=82" target="_blank">
         逛市场
     </a>
 </li>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
+    <a href="//so.571xz.com/zlgoods.htm?pid=50008165" target="_blank">
         商品库
     </a>
 </li>
 <li
         <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="http://so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
+    <a href="//so.571xz.com/newgoods.htm?webSite=zl&amp;cid=5" target="_blank">
         今日新品
     </a>
 </li>
 <li
 >
-    <a href="http://zixun.571xz.com/index" target="_blank">
+    <a href="//zixun.571xz.com/index" target="_blank">
         资讯
     </a>
 </li>
@@ -328,7 +335,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
     <div class="rightbox">
 <div class="topInfoBox yahei">
     <div class="userbox tac">
-        <img class="userIcon" src="http://style.571xz.com/v6/hzMan/css/img/touxiang.png">
+        <img class="userIcon" src="//style.571xz.com/v6/hzMan/css/img/touxiang.png">
         <div class="wellcom">
             <p class="s1" id="wellcomUserInfo">Hi，欢迎来到</p>
             <p>www.571xz.com</p>
@@ -336,7 +343,7 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
         <div class="btnLinks clearfix" id="goBackstageButtonBox">
             <a class="first" href="/login.htm">登录</a>
             <a href="/regedit.htm">注册</a>
-            <a href="/member/ruzhu.htm">商家入驻</a>
+            <a href="/member/ruzhu.htm">供应商</a>
         </div>
     </div>
     <div class="userCount">
@@ -450,25 +457,25 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
             <ul>
                 <li>
                     <h5>四季星座网</h5>
-                    <p><a href="http://www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=79" target="_blank">联系我们</a></p>
+                    <p><a href="//www.571xz.com/xzPage/about.htm" target="_blank">关于我们</a></p>
+                    <p><a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a></p>
                 </li>
                 <li>
                     <h5>代理商</h5>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=99" target="_blank">一键上传</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=106" target="_blank">一件代发</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=99" target="_blank">一键上传</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=106" target="_blank">一件代发</a></p>
                 </li>
                 <li>
                     <h5>供应商</h5>
-                    <p><a href="http://www.571xz.com/helpCenter/queIndex.htm?cid=41" target="_blank">发布商品</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=90" target="_blank">账户安全</a></p>
-                    <p><a href="http://www.571xz.com/seller/indexgglist.htm" target="_blank">广告投放</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queIndex.htm?cid=41" target="_blank">发布商品</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=90" target="_blank">账户安全</a></p>
+                    <p><a href="//www.571xz.com/seller/indexgglist.htm" target="_blank">广告投放</a></p>
                 </li>
                 <li>
                     <h5>帮助中心</h5>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=80" target="_blank">新手入门</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=97" target="_blank">成为代理</a></p>
-                    <p><a href="http://www.571xz.com/helpCenter/queDetail.htm?id=81" target="_blank">成为供货商</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=80" target="_blank">新手入门</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=97" target="_blank">成为代理</a></p>
+                    <p><a href="//www.571xz.com/helpCenter/queDetail.htm?id=81" target="_blank">成为供货商</a></p>
                 </li>
             </ul>
         </div>
@@ -480,12 +487,12 @@ if(hreflocation.indexOf('http://www.571xz.com') == 0 || hreflocation.indexOf('ht
                 </li>
                 <li>
                     <i class="cApp"></i>
-                    <p>代理商APP</p>
+                    <p>分销商APP</p>
                 </li>
-                <li>
+                <!--<li>
                     <i class="bApp"></i>
                     <p>供货商APP</p>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>

@@ -10,7 +10,7 @@
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/xzPage__batchOrders_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/xzPage__batchOrders_js.ftl">
@@ -20,7 +20,7 @@
 <#include "/common/xz__topbar.ftl">
 </#list>
 <div class="banner">
-    <div class="layout pr"></div><a href="http://www.571xz.com/contact.htm" target="_blank"></a></div>
+    <div class="layout pr"></div><a href="//www.571xz.com/contact.htm" target="_blank"></a></div>
 </div>
 <div class="bg">
 <div class="introduction layout">
@@ -50,5 +50,7 @@
     <div class="content"></div>
 </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

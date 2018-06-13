@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__promotion_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__promotion_js.ftl">
@@ -47,7 +47,7 @@
                         </div>
                         <#else>
                         <div class="imgBox">
-                            <img src="http://style.571xz.com/v6/gys/css/img/ggDefault.jpg">
+                            <img src="//style.571xz.com/v6/gys/css/img/ggDefault.jpg">
                         </div>
                         </#if>
                         <p class="validTime">有效期：${list.startOnline!} - ${list.endOnline!}</p>
@@ -79,7 +79,7 @@
                         </div>
                         <#else>
                         <div class="imgBox">
-                            <img src="http://style.571xz.com/v6/gys/css/img/ggDefault.jpg">
+                            <img src="//style.571xz.com/v6/gys/css/img/ggDefault.jpg">
                         </div>
                         </#if>
                         <p class="validTime">有效期：${list.startOnline!} - ${list.endOnline!}</p>
@@ -112,4 +112,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

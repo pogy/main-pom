@@ -4,22 +4,22 @@ package com.shigu.seller.vo;
  * 类目列表
  */
 public class CategoryVo {
-    private Long categoryId;
-    private String categoryName;
+    private Long cateId;
+    private String cateName;
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getCateId() {
+        return cateId;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCateId(Long cateId) {
+        this.cateId = cateId;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCateName() {
+        return cateName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCateName(String cateName) {
+        this.cateName = cateName;
     }
 }

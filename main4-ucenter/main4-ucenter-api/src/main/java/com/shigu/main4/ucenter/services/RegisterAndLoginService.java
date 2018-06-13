@@ -20,6 +20,13 @@ public interface RegisterAndLoginService {
     Long registerByPhone(RegisterUser user) throws Main4Exception;
 
     /**
+     * 根据用户id获取用户外部id
+     * @param userId
+     * @return
+     */
+    Long selOutUidByUid(Long userId);
+
+    /**
      * 手机号是否允许注册
      * @return
      */

@@ -3,6 +3,7 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
+import com.opentae.data.mall.beans.SearchCategorySub;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
@@ -445,9 +446,31 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             website = "hz";
         }
         SearchCategorySubExample subExample = new SearchCategorySubExample();
-        subExample.createCriteria().andParentCateValueEqualTo(parentCateValue).andTypeEqualTo(category.getCategoryType()).andWebSiteEqualTo(website);
-        List<CategoryValue> categoryValues;
-        Collections.sort(categoryValues = BeanMapper.mapList(searchCategorySubMapper.selectByExample(subExample), CategoryValue.class));
+        SearchCategorySubExample.Criteria criteria=subExample.createCriteria();
+        SearchCategorySubExample.Criteria criteria1=subExample.createCriteria();
+        int ss=category.getCategoryType();
+        if (ss == 1){
+            criteria1.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
+            criteria.andWebSiteEqualTo(website).andParentCateValueEqualTo(parentCateValue).andTypeEqualTo(5);
+            subExample.or(criteria1);
+        }else {
+            criteria.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
+        }
+        List<SearchCategorySub> list=searchCategorySubMapper.selectByExample(subExample);
+
+        List<CategoryValue> categoryValues=new ArrayList<>();
+
+        for (SearchCategorySub sub:list){
+            CategoryValue value=new CategoryValue();
+            value.setCateName(sub.getCateName());
+            value.setCateValue(sub.getCateValue());
+            value.setSort(sub.getSort());
+            value.setSubId(sub.getSubId());
+            value.setType(sub.getType());
+            categoryValues.add(value);
+        }
+
+        //Collections.sort(categoryValues = BeanMapper.mapList(list, CategoryValue.class));
         return categoryValues;
     }
 

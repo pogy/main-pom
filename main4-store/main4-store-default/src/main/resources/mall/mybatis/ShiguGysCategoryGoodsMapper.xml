@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguGysCategoryGoodsMapper" >
+
+
+    <select id="getCateInfo" resultType="java.lang.Integer">
+       SELECT
+        COUNT( gcg.goods_id ) AS num
+       FROM
+        shigu_gys_category_goods AS gcg
+        LEFT JOIN shigu_goods_tiny_${webSite} AS sgt ON gcg.goods_id = sgt.goods_id
+       WHERE
+        sgt.goods_status = 0
+        AND sgt.is_closed = 0
+        AND gcg.gcg_status = 1
+        AND gcg.gc_id = #{cateId}
+      GROUP BY gcg.gc_id
+    </select>
+
+    <resultMap id="goodsVo" type="com.shigu.main4.vo.GoodsVo">
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="pic_url" property="imgSrc"/>
+    </resultMap>
+    <select id="selectGoodsByDiyCate" resultMap="goodsVo">
+        SELECT
+            t1.goods_id,
+            t1.goods_no,
+            t1.pic_url
+        FROM
+          (
+            SELECT
+              goods_id,
+              goods_no,
+              pic_url
+            FROM
+              shigu_goods_tiny_${webSite}
+            WHERE
+              store_id = #{shopId}
+            AND goods_status = 0
+            AND is_closed = 0
+          ) t1
+        LEFT JOIN (
+          SELECT
+            goods_id
+          FROM
+            shigu_gys_category_goods
+          WHERE
+            s_id = #{shopId}
+          AND gcg_status = 1
+          <if test="cateId != null">
+              AND gc_id = #{cateId}
+          </if>
+        )t2
+        on t1.goods_id=t2.goods_id
+        where
+           <choose>
+             <when test="cateId != null">
+                 t2.goods_id is NOT null
+             </when>
+             <otherwise>
+                 t2.goods_id is null
+             </otherwise>
+           </choose>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="selectGoodsCountByDiyCate" resultType="java.lang.Integer">
+        SELECT
+        COUNT(t1.goods_id)
+        FROM
+        (
+        SELECT
+        goods_id
+        FROM
+        shigu_goods_tiny_${webSite}
+        WHERE
+        store_id = #{shopId}
+        AND goods_status = 0
+        AND is_closed = 0
+        ) t1
+        LEFT JOIN (
+        SELECT
+        goods_id
+        FROM
+        shigu_gys_category_goods
+        WHERE
+        s_id = #{shopId}
+        AND gcg_status = 1
+        <if test="cateId != null">
+            AND gc_id = #{cateId}
+        </if>
+        )t2
+        on t1.goods_id=t2.goods_id
+        where
+        <choose>
+            <when test="cateId != null">
+                t2.goods_id is NOT null
+            </when>
+            <otherwise>
+                t2.goods_id is null
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

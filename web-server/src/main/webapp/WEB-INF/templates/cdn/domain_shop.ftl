@@ -18,7 +18,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/shop_item_temp/css/shop.css" rel="stylesheet">
+    <link href="//style.571xz.com/shop_item_temp/css/shop.css" rel="stylesheet">
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -41,7 +41,7 @@
             <ul class="clearfix">
                 <li class="navMap">
                     <div class="navIn">
-                        <a href="http://${main_host!}member/memberfxs.htm">我是代理<span class="ico1 c_ico_jiantou"></span></a>
+                        <a href="//${main_host!}member/memberfxs.htm">我是代理<span class="ico1 c_ico_jiantou"></span></a>
                     </div>
                     <div id="xzInfo" class="showBox">
                         <dl>
@@ -84,10 +84,10 @@
                                 <a rel="nofollow" title="联系客服" href="<%=qq_qiye%> "  target="_blank">在线客服</a>
                             </dd>
                             <dd>
-                                <a rel="nofollow" title="联系我们" href="http://hz.571xz.com:8070/zixun/article?id=87"  target="_blank">联系我们</a>
+                                <a rel="nofollow" title="联系我们" href="//hz.571xz.com:8070/zixun/article?id=87"  target="_blank">联系我们</a>
                             </dd>
                              <dd>
-                                <a rel="nofollow" title="新手入门" href="http://hz.571xz.com:8070/zixun/article?id=14" old_href="${main_host!}member/releaseGoodsinit.htm" target="_blank">新手入门</a>
+                                <a rel="nofollow" title="新手入门" href="//hz.571xz.com:8070/zixun/article?id=14" old_href="${main_host!}member/releaseGoodsinit.htm" target="_blank">新手入门</a>
                             </dd>
                         </dl>
                     </div>
@@ -99,7 +99,7 @@
 </div>
 <div class="rect-wrap clearfix">
     <div class="shopName">
-    <a class="logo iconfont c_logo2016" href="http://cs.571xz.com/index.html"><img src="http://style.571xz.com/global_temp/css/images/LOGO_2.png" title="四季星座网-首页" width="200" height="46"></a>
+    <a class="logo iconfont c_logo2016" href="//cs.571xz.com/index.html"><img src="//style.571xz.com/global_temp/css/images/LOGO_2.png" title="四季星座网-首页" width="200" height="46"></a>
 <div class="changeCity">
     <strong>
         <#if vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "bj">北京<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == "gz">广州</#if>
@@ -108,19 +108,19 @@
      <a class="selectTit" href="javascript:;">切换城市</a>
      <span class="c_ico_jiantou"></span>
      <ul>
-      <li<#if vo.storeRelation.webSite == "hz"> class="select"</#if>><a href="http://hz.571xz.com">杭州<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "cs"> class="select"</#if>><a href="http://cs.571xz.com" target="_blank">常熟<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "ss"> class="select"</#if>><a href="http://ss.571xz.com" target="_blank">石狮<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "bj"> class="select"</#if>><a href="http://bj.571xz.com" target="_blank">北京<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "gz"> class="select"</#if>><a href="http://gz.571xz.com" target="_blank">广州<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "wa"> class="select"</#if>><a href="http://wa.571xz.com" target="_blank">辽源<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "hz"> class="select"</#if>><a href="//hz.571xz.com">杭州<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "cs"> class="select"</#if>><a href="//cs.571xz.com" target="_blank">常熟<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "ss"> class="select"</#if>><a href="//ss.571xz.com" target="_blank">石狮<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "bj"> class="select"</#if>><a href="//bj.571xz.com" target="_blank">北京<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "gz"> class="select"</#if>><a href="//gz.571xz.com" target="_blank">广州<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "wa"> class="select"</#if>><a href="//wa.571xz.com" target="_blank">辽源<img src="//static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
      </ul>
     </div>
 </div>
         <h2>
             ${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}
-            <a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/ww2016.png" alt="联系旺旺" width="16" height="18"></a>
-            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/qq2016.png" alt="联系qq" width="16" height="18"></a>
+            <a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><img src="//static.571xz.com:86/resources2016/images/ww2016.png" alt="联系旺旺" width="16" height="18"></a>
+            <a href="//wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><img src="//static.571xz.com:86/resources2016/images/qq2016.png" alt="联系qq" width="16" height="18"></a>
         </h2>
         <div class="Diamonds pdl0 xinyuxingxingB">
             <div class="starnumbox">
@@ -212,7 +212,7 @@
             
        </div>
     </div>
-    <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${vo.storeRelation.webSite!}search.htm">
+    <form id="searchgo3" class="c_shop_search_2016" action="//so.571xz.com/${vo.storeRelation.webSite!}search.htm">
     <button id="allSearchbtn">搜全站</button>
     <div class="shopSecrh">
         <div class="search">
@@ -224,12 +224,12 @@
 </div>
 <div class="shopNav">
     <ul>
-        <li <#if query.timeflag??><#else>class="all"</#if>><a href='<#if vo.domain?? && vo.domain != "">http://${vo.domain!}.571xz.com<#else>http://${vo.storeRelation.webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}</#if>'>店铺首页</a></li>
+        <li <#if query.timeflag??><#else>class="all"</#if>><a href='<#if vo.domain?? && vo.domain != "">//${vo.domain!}.571xz.com<#else>//${vo.storeRelation.webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}</#if>'>店铺首页</a></li>
         <li <#if query.timeflag?? && (query.timeflag == 2 || query.timeflag == 3 || query.timeflag == 5 || query.timeflag == 6)>class="all"</#if>><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2">全部商品</a></li>
         <li><a href="javascript:;" rel="nofollow">商品数据包</a></li>
         <li <#if query.timeflag?? && query.timeflag == 4>class="all"</#if>><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=4">下架商品</a></li>
         <li><a href="shopcomment.htm?id=${vo.storeRelation.storeId!}">店铺讨论区</a></li>
-        <li class="all" style="float:right;"><a href="http://cs.571xz.com/huoyuan/guojifuzhuangcheng/">返回市场</a></li>
+        <li class="all" style="float:right;"><a href="//cs.571xz.com/huoyuan/guojifuzhuangcheng/">返回市场</a></li>
     </ul>
 </div>
 <#if query.timeflag??>
@@ -265,7 +265,7 @@ ${vo.shopFitment.description}
             <#if query.timeflag?? && query.timeflag == 4>
             <li class="xjgoods">
                 <a class="apic" href="javascript:;" title="${goods.title!}">
-                    <img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;">
+                    <img class="lazyload" src="//style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;">
                     <i class="iconfont">&#xe67d;</i>
                 </a>
                 <a href="javascript:;" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
@@ -273,11 +273,11 @@ ${vo.shopFitment.description}
             </li>
             <#else>
             <li>
-                <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
+                <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="//style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
                 <a href="item.htm?id=${goods.itemId!}&amp;numId=39528" target="_blank" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
                 <p class="c_btnbox j_btnbox">
-                    <a href="http://upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
-                    <a href="http://1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
+                    <a href="//upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
+                    <a href="//1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
                     <a href="javascript:;" alt="传微信" title="传微信" class="iconfont cor3"></a>
                     
                     <a href="javascript:sc_goods(${goods.itemId!})" alt="我的星座-我的数据包-生成数据包导出" title="我的星座-我的数据包-生成数据包导出" class="ctb">加数据包</a>
@@ -432,11 +432,11 @@ ${vo.shopFitment.description}
                 <li>在线客服：</li>
                 <li>
         
-        <a class="online" href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><i class="qq"></i>和我联系</a>
+        <a class="online" href="//wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><i class="qq"></i>和我联系</a>
         
         
         
-        <a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8"><img src="http://amos.alicdn.com/online.aw?v=2&amp;uid=${vo.storeRelation.imWw!}&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="点这里给我发消息" border="0"></a>
+        <a target="_blank" href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8"><img src="//amos.alicdn.com/online.aw?v=2&amp;uid=${vo.storeRelation.imWw!}&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="点这里给我发消息" border="0"></a>
         
         
                 </li>
@@ -579,7 +579,7 @@ ${vo.shopFitment.description}
                         <#if query.timeflag?? && query.timeflag == 4>
                         <li class="xjgoods">
                             <a class="apic" href="javascript:;" title="${goods.title!}">
-                                <img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;">
+                                <img class="lazyload" src="//style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;">
                                 <i class="iconfont">&#xe67d;</i>
                             </a>
                             <a href="javascript:;" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
@@ -587,11 +587,11 @@ ${vo.shopFitment.description}
                         </li>
                         <#else>
                         <li>
-                            <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="http://style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
+                            <a class="apic" href="item.htm?id=${goods.itemId!}&amp;numId=39528" title="${goods.title!}" target="_blank"><img class="lazyload" src="//style.571xz.com/shop_item_temp/css/imgs/loading_s.gif" data-original="${goods.imgUrl!}" style="zoom: 1;"></a>
                             <a href="item.htm?id=${goods.itemId!}&amp;numId=39528" target="_blank" class="atitle" style="  height: 59px;display: block;overflow: hidden;"><h2>¥ ${goods.price!} </h2>${goods.title!}</a>
                             <p class="c_btnbox j_btnbox">
-                                <a href="http://upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
-                                <a href="http://1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
+                                <a href="//upload.571xz.com/publish.htm?id=${goods.itemId!}&amp;wsit=1" alt="淘宝一键上传" title="淘宝一键上传" target="_blank" class="iconfont cor1"></a>
+                                <a href="//1688.571xz.com/offer/publish.htm?id=${goods.itemId!}" alt="阿里一键上传" title="阿里一键上传" target="_blank" class="iconfont cor2"></a>
                                 <a href="javascript:;" alt="传微信" title="传微信" class="iconfont cor3"></a>
                                 
                                 <a href="javascript:sc_goods(${goods.itemId!})" alt="我的星座-我的数据包-生成数据包导出" title="我的星座-我的数据包-生成数据包导出" class="ctb">加数据包</a>
@@ -611,15 +611,15 @@ ${vo.shopFitment.description}
     <div class="inner">
         <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
-            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-            <a href="http://bj.571xz.com" target="_blank">北京站</a>
-            <a href="http://gz.571xz.com" target="_blank">广州站</a>
-            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-            <a href="http://bbs.571xz.com/" target="_blank">星座论坛</a>
-            <a href="http://market.571xz.com/" target="_blank">服装批发市场</a>
-            <a href="http://hz.571xz.com:8070/zixun/article?id=87" target="_blank">联系我们</a>
-            <a href="http://www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a> 
+            <a href="//hz.571xz.com" target="_blank">杭州站</a>
+            <a href="//bj.571xz.com" target="_blank">北京站</a>
+            <a href="//gz.571xz.com" target="_blank">广州站</a>
+            <a href="//ss.571xz.com" target="_blank">石狮站</a>
+            <a href="//cs.571xz.com" target="_blank">常熟站</a>
+            <a href="//bbs.571xz.com/" target="_blank">星座论坛</a>
+            <a href="//market.571xz.com/" target="_blank">服装批发市场</a>
+            <a href="//hz.571xz.com:8070/zixun/article?id=87" target="_blank">联系我们</a>
+            <a href="//www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a> 
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
@@ -629,15 +629,15 @@ ${vo.shopFitment.description}
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            &copy; 2009-2017 571xz.com 版权所有 <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            &copy; 2009-2017 571xz.com 版权所有 <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://www.571xz.com/images/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//www.571xz.com/images/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
         </p>
     </div>
 </div>
-<script src="http://style.571xz.com/global/js/jquery.js"></script>
-        <script src="http://style.571xz.com/shop_item_temp/js/temp/ekoo.min.js"></script>
-<script src="http://style.571xz.com/shop_item_temp/js/shop.js"></script>
+<script src="//style.571xz.com/global/js/jquery.js"></script>
+        <script src="//style.571xz.com/shop_item_temp/js/temp/ekoo.min.js"></script>
+<script src="//style.571xz.com/shop_item_temp/js/shop.js"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

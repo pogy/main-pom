@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__shiguOnekeyRecordinit_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -216,11 +216,11 @@
                 <#elseif goods.taobaoSaleState == 2>
                 <span class="zwf fl"></span>
                 </#if>
-                <a class="piclink fl" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">
+                <a class="piclink fl" href="//www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">
                     <img src="${goods.imgsrc!}_80x80.jpg">
                 </a>
                 <p class="fl">
-                    <a class="title" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
+                    <a class="title" href="//www.571xz.com/item.htm?id=${goods.goodsId!}" title="查看宝贝详情" target="_blank">${goods.title!}</a>
                 </p>
                 <p class="fl"><span>货号：${goods.goodsNo!}</span></p>
                 <p class="fl">
@@ -314,4 +314,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

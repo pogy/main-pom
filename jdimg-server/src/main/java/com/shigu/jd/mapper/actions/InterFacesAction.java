@@ -1,18 +1,16 @@
 package com.shigu.jd.mapper.actions;
 
 import com.openJar.beans.JdItemProp;
+import com.openJar.beans.JdSession;
 import com.openJar.commons.ResponseUtil;
-import com.openJar.requests.interfaces.SelJdItemPropsRequest;
-import com.openJar.requests.interfaces.SelJdPropValuesRequest;
-import com.openJar.requests.interfaces.SelJdTbBindsRequest;
-import com.openJar.requests.interfaces.SelShiguJdCatRequest;
-import com.openJar.responses.interfaces.SelJdItemPropsResponse;
-import com.openJar.responses.interfaces.SelJdPropValuesResponse;
-import com.openJar.responses.interfaces.SelJdTbBindsResponse;
-import com.openJar.responses.interfaces.SelShiguJdCatResponse;
+import com.openJar.exceptions.OpenException;
+import com.openJar.requests.interfaces.*;
+import com.openJar.responses.interfaces.*;
+import com.shigu.exceptions.JdAuthOverdueException;
 import com.shigu.exceptions.OtherCustomException;
 import com.shigu.jd.mapper.services.InterFacesService;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,6 +37,19 @@ public class InterFacesAction {
         res.setDatas(list);
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
     }
+    @RequestMapping("api/selJdItemPropsNew")
+    @ResponseBody
+    public JSONObject selJdItemPropsNew(@Valid SelJdItemPropsNewRequest request, BindingResult error) throws OtherCustomException, JdAuthOverdueException {
+        if(error.hasErrors()){
+            throw new OtherCustomException(error.getAllErrors().get(0).getDefaultMessage());
+        }
+        SelJdItemPropsResponse res=new SelJdItemPropsResponse();
+        List<JdItemProp> list= interFacesService.selJdItemPropsNew(request.getJdUid(),request.getJdCid());
+        res.setSuccess(true);
+        res.setDatas(list);
+        return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
+    }
+
     @RequestMapping("api/selJdPropValues")
     @ResponseBody
     public JSONObject selJdPropValues(@Valid SelJdPropValuesRequest request, BindingResult error) throws OtherCustomException {
@@ -73,6 +84,35 @@ public class InterFacesAction {
         res.setSuccess(true);
         res.setData(interFacesService.selShiguJdcat(request.getCid()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(res).toString());
+    }
+
+    /**
+     * 根据京东登陆名精确查询
+     * @param request
+     * @return
+     */
+    @RequestMapping("api/selJdUidsByFuzzyJdLoginName")
+    @ResponseBody
+    public JSONObject selJdUidsByFuzzyJdLoginName(SelJdUidsByFuzzyJdLoginNameRequest request, SelJdUidsByFuzzyJdLoginNameResponse response) {
+        if (StringUtils.isBlank(request.getJdUserNick())) {
+            response.setSuccess(false);
+            OpenException openException = new OpenException();
+            openException.setErrMsg("昵称不能为空");
+            response.setException(openException);
+            return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
+        }
+        List<JdSession> jdUids = null;
+        try {
+            jdUids = interFacesService.selJdUidsByFuzzyJdLoginName(request.getJdUserNick());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setSuccess(false);
+            return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
+        }
+
+        response.setSuccess(true);
+        response.setJdUids(jdUids);
+        return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 
 }

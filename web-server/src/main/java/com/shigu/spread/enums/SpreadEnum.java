@@ -23,7 +23,9 @@ public enum SpreadEnum {
     WOMAN_DT("男装大图", "WOMAN-DT"), WOMAN_XT("男装小图", "WOMAN-XT"),
     WOMAN_RM("热卖广告", "WOMAN-RM"), WOMAN_FG("风格", "WOMAN-FG"), WOMAN_YS("元素", "WOMAN-YS"),
     WOMAN_TJDK("推荐档口", "WOMAN-TJDK"), WOMAN_XHTX("喜欢T恤", "WOMAN-XHTX"), WOMAN_XHNZ("喜欢牛仔", "WOMAN-XHNZ"),
-    WOMAN_XHXZ("喜欢鞋子", "WOMAN-XHXZ"), WOMAN_HOTBOT("热卖下方条形广告", "WOMAN-HOTBOT"), WOMAN_STYLEBOT("风格下方条形广告", "WOMAN-STYLEBOT"), MAN_GOODS_RIGHT("男装商品库右侧", "MAN-GOODS-RIGHT"),MAN_GOODS_BOTTOM("男装商品库下侧","MAN-GOODS-BOTTOM"),
+    WOMAN_XHXZ("喜欢鞋子", "WOMAN-XHXZ"), WOMAN_HOTBOT("热卖下方条形广告", "WOMAN-HOTBOT"), WOMAN_STYLEBOT("风格下方条形广告", "WOMAN-STYLEBOT"),
+    MAN_GOODS_RIGHT("男装商品库右侧", "MAN-GOODS-RIGHT"),
+    MAN_GOODS_BOTTOM("男装商品库下侧","MAN-GOODS-BOTTOM"),
     WOMAN_GOODS_RIGHT("女装商品库右侧", "WOMAN-GOODS-RIGHT"),
 
 
@@ -31,6 +33,9 @@ public enum SpreadEnum {
 
     INDEX_TOP("首页顶部男装广告", "INDEX-TOP"),
     INDEX_TOP_WOMAN("首页顶部女装广告", "INDEX-TOP-WOMAN"),
+    SHOP_DETAIL_TOP_MAN("男装店铺和详情页顶部广告","SHOP_DETAIL_TOP_MAN"),
+    SHOP_DETAIL_TOP_WOMAN("女装店铺和详情页顶部广告","SHOP_DETAIL_TOP_WOMAN"),
+
 
     LOGIN_GT("登录页", "LOGIN_GT"),
     BACK_SHOP("供应商后台", "BACK_SHOP"), BACK_MEMBER("分销商后台", "BACK_MEMBER"),
@@ -84,6 +89,10 @@ public enum SpreadEnum {
     WOMAN_QZ_DT("首页轮播图","WOMAN-DT-QZ"),WOMAN_QZ_XT("首页轮播图下方小图","WOMAN-QZ-XT"),
     WOMAN_QZ_RM("首页热卖","WOMAN-QZ-RM"),WOMAN_QZ_TJ("首页推荐商品","WOMAN-QZ-TJ"),
     WOMAN_QZ_TOP_BANNER("顶部公告","WOMAN-QZ-TOP-BANNER"),
+
+    QZ_MAN_GOODS_RIGHT("泉州男装商品库右侧","QZ_MAN_GOODS_RIGHT"),
+    QZ_ITEM_GOAT("泉州商品详情左侧广告","QZ_ITEM_GOAT"),
+    QZ_BOTTOM_ITEM_GOAT("泉州商品详情下方广告","QZ_BOTTOM_ITEM_GOAT"),
 
 
     //织里

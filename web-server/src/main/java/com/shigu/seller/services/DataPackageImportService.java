@@ -18,6 +18,9 @@ import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,6 @@ public class DataPackageImportService {
         item.setFloorId(shop.getFloorId());
         item.setMarketId(shop.getMarketId());
         item.setOnsale(true);
-        item.setGoodsDesc(tiny.getExtendsGoods().getGoodsDesc());
         item.setPropsName(parsePropName(tiny.getCid(),tiny.getExtendsGoods().getProps(),
                 tiny.getExtendsGoods().getInputPids(),tiny.getExtendsGoods().getInputStr(),tiny.getExtendsGoods().getInputCustomCpv()));
         item.setPropertyAlias(tiny.getExtendsGoods().getPropertyAlias());
@@ -89,6 +91,25 @@ public class DataPackageImportService {
             newPicUrl=banjia(tiny.getPicUrl());
             item.setPicUrl(newPicUrl);
         }
+//        String desc = tiny.getExtendsGoods().getGoodsDesc();
+//        String goodsDesc = desc;
+//        if (StringUtils.isNotBlank(desc)){
+//            Document doc = Jsoup.parseBodyFragment(desc);
+//            Elements elements = doc.getElementsByTag("img");
+//            if (elements != null && elements.size() > 0){
+//                for (int i = 0; i <elements.size() ; i++) {
+//                    String imgUrl = elements.get(i).attr("src");
+//                    if (StringUtils.isNotBlank(imgUrl)) {
+//                        String newImgUrl = banjia(imgUrl);
+//                        if (imgUrl.equalsIgnoreCase(newImgUrl) == false){
+//                            goodsDesc = goodsDesc.replaceAll(imgUrl,newImgUrl);
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+        item.setGoodsDesc(tiny.getExtendsGoods().getGoodsDesc());
         List<ShiguPropImg> propImgs=BeanMapper.mapList(tiny.getExtendsGoods().getList_spi(), ShiguPropImg.class);
         for(ShiguPropImg img:propImgs){
             img.setUrl(banjia(img.getUrl()));

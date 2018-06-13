@@ -44,6 +44,20 @@ public class StoreRelation implements Serializable{
      */
     private String webSite;
 
+    /**
+     * 市场ID
+     * @return
+     */
+    private Long marketId;
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
+
     public String getWebSite() {
         return webSite;
     }

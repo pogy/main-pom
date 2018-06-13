@@ -61,6 +61,19 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      */
     private Integer goodsVideo;
 
+    /**
+     * 自定义搜索名
+     */
+    private String cname;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
     public String getFrom() {
         return from;
     }

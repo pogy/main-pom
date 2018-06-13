@@ -5,10 +5,10 @@
 <div style="width:700px; margin:0 auto;">
     <div style="margin-top:150px;">
         <p style="text-align:center; font-size:24px; margin-bottom:40px;">${errMsg}</p>
-        <img src="http://style.571xz.com/errors/css/img/500.png">
+        <img src="//style.571xz.com/errors/css/img/500.png">
     </div>
     <div class="buttonbox">
-        <a href="http://www.571xz.com/">访问首页</a>
+        <a href="//www.571xz.com/">访问首页</a>
         <#--<a href="${backurl!}" class="back">返回上一页</a>-->
     </div>
     <style >

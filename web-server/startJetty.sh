@@ -8,6 +8,6 @@ if [ $# -gt '0' ] ; then
 
 fi
 export MAVEN_OPTS
-mvn jetty:run
+mvn jetty:run -X
 
 
