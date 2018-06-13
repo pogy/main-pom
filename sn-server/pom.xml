@@ -366,11 +366,6 @@
         </dependency>
         <!--查淘宝店内信息-->
 
-        <dependency>
-            <groupId>com.jd</groupId>
-            <artifactId>jfs-jcloud-sdk-java</artifactId>
-            <version>1.0.3</version>
-        </dependency>
     </dependencies>
 
     <repositories>

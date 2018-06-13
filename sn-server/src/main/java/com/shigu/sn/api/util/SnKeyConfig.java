@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 
 @Configuration
 @PropertySource("classpath:/third_part.properties")
-public class JdKeyConfig {
+public class SnKeyConfig {
     @Autowired
     Environment environment;
     @PostConstruct
@@ -17,6 +17,7 @@ public class JdKeyConfig {
         snAppkey=environment.getProperty("sn.app.key");
         snSecret=environment.getProperty("sn.app.secret");
         snRedirectUri=environment.getProperty("sn.redirect_uri");
+        snFuWuId=environment.getProperty("sn.fuwu_id");
     }
 
     public static String snAppkey;
@@ -24,5 +25,7 @@ public class JdKeyConfig {
     public static String snSecret;
 
     public static String snRedirectUri;
+
+    public static String snFuWuId;
 
 }

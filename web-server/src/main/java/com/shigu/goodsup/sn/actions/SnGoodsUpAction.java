@@ -68,7 +68,7 @@ public class SnGoodsUpAction {
     }
 
     @RequestMapping("callback")
-    public String SnCallback(SnAuthInfo snAuthInfo, HttpServletRequest request, HttpSession session){
+    public String SnCallback(String code, HttpServletRequest request, HttpSession session){
 //        System.out.println(code);
         String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
         session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());

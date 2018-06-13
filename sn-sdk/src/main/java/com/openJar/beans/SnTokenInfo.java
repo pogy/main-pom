@@ -8,7 +8,7 @@ public class SnTokenInfo extends OpenBean {
     private String accessToken;//访问令牌
     private String tokenType;//令牌类型，只支持bearer
     private String refreshToken;
-    private Date expiresIn;//令牌过期时间
+    private int expiresIn;//令牌过期时间
     private String suningUserName;
     private Long custnum;//用户会员编码
     private int module;//用户类型
@@ -38,11 +38,11 @@ public class SnTokenInfo extends OpenBean {
         this.refreshToken = refreshToken;
     }
 
-    public Date getExpiresIn() {
+    public int getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(Date expiresIn) {
+    public void setExpiresIn(int expiresIn) {
         this.expiresIn = expiresIn;
     }
 
