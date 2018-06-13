@@ -97,9 +97,8 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         //查出第几次退
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
-                "    \"out_trade_no\":\"xzTest" + orderPayApply.getApplyId() +"\"," +
-//                "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
-                "    \"refund_amount\":0.01," +
+                "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
+                "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + refundNo + "\"" +
                 "  }");
