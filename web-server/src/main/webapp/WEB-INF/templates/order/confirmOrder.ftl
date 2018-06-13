@@ -13,7 +13,8 @@
 <#include "/__style_torrent__/order__common_css.ftl">
 <#include "/__style_torrent__/order__confirmOrder_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
-    <#include "/__style_torrent__/common__base_js.ftl">
+    <script src="getAreaData.json?${linkageVersion}"></script>
+<#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/order__confirmOrder_js.ftl">
@@ -93,7 +94,6 @@ var code = '${code!}'
 <div data-id="myArea"
     class="fmCitypick1" data-value="${$it.value!}">
 </div>
-<script src="getAreaData.json?${linkageVersion!}"></script>
 </#list>
                 </div>
             </li>
