@@ -155,27 +155,27 @@ public class ImportCsvFileService {
                     List<String> hasProps=Arrays.stream(((String) codeValueMap.get("cateProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> imgs= Arrays.stream(((String)codeValueMap.get("picture")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
 //                    List<String> skus=Arrays.stream(((String)codeValueMap.get("skuProps")).split(";")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<Integer> hasInputVid=new ArrayList<>();
+                    List<Long> hasInputVid=new ArrayList<>();
                     for (String anInputList : inputList) {
                         String[] inputs = anInputList.split(":");
-                        Integer nvid=new Integer(inputs[1]);
+                        Long nvid=new Long(inputs[1]);
                         if(nvid>0){
                             nvid=-nvid;
                         }
                         hasInputVid.add(nvid);
                     }
-                    Integer startIndex=null;
+                    Long startIndex=null;
                     if(hasInputVid.size()>0){
-                        hasInputVid.sort(Comparator.comparingInt(o -> o));
+                        hasInputVid.sort(Comparator.comparingLong(o -> o));
                         startIndex= hasInputVid.get(0);
                     }
                     if(startIndex==null){
-                        startIndex=0;
+                        startIndex=0L;
                     }
                     for(int iv=0;iv<inputList.size();iv++){
                         String[] inputs=inputList.get(iv).split(":");
-                        if(hasInputVid.contains(new Integer(inputs[1]))){
-                            hasInputVid.removeIf(new Integer(inputs[1])::equals);
+                        if(hasInputVid.contains(new Long(inputs[1]))){
+                            hasInputVid.removeIf(new Long(inputs[1])::equals);
                         }else{
                             String newVid=(startIndex-(iv+1))+"";
                             String input=inputs[0]+":"+newVid+":"+inputs[2];
