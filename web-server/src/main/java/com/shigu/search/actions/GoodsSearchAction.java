@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.bo.SearchBO;
@@ -29,10 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +50,8 @@ public class GoodsSearchAction {
 
     @Autowired
     StoreSelFromEsService storeSelFromEsService;
+    @Autowired
+    SearchCategoryService searchCategoryService;
 
     @Autowired
     OssIO ossIO;
@@ -146,6 +147,7 @@ public class GoodsSearchAction {
         model.addAttribute("goodslist", pager.getContent() == null ? new ArrayList<>() : pager.getContent());
         model.addAttribute("query", bo);
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         return "search/newgoods";
     }
 
@@ -215,6 +217,7 @@ public class GoodsSearchAction {
 //        model.addAttribute("cateNav",searchNav);
         model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/search";
         } else  {
@@ -242,7 +245,11 @@ public class GoodsSearchAction {
                 bo.setPid(50011740L);
             }else if ("zl".equalsIgnoreCase(website)){
                 bo.setPid(50008165L);
-            }else {
+            }else if ("wa".equalsIgnoreCase(website)){
+                bo.setPid(1625L);
+            }else if("qz".equalsIgnoreCase(website)){
+                bo.setPid(50011740L);
+            }else{
                 bo.setPid(30L);
             }
         }
@@ -272,19 +279,18 @@ public class GoodsSearchAction {
                 goodsInSearch.setHighLightTitle(KeyWordsUtil.duleKeyWords(goodsInSearch.getHighLightTitle()));
             });
         }
-
-
         maxTotalSizeOrPage(pager, bo.getRows());
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
         //查顶级类目
         model.addAttribute("navCate", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
-        if (bo.getPid() != null) {
+        if (bo.getPid() != null) {//分类
             model.addAttribute("cates", categoryInSearchService.selSubCates(bo.getPid().toString(),
                     SearchCategory.CATEGORY, website)
             );
             model.addAttribute("styles", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.STYLE, website));
             model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT, website));
+//            model.addAttribute("custom", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.CUSTOM, website));
         }
         //查匹配店铺
         model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
@@ -301,6 +307,7 @@ public class GoodsSearchAction {
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
         if(website.equals("hz")&&bo.getPid().equals(30L))
         model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         if ("kx".equalsIgnoreCase(website)) {

@@ -12,9 +12,9 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/search__common_css.ftl">
 <#include "/__style_torrent__/search__goods_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -29,7 +29,7 @@
 <#assign headerTitle=null>
 <#include "/common/xz__searchHeader.ftl">
 <#include "/__ftl_links__/search__common__pageNav.ftl">
-<#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"mid","value":""+query.mid},{"name":"pid","value":""+query.pid},{"name":"cid","value":""+query.cid},{"name":"sort","value":""+query.sort},{"name":"d","value":""+query.d},{"name":"sp","value":""+query.sp},{"name":"ep","value":""+query.ep},{"name":"st","value":""+query.st},{"name":"et","value":""+query.et},{"name":"keyword","value":""+query.keyword},{"name":"page","value":""+query.page},{"name":"bpic","value":""+query.bpic},{"name":"goodsVideo","value":""+query.goodsVideo}]}] as $it>
+<#list [{"fields":[{"name":"webSite","value":""+query.webSite},{"name":"mid","value":""+query.mid},{"name":"pid","value":""+query.pid},{"name":"cid","value":""+query.cid},{"name":"cname","value":""+query.cname},{"name":"sort","value":""+query.sort},{"name":"d","value":""+query.d},{"name":"sp","value":""+query.sp},{"name":"ep","value":""+query.ep},{"name":"st","value":""+query.st},{"name":"et","value":""+query.et},{"name":"keyword","value":""+query.keyword},{"name":"page","value":""+query.page},{"name":"bpic","value":""+query.bpic},{"name":"goodsVideo","value":""+query.goodsVideo}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -62,7 +62,7 @@
                     <#if goods_index lt 20>
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
                     <#else>
-                        <img class="lazyload img" src="http://style.571xz.com/v6/search/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
+                        <img class="lazyload img" src="//style.571xz.com/v6/search/css/img/opacity0.png" data-original="${goods.imgsrc!}_240x240.jpg">
                     </#if>
                 </a>
                 <p class="p1">
@@ -81,8 +81,8 @@
                         <em><i class="iconUp"></i>一键上传</em>
                         <div class="list">
                             <ul>
-                                <li><a href="http://upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><em class="iconUp"></em>上传淘宝</a></li>
-                                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><em class="iconUp"></em>上传阿里</a></li>
+                                <li><a href="//upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><em class="iconUp"></em>上传淘宝</a></li>
+                                <li><a href="//1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><em class="iconUp"></em>上传阿里</a></li>
                                 <li><a href="#" jbtn="showGoodsWx"><em class="iconUp"></em>分享朋友圈</a></li>
                                 <li><a href="javascript:;" xzclick="addGoodsPkg" data-goodsid="${goods.id!}"><em class="iconAdd"></em>加入数据包</a></li>
                             </ul>
@@ -141,18 +141,20 @@
         <ul class="clearfix">
             <#list goodsGoats as goods>
             <li>
-                <a href="http://www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
+                <a href="//www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
                     <img src="${goods.imgsrc!}_220x220.jpg" alt>
                 </a>
-                <a href="http://www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
+                <a href="//www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
                 <p>
                     <span class="price">&yen;${goods.piprice!}</span>
-                    <a href="http://www.571xz.com/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
+                    <a href="//www.571xz.com/shop.htm?id=${goods.storeId!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
                 </p>
             </li>
             </#list>
         </ul>
     </div>
 </#if>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>
 <#include "/common/cnzz.ftl">

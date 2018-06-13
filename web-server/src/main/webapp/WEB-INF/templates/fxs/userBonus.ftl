@@ -11,7 +11,7 @@
 <#include "/__style_torrent__/common__xz_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__userBonus_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/fxs__userBonus_js.ftl">
@@ -59,7 +59,7 @@
                     <ul class="clearfix">
                         <li class="time fc3">${item.time!}</li>
                         <li class="money">
-                            <span class="<#if (item.money)?? && (item.money)?starts_with("+")>green<#else>red</#if>">${(item.money)!}</span>
+                            <span <#if item.payState == 1>class="green"<#elseif item.payState == 2>class="red"</#if>>${item.money!}</span>
                         </li>
                         <li class="type">
                             <p class="fc3">${item.payText!}</p>
@@ -76,4 +76,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

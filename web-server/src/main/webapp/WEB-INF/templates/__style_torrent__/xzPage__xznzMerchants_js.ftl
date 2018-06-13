@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/xzPage/js/xznzMerchants_v20180413_153823.js"></script>
+<script src="//style.571xz.com/v6/xzPage/js/xznzMerchants_v20180413_153823.js"></script>

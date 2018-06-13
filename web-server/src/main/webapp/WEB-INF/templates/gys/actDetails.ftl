@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/gys__common_css.ftl">
 <#include "/__style_torrent__/gys__actDetails_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -26,7 +26,7 @@
 <div class="wrapper">
     <div class="layout">
 <ol class="pageNav clearfix">
-    <li><a class="index" href="http://www.571xz.com/">首页</a><em>/</em></li>
+    <li><a class="index" href="//www.571xz.com/">首页</a><em>/</em></li>
     <li><a href="javascript:;">营销中心</a><em>/</em></li>
     <li><a href="actRegister.htm">活动报名</a><em>/</em></li>
     <li><a href="javascript:;" class="active">${actDetails.actTitle!}</a></li>
@@ -111,4 +111,6 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
 </script>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

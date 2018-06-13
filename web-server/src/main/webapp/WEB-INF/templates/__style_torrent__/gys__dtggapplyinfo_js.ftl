@@ -1,1 +1,1 @@
-<script src="http://style.571xz.com/v6/gys/js/dtggapplyinfo_v20180117_170918.js"></script>
+<script src="//style.571xz.com/v6/gys/js/dtggapplyinfo_v20180117_170918.js"></script>

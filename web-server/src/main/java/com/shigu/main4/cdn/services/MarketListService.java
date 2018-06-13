@@ -140,6 +140,7 @@ public class MarketListService {
         for(FloorShow fs:floors){
             FloorVO fv=new FloorVO();
             fv.setTitle(fs.getShowName());
+            fv.setSmTitle(fs.getOtherName());
             fv.setStores(new ArrayList<ShopInFloorVO>());
             for(ShopShow ss:fs.getShops()){
                 ShopInFloorVO sifv=new ShopInFloorVO();

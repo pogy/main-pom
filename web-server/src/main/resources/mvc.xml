@@ -40,7 +40,19 @@
             </bean>
         </mvc:interceptor>
 
-
+        <!--20180515 商品紧急密度拦截-->
+        <mvc:interceptor>
+            <mvc:mapping path="/*goods.*"/>
+            <mvc:mapping path="/*search.*"/>
+            <mvc:mapping path="/item.*"/>
+            <bean class="com.shigu.interceptors.ItemIpDensityInterceptor">
+                <property name="minMillionSecond" value="500"/>
+                <property name="startNum" value="3"/>
+                <property name="redisIO" ref="redisIO"/>
+                <property name="refuseSecond" value="60"/>
+            </bean>
+        </mvc:interceptor>
+        
         <!-- 手机密度拦截器 - 发送短信-->
         <mvc:interceptor>
             <mvc:mapping path="/loginPhoneVerification.*"/>

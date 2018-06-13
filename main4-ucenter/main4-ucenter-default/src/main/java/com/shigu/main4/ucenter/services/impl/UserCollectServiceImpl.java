@@ -13,10 +13,7 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.util.DataPackageUtil;
-import com.shigu.main4.ucenter.util.FileOperator;
-import com.shigu.main4.ucenter.util.FilePathConstant;
-import com.shigu.main4.ucenter.util.UtilCharacter;
+import com.shigu.main4.ucenter.util.*;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
@@ -382,7 +379,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         String picture = subimageString;//新图片
         String video = "";//视频
         // 销售属性组合
-        StringBuffer skuProps = new StringBuffer();//sku组合属性
+        StringBufferAgent skuProps = new StringBufferAgent();//sku组合属性
         List<TaobaoSku> list_ts=new ArrayList<>();
         if(goods.getNumIid()!=null){
             TaobaoSkuExample example_ts = new TaobaoSkuExample();
@@ -471,7 +468,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         if ("second".equals(goods.getStuffStatus())) {
             stuff_status = "3";
         }
-        StringBuffer contentsString = new StringBuffer();
+        StringBufferAgent contentsString = new StringBufferAgent();
         contentsString.append(goods.getTitle()).append('\t').append(goods.getCid()).append('\t').append(goods.getCidAll()).append('\t').append(stuff_status).append('\t').append(goods.getProv()).append('\t').append(goods.getCity()).append('\t').append(item_type).append('\t').append(goods.getPriceString()).append('\t').append(auction_increment).append('\t');
         contentsString.append(goods.getNum()).append('\t').append(valid_thru).append('\t').append(freight_payer).append('\t').append('0').append('\t').append('0').append('\t').append('0').append('\t').append(has_invoice).append('\t').append(has_warranty).append('\t').append(approve_status).append('\t').append(has_showcase).append('\t');
         contentsString.append(list_time).append('\t').append("\"").append(goodsdesc).append("\"").append('\t').append(sge.getProps()).append('\t').append(postage_id).append('\t').append(has_discount).append('\t').append(modified).append('\t').append(upload_fail_msg).append('\t').append(picture_status).append('\t').append(auction_point).append('\t');
@@ -538,8 +535,8 @@ public class UserCollectServiceImpl implements UserCollectService {
             FileOperator.createDirectory(relativePath1);
         }
 
-        StringBuffer contentBuffer = new StringBuffer();
-        StringBuffer shopBuffer = new StringBuffer();
+        StringBufferAgent contentBuffer = new StringBufferAgent();
+        StringBufferAgent shopBuffer = new StringBufferAgent();
 
 
         Long shopId = null;

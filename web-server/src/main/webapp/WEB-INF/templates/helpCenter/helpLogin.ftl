@@ -4,7 +4,7 @@
 
     <title>登录</title>
     <style type="text/css">
-        body{margin:0;padding:0;font-size:12px;background:url(http://www.571xz.com:80/571_admin/images/login/bg.jpg) top repeat-x;}
+        body{margin:0;padding:0;font-size:12px;background:url(//www.571xz.com:80/571_admin/images/login/bg.jpg) top repeat-x;}
         .input{width:150px;height:17px;border-top:1px solid #404040;border-left:1px solid #404040;border-right:1px solid #D4D0C8;border-bottom:1px solid #D4D0C8;}
     </style>
 
@@ -24,16 +24,16 @@ ${error}
                 <tr>
                     <td width="423" height="280" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td><img src="http://www.571xz.com:80/571_admin/images/login/ltop.jpg" /></td>
+                            <td><img src="//www.571xz.com:80/571_admin/images/login/ltop.jpg" /></td>
                         </tr>
                         <tr>
                             <td><span style="color: #d58512;font-size: xx-large">帮助中心后台登录</span></td>
                         </tr>
                     </table></td>
-                    <td width="40" align="center" valign="bottom"><img src="http://www.571xz.com:80/571_admin/images/login/line.jpg" width="23" height="232" /></td>
+                    <td width="40" align="center" valign="bottom"><img src="//www.571xz.com:80/571_admin/images/login/line.jpg" width="23" height="232" /></td>
                     <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td height="90" align="center" valign="bottom"><img src="http://www.571xz.com:80/571_admin/images/login/ltitle.jpg" /></td>
+                            <td height="90" align="center" valign="bottom"><img src="//www.571xz.com:80/571_admin/images/login/ltitle.jpg" /></td>
                         </tr>
                         <tr>
                             <td>

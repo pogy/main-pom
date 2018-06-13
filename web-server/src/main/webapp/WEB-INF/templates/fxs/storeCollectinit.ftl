@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__storeCollectinit_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -150,7 +150,7 @@
 </label>
 </#list>
                     <div class="fl">
-                        <a class="imgBox fl" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">
+                        <a class="imgBox fl" href="//www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">
                             <#if shop.shopImgSrc??>
                                 <img src="${shop.shopImgSrc!}_80x80.jpg">
                             <#else>
@@ -159,7 +159,7 @@
                         </a>
                         <div class="fl shopInfo">
                            <p>
-                               <a class="marketAndShop" href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank" title="${shop.marketName!}${shop.shopNum!}">${shop.marketName!}${shop.shopNum!}</a>
+                               <a class="marketAndShop" href="//www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank" title="${shop.marketName!}${shop.shopNum!}">${shop.marketName!}${shop.shopNum!}</a>
 <#list [{"num":shop.starNum}] as $it>
 <#include "/common/xz__shopLevel.ftl">
 </#list>
@@ -172,7 +172,7 @@
 </#list>
 <#list [{"id":shop.imQq}] as $it>
 <#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list></p>
                         </div>
@@ -184,7 +184,7 @@
                             <#list shop.goodsList as goods>
                                 <#if goods_index lt 4>
                                     <li>
-                                        <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgSrc!}_180x180.jpg" width="150" height="150"></a>
+                                        <a href="//www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank"><img src="${goods.imgSrc!}_180x180.jpg" width="150" height="150"></a>
                                     </li>
                                 </#if>
                             </#list>
@@ -192,7 +192,7 @@
                             <p class="fc6 notNewGoodsUp">暂时没有店铺的上新！去店铺看看吧～</p>
                         </#if>
                     </ul>
-                    <p><a href="http://www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">查看更多></a></p>
+                    <p><a href="//www.571xz.com/shop.htm?id=${shop.shopId!}" target="_blank">查看更多></a></p>
                 </li>
             </ul>
         </#list>
@@ -221,4 +221,6 @@
             </div>
     </div>
 </div>
+<#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
+</#list>

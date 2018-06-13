@@ -79,10 +79,10 @@
     <ul>
         <li>
             <a
-                <#if 'http://www.571xz.com/qualityControl.htm' == $pageid >
+                <#if '//www.571xz.com/qualityControl.htm' == $pageid >
                     class="selected"
                 </#if>
-                    href="http://www.571xz.com/qualityControl.htm"
+                    href="//www.571xz.com/qualityControl.htm"
                     target="_blank"
             >我要质检</a>
         </li>

@@ -1,5 +1,6 @@
 package com.shigu.main4.order.process;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.exceptions.TbSendException;
 
 /**
@@ -8,6 +9,8 @@ import com.shigu.main4.order.exceptions.TbSendException;
 public interface ItemOrderProcess {
 
     void finish(Long oid);
+
+    void sysFinish(Long oid) throws Main4Exception;
 
     /**
      * 缺货

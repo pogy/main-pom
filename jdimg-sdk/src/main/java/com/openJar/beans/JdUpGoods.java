@@ -609,4 +609,5 @@ public class JdUpGoods extends OpenBean{
     public void setWarePackType(String warePackType) {
         this.warePackType = warePackType;
     }
+
 }

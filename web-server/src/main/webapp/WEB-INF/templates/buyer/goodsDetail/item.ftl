@@ -12,10 +12,10 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/goodsDetail__common_css.ftl">
 <#include "/__style_torrent__/goodsDetail__item_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
-<script src="http://style.571xz.com/v6/goodsDetail/js/clipboard/jquery.zeroclipboard.min.js"></script>
-<script src="http://style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
+<script src="//style.571xz.com/v6/goodsDetail/js/clipboard/jquery.zeroclipboard.min.js"></script>
+<script src="//style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -30,7 +30,7 @@
     <div class="layout">
         <div class="logoBox">
             <a href="/">
-                <img src="http://style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
+                <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
@@ -39,7 +39,7 @@
             <div class="storeNamebox">
                 <h3
                 <#if shopInfo.domain??>
-                    onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
+                    onclick="jumpShopLink('//${shopInfo.domain!}.571xz.com')"
                 <#else>
                     onclick="jumpShopLink('/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
@@ -91,7 +91,7 @@
         </ul>
     </div>
     <div class="p2 clearfix">
-        <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
         <#else>
@@ -148,7 +148,7 @@
         </ul>
     </div>
     <div class="p2 clearfix">
-        <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
         <#else>
@@ -162,7 +162,7 @@
     </div>
 </div>
         </div>
-        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="//so.571xz.com/${webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">
@@ -239,7 +239,7 @@ ${userShopHdHtml}
 <div class="goodsTitle">
     <h2 class="fs18 fc3 yahei">
         <#if goodsInfo.tbGoodsId??>
-            <a href="http://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
+            <a href="//item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
         <#else>
             ${goodsInfo.title!}
         </#if>
@@ -361,7 +361,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     <ul>
         <#list tjGoodsList as tjGoods>
         <Li>
-            <a href="http://${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgSrc!}_140x140.jpg" title="${tjGoods.title!}" /></a>
+            <a href="//${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgSrc!}_140x140.jpg" title="${tjGoods.title!}" /></a>
             <p class="text-size14"><em class="yahei">&yen;</em>${tjGoods.price!}</p>
         </Li>
         </#list>
@@ -374,7 +374,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     <div class="fixContainer ">
         <div class="layout">
             <div class="shopName" >
-                <a class="nameDetails" href='http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
+                <a class="nameDetails" href='//${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}' target="_blank">${shopInfo.marketName!}${shopInfo.shopNo!}</a>
                 <span>
 <#list [{"id":"${shopInfo.imWw!}"}] as $it>
 <#include "/common/xz__imAliww.ftl">
@@ -425,7 +425,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         </ul>
     </div>
     <div class="p2 clearfix">
-        <b><a href="http://www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
+        <b><a href="//www.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <a class="link" href="${shopInfo.tbUrl!}" target="_blank">淘宝店铺</a>
         <#else>
@@ -486,8 +486,8 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
 <div id="onkeyupFixbar" class="onkeyupFixbar">
     <div class="innerbox">
          <ul class="keybox">
-                <li><a href="http://upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
-                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
+                <li><a href="//upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                <li><a href="//1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
                 <li class="wxContainer"><b id="showGoodsWxCode" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
                 <li class="addData"><b xzclick="addGoodsPkg" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 <li class="imgDownload" jhand="downloadPic" data-goodsid="${goodsInfo.goodsId!}"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
@@ -500,14 +500,14 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         <div class="contactbox">
             <h3>联系档口</h3>
             <#if shopInfo.imWw??>
-                <p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
+                <p class="wangwang"><a href="//www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
 <#list [{"id":"${shopInfo.imWw!}"}] as $it>
 <#include "/common/xz__imAliww.ftl">
 </#list>
 </p>
             </#if>
             <#if shopInfo.imQq?? && shopInfo.imQq != "">
-                <p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
+                <p class="qq"><a href="//wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
 <#list [{"id":"${shopInfo.imQq!}"}] as $it>
 <#include "/common/xz__imQQ.ftl">
 </#list>

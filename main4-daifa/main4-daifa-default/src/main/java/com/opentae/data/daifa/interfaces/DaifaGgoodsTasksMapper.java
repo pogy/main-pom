@@ -1,10 +1,14 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+
+import java.util.List;
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -23,5 +27,6 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaGgoodsTasksMapper extends Mapper<DaifaGgoodsTasks>{
+    List<String> selectTodayShopPhone(@Param("sellerId") Long sellerId);
 
 }

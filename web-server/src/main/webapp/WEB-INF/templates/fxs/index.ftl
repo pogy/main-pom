@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/fxs__common_css.ftl">
 <#include "/__style_torrent__/fxs__index_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/fxs__index_js.ftl">
@@ -60,7 +60,7 @@
         <#if session_user_redis__.headUrl??>
         <img src="${session_user_redis__.headUrl!}" class="headImg fl">
         <#else>
-        <img src="http://style.571xz.com/v6/fxs/css/img/DefaultImg.jpg" class="headImg fl">
+        <img src="//style.571xz.com/v6/fxs/css/img/DefaultImg.jpg" class="headImg fl">
         </#if>
         <div class="myinfo">
             <p class="welcome"><em></em>您好！</p>

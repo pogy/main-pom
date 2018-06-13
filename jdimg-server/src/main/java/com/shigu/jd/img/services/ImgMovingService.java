@@ -3,6 +3,7 @@ package com.shigu.jd.img.services;
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureDeleteRequest;
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureQueryRequest;
 import com.jd.open.api.sdk.request.imgzone.ImgzonePictureUploadRequest;
+import com.jd.open.api.sdk.response.imgzone.ImgzoneImgInfo;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureDeleteResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureQueryResponse;
 import com.jd.open.api.sdk.response.imgzone.ImgzonePictureUploadResponse;
@@ -20,11 +21,12 @@ import com.shigu.jd.tools.DownImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-
+import java.util.stream.Collectors;
 
 /**
  * Created By admin on 2017/12/22/13:51
@@ -60,17 +62,23 @@ public class ImgMovingService {
         StringBuilder imgIds = new StringBuilder();
         List<String> imgUrls = jdUpImgRequest.getImgUrls();
         Map<String,JdImgInfo> jdImgInfos = new HashMap<>();
+        ImgzonePictureQueryRequest imgzonePictureQueryRequest=new ImgzonePictureQueryRequest();
+        imgzonePictureQueryRequest.setPictureCateId(jdUpImgRequest.getPictureCateId().intValue());
+        ImgzonePictureQueryResponse imgzonePictureQueryResponse = null;
+        Map<String,ImgzoneImgInfo> hasImgs=new HashMap<>();
+        try {
+            imgzonePictureQueryResponse = jdClientService.execute(imgzonePictureQueryRequest, accessToken);
+            hasImgs=imgzonePictureQueryResponse.getImgList().stream().collect(Collectors.toMap(ImgzoneImgInfo::getPictureName,o->o));
+        } catch (Exception e) {
+        }
+
         for (String imgUrl : imgUrls) {
             try {
-                String pictureName = MD5Attestation.MD5Encode(imgUrl);
-
-                ImgzonePictureQueryRequest imgzonePictureQueryRequest=new ImgzonePictureQueryRequest();
-                imgzonePictureQueryRequest.setPictureName(pictureName);
-                ImgzonePictureQueryResponse imgzonePictureQueryResponse = jdClientService.execute(imgzonePictureQueryRequest, accessToken);
-                if (imgzonePictureQueryResponse.getTotalNum() > 0) {
+                String pictureName = selName(imgUrl);
+                if (hasImgs.get(pictureName)!=null) {
                     JdImgInfo jdImgInfo = new JdImgInfo();
-                    jdImgInfo.setPictureId(imgzonePictureQueryResponse.getImgList().get(0).getPictureId());
-                    jdImgInfo.setPictureUrl(imgzonePictureQueryResponse.getImgList().get(0).getPictureUrl());
+                    jdImgInfo.setPictureId(hasImgs.get(pictureName).getPictureId());
+                    jdImgInfo.setPictureUrl(hasImgs.get(pictureName).getPictureUrl());
                     jdImgInfos.put(imgUrl,jdImgInfo);
                     continue;
                 }
@@ -111,6 +119,10 @@ public class ImgMovingService {
         return jdUptoItemImgResponse;
     }
 
+    private String selName(String img){
+        String[] strs=img.split("/");
+        return strs[strs.length-1].split("\\.")[0];
+    }
     /**
      * 删除图片 批量删除时ID间以半角逗号分隔，已被引用的图片不能删除
      * @param jdUid

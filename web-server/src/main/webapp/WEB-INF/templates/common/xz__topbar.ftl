@@ -28,12 +28,13 @@
                     <i class="downArrow"></i>
                 </span>
                 <ul>
-                    <li><a href="http://hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
-                    <li><a href="http://cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
-                    <li><a href="http://ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
-                    <li><a href="http://bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
-                    <li><a href="http://gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
-                    <li><a href="http://jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
+                    <li><a href="//hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
+                    <li><a href="//cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
+                    <li><a href="//ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
+                    <li><a href="//bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
+                    <li><a href="//gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
+                    <li><a href="//jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
+                    <li><a href="//qz.571xz.com" <#if webSite == 'qz'>class="select"</#if>>泉州</a></li>
                 </ul>
             </div>
             </#if>
@@ -92,7 +93,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    <a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a>
                 </li>
                 <#if webSite?? && webSite != ''>
                 <li>
@@ -106,7 +107,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://www.571xz.com/helpCenter/queIndex.htm" target="_blank">帮助中心</a>
+                    <a href="//www.571xz.com/helpCenter/queIndex.htm" target="_blank">帮助中心</a>
                 </li>
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
                 <li>
@@ -115,7 +116,7 @@
                         <div class="appQr cnBoxCon pa">
                             <ul>
                                 <li>
-                                    <p><img src="http://style.571xz.com/v6/common/img/AppDownloadQr.png" width="80" hieght="80"></p>
+                                    <p><img src="//style.571xz.com/v6/common/img/AppDownloadQr.png" width="80" hieght="80"></p>
                                     <p class="fwb tac fs14">分销商App</p>
                                 </li>
                             </ul>

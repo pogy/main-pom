@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>首页 - 装修预览 - 星座网</title>
-    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/theme/xzw/css/global_new-min.css?t=20170413U">
-    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/theme/xzw/shop/css/newshop-min.css?t=20170413U">
-    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/css/shop/design/preview.css?t=20170413U1" />
-    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/css/shop/design/flagship.css" />
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/global-min.js?t=20170413U"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/shop_preview.js?t=20170413U"></script>
+    <link rel="stylesheet" type="text/css" href="//www.571xz.com/design/theme/xzw/css/global_new-min.css?t=20170413U">
+    <link rel="stylesheet" type="text/css" href="//www.571xz.com/design/theme/xzw/shop/css/newshop-min.css?t=20170413U">
+    <link rel="stylesheet" type="text/css" href="//www.571xz.com/design/css/shop/design/preview.css?t=20170413U1" />
+    <link rel="stylesheet" type="text/css" href="//www.571xz.com/design/css/shop/design/flagship.css" />
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/theme/xzw/js/global-min.js?t=20170413U"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/shop_preview.js?t=20170413U"></script>
 
 </head>
 <body style="overflow-x:hidden">
@@ -146,9 +146,9 @@
                         <dt><span class="blank blank-app"></span><s class="phone-icon"></s><a href="/">手机版<i></i></a></dt>
                         <dd class="sub-dd right app">
                             <ul>
-                                <li class="d2icon"><a target="_blank" href="javascript:void(0)"><img src="http://style.571xz.com/indexV3/css/img/appQrCode.png" alt=""/></a><b>分销商APP</b></li>
-                                <li class="d2icon"><a target="_blank" href="javascript:void(0)"><img src="http://style.571xz.com/indexV3/css/img/appQrCode.png" alt=""/></a><b>供应商APP</b></li>
-                                <li class="d2icon"><a target="_blank" href="javascript:;"><img src="http://style.571xz.com/indexV3/css/img/foot_wx_2016.png" alt=""/></a><b>微信公众号</b></li>
+                                <li class="d2icon"><a target="_blank" href="javascript:void(0)"><img src="//style.571xz.com/indexV3/css/img/appQrCode.png" alt=""/></a><b>分销商APP</b></li>
+                                <li class="d2icon"><a target="_blank" href="javascript:void(0)"><img src="//style.571xz.com/indexV3/css/img/appQrCode.png" alt=""/></a><b>供应商APP</b></li>
+                                <li class="d2icon"><a target="_blank" href="javascript:;"><img src="//style.571xz.com/indexV3/css/img/foot_wx_2016.png" alt=""/></a><b>微信公众号</b></li>
                             </ul>
                         </dd>
                     </dl>

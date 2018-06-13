@@ -2,14 +2,17 @@ package com.shigu.jd.api.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jd.open.api.sdk.JdException;
+import com.jd.open.api.sdk.domain.Ware;
 import com.jd.open.api.sdk.request.ware.ImageWriteUpdateRequest;
 import com.jd.open.api.sdk.request.ware.TransportWriteUpdateWareTransportIdRequest;
 import com.jd.open.api.sdk.request.ware.WareAddRequest;
+import com.jd.open.api.sdk.request.ware.WareWriteUpdateWareRequest;
 import com.jd.open.api.sdk.response.ware.ImageWriteUpdateResponse;
 import com.jd.open.api.sdk.response.ware.WareAddResponse;
 import com.openJar.beans.JdAuthedInfo;
 import com.openJar.beans.SdkJdWareAdd;
 import com.openJar.exceptions.imgs.JdApiException;
+import com.openJar.requests.api.JdWareMobileDescRequest;
 import com.openJar.responses.api.GoodsCanbeUploadedToJdResponse;
 import com.openJar.responses.api.JdAuthedInfoResponse;
 import com.openJar.responses.api.JdSkuInfoResponse;
@@ -114,6 +117,7 @@ public class JdGoodsService {
         jdClientService.execute(request, authedInfo.getAccessToken());
     }
 
+
     /**
      * 根据cid查询商品是否可上传到京东
      * @param tbCid
@@ -136,6 +140,25 @@ public class JdGoodsService {
         TransportWriteUpdateWareTransportIdRequest request=new TransportWriteUpdateWareTransportIdRequest();
         request.setWareId(wareId);
         request.setTransportId(templateId);
+        return jdClientService.execute(request, authedInfo.getAccessToken()).getSuccess();
+    }
+
+    /**
+     * 修改手机详情
+     * @param req
+     * @return
+     * @throws JdAuthOverdueException
+     * @throws OtherCustomException
+     */
+    public boolean jdWareMobileDesc(JdWareMobileDescRequest req) throws JdAuthOverdueException, OtherCustomException {
+        JdAuthedInfo authedInfo = jdAuthService.getAuthedInfo(req.getJdUid());
+        WareWriteUpdateWareRequest request=new WareWriteUpdateWareRequest();
+        Ware w=new Ware();
+        w.setWareId(req.getWareId());
+        w.setTitle(req.getTitle());
+        w.setTemplateId(req.getTransportId());
+        w.setMobileDesc(req.getMobileDesc());
+        request.setWare(w);
         return jdClientService.execute(request, authedInfo.getAccessToken()).getSuccess();
     }
 }

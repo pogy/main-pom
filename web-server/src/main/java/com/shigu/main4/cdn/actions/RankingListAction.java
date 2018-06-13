@@ -8,6 +8,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.monitor.enums.CidMapEnum;
 import com.shigu.main4.monitor.enums.CidMarketIdMapEnum;
 import com.shigu.main4.monitor.vo.RankingShopVO;
+import com.shigu.main4.storeservices.SearchCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,8 @@ public class RankingListAction {
 
     @Autowired
     RankingListShowService rankingListShowService;
+    @Autowired
+    SearchCategoryService searchCategoryService;
 
     @RequestMapping("fullShopRanking")
     public String fullShopRanking(FullShopRankingBO bo, Model model) throws Main4Exception {
@@ -46,6 +49,8 @@ public class RankingListAction {
         model.addAttribute("shopRanking", shopRanking);
         model.addAttribute("pageOption",rankingShopVOPager.selPageOption(20));
         model.addAttribute("query",bo);
+        model.addAttribute("webSite","hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/fullShopRanking";
     }
 
@@ -60,6 +65,8 @@ public class RankingListAction {
         rankingShopList.add(rankingListShowService.getShopRanking(CidMarketIdMapEnum.ALL_CAT_SHOP_RANKING_MONTH));
         model.addAttribute("rankingCateList",rankingCateList);
         model.addAttribute("rankingShopList",rankingShopList);
+        model.addAttribute("webSite","hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
         return "xzSearch/shopRanking";
     }
 }

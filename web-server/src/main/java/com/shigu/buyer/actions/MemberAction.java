@@ -489,6 +489,9 @@ public class MemberAction {
             List<UserLicense> licenses = safeAbout.getLicenses();
             if (licenses != null) {
                 for (UserLicense ul : licenses) {
+                    if (ul.getType() == null) {
+                        continue;
+                    }
                     if (ul.getType().equals(MemberLicenseType.PHONE_BIND)) {
                         model.addAttribute("info_mobile", true);
                         model.addAttribute("text_mobile", ul.getContext());

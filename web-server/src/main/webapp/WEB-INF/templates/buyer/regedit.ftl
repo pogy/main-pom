@@ -7,11 +7,11 @@
     <title>注册 - 四季星座网</title>
   
     
-    <link href="http://style.571xz.com/loginV2/css/regedit.css" rel="stylesheet">
+    <link href="//style.571xz.com/loginV2/css/regedit.css" rel="stylesheet">
     
     
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/loginV2/js/regedit.js"></script>
+    <script src="//style.571xz.com/global/js/jquery.js"></script>
+    <script src="//style.571xz.com/loginV2/js/regedit.js"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -83,22 +83,22 @@
 <div class="footer">
     <p class="sitemap"> 
         <a href="/" target="_blank">首页</a>
-        <a href="http://hz.571xz.com" target="_blank">杭州站</a>
-        <a href="http://bj.571xz.com" target="_blank">北京站</a>
-        <a href="http://gz.571xz.com" target="_blank">广州站</a>
-        <a href="http://ss.571xz.com" target="_blank">石狮站</a>
-        <a href="http://cs.571xz.com" target="_blank">常熟站</a>
-        <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-        <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+        <a href="//hz.571xz.com" target="_blank">杭州站</a>
+        <a href="//bj.571xz.com" target="_blank">北京站</a>
+        <a href="//gz.571xz.com" target="_blank">广州站</a>
+        <a href="//ss.571xz.com" target="_blank">石狮站</a>
+        <a href="//cs.571xz.com" target="_blank">常熟站</a>
+        <a href="//wa.571xz.com" target="_blank">辽源站</a>
+        <a href="//zixun.571xz.com" target="_blank">资讯</a>
         
         
-        <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+        <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
         
     </p>
     <p class="jyga">
-        <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+        <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
         
-        <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+        <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
     </p>
 </div>
 </body>

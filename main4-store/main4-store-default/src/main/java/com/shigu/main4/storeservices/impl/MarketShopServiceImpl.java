@@ -166,6 +166,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         floorShow.setFloorIds(shiguOuterFloor.getFloorIds());
         floorShow.setOuterFloorId(outerFloor);
         floorShow.setShowName(shiguOuterFloor.getShowName());
+        floorShow.setOtherName(shiguOuterFloor.getOtherName());
         for (String floorIdStr : floorIds) {
             Long floorId = Long.valueOf(floorIdStr);
             List<ShiguShop> shiguShopList = new ArrayList<ShiguShop>();
@@ -226,7 +227,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                     if(isSort.get(shiguShop.getShopId())==null){
                         s.setSortOrderKey(shiguShop.getSortOrderKey());
                     }else{
-                        s.setFloorId(floorId);
+                        s.setFloorId(floorId!=-1?floorId:shiguShop.getFloorId());
                     }
                     if (!StringUtils.isEmpty(shiguShop.getSystemRecommon())) {
                         s.setSystemComment(shiguShop.getSystemRecommon());

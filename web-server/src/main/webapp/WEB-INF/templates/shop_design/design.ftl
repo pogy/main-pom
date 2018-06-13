@@ -4,19 +4,19 @@
 <head>
     <meta charset="utf-8">
     <title>首页 - 店铺装修 - 星座网</title>
-    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/theme/xzw/css/globaladmin.css?t=20170413U">
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/common.css?t=20161230A" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/preview.css?t=20170321E" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="http://www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/jquery.loadTemplate.min.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/global-min.js?t=20170413U"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/s/editor/kindeditor-min.js?t=20160106"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/shop_design.js?t=20170119"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/builder.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/js/layer/layer.js"></script>
-    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/shop/js/shopedit_page-min.js?t=20160427"></script>
+    <link rel="stylesheet" type="text/css" href="//www.571xz.com/design/theme/xzw/css/globaladmin.css?t=20170413U">
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/common.css?t=20161230A" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//www.571xz.com/design/css/shop/design/preview.css?t=20170321E" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//www.571xz.com/design/theme/xzw/js/layer/skin/layer.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="//www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/jquery-ui.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/jquery.loadTemplate.min.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/theme/xzw/js/global-min.js?t=20170413U"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/s/editor/kindeditor-min.js?t=20160106"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/shop_design.js?t=20170119"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/shop/design/builder.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/js/layer/layer.js"></script>
+    <script type="text/javascript" src="//www.571xz.com/design/theme/xzw/shop/js/shopedit_page-min.js?t=20160427"></script>
 </head>
 <body>
 <div id="page" class="shop-taobao" style="height: 100%; overflow-y: hidden">

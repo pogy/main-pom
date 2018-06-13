@@ -19,13 +19,13 @@
             <div class="user">
         <span>
           欢迎登录：
-          <a target="_top" href="javascript:void(0)">${jd_yj_zh_session.userNick}</a> <a href="http://www.571xz.com/membertc.htm">退出</a>
+          <a target="_top" href="javascript:void(0)">${jd_yj_zh_session.userNick}</a> <a href="//www.571xz.com/membertc.htm">退出</a>
             </span>
             </div>
         </div>
         <div class="site-nav-js site-nav-r">
-            <a href="http://www.571xz.com/">星座网首页</a>|
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">意见反馈</a></div>
+            <a href="//www.571xz.com/">星座网首页</a>|
+            <a href="//zixun.571xz.com/article?id=87" target="_blank">意见反馈</a></div>
     </div>
 </div>
 <div class="r-box">
@@ -312,7 +312,7 @@
                 <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
                 <input type="hidden" id="mid" name="mid" value="${allData.items.goodsId}">
                 <input type="hidden" name="oldToNew" value="[]">
-                <input type="hidden" id="domain" value="http://upload.571xz.com/">
+                <input type="hidden" id="domain" value="//upload.571xz.com/">
                 <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
                 <input type="hidden" id="getToken" name="getToken"
                        value="uid=-${allData.jdUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
@@ -321,13 +321,13 @@
 </div>
 <div class="footer clearfix">
     <div class="footer-a">
-        <a href="http://zixun.571xz.com/article?id=67" target="_blank">关于星座网</a>
+        <a href="//zixun.571xz.com/article?id=67" target="_blank">关于星座网</a>
         <span>|</span>
-        <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+        <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
         <span>|</span>
-        <a href="http://www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
+        <a href="//www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
         <span>|</span>
-        <a href="http://www.571xz.com/ruzhu.htm" target="">供应商入驻</a></div>
+        <a href="//www.571xz.com/ruzhu.htm" target="">供应商入驻</a></div>
     <div class="footer-b">增值电信业务经营许可证：
         <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&id=4063" target="_blank">浙B2-20120165</a>
         <span>|</span>
@@ -428,7 +428,7 @@
         <!--    <div  style="display: none"></div>-->
         <div>
             <p id="tip_default">
-                <img src="http://upload.571xz.com/public/images/loading.gif" align="absmiddle">
+                <img src="//upload.571xz.com/public/images/loading.gif" align="absmiddle">
                 正在上传中,请稍后
                 <#--<img src="public/images/loading.gif" align="absmiddle"/>
                 <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张-->
