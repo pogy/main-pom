@@ -170,11 +170,6 @@ public class ConfirmOrderAction {
 
         return JsonResponseUtil.success();
     }
-
-    public static void main(String[] args) {
-        System.out.println(1000 * 3600 * 24 * 30);
-    }
-
     @ResponseBody
     @RequestMapping("deleteCollJson")
     public JSONObject deleteCollJson(Long id, HttpSession session) {
