@@ -533,7 +533,7 @@ public class ConfirmOrderService {
                 }
             }
         }
-        String date = com.alibaba.fastjson.JSONArray.toJSONString(provVoList);
+        String date = JSONArray.fromObject(provVoList).toString();
         redisIO.put(ORDER_EXPRESS_ADDRESS, date);
         return date;
     }
