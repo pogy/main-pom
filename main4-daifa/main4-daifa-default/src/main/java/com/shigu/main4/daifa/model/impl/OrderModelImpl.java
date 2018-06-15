@@ -1,4 +1,5 @@
 package com.shigu.main4.daifa.model.impl;
+
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
@@ -17,9 +18,6 @@ import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.utils.*;
-import com.shigu.main4.daifa.utils.BigNumber;
-import com.shigu.main4.daifa.utils.DaifaListDealUtil;
-import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -89,7 +85,8 @@ public class OrderModelImpl implements OrderModel {
     public OrderModelImpl(OrderBO bo) {
         this.orderBO = bo;
     }
-
+    public OrderModelImpl() {
+    }
 
     /**
      * 创建订单
@@ -486,13 +483,26 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
         sendRefundMq(refundId.toString(),null);
     }
+
+    @Override
+    public void sendMessage(Integer refundId) {
+        String refund=refundId.toString();
+        String msg=null;
+        sendRefundMq(refund,msg);
+    }
+
     /**
      * 退款
      * @param refundId
      * @param msg
      */
     private void sendRefundMq(String refundId, String msg){
+        //做正式和测试区分
+        if(!"SHIGU_DAIFA".equals(mqTopic)){
+            return;
+        }
         JSONObject obj=new JSONObject();
+
         if(msg==null){
             JSONObject o1=new JSONObject();
             o1.put("refundId",refundId);

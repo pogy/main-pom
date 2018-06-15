@@ -11,6 +11,7 @@ import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,11 +70,18 @@ public class DaifaWaitSendAction {
      * ====================================================================================
      *
      */
+
+    @Value("${MQ_topic}")
+    private String mqTopic;
+
     @RequestMapping("daifa/noPostRefund")
     @ResponseBody
     public JSONObject noPostRefund(Long childOrderId,String refundMoney) throws DaifaException {
-
-        return daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
+        JSONObject jsonObject=new JSONObject();
+        if("SHIGU_DAIFA".equals(mqTopic)){
+            jsonObject=daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
+        }
+        return jsonObject;
     }
 
 }

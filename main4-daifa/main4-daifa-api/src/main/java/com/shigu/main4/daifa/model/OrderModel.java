@@ -3,7 +3,6 @@ package com.shigu.main4.daifa.model;
 import com.shigu.main4.daifa.bo.DeliveryBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -36,4 +35,6 @@ public interface OrderModel {
      * @param subOrderIds 退单包含的子单信息
      */
     void autoRefund(Long refundId,List<Long> subOrderIds) throws DaifaException;
+
+    void sendMessage(Integer refundId);
 }
