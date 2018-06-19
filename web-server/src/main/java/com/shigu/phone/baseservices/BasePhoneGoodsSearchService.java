@@ -214,11 +214,11 @@ public class BasePhoneGoodsSearchService {
             }
         }
         vo.setGoodsLicenses(list);
-        vo.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
-            JSONObject color = (JSONObject) o;
-            return color.get("text").toString();
-        }).collect(Collectors.toList()));
-        vo.setSize(JSONArray.parseArray(goods.getSizesMeta()).parallelStream().map(Object::toString).collect(Collectors.toList()));
+//        vo.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
+//            JSONObject color = (JSONObject) o;
+//            return color.get("text").toString();
+//        }).collect(Collectors.toList()));
+//        vo.setSize(JSONArray.parseArray(goods.getSizesMeta()).parallelStream().map(Object::toString).collect(Collectors.toList()));
         vo.setItemKvs(goods.getNormalAttrs().parallelStream().map(o -> {
             AppItemKv itemKv = new AppItemKv();
             itemKv.setKey(o.getName());

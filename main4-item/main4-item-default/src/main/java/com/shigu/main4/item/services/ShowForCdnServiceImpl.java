@@ -6,11 +6,13 @@ import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -468,6 +470,8 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem.setInFabric(goodsCountForsearch.getInfabric());
                     cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
                 }
+                //补充独立sku
+                cdnItem.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, id).pull());
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end

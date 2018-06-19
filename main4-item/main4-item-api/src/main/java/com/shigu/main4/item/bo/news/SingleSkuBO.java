@@ -26,6 +26,10 @@ public class SingleSkuBO implements Serializable {
      * 库存
      */
     private Integer stockNum;
+    /**
+     * 独立价格(优先使用该价格)
+     */
+    private String priceString;
 
     /**
      * 获取 颜色属性值ID
@@ -95,5 +99,19 @@ public class SingleSkuBO implements Serializable {
      */
     public void setStockNum(Integer stockNum) {
         this.stockNum = stockNum;
+    }
+
+    /**
+     * 获取 独立价格
+     */
+    public String getPriceString() {
+        return this.priceString;
+    }
+
+    /**
+     * 设置 独立价格
+     */
+    public void setPriceString(String priceString) {
+        this.priceString = priceString;
     }
 }

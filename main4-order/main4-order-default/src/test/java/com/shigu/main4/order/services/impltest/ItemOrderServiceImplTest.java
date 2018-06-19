@@ -51,7 +51,7 @@ public class ItemOrderServiceImplTest extends BaseTest {
 
     @Test
     public void testOrder() {
-        ItemProduct bean = SpringBeanFactory.getBean(ItemProduct.class, 20940313L, "白条", "L");
+        ItemProduct bean = SpringBeanFactory.getBean(ItemProduct.class, 20940313L,"白条", "L");
         show(bean.info());
     }
     @Test

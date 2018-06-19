@@ -11,14 +11,15 @@ import com.opentae.data.mall.interfaces.ShiguGoodsSingleSkuMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.TaobaoItemPropMapper;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
+import com.shigu.main4.item.vo.CatColorSizeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,14 +32,20 @@ public class SingleSkuDao {
     ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
+    /**
+     *
+     * @param webSite 站点
+     * @param inserts 新增的集合
+     * @param updates 修改的集合
+     * @param dels 无效化的集合
+     * @param ipids 涉及的类目属性ID
+     * @param cid 类目ID
+     */
     @Transactional(rollbackFor = Exception.class)
-    public void pushSkus(String webSite,Long goodsId,List<ShiguGoodsSingleSku> inserts,List<ShiguGoodsSingleSku> updates,List<Long> dels){
+    public void pushSkus(String webSite,List<ShiguGoodsSingleSku> inserts,List<ShiguGoodsSingleSku> updates,List<Long> dels,List<Long> ipids,Long cid){
         //执行写入
         if (inserts.size() > 0) {
-            ShiguGoodsTiny tiny = new ShiguGoodsTiny();
-            tiny.setWebSite(webSite);
-            tiny.setGoodsId(goodsId);
-            tiny = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny, FieldUtil.codeFields("goods_id,cid"));
             List<Long> ivids = new ArrayList<>();
             inserts.forEach(shiguGoodsSingleSku -> {
                 if(shiguGoodsSingleSku.getColorVid()!=0L){
@@ -49,15 +56,8 @@ public class SingleSkuDao {
                 }
             });
             if(ivids.size()>0){
-                TaobaoItemProp itemProp = new TaobaoItemProp();
-                itemProp.setCid(tiny.getCid());
-                itemProp.setIsSaleProp(1);
-                List<TaobaoItemProp> itemProps = taobaoItemPropMapper.select(itemProp);
-                List<Long> ipids = itemProps.stream().filter(taobaoItemProp -> taobaoItemProp.getIsColorProp() == 1
-                        || SkuCheckUtil.isSizeProp(taobaoItemProp.getPid().toString(), taobaoItemProp.getName()))
-                        .map(TaobaoItemProp::getPid).collect(Collectors.toList());
                 TaobaoPropValueExample taobaoPropValueExample = new TaobaoPropValueExample();
-                taobaoPropValueExample.createCriteria().andCidEqualTo(tiny.getCid()).andVidIn(ivids).andPidIn(ipids);
+                taobaoPropValueExample.createCriteria().andCidEqualTo(cid).andVidIn(ivids).andPidIn(ipids);
                 List<TaobaoPropValue> propValues = taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
                 Map<Long, TaobaoPropValue> propValueMap = propValues.stream()
                         .collect(Collectors.toMap(TaobaoPropValue::getVid, o -> o));
@@ -76,9 +76,9 @@ public class SingleSkuDao {
             }
             shiguGoodsSingleSkuMapper.insertListNoIdMore(inserts,webSite);
         }
-        //执行修改,由于设计到null的问题,所以这里用全字段修改
+        //执行修改
         if (updates.size() > 0) {
-            updates.forEach(shiguGoodsSingleSku -> shiguGoodsSingleSkuMapper.updateByPrimaryKey(shiguGoodsSingleSku));
+            updates.forEach(shiguGoodsSingleSku -> shiguGoodsSingleSkuMapper.updateByPrimaryKeySelective(shiguGoodsSingleSku));
         }
         //执行无效化
         if (dels.size() > 0) {
@@ -95,4 +95,45 @@ public class SingleSkuDao {
     public void updateByPrimaryKeySelective(ShiguGoodsSingleSku sku) {
         shiguGoodsSingleSkuMapper.updateByPrimaryKeySelective(sku);
     }
+
+    public CatColorSizeVO selCatColorSize(Long cid){
+        CatColorSizeVO vo=new CatColorSizeVO();
+        selProps(cid).stream().filter(taobaoItemProp -> taobaoItemProp.getIsColorProp() == 1
+                || SkuCheckUtil.isSizeProp(taobaoItemProp.getPid().toString(), taobaoItemProp.getName()))
+                .forEach(taobaoItemProp -> {
+                    if(taobaoItemProp.getIsColorProp()==1){
+                        vo.setColorPid(taobaoItemProp.getPid());
+                    }else{
+                        vo.setSizePid(taobaoItemProp.getPid());
+                    }
+                });
+        return vo;
+    }
+
+    public List<TaobaoItemProp> selProps(Long cid){
+        TaobaoItemProp itemProp = new TaobaoItemProp();
+        itemProp.setCid(cid);
+        itemProp.setIsSaleProp(1);
+        return taobaoItemPropMapper.select(itemProp);
+    }
+
+    public List<TaobaoPropValueBO> taobaoPropValues(Long cid){
+        CatColorSizeVO catColorSizeVO = selCatColorSize(cid);
+        List<Long> pids = new ArrayList<>();
+        pids.add(-1L);
+        pids.add(catColorSizeVO.getColorPid());
+        pids.add(catColorSizeVO.getSizePid());
+        TaobaoPropValueExample taobaoPropValueExample = new TaobaoPropValueExample();
+        taobaoPropValueExample.createCriteria().andCidEqualTo(cid).andPidIn(pids);
+        return taobaoPropValueMapper.selectByExample(taobaoPropValueExample).stream().map(taobaoPropValue -> {
+            TaobaoPropValueBO bo=BeanMapper.map(taobaoPropValue,TaobaoPropValueBO.class);
+            if(bo.getPid().equals(catColorSizeVO.getColorPid())){
+                bo.setIsColor(true);
+            }else{
+                bo.setIsColor(false);
+            }
+            return bo;
+        }).collect(Collectors.toList());
+    }
+
 }

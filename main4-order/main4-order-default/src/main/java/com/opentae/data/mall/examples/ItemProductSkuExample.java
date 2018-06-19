@@ -12,6 +12,7 @@ public class ItemProductSkuExample extends SgExample<ItemProductSkuExample.Crite
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn color;
     public static EntityColumn size;
+    public static EntityColumn price;
     public static EntityColumn pid;
     public static EntityColumn skuId;
     static {
@@ -22,6 +23,7 @@ public class ItemProductSkuExample extends SgExample<ItemProductSkuExample.Crite
         }
         color = listMap.get("color");
         size = listMap.get("size");
+        price = listMap.get("price");
         pid = listMap.get("pid");
         skuId = listMap.get("skuId");
         }
@@ -154,6 +156,53 @@ public class ItemProductSkuExample extends SgExample<ItemProductSkuExample.Crite
 
         public ItemProductSkuExample.Criteria andSizeNotBetween(String value1, String value2) {
             return notBetween(size, value1, value2);
+        }
+        public ItemProductSkuExample.Criteria andPriceIsNull() {
+            return isNull(price);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceIsNotNull() {
+            return isNotNull(price);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceEqualTo(Long value) {
+            return equalTo(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceNotEqualTo(Long value) {
+            return notEqualTo(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceGreaterThan(Long value) {
+            return greaterThan(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceLessThan(Long value) {
+            return lessThan(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(price, value);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceIn(List<Long> values) {
+            return in(price, values);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceNotIn(List<Long> values) {
+            return notIn(price, values);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceBetween(Long value1, Long value2) {
+            return between(price, value1, value2);
+        }
+
+        public ItemProductSkuExample.Criteria andPriceNotBetween(Long value1, Long value2) {
+            return notBetween(price, value1, value2);
         }
         public ItemProductSkuExample.Criteria andPidIsNull() {
             return isNull(pid);

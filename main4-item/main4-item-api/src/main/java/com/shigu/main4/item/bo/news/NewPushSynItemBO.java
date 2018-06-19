@@ -1,5 +1,6 @@
 package com.shigu.main4.item.bo.news;
 
+
 import com.shigu.main4.item.vo.SynItem;
 
 import java.util.List;

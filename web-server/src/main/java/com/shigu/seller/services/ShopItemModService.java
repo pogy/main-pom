@@ -10,13 +10,16 @@ import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.vo.StyleChannelVO;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.item.vo.news.NewPullSynItemVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.seller.vo.*;
 import com.shigu.session.main4.ShopSession;
@@ -52,7 +55,7 @@ public class ShopItemModService {
     ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
 
     @Autowired
-    ItemAddOrUpdateService itemAddOrUpdateService;
+    NewItemAddOrUpdateService newItemAddOrUpdateService;
 
     @Autowired
     SearchCategorySubMapper searchCategorySubMapper;
@@ -91,9 +94,9 @@ public class ShopItemModService {
     private static final String SHOP_STYLE_HANDLER_QUEUE_INDEX = "shop_style_handler_queue_";
 
     @Transactional(rollbackFor = Exception.class)
-    public void moreModify(List<SynItem> items) throws ItemModifyException {
-        for(SynItem item:items){
-            itemAddOrUpdateService.userUpdateItem(item);
+    public void moreModify(List<NewPushSynItemBO> items) throws ItemModifyException {
+        for(NewPushSynItemBO item:items){
+            newItemAddOrUpdateService.userUpdateItem(item);
         }
     }
     /**
@@ -122,7 +125,7 @@ public class ShopItemModService {
         List<Long> ids=filterItemIds(shopId,itemIds,webSite,true);
         for(Long id:ids){
             try {
-                itemAddOrUpdateService.userUpItem(id);
+                newItemAddOrUpdateService.userUpItem(id);
             } catch (ItemModifyException e) {
                 logger.error("商品上架失败",e);
             }
@@ -139,7 +142,7 @@ public class ShopItemModService {
         List<Long> ids=filterItemIds(shopId,itemIds,webSite,false);
         for(Long id:ids){
             try {
-                itemAddOrUpdateService.userDownItem(id);
+                newItemAddOrUpdateService.userDownItem(id);
             } catch (ItemModifyException e) {
                 logger.error("商品下架失败",e);
             }
@@ -156,7 +159,7 @@ public class ShopItemModService {
         List<Long> ids=filterItemIds(shopId,itemIds,webSite,true);
         for(Long id:ids){
             try {
-                itemAddOrUpdateService.userDeleteItem(id);
+                newItemAddOrUpdateService.userDeleteItem(id);
             } catch (ItemModifyException e) {
                 logger.error("商品删除失败",e);
             }
@@ -509,8 +512,8 @@ public class ShopItemModService {
     /**
      * 查店内需要编辑的商品的具体内容
      */
-    public SynItem getGoodsOffer(Long goodId, ShopSession shopSession){
-        SynItem synItem = itemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
+    public NewPullSynItemVO getGoodsOffer(Long goodId, ShopSession shopSession){
+        NewPullSynItemVO synItem = newItemAddOrUpdateService.selItemByGoodsId(goodId, shopSession.getWebSite());
 //        synItem.getInputStr();// 自定义值串   '用户自行输入的子属性名和属性值@所有属性别名加起来不能超过 3999字节。',
 //        synItem.getInputPids();//自定义pid串  '用户自行输入的类目属性ID串',
 //

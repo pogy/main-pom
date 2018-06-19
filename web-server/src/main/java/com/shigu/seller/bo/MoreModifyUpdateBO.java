@@ -1,5 +1,6 @@
 package com.shigu.seller.bo;
 
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.vo.SynItem;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -29,14 +30,14 @@ public class MoreModifyUpdateBO implements Serializable{
     private String piPriceStrings;
 
 
-    public List<SynItem> parseSynItems(Long shopId,String webSite){
+    public List<NewPushSynItemBO> parseSynItems(Long shopId, String webSite){
         String[] goodsarr=goodsIds.split(",");
         String[] noarr=goodsNos.split(",");
         String[] pricearr=priceStrings.split(",");
         String[] pipricearr=piPriceStrings.split(",");
-        List<SynItem> items=new ArrayList<>();
+        List<NewPushSynItemBO> items=new ArrayList<>();
         for(int i=0;i<goodsarr.length;i++){
-            SynItem synItem=new SynItem();
+            NewPushSynItemBO synItem=new NewPushSynItemBO();
             synItem.setGoodsId(Long.valueOf(goodsarr[i]));
             synItem.setShopId(shopId);
             synItem.setWebSite(webSite);

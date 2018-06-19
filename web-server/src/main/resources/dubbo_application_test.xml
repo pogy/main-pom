@@ -48,6 +48,11 @@
     <dubbo:reference interface="com.shigu.main4.item.services.ItemCatService" id="itemCatService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemAddOrUpdateService" id="itemAddOrUpdateService" timeout="10000"/>
 
+    <dubbo:reference interface="com.shigu.main4.item.newservice.NewItemAddOrUpdateService" id="newItemAddOrUpdateService" timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.item.newservice.NewShowForCdnService" id="newShowForCdnService" timeout="20000" />
+
+
+
     <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.ItemOrderService" id="itemOrderService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.OrderConstantService" id="orderConstantService" timeout="10000"/>

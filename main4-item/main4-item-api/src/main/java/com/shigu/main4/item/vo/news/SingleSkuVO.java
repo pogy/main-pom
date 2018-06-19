@@ -69,6 +69,11 @@ public class SingleSkuVO implements Serializable {
     private Integer stockNum;
 
     /**
+     * 独立价格(优先使用)
+     */
+    private String priceString;
+
+    /**
      *
      */
     private Integer status;
@@ -183,5 +188,19 @@ public class SingleSkuVO implements Serializable {
 
     public Integer getStatus() {
         return this.status;
+    }
+
+    /**
+     * 获取 独立价格(优先使用)
+     */
+    public String getPriceString() {
+        return this.priceString;
+    }
+
+    /**
+     * 设置 独立价格(优先使用)
+     */
+    public void setPriceString(String priceString) {
+        this.priceString = priceString;
     }
 }

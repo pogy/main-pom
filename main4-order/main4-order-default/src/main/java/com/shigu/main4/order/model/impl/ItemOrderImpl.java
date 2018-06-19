@@ -142,7 +142,7 @@ public class ItemOrderImpl implements ItemOrder {
             ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNum(vo.getNum());
-            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, vo.getGoodsId(), vo.getColor(), vo.getSize()).info();
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class,orderSub.getPid(),orderSub.getSkuId()).info();
             vo.setProduct(info);
         }
         return vos;
@@ -331,7 +331,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException {
+    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice,Long userId) throws OrderException {
         for (SubOrderBO bo : subOrders) {
             ItemOrderSub sub=new ItemOrderSub();
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());

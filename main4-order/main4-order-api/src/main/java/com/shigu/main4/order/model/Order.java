@@ -26,7 +26,7 @@ public interface Order{
      * 追加子订单
      * @param subOrders 子订单
      */
-    void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException;
+    void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice,Long userId) throws OrderException;
 
     /**
      * 二次支付申请

@@ -46,7 +46,7 @@ public class ItemProductProcessImpl implements ItemProductProcess {
 
     @Override
     public ItemProductVO generateProduct(Long goodsId, String color, String size) {
-        return SpringBeanFactory.getBean(ItemProduct.class, goodsId, color, size).info();
+        return SpringBeanFactory.getBean(ItemProduct.class, goodsId,color, size).info();
     }
 
     @Override

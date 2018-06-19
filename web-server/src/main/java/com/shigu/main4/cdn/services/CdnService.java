@@ -9,19 +9,21 @@ import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
-import com.shigu.main4.cdn.vo.CatPolyFormatVO;
-import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
-import com.shigu.main4.cdn.vo.ShopShowVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.order.process.ItemProductProcess;
@@ -104,6 +106,10 @@ public class CdnService {
     ShiguTempMapper shiguTempMapper;
     @Autowired
     ItemCatService itemCatService;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
+
+
     /**
      * 禁止销售的
      */
@@ -315,6 +321,7 @@ public class CdnService {
         return itemTradeForbidMapper.countByExample(example)==0;
     }
 
+
     /**
      * 商品详情页,商品数据
      * @param goodsId
@@ -323,15 +330,17 @@ public class CdnService {
      */
     public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws Main4Exception {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
-        CdnItem cdnItem=showForCdnService.selItemById(goodsId);
+        NewCdnItem cdnItem=newShowForCdnService.selItemById(goodsId);
         vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
         if(cdnItem==null){//已经下架
-            cdnItem=showForCdnService.selItemInstockById(goodsId);
+            cdnItem=newShowForCdnService.selItemInstockById(goodsId);
         }
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
-        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getFloorId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
+        vo.setOnlineSale(itemProductProcess
+                .canSale(cdnItem.getMarketId(), cdnItem.getFloorId(), cdnItem.getShopId(), goodsId, cdnItem
+                        .getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
@@ -371,33 +380,53 @@ public class CdnService {
         }
         List<String> qys=showForCdnService.selItemLicenses(goodsId,cdnItem.getShopId());
         vo.setServices(qys);
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
 
+        List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+        Map<String,List<SingleSkuVO>> skus=singleSkus.stream().collect(Collectors.groupingBy(sku->{
+            if(StringUtils.isNotBlank(sku.getColorPropertyAlias())){
+                return sku.getColorPropertyAlias();
+            }else{
+                return sku.getColorName();
+            }
+        }));
         List<SaleProp> colors=cdnItem.getColors();
         if(colors==null){
             colors=new ArrayList<>();
-            SaleProp c=new SaleProp();
-            c.setValue("图片色");
-            colors.add(c);
         }
-        JSONArray array = new JSONArray();
-        for(SaleProp c:colors){
-            array.add(new JSONObject().element("text", c.getValue()).element("imgSrc", c.getImgUrl()));
-        }
-        vo.setColorsMeta(array.toString());
+        Map<String, String> propImgMap = colors.stream().collect(Collectors
+                .toMap(SaleProp::getValue, saleProp -> StringUtils.isNotBlank(saleProp.getImgUrl()) ? saleProp
+                        .getImgUrl() : ""));
 
-        List<SaleProp> sizes=cdnItem.getSizes();
-        if(sizes==null){
-            sizes=new ArrayList<>();
-            SaleProp s=new SaleProp();
-            s.setValue("均码");
-            sizes.add(s);
+        List<String> colorMetas=new ArrayList<>(skus.keySet());
+        colorMetas.sort(Comparator.comparing(o -> o));
+
+
+        List<String> priceSort=new ArrayList<>();
+        List<SkuMetaVO> skuMetaVOS = colorMetas.stream().map(s -> {
+            SkuMetaVO skuMetaVO = new SkuMetaVO();
+            skuMetaVO.setText(s);
+            skuMetaVO.setImgSrc(propImgMap.get(s));
+            skuMetaVO.setSizes(skus.get(s).stream().map(singleSkuVO -> {
+                SkuSizeMetaVO skuSizeMetaVO = new SkuSizeMetaVO();
+                skuSizeMetaVO.setNum(singleSkuVO.getStatus() == 0 ? 0 : singleSkuVO.getStockNum());
+                skuSizeMetaVO.setPrice(singleSkuVO.getPriceString());
+                skuSizeMetaVO.setText(StringUtils.isNotBlank(singleSkuVO.getSizePropertyAlias()) ? singleSkuVO
+                        .getSizePropertyAlias() : singleSkuVO.getSizeName());
+                if(skuSizeMetaVO.getNum()!=0){
+                    priceSort.add(singleSkuVO.getPriceString());
+                }
+                return skuSizeMetaVO;
+            }).collect(Collectors.toList()));
+            return skuMetaVO;
+        }).collect(Collectors.toList());
+        vo.setSkusMeta(JSONArray.fromObject(skuMetaVOS).toString());
+        if(priceSort.size()>0){
+            priceSort.sort(Comparator.comparingLong(MoneyUtil::StringToLong));
+            if(!priceSort.get(0).equals(priceSort.get(priceSort.size()-1))){
+                vo.setPiPrice(priceSort.get(0)+"-"+priceSort.get(priceSort.size()-1));
+            }
         }
-        List<String> ss=new ArrayList<>();
-        for(SaleProp s:sizes){
-            ss.add(s.getValue());
-        }
-        vo.setSizesMeta(JSONArray.fromObject(ss).toString());
-        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
         return vo;
     }
 

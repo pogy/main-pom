@@ -9,6 +9,7 @@ import com.shigu.order.services.CartService;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
+import com.shigu.order.vo.CartSingleSkuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -178,6 +179,13 @@ public class CartAction {
             return JsonResponseUtil.error("商品不存在");
         }
         return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("getGoodsSkuList")
+    @ResponseBody
+    public JSONObject getGoodsSkuList(Long goodsId){
+        List<CartSingleSkuVO> skus=cartService.getGoodsSkuList(goodsId);
+        return JsonResponseUtil.success().element("skuList",skus);
     }
 
 }

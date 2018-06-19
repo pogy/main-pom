@@ -2,13 +2,17 @@ package com.shigu.main4.item.newservice.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ShiguGoodsSingleSkuExample;
 import com.opentae.data.mall.examples.ShiguSiteExample;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.domain.SimpleElaBean;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
+import com.shigu.main4.item.dao.SingleSkuDao;
 import com.shigu.main4.item.exceptions.ItemAddException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.item.exceptions.SystemSynItemException;
 import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
@@ -18,8 +22,9 @@ import com.shigu.main4.item.services.impl.SameItemUtil;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
 import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.tools.ItemHelper;
-import com.shigu.main4.item.vo.news.NewPullSynItemVO;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +35,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by wxc on 2017/2/25.
@@ -41,7 +46,7 @@ import java.util.List;
  * @since domwiki 4.0.0
  */
 @Service("newItemAddOrUpdateService")
-public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl implements NewItemAddOrUpdateService {
+public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  implements NewItemAddOrUpdateService {
 
     private static final Logger logger = LoggerFactory.getLogger(NewItemAddOrUpdateServiceImpl.class);
 
@@ -105,151 +110,32 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
     @Autowired
     private SearchCategorySubMapper searchCategorySubMapper;
 
+    @Autowired
+    SingleSkuDao singleSkuDao;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long systemAddItem(NewPushSynItemBO item) throws ItemModifyException {
-        return addItem(item, true);
-    }
-
-    /**
-     * 商品添加
-     * <doc>http://open.571xz.com/document.htm?did=451</doc>
-     * <task>http://gz.571xz.com:32100/issue/MAIN_SITE4-80</task>
-     *
-     * @param item  通讯对象
-     * @param isSys 是否系统添加
-     * @return 商品ID
-     */
-    @Transactional(rollbackFor = Exception.class)
-    protected Long addItem(NewPushSynItemBO item, boolean isSys) throws ItemModifyException {
-        if (item == null || StringUtils.isEmpty(item.getWebSite()) || item.getShopId() == null) {
-            throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.IllegalArgumentException, null);
-        }
-        //1.添加shigu_goods_id_generator  //下面简称generator
-        if (item.getListTime() == null) {
-            item.setListTime(item.getModified());
-        }
-        if (item.getDelistTime() == null) {
-            item.setDelistTime(item.getModified());
-        }
-        // 更新批发价 只有系统添加才会自动应用批发价
-        if (isSys && item.getPriceString() != null) {
-            super.updatePiPrice(item, item.getTitle(), item.getGoodsNo(), item.getOuterId());
-        }
-
-        if (item.getNumIid() != null) {
-            // 为店铺内商品做一些检查，预防一些错误
-            ShiguGoodsTiny tiny = new ShiguGoodsTiny();
-            tiny.setNumIid(item.getNumIid());
-            tiny.setWebSite(item.getWebSite());
-            tiny.setStoreId(item.getShopId());
-            if (shiguGoodsTinyMapper.selectCount(tiny) > 0) {
-                throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.ITEM_ALREADY_EXIST, item.getNumIid());
-            }
-
-            ShiguGoodsSoldout soldout = new ShiguGoodsSoldout();
-            soldout.setWebSite(item.getWebSite());
-            soldout.setNumIid(item.getNumIid());
-            soldout.setStoreId(item.getShopId());
-            if (shiguGoodsSoldoutMapper.selectCount(soldout) > 0) {
-                throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.ITEM_ALREADY_INSTOCK, item
-                        .getNumIid());
-            }
-        }
-
-        ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(item.getShopId());
-        if (shiguShop == null) {
-            throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.SHOP_DOES_NOT_EXIST, item.getShopId());
-        }
-
-        ShiguGoodsIdGenerator idGenerator = new ShiguGoodsIdGenerator();
-        idGenerator.setWebSite(item.getWebSite());
-        shiguGoodsIdGeneratorMapper.insertSelective(idGenerator);
-
-        Date now = new Date();
-
-        //2.添加shigu_goods_tiny    //下面简称tiny
-        ItemHelper.SynItemContainer container = ItemHelper.helpMe(item);
-        ShiguGoodsTiny tiny = container.getTiny();
-        tiny.setGoodsId(idGenerator.getGoodId());
-        tiny.setCreated(item.getCreated());
-        tiny.setDetailUrl("http://item.taobao.com/item.htm?id=" + tiny.getNumIid());
-        tiny.setNick(shiguShop.getTbNick());
-//        tiny.setCidAll();
-        tiny.setLoadDate(now);
-        tiny.setListTime(item.getListTime());
-        tiny.setDelistTime(item.getDelistTime());
-        tiny.setModified(item.getModified());
-
-        ShiguSiteExample siteExample = new ShiguSiteExample();
-        siteExample.createCriteria().andCitySiteEqualTo(tiny.getWebSite());
-        List<ShiguSite> shiguSiteList = shiguSiteMapper.selectByExample(siteExample);
-        ShiguSite shiguSite = new ShiguSite();
-        if (shiguSiteList.size() > 0) {
-            shiguSite = shiguSiteList.get(0);
-        }
-        if (StringUtils.isEmpty(tiny.getProv())) {
-            tiny.setProv(shiguSite.getProvinceName());
-        }
-        if (StringUtils.isEmpty(tiny.getCity())) {
-            tiny.setCity(shiguSite.getCityName());
-        }
-        try {
-            shiguGoodsTinyMapper.insertSelective(tiny);
-        } catch (Exception e) {
-            throw new ItemModifyException(item.getNumIid() + "_" + item.getShopId() + " 重复插入");
-        }
-
-        //3.添加shigu_goods_extends //下面简称extends
-        ShiguGoodsExtends goodsExtends = container.getGoodsExtends();
-        goodsExtends.setGoodsId(tiny.getGoodsId());
-        goodsExtends.setLoadDate(now);
-        goodsExtends.setLastModifyTime(now);
-        shiguGoodsExtendsMapper.insertSelective(goodsExtends);
-
-        //4.添加shigu_prop_img   //下面简称propimg
-        ShiguPropImgs shiguPropImgs = container.getShiguPropImgs();
-        shiguPropImgs.setItemId(tiny.getGoodsId());
-        shiguPropImgsMapper.insertSelective(shiguPropImgs);
-
+        Long itemId = super.addItem(item, true);
         //添加独立sku
-        SpringBeanFactory.getBean(ItemSkuModel.class, tiny.getGoodsId()).push(item.getSingleSkus());
-
-        //添加搜索辅表
-        GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-        goodsCountForsearch.setGoodsId(tiny.getGoodsId());
-        goodsCountForsearch.setWebSite(item.getWebSite());
-        goodsCountForsearch.setFabric(item.getFabric());
-        goodsCountForsearch.setInfabric(item.getInFabric());
-        goodsCountForsearchMapper.insertSelective(goodsCountForsearch);
-        ShiguGoodsModified shiguGoodsModified = new ShiguGoodsModified();
-        shiguGoodsModified.setItemId(tiny.getGoodsId());
-//        if (item.getPriceString() != null &&!item.getPriceString().equals(item.getPiPriceString())) {
-//            shiguGoodsModified.setHasSetPrice(1);
-//        }
-        shiguGoodsModifiedMapper.insertSelective(shiguGoodsModified);
-
-        //5.添加es中goods数据
-        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
-        //ElasticRepository repository = new ElasticRepository();
-        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
-        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-        //repository.insert(seb);
-        goodsAddToRedis.addToRedis(seb);
-        sameItemUtilAddRemove(tiny, true);
-        //添加首图到图搜
-        addImgToSearch(tiny.getGoodsId(), tiny.getWebSite(), null, tiny.getPicUrl(), 1);
-        return tiny.getGoodsId();
+        SpringBeanFactory.getBean(ItemSkuModel.class, itemId).push(item.getSingleSkus());
+        return itemId;
     }
 
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long userAddItem(NewPushSynItemBO item) throws ItemModifyException {
-        return addItem(item, false);
+        Long itemId = super.addItem(item, false);
+        //添加独立sku
+        SpringBeanFactory.getBean(ItemSkuModel.class, itemId).push(item.getSingleSkus());
+        return itemId;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int systemUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
-        int i = super.systemUpdateItem(item);
+        int i = super.systemUpdateItem(BeanMapper.map(item,SynItem.class));
         if (i > 0 && item.getSingleSkus() != null) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
@@ -257,8 +143,9 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int officeUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
-        int i = super.officeUpdateItem(item);
+        int i = super.officeUpdateItem(BeanMapper.map(item,SynItem.class));
         if (i > 0 && item.getSingleSkus() != null) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
@@ -266,8 +153,9 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
-        int i = super.userUpdateItem(item);
+        int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class));
         if (i > 0 && item.getSingleSkus() != null) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
@@ -275,8 +163,9 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(NewPushSynItemBO item, Boolean updatePrice) throws ItemModifyException {
-        int i = super.userUpdateItem(item,updatePrice);
+        int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class),updatePrice);
         if (i > 0 && item.getSingleSkus() != null) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
@@ -289,6 +178,8 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
         if(synItem!=null){
             NewPullSynItemVO vo=BeanMapper.map(synItem,NewPullSynItemVO.class);
             vo.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, synItem.getGoodsId()).pull());
+            toPropName(vo);
+            return vo;
         }
         return null;
     }
@@ -299,7 +190,90 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl im
         if(synItem!=null){
             NewPullSynItemVO vo=BeanMapper.map(synItem,NewPullSynItemVO.class);
             vo.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, synItem.getGoodsId()).pull());
+            toPropName(vo);
+            return vo;
         }
         return null;
+    }
+    ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
+    @Override
+    public List<TaobaoPropValueBO> selColorSizeValues(Long cid) {
+        return singleSkuDao.taobaoPropValues(cid);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void systemDeleteItem(Long itemId) throws ItemModifyException {
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(itemId);
+        if(shiguGoodsIdGenerator!=null){
+            super.systemDeleteItem(itemId);
+            ShiguGoodsSingleSkuExample shiguGoodsSingleSkuExample=new ShiguGoodsSingleSkuExample();
+            shiguGoodsSingleSkuExample.createCriteria().andGoodsIdEqualTo(itemId);
+            shiguGoodsSingleSkuExample.setWebSite(shiguGoodsIdGenerator.getWebSite());
+            shiguGoodsSingleSkuMapper.deleteByExample(shiguGoodsSingleSkuExample);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void userDeleteItem(Long itemId) throws ItemModifyException {
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(itemId);
+        if(shiguGoodsIdGenerator!=null){
+            super.userDeleteItem(itemId);
+            ShiguGoodsSingleSkuExample shiguGoodsSingleSkuExample=new ShiguGoodsSingleSkuExample();
+            shiguGoodsSingleSkuExample.createCriteria().andGoodsIdEqualTo(itemId);
+            shiguGoodsSingleSkuExample.setWebSite(shiguGoodsIdGenerator.getWebSite());
+            shiguGoodsSingleSkuMapper.deleteByExample(shiguGoodsSingleSkuExample);
+        }
+    }
+
+    private void toPropName(NewPullSynItemVO vo){
+        if(vo.getPropertyAlias()==null||"null".equals(vo.getPropertyAlias())){
+            vo.setPropertyAlias("");
+        }
+        if(vo.getProps()==null||"null".equals(vo.getProps())){
+            vo.setProps("");
+        }
+        if(vo.getPropsName()==null||"null".equals(vo.getPropsName())){
+            vo.setPropsName("");
+        }
+
+        List<TaobaoItemProp> taobaoItemProps = singleSkuDao.selProps(vo.getCid());
+        Map<Long,String> nameMap=taobaoItemProps.stream().collect(Collectors.toMap(TaobaoItemProp::getPid,TaobaoItemProp::getName));
+
+        Set<String> ns=new HashSet<>();
+        Set<String> ids=new HashSet<>();
+        Set<String> pas=new HashSet<>();
+        vo.getSingleSkus().forEach(singleSkuVO -> {
+            ns.add(singleSkuVO.getColorPid()+":"+singleSkuVO.getColorVid()+":"+nameMap.get(singleSkuVO.getColorPid())+":"+singleSkuVO.getColorName());
+            ns.add(singleSkuVO.getSizePid()+":"+singleSkuVO.getSizeVid()+":"+nameMap.get(singleSkuVO.getSizePid())+":"+singleSkuVO.getSizeName());
+
+            ids.add(singleSkuVO.getColorPid()+":"+singleSkuVO.getColorVid());
+            ids.add(singleSkuVO.getSizePid()+":"+singleSkuVO.getSizeVid());
+
+            if(StringUtils.isNotBlank(singleSkuVO.getColorPropertyAlias())){
+                pas.add(singleSkuVO.getColorPid()+":"+singleSkuVO.getColorVid()+":"+singleSkuVO.getColorPropertyAlias());
+            }
+            if(StringUtils.isNotBlank(singleSkuVO.getSizePropertyAlias())){
+                pas.add(singleSkuVO.getSizePid()+":"+singleSkuVO.getSizeVid()+":"+singleSkuVO.getSizePropertyAlias());
+            }
+        });
+        List<String> props=new ArrayList<>(Arrays.asList(vo.getProps().split(";")));
+        List<String> propNames=new ArrayList<>(Arrays.asList(vo.getPropsName().split(";")));
+        List<String> as=new ArrayList<>(Arrays.asList(vo.getPropertyAlias().split(";")));
+
+        propNames.removeIf(s -> StringUtils.isBlank(s)||nameMap.keySet().contains(new Long(s.split(":")[0])));
+        props.removeIf(s -> StringUtils.isBlank(s)||nameMap.keySet().contains(new Long(s.split(":")[0])));
+        as.removeIf(s -> StringUtils.isBlank(s)||nameMap.keySet().contains(new Long(s.split(":")[0])));
+
+        propNames.addAll(ns);
+        props.addAll(ids);
+        as.addAll(pas);
+
+        vo.setPropsName(StringUtils.join(propNames,";"));
+        vo.setProps(StringUtils.join(props,";"));
+        vo.setPropertyAlias(StringUtils.join(as,";"));
+        vo.setInputPids("");
+        vo.setInputStr("");
     }
 }

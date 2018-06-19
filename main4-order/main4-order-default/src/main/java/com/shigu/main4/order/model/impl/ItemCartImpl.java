@@ -107,7 +107,7 @@ public class ItemCartImpl implements Cart {
         if (cart==null){
             throw new CartException("商品不存在");
         }
-        return SpringBeanFactory.getBean(ItemProductImpl.class, cart.getPid(), cart.getSkuId());
+        return SpringBeanFactory.getBean(ItemProduct.class, cart.getPid(), cart.getSkuId());
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ItemCartImpl implements Cart {
         ItemCart cart = new ItemCart();
         cart.setUserId(userId);
         return itemCartMapper.select(cart).stream().map(itemCart -> {
-            ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info();
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, itemCart.getPid(), itemCart.getSkuId()).info();
             CartVO cartVO = BeanMapper.map(info, CartVO.class);
             cartVO.setCartId(itemCart.getCartId());
             cartVO.setNum(itemCart.getNum());

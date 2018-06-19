@@ -13,11 +13,14 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
@@ -40,7 +43,7 @@ import com.taobao.api.security.SecurityBiz;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +60,7 @@ public class MyTbOrderService {
     @Autowired
     StoreRelationService storeRelationService;
     @Autowired
-    ItemAddOrUpdateService itemAddOrUpdateService;
+    NewItemAddOrUpdateService newItemAddOrUpdateService;
     @Autowired
     private ConfirmOrderService confirmOrderService;
 
@@ -220,8 +223,8 @@ public class MyTbOrderService {
         for(int i=0;i<order.getChildOrders().size();i++){
             SubTbOrderVO sub=order.getChildOrders().get(i);
             TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(sub.getNumiid());
-            SynItem goods=itemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
-            ItemProductVO info = itemProductProcess.generateProduct(rgv.getGoodsId(), sub.getColor(), sub.getSize());
+            SynItem goods=newItemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
+            ItemProductVO info = itemProductProcess.generateProduct(rgv.getGoodsId(),sub.getColor(), sub.getSize());
             CartVO vo=new CartVO();
             vo.setNum(sub.getNum());
             vo.setUserId(userId);
@@ -341,6 +344,7 @@ public class MyTbOrderService {
         List<Long> fdlProvIds= Arrays.asList(33L,34L,35L);
         List<String> noGoodsNoTids=new ArrayList<>();
         List<Long> noGoodsNoNumiids=new ArrayList<>();
+        List<String> noSkuTids=new ArrayList<>();
 
         Set<String> errorAddressTids=new HashSet<>();
         List<String> otherIds=new ArrayList<>();
@@ -365,7 +369,7 @@ public class MyTbOrderService {
             }
             otherIds.add(order.getTbId());
             List<CartVO> cartVOS = new ArrayList<>();
-            for(int i=0;i<order.getChildOrders().size();i++){
+            sku:for(int i=0;i<order.getChildOrders().size();i++){
                 SubTbOrderVO sub=order.getChildOrders().get(i);
                 //商品是否已经确定未关联,如果是则continue,减少后续操作
                 if(noGoodsNoNumiids.contains(sub.getNumiid())){
@@ -386,6 +390,31 @@ public class MyTbOrderService {
                         noGoodsNoNumiids.add(sub.getNumiid());
                         continue;
                     }
+                    NewPullSynItemVO newPullSynItemVO = newItemAddOrUpdateService
+                            .selItemByGoodsId(rgv.getGoodsId(), rgv.getWebSite());
+                    if (newPullSynItemVO == null) {
+                        noSkuTids.add(order.getTbId());
+                        continue;
+                    } else {
+                        boolean hasSku=false;
+                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
+                            String color= StringUtils.isNotBlank(sku.getColorPropertyAlias())?sku.getColorPropertyAlias():sku.getColorName();
+                            String size=StringUtils.isNotBlank(sku.getSizePropertyAlias())?sku.getSizePropertyAlias():sku.getSizeName();
+                            String tcolor=StringUtils.isBlank(sub.getColor())?"图片色":sub.getColor();
+                            String tsize=StringUtils.isBlank(sub.getSize())?"均码":sub.getSize();
+                            if(tcolor.equals(color)&&tsize.equals(size)){
+                                hasSku=true;
+                                if(sku.getStockNum()==0){
+                                    noSkuTids.add(order.getTbId());
+                                    continue sku;
+                                }
+                            }
+                        }
+                        if(!hasSku){
+                            noSkuTids.add(order.getTbId());
+                            continue;
+                        }
+                    }
                     tinyVOMap.put(sub.getNumiid(),rgv);
                 }
                 checkSingleWebSite.add(rgv.getWebSite());
@@ -396,12 +425,12 @@ public class MyTbOrderService {
                 if(noGoodsNoTids.size()==0&&errorAddressTids.size()==0){
                     SynItem goods=synItemMap.get(rgv.getGoodsId()+rgv.getWebSite());
                     if(goods==null){
-                        goods=itemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
+                        goods=newItemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
                         synItemMap.put(rgv.getGoodsId()+rgv.getWebSite(),goods);
                     }
                     ItemProductVO info = itemProductVOMap.get(rgv.getGoodsId()+sub.getColor()+sub.getSize());
                     if(info==null){
-                        info=itemProductProcess.generateProduct(rgv.getGoodsId(), sub.getColor(), sub.getSize());
+                        info=itemProductProcess.generateProduct(rgv.getGoodsId(),sub.getColor(), sub.getSize());
                         itemProductVOMap.put(rgv.getGoodsId()+sub.getColor()+sub.getSize(),info);
                     }
                     CartVO vo=new CartVO();
@@ -488,7 +517,16 @@ public class MyTbOrderService {
             return obj;
         }
 
-
+        if(noSkuTids.size()>0){
+            // 存在失效的商品
+            List<String> leftOrdersIds=new ArrayList<>(otherIds);
+            leftOrdersIds.removeIf(noSkuTids::contains);
+            JSONObject obj= new JSONObject();
+            obj.put("result","error");
+            obj.put("goodsErrorOrderNum",noSkuTids.size());
+            obj.put("leftOrdersIds",leftOrdersIds);
+            return obj;
+        }
 
         if(errorAddressTids.size()!=0){
             // 存在错误地址的商品
@@ -625,24 +663,49 @@ public class MyTbOrderService {
         Long lr= 0L;
         List<String> notLinkIds=new ArrayList<>();
         for(SubTbOrderVO subvo:vo.getChildOrders()){
-            if(StringUtils.isEmpty(subvo.getGoodsNo())){
-                try {
-                    TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
-                    if (rgv != null) {
-                        subvo.setGoodsNo(rgv.getGoodsNo());
-                        subvo.setXzPrice(rgv.getPiPriceString());
-                        subvo.setWebSite(rgv.getWebSite());
-                        lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
-                    }else {
+            if(StringUtils.isEmpty(subvo.getGoodsNo())) try {
+                TinyVO rgv = taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
+                if (rgv != null) {
+                    subvo.setGoodsNo(rgv.getGoodsNo());
+                    subvo.setXzPrice(rgv.getPiPriceString());
+                    subvo.setWebSite(rgv.getWebSite());
+                    NewPullSynItemVO newPullSynItemVO = newItemAddOrUpdateService
+                            .selItemByGoodsId(rgv.getGoodsId(), rgv.getWebSite());
+                    if (newPullSynItemVO == null) {
+                        subvo.setGoodsType(1);
                         vo.setCanOrder(false);
-                        notLinkIds.add(vo.getTbId());
-                        notLinkNumiids.add(subvo.getNumiid());
+                    } else {
+                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
+                            String color= StringUtils.isNotBlank(sku.getColorPropertyAlias())?sku.getColorPropertyAlias():sku.getColorName();
+                            String size=StringUtils.isNotBlank(sku.getSizePropertyAlias())?sku.getSizePropertyAlias():sku.getSizeName();
+                            String tcolor=StringUtils.isBlank(subvo.getColor())?"图片色":subvo.getColor();
+                            String tsize=StringUtils.isBlank(subvo.getSize())?"均码":subvo.getSize();
+                            if(tcolor.equals(color)&&tsize.equals(size)){
+                                if(sku.getStockNum()==0){
+                                    subvo.setGoodsType(2);
+                                    vo.setCanOrder(false);
+                                }else{
+                                    subvo.setGoodsType(0);
+                                }
+                            }
+                        }
+                        if(subvo.getGoodsType()==null){
+                            subvo.setGoodsType(2);
+                            vo.setCanOrder(false);
+                        }
                     }
-                } catch (NotFindRelationGoodsException e) {
+                    if(subvo.getGoodsType()==0){
+                        lr += subvo.getNewTbPriceLong() - rgv.getPiPrice();
+                    }
+                } else {
                     vo.setCanOrder(false);
                     notLinkIds.add(vo.getTbId());
                     notLinkNumiids.add(subvo.getNumiid());
                 }
+            } catch (NotFindRelationGoodsException e) {
+                vo.setCanOrder(false);
+                notLinkIds.add(vo.getTbId());
+                notLinkNumiids.add(subvo.getNumiid());
             }
         }
         if(vo.isCanOrder()){

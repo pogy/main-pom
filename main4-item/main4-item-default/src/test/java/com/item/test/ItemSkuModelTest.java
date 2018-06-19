@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguSiteMapper;
 import com.shigu.main4.common.util.Jobs;
 import com.shigu.main4.item.model.ItemSkuModel;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ public class ItemSkuModelTest extends BaseSpringTest{
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Autowired
     ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
-
+    @Test
+    public void sel(){
+        List<SingleSkuVO> pull = SpringBeanFactory.getBean(ItemSkuModel.class, 23000216L).pull();
+    }
 
     @Test
     public void vv(){

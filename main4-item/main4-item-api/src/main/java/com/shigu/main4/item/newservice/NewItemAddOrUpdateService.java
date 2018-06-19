@@ -1,8 +1,14 @@
 package com.shigu.main4.item.newservice;
 
+import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.item.exceptions.SystemSynItemException;
+import com.shigu.main4.item.vo.CatColorSizeVO;
+import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+
+import java.util.List;
 
 /**
  * 商品添加或更新服务类
@@ -61,4 +67,66 @@ public interface NewItemAddOrUpdateService {
      * @return
      */
     NewPullSynItemVO selItemWithSynItem(Long numIid,Long shopId);
+
+    /**
+     * 获取所有颜色尺码的属性值
+     * @param cid
+     * @return
+     */
+    List<TaobaoPropValueBO> selColorSizeValues(Long cid);
+
+    /**
+     * 系统上架一款商品
+     * @param itemId 商品主键
+     */
+    void systemUpItem(Long itemId) throws ItemModifyException;
+
+    /**
+     * 用户上架一款商品
+     * @param itemId
+     */
+    void userUpItem(Long itemId) throws ItemModifyException;
+    /**
+     * 系统下架一款商品
+     * @param itemId
+     */
+    void systemDownItem(Long itemId) throws ItemModifyException;
+
+    /**
+     * 用户下架一款商品
+     */
+    void userDownItem(Long itemId) throws ItemModifyException;
+
+    /**
+     * 系统删除一款商品
+     * @param itemId
+     */
+    void systemDeleteItem(Long itemId) throws ItemModifyException;
+    /**
+     * 用户删除一款商品
+     * @param itemId
+     */
+    void userDeleteItem(Long itemId) throws ItemModifyException;
+
+    /**
+     * 系统同步一批商品
+     * @param items
+     */
+    void systemSynSomeItems(List<SynItem> items) throws SystemSynItemException;
+
+    /**
+     * 查询是否有更新
+     * @param item
+     * @return
+     */
+    boolean hasUpdated(SynItem item);
+
+    /**
+     * 添加图片到图搜引擎
+     * @param goodsId
+     * @param url
+     * @param type
+     */
+    void addImgToSearch(Long goodsId,String webSite,String oldUrl,String url,int type);
+
 }

@@ -42,4 +42,8 @@
     <dubbo:service interface="com.shigu.main4.item.services.PriceCalculateService" ref="priceCalculateService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" retries="0" timeout="20000" />
+
+
+    <dubbo:service interface="com.shigu.main4.item.newservice.NewItemAddOrUpdateService" ref="newItemAddOrUpdateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.newservice.NewShowForCdnService" ref="newShowForCdnService" retries="0" timeout="20000" />
 </beans>

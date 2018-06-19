@@ -4,7 +4,6 @@ import com.opentae.common.beans.MoreSiteBean;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 public class ShiguGoodsSingleSku extends MoreSiteBean {
     /**

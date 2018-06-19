@@ -4,8 +4,10 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemCidWeightExample;
 import com.opentae.data.mall.examples.ItemProductSkuExample;
+import com.opentae.data.mall.examples.ShiguGoodsSingleSkuExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 商品形式的产品实现类
@@ -45,11 +48,14 @@ public class ItemProductImpl implements ItemProduct {
 
     @Autowired
     private ItemCidWeightMapper itemCidWeightMapper;
+    @Autowired
+    ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
 
 
     private Long goodsId;
     private String color;
     private String size;
+
 
     private Long skuId;
     private Long pid;
@@ -59,7 +65,7 @@ public class ItemProductImpl implements ItemProduct {
         this.skuId = skuId;
     }
 
-    public ItemProductImpl(Long goodsId, String color, String size) {
+    public ItemProductImpl(Long goodsId,String color, String size) {
         this.goodsId = goodsId;
         this.color = color;
         this.size = size;
@@ -80,14 +86,25 @@ public class ItemProductImpl implements ItemProduct {
         if(StringUtils.isBlank(size)){
             size="-1";
         }
-        ItemProductInfo productInfo = createProduct(goodsId, color, size);
+        ItemProductInfo productInfo = createProduct(goodsId,color, size);
         pid = productInfo.getPid();
         skuId = productInfo.getSkuId();
     }
 
-    private ItemProductInfo createProduct(Long goodsId, String color, String size) {
-        ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId, color, size);
+    private ItemProductInfo createProduct(Long goodsId,String color, String size) {
+        ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId,color, size);
         if (productInfo != null) {
+            Long price=selSkuPrice(goodsId,color,size);
+            if(price==null){
+                price=productInfo.getSuperPrice();
+            }
+            if(!Objects.equals(price,productInfo.getPrice())){
+                ItemProductSku sku = new ItemProductSku();
+                sku.setSkuId(productInfo.getSkuId());
+                sku.setPrice(price);
+                itemProductSkuMapper.updateByPrimaryKeySelective(sku);
+                productInfo.setPrice(sku.getPrice());
+            }
             return productInfo;
         }
         com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
@@ -128,6 +145,7 @@ public class ItemProductImpl implements ItemProduct {
         sku.setPid(product.getPid());
         sku.setColor(color);
         sku.setSize(size);
+        sku.setPrice(selSkuPrice(goodsId,color,size));
         itemProductSkuMapper.insertSelective(sku);
 
         ItemProductInfo info = new ItemProductInfo();
@@ -136,10 +154,42 @@ public class ItemProductImpl implements ItemProduct {
         return info;
     }
 
+    private Long selSkuPrice(Long goodsId,String color, String size){
+        if(goodsId==null){
+            return null;
+        }
+        ShiguGoodsIdGenerator idGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        ShiguGoodsSingleSkuExample shiguGoodsSingleSkuExample=new ShiguGoodsSingleSkuExample();
+        shiguGoodsSingleSkuExample.setWebSite(idGenerator.getWebSite());
+        shiguGoodsSingleSkuExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        List<ShiguGoodsSingleSku> select = shiguGoodsSingleSkuMapper.selectByExample(shiguGoodsSingleSkuExample);
+        for(ShiguGoodsSingleSku s:select){
+            if((color.equals(s.getColorName())||color.equals(s.getSizePropertyAlias()))
+                    &&(size.equals(s.getSizePropertyAlias())||size.equals(s.getSizeName()))){
+                if(StringUtils.isBlank(s.getPriceString())){
+                    ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+                    tiny.setGoodsId(goodsId);
+                    tiny.setWebSite(idGenerator.getWebSite());
+                    tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,pi_price_string"));
+                    if(tiny==null||StringUtils.isBlank(tiny.getPiPriceString())){
+                        return null;
+                    }
+                    return MoneyUtil.StringToLong(tiny.getPiPriceString());
+                }
+                return MoneyUtil.StringToLong(s.getPriceString());
+            }
+        }
+        return null;
+    }
+
     @Override
     public ItemProductVO info() {
         ItemProductVO productVO = BeanMapper.map(itemProductMapper.selectByPrimaryKey(pid), ItemProductVO.class);
         productVO.setSelectiveSku(selSelectiveSku());
+        Long price=productVO.getSelectiveSku().getPrice();
+        if(price!=null){
+            productVO.setPrice(price);
+        }
         return productVO;
     }
 
@@ -165,10 +215,15 @@ public class ItemProductImpl implements ItemProduct {
 
     @Override
     public void modifyPrice(Long price) {
-        com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
-        product.setPrice(price);
-        product.setPid(pid);
-        itemProductMapper.updateByPrimaryKeySelective(product);
+//        com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
+//        product.setPrice(price);
+//        product.setPid(pid);
+//        itemProductMapper.updateByPrimaryKeySelective(product);
+        ItemProductSku itemProductSku=new ItemProductSku();
+        itemProductSku.setPrice(price);
+        itemProductSku.setSkuId(skuId);
+        itemProductSkuMapper.updateByPrimaryKeySelective(itemProductSku);
+
     }
 
     /**
@@ -181,7 +236,7 @@ public class ItemProductImpl implements ItemProduct {
     public Long modSelectiveSku(String color, String size) {
         this.color = color;
         this.size = size;
-        return this.skuId = createProduct(goodsId, color, size).getSkuId();
+        return this.skuId = createProduct(goodsId,color, size).getSkuId();
     }
 
     /**

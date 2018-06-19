@@ -11,6 +11,7 @@ public class ShiguGoodsSingleSkuExample extends SgExample<ShiguGoodsSingleSkuExa
     public static final Class<ShiguGoodsSingleSku> beanClass = ShiguGoodsSingleSku.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn colorName;
+    public static EntityColumn priceString;
     public static EntityColumn goodsId;
     public static EntityColumn colorVid;
     public static EntityColumn sizeInputStr;
@@ -31,6 +32,7 @@ public class ShiguGoodsSingleSkuExample extends SgExample<ShiguGoodsSingleSkuExa
             listMap.put(column.getProperty(), column);
         }
         colorName = listMap.get("colorName");
+        priceString = listMap.get("priceString");
         goodsId = listMap.get("goodsId");
         colorVid = listMap.get("colorVid");
         sizeInputStr = listMap.get("sizeInputStr");
@@ -119,6 +121,61 @@ public class ShiguGoodsSingleSkuExample extends SgExample<ShiguGoodsSingleSkuExa
 
         public ShiguGoodsSingleSkuExample.Criteria andColorNameNotBetween(String value1, String value2) {
             return notBetween(colorName, value1, value2);
+        }
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringIsNull() {
+            return isNull(priceString);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringIsNotNull() {
+            return isNotNull(priceString);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringEqualTo(String value) {
+            return equalTo(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringNotEqualTo(String value) {
+            return notEqualTo(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringGreaterThan(String value) {
+            return greaterThan(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringLessThan(String value) {
+            return lessThan(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringLike(String value) {
+            return like(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringNotLike(String value) {
+            return notLike(priceString, value);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringIn(List<String> values) {
+            return in(priceString, values);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringNotIn(List<String> values) {
+            return notIn(priceString, values);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringBetween(String value1, String value2) {
+            return between(priceString, value1, value2);
+        }
+
+        public ShiguGoodsSingleSkuExample.Criteria andPriceStringNotBetween(String value1, String value2) {
+            return notBetween(priceString, value1, value2);
         }
         public ShiguGoodsSingleSkuExample.Criteria andGoodsIdIsNull() {
             return isNull(goodsId);

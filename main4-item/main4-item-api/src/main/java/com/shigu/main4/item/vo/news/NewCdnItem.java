@@ -1,11 +1,7 @@
 package com.shigu.main4.item.vo.news;
 
-import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.CdnItem;
-import com.shigu.main4.item.vo.NormalProp;
-import com.shigu.main4.item.vo.SaleProp;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**

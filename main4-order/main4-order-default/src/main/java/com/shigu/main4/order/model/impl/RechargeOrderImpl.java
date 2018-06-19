@@ -7,6 +7,7 @@ import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RechargeOrder;
@@ -50,7 +51,7 @@ public class RechargeOrderImpl implements RechargeOrder {
     }
 
     @Override
-    public void addSubOrder(List<SubOrderBO> subOrders, boolean needReprice) {
+    public void addSubOrder(List<SubOrderBO> subOrders, boolean needReprice, Long userId) throws OrderException {
 
     }
 

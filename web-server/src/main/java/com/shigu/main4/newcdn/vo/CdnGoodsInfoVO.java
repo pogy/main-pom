@@ -1,5 +1,7 @@
 package com.shigu.main4.newcdn.vo;
 
+import com.shigu.main4.cdn.vo.SkuMetaVO;
+
 import java.util.List;
 
 /**
@@ -73,14 +75,6 @@ public class CdnGoodsInfoVO {
      */
     private String webSite;
     /**
-     * 颜色
-     */
-    private String colorsMeta;
-    /**
-     * 尺码
-     */
-    private String sizesMeta;
-    /**
      * 是否有原图
      */
     private String hasOriginalPic;
@@ -100,6 +94,8 @@ public class CdnGoodsInfoVO {
      * 主图视频地址
      */
     private String goodsVideoUrl;
+
+    private String skusMeta;
 
     /**
      * 获取 商品ID
@@ -291,33 +287,6 @@ public class CdnGoodsInfoVO {
         this.webSite = webSite;
     }
 
-    /**
-     * 获取 颜色
-     */
-    public String getColorsMeta() {
-        return this.colorsMeta;
-    }
-
-    /**
-     * 设置 颜色
-     */
-    public void setColorsMeta(String colorsMeta) {
-        this.colorsMeta = colorsMeta;
-    }
-
-    /**
-     * 获取 尺码
-     */
-    public String getSizesMeta() {
-        return this.sizesMeta;
-    }
-
-    /**
-     * 设置 尺码
-     */
-    public void setSizesMeta(String sizesMeta) {
-        this.sizesMeta = sizesMeta;
-    }
 
     /**
      * 获取 标题
@@ -391,5 +360,13 @@ public class CdnGoodsInfoVO {
 
     public void setGoodsVideoUrl(String goodsVideoUrl) {
         this.goodsVideoUrl = goodsVideoUrl;
+    }
+
+    public String getSkusMeta() {
+        return this.skusMeta;
+    }
+
+    public void setSkusMeta(String skusMeta) {
+        this.skusMeta = skusMeta;
     }
 }

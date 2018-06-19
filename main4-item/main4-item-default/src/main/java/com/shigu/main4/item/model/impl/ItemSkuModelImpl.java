@@ -5,11 +5,14 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.dao.SingleSkuDao;
 import com.shigu.main4.item.exceptions.ItemNotFundException;
 import com.shigu.main4.item.model.ItemSkuModel;
+import com.shigu.main4.item.news.utils.SingleSkuUtils;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
+import com.shigu.main4.item.vo.CatColorSizeVO;
 import com.shigu.main4.item.vo.SinglePropVO;
 import com.shigu.main4.item.vo.news.SingleSkuVO;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -27,7 +30,10 @@ import java.util.stream.Collectors;
 public class ItemSkuModelImpl implements ItemSkuModel {
     private Long goodsId;
     private String webSite;
+    private Long cid;
     private List<SingleSkuVO> singleSkuVOS;
+    private CatColorSizeVO catColorSizeVO;
+    private Long tinyPiPrice;
 
     @Autowired
     SingleSkuDao singleSkuDao;
@@ -36,6 +42,8 @@ public class ItemSkuModelImpl implements ItemSkuModel {
     ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+    @Autowired
+    ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
     @Autowired
     ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
@@ -47,7 +55,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
 
     public ItemSkuModelImpl(Long goodsId) throws ItemNotFundException {
         if (goodsId == null) {
-            throw new ItemNotFundException("商8品不存在");
+            throw new ItemNotFundException("商品不存在");
         }
         this.goodsId = goodsId;
     }
@@ -59,11 +67,36 @@ public class ItemSkuModelImpl implements ItemSkuModel {
             throw new ItemNotFundException("商品不存在");
         }
         this.webSite = shiguGoodsIdGenerator.getWebSite();
+        String field=FieldUtil.codeFields("goods_id,cid,price,pi_price");
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setWebSite(webSite);
+        tiny.setGoodsId(goodsId);
+        tiny = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,field);
+        if (tiny == null) {
+            ShiguGoodsSoldout shiguGoodsSoldout = new ShiguGoodsSoldout();
+            shiguGoodsSoldout.setWebSite(webSite);
+            shiguGoodsSoldout.setGoodsId(goodsId);
+            shiguGoodsSoldout = shiguGoodsSoldoutMapper.selectFieldsByPrimaryKey(shiguGoodsSoldout,field);
+            if (shiguGoodsSoldout == null) {
+                throw new ItemNotFundException("商品不存在");
+            }
+            cid = shiguGoodsSoldout.getCid();
+            tinyPiPrice=shiguGoodsSoldout.getPiPrice()==null?shiguGoodsSoldout.getPrice():shiguGoodsSoldout.getPiPrice();
+        } else {
+            cid = tiny.getCid();
+            tinyPiPrice=tiny.getPiPrice()==null?tiny.getPrice():tiny.getPiPrice();
+        }
         init();
     }
 
     @Override
     public List<SingleSkuVO> pull() {
+        List<SingleSkuVO> skus=new ArrayList<>(singleSkuVOS);
+        skus.removeIf(singleSkuVO -> singleSkuVO.getStatus()==0);
+        return skus;
+    }
+    @Override
+    public List<SingleSkuVO> pullAll(){
         return singleSkuVOS;
     }
 
@@ -97,18 +130,15 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 sku.setWebSite(webSite);
                 inserts.add(sku);
             } else {
-                if (singleSkuBO.getStockNum() == 0) {
-                    dels.add(singleSkuVO.getSkuId());
-                }
                 //参数中存在的,数据库中也存在的
                 ShiguGoodsSingleSku sku = BeanMapper.map(singleSkuVO, ShiguGoodsSingleSku.class);
                 //根据条件修改别名
                 if (sku.getColorPropertyAlias() != null) {
                     if (singleSkuBO.getColorAlias() == null) {
-                        sku.setColorPropertyAlias(null);
+                        sku.setColorPropertyAlias("");
                     } else {
                         if (singleSkuBO.getColorAlias().equals(sku.getColorName())) {
-                            sku.setColorPropertyAlias(null);
+                            sku.setColorPropertyAlias("");
                         } else if (!singleSkuBO.getColorAlias().equals(sku.getColorPropertyAlias())) {
                             sku.setColorPropertyAlias(singleSkuBO.getColorAlias());
                         }
@@ -116,10 +146,10 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 }
                 if (sku.getSizePropertyAlias() != null) {
                     if (singleSkuBO.getSizeAlias() == null) {
-                        sku.setSizePropertyAlias(null);
+                        sku.setSizePropertyAlias("");
                     } else {
                         if (singleSkuBO.getSizeAlias().equals(sku.getSizeName())) {
-                            sku.setSizePropertyAlias(null);
+                            sku.setSizePropertyAlias("");
                         } else if (!singleSkuBO.getSizeAlias().equals(sku.getSizePropertyAlias())) {
                             sku.setSizePropertyAlias(singleSkuBO.getSizeAlias());
                         }
@@ -127,11 +157,15 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 }
                 sku.setStatus(1);
                 sku.setStockNum(singleSkuBO.getStockNum());
+                sku.setPriceString(singleSkuBO.getPriceString());
                 //别名修改后,和数据库不同了,写入待修改集合
                 if (!Objects.equals(sku.getColorPropertyAlias(), singleSkuVO.getColorPropertyAlias()) ||
                         !Objects.equals(sku.getSizePropertyAlias(), singleSkuVO.getSizePropertyAlias()) ||
                         !Objects.equals(sku.getStatus(), singleSkuVO.getStatus()) ||
-                        !Objects.equals(sku.getStockNum(), singleSkuVO.getStockNum())) {
+                        !Objects.equals(sku.getStockNum(), singleSkuVO.getStockNum()) ||
+                        (sku.getPriceString() != null &&
+                                !MoneyUtil.StringToLong(sku.getPriceString()).equals(MoneyUtil.StringToLong(singleSkuVO.getPriceString())))
+                        ) {
                     sku.setWebSite(webSite);
                     updates.add(sku);
                 }
@@ -142,9 +176,14 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         //读取剩余的skuId,这些是在参数中不存在的,但数据库中存在的,这些sku需要进行无效化操作
         dels.addAll(thMap.entrySet().stream().map(Map.Entry::getValue).map(SingleSkuVO::getSkuId)
                 .collect(Collectors.toList()));
-        singleSkuDao.pushSkus(webSite, goodsId, inserts, updates, dels);
+        CatColorSizeVO catColorSizeVO = selColorSizeMap();
+        List<Long> pids = new ArrayList<>();
+        pids.add(catColorSizeVO.getSizePid());
+        pids.add(catColorSizeVO.getColorPid());
+        singleSkuDao.pushSkus(webSite, inserts, updates, dels, pids, cid);
         reload();
     }
+
 
     @Override
     public void updateStockNum(Long skuId, Integer stockNum) {
@@ -159,6 +198,13 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         singleSkuDao.updateByPrimaryKeySelective(sku);
     }
 
+    private CatColorSizeVO selColorSizeMap() {
+        if (catColorSizeVO == null) {
+            catColorSizeVO = singleSkuDao.selCatColorSize(cid);
+        }
+        return catColorSizeVO;
+    }
+
     private void reload() {
         ShiguGoodsSingleSku shiguGoodsSingleSku = new ShiguGoodsSingleSku();
         shiguGoodsSingleSku.setGoodsId(goodsId);
@@ -166,7 +212,13 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         List<ShiguGoodsSingleSku> skus = shiguGoodsSingleSkuMapper.select(shiguGoodsSingleSku);
         if (skus.size() != 0) {
             singleSkuVOS = new ArrayList<>(skus.size());
-            skus.forEach(o -> singleSkuVOS.add(BeanMapper.map(o, SingleSkuVO.class)));
+            skus.forEach((ShiguGoodsSingleSku o) -> {
+                SingleSkuVO vo = BeanMapper.map(o, SingleSkuVO.class);
+                if(StringUtils.isBlank(vo.getPriceString())){
+                    vo.setPriceString(MoneyUtil.dealPrice(this.tinyPiPrice));
+                }
+                singleSkuVOS.add(vo);
+            });
         }
     }
 
@@ -175,311 +227,19 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         if (singleSkuVOS != null) {
             return;
         }
-        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
-        tiny.setWebSite(webSite);
-        tiny.setGoodsId(goodsId);
-        tiny = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny, FieldUtil.codeFields("goods_id,cid"));
         ShiguGoodsExtends ext = new ShiguGoodsExtends();
         ext.setWebSite(webSite);
         ext.setGoodsId(goodsId);
         ext = shiguGoodsExtendsMapper.selectFieldsByPrimaryKey(ext, FieldUtil
                 .codeFields("goods_id,props_name,property_alias"));
-        if(ext==null){
+        if (ext == null) {
             throw new ItemNotFundException("商品不存在");
         }
-        List<SingleSkuBO> singleSkuBOS = dealProps(tiny.getCid(), ext.getPropsName(), ext.getPropertyAlias());
+        List<SingleSkuBO> singleSkuBOS = SingleSkuUtils.dealProps(ext.getPropsName(), ext.getPropertyAlias(),singleSkuDao.taobaoPropValues(cid));
         push(singleSkuBOS);
     }
 
-    private boolean isLong(String str){
-        try {
-            new Long(str);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-    private List<SingleSkuBO> dealProps(Long cid, String propName, String propertyAlias) {
-        propertyAlias = propertyAlias == null ? "" : StringEscapeUtils.unescapeHtml(propertyAlias);
-        String[] tas=propertyAlias.split(";");
-        StringBuilder propertyAliasBuilder = new StringBuilder();
-        for(String a:tas){
-            String[] as=a.split(":");
-            //如果单段字符窜分割后,长度为2且两个都是Long型,可以认为是"20549:28389:"这类数据,别名的值为空字符串,该类数据抛弃
-            if(as.length==2&&isLong(as[0])&&isLong(as[1])){
-                continue;
-            }
-            //如果长度为3,且前两个都是Long型,认为是标准的别名值
-            if(as.length==3&&isLong(as[0])&&isLong(as[1])){
-                propertyAliasBuilder.append(a).append(";");
-            }else{
-                //剩余的则认为是别名中存在";"导致形成错误的分割,重新进行组合,将分割符转为"&"
-                //propertyAlias的长度为0,意味着一开始就是错误的,抛弃
-                if(propertyAliasBuilder.length()==0){
-                    continue;
-                }
-                //剔除上一个循环添加上的最后一个";"
-                propertyAliasBuilder = new StringBuilder(
-                        propertyAliasBuilder.substring(0, propertyAliasBuilder.length() - 1) + "&" + a + ";");
-            }
-        }
-        propertyAlias = propertyAliasBuilder.toString();
-        propName=propName==null?"":StringEscapeUtils.unescapeHtml(propName);
-        String[] tps=propName.split(";");
-        StringBuilder propNameBuilder = new StringBuilder();
-        for(String p:tps){
-            String[] ps=p.split(":");
-            //如果长度为4,且前两个都是Long型,认为是标准的别名值
-            if(ps.length==4&&isLong(ps[0])&&isLong(ps[1])){
-                propNameBuilder.append(p).append(";");
-            }else{
-                //剩余的则认为是别名中存在";"导致形成错误的分割,重新进行组合,将分割符转为"&"
-                //propName,意味着一开始就是错误的,抛弃
-                if(propNameBuilder.length()==0){
-                    continue;
-                }
-                //剔除上一个循环添加上的最后一个";"
-                propNameBuilder = new StringBuilder(
-                        propNameBuilder.substring(0, propNameBuilder.length() - 1) + "&" + p + ";");
-            }
-        }
-        propName = propNameBuilder.toString();
 
-        TaobaoItemProp itemProp = new TaobaoItemProp();
-        itemProp.setCid(cid);
-        itemProp.setIsSaleProp(1);
-        List<TaobaoItemProp> itemProps = taobaoItemPropMapper.select(itemProp);
-        List<Long> pids = new ArrayList<>();
-        pids.add(-1L);
-        Map<Long, Integer> isColorMap = new HashMap<>();
-        itemProps.stream().filter(taobaoItemProp -> taobaoItemProp.getIsColorProp() == 1
-                || SkuCheckUtil.isSizeProp(taobaoItemProp.getPid().toString(), taobaoItemProp.getName()))
-                .forEach(taobaoItemProp -> {
-                    pids.add(taobaoItemProp.getPid());
-                    isColorMap.put(taobaoItemProp.getPid(), taobaoItemProp.getIsColorProp());
-                });
-
-        TaobaoPropValueExample taobaoPropValueExample = new TaobaoPropValueExample();
-        taobaoPropValueExample.createCriteria().andCidEqualTo(cid).andPidIn(pids);
-        List<TaobaoPropValue> propValues = taobaoPropValueMapper.selectByExample(taobaoPropValueExample);
-        Map<Long, TaobaoPropValue> colors = new HashMap<>();
-        Map<Long, TaobaoPropValue> sizes = new HashMap<>();
-        propValues.forEach(taobaoPropValue -> {
-            if (isColorMap.get(taobaoPropValue.getPid()) == 1) {
-                colors.put(taobaoPropValue.getVid(), taobaoPropValue);
-            } else {
-                sizes.put(taobaoPropValue.getVid(), taobaoPropValue);
-            }
-        });
-
-        List<String> propNames = Arrays.asList(propName.split(";"));
-        Map<String, String> propertyAliass = new HashMap<>();
-        Arrays.stream(propertyAlias.split(";")).filter(s -> StringUtils.isNotBlank(s) && !s.trim().endsWith(":"))
-                .forEach(s -> {
-                    String[] ps = s.split(":");
-                    propertyAliass.put(ps[0] + ":" + ps[1], ps[2]);
-                });
-
-        List<SinglePropVO> vos = propNames.stream().filter(StringUtils::isNotBlank).map(s -> {
-            String[] ps = s.split(":");
-            if(ps.length!=4){
-                return null;
-            }
-            Long tmpPid = new Long(ps[0]);
-            if (!pids.contains(tmpPid)) {
-                return null;
-            }
-            SinglePropVO vo = new SinglePropVO();
-            vo.setPid(tmpPid);
-            vo.setVid(new Long(ps[1]));
-            vo.setPname(ps[2]);
-            String alias = propertyAliass.get(vo.getPid() + ":" + vo.getVid());
-            if (alias != null) {
-                if (isColorMap.get(vo.getPid()) == 1) {
-                    if (dealValueByName(colors, alias, vo)) {
-                        return vo;
-                    }
-                    vo.setAliasName(alias);
-                } else {
-                    if (dealValueByName(sizes, alias, vo)) {
-                        return vo;
-                    }
-                    vo.setAliasName(alias);
-                }
-            }
-            if (isColorMap.get(tmpPid) == 1) {
-                if (colors.keySet().contains(vo.getVid())) {
-                    vo.setVname(ps[3]);
-                } else {
-                    if (dealValueByName(colors, ps[3], vo)) {
-                        return vo;
-                    }
-                    vo.setInputName(ps[3]);
-                }
-                colors.remove(vo.getVid());
-            } else {
-                if (sizes.keySet().contains(vo.getVid())) {
-                    vo.setVname(ps[3]);
-                } else {
-                    if (dealValueByName(sizes, ps[3], vo)) {
-                        return vo;
-                    }
-                    vo.setInputName(ps[3]);
-                }
-                sizes.remove(vo.getVid());
-            }
-
-            return vo;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
-
-        //取出颜色
-        List<SinglePropVO> colorVOS = vos.stream().filter(singlePropVO -> isColorMap.get(singlePropVO.getPid()) == 1)
-                .collect(Collectors.toList());
-        //如果不存在颜色,添加一个"图片色"
-        if (colorVOS.size() == 0 && isColorMap.size() > 0 && colors.size() > 0) {
-            try {
-                SinglePropVO vo = new SinglePropVO();
-                vo.setPid(isColorMap.entrySet().stream().filter(longIntegerEntry -> longIntegerEntry.getValue() == 1)
-                        .findFirst().get().getKey());
-                vo.setInputName("图片色");
-                colorVOS.add(vo);
-            } catch (Exception e) {
-            }
-        }
-        //取出尺码
-        List<SinglePropVO> sizeVOS = vos.stream().filter(singlePropVO -> isColorMap.get(singlePropVO.getPid()) != 1)
-                .collect(Collectors.toList());
-        //如果没有尺码,添加一个"均码"
-        if (sizeVOS.size() == 0 && isColorMap.size() > 0 && sizes.size() > 0) {
-            try {
-                SinglePropVO vo = new SinglePropVO();
-                vo.setPid(isColorMap.entrySet().stream().filter(longIntegerEntry -> longIntegerEntry.getValue() != 1)
-                        .findFirst().get().getKey());
-                vo.setInputName("均码");
-                sizeVOS.add(vo);
-            } catch (Exception e) {
-            }
-        }
-        //获取剩余的颜色
-        Map<Long, TaobaoPropValue> surplusColors = new HashMap<>(colors);
-        colorVOS.forEach(singlePropVO -> {
-            if (singlePropVO.getInputName() == null) {
-                surplusColors.remove(singlePropVO.getVid());
-            }
-        });
-        //获取剩余尺码
-        Map<Long, TaobaoPropValue> surplusSizes = new HashMap<>(sizes);
-        sizeVOS.forEach(singlePropVO -> {
-            if (singlePropVO.getInputName() == null) {
-                surplusSizes.remove(singlePropVO.getVid());
-            }
-        });
-
-        //转化自定义颜色
-        colorVOS.forEach(singlePropVO -> {
-            if (singlePropVO.getInputName() != null) {
-                if (surplusColors.size() > 0) {
-                    inputDeal(singlePropVO, surplusColors);
-                }
-            }
-        });
-        //转化自定义尺码
-        sizeVOS.forEach(singlePropVO -> {
-            if (singlePropVO.getInputName() != null) {
-                if (surplusSizes.size() > 0) {
-                    inputDeal(singlePropVO, surplusSizes);
-                }
-            }
-        });
-        //转化为写入数据库对象
-        List<SingleSkuBO> skuVOS = new ArrayList<>();
-        if (colorVOS.size() > 0) {
-            colorVOS.forEach(c -> {
-                if (sizeVOS.size() > 0) {
-                    sizeVOS.forEach(s -> {
-                        SingleSkuBO v = new SingleSkuBO();
-                        v.setColorVid(c.getVid());
-                        v.setColorAlias(c.getAliasName());
-                        v.setSizeVid(s.getVid());
-                        v.setSizeAlias(s.getAliasName());
-                        v.setStockNum(999);
-                        skuVOS.add(v);
-                    });
-                } else {
-                    SingleSkuBO v = new SingleSkuBO();
-                    v.setColorVid(c.getVid());
-                    v.setColorAlias(c.getAliasName());
-                    v.setSizeVid(0L);
-                    v.setSizeAlias("均码");
-                    v.setStockNum(999);
-                    skuVOS.add(v);
-                }
-
-            });
-        } else {
-            if (sizeVOS.size() > 0) {
-                sizeVOS.forEach(s -> {
-                    SingleSkuBO v = new SingleSkuBO();
-                    v.setColorVid(0L);
-                    v.setColorAlias("图片色");
-                    v.setSizeVid(s.getVid());
-                    v.setSizeAlias(s.getAliasName());
-                    v.setStockNum(999);
-                    skuVOS.add(v);
-                });
-            } else {
-                SingleSkuBO v = new SingleSkuBO();
-                v.setColorVid(0L);
-                v.setColorAlias("图片色");
-                v.setSizeVid(0L);
-                v.setSizeAlias("均码");
-                v.setStockNum(999);
-                skuVOS.add(v);
-            }
-
-        }
-
-        return skuVOS;
-    }
-
-    private void inputDeal(SinglePropVO singlePropVO, Map<Long, TaobaoPropValue> surplus) {
-        List<TaobaoPropValue> taobaoPropValues = surplus.values().stream()
-                .filter(taobaoPropValue1 -> taobaoPropValue1.getName().equals(singlePropVO.getInputName()))
-                .collect(Collectors.toList());
-        TaobaoPropValue taobaoPropValue;
-        if (taobaoPropValues.size() == 0) {
-            taobaoPropValue = surplus.values().stream().findFirst().get();
-        } else {
-            taobaoPropValue = taobaoPropValues.get(0);
-        }
-        singlePropVO.setAliasName(singlePropVO.getInputName());
-        singlePropVO.setVid(taobaoPropValue.getVid());
-        singlePropVO.setVname(taobaoPropValue.getName());
-        singlePropVO.setPid(taobaoPropValue.getPid());
-        singlePropVO.setPname(taobaoPropValue.getPropName());
-        singlePropVO.setInputName(null);
-        surplus.remove(taobaoPropValue.getVid());
-    }
-
-    /**
-     * 尝试用vname匹配属性值,如果匹配上,这直接使用改属性值替换原来的别名或自定义名
-     *
-     * @param map
-     * @param name
-     * @param vo
-     * @return
-     */
-    private boolean dealValueByName(Map<Long, TaobaoPropValue> map, String name, SinglePropVO vo) {
-        if (map.values().stream().map(TaobaoPropValue::getName).collect(Collectors.toSet()).contains(name)) {
-            TaobaoPropValue tv = map.values().stream().filter(taobaoPropValue -> taobaoPropValue.getName().equals(name))
-                    .findFirst().get();
-            vo.setVid(tv.getVid());
-            vo.setVname(tv.getName());
-            map.remove(tv.getVid());
-            return true;
-        }
-        return false;
-    }
 
     //----------------------get/set------------------------//
     public Long getGoodsId() {

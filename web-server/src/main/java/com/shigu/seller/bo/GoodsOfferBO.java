@@ -1,5 +1,8 @@
 package com.shigu.seller.bo;
 
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.seller.services.DataPackageImportService;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -112,6 +116,9 @@ public class GoodsOfferBO implements Serializable{
      * 商品id
      */
     private String goodsId;
+
+
+    private List<String> skuSpecs;
 
     public String getGoodsId() {
         return goodsId;
@@ -273,8 +280,8 @@ public class GoodsOfferBO implements Serializable{
      * 转化成标准对象
      * @return
      */
-    public SynItem parseToSynItem(DataPackageImportService dataPackageImportService){
-        SynItem synItem=new SynItem();
+    public NewPushSynItemBO parseToSynItem(DataPackageImportService dataPackageImportService){
+        NewPushSynItemBO synItem=new NewPushSynItemBO();
         synItem.setPicUrl(dataPackageImportService.banjia(picPath));
         List<String> allImgUrl=new ArrayList<>();
         if(this.picPath!=null){
@@ -313,6 +320,35 @@ public class GoodsOfferBO implements Serializable{
         synItem.setFabric(this.getFabric());
         synItem.setInFabric(this.getInFabric());
         synItem.setGoodsNo(this.getGoodsNo());
+
+        List<SingleSkuBO> singleSkus=new ArrayList<>();
+        for(String skuSpec:skuSpecs){
+            String[] cs=skuSpec.split("-");
+            String[] colorStrs=cs[0].split("_");
+            String[] sizeStrs=cs[1].split("_");
+            String piPriceString= MoneyUtil.dealPrice(MoneyUtil.StringToLong(cs[2]));
+            Integer num=new Integer(cs[3]);
+            SingleSkuBO sbo=new SingleSkuBO();
+            sbo.setPriceString(piPriceString);
+            sbo.setStockNum(num);
+            sbo.setColorVid(new Long(colorStrs[1]));
+            sbo.setColorAlias(colorStrs[2]);
+            sbo.setSizeVid(new Long(sizeStrs[1]));
+            sbo.setSizeAlias(sizeStrs[2]);
+            singleSkus.add(sbo);
+        }
+        synItem.setSingleSkus(singleSkus);
+
+
+
         return synItem;
+    }
+
+    public List<String> getSkuSpecs() {
+        return this.skuSpecs;
+    }
+
+    public void setSkuSpecs(List<String> skuSpecs) {
+        this.skuSpecs = skuSpecs;
     }
 }
