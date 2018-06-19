@@ -15,6 +15,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.enums.RankingPeriodEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.StarCaculateService;
@@ -402,6 +403,54 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
             return null;
         }
     }
+
+    /**
+     * 用户对某件商品的最后一次上传时间
+     * @param userId
+     * @param supperGoodsId
+     * @return
+     */
+    @Override
+    public LastUploadedVO selLastUpByIds(Long userId, Long supperGoodsId,GoodsUploadFlagEnum flag) {
+        if(userId == null || supperGoodsId == null){
+            return null;
+        }
+        try {
+            SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+            BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+            QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
+            boleanQueryBuilder.must(query);
+            BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
+            QueryBuilder flagQuery=QueryBuilders.termQuery("flag",flag);
+            flagbool.should(flagQuery);
+            flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
+            flagbool.minimumNumberShouldMatch(1);
+            boleanQueryBuilder.must(flagbool);
+            QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
+            boleanQueryBuilder.must(queryGoods);
+            QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
+            boleanQueryBuilder.must(stautsQuery);
+            srb.addSort("daiTime", SortOrder.DESC);
+            srb.setSize(1);
+            srb.setQuery(boleanQueryBuilder);
+            SearchResponse response = srb.execute().actionGet();
+            SearchHit[] hits = response.getHits().getHits();
+            if (hits == null || hits.length == 0) {
+                return null;
+            }
+            SearchHit hit = hits[0];
+            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+            Date daitime = DateUtil.stringToDate(shiguGoodsUp.getDaiTime(),DateUtil.patternD);
+            LastUploadedVO vo=new LastUploadedVO();
+            vo.setLastTime(daitime);
+            vo.setNumIid(shiguGoodsUp.getFenNumiid());
+            return vo;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
 
     /**
      * 查询已上传的宝贝

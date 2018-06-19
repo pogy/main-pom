@@ -46,6 +46,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.shigu.common</groupId>
+            <artifactId>pinduoduo-sdk</artifactId>
+            <version>${pinduoduo-sdk.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>sites.main</groupId>
             <artifactId>jdimg-sdk</artifactId>
             <version>${jdimg-sdk.version}</version>
