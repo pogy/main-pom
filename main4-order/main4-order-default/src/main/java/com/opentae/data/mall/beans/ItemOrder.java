@@ -89,14 +89,19 @@ public class ItemOrder implements Serializable {
 	private Date sendTime;
 
     /**
+     * 
+     */
+	private Boolean tbSend;
+
+    /**
      * 支付时间
      */
 	private Date payTime;
 
     /**
-     * 是否已设置淘宝发货,0:未设置,1:已设置
+     * 订单终端来源 1:PC 2:APP 3:WAP 4:WX
      */
-	private Boolean tbSend;
+	private Integer orderFrom;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -240,6 +245,14 @@ public class ItemOrder implements Serializable {
 
 	public Date getPayTime() {
 		return this.payTime;
+	}
+
+	public void setOrderFrom(Integer orderFrom) {
+		this.orderFrom = orderFrom;
+	}
+
+	public Integer getOrderFrom() {
+		return this.orderFrom;
 	}
 
 }

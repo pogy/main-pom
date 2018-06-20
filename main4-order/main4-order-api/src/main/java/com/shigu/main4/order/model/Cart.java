@@ -58,4 +58,11 @@ public interface Cart{
      * @return 产品列表
      */
     <T extends ProductVO> List<T> listProduct();
+
+    /**
+     * 根据子订单id集合获取购物车内部分产品
+     * @param <T> 具体产品类型
+     * @return 产品列表
+     */
+    <T extends ProductVO> List<T> listSomeProduct(String childCartIds);
 }

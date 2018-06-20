@@ -27,6 +27,11 @@ public class SubOrderSoidps implements Serializable {
      */
 	private Boolean alreadyRefund;
 
+    /**
+     * 
+     */
+	private Boolean downIs;
+
 	public void setSoidpId(Long soidpId) {
 		this.soidpId = soidpId;
 	}
@@ -57,6 +62,14 @@ public class SubOrderSoidps implements Serializable {
 
 	public Boolean getAlreadyRefund() {
 		return this.alreadyRefund;
+	}
+
+	public void setDownIs(Boolean downIs) {
+		this.downIs = downIs;
+	}
+
+	public Boolean getDownIs() {
+		return this.downIs;
 	}
 
 }
