@@ -14,6 +14,14 @@ public interface ItemCartProcess {
 
     List<CartVO> someOneCart(Long userId);
 
+    /**
+     * 根据用户id 子订单Id 查询子订单
+     * @param userId
+     * @param childCartIds
+     * @return
+     */
+    List<CartVO> selByChildCartIds(Long userId,String childCartIds);
+
     int productNumbers(Long userId);
 
     void modProductNumber(Long user, Long cid, Integer number) throws CartException;

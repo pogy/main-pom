@@ -117,7 +117,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @param townId
      * @return
      */
-    public boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId) {
+    @Override
+    public Boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId) {
         List<CantSendVO> cantSendVOS = redisIO.getList("CANT_SEND_AREAS", CantSendVO.class);
         if (cantSendVOS == null) {
             return false;
@@ -181,7 +182,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
+        if (orderBO.getOrderFrom() != null ) {
+            order.setOrderFrom(orderBO.getOrderFrom());
+        }
         order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
+
         itemOrderMapper.insertSelective(order);
 
         // 获取订单操作接口
@@ -364,6 +369,19 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public void rmBuyerAddress(Long addressId) {
         buyerAddressMapper.deleteByPrimaryKey(addressId);
     }
+
+    /**
+     * 删除地址
+     * @param addressIds
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void rmBuyerAddressByAddressIds(List<Long> addressIds,Long userId){
+        BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
+        buyerAddressExample.createCriteria().andUserIdEqualTo(userId).andAddressIdIn(addressIds);
+        buyerAddressMapper.deleteByExample(buyerAddressExample);
+    }
+
 
     /**
      * 查询订单的物流信息
