@@ -83,7 +83,7 @@ public class ConfirmOrderService {
     @Autowired
     private ItemProductProcess itemProductProcess;
 
-
+    private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
 
     /**
      * 订单确认提交
@@ -342,7 +342,7 @@ public class ConfirmOrderService {
      * @param totalWeight
      * @return
      */
-    public OtherCostVO getOtherCost(Long companyId, String provId, String eachShopNum, Long totalWeight, String senderId,Long userId) throws JsonErrException, LogisticsRuleException {
+    public OtherCostVO getOtherCost(Long companyId, String provId, String eachShopNum, Long totalWeight, String senderId, Long userId) throws JsonErrException, LogisticsRuleException {
         ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
         boolean isDaifa = sender.getType() == 1;
 
@@ -369,7 +369,7 @@ public class ConfirmOrderService {
 //            throw new JsonErrException("未查询到快递信息");
 //        }
         Boolean discounts = false;
-        Long postPrice = logisticsService.calculate(userId,new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId),discounts);
+        Long postPrice = logisticsService.calculate(userId, new Long(provId), companyId, goodsNumber, totalWeight, new Long(senderId), discounts);
         OtherCostVO otherCostVO = new OtherCostVO();
         otherCostVO.setPostPrice(postPrice);//元转分
         List<ServiceInfosTextVO> serviceInfosText = new ArrayList<>();
@@ -393,6 +393,7 @@ public class ConfirmOrderService {
 
     /**
      * 淘宝批量下单获取整合信息
+     *
      * @param tbTrades
      * @param senderId
      * @return
@@ -406,7 +407,7 @@ public class ConfirmOrderService {
         Map<Long, Integer> marketNumMap = new HashMap<>();
         for (OrderSubmitVo t : tbTrades) {
             for (CartVO cart : t.getProducts()) {
-                goodsTotalPrice += cart.getPrice()*cart.getNum();
+                goodsTotalPrice += cart.getPrice() * cart.getNum();
                 goodsNum += cart.getNum();
                 Integer marketNum = marketNumMap.get(cart.getMarketId());
                 if (marketNum == null) {
@@ -430,45 +431,47 @@ public class ConfirmOrderService {
 
     /**
      * 淘宝批量下单获取快递费
+     *
      * @param tbTrades
      * @param senderId
      * @param postId
      * @return
      * @throws LogisticsRuleException
      */
-    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId,Long userId) throws LogisticsRuleException {
-        long postPrice=0L;
+    public Long confirmTbBatchOrderPostFee(List<OrderSubmitVo> tbTrades, Long senderId, Long postId, Long userId) throws LogisticsRuleException {
+        long postPrice = 0L;
         Boolean discounts = false;
         for (OrderSubmitVo t : tbTrades) {
             BuyerAddressVO buyerAddress = redisIO.get("tmp_buyer_address_" + t.getTbOrderAddressInfo().getAddressId(), BuyerAddressVO.class);
-            postPrice += logisticsService.calculate(userId,buyerAddress.getProvId(), postId,
+            postPrice += logisticsService.calculate(userId, buyerAddress.getProvId(), postId,
                     t.getProducts().stream().mapToInt(CartVO::getNum).sum(),
-                    null, senderId,discounts);
+                    null, senderId, discounts);
             discounts = false;
         }
         return postPrice;
     }
+
     /**
      * 淘宝批量下单确认提交
      *
      * @param bo
      */
     @Transactional(rollbackFor = Exception.class)
-    public String confirmTbBatchOrders(ConfirmMoreTbBO bo, Long userId,List<OrderSubmitVo> tbTrades) throws JsonErrException {
+    public String confirmTbBatchOrders(ConfirmMoreTbBO bo, Long userId, List<OrderSubmitVo> tbTrades) throws JsonErrException {
         String code = bo.getIdCode();
-        List<ItemOrderBO> items=new ArrayList<>();
-        for(OrderSubmitVo orderSubmitVo:tbTrades) {
-            ConfirmBO b=new ConfirmBO();
+        List<ItemOrderBO> items = new ArrayList<>();
+        for (OrderSubmitVo orderSubmitVo : tbTrades) {
+            ConfirmBO b = new ConfirmBO();
             b.setSenderId(bo.getSenderId());
             b.setAddressId(orderSubmitVo.getTbOrderAddressInfo().getAddressId());
             b.setCourierId(bo.getPostId());
             b.setOrders(orderSubmitVo.getProducts().stream().collect(Collectors.groupingBy(CartVO::getShopId))
                     .entrySet().stream().map(longListEntry -> {
-                        ConfirmOrderBO c=new ConfirmOrderBO();
+                        ConfirmOrderBO c = new ConfirmOrderBO();
                         c.setOrderId(longListEntry.getKey().toString());
                         c.setShopId(longListEntry.getKey());
                         c.setChildOrders(longListEntry.getValue().stream().map(cartVO -> {
-                            ConfirmSubOrderBO cn=new ConfirmSubOrderBO();
+                            ConfirmSubOrderBO cn = new ConfirmSubOrderBO();
                             cn.setId(cartVO.getCartId().toString());
                             cn.setNum(cartVO.getNum());
                             return cn;
@@ -480,7 +483,8 @@ public class ConfirmOrderService {
                 throw new JsonErrException("只能操作本用户下的订单");
             }
             items.add(itemOrderBO);
-        };
+        }
+        ;
         List<Long> oids;
         try {
             oids = itemOrderService.createOrders(items);
@@ -492,6 +496,46 @@ public class ConfirmOrderService {
         String uuid = UUIDGenerator.getUUID();
         redisIO.putTemp(uuid, oids, 600);
         return uuid;
+    }
+
+    public String getArea() {
+        List<OrderProv> orderProvs = orderProvMapper.select(new OrderProv());
+        if (orderProvs == null || orderProvs.size() <= 0)
+            return "";
+        List<ProvVo> provVoList = new ArrayList<>();
+        for (OrderProv orderProv : orderProvs) {
+            ProvVo provVo = new ProvVo();
+            provVo.setProvId(orderProv.getProvId());
+            provVo.setProvText(orderProv.getProvName());
+            provVo.setCitys(new ArrayList<CityVo>());
+            provVoList.add(provVo);
+            OrderCity orderCity = new OrderCity();
+            orderCity.setProvId(orderProv.getProvId());
+            List<OrderCity> orderCitys = orderCityMapper.select(orderCity);
+            if (orderCitys != null || orderCitys.size() > 0) {
+                for (OrderCity city : orderCitys) {
+                    CityVo cityVo = new CityVo();
+                    cityVo.setCityId(city.getCityId());
+                    cityVo.setCityText(city.getCityName());
+                    cityVo.setCountys(new ArrayList<TownVo>());
+                    provVo.getCitys().add(cityVo);
+                    OrderTown orderTown = new OrderTown();
+                    orderTown.setCityId(city.getCityId());
+                    List<OrderTown> orderTowns = orderTownMapper.select(orderTown);
+                    if (orderTowns != null || orderTowns.size() > 0) {
+                        for (OrderTown town : orderTowns) {
+                            TownVo townVo = new TownVo();
+                            townVo.setCountyId(town.getTownId());
+                            townVo.setCountyText(town.getTownName());
+                            cityVo.getCountys().add(townVo);
+                        }
+                    }
+                }
+            }
+        }
+        String date = JSONArray.fromObject(provVoList).toString();
+        redisIO.put(ORDER_EXPRESS_ADDRESS, date);
+        return date;
     }
 
 }
