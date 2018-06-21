@@ -47,4 +47,6 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     List<DfGoodsVo> getDropShippingGoods(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo,@Param("start")Integer start,@Param("end")Integer end);
     Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
 
+    Long selectUserIdByOid(@Param("oid") Long oid);
+
 }

@@ -18,12 +18,28 @@ public class CateNav implements Serializable{
         this.text = text;
         this.keyword = keyword;
     }
+    public CateNav(String id, String text, String keyword,String cname) {
+        this.id = id;
+        this.text = text;
+        this.keyword = keyword;
+        this.cname = cname;
+    }
 
     private String id;
 
     private String text;
 
+    private String cname;
+
     private String keyword;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
 
     public String getKeyword() {
         return keyword;

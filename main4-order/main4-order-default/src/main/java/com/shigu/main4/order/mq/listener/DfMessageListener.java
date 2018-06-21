@@ -5,10 +5,15 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
+import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ShiguOrderCashback;
 import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.SubOrderSoidpsExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.interfaces.ShiguOrderCashbackMapper;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
@@ -19,10 +24,13 @@ import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
+import com.shigu.main4.order.vo.OrderSubMoney;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +67,7 @@ public class DfMessageListener implements MessageListener {
     @Autowired
     private OrderMessageProducter orderMessageProducter;
 
+
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
 
@@ -75,6 +84,9 @@ public class DfMessageListener implements MessageListener {
         after_sale_accept(AfterSaleAcceptMessage.class),
 
         have_time(HaveTimeMessage.class),
+
+        mark_down(MarkDownMessage.class),
+
         ;
         public final Class<?> clazz;
 
@@ -128,8 +140,24 @@ public class DfMessageListener implements MessageListener {
             case have_time:
                 haveTime(baseMessage);
                 break;
+            case mark_down:
+                makeDown(baseMessage);
+                break;
+            default:{
+                logger.info(message.getTag()+">>>>>>>>>");
+            }
+
         }
         return Action.CommitMessage;
+    }
+
+    public void makeDown(BaseMessage<MarkDownMessage> baseMessage) {
+        logger.info("soidpid>>>>>>>"+baseMessage.getData().getOrderPartitionId());
+        //更新sub_order_soidps#down_is
+        SubOrderSoidps subOrderSoidps = new SubOrderSoidps();
+        subOrderSoidps.setDownIs(true);
+        subOrderSoidps.setSoidpId(baseMessage.getData().getOrderPartitionId());
+        subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
     }
 
     public synchronized void refundAgree(BaseMessage<RefundMessage> msg) {

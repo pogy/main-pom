@@ -34,9 +34,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -64,6 +66,10 @@ public class ConfirmOrderAction {
     private OrderOptionSafeService orderOptionSafeService;
     @Autowired
     LogisticsService logisticsService;
+
+    private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
+    private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
+    private static String ORDER_EXPRESS_VERSION = "order_express_version";
     /**
      * 订单确认提交
      * @param request
@@ -109,7 +115,21 @@ public class ConfirmOrderAction {
             bo.setSenderId(Long.valueOf(senderInfoVO.getId()));
             senderInfoVO.setChecked(true);
         }
-
+        String version = redisIO.get(ORDER_EXPRESS_VERSION,String.class);
+        if (StringUtils.isBlank(version)){
+            Long time = System.currentTimeMillis();
+            redisIO.put(ORDER_EXPRESS_VERSION,time.toString());
+            model.addAttribute("linkageVersion", time.toString());
+        }else{
+            String address = redisIO.get(ORDER_EXPRESS_ADDRESS,String.class);
+            if (StringUtils.isBlank(address)){
+                Long time = System.currentTimeMillis();
+                redisIO.put(ORDER_EXPRESS_VERSION,time.toString());
+                model.addAttribute("linkageVersion", time.toString());
+            }else {
+                model.addAttribute("linkageVersion",version);
+            }
+        }
         // 商品信息
         List<CartOrderVO> vos = cartService.packCartProductVo(orderSubmitVo.getProducts()).getOrders();
         //极限词过滤
@@ -125,6 +145,31 @@ public class ConfirmOrderAction {
         return "order/confirmOrder";
     }
 
+    @RequestMapping("getAreaData")
+    @ResponseBody
+    public JSONObject getAreaData(HttpServletResponse response) {
+        response.setHeader("Content-type", "text/plain;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setDateHeader("expries", System.currentTimeMillis() + 1000 * 3600 * 24 * 20);
+        PrintWriter out = null;
+        String address = redisIO.get(ORDER_EXPRESS_ADDRESS,String.class);
+        if (StringUtils.isBlank(address)){
+            address = confirmOrderService.getArea();
+        }
+        try{
+            out = response.getWriter();
+            out.append("var areaData = ");
+            out.append(address);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+
+        return JsonResponseUtil.success();
+    }
     @ResponseBody
     @RequestMapping("deleteCollJson")
     public JSONObject deleteCollJson(Long id, HttpSession session) {
@@ -201,13 +246,21 @@ public class ConfirmOrderAction {
      */
     @ResponseBody
     @RequestMapping("getOtherCost")
-    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId) throws JsonErrException, LogisticsRuleException {
-        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId);
+    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId,HttpSession session) throws JsonErrException, LogisticsRuleException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        Long freePostCost = 0l;
+        if (activity) {
+            if (logisticsService.isMinusFreight(ps.getUserId(), null))
+                freePostCost = otherCostVO.getPostPrice() > 500 ? 500 : otherCostVO.getPostPrice();
+        }
         return JsonResponseUtil
                     .success()
                     .element("postPrice",otherCostVO.getPostPrice())
                     .element("servicePrice",otherCostVO.getServicePrice())
-                    .element("serviceInfosText",otherCostVO.getServiceInfosText());
+                    .element("serviceInfosText",otherCostVO.getServiceInfosText())
+                    .element("freePostCost",freePostCost);
     }
 
     /**
@@ -265,7 +318,14 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        return JsonResponseUtil.success().element("postTotalPrice", MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades,bo.getSenderId(),bo.getPostId())));
+        Double freePostCost=0.00;
+        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades, bo.getSenderId(), bo.getPostId(), sessionUser.getUserId()));
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        if (activity) {
+            if (logisticsService.isMinusFreight(sessionUser.getUserId(), null))
+                freePostCost = Double.valueOf(postTotalPrice) > Double.valueOf(5.00) ? Double.valueOf(5.00) : Double.valueOf(postTotalPrice);
+        }
+        return JsonResponseUtil.success().element("postTotalPrice",postTotalPrice).element("freePostCost",freePostCost.toString());
     }
 
     /**

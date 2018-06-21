@@ -53,4 +53,5 @@
     <dubbo:service interface="com.shigu.main4.storeservices.SearchCategoryService" ref="searchCategoryService" retries="0" timeout="20000" />
 
     <dubbo:service interface="com.shigu.main4.storeservices.FlickrManageService" ref="FlickrManageService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopCategoryClassifyService" ref="ShopCategoryClassifyService" retries="0" timeout="20000" />
 </beans>

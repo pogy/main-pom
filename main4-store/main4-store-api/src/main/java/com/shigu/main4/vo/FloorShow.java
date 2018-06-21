@@ -21,6 +21,10 @@ public class FloorShow implements Serializable{
      */
     private String showName;
     /**
+     * 额外楼层名
+     */
+    private String otherName;
+    /**
      * 排序好的店铺信息
      */
     private List<ShopShow> shops;
@@ -55,5 +59,19 @@ public class FloorShow implements Serializable{
 
     public void setShops(List<ShopShow> shops) {
         this.shops = shops;
+    }
+
+    /**
+     * 获取 额外楼层名
+     */
+    public String getOtherName() {
+        return this.otherName;
+    }
+
+    /**
+     * 设置 额外楼层名
+     */
+    public void setOtherName(String otherName) {
+        this.otherName = otherName;
     }
 }

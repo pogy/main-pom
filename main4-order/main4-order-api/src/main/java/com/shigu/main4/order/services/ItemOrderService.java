@@ -25,11 +25,22 @@ public interface ItemOrderService {
      * @return
      */
     Long idGenerator(OrderType type);
+
     /**
-     * 创建订单
-     * @param orderBO
+     * 根据省市县以及快递id判断该区域是否支持改快递
+     * @param companyId
+     * @param townId
+     * @param cityId
+     * @param provId
      * @return
      */
+    Boolean someAreaCantSend(Long companyId, Long townId, Long cityId, Long provId);
+
+        /**
+         * 创建订单
+         * @param orderBO
+         * @return
+         */
     Long createOrder(ItemOrderBO orderBO) throws OrderException;
 
     /**
@@ -47,7 +58,7 @@ public interface ItemOrderService {
      * @param provId 省份ID
      * @return
      */
-    Long calculateLogisticsFee(Long senderId,Long companyId,Long provId,List<PidNumBO> pids) throws OrderException;
+    Long calculateLogisticsFee(Long userId,Long oId,Long senderId,Long companyId,Long provId,List<PidNumBO> pids) throws OrderException;
 
     /**
      * 查询买家有的地址
@@ -67,6 +78,12 @@ public interface ItemOrderService {
      * @param addressId
      */
     void rmBuyerAddress(Long addressId);
+
+    /**
+     * 删除地址
+     * @param addressIds
+     */
+    void rmBuyerAddressByAddressIds(List<Long> addressIds,Long userId);
 
     /**
      * 查询订单的物流信息
