@@ -631,9 +631,8 @@ public class MemberAction {
         userInfoUpdate.setUserId(ps.getUserId());
         try {
             userBaseService.updateUserInfo(userInfoUpdate);
-            PersonalSession personalSession=(PersonalSession)session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            personalSession.setUserNick(userInfoUpdate.getUserNick());
-            redisIO.put("session_user_redis__",personalSession);
+            ps.setUserNick(bo.getName());
+            redisIO.put("session_user_redis__",ps);
         } catch (UpdateUserInfoException e) {
             return JsonResponseUtil.error(e.getMessage());
         }
