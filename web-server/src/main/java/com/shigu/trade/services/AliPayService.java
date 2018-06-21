@@ -1,5 +1,6 @@
 package com.shigu.trade.services;
 
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
 import org.slf4j.Logger;
@@ -34,7 +35,8 @@ public class AliPayService {
         String tradeNo=paramsMapAli.get("trade_no");
         String totalAmount = paramsMapAli.get("total_amount");
         String buyerId = paramsMapAli.get("buyer_id");
-        Long totalFee = ((Double) (Double.valueOf(totalAmount.replaceAll("[$￥,]", "")) * 100.0)).longValue();
+//        Long totalFee = ((Double) (Double.valueOf(totalAmount.replaceAll("[$￥,]", "")) * 100.0)).longValue();
+        Long totalFee = MoneyUtil.StringToLong(totalAmount.replaceAll("[$￥,]", ""));
 
         payerService.paySure(Long.valueOf(outTradeNo), tradeNo, buyerId, totalFee);
     }

@@ -43,6 +43,11 @@
     <dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" retries="0" timeout="20000" />
 
+    <dubbo:service interface="com.shigu.main4.item.processes.TaobaoAuthProcess" ref="taobaoAuthProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.processes.TaobaoItemSelProcess" ref="taobaoItemSelProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.processes.TaobaoItemSynProcess" ref="taobaoItemSynProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.processes.TaobaoAddItemProcess" ref="taobaoAddItemProcess" retries="0" timeout="20000" />
+
 
     <dubbo:service interface="com.shigu.main4.item.newservice.NewItemAddOrUpdateService" ref="newItemAddOrUpdateService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.newservice.NewShowForCdnService" ref="newShowForCdnService" retries="0" timeout="20000" />

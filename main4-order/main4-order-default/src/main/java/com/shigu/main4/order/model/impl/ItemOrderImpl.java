@@ -1,5 +1,7 @@
 package com.shigu.main4.order.model.impl;
 
+import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
+import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
@@ -24,12 +26,16 @@ import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.tools.XzSdkClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +79,14 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private  XzSdkClient xzSdkClient;
+
+    @Autowired
+    private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
+
+    private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
 
     /**
@@ -420,6 +434,40 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public void finished() {
         changeStatus(OrderStatus.TRADE_FINISHED);
+        Date date = itemOrderMapper.selectByPrimaryKey(oid).getPayTime();
+        if (date.getTime() - 1527782400000L > 0){
+            Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
+            if (b != null && b) {
+                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
+                request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(oid));
+                request.setCashbackOrderNo(oid);
+                List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(oid);
+                Long money = 0l;
+                if (orderSubMoneyList != null || orderSubMoneyList.size() > 0) {
+                    for (int i = 0; i < orderSubMoneyList.size(); i++) {
+                        money = orderSubMoneyList.get(i).getNum() * orderSubMoneyList.get(i).getPrice() + money;
+                    }
+                    Long refund = itemOrderSubMapper.selectRefundByOid(oid);
+                    if (refund != null && refund > 0)
+                        money = money - refund;
+                }
+                if (money > 0) {
+                    request.setCashbackAmount(money / 100);
+                    ShiguOrderCashback shiguOrderCashback = new ShiguOrderCashback();
+                    shiguOrderCashback.setOId(oid);
+                    shiguOrderCashback.setCashback(money / 100);
+                    shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
+                    OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                    if (resp == null || !resp.isSuccess()) {
+                        try {
+                            throw new RefundException("订单返现失败：oid=" + oid);
+                        } catch (RefundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -482,4 +530,5 @@ public class ItemOrderImpl implements ItemOrder {
             redisIO.rpush(TradeCountDTO.TRADE_COUNT_REDIS_QUEUE_,tradeCountDTO);
         }
     }
+
 }

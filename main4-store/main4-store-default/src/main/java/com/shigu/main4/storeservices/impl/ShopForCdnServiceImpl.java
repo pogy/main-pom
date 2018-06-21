@@ -82,6 +82,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Autowired
     private RedisIO redisIO;
 
+    @Autowired
+    private ShiguGysCustomCategoryMapper shiguGysCustomCategoryMapper;
+
     // 店铺风格处理队列redis标签
     private static final String SHOP_STYLE_HANDLER_QUEUE_INDEX = "shop_style_handler_queue_";
 
@@ -95,7 +98,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Override
     public List<ShopCat> selShopCatsById(Long shopId) {
         Cache shopCatCache = cacheManager.getCache("shopCatCache");
-
+        Integer syntaobao = 1;
+        ShiguShop shop = shiguShopMapper.selectByPrimaryKey(shopId);
+        if ("qz".equals(shop.getWebSite()) || "hz".equals(shop.getWebSite())){
+            syntaobao = shop.getType();
+        }
         //确定该cache保存的类型正确
         @SuppressWarnings("unchecked")
         List<ShopCat> shopCats = (List<ShopCat>) shopCatCache.get(shopId, List.class);
@@ -103,49 +110,63 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
             //1. 查询数据库
             shopCats = new ArrayList<>();
-            ShiguStorecatExample catExample = new ShiguStorecatExample();
-            catExample.createCriteria().andStoreIdEqualTo(shopId);
-            List<ShiguStorecat> shiguStorecats = storeCatMapper.selectByExample(catExample);
+            if (syntaobao==1) {
+                ShiguStorecatExample catExample = new ShiguStorecatExample();
+                catExample.createCriteria().andStoreIdEqualTo(shopId);
+                List<ShiguStorecat> shiguStorecats = storeCatMapper.selectByExample(catExample);
 
-            //  父类ID， 子类集合    暂存子类目集合
-            Map<Long, List<ShopCat>> catMap = new TreeMap<>();
-            //2. 构造数据
-            for (ShiguStorecat shiguStorecat : shiguStorecats) {
-                ShopCat cat = new ShopCat();
-                cat.setCid(shiguStorecat.getScid().toString());
-                cat.setName(shiguStorecat.getScName());
-                Integer sortOrder = shiguStorecat.getSortOrder();
-                if (sortOrder != null)
-                    cat.setSort(sortOrder);
+                //  父类ID， 子类集合    暂存子类目集合
+                Map<Long, List<ShopCat>> catMap = new TreeMap<>();
+                //2. 构造数据
+                for (ShiguStorecat shiguStorecat : shiguStorecats) {
+                    ShopCat cat = new ShopCat();
+                    cat.setCid(shiguStorecat.getScid().toString());
+                    cat.setName(shiguStorecat.getScName());
+                    Integer sortOrder = shiguStorecat.getSortOrder();
+                    if (sortOrder != null)
+                        cat.setSort(sortOrder);
 
-                boolean isParent = shiguStorecat.getIsParent()!=null&&shiguStorecat.getIsParent() == 1;
+                    boolean isParent = shiguStorecat.getIsParent() != null && shiguStorecat.getIsParent() == 1;
 
-                // 获取父类ID
-                Long parentScid = isParent ? shiguStorecat.getScid() : shiguStorecat.getParentScid();
+                    // 获取父类ID
+                    Long parentScid = isParent ? shiguStorecat.getScid() : shiguStorecat.getParentScid();
 
-                // 从Map中获取该父级类目的子类集合
-                List<ShopCat> sub = catMap.get(parentScid);
+                    // 从Map中获取该父级类目的子类集合
+                    List<ShopCat> sub = catMap.get(parentScid);
+                    if (sub == null) {
+                        sub = new ArrayList<>();
+                        catMap.put(parentScid, sub);
+                    }
 
-                if (sub == null) {
-                    sub = new ArrayList<>();
-                    catMap.put(parentScid, sub);
+                    if (isParent) {
+                        // 从Map中接管 子类目集合引用
+                        cat.setSubCats(sub);
+                        // 如果是父级类目，添加到结果集shopCats
+                        shopCats.add(cat);
+                    } else {
+                        // 暂存入Map中
+                        sub.add(cat);
+                    }
+                } // shiguStorecats loop:
+
+                // 3. 父级以及父级下面的子级，都要按这个顺序排序
+                Collections.sort(shopCats);
+                for (ShopCat shopCat : shopCats)
+                    Collections.sort(shopCat.getSubCats());
+            }else {
+                ShiguGysCustomCategory customCategory = new ShiguGysCustomCategory();
+                customCategory.setSId(shopId);
+                customCategory.setGcStatus(1);
+                List<ShiguGysCustomCategory> cates = shiguGysCustomCategoryMapper.select(customCategory);
+                if (cates != null && cates.size() > 0){
+                    for (int i = 0; i <cates.size() ; i++) {
+                        ShopCat shopCat = new ShopCat();
+                        shopCat.setCid(cates.get(i).getGcId().toString());
+                        shopCat.setName(cates.get(i).getGcName());
+                        shopCats.add(shopCat);
+                    }
                 }
-
-                if (isParent) {
-                    // 从Map中接管 子类目集合引用
-                    cat.setSubCats(sub);
-                    // 如果是父级类目，添加到结果集shopCats
-                    shopCats.add(cat);
-                } else {
-                    // 暂存入Map中
-                    sub.add(cat);
-                }
-            } // shiguStorecats loop:
-
-            // 3. 父级以及父级下面的子级，都要按这个顺序排序
-            Collections.sort(shopCats);
-            for (ShopCat shopCat : shopCats)
-                Collections.sort(shopCat.getSubCats());
+            }
 
             // 4. 缓存
             shopCatCache.put(shopId, shopCats);
@@ -640,6 +661,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         }
         if (searchQuery != null) {
             requestBuilder.setQuery(searchQuery);
+        }
+        if (shopId != null && shopForCdnBo.getDiyScid() != null){
+//            requestBuilder.setQuery(QueryBuilder.termSearch("gc_id",shopForCdnBo.getDiyScid().toString()));
+            requestBuilder.addFilter(FilterBuilder.number("gc_id",shopForCdnBo.getDiyScid()));
         }
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {

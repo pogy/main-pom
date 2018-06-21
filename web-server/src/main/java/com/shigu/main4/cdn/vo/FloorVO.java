@@ -12,6 +12,10 @@ public class FloorVO {
      */
     private String title;
     /**
+     * 额外标题
+     */
+    private String smTitle;
+    /**
      * 楼层中的店铺
      */
     private List<ShopInFloorVO> stores;
@@ -30,5 +34,19 @@ public class FloorVO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * 获取 额外标题
+     */
+    public String getSmTitle() {
+        return this.smTitle;
+    }
+
+    /**
+     * 设置 额外标题
+     */
+    public void setSmTitle(String smTitle) {
+        this.smTitle = smTitle;
     }
 }

@@ -47,7 +47,7 @@ public interface ItemOrderService {
      * @param provId 省份ID
      * @return
      */
-    Long calculateLogisticsFee(Long senderId,Long companyId,Long provId,List<PidNumBO> pids) throws OrderException;
+    Long calculateLogisticsFee(Long userId,Long oId,Long senderId,Long companyId,Long provId,List<PidNumBO> pids) throws OrderException;
 
     /**
      * 查询买家有的地址

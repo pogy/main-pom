@@ -215,7 +215,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/index")
-    public String index(Model model) {
+    public String index(HttpSession session,Model model) {
         // 分销商广告
         List<ImgBannerVO> imageGoat = spreadService.selImgBanners(SpreadEnum.BACK_SHOP).selReal();
         if (!imageGoat.isEmpty()) {
@@ -223,7 +223,82 @@ public class ShopAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
+
+        ShopSession shopSession = getShopSession(session);
+        //展示累计数据
+        List<EachAllDataVO> eachAllDataVOS = null;
+        try {
+            eachAllDataVOS = shopIndexDataService.eachAllDataList(shopSession.getShopId(),shopSession.getWebSite());
+        } catch (Exception e) {
+            e.printStackTrace();
+            eachAllDataVOS = new ArrayList<>();
+
+            EachAllDataVO todayViewDataVO = new EachAllDataVO();
+            todayViewDataVO.setText("今日访问");
+            todayViewDataVO.setNum("0");
+
+            EachAllDataVO todayDownloadDataVO = new EachAllDataVO();
+            todayDownloadDataVO.setText("今日下载");
+            todayDownloadDataVO.setNum("0");
+
+            EachAllDataVO totalDownloadDataVO = new EachAllDataVO();
+            totalDownloadDataVO.setText("累计下载");
+            totalDownloadDataVO.setNum("0");
+
+            EachAllDataVO followUserDataVO = new EachAllDataVO();
+            followUserDataVO.setText("关注用户");
+            followUserDataVO.setNum("0");
+
+            eachAllDataVOS.add(todayViewDataVO);
+            eachAllDataVOS.add(todayDownloadDataVO);
+            eachAllDataVOS.add(totalDownloadDataVO);
+            eachAllDataVOS.add(followUserDataVO);
+        }
+        //今日下载排行榜数据
+        List<DownlaodDataVO> todayDownlaodDataVOS = null;
+        try {
+            todayDownlaodDataVOS = shopIndexDataService.todayDownlaodDataList(shopSession.getShopId(),shopSession.getWebSite());
+        } catch (Exception e) {
+            e.printStackTrace();
+            todayDownlaodDataVOS = new ArrayList<>();
+        }
+
+        //一周访问排行榜数据
+        List<WeekReadDataVO> weekReadDataVOS = null;
+        try {
+            weekReadDataVOS = shopIndexDataService.weekReadDataList(shopSession.getShopId(),shopSession.getWebSite());
+        } catch (Exception e) {
+            e.printStackTrace();
+            weekReadDataVOS = new ArrayList<>();
+        }
+
+        //一周下载排行榜数据
+        List<DownlaodDataVO> weekDownlaodVOS = null;
+        try {
+            weekDownlaodVOS = shopIndexDataService.weekDownloadDataList(shopSession.getShopId(),shopSession.getWebSite());
+        } catch (Exception e) {
+            e.printStackTrace();
+            weekDownlaodVOS = new ArrayList<>();
+        }
+
+        model.addAttribute("eachAllDataList",eachAllDataVOS);
+        model.addAttribute("todayDownlaodList",todayDownlaodDataVOS);
+        model.addAttribute("weekReadList",weekReadDataVOS);
+        model.addAttribute("weekDownlaodList",weekDownlaodVOS);
         return "gys/index";
+    }
+
+    /**
+     * 获取访问下载数据
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("seller/getDownReadData")
+    @ResponseBody
+    public JSONObject getDownReadData(HttpSession session,Model model) {
+        ShopSession shopSession = getShopSession(session);
+        return JsonResponseUtil.success().element("lineData",shopIndexDataService.getDownReadData(shopSession.getShopId(),shopSession.getWebSite()));
     }
 
     /**
