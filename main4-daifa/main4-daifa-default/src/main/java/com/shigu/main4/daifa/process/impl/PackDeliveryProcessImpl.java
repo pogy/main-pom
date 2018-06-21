@@ -19,10 +19,12 @@ import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.utils.MQUtil;
+import com.shigu.main4.daifa.utils.WorkerMan;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.main4.daifa.vo.PrintExpressVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,11 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
 
     @Autowired
     private MQUtil mqUtil;
+
+    @Autowired
+    RedisIO redisIO;
+    @Autowired
+    WorkerMan workerMan;
 
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
@@ -299,35 +306,10 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
                 DaifaSendMqEnum.weightSet.getMessageTag(), jsonObject.toString());
 
     }
-
     @Override
     public void queryExpressCode(Long dfTradeId) throws DaifaException {
-        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(dfTradeId);
-        if(trade==null||trade.getSendStatus()==2){
-            return;
-        }
-        List<SubOrderExpressBO> list;
-        try {
-            list = cheackeSend(dfTradeId);
-        } catch (DaifaException e) {
-            return;
-        }
-        OrderExpressBO exbo=new OrderExpressBO();
-        exbo.setExpressName(trade.getExpressName());
-        exbo.setReceiverAddress(trade.getReceiverAddress());
-        exbo.setReceiverName(trade.getReceiverName());
-        exbo.setReceiverPhone(trade.getReceiverMobile()==null?trade.getReceiverPhone():trade.getReceiverMobile());
-        exbo.setTid(trade.getDfTradeId());
-        exbo.setList(list);
-        ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
-        try {
-            expressModel.callExpress(exbo);
-        } catch (DaifaException e) {
-            List<String> errMsgs=Arrays.asList("快递鸟内部错误码：207,错误信息：单号不足请及时充值");
-            if(errMsgs.contains(e.getMessage())){
-                throw new DaifaException(trade.getExpressName()+"单号不足",DaifaException.DEBUG);
-            }
-        }
+        redisIO.rpush("QueryExpressCodeThread",dfTradeId);
+        workerMan.start();
     }
 
     /**
@@ -335,7 +317,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
      * 如果可发,则返回因拿到的商品信息
      * @param dfTradeId
      */
-    private List<SubOrderExpressBO> cheackeSend(Long dfTradeId) throws DaifaException {
+    public List<SubOrderExpressBO> cheackeSend(Long dfTradeId) throws DaifaException {
         DaifaOrder tmpo=new DaifaOrder();
         tmpo.setDfTradeId(dfTradeId);
         List<DaifaOrder> orders=daifaOrderMapper.select(tmpo);

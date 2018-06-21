@@ -513,8 +513,10 @@ public class OrderModelImpl implements OrderModel {
                 obj.toString());
 
         //判断当前订单是否未发货且处于可发货状态,如果是,则尝试获取快递单号
-        redisIO.rpush("QueryExpressCodeThread",tid);
-        workerMan.start();
+        try {
+            packDeliveryProcess.queryExpressCode(tid);
+        } catch (DaifaException ignored) {
+        }
     }
 
     /**

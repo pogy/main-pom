@@ -1,7 +1,9 @@
 package com.shigu.main4.daifa.utils;
 
+import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
+import com.shigu.main4.daifa.process.impl.PackDeliveryProcessImpl;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +23,9 @@ public class WorkerMan {
 
     private Map<Object,AtomicInteger> map=new HashMap<>();
     @Autowired
-    private PackDeliveryProcess packDeliveryProcess;
+    private PackDeliveryProcessImpl packDeliveryProcessImpl;
+    @Autowired
+    private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     private RedisIO redisIO;
     /**
@@ -42,7 +46,7 @@ public class WorkerMan {
         }
         isRun=true;
         try {
-            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcess,redisIO);
+            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcessImpl,redisIO,daifaTradeMapper);
             getPool().submit(task);
         } catch (Exception ignored) {
         }finally {
