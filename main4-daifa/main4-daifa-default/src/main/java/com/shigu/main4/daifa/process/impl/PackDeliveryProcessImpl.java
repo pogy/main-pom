@@ -317,6 +317,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
      * 如果可发,则返回因拿到的商品信息
      * @param dfTradeId
      */
+    @Override
     public List<SubOrderExpressBO> cheackeSend(Long dfTradeId) throws DaifaException {
         DaifaOrder tmpo=new DaifaOrder();
         tmpo.setDfTradeId(dfTradeId);

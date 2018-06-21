@@ -14,12 +14,12 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import java.util.List;
 
 public class DoQueryExpressCodeTask implements Runnable{
-    private PackDeliveryProcessImpl packDeliveryProcessImpl;
+    private PackDeliveryProcess packDeliveryProcess;
     private RedisIO redisIO;
     private DaifaTradeMapper daifaTradeMapper;
 
-    DoQueryExpressCodeTask(PackDeliveryProcessImpl packDeliveryProcessImpl, RedisIO redisIO, DaifaTradeMapper daifaTradeMapper) {
-        this.packDeliveryProcessImpl = packDeliveryProcessImpl;
+    DoQueryExpressCodeTask(PackDeliveryProcess packDeliveryProcess, RedisIO redisIO, DaifaTradeMapper daifaTradeMapper) {
+        this.packDeliveryProcess = packDeliveryProcess;
         this.redisIO = redisIO;
         this.daifaTradeMapper = daifaTradeMapper;
     }
@@ -44,7 +44,7 @@ public class DoQueryExpressCodeTask implements Runnable{
         }
         List<SubOrderExpressBO> list;
         try {
-            list = packDeliveryProcessImpl.cheackeSend(tid);
+            list = packDeliveryProcess.cheackeSend(tid);
         } catch (DaifaException e) {
             return;
         }

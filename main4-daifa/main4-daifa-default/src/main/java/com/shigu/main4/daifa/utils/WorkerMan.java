@@ -23,7 +23,7 @@ public class WorkerMan {
 
     private Map<Object,AtomicInteger> map=new HashMap<>();
     @Autowired
-    private PackDeliveryProcessImpl packDeliveryProcessImpl;
+    private PackDeliveryProcess packDeliveryProcess;
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
@@ -46,7 +46,7 @@ public class WorkerMan {
         }
         isRun=true;
         try {
-            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcessImpl,redisIO,daifaTradeMapper);
+            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcess,redisIO,daifaTradeMapper);
             getPool().submit(task);
         } catch (Exception ignored) {
         }finally {
