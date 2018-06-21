@@ -231,7 +231,7 @@ public class JdUpItemService {
             propImgs=new ArrayList<>();
         }
         tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
-                .getInputStr(),item.getInputPids());
+                .getInputStr(),item.getInputPids(),goodsId);
         PropsVO prop=find(item,jdUserId,jdCid,brands);
 //        if (prop.getColor() == null) {
 //            throw new CustomException("获取颜色信息失败");
@@ -247,7 +247,7 @@ public class JdUpItemService {
         }
         fillProp(prop.getProperties(),tbPropsVO.getSaleProps());
         fillProp(prop.getSpecification(),tbPropsVO.getProperties());
-        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));
+        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps(),goodsId));
         return prop;
     }
 
