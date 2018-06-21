@@ -321,6 +321,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaOrder tmpo=new DaifaOrder();
         tmpo.setDfTradeId(dfTradeId);
         List<DaifaOrder> orders=daifaOrderMapper.select(tmpo);
+        int num=0;
         for(DaifaOrder o:orders){
             if(o.getAllocatStatus()==0&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未分配",DaifaException.DEBUG);
@@ -334,6 +335,10 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             if(o.getTakeGoodsStatus()==1&&o.getRefundStatus() != null&&o.getRefundStatus()==1){
                 throw new DaifaException("此条码对应的商品已申请未发退款(退款进行中),请稍后重试",DaifaException.DEBUG);
             }
+            num++;
+        }
+        if(num==0){
+            throw new DaifaException("此条码对应的商品全部已退款",DaifaException.DEBUG);
         }
         List<SubOrderExpressBO> list=new ArrayList<>();
         for(DaifaOrder o:orders){
