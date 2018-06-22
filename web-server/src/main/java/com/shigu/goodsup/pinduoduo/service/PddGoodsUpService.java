@@ -1,5 +1,13 @@
 package com.shigu.goodsup.pinduoduo.service;
 
+import com.openJar.requests.PddAuthInfoRequest;
+import com.openJar.requests.PddCatsNamesRequest;
+import com.openJar.requests.SelPddCidByXzCidRequest;
+import com.openJar.requests.SelThirdLevelCidRequest;
+import com.openJar.responses.PddAuthInfoResponse;
+import com.openJar.responses.PddCatsNamesResponse;
+import com.openJar.responses.SelPddCidByXzCidResponse;
+import com.openJar.responses.SelThirdLevelCidResponse;
 import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
@@ -12,23 +20,16 @@ import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
 import com.shigu.goodsup.pinduoduo.util.XzPddClient;
 import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
+import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
-import com.shigu.phone.api.enums.ImgFormatEnum;
-import com.shigu.phone.apps.utils.ImgUtils;
-import com.shigu.sdk.pinduoduo.requests.PddAuthInfoRequest;
-import com.shigu.sdk.pinduoduo.requests.PddCatsNamesRequest;
-import com.shigu.sdk.pinduoduo.requests.SelPddCidByXzCidRequest;
-import com.shigu.sdk.pinduoduo.requests.SelThirdLevelCidRequest;
-import com.shigu.sdk.pinduoduo.response.PddAuthInfoResponse;
-import com.shigu.sdk.pinduoduo.response.PddCatsNamesResponse;
-import com.shigu.sdk.pinduoduo.response.SelPddCidByXzCidResponse;
-import com.shigu.sdk.pinduoduo.response.SelThirdLevelCidResponse;
+import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.XzSdkClient;
+import freemarker.template.TemplateException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -48,7 +49,9 @@ import pdd.goods.spec.id.get.SpecIdGetRequest;
 import pdd.goods.spec.id.get.SpecIdGetResponse;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,6 +80,8 @@ public class PddGoodsUpService {
     private XzPddClient xzPddClient;
     @Resource
     private XzSdkClient xzSdkClient;
+    @Resource
+    private CdnService cdnService;
 
     /**
      * 获取上传页面商品数据
@@ -95,10 +100,23 @@ public class PddGoodsUpService {
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setPrice(cdnItem.getPiPrice());
         vo.setTitle(cdnItem.getTitle());
+        vo.setTitleLength(cdnItem.getTitle().getBytes(Charset.forName("GBK")).length);
+        CdnShopInfoVO shop = null;
+        try {
+            shop = cdnService.cdnShopInfo(cdnItem.getShopId());
+            vo.setMarketName(shop.getMarketName());
+            vo.setShopNum(shop.getShopNo());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }
+
         //a. 尺寸 等宽高 宽高不低于480px
         //b. 大小1M
         //c. 图片格式仅支持JPG,PNG格式
 //        vo.setImgSrcs(cdnItem.getImgUrl().stream().map(s -> ImgUtils.formatImg(s, ImgFormatEnum.GOODS_HEAD_IMAGES)).collect(Collectors.toList()));
+        vo.setImgSrcs(cdnItem.getImgUrl());
         vo.setLiPrice(cdnItem.getPrice());
 
         BigDecimal liPrce = new BigDecimal(cdnItem.getPrice());
@@ -156,7 +174,8 @@ public class PddGoodsUpService {
         List<String> imgUrls = new ArrayList<>();
         for (Element img : imgs){
             String imgUrl = img.attr("data-original");
-            imgUrls.add(ImgUtils.formatImg(imgUrl, ImgFormatEnum.GOODS_DETAIL));
+//            imgUrls.add(ImgUtils.formatImg(imgUrl, ImgFormatEnum.GOODS_DETAIL));
+            imgUrls.add(imgUrl);
         }
         return imgUrls;
     }
@@ -230,6 +249,28 @@ public class PddGoodsUpService {
             return null;
         }
         return response.getCatNames();
+    }
+
+
+    /**
+     * 根据拼多多cid查询拼多多类目层级cid信息
+     */
+    public String selPddCatsIdsByPddCid(Long cid) {
+        PddCatsNamesResponse response = selPddCatsInfoByPddCid(cid);
+        if (!response.isSuccess()) {
+            return null;
+        }
+        return response.getAllCids();
+    }
+
+    /**
+     * 根据拼多多cid查询拼多多类目层级信息
+     */
+    public PddCatsNamesResponse selPddCatsInfoByPddCid(Long cid) {
+        PddCatsNamesRequest request = new PddCatsNamesRequest();
+        request.setCatId(cid);
+
+        return xzSdkClient.getPcOpenClient().execute(request);
     }
 
     /**
@@ -355,5 +396,18 @@ public class PddGoodsUpService {
             return null;
         }
         return specIdGetResponse.getSpecId();
+    }
+
+    /**
+     * 记录上传使用过的类目信息
+     * @param userId
+     * @param pddCid
+     */
+    public void addUsedCatRecord(Long userId, Long pddCid) {
+        PddCatsNamesResponse response = selPddCatsInfoByPddCid(pddCid);
+        if (response.isSuccess()) {
+            return;
+        }
+
     }
 }

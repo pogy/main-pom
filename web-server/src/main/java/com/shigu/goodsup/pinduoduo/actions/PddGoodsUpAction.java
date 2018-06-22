@@ -1,5 +1,8 @@
 package com.shigu.goodsup.pinduoduo.actions;
 
+import com.openJar.requests.PddRefreshAuthInfoRequest;
+import com.openJar.responses.PddAuthInfoResponse;
+import com.openJar.responses.PddRefreshAuthInfoResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -19,9 +22,6 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
-import com.shigu.sdk.pinduoduo.requests.PddRefreshAuthInfoRequest;
-import com.shigu.sdk.pinduoduo.response.PddAuthInfoResponse;
-import com.shigu.sdk.pinduoduo.response.PddRefreshAuthInfoResponse;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
@@ -29,8 +29,6 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONString;
-import net.sf.json.util.JSONStringer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -39,6 +37,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pdd.beans.GoodsCats;
+import pdd.beans.LogisticsTemplate;
 import pdd.constant.PddConfig;
 
 import javax.annotation.Resource;
@@ -47,7 +46,6 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -217,20 +215,21 @@ public class PddGoodsUpAction {
             pddItemDetailVO.setLiPrice(price.multiply(new BigDecimal("2")).toString());//默认为团购件的2倍
             pddItemDetailVO.setProfit(profit.setScale(2,BigDecimal.ROUND_UP).toString());
         }
+        model.addAttribute("item",pddItemDetailVO);
+
 
         /********************************查出类目信息********************************/
-        pddGoodsUpService.selPddCidByXzCid(bo.getGoodsId());
 
-        Long pddCid = null;
-        if (bo.getCid() != null) {
-            pddCid = bo.getCid();
-        }else {
-            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
-            if (pddCid == null) {
-                throw new CustomException("未查询到类目信息");
-            }
-        }
-        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
+//        Long pddCid = null;
+//        if (bo.getCid() != null) {
+//            pddCid = bo.getCid();
+//        }else {
+//            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
+//            if (pddCid == null) {
+//                throw new CustomException("未查询到类目信息");
+//            }
+//        }
+//        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
         model.addAttribute("xzCatName",pddGoodsUpService.selXzCatsName(bo.getGoodsId()));
 
         /******************** 退换货模板 *********************/
@@ -241,12 +240,6 @@ public class PddGoodsUpAction {
             returnsTemplate.setDelivery(1);
             returnsTemplate.setReturns(1);
             model.addAttribute("returnsTemplate",returnsTemplate);
-        }
-
-        /********************************查出以前用过的快递模板********************************/
-        String postTemplateId = redisIO.get(PDD_POST_TEMPLATE_PRE + ps.getUserId());
-        if (postTemplateId != null) {
-            model.addAttribute("postTemplateId",postTemplateId);
         }
 
         return "pinduoduo/pdd";
@@ -271,8 +264,16 @@ public class PddGoodsUpAction {
     @RequestMapping("selPostTemplate")
     public String selPostTemplate (HttpSession session,Model model){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        model.addAttribute("postTemplate",pddGoodsUpService.selPostTemplate(ps.getUserId()));
-        return "";
+        /********************************查出以前用过的快递模板********************************/
+        String postTemplateId = redisIO.get(PDD_POST_TEMPLATE_PRE + ps.getUserId());
+        if (postTemplateId != null) {
+            model.addAttribute("erverDyTemplateId",postTemplateId);
+        }
+        List<LogisticsTemplate> logisticsTemplates = pddGoodsUpService.selPostTemplate(ps.getUserId());
+        if (logisticsTemplates != null || !logisticsTemplates.isEmpty()) {
+            model.addAttribute("deliveyList",logisticsTemplates);
+        }
+        return "pinduoduo/parts/deliver";
     }
 
     /**
@@ -344,6 +345,21 @@ public class PddGoodsUpAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long specId = pddGoodsUpService.addProp(ps.getUserId(), bo);
         return JsonResponseUtil.success().element("specId",specId);
+    }
+
+    /**
+     * 记录上传使用过的类目信息
+     * @return
+     */
+    @RequestMapping("addUsedCatRecord")
+    @ResponseBody
+    public JSONObject addUsedCatRecord (Long pddCid, HttpSession session){
+        if (pddCid == null) {//错误不影响正常使用
+            return JsonResponseUtil.success();
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        pddGoodsUpService.addUsedCatRecord(ps.getUserId(),pddCid);
+        return JsonResponseUtil.success();
     }
 
 
