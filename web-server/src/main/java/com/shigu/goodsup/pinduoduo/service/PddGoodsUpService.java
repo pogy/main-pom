@@ -8,14 +8,8 @@ import com.openJar.responses.PddAuthInfoResponse;
 import com.openJar.responses.PddCatsNamesResponse;
 import com.openJar.responses.SelPddCidByXzCidResponse;
 import com.openJar.responses.SelThirdLevelCidResponse;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguTaobaocat;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
 import com.shigu.goodsup.pinduoduo.util.XzPddClient;
 import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
@@ -54,6 +48,7 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -404,10 +399,7 @@ public class PddGoodsUpService {
      * @param pddCid
      */
     public void addUsedCatRecord(Long userId, Long pddCid) {
-        PddCatsNamesResponse response = selPddCatsInfoByPddCid(pddCid);
-        if (response.isSuccess()) {
-            return;
-        }
+
 
     }
 }

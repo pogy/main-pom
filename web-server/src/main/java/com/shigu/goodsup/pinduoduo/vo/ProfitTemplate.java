@@ -12,6 +12,10 @@ public class ProfitTemplate implements Serializable {
 
     private static final long serialVersionUID = 2198793093165832732L;
     /**
+     * 是否使用模板 0 不适用 1 使用
+     */
+    private Integer actived;
+    /**
      * 类型 1 固定利润 2 批发价百分比
      */
     private Integer type;
@@ -19,7 +23,19 @@ public class ProfitTemplate implements Serializable {
      * 利润
      */
     private Integer profit;
+    /**
+     * 结果是否取整
+     */
+    private Integer rounding;
 
+
+    public Integer getActived() {
+        return actived;
+    }
+
+    public void setActived(Integer actived) {
+        this.actived = actived;
+    }
 
     public Integer getType() {
         return type;
@@ -35,5 +51,13 @@ public class ProfitTemplate implements Serializable {
 
     public void setProfit(Integer profit) {
         this.profit = profit;
+    }
+
+    public Integer getRounding() {
+        return rounding;
+    }
+
+    public void setRounding(Integer rounding) {
+        this.rounding = rounding;
     }
 }

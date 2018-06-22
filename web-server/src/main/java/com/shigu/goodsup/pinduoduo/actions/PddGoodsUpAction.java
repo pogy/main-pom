@@ -169,7 +169,6 @@ public class PddGoodsUpAction {
             }
         }
 
-
         /********************************屏蔽卖家用户使用********************************/
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
@@ -200,47 +199,68 @@ public class PddGoodsUpAction {
         }
         /******************** 根据利润模板设置利润 团购价 及 单买价 *******************/
         ProfitTemplate profitTemplate = redisIO.get(PDD_PROFIT_TEMPLATE_PRE + ps.getUserId(), ProfitTemplate.class);
-        if (profitTemplate != null) {
+        if (profitTemplate != null && profitTemplate.getActived() == 1) {
+
             BigDecimal price = new BigDecimal(pddItemDetailVO.getPrice());
+            BigDecimal liPrice = null;
             BigDecimal profit = null;
             if (profitTemplate.getType() == 1) {
                 profit = new BigDecimal(profitTemplate.getProfit());
                 price = price.add(profit);
             }else {
                 profit = new BigDecimal(profitTemplate.getProfit()).divide(new BigDecimal("100"),2,BigDecimal.ROUND_UP);
-                price = price.multiply(profit);
+                profit = price.multiply(profit).setScale(2,BigDecimal.ROUND_UP);
+                price = price.add(profit);
             }
-            price = price.setScale(2, BigDecimal.ROUND_UP);
+
+            if (profitTemplate.getRounding() != null && profitTemplate.getRounding() == 1) {
+                //结果取整
+                price = price.setScale(0, BigDecimal.ROUND_UP);
+                liPrice = new BigDecimal("2").multiply(price);
+                profit = price.subtract(new BigDecimal(pddItemDetailVO.getPrice())).setScale(2,BigDecimal.ROUND_UP);
+            }else {
+                price = price.setScale(2, BigDecimal.ROUND_UP);
+                liPrice = new BigDecimal("2").multiply(price).setScale(2,BigDecimal.ROUND_UP);
+                profit = price.subtract(new BigDecimal(pddItemDetailVO.getPrice())).setScale(2,BigDecimal.ROUND_UP);
+            }
+
             pddItemDetailVO.setPrice(price.toString());
-            pddItemDetailVO.setLiPrice(price.multiply(new BigDecimal("2")).toString());//默认为团购件的2倍
-            pddItemDetailVO.setProfit(profit.setScale(2,BigDecimal.ROUND_UP).toString());
+            pddItemDetailVO.setLiPrice(liPrice.toString());//默认为团购件的2倍
+            pddItemDetailVO.setProfit(profit.toString());
+        }else {
+            pddItemDetailVO.setPrice(pddItemDetailVO.getLiPrice());
+            BigDecimal liPrice = new BigDecimal(pddItemDetailVO.getLiPrice()).multiply(new BigDecimal("2")).setScale(2,BigDecimal.ROUND_UP);
+            pddItemDetailVO.setLiPrice(liPrice.toString());
         }
         model.addAttribute("item",pddItemDetailVO);
+        if (profitTemplate != null) {
+            model.addAttribute("profitTemplate",profitTemplate);
+        }
 
 
         /********************************查出类目信息********************************/
 
-//        Long pddCid = null;
-//        if (bo.getCid() != null) {
-//            pddCid = bo.getCid();
-//        }else {
-//            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
-//            if (pddCid == null) {
-//                throw new CustomException("未查询到类目信息");
-//            }
-//        }
-//        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
+        Long pddCid = null;
+        if (bo.getCid() != null) {
+            pddCid = bo.getCid();
+        }else {
+            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
+            if (pddCid == null) {
+                throw new CustomException("未查询到类目信息");
+            }
+        }
+        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
         model.addAttribute("xzCatName",pddGoodsUpService.selXzCatsName(bo.getGoodsId()));
 
         /******************** 退换货模板 *********************/
         ReturnsTemplate returnsTemplate = redisIO.get(PDD_RETURNS_TEMPLATE_PRE + ps.getUserId() + "_" + xzCid, ReturnsTemplate.class);
-        if (returnsTemplate != null) {
+        if (returnsTemplate == null) {
             returnsTemplate = new ReturnsTemplate();
             returnsTemplate.setArtificial(0);
-            returnsTemplate.setDelivery(1);
-            returnsTemplate.setReturns(1);
-            model.addAttribute("returnsTemplate",returnsTemplate);
+            returnsTemplate.setDelivery(0);
+            returnsTemplate.setReturns(0);
         }
+        model.addAttribute("returnsTemplate",returnsTemplate);
 
         return "pinduoduo/pdd";
     }
@@ -359,6 +379,21 @@ public class PddGoodsUpAction {
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         pddGoodsUpService.addUsedCatRecord(ps.getUserId(),pddCid);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 查询用户上传使用过的类目信息
+     * @return
+     */
+    @RequestMapping("selUsedCatRecord")
+    @ResponseBody
+    public JSONObject selUsedCatRecord (String catName, HttpSession session){
+        if (StringUtils.isBlank(catName)) {//错误不影响正常使用
+            return JsonResponseUtil.success();
+        }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        pddGoodsUpService.selUsedCatRecord(ps.getUserId(),pddCid);
         return JsonResponseUtil.success();
     }
 
