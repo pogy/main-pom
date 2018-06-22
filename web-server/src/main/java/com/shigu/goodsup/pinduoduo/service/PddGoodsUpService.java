@@ -1,7 +1,15 @@
 package com.shigu.goodsup.pinduoduo.service;
 
 import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguTaobaocat;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
+import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
+import com.shigu.goodsup.pinduoduo.util.XzPddClient;
 import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
 import com.shigu.main4.common.tools.StringUtil;
@@ -10,14 +18,34 @@ import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
+import com.shigu.sdk.pinduoduo.requests.PddAuthInfoRequest;
+import com.shigu.sdk.pinduoduo.requests.PddCatsNamesRequest;
+import com.shigu.sdk.pinduoduo.requests.SelPddCidByXzCidRequest;
+import com.shigu.sdk.pinduoduo.requests.SelThirdLevelCidRequest;
+import com.shigu.sdk.pinduoduo.response.PddAuthInfoResponse;
+import com.shigu.sdk.pinduoduo.response.PddCatsNamesResponse;
+import com.shigu.sdk.pinduoduo.response.SelPddCidByXzCidResponse;
+import com.shigu.sdk.pinduoduo.response.SelThirdLevelCidResponse;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.XzSdkClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import pdd.beans.GoodsCats;
+import pdd.beans.GoodsSpec;
+import pdd.beans.LogisticsTemplate;
+import pdd.goods.authorization.cats.AuthorizationCatsRequest;
+import pdd.goods.authorization.cats.AuthorizationCatsResponse;
+import pdd.goods.logistics.template.get.LogisticsTemplateGetRequest;
+import pdd.goods.logistics.template.get.LogisticsTemplateGetResponse;
+import pdd.goods.spec.get.SpecGetRequest;
+import pdd.goods.spec.get.SpecGetResponse;
+import pdd.goods.spec.id.get.SpecIdGetRequest;
+import pdd.goods.spec.id.get.SpecIdGetResponse;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -39,6 +67,16 @@ public class PddGoodsUpService {
     private ShowForCdnService showForCdnService;
     @Resource(name = "tae_mall_memberUserSubMapper")
     private MemberUserSubMapper memberUserSubMapper;
+    @Resource(name = "tae_mall_shiguGoodsIdGeneratorMapper")
+    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
+    @Resource(name = "tae_mall_shiguGoodsTinyMapper")
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+    @Resource(name = "tae_mall_shiguTaobaocatMapper")
+    private ShiguTaobaocatMapper shiguTaobaocatMapper;
+    @Resource
+    private XzPddClient xzPddClient;
+    @Resource
+    private XzSdkClient xzSdkClient;
 
     /**
      * 获取上传页面商品数据
@@ -143,5 +181,178 @@ public class PddGoodsUpService {
             return Long.parseLong(memberUserSub.getSubUserKey());
         }
         return null;
+    }
+
+    /**
+     * 查询运费模板
+     * @param userId
+     */
+    public List<LogisticsTemplate> selPostTemplate(Long userId) {
+        String token = selAccessToken(userId);
+        if (token == null) {
+            return null;
+        }
+        LogisticsTemplateGetRequest request = new LogisticsTemplateGetRequest();
+        request.setPage(1);
+        request.setPage_size(20);
+        LogisticsTemplateGetResponse response = xzPddClient.openClient(token).excute(request);
+        if (!response.getSuccess()) {
+            return null;
+        }
+        return response.getLogisticsTemplates();
+    }
+
+    /**
+     * 查询用户授权类目信息
+     * cid为空则查最顶级
+     */
+    public  List<GoodsCats> selAuthorizationCats(Long userId,Long cid) {
+        String token = selAccessToken(userId);
+        if (token == null) {
+            return null;
+        }
+
+        AuthorizationCatsRequest request = new AuthorizationCatsRequest();
+        request.setParent_cat_id(cid);
+        AuthorizationCatsResponse response = xzPddClient.openClient(token).excute(request);
+        if (!response.getSuccess()) {
+            return null;
+        }
+        return response.getGoodsCatsList();
+
+    }
+
+    /**
+     * 根据拼多多cid查询拼多多类目层级信息
+     */
+    public String selPddCatsNamesByPddCid(Long cid) {
+        PddCatsNamesRequest request = new PddCatsNamesRequest();
+        request.setCatId(cid);
+
+        PddCatsNamesResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            return null;
+        }
+        return response.getCatNames();
+    }
+
+    /**
+     * 根据星座网cid查询拼多多cid
+     */
+    public Long selPddCidByXzCid(Long cid) {
+        SelPddCidByXzCidRequest request = new SelPddCidByXzCidRequest();
+        request.setXzCid(cid);
+
+        SelPddCidByXzCidResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            return null;
+        }
+        return response.getPddCid();
+    }
+
+
+    /**
+     *  根据goodsId查询星座网类目层级信息
+     * @param goodsId
+     */
+    public String selXzCatsName(Long goodsId) {
+
+        Long cid = selCidByGoodsId(goodsId);
+        if (cid == null) {
+            return null;
+        }
+        ShiguTaobaocat st = shiguTaobaocatMapper.selectByPrimaryKey(cid);
+        if(st != null){
+            if(st.getParentCname() != null){
+                return st.getParentCname()+" > "+st.getCname();
+            }else{
+                return st.getCname();
+            }
+        }
+        return null;
+    }
+
+    /**
+     *  根据商品id 查询类目id
+     * @param goodsId 商品id
+     * @return 类目id
+     */
+    public Long selCidByGoodsId(Long goodsId){
+        // 获取出售中商品
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        if (tiny == null) {
+            return null;
+        }
+        return tiny.getCid();
+    }
+
+    /**
+     * 根据userId获取与accesstoken
+     * @param userId
+     * @return
+     */
+    public String selAccessToken(Long userId){
+        PddAuthInfoRequest pddAuthInfoRequest = new PddAuthInfoRequest();
+        pddAuthInfoRequest.setThirdUid(selPddUserId(userId));
+        PddAuthInfoResponse pddAuthInfoResponse = xzSdkClient.getPcOpenClient().execute(pddAuthInfoRequest);
+        if (pddAuthInfoResponse.isSuccess()) {
+            return pddAuthInfoResponse.getAccessToken();
+        }
+        return null;
+    }
+
+    /**
+     * 生成商家自定义的规格
+     * 0 颜色 1 尺码
+     * @return
+     */
+    public Long addProp(Long userId,AddPropBO bo) {
+        SelThirdLevelCidRequest request = new SelThirdLevelCidRequest();
+        request.setPddCid(bo.getPddCid());
+        SelThirdLevelCidResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+           return null;
+        }
+
+        String token = selAccessToken(userId);
+        if (token == null) {
+            return null;
+        }
+
+        SpecGetRequest specGetRequest = new SpecGetRequest();
+        specGetRequest.setCat_id(response.getThirdLevelCid());
+        SpecGetResponse specGetResponse = xzPddClient.openClient(token).excute(specGetRequest);
+        if (!specGetResponse.getSuccess()) {
+            return null;
+        }
+
+        List<GoodsSpec> goodsSpecList = specGetResponse.getGoodsSpecList();
+        Long parentSpecId = null;
+        if (bo.getType() == 0) {//0 颜色
+            for (GoodsSpec goodsSpec : goodsSpecList){
+                if ("颜色".equals(goodsSpec.getParentSpecName())) {
+                    parentSpecId = goodsSpec.getParentSpecId();
+                    break;
+                }
+            }
+        }else {//1 尺码
+            for (GoodsSpec goodsSpec : goodsSpecList){
+                if ("尺码".equals(goodsSpec.getParentSpecName())) {
+                    parentSpecId = goodsSpec.getParentSpecId();
+                    break;
+                }
+            }
+        }
+
+        SpecIdGetRequest specIdGetRequest = new SpecIdGetRequest();
+        specIdGetRequest.setParent_spec_id(parentSpecId);
+        specIdGetRequest.setSpec_name(bo.getPropName());
+        SpecIdGetResponse specIdGetResponse = xzPddClient.openClient(token).excute(specIdGetRequest);
+        if (!specIdGetResponse.getSuccess()) {
+            return null;
+        }
+        return specIdGetResponse.getSpecId();
     }
 }

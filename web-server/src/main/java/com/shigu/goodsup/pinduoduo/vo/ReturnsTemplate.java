@@ -8,17 +8,17 @@ import java.io.Serializable;
  * @author gtx
  * @since
  */
-public class ReturnsTemplateVO implements Serializable {
+public class ReturnsTemplate implements Serializable {
     /**
-     * 发货承诺
+     * 发货承诺 0 24小时 1 48小时
      */
     private Integer delivery;
     /**
-     * 7天无理由退换货
+     * 7天无理由退换货 0 否 1 是
      */
     private Integer returns;
     /**
-     * 假一赔十
+     * 假一赔十 0 否 1 是
      */
     private Integer artificial;
 
