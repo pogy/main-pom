@@ -196,7 +196,7 @@ public class PddGoodsUpAction {
         if (xzCid == null) {
             throw new CustomException("未查询到类目信息");
         }
-        PddItemDetailVO pddItemDetailVO = pddGoodsUpService.goodsDetail(bo.getGoodsId(), ps.getUserId());
+        PddItemDetailVO pddItemDetailVO = pddGoodsUpService.goodsDetail(bo.getGoodsId());
         if (pddItemDetailVO == null) {
             throw new CustomException("商品不存在");
         }

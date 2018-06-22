@@ -81,11 +81,7 @@ public class PddGoodsUpService {
     /**
      * 获取上传页面商品数据
      */
-    /**
-     * app单商品信息
-     * @return
-     */
-    public PddItemDetailVO goodsDetail(Long itemId, Long userId) {
+    public PddItemDetailVO goodsDetail(Long itemId) {
         PddItemDetailVO vo = new PddItemDetailVO();
         //商品数据填充
         CdnItem cdnItem = showForCdnService.selItemById(itemId);
@@ -278,9 +274,14 @@ public class PddGoodsUpService {
      * @return 类目id
      */
     public Long selCidByGoodsId(Long goodsId){
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if (shiguGoodsIdGenerator == null) {
+            return null;
+        }
         // 获取出售中商品
         ShiguGoodsTiny tiny = new ShiguGoodsTiny();
         tiny.setGoodsId(goodsId);
+        tiny.setWebSite(shiguGoodsIdGenerator.getWebSite());
         tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
         if (tiny == null) {
             return null;
