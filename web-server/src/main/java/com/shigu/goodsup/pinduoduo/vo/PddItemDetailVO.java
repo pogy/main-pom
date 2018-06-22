@@ -31,7 +31,13 @@ public class PddItemDetailVO implements Serializable{
     //商品详情图
     private List<String> detailsImgs;
     //数量 固定999
-    private Integer goodsNum = 999;
+    private Integer goodsNum;
+    //长标题长度
+    private int titleLength;
+    //市场名
+    private String marketName;
+    //档口名
+    private String shopNum;
 
     public String getTitle() {
         return title;
@@ -119,5 +125,29 @@ public class PddItemDetailVO implements Serializable{
 
     public void setGoodsNum(Integer goodsNum) {
         this.goodsNum = goodsNum;
+    }
+
+    public int getTitleLength() {
+        return titleLength;
+    }
+
+    public void setTitleLength(int titleLength) {
+        this.titleLength = titleLength;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getShopNum() {
+        return shopNum;
+    }
+
+    public void setShopNum(String shopNum) {
+        this.shopNum = shopNum;
     }
 }
