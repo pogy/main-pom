@@ -120,13 +120,14 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <div class="citylist">
             <span class="changebutton">切换城市<i class="img-jiantou"></i></span>
             <ul>
-                        <li><a href="//hz.571xz.com">杭州</a></li>
-                        <li><a href="//cs.571xz.com">常熟</a></li>
-                        <li><a href="//ss.571xz.com">石狮</a></li>
-                        <li><a href="//bj.571xz.com">北京</a></li>
-                        <li><a href="//gz.571xz.com">广州</a></li>
-                        <li><a href="//wa.571xz.com">辽源</a></li>
-                        <li class="selected"><a href="//jx.571xz.com">濮院</a></li>
+                <li><a href="//hz.571xz.com">杭州</a></li>
+                <li><a href="//cs.571xz.com">常熟</a></li>
+                <li><a href="//ss.571xz.com">石狮</a></li>
+                <li><a href="//bj.571xz.com">北京</a></li>
+                <li><a href="//gz.571xz.com">广州</a></li>
+                <li><a href="//wa.571xz.com">辽源</a></li>
+                <li class="selected"><a href="//jx.571xz.com">濮院</a></li>
+                <li><a href="//qz.571xz.com">泉州</a></li>
             </ul>
         </div>
     </div>
