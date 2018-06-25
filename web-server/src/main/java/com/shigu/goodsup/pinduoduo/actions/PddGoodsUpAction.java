@@ -197,6 +197,23 @@ public class PddGoodsUpAction {
         if (pddItemDetailVO == null) {
             throw new CustomException("商品不存在");
         }
+
+        /********************************查出类目信息********************************/
+
+        Long pddCid = null;
+        if (bo.getCid() != null) {
+            pddCid = bo.getCid();
+        }else {
+            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
+            if (pddCid == null) {
+                //选类目
+
+            }
+        }
+        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
+        model.addAttribute("xzCatName",pddGoodsUpService.selXzCatsName(bo.getGoodsId()));
+
+
         /******************** 根据利润模板设置利润 团购价 及 单买价 *******************/
         ProfitTemplate profitTemplate = redisIO.get(PDD_PROFIT_TEMPLATE_PRE + ps.getUserId(), ProfitTemplate.class);
         if (profitTemplate != null && profitTemplate.getActived() == 1) {
@@ -236,21 +253,6 @@ public class PddGoodsUpAction {
         if (profitTemplate != null) {
             model.addAttribute("profitTemplate",profitTemplate);
         }
-
-
-        /********************************查出类目信息********************************/
-
-        Long pddCid = null;
-        if (bo.getCid() != null) {
-            pddCid = bo.getCid();
-        }else {
-            pddCid = pddGoodsUpService.selPddCidByXzCid(xzCid);
-            if (pddCid == null) {
-                throw new CustomException("未查询到类目信息");
-            }
-        }
-        model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
-        model.addAttribute("xzCatName",pddGoodsUpService.selXzCatsName(bo.getGoodsId()));
 
         /******************** 退换货模板 *********************/
         ReturnsTemplate returnsTemplate = redisIO.get(PDD_RETURNS_TEMPLATE_PRE + ps.getUserId() + "_" + xzCid, ReturnsTemplate.class);
@@ -393,7 +395,7 @@ public class PddGoodsUpAction {
             return JsonResponseUtil.success();
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        pddGoodsUpService.selUsedCatRecord(ps.getUserId(),pddCid);
+        pddGoodsUpService.selUsedCatRecord(ps.getUserId(),catName);
         return JsonResponseUtil.success();
     }
 

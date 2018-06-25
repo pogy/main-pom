@@ -1,13 +1,7 @@
 package com.shigu.goodsup.pinduoduo.service;
 
-import com.openJar.requests.PddAuthInfoRequest;
-import com.openJar.requests.PddCatsNamesRequest;
-import com.openJar.requests.SelPddCidByXzCidRequest;
-import com.openJar.requests.SelThirdLevelCidRequest;
-import com.openJar.responses.PddAuthInfoResponse;
-import com.openJar.responses.PddCatsNamesResponse;
-import com.openJar.responses.SelPddCidByXzCidResponse;
-import com.openJar.responses.SelThirdLevelCidResponse;
+import com.openJar.requests.*;
+import com.openJar.responses.*;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
@@ -16,6 +10,7 @@ import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
@@ -77,6 +72,8 @@ public class PddGoodsUpService {
     private XzSdkClient xzSdkClient;
     @Resource
     private CdnService cdnService;
+    @Resource
+    private ItemCatService itemCatService;
 
     /**
      * 获取上传页面商品数据
@@ -272,8 +269,11 @@ public class PddGoodsUpService {
      * 根据星座网cid查询拼多多cid
      */
     public Long selPddCidByXzCid(Long cid) {
+        boolean instanOfWoman = itemCatService.instanOfWoman(cid);
+
         SelPddCidByXzCidRequest request = new SelPddCidByXzCidRequest();
         request.setXzCid(cid);
+        request.setSex(instanOfWoman ? 0 : 1);
 
         SelPddCidByXzCidResponse response = xzSdkClient.getPcOpenClient().execute(request);
         if (!response.isSuccess()) {
@@ -399,7 +399,22 @@ public class PddGoodsUpService {
      * @param pddCid
      */
     public void addUsedCatRecord(Long userId, Long pddCid) {
+        try {
+            AddUsedCatRecordRequest recordRequest = new AddUsedCatRecordRequest();
+            recordRequest.setXzUserId(userId);
+            recordRequest.setPddCid(pddCid);
 
+            xzSdkClient.getPcOpenClient().execute(recordRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询用户上传使用过的类目信息
+     * @return
+     */
+    public void selUsedCatRecord(Long userId, String catName) {
 
     }
 }
