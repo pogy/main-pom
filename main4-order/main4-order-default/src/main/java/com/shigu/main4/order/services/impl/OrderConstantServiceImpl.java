@@ -268,4 +268,52 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     public TownVO selTownByTid(Long tid) {
         return townMap.get(tid);
     }
+
+    public Map<Long, List<TownVO>> getCityGroup() {
+        return cityGroup;
+    }
+
+    public void setCityGroup(Map<Long, List<TownVO>> cityGroup) {
+        this.cityGroup = cityGroup;
+    }
+
+    public Map<Long, List<CityVO>> getProvGroup() {
+        return provGroup;
+    }
+
+    public void setProvGroup(Map<Long, List<CityVO>> provGroup) {
+        this.provGroup = provGroup;
+    }
+
+    public Map<Long, ProvinceVO> getProvMap() {
+        return provMap;
+    }
+
+    public void setProvMap(Map<Long, ProvinceVO> provMap) {
+        this.provMap = provMap;
+    }
+
+    public Map<Long, CityVO> getCityMap() {
+        return cityMap;
+    }
+
+    public void setCityMap(Map<Long, CityVO> cityMap) {
+        this.cityMap = cityMap;
+    }
+
+    public Map<Long, TownVO> getTownMap() {
+        return townMap;
+    }
+
+    public void setTownMap(Map<Long, TownVO> townMap) {
+        this.townMap = townMap;
+    }
+
+    public Map<Long, ExpressVo> getExpressMap() {
+        return expressMap;
+    }
+
+    public void setExpressMap(Map<Long, ExpressVo> expressMap) {
+        this.expressMap = expressMap;
+    }
 }
