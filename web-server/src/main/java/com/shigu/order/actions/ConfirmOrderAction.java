@@ -6,6 +6,7 @@ import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressItemVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.OtherCostVO;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,6 +63,8 @@ public class ConfirmOrderAction {
 
     @Autowired
     ItemOrderService itemOrderService;
+    @Autowired
+    private OrderConstantService orderConstantService;
 
     @Autowired
     private OrderOptionSafeService orderOptionSafeService;
@@ -69,6 +73,7 @@ public class ConfirmOrderAction {
 
     private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
     private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
+    private static String ORDER_EXPRESS_UPDATE = "order_express_update";
     private static String ORDER_EXPRESS_VERSION = "order_express_version";
     /**
      * 订单确认提交
@@ -88,7 +93,14 @@ public class ConfirmOrderAction {
             e.printStackTrace();
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
+        ConfirmBO confirmBO = JSON.parseObject(boStr.toString(), ConfirmBO.class);
+        Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE,Boolean.class);
+        if (b != null && b){
+            orderConstantService.init();
+            redisIO.put(ORDER_EXPRESS_UPDATE,"false");
+        }
+        confirmOrderService.isAddress(confirmBO.getAddressId());
+        Long oid = confirmOrderService.confirmOrders(confirmBO,ps.getUserId());
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
