@@ -1,16 +1,14 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.BuyerAddressItemVO;
-import com.shigu.main4.order.vo.BuyerAddressVO;
-import com.shigu.main4.order.vo.OtherCostVO;
-import com.shigu.main4.order.vo.PostVO;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
 import com.shigu.order.bo.ConfirmBO;
@@ -42,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -75,8 +74,16 @@ public class ConfirmOrderAction {
     private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
     private static String ORDER_EXPRESS_UPDATE = "order_express_update";
     private static String ORDER_EXPRESS_VERSION = "order_express_version";
+    private static String ORDER_EXPRESS_CITY_GROUP = "order_express_city_group";
+    private static String ORDER_EXPRESS_CITY_MAP = "order_express_city_map";
+    private static String ORDER_EXPRESS_EXPRESS_MAP = "order_express_express_map";
+    private static String ORDER_EXPRESS_PROV_GROUP = "order_express_prov_group";
+    private static String ORDER_EXPRESS_PROV_MAP = "order_express_prov_map";
+    private static String ORDER_EXPRESS_TOWN_MAP = "order_express_town_map";
+
     /**
      * 订单确认提交
+     *
      * @param request
      */
     @RequestMapping("confirmOrders")
@@ -92,15 +99,53 @@ public class ConfirmOrderAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ConfirmBO confirmBO = JSON.parseObject(boStr.toString(), ConfirmBO.class);
-        Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE,Boolean.class);
-        if (b != null && b){
-            orderConstantService.init();
-            redisIO.put(ORDER_EXPRESS_UPDATE,"false");
+        Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE, Boolean.class);
+        String cityGroupStr = null;
+        String cityMapStr = null;
+        String expressMapStr = null;
+        String provGroupStr = null;
+        String provMapStr = null;
+        String townMapStr = null;
+        if (b != null && b) {
+            orderConstantService.initAddress();
+            Map<Long, List<TownVO>> cityGroup = orderConstantService.getCityGroup();
+            Map<Long, CityVO> cityMap = orderConstantService.getCityMap();
+            Map<Long, ExpressVo> expressMap = orderConstantService.getExpressMap();
+            Map<Long, List<CityVO>> provGroup = orderConstantService.getProvGroup();
+            Map<Long, ProvinceVO> provMap = orderConstantService.getProvMap();
+            Map<Long, TownVO> townMap = orderConstantService.getTownMap();
+            cityGroupStr = JSONArray.toJSONString(cityGroup);
+            cityMapStr = JSONArray.toJSONString(cityMap);
+            expressMapStr = JSONArray.toJSONString(expressMap);
+            provGroupStr = JSONArray.toJSONString(provGroup);
+            provMapStr = JSONArray.toJSONString(provMap);
+            townMapStr = JSONArray.toJSONString(townMap);
+            redisIO.put(ORDER_EXPRESS_CITY_GROUP,cityGroupStr);
+            redisIO.put(ORDER_EXPRESS_CITY_MAP,cityMapStr);
+            redisIO.put(ORDER_EXPRESS_EXPRESS_MAP,expressMapStr);
+            redisIO.put(ORDER_EXPRESS_PROV_GROUP,provGroupStr);
+            redisIO.put(ORDER_EXPRESS_PROV_MAP,provMapStr);
+            redisIO.put(ORDER_EXPRESS_TOWN_MAP,townMapStr);
+            redisIO.put(ORDER_EXPRESS_UPDATE, "false");
+        }else{
+            cityGroupStr = redisIO.get(ORDER_EXPRESS_CITY_GROUP,String.class);
+            cityMapStr = redisIO.get(ORDER_EXPRESS_CITY_MAP,String.class);
+            expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
+            provGroupStr = redisIO.get(ORDER_EXPRESS_PROV_GROUP,String.class);
+            provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
+            townMapStr = redisIO.get(ORDER_EXPRESS_TOWN_MAP,String.class);
+            Map<Long, List<TownVO>> ss = (Map<Long, List<TownVO>>) JSONObject.fromObject(cityGroupStr);
+            orderConstantService.setCityGroup(ss);
+            orderConstantService.setCityMap((Map<Long, CityVO>) JSONObject.fromObject(cityMapStr));
+            orderConstantService.setExpressMap((Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr));
+            orderConstantService.setProvGroup((Map<Long, List<CityVO>>) JSONObject.fromObject(provGroupStr));
+            orderConstantService.setProvMap((Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr));
+            orderConstantService.setTownMap((Map<Long, TownVO>) JSONObject.fromObject(townMapStr));
         }
         confirmOrderService.isAddress(confirmBO.getAddressId());
-        Long oid = confirmOrderService.confirmOrders(confirmBO,ps.getUserId());
+        Long oid = confirmOrderService.confirmOrders(confirmBO, ps.getUserId());
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
@@ -127,19 +172,19 @@ public class ConfirmOrderAction {
             bo.setSenderId(Long.valueOf(senderInfoVO.getId()));
             senderInfoVO.setChecked(true);
         }
-        String version = redisIO.get(ORDER_EXPRESS_VERSION,String.class);
-        if (StringUtils.isBlank(version)){
+        String version = redisIO.get(ORDER_EXPRESS_VERSION, String.class);
+        if (StringUtils.isBlank(version)) {
             Long time = System.currentTimeMillis();
-            redisIO.put(ORDER_EXPRESS_VERSION,time.toString());
+            redisIO.put(ORDER_EXPRESS_VERSION, time.toString());
             model.addAttribute("linkageVersion", time.toString());
-        }else{
-            String address = redisIO.get(ORDER_EXPRESS_ADDRESS,String.class);
-            if (StringUtils.isBlank(address)){
+        } else {
+            String address = redisIO.get(ORDER_EXPRESS_ADDRESS, String.class);
+            if (StringUtils.isBlank(address)) {
                 Long time = System.currentTimeMillis();
-                redisIO.put(ORDER_EXPRESS_VERSION,time.toString());
+                redisIO.put(ORDER_EXPRESS_VERSION, time.toString());
                 model.addAttribute("linkageVersion", time.toString());
-            }else {
-                model.addAttribute("linkageVersion",version);
+            } else {
+                model.addAttribute("linkageVersion", version);
             }
         }
         // 商品信息
@@ -153,7 +198,7 @@ public class ConfirmOrderAction {
         model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
         model.addAttribute("webSite", "hz");//站点
         model.addAttribute("code", bo.getCode());
-        model.addAttribute("tbOrderAddressInfo",orderSubmitVo.getTbOrderAddressInfo());
+        model.addAttribute("tbOrderAddressInfo", orderSubmitVo.getTbOrderAddressInfo());
         return "order/confirmOrder";
     }
 
@@ -164,17 +209,17 @@ public class ConfirmOrderAction {
         response.setCharacterEncoding("UTF-8");
         response.setDateHeader("expries", System.currentTimeMillis() + 1000 * 3600 * 24 * 20);
         PrintWriter out = null;
-        String address = redisIO.get(ORDER_EXPRESS_ADDRESS,String.class);
-        if (StringUtils.isBlank(address)){
+        String address = redisIO.get(ORDER_EXPRESS_ADDRESS, String.class);
+        if (StringUtils.isBlank(address)) {
             address = confirmOrderService.getArea();
         }
-        try{
+        try {
             out = response.getWriter();
             out.append("var areaData = ");
             out.append(address);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (out != null) {
                 out.close();
             }
@@ -182,11 +227,12 @@ public class ConfirmOrderAction {
 
         return JsonResponseUtil.success();
     }
+
     @ResponseBody
     @RequestMapping("deleteCollJson")
     public JSONObject deleteCollJson(Long id, HttpSession session) {
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkByAddressId(ps.getUserId(),id)){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (!orderOptionSafeService.checkByAddressId(ps.getUserId(), id)) {
             return JsonResponseUtil.error("只能操作本用户下的地址");
         }
         itemOrderService.rmBuyerAddress(id);
@@ -196,8 +242,8 @@ public class ConfirmOrderAction {
     @ResponseBody
     @RequestMapping("collectCgneeJson")
     public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) throws JsonErrException {
-        if(StringUtils.isEmpty(buyerAddressItem.getName())||StringUtils.isEmpty(buyerAddressItem.getAddress())
-                ||StringUtils.isEmpty(buyerAddressItem.getPhone())){
+        if (StringUtils.isEmpty(buyerAddressItem.getName()) || StringUtils.isEmpty(buyerAddressItem.getAddress())
+                || StringUtils.isEmpty(buyerAddressItem.getPhone())) {
             throw new JsonErrException("地址缺少必要信息");
         }
         Long userId = null;
@@ -205,7 +251,7 @@ public class ConfirmOrderAction {
         if (sessionUser != null) {
             userId = sessionUser.getUserId();
         }
-        if (!orderOptionSafeService.checkCitySafe(buyerAddressItem.getProvId(),buyerAddressItem.getCityId())) {
+        if (!orderOptionSafeService.checkCitySafe(buyerAddressItem.getProvId(), buyerAddressItem.getCityId())) {
             throw new JsonErrException("省市无法对应");
         }
         BuyerAddressVO buyerAddress = new BuyerAddressVO();
@@ -232,25 +278,27 @@ public class ConfirmOrderAction {
 
     /**
      * 获取快递规则接口json
-     * @param provId    省份id
-     * @param senderId  发货方式id
+     *
+     * @param provId   省份id
+     * @param senderId 发货方式id
      * @return
      * @throws JsonErrException
      * @throws LogisticsRuleException
      */
     @ResponseBody
     @RequestMapping("getPostListByProvId")
-    public JSONObject getPostListByProvId (String provId, String senderId) throws JsonErrException, LogisticsRuleException {
+    public JSONObject getPostListByProvId(String provId, String senderId) throws JsonErrException, LogisticsRuleException {
         List<PostVO> postVOS = confirmOrderService.getPostListByProvId(provId, senderId);
         return JsonResponseUtil.success().element("postList",
-                postVOS.stream().map(postVO -> new JSONObject().element("name",postVO.getId()).element("text",postVO.getText())).collect(Collectors.toList()));
+                postVOS.stream().map(postVO -> new JSONObject().element("name", postVO.getId()).element("text", postVO.getText())).collect(Collectors.toList()));
     }
 
     /**
      * 获取快递与服务费信息
+     *
      * @param postName
      * @param provId
-     * @param eachShopNum  每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
+     * @param eachShopNum 每家店铺的商品数量 如{店铺id:商品数量，店铺id:商品数量，}
      * @param totalWeight
      * @return
      * @throws JsonErrException
@@ -258,25 +306,26 @@ public class ConfirmOrderAction {
      */
     @ResponseBody
     @RequestMapping("getOtherCost")
-    public JSONObject getOtherCost(String postName, String provId,String eachShopNum,Long totalWeight,String senderId,HttpSession session) throws JsonErrException, LogisticsRuleException {
+    public JSONObject getOtherCost(String postName, String provId, String eachShopNum, Long totalWeight, String senderId, HttpSession session) throws JsonErrException, LogisticsRuleException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName),provId,eachShopNum,totalWeight,senderId,ps.getUserId());
-        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName), provId, eachShopNum, totalWeight, senderId, ps.getUserId());
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS, String.class));
         Long freePostCost = 0l;
         if (activity) {
             if (logisticsService.isMinusFreight(ps.getUserId(), null))
                 freePostCost = otherCostVO.getPostPrice() > 500 ? 500 : otherCostVO.getPostPrice();
         }
         return JsonResponseUtil
-                    .success()
-                    .element("postPrice",otherCostVO.getPostPrice())
-                    .element("servicePrice",otherCostVO.getServicePrice())
-                    .element("serviceInfosText",otherCostVO.getServiceInfosText())
-                    .element("freePostCost",freePostCost);
+                .success()
+                .element("postPrice", otherCostVO.getPostPrice())
+                .element("servicePrice", otherCostVO.getServicePrice())
+                .element("serviceInfosText", otherCostVO.getServiceInfosText())
+                .element("freePostCost", freePostCost);
     }
 
     /**
      * 淘宝批量下单获取整合信息
+     *
      * @param bo
      * @param request
      * @return
@@ -287,28 +336,29 @@ public class ConfirmOrderAction {
     @ResponseBody
     public JSONObject confirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, LogisticsRuleException {
         PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+        if (!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())) {
             throw new OrderException("没有访问的权限");
         }
-        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
-        if (tbTrades == null||tbTrades.size()==0) {
+        List<OrderSubmitVo> tbTrades = redisIO.getList(bo.getIdCode(), OrderSubmitVo.class);
+        if (tbTrades == null || tbTrades.size() == 0) {
             throw new OrderException("订单超时");
         }
         Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        List<PostVO> psv=logisticsService.defaultPost(bo.getSenderId());
-        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades,bo.getSenderId()))
-                .element("result","success")
-                .element("postTotalPrice","0.00")
-                .element("postList",psv.stream().map(postVO -> new JSONObject()
-                        .element("id",postVO.getId()).element("name",postVO.getText())).collect(Collectors.toList()));
+        List<PostVO> psv = logisticsService.defaultPost(bo.getSenderId());
+        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades, bo.getSenderId()))
+                .element("result", "success")
+                .element("postTotalPrice", "0.00")
+                .element("postList", psv.stream().map(postVO -> new JSONObject()
+                        .element("id", postVO.getId()).element("name", postVO.getText())).collect(Collectors.toList()));
 
     }
 
     /**
      * 淘宝批量下单获取快递费
+     *
      * @param bo
      * @param request
      * @return
@@ -317,31 +367,32 @@ public class ConfirmOrderAction {
      */
     @RequestMapping("queryPostPriceForConfirmTbBatchOrder")
     @ResponseBody
-    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, LogisticsRuleException {
+    public JSONObject queryPostPriceForConfirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, LogisticsRuleException {
         PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+        if (!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())) {
             throw new OrderException("没有访问的权限");
         }
-        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
-        if (tbTrades == null||tbTrades.size()==0) {
+        List<OrderSubmitVo> tbTrades = redisIO.getList(bo.getIdCode(), OrderSubmitVo.class);
+        if (tbTrades == null || tbTrades.size() == 0) {
             throw new OrderException("订单超时");
         }
         Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        Double freePostCost=0.00;
+        Double freePostCost = 0.00;
         String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades, bo.getSenderId(), bo.getPostId(), sessionUser.getUserId()));
-        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS,String.class));
+        Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS, String.class));
         if (activity) {
             if (logisticsService.isMinusFreight(sessionUser.getUserId(), null))
                 freePostCost = Double.valueOf(postTotalPrice) > Double.valueOf(5.00) ? Double.valueOf(5.00) : Double.valueOf(postTotalPrice);
         }
-        return JsonResponseUtil.success().element("postTotalPrice",postTotalPrice).element("freePostCost",freePostCost.toString());
+        return JsonResponseUtil.success().element("postTotalPrice", postTotalPrice).element("freePostCost", freePostCost.toString());
     }
 
     /**
      * 淘宝批量下单,订单提交
+     *
      * @param bo
      * @param request
      * @return
@@ -350,20 +401,20 @@ public class ConfirmOrderAction {
      */
     @RequestMapping("submitResultForConfirmTbBatchOrder")
     @ResponseBody
-    public JSONObject submitResultForConfirmTbBatchOrder(ConfirmMoreTbBO bo,HttpServletRequest request) throws OrderException, JsonErrException {
+    public JSONObject submitResultForConfirmTbBatchOrder(ConfirmMoreTbBO bo, HttpServletRequest request) throws OrderException, JsonErrException {
         PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+        if (!(Boolean) sessionUser.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())) {
             throw new OrderException("没有访问的权限");
         }
-        List<OrderSubmitVo> tbTrades=redisIO.getList(bo.getIdCode(),OrderSubmitVo.class);
-        if (tbTrades == null||tbTrades.size()==0) {
+        List<OrderSubmitVo> tbTrades = redisIO.getList(bo.getIdCode(), OrderSubmitVo.class);
+        if (tbTrades == null || tbTrades.size() == 0) {
             throw new OrderException("订单超时");
         }
         Long userId = sessionUser.getUserId();
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode="+confirmOrderService.confirmTbBatchOrders(bo,userId,tbTrades));
+        return JsonResponseUtil.success().element("redectUrl", "/order/payMode.htm?orderCode=" + confirmOrderService.confirmTbBatchOrders(bo, userId, tbTrades));
 
     }
 
