@@ -6,7 +6,6 @@ import com.shigu.main4.item.exceptions.SystemSynItemException;
 import com.shigu.main4.item.vo.SynItem;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 商品添加或更新服务类

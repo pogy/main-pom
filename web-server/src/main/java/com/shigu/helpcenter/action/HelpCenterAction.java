@@ -1,6 +1,5 @@
 package com.shigu.helpcenter.action;
 
-
 import com.opentae.data.mall.beans.ShiguHelpcenterLevel1;
 import com.opentae.data.mall.beans.ShiguHelpcenterLevel2;
 import com.opentae.data.mall.beans.ShiguHelpcenterQuestion;
@@ -8,15 +7,8 @@ import com.shigu.helpcenter.service.LevelOneService;
 import com.shigu.helpcenter.service.LevelTwoService;
 import com.shigu.helpcenter.service.QuestionService;
 import com.shigu.helpcenter.vo.*;
-import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.tools.OssIO;
-import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
-import com.shigu.main4.ucenter.vo.UserInfoUpdate;
-import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
-
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

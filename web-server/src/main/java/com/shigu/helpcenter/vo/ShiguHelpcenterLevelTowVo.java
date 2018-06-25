@@ -1,7 +1,6 @@
 package com.shigu.helpcenter.vo;
 
 import com.opentae.data.mall.beans.ShiguHelpcenterLevel2;
-import com.opentae.data.mall.beans.ShiguHelpcenterQuestion;
 
 public class ShiguHelpcenterLevelTowVo {
     private String queCateNamePath;

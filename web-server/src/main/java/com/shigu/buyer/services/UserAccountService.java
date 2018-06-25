@@ -2,9 +2,15 @@ package com.shigu.buyer.services;
 
 import com.openJar.requests.sgpay.RedPackPayRequest;
 import com.openJar.responses.sgpay.RedPackPayResponse;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.MemberAlipayBind;
+import com.opentae.data.mall.beans.OrderPay;
+import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayRelationship;
 import com.opentae.data.mall.examples.MemberAlipayBindExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.MemberAlipayBindMapper;
+import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
+import com.opentae.data.mall.interfaces.OrderPayMapper;
+import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.bo.TixianBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;

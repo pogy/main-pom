@@ -21,7 +21,6 @@ import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
-import com.shigu.main4.spread.vo.ActiveForShowVO;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.main4.tools.RedisIO;

@@ -1,10 +1,8 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;

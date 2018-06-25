@@ -1,7 +1,5 @@
 package com.shigu.main4.newcdn.vo;
 
-import com.shigu.main4.cdn.vo.SkuMetaVO;
-
 import java.util.List;
 
 /**

@@ -5,18 +5,13 @@ import com.openJar.beans.app.AppItemSpread;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.phone.api.enums.ImgFormatEnum;
-import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.baseservices.BaseAdvertService;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pc on 2017-08-29.

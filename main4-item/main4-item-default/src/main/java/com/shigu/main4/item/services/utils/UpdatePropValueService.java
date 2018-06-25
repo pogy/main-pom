@@ -1,9 +1,7 @@
 package com.shigu.main4.item.services.utils;
 
 import com.opentae.data.mall.beans.TaobaoPropValue;
-import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
 import com.taobao.api.domain.PropValue;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

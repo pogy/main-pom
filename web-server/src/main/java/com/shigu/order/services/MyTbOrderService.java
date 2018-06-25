@@ -14,7 +14,6 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
-import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
@@ -41,9 +40,9 @@ import com.shigu.zf.utils.PriceConvertUtils;
 import com.shigu.zf.utils.SimilarityMap;
 import com.taobao.api.security.SecurityBiz;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

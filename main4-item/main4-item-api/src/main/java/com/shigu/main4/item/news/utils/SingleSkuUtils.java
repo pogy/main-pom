@@ -2,6 +2,7 @@ package com.shigu.main4.item.news.utils;
 
 import com.aliyun.opensearch.sdk.dependencies.org.apache.commons.lang.StringEscapeUtils;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.vo.CatColorSizeVO;
@@ -301,5 +302,91 @@ public class SingleSkuUtils {
             return false;
         }
         return true;
+    }
+
+    public static void callSkus(List<SingleSkuBO> singleSkuBOS, List<TbSku> skus,Long colorPid,Long sizePid){
+        if(skus==null||skus.size()==0||singleSkuBOS.size()==0){
+            return;
+        }
+        for(TbSku sku:skus){
+            String propertiesName = sku.getPropertiesName();
+            String[] pvs = propertiesName.split(";");
+            String color=null;
+            String size=null;
+            String colorVid=null;
+            String sizeVid=null;
+            for(String pv:pvs){
+                String[] props=pv.split(":");
+                if(props.length!=4){
+                    continue;
+                }
+                Long pid=new Long(props[0]);
+                if(pid.equals(colorPid)){
+                    color=props[3];
+                    colorVid=props[1];
+                }
+                if(pid.equals(sizePid)){
+                    size=props[3];
+                    sizeVid=props[1];
+                }
+            }
+            if(color==null&&colorPid!=null){
+                color="图片色";
+            }
+            if(size==null&&sizePid!=null){
+                size="均码";
+            }
+            //先用vid组合去匹配
+            boolean haveVid=false;
+            for(SingleSkuBO singleSkuBO:singleSkuBOS){
+                if((singleSkuBO.getColorVid()+"_"+singleSkuBO.getSizeVid()).equals(colorVid+"_"+sizeVid)){
+                    if("delete".equals(sku.getStatus())){
+                        singleSkuBO.setStockNum(0);
+                    }else{
+                        singleSkuBO.setStockNum(sku.getQuantity().intValue());
+                    }
+                    singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
+                    haveVid=true;
+                    break;
+                }
+            }
+            //如果用vid组合匹配失败,意味着vname可能原来是自定义,但被转化成别名了,于是vid发生改变,这是用vname组合进行匹配
+            if(!haveVid){
+                for(SingleSkuBO singleSkuBO:singleSkuBOS){
+                    if((singleSkuBO.getColorAlias()+"_"+singleSkuBO.getSizeAlias()).equals(color+"_"+size)){
+                        if("delete".equals(sku.getStatus())){
+                            singleSkuBO.setStockNum(0);
+                        }else{
+                            singleSkuBO.setStockNum(sku.getQuantity().intValue());
+                        }
+                        singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<TbSku> calTbSkus(String singSkus){
+        List<TbSku> tbSkus=new ArrayList<>();
+        if(StringUtils.isNotBlank(singSkus)){
+            String[] skuStrs=singSkus.split(";");
+            for(String skuStr:skuStrs){
+                String[] strs=skuStr.split(":");
+                if(strs.length==7){
+                    TbSku tbSku=new TbSku();
+                    tbSku.setPrice(strs[0]);
+                    tbSku.setStatus("normal");
+                    tbSku.setQuantity(new Long(strs[1]));
+                    tbSku.setPropertiesName(strs[3]+":"+strs[4]+":"+strs[5]+":"+strs[6]);
+                    tbSkus.add(tbSku);
+                }
+                if(strs.length==4&&tbSkus.size()>0){
+                    TbSku tbSku=tbSkus.get(tbSkus.size()-1);
+                    tbSku.setPropertiesName(tbSku.getPropertiesName()+";"+strs[0]+":"+strs[1]+":"+strs[2]+":"+strs[3]);
+                }
+            }
+        }
+        return tbSkus;
     }
 }

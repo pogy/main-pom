@@ -74,7 +74,7 @@
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
 
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
+    <dubbo:reference interface="com.shigu.main4.packages.process.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
 
     <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.activity.process.StrengthMemberService" id="strengthMemberService" retries="0" timeout="20000"/>

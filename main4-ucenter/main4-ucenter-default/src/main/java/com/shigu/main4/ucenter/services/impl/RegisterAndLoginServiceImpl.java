@@ -1,6 +1,5 @@
 package com.shigu.main4.ucenter.services.impl;
 
-
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
@@ -23,7 +22,6 @@ import com.shigu.main4.ucenter.vo.LoginRecord;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
-import org.apache.zookeeper.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

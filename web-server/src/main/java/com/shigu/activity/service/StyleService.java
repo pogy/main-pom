@@ -17,7 +17,6 @@ import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

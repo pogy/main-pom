@@ -1,10 +1,10 @@
 package com.opentae.data.mall.interfaces;
 
-import com.opentae.data.mall.beans.TaobaoPropValue;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.Lazy;
-import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+import com.opentae.core.mybatis.mapper.Mapper;
+import com.opentae.data.mall.beans.TaobaoPropValue;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息

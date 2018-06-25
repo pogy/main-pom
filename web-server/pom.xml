@@ -92,6 +92,11 @@
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
+            <artifactId>main4-package-api</artifactId>
+            <version>${main4-package-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
             <artifactId>main4-common</artifactId>
             <version>${main4-common.version}</version>
         </dependency>

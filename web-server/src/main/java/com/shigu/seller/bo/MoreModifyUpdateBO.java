@@ -1,7 +1,6 @@
 package com.shigu.seller.bo;
 
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
-import com.shigu.main4.item.vo.SynItem;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 

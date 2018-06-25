@@ -1,12 +1,9 @@
 package com.shigu.main4.item.model;
 
 import com.shigu.main4.item.bo.news.SingleSkuBO;
-import com.shigu.main4.item.vo.CatColorSizeVO;
 import com.shigu.main4.item.vo.news.SingleSkuVO;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface ItemSkuModel {
 

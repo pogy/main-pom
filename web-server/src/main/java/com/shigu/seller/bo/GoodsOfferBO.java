@@ -3,7 +3,6 @@ package com.shigu.seller.bo;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.bo.news.SingleSkuBO;
-import com.shigu.main4.item.vo.SynItem;
 import com.shigu.seller.services.DataPackageImportService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -15,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 /**

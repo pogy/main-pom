@@ -4,7 +4,6 @@ import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.SystemSynItemException;
-import com.shigu.main4.item.vo.CatColorSizeVO;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.item.vo.news.NewPullSynItemVO;
 

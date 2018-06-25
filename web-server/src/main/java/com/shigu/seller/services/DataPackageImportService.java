@@ -2,25 +2,21 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
-import com.shigu.main4.item.services.ItemAddOrUpdateService;
+import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.vo.ShiguPropImg;
-import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.packages.process.PackageImportGoodsDataService;
+import com.shigu.main4.packages.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.tools.OssIO;
-import com.shigu.main4.ucenter.services.PackageImportGoodsDataService;
-import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
-import com.shigu.tb.finder.exceptions.TbPropException;
 import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +44,7 @@ public class DataPackageImportService {
     PackageImportGoodsDataService packageImportGoodsDataService;
 
     @Autowired
-    ItemAddOrUpdateService itemAddOrUpdateService;
+    NewItemAddOrUpdateService newItemAddOrUpdateService;
 
     @Autowired
     TbPropsService tbPropsService;
@@ -62,10 +58,6 @@ public class DataPackageImportService {
     @Autowired
     ShiguShopMapper shiguShopMapper;
 
-    public List<ShiguGoodsTinyVO> importtempGoods(String packageUrl, Long storeId, String flag)throws Main4Exception{
-      return  packageImportGoodsDataService.packageImporttempGoods (packageUrl,  storeId,  flag);
-    }
-
     /**
      * 添加商品到星座网
      * @param shopId
@@ -73,7 +65,7 @@ public class DataPackageImportService {
      * @throws ItemModifyException
      */
     public void addToXzw(Long shopId,ShiguGoodsTinyVO tiny) throws ItemModifyException {
-        SynItem item= BeanMapper.map(tiny,SynItem.class);
+        NewPushSynItemBO item= BeanMapper.map(tiny,NewPushSynItemBO.class);
         ShiguShop shop=shiguShopMapper.selectByPrimaryKey(shopId);
         item.setShopId(shop.getShopId());
         item.setFloorId(shop.getFloorId());
@@ -130,7 +122,8 @@ public class DataPackageImportService {
             }
         }
         item.setImageList(imageList);
-        itemAddOrUpdateService.userAddItem(item);
+        item.setSingleSkus(BeanMapper.mapList(tiny.getSkus(), SingleSkuBO.class));
+        newItemAddOrUpdateService.userAddItem(item);
     }
 
     public String banjia(String url){

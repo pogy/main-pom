@@ -1,7 +1,5 @@
 package com.shigu.buyer.vo;
 
-import java.util.Date;
-
 /**
  * Created by wxc on 2017/1/13.
  * 一键上传记录值
