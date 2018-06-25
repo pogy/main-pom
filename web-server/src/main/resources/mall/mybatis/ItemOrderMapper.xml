@@ -74,6 +74,7 @@
         item_order_sub.size as size,
         item_order_sub.goods_no as goodsNo,
         item_order_sub.out_of_stok_reason as haveGoodsTime,
+        item_order.tbOrderId as tbOrderId,
         CONVERT (item_order_sub.price * 0.01, DECIMAL (10, 2)) as price,
         item_order_sub.num as num,
         item_order_sub.out_of_stok as stockoutNum,
@@ -89,6 +90,7 @@
         SELECT
         item_order.oid oid,
         item_order.create_time tradeTime,
+        item_order.outer_id tbOrderId,
         CONVERT (item_order.total_fee * 0.01,DECIMAL (10, 2)) tradePay,
         CONVERT (item_order_logistics.money * 0.01,DECIMAL (10, 2)) postPay,
         item_order.ORDER_STATUS mainState,
@@ -143,6 +145,7 @@
         <result column="postPay" property="postPay"/>
         <result column="mainState" property="mainState"/>
         <result column="isTbOrder" property="isTbOrder"/>
+        <result column="tbOrderId" property="tbOrderId"/>
         <result column="webSite" property="webSite"/>
         <result column="isTbShipments" property="isTbShipments"/>
         <result column="payTime" property="payTime"/>

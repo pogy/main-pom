@@ -17,6 +17,11 @@ public class MyOrderVO {
     @Column("item_order.create_time")
     private String tradeTime;
     /**
+     * 淘宝订单id
+     */
+    @Column("item_order.outer_id")
+    private String tbOrderId;
+    /**
      * 交易总金额
      */
     @Column("convert(item_order.total_fee*0.01,decimal(10,2))")
@@ -198,6 +203,22 @@ public class MyOrderVO {
      */
     public void setIsTbShipments(Boolean isTbShipments) {
         this.isTbShipments = isTbShipments;
+    }
+
+    public String getTbOrderId() {
+        return tbOrderId;
+    }
+
+    public void setTbOrderId(String tbOrderId) {
+        this.tbOrderId = tbOrderId;
+    }
+
+    public Boolean getTbOrder() {
+        return isTbOrder;
+    }
+
+    public void setTbOrder(Boolean tbOrder) {
+        isTbOrder = tbOrder;
     }
 
     public Date getPayTime() {
