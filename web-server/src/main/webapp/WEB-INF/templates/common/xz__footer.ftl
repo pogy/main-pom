@@ -9,6 +9,7 @@
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//wa.571xz.com" target="_blank">辽源站</a>
+            <a href="//qz.571xz.com" target="_blank">泉州站</a>
             <a href="//zixun.571xz.com" target="_blank">资讯</a>
             <a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a>
         </p>
@@ -32,10 +33,3 @@
         </p>
     </div>
 </div>
-
-<script modulepath="common/xz#alls">
-    (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};
-        b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);
-        s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)
-    })(window,document,"script","_qha",256591,false);
-</script>
