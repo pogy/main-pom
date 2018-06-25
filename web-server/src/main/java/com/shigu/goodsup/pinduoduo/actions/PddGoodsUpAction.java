@@ -16,6 +16,7 @@ import com.shigu.goodsup.pinduoduo.service.PddGoodsUpService;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
 import com.shigu.goodsup.pinduoduo.vo.ProfitTemplate;
 import com.shigu.goodsup.pinduoduo.vo.ReturnsTemplate;
+import com.shigu.goodsup.pinduoduo.vo.UsedCatRecordVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
@@ -292,7 +293,7 @@ public class PddGoodsUpAction {
             model.addAttribute("erverDyTemplateId",postTemplateId);
         }
         List<LogisticsTemplate> logisticsTemplates = pddGoodsUpService.selPostTemplate(ps.getUserId());
-        if (logisticsTemplates != null || !logisticsTemplates.isEmpty()) {
+        if (logisticsTemplates != null && !logisticsTemplates.isEmpty()) {
             model.addAttribute("deliveyList",logisticsTemplates);
         }
         return "pinduoduo/parts/deliver";
@@ -395,8 +396,8 @@ public class PddGoodsUpAction {
             return JsonResponseUtil.success();
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        pddGoodsUpService.selUsedCatRecord(ps.getUserId(),catName);
-        return JsonResponseUtil.success();
+        List<UsedCatRecordVO> usedCatRecordVOS = pddGoodsUpService.selUsedCatRecord(ps.getUserId(), catName);
+        return JsonResponseUtil.success().element("pddHistoryCategory",usedCatRecordVOS);
     }
 
 

@@ -8,6 +8,7 @@ import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
 import com.shigu.goodsup.pinduoduo.util.XzPddClient;
 import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
+import com.shigu.goodsup.pinduoduo.vo.UsedCatRecordVO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.item.services.ItemCatService;
@@ -414,7 +415,26 @@ public class PddGoodsUpService {
      * 查询用户上传使用过的类目信息
      * @return
      */
-    public void selUsedCatRecord(Long userId, String catName) {
+    public List<UsedCatRecordVO> selUsedCatRecord(Long userId, String catName) {
+        SelUsedCatRecordRequest recordRequest = new SelUsedCatRecordRequest();
+        recordRequest.setXzUserId(userId);
+        recordRequest.setCatName(catName);
+        recordRequest.setStartIndex(0);
+        recordRequest.setSize(5);
 
+        SelUsedCatRecordResponse recordResponse = xzSdkClient.getPcOpenClient().execute(recordRequest);
+        if (!recordResponse.isSuccess() || recordResponse.getUsedCatRecords() == null
+                || recordResponse.getUsedCatRecords().isEmpty()) {
+            return null;
+        }
+        List<UsedCatRecordVO> usedCatRecordVOS = recordResponse.getUsedCatRecords().stream().map(item -> {
+            UsedCatRecordVO usedCatRecordVO = new UsedCatRecordVO();
+            usedCatRecordVO.setCid(item.getCid() + "");
+            usedCatRecordVO.setText(item.getShowName());
+            usedCatRecordVO.setValue(item.getAllcids());
+            return usedCatRecordVO;
+        }).collect(Collectors.toList());
+
+        return usedCatRecordVOS;
     }
 }
