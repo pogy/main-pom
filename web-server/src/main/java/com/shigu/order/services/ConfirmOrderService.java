@@ -218,7 +218,7 @@ public class ConfirmOrderService {
             CollListVO vo = new CollListVO();
             collListVOS.add(vo);
             vo.setId(buyerAddressVO.getAddressId());
-            vo.setAddress(buyerAddressVO.getProvince() + " " + buyerAddressVO.getCity() + " " + buyerAddressVO.getTown()==null?"":buyerAddressVO.getTown() + " " + buyerAddressVO.getAddress());
+            vo.setAddress(buyerAddressVO.getProvince() + " " + buyerAddressVO.getCity() + " " +(buyerAddressVO.getTown()==null?"":buyerAddressVO.getTown())+ " " + buyerAddressVO.getAddress());
             vo.setName(buyerAddressVO.getName());
             vo.setPhone(buyerAddressVO.getTelephone());
         }
