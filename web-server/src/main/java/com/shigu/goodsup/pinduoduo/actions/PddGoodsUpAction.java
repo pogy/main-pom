@@ -22,6 +22,7 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.vo.ShopCat;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
@@ -79,6 +80,8 @@ public class PddGoodsUpAction {
     public static final String PDD_RETURNS_TEMPLATE_PRE = "pdd_returns_template_";
     //利润模板
     public static final String PDD_PROFIT_TEMPLATE_PRE = "pdd_profit_template_";
+    //店内类目更新
+    public static final String UPDATE_PDD_SHOP_CATS_PRE = "update_pdd_shop_cats_pre";
 
     @RequestMapping("login")
     public String login(){
@@ -358,16 +361,32 @@ public class PddGoodsUpAction {
     }
 
     /**
-     * 查询pdd类目信息
+     * 查询pdd店内类目信息
      * @return
      */
     @RequestMapping("selPddCats")
     @ResponseBody
     public JSONObject selPddCats (Long pddCid,HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<GoodsCats> goodsCats = pddGoodsUpService.selAuthorizationCats(ps.getUserId(), pddCid);
+        List<com.openJar.pdd.beans.ShopCat> goodsCats = pddGoodsUpService.selAuthorizationCats(ps.getUserId(), pddCid);
         return JsonResponseUtil.success().element("goodsCats",goodsCats);
     }
+
+    /**
+     * 强制更新pdd店内类目信息 每天最多更新3次
+     * @return
+     */
+    @RequestMapping("updateShopCats")
+    @ResponseBody
+    public JSONObject updateShopCats (HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Integer updateNum = redisIO.get(UPDATE_PDD_SHOP_CATS_PRE + ps.getUserId(), Integer.class);
+        if (updateNum != null && updateNum >= 3) {
+            return JsonResponseUtil.error("今日更新次数已用完");
+        }
+        return pddGoodsUpService.updateShopCats(ps.getUserId());
+    }
+
 
     /**
      * 生成商家自定义的规格
@@ -425,14 +444,19 @@ public class PddGoodsUpAction {
     }
 
     /**
-     * 查询用户上传使用过的类目信息
+     * 选择类目信息
      * @return
      */
     @RequestMapping("changeGoodsCate")
     public String chooseCat (String allCids,Long goodsId,String catName,Model model, HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<UsedCatRecordVO> usedCatRecordVOS = pddGoodsUpService.selUsedCatRecord(ps.getUserId(), catName);
+        Integer updateNum = redisIO.get(UPDATE_PDD_SHOP_CATS_PRE + ps.getUserId(), Integer.class);
+        if (updateNum == null) {
+            updateNum = 3;
+        }
 
+        model.addAttribute("updateNum",updateNum);
         model.addAttribute("allCids",allCids);
         model.addAttribute("goodsId",goodsId);
         model.addAttribute("pddHistoryCategory",usedCatRecordVOS);

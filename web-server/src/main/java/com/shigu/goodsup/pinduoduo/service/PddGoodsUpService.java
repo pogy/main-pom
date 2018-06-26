@@ -1,5 +1,6 @@
 package com.shigu.goodsup.pinduoduo.service;
 
+import com.openJar.pdd.beans.ShopCat;
 import com.openJar.requests.*;
 import com.openJar.responses.*;
 import com.opentae.data.mall.beans.*;
@@ -18,22 +19,22 @@ import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
+import net.sf.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import pdd.beans.GoodsCats;
 import pdd.beans.GoodsSpec;
 import pdd.beans.LogisticsTemplate;
 import pdd.goods.add.GoodsAddRequest;
-import pdd.goods.authorization.cats.AuthorizationCatsRequest;
-import pdd.goods.authorization.cats.AuthorizationCatsResponse;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetRequest;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetResponse;
 import pdd.goods.spec.get.SpecGetRequest;
@@ -47,7 +48,6 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +78,9 @@ public class PddGoodsUpService {
     private CdnService cdnService;
     @Resource
     private ItemCatService itemCatService;
+    @Resource
+    private RedisIO redisIO;
+
 
     /**
      * 获取上传页面商品数据
@@ -213,24 +216,48 @@ public class PddGoodsUpService {
         return response.getLogisticsTemplates();
     }
 
+//    /**
+//     * 查询用户授权类目信息
+//     * cid为空则查最顶级
+//     */
+//    public  List<GoodsCats> selAuthorizationCats(Long userId,Long cid) {
+//        String token = selAccessToken(userId);
+//        if (token == null) {
+//            return null;
+//        }
+//
+//        AuthorizationCatsRequest request = new AuthorizationCatsRequest();
+//        request.setParent_cat_id(cid);
+//        AuthorizationCatsResponse response = xzPddClient.openClient(token).excute(request);
+//        if (!response.getSuccess()) {
+//            return null;
+//        }
+//        return response.getGoodsCatsList();
+//
+//    }
+//
     /**
      * 查询用户授权类目信息
      * cid为空则查最顶级
      */
-    public  List<GoodsCats> selAuthorizationCats(Long userId,Long cid) {
-        //TODO 每次用户登陆同步下店内类目信息
-        String token = selAccessToken(userId);
-        if (token == null) {
+    public  List<ShopCat> selAuthorizationCats(Long userId, Long cid) {
+        MemberUserSub memberUserSub = new MemberUserSub();
+        memberUserSub.setUserId(userId);
+        memberUserSub.setAccountType(LoginFromType.PDD.getAccountType());
+
+        memberUserSub = memberUserSubMapper.selectOne(memberUserSub);
+        if (memberUserSub == null) {
             return null;
         }
 
-        AuthorizationCatsRequest request = new AuthorizationCatsRequest();
-        request.setParent_cat_id(cid);
-        AuthorizationCatsResponse response = xzPddClient.openClient(token).excute(request);
-        if (!response.getSuccess()) {
+        SelAuthorizationCatsRequest request = new SelAuthorizationCatsRequest();
+        request.setPddUid(new Long(memberUserSub.getSubUserKey()));
+        request.setParentCid(cid);
+        SelAuthorizationCatsResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
             return null;
         }
-        return response.getGoodsCatsList();
+        return response.getShopCats();
 
     }
 
@@ -484,4 +511,30 @@ public class PddGoodsUpService {
         return vo;
 
     }
+
+    /**
+     * 强制更新pdd店内类目信息
+     * @return
+     */
+    public JSONObject updateShopCats(Long userId) {
+        MemberUserSub memberUserSub = new MemberUserSub();
+        memberUserSub.setUserId(userId);
+        memberUserSub.setAccountType(LoginFromType.PDD.getAccountType());
+
+        memberUserSub = memberUserSubMapper.selectOne(memberUserSub);
+        if (memberUserSub == null) {
+            return JsonResponseUtil.error("该账号尚未绑定拼多多");
+        }
+
+        UpdateShopCatsRequest request = new UpdateShopCatsRequest();
+        request.setPddUid(new Long(memberUserSub.getSubUserKey()));
+
+        UpdateShopCatsResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            return JsonResponseUtil.error("更新失败");
+        }
+        return JsonResponseUtil.success();
+
+    }
+
 }
