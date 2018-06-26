@@ -528,6 +528,7 @@ public class PddGoodsUpService {
 
         UpdateShopCatsRequest request = new UpdateShopCatsRequest();
         request.setPddUid(new Long(memberUserSub.getSubUserKey()));
+        request.setXzUserId(userId);
 
         UpdateShopCatsResponse response = xzSdkClient.getPcOpenClient().execute(request);
         if (!response.isSuccess()) {
