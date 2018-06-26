@@ -5,7 +5,9 @@ import com.openJar.responses.*;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
+import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.util.XzPddClient;
+import com.shigu.goodsup.pinduoduo.vo.ImgUploadVO;
 import com.shigu.goodsup.pinduoduo.vo.ItemColorPropVO;
 import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
 import com.shigu.goodsup.pinduoduo.vo.UsedCatRecordVO;
@@ -16,8 +18,6 @@ import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
-import com.shigu.phone.api.enums.ImgFormatEnum;
-import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.XzSdkClient;
@@ -448,6 +448,40 @@ public class PddGoodsUpService {
      */
     public void upload(Object o) {
         GoodsAddRequest request = new GoodsAddRequest();
+
+    }
+
+    /**
+     * 图片上传
+     * @param imgUrl
+     * @param tempCode
+     * @return
+     */
+    public ImgUploadVO uploadImg(String imgUrl, String tempCode, Integer type, Long userId) throws CustomException {
+        MemberUserSub memberUserSub = new MemberUserSub();
+        memberUserSub.setUserId(userId);
+        memberUserSub.setAccountType(LoginFromType.PDD.getAccountType());
+
+        memberUserSub = memberUserSubMapper.selectOne(memberUserSub);
+        if (memberUserSub == null) {
+            throw new CustomException("该账号尚未绑定拼多多");
+        }
+
+        PddUploadImgRequest request = new PddUploadImgRequest();
+        request.setImgUrl(imgUrl);
+        request.setPddUid(new Long(memberUserSub.getSubUserKey()));
+        request.setType(type);
+        request.setTempCode(tempCode);
+
+        PddUploadImgResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        if (!response.isSuccess()) {
+            throw new CustomException(response.getException().getMessage());
+        }
+        ImgUploadVO vo = new ImgUploadVO();
+        vo.setTempCode(response.getTempCode());
+        vo.setPddImgUrls(response.getPddImgUrls());
+        vo.setNum(response.getNum());
+        return vo;
 
     }
 }

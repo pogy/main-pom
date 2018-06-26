@@ -14,10 +14,7 @@ import com.shigu.goodsup.pinduoduo.bo.PddUploadBO;
 import com.shigu.goodsup.pinduoduo.bo.PublishBO;
 import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.service.PddGoodsUpService;
-import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
-import com.shigu.goodsup.pinduoduo.vo.ProfitTemplate;
-import com.shigu.goodsup.pinduoduo.vo.ReturnsTemplate;
-import com.shigu.goodsup.pinduoduo.vo.UsedCatRecordVO;
+import com.shigu.goodsup.pinduoduo.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
@@ -440,6 +437,24 @@ public class PddGoodsUpAction {
         model.addAttribute("goodsId",goodsId);
         model.addAttribute("pddHistoryCategory",usedCatRecordVOS);
         return "pinduoduo/changeGoodsCate";
+    }
+
+    /**
+     * 上传图片
+     * @return
+     */
+    @RequestMapping("uploadImg")
+    @ResponseBody
+    public JSONObject uploadImg (String imgUrl,String tempCode,Integer type,HttpSession session){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ImgUploadVO vo = null;
+        try {
+            vo = pddGoodsUpService.uploadImg(imgUrl,tempCode,type,ps.getUserId());
+        } catch (CustomException e) {
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getMessage());
+        }
+        return JsonResponseUtil.success().element("pddImgInfo",vo);
     }
 
 
