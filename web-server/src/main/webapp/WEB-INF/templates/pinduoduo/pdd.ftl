@@ -228,7 +228,7 @@
                                 <#list item.detailsImgs as img>
                                     <#if img_index lt 20>
                                         <li data-index="${img_index}" class="has-media">
-                                            <input type="hidden" class="picUrl" name="descPicUrl[]" id="picurl${img_index}"
+                                            <input type="hidden" class="picUrl" name="descPicUrl[]" id="descPicUrl${img_index}"
                                                    value="${img}">
 
                                             <div class="operate">
@@ -301,8 +301,7 @@
                 <input type="hidden" id="token" name="_csrf"
                        value="${allData.token}">
                 <input type="hidden" id="pPrice" value="${item.price}">
-                <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.pid}</#if>">
-                <input type="hidden" name="sizePid" value="${allData.props.sizePid}">
+                <input type="hidden" id="piPrice" value="${item.piPrice}">
                 <input type="hidden" id="cid" name="cid" value="${pddCid}">
                 <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
