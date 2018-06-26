@@ -18,6 +18,8 @@ public class PddItemDetailVO implements Serializable{
     private List<String> imgSrcs;
     //货号
     private String goodsNo;
+    //星座网批发价
+    private String piPrice;
     // 团购价  批发售价 + 团购利润
     private String price;
     //单买价 商品零售价格 + 零售利润
@@ -69,6 +71,14 @@ public class PddItemDetailVO implements Serializable{
 
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
+    }
+
+    public String getPiPrice() {
+        return piPrice;
+    }
+
+    public void setPiPrice(String piPrice) {
+        this.piPrice = piPrice;
     }
 
     public String getPrice() {

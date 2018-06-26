@@ -16,6 +16,8 @@ import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.phone.api.enums.ImgFormatEnum;
+import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.XzSdkClient;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import pdd.beans.GoodsCats;
 import pdd.beans.GoodsSpec;
 import pdd.beans.LogisticsTemplate;
+import pdd.goods.add.GoodsAddRequest;
 import pdd.goods.authorization.cats.AuthorizationCatsRequest;
 import pdd.goods.authorization.cats.AuthorizationCatsResponse;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetRequest;
@@ -91,6 +94,7 @@ public class PddGoodsUpService {
         }
         vo.setGoodsId(itemId.toString());
         vo.setGoodsNo(cdnItem.getHuohao());
+        vo.setPiPrice(cdnItem.getPiPrice());
         vo.setPrice(cdnItem.getPiPrice());
         vo.setTitle(cdnItem.getTitle());
         vo.setTitleLength(cdnItem.getTitle().getBytes(Charset.forName("GBK")).length);
@@ -108,7 +112,6 @@ public class PddGoodsUpService {
         //a. 尺寸 等宽高 宽高不低于480px
         //b. 大小1M
         //c. 图片格式仅支持JPG,PNG格式
-//        vo.setImgSrcs(cdnItem.getImgUrl().stream().map(s -> ImgUtils.formatImg(s, ImgFormatEnum.GOODS_HEAD_IMAGES)).collect(Collectors.toList()));
         vo.setImgSrcs(cdnItem.getImgUrl());
         vo.setLiPrice(cdnItem.getPrice());
 
@@ -215,6 +218,7 @@ public class PddGoodsUpService {
      * cid为空则查最顶级
      */
     public  List<GoodsCats> selAuthorizationCats(Long userId,Long cid) {
+        //TODO 每次用户登陆同步下店内类目信息
         String token = selAccessToken(userId);
         if (token == null) {
             return null;
@@ -436,5 +440,14 @@ public class PddGoodsUpService {
         }).collect(Collectors.toList());
 
         return usedCatRecordVOS;
+    }
+
+    /**
+     * 商品上传
+     * @param
+     */
+    public void upload(Object o) {
+        GoodsAddRequest request = new GoodsAddRequest();
+
     }
 }
