@@ -58,7 +58,15 @@
                                 <a class="del" href="javascript:void(0);">删除</a>
                                 <a class="undel" data-path="" href="javascript:void(0);">恢复删除</a>
                                 <#else >
-                                当前无图片
+                                <input type="hidden" id="prop_img-${c_index}" name="prop_img[]"
+                                       class="prop_img_default"
+                                       name="cpvf_old[]"
+                                       value="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>">
+                                <a target="_blank" href="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>">
+                                    <img height="40px" width="40px;" src="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>_40x40.jpg">
+                                </a>
+                                <a class="del" href="javascript:void(0);">删除</a>
+                                <a class="undel" data-path="" href="javascript:void(0);">恢复删除</a>
                                 </#if>
                             </td>
                         </tr>

@@ -48,6 +48,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -281,11 +282,13 @@ public class PddGoodsUpAction {
      * 上传
      * @return
      */
-    @RequestMapping("upload")
+    @RequestMapping("index")
     @ResponseBody
-    public JSONObject upload (PddUploadBO bo, @RequestParam(value = "sku[]",required = true)String[] sku,
-                              @RequestParam(value = "carouselGallery[]",required = true)String[] carouselGallery,
-                              @RequestParam(value = "detailGallery[]",required = true)String[] detailGallery,
+    public JSONObject upload (PddUploadBO bo,
+                              @RequestParam(value = "picUrl[]",required = true)String[] picUrl,
+                              @RequestParam(value = "descPicUrl[]",required = true)String[] descPicUrl,
+                              @RequestParam(value = "prop_img[]",required = true)String[] prop_img,
+                              String skus,
                               HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
@@ -369,7 +372,7 @@ public class PddGoodsUpAction {
     public JSONObject selPddCats (Long pddCid,HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<com.openJar.pdd.beans.ShopCat> goodsCats = pddGoodsUpService.selAuthorizationCats(ps.getUserId(), pddCid);
-        return JsonResponseUtil.success().element("goodsCats",goodsCats);
+        return JsonResponseUtil.success().element("goodsCats",goodsCats == null ? new ArrayList() : goodsCats);
     }
 
     /**
@@ -420,9 +423,9 @@ public class PddGoodsUpAction {
     @RequestMapping("addUsedCatRecord")
     @ResponseBody
     public JSONObject addUsedCatRecord (Long pddCid, HttpSession session){
-        if (pddCid == null) {//错误不影响正常使用
-            return JsonResponseUtil.success();
-        }
+//        if (pddCid == null) {//错误不影响正常使用
+//            return JsonResponseUtil.success();
+//        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         pddGoodsUpService.addUsedCatRecord(ps.getUserId(),pddCid);
         return JsonResponseUtil.success();

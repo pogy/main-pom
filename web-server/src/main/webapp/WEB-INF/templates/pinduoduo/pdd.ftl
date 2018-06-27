@@ -303,8 +303,7 @@
                 <input type="hidden" id="pPrice" value="${item.price}">
                 <input type="hidden" id="piPrice" value="${item.piPrice}">
                 <input type="hidden" id="cid" name="cid" value="${pddCid}">
-                <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
-                <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
+                <input type="hidden" id="tempCode" name="tempCode" value="${tempCode}">
                 <input type="hidden" id="mid" name="mid" value="${item.goodsId}">
                 <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
@@ -466,8 +465,7 @@
             <p id="tip_default">
                 <img src="//upload.571xz.com/public/images/loading.gif" align="absmiddle">
                 正在上传中,请稍后
-                <#--<img src="public/images/loading.gif" align="absmiddle"/>
-                <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张-->
+                <span id="imgType">开始计算图片</span>，一共<span id='imgAllNum'></span>张，当前第<span id='imgOrderNum'></span>张
             </p>
             <p id="tip_content"></p>
             <#--<p class="time-con" style="display:none;">已使用时间<input id="txt" vlaue="0">秒</p>-->

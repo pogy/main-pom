@@ -151,6 +151,11 @@ function checkform(){
         error_msg='主图不存在;';
     }
 
+    var postage_id = $('#J_Logistics').find('#J_deliverTemplate').val();
+    if(!postage_id){
+        error_msg='请选择运费模板';
+    }
+
 
     if(error_msg!=''){
         alert(error_msg);
@@ -281,37 +286,35 @@ function ready_publish(){
                 $.each(skudata, function(i, sku){
                     if(type == 1 && propName == sku.name){
                         sku.vid = resp.specId;
-                        colorSizeLength = colorSizeLength - 1;
                     }
                     if(type == 0){
                         $.each(sku.sizes, function(i, size){
                             if(propName == size.name){
                                 size.vid = resp.specId;
-                                colorSizeLength = colorSizeLength - 1;
                             }
                         });
                     }
                 })
+                colorSizeLength = colorSizeLength - 1;
             }
-            console.info(item)
-            console.info(colorSizeLength)
-            if(colorSizeLength == 0){
-                skudata = JSON.stringify(skudata);
-                $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
-                console.info(JSON.parse(skudata));
-            }
+
+            // if(colorSizeLength == 0){
+            //     skudata = JSON.stringify(skudata);
+            //     $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
+            // }
         })
     });
 
 
     //抓取宝贝描述图拼接成数组
     var arr = [];
+    var imgsList;
     $('.long-img li .picUrl').each(function () {
         arr.push($(this).val());
     });
 
-    if(arr){
-        var imgsList=new Array();
+    if(arr.length > 0){
+        imgsList=new Array();
         var errorNum=0;
         for (var i = 0; i < arr.length; i++) {
             iTrue=i-errorNum;
@@ -322,6 +325,7 @@ function ready_publish(){
                 errorNum++;
             }
         }
+
         imgAllNum=imgsList.length-1;
 
         //抓取商品描述图搬家记录并生成数组 搬家=将编辑器中的图片通过ajax替换成自动京东相册中的图片
@@ -339,9 +343,10 @@ function ready_publish(){
 
     //抓取宝贝主图拼接成数组
     var img_arr_list_main = new Array();
+    var ossMainImgs = [];
     var img_arr_id_main=new Array();
     var picUrlI=0;
-    $(".picUrl").each(function(){
+    $(".zhu-img .picUrl").each(function(){
         picUrlI=picUrlI+1;
         picUrlValue=$(this).val();
         picUrlId=$(this).attr('id');
@@ -355,6 +360,7 @@ function ready_publish(){
 
     //抓取宝贝属性图拼接成数组
     var img_arr_list_prop = new Array();
+    var ossPropImgs = [];
     var img_arr_id_prop=new Array();
     var picUrlI=0;
     $(".prop_img_default").each(function(){
@@ -368,43 +374,24 @@ function ready_publish(){
     });
     img_arr_list_prop_count=img_arr_list_prop.length-1;
 
-    var is_pic_full=0;//图片空间是否满了，1表示满了，0表示未满
-    var is_show_full=0;//是否提示过满了
-//将描述图上传到京东并替换链接
+    var ossDetailImgs = [];
+//将描述图上传到星座网并替换链接
     function download_detail(url,order,times) {
         if(!times){times=0;}
-        if(is_pic_full==1){
-            order=imgAllNum+1;
-            if(is_show_full==0){
-                is_show_full=1;
-                $('#tip_content').html('您的京东图片空间容量不足，请进入京东图片空间进行删除或订购！' +
-                    '<br/><br/>前往图片空间：<a href="https://imgzone.shop.jd.com/imginfo/main.html" target="_blank">https://imgzone.shop.jd.com/imginfo/main.html</a>');
-                $('#tip_content').show();
-                $('#tip_default').hide();
-            }
-            return false;
-        }
+
         if(order>imgAllNum){
-            download_main(img_arr_list_main,1);return false;
+            upDetailImg(ossDetailImgs,0);return false;
         }
         if(in_array(url[order],img_detal_arr_temp)){
             download_detail(url,order+1,0);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : url[order],'order':order, "mid" : midHidden, witch:'desc'},
             function(data){
                 if(data['status']=='1'){
                     $('#imgType').html('开始搬家：描述图');
 
-                    imgtemp=$('#pcContent').val();
-                    oldUrl=url[order].replace(new RegExp("[?]","g"),"[?]");  //把原url中的?id=123 替换成 [?]id=123 这样正则才能识别
-                    re = new RegExp(oldUrl, "g");
-                    imgreplace=imgtemp.replace(re,data['url']);
-
-                    $('#pcContent').html(imgreplace); //兼容Firfox
-                    $('#pcContent').val(imgreplace);
-
-                    $("#body").append("<input type='hidden' id='imgDetailTemp"+order+"' class='imgDetailTemp' data-old='"+url[order]+"' data-own='"+data['url']+"'>");
-
+                    $('#descPicUrl'+ (order - 1)).val(data['url']);
+                    ossDetailImgs.push(data['url']);
                     $('#imgOrderNum').html(order);
                     $('#imgAllNum').html(imgAllNum);
                     order=order+1;
@@ -413,20 +400,13 @@ function ready_publish(){
                 }else if(data['msg']!='img016'&&data['msg']!='img017'){
                     if(times>=3){
                         //重试3次后放弃
-                        imgtemp=$('#pcContent').val();
-                        if(url[order]!==undefined)
-                        oldUrl=url[order].replace(new RegExp("[?]","g"),"[?]");  //把原url中的?id=123 替换成 [?]id=123 这样正则才能识别
-                        re = new RegExp(oldUrl, "g");
-                        imgreplace=imgtemp.replace(re,'');
+                        $('#descPicUrl'+ (order - 1)).val('');
+                        $('#descPicUrl'+ (order - 1)).parent('li').find('img').attr('src', '')
 
-                        $('#pcContent').html(imgreplace); //兼容Firfox
-                        $('#pcContent').val(imgreplace);
-
-                        //order=order+1;
+                        order=order+1;
                         times=0;
                     }else{
                         console.log('#'+times+'$'+order+'#'+data['msg']+'&');
-                        order=order+1;
                         times++;
                     }
 
@@ -438,20 +418,67 @@ function ready_publish(){
     }
     download_detail(imgsList,1,0);
 
+    //将描述图传给gtx
+    function upDetailImg(url,order){
+        console.info(url)
+        if(order>(imgAllNum - 1)){
+            download_main(img_arr_list_main,1);return false;
+        }
+
+        $.post('uploadImg.json', {imgUrl:url[order], tempCode:$('#tempCode').val(), type:4}, function(resp){
+            if(resp.result == 'success'){
+                if(resp.pddImgInfo.num > 19){
+                    download_main(img_arr_list_main,1);return;
+                }else{
+                    if(resp.pddImgInfo.pddImgUrls.length > 1){
+                        $('#descPicUrl'+ order).val(resp.pddImgInfo.pddImgUrls[0]);
+                        $('#descPicUrl'+ order).parent('li').find('img').attr('src', resp.pddImgInfo.pddImgUrls[0])
+                        var addDescHtml = '';
+                        $.each(resp.pddImgInfo.pddImgUrls, function(i, img){
+                            if(i > 0){
+                                addDescHtml += '<li data-index="' + (i+100) + '" class="has-media">' +
+                                        '<input type="hidden" class="picUrl" name="descPicUrl[]" id="descPicUrl' + (i+100) + '" value="'+ img +'">' +
+                                        '<div class="operate">' +
+                                            '<i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>' +
+                                            '<i class="icon iconfont icon-sortright toright" title="右移">&rsaquo;</i>' +
+                                            '<i class="icon iconfont icon-remove del" title="删除">x</i>' +
+                                        '</div>' +
+                                        '<div class="preview ">' +
+                                            '<a title="上传图片 " href="javascript:; " class="upload-tip" style="display: none;">' +
+                                                '<i class="icon iconfont icon-tianjia">+</i>' +
+                                            '</a>' +
+                                            '<div class="img">' +
+                                                '<a href="'+ img +'" target="_blank"> <img src="'+ img +'"></a>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</li>';
+                            }
+                        });
+                        $('#descPicUrl'+ order).parents('li').after(addDescHtml);
+                    }else{
+                        $('#descPicUrl'+ order).val(resp.pddImgInfo.pddImgUrls[0]);
+                    }
+                }
+            }
+            order = order + 1;
+            upDetailImg(url,order);
+        });
+    }
 
     //将主图片上传到星座网
     function download_main(url,order){
         if(order>img_arr_list_main_count){
-            download_prop(img_arr_list_prop,1);return false;
+            upMainImg(ossMainImgs,0);return false;
         }
         if(url[order]==undefined || url[order].indexOf("@")==0){   //如果用户没刷新修改参数后点击发布，则绕开上传直接跳过+图片被取消
             download_main(url,order+1);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main'},
             function(data){
                 if(data['status']=='1'){
                     img_main_error=0;
                     $('#'+img_arr_id_main[order]).val(data['url']);
+                    ossMainImgs.push(data['url']);
                     $('#imgType').html('开始搬家：商品主图');
                     $('#imgOrderNum').html(order);
                     $('#imgAllNum').html(img_arr_list_main_count);
@@ -464,22 +491,46 @@ function ready_publish(){
             },"json");
     }
 
+    //将主图上传给gtx
+    function upMainImg(url, order){
+        if(order>(img_arr_list_main_count - 1)){
+            upHdImg(url);return false;
+        }
+
+        $.post('uploadImg.json', {imgUrl:url[order], tempCode:$('#tempCode').val(), type:3}, function(resp){
+            if(resp.result = 'success'){
+                $('#'+img_arr_id_main[order+1]).val(resp.pddImgInfo.pddImgUrls[0]);
+            }
+            order = order + 1;
+            upMainImg(url,order);
+        });
+    }
+
+    //将高清缩略图
+    function upHdImg(url){
+        $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:1}, function(resp){
+            if(resp.result = 'success'){
+                $('#mainform').append("<input type='hidden' name='hdThumbUrl' class='' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+            }
+            upThumbImg(url);
+        });
+    }
+
+    function upThumbImg(url) {
+        $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:2}, function(resp){
+            if(resp.result = 'success'){
+                $('#mainform').append("<input type='hidden' name='thumbUrl' class='' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+            }
+            download_prop(img_arr_list_prop,1);
+        });
+    }
+
     //将属性图上传到星座网
 
     function download_prop(url,order){
         if(order>img_arr_list_prop_count){
             //显示计时器
-            clearTimeout(t);
-            $('.time-con').show();
-            c=0;
-            timeCount();
-            //
-            $('#tip_content').html('<img src='+domainHidden+'public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到京东,请勿取消...<br/>过程大概需要1-3分钟。');
-            $('#tip_content').show();
-            $('#tip_default').hide();
-            //alert('搞定');return false;
-            //$('#mainform').submit();return false;
-            upForm(); return false;
+            upPropImg(ossPropImgs, 0);return false;
         }
         if(url[order]==undefined || url[order].indexOf("@")==0){   //如果用户没刷新修改参数后点击发布，则绕开上传直接跳过
             download_prop(url,order+1); return false;
@@ -490,10 +541,11 @@ function ready_publish(){
             propids=propurl.substring(0,propurl.indexOf("##"));
             propurl=propurl.substring(propurl.indexOf("##")+2);
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop'},
             function(data){
                 if(data['status']=='1'){
                     img_prop_error=0;
+                    ossPropImgs.push(data['url']);
                     $('#'+img_arr_id_prop[order]).val(propids+"##"+data['url']);
                     $('#imgType').html('开始搬家：商品属性图');
                     $('#imgOrderNum').html(order);
@@ -507,6 +559,35 @@ function ready_publish(){
             },"json");
     }
 
+    //将属性图上传给gtx
+    function upPropImg(url, order) {
+        if(order>(img_arr_list_prop_count-1)){
+            //显示计时器
+            skudata = JSON.stringify(skudata);
+            $("#mainform").append("<input type='hidden' name='skus' class='skuStr' value='"+skudata+"'>");
+            clearTimeout(t);
+            $('.time-con').show();
+            c=0;
+            timeCount();
+            $('#tip_content').html('<img src=public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到拼多多,请勿取消...<br/>过程大概需要1-3分钟。');
+            $('#tip_content').show();
+            $('#tip_default').hide();
+            upForm(); return false;
+        }
+
+        $.post('uploadImg.json', {imgUrl:url[order], tempCode:$('#tempCode').val(), type:0}, function(resp){
+            if(resp.result = 'success'){
+                $.each(skudata, function(i, sku){
+                    if(i == order){
+                        sku.imgSrc = resp.pddImgInfo.pddImgUrls[0];
+                    }
+                })
+            }
+            order = order + 1;
+            upPropImg(url,order);
+        });
+    }
+
 
 
 }
@@ -517,7 +598,7 @@ function ready_publish(){
 function upForm(){
     getDetail=$('#getToken').val();
     $.ajax({
-        url : "index.action?"+getDetail,
+        url : "index.json?"+getDetail,
         type : "POST",
         dataType: "html",
         data : $( '#mainform').serialize(),
@@ -580,7 +661,7 @@ function makeMobileDesc(num_iid){
 function error_break(){
     setTimeout(function(){
         tipsMobile=$('#tipsMobile').html();
-        if(tipsMobile=='&nbsp;<img src='+domainHidden+'public/images/loadingMobile.gif />'){
+        if(tipsMobile=='&nbsp;<img src=public/images/loadingMobile.gif />'){
             alert('请求超时');
             $('#tipsMobile').html("&nbsp;<a style='color:blue;' href='#' onclick='makeMobileDesc("+num_iid+")'>重新生成</a>");
         }
