@@ -6,6 +6,9 @@ import com.openJar.responses.*;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
+import com.shigu.goodsup.pinduoduo.bo.PddUploadBO;
+import com.shigu.goodsup.pinduoduo.bo.SizeBO;
+import com.shigu.goodsup.pinduoduo.bo.SkuBO;
 import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.util.XzPddClient;
 import com.shigu.goodsup.pinduoduo.vo.ImgUploadVO;
@@ -14,6 +17,7 @@ import com.shigu.goodsup.pinduoduo.vo.PddItemDetailVO;
 import com.shigu.goodsup.pinduoduo.vo.UsedCatRecordVO;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
@@ -35,7 +39,9 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import pdd.beans.GoodsSpec;
 import pdd.beans.LogisticsTemplate;
+import pdd.beans.Sku;
 import pdd.goods.add.GoodsAddRequest;
+import pdd.goods.add.GoodsAddResponse;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetRequest;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetResponse;
 import pdd.goods.spec.get.SpecGetRequest;
@@ -477,9 +483,75 @@ public class PddGoodsUpService {
      * 商品上传
      * @param
      */
-    public void upload(Object o) {
+    public JSONObject upload(PddUploadBO bo, String[] picUrl, String[] descPicUrl, List<SkuBO> skuBOS ,Long userId){
         GoodsAddRequest request = new GoodsAddRequest();
+        //skuList
+        List<Sku> skus = new ArrayList<>();
+        for (SkuBO skuBO :skuBOS){
+            Long colorId = skuBO.getVid();
 
+            List<SizeBO> sizes = skuBO.getSizes();
+            if (sizes != null && sizes.size() > 0) {
+                for (SizeBO sizeBO : sizes){
+                    if (sizeBO == null) {
+                        continue;
+                    }
+                    Sku sku = new Sku();
+
+                    sku.setSpec_id_list(Arrays.asList(colorId,sizeBO.getVid()));
+                    sku.setWeight(1000L);
+                    sku.setQuantity(Integer.parseInt(sizeBO.getNum()));
+                    sku.setOut_sku_sn(sizeBO.getCode());
+                    sku.setThumb_url(skuBO.getImgSrc());
+                    sku.setMulti_price(MoneyUtil.StringToLong(sizeBO.getGprice()));
+                    sku.setPrice(MoneyUtil.StringToLong(sizeBO.getPrice()));
+                    sku.setLimit_quantity(999);
+                    sku.setIs_onsale(1);
+
+                    skus.add(sku);
+                }
+            }
+        }
+
+        request.setGoods_name(bo.getTitle());
+        //1-国内普通商品，2-进口，3-直供（保税），4-直邮 ,5-流量 ,6-话费 ,7-优惠券 ,8-QQ充值 ,9-加油卡
+        request.setGoods_type(1);
+        request.setGoods_desc(bo.getSellPoint());
+        request.setCat_id(bo.getCid());
+        request.setTiny_name(bo.getSmallTitle());
+        request.setCountry_id(48L);//中国CountryGetRequest获取
+        request.setMarket_price(MoneyUtil.StringToLong(bo.getMarketPrice()));
+        request.setIs_pre_sale(false);
+
+        long shipment_limit_second = 0L;
+        if (bo.getDelivery() == 1) {
+            shipment_limit_second = 48 * 60 * 60;
+        }else {
+            shipment_limit_second = 24 * 60 * 60;
+        }
+        request.setShipment_limit_second(""+shipment_limit_second);
+        request.setCost_template_id(bo.getPostage_id());
+        request.setCustomer_num(bo.getGrouponer());
+        request.setBuy_limit(bo.getSingleLimit());
+        request.setOrder_limit(bo.getPurchaseLimit());
+        request.setIs_refundable(bo.getReturns() == 1 ? true : false );
+        request.setSecond_hand(false);
+        request.setIs_folt(bo.getArtificial() == 1 ? true : false);
+        request.setOut_goods_id(bo.getOuterId());
+        request.setHd_thumb_url(bo.getHdThumbUrl());
+        request.setThumb_url(bo.getThumbUrl());
+        request.setCarousel_gallery(Arrays.asList(picUrl));
+        request.setDetail_gallery(Arrays.asList(descPicUrl));
+
+        String token = selAccessToken(userId);
+        if (token == null) {
+            return JsonResponseUtil.error("未查询到授权信息");
+        }
+        GoodsAddResponse response = xzPddClient.openClient(token).excute(request);
+        if (!response.getSuccess()) {
+            return JsonResponseUtil.error(response.getException().getErrMsg());
+        }
+        return JsonResponseUtil.success();
     }
 
     /**

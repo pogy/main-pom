@@ -9,10 +9,7 @@ import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
-import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
-import com.shigu.goodsup.pinduoduo.bo.PddUploadBO;
-import com.shigu.goodsup.pinduoduo.bo.PublishBO;
-import com.shigu.goodsup.pinduoduo.bo.SkuBO;
+import com.shigu.goodsup.pinduoduo.bo.*;
 import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.service.PddGoodsUpService;
 import com.shigu.goodsup.pinduoduo.vo.*;
@@ -312,11 +309,29 @@ public class PddGoodsUpAction {
         }
 
         List<SkuBO> skuBOS = com.alibaba.fastjson.JSONObject.parseArray(skus, SkuBO.class);
+        if (skuBOS == null || skuBOS.isEmpty()) {
+            return JsonResponseUtil.error("颜色sku不能为空");
+        }
+
+        boolean canUpload = false;
+        for (SkuBO skuBO : skuBOS){
+            if (skuBO == null) {
+                continue;
+            }
+            List<SizeBO> sizes = skuBO.getSizes();
+            if (sizes == null || sizes.size() <= 0 ) {
+                continue;
+            }
+            canUpload = true;
+        }
+        if (!canUpload) {
+            return JsonResponseUtil.error("尺寸sku不能为空");
+        }
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
 
-        pddGoodsUpService.upload(null);
+        pddGoodsUpService.upload(bo,picUrl,descPicUrl,skuBOS,ps.getUserId());
 
         return JsonResponseUtil.success();
     }

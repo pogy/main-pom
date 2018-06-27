@@ -1,10 +1,7 @@
 package com.shigu.goodsup.pinduoduo.bo;
 
 
-import com.shigu.main4.common.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
@@ -74,7 +71,6 @@ public class PddUploadBO implements Serializable{
     /**
      * 普通缩略图
      */
-    @NotNull(message = "请上传普通缩略图")
     private String thumbUrl;
 
     public String getTitle() {
@@ -179,6 +175,22 @@ public class PddUploadBO implements Serializable{
 
     public void setOuterId(String outerId) {
         this.outerId = outerId;
+    }
+
+    public String getHdThumbUrl() {
+        return hdThumbUrl;
+    }
+
+    public void setHdThumbUrl(String hdThumbUrl) {
+        this.hdThumbUrl = hdThumbUrl;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
     }
 
     public void canUpload(){
