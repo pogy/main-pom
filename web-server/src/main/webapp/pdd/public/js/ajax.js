@@ -541,8 +541,8 @@ function ready_publish(){
     function upMainImg(url) {
         $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:5}, function(resp){
             if(resp.result = 'success'){
-                $('#mainform').append("<input type='hidden' name='thumbUrl' class='thumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
-            }
+                $('#mainform').append("<input type='hidden' name='mainImg' class='mainImg' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+                mainUrl
             download_prop(img_arr_list_prop,1);
         });
     }
