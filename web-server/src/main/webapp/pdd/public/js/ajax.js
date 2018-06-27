@@ -184,6 +184,8 @@ function ready_publish(){
     //清空上次表单提交时候生成的各种参数
     $(".skuStr").remove();
     $(".sku-props").remove();
+    $('.thumbUrl').remove();
+    $('.hdThumbUrl').remove();
 
     //点击发布后先清空已经存在的提示消息
     $('#tip_default').show();
@@ -237,6 +239,7 @@ function ready_publish(){
         sizeName  = $('.J_MapSize_'+dataDetailTemp[1]).html();
         quantity = $('#J_SkuField_quantity_'+data).val();
         price = $('#J_SkuField_price_'+data).val();
+        gprice = $('#J_SkuField_gprice_'+data).val();
         var tsc=$('#J_SkuField_tsc_'+data).val();
         var colorIsExist = false;
         if(skudata.length){
@@ -248,6 +251,7 @@ function ready_publish(){
                         name: sizeName,
                         num: quantity,
                         price: price,
+                        gprice: gprice,
                         code: tsc
                     })
                     return false;
@@ -510,7 +514,7 @@ function ready_publish(){
     function upHdImg(url){
         $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:1}, function(resp){
             if(resp.result = 'success'){
-                $('#mainform').append("<input type='hidden' name='hdThumbUrl' class='' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+                $('#mainform').append("<input type='hidden' name='hdThumbUrl' class='hdThumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
             }
             upThumbImg(url);
         });
@@ -519,7 +523,7 @@ function ready_publish(){
     function upThumbImg(url) {
         $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:2}, function(resp){
             if(resp.result = 'success'){
-                $('#mainform').append("<input type='hidden' name='thumbUrl' class='' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+                $('#mainform').append("<input type='hidden' name='thumbUrl' class='thumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
             }
             download_prop(img_arr_list_prop,1);
         });

@@ -12,7 +12,7 @@
                                 <#list color as c>
                                     <li class="sku-item edit">
                                         <input type="checkbox" data-name='${c.text}'
-                                               id="prop_${c_index}" name="cp[]"
+                                               id="prop_${c_index}"
                                                class="J_Checkbox colorCheckbox" value="${c.text}"
                                                checked/>
                                         <label class="labelname" for="prop_${c_index}" title="${c.text}" style="display: none;">${c.text}</label>
@@ -48,9 +48,8 @@
                             </td>
                             <td class="preview">
                                 <#if c.imgSrc??>
-                                <input type="hidden" id="prop_img-${c_index}" name="prop_img[]"
+                                <input type="hidden" id="prop_img-${c_index}"
                                     class="prop_img_default"
-                                    name="cpvf_old[]"
                                     value="${c.imgSrc}">
                                 <a target="_blank" href="${c.imgSrc}">
                                     <img height="40px" width="40px;" src="${c.imgSrc}_40x40.jpg">
@@ -58,9 +57,8 @@
                                 <a class="del" href="javascript:void(0);">删除</a>
                                 <a class="undel" data-path="" href="javascript:void(0);">恢复删除</a>
                                 <#else >
-                                <input type="hidden" id="prop_img-${c_index}" name="prop_img[]"
+                                <input type="hidden" id="prop_img-${c_index}"
                                        class="prop_img_default"
-                                       name="cpvf_old[]"
                                        value="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>">
                                 <a target="_blank" href="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>">
                                     <img height="40px" width="40px;" src="<#if item.imgSrcs?size gt 0>${item.imgSrcs[0]}</#if>_40x40.jpg">
@@ -81,7 +79,7 @@
                         <ul class="sku-list">
                             <#list item.size as sv>
                                 <li class="sku-item edit">
-                                    <input type="checkbox" id="prop_${sv_index}" name="cp[]"
+                                    <input type="checkbox" id="prop_${sv_index}"
                                            class="J_Checkbox" value="${sv}"
                                            checked
                                     />
