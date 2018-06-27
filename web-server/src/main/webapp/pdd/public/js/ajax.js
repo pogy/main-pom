@@ -106,6 +106,12 @@ function checkform(){
         error_msg='宝贝标题和商品描述不能为空';
     }
 
+    var smallTitle = $('#smallTitleID').val();
+    var charBt = smallTitle.replace(/[^\x00-\xff]/g, '**').length;
+    if(smallTitle && (charBt < 4 || charBt > 20)){
+        error_msg='短标题限制4-20字符';
+    }
+
     var goodsWeight = $('#goodsWeight').val();
     if(!goodsWeight){
         error_msg='宝贝重量不能为空';
