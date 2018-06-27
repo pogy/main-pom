@@ -265,9 +265,9 @@ public class PddGoodsUpAction {
         ReturnsTemplate returnsTemplate = redisIO.get(PDD_RETURNS_TEMPLATE_PRE + ps.getUserId(), ReturnsTemplate.class);
         if (returnsTemplate == null) {
             returnsTemplate = new ReturnsTemplate();
-            returnsTemplate.setArtificial(0);
+            returnsTemplate.setArtificial(1);
             returnsTemplate.setDelivery(0);
-            returnsTemplate.setReturns(0);
+            returnsTemplate.setReturns(1);
         }
         model.addAttribute("returnsTemplate",returnsTemplate);
 

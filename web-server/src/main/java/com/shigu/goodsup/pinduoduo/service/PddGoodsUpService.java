@@ -498,7 +498,7 @@ public class PddGoodsUpService {
                     }
                     Sku sku = new Sku();
 
-                    sku.setSpec_id_list(Arrays.asList(colorId,sizeBO.getVid()));
+                    sku.setSpec_id_list(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(colorId,sizeBO.getVid())));
                     sku.setWeight(1000L);
                     sku.setQuantity(Integer.parseInt(sizeBO.getNum()));
                     sku.setOut_sku_sn(sizeBO.getCode());
@@ -513,13 +513,15 @@ public class PddGoodsUpService {
             }
         }
 
+        request.setSku_list(com.alibaba.fastjson.JSONObject.toJSONString(skus));
+
         request.setGoods_name(bo.getTitle());
         //1-国内普通商品，2-进口，3-直供（保税），4-直邮 ,5-流量 ,6-话费 ,7-优惠券 ,8-QQ充值 ,9-加油卡
         request.setGoods_type(1);
         request.setGoods_desc(bo.getSellPoint());
         request.setCat_id(bo.getCid());
         request.setTiny_name(bo.getSmallTitle());
-        request.setCountry_id(48L);//中国CountryGetRequest获取
+        request.setCountry_id(0L);//中国CountryGetRequest获取 仅在goods_type为2、3时（海淘商品）入参生效，其余goods_type传0
         request.setMarket_price(MoneyUtil.StringToLong(bo.getMarketPrice()));
         request.setIs_pre_sale(false);
 
@@ -540,8 +542,8 @@ public class PddGoodsUpService {
         request.setOut_goods_id(bo.getOuterId());
         request.setHd_thumb_url(bo.getHdThumbUrl());
         request.setThumb_url(bo.getThumbUrl());
-        request.setCarousel_gallery(Arrays.asList(picUrl));
-        request.setDetail_gallery(Arrays.asList(descPicUrl));
+        request.setCarousel_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(picUrl)));
+        request.setDetail_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(descPicUrl)));
 
         String token = selAccessToken(userId);
         if (token == null) {

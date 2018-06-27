@@ -72,6 +72,10 @@ public class PddUploadBO implements Serializable{
      * 普通缩略图
      */
     private String thumbUrl;
+    /**
+     * 主图
+     */
+    private String mainImg;
 
     public String getTitle() {
         return title;
@@ -193,6 +197,14 @@ public class PddUploadBO implements Serializable{
         this.thumbUrl = thumbUrl;
     }
 
+    public String getMainImg() {
+        return mainImg;
+    }
+
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg;
+    }
+
     public void canUpload(){
         if (StringUtils.isBlank(title)) {
             throw new IllegalArgumentException("商品标题不能为空");
@@ -208,6 +220,8 @@ public class PddUploadBO implements Serializable{
             if (length < 4 || length > 20) {
                 throw new IllegalArgumentException("短标题限制4-20字");
             }
+        }else {
+            smallTitle = null;
         }
         if (StringUtils.isBlank(marketPrice)) {
             throw new IllegalArgumentException("请填写市场价");
@@ -248,6 +262,9 @@ public class PddUploadBO implements Serializable{
         }
         if (StringUtils.isBlank(thumbUrl)) {
             throw new IllegalArgumentException("请上传普通缩略图");
+        }
+        if (StringUtils.isBlank(mainImg)) {
+            throw new IllegalArgumentException("请上传商品主图");
         }
 
     }
