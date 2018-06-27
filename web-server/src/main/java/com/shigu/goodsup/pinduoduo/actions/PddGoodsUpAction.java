@@ -12,6 +12,7 @@ import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.pinduoduo.bo.AddPropBO;
 import com.shigu.goodsup.pinduoduo.bo.PddUploadBO;
 import com.shigu.goodsup.pinduoduo.bo.PublishBO;
+import com.shigu.goodsup.pinduoduo.bo.SkuBO;
 import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.service.PddGoodsUpService;
 import com.shigu.goodsup.pinduoduo.vo.*;
@@ -35,6 +36,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +47,7 @@ import pdd.constant.PddConfig;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -285,12 +288,33 @@ public class PddGoodsUpAction {
     @RequestMapping("index")
     @ResponseBody
     public JSONObject upload (PddUploadBO bo,
-                              @RequestParam(value = "picUrl[]",required = true)String[] picUrl,
-                              @RequestParam(value = "descPicUrl[]",required = true)String[] descPicUrl,
-                              @RequestParam(value = "prop_img[]",required = true)String[] prop_img,
+                              @RequestParam(value = "picUrl[]")String[] picUrl,
+                              @RequestParam(value = "descPicUrl[]")String[] descPicUrl,
                               String skus,
+                              String tempCode,
                               HttpSession session){
+        redisIO.del(tempCode);//删除图片上传记录
+        try {
+            bo.canUpload();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResponseUtil.error(e.getMessage());
+        }
+
+        if (picUrl == null || picUrl.length <= 0 ){
+            return JsonResponseUtil.error("请上传轮播图");
+        }
+        if (descPicUrl == null || descPicUrl.length <= 0) {
+            return JsonResponseUtil.error("请上传详情图");
+        }
+        if (StringUtils.isBlank(skus)) {
+            return JsonResponseUtil.error("sku不能为空");
+        }
+
+        List<SkuBO> skuBOS = com.alibaba.fastjson.JSONObject.parseArray(skus, SkuBO.class);
+
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+
 
         pddGoodsUpService.upload(null);
 

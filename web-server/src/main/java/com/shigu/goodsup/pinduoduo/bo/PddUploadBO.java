@@ -1,6 +1,12 @@
 package com.shigu.goodsup.pinduoduo.bo;
 
+
+import com.shigu.main4.common.tools.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 
 /**
  * Created by gtx on 2018/6/26.
@@ -54,7 +60,7 @@ public class PddUploadBO implements Serializable{
      */
     private Integer returns;
     /**
-     * 是否支持假一赔十\
+     * 是否支持假一赔十
      */
     private Integer artificial;
     /**
@@ -68,6 +74,7 @@ public class PddUploadBO implements Serializable{
     /**
      * 普通缩略图
      */
+    @NotNull(message = "请上传普通缩略图")
     private String thumbUrl;
 
     public String getTitle() {
@@ -173,4 +180,64 @@ public class PddUploadBO implements Serializable{
     public void setOuterId(String outerId) {
         this.outerId = outerId;
     }
+
+    public void canUpload(){
+        if (StringUtils.isBlank(title)) {
+            throw new IllegalArgumentException("商品标题不能为空");
+        }
+        if (StringUtils.isBlank(sellPoint)) {
+            throw new IllegalArgumentException("商品描述不能为空");
+        }
+        if (cid == null) {
+            throw new IllegalArgumentException("请选择类目");
+        }
+        if (StringUtils.isNotBlank(smallTitle)) {
+            int length = smallTitle.getBytes(Charset.forName("GBK")).length;
+            if (length < 4 || length > 20) {
+                throw new IllegalArgumentException("短标题限制4-20字");
+            }
+        }
+        if (StringUtils.isBlank(marketPrice)) {
+            throw new IllegalArgumentException("请填写市场价");
+        }
+
+        try {
+            Double.parseDouble(marketPrice);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("请填写正确的市场价");
+        }
+
+        if (delivery == null || (delivery != 0 && delivery != 1)) {
+            throw new IllegalArgumentException("请选择发货时间承诺时间");
+        }
+        if (postage_id == null) {
+            throw new IllegalArgumentException("请选择运费模板");
+        }
+
+        if (grouponer == null || grouponer <=0 ) {
+            throw new IllegalArgumentException("请填写正确的团购人数");
+        }
+        if (singleLimit == null || singleLimit <= 0) {
+            throw new IllegalArgumentException("请填写正确的单次限量人数");
+        }
+        if (purchaseLimit == null || purchaseLimit <=0 ) {
+            throw new IllegalArgumentException("请填写正确的限购次数");
+        }
+        if (returns == null || (returns != 0 && returns != 1)) {
+            throw new IllegalArgumentException("请选择是否支持退换货承诺");
+        }
+
+        if (artificial == null || (artificial != 0 && artificial != 1)) {
+            throw new IllegalArgumentException("请选择是否支持假一赔十");
+        }
+        if (StringUtils.isBlank(hdThumbUrl)) {
+            throw new IllegalArgumentException("请上传高清缩略图");
+        }
+        if (StringUtils.isBlank(thumbUrl)) {
+            throw new IllegalArgumentException("请上传普通缩略图");
+        }
+
+    }
+
 }
