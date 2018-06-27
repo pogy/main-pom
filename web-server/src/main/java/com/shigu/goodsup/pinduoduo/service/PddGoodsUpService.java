@@ -26,6 +26,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -115,7 +116,7 @@ public class PddGoodsUpService {
         //a. 尺寸 等宽高 宽高不低于480px
         //b. 大小1M
         //c. 图片格式仅支持JPG,PNG格式
-        vo.setImgSrcs(cdnItem.getImgUrl());
+        vo.setImgSrcs(cdnItem.getImgUrl().stream().filter(item-> StringUtils.isNotBlank(item)).collect(Collectors.toList()));
         vo.setLiPrice(cdnItem.getPrice());
 
         BigDecimal liPrce = new BigDecimal(cdnItem.getPrice());
@@ -173,6 +174,9 @@ public class PddGoodsUpService {
         List<String> imgUrls = new ArrayList<>();
         for (Element img : imgs){
             String imgUrl = img.attr("data-original");
+            if (StringUtils.isBlank(imgUrl)) {
+                continue;
+            }
 //            imgUrls.add(ImgUtils.formatImg(imgUrl, ImgFormatEnum.GOODS_DETAIL));
             imgUrls.add(imgUrl);
         }
@@ -502,7 +506,7 @@ public class PddGoodsUpService {
 
         PddUploadImgResponse response = xzSdkClient.getPcOpenClient().execute(request);
         if (!response.isSuccess()) {
-            throw new CustomException(response.getException().getMessage());
+            throw new CustomException(response.getException().getErrMsg());
         }
         ImgUploadVO vo = new ImgUploadVO();
         vo.setTempCode(response.getTempCode());

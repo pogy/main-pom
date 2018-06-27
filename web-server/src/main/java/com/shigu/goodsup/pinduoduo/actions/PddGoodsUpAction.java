@@ -48,6 +48,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -161,7 +162,7 @@ public class PddGoodsUpAction {
         if (ps.getLoginFromType() != LoginFromType.PDD) {
             //拿拼多多授权信息并刷新授权 无授权信息或刷新出现异常跳登陆
             Long pddUid = pddGoodsUpService.selPddUserId(ps.getUserId());
-            if (pddUid != null) {
+            if (pddUid == null) {
                 return redirectLoginPdd(request);
             }
             //使用refreshToken刷新授权
@@ -369,7 +370,7 @@ public class PddGoodsUpAction {
     public JSONObject selPddCats (Long pddCid,HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<com.openJar.pdd.beans.ShopCat> goodsCats = pddGoodsUpService.selAuthorizationCats(ps.getUserId(), pddCid);
-        return JsonResponseUtil.success().element("goodsCats",goodsCats);
+        return JsonResponseUtil.success().element("goodsCats",goodsCats == null ? new ArrayList() : goodsCats);
     }
 
     /**
