@@ -66,7 +66,7 @@ $(function(){
         var propId = inputC.attr("id").substr(5); //id="prop_1627207_28327"
         var sibL = skuLi.siblings("li.edit").length;
         var curlirun = $('#curlirun').val(); //当前利润后的价格
-        buyNowPrice = (parseFloat($("#pPrice").val()) + parseFloat(curlirun)).toFixed(2);
+        buyNowPrice = (parseFloat($("#piPrice").val()) + parseFloat(curlirun)).toFixed(2);
         buyOnePrice = (parseFloat(buyNowPrice) * 2).toFixed(2);
 
         if(inputC.is(":checked")){
@@ -208,7 +208,7 @@ $(function(){
         sizeCount = $(".sku-size").find(".edit").length;
         colorCount  = $(".sku-color").find(".edit").length;
         var curlirun = $('#curlirun').val(); //当前利润后的价格
-        buyNowPrice = (parseFloat($("#pPrice").val()) + parseFloat(curlirun)).toFixed(2);
+        buyNowPrice = (parseFloat($("#piPrice").val()) + parseFloat(curlirun)).toFixed(2);
         buyOnePrice = (parseFloat(buyNowPrice) * 2).toFixed(2);
 
         if(inputC.is(":checked")){
@@ -1080,7 +1080,7 @@ $(function(){
 
 
     //利润设置,改变一口价时
-    var price = parseFloat($('#pPrice').val());
+    var price = parseFloat($('#piPrice').val());
 
     $("#curlirun").blur(function(){
         var lrPrice = parseFloat($(this).val());
@@ -1092,6 +1092,7 @@ $(function(){
         buyPrice = parseFloat(price+lrPrice)
         $(".J_MapRow td.gprice input").val(buyPrice.toFixed(2));
         $(".J_MapRow td.price input").val((buyPrice*2).toFixed(2));
+        $('#marketPrice').val(((buyPrice*2)+100).toFixed(2));
     });
     $("#J_LiRun").click(function(){
         liLay = layer.open({
@@ -1111,39 +1112,41 @@ $(function(){
             $(this).siblings("input").removeAttr("disabled");
         });
 		
-		// 修改默认利润 
-		$("#L_liRun .btn-primary").click(function(){
-            layer.close(liLay);
-			var lrauto = $("#lirunauto").is(":checked");	//自动设置利润 booleans
-			var qzauto = $("#lirunzheng").is(":checked");	//是否取整
-			var $lr = $("#liruncontent input[type='radio']:checked");
-			var fbTemp = $lr.val();
-			var lrPrice1 = "";
-			if(lrauto){
-				var lrPrice =  parseFloat($lr.siblings("input[type='text']").val());
-				$(".fl-label[data-index='"+(fbTemp-1)+"']").show().siblings(".fl-label").hide();
-				if(fbTemp == 1){	//按固定值
-                    lrPrice1=lrPrice;
-					$(".set-sty option[value='"+(fbTemp-1)+"']").prop("selected",true);
-                }else{
-                        lrPrice1=lrPrice;
-                        if(qzauto){	//取整
-                            lrPrice =  parseFloat(Math.round(price*lrPrice1/100));
-                            $(".set-sty option[value='"+fbTemp+"']").prop("selected",true);
-                        }else{	//不取整
-                            lrPrice =  parseFloat(price*lrPrice1/100);
-                            $(".set-sty option[value='"+(fbTemp-1)+"']").prop("selected",true);
-                        }
-                    $("#lrPrice").html(lrPrice);
-                }
-                $("#curlirun").val(lrPrice);
-                $("#marketPrice").val(price+lrPrice);
-                $(".J_MapRow td.gprice input").val((price+lrPrice).toFixed(2));
-                $(".J_MapRow td.price input").val(((price+lrPrice)*2).toFixed(2));
-			}
 
-			setProfitTemplate(lrauto, fbTemp, lrPrice1, qzauto);
-        });
+    });
+
+    // 修改默认利润
+    $(document).on('click', "#L_liRun .btn-primary", function(){
+        layer.close(liLay);
+        var lrauto = $("#lirunauto").is(":checked");	//自动设置利润 booleans
+        var qzauto = $("#lirunzheng").is(":checked");	//是否取整
+        var $lr = $("#liruncontent input[type='radio']:checked");
+        var fbTemp = $lr.val();
+        var lrPrice1 = "";
+        if(lrauto){
+            var lrPrice =  parseFloat($lr.siblings("input[type='text']").val());
+            $(".fl-label[data-index='"+(fbTemp-1)+"']").show().siblings(".fl-label").hide();
+            if(fbTemp == 1){	//按固定值
+                lrPrice1=lrPrice;
+                $(".set-sty option[value='"+(fbTemp-1)+"']").prop("selected",true);
+            }else{
+                lrPrice1=lrPrice;
+                if(qzauto){	//取整
+                    lrPrice =  parseFloat(Math.round(price*lrPrice1/100));
+                    $(".set-sty option[value='"+fbTemp+"']").prop("selected",true);
+                }else{	//不取整
+                    lrPrice =  parseFloat(price*lrPrice1/100);
+                    $(".set-sty option[value='"+(fbTemp-1)+"']").prop("selected",true);
+                }
+                $("#lrPrice").html(lrPrice);
+            }
+            $("#curlirun").val(lrPrice);
+            $("#marketPrice").val(((price+lrPrice)*2 + 100).toFixed(2));
+            $(".J_MapRow td.gprice input").val((price+lrPrice).toFixed(2));
+            $(".J_MapRow td.price input").val(((price+lrPrice)*2).toFixed(2));
+        }
+
+        setProfitTemplate(lrauto, fbTemp, lrPrice1, qzauto);
     });
 
 	//改变利润类型
