@@ -273,6 +273,7 @@ function ready_publish(){
                         name: sizeName,
                         num: quantity,
                         price: price,
+                        gprice: gprice,
                         code: tsc
                     })
                 }
