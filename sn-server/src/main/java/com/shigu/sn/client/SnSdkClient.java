@@ -5,15 +5,20 @@ import com.suning.api.DefaultSuningClient;
 import com.suning.api.SuningRequest;
 import com.suning.api.SuningResponse;
 import com.suning.api.exception.SuningApiException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SnSdkClient {
 
-    private static final String test_url ="https://openpre.cnsuning.com/api/http/sopRequest";
+    private static final String rest_url = "https://open.suning.com/api/http/sopRequest";
 
-    private static final String rest_url ="https://open.suning.com/api/http/sopRequest";
+    public <T extends SuningRequest<O>, O extends SuningResponse> O send(T request, String accessToken) throws SuningApiException {
+        DefaultSuningClient client = new DefaultSuningClient(rest_url, SnKeyConfig.snAppkey, SnKeyConfig.snSecret, accessToken, "json");
+        return client.excute(request);
+    }
 
-    public <T extends SuningRequest<O>,O extends SuningResponse> O send(T request) throws SuningApiException{
-        DefaultSuningClient client = new DefaultSuningClient(test_url, SnKeyConfig.snAppkey, SnKeyConfig.snSecret,"json");
+    public <T extends SuningRequest<O>, O extends SuningResponse> O testSend(T request, String snAppkey, String snSecret) throws SuningApiException {
+        DefaultSuningClient client = new DefaultSuningClient(rest_url, snAppkey, snSecret, "json");
         return client.excute(request);
     }
 }
