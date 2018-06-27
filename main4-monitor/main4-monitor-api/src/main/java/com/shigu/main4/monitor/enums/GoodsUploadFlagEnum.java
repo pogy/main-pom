@@ -10,7 +10,7 @@ package com.shigu.main4.monitor.enums;
 public enum  GoodsUploadFlagEnum {
 
     WEB_TB("web-tb","上传到淘宝"),
-    WEB_JD("web-jd","上传到京东"),
+    WEB_JD("jd","上传到京东"),
     WEB_PDD("web-pdd","上传到拼多多"),
     WEB_SN("web-sn","上传到苏宁"),
 

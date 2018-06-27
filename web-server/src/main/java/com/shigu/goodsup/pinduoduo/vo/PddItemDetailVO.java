@@ -41,6 +41,7 @@ public class PddItemDetailVO implements Serializable{
     //档口名
     private String shopNum;
 
+
     public String getTitle() {
         return title;
     }

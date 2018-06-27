@@ -160,7 +160,7 @@
                 <label class="fl">商家编码</label>
                 <div class="field-content fl">
                     <input type="text" class="text text-bmlong notBeEmpty" data-error-title='商家编码' name="outerId"
-                           size="64" value="${item.parentMarketName!}_${item.storeNum!}_P${item.price!}_#${item.huohao!}">
+                           size="64" value="${item.marketName!}_${item.shopNum!}_P${item.price!}_#${item.goodsNo!}">
                     <span class="pri">注：市场_档口_P价格_#货号</span></div>
             </div>
             <div class="field clearfix">
@@ -278,19 +278,28 @@
                 <div class="field clearfix">
                     <label class="fl"><em>*</em>团购人数</label>
                     <div class="field-content fl">
-                        <input type="text" name="grouponer" value="2">
+                        <select name="grouponer" style="width: 194px;height: 26px;border: 1px solid #C9C9C9;">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                        </select>
                     </div>
                 </div>
                 <div class="field clearfix">
                     <label class="fl"><em>*</em>单次限量</label>
                     <div class="field-content fl">
-                        <input type="text" name="singleLimit" value="99999">
+                        <input type="text" id="singleLimit" name="singleLimit" value="99999">
                     </div>
                 </div>
                 <div class="field clearfix">
                     <label class="fl"><em>*</em>限购次数</label>
                     <div class="field-content fl">
-                        <input type="text" name="purchaseLimit" value="99999">
+                        <input type="text" id="purchaseLimit" name="purchaseLimit" value="99999">
                     </div>
                 </div>
                 <div id="commit" class="floatbar rootStruct J_FlexSubmitBar">

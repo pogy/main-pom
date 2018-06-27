@@ -22,8 +22,11 @@ import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
+import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
-import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.JsonResponseUtil;
@@ -53,8 +56,10 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +82,8 @@ public class PddGoodsUpService {
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Resource(name = "tae_mall_shiguTaobaocatMapper")
     private ShiguTaobaocatMapper shiguTaobaocatMapper;
+    @Resource(name = "tae_mall_shiguShopMapper")
+    private ShiguShopMapper shiguShopMapper;
     @Resource
     private XzPddClient xzPddClient;
     @Resource
@@ -86,7 +93,9 @@ public class PddGoodsUpService {
     @Resource
     private ItemCatService itemCatService;
     @Resource
-    private RedisIO redisIO;
+    private UserLicenseService userLicenseService;
+    @Resource
+    private ItemUpRecordService itemUpRecordService;
 
 
     /**
@@ -483,7 +492,7 @@ public class PddGoodsUpService {
      * 商品上传
      * @param
      */
-    public JSONObject upload(PddUploadBO bo, String[] picUrl, String[] descPicUrl, List<SkuBO> skuBOS ,Long userId){
+    public GoodsAddResponse upload(PddUploadBO bo, String[] picUrl, String[] descPicUrl, List<SkuBO> skuBOS ,Long userId) throws CustomException {
         GoodsAddRequest request = new GoodsAddRequest();
         //skuList
         List<Sku> skus = new ArrayList<>();
@@ -544,16 +553,18 @@ public class PddGoodsUpService {
         request.setThumb_url(bo.getThumbUrl());
         request.setCarousel_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(picUrl)));
         request.setDetail_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(descPicUrl)));
+        request.setImage_url(bo.getMainImg());
 
         String token = selAccessToken(userId);
         if (token == null) {
-            return JsonResponseUtil.error("未查询到授权信息");
+            throw new CustomException("未查询到授权信息");
         }
         GoodsAddResponse response = xzPddClient.openClient(token).excute(request);
         if (!response.getSuccess()) {
-            return JsonResponseUtil.error(response.getException().getErrMsg());
+            throw new CustomException(response.getException().getErrMsg());
         }
-        return JsonResponseUtil.success();
+
+        return response;
     }
 
     /**
@@ -616,4 +627,73 @@ public class PddGoodsUpService {
 
     }
 
+    /**
+     * 添加上传记录
+     * @param userId
+     * @param cid
+     * @param mid
+     */
+    public void saveRecord(Long userId, Long cid, Long mid,PddUploadBO bo,Long pddGoodsId) {
+
+        PddAuthInfoRequest pddAuthInfoRequest = new PddAuthInfoRequest();
+        pddAuthInfoRequest.setThirdUid(selPddUserId(userId));
+        PddAuthInfoResponse pddAuthInfoResponse = xzSdkClient.getPcOpenClient().execute(pddAuthInfoRequest);
+        if (!pddAuthInfoResponse.isSuccess()) {
+            return;
+        }
+
+        ItemUpRecordVO vo=new ItemUpRecordVO();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        vo.setDaiTime(sdf.format(new Date()));
+        vo.setFenGoodsName(bo.getTitle());
+        vo.setFenImage(bo.getMainImg());
+        vo.setFenPrice(bo.getMarketPrice());
+        vo.setFenNumiid(pddGoodsId);
+        vo.setFenUserId(pddAuthInfoResponse.getThirdUid());
+        vo.setFenUserNick(pddAuthInfoResponse.getThirdUserNick());
+        vo.setFlag(GoodsUploadFlagEnum.WEB_PDD.getFlag());
+        vo.setSupperGoodsId(mid);
+        vo.setCid(cid);
+
+
+
+        try {
+            userLicenseService.addScore(vo.getFenUserId(),1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ShiguGoodsIdGenerator sgig = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(vo.getSupperGoodsId());
+        if(sgig==null){
+            return;
+        }
+        ShiguGoodsTiny sgt=new ShiguGoodsTiny();
+        sgt.setGoodsId(vo.getSupperGoodsId());
+        sgt.setWebSite(sgig.getWebSite());
+        sgt = shiguGoodsTinyMapper.selectByPrimaryKey(sgt);
+        if(sgt==null){
+            return;
+        }
+        ShiguShop shop = shiguShopMapper.selectByPrimaryKey(sgt.getStoreId());
+        if(shop==null){
+            return;
+        }
+        ShopNumAndMarket goodsMarketInfo = shiguShopMapper.selMarketInfo(sgt.getStoreId());
+        vo.setSupperGoodsName(sgt.getTitle());
+        vo.setWebSite(sgig.getWebSite());
+        vo.setSupperImage(sgt.getPicUrl());
+        vo.setSupperMarketId(sgt.getMarketId());
+        vo.setSupperNumiid(sgt.getNumIid());
+        vo.setSupperMarket(goodsMarketInfo.getMarket());
+
+        vo.setSupperPiPrice(sgt.getPiPriceString());
+        vo.setSupperPrice(sgt.getPriceString());
+        vo.setSupperStoreId(sgt.getStoreId());
+        vo.setSupperImww(shop.getImAliww());
+        vo.setSupperQq(shop.getImQq());
+        vo.setSupperTelephone(shop.getTelephone());
+        vo.setSupperTaobaoUrl(shop.getTaobaoUrl());
+        itemUpRecordService.addItemUpRecord(vo);
+
+    }
 }

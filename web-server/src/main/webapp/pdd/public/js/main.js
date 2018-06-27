@@ -169,7 +169,7 @@ $(function(){
             });
 
             //删除颜色尺码
-            var aliasId = inputE.attr("id").substr(8); //id="J_Alias_1627207-28327"
+            var aliasId = inputE.attr("id").substr(13); //id="J_Alias_1627207-28327"
             $(".sku-loading tbody tr").each(function(){
                 var d = $(this).attr("data-color");
                 if(d==aliasId){

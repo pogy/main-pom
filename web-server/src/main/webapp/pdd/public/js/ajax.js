@@ -125,6 +125,19 @@ function checkform(){
         }
     });
 
+    var singleLimit = parseInt($('#singleLimit').val());
+    $('#singleLimit').val(singleLimit);
+    if(singleLimit < 1 || singleLimit > 999999){
+        error_msg="单次限量必须在1-999999之间";
+    }
+
+    var purchaseLimit = parseInt($('#purchaseLimit').val());
+    $('#purchaseLimit').val(purchaseLimit);
+    if(purchaseLimit < 1 || purchaseLimit > 999999){
+        error_msg="限购次数必须在1-999999之间";
+    }
+
+
     //判断sku是否合法 sku价格只能在主价格的上下10%
     price=$('#pPrice').val();
     var marketPrice = $('#marketPrice').val();
@@ -192,6 +205,7 @@ function ready_publish(){
     $(".sku-props").remove();
     $('.thumbUrl').remove();
     $('.hdThumbUrl').remove();
+    $('.mainImg').remove();
 
     //点击发布后先清空已经存在的提示消息
     $('#tip_default').show();
@@ -431,7 +445,6 @@ function ready_publish(){
 
     //将描述图传给gtx
     function upDetailImg(url,order){
-        console.info(url)
         if(order>(imgAllNum - 1)){
             download_main(img_arr_list_main,1);return false;
         }
@@ -533,12 +546,12 @@ function ready_publish(){
             if(resp.result = 'success'){
                 $('#mainform').append("<input type='hidden' name='thumbUrl' class='thumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
             }
-            upMainImg(url);
+            upMainFirstImg(url);
         });
     }
 
     //主图
-    function upMainImg(url) {
+    function upMainFirstImg(url) {
         $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:5}, function(resp){
             if(resp.result = 'success') {
                 $('#mainform').append("<input type='hidden' name='mainImg' class='mainImg' value='" + resp.pddImgInfo.pddImgUrls[0] + "'>")
@@ -620,7 +633,7 @@ function ready_publish(){
 function upForm(){
     getDetail=$('#getToken').val();
     $.ajax({
-        url : "index.json?"+getDetail,
+        url : "index.htm?"+getDetail,
         type : "POST",
         dataType: "html",
         data : $( '#mainform').serialize(),

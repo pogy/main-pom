@@ -14,13 +14,14 @@ import com.shigu.goodsup.pinduoduo.exceptions.CustomException;
 import com.shigu.goodsup.pinduoduo.service.PddGoodsUpService;
 import com.shigu.goodsup.pinduoduo.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
-import com.shigu.main4.vo.ShopCat;
+import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
@@ -33,18 +34,16 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pdd.beans.GoodsCats;
 import pdd.beans.LogisticsTemplate;
 import pdd.constant.PddConfig;
+import pdd.goods.add.GoodsAddResponse;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -75,6 +74,7 @@ public class PddGoodsUpAction {
     private PddGoodsUpService pddGoodsUpService;
     @Resource
     private XzSdkClient xzSdkClient;
+
     //运费模板
     public static final String PDD_POST_TEMPLATE_PRE = "pdd_post_template_";
     //退换货模板
@@ -283,34 +283,46 @@ public class PddGoodsUpAction {
      * @return
      */
     @RequestMapping("index")
-    @ResponseBody
-    public JSONObject upload (PddUploadBO bo,
+    public String upload (PddUploadBO bo,
                               @RequestParam(value = "picUrl[]")String[] picUrl,
                               @RequestParam(value = "descPicUrl[]")String[] descPicUrl,
                               String skus,
                               String tempCode,
-                              HttpSession session){
+                              Long mid,//goodsId
+                              HttpSession session,Model model) {
         redisIO.del(tempCode);//删除图片上传记录
+
+        String errMsg = null;
         try {
             bo.canUpload();
         } catch (Exception e) {
             e.printStackTrace();
-            return JsonResponseUtil.error(e.getMessage());
+            errMsg = e.getMessage();
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
 
         if (picUrl == null || picUrl.length <= 0 ){
-            return JsonResponseUtil.error("请上传轮播图");
+            errMsg = "请上传轮播图";
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
         if (descPicUrl == null || descPicUrl.length <= 0) {
-            return JsonResponseUtil.error("请上传详情图");
+            errMsg = "请上传详情图";
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
         if (StringUtils.isBlank(skus)) {
-            return JsonResponseUtil.error("sku不能为空");
+            errMsg = "sku不能为空";
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
 
         List<SkuBO> skuBOS = com.alibaba.fastjson.JSONObject.parseArray(skus, SkuBO.class);
         if (skuBOS == null || skuBOS.isEmpty()) {
-            return JsonResponseUtil.error("颜色sku不能为空");
+            errMsg = "颜色sku不能为空";
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
 
         boolean canUpload = false;
@@ -323,17 +335,37 @@ public class PddGoodsUpAction {
                 continue;
             }
             canUpload = true;
+            break;
         }
         if (!canUpload) {
-            return JsonResponseUtil.error("尺寸sku不能为空");
+            errMsg = "尺寸sku不能为空";
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
         }
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        GoodsAddResponse response = null;
+        try {
+            response = pddGoodsUpService.upload(bo, picUrl, descPicUrl, skuBOS, ps.getUserId());
+        } catch (CustomException e) {
+            e.printStackTrace();
+            errMsg = e.getMessage();
+            model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
+        }
 
+        //记录上次是用的运费模板
+        redisIO.put(PDD_POST_TEMPLATE_PRE + ps.getUserId(),bo.getPostage_id());
 
-        pddGoodsUpService.upload(bo,picUrl,descPicUrl,skuBOS,ps.getUserId());
+        //添加上传记录
+        try {
+            pddGoodsUpService.saveRecord(ps.getUserId(),bo.getCid(),mid,bo,Long.parseLong(response.getGoodsId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return JsonResponseUtil.success();
+        model.addAttribute("numIid",response.getGoodsCommitId());
+        return "pinduoduo/parts/success";
     }
 
 
