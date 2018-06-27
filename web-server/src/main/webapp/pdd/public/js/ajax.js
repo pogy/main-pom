@@ -430,38 +430,38 @@ function ready_publish(){
             download_main(img_arr_list_main,1);return false;
         }
 
+        if(order == 0){
+            $('.long-img ul.image-list li').remove();
+        }
+
         $.post('uploadImg.json', {imgUrl:url[order], tempCode:$('#tempCode').val(), type:4}, function(resp){
             if(resp.result == 'success'){
-                if(resp.pddImgInfo.num > 19){
-                    download_main(img_arr_list_main,1);return;
-                }else{
-                    if(resp.pddImgInfo.pddImgUrls.length > 1){
-                        $('#descPicUrl'+ order).val(resp.pddImgInfo.pddImgUrls[0]);
-                        $('#descPicUrl'+ order).parent('li').find('img').attr('src', resp.pddImgInfo.pddImgUrls[0])
-                        var addDescHtml = '';
-                        $.each(resp.pddImgInfo.pddImgUrls, function(i, img){
-                            if(i > 0){
-                                addDescHtml += '<li data-index="' + (i+100) + '" class="has-media">' +
-                                        '<input type="hidden" class="picUrl" name="descPicUrl[]" id="descPicUrl' + (i+100) + '" value="'+ img +'">' +
-                                        '<div class="operate">' +
-                                            '<i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>' +
-                                            '<i class="icon iconfont icon-sortright toright" title="右移">&rsaquo;</i>' +
-                                            '<i class="icon iconfont icon-remove del" title="删除">x</i>' +
-                                        '</div>' +
-                                        '<div class="preview ">' +
-                                            '<a title="上传图片 " href="javascript:; " class="upload-tip" style="display: none;">' +
-                                                '<i class="icon iconfont icon-tianjia">+</i>' +
-                                            '</a>' +
-                                            '<div class="img">' +
-                                                '<a href="'+ img +'" target="_blank"> <img src="'+ img +'"></a>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</li>';
-                            }
-                        });
-                        $('#descPicUrl'+ order).parents('li').after(addDescHtml);
-                    }else{
-                        $('#descPicUrl'+ order).val(resp.pddImgInfo.pddImgUrls[0]);
+                if(resp.pddImgInfo.num <= 20){
+                    var addDescHtml = '';
+                    $.each(resp.pddImgInfo.pddImgUrls, function(i, img){
+                        addDescHtml += '<li data-index="' + (resp.pddImgInfo.num - i) + '" class="has-media">' +
+                                '<input type="hidden" class="picUrl" name="descPicUrl[]" id="descPicUrl' + (resp.pddImgInfo.num - i) + '" value="'+ img +'">' +
+                                '<div class="operate">' +
+                                    '<i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>' +
+                                    '<i class="icon iconfont icon-sortright toright" title="右移">&rsaquo;</i>' +
+                                    '<i class="icon iconfont icon-remove del" title="删除">x</i>' +
+                                '</div>' +
+                                '<div class="preview ">' +
+                                    '<a title="上传图片 " href="javascript:; " class="upload-tip" style="display: none;">' +
+                                        '<i class="icon iconfont icon-tianjia">+</i>' +
+                                    '</a>' +
+                                    '<div class="img">' +
+                                        '<a href="'+ img +'" target="_blank"> <img src="'+ img +'"></a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</li>';
+                    });
+                    $('.long-img ul.image-list .addDimg').before(addDescHtml);
+                    $('.descImgTip').html('当前商品共有 '+resp.pddImgInfo.num+' 张图片');
+
+                    if(resp.pddImgInfo.num == 20){
+                        $('.long-img .image-list .addDimg').hide();
+                        download_main(img_arr_list_main,1);return;
                     }
                 }
             }
@@ -521,8 +521,19 @@ function ready_publish(){
         });
     }
 
+    //普通缩略图
     function upThumbImg(url) {
         $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:2}, function(resp){
+            if(resp.result = 'success'){
+                $('#mainform').append("<input type='hidden' name='thumbUrl' class='thumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
+            }
+            upMainImg(url);
+        });
+    }
+
+    //主图
+    function upMainImg(url) {
+        $.post('uploadImg.json', {imgUrl:url[0], tempCode:$('#tempCode').val(), type:5}, function(resp){
             if(resp.result = 'success'){
                 $('#mainform').append("<input type='hidden' name='thumbUrl' class='thumbUrl' value='"+resp.pddImgInfo.pddImgUrls[0]+"'>")
             }
