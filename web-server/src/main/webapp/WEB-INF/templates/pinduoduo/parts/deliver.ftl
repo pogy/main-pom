@@ -1,5 +1,4 @@
 <select id="J_deliverTemplate" name="postage_id">
-    <option value="" valu="">请选择运费模板</option>
     <#if deliveyList??>
         <#list deliveyList as dy>
             <#if dy??>

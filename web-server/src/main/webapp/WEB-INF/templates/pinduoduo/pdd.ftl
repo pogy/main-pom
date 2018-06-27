@@ -35,7 +35,8 @@
         <div class="hd clearfix">
             <span class="fl">拼多多宝贝发布</span></div>
         <div id="main">
-            <div id="catPath">类目：${pddCatName!} <a href="changeGoodsCate.htm?allCids=${allCids!}&goodsId=${(item.goodsId)!}">更换目录</a> </div>
+            <div id="catPath">星座网类目：${xzCatName!} </div>
+            <div id="catPath">拼多多类目：${pddCatName!} <a href="changeGoodsCate.htm?allCids=${allCids!}&goodsId=${(item.goodsId)!}" style=" color:#337ab7; margin-left:6px;">更换目录</a> </div>
             <div class="field clearfix">
                 <label class="fl"><em>*</em>商品关键信息</label>
                 <div class="field-content fl">
