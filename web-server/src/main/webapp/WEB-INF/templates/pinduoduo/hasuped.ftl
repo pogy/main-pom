@@ -16,7 +16,7 @@
 <div class="msg">
     <h3>亲，您已上传过该商品！</h3>
     <p class="time">上传时间：${lastup.lastTime?string('yyyy-MM-dd HH:mm:ss')}<a href="https://item.taobao.com/item.htm?id=${lastup.numIid}">查看宝贝</a></p>
-    <p><a href="/publish.htm?id=${goodsId}&yesrepeat=1" class="sc">继续上传</a><a href="javascript:window.opener=null;window.open(&#39;&#39;,&#39;_self&#39;);window.close();" class="close">关闭页面</a></p>
+    <p><a href="publish.htm?goodsId=${goodsId}&yesrepeat=1" class="sc">继续上传</a><a href="javascript:window.opener=null;window.open(&#39;&#39;,&#39;_self&#39;);window.close();" class="close">关闭页面</a></p>
 </div>
 <div style="display:none">
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " //");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255319538'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1255319538' type='text/javascript'%3E%3C/script%3E"));</script>

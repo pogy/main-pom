@@ -298,18 +298,12 @@
                     <input type="text" id="curlirun" class="lr-txt" value="${item.profit}">元
                     <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue"
                            value="发 布" data-name="event_submit_do_publish"></div>
-                <input type="hidden" id="token" name="_csrf"
-                       value="${allData.token}">
                 <input type="hidden" id="pPrice" value="${item.price}">
                 <input type="hidden" id="piPrice" value="${item.piPrice}">
                 <input type="hidden" id="cid" name="cid" value="${pddCid}">
                 <input type="hidden" id="tempCode" name="tempCode" value="${tempCode}">
                 <input type="hidden" id="mid" name="mid" value="${item.goodsId}">
-                <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
-                <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
-                <input type="hidden" id="getToken" name="getToken"
-                       value="uid=-${allData.jdUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
             </div>
     </form>
 </div>
