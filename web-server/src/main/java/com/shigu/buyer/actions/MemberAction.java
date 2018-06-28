@@ -627,6 +627,8 @@ public class MemberAction {
         userInfoUpdate.setUserId(ps.getUserId());
         try {
             userBaseService.updateUserInfo(userInfoUpdate);
+            ps.setUserNick(bo.getName());
+            redisIO.put("session_user_redis__",ps);
         } catch (UpdateUserInfoException e) {
             return JsonResponseUtil.error(e.getMessage());
         }

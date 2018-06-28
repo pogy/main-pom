@@ -74,6 +74,7 @@ public class ShopCdnBO implements Serializable{
 
     private String startDate;
     private String endDate;
+    private Long diyScid;
 
     /**
      * 判断是否首页,决定要不要装修
@@ -209,5 +210,13 @@ public class ShopCdnBO implements Serializable{
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public Long getDiyScid() {
+        return diyScid;
+    }
+
+    public void setDiyScid(Long diyScid) {
+        this.diyScid = diyScid;
     }
 }

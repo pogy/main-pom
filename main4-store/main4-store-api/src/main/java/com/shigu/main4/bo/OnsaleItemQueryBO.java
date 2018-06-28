@@ -38,6 +38,8 @@ public class OnsaleItemQueryBO implements Serializable {
 
     /** 父类风格id */
     private Long parentStyleId;
+    /** 店铺自定义类目 */
+    private Long diyScid;
 
     public String getKeyword() {
         return keyword;
@@ -125,5 +127,13 @@ public class OnsaleItemQueryBO implements Serializable {
 
     public void setParentStyleId(Long parentStyleId) {
         this.parentStyleId = parentStyleId;
+    }
+
+    public Long getDiyScid() {
+        return diyScid;
+    }
+
+    public void setDiyScid(Long diyScid) {
+        this.diyScid = diyScid;
     }
 }

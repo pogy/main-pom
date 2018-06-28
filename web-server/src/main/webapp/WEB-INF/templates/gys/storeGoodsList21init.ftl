@@ -66,11 +66,13 @@
                 <i id="noVideoNum"></i>
             </a>
         </li>
+        <#if session_user_redis__.logshop.webSite != 'qz'>
         <li <#if query.state == 5>class="select"</#if>>
             <a href="storeGoodsList21init.htm?state=5">无风格标签
                 <i id="noGoodsStyleNum"></i>
             </a>
         </li>
+        </#if>
     </ul>
 </div>
 <div class="goodsFilterBar">
@@ -385,6 +387,7 @@ $$.domready('#goodsStyle', function(){
                                 材料成分
                             </b>
                         </li>
+                        <#if session_user_redis__.logshop.webSite != 'qz'>
                         <li>
                             <b jhand="openEditGoodsStyleWindow" data-oneset="1" data-goodsstyleid="${item.goodsStyleId!}">
                                 <i class="icon-tag <#if item.goodsStyleType == 2> setted </#if>"></i>
@@ -395,6 +398,7 @@ $$.domready('#goodsStyle', function(){
                                 </#if>
                             </b>
                         </li>
+                        </#if>
                         <li>
                             <b jhand="openEditGoodsVideoWindow" data-goodsvideourl="${item.goodsVideoUrl!}">
                                 <i class="icon-video <#if item.goodsVideoType == 2> setted </#if>"></i>

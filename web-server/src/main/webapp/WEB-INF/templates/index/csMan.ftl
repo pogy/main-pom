@@ -31,6 +31,7 @@
                         <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="//wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
                         <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
                     </ul>
                 </div>
             </div>
@@ -874,7 +875,7 @@ $(".imgBox img").lazyload({
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
             <a href="//wa.571xz.com" target="_blank">辽源站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
-            <a href="//zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//qz.571xz.com" target="_blank">泉州站</a>
             
             
             <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>

@@ -53,6 +53,9 @@ public class ShopForCdnBo implements Serializable{
     /** shop id */
     private Long shopId;
 
+    /** 店铺自定义类目 */
+    private Long diyScid;
+
     /**
      * 父类风格id
      */
@@ -190,5 +193,13 @@ public class ShopForCdnBo implements Serializable{
 
     public void setParentStyleId(Long parentStyleId) {
         this.parentStyleId = parentStyleId;
+    }
+
+    public Long getDiyScid() {
+        return diyScid;
+    }
+
+    public void setDiyScid(Long diyScid) {
+        this.diyScid = diyScid;
     }
 }

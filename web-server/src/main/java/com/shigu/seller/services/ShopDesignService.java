@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ShopFitmentArea;
 import com.opentae.data.mall.beans.ShopFitmentModule;
 import com.opentae.data.mall.beans.ShopFitmentPage;
 import com.opentae.data.mall.examples.ShopFitmentPageExample;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentAreaMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentModuleMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentPageMapper;
@@ -67,6 +68,9 @@ public class ShopDesignService {
 
     @Autowired
     ShopBaseService shopBaseService;
+
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
 
     /**
      * 得到模块
@@ -254,8 +258,13 @@ public class ShopDesignService {
         mv.getData().put("shop", shop);
         mv.getData().put("isEditer", isEditer);
         Long shopId = shop.getShopId();
+        Integer syntaobao = shiguShopMapper.selectByPrimaryKey(shopId).getType();
         if (module instanceof CategoryModule) {//如果是店内分类模块
-            mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));
+            if (syntaobao==1) {
+                mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));
+            }else {
+                mv.getData().put("diyShopCats", shopForCdnService.selShopCatsById(shopId));
+            }
         } else if (module instanceof ItemPromoteModule) {//推荐需要查数据
             ShiguPager<ItemShowBlock> promotePage = shopFitmentService.selItemByPromote(shopId, shop.getWebSite(), (ItemPromoteModule) module);
             if(promotePage.getTotalCount()==0){
@@ -269,7 +278,11 @@ public class ShopDesignService {
             mv.getData().put("shopStyles", shopForCdnService.selShopStyleById(shopId));
         } else if (module instanceof ShopBanner) {
             mv.getData().put("checkedNavs", selCheckedPageNav(shopId, ((ShopBanner) module).getStoreNav().getPages()));
-            mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));
+            if (syntaobao==1) {
+                mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));
+            }else {
+                mv.getData().put("diyShopCats", shopForCdnService.selShopCatsById(shopId));
+            }
             mv.getData().put("shopStyles", shopForCdnService.selShopStyleById(shopId));
         }
         return mv;

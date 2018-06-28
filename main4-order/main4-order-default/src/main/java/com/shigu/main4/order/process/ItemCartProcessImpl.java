@@ -27,6 +27,17 @@ public class ItemCartProcessImpl implements ItemCartProcess {
     }
 
     /**
+     * 根据用户id 子订单Id 查询子订单
+     * @param userId
+     * @param childCartIds
+     * @return
+     */
+    @Override
+    public List<CartVO> selByChildCartIds(Long userId,String childCartIds){
+        return SpringBeanFactory.getBean(Cart.class, userId).listSomeProduct(childCartIds);
+    };
+
+    /**
      * 某用户购物车商品数量
      * @param userId 所属用户
      * @return 商品合计总件数

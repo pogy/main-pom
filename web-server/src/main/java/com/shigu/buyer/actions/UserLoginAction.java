@@ -941,14 +941,13 @@ public class UserLoginAction {
             //登陆成功
             //还未绑定星座网帐号,去绑定星座网帐号
             //主站url还没提取成配置文件
-//            logger.error(targetUrl);
+            //session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
+            if (targetUrl.equals(mainSiteConfig.getPhoneBindUrl())) {
+                return "redirect:" + targetUrl;
+            }
             //没有传回调地址时，调转默认地址
             if (StringUtils.isBlank(backUrl)) {
                 backUrl = targetUrl;
-            }
-            session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
-            if (targetUrl.equals(mainSiteConfig.getPhoneBindUrl())) {
-                return "redirect:" + targetUrl;
             }
             //已经绑定星座网帐号，且登陆成功，转发给上传站，上传站自行处理
             Long userId = ((PersonalSession) subject.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();

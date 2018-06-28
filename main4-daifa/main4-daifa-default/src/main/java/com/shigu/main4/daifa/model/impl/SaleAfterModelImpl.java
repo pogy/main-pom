@@ -267,7 +267,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public String saleAfterExpress(String expressName, String expressCode) throws DaifaException {
         expressName= StringEscapeUtils.escapeHtml4(expressName.replace(" ",""));
-        expressCode= StringEscapeUtils.escapeHtml4(expressCode.replace(" ",""));
+        expressCode= StringEscapeUtils.escapeHtml4(expressCode.replace(" ","")).trim();
         DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
         tmp.setRefundId(refundId);
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);

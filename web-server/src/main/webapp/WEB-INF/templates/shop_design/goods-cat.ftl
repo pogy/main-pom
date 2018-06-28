@@ -32,26 +32,49 @@
                                 </a>
                             </li>
                         </ul>
-                    <#list shopcats as cat>
-                        <ul>
-                            <li class="mlc-title">
-                                <a href="javascript:;" class="mlc-show"> <em>-</em>
-                                    <a href="/shop/search.htm?id=${shop.shopId}&scid=${cat.cid!}">${cat.name!}</a>
-                                </a>
-                            </li>
-                        </ul>
-                        <#if cat.subCats??>
-                        <ul>
-                            <#list cat.subCats as subcat>
-                                <li class="list">
-                                    <a href="/shop/search.htm?id=${shop.shopId}&scid=${subcat.cid!}">
-                                        <i class="show-down"></i>
-                                        ${subcat.name!}
-                                    </a>
-                                </li>
+                        <#if shopcats??>
+                            <#list shopcats as cat>
+                                <ul>
+                                    <li class="mlc-title">
+                                        <a href="javascript:;" class="mlc-show"> <em>-</em>
+                                            <a href="/shop/search.htm?id=${shop.shopId}&scid=${cat.cid!}">${cat.name!}</a>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <#if cat.subCats??>
+                                <ul>
+                                    <#list cat.subCats as subcat>
+                                        <li class="list">
+                                            <a href="/shop/search.htm?id=${shop.shopId}&scid=${subcat.cid!}">
+                                                <i class="show-down"></i>
+                                                ${subcat.name!}
+                                            </a>
+                                        </li>
+                                    </#list>
+                                </#if>
+                            </#list>
+                        <#elseif diyShopCats??>
+                            <#list diyShopCats as cat>
+                                <ul>
+                                    <li class="mlc-title">
+                                        <a href="javascript:;" class="mlc-show"> <em>-</em>
+                                            <a href="/shop/search.htm?id=${shop.shopId}&diyScid=${cat.cid!}">${cat.name!}</a>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <#if cat.subCats??>
+                                <ul>
+                                    <#list cat.subCats as subcat>
+                                        <li class="list">
+                                            <a href="/shop/search.htm?id=${shop.shopId}&diyScid=${subcat.cid!}">
+                                                <i class="show-down"></i>
+                                            ${subcat.name!}
+                                            </a>
+                                        </li>
+                                    </#list>
+                                </#if>
                             </#list>
                         </#if>
-                    </#list>
                     </dd>
                 </dl>
             </div>
