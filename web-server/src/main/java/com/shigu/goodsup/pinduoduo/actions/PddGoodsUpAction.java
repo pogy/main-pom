@@ -357,6 +357,7 @@ public class PddGoodsUpAction {
 
         //添加上传记录
         try {
+            pddGoodsUpService.addUsedCatRecord(ps.getUserId(),bo.getCid());
             pddGoodsUpService.saveRecord(ps.getUserId(),bo.getCid(),mid,bo,Long.parseLong(response.getGoodsId()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -453,7 +454,7 @@ public class PddGoodsUpAction {
     public JSONObject updateShopCats (HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Integer updateNum = redisIO.get(UPDATE_PDD_SHOP_CATS_PRE + ps.getUserId(), Integer.class);
-        if (updateNum != null && updateNum >= 3) {
+        if (updateNum != null && updateNum <= 0) {
             return JsonResponseUtil.error("今日更新次数已用完");
         }
         return pddGoodsUpService.updateShopCats(ps.getUserId());
