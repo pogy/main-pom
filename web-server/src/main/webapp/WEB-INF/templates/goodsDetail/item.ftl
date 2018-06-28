@@ -338,8 +338,9 @@ ${userShopHdHtml}
 </div>
 </div>
 <script modulepath="goodsDetail/item#goodsOrder">
+var colorsMeta = ${goodsInfo.colorsMeta!};
+var sizesMeta = ${goodsInfo.sizesMeta!};
 var piPrice = '${goodsInfo.piPrice!}';
-var skusMeta = ${goodsInfo.skusMeta!};
 </script>
 <#list [{}] as $it>
 </#list>
