@@ -652,7 +652,7 @@ public class PddGoodsUpService {
         vo.setFenNumiid(pddGoodsId);
         vo.setFenUserId(pddAuthInfoResponse.getThirdUid());
         vo.setFenUserNick(pddAuthInfoResponse.getThirdUserNick());
-        vo.setFlag(GoodsUploadFlagEnum.WEB_PDD.getFlag());
+        vo.setFlag(GoodsUploadFlagEnum.PDD.getFlag());
         vo.setSupperGoodsId(mid);
         vo.setCid(cid);
 

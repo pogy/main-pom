@@ -171,13 +171,14 @@ public class MemberAction {
     public String fenxiaoZhanghao(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
+        List<OuterUserVO> outerUserVOS = new ArrayList<>();
         for (OuterUser ou : outerUsers) {
             if (ou == null || ou.getLoginFromType() == null) {
                 continue;
             }
-            OuterUserVO vo = new OuterUserVO(ou);
-            model.addAttribute("outer_" + vo.getFrom(), vo);
+            outerUserVOS.add(new OuterUserVO(ou));
         }
+        model.addAttribute("_outer_accountType_", outerUserVOS);
         return "fxs/fenxiaoZhanghao";
     }
 

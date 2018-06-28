@@ -183,7 +183,7 @@ public class PddGoodsUpAction {
         /********************************查上传记录********************************/
         try {
             if (bo.getYesrepeat() == null || bo.getYesrepeat() != 1) {
-                LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),bo.getGoodsId(), GoodsUploadFlagEnum.WEB_PDD);
+                LastUploadedVO lastup = itemUpRecordService.selLastUpByIds(ps.getUserId(),bo.getGoodsId(), GoodsUploadFlagEnum.PDD);
                 if (lastup != null) {
                     model.addAttribute("lastup", lastup);
                     model.addAttribute("goodsId", bo.getGoodsId());
