@@ -358,7 +358,7 @@ public class PddGoodsUpAction {
         //添加上传记录
         try {
             pddGoodsUpService.addUsedCatRecord(ps.getUserId(),bo.getCid());
-            pddGoodsUpService.saveRecord(ps.getUserId(),bo.getCid(),mid,bo,Long.parseLong(response.getGoodsId()));
+            pddGoodsUpService.saveRecord(ps.getUserId(),bo.getCid(),mid,bo,response.getGoodsCommitId());
         } catch (Exception e) {
             e.printStackTrace();
         }

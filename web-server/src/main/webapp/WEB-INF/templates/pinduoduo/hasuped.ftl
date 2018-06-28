@@ -15,7 +15,7 @@
 <body>
 <div class="msg">
     <h3>亲，您已上传过该商品！</h3>
-    <p class="time">上传时间：${lastup.lastTime?string('yyyy-MM-dd HH:mm:ss')}<a href="https://item.taobao.com/item.htm?id=${lastup.numIid}">查看宝贝</a></p>
+    <p class="time">上传时间：${lastup.lastTime?string('yyyy-MM-dd HH:mm:ss')}<a href="https://mms.pinduoduo.com/Pdd.html#/goods/goods_edit/index?id=${lastup.numIid}">查看宝贝</a></p>
     <p><a href="publish.htm?goodsId=${goodsId}&yesrepeat=1" class="sc">继续上传</a><a href="javascript:window.opener=null;window.open(&#39;&#39;,&#39;_self&#39;);window.close();" class="close">关闭页面</a></p>
 </div>
 <div style="display:none">
