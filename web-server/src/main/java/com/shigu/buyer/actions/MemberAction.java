@@ -3,6 +3,7 @@ package com.shigu.buyer.actions;
 import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
+import com.shigu.buyer.enums.OutUserBindTypeEnum;
 import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
@@ -171,13 +172,7 @@ public class MemberAction {
     public String fenxiaoZhanghao(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
-        List<OuterUserVO> outerUserVOS = new ArrayList<>();
-        for (OuterUser ou : outerUsers) {
-            if (ou == null || ou.getLoginFromType() == null) {
-                continue;
-            }
-            outerUserVOS.add(new OuterUserVO(ou));
-        }
+        List<OuterUserVO> outerUserVOS = OutUserBindTypeEnum.psrseToOutUserVO(outerUsers);
         model.addAttribute("_outer_accountType_", outerUserVOS);
         return "fxs/fenxiaoZhanghao";
     }

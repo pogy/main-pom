@@ -35,6 +35,10 @@ public class OuterUserVO implements Serializable{
      * 1淘宝 2阿里 4微信 6京东 7拼多多 第三方登陆type
      */
     private String ortherLoginType;
+    /**
+     * 图标地址
+     */
+    private String iconUrl;
 
     public OuterUserVO() {
     }
@@ -132,5 +136,13 @@ public class OuterUserVO implements Serializable{
 
     public void setOrtherLoginType(String ortherLoginType) {
         this.ortherLoginType = ortherLoginType;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }
