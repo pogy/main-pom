@@ -650,7 +650,7 @@ public class PddGoodsUpService {
         vo.setFenImage(bo.getMainImg());
         vo.setFenPrice(bo.getMarketPrice());
         vo.setFenNumiid(pddGoodsId);
-        vo.setFenUserId(pddAuthInfoResponse.getThirdUid());
+        vo.setFenUserId(userId);
         vo.setFenUserNick(pddAuthInfoResponse.getThirdUserNick());
         vo.setFlag(GoodsUploadFlagEnum.PDD.getFlag());
         vo.setSupperGoodsId(mid);
