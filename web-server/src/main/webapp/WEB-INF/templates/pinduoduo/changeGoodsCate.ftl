@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300">
-    <title>四季星座网</title>
+    <title>拼多多类目更换 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
 <#include "/__style_torrent__/common__form_css.ftl">
@@ -29,6 +29,10 @@ var goodsId = '${goodsId!}';
         <option value="${cate.value!}" data-cid="${cate.cid!}">${cate.text!}</option>
         </#list>
     </select>
+</div>
+<div class="updatePddCate">
+    <b class="updateCateBtn fcBlue">更新类目</b>
+    <span>(今日剩余更新次数 <em class="fcF40">${updateNum!}</em> 次)</span>
 </div>
 <div class="categoryList clearfix">
     <div class="categoryContainer" data-level="0">
