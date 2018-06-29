@@ -1,7 +1,6 @@
 package com.shigu.main4.item.news.utils;
 
 import com.aliyun.opensearch.sdk.dependencies.org.apache.commons.lang.StringEscapeUtils;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.SingleSkuBO;

@@ -6,7 +6,6 @@ import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.PayedVO;
-import com.shigu.main4.order.vo.SubOrderVO;
 
 import java.util.List;
 

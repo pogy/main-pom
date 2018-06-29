@@ -3,8 +3,8 @@ package com.opentae.data.mall.beans;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class MemberUser implements Serializable {
 

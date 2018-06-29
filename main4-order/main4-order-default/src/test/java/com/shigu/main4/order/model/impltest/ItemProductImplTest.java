@@ -1,6 +1,5 @@
 package com.shigu.main4.order.model.impltest;
 
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.interfaces.ItemProductMapper;
 import com.opentae.data.mall.interfaces.ItemProductSkuMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -10,7 +9,7 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *  产品服务测试

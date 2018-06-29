@@ -1,12 +1,12 @@
 package com.shigu.main4.order.services.impl;
 
+import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
-import com.alibaba.dubbo.common.logger.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

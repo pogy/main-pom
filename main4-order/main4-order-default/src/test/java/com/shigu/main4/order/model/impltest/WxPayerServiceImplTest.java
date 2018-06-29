@@ -3,7 +3,6 @@ package com.shigu.main4.order.model.impltest;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.PayerService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 

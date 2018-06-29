@@ -6,7 +6,10 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 public class ShiguStoreCollectExample extends SgExample<ShiguStoreCollectExample.Criteria> {
     public static final Class<ShiguStoreCollect> beanClass = ShiguStoreCollect.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);

@@ -16,9 +16,7 @@ import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.TradeFullinfoGetRequest;
-import com.taobao.api.request.TradeGetRequest;
 import com.taobao.api.response.TradeFullinfoGetResponse;
-import com.taobao.api.response.TradeGetResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

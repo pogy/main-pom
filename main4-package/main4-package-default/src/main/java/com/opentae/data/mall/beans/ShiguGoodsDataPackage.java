@@ -1,9 +1,7 @@
 package com.opentae.data.mall.beans;
 
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**

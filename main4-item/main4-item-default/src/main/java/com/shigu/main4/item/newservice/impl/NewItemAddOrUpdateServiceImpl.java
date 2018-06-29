@@ -3,7 +3,8 @@ package com.shigu.main4.item.newservice.impl;
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.TaobaoItemProp;
 import com.opentae.data.mall.examples.ShiguGoodsSingleSkuExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsSingleSkuMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
@@ -11,19 +12,13 @@ import com.shigu.main4.item.dao.SingleSkuDao;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
-import com.shigu.main4.item.services.PriceCalculateService;
-import com.shigu.main4.item.services.impl.EsGoodsServiceImpl;
 import com.shigu.main4.item.services.impl.ItemAddOrUpdateServiceImpl;
-import com.shigu.main4.item.services.impl.SameItemUtil;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
-import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.item.vo.news.NewPullSynItemVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,43 +37,8 @@ import java.util.stream.Collectors;
 @Service("newItemAddOrUpdateService")
 public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  implements NewItemAddOrUpdateService {
 
-    private static final Logger logger = LoggerFactory.getLogger(NewItemAddOrUpdateServiceImpl.class);
-
     @Resource(name = "tae_mall_shiguGoodsIdGeneratorMapper")
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
-
-    @Resource(name = "tae_mall_shiguGoodsTinyMapper")
-    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-
-    @Resource(name = "tae_mall_shiguGoodsSoldoutMapper")
-    private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
-
-    @Resource(name = "tae_mall_shiguGoodsExtendsMapper")
-    private ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
-
-    @Resource(name = "tae_mall_shiguGoodsModifiedMapper")
-    private ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
-
-    @Resource(name = "tae_mall_shiguGoodsUnlicenseMapper")
-    private ShiguGoodsUnlicenseMapper shiguGoodsUnlicenseMapper;
-
-    @Resource(name = "tae_mall_shiguPropImgsMapper")
-    private ShiguPropImgsMapper shiguPropImgsMapper;
-
-    @Resource(name = "tae_mall_shiguShopMapper")
-    private ShiguShopMapper shiguShopMapper;
-
-    @Autowired
-    private PriceCalculateService priceCalculateService;
-
-    @Autowired
-    private SameItemUtil sameItemUtil;
-
-    @Autowired
-    private EsGoodsServiceImpl esGoodsServiceImpl;
-
-    @Autowired
-    private ItemCache itemCache;
 
     @Autowired
     GoodsAddToRedis goodsAddToRedis;
@@ -87,25 +47,10 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     RedisIO redisIO;
 
     @Autowired
-    private ShiguSiteMapper shiguSiteMapper;
-
-    @Autowired
-    private ShiguGoodsStyleMapper shiguGoodsStyleMapper;
-
-    @Autowired
-    private ItemProductMapper itemProductMapper;
-
-    @Autowired
-    private GoodsCountForsearchMapper goodsCountForsearchMapper;
-
-    @Autowired
-    private ShiguCustomerStyleMapper shiguCustomerStyleMapper;
-
-    @Autowired
-    private SearchCategorySubMapper searchCategorySubMapper;
-
-    @Autowired
     SingleSkuDao singleSkuDao;
+
+    @Autowired
+    ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -172,7 +117,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         if(synItem!=null){
             NewPullSynItemVO vo=BeanMapper.map(synItem,NewPullSynItemVO.class);
             vo.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, synItem.getGoodsId()).pull());
-            toPropName(vo);
+//            toPropName(vo);
             return vo;
         }
         return null;
@@ -184,12 +129,11 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         if(synItem!=null){
             NewPullSynItemVO vo=BeanMapper.map(synItem,NewPullSynItemVO.class);
             vo.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, synItem.getGoodsId()).pull());
-            toPropName(vo);
+//            toPropName(vo);
             return vo;
         }
         return null;
     }
-    ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
     @Override
     public List<TaobaoPropValueBO> selColorSizeValues(Long cid) {
         return singleSkuDao.taobaoPropValues(cid);

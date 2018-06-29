@@ -435,7 +435,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         example.setEndIndex(pageSize);
         List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByConditionList(example);
         if (shiguGoodsDataPackageList.size() == 0) {
-            return new ShiguPager<DataPackage>();
+            return new ShiguPager<>();
         }
         List<DataPackage> dataPackageList = new ArrayList<DataPackage>();
         for (ShiguGoodsDataPackage shiguGoodsDataPackage : shiguGoodsDataPackageList) {
