@@ -41,6 +41,12 @@
                 /helpCenter/** = help
                 /photo/member/** = photoMember
                 /photo/auth/** = photoAuth
+
+				/pdd/login.* = anon
+				/pdd/callback.* = anon
+				/pdd/publish.* = anon
+				/pdd/** = member
+
 				/** = anon
 			</value>
 		</property>

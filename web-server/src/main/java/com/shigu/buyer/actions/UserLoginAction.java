@@ -303,6 +303,16 @@ public class UserLoginAction {
                 url = "http://www.571xz.com/jd/login.htm";
                 break;
             }
+            //拼多多授权
+            case 7: {
+                url = "http://www.571xz.com/pdd/login.htm";
+                break;
+            }
+            //苏宁授权
+//            case 8: {
+//                url = "http://www.571xz.com/pdd/login.htm";
+//                break;
+//            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
         return "redirect:" + url;
