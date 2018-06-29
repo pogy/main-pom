@@ -246,6 +246,9 @@ function ready_publish(){
         shadeClose: false,
         area: ['550px', ''],
         content: $("#J_publish"),
+        cancel: function(){
+            location.reload();
+        },
     });
 
     //生成所有sku的隐藏域
