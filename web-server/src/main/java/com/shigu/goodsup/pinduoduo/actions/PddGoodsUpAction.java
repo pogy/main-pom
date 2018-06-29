@@ -18,8 +18,10 @@ import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.LastUploadedVO;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
@@ -43,6 +45,7 @@ import pdd.goods.add.GoodsAddResponse;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -50,6 +53,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gtx on 2018/6/6.
@@ -74,6 +78,8 @@ public class PddGoodsUpAction {
     private PddGoodsUpService pddGoodsUpService;
     @Resource
     private XzSdkClient xzSdkClient;
+    @Resource
+    private OssIO ossIO;
 
     //运费模板
     public static final String PDD_POST_TEMPLATE_PRE = "pdd_post_template_";
@@ -85,7 +91,8 @@ public class PddGoodsUpAction {
     public static final String UPDATE_PDD_SHOP_CATS_PRE = "update_pdd_shop_cats_pre";
     //cat_id=3845,233,231,218,234时需要入参服饰成分信息和服饰面料信息
     public static final List<String> FABRIC_CONTENT_IDS = Arrays.asList("3845","233","231","218","234");
-
+    //拼多多临时文件夹
+    public static final String PDD_FORDER = "pdd/temp/";
 
     @RequestMapping("login")
     public String login(){
@@ -575,6 +582,20 @@ public class PddGoodsUpAction {
         return JsonResponseUtil.success().element("pddImgInfo",vo);
     }
 
-
+    @RequestMapping("getAccessInfo")
+    public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, String> infoMap = ossIO.createPostSignInfo(PDD_FORDER);
+        JSONObject jsonInfo = JSONObject.fromObject(infoMap);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+        String callbackFunName = request.getParameter("callback");
+        if (callbackFunName==null || callbackFunName.equalsIgnoreCase(""))
+            response.getWriter().println(jsonInfo.toString());
+        else
+            response.getWriter().println(callbackFunName + "( "+jsonInfo.toString()+" )");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.flushBuffer();
+        return null;
+    }
 
 }
