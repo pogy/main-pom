@@ -92,7 +92,7 @@ public class PddGoodsUpAction {
     //cat_id=3845,233,231,218,234时需要入参服饰成分信息和服饰面料信息
     public static final List<String> FABRIC_CONTENT_IDS = Arrays.asList("3845","233","231","218","234");
     //拼多多临时文件夹
-    public static final String PDD_FORDER = "pdd/temp/";
+    public static final String PDD_FORDER = "onekey/";
 
     @RequestMapping("login")
     public String login(){
