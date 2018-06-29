@@ -114,7 +114,7 @@
                                             </span>
                                         </th>
                                         <th class="J_MapOnePrice">
-                                            <span class="required">价格
+                                            <span class="required">单买价
                                               <input id="batchprice" type="button" class="batch d_size2" data-t="price">
                                             </span>
                                         </th>
