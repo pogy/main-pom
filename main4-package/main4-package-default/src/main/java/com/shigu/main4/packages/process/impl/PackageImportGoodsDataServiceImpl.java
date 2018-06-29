@@ -3,12 +3,14 @@ package com.shigu.main4.packages.process.impl;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsDataPackageExample;
 import com.opentae.data.mall.examples.TaobaoItemPropExample;
-import com.opentae.data.mall.examples.TaobaoSkuExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.common.util.TypeConvert;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.packages.bo.DataPackage;
 import com.shigu.main4.packages.bo.PackageItem;
 import com.shigu.main4.packages.process.PackageImportGoodsDataService;
@@ -39,8 +41,6 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
     @Autowired
     private ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
-    private TaobaoSkuMapper taobaoSkuMapper;
-    @Autowired
     private ShiguGoodsDataPackageMapper shiguGoodsDataPackageMapper;
     @Autowired
     private ShiguGoodsCollectMapper shiguGoodsCollectMapper;
@@ -50,6 +50,10 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
     @Autowired
     TaobaoItemPropMapper taobaoItemPropMapper;
+
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
+
     @Autowired
     private WorkerMan workerMan = WorkerMan.getInstance();
 
@@ -65,14 +69,11 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
     /**
      * 单个数据包str组成
      *
-     * @param userId
      * @param itemId
-     * @param dataPackageAddr
      * @param relativePath
-     * @param relativePath1
      * @return
      */
-    public Map<String, String> createDataPackagestr(Long userId, Long itemId, String dataPackageAddr, String relativePath, String relativePath1) {
+    private Map<String, String> createDataPackagestr(Long itemId, String relativePath) {
         ShiguGoodsIdGenerator shiguGoodsIdGenerator = new ShiguGoodsIdGenerator();
         shiguGoodsIdGenerator.setGoodId(itemId);
         shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectOne(shiguGoodsIdGenerator);
@@ -136,17 +137,32 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         String subimageString = DataPackageUtil
                 .addpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "571sjb" + UtilCharacter.UNIX_FILE_SEPARATOR, sge.getImages());
         DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
-        String picture = subimageString;//新图片
         String video = "";//视频
         // 销售属性组合
         StringBufferAgent skuProps = new StringBufferAgent();//sku组合属性
         List<TaobaoSku> list_ts=new ArrayList<>();
-        if(goods.getNumIid()!=null){
-            TaobaoSkuExample example_ts = new TaobaoSkuExample();
-            example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
-            example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
-            example_ts.setOrderByClause("properties asc");
-            list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        NewCdnItem newCdnItem = newShowForCdnService.selItemById(itemId);
+
+
+        for(SingleSkuVO singleSkuVO:newCdnItem.getSingleSkus()){
+            if(singleSkuVO.getColorPid()==null&&singleSkuVO.getSizePid()==null){
+                continue;
+            }
+            TaobaoSku sku=new TaobaoSku();
+            sku.setPrice(singleSkuVO.getPriceString());
+            sku.setQuantity(singleSkuVO.getStockNum().longValue());
+            String props="";
+            if(singleSkuVO.getColorPid()!=null){
+                props+=singleSkuVO.getColorPid()+":"+singleSkuVO.getColorVid()+";";
+            }
+            if(singleSkuVO.getSizePid()!=null){
+                props+=singleSkuVO.getSizePid()+":"+singleSkuVO.getSizeVid()+";";
+            }
+            if(props.endsWith(";")){
+                props=props.substring(0,props.length()-1);
+            }
+            sku.setProperties(props);
+            list_ts.add(sku);
         }
         String input_custom_cpv = "";//自定义属性
 
@@ -163,8 +179,9 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             }
         }
         if (list_ts.size() > 0) {
-            for (int i = 0; i < list_ts.size(); i++) {
-                skuProps.append(list_ts.get(i).getPrice()).append(':').append(list_ts.get(i).getQuantity()).append(':').append(':').append(list_ts.get(i).getProperties()).append(';');
+            for (TaobaoSku list_t : list_ts) {
+                skuProps.append(list_t.getPrice()).append(':').append(list_t.getQuantity()).append(':').append(':')
+                        .append(list_t.getProperties()).append(';');
             }
         } else {
             String props = sge.getProps();
@@ -232,7 +249,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         contentsString.append(goods.getTitle()).append('\t').append(goods.getCid()).append('\t').append(goods.getCidAll()).append('\t').append(stuff_status).append('\t').append(goods.getProv()).append('\t').append(goods.getCity()).append('\t').append(item_type).append('\t').append(goods.getPriceString()).append('\t').append(auction_increment).append('\t');
         contentsString.append(goods.getNum()).append('\t').append(valid_thru).append('\t').append(freight_payer).append('\t').append('0').append('\t').append('0').append('\t').append('0').append('\t').append(has_invoice).append('\t').append(has_warranty).append('\t').append(approve_status).append('\t').append(has_showcase).append('\t');
         contentsString.append(list_time).append('\t').append("\"").append(goodsdesc).append("\"").append('\t').append(sge.getProps()).append('\t').append(postage_id).append('\t').append(has_discount).append('\t').append(modified).append('\t').append(upload_fail_msg).append('\t').append(picture_status).append('\t').append(auction_point).append('\t');
-        contentsString.append(picture).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goods.getOuterId()).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
+        contentsString.append(subimageString).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goods.getOuterId()).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
         contentsString.append(user_name).append('\t').append(syncStatus).append('\t').append(is_lighting_consigment).append('\t').append(is_xinpin).append('\t').append(foodparame).append('\t').append(features).append('\t').append(buyareatype).append('\t').append(global_stock_type).append('\t').append(global_stock_country).append('\t').append(sub_stock_type).append('\t').append(item_size).append('\t');
         contentsString.append(item_weight).append('\t').append(sell_promise).append('\t').append(custom_design_flag).append('\t').append(wireless_desc).append('\t').append(barcode).append('\t').append(sku_barcode).append('\t').append(newprepay).append('\t').append(subtitle).append('\t').append(cpv_memo).append('\t').append(input_custom_cpv).append('\t').append(qualification).append('\t');
         contentsString.append(add_qualification).append('\t').append(o2o_bind_service).append('\t').append(tmall_extend).append('\t').append(product_combine).append('\t').append(tmall_item_prop_combine).append('\t').append(taoschema_extend).append('\r').append('\n');
@@ -301,7 +318,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
 
         Long shopId = null;
         for (int i = 0; i < itemIds.size(); i++) {
-            Map<String, String> hashMap = createDataPackagestr(userId, itemIds.get(i), DATA_PACKAGE_ADDR, relativePath, relativePath1);
+            Map<String, String> hashMap = createDataPackagestr(itemIds.get(i), relativePath);
             if (hashMap == null) {
                 continue;
             }
@@ -380,17 +397,16 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         }
         // TODO:待优化
         List<Long> goodsList = new ArrayList<Long>();
-        for (int i = 0; i < collectIdList.size(); i++) {
+        for (Long aCollectIdList : collectIdList) {
             ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
-            shiguGoodsCollect.setGoodsCollectId(collectIdList.get(i));
+            shiguGoodsCollect.setGoodsCollectId(aCollectIdList);
             shiguGoodsCollect = shiguGoodsCollectMapper.selectOne(shiguGoodsCollect);
             if (shiguGoodsCollect == null) {
                 continue;
             }
             goodsList.add(shiguGoodsCollect.getGoodsId());
         }
-        boolean pans = createDataPackage(userId, goodsList);
-        return pans;
+        return createDataPackage(userId, goodsList);
     }
 
     /**
@@ -422,8 +438,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             return new ShiguPager<DataPackage>();
         }
         List<DataPackage> dataPackageList = new ArrayList<DataPackage>();
-        for (int i = 0; i < shiguGoodsDataPackageList.size(); i++) {
-            ShiguGoodsDataPackage shiguGoodsDataPackage = shiguGoodsDataPackageList.get(i);
+        for (ShiguGoodsDataPackage shiguGoodsDataPackage : shiguGoodsDataPackageList) {
             DataPackage dataPackage = new DataPackage();
             dataPackage.setCreateTime(shiguGoodsDataPackage.getRemark1());
             dataPackage.setDataPackageId(shiguGoodsDataPackage.getDataPackageId());
@@ -444,8 +459,8 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             String[] itemIds = itemIdStrs.split(",");
 
             List<PackageItem> packageItemsList = new ArrayList<PackageItem>();
-            for (int j = 0; j < itemIds.length; j++) {
-                Long goodsId = Long.valueOf(itemIds[j]);
+            for (String itemId : itemIds) {
+                Long goodsId = Long.valueOf(itemId);
                 ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
                 if (shiguGoodsIdGenerator == null) {
                     continue;
@@ -506,8 +521,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         if (shiguGoodsDataPackageList.size() == 0) {
             return;
         }
-        for (int i = 0; i < shiguGoodsDataPackageList.size(); i++) {
-            ShiguGoodsDataPackage shiguGoodsDataPackage = shiguGoodsDataPackageList.get(i);
+        for (ShiguGoodsDataPackage shiguGoodsDataPackage : shiguGoodsDataPackageList) {
             if (shiguGoodsDataPackage.getUserId().intValue() != userId.intValue()) {
                 continue;
             }

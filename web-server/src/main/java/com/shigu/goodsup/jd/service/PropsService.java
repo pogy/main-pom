@@ -349,8 +349,8 @@ public class PropsService {
                         .getPiPrice()) - MoneyUtil.StringToLong(newCdnItem.getPiPrice());
         Map<String,SingleSkuVO> skuMap=new HashMap<>();
         for(SingleSkuVO vo:newCdnItem.getSingleSkus()){
-            String color= StringUtils.isNotBlank(vo.getColorPropertyAlias())?vo.getColorPropertyAlias():vo.getColorName();
-            String size= StringUtils.isNotBlank(vo.getSizePropertyAlias())?vo.getSizePropertyAlias():vo.getSizeName();
+            String color= vo.getThisColor();
+            String size= vo.getThisSize();
             skuMap.put(color+"_"+size,vo);
         }
         for(TdVO ctd:srv){

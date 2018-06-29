@@ -164,8 +164,8 @@ public class ItemProductImpl implements ItemProduct {
         shiguGoodsSingleSkuExample.createCriteria().andGoodsIdEqualTo(goodsId);
         List<ShiguGoodsSingleSku> select = shiguGoodsSingleSkuMapper.selectByExample(shiguGoodsSingleSkuExample);
         for(ShiguGoodsSingleSku s:select){
-            if((color.equals(s.getColorName())||color.equals(s.getSizePropertyAlias()))
-                    &&(size.equals(s.getSizePropertyAlias())||size.equals(s.getSizeName()))){
+            if((color.equals(s.getColorName())||color.equals(s.getColorPropertyAlias())||color.equals(s.getColorInputStr()))
+                    &&(size.equals(s.getSizePropertyAlias())||size.equals(s.getSizeName())||size.equals(s.getSizeInputStr()))){
                 if(StringUtils.isBlank(s.getPriceString())){
                     ShiguGoodsTiny tiny=new ShiguGoodsTiny();
                     tiny.setGoodsId(goodsId);

@@ -380,13 +380,7 @@ public class CdnService {
         vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
 
         List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
-        Map<String,List<SingleSkuVO>> skus=singleSkus.stream().collect(Collectors.groupingBy(sku->{
-            if(StringUtils.isNotBlank(sku.getColorPropertyAlias())){
-                return sku.getColorPropertyAlias();
-            }else{
-                return sku.getColorName();
-            }
-        }));
+        Map<String,List<SingleSkuVO>> skus=singleSkus.stream().collect(Collectors.groupingBy(SingleSkuVO::getThisColor));
         List<SaleProp> colors=cdnItem.getColors();
         if(colors==null){
             colors=new ArrayList<>();
@@ -404,12 +398,13 @@ public class CdnService {
             SkuMetaVO skuMetaVO = new SkuMetaVO();
             skuMetaVO.setText(s);
             skuMetaVO.setImgSrc(propImgMap.get(s));
-            skuMetaVO.setSizes(skus.get(s).stream().map(singleSkuVO -> {
+            List<SingleSkuVO> sizes=skus.get(s);
+            sizes.sort(Comparator.comparing(SingleSkuVO::getThisSize));
+            skuMetaVO.setSizes(sizes.stream().map(singleSkuVO -> {
                 SkuSizeMetaVO skuSizeMetaVO = new SkuSizeMetaVO();
-                skuSizeMetaVO.setNum(singleSkuVO.getStatus() == 0 ? 0 : singleSkuVO.getStockNum());
+                skuSizeMetaVO.setNum(singleSkuVO.getStockNum());
                 skuSizeMetaVO.setPrice(singleSkuVO.getPriceString());
-                skuSizeMetaVO.setText(StringUtils.isNotBlank(singleSkuVO.getSizePropertyAlias()) ? singleSkuVO
-                        .getSizePropertyAlias() : singleSkuVO.getSizeName());
+                skuSizeMetaVO.setText(singleSkuVO.getThisSize());
                 if(skuSizeMetaVO.getNum()!=0){
                     priceSort.add(singleSkuVO.getPriceString());
                 }

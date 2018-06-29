@@ -92,6 +92,15 @@ public class ItemSkuModelImpl implements ItemSkuModel {
     public List<SingleSkuVO> pull() {
         List<SingleSkuVO> skus=new ArrayList<>(singleSkuVOS);
         skus.removeIf(singleSkuVO -> singleSkuVO.getStatus()==0);
+        if(skus.size()==0){
+            SingleSkuVO vo=new SingleSkuVO();
+            vo.setStatus(1);
+            vo.setStockNum(999);
+            vo.setThisColor("图片色");
+            vo.setThisSize("均码");
+            vo.setPriceString(MoneyUtil.dealPrice(tinyPiPrice));
+            skus.add(vo);
+        }
         return skus;
     }
     @Override
@@ -104,9 +113,9 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         if (singleSkuVOS == null) {
             singleSkuVOS = new ArrayList<>();
         }
-        Map<String, SingleSkuVO> thMap = singleSkuVOS.stream()
+        Map<String, SingleSkuVO> thMap = singleSkuVOS.stream().filter(singleSkuVO -> !(singleSkuVO.getColorVid()==null&&singleSkuVO.getSizeVid()==null))
                 .collect(Collectors.toMap(sku -> sku.getColorVid() + "," + sku.getSizeVid(), sku -> sku));
-        Map<String, SingleSkuBO> ahMap = skus.stream()
+        Map<String, SingleSkuBO> ahMap = skus.stream().filter(singleSkuVO -> !(singleSkuVO.getColorVid()==null&&singleSkuVO.getSizeVid()==null))
                 .collect(Collectors.toMap(sku -> sku.getColorVid() + "," + sku.getSizeVid(), sku -> sku));
         List<ShiguGoodsSingleSku> inserts = new ArrayList<>();
         List<ShiguGoodsSingleSku> updates = new ArrayList<>();
@@ -117,10 +126,16 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 //参数中存在的,数据库中不存在的,写入新增集合
                 ShiguGoodsSingleSku sku = new ShiguGoodsSingleSku();
                 sku.setGoodsId(goodsId);
+                sku.setColorPid(singleSkuBO.getColorPid());
                 sku.setColorVid(singleSkuBO.getColorVid());
+                sku.setSizePid(singleSkuBO.getSizePid());
                 sku.setSizeVid(singleSkuBO.getSizeVid());
+                sku.setColorName(singleSkuBO.getColorVname());
+                sku.setSizeName(singleSkuBO.getSizeVname());
                 sku.setColorPropertyAlias(singleSkuBO.getColorAlias());
                 sku.setSizePropertyAlias(singleSkuBO.getSizeAlias());
+                sku.setColorInputStr(singleSkuBO.getColorInput());
+                sku.setSizeInputStr(singleSkuBO.getSizeInput());
                 sku.setStockNum(singleSkuBO.getStockNum());
                 sku.setStatus(1);
                 if (singleSkuBO.getStockNum() == 0) {
@@ -154,12 +169,29 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                         }
                     }
                 }
+                if (sku.getColorInputStr() != null) {
+                    if (singleSkuBO.getColorInput() == null) {
+                        sku.setColorInputStr("");
+                    } else if(!singleSkuBO.getColorInput().equals(sku.getColorInputStr())){
+                        sku.setColorInputStr(singleSkuBO.getColorInput());
+                    }
+                }
+                if (sku.getSizeInputStr() != null) {
+                    if (singleSkuBO.getSizeInput() == null) {
+                        sku.setSizeInputStr("");
+                    } else if (!singleSkuBO.getSizeInput().equals(sku.getSizeInputStr())) {
+                            sku.setSizeInputStr(singleSkuBO.getSizeInput());
+                    }
+                }
+
                 sku.setStatus(1);
                 sku.setStockNum(singleSkuBO.getStockNum());
                 sku.setPriceString(singleSkuBO.getPriceString());
                 //别名修改后,和数据库不同了,写入待修改集合
                 if (!Objects.equals(sku.getColorPropertyAlias(), singleSkuVO.getColorPropertyAlias()) ||
                         !Objects.equals(sku.getSizePropertyAlias(), singleSkuVO.getSizePropertyAlias()) ||
+                        !Objects.equals(sku.getColorInputStr(), singleSkuVO.getColorInputStr()) ||
+                        !Objects.equals(sku.getSizeInputStr(), singleSkuVO.getSizeInputStr()) ||
                         !Objects.equals(sku.getStatus(), singleSkuVO.getStatus()) ||
                         !Objects.equals(sku.getStockNum(), singleSkuVO.getStockNum()) ||
                         (sku.getPriceString() != null &&
@@ -180,7 +212,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         pids.add(catColorSizeVO.getSizePid());
         pids.add(catColorSizeVO.getColorPid());
         singleSkuDao.pushSkus(webSite, inserts, updates, dels, pids, cid);
-        reload();
+        reload(false);
     }
 
 
@@ -204,7 +236,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         return catColorSizeVO;
     }
 
-    private void reload() {
+    private void reload(boolean isInit) {
         ShiguGoodsSingleSku shiguGoodsSingleSku = new ShiguGoodsSingleSku();
         shiguGoodsSingleSku.setGoodsId(goodsId);
         shiguGoodsSingleSku.setWebSite(webSite);
@@ -216,13 +248,34 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 if(StringUtils.isBlank(vo.getPriceString())){
                     vo.setPriceString(MoneyUtil.dealPrice(this.tinyPiPrice));
                 }
+                vo.setThisColor(StringUtils.isNotBlank(vo.getColorInputStr()) ? vo.getColorInputStr() : (StringUtils
+                        .isNotBlank(vo.getColorPropertyAlias()) ? vo.getColorPropertyAlias() : vo.getColorName()));
+                vo.setThisSize(StringUtils.isNotBlank(vo.getSizeInputStr()) ? vo.getSizeInputStr() : (StringUtils
+                        .isNotBlank(vo.getSizePropertyAlias()) ? vo.getSizePropertyAlias() : vo.getSizeName()));
+                if(StringUtils.isBlank(vo.getThisColor())){
+                    vo.setThisColor("图片色");
+                }
+                if(StringUtils.isBlank(vo.getThisSize())){
+                    vo.setThisSize("均码");
+                }
                 singleSkuVOS.add(vo);
             });
+        }else{
+            if(!isInit){
+                singleSkuVOS = new ArrayList<>(skus.size());
+                SingleSkuVO vo=new SingleSkuVO();
+                vo.setThisColor("图片色");
+                vo.setThisSize("均码");
+                vo.setPriceString(MoneyUtil.dealPrice(this.tinyPiPrice));
+                vo.setStatus(1);
+                vo.setStockNum(999);
+                singleSkuVOS.add(vo);
+            }
         }
     }
 
     private void init() throws ItemNotFundException {
-        reload();
+        reload(true);
         if (singleSkuVOS != null) {
             return;
         }

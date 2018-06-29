@@ -13,6 +13,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.CatColorSizeVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +49,10 @@ public class SingleSkuDao {
         if (inserts.size() > 0) {
             List<Long> ivids = new ArrayList<>();
             inserts.forEach(shiguGoodsSingleSku -> {
-                if(shiguGoodsSingleSku.getColorVid()!=0L){
+                if(shiguGoodsSingleSku.getColorVid()!=null){
                     ivids.add(shiguGoodsSingleSku.getColorVid());
                 }
-                if(shiguGoodsSingleSku.getSizeVid()!=0L){
+                if(shiguGoodsSingleSku.getSizeVid()!=null){
                     ivids.add(shiguGoodsSingleSku.getSizeVid());
                 }
             });
@@ -63,13 +64,11 @@ public class SingleSkuDao {
                         .collect(Collectors.toMap(TaobaoPropValue::getVid, o -> o));
                 inserts.forEach(shiguGoodsSingleSku -> {
                     TaobaoPropValue v = propValueMap.get(shiguGoodsSingleSku.getColorVid());
-                    if(v!=null){
-                        shiguGoodsSingleSku.setColorPid(v.getPid());
+                    if(v!=null&& StringUtils.isBlank(shiguGoodsSingleSku.getColorName())){
                         shiguGoodsSingleSku.setColorName(v.getName());
                     }
                     TaobaoPropValue v1 = propValueMap.get(shiguGoodsSingleSku.getSizeVid());
-                    if(v1!=null){
-                        shiguGoodsSingleSku.setSizePid(v1.getPid());
+                    if(v1!=null&& StringUtils.isBlank(shiguGoodsSingleSku.getSizeName())){
                         shiguGoodsSingleSku.setSizeName(v1.getName());
                     }
                 });

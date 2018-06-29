@@ -277,13 +277,6 @@ public class ImportCsvFileService {
                     v11.set(codeMap.get("cateProps"), prop);
                     v11.set(codeMap.get("propAlias"), al);
                     v11.set(codeMap.get("picture"), img);
-
-                    for(String s:hasProps){
-                        String[] props=s.split(":");
-                        String key=props[0]+":"+props[1];
-                        singSkus=singSkus.replace(":"+key+";",":"+s+";");
-                        singSkus=singSkus.replace(";"+key+";",";"+s+";");
-                    }
                 }
 
 
@@ -701,23 +694,8 @@ public class ImportCsvFileService {
                 record.setPiPrice(data.getGoods().getPiPrice());
                 record.setIsStandard(data.getGoods().getIsStandard());
                 record.setIsExcelImp(1);
-                List<SingleSkuBO> singleSkuBOS = SingleSkuUtils
-                        .dealProps(sge.getPropsName(), sge.getPropertyAlias(), newItemAddOrUpdateService
-                                .selColorSizeValues(record.getCid()));
-                List<TbSku> tbSkus = SingleSkuUtils.calTbSkus(singSkus);
-                List<TaobaoPropValueBO> taobaoPropValueBOS = newItemAddOrUpdateService
-                        .selColorSizeValues(record.getCid());
-                Long colorPid = null;
-                Long sizePid = null;
-                for (TaobaoPropValueBO t : taobaoPropValueBOS) {
-                    if (t.getIsColor()) {
-                        colorPid = t.getPid();
-                    } else {
-                        sizePid = t.getPid();
-                    }
-                }
-                SingleSkuUtils.callSkus(singleSkuBOS,tbSkus,colorPid,sizePid);
-                record.setSkus(BeanMapper.mapList(singleSkuBOS, SingleSkuVO.class));
+
+                record.setSkus(singSkus);
                 //加入前判断哪些字段不能为空有为空的就返回报错到页面=====================================================================
                 String checkres = checkRecord(record, sge);
                 record.setError(checkres);

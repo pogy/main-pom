@@ -144,10 +144,8 @@ public class CartService {
                         List<String> colors=new ArrayList<>();
                         List<String> sizes=new ArrayList<>();
                         for(SingleSkuVO singleSkuVO:singleSkus){
-                            String color = StringUtils.isNotBlank(singleSkuVO.getColorPropertyAlias()) ? singleSkuVO
-                                    .getColorPropertyAlias() : singleSkuVO.getColorName();
-                            String size = StringUtils.isNotBlank(singleSkuVO.getSizePropertyAlias()) ? singleSkuVO
-                                    .getSizePropertyAlias() : singleSkuVO.getSizeName();
+                            String color = singleSkuVO.getThisColor();
+                            String size = singleSkuVO.getThisSize();
                             Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
                             if(color.equals(selectiveSku.getColor())&&size.equals(selectiveSku.getSize())){
                                 childOrderVO.setPrice(singleSkuVO.getPriceString());
@@ -156,6 +154,10 @@ public class CartService {
                                     continue child;
                                 }
                             }
+                        }
+                        if(childOrderVO.getPrice()==null){
+                            childOrderVO.setDisabled(true);
+                            continue;
                         }
                         childOrderVO.setGoodsNo(cdnItem.getHuohao());
                         childOrderVO.setColors(colors);
@@ -282,10 +284,10 @@ public class CartService {
         NewCdnItem cdnItem=newShowForCdnService.selItemById(goodsId);
         return cdnItem.getSingleSkus().stream().map(singleSkuVO -> {
             CartSingleSkuVO vo=new CartSingleSkuVO();
-            vo.setColor(StringUtils.isNotBlank(singleSkuVO.getColorPropertyAlias())?singleSkuVO.getColorPropertyAlias():singleSkuVO.getColorName());
-            vo.setSize(StringUtils.isNotBlank(singleSkuVO.getSizePropertyAlias())?singleSkuVO.getSizePropertyAlias():singleSkuVO.getSizeName());
-            vo.setPrice(StringUtils.isNotBlank(singleSkuVO.getPriceString())?singleSkuVO.getPriceString():cdnItem.getPiPrice());
-            vo.setNum(singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum());
+            vo.setColor(singleSkuVO.getThisColor());
+            vo.setSize(singleSkuVO.getThisSize());
+            vo.setPrice(singleSkuVO.getPriceString());
+            vo.setNum(singleSkuVO.getStockNum());
             return vo;
         }).collect(Collectors.toList());
     }

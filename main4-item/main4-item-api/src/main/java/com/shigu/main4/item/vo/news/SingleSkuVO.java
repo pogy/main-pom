@@ -38,6 +38,8 @@ public class SingleSkuVO implements Serializable {
      */
     private String colorInputStr;
 
+    private String thisColor;
+
     /**
      * 尺码pid,如果该字段为null,则表示该商品没有颜色属性,默认sizeVid为0,sizePropertyAlias为均码',
      */
@@ -62,6 +64,8 @@ public class SingleSkuVO implements Serializable {
      * 尺码自定义名
      */
     private String sizeInputStr;
+
+    private String thisSize;
 
     /**
      * 库存数量
@@ -202,5 +206,21 @@ public class SingleSkuVO implements Serializable {
      */
     public void setPriceString(String priceString) {
         this.priceString = priceString;
+    }
+
+    public String getThisColor() {
+        return this.thisColor;
+    }
+
+    public void setThisColor(String thisColor) {
+        this.thisColor = thisColor;
+    }
+
+    public String getThisSize() {
+        return this.thisSize;
+    }
+
+    public void setThisSize(String thisSize) {
+        this.thisSize = thisSize;
     }
 }

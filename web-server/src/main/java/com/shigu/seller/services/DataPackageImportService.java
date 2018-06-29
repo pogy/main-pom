@@ -3,10 +3,13 @@ package com.shigu.seller.services;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.item.news.utils.SingleSkuUtils;
+import com.shigu.main4.item.news.utils.TbSku;
 import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.packages.process.PackageImportGoodsDataService;
@@ -122,7 +125,30 @@ public class DataPackageImportService {
             }
         }
         item.setImageList(imageList);
-        item.setSingleSkus(BeanMapper.mapList(tiny.getSkus(), SingleSkuBO.class));
+        List<SingleSkuBO> singleSkuBOS = SingleSkuUtils
+                .dealProps(item.getPropsName(), item.getPropertyAlias(), newItemAddOrUpdateService
+                        .selColorSizeValues(item.getCid()));
+        String singSkus=tiny.getSkus();
+        for(String s:item.getPropsName().split(";")){
+            String[] props=s.split(":");
+            String key=props[0]+":"+props[1];
+            singSkus=singSkus.replace(":"+key+";",":"+s+";");
+            singSkus=singSkus.replace(";"+key+";",";"+s+";");
+        }
+        List<TbSku> tbSkus = SingleSkuUtils.calTbSkus(singSkus);
+        List<TaobaoPropValueBO> taobaoPropValueBOS = newItemAddOrUpdateService
+                .selColorSizeValues(item.getCid());
+        Long colorPid = null;
+        Long sizePid = null;
+        for (TaobaoPropValueBO t : taobaoPropValueBOS) {
+            if (t.getIsColor()) {
+                colorPid = t.getPid();
+            } else {
+                sizePid = t.getPid();
+            }
+        }
+        SingleSkuUtils.callSkus(singleSkuBOS,tbSkus,colorPid,sizePid);
+        item.setSingleSkus(singleSkuBOS);
         newItemAddOrUpdateService.userAddItem(item);
     }
 

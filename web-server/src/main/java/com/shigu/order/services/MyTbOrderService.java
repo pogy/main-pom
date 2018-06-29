@@ -397,8 +397,8 @@ public class MyTbOrderService {
                     } else {
                         boolean hasSku=false;
                         for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
-                            String color= StringUtils.isNotBlank(sku.getColorPropertyAlias())?sku.getColorPropertyAlias():sku.getColorName();
-                            String size=StringUtils.isNotBlank(sku.getSizePropertyAlias())?sku.getSizePropertyAlias():sku.getSizeName();
+                            String color= sku.getThisColor();
+                            String size=sku.getThisSize();
                             String tcolor=StringUtils.isBlank(sub.getColor())?"图片色":sub.getColor();
                             String tsize=StringUtils.isBlank(sub.getSize())?"均码":sub.getSize();
                             if(tcolor.equals(color)&&tsize.equals(size)){
@@ -476,18 +476,14 @@ public class MyTbOrderService {
             OrderCity city=citymap.get(order.getCity(),prov.getProvId());
             OrderTown town=townmap.get(order.getTown(),city.getCityId());
             BuyerAddressVO buyerAddress = new BuyerAddressVO();
-            if (prov != null && !fdlProvIds.contains(prov.getProvId())) {
+            if (!fdlProvIds.contains(prov.getProvId())) {
                 buyerAddress.setProvId(prov.getProvId());
                 buyerAddress.setProvince(prov.getProvName());
             }else{
                 errorAddressTids.add(order.getTbId());
             }
-            if (city != null) {
-                buyerAddress.setCityId(city.getCityId());
-                buyerAddress.setCity(city.getCityName());
-            }else{
-                errorAddressTids.add(order.getTbId());
-            }
+            buyerAddress.setCityId(city.getCityId());
+            buyerAddress.setCity(city.getCityName());
             if(errorAddressTids.size()!=0){
                 continue ;
             }
@@ -675,8 +671,8 @@ public class MyTbOrderService {
                         vo.setCanOrder(false);
                     } else {
                         for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
-                            String color= StringUtils.isNotBlank(sku.getColorPropertyAlias())?sku.getColorPropertyAlias():sku.getColorName();
-                            String size=StringUtils.isNotBlank(sku.getSizePropertyAlias())?sku.getSizePropertyAlias():sku.getSizeName();
+                            String color= sku.getThisColor();
+                            String size=sku.getThisSize();
                             String tcolor=StringUtils.isBlank(subvo.getColor())?"图片色":subvo.getColor();
                             String tsize=StringUtils.isBlank(subvo.getSize())?"均码":subvo.getSize();
                             if(tcolor.equals(color)&&tsize.equals(size)){

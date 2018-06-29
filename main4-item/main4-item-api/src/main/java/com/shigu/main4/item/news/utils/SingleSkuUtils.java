@@ -61,18 +61,18 @@ public class SingleSkuUtils {
         Map<String, String> propertyAliass = new HashMap<>();
 
         String[] propertyAliasStrs = propertyAlias.split(";");
-        for(String s:propertyAliasStrs){
-            if(StringUtils.isNotBlank(s)&& !s.trim().endsWith(":")){
+        for (String s : propertyAliasStrs) {
+            if (StringUtils.isNotBlank(s) && !s.trim().endsWith(":")) {
                 String[] ps = s.split(":");
                 propertyAliass.put(ps[0] + ":" + ps[1], ps[2]);
             }
         }
         List<Long> pids = new ArrayList<>();
         pids.add(-1L);
-        CatColorSizeVO catColorSizeVO=new CatColorSizeVO();
+        CatColorSizeVO catColorSizeVO = new CatColorSizeVO();
         Map<Long, TaobaoPropValueBO> colors = new HashMap<>();
         Map<Long, TaobaoPropValueBO> sizes = new HashMap<>();
-        for(TaobaoPropValueBO taobaoPropValue:propValues){
+        for (TaobaoPropValueBO taobaoPropValue : propValues) {
             if (taobaoPropValue.getIsColor()) {
                 colors.put(taobaoPropValue.getVid(), taobaoPropValue);
                 catColorSizeVO.setColorPid(taobaoPropValue.getPid());
@@ -82,46 +82,36 @@ public class SingleSkuUtils {
             }
             pids.add(taobaoPropValue.getPid());
         }
-
+        Long lastInputVid=-1001L;
         List<SinglePropVO> vos = new ArrayList<>();
-        for(String s:propNames){
-            if(StringUtils.isNotBlank(s)){
+        for (String s : propNames) {
+            if (StringUtils.isNotBlank(s)) {
                 String[] ps = s.split(":");
                 if (ps.length != 4) {
                     continue;
                 }
                 Long tmpPid = new Long(ps[0]);
+                Long tmpVid=new Long(ps[1]);
+                if(tmpVid<0L){
+                    if(tmpVid<lastInputVid){
+                        lastInputVid=tmpVid;
+                    }
+                }
                 if (!pids.contains(tmpPid)) {
                     continue;
                 }
                 SinglePropVO vo = new SinglePropVO();
                 vo.setPid(tmpPid);
-                vo.setVid(new Long(ps[1]));
+                vo.setVid(tmpVid);
                 vo.setPname(ps[2]);
                 String alias = propertyAliass.get(vo.getPid() + ":" + vo.getVid());
                 if (alias != null) {
-                    if (vo.getPid().equals(catColorSizeVO.getColorPid())) {
-                        if (dealValueByName(colors, alias, vo)) {
-                            vos.add(vo);
-                           continue;
-                        }
-                        vo.setAliasName(alias);
-                    } else {
-                        if (dealValueByName(sizes, alias, vo)) {
-                            vos.add(vo);
-                            continue;
-                        }
-                        vo.setAliasName(alias);
-                    }
+                    vo.setAliasName(alias);
                 }
                 if (tmpPid.equals(catColorSizeVO.getColorPid())) {
                     if (colors.keySet().contains(vo.getVid())) {
                         vo.setVname(ps[3]);
                     } else {
-                        if (dealValueByName(colors, ps[3], vo)) {
-                            vos.add(vo);
-                            continue;
-                        }
                         vo.setInputName(ps[3]);
                     }
                     colors.remove(vo.getVid());
@@ -129,10 +119,6 @@ public class SingleSkuUtils {
                     if (sizes.keySet().contains(vo.getVid())) {
                         vo.setVname(ps[3]);
                     } else {
-                        if (dealValueByName(sizes, ps[3], vo)) {
-                            vos.add(vo);
-                            continue;
-                        }
                         vo.setInputName(ps[3]);
                     }
                     sizes.remove(vo.getVid());
@@ -142,8 +128,8 @@ public class SingleSkuUtils {
         }
         //取出颜色
         List<SinglePropVO> colorVOS = new ArrayList<>();
-        for(SinglePropVO singlePropVO:vos){
-            if(singlePropVO.getPid().equals(catColorSizeVO.getColorPid())){
+        for (SinglePropVO singlePropVO : vos) {
+            if (singlePropVO.getPid().equals(catColorSizeVO.getColorPid())) {
                 colorVOS.add(singlePropVO);
             }
         }
@@ -153,14 +139,15 @@ public class SingleSkuUtils {
                 SinglePropVO vo = new SinglePropVO();
                 vo.setPid(catColorSizeVO.getColorPid());
                 vo.setInputName("图片色");
+
                 colorVOS.add(vo);
             } catch (Exception ignored) {
             }
         }
         //取出尺码
         List<SinglePropVO> sizeVOS = new ArrayList<>();
-        for(SinglePropVO singlePropVO:vos){
-            if(singlePropVO.getPid().equals(catColorSizeVO.getSizePid())){
+        for (SinglePropVO singlePropVO : vos) {
+            if (singlePropVO.getPid().equals(catColorSizeVO.getSizePid())) {
                 sizeVOS.add(singlePropVO);
             }
         }
@@ -176,32 +163,16 @@ public class SingleSkuUtils {
         }
         //获取剩余的颜色
         Map<Long, TaobaoPropValueBO> surplusColors = new HashMap<>(colors);
-        for(SinglePropVO singlePropVO:colorVOS){
+        for (SinglePropVO singlePropVO : colorVOS) {
             if (singlePropVO.getInputName() == null) {
                 surplusColors.remove(singlePropVO.getVid());
             }
         }
         //获取剩余尺码
         Map<Long, TaobaoPropValueBO> surplusSizes = new HashMap<>(sizes);
-        for(SinglePropVO singlePropVO:sizeVOS){
+        for (SinglePropVO singlePropVO : sizeVOS) {
             if (singlePropVO.getInputName() == null) {
                 surplusSizes.remove(singlePropVO.getVid());
-            }
-        }
-        //转化自定义颜色
-        for(SinglePropVO singlePropVO:colorVOS){
-            if (singlePropVO.getInputName() != null) {
-                if (surplusColors.size() > 0) {
-                    inputDeal(singlePropVO, surplusColors);
-                }
-            }
-        }
-        //转化自定义尺码
-        for(SinglePropVO singlePropVO:sizeVOS){
-            if (singlePropVO.getInputName() != null) {
-                if (surplusSizes.size() > 0) {
-                    inputDeal(singlePropVO, surplusSizes);
-                }
             }
         }
         //转化为写入数据库对象
@@ -211,19 +182,26 @@ public class SingleSkuUtils {
                 if (sizeVOS.size() > 0) {
                     for(SinglePropVO s:sizeVOS){
                         SingleSkuBO v = new SingleSkuBO();
+                        v.setColorPid(c.getPid());
                         v.setColorVid(c.getVid());
+                        v.setColorVname(c.getVname());
                         v.setColorAlias(c.getAliasName());
+                        v.setColorInput(c.getInputName());
+                        v.setSizePid(s.getPid());
                         v.setSizeVid(s.getVid());
+                        v.setSizeVname(s.getVname());
                         v.setSizeAlias(s.getAliasName());
+                        v.setSizeInput(s.getInputName());
                         v.setStockNum(999);
                         skuVOS.add(v);
                     }
-                } else {
+                }else{
                     SingleSkuBO v = new SingleSkuBO();
+                    v.setColorPid(c.getPid());
                     v.setColorVid(c.getVid());
+                    v.setColorVname(c.getVname());
                     v.setColorAlias(c.getAliasName());
-                    v.setSizeVid(0L);
-                    v.setSizeAlias("均码");
+                    v.setColorInput(c.getInputName());
                     v.setStockNum(999);
                     skuVOS.add(v);
                 }
@@ -232,68 +210,17 @@ public class SingleSkuUtils {
             if (sizeVOS.size() > 0) {
                 for(SinglePropVO s:sizeVOS){
                     SingleSkuBO v = new SingleSkuBO();
-                    v.setColorVid(0L);
-                    v.setColorAlias("图片色");
+                    v.setSizePid(s.getPid());
                     v.setSizeVid(s.getVid());
+                    v.setSizeVname(s.getVname());
                     v.setSizeAlias(s.getAliasName());
+                    v.setSizeInput(s.getInputName());
                     v.setStockNum(999);
                     skuVOS.add(v);
                 }
-            } else {
-                SingleSkuBO v = new SingleSkuBO();
-                v.setColorVid(0L);
-                v.setColorAlias("图片色");
-                v.setSizeVid(0L);
-                v.setSizeAlias("均码");
-                v.setStockNum(999);
-                skuVOS.add(v);
             }
-
         }
-
         return skuVOS;
-    }
-
-    private static void inputDeal(SinglePropVO singlePropVO, Map<Long, TaobaoPropValueBO> surplus) {
-        List<TaobaoPropValueBO> taobaoPropValues = new ArrayList<>();
-        for(TaobaoPropValueBO taobaoPropValue1:surplus.values()){
-            if(taobaoPropValue1.getName().equals(singlePropVO.getInputName())){
-                taobaoPropValues.add(taobaoPropValue1);
-            }
-        }
-        TaobaoPropValueBO taobaoPropValue;
-        if (taobaoPropValues.size() == 0) {
-            taobaoPropValue = surplus.values().iterator().next();
-        } else {
-            taobaoPropValue = taobaoPropValues.get(0);
-        }
-        singlePropVO.setAliasName(singlePropVO.getInputName());
-        singlePropVO.setVid(taobaoPropValue.getVid());
-        singlePropVO.setVname(taobaoPropValue.getName());
-        singlePropVO.setPid(taobaoPropValue.getPid());
-        singlePropVO.setPname(taobaoPropValue.getPropName());
-        singlePropVO.setInputName(null);
-        surplus.remove(taobaoPropValue.getVid());
-    }
-
-    /**
-     * 尝试用vname匹配属性值,如果匹配上,这直接使用改属性值替换原来的别名或自定义名
-     *
-     * @param map
-     * @param name
-     * @param vo
-     * @return
-     */
-    private static boolean dealValueByName(Map<Long, TaobaoPropValueBO> map, String name, SinglePropVO vo) {
-        Map<String, TaobaoPropValueBO> names = BeanMapper.list2Map(map.values(), "name", String.class);
-        if (names.keySet().contains(name)) {
-            TaobaoPropValueBO tv = names.get(name);
-            vo.setVid(tv.getVid());
-            vo.setVname(tv.getName());
-            map.remove(tv.getVid());
-            return true;
-        }
-        return false;
     }
     private static boolean isLong(String str) {
         try {
@@ -304,86 +231,61 @@ public class SingleSkuUtils {
         return true;
     }
 
-    public static void callSkus(List<SingleSkuBO> singleSkuBOS, List<TbSku> skus,Long colorPid,Long sizePid){
-        if(skus==null||skus.size()==0||singleSkuBOS.size()==0){
+    public static void callSkus(List<SingleSkuBO> singleSkuBOS, List<TbSku> skus, Long colorPid, Long sizePid) {
+        if (skus == null || skus.size() == 0 || singleSkuBOS.size() == 0) {
             return;
         }
-        for(TbSku sku:skus){
+        for (TbSku sku : skus) {
             String propertiesName = sku.getPropertiesName();
             String[] pvs = propertiesName.split(";");
-            String color=null;
-            String size=null;
-            String colorVid=null;
-            String sizeVid=null;
-            for(String pv:pvs){
-                String[] props=pv.split(":");
-                if(props.length!=4){
+            String colorVid = null;
+            String sizeVid = null;
+            for (String pv : pvs) {
+                String[] props = pv.split(":");
+                if (props.length != 4) {
                     continue;
                 }
-                Long pid=new Long(props[0]);
-                if(pid.equals(colorPid)){
-                    color=props[3];
-                    colorVid=props[1];
+                Long pid = new Long(props[0]);
+                if (pid.equals(colorPid)) {
+                    colorVid = props[1];
                 }
-                if(pid.equals(sizePid)){
-                    size=props[3];
-                    sizeVid=props[1];
+                if (pid.equals(sizePid)) {
+                    sizeVid = props[1];
                 }
-            }
-            if(color==null&&colorPid!=null){
-                color="图片色";
-            }
-            if(size==null&&sizePid!=null){
-                size="均码";
             }
             //先用vid组合去匹配
-            boolean haveVid=false;
-            for(SingleSkuBO singleSkuBO:singleSkuBOS){
-                if((singleSkuBO.getColorVid()+"_"+singleSkuBO.getSizeVid()).equals(colorVid+"_"+sizeVid)){
-                    if("delete".equals(sku.getStatus())){
+            for (SingleSkuBO singleSkuBO : singleSkuBOS) {
+                if ((singleSkuBO.getColorVid() + "_" + singleSkuBO.getSizeVid()).equals(colorVid + "_" + sizeVid)) {
+                    if ("delete".equals(sku.getStatus())) {
                         singleSkuBO.setStockNum(0);
-                    }else{
+                    } else {
                         singleSkuBO.setStockNum(sku.getQuantity().intValue());
                     }
                     singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
-                    haveVid=true;
                     break;
-                }
-            }
-            //如果用vid组合匹配失败,意味着vname可能原来是自定义,但被转化成别名了,于是vid发生改变,这是用vname组合进行匹配
-            if(!haveVid){
-                for(SingleSkuBO singleSkuBO:singleSkuBOS){
-                    if((singleSkuBO.getColorAlias()+"_"+singleSkuBO.getSizeAlias()).equals(color+"_"+size)){
-                        if("delete".equals(sku.getStatus())){
-                            singleSkuBO.setStockNum(0);
-                        }else{
-                            singleSkuBO.setStockNum(sku.getQuantity().intValue());
-                        }
-                        singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
-                        break;
-                    }
                 }
             }
         }
     }
 
-    public static List<TbSku> calTbSkus(String singSkus){
-        List<TbSku> tbSkus=new ArrayList<>();
-        if(StringUtils.isNotBlank(singSkus)){
-            String[] skuStrs=singSkus.split(";");
-            for(String skuStr:skuStrs){
-                String[] strs=skuStr.split(":");
-                if(strs.length==7){
-                    TbSku tbSku=new TbSku();
+    public static List<TbSku> calTbSkus(String singSkus) {
+        List<TbSku> tbSkus = new ArrayList<>();
+        if (StringUtils.isNotBlank(singSkus)) {
+            String[] skuStrs = singSkus.split(";");
+            for (String skuStr : skuStrs) {
+                String[] strs = skuStr.split(":");
+                if (strs.length == 7) {
+                    TbSku tbSku = new TbSku();
                     tbSku.setPrice(strs[0]);
                     tbSku.setStatus("normal");
                     tbSku.setQuantity(new Long(strs[1]));
-                    tbSku.setPropertiesName(strs[3]+":"+strs[4]+":"+strs[5]+":"+strs[6]);
+                    tbSku.setPropertiesName(strs[3] + ":" + strs[4] + ":" + strs[5] + ":" + strs[6]);
                     tbSkus.add(tbSku);
                 }
-                if(strs.length==4&&tbSkus.size()>0){
-                    TbSku tbSku=tbSkus.get(tbSkus.size()-1);
-                    tbSku.setPropertiesName(tbSku.getPropertiesName()+";"+strs[0]+":"+strs[1]+":"+strs[2]+":"+strs[3]);
+                if (strs.length == 4 && tbSkus.size() > 0) {
+                    TbSku tbSku = tbSkus.get(tbSkus.size() - 1);
+                    tbSku.setPropertiesName(
+                            tbSku.getPropertiesName() + ";" + strs[0] + ":" + strs[1] + ":" + strs[2] + ":" + strs[3]);
                 }
             }
         }

@@ -66,7 +66,7 @@ public class ShiguGoodsTinyVO implements Serializable {
 
     private ShiguGoodsExtendsVO extendsGoods;
 
-    private List<SingleSkuVO> skus;
+    private String skus;
 
     public Boolean getHasAdded() {
         return hasAdded;
@@ -446,11 +446,11 @@ public class ShiguGoodsTinyVO implements Serializable {
         this.isExcelImp = isExcelImp;
     }
 
-    public List<SingleSkuVO> getSkus() {
+    public String getSkus() {
         return this.skus;
     }
 
-    public void setSkus(List<SingleSkuVO> skus) {
+    public void setSkus(String skus) {
         this.skus = skus;
     }
 }

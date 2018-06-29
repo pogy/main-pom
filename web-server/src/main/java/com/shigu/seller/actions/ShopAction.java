@@ -723,7 +723,7 @@ public class ShopAction {
             goodsInfoSkuSizeVO.setNum(singleSkuVO.getStockNum());
             goodsInfoSkuSizeVO.setPrice(singleSkuVO.getPriceString());
             goodsInfoSkuSizeVO.setSizeId(singleSkuVO.getSizePid()+"_"+singleSkuVO.getSizeVid());
-            goodsInfoSkuSizeVO.setSizeText(StringUtils.isBlank(singleSkuVO.getSizePropertyAlias())?singleSkuVO.getSizeName():singleSkuVO.getSizePropertyAlias());
+            goodsInfoSkuSizeVO.setSizeText(singleSkuVO.getThisSize());
             String cpv=singleSkuVO.getColorPid()+"_"+singleSkuVO.getColorVid();
             for(GoodsInfoSkuColorVO v:singleProps){
                 if(v.getColorId().equals(cpv)){
@@ -733,7 +733,7 @@ public class ShopAction {
             }
             GoodsInfoSkuColorVO vo=new GoodsInfoSkuColorVO();
             vo.setColorId(cpv);
-            vo.setColorText(StringUtils.isBlank(singleSkuVO.getColorPropertyAlias())?singleSkuVO.getColorName():singleSkuVO.getColorPropertyAlias());
+            vo.setColorText(singleSkuVO.getThisColor());
             vo.setSizes(new ArrayList<>());
             vo.getSizes().add(goodsInfoSkuSizeVO);
             singleProps.add(vo);

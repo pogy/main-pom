@@ -329,10 +329,20 @@ public class GoodsOfferBO implements Serializable{
             SingleSkuBO sbo=new SingleSkuBO();
             sbo.setPriceString(piPriceString);
             sbo.setStockNum(num);
-            sbo.setColorVid(new Long(colorStrs[1]));
-            sbo.setColorAlias(colorStrs[2]);
-            sbo.setSizeVid(new Long(sizeStrs[1]));
-            sbo.setSizeAlias(sizeStrs[2]);
+            if(!"null".equals(colorStrs[1])){
+                sbo.setColorVid(new Long(colorStrs[1]));
+                sbo.setColorAlias(colorStrs[2]);
+            }
+            if(!"null".equals(sizeStrs[1])){
+                sbo.setSizeVid(new Long(sizeStrs[1]));
+                sbo.setSizeAlias(sizeStrs[2]);
+            }
+            singleSkus.add(sbo);
+        }
+        if(singleSkus.size()==0){
+            SingleSkuBO sbo=new SingleSkuBO();
+            sbo.setPriceString(this.getPiPrice());
+            sbo.setStockNum(999);
             singleSkus.add(sbo);
         }
         synItem.setSingleSkus(singleSkus);
