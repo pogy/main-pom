@@ -195,7 +195,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     private String provGroupStr;
     private String provMapStr;
     private String townMapStr;
-    private Long updateMapVersion = 1L;
+    private static Long updateMapVersion;
 
     public void initAddress() {
         List<OrderCity> orderCities = orderCityMapper.select(new OrderCity());
@@ -248,6 +248,13 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         redisIO.put(ORDER_EXPRESS_PROV_GROUP,provGroupStr);
         redisIO.put(ORDER_EXPRESS_PROV_MAP,provMapStr);
         redisIO.put(ORDER_EXPRESS_TOWN_MAP,townMapStr);
+        Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE,Boolean.class);
+        if (b != null && b == true){
+            updateMapVersion = System.currentTimeMillis();
+            redisIO.put(ORDER_EXPRESS_MAP_UPDATE_VERSION,updateMapVersion.toString());
+        }else {
+            updateMapVersion = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        }
         redisIO.put(ORDER_EXPRESS_UPDATE, "false");
     }
 
