@@ -173,6 +173,18 @@ public class SubOrderModelImpl implements SubOrderModel {
         DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
         daifaGgoodsExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
         daifaGgoodsMapper.updateByExampleSelective(ggoods,daifaGgoodsExample);
+
+        DaifaOrder daifaOrder = daifaOrderMapper.selectByPrimaryKey(subOrderId);
+
+        com.alibaba.fastjson.JSONObject jsonObject=new com.alibaba.fastjson.JSONObject();
+        Map<String,Object>map=new HashMap<>();
+        map.put("orderPartitionId",daifaOrder.getOrderPartitionId());
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.markDown.getMsg());
+        jsonObject.put("status","true");
+        String message = jsonObject.toString();
+        mqUtil.sendMessage(DaifaSendMqEnum.markDown.getMessageKey()+subOrderId,
+                DaifaSendMqEnum.markDown.getMessageTag(), message);
     }
 
     @Override

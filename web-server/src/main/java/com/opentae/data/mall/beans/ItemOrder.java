@@ -84,9 +84,24 @@ public class ItemOrder implements Serializable {
 	private Boolean disenable;
 
     /**
+     * 发货时间
+     */
+	private Date sendTime;
+
+    /**
      * 是否已设置淘宝发货,0:未设置,1:已设置
      */
-    private Boolean tbSend;
+	private Boolean tbSend;
+
+    /**
+     * 支付时间
+     */
+	private Date payTime;
+
+    /**
+     * 订单终端来源 1:PC 2:APP 3:WAP 4:WX
+     */
+	private Integer orderFrom;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -208,17 +223,36 @@ public class ItemOrder implements Serializable {
 		return this.disenable;
 	}
 
-    /**
-     * 获取 是否已设置淘宝发货,0:未设置,1:已设置
-     */
-    public Boolean getTbSend() {
-        return this.tbSend;
-    }
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
 
-    /**
-     * 设置 是否已设置淘宝发货,0:未设置,1:已设置
-     */
-    public void setTbSend(Boolean tbSend) {
-        this.tbSend = tbSend;
-    }
+	public Date getSendTime() {
+		return this.sendTime;
+	}
+
+	public void setTbSend(Boolean tbSend) {
+		this.tbSend = tbSend;
+	}
+
+	public Boolean getTbSend() {
+		return this.tbSend;
+	}
+
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
+
+	public Date getPayTime() {
+		return this.payTime;
+	}
+
+	public void setOrderFrom(Integer orderFrom) {
+		this.orderFrom = orderFrom;
+	}
+
+	public Integer getOrderFrom() {
+		return this.orderFrom;
+	}
+
 }

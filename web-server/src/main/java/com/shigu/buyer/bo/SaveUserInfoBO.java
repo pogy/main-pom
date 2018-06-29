@@ -100,7 +100,7 @@ public class SaveUserInfoBO implements Serializable{
         userInfoUpdate.setImWx(wx);
         userInfoUpdate.setUserNick(name);
         if(sex!=null){
-            userInfoUpdate.setSex(sex==-1?"保密":sex==0?"男":"女");
+            userInfoUpdate.setSex(sex==0?"保密":sex==1?"男":"女");
         }
         return userInfoUpdate;
     }

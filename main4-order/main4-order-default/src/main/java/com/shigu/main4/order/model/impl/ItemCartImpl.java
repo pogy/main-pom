@@ -12,10 +12,12 @@ import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ProductVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -135,6 +137,8 @@ public class ItemCartImpl implements Cart {
         return sum;
     }
 
+
+    @Override
     public List<CartVO> listProduct() {
         ItemCart cart = new ItemCart();
         cart.setUserId(userId);
@@ -149,4 +153,49 @@ public class ItemCartImpl implements Cart {
             return cartVO;
         }).collect(Collectors.toList());
     }
+
+    /**
+     * 根据子订单id集合获取购物车内部分产品
+     * @return 产品列表
+     */
+    @Override
+    public List<CartVO> listSomeProduct(String childCartIds) {
+        String[] childOrderIds = childCartIds.split(",");
+        List<Long> cids = new ArrayList<>();
+        for (String childOrderId : childOrderIds) {
+            if (StringUtils.isBlank(childOrderId)) {
+                continue;
+            }
+            cids.add(Long.valueOf(childOrderId));
+        }
+        if (cids.isEmpty()) {
+            return null;
+        }
+
+        ItemCartExample cartExample = new ItemCartExample();
+        cartExample.createCriteria().andUserIdEqualTo(userId).andCartIdIn(cids);
+        List<ItemCart> itemCarts = itemCartMapper.selectByExample(cartExample);
+        if (itemCarts == null || itemCarts.isEmpty()) {
+            return null;
+        }
+        return itemCarts.stream().map(itemCart -> {
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info();
+            CartVO cartVO = BeanMapper.map(info, CartVO.class);
+            cartVO.setCartId(itemCart.getCartId());
+            cartVO.setGoodsId(info.getGoodsId());
+            cartVO.setPicUrl(info.getPicUrl());
+            cartVO.setTitle(info.getTitle());
+            cartVO.setGoodsNo(info.getGoodsNo());
+            cartVO.setPrice(info.getPrice());
+            cartVO.setSelectiveSku(info.getSelectiveSku());
+
+            cartVO.setNum(itemCart.getNum());
+            cartVO.setUserId(userId);
+            cartVO.setLastModify(itemCart.getLastModify());
+            cartVO.setSkuId(info.getSelectiveSku().getSkuId());
+            return cartVO;
+        }).collect(Collectors.toList());
+    }
+
+
 }

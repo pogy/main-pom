@@ -14,6 +14,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
     public static final Class<SubOrderSoidps> beanClass = SubOrderSoidps.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn soid;
+    public static EntityColumn downIs;
     public static EntityColumn stockStatus;
     public static EntityColumn soidpId;
     public static EntityColumn alreadyRefund;
@@ -24,6 +25,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
             listMap.put(column.getProperty(), column);
         }
         soid = listMap.get("soid");
+        downIs = listMap.get("downIs");
         stockStatus = listMap.get("stockStatus");
         soidpId = listMap.get("soidpId");
         alreadyRefund = listMap.get("alreadyRefund");
@@ -94,6 +96,53 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
 
         public SubOrderSoidpsExample.Criteria andSoidNotBetween(Long value1, Long value2) {
             return notBetween(soid, value1, value2);
+        }
+        public SubOrderSoidpsExample.Criteria andDownIsIsNull() {
+            return isNull(downIs);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsIsNotNull() {
+            return isNotNull(downIs);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsEqualTo(Boolean value) {
+            return equalTo(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsNotEqualTo(Boolean value) {
+            return notEqualTo(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsGreaterThan(Boolean value) {
+            return greaterThan(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsLessThan(Boolean value) {
+            return lessThan(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(downIs, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsIn(List<Boolean> values) {
+            return in(downIs, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsNotIn(List<Boolean> values) {
+            return notIn(downIs, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsBetween(Boolean value1, Boolean value2) {
+            return between(downIs, value1, value2);
+        }
+
+        public SubOrderSoidpsExample.Criteria andDownIsNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(downIs, value1, value2);
         }
         public SubOrderSoidpsExample.Criteria andStockStatusIsNull() {
             return isNull(stockStatus);

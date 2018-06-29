@@ -102,5 +102,6 @@
         <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
+    <bean id="workerMan" class="com.shigu.main4.daifa.utils.WorkerMan"/>
     <import resource="../../daifa.xml"/>
 </beans>

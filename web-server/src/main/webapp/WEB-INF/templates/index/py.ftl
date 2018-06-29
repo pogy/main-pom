@@ -120,13 +120,14 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <div class="citylist">
             <span class="changebutton">切换城市<i class="img-jiantou"></i></span>
             <ul>
-                        <li><a href="//hz.571xz.com">杭州</a></li>
-                        <li><a href="//cs.571xz.com">常熟</a></li>
-                        <li><a href="//ss.571xz.com">石狮</a></li>
-                        <li><a href="//bj.571xz.com">北京</a></li>
-                        <li><a href="//gz.571xz.com">广州</a></li>
-                        <li><a href="//wa.571xz.com">辽源</a></li>
-                        <li class="selected"><a href="//jx.571xz.com">濮院</a></li>
+                <li><a href="//hz.571xz.com">杭州</a></li>
+                <li><a href="//cs.571xz.com">常熟</a></li>
+                <li><a href="//ss.571xz.com">石狮</a></li>
+                <li><a href="//bj.571xz.com">北京</a></li>
+                <li><a href="//gz.571xz.com">广州</a></li>
+                <li><a href="//wa.571xz.com">辽源</a></li>
+                <li class="selected"><a href="//jx.571xz.com">濮院</a></li>
+                <li><a href="//qz.571xz.com">泉州</a></li>
             </ul>
         </div>
     </div>
@@ -518,7 +519,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
             <a href="//wa.571xz.com" target="_blank">辽源站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
-            <a href="//zixun.571xz.com" target="_blank">资讯</a>
+            <a href="//qz.571xz.com" target="_blank">泉州站</a>
             
             
             <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>

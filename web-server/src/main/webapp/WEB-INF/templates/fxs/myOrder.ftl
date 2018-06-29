@@ -308,6 +308,9 @@
                 </#if>
                 <span class="fc6 mr">订单编号：${order.orderId!}</span>
                 <span class="fc6 mr">时间：${order.tradeTime!}</span>
+                <#if order.tbOrderId??>
+                <span class="fc6 mr">淘宝订单编号：${order.tbOrderId!}</span>
+                </#if>
                 <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
             </div>
             <div class="childOrderList fl">

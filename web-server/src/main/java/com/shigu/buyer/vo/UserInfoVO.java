@@ -112,11 +112,11 @@ public class UserInfoVO implements Serializable{
 
     public void setSex(String sex) {
         if("保密".equals(sex)){
-            this.sex="-1";
-        }else if("男".equals(sex)){
             this.sex="0";
-        }else if("女".equals(sex)){
+        }else if("男".equals(sex)){
             this.sex="1";
+        }else if("女".equals(sex)){
+            this.sex="2";
         }
     }
 

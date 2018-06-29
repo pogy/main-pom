@@ -13,7 +13,8 @@
 <#include "/__style_torrent__/order__common_css.ftl">
 <#include "/__style_torrent__/order__confirmOrder_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
-    <#include "/__style_torrent__/common__base_js.ftl">
+    <script src="getAreaData.json?${linkageVersion}"></script>
+<#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
 <#include "/__style_torrent__/order__confirmOrder_js.ftl">
@@ -91,7 +92,7 @@ var code = '${code!}'
                     <label><span class="fcF40 required">*</span>所在地区：</label>
 <#list [{}] as $it>
 <div data-id="myArea"
-    class="fmCitypick" data-value="${$it.value!}">
+    class="fmCitypick1" data-value="${$it.value!}">
 </div>
 </#list>
                 </div>
@@ -283,7 +284,7 @@ var code = '${code!}'
     data-weight="${childOrder.weight!}"
 >
     <li class="goodsTitle clearfix">
-        <a href="javascript:;" class="fl imgBox"><img src="${childOrder.imgsrc!}_70x70.jpg" width=62 height=62 class="fl"></a>
+        <a href="javascript:;" class="fl imgBox"><img src="${childOrder.imgsrc!}_100x100.jpg" width=62 height=62 class="fl"></a>
         <div class="fl goodsInfo fc3">
             <h4>${childOrder.title!}</h4>
             <p class="fwb">货号：${childOrder.goodsNo!}</p>
