@@ -738,12 +738,7 @@ $(function(){
                 area: ['840px', '610px'],
                 content: $("#kc"),
             });
-                $("#J_ListTable").delegate("li","click",function(){
-                    layer.close(imgLay);
-                    imgUrl = $(this).find("img").attr("src");
-                    $(".current").find(".image-div img").attr("src",imgUrl);
-                    $(".module").removeClass("current");
-                });
+
                 break;
             case 3: var $mText = $(this).parents(".m-text");
                 var textCount = 4991;
@@ -796,7 +791,7 @@ $(function(){
         imgUrl = $(this).find("img").attr("src");
         if(objLay==0){   //插入宝贝图片
             var Html = "";
-            var $imgList = $(".image-list li[data-index='"+imgData+"']");
+            var $imgList = $(".zhu-img .image-list li[data-index='"+imgData+"']");
 			// Html += "<div class='img'>";
 			// Html += "<img src='"+imgUrl+"'></div>";
 			$imgList.find(".img img").attr("src",imgUrl);
