@@ -102,47 +102,8 @@ public class ConfirmOrderAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ConfirmBO confirmBO = JSON.parseObject(boStr.toString(), ConfirmBO.class);
         Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE, Boolean.class);
-        String cityGroupStr = null;
-        String cityMapStr = null;
-        String expressMapStr = null;
-        String provGroupStr = null;
-        String provMapStr = null;
-        String townMapStr = null;
         if (b != null && b) {
             orderConstantService.initAddress();
-            Map<Long, List<TownVO>> cityGroup = orderConstantService.getCityGroup();
-            Map<Long, CityVO> cityMap = orderConstantService.getCityMap();
-            Map<Long, ExpressVo> expressMap = orderConstantService.getExpressMap();
-            Map<Long, List<CityVO>> provGroup = orderConstantService.getProvGroup();
-            Map<Long, ProvinceVO> provMap = orderConstantService.getProvMap();
-            Map<Long, TownVO> townMap = orderConstantService.getTownMap();
-            cityGroupStr = JSONArray.toJSONString(cityGroup);
-            cityMapStr = JSONArray.toJSONString(cityMap);
-            expressMapStr = JSONArray.toJSONString(expressMap);
-            provGroupStr = JSONArray.toJSONString(provGroup);
-            provMapStr = JSONArray.toJSONString(provMap);
-            townMapStr = JSONArray.toJSONString(townMap);
-            redisIO.put(ORDER_EXPRESS_CITY_GROUP,cityGroupStr);
-            redisIO.put(ORDER_EXPRESS_CITY_MAP,cityMapStr);
-            redisIO.put(ORDER_EXPRESS_EXPRESS_MAP,expressMapStr);
-            redisIO.put(ORDER_EXPRESS_PROV_GROUP,provGroupStr);
-            redisIO.put(ORDER_EXPRESS_PROV_MAP,provMapStr);
-            redisIO.put(ORDER_EXPRESS_TOWN_MAP,townMapStr);
-            redisIO.put(ORDER_EXPRESS_UPDATE, "false");
-        }else{
-            cityGroupStr = redisIO.get(ORDER_EXPRESS_CITY_GROUP,String.class);
-            cityMapStr = redisIO.get(ORDER_EXPRESS_CITY_MAP,String.class);
-            expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
-            provGroupStr = redisIO.get(ORDER_EXPRESS_PROV_GROUP,String.class);
-            provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
-            townMapStr = redisIO.get(ORDER_EXPRESS_TOWN_MAP,String.class);
-            Map<Long, List<TownVO>> ss = (Map<Long, List<TownVO>>) JSONObject.fromObject(cityGroupStr);
-            orderConstantService.setCityGroup(ss);
-            orderConstantService.setCityMap((Map<Long, CityVO>) JSONObject.fromObject(cityMapStr));
-            orderConstantService.setExpressMap((Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr));
-            orderConstantService.setProvGroup((Map<Long, List<CityVO>>) JSONObject.fromObject(provGroupStr));
-            orderConstantService.setProvMap((Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr));
-            orderConstantService.setTownMap((Map<Long, TownVO>) JSONObject.fromObject(townMapStr));
         }
         confirmOrderService.isAddress(confirmBO.getAddressId());
         Long oid = confirmOrderService.confirmOrders(confirmBO, ps.getUserId());

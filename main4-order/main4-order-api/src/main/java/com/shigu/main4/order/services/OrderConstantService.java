@@ -98,21 +98,4 @@ public interface OrderConstantService {
 
     void initAddress();
 
-    Map<Long, List<TownVO>> getCityGroup();
-    void setCityGroup(Map<Long, List<TownVO>> cityGroup);
-
-    Map<Long, List<CityVO>> getProvGroup();
-    void setProvGroup(Map<Long, List<CityVO>> provGroup);
-
-    Map<Long, ProvinceVO> getProvMap();
-    void setProvMap(Map<Long, ProvinceVO> provMap);
-
-    Map<Long, CityVO> getCityMap();
-    void setCityMap(Map<Long, CityVO> cityMap);
-
-    Map<Long, TownVO> getTownMap();
-    void setTownMap(Map<Long, TownVO> townMap);
-
-    Map<Long, ExpressVo> getExpressMap();
-    void setExpressMap(Map<Long, ExpressVo> expressMap);
 }

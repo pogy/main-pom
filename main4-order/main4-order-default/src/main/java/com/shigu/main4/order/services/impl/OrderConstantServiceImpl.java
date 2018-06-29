@@ -2,11 +2,14 @@ package com.shigu.main4.order.services.impl;
 
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.alibaba.dubbo.common.logger.Logger;
+import com.shigu.main4.tools.RedisIO;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,17 @@ public class OrderConstantServiceImpl implements OrderConstantService {
 
     @Autowired
     private ExpressCompanyMapper expressCompanyMapper;
+
+    @Autowired
+    private RedisIO redisIO;
+
+    private static String ORDER_EXPRESS_CITY_GROUP = "order_express_city_group";
+    private static String ORDER_EXPRESS_CITY_MAP = "order_express_city_map";
+    private static String ORDER_EXPRESS_EXPRESS_MAP = "order_express_express_map";
+    private static String ORDER_EXPRESS_PROV_GROUP = "order_express_prov_group";
+    private static String ORDER_EXPRESS_PROV_MAP = "order_express_prov_map";
+    private static String ORDER_EXPRESS_TOWN_MAP = "order_express_town_map";
+    private static String ORDER_EXPRESS_UPDATE = "order_express_update";
 
     /**
      * 订单常量
@@ -174,6 +188,12 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     private Map<Long, CityVO> cityMap;
     private Map<Long, TownVO> townMap;
     private Map<Long, ExpressVo> expressMap;
+    private String cityGroupStr;
+    private String cityMapStr;
+    private String expressMapStr;
+    private String provGroupStr;
+    private String provMapStr;
+    private String townMapStr;
 
     public void initAddress() {
         List<OrderCity> orderCities = orderCityMapper.select(new OrderCity());
@@ -213,13 +233,31 @@ public class OrderConstantServiceImpl implements OrderConstantService {
                 .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(townTransform).collect(Collectors.toList())));
         provGroup = orderCities.stream().collect(Collectors.groupingBy(OrderCity::getProvId))
                 .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(cityTransform).collect(Collectors.toList())));
+
+        cityGroupStr = JSONArray.toJSONString(cityGroup);
+        cityMapStr = JSONArray.toJSONString(cityMap);
+        expressMapStr = JSONArray.toJSONString(expressMap);
+        provGroupStr = JSONArray.toJSONString(provGroup);
+        provMapStr = JSONArray.toJSONString(provMap);
+        townMapStr = JSONArray.toJSONString(townMap);
+        redisIO.put(ORDER_EXPRESS_CITY_GROUP,cityGroupStr);
+        redisIO.put(ORDER_EXPRESS_CITY_MAP,cityMapStr);
+        redisIO.put(ORDER_EXPRESS_EXPRESS_MAP,expressMapStr);
+        redisIO.put(ORDER_EXPRESS_PROV_GROUP,provGroupStr);
+        redisIO.put(ORDER_EXPRESS_PROV_MAP,provMapStr);
+        redisIO.put(ORDER_EXPRESS_TOWN_MAP,townMapStr);
+        redisIO.put(ORDER_EXPRESS_UPDATE, "false");
     }
 
     public List<ExpressVo> selExpresses() {
+        expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
+        expressMap = (Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr);
         return new ArrayList<>(expressMap.values());
     }
 
     public ExpressVo selByExpressId(Long expressId) {
+        expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
+        expressMap = (Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr);
         return expressMap.get(expressId);
     }
 
@@ -230,6 +268,8 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<ProvinceVO> selProvinces() {
+        provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
+        provMap = (Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr);
         return new ArrayList<>(provMap.values());
     }
 
@@ -241,6 +281,8 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<CityVO> selCitysByPid(Long provinceId) {
+        provGroupStr = redisIO.get(ORDER_EXPRESS_PROV_GROUP,String.class);
+        provGroup = (Map<Long, List<CityVO>>) JSONObject.fromObject(provGroupStr);
         return provGroup.get(provinceId);
     }
 
@@ -254,66 +296,28 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<TownVO> selTownByCid(Long cityId) {
+        cityGroupStr = redisIO.get(ORDER_EXPRESS_CITY_GROUP,String.class);
+        cityGroup = (Map<Long, List<TownVO>>) JSONObject.fromObject(cityGroupStr);
         return cityGroup.get(cityId);
     }
 
     public ProvinceVO selProvByPid(Long pid) {
+        provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
+        provMap = (Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr);
         return provMap.get(pid);
     }
 
     public CityVO selCityByCid(Long cid) {
+        cityMapStr = redisIO.get(ORDER_EXPRESS_CITY_MAP,String.class);
+        cityMap = (Map<Long, CityVO>) JSONObject.fromObject(cityMapStr);
         return cityMap.get(cid);
     }
 
     public TownVO selTownByTid(Long tid) {
+        townMapStr = redisIO.get(ORDER_EXPRESS_TOWN_MAP,String.class);
+        townMap = (Map<Long, TownVO>) JSONObject.fromObject(townMapStr);
         return townMap.get(tid);
     }
 
-    public Map<Long, List<TownVO>> getCityGroup() {
-        return cityGroup;
-    }
 
-    public void setCityGroup(Map<Long, List<TownVO>> cityGroup) {
-        this.cityGroup = cityGroup;
-    }
-
-    public Map<Long, List<CityVO>> getProvGroup() {
-        return provGroup;
-    }
-
-    public void setProvGroup(Map<Long, List<CityVO>> provGroup) {
-        this.provGroup = provGroup;
-    }
-
-    public Map<Long, ProvinceVO> getProvMap() {
-        return provMap;
-    }
-
-    public void setProvMap(Map<Long, ProvinceVO> provMap) {
-        this.provMap = provMap;
-    }
-
-    public Map<Long, CityVO> getCityMap() {
-        return cityMap;
-    }
-
-    public void setCityMap(Map<Long, CityVO> cityMap) {
-        this.cityMap = cityMap;
-    }
-
-    public Map<Long, TownVO> getTownMap() {
-        return townMap;
-    }
-
-    public void setTownMap(Map<Long, TownVO> townMap) {
-        this.townMap = townMap;
-    }
-
-    public Map<Long, ExpressVo> getExpressMap() {
-        return expressMap;
-    }
-
-    public void setExpressMap(Map<Long, ExpressVo> expressMap) {
-        this.expressMap = expressMap;
-    }
 }
