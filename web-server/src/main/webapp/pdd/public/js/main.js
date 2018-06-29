@@ -1219,50 +1219,134 @@ $(function(){
         });
     });
 
-	//改变利润数值
-	/*$("#curlirun").blur(function(){
-		var fbTemp = $(".set-sty").find("option:selected").val();//0:按固定值   1:按比例（不取整）  2:按比例（取整）
-		var lrPrice = parseFloat($(this).val());	//利润值
-		var buyPrice = "";	//最新价格
-		if(lrPrice<0 || isNaN(lrPrice)){
-			lrPrice = 0;
-			$(this).val(0)
-		}
-		if(fbTemp == 0){	//按固定值
-			buyPrice = parseFloat(price+lrPrice);		
-		}else if(fbTemp == 1){	//按比例（不取整）
-			lrPrice = price*lrPrice/100
-			buyPrice = parseFloat(price+lrPrice);
-		}else if(fbTemp == 2){	//按比例（取整）
-			lrPrice = Math.round(price*lrPrice/100);
-			buyPrice = parseFloat(price+lrPrice);
-		}	
-		$("#lrPrice").html(lrPrice);	
-		$("#buynow").val(buyPrice);
-		$(".J_MapRow td.price input").val(buyPrice);
-	});*/
+    // 宝贝属性下拉
+    var oldList = "";
+    $(".J_spu-property").delegate(".kui-combobox-caption,.kui-icon-dropdown","click",function(event){
+        $(".kui-listbox").hide();
+        var nowList = "";
+        var downHtml = "";
+        var lastVid = '';
+        var pid = ''
+        var $select = $(this).parents(".kui-combobox").siblings("select").find("option");
+        $select.each(function(i,e){
+            var optionVal = $(e).text();
+            var dataVal = $(e).attr("value");
+            nonum = $(e).attr("data-nonum")
+            pid = $(e).attr("data-pid");
+            fid = $(e).attr("data-fid");
+            vid = $(e).attr("data-vid");
+            lastVid = dataVal;   //在div使用类似option的方式写入id，为只用ajax后部after数据提供条件
+            fid=$(this).data('fid');
+            nowList += "<div data-nonum='"+nonum+"' data-fid='"+fid+"' data-pid='"+pid+"' data-vid='"+vid+"' id='prop_option_"+dataVal+"' class='has_son_prop kui-option' role='menuitem' data-value='"+dataVal+"'  title='"+optionVal+"'>"+optionVal+"</div>"; //onclick='propSon("+fid+")'
+        });
+        downHtml += "<div role='menu' class='kui-list kui-listbox'>";
+        downHtml += "<div class='kui-header' role='region'>" ;
+        downHtml += "<input type='text' class='kui-dropdown-search' autocomplete='off'>";
+        downHtml += "</div>";
+        downHtml += "<div class='kui-body kui-oversize' style='width: 190px;' id='flag_prop_more_"+pid+"' data-vvid='"+lastVid+"'>";//写入最后的那个pid:vid, ajax拿这个去接口请求数据
+        downHtml += "<div class='kui-list kui-group' id='kui-list-6659'>";
+        //downHtml += "<div class='kui-option' role='menuitem'  title=''></div>";  //默认下拉列表第一个空
+        downHtml += "" + nowList + "";
+        downHtml += "</div>";
+        downHtml += "</div>";
+        downHtml += "</div>";
+        var hasList = $(this).parents(".kui-combobox").find(".kui-listbox");
+        var isread =  $(this).attr("readonly");
+        //判断下拉内容是否存在
+        if(hasList.length==0){
+            $(this).parents(".kui-combobox").append(downHtml);
+        }else{
+            hasList.show();
+        }
+        if(isread){
+            $(this).parents(".kui-combobox").find("input[name=kui-search]").focus();
+        }
+        event.stopPropagation();
 
-	
-	
+        oldList = $(this).parents(".kui-combobox").find(".kui-group").html();
+        $("body").delegate(".kui-option","click",function(event){
+            var curVal = $(this).text();
+            var dataPid = $(this).attr("data-pid");
+            var dataFid = $(this).attr("data-fid");
+            var dataVid = $(this).attr("data-vid");
+            var dataNonum = $(this).attr("data-nonum");
+            hasSonProp(dataPid,dataFid,dataVid);  //如果有子属性则显示
+            var dataCheck = $(this).attr("data-value");
+            var $curCaption = $(this).parents(".kui-listbox").siblings(".kui-dropdown-trigger").find(".kui-combobox-caption");
+            var $czcfInput = $(this).parents(".kui-listbox").siblings(".czcf-con").find(".content-input");
+            var $curUpInfo = $(this).parents(".kui-listbox").siblings(".kui-dropdown-trigger").find(".upInfoItHide");
+            $curCaption.attr("value",curVal);
+            $curCaption.attr("data-value",dataCheck);
+            $curUpInfo.attr("value",dataCheck);
+            //点击div模拟的下拉列表后，先将所有selectd情况，然后将选中的selectd选中  xuk添加
+            // $(".props_option_"+dataPid).attr("selected",false);
+            // if(dataCheck){
+            // $("option[value='"+dataCheck+"']").attr("selected",true);
+            // }
+            //
+            $(this).parents(".kui-listbox").hide();
+            $(this).parents(".kui-listbox").siblings(".kui-dropdown-trigger").find(".kui-placeholder").hide();
+            event.stopPropagation();
 
-    //发布
+            if(dataNonum=="true" || curVal==""){
+                $czcfInput.addClass("disable").attr("disabled","disabled").val("");
+            }else{
+                $czcfInput.removeClass("disable").removeAttr("disabled");
+            }
 
-    // $("#event_submit_do_publish").click(function(){
-    // fbLay = layer.open({
-    // type: 1,
-    // title: '发布商品',
-    // closeBtn: 1,
-    // shade: 0.5,
-    // shadeClose: false,
-    // area: ['550px', ''],
-    // content: $("#J_publish"),
-    // });
-    // timeCount();
-    // c=0;
-    // });
-    $("#J_publish .fb-btn").click(function(){
-        //layer.close(fbLay);
-        // clearTimeout(t);
+        });
+        $(".kui-header").on("click",function(event){
+            event.stopPropagation();
+        });
+
+        //$(".ul-select li").click(function(event){
+        //$(this).find("input[name=kui-search]").focus();
+        //$(this).parents(".J_spu-property").siblings("li").find(".kui-listbox").hide();
+        //event.stopPropagation();
+        //});
+        $("body").click(function(){
+            $(".kui-listbox").hide();
+        });
+
+        // $(".kui-oversize").on("scroll",function(){   //已经在页面里了
+        // viewH =$(this).height(),//可见高度
+        // contentH =$(this).find(".kui-group").height(),//内容高度
+        // scrollTop =$(this).scrollTop();//滚动高度
+        // if(contentH - viewH - scrollTop ==0){
+        // alert(1)
+        // }
+        // });
+    });
+
+    //属性搜索
+    $(".J_ul-single").delegate(".kui-dropdown-search","keyup",function(){ //.ul-select
+        var searchVal = "";
+        var $option = $(this).parents(".kui-header").siblings(".kui-body").find(".kui-option");
+        var $brand = $(this).parents("li.J_spu-property").find("input.kui-combobox-caption");
+        var nowList = "<div class='kui-option' role='menuitem' title=''></div>";
+        searchVal = $(this).val();
+        if($brand.attr("data-pid")==20000){
+            if(searchVal!=""){
+                $.post("prop-select.action", {"cid":cidHidden,'_csrf':tokenHidden,'key':searchVal},
+                    function(data){
+                        $(".kui-combobox-caption[data-pid='20000']").parents("li").find(".kui-group").html(data);
+                    },"html");
+                //var brandAry = [{name:"棉麻",val:"20019:3267700"},{name:"磨毛布",val:"20019:3267700"},{name:"other/其他",val:"20019:3267700"}];
+            }else if(searchVal == ""){
+                $(".kui-combobox-caption[data-pid='20000']").parents("li").find(".kui-group").html(oldList);
+            }
+
+        }else{
+            $option.each(function(i,e){
+                var str = $(e).text();
+                var x = str.indexOf(searchVal);
+                if(x==-1){
+                    $(e).hide();
+                }else{
+                    $(e).show();
+                }
+            });
+        }
     });
 
 });

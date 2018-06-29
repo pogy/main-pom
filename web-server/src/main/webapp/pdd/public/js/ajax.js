@@ -2,35 +2,46 @@ $(document).ready(function () {
     cidHidden=$('#cid').val();
     tokenHidden=$('#token').val();
     // 选择空间上传图片
-    $("#J_MultimageField1").change(function(){
-        var objUrl = getObjectURL(this.files[0]); //二进制显示
-        fireUrl=$(this).val();
-        if(fireUrl.indexOf("fakepath")){
-            var formData = new FormData($( "#spaceImg" )[0]);
-            $.ajax({
-                url: 'zs.571xz.com/detailImg/upload.json?callback=?' ,
-                type: 'POST',
-                dataType: 'jsonp',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (returndata) {
-                    objUrl=returndata;
-                },
-                error: function (returndata) {
-                    alert(returndata);
-                }
-            });
-        }
-        var addHtml = "";
-        $(".sui-nav li").eq(0).removeClass("active").siblings().addClass("active");
-        $(".tab-content .upload-container").eq(0).hide().siblings().show();
-        addHtml += "<li><div class='ii'><img src='"+objUrl+"'></div></li>"
-        $("#J_ListTable").prepend(addHtml);
 
-    });
+    $$.domready('#J_MultimageField1', function(){
+        var startUpload = $$.fileUpload({
+            buttons: 'J_MultimageField1',
+            acceptFileList: [
+                {title : "Image files", extensions : "jpg,gif,png" }
+            ],
+            randomName: true,
+            accessInfoApiUrl: 'getAccessInfo.json',
+            listen:{
+                postInit: function(){
+                },
+                FilesAdded: function(up, files){
+                    var file = files[0]
+                    startUpload(up, file);
+                },
+                BeforeUpload: function(up, file){
+
+                },
+                UploadProgress: function(up, file) {
+                    $('#uploadWindow .progressBar').css('width', file.percent+ '%');
+                },
+
+                FileUploaded: function(up, file, info) {
+                    var addHtml = "";
+                    $(".sui-nav li").eq(0).removeClass("active").siblings().addClass("active");
+                    $(".tab-content .upload-container").eq(0).hide().siblings().show();
+                    addHtml += "<li><div class='ii'><img src='"+file.path+"'></div></li>"
+                    $("#J_ListTable").prepend(addHtml);
+
+                },
+
+                UploadComplete: function(up, files){
+
+                }
+            }
+        })
+    })
+
+
     function getObjectURL(file) {
         var url = null;
         if (window.createObjectURL != undefined) { // basic
@@ -100,15 +111,15 @@ function checkform(){
     //sku数量不能为空
     error_msg='';
 
-    if($('.goodsFabricCode')[0]) {
-        var goodsFabricCode = $('.goodsFabricCode').val();
+    if($('#goodsFabricCode')[0]) {
+        var goodsFabricCode = $('#goodsFabricCode').val();
         if (!goodsFabricCode) {
             error_msg = '请选择商品面料';
         }
     }
 
-    if($('.fabricContentCode')[0]){
-        var fabricContentCode = $('.fabricContentCode').val();
+    if($('#fabricContentCode')[0]){
+        var fabricContentCode = $('#fabricContentCode').val();
         if(!fabricContentCode){
             error_msg='请选择面料含量';
         }
