@@ -100,14 +100,18 @@ function checkform(){
     //sku数量不能为空
     error_msg='';
 
-    var goodsFabricCode = $('.goodsFabricCode').val();
-    if(!goodsFabricCode){
-        error_msg='请选择商品面料';
+    if($('.goodsFabricCode')[0]) {
+        var goodsFabricCode = $('.goodsFabricCode').val();
+        if (!goodsFabricCode) {
+            error_msg = '请选择商品面料';
+        }
     }
 
-    var fabricContentCode = $('.fabricContentCode').val();
-    if(!fabricContentCode){
-        error_msg='请选择面料含量';
+    if($('.fabricContentCode')[0]){
+        var fabricContentCode = $('.fabricContentCode').val();
+        if(!fabricContentCode){
+            error_msg='请选择面料含量';
+        }
     }
 
     var title = $('#TitleID').val();
