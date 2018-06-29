@@ -80,6 +80,7 @@ public class ConfirmOrderAction {
     private static String ORDER_EXPRESS_PROV_GROUP = "order_express_prov_group";
     private static String ORDER_EXPRESS_PROV_MAP = "order_express_prov_map";
     private static String ORDER_EXPRESS_TOWN_MAP = "order_express_town_map";
+    private static String ORDER_EXPRESS_MAP_UPDATE_VERSION = "order_express_map_update_version";
 
     /**
      * 订单确认提交
@@ -104,6 +105,8 @@ public class ConfirmOrderAction {
         Boolean b = redisIO.get(ORDER_EXPRESS_UPDATE, Boolean.class);
         if (b != null && b) {
             orderConstantService.initAddress();
+            Long updateMapVersion = System.currentTimeMillis();
+            redisIO.put(ORDER_EXPRESS_MAP_UPDATE_VERSION,updateMapVersion.toString());
         }
         confirmOrderService.isAddress(confirmBO.getAddressId());
         Long oid = confirmOrderService.confirmOrders(confirmBO, ps.getUserId());

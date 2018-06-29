@@ -52,6 +52,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     private static String ORDER_EXPRESS_PROV_MAP = "order_express_prov_map";
     private static String ORDER_EXPRESS_TOWN_MAP = "order_express_town_map";
     private static String ORDER_EXPRESS_UPDATE = "order_express_update";
+    private static String ORDER_EXPRESS_MAP_UPDATE_VERSION = "order_express_map_update_version";
 
     /**
      * 订单常量
@@ -194,6 +195,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     private String provGroupStr;
     private String provMapStr;
     private String townMapStr;
+    private Long updateMapVersion = 1L;
 
     public void initAddress() {
         List<OrderCity> orderCities = orderCityMapper.select(new OrderCity());
@@ -234,12 +236,12 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         provGroup = orderCities.stream().collect(Collectors.groupingBy(OrderCity::getProvId))
                 .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(cityTransform).collect(Collectors.toList())));
 
-        cityGroupStr = JSONArray.toJSONString(cityGroup);
-        cityMapStr = JSONArray.toJSONString(cityMap);
-        expressMapStr = JSONArray.toJSONString(expressMap);
-        provGroupStr = JSONArray.toJSONString(provGroup);
-        provMapStr = JSONArray.toJSONString(provMap);
-        townMapStr = JSONArray.toJSONString(townMap);
+        cityGroupStr = JSON.toJSONString(cityGroup);
+        cityMapStr = JSON.toJSONString(cityMap);
+        expressMapStr = JSON.toJSONString(expressMap);
+        provGroupStr = JSON.toJSONString(provGroup);
+        provMapStr = JSON.toJSONString(provMap);
+        townMapStr = JSON.toJSONString(townMap);
         redisIO.put(ORDER_EXPRESS_CITY_GROUP,cityGroupStr);
         redisIO.put(ORDER_EXPRESS_CITY_MAP,cityMapStr);
         redisIO.put(ORDER_EXPRESS_EXPRESS_MAP,expressMapStr);
@@ -250,14 +252,20 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     }
 
     public List<ExpressVo> selExpresses() {
-        expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
-        expressMap = (Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return new ArrayList<>(expressMap.values());
     }
 
     public ExpressVo selByExpressId(Long expressId) {
-        expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
-        expressMap = (Map<Long, ExpressVo>) JSONObject.fromObject(expressMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return expressMap.get(expressId);
     }
 
@@ -268,8 +276,11 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<ProvinceVO> selProvinces() {
-        provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
-        provMap = (Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return new ArrayList<>(provMap.values());
     }
 
@@ -281,8 +292,11 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<CityVO> selCitysByPid(Long provinceId) {
-        provGroupStr = redisIO.get(ORDER_EXPRESS_PROV_GROUP,String.class);
-        provGroup = (Map<Long, List<CityVO>>) JSONObject.fromObject(provGroupStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return provGroup.get(provinceId);
     }
 
@@ -296,27 +310,89 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<TownVO> selTownByCid(Long cityId) {
-        cityGroupStr = redisIO.get(ORDER_EXPRESS_CITY_GROUP,String.class);
-        cityGroup = (Map<Long, List<TownVO>>) JSONObject.fromObject(cityGroupStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return cityGroup.get(cityId);
     }
 
     public ProvinceVO selProvByPid(Long pid) {
-        provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
-        provMap = (Map<Long, ProvinceVO>) JSONObject.fromObject(provMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return provMap.get(pid);
     }
 
     public CityVO selCityByCid(Long cid) {
-        cityMapStr = redisIO.get(ORDER_EXPRESS_CITY_MAP,String.class);
-        cityMap = (Map<Long, CityVO>) JSONObject.fromObject(cityMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+               updateMap();
+               updateMapVersion = version;
+        }
         return cityMap.get(cid);
     }
 
     public TownVO selTownByTid(Long tid) {
-        townMapStr = redisIO.get(ORDER_EXPRESS_TOWN_MAP,String.class);
-        townMap = (Map<Long, TownVO>) JSONObject.fromObject(townMapStr);
+        Long version = redisIO.get(ORDER_EXPRESS_MAP_UPDATE_VERSION,Long.class);
+        if (version != null && !version.equals(updateMapVersion)){
+            updateMap();
+            updateMapVersion = version;
+        }
         return townMap.get(tid);
+    }
+
+    public void updateMap(){
+        Map<String, com.alibaba.fastjson.JSONObject> jsonObject;
+        expressMapStr = redisIO.get(ORDER_EXPRESS_EXPRESS_MAP,String.class);
+        expressMap.clear();
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(expressMapStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            expressMap.put(Long.valueOf(entry.getKey()), JSON.parseObject(JSON.toJSONString(entry.getValue()),ExpressVo.class));
+        }
+
+        provMapStr = redisIO.get(ORDER_EXPRESS_PROV_MAP,String.class);
+        provMap.clear();
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(provMapStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            provMap.put(Long.valueOf(entry.getKey()), JSON.parseObject(JSON.toJSONString(entry.getValue()),ProvinceVO.class));
+        }
+
+        provGroupStr = redisIO.get(ORDER_EXPRESS_PROV_GROUP,String.class);
+        provGroup.clear();
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(provGroupStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            provGroup.put(Long.valueOf(entry.getKey()), JSONArray.parseArray(JSON.toJSONString(entry.getValue()),CityVO.class));
+        }
+
+        cityGroupStr = redisIO.get(ORDER_EXPRESS_CITY_GROUP,String.class);
+        cityGroup.clear();
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(cityGroupStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            cityGroup.put(Long.valueOf(entry.getKey()), JSONArray.parseArray(JSON.toJSONString(entry.getValue()),TownVO.class));
+        }
+
+        cityMapStr = redisIO.get(ORDER_EXPRESS_CITY_MAP,String.class);
+        cityMap.clear();
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(cityMapStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            cityMap.put(Long.valueOf(entry.getKey()), JSON.parseObject(JSON.toJSONString(entry.getValue()),CityVO.class));
+        }
+
+        townMapStr = redisIO.get(ORDER_EXPRESS_TOWN_MAP,String.class);
+        jsonObject = new HashMap<>();
+        jsonObject.putAll((Map<String,  com.alibaba.fastjson.JSONObject>) JSON.parse(townMapStr));
+        for (Map.Entry<String, com.alibaba.fastjson.JSONObject> entry : jsonObject.entrySet()) {
+            townMap.put(Long.valueOf(entry.getKey()), JSON.parseObject(JSON.toJSONString(entry.getValue()),TownVO.class));
+        }
     }
 
 
