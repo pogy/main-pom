@@ -420,7 +420,7 @@
 
                 <div class="tab-content">
                     <div class="upload-container">
-                        <b id="J_MultimageField1" style="padding:6px 16px; background:#fff; border:1px solid #e8e8e8; color:#333; cursor:pointer;">图片上传</b>
+                        <b id="J_MultimageField1" style="padding:6px 16px; background:#fff; border:1px solid #e8e8e8; color:#333; cursor:pointer; font-weight:normal;">图片上传</b>
                     </div>
                     <div class="upload-container" style="display:none;">
                         <div class="kongjian-table-container">
