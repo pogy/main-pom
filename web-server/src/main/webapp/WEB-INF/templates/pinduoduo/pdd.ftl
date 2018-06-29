@@ -33,7 +33,7 @@
         </div>
         <div class="site-nav-js site-nav-r">
             <a href="//www.571xz.com/">星座网首页</a>|
-            <a href="//zixun.571xz.com/article?id=87" target="_blank">意见反馈</a></div>
+            <a href="//www.571xz.com/contact.htm" target="_blank">意见反馈</a></div>
     </div>
 </div>
 
@@ -378,9 +378,7 @@
     <div class="footer-a">
         <a href="//zixun.571xz.com/article?id=67" target="_blank">关于星座网</a>
         <span>|</span>
-        <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-        <span>|</span>
-        <a href="//www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
+        <a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a>
         <span>|</span>
         <a href="//www.571xz.com/ruzhu.htm" target="">供应商入驻</a></div>
     <div class="footer-b">增值电信业务经营许可证：

@@ -19,7 +19,7 @@ $(function(){
     });
 
     //商品描述
-    $("#smallTitleID").keyup(function(){
+    $("#SubheadingID").keyup(function(){
         var txtCount = 500;
         var obj = $('#SubheadingID');
         var errID = $("#err_nav_subTitle");
@@ -184,11 +184,12 @@ $(function(){
     // 改变颜色值&&尺码值
     $(".editbox").blur(function(){
         var newVal = $(this).val();
-        var aliasId = $(this).attr("id").substr(8); //id="J_Alias_1627207-28327"
         var type = $(this).attr('data-type');
         if(type == 'color'){
+            var aliasId = $(this).attr("id").substr(13); //id="J_Alias_1627207-28327"
             var mapId = "J_MapColor_" + aliasId;
         }else if(type == 'size'){
+            var aliasId = $(this).attr("id").substr(8); //id="J_Alias_1627207-28327"
             var mapId = "J_MapSize_" + aliasId;
         }
         $("."+mapId).html(newVal);
