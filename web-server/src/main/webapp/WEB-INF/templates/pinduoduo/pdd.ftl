@@ -8,9 +8,17 @@
     <link href="public/css/fabu20170108.css?t=012001" type="text/css" rel="stylesheet">
     <link href="public/css/tc-min.css" type="text/css" rel="stylesheet">
     <link href="public/css/saved_resource.css" type="text/css" rel="stylesheet">
+
+    <script>
+        var $build = true
+    </script>
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
     <script type="text/javascript" src="public/js/main.js?t=20170808"></script>
     <script type="text/javascript" src="public/js/ajax.js?t=2017102602"></script>
+    <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/base_v20180509_194914.js"></script>
+    <script src="//style.571xz.com/v6/common/js/xz_v20180511_135030.js"></script>
+    <script type="text/javascript" src="public/js/webOSS.js"></script>
 <body id="body" class="ke-webkit">
 <div style="display:none;" id="skuData"></div>
 <div class="site-nav">
@@ -79,21 +87,39 @@
                             <ul class="ul-select">
                                 <li>
                                     <label class="label-title">商品面料：</label>
-                                    <select name="goodsFabricCode" class="goodsFabricCode">
-                                        <option value=""></option>
-                                        <#list goodsFabric as item>
-                                        <option value="${item.code}">${item.desc}</option>
-                                        </#list>
-                                    </select>
+                                    <div class="J_spu-property J_ul-single" style="float: left">
+                                        <select id="prop_0_select" class="keyPropClass" data-transtype="dropbox" style="display: none; visibility: hidden;">
+                                            <#list goodsFabric as item>
+                                                <option value="${item.code}">${item.desc}</option>
+                                            </#list>
+                                        </select>
+                                        <div class="kui-combobox" role="combobox" data-iswrite="1">
+                                            <div class="kui-dropdown-trigger">
+                                                <input  class="kui-combobox-caption prop_from" readonly="true" value="" style="width:190px;" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
+                                                <input type="hidden" name="goodsFabricCode" id="goodsFabricCode" class="upInfoItHide">
+                                                <div class="kui-icon-dropdown"></div>  <!--data-value="//$sku_data_value_mini"-->
+                                                <!--以为pid=122216588时候中文：流行元素/工艺+服装款式细节 他的defaul是数组所以如果是数组则用第一个-->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                                 <li>
                                     <label class="label-title">面料含量：</label>
-                                    <select name="fabricContentCode" class="fabricContentCode">
-                                        <option value=""></option>
-                                        <#list fabricContent as item>
-                                        <option value="${item.code}">${item.desc}</option>
-                                        </#list>
-                                    </select>
+                                    <div class="J_spu-property J_ul-single" style="float: left">
+                                        <select id="prop_0_select" class="keyPropClass" data-transtype="dropbox" style="display: none; visibility: hidden;">
+                                            <#list fabricContent as item>
+                                                <option value="${item.code}">${item.desc}</option>
+                                            </#list>
+                                        </select>
+                                        <div class="kui-combobox" role="combobox" data-iswrite="1">
+                                            <div class="kui-dropdown-trigger">
+                                                <input  class="kui-combobox-caption prop_from" readonly="true" value="" style="width:190px;" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
+                                                <input type="hidden" name="fabricContentCode" id="fabricContentCode" class="upInfoItHide">
+                                                <div class="kui-icon-dropdown"></div>  <!--data-value="//$sku_data_value_mini"-->
+                                                <!--以为pid=122216588时候中文：流行元素/工艺+服装款式细节 他的defaul是数组所以如果是数组则用第一个-->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -394,12 +420,7 @@
 
                 <div class="tab-content">
                     <div class="upload-container">
-                        <form name="spaceImg" id="spaceImg" action="" method="post" enctype="multipart/form-data">
-                            <input type="file" name="multimagefile1" id="J_MultimageField1">
-                            <input type="hidden" id="_csrf" name="_csrf"
-                                   value="${allData.token}">
-                            <input type="hidden" id="mid" name="mid" value="${item.goodsId}">
-                        </form>
+                        <b id="J_MultimageField1" style="padding:6px 16px; background:#fff; border:1px solid #e8e8e8; color:#333; cursor:pointer;">图片上传</b>
                     </div>
                     <div class="upload-container" style="display:none;">
                         <div class="kongjian-table-container">

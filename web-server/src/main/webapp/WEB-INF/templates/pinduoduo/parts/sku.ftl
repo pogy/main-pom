@@ -41,7 +41,7 @@
                         <#list color as c>
                         <tr id="J_MapImg_${c_index}">
                             <td class="tile">
-                                <span class="J_MapColor_${c_index}">${c.text}</span>
+                                <span class="J_MapColor_${c_index}" data-value="${c_index}">${c.text}</span>
                             </td>
                             <td>
                                 <input type="button" value="上传图片">
