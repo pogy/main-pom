@@ -35,6 +35,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pdd.beans.FabricContent;
+import pdd.beans.GoodsFabric;
 import pdd.beans.LogisticsTemplate;
 import pdd.constant.PddConfig;
 import pdd.goods.add.GoodsAddResponse;
@@ -81,6 +83,9 @@ public class PddGoodsUpAction {
     public static final String PDD_PROFIT_TEMPLATE_PRE = "pdd_profit_template_";
     //店内类目更新
     public static final String UPDATE_PDD_SHOP_CATS_PRE = "update_pdd_shop_cats_pre";
+    //cat_id=3845,233,231,218,234时需要入参服饰成分信息和服饰面料信息
+    public static final List<String> FABRIC_CONTENT_IDS = Arrays.asList("3845","233","231","218","234");
+
 
     @RequestMapping("login")
     public String login(){
@@ -213,10 +218,26 @@ public class PddGoodsUpAction {
                 return "redirect:http://www.571xz.com/pdd/changeGoodsCate.htm?goodsId="+bo.getGoodsId();
             }
         }
+        String allCids = pddGoodsUpService.selPddCatsIdsByPddCid(pddCid);
         model.addAttribute("pddCatName",pddGoodsUpService.selPddCatsNamesByPddCid(pddCid));
         model.addAttribute("xzCatName",pddGoodsUpService.selXzCatsName(bo.getGoodsId()));
-        model.addAttribute("allCids",pddGoodsUpService.selPddCatsIdsByPddCid(pddCid));
+        model.addAttribute("allCids",allCids);
         model.addAttribute("pddCid",pddCid);
+
+        //cat_id=3845,233,231,218,234时需要入参服饰成分信息和服饰面料信息
+        boolean flag = false;
+        for (String item : FABRIC_CONTENT_IDS){
+            if (allCids.contains(item)) {
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {//查询服饰面料信息
+            List<FabricContent> fabricContents = pddGoodsUpService.selFabricContent(ps.getUserId());
+            List<GoodsFabric> goodsFabrics = pddGoodsUpService.selGoodsFabric(ps.getUserId());
+            model.addAttribute("fabricContent",fabricContents);
+            model.addAttribute("goodsFabric",goodsFabrics);
+        }
 
 
         /******************** 根据利润模板设置利润 团购价 及 单买价 *******************/

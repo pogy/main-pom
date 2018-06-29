@@ -40,11 +40,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import pdd.beans.GoodsSpec;
-import pdd.beans.LogisticsTemplate;
-import pdd.beans.Sku;
+import pdd.beans.*;
 import pdd.goods.add.GoodsAddRequest;
 import pdd.goods.add.GoodsAddResponse;
+import pdd.goods.fabric.content.get.FabricContentGetRequest;
+import pdd.goods.fabric.content.get.FabricContentGetResponse;
+import pdd.goods.fabric.get.FabricGetRequest;
+import pdd.goods.fabric.get.FabricGetResponse;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetRequest;
 import pdd.goods.logistics.template.get.LogisticsTemplateGetResponse;
 import pdd.goods.spec.get.SpecGetRequest;
@@ -555,6 +557,13 @@ public class PddGoodsUpService {
         request.setDetail_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(descPicUrl)));
         request.setImage_url(bo.getMainImg());
 
+        if (StringUtils.isNotBlank(bo.getGoodsFabricCode())) {
+            request.setFabric(Long.valueOf(bo.getGoodsFabricCode()));
+        }
+        if (StringUtils.isNotBlank(bo.getFabricContentCode())) {
+            request.setFabric_content(Long.valueOf(bo.getFabricContentCode()));
+        }
+
         String token = selAccessToken(userId);
         if (token == null) {
             throw new CustomException("未查询到授权信息");
@@ -695,5 +704,37 @@ public class PddGoodsUpService {
         vo.setSupperTaobaoUrl(shop.getTaobaoUrl());
         itemUpRecordService.addItemUpRecord(vo);
 
+    }
+
+    /**
+     * 查询服饰面料含量信息
+     */
+    public List<FabricContent> selFabricContent(Long userId) {
+        String token = selAccessToken(userId);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        FabricContentGetRequest request = new FabricContentGetRequest();
+        FabricContentGetResponse response = xzPddClient.openClient(token).excute(request);
+        if (!response.getSuccess()) {
+            return null;
+        }
+        return response.getFabricContentList();
+    }
+
+    /**
+     * 查询服饰面料信息
+     */
+    public List<GoodsFabric> selGoodsFabric(Long userId) {
+        String token = selAccessToken(userId);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        FabricGetRequest request = new FabricGetRequest();
+        FabricGetResponse response = xzPddClient.openClient(token).excute(request);
+        if (!response.getSuccess()) {
+            return null;
+        }
+        return response.getGoodsFabricList();
     }
 }

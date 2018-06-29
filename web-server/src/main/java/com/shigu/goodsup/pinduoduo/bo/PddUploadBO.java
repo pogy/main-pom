@@ -76,6 +76,14 @@ public class PddUploadBO implements Serializable{
      * 主图
      */
     private String mainImg;
+    /**
+     * 面料含量
+     */
+    private String fabricContentCode;
+    /**
+     * 面料
+     */
+    private String goodsFabricCode;
 
     public String getTitle() {
         return title;
@@ -203,6 +211,22 @@ public class PddUploadBO implements Serializable{
 
     public void setMainImg(String mainImg) {
         this.mainImg = mainImg;
+    }
+
+    public String getFabricContentCode() {
+        return fabricContentCode;
+    }
+
+    public void setFabricContentCode(String fabricContentCode) {
+        this.fabricContentCode = fabricContentCode;
+    }
+
+    public String getGoodsFabricCode() {
+        return goodsFabricCode;
+    }
+
+    public void setGoodsFabricCode(String goodsFabricCode) {
+        this.goodsFabricCode = goodsFabricCode;
     }
 
     public void canUpload(){
