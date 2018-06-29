@@ -100,6 +100,20 @@ function checkform(){
     //sku数量不能为空
     error_msg='';
 
+    if($('.goodsFabricCode')[0]) {
+        var goodsFabricCode = $('.goodsFabricCode').val();
+        if (!goodsFabricCode) {
+            error_msg = '请选择商品面料';
+        }
+    }
+
+    if($('.fabricContentCode')[0]){
+        var fabricContentCode = $('.fabricContentCode').val();
+        if(!fabricContentCode){
+            error_msg='请选择面料含量';
+        }
+    }
+
     var title = $('#TitleID').val();
     var sellPoint = $('#SubheadingID').val();
     if(!title || !sellPoint){

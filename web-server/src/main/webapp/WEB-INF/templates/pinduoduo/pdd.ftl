@@ -70,6 +70,37 @@
                     </div>
                 </div>
             </div>
+            <#if fabricContent?? && goodsFabric??>
+            <div class="field clearfix">
+                <label class="fl"><em>*</em>商品成分</label>
+                <div class="field-content fl">
+                    <div id="J_module-property" class="module-property module-form pddKeyInfo">
+                        <div class="skin">
+                            <ul class="ul-select">
+                                <li>
+                                    <label class="label-title">商品面料：</label>
+                                    <select name="goodsFabricCode" class="goodsFabricCode">
+                                        <option value=""></option>
+                                        <#list goodsFabric as item>
+                                        <option value="${item.code}">${item.desc}</option>
+                                        </#list>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label class="label-title">面料含量：</label>
+                                    <select name="fabricContentCode" class="fabricContentCode">
+                                        <option value=""></option>
+                                        <#list fabricContent as item>
+                                        <option value="${item.code}">${item.desc}</option>
+                                        </#list>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </#if>
             <!--一般商品属性-->
             <#--<#include "/pinduoudo/parts/normal_prop.ftl"/>-->
             <div class="field clearfix">
