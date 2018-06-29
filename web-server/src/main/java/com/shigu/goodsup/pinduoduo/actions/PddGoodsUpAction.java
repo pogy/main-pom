@@ -169,12 +169,13 @@ public class PddGoodsUpAction {
         if (ps==null) {
             return redirectLoginPdd(request);
         }
+
+        //拿拼多多授权信息并刷新授权 无授权信息或刷新出现异常跳登陆
+        Long pddUid = pddGoodsUpService.selPddUserId(ps.getUserId());
+        if (pddUid == null) {
+            return redirectLoginPdd(request);
+        }
         if (ps.getLoginFromType() != LoginFromType.PDD) {
-            //拿拼多多授权信息并刷新授权 无授权信息或刷新出现异常跳登陆
-            Long pddUid = pddGoodsUpService.selPddUserId(ps.getUserId());
-            if (pddUid == null) {
-                return redirectLoginPdd(request);
-            }
             //使用refreshToken刷新授权
             PddRefreshAuthInfoRequest pddRefreshAuthInfoRequest = new PddRefreshAuthInfoRequest();
             pddRefreshAuthInfoRequest.setThirdUid(pddUid);
