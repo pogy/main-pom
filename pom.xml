@@ -56,6 +56,9 @@
         <daifa-sdk.version>${project.version}</daifa-sdk.version>
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
 
+        <!-- 新版sdk-->
+        <pinduoduo-sdk.version>0.0.1-SNAPSHOT</pinduoduo-sdk.version>
+
 
 
         <spring.version>4.3.9.RELEASE</spring.version>

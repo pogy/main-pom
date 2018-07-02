@@ -2,6 +2,7 @@ package com.shigu.main4.monitor.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.vo.*;
 
 import java.util.Date;
@@ -36,12 +37,20 @@ public interface ItemUpRecordService {
      * @return
      */
     LastUploadedVO selLastUpByIds(Long userId, Long supperGoodsId);
-
     /**
-     * 查询已上传的宝贝
-     * @param userId 用户ID
-     * @return 已上传的宝贝分页信息
+     * 查最后一次上传的时间
+     * @param userId
+     * @param supperGoodsId
+     * @return
      */
+    LastUploadedVO selLastUpByIds(Long userId, Long supperGoodsId,GoodsUploadFlagEnum flag);
+
+
+        /**
+         * 查询已上传的宝贝
+         * @param userId 用户ID
+         * @return 已上传的宝贝分页信息
+         */
     ShiguPager<OnekeyRecoreVO> uploadedItems(Long userId, String target, String keyword, Date fromDate, Date toDate,
                                              int pageNo, int pageSize);
 
