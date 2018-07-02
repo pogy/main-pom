@@ -195,6 +195,11 @@ function checkform(){
         error_msg='主图不存在;';
     }
 
+    //检测描述图是否存在
+    if(!$('.long-img li')[0]){
+        error_msg='描述图不存在;';
+    }
+
     var postage_id = $('#J_Logistics').find('#J_deliverTemplate').val();
     if(!postage_id){
         error_msg='请选择运费模板';
