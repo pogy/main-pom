@@ -200,7 +200,7 @@
             <div class="field clearfix">
                 <label class="fl"><em>*</em>物流重量</label>
                 <div class="field-content fl">
-                    <input type="text" id="goodsWeight" name="goodsWeight" size="15" value="1" class="text text-weight notBeEmpty" data-error-title='物流重量'>
+                    <input type="text" id="goodsWeight" name="goodsWeight" size="15" value="1" class="text text-weight notBeEmpty" data-error-title='物流重量' disabled>
                     <span class="pri">kg</span>
                 </div>
             </div>
