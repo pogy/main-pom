@@ -840,7 +840,7 @@ $(function(){
             layer.close(imgLay);
             imgUrl = $(this).find("img").attr("src");
             imgHtml += '<li data-index="'+ descImgNum +'" class="has-media">\n' +
-                        '<input type="hidden" class="picUrl" name="descPicUrl[]" id="picurl'+ descImgNum +'" value="'+ descImgNum +'">\n' +
+                        '<input type="hidden" class="picUrl" name="descPicUrl[]" id="picurl'+ descImgNum +'" value="'+ imgUrl +'">\n' +
                         '<div class="operate">\n' +
                             '<i class="icon iconfont icon-sortleft toleft" title="左移">&lsaquo;</i>\n' +
                             '<i class="icon iconfont icon-sortright toright" title="右移">&rsaquo;</i>\n' +
