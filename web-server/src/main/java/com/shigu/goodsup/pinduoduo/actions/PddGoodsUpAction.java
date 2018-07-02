@@ -572,6 +572,9 @@ public class PddGoodsUpAction {
     @RequestMapping("uploadImg")
     @ResponseBody
     public JSONObject uploadImg (String imgUrl,String tempCode,Integer type,HttpSession session){
+        if (StringUtils.isBlank(imgUrl)) {
+            return JsonResponseUtil.error("图片地址不能为空");
+        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ImgUploadVO vo = null;
         try {
