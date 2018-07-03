@@ -347,7 +347,7 @@ public class ShopIndexDataService {
         BoolQueryBuilder downloadQb= QueryBuilders.boolQuery();
         downloadQb.must(QueryBuilders.rangeQuery("daiTime").gte(startTime));
         downloadQb.must(QueryBuilders.termQuery("supperStoreId",shopId));
-        downloadQb.must(QueryBuilders.termQuery("flag","imgzip"));
+        //downloadQb.must(QueryBuilders.termQuery("flag","imgzip"));
 
         downloadsSrb.setQuery(downloadQb);
         downloadsSrb.setSize(0);
@@ -372,7 +372,7 @@ public class ShopIndexDataService {
             BoolQueryBuilder goodsQb= QueryBuilders.boolQuery();
             goodsQb.must(QueryBuilders.rangeQuery("daiTime").gte(startTime));
             goodsQb.must(QueryBuilders.termsQuery("supperGoodsId",goodsIds.toArray(new Long[goodsIds.size()])));
-            goodsQb.must(QueryBuilders.termQuery("flag","imgzip"));
+            //goodsQb.must(QueryBuilders.termQuery("flag","imgzip"));
 
             TopHitsBuilder topHitsBuilder = AggregationBuilders.topHits("daiTimeSort").setSize(1).addSort(SortBuilders.fieldSort("daiTime").order(SortOrder.DESC)).setFetchSource(true);
             goodsSrb.setQuery(goodsQb);
