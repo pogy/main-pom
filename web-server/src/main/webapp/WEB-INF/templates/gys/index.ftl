@@ -132,37 +132,6 @@ var webSite = '${webSite!}';
         </div>
         <div class="pdBdBox">
             <div class="readDownDataBox">
-                <h2>一周访问排行榜</h2>
-                <div class="weekReadRank">
-                    <div class="head">
-                        <ul class="clearfix">
-                            <li class="pic">图片</li>
-                            <li class="goods">商品</li>
-                            <li class="readNum">浏览次数</li>
-                            <li class="lastReadTime">最后浏览时间</li>
-                        </ul>
-                    </div>
-                    <#if (weekReadList?size) gt 0>
-                    <div class="body">
-                        <#list weekReadList as item>
-                        <ul class="clearfix">
-                            <li class="pic">
-                                <img src="${item.imgSrc!}_80x80.jpg">
-                            </li>
-                            <li class="goods"><a href="//www.571xz.com/item.htm?id=${item.goodsId!}" target="_blank" class="fc3 ellip" title="${item.title!}">${item.title!}</a></li>
-                            <li class="readNum">${item.readNum!}</li>
-                            <li class="lastReadTime">${item.lastReadTime!}</li>
-                        </ul>
-                        </#list>
-                    </div>
-                    <#else>
-                    <div class="empty">暂无数据！</div>
-                    </#if>
-                </div>
-            </div>
-        </div>
-        <div class="pdBdBox">
-            <div class="readDownDataBox">
                 <h2>一周下载排行榜</h2>
                 <div class="weekDownlaodRank">
                     <div class="head">
@@ -183,6 +152,37 @@ var webSite = '${webSite!}';
                             <li class="goods"><a href="//www.571xz.com/item.htm?id=${item.goodsId!}" target="_blank" class="fc3 ellip" title="${item.title!}">${item.title!}</a></li>
                             <li class="downNum">${item.downNum!}</li>
                             <li class="lastDownTime">${item.lastDownTime!}</li>
+                        </ul>
+                        </#list>
+                    </div>
+                    <#else>
+                    <div class="empty">暂无数据！</div>
+                    </#if>
+                </div>
+            </div>
+        </div>
+        <div class="pdBdBox">
+            <div class="readDownDataBox">
+                <h2>访问排行榜</h2>
+                <div class="weekReadRank">
+                    <div class="head">
+                        <ul class="clearfix">
+                            <li class="pic">图片</li>
+                            <li class="goods">商品</li>
+                            <li class="readNum">浏览次数</li>
+                            <li class="lastReadTime">最后浏览时间</li>
+                        </ul>
+                    </div>
+                    <#if (weekReadList?size) gt 0>
+                    <div class="body">
+                        <#list weekReadList as item>
+                        <ul class="clearfix">
+                            <li class="pic">
+                                <img src="${item.imgSrc!}_80x80.jpg">
+                            </li>
+                            <li class="goods"><a href="//www.571xz.com/item.htm?id=${item.goodsId!}" target="_blank" class="fc3 ellip" title="${item.title!}">${item.title!}</a></li>
+                            <li class="readNum">${item.readNum!}</li>
+                            <li class="lastReadTime">${item.lastReadTime!}</li>
                         </ul>
                         </#list>
                     </div>
