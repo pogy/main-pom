@@ -118,7 +118,7 @@ var webSite = '${webSite!}';
                                 <img src="${item.imgSrc!}_80x80.jpg">
                             </li>
                             <li class="goods"><a href="//www.571xz.com/item.htm?id=${item.goodsId!}" target="_blank" class="fc3 ellip" title="${item.title!}">${item.title!}</a></li>
-                            <li class="lastDownUser"><#if item.userPhone??>${item.userPhone?substring(0, 3)}****${item.userPhone?substring(7, 11)}</#if></li>
+                            <li class="lastDownUser">${item.userPhone!}</li>
                             <li class="downNum">${item.downNum!}</li>
                             <li class="lastDownTime">${item.lastDownTime!}</li>
                         </ul>
