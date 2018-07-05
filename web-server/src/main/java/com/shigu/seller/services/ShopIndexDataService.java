@@ -78,6 +78,8 @@ public class ShopIndexDataService {
     private ShiguStoreCollectMapper shiguStoreCollectMapper;
     @Autowired
     private MemberLicenseMapper memberLicenseMapper;
+    @Autowired
+    GoodsBogusRecordsMapper goodsBogusRecordsMapper;
 
     /**
      * 商户中心,首屏数据
@@ -424,103 +426,6 @@ public class ShopIndexDataService {
     }
 
     /**
-     * 一周访问排行榜数据
-     * @param shopId
-     * @param webSite
-     * @return
-     */
-    public List<WeekReadDataVO> weekReadDataList(Long shopId, String webSite) {
-        List<WeekReadDataVO> weekReadDataVOS = new ArrayList<>();
-
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 0);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.SECOND, 0);
-        startTime.set(Calendar.MILLISECOND, 0);
-        startTime.add(Calendar.DAY_OF_MONTH,-7);
-
-        String startStrTime = DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss");
-
-        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
-        example.setWebSite(webSite);
-        example.createCriteria().andStoreIdEqualTo(shopId);
-        List<ShiguGoodsTiny> goodsList = shiguGoodsTinyMapper.selectFieldsByExample(example, FieldUtil.codeFields("goods_id"));
-
-        List<WeekReadDataVO> topWeekReadDataVOS = new ArrayList<>();
-        if (goodsList != null && !goodsList.isEmpty()) {
-            List<Long> goodsIds = goodsList.stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList());
-            List<List<Long>> partition = Lists.partition(goodsIds, 500);
-
-            for (List<Long> ids : partition){
-                //查浏览量
-                SearchRequestBuilder downloadsSrb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
-                downloadsSrb.setTypes("item");
-                BoolQueryBuilder itemQb= QueryBuilders.boolQuery();
-                itemQb.must(QueryBuilders.rangeQuery("inTime").gte(startStrTime));
-                itemQb.must(QueryBuilders.termsQuery("itemId",ids.toArray(new Long[ids.size()])));
-
-                downloadsSrb.setQuery(itemQb);
-                downloadsSrb.setSize(0);
-                downloadsSrb.setFrom(1);
-                downloadsSrb.addAggregation(AggregationBuilders.terms("itemId").field("itemId").size(30)
-                        .subAggregation(AggregationBuilders.topHits("inTimeSort").setSize(1)
-                                .addSort(SortBuilders.fieldSort("inTime").order(SortOrder.DESC)).setFetchSource(true)));
-                org.elasticsearch.action.search.SearchResponse downloadsSrbResponse = downloadsSrb.execute()
-                        .actionGet();
-                Terms downloadsSrbTerms = downloadsSrbResponse.getAggregations().get("itemId");
-                if (downloadsSrbTerms != null && !downloadsSrbTerms.getBuckets().isEmpty()) {
-                    downloadsSrbTerms.getBuckets().stream().forEach(item->{
-
-                        WeekReadDataVO vo = new WeekReadDataVO();
-                        vo.setGoodsId(String.valueOf(item.getKeyAsNumber().longValue()));
-                        vo.setReadNum(String.valueOf(item.getDocCount()));
-
-                        SearchHit[] daiTimeSorts = ((InternalTopHits) item.getAggregations().get("inTimeSort")).getHits().getHits();
-                        if (daiTimeSorts != null && daiTimeSorts.length >0) {
-                            BrowerRecord browerRecord = JSON.parseObject(daiTimeSorts[0].getSourceAsString(), BrowerRecord.class);
-                            vo.setLastReadTime(DateFormatUtils.format(browerRecord.getInTime(), "yyyy-MM-dd HH:mm:ss"));
-                        }
-
-                        weekReadDataVOS.add(vo);
-                    });
-                }
-            }
-
-            Collections.sort(weekReadDataVOS);
-            topWeekReadDataVOS = weekReadDataVOS.stream().limit(30).collect(Collectors.toList());
-            Map<String, WeekReadDataVO> topDataVOMap = topWeekReadDataVOS.stream().collect(Collectors.toMap(WeekReadDataVO::getGoodsId, Function.identity(), (key1, key2) -> key2));
-
-            if (topDataVOMap != null && !topDataVOMap.isEmpty()) {
-                List<Long> longGoodsIds = topWeekReadDataVOS.stream().map(item -> Long.parseLong(item.getGoodsId())).collect(Collectors.toList());
-
-                ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-                shiguGoodsTinyExample.setWebSite(webSite);
-                shiguGoodsTinyExample.createCriteria().andGoodsIdIn(longGoodsIds);
-                List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, FieldUtil.codeFields("goods_id,pic_url,title"));
-                shiguGoodsTinies.stream().forEach(item -> {
-                    WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
-                    weekReadDataVO.setTitle(item.getTitle());
-                    weekReadDataVO.setImgSrc(item.getPicUrl());
-                });
-
-                ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
-                shiguGoodsSoldoutExample.setWebSite(webSite);
-                shiguGoodsSoldoutExample.createCriteria().andGoodsIdIn(longGoodsIds);
-                List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("goods_id,pic_url,title"));
-                shiguGoodsSoldouts.stream().forEach(item -> {
-                    WeekReadDataVO weekReadDataVO = topDataVOMap.get(String.valueOf(item.getGoodsId()));
-                    weekReadDataVO.setTitle(item.getTitle());
-                    weekReadDataVO.setImgSrc(item.getPicUrl());
-                });
-            }
-
-
-        }
-
-        return topWeekReadDataVOS;
-    }
-
-    /**
      * 一周下载排行榜数据
      * @param shopId
      * @param webSite
@@ -533,9 +438,53 @@ public class ShopIndexDataService {
         startTime.set(Calendar.SECOND, 0);
         startTime.set(Calendar.MILLISECOND, 0);
         startTime.add(Calendar.DAY_OF_MONTH,-7);
-
         return downlaodDataList(shopId,webSite,DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss"));
     }
+
+    /**
+     * 访问排行榜数据
+     * @param shopId
+     * @param webSite
+     * @return
+     */
+    public List<WeekReadDataVO> weekReadDataList(Long shopId, String webSite) {
+        int num=10;
+        List<WeekReadDataVO> weekReadDataVOS = shiguShopMapper.qzIndexCount(shopId, webSite,num);
+        List<Long> gids=weekReadDataVOS.stream().map(weekReadDataVO -> new Long(weekReadDataVO.getGoodsId())).collect(Collectors.toList());
+        Map<Long,GoodsBogusRecords> map=new HashMap<>();
+        if(gids.size()>0){
+            GoodsBogusRecordsExample goodsBogusRecordsExample=new GoodsBogusRecordsExample();
+            goodsBogusRecordsExample.createCriteria().andGoodsIdIn(gids);
+            goodsBogusRecordsExample.setOrderByClause("time desc");
+            goodsBogusRecordsExample.setStartIndex(0);
+            goodsBogusRecordsExample.setEndIndex(1);
+            List<GoodsBogusRecords> brs=goodsBogusRecordsMapper.selectByConditionList(goodsBogusRecordsExample);
+            map=brs.stream().collect(Collectors.toMap(GoodsBogusRecords::getGoodsId,o->o));
+        }
+        Map<Long, GoodsBogusRecords> finalMap = map;
+        weekReadDataVOS.forEach(weekReadDataVO -> {
+            SearchRequestBuilder downloadsSrb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
+            downloadsSrb.setTypes("item");
+            downloadsSrb.setQuery(QueryBuilders.termQuery("itemId",weekReadDataVO.getGoodsId()));
+            downloadsSrb.setSize(num);
+            downloadsSrb.setFrom(0);
+            downloadsSrb.addSort("inTime",SortOrder.DESC);
+            SearchResponse response = downloadsSrb.execute()
+                    .actionGet();
+            if(response.getHits().totalHits()!=0){
+                SearchHit at = response.getHits().getAt(0);
+                BrowerRecord browerRecord = JSON.parseObject(at.getSourceAsString(), BrowerRecord.class);
+                weekReadDataVO.setLastReadTime(DateUtil.dateToString(browerRecord.getInTime(),DateUtil.patternD));
+            }else{
+                GoodsBogusRecords goodsBogusRecords = finalMap.get(new Long(weekReadDataVO.getGoodsId()));
+                if(goodsBogusRecords!=null){
+                    weekReadDataVO.setLastReadTime(DateUtil.dateToString(goodsBogusRecords.getTime(),DateUtil.patternD));
+                }
+            }
+        });
+        return weekReadDataVOS;
+    }
+
 
     /**
      * 获取访问下载数据
@@ -657,6 +606,22 @@ public class ShopIndexDataService {
         LineDataVO readLineDataVO = new LineDataVO();
         readLineDataVO.setTitle("访问");
         readLineDataVO.setDataList(goodsReadStatistics);
+
+        List<String> days=readLineDataVO.getDataList().stream().map(dataListVO -> DateUtil
+                .dateToString(DateUtil.stringToDate(dataListVO.getText(), "yyyy/MM/dd"), DateUtil.patternB))
+                .collect(Collectors.toList());
+
+        List<DataListVO> dataListVOS = shiguShopMapper.qzIndexCountForDay(shopId, webSite, StringUtils.join(days, ","));
+        dataListVOS.forEach(dataListVO -> {
+            String day=DateUtil
+                    .dateToString(DateUtil.stringToDate(dataListVO.getText(),DateUtil.patternB ), "yyyy/MM/dd");
+            readLineDataVO.getDataList().forEach(dataListVO1 -> {
+                if(day.equals(dataListVO1.getText())){
+                    dataListVO1.setValue(dataListVO1.getValue()+dataListVO.getValue());
+                }
+            });
+        });
+
 
         LineDataVO downloadLineDataVO = new LineDataVO();
         downloadLineDataVO.setTitle("下载");
