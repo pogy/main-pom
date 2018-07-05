@@ -83,6 +83,9 @@ public class ConfirmOrderService {
     @Autowired
     private ItemProductProcess itemProductProcess;
 
+    @Autowired
+    private BuyerAddressMapper buyerAddressMapper;
+
     private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
 
     /**
@@ -113,6 +116,69 @@ public class ConfirmOrderService {
         rmCartProductByOrder(itemOrderBO);
         redisIO.del(code);
         return oid;
+    }
+
+
+    public void isAddress(String addressId) throws JsonErrException {
+        if (addressId == null || Strings.isNullOrEmpty(addressId)){
+            throw new JsonErrException("地址为空");
+        }
+        try {
+            Long aid = Long.valueOf(addressId);
+            BuyerAddress buyerAddress = buyerAddressMapper.selectByPrimaryKey(aid);
+            if (buyerAddress != null){
+                return;
+            }
+        } catch (NumberFormatException e) {
+            BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
+            if (buyerAddressVO == null) {
+                throw new JsonErrException("下单失败，未查询到收货地址");
+            }
+//            String provs = redisIO.get(ORDER_EXPRESS_ADDRESS,String.class);
+//            List<ProvVo> provVoList = com.alibaba.fastjson.JSONArray.parseArray(provs, ProvVo.class);
+//            if (provVoList == null || provVoList.size()<=0)
+//                throw new JsonErrException("请刷新页面重试");
+//            int b = 0;
+//            for (ProvVo provVo : provVoList) {
+//                if (provVo.getProvId().equals(buyerAddressVO.getProvId()))
+//                    b++;
+//                List<CityVo> cityVos = provVo.getCitys();
+//                for (CityVo cityVo : cityVos) {
+//                    if (cityVo.getCityId().equals(buyerAddressVO.getCityId()))
+//                        b++;
+//                    List<TownVo> townVos = cityVo.getCountys();
+//                    if (buyerAddressVO.getTownId()!=null && townVos!= null){
+//                        for (TownVo townVo : townVos) {
+//                            if (townVo.getCountyId().equals(buyerAddressVO.getTownId()))
+//                                b++;
+//                        }
+//                    }
+//                }
+//            }
+//            if (buyerAddressVO.getTownId() != null){
+//                if (b!=3)
+//                    throw new JsonErrException("地址错误请刷新页面重试");
+//            }else {
+//                if (b!=2){
+//                    throw  new JsonErrException("地址错误请刷新页面重试");
+//                }
+//            }
+            ProvinceVO provVo = orderConstantService.selProvByPid(buyerAddressVO.getProvId());
+            if (provVo==null){
+                throw new JsonErrException("省地址错误请检查");
+            }
+            CityVO cityVO = orderConstantService.selCityByCid(buyerAddressVO.getCityId());
+            if (cityVO==null){
+                throw new JsonErrException("市地址错误请检查");
+            }
+            if (buyerAddressVO.getTownId()!=null){
+                TownVO townVO = orderConstantService.selTownByTid(buyerAddressVO.getTownId());
+                if (townVO==null){
+                    throw new JsonErrException("区域地址错误请检查");
+                }
+            }
+        }
+        return;
     }
 
     /**

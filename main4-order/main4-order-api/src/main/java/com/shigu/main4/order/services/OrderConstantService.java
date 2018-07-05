@@ -3,6 +3,7 @@ package com.shigu.main4.order.services;
 import com.shigu.main4.order.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单常量资源管理
@@ -94,4 +95,7 @@ public interface OrderConstantService {
     CityVO selCityByCid(Long cid);
 
     TownVO selTownByTid(Long tid);
+
+    void initAddress();
+
 }

@@ -239,8 +239,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         try {
             Long aid = Long.valueOf(logistics.getAddressId());
             buyerAddress = buyerAddressMapper.selectByPrimaryKey(aid);
+            if (buyerAddress == null){
+                throw new OrderException("地址有变动，请重新选择");
+            }
             buyerAddress.setAddress(buyerAddress.getAddress());
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
             if (buyerAddressVO == null) {
                 throw new OrderException("下单失败，未查询到收货地址");
