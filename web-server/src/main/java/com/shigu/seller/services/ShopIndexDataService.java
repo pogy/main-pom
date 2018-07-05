@@ -2,13 +2,19 @@ package com.shigu.seller.services;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.google.protobuf.Internal;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.beans.GoodsBogusRecords;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.GoodsBogusRecordsExample;
+import com.opentae.data.mall.examples.MemberUserExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MiUtil;
 import com.shigu.main4.monitor.enums.FlowType;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.services.ShopBrowerService;
@@ -21,16 +27,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregator;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
@@ -38,16 +38,13 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.aggregations.metrics.tophits.InternalTopHits;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHitsBuilder;
-import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.jsoup.select.Collector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -80,6 +77,8 @@ public class ShopIndexDataService {
     private MemberLicenseMapper memberLicenseMapper;
     @Autowired
     GoodsBogusRecordsMapper goodsBogusRecordsMapper;
+    @Autowired
+    MemberUserMapper memberUserMapper;
 
     /**
      * 商户中心,首屏数据
@@ -403,27 +402,32 @@ public class ShopIndexDataService {
                 }
             }
 
-            if (downloadcUserIds != null && !downloadcUserIds.isEmpty()) {
+            if (!downloadcUserIds.isEmpty()) {
 
-                MemberLicenseExample memberLicenseExample = new MemberLicenseExample();
-                memberLicenseExample.createCriteria().andLicenseTypeEqualTo(4).andUserIdIn(downloadcUserIds);
-                List<MemberLicense> memberLicenses = memberLicenseMapper.selectByExample(memberLicenseExample);
-                Map<String, String> licenceMap = new HashMap<>();
-                memberLicenses.stream().forEach(item->{
-                    licenceMap.put(String.valueOf(item.getUserId()),item.getContext());
-                });
+                MemberUserExample memberUserExample=new MemberUserExample();
+                memberUserExample.createCriteria().andUserIdIn(downloadcUserIds);
+                List<MemberUser> users=memberUserMapper.selectByExample(memberUserExample);
+                Map<String,String> mmap=users.stream().collect(Collectors.toMap(o -> o.getUserId().toString(), MemberUser::getLoginPhone));
 
                for(Map.Entry<String,String> entry : goodsIdUidMap.entrySet()){
-                   String context = licenceMap.get(entry.getValue());
-                   todayDownloadMap.get(entry.getKey()).setUserPhone(context.substring(0,3)+"****"+context.substring(7));
+                   String context = mmap.get(entry.getValue());
+                   DownlaodDataVO downlaodDataVO = todayDownloadMap.get(entry.getKey());
+                   if(downlaodDataVO==null){
+                       continue;
+                   }
+                   if(MiUtil.isPhone(context)){
+                       downlaodDataVO.setUserPhone(MiUtil.toPhoneMi(context));
+                   }else{
+                       downlaodDataVO.setUserPhone(MiUtil.toMi(context));
+                   }
                }
-
             }
-
         }
-
         return todayDownlaodDataVOS;
     }
+
+
+
 
     /**
      * 一周下载排行榜数据
