@@ -294,7 +294,14 @@ public class ShopIndexDataService {
 
         EachAllDataVO todayViewDataVO = new EachAllDataVO();
         todayViewDataVO.setText("今日访问");
-        todayViewDataVO.setNum(String.valueOf(todayViewNum));
+
+        List<DataListVO> dataListVOS = shiguShopMapper
+                .qzIndexCountForDay(shopId, webSite, DateUtil.dateToString(new Date(), DateUtil.patternB));
+        if(dataListVOS.size()>0){
+            todayViewDataVO.setNum(String.valueOf(todayViewNum+dataListVOS.get(0).getValue()));
+        }else{
+            todayViewDataVO.setNum(String.valueOf(todayViewNum));
+        }
 
         EachAllDataVO todayDownloadDataVO = new EachAllDataVO();
         todayDownloadDataVO.setText("今日下载");
