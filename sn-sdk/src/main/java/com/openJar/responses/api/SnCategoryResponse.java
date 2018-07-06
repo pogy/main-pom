@@ -8,6 +8,16 @@ import java.util.List;
 public class SnCategoryResponse extends Response {
     private List<CategoryQueryResponse.CategoryQuery> categoryQueryList;
 
+    private String totalSize;
+
+    public String getTotalSize() {
+        return totalSize;
+    }
+
+    public void setTotalSize(String totalSize) {
+        this.totalSize = totalSize;
+    }
+
     public List<CategoryQueryResponse.CategoryQuery> getCategoryQueryList() {
         return categoryQueryList;
     }

@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-
+    <mvc:annotation-driven></mvc:annotation-driven>
     <context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*">
     </context:component-scan>
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -28,7 +28,7 @@
     <bean id="exceptionResolver"
           class="com.shigu.resolver.ExceptionResolver">
     </bean>
-    <import resource="spring-database/jd.xml"/>
+    <import resource="spring-database/sn.xml"/>
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
     </bean>
@@ -48,16 +48,16 @@
         </property>
     </bean>
 
-    <bean id="workerMan" class="com.shigu.jd.img.WorkerMan" >
-        <!--每个任务最大执行时间 单位秒-->
-        <property name="timeOut" value="600" />
-        <!--队列最大长度默认200-->
-        <property name="maxQueue" value="200" />
-        <!--线程池初始线程数-->
-        <property name="threadNum" value="8" />
-        <!--单用户最大任务数-->
-        <property name="userMaxNum" value="10" />
-    </bean>
+    <!--<bean id="workerMan" class="com.shigu.jd.img.WorkerMan" >-->
+        <!--&lt;!&ndash;每个任务最大执行时间 单位秒&ndash;&gt;-->
+        <!--<property name="timeOut" value="600" />-->
+        <!--&lt;!&ndash;队列最大长度默认200&ndash;&gt;-->
+        <!--<property name="maxQueue" value="200" />-->
+        <!--&lt;!&ndash;线程池初始线程数&ndash;&gt;-->
+        <!--<property name="threadNum" value="8" />-->
+        <!--&lt;!&ndash;单用户最大任务数&ndash;&gt;-->
+        <!--<property name="userMaxNum" value="10" />-->
+    <!--</bean>-->
 
     <mvc:interceptors>
         <!-- IP密度拦截器 - 发送短信-->
@@ -74,6 +74,7 @@
                 <property name="ipWhiteList" >
                     <list>
                         <value>192.168.1.193</value>
+                        <value>192.168.1.109</value>
                     </list>
                 </property>
             </bean>

@@ -1,7 +1,6 @@
 package com.openJar.beans;
 
 import com.openJar.utils.OpenBean;
-import com.suning.api.entity.item.ItemAddRequest;
 
 public class SnGood extends OpenBean {
     //苏宁采购目录编码

@@ -32,6 +32,6 @@ public class SnItemAddRequest extends Request<SnItemAddResponse> {
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/itemAdd.json";
     }
 }

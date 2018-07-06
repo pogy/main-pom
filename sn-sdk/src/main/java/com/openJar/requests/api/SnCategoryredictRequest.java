@@ -24,6 +24,6 @@ public class SnCategoryredictRequest extends Request<SnCategoryredictResponse>{
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/snCategoryredict.json";
     }
 }

@@ -17,8 +17,8 @@ public class SnSdkClient {
         return client.excute(request);
     }
 
-    public <T extends SuningRequest<O>, O extends SuningResponse> O testSend(T request, String snAppkey, String snSecret) throws SuningApiException {
-        DefaultSuningClient client = new DefaultSuningClient(rest_url, snAppkey, snSecret, "json");
+    public <T extends SuningRequest<O>, O extends SuningResponse> O testSend(T request, String snAppkey, String snSecret,String accessToken) throws SuningApiException {
+        DefaultSuningClient client = new DefaultSuningClient(rest_url, snAppkey, snSecret,accessToken, "json");
         return client.excute(request);
     }
 }

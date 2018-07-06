@@ -1,5 +1,6 @@
 package com.shigu.goodsup.sn.actions;
 
+import com.openJar.beans.SnToken;
 import com.openJar.beans.SnTokenInfo;
 import com.openJar.responses.api.SnAuthInfoResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
@@ -13,6 +14,7 @@ import com.shigu.goodsup.sn.service.SnCategoryService;
 import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
 import com.shigu.goodsup.sn.vo.SnPageItem;
+import com.shigu.goodsup.sn.vo.SnShowDataVo;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.session.main4.PersonalSession;
@@ -20,6 +22,8 @@ import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
 import com.suning.api.entity.custom.CategoryredictGetResponse;
+import com.suning.api.entity.custom.NewbrandQueryResponse;
+import com.suning.api.entity.item.CategoryQueryResponse;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -33,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +67,7 @@ public class SnGoodsUpAction {
     @Value("${sn.redirect_uri}")
     private String SN_redirect_uri;
 
-    private static final String SN_Outh_URL = "https://open.suning.com/api/oauth/authorize?response_type=code&client_id=SN_appkey&redirect_uri=SN_redirect_uri&itemcode=1";
+    private static final String SN_Outh_URL = "https://open.suning.com/api/oauth/authorize?response_type=code&client_id=SN_appkey&redirect_uri=SN_redirect_uri&itemcode=4811";
 
     /**
      * 上传页面
@@ -81,12 +86,15 @@ public class SnGoodsUpAction {
             if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
                 throw new CustomException("档口不支持代理功能");
             }
-            List<CategoryredictGetResponse.CategoryList> list=snCategoryService.getCategoryredict(SnUsername);
-            if(list.size()==0){
-                throw new CustomException("该商品暂不支持上传");
-            }else if(list.size()==1){
-                SnPageItem snPageItem=new SnPageItem();
-                snPageItem=snUpItemService.findGoods(itemId);
+            int total = Integer.valueOf(snCategoryService.getCategory(SnUsername).getTotalSize());
+            if(total==0){
+                throw new CustomException("不是苏宁商家");
+            }
+            List<CategoryQueryResponse.CategoryQuery> categoryQueries = snCategoryService.getCategory(SnUsername, itemId).getCategoryQueryList();
+            if(categoryQueries.size()!=1){
+                return "suning/catChoose";
+            }else {
+                SnPageItem snPageItem=snUpItemService.findGoods(itemId);
                 if(snPageItem==null){
                     map.put("errmsg","商品不存在");
                     return "suning/uperror";
@@ -97,9 +105,26 @@ public class SnGoodsUpAction {
                 if(snPageItem.getItem().getSellPoint()!=null){
                     snPageItem.setSellPointLength(snPageItem.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
                 }
+                SnShowDataVo snShowDataVo=new SnShowDataVo();
+                snShowDataVo.setUsername(SnUsername);
+                snShowDataVo.setSnPageItem(snPageItem);
+                snShowDataVo.setDeliveyList(snUpItemService.selPostModel(SnUsername));
+                snShowDataVo.setStoreCats(snUpItemService.selShopCats(SnUsername));
+                List<NewbrandQueryResponse.QueryNewbrand> brands= snUserInfoService.getBrand(SnUsername,categoryQueries.get(0).getCategoryCode());
+                if(brands==null){
+                    throw new CustomException("没有苏宁品牌,暂不支持上传");
+                }
+                snShowDataVo.setProps(snUpItemService.selProps(1L,SnUsername,snPageItem.getItem(),brands));
+
+                SnToken snToken=new SnToken();
+                snToken.setUsername(SnUsername);
+                snToken.setCreateTime(new Date());
+                String tokenStr=Opt3Des.encryptPlainData(JSONObject.fromObject(snToken).toString());
+                snShowDataVo.setToken(tokenStr);
+                map.put("allData",snShowDataVo);
+                map.put("id",itemId);
+                map.put("sn_yj_sn_session",ps);
                 return "suning/sn";
-            }else{
-                return "suning/catChoose";
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +151,7 @@ public class SnGoodsUpAction {
     @RequestMapping("callback")
     public String SnCallback(String code, HttpServletRequest request, HttpSession session) throws Main4Exception{
 //        System.out.println(code);
-        JSONObject jsonObject = JSONObject.fromObject(Opt3Des.decryptPlainData(code));
+        JSONObject jsonObject = JSONObject.fromObject(Opt3Des.decryptPlainData(code.replace(" ", "+")));
         SnAuthInfoResponse snAuthInfoResponse = (SnAuthInfoResponse) JSONObject.toBean(jsonObject, SnAuthInfoResponse.class);
         SnTokenInfo snTokenInfo = snAuthInfoResponse.getData();
         Subject currentUser = SecurityUtils.getSubject();

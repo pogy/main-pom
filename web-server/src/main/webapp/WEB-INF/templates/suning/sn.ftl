@@ -33,27 +33,27 @@
     <div class="list-box">
 
     </div>
-    <script>
-        $(function(){
-            var goodsId = '${id!}';
-            $.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){
-                if(resp.result == 'success'){
-                    var html_ = '';
-                    $.each(resp.attrList, function(key, item){
-                        html_ += '<div class="list clearfix">\n' +
-                        '            <label class="name-con">' + item.name + '：</label>\n' +
-                        '            <div class="list-con">' + item.value + '</div>\n' +
-                        '        </div>'
-                    })
-                    $('.r-box .list-box').html(html_)
-                }
-            })
+    <#--<script>-->
+        <#--$(function(){-->
+            <#--var goodsId = '${id!}';-->
+            <#--$.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){-->
+                <#--if(resp.result == 'success'){-->
+                    <#--var html_ = '';-->
+                    <#--$.each(resp.attrList, function(key, item){-->
+                        <#--html_ += '<div class="list clearfix">\n' +-->
+                        <#--'            <label class="name-con">' + item.name + '：</label>\n' +-->
+                        <#--'            <div class="list-con">' + item.value + '</div>\n' +-->
+                        <#--'        </div>'-->
+                    <#--})-->
+                    <#--$('.r-box .list-box').html(html_)-->
+                <#--}-->
+            <#--})-->
 
-            $('.r-box .opt-btn').click(function(){
-                $(this).siblings('.list-box').slideToggle();
-            });
-        });
-    </script>
+            <#--$('.r-box .opt-btn').click(function(){-->
+                <#--$(this).siblings('.list-box').slideToggle();-->
+            <#--});-->
+        <#--});-->
+    <#--</script>-->
 </div>
 <div id="page">
     <form id="mainform" name="mainform" action="" method="post" enctype="multipart/form-data">
@@ -72,15 +72,15 @@
                 </div>
             </div>
             <!--一般商品属性-->
-            <#include "/jingdong/parts/normal_prop.ftl"/>
+            <#include "/suning/parts/normal_prop.ftl"/>
             <div class="field clearfix">
                 <label class="fl">
                     <em>*</em>宝贝标题</label>
-                <#assign item=allData.items.item>
+                <#assign item=allData.snPageItem.item>
                 <div class="field-content fl">
                     <input type="text" id="TitleID" class="text text-long notBeEmpty" data-error-title='宝贝标题'
                            name="title" value="${item.title}">
-                    <span id="J_TitleCountDownTip" class="input-count"><span>${allData.items.titleLength}</span>/60</span>
+                    <span id="J_TitleCountDownTip" class="input-count"><span>${allData.snPageItem.titleLength}</span>/60</span>
                     <input type="hidden" id="nav_title" data-feed="err_nav_title">
                     <div id="err_nav_title" style="display:none">
                         <div class="errors">
@@ -97,7 +97,7 @@
                 <label class="fl">商品标语</label>
                 <div class="field-content fl">
                     <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="提示：如果同时设置了促销宣传语，此商品标语在前台将会被促销宣传语覆盖！">${item.sellPoint!}</textarea>
-                    <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.items.sellPointLength}</span>/45</span>
+                    <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.snPageItem.sellPointLength}</span>/45</span>
                     <input type="hidden" id="nav_subTitle" data-feed="err_nav_subTitle">
                     <div id="err_nav_subTitle" style="display:none">
                         <div class="errors">
@@ -125,7 +125,7 @@
                 </div>
             </div>
             <!--sku信息-->
-            <#include "/jingdong/parts/sku.ftl"/>
+            <#include "/suning/parts/sku.ftl"/>
             <div class="field clearfix">
                 <label class="fl"><em>*</em>宝贝数量</label>
                 <div class="field-content fl">
@@ -136,7 +136,7 @@
             <div class="field clearfix">
                 <label class="fl">货号</label>
                 <div class="field-content fl">
-                    <input type="text" class="text text-bmlong notBeEmpty" data-error-title='货号' name="goodsNo" size="64" value="${allData.items.huohao!}">
+                    <input type="text" class="text text-bmlong notBeEmpty" data-error-title='货号' name="goodsNo" size="64" value="${allData.snPageItem.huohao!}">
                 </div>
             </div>
             <div class="field clearfix">
@@ -255,7 +255,7 @@
                             <ul class="J_ShopCatList" id="J_ShopCatList">
                                 <#if allData.storeCats??>
                                     <#assign cats=allData.storeCats>
-                                    <#include "/jingdong/parts/storecat.ftl">
+                                    <#include "/suning/parts/storecat.ftl">
                                 </#if>
                             </ul>
                         </div>
@@ -271,7 +271,7 @@
                                 <#if allData.deliveyList??>
                                     <#assign deliveyList=allData.deliveyList>
                                     <#assign erverDyTemplateId=allData.erverDyTemplateId>
-                                    <#include "/jingdong/parts/deliver.ftl">
+                                    <#include "/suning/parts/deliver.ftl">
                                 </#if>
                             </div>
                         </div>
@@ -300,7 +300,7 @@
                 <div id="commit" class="floatbar rootStruct J_FlexSubmitBar">
                     <a href="javascript:;" id="J_LiRun">利润设置</a>
                     <span>|</span>利润：
-                    <input type="text" id="curlirun" class="lr-txt" value="${allData.items.profit}">元
+                    <input type="text" id="curlirun" class="lr-txt" value="${allData.snPageItem.profit}">元
                     <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue"
                            value="发 布" data-name="event_submit_do_publish"></div>
                 <input type="hidden" id="token" name="_csrf"
@@ -309,13 +309,13 @@
                 <input type="hidden" name="sizePid" value="${allData.props.sizePid}">
                 <input type="hidden" id="cid" name="cid" value="${allData.props.cid}">
                 <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
-                <input type="hidden" id="uid" name="shopUid" value="${allData.items.storeId}">
-                <input type="hidden" id="mid" name="mid" value="${allData.items.goodsId}">
+                <input type="hidden" id="uid" name="shopUid" value="${allData.snPageItem.storeId}">
+                <input type="hidden" id="mid" name="mid" value="${allData.snPageItem.goodsId}">
                 <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
                 <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
                 <input type="hidden" id="getToken" name="getToken"
-                       value="uid=-${allData.jdUserId}&mid=${allData.items.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
+                       value="uid=-${allData.jdUserId}&mid=${allData.snPageItem.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
             </div>
     </form>
 </div>

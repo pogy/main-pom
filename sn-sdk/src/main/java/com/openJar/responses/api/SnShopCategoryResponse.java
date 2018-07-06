@@ -1,18 +1,19 @@
 package com.openJar.responses.api;
 
+import com.openJar.beans.SnShopCategory;
 import com.openJar.responses.Response;
 import com.suning.api.entity.shop.ShopcategoryQueryResponse;
 
 import java.util.List;
 
 public class SnShopCategoryResponse extends Response{
-    private List<ShopcategoryQueryResponse.ShopCategory> shopCategories;
+    private List<SnShopCategory> snShopCategories;
 
-    public List<ShopcategoryQueryResponse.ShopCategory> getShopCategories() {
-        return shopCategories;
+    public List<SnShopCategory> getSnShopCategories() {
+        return snShopCategories;
     }
 
-    public void setShopCategories(List<ShopcategoryQueryResponse.ShopCategory> shopCategories) {
-        this.shopCategories = shopCategories;
+    public void setSnShopCategories(List<SnShopCategory> snShopCategories) {
+        this.snShopCategories = snShopCategories;
     }
 }

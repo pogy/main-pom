@@ -56,7 +56,7 @@ public class SnSession implements Serializable {
     /**
      * 用户类型
      */
-	private Integer module;
+	private String module;
 
     /**
      * 商家编码
@@ -135,12 +135,12 @@ public class SnSession implements Serializable {
 		return this.custnum;
 	}
 
-	public void setModule(Integer module) {
-		this.module = module;
+	public String getModule() {
+		return module;
 	}
 
-	public Integer getModule() {
-		return this.module;
+	public void setModule(String module) {
+		this.module = module;
 	}
 
 	public void setVendorCode(Long vendorCode) {

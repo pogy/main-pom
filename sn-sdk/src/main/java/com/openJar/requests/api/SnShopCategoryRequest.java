@@ -22,6 +22,6 @@ public class SnShopCategoryRequest extends Request<SnShopCategoryResponse> {
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/getShopCategory.json";
     }
 }

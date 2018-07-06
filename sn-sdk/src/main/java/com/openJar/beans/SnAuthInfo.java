@@ -10,7 +10,7 @@ public class SnAuthInfo extends OpenBean {
     private String scope;//授权范围
     private String error;
     private String errorDescription;
-    private int state;
+    private String state;
 
     public Long getUserid() {
         return userid;
@@ -64,15 +64,15 @@ public class SnAuthInfo extends OpenBean {
         return errorDescription;
     }
 
-    public void setErrorDescription(String errorDescription) {
-        this.errorDescription = errorDescription;
-    }
-
-    public int getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(String state) {
         this.state = state;
+    }
+
+    public void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
     }
 }

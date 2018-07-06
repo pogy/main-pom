@@ -33,7 +33,7 @@ public class SnAuthService {
         String entityString = null;
         try {
             HttpEntity entity=HttpClientUtil.excuteWithEntityRes(url);
-            entityString= EntityUtils.toString(entity);
+            entityString= EntityUtils.toString(entity,"GBK");
         }catch (Exception e){
             return null;
         }
@@ -73,8 +73,10 @@ public class SnAuthService {
         snTokenInfo.setAccessToken(jsonObject.getString("access_token"));
         snTokenInfo.setCustnum(jsonObject.getLong("custnum"));
         snTokenInfo.setExpiresIn(jsonObject.getInt("expires_in"));
-        snTokenInfo.setModule(jsonObject.getInt("module"));
-        snTokenInfo.setRefreshToken(jsonObject.getString("refresh_token"));
+        snTokenInfo.setModule(jsonObject.getString("module"));
+        if(jsonObject.get("refresh_token")!=null){
+            snTokenInfo.setRefreshToken(jsonObject.getString("refresh_token"));
+        }
         snTokenInfo.setSuningUserName(jsonObject.getString("suning_user_name"));
         snTokenInfo.setVendorCode(jsonObject.getLong("vendorCode"));
         snTokenInfo.setTokenType(jsonObject.getString("token_type"));

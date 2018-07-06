@@ -18,7 +18,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <bean id="jd_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="sn_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
         <!--<property name="username" value="admin" />-->
@@ -56,27 +56,27 @@
         <property name="filters" value="stat" />
     </bean>
 
-    <bean id="tae_jd_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+    <bean id="tae_sn_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
         <property name="plugins">
             <list>
                 <ref bean="mapperInterceptor"></ref>
             </list>
         </property>
-        <property name="dataSource" ref="jd_dataSource"></property>
+        <property name="dataSource" ref="sn_dataSource"></property>
         <!--<property name="configLocation" value="classpath:/mybatis-config.xml"></property>-->
-        <property name="mapperLocations" value="classpath*:/jd/mybatis/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.jd"></property>
+        <property name="mapperLocations" value="classpath*:/sn/mybatis/*.xml" />
+        <property name="typeAliasesPackage" value="com.opentae.data"></property>
     </bean>
 
     <bean id="txManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="jd_dataSource" />
+        <property name="dataSource" ref="sn_dataSource" />
     </bean>
 
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage"
-                  value= "com/opentae/data/jd/interfaces" />
-        <property name= "sqlSessionFactoryBeanName" value="tae_jd_sqlSessionFactory" />
+                  value= "com/opentae/data/interfaces" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_sn_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
 </beans>

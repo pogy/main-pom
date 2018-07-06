@@ -2,7 +2,7 @@
     <div id="J_SellProperties" class="sku-style">
         <div>
             <#if (allData.props.color)??>
-                <#include "/jingdong/parts/color.ftl">
+                <#include "/suning/parts/color.ftl">
                     <#assign color=allData.props.color>
                     <#assign selected_color={}>
                     <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">

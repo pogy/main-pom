@@ -39,11 +39,11 @@
                     </#if>
                     <#list allData.props.properties  as prop >
                         <#if prop.type.value=="input">
-                                <#include "/jingdong/parts/input.ftl" />
+                                <#include "/suning/parts/input.ftl" />
                             <#elseif prop.type.value=="select">
-                                <#include "/jingdong/parts/select.ftl" />
+                                <#include "/suning/parts/select.ftl" />
                             <#elseif prop.type.value=="checkbox">
-                                <#include "/jingdong/parts/checkbox.ftl" />
+                                <#include "/suning/parts/checkbox.ftl" />
                         </#if>
                     </#list>
                 </ul>
@@ -55,11 +55,11 @@
                     <ul>
                         <#list allData.props.specification  as prop >
                             <#if prop.type.value=="input">
-                                <#include "/jingdong/parts/input.ftl" />
+                                <#include "/suning/parts/input.ftl" />
                             <#elseif prop.type.value=="select">
-                                <#include "/jingdong/parts/select.ftl" />
+                                <#include "/suning/parts/select.ftl" />
                             <#elseif prop.type.value=="checkbox">
-                                <#include "/jingdong/parts/checkbox.ftl" />
+                                <#include "/suning/parts/checkbox.ftl" />
                             </#if>
                         </#list>
                     </ul>

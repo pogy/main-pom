@@ -28,6 +28,7 @@ public class HttpClientUtil {
         HttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
         httpPost.setHeader("Accept-Charset","utf-8");
+        httpPost.setHeader("Content-type","application/x-www-form-urlencoded");
         return client.execute(httpPost).getEntity();
     }
 

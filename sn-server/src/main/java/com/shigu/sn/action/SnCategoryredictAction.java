@@ -22,12 +22,22 @@ public class SnCategoryredictAction {
     @Autowired
     private SnGoodsService snGoodsService;
 
+    @RequestMapping("snCategorySize")
+    @ResponseBody
+    public JSONObject getCategorySize(SnCategoryRequest request) throws SuningApiException{
+        SnCategoryResponse response = new SnCategoryResponse();
+        response.setSuccess(true);
+        response.setTotalSize(snGoodsService.getCategorySize(request.getUsername()));
+        return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
+    }
+
     @RequestMapping("snCategory")
     @ResponseBody
     public JSONObject getCategory(SnCategoryRequest request) throws SuningApiException{
         SnCategoryResponse response = new SnCategoryResponse();
         response.setSuccess(true);
-        response.setCategoryQueryList(snGoodsService.getCategory(request.getUsername()));
+        response.setCategoryQueryList(snGoodsService.getCategory(request.getUsername(),request.getCategoryName()));
+        response.setTotalSize(snGoodsService.getCategorySize(request.getUsername()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 

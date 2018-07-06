@@ -11,9 +11,9 @@
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/inv/memberLogin.htm"/>
-        <property name="successUrl" value="/mainindex.htm"/>
-        <property name="unauthorizedUrl" value="/inv/memberLogin.htm"/>
+        <!--<property name="loginUrl" value="/inv/memberLogin.htm"/>-->
+        <!--<property name="successUrl" value="/mainindex.htm"/>-->
+        <!--<property name="unauthorizedUrl" value="/inv/memberLogin.htm"/>-->
         <property name="filters">
             <map>
                 <entry key="api" value-ref="tae_apiRequestFilter"/>

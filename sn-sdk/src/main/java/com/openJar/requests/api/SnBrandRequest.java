@@ -31,6 +31,6 @@ public class SnBrandRequest extends Request<SnBrandResponse> {
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/getBrand.json";
     }
 }

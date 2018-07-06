@@ -1,4 +1,4 @@
-package com.shigu.component.core.config;
+package com.shigu.component;
 
 import org.springframework.web.util.Log4jConfigListener;
 

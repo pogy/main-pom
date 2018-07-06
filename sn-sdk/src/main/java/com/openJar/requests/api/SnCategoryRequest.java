@@ -6,6 +6,16 @@ import com.openJar.responses.api.SnCategoryResponse;
 
 public class SnCategoryRequest extends Request<SnCategoryResponse>{
     private String username;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public SnCategoryRequest(){}
 
     public String getUsername() {
@@ -23,6 +33,6 @@ public class SnCategoryRequest extends Request<SnCategoryResponse>{
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+ "api/snCategory.json";
     }
 }

@@ -20,8 +20,13 @@ public class SnOrderService {
     public List<FreighttemplateQueryResponse.QueryFreighttemplate> getFreight(String username) throws SuningApiException{
         SnTokenInfo snTokenInfo=snAuthService.getToken(username);
         FreighttemplateQueryRequest request = new FreighttemplateQueryRequest();
+        request.setPageNo(1);
+        request.setPageSize(10);
         FreighttemplateQueryResponse response= new FreighttemplateQueryResponse();
         response=snSdkClient.send(request,snTokenInfo.getAccessToken());
+        if(response.getSnerror().getErrorCode().equals("biz.handler.data-get:no-result")){
+            return null;
+        }
         return response.getSnbody().getQueryFreighttemplate();
     }
 }

@@ -22,6 +22,6 @@ public class SnFreightTemplateRequest extends Request<SnFreightTemplateResponse>
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/getFreight.json";
     }
 }

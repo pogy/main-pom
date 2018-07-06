@@ -11,7 +11,7 @@ public class SnTokenInfo extends OpenBean {
     private int expiresIn;//令牌过期时间
     private String suningUserName;
     private Long custnum;//用户会员编码
-    private int module;//用户类型
+    private String module;//用户类型
     private Long vendorCode;//商家编码
 
     public String getAccessToken() {
@@ -62,11 +62,11 @@ public class SnTokenInfo extends OpenBean {
         this.custnum = custnum;
     }
 
-    public int getModule() {
+    public String getModule() {
         return module;
     }
 
-    public void setModule(int module) {
+    public void setModule(String module) {
         this.module = module;
     }
 
