@@ -261,7 +261,6 @@ public class ShopIndexDataService {
         BoolQueryBuilder downloadQb= QueryBuilders.boolQuery();
         downloadQb.must(QueryBuilders.rangeQuery("daiTime").gte(todayStartStrTime));
         downloadQb.must(QueryBuilders.termQuery("supperStoreId",shopId));
-        downloadQb.must(QueryBuilders.termQuery("flag","imgzip"));
 
         downloadsSrb.setQuery(downloadQb);
         downloadsSrb.addAggregation(AggregationBuilders.terms("_type").field("_type"));
@@ -278,7 +277,6 @@ public class ShopIndexDataService {
         totalDownloadsSrb.setTypes(webSite);
         BoolQueryBuilder totalDownloadQb= QueryBuilders.boolQuery();
         totalDownloadQb.must(QueryBuilders.termQuery("supperStoreId",shopId));
-        downloadQb.must(QueryBuilders.termQuery("flag","imgzip"));
 
         totalDownloadsSrb.setQuery(downloadQb);
         totalDownloadsSrb.addAggregation(AggregationBuilders.terms("_type").field("_type"));
@@ -593,7 +591,6 @@ public class ShopIndexDataService {
 
         downloadBuilder.setQuery(QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("supperStoreId", shopId))
-                        .must(QueryBuilders.termQuery("flag","imgzip"))
                         .must(QueryBuilders.rangeQuery("daiTime").from(commonStartStrTime)))
                 .addAggregation(AggregationBuilders.dateHistogram("goodsUploadStatistics")
                         .field("daiTime").interval(DateHistogramInterval.DAY).minDocCount(0).format("yyyy/MM/dd").extendedBounds(startStrTime, nowStrTime));
