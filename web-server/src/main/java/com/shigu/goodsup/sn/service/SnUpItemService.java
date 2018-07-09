@@ -1,40 +1,39 @@
 package com.shigu.goodsup.sn.service;
 
-import com.openJar.beans.JdVenderBrandPubInfo;
 import com.openJar.beans.SnShopCategory;
 import com.openJar.requests.api.SnFreightTemplateRequest;
+import com.openJar.requests.api.SnItemParametersRequest;
 import com.openJar.requests.api.SnShopCategoryRequest;
 import com.openJar.responses.api.SnFreightTemplateResponse;
+import com.openJar.responses.api.SnItemParametersResponse;
 import com.openJar.responses.api.SnShopCategoryResponse;
+import com.opentae.data.mall.beans.ShiguGoodsExtends;
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShopNumAndMarket;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.jd.exceptions.AuthOverException;
 import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.PropsService;
 import com.shigu.goodsup.jd.util.XzJdSdkSend;
-import com.shigu.goodsup.jd.vo.PropertyItemVO;
-import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
+import com.shigu.goodsup.sn.vo.PropItemVo;
+import com.shigu.goodsup.sn.vo.PropValueVo;
 import com.shigu.goodsup.sn.vo.SnPageItem;
-import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.goodsup.sn.vo.SnPropsVo;
 import com.shigu.tb.finder.vo.PropType;
 import com.shigu.tools.KeyWordsUtil;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
+import com.suning.api.entity.item.ItemparametersQueryResponse;
 import com.suning.api.entity.sale.FreighttemplateQueryResponse;
-import com.suning.api.entity.shop.ShopcategoryQueryResponse;
 import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
-import com.taobao.api.domain.PropImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,6 +53,10 @@ public class SnUpItemService {
     XzJdSdkSend xzJdSdkSend;
     @Autowired
     PropsService propsService;
+    @Autowired
+    ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
+    @Autowired
+    TaobaoPropValueMapper taobaoPropValueMapper;
 
     public SnPageItem findGoods(Long goodsId) throws CustomException {
         ShiguGoodsTiny shiguGoodsTiny = selTiny(goodsId);
@@ -164,9 +167,9 @@ public class SnUpItemService {
         }
     }
 
-    public PropsVO selProps(Long jdCid, String username, Item item, List<NewbrandQueryResponse.QueryNewbrand> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException, AuthOverException, CustomException{
-        PropsVO tbPropsVO=propsService.selProps(item.getCid());
-        List<PropImg> propImgs=item.getPropImgs();
+    public SnPropsVo selProps(Long goodId, String categoryCode, String username, List<NewbrandQueryResponse.QueryNewbrand> brands) throws AuthOverException, CustomException {
+        //PropsVO tbPropsVO=propsService.selProps(item.getCid());
+        /*List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
             propImgs=new ArrayList<>();
         }
@@ -184,7 +187,150 @@ public class SnUpItemService {
         }
         jdUpItemService.fillProp(prop.getProperties(),tbPropsVO.getSaleProps());
         jdUpItemService.fillProp(prop.getSpecification(),tbPropsVO.getProperties());
-        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));
-        return prop;
+        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));*/
+        PropItemVo pivBrand = new PropItemVo();
+        pivBrand.setMustHave(true);
+        List<PropValueVo> values = new ArrayList<>();
+        PropValueVo propertyValueVO = new PropValueVo();
+        propertyValueVO.setName(brands.get(0).getBrandName());
+        propertyValueVO.setSelected(true);
+        propertyValueVO.setFid(2);
+        propertyValueVO.setSubPropItem(null);
+        propertyValueVO.setSnId(brands.get(0).getBrandCode());
+        values.add(propertyValueVO);
+        pivBrand.setValues(values);
+        SnItemParametersRequest reqeust = new SnItemParametersRequest();
+        reqeust.setUsername(username);
+        reqeust.setCategoryCode(categoryCode);
+        SnItemParametersResponse response = xzJdSdkSend.send(reqeust);
+        List<ItemparametersQueryResponse.ItemparametersQuery> list = response.getItemparametersQueries();
+        SnPropsVo pv = new SnPropsVo();
+        pv.setPingpai(pivBrand);
+        pv.setProperties(fillProp(list, "", goodId,0));
+        pv.setColor(fillProp(list, "common", goodId,1).get(0));
+        pv.setSaleProps(fillProp(list,"common",goodId,2));
+        return pv;
+    }
+
+    private List<PropItemVo> fillProp(List<ItemparametersQueryResponse.ItemparametersQuery> list, String type, Long goodId,int status) throws CustomException {
+        List<PropItemVo> pv = new ArrayList<>();
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = new ShiguGoodsIdGenerator();
+        shiguGoodsIdGenerator.setGoodId(goodId);
+        shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(shiguGoodsIdGenerator);
+        if (shiguGoodsIdGenerator == null) {
+            throw new CustomException("商品id不存在");
+        }
+        ShiguGoodsExtends shiguGoodsExtends = new ShiguGoodsExtends();
+        shiguGoodsExtends.setGoodsId(goodId);
+        shiguGoodsExtends.setWebSite(shiguGoodsIdGenerator.getWebSite());
+        shiguGoodsExtends = shiguGoodsExtendsMapper.selectByPrimaryKey(shiguGoodsExtends);
+        if (shiguGoodsExtends == null) {
+            throw new CustomException("商品详情不存在");
+        }
+        Map<String, String> propMap = new HashMap<>();
+        if (shiguGoodsExtends.getPropsName() == null) {
+            propMap = null;
+        }
+        propMap = changeProp(shiguGoodsExtends.getPropsName());
+        PropItemVo p = new PropItemVo();
+        PropItemVo p1=new PropItemVo();
+        for (ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery : list) {
+            String snType = itemparametersQuery.getParaTemplateCode();
+            if (snType.equals("basic")) {
+                continue;
+            }
+            boolean flag = true;
+            if (type.equals("common")) {
+                flag = false;
+            }
+            if (flag && !snType.equals("common")) {
+                pv.add(addProp(itemparametersQuery, propMap));
+            } else if (snType.equals(type)) {
+                if(status==1) {
+                    if (itemparametersQuery.getParName().equals("色卡")) {
+                        p = addProp(itemparametersQuery, propMap);
+                    }
+                    if (itemparametersQuery.getParName().equals("颜色")) {
+                        p1 = addProp(itemparametersQuery, propMap);
+                    }
+                }else if(status==2){
+                    if (!itemparametersQuery.getParCode().equals("G00000")&&!itemparametersQuery.getParCode().equals("G00001")&&!itemparametersQuery.getParCode().equals("G00002")) {
+                        p = addProp(itemparametersQuery, propMap);
+                    }
+                    if (itemparametersQuery.getParName().equals("尺码")) {
+                        p1 = addProp(itemparametersQuery, propMap);
+                    }
+                }
+            }
+        }
+        if(!type.equals("")) {
+            p1.addPropValueList(p.getValues());
+            pv.add(p1);
+        }
+        return pv;
+    }
+
+    private Map<String, String> changeProp(String propName) {
+        if (propName.equals("")) {
+            return null;
+        }
+        Map<String, String> map = new HashMap<>();
+        String[] props = propName.split(";");
+        for (String s : props) {
+            String[] prop = s.split(":");
+            map.put(prop[2], prop[3]);
+        }
+        return map;
+    }
+
+    private PropItemVo addProp(ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery, Map<String, String> propMap) {
+        PropItemVo propItemVo = new PropItemVo();
+        if (itemparametersQuery.getIsMust().equals("X")) {
+            propItemVo.setMustHave(true);
+        } else {
+            propItemVo.setMustHave(false);
+        }
+        if (itemparametersQuery.getParType().equals("1")) {
+            propItemVo.setType(PropType.SELECT);
+        } else if (itemparametersQuery.getParType().equals("2")) {
+            propItemVo.setType(PropType.CHECKBOX);
+        } else if (itemparametersQuery.getParType().equals("3")) {
+            propItemVo.setType(PropType.INPUT);
+        }
+        propItemVo.setCanAlias(false);
+        propItemVo.setName(itemparametersQuery.getParName());
+        List<PropValueVo> propValueVos = new ArrayList<>();
+        List<ItemparametersQueryResponse.ParOption> parOptions = itemparametersQuery.getParOption();
+        if (parOptions == null) {
+            propItemVo.setValues(null);
+        } else {
+            fill(propMap,parOptions,propValueVos,propItemVo);
+        }
+        propItemVo.setSnCode(itemparametersQuery.getParCode());
+        propItemVo.setValues(propValueVos);
+        return propItemVo;
+    }
+
+    private void fill(Map<String, String> propMap,List<ItemparametersQueryResponse.ParOption> parOptions,List<PropValueVo> propValueVos,PropItemVo propItemVo){
+        if (propMap == null) {
+            for (ItemparametersQueryResponse.ParOption p : parOptions) {
+                PropValueVo propValueVo = new PropValueVo();
+                propValueVo.setName(p.getParOptionDesc());
+                propValueVo.setSnId(p.getParOptionCode());
+                propValueVo.setSelected(false);
+                propValueVos.add(propValueVo);
+            }
+        } else {
+            String propName = propMap.get(propItemVo.getName());
+            for (ItemparametersQueryResponse.ParOption p : parOptions) {
+                PropValueVo propValueVo = new PropValueVo();
+                propValueVo.setName(p.getParOptionDesc());
+                if (propValueVo.getName().equals(propName)) {
+                    propValueVo.setSelected(true);
+                }
+                propValueVo.setSnId(p.getParOptionCode());
+                propValueVos.add(propValueVo);
+            }
+        }
     }
 }

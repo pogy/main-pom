@@ -2,7 +2,9 @@ package com.shigu.sn.action;
 
 import com.openJar.commons.ResponseUtil;
 import com.openJar.requests.api.SnItemAddRequest;
+import com.openJar.requests.api.SnItemParametersRequest;
 import com.openJar.responses.api.SnItemAddResponse;
+import com.openJar.responses.api.SnItemParametersResponse;
 import com.shigu.sn.api.service.SnGoodsService;
 import com.suning.api.exception.SuningApiException;
 import net.sf.json.JSONObject;
@@ -24,6 +26,15 @@ public class SnGoodsUpAction {
         SnItemAddResponse response=new SnItemAddResponse();
         response.setSuccess(true);
         response.setApplyParams(snGoodsService.getItemAdd(request.getUsername(),request.getSnGood()));
+        return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
+    }
+
+    @RequestMapping("getItem")
+    @ResponseBody
+    public JSONObject getItem(SnItemParametersRequest request) throws SuningApiException{
+        SnItemParametersResponse response=new SnItemParametersResponse();
+        response.setSuccess(true);
+        response.setItemparametersQueries(snGoodsService.getItem(request.getUsername(),request.getCategoryCode()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 }

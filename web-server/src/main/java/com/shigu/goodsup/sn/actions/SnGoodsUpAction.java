@@ -10,6 +10,7 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.exceptions.CustomException;
+import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.sn.service.SnCategoryService;
 import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
@@ -21,9 +22,11 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
+import com.shigu.tools.JsonResponseUtil;
 import com.suning.api.entity.custom.CategoryredictGetResponse;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
 import com.suning.api.entity.item.CategoryQueryResponse;
+import com.taobao.api.domain.Item;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -32,14 +35,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("sn")
@@ -56,6 +59,9 @@ public class SnGoodsUpAction {
 
     @Autowired
     private SnUserInfoService snUserInfoService;
+
+    @Autowired
+    private JdUpItemService jdUpItemService;
 
     @Autowired
     private SnUpItemService snUpItemService;
@@ -94,6 +100,11 @@ public class SnGoodsUpAction {
             if(categoryQueries.size()!=1){
                 return "suning/catChoose";
             }else {
+                String categoryCode=categoryQueries.get(0).getCategoryCode();
+                List<NewbrandQueryResponse.QueryNewbrand> brands= snUserInfoService.getBrand(SnUsername,categoryCode);
+                if(brands==null){
+                    throw new CustomException("没有苏宁品牌,暂不支持上传");
+                }
                 SnPageItem snPageItem=snUpItemService.findGoods(itemId);
                 if(snPageItem==null){
                     map.put("errmsg","商品不存在");
@@ -110,11 +121,8 @@ public class SnGoodsUpAction {
                 snShowDataVo.setSnPageItem(snPageItem);
                 snShowDataVo.setDeliveyList(snUpItemService.selPostModel(SnUsername));
                 snShowDataVo.setStoreCats(snUpItemService.selShopCats(SnUsername));
-                List<NewbrandQueryResponse.QueryNewbrand> brands= snUserInfoService.getBrand(SnUsername,categoryQueries.get(0).getCategoryCode());
-                if(brands==null){
-                    throw new CustomException("没有苏宁品牌,暂不支持上传");
-                }
-                snShowDataVo.setProps(snUpItemService.selProps(1L,SnUsername,snPageItem.getItem(),brands));
+                snShowDataVo.setGoodsCat(categoryQueries.get(0).getDescPath().replace("|",">"));
+                snShowDataVo.setPropsVo(snUpItemService.selProps(itemId,categoryCode,SnUsername,brands));
 
                 SnToken snToken=new SnToken();
                 snToken.setUsername(SnUsername);
@@ -194,4 +202,5 @@ public class SnGoodsUpAction {
         }
         return toUrl;
     }
+
 }

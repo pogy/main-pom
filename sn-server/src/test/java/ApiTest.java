@@ -54,10 +54,22 @@ public class ApiTest {
     }
 
     @Test
+    public void cat5() throws SuningApiException{
+        SnSdkClient snSdkClient=new SnSdkClient();
+        ItemparametersQueryRequest request=new ItemparametersQueryRequest();
+        request.setCategoryCode("R6152001");
+        request.setPageNo(1);
+        request.setPageSize(50);
+//        request.setCheckParam(true);
+        ItemparametersQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","672bf348edf93c9fbb32ed4e5f1fa8a2");
+        System.out.println(res.getBody());
+    }
+
+    @Test
     public void cat1() throws SuningApiException{
         SnSdkClient snSdkClient=new SnSdkClient();
         CategoryQueryRequest request=new CategoryQueryRequest();
-        request.setCategoryName("T恤");
+        request.setCategoryName("");
         request.setPageNo(1);
         request.setPageSize(50);
 //        request.setCheckParam(true);

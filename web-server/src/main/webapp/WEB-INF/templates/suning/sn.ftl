@@ -19,7 +19,7 @@
             <div class="user">
         <span>
           欢迎登录：
-          <a target="_top" href="javascript:void(0)">${sn_yj_zh_session.userNick}</a> <a href="//www.571xz.com/membertc.htm">退出</a>
+          <a target="_top" href="javascript:void(0)">${sn_yj_sn_session.userNick}</a> <a href="//www.571xz.com/membertc.htm">退出</a>
             </span>
             </div>
         </div>
@@ -33,27 +33,27 @@
     <div class="list-box">
 
     </div>
-    <#--<script>-->
-        <#--$(function(){-->
-            <#--var goodsId = '${id!}';-->
-            <#--$.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){-->
-                <#--if(resp.result == 'success'){-->
-                    <#--var html_ = '';-->
-                    <#--$.each(resp.attrList, function(key, item){-->
-                        <#--html_ += '<div class="list clearfix">\n' +-->
-                        <#--'            <label class="name-con">' + item.name + '：</label>\n' +-->
-                        <#--'            <div class="list-con">' + item.value + '</div>\n' +-->
-                        <#--'        </div>'-->
-                    <#--})-->
-                    <#--$('.r-box .list-box').html(html_)-->
-                <#--}-->
-            <#--})-->
+    <script>
+        $(function(){
+            var goodsId = '${id!}';
+            $.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){
+                if(resp.result == 'success'){
+                    var html_ = '';
+                    $.each(resp.attrList, function(key, item){
+                        html_ += '<div class="list clearfix">\n' +
+                        '            <label class="name-con">' + item.name + '：</label>\n' +
+                        '            <div class="list-con">' + item.value + '</div>\n' +
+                        '        </div>'
+                    })
+                    $('.r-box .list-box').html(html_)
+                }
+            })
 
-            <#--$('.r-box .opt-btn').click(function(){-->
-                <#--$(this).siblings('.list-box').slideToggle();-->
-            <#--});-->
-        <#--});-->
-    <#--</script>-->
+            $('.r-box .opt-btn').click(function(){
+                $(this).siblings('.list-box').slideToggle();
+            });
+        });
+    </script>
 </div>
 <div id="page">
     <form id="mainform" name="mainform" action="" method="post" enctype="multipart/form-data">

@@ -1,9 +1,9 @@
 <div class="field clearfix">
     <div id="J_SellProperties" class="sku-style">
         <div>
-            <#if (allData.props.color)??>
+            <#if (allData.propsVo.color)??>
                 <#include "/suning/parts/color.ftl">
-                    <#assign color=allData.props.color>
+                    <#assign color=allData.propsVo.color>
                     <#assign selected_color={}>
                     <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">
                         <label class="sku-lable">${color.name}：</label>
@@ -72,8 +72,8 @@
                     </tbody>
                 </table>
             </div>
-            <#if allData.props.saleProps??>
-                <#list allData.props.saleProps as s>
+            <#if allData.propsVo.saleProps??>
+                <#list allData.propsVo.saleProps as s>
                     <div class="sku-group required sku-size " data-caption="${s.name}" data-features=" edit" data-p="${s.pid}">
                         <label class="sku-lable">${s.name}：</label>
                         <div class="sku-box ">
@@ -99,8 +99,8 @@
             <div class="sku-wrapper">
                 <label class="sku-lable">&nbsp;</label>
                 <div class="sku-map sku-loading" id="J_SKUMapContainer">
-                    <#if allData.props.skus??>
-                        <#assign mskus=allData.props.skus>
+                    <#if allData.propsVo.skus??>
+                        <#assign mskus=allData.propsVo.skus>
                         <table border="0" cellspacing="0" style="visibility: visible;">
                             <caption>销售属性匹配表</caption>
                             <#list mskus as s>

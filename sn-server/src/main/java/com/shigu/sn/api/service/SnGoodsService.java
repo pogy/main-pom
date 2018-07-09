@@ -86,6 +86,8 @@ public class SnGoodsService {
         NewbrandQueryRequest request = new NewbrandQueryRequest();
         NewbrandQueryResponse response= new NewbrandQueryResponse();
         request.setCategoryCode(categoryCode);
+        request.setPageSize(10);
+        request.setPageNo(1);
         response=snSdkClient.send(request,snTokenInfo.getAccessToken());
         return response.getSnbody().getQueryNewbrand();
     }
@@ -220,5 +222,22 @@ public class SnGoodsService {
         request.setWriteoffShop(snGood.getWirteoffShop());
         ItemAddResponse response=snSdkClient.send(request,snTokenInfo.getAccessToken());
         return response.getSnbody().getApplyParams();
+    }
+
+    /**
+     * 获取苏宁商品参数模板
+     * @param username
+     * @param categoryCode
+     * @return
+     * @throws SuningApiException
+     */
+    public List<ItemparametersQueryResponse.ItemparametersQuery> getItem(String username,String categoryCode) throws SuningApiException{
+        SnTokenInfo snTokenInfo=snAuthService.getToken(username);
+        ItemparametersQueryRequest request=new ItemparametersQueryRequest();
+        request.setCategoryCode(categoryCode);
+        request.setPageNo(1);
+        request.setPageSize(50);
+        ItemparametersQueryResponse response=snSdkClient.send(request,snTokenInfo.getAccessToken());
+        return response.getSnbody().getItemparametersQueries();
     }
 }
