@@ -60,5 +60,71 @@
 	</select>
 
 
+    <select id="qzIndexCount" resultType="com.shigu.seller.vo.WeekReadDataVO">
+        SELECT
+            t1.goods_id goodsId,
+            t1.pic_url imgSrc,
+            t1.title,
+            t1.click + (ifnull(t2.virtual_clicks, 0)) readNum
+        FROM
+            (
+                SELECT
+                    t2.goods_id,
+                    t1.pic_url,
+                    t1.title,
+                    t2.click
+                FROM
+                    (
+                        SELECT
+                            goods_id,pic_url,title
+                        FROM
+                            shigu_goods_tiny_${webSite}
+                        WHERE
+                            store_id = ${shopId}
+                        UNION ALL
+                            SELECT
+                                goods_id,pic_url,title
+                            FROM
+                                shigu_goods_soldout_${webSite}
+                            WHERE
+                                store_id = ${shopId}
+                    ) t1,
+                    goods_count_forsearch t2
+                WHERE
+                    t1.goods_id = t2.goods_id
+            ) t1
+        LEFT JOIN virtual_flow t2 ON t1.goods_id = t2.goods_id
+        ORDER BY
+            readNum DESC
+        limit ${num}
+    </select>
+
+    <select id="qzIndexCountForDay" resultType="com.shigu.seller.vo.DataListVO">
+        SELECT
+            t2.`day` text,
+            count(*) `value`
+        FROM
+            (
+                SELECT
+                    goods_id
+                FROM
+                    shigu_goods_tiny_${webSite}
+                WHERE
+                    store_id = ${shopId}
+                UNION ALL
+                    SELECT
+                        goods_id
+                    FROM
+                        shigu_goods_soldout_${webSite}
+                    WHERE
+                        store_id = ${shopId}
+            ) t1,
+            goods_bogus_records t2
+        WHERE
+            t1.goods_id = t2.goods_id
+        AND t2.`day` in(${days})
+        GROUP BY
+            t2.`day`
+    </select>
 
 </mapper>
