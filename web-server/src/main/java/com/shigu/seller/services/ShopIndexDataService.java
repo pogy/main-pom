@@ -438,6 +438,16 @@ public class ShopIndexDataService {
         return downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getIsStartTime(DateUtil.getdate(-7)),DateUtil.patternD));
     }
 
+    public static void main(String[] args) {
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, 0);
+        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.SECOND, 0);
+        startTime.set(Calendar.MILLISECOND, 0);
+        startTime.add(Calendar.DAY_OF_MONTH,-7);
+        System.out.println(DateUtil.dateToString(DateUtil.getIsStartTime(startTime.getTime()),DateUtil.patternD));
+    }
+
     /**
      * 访问排行榜数据
      * @param shopId

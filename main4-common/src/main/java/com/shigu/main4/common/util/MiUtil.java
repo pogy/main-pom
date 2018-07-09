@@ -19,7 +19,7 @@ public class MiUtil {
 
 
     public static String toMi(String str){
-        if(str==null){
+        if(StringUtils.isBlank(str)){
             return "***";
         }
         if(str.length()>1){
