@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropItemVo implements Serializable {
+public class PropItemVo implements Serializable,Cloneable {
     private static final long serialVersionUID = -2116803040868807220L;
 
     /**

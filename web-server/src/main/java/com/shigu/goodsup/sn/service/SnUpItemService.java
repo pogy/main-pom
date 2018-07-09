@@ -17,7 +17,10 @@ import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.jd.service.PropsService;
 import com.shigu.goodsup.jd.util.XzJdSdkSend;
+import com.shigu.goodsup.jd.vo.SkuRankVO;
+import com.shigu.goodsup.jd.vo.SkuVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
+import com.shigu.goodsup.jd.vo.TdVO;
 import com.shigu.goodsup.sn.vo.PropItemVo;
 import com.shigu.goodsup.sn.vo.PropValueVo;
 import com.shigu.goodsup.sn.vo.SnPageItem;
@@ -27,6 +30,7 @@ import com.shigu.tools.KeyWordsUtil;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
 import com.suning.api.entity.item.ItemparametersQueryResponse;
 import com.suning.api.entity.sale.FreighttemplateQueryResponse;
+import com.suning.api.util.StringUtil;
 import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +171,7 @@ public class SnUpItemService {
         }
     }
 
-    public SnPropsVo selProps(Long goodId, String categoryCode, String username, List<NewbrandQueryResponse.QueryNewbrand> brands) throws AuthOverException, CustomException {
+    public SnPropsVo selProps(Long goodId, String categoryCode, String username, List<NewbrandQueryResponse.QueryNewbrand> brands) throws AuthOverException, CustomException, CloneNotSupportedException {
         //PropsVO tbPropsVO=propsService.selProps(item.getCid());
         /*List<PropImg> propImgs=item.getPropImgs();
         if (propImgs == null) {
@@ -188,37 +192,18 @@ public class SnUpItemService {
         jdUpItemService.fillProp(prop.getProperties(),tbPropsVO.getSaleProps());
         jdUpItemService.fillProp(prop.getSpecification(),tbPropsVO.getProperties());
         prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));*/
-        PropItemVo pivBrand = new PropItemVo();
-        pivBrand.setMustHave(true);
-        List<PropValueVo> values = new ArrayList<>();
-        PropValueVo propertyValueVO = new PropValueVo();
-        propertyValueVO.setName(brands.get(0).getBrandName());
-        propertyValueVO.setSelected(true);
-        propertyValueVO.setFid(2);
-        propertyValueVO.setSubPropItem(null);
-        propertyValueVO.setSnId(brands.get(0).getBrandCode());
-        values.add(propertyValueVO);
-        pivBrand.setValues(values);
-        SnItemParametersRequest reqeust = new SnItemParametersRequest();
-        reqeust.setUsername(username);
-        reqeust.setCategoryCode(categoryCode);
-        SnItemParametersResponse response = xzJdSdkSend.send(reqeust);
-        List<ItemparametersQueryResponse.ItemparametersQuery> list = response.getItemparametersQueries();
-        SnPropsVo pv = new SnPropsVo();
-        pv.setPingpai(pivBrand);
-        pv.setProperties(fillProp(list, "", goodId,0));
-        pv.setColor(fillProp(list, "common", goodId,1).get(0));
-        pv.setSaleProps(fillProp(list,"common",goodId,2));
-        return pv;
-    }
-
-    private List<PropItemVo> fillProp(List<ItemparametersQueryResponse.ItemparametersQuery> list, String type, Long goodId,int status) throws CustomException {
-        List<PropItemVo> pv = new ArrayList<>();
         ShiguGoodsIdGenerator shiguGoodsIdGenerator = new ShiguGoodsIdGenerator();
         shiguGoodsIdGenerator.setGoodId(goodId);
         shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(shiguGoodsIdGenerator);
         if (shiguGoodsIdGenerator == null) {
             throw new CustomException("商品id不存在");
+        }
+        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+        shiguGoodsTiny.setGoodsId(goodId);
+        shiguGoodsTiny.setWebSite(shiguGoodsIdGenerator.getWebSite());
+        shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
+        if (shiguGoodsTiny == null) {
+            throw new CustomException(goodId + " goodsTiny表没找到");
         }
         ShiguGoodsExtends shiguGoodsExtends = new ShiguGoodsExtends();
         shiguGoodsExtends.setGoodsId(goodId);
@@ -232,8 +217,40 @@ public class SnUpItemService {
             propMap = null;
         }
         propMap = changeProp(shiguGoodsExtends.getPropsName());
+
+
+        PropItemVo pivBrand = new PropItemVo();
+        pivBrand.setMustHave(true);
+        List<PropValueVo> values = new ArrayList<>();
+        for(NewbrandQueryResponse.QueryNewbrand brand:brands){
+            PropValueVo propertyValueVO = new PropValueVo();
+            propertyValueVO.setName(brand.getBrandName());
+            propertyValueVO.setSelected(false);
+            propertyValueVO.setFid(2);
+            propertyValueVO.setSubPropItem(null);
+            propertyValueVO.setSnId(brand.getBrandCode());
+            values.add(propertyValueVO);
+        }
+        pivBrand.setValues(values);
+        SnItemParametersRequest reqeust = new SnItemParametersRequest();
+        reqeust.setUsername(username);
+        reqeust.setCategoryCode(categoryCode);
+        SnItemParametersResponse response = xzJdSdkSend.send(reqeust);
+        List<ItemparametersQueryResponse.ItemparametersQuery> list = response.getItemparametersQueries();
+        SnPropsVo pv = new SnPropsVo();
+        pv.setPingpai(pivBrand);
+        pv.setProperties(fillProp(list, "", shiguGoodsTiny.getGoodsNo(), 0, propMap));
+        pv.setColor(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 1, propMap).get(0));
+        pv.setSaleProps(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 2, propMap));
+        pv.setSkus(calculateSku(pv.getColor(), pv.getSaleProps()));
+        return pv;
+    }
+
+    private List<PropItemVo> fillProp(List<ItemparametersQueryResponse.ItemparametersQuery> list, String type, String goodNo, int status, Map<String, String> propMap) throws CustomException {
+        List<PropItemVo> pv = new ArrayList<>();
+
         PropItemVo p = new PropItemVo();
-        PropItemVo p1=new PropItemVo();
+        PropItemVo p1 = new PropItemVo();
         for (ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery : list) {
             String snType = itemparametersQuery.getParaTemplateCode();
             if (snType.equals("basic")) {
@@ -244,26 +261,26 @@ public class SnUpItemService {
                 flag = false;
             }
             if (flag && !snType.equals("common")) {
-                pv.add(addProp(itemparametersQuery, propMap));
+                pv.add(addProp(itemparametersQuery, propMap, 3,goodNo));
             } else if (snType.equals(type)) {
-                if(status==1) {
+                if (status == 1) {
                     if (itemparametersQuery.getParName().equals("色卡")) {
-                        p = addProp(itemparametersQuery, propMap);
+                        p = addProp(itemparametersQuery, propMap, 1,goodNo);
                     }
                     if (itemparametersQuery.getParName().equals("颜色")) {
-                        p1 = addProp(itemparametersQuery, propMap);
+                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo);
                     }
-                }else if(status==2){
-                    if (!itemparametersQuery.getParCode().equals("G00000")&&!itemparametersQuery.getParCode().equals("G00001")&&!itemparametersQuery.getParCode().equals("G00002")) {
-                        p = addProp(itemparametersQuery, propMap);
+                } else if (status == 2) {
+                    if (!itemparametersQuery.getParCode().equals("G00000") && !itemparametersQuery.getParCode().equals("G00001") && !itemparametersQuery.getParCode().equals("G00002")) {
+                        p = addProp(itemparametersQuery, propMap, 2,goodNo);
                     }
                     if (itemparametersQuery.getParName().equals("尺码")) {
-                        p1 = addProp(itemparametersQuery, propMap);
+                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo);
                     }
                 }
             }
         }
-        if(!type.equals("")) {
+        if (!type.equals("")) {
             p1.addPropValueList(p.getValues());
             pv.add(p1);
         }
@@ -278,40 +295,55 @@ public class SnUpItemService {
         String[] props = propName.split(";");
         for (String s : props) {
             String[] prop = s.split(":");
-            map.put(prop[2], prop[3]);
+            map.merge(prop[2], prop[3], (a, b) -> a + "," + b);
         }
         return map;
     }
 
-    private PropItemVo addProp(ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery, Map<String, String> propMap) {
+    private PropItemVo addProp(ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery, Map<String, String> propMap, int status,String goodNo) {
+        if (status == 2) {
+            String s = propMap.get("尺码");
+            propMap = new HashMap<>();
+            propMap.put("尺码", s);
+        }
         PropItemVo propItemVo = new PropItemVo();
         if (itemparametersQuery.getIsMust().equals("X")) {
             propItemVo.setMustHave(true);
         } else {
             propItemVo.setMustHave(false);
         }
-        if (itemparametersQuery.getParType().equals("1")) {
-            propItemVo.setType(PropType.SELECT);
-        } else if (itemparametersQuery.getParType().equals("2")) {
-            propItemVo.setType(PropType.CHECKBOX);
-        } else if (itemparametersQuery.getParType().equals("3")) {
-            propItemVo.setType(PropType.INPUT);
+        switch (itemparametersQuery.getParType()) {
+            case "1":
+                propItemVo.setType(PropType.SELECT);
+                break;
+            case "2":
+                propItemVo.setType(PropType.CHECKBOX);
+                break;
+            case "3":
+                propItemVo.setType(PropType.INPUT);
+                break;
         }
         propItemVo.setCanAlias(false);
         propItemVo.setName(itemparametersQuery.getParName());
         List<PropValueVo> propValueVos = new ArrayList<>();
+        if(itemparametersQuery.getParName().equals("货号")) {
+            PropValueVo p=new PropValueVo();
+            p.setName(goodNo);
+            propValueVos.add(p);
+        }
         List<ItemparametersQueryResponse.ParOption> parOptions = itemparametersQuery.getParOption();
         if (parOptions == null) {
             propItemVo.setValues(null);
         } else {
-            fill(propMap,parOptions,propValueVos,propItemVo);
+            fill(propMap, parOptions, propValueVos, propItemVo,status);
         }
         propItemVo.setSnCode(itemparametersQuery.getParCode());
         propItemVo.setValues(propValueVos);
+
         return propItemVo;
     }
 
-    private void fill(Map<String, String> propMap,List<ItemparametersQueryResponse.ParOption> parOptions,List<PropValueVo> propValueVos,PropItemVo propItemVo){
+    private void fill(Map<String, String> propMap, List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, PropItemVo propItemVo,int status) {
         if (propMap == null) {
             for (ItemparametersQueryResponse.ParOption p : parOptions) {
                 PropValueVo propValueVo = new PropValueVo();
@@ -321,16 +353,229 @@ public class SnUpItemService {
                 propValueVos.add(propValueVo);
             }
         } else {
-            String propName = propMap.get(propItemVo.getName());
-            for (ItemparametersQueryResponse.ParOption p : parOptions) {
-                PropValueVo propValueVo = new PropValueVo();
-                propValueVo.setName(p.getParOptionDesc());
-                if (propValueVo.getName().equals(propName)) {
-                    propValueVo.setSelected(true);
+            String propName = null;
+            if (!propMap.containsKey(propItemVo.getName())) {
+                for (String key : propMap.keySet()) {
+                    if (key.contains(propItemVo.getName())) {
+                        propName = propMap.get(key);
+                    } else {
+                        char[] c = propItemVo.getName().toCharArray();
+                        if (c.length >= 2) {
+                            for (int i = 0; i < c.length - 2; i++) {
+                                if (key.contains(String.valueOf(c[i]) + String.valueOf(c[i + 1]))) {
+                                    propName = propMap.get(key);
+                                    break;
+                                }
+                            }
+                        }
+                        for (char c1 : c) {
+                            if (key.contains(String.valueOf(c1))) {
+                                propName = propMap.get(key);
+                                break;
+                            }
+                        }
+                    }
                 }
-                propValueVo.setSnId(p.getParOptionCode());
-                propValueVos.add(propValueVo);
+            } else {
+                propName = propMap.get(propItemVo.getName());
+            }
+            if (propName == null) {
+                if (parOptions.size() > 10) {
+                    if (parOptions.get(0).getParOptionCode().equals("")) {
+                        propName = propMap.get("尺码");
+                        String[] ss = propName.split(",");
+                        for (String s : ss) {
+                            if (StringUtil.isNumeric(s)) {
+                                propName = propName.replace(s, s + "码");
+                            }
+                        }
+                        addParOption(parOptions, propValueVos, propName,status);
+                    } else {
+                        addParOption(parOptions, propValueVos);
+                    }
+                } else {
+                    addParOption(parOptions, propValueVos);
+                    ;
+                }
+            } else {
+                addParOption(parOptions, propValueVos, propName,status);
             }
         }
+    }
+
+    private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos) {
+        for (ItemparametersQueryResponse.ParOption p : parOptions) {
+            PropValueVo propValueVo = new PropValueVo();
+            propValueVo.setName(p.getParOptionDesc());
+            propValueVo.setSnId(p.getParOptionCode());
+            propValueVos.add(propValueVo);
+        }
+    }
+
+    private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, String propName,int status) {
+        for (ItemparametersQueryResponse.ParOption p : parOptions) {
+            PropValueVo propValueVo = new PropValueVo();
+            propValueVo.setName(p.getParOptionDesc());
+            if (!propName.equals("")) {
+                String[] s = propName.split(",");
+                for (String s1 : s) {
+                    if (propValueVo.getName().equals(s1)) {
+                        propValueVo.setSelected(true);
+                        propName = replace(s1, propName);
+                    } else {
+                        if (propValueVo.getName().contains(s1)) {
+                            propValueVo.setSelected(true);
+                            propName = replace(s1, propName);
+                        }
+                    }
+                }
+            }
+            propValueVo.setSnId(p.getParOptionCode());
+            propValueVos.add(propValueVo);
+        }
+        if(status!=3) {
+            if (!propName.equals("")) {
+                String[] s = propName.split(",");
+                for (String s1 : s) {
+                    PropValueVo propValueVo = new PropValueVo();
+                    propValueVo.setSelected(true);
+                    propValueVo.setSnId("");
+                    propValueVo.setName(s1);
+                    propValueVos.add(propValueVo);
+                }
+            }
+        }
+    }
+
+    private String replace(String s, String propName) {
+        if (propName.contains(s + ",")) {
+            propName = propName.replaceFirst(s + ",", "");
+        } else if (propName.contains("," + s)) {
+            propName = propName.replaceFirst("," + s, "");
+        } else {
+            propName = propName.replaceFirst(s, "");
+        }
+        return propName;
+    }
+
+    /**
+     * 计算sku
+     *
+     * @param color 颜色
+     * @param sales 其它销售属性
+     * @return
+     */
+    public List<SkuVO> calculateSku(PropItemVo color, List<PropItemVo> sales) throws CloneNotSupportedException {
+        PropItemVo colorSelected = null;
+        if (color != null) {
+            colorSelected = (PropItemVo) color.clone();
+            List<PropValueVo> colorSelectedPV = new ArrayList<>();
+            //把已选的循环出来
+            for (PropValueVo pvv : color.getValues()) {
+                if (pvv.isSelected()) {
+                    colorSelectedPV.add(pvv);
+                }
+            }
+            //颜色属性没有选择,无法生成sku
+            if (colorSelectedPV.size() == 0) {
+                return null;
+            } else {
+                colorSelected.setValues(colorSelectedPV);
+            }
+        }
+        //对普通销售属性做筛选
+        List<PropItemVo> salesselected = new ArrayList<>();
+        //有可能没有销售属性
+        if (sales != null)
+            for (PropItemVo s : sales) {
+                PropItemVo st = (PropItemVo) s.clone();
+                List<PropValueVo> stpvv = new ArrayList<>();
+                if (st.getValues() == null) {
+                    st.setValues(new ArrayList<PropValueVo>());
+                }
+                for (PropValueVo pvv : st.getValues()) {
+                    if (pvv.isSelected()) {
+                        stpvv.add(pvv);
+                    }
+                }
+                //如果这个销售属性没选,无法生成SKU
+                if (stpvv.size() == 0) {
+                    return null;
+                } else {
+                    st.setValues(stpvv);
+                    salesselected.add(st);
+                }
+            }
+        //如果color没有,sales也没有,那么直接不用算
+        if (colorSelected == null && salesselected.size() == 0) {
+            return null;
+        }
+        //开始正式计算
+        //先判断有没有颜色
+        SkuRankVO srv = null;
+        if (colorSelected == null) {
+            srv = calculateSkuRank(salesselected.remove(0), salesselected, false, "");
+        } else {
+            srv = calculateSkuRank(colorSelected, salesselected, true, "");
+        }
+        //计算表头
+        SkuVO head = new SkuVO();
+        head.setType(1);
+        if (colorSelected != null) {
+            head.add(new TdVO(colorSelected.getPid(), colorSelected.getName()));
+        }
+        for (PropItemVo s : salesselected) {
+            head.add(new TdVO(s.getPid(), s.getName()));
+        }
+        List<SkuVO> skus = srv.parseToSkuVO();
+        //把表头插入
+        if (skus != null) {
+            skus.add(0, head);
+        }
+        return skus;
+    }
+
+    /**
+     * 比如nowdo传入的是颜色列,那么最终返回应该是颜色列之后的所有列,包括颜色列
+     * 如果传入的是第二列,那么最终返回应该是第二列以后的所有列
+     * 计算本列之后所有列
+     *
+     * @param nowdo   当前要处理的列
+     * @param sales   销售属性
+     * @param iscolor 是否颜色
+     * @param idsPath 前景id串
+     * @return
+     */
+    public SkuRankVO calculateSkuRank(PropItemVo nowdo, List<PropItemVo> sales, boolean iscolor, String idsPath) {
+        //如果没有剩余销售属性了
+        int rowspan = 1;
+        if (sales.size() > 0) {
+            //需要计算rowspan
+            for (PropItemVo piv : sales) {
+                rowspan *= piv.getValues().size();
+            }
+        }
+        SkuRankVO srv = new SkuRankVO();
+        for (PropValueVo pvv : nowdo.getValues()) {
+            String idkey = null;
+            if ("".equals(idsPath)) {
+                idkey = nowdo.getPid() + "-" + pvv.getVid();
+            } else {
+                idkey = idsPath + "_" + nowdo.getPid() + "-" + pvv.getVid();
+            }
+            TdVO td = new TdVO();
+            td.setRowspan(rowspan);
+            td.setValue(pvv.getName());
+            td.setVid(pvv.getVid());
+            td.setIds(idkey);
+            td.setColor(iscolor);
+            td.setPid(nowdo.getPid());
+            //这个td屁股后面跟的td们
+            if (sales.size() > 0) {
+                td.setSkuRankVO(calculateSkuRank(sales.get(0), sales.subList(1, sales.size()), false, idkey));
+            }
+            srv.add(td);
+        }
+        return srv;
     }
 }
