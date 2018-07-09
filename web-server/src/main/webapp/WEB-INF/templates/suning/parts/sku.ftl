@@ -5,21 +5,20 @@
                 <#include "/suning/parts/color.ftl">
                     <#assign color=allData.propsVo.color>
                     <#assign selected_color={}>
-                    <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.pid}" data-features="image edit">
+                    <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.snCode}" data-features="image edit">
                         <label class="sku-lable">${color.name}：</label>
                         <div class="sku-box sku-color" id="sku-color-wrap">
                             <ul class="sku-list">
                                 <#list color.values as c>
                                     <li class="sku-item <#if c.selected>edit</#if>">
-                                        <input type="checkbox" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
-                                               id="prop_${color.pid}_${c.vid}" name="cp[]"
-                                               class="J_Checkbox colorCheckbox" value="${color.pid}:${c.vid}"
-                                               data-color="${colorMap["${c.vid}"]}" <#if c.selected>checked</#if>/>
-                                        <label class="color-lump" style="background-color:#${colorMap["${c.vid}"]};" for=""
-                                               prop_${color.pid}_${c.vid}"></label>
-                                        <label class="labelname" for="prop_${color.pid}_${c.vid}" title="${c.name}" <#if c.selected>style="display: none;" </#if>>${c.name}</label>
-                                        <input type="text" data-pid='${color.pid}' data-vid='${c.vid}' data-name='${c.name}'
-                                               id="J_Alias_${color.pid}-${c.vid}" class="editbox text" maxlength=15
+                                        <input type="checkbox" data-pid='${color.snCode}' data-vid='${c.name}' data-name='${c.name}'
+                                               id="prop_${color.snCode}_${c_index}" name="cp[]"
+                                               class="J_Checkbox colorCheckbox" value="${color.snCode}:${c.name}"
+                                                <#if c.selected>checked</#if>/>
+                                        <label class="color-lump" for="prop_${color.snCode}_${c_index}"></label>
+                                        <label class="labelname" for="prop_${color.snCode}_${c_index}" title="${c.name}" <#if c.selected>style="display: none;" </#if>>${c.name}</label>
+                                        <input type="text" data-pid='${color.snCode}' data-vid='${c.name}' data-name='${c.name}'
+                                               id="J_Alias_${color.snCode}-${c_index}" class="editbox text" maxlength=15
                                                value="${c.name}" <#if !c.selected>style="display: none;"</#if>/>
                                     </li>
                                 </#list>
@@ -41,23 +40,23 @@
                     </thead>
                     <tbody>
                         <#list color.values as c>
-                        <tr id="J_MapImg_${color.pid}-${c.vid}" <#if !c.selected>
+                        <tr id="J_MapImg_${color.snCode}-${c_index}" <#if !c.selected>
                             style="display: none;"
                             </#if>
                         >
                             <td class="tile">
                                 <i class="color-lump" style="background-color:#${colorMap["${c.vid}"]};"></i>
-                                <span class="J_Map" data-value="${color.pid}:${c.vid}">${c.name}</span>
+                                <span class="J_Map" data-value="${color.snCode}:${c.name}">${c.name}</span>
                             </td>
                             <td>
                                 <input type="button" value="上传图片">
                             </td>
                             <td class="preview">
                                 <#if c.imgUrl??>
-                                <input type="hidden" id="prop_img-${color.pid}_${c.vid}" name="prop_img[]"
-                                    class="prop_img_default" data-value="${color.pid}:${c.vid}"
-                                    name="cpvf_old_${color.pid}:${c.vid}[]"
-                                    value="${color.pid}_${c.vid}##${c.imgUrl}">
+                                <input type="hidden" id="prop_img-${color.snCode}_${c_index}" name="prop_img[]"
+                                    class="prop_img_default" data-value="${color.snCode}:${c.name}"
+                                    name="cpvf_old_${color.snCode}:${c_index}[]"
+                                    value="${color.snCode}_${c.name}##${c.imgUrl}">
                                 <a target="_blank" href="${c.imgUrl}">
                                     <img height="40px" width="40px;" src="${c.imgUrl}_40x40.jpg">
                                 </a>
@@ -74,19 +73,19 @@
             </div>
             <#if allData.propsVo.saleProps??>
                 <#list allData.propsVo.saleProps as s>
-                    <div class="sku-group required sku-size " data-caption="${s.name}" data-features=" edit" data-p="${s.pid}">
+                    <div class="sku-group required sku-size " data-caption="${s.name}" data-features=" edit" data-p="${s.snCode}">
                         <label class="sku-lable">${s.name}：</label>
                         <div class="sku-box ">
                             <ul class="sku-list">
                                 <#list s.values as sv>
                                     <li class="sku-item <#if sv.selected>edit</#if>">
-                                        <input type="checkbox" id="prop_${s.pid}_${sv.vid}" name="cp[]"
-                                               class="J_Checkbox" value="${s.pid}:${sv.vid}" <#if sv.selected>
+                                        <input type="checkbox" id="prop_${s.snCode}_${sv_index}" name="cp[]"
+                                               class="J_Checkbox" value="${s.snCode}:${sv.name}" <#if sv.selected>
                                                checked
                                                </#if>/>
-                                        <label class="labelname" for="prop_${s.pid}_${sv.vid}"
+                                        <label class="labelname" for="prop_${s.snCode}_${sv_index}"
                                                title="${sv.name}">${sv.name}</label>
-                                        <input type="text" id="J_Alias_${s.pid}-${sv.vid}" class="editbox text" maxlength=15
+                                        <input type="text" id="J_Alias_${s.snCode}-${sv_index}" class="editbox text" maxlength=15
                                                value="${sv.name}"/>
                                     </li>
                                 </#list>
@@ -108,7 +107,7 @@
                                     <thead>
                                     <tr>
                                        <#list s as si>
-                                           <th class="J_Map_${si.pid}">
+                                           <th class="J_Map_${si.snCode}">
                                                <span>${si.value}</span>
                                             </th>
                                         </#list>
@@ -136,7 +135,7 @@
                                     <#list s as si>
                                         <td rowspan="${si.rowspan}" <#if si.color>class="tile"</#if>>
                                             <#if si.color><i class="color-lump" style="background-color:#${colorMap["${si.vid}"]};"></i></#if>
-                                            <span class="J_Map_${si.pid}-${si.vid}">${si.value}</span>
+                                            <span class="J_Map_${si.snCode}-${si_index}">${si.value}</span>
                                         </td>
                                         <#if !si_has_next>
                                             <#assign lastid=si.ids>

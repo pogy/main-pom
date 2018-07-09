@@ -94,17 +94,17 @@
                 </div>
             </div>
             <div class="field clearfix">
-                <label class="fl">商品标语</label>
+                <label class="fl">商品卖点</label>
                 <div class="field-content fl">
-                    <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="提示：如果同时设置了促销宣传语，此商品标语在前台将会被促销宣传语覆盖！">${item.sellPoint!}</textarea>
-                    <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.snPageItem.sellPointLength}</span>/45</span>
+                    <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="">${item.sellPoint!}</textarea>
+                    <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.snPageItem.sellPointLength}</span>/300</span>
                     <input type="hidden" id="nav_subTitle" data-feed="err_nav_subTitle">
                     <div id="err_nav_subTitle" style="display:none">
                         <div class="errors">
                             <ul>
                                 <li>
                                     <i class="icon iconfont icon-removecircle"></i>
-                                    <span class="errorinfo">不能超过22个字或45个字符!</span></li>
+                                    <span class="errorinfo">不能超过150个字或300个字符!</span></li>
                             </ul>
                         </div>
                     </div>
@@ -117,13 +117,6 @@
                     (<span style="color:red;">最终</span>价格以<span style="color:red;">苏宁价</span>为准)
                 </div>
             </div>
-            <div class="field clearfix">
-                <label class="fl"><em>*</em>市场价</label>
-                <div class="field-content fl">
-                    <input type="text" id="marketPrice" name="marketPrice" size="15" value="${(item.price?number * 1.5)?string("0.00")}" class="text text-pri notBeEmpty" data-error-title='市场价'>
-                    <span class="pri"> (市场价必需大于京东价，默认为苏宁价的1.5倍)</span>
-                </div>
-            </div>
             <!--sku信息-->
             <#include "/suning/parts/sku.ftl"/>
             <div class="field clearfix">
@@ -131,12 +124,6 @@
                 <div class="field-content fl">
                     <input type="text" id="quantityId" class="text text-pri text-short J_Quantity" name="num" size="15" value="${item.num}">
                     <span class="pri">件</span>
-                </div>
-            </div>
-            <div class="field clearfix">
-                <label class="fl">货号</label>
-                <div class="field-content fl">
-                    <input type="text" class="text text-bmlong notBeEmpty" data-error-title='货号' name="goodsNo" size="64" value="${allData.snPageItem.huohao!}">
                 </div>
             </div>
             <div class="field clearfix">
