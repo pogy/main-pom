@@ -330,13 +330,7 @@ public class ShopIndexDataService {
      * @return
      */
     public List<DownlaodDataVO> todayDownlaodDataList(Long shopId, String webSite) {
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 0);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.SECOND, 0);
-        startTime.set(Calendar.MILLISECOND, 0);
-
-        return downlaodDataList(shopId,webSite,DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss"));
+        return downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getStartTime(),DateUtil.patternD));
     }
 
     /**
@@ -441,13 +435,7 @@ public class ShopIndexDataService {
      * @return
      */
     public List<DownlaodDataVO> weekDownloadDataList(Long shopId, String webSite) {
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 0);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.SECOND, 0);
-        startTime.set(Calendar.MILLISECOND, 0);
-        startTime.add(Calendar.DAY_OF_MONTH,-7);
-        return downlaodDataList(shopId,webSite,DateFormatUtils.format(startTime, "yyyy-MM-dd HH:mm:ss"));
+        return downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getIsStartTime(DateUtil.getdate(-7)),DateUtil.patternD));
     }
 
     /**
