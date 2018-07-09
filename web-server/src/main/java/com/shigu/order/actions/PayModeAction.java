@@ -184,8 +184,8 @@ public class PayModeAction {
         writer.close();
     }
 
-    @RequestMapping("qzalipay")
-    public void qzalipay(Long id,String orderCode, HttpServletResponse response, HttpSession session) throws PayApplyException, IOException {
+    @RequestMapping("qzAlipay")
+    public void qzAlipay(Long id,String orderCode, HttpServletResponse response, HttpSession session) throws PayApplyException, IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         response.setCharacterEncoding("UTF-8");

@@ -24,15 +24,15 @@ import javax.annotation.Resource;
  * 支付宝支付
  * Created by zhaohongbo on 17/6/9.
  */
-@Service("aliPayerService")
-public class AliPayerServiceImpl extends PayerServiceAble {
-    @Resource(name="alipayClient")
+@Service("aliPayerQzService")
+public class AliPayerQzServiceImpl extends PayerServiceAble {
+    @Resource(name="alipayQzClient")
     private AlipayClient alipayClient;
 
-    @Value("${returnUrl}")
+    @Value("${qzreturnUrl}")
     private String  returnUrl;
 
-    @Value("${notifyUrl}")
+    @Value("${qznotifyUrl}")
     private String notifyUrl;
 
 

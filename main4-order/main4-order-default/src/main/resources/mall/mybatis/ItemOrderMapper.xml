@@ -16,4 +16,7 @@
 		WHERE io.user_id=#{userId} AND io.create_time <![CDATA[>=]]> #{createTime} AND io.order_status > 1
 	</select>
 
+    <select id="getSenderIdByRefundId" resultType="java.lang.Long">
+        select t2.sender_id from item_order_refund t1,item_order t2 where t1.refund_id=${refundId} and t1.oid=t2.oid
+    </select>
 </mapper>
