@@ -5,6 +5,7 @@ import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.order.bo.AddCartBO;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
@@ -41,7 +42,7 @@ public class CartAction {
     private CartService cartService;
 
     @RequestMapping("cart")
-    public String cart(HttpSession session, Model model) {
+    public String cart(HttpSession session, Model model) throws OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         CartPageVO cartPageVO = cartService.selMyCart(ps.getUserId());
         //极限词过滤
@@ -151,7 +152,7 @@ public class CartAction {
      */
     @RequestMapping("getOrderNum")
     @ResponseBody
-    public String cartCount(HttpSession session, HttpServletResponse response, String callback) throws IOException {
+    public String cartCount(HttpSession session, HttpServletResponse response, String callback) throws IOException, OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         int count=0;
         if(ps!=null){

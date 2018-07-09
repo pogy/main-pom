@@ -19,6 +19,7 @@ import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.OrderSubmitType;
 import com.shigu.order.bo.AddCartPropBO;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
@@ -28,10 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -86,7 +84,7 @@ public class CartService {
      * @param userId 用户ID
      * @return 页面数据
      */
-    public CartPageVO selMyCart(Long userId) {
+    public CartPageVO selMyCart(Long userId) throws OrderException {
         CartPageVO vo = packCartProductVo(itemCartProcess.someOneCart(userId));
 //        vo.setGoodsCount(itemCartProcess.productNumbers(userId));
         return vo;
@@ -96,11 +94,12 @@ public class CartService {
      * 包装进货车商品对象
      * @param vos 进货车商品源信息
      */
-    public CartPageVO packCartProductVo(List<CartVO> vos) {
+    public CartPageVO packCartProductVo(List<CartVO> vos) throws OrderException {
         CartPageVO vo = new CartPageVO();
         Map<Long, List<CartVO>> groupByShop = vos.stream().collect(Collectors.groupingBy(CartVO::getShopId));
         vo.setOrders(new ArrayList<>(groupByShop.size()));
         int num=0;
+        Set<String> webs=new HashSet<>();
         if (!groupByShop.isEmpty()) {
             Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
 
@@ -117,6 +116,7 @@ public class CartService {
                     orderVO.setWebSite(shiguShop.getWebSite());
                     orderVO.setStoreNum(shiguShop.getShopNum());
                     orderVO.setMarketName(shiguShop.getParentMarketName());
+                    webs.add(shiguShop.getWebSite());
                 }
                 List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<>(productVOS.size()));
@@ -137,12 +137,19 @@ public class CartService {
                     CdnItem cdnItem = showForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
                     if (cdnItem == null) {
                         childOrderVO.setDisabled(true);
+                        orderVO.setWebSite(productVO.getWebSite());
+                        webs.add(productVO.getWebSite());
                     } else {
                         childOrderVO.setGoodsNo(cdnItem.getHuohao());
                         childOrderVO.setColors(BeanMapper.getFieldList(cdnItem.getColors(), "value", String.class));
                         childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
                         num+=productVO.getNum();
+                        orderVO.setWebSite(cdnItem.getWebSite());
+                        webs.add(cdnItem.getWebSite());
                     }
+                }
+                if(webs.size()>1){
+                    throw new OrderException("单次只能结算单个分站的订单");
                 }
                 Collections.sort(orderVO.getChildOrders());
                 Collections.reverse(orderVO.getChildOrders());

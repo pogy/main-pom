@@ -190,7 +190,6 @@ public class ConfirmOrderService {
     private ItemOrderBO generateItemOrderBO(ConfirmBO bo, OrderSubmitVo orderSubmitVo) throws JsonErrException {
         ItemOrderBO itemOrderBO = new ItemOrderBO();
         itemOrderBO.setUserId(orderSubmitVo.getUserId());
-        itemOrderBO.setSenderId(bo.getSenderId());
 
         // 设置物流信息
         LogisticsBO logisticsBO = new LogisticsBO();
@@ -255,6 +254,9 @@ public class ConfirmOrderService {
         itemOrderBO.setTitle(title);
         itemOrderBO.setWebSite(webSite);
         itemOrderBO.setMark(subItemOrderBO.getMark());
+        itemOrderBO.setSenderId(bo.getSenderId());
+
+
 
         return itemOrderBO;
     }
