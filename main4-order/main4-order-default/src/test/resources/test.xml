@@ -138,5 +138,12 @@
 
     </bean>
 
+    <bean id="tbClient" class="com.shigu.tools.TbClient">
+        <property name="appkey" value="${taobao.app.key}"/>
+        <property name="secret" value="${taobao.app.secret}"/>
+        <property name="url" value="${taobao.app.server.url}"/>
+    </bean>
+
+
     <import resource="message_queue.xml"/>
 </beans>
