@@ -14,6 +14,8 @@ import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.sn.service.SnCategoryService;
 import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
+import com.shigu.goodsup.sn.vo.PropItemVo;
+import com.shigu.goodsup.sn.vo.PropValueVo;
 import com.shigu.goodsup.sn.vo.SnPageItem;
 import com.shigu.goodsup.sn.vo.SnShowDataVo;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -123,6 +125,17 @@ public class SnGoodsUpAction {
                 snShowDataVo.setStoreCats(snUpItemService.selShopCats(SnUsername));
                 snShowDataVo.setGoodsCat(categoryQueries.get(0).getDescPath().replace("|",">"));
                 snShowDataVo.setPropsVo(snUpItemService.selProps(itemId,categoryCode,SnUsername,brands));
+                int size=0;
+                for(PropItemVo p:snShowDataVo.getPropsVo().getSaleProps()){
+                    for(PropValueVo propValueVo:p.getValues()){
+                        if(propValueVo.isFirstChange()){
+                            System.out.println(propValueVo.getName());
+                        }
+                        if(propValueVo.isSelected()){
+                            size++;
+                        }
+                    }
+                }
 
                 SnToken snToken=new SnToken();
                 snToken.setUsername(SnUsername);
@@ -130,6 +143,7 @@ public class SnGoodsUpAction {
                 String tokenStr=Opt3Des.encryptPlainData(JSONObject.fromObject(snToken).toString());
                 snShowDataVo.setToken(tokenStr);
                 map.put("allData",snShowDataVo);
+                map.put("size",size);
                 map.put("id",itemId);
                 map.put("sn_yj_sn_session",ps);
                 return "suning/sn";

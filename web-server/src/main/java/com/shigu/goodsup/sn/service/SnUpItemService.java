@@ -413,6 +413,7 @@ public class SnUpItemService {
     }
 
     private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, String propName,int status) {
+        int i=0;
         for (ItemparametersQueryResponse.ParOption p : parOptions) {
             PropValueVo propValueVo = new PropValueVo();
             propValueVo.setName(p.getParOptionDesc());
@@ -420,6 +421,10 @@ public class SnUpItemService {
                 String[] s = propName.split(",");
                 for (String s1 : s) {
                     if (propValueVo.getName().equals(s1)) {
+                        i++;
+                        if(i==1){
+                            propValueVo.setFirstChange(true);
+                        }
                         propValueVo.setSelected(true);
                         propName = replace(s1, propName);
                     } else {
@@ -437,7 +442,11 @@ public class SnUpItemService {
             if (!propName.equals("")) {
                 String[] s = propName.split(",");
                 for (String s1 : s) {
+                    i++;
                     PropValueVo propValueVo = new PropValueVo();
+                    if(i==1){
+                        propValueVo.setFirstChange(true);
+                    }
                     propValueVo.setSelected(true);
                     propValueVo.setSnId("");
                     propValueVo.setName(s1);
@@ -448,14 +457,31 @@ public class SnUpItemService {
     }
 
     private String replace(String s, String propName) {
+        int i=propName.indexOf(s);
+        String flag="";
+        if(i!=0) {
+            flag = propName.substring(i - 1, i);
+        }
+        String flag1="";
+        if(i!=propName.length()){
+            flag1 = propName.substring(i, i+1);
+        }
         if (propName.contains(s + ",")) {
+            if(!flag.equals(",")&&!flag.equals("") ){
+                replace(s, propName.substring(i));
+            }
             propName = propName.replaceFirst(s + ",", "");
+            return flag+propName;
         } else if (propName.contains("," + s)) {
+            if(!flag1.equals(",")&&!flag1.equals("") ){
+                replace(s, propName.substring(i));
+            }
             propName = propName.replaceFirst("," + s, "");
+            return flag1+propName;
         } else {
             propName = propName.replaceFirst(s, "");
+            return flag+ propName;
         }
-        return propName;
     }
 
     /**
