@@ -5,6 +5,7 @@ import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.shigu.seller.vo.DataListVO;
+import com.shigu.seller.vo.DownlaodDataVO;
 import com.shigu.seller.vo.WeekReadDataVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
@@ -33,5 +34,9 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
 
     List<WeekReadDataVO> qzIndexCount(@Param("shopId") Long shopId,@Param("webSite")String webSite,@Param("num")Integer num);
 
-    List<DataListVO> qzIndexCountForDay(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("days")String days);
+    List<DataListVO> qzIndexCountForDay(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
+
+    List<DataListVO> qzIndexDownCountForDay(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
+
+    List<DownlaodDataVO> qzIndexDownCountForDayGroupItem(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
 }
