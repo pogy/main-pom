@@ -8,9 +8,17 @@
     <link href="public/css/fabu20170108.css?t=012001" type="text/css" rel="stylesheet">
     <link href="public/css/tc-min.css" type="text/css" rel="stylesheet">
     <link href="public/css/saved_resource.css" type="text/css" rel="stylesheet">
+
+    <script>
+        var $build = true
+    </script>
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
     <script type="text/javascript" src="public/js/main.js?t=20170808"></script>
     <script type="text/javascript" src="public/js/ajax.js?t=2017102602"></script>
+    <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+    <script src="//style.571xz.com/v6/common/js/base_v20180509_194914.js"></script>
+    <script src="//style.571xz.com/v6/common/js/xz_v20180511_135030.js"></script>
+    <script type="text/javascript" src="public/js/webOSS.js"></script>
 <body id="body" class="ke-webkit">
 <div style="display:none;" id="skuData"></div>
 <div class="site-nav">
@@ -271,12 +279,12 @@
                     <div class="field-content fl">
                         <div id="startTime.startType" class="checkbox-wrap">
                             <label>
-                                <input type="radio" class="radio" name="approve_status" value="onsale"
+                                <input type="radio" class="radio" name="approve_status" value="1"
                                        checked="checked">
                                 <label for="_now0">立刻</label>
                             </label>
                             <label>
-                                <input type="radio" class="radio" name="approve_status" value="onsale_clock" id="_now1">
+                                <input type="radio" class="radio" name="approve_status" value="0" id="_now1">
                                 <label for="_now1">设定</label>
                                 <select name="_date" disabled="disabled">
                                 <#list allData.dateList as d>
@@ -291,7 +299,7 @@
                                 </select>分
                             </label>
                             <label>
-                                <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
+                                <input type="radio" class="radio" name="approve_status" value="2" <#if !(allData.props.color)??>checked="checked"</#if>>
                                 <label for="inStock">放入仓库</label>
                             </label>
                         </div>
@@ -306,6 +314,7 @@
                 <input type="hidden" id="token" name="_csrf" value="${allData.token}">
                 <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.snCode}</#if>">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.snPageItem.storeId}">
+                <input type="hidden" id="mid" name="cid" value="">
                 <input type="hidden" id="mid" name="mid" value="${allData.snPageItem.goodsId}">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
             </div>
