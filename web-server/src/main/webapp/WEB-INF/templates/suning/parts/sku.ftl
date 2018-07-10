@@ -147,13 +147,13 @@
                                                     <span class="J_Map_${s.snCode}-${sv_index}">${sv.name}</span>
                                                 </td>
                                                 <td class="price">
-                                                    <input data-id="${lastid}" id="J_SkuField_price_${lastid}" class="J_MapPrice text" data-type="price" type="text" value="${item.price}">
+                                                    <input data-id="${color.snCode}-${c_index}_${s.snCode}-${sv_index}" id="J_SkuField_price_${color.snCode}-${c_index}_${s.snCode}-${sv_index}" class="J_MapPrice text" data-type="price" type="text" value="${item.price}">
                                                 </td>
                                                 <td class="quantity">
-                                                    <input maxlength="9" data-id="${lastid}" id="J_SkuField_quantity_${lastid}" class="J_MapQuantity text" data-type="quantity" type="text" value="100">
+                                                    <input maxlength="9" data-id="${color.snCode}-${c_index}_${s.snCode}-${sv_index}" id="J_SkuField_quantity_${color.snCode}-${c_index}_${s.snCode}-${sv_index}" class="J_MapQuantity text" data-type="quantity" type="text" value="100">
                                                 </td>
                                                 <td class="tsc">
-                                                    <input data-id="${lastid}" id="J_SkuField_tsc_${lastid}" class="J_MapProductid text" data-type="tsc" type="text" value="">
+                                                    <input data-id="${color.snCode}-${c_index}_${s.snCode}-${sv_index}" id="J_SkuField_tsc_${color.snCode}-${c_index}_${s.snCode}-${sv_index}" class="J_MapProductid text" data-type="tsc" type="text" value="">
                                                 </td>
                                             </tr>
                                             </#if>
