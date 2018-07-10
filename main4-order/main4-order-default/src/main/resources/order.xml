@@ -44,13 +44,13 @@
 
     <bean id="alipayQzClient"
           class="com.alipay.api.DefaultAlipayClient">
-        <constructor-arg index="0" value="${serverUrl}"/>
-        <constructor-arg index="1" value="${qzappId}"/>
-        <constructor-arg index="2" value="${privateKey}"/>
-        <constructor-arg index="3" value="${format}"/>
-        <constructor-arg index="4" value="${charset}"/>
-        <constructor-arg index="5" value="${alipayPulicKey}"/>
-        <constructor-arg index="6" value="${signType}"/>
+        <constructor-arg index="0" value="${qzServerUrl}"/>
+        <constructor-arg index="1" value="${qzAppId}"/>
+        <constructor-arg index="2" value="${qzPrivateKey}"/>
+        <constructor-arg index="3" value="${qzFormat}"/>
+        <constructor-arg index="4" value="${qzCharset}"/>
+        <constructor-arg index="5" value="${qzAlipayPulicKey}"/>
+        <constructor-arg index="6" value="${qzSignType}"/>
     </bean>
 
 

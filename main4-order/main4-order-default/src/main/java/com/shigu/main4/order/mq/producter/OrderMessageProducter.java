@@ -58,45 +58,6 @@ public class OrderMessageProducter {
             this.preKey = preKey;
         }
     }
-    public enum SenderEnum {
-        //杭州星帮代发
-        XB(999999990L,"producerBean"),
-        //泉州代发
-        QZ(999999980L,"producerBeanQz");
-
-        private Long senderId;
-        private String serviceName;
-
-        SenderEnum(Long senderId, String serviceName) {
-            this.senderId = senderId;
-            this.serviceName = serviceName;
-        }
-
-        public Long getSenderId() {
-            return this.senderId;
-        }
-
-        public void setSenderId(Long senderId) {
-            this.senderId = senderId;
-        }
-
-        public String getServiceName() {
-            return this.serviceName;
-        }
-
-        public void setServiceName(String serviceName) {
-            this.serviceName = serviceName;
-        }
-
-        public static SenderEnum sel(Long senderId){
-            for (SenderEnum e: SenderEnum.values()){
-                if(e.getSenderId().equals(senderId)){
-                    return e;
-                }
-            }
-            return XB;
-        }
-    }
 
     @Autowired
     private OrderConstantService orderConstantService;
@@ -263,7 +224,7 @@ public class OrderMessageProducter {
 
 
     private void sendAsync(OrderMessageProducter.OrderMQTag tag, BaseMessage msg,Long senderId) {
-        ProducerBean producerBean= SpringBeanFactory.getBean(SenderEnum.sel(senderId).getServiceName(),ProducerBean.class);
+        ProducerBean producerBean= SpringBeanFactory.getBean("orderProduct_"+senderId,ProducerBean.class);
                 producerBean.sendAsync(
                 new Message(producerBean.getProperties().getProperty("topic"), tag.name(), tag.preKey + msg.getKey(), msg.toString().getBytes()),
                 new SendCallback() {

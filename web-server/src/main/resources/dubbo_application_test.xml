@@ -73,9 +73,6 @@
     <dubbo:reference interface="com.shigu.main4.monitor.services.RankingSimpleService" id="rankingSimpleService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShiguFeedbackService" id="shiguFeedbackService"  timeout="20000"/>
 
-    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
-
     <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
 
     <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
@@ -85,5 +82,5 @@
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoImgProcess" id="photoImgProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoWorksProcess" id="photoWorksProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoGoatProcess" id="photoGoatProcess" retries="0" timeout="20000"/>
-
+    <import resource="daifa/dubbo/*"/>
 </beans>

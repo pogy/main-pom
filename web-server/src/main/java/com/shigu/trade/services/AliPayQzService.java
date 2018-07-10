@@ -23,10 +23,10 @@ public class AliPayQzService {
     private PayerService payerService;
 
 
-    @Value("${alipayPulicKey}")
+    @Value("${qzAlipayPulicKey}")
     private String alipayPulicKey;
 
-    @Value("${signType}")
+    @Value("${qzSignType}")
     private String signType;
 
     @Transactional(rollbackFor = Exception.class)

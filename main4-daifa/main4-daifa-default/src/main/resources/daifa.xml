@@ -24,14 +24,13 @@
             <dubbo:method name="storeMove" timeout="300000"/>
         <dubbo:method name="getMessage" timeout="300000"/>
     </dubbo:service>
-    <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.SaleAfterProcess" ref="saleAfterProcess" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" ref="scanSaleAfterExpressProcess" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.SysDealProcess" ref="sysDealProcess" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.DaifaActProcess" ref="daifaActProcess" retries="0" timeout="20000" />
-
-    <dubbo:service interface="com.shigu.main4.daifa.process.TemplateProcess" ref="TemplateProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.SaleAfterProcess" ref="saleAfterProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" ref="scanSaleAfterExpressProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.SysDealProcess" ref="sysDealProcess" retries="0" group="${DAIFA_GROUP}" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.DaifaActProcess" ref="daifaActProcess" retries="0" group="${DAIFA_GROUP}" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.TemplateProcess" ref="TemplateProcess" retries="0" group="${DAIFA_GROUP}" timeout="20000" />
 
     <bean id="tae_producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
         <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
