@@ -143,7 +143,7 @@ public class SnGoodsUpAction {
                 String tokenStr=Opt3Des.encryptPlainData(JSONObject.fromObject(snToken).toString());
                 snShowDataVo.setToken(tokenStr);
                 map.put("allData",snShowDataVo);
-                map.put("size",size);
+                map.put("selectedSizeLength",size);
                 map.put("id",itemId);
                 map.put("sn_yj_sn_session",ps);
                 return "suning/sn";
