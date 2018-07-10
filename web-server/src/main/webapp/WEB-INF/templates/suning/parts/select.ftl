@@ -5,8 +5,13 @@
                           <li>
                             <select id="prop_${prop.snCode}_select" class="keyPropClass" data-transtype="dropbox"
                                     style="display: none; visibility: hidden;">
+                                <#if !prop.mustHave>
+                                    <#assign selectedpv={}>
+                                    <option value=""></option>
+                                <#else>
+                                    <#assign selectedpv=prop.values[0]>
+                                </#if>
                                   <!--必填的参数不给于第一个空值的选项-->
-                                <#assign selectedpv=prop.values[0]>
                                 <#list prop.values as pv>
                                     <option data-pid="${prop.snCode}"
                                             class="props_option_${prop.snCode}"

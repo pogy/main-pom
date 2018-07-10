@@ -272,7 +272,7 @@ function ready_publish(){
         value=$(this).val();
         if(!dataPid){
             alert('pid不存在，操作失败');
-            return false;
+            return;
         }
 
         if(dataType=='input' && value){  //如果是input方式提交的 表单

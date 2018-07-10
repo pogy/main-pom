@@ -270,13 +270,26 @@
                         <em>*</em>开始时间</label>
                     <div class="field-content fl">
                         <div id="startTime.startType" class="checkbox-wrap">
-                            <#if (allData.props.color)??>
-                                <label>
-                                    <input type="radio" class="radio" name="approve_status" value="onsale"
-                                           checked="checked">
-                                    <label for="_now0">立刻</label>
-                                </label>
-                            </#if>
+                            <label>
+                                <input type="radio" class="radio" name="approve_status" value="onsale"
+                                       checked="checked">
+                                <label for="_now0">立刻</label>
+                            </label>
+                            <label>
+                                <input type="radio" class="radio" name="approve_status" value="onsale_clock" id="_now1">
+                                <label for="_now1">设定</label>
+                                <select name="_date" disabled="disabled">
+                                <#list allData.dateList as d>
+                                    <option value="${d?string("yyyy-MM-dd")}">${d?string("yyyy年MM月dd日")}</option>
+                                </#list>
+                                </select>
+                                <select name="_hour" disabled="disabled">
+                                    <option value="0">0</option>
+                                </select>时
+                                <select name="_minute" disabled="disabled">
+                                    <option value="0">0</option>
+                                </select>分
+                            </label>
                             <label>
                                 <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
                                 <label for="inStock">放入仓库</label>
@@ -288,21 +301,13 @@
                     <a href="javascript:;" id="J_LiRun">利润设置</a>
                     <span>|</span>利润：
                     <input type="text" id="curlirun" class="lr-txt" value="${allData.snPageItem.profit}">元
-                    <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue"
-                           value="发 布" data-name="event_submit_do_publish"></div>
-                <input type="hidden" id="token" name="_csrf"
-                       value="${allData.token}">
-                <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.pid}</#if>">
-                <input type="hidden" name="sizePid" value="${allData.props.sizePid}">
-                <input type="hidden" id="cid" name="cid" value="${allData.props.cid}">
-                <input type="hidden" id="uid" name="uid" value="-${allData.jdUserId}">
+                    <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue" value="发 布" data-name="event_submit_do_publish">
+                </div>
+                <input type="hidden" id="token" name="_csrf" value="${allData.token}">
+                <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.snCode}</#if>">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.snPageItem.storeId}">
                 <input type="hidden" id="mid" name="mid" value="${allData.snPageItem.goodsId}">
-                <input type="hidden" name="oldToNew" value="[]">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
-                <input type="hidden" id="componentPid" value="${allData.props.componentPid}">
-                <input type="hidden" id="getToken" name="getToken"
-                       value="uid=-${allData.jdUserId}&mid=${allData.snPageItem.goodsId}&timestamp=${allData.timestamp}&sign=${allData.sign}">
             </div>
     </form>
 </div>
@@ -310,9 +315,7 @@
     <div class="footer-a">
         <a href="//zixun.571xz.com/article?id=67" target="_blank">关于星座网</a>
         <span>|</span>
-        <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-        <span>|</span>
-        <a href="//www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
+        <a href="//www.571xz.com/contact.htm" target="_blank">联系我们</a>
         <span>|</span>
         <a href="//www.571xz.com/ruzhu.htm" target="">供应商入驻</a></div>
     <div class="footer-b">增值电信业务经营许可证：
@@ -322,7 +325,7 @@
             33010202000302号
             <img src="public/images/beian.png"></a>
     </div>
-    <div class="footer-c">Copyright © 2009-2017 星座网www.571xz.com 版权所有</div>
+    <div class="footer-c">Copyright © 2009-2018 星座网www.571xz.com 版权所有</div>
 </div>
 
 
