@@ -54,6 +54,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Autowired
     DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
 
+
     @Override
     public void newOrder(OrderBO order) {
         SpringBeanFactory.getBean(OrderModel.class, order).init();
@@ -423,6 +424,11 @@ public class OrderManageProcessImpl implements OrderManageProcess {
             daifaAfterSaleSubExample.createCriteria().andGoodsIdEqualTo(goodsId);
             daifaAfterSaleSubMapper.updateByExampleSelective(daifaAfterSaleSub,daifaAfterSaleSubExample);
         }
+    }
+
+    @Override
+    public void getMessage(Integer refundId) {
+        SpringBeanFactory.getBean(OrderModel.class).sendMessage(refundId);
     }
 
 }
