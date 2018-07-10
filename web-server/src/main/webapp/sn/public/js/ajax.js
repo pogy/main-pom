@@ -2,46 +2,43 @@ $(document).ready(function () {
     cidHidden=$('#cid').val();
     tokenHidden=$('#token').val();
     // 选择空间上传图片
-    $("#J_MultimageField1").change(function(){
-        var objUrl = getObjectURL(this.files[0]); //二进制显示
-        fireUrl=$(this).val();
-        if(fireUrl.indexOf("fakepath")){
-            var formData = new FormData($( "#spaceImg" )[0]);
-            $.ajax({
-                url: 'zs.571xz.com/detailImg/upload.json?callback=?' ,
-                type: 'POST',
-                dataType: 'jsonp',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (returndata) {
-                    objUrl=returndata;
+    $$.domready('#J_MultimageField1', function(){
+        var startUpload = $$.fileUpload({
+            buttons: 'J_MultimageField1',
+            acceptFileList: [
+                {title : "Image files", extensions : "jpg,gif,png" }
+            ],
+            randomName: true,
+            accessInfoApiUrl: 'getAccessInfo.json',
+            listen:{
+                postInit: function(){
                 },
-                error: function (returndata) {
-                    alert(returndata);
-                }
-            });
-        }
-        var addHtml = "";
-        $(".sui-nav li").eq(0).removeClass("active").siblings().addClass("active");
-        $(".tab-content .upload-container").eq(0).hide().siblings().show();
-        addHtml += "<li><div class='ii'><img src='"+objUrl+"'></div></li>"
-        $("#J_ListTable").prepend(addHtml);
+                FilesAdded: function(up, files){
+                    var file = files[0]
+                    startUpload(up, file);
+                },
+                BeforeUpload: function(up, file){
 
-    });
-    function getObjectURL(file) {
-        var url = null;
-        if (window.createObjectURL != undefined) { // basic
-            url = window.createObjectURL(file);
-        } else if (window.URL != undefined) { // mozilla(firefox)
-            url = window.URL.createObjectURL(file);
-        } else if (window.webkitURL != undefined) { // webkit or chrome
-            url = window.webkitURL.createObjectURL(file);
-        }
-        return url;
-    }
+                },
+                UploadProgress: function(up, file) {
+                    $('#uploadWindow .progressBar').css('width', file.percent+ '%');
+                },
+
+                FileUploaded: function(up, file, info) {
+                    var addHtml = "";
+                    $(".sui-nav li").eq(0).removeClass("active").siblings().addClass("active");
+                    $(".tab-content .upload-container").eq(0).hide().siblings().show();
+                    addHtml += "<li><div class='ii'><img src='"+file.path+"'></div></li>"
+                    $("#J_ListTable").prepend(addHtml);
+
+                },
+
+                UploadComplete: function(up, files){
+
+                }
+            }
+        })
+    })
 
     //品牌属性动态加载
     $(".J_spu-property").delegate(".kui-combobox-caption,.kui-icon-dropdown","click",function(event){
@@ -466,7 +463,7 @@ function ready_publish(){
             order=imgAllNum+1;
             if(is_show_full==0){
                 is_show_full=1;
-                $('#tip_content').html('您的京东图片空间容量不足，请进入京东图片空间进行删除或订购！' +
+                $('#tip_content').html('您的苏宁图片空间容量不足，请进入苏宁图片空间进行删除或订购！' +
                     '<br/><br/>前往图片空间：<a href="https://imgzone.shop.jd.com/imginfo/main.html" target="_blank">https://imgzone.shop.jd.com/imginfo/main.html</a>');
                 $('#tip_content').show();
                 $('#tip_default').hide();
@@ -479,7 +476,7 @@ function ready_publish(){
         if(in_array(url[order],img_detal_arr_temp)){
             download_detail(url,order+1,0);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],'order':order,"uid" : uid, "mid" : midHidden,'_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : url[order],'order':order, "mid" : midHidden, witch:'desc'},
             function(data){
                 if(data['status']=='1'){
                     $('#imgType').html('开始搬家：描述图');
@@ -536,7 +533,7 @@ function ready_publish(){
         if(url[order]==undefined || url[order].indexOf("@")==0){   //如果用户没刷新修改参数后点击发布，则绕开上传直接跳过+图片被取消
             download_main(url,order+1);return false;
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : url[order],"order":order,"mid" : midHidden,'witch':'main','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_main_error=0;
@@ -579,7 +576,7 @@ function ready_publish(){
             propids=propurl.substring(0,propurl.indexOf("##"));
             propurl=propurl.substring(propurl.indexOf("##")+2);
         }
-        $.getJSON("http://zs.571xz.com/detailImg/uploadByUrl.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
+        $.getJSON("http://imgbj.571xz.net/down-img-other.json?callback=?", {"url" : propurl,"order":order, "mid" : midHidden,'witch':'prop','_csrf':tokenHidden},
             function(data){
                 if(data['status']=='1'){
                     img_prop_error=0;
