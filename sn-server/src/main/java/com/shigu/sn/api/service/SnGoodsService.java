@@ -220,8 +220,45 @@ public class SnGoodsService {
         request.setVerticalPic(snGood.getVerticalPic());
         request.setWriteoffPayment(snGood.getWirteoffPayment());
         request.setWriteoffShop(snGood.getWirteoffShop());
+        request.setSourceCountry("CN");
+        List<Pars> pars=pars(snGood.getPars());
+        List<ItemAddRequest.ChildItem> childItems=new ArrayList<>();
+        for(SnGood.ChildItem childItem:snGood.getChildItems()){
+            ItemAddRequest.ChildItem childItem1=new ItemAddRequest.ChildItem();
+            childItem1.setBarcode(childItem.getBarcode());
+            childItem1.setInvQty(childItem.getInvQty());
+            childItem1.setPrice(childItem.getPrice());
+            childItem1.setSupplierImg1Url(childItem.getSupplierImg1Url());
+            childItem1.setItemCode(childItem.getItemCode());
+            childItem1.setPars(pars(childItem.getPars()));
+            childItems.add(childItem1);
+        }
+        request.setChildItem(childItems);
+        request.setPars(pars);
+        request.setSupplierImg1Url(snGood.getSupplierImg1Url());
+        request.setSupplierImg2Url(snGood.getSupplierImg2Url());
+        request.setSupplierImg3Url(snGood.getSupplierImg3Url());
+        request.setSupplierImg4Url(snGood.getSupplierImg4Url());
+        request.setSupplierImg5Url(snGood.getSupplierImg5Url());
+        request.setSupplierImg6Url(snGood.getSupplierImg6Url());
+        request.setSupplierImg7Url(snGood.getSupplierImg7Url());
+        request.setSupplierImg8Url(snGood.getSupplierImg8Url());
+        request.setSupplierImg9Url(snGood.getSupplierImg9Url());
+        request.setSupplierImg10Url(snGood.getSupplierImg10Url());
+
         ItemAddResponse response=snSdkClient.send(request,snTokenInfo.getAccessToken());
         return response.getSnbody().getApplyParams();
+    }
+
+    public List<Pars> pars(List<SnGood.Par> list){
+        List<Pars> pars=new ArrayList<>();
+        for(SnGood.Par p:list){
+            Pars ps=new Pars();
+            ps.setParCode(p.getParCode());
+            ps.setParValue(p.getParValue());
+            pars.add(ps);
+        }
+        return pars;
     }
 
     /**

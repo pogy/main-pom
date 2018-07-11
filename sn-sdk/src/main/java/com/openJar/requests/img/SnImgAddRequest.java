@@ -31,6 +31,6 @@ public class SnImgAddRequest extends Request<SnImgAddResponse>{
 
     @Override
     public String testApiUrl() {
-        return null;
+        return SnEnum.REST+"api/imgAdd.json";
     }
 }

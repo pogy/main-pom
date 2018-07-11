@@ -1,4 +1,5 @@
 import com.shigu.sn.client.SnSdkClient;
+import com.suning.api.DefaultSuningClient;
 import com.suning.api.entity.custom.CategoryredictGetRequest;
 import com.suning.api.entity.custom.CategoryredictGetResponse;
 import com.suning.api.entity.custom.NewbrandQueryRequest;
@@ -6,12 +7,18 @@ import com.suning.api.entity.custom.NewbrandQueryResponse;
 import com.suning.api.entity.fontorder.IsvorderQueryRequest;
 import com.suning.api.entity.fontorder.IsvorderQueryResponse;
 import com.suning.api.entity.item.*;
+import com.suning.api.entity.master.CityQueryRequest;
+import com.suning.api.entity.master.CityQueryResponse;
+import com.suning.api.entity.master.NationQueryRequest;
+import com.suning.api.entity.master.NationQueryResponse;
 import com.suning.api.entity.sale.FreighttemplateQueryRequest;
 import com.suning.api.entity.sale.FreighttemplateQueryResponse;
 import com.suning.api.entity.shop.ShopcategoryQueryRequest;
 import com.suning.api.entity.shop.ShopcategoryQueryResponse;
 import com.suning.api.exception.SuningApiException;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class ApiTest {
     @Test
@@ -68,23 +75,45 @@ public class ApiTest {
     @Test
     public void cat1() throws SuningApiException{
         SnSdkClient snSdkClient=new SnSdkClient();
-        CategoryQueryRequest request=new CategoryQueryRequest();
-        request.setCategoryName("");
-        request.setPageNo(1);
-        request.setPageSize(50);
+        CityQueryRequest request=new CityQueryRequest();
+        request.setNationCode("CN");
 //        request.setCheckParam(true);
-        CategoryQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","672bf348edf93c9fbb32ed4e5f1fa8a2");
+        CityQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","c1bccdea8ef33eafa816371d51181e16");
         System.out.println(res.getBody());
     }
 
     @Test
-    public void cat3() throws SuningApiException{
+    public void cat3() throws SuningApiException,IOException{
+//        SnSdkClient snSdkClient=new SnSdkClient();
+//        NPicAddRequest request=new NPicAddRequest();
+//        request.setPicFileData("/home/yxg/图片/psb.jpeg");
+////        request.setCheckParam(true);
+//        PicAddResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","eb765d8270ab3dbd97ed0ff2fda9c885");
+//        System.out.println(res.getBody());
+//
+        NPicAddRequest request = new NPicAddRequest();
+        request.setPicFileData("无");
+//api入参校验逻辑开关，当测试稳定之后建议设置为 false 或者删除该行
+        request.setCheckParam(true);
+        String serverUrl = "https://open.suning.com/api/http/sopRequest";
+        String appKey = "715ddac6a126cbd540b8203a08a4ad73";
+        String appSecret = "6779e1cddd0567e09df169d66daca2cb";
+        DefaultSuningClient client = new DefaultSuningClient(serverUrl, appKey,appSecret,"eb765d8270ab3dbd97ed0ff2fda9c885", "json");
+        try {
+            NPicAddResponse response = client.excuteMultiPart(request);
+            System.out.println("返回json/xml格式数据 :" + response.getBody());
+        } catch (SuningApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void cat6() throws SuningApiException{
         SnSdkClient snSdkClient=new SnSdkClient();
-        ShopcategoryQueryRequest request=new ShopcategoryQueryRequest();
-        request.setPageNo(1);
-        request.setPageSize(10);
+        NationQueryRequest request=new NationQueryRequest();
+        request.setNationName("中国");
 //        request.setCheckParam(true);
-        ShopcategoryQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","669691d8a2f438379ecb689df4d1a9e3");
+        NationQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","0d2f1006ed803c80a4bf73ad5c657d6a");
         System.out.println(res.getBody());
     }
 }

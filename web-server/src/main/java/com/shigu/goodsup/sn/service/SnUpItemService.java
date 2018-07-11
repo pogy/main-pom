@@ -7,10 +7,8 @@ import com.openJar.requests.api.SnShopCategoryRequest;
 import com.openJar.responses.api.SnFreightTemplateResponse;
 import com.openJar.responses.api.SnItemParametersResponse;
 import com.openJar.responses.api.SnShopCategoryResponse;
-import com.opentae.data.mall.beans.ShiguGoodsExtends;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShopNumAndMarket;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ShiguPropImgsExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.goodsup.jd.exceptions.AuthOverException;
 import com.shigu.goodsup.jd.exceptions.CustomException;
@@ -25,6 +23,7 @@ import com.shigu.goodsup.sn.vo.PropItemVo;
 import com.shigu.goodsup.sn.vo.PropValueVo;
 import com.shigu.goodsup.sn.vo.SnPageItem;
 import com.shigu.goodsup.sn.vo.SnPropsVo;
+import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.tb.finder.vo.PropType;
 import com.shigu.tools.KeyWordsUtil;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
@@ -58,6 +57,8 @@ public class SnUpItemService {
     ShiguGoodsExtendsMapper shiguGoodsExtendsMapper;
     @Autowired
     TaobaoPropValueMapper taobaoPropValueMapper;
+    @Autowired
+    ShiguPropImgsMapper shiguPropImgsMapper;
 
     public SnPageItem findGoods(Long goodsId) throws CustomException {
         ShiguGoodsTiny shiguGoodsTiny = selTiny(goodsId);
@@ -209,11 +210,16 @@ public class SnUpItemService {
         if (shiguGoodsExtends == null) {
             throw new CustomException("商品详情不存在");
         }
+        ShiguPropImgs shiguPropImgs=new ShiguPropImgs();
+        ShiguPropImgsExample shiguPropImgsExample=new ShiguPropImgsExample();
+        shiguPropImgsExample.createCriteria().andItemIdEqualTo(goodId);
+        shiguPropImgs=shiguPropImgsMapper.selectByExample(shiguPropImgsExample).get(0);
         Map<String, String> propMap = new HashMap<>();
         if (shiguGoodsExtends.getPropsName() == null) {
             propMap = null;
         }
         propMap = changeProp(shiguGoodsExtends.getPropsName());
+        Map<String,String> propImg=changeColorImg(shiguGoodsExtends.getPropsName(),shiguPropImgs.getPropimgs());
 
 
         PropItemVo pivBrand = new PropItemVo();
@@ -236,14 +242,14 @@ public class SnUpItemService {
         List<ItemparametersQueryResponse.ItemparametersQuery> list = response.getItemparametersQueries();
         SnPropsVo pv = new SnPropsVo();
         pv.setPingpai(pivBrand);
-        pv.setProperties(fillProp(list, "", shiguGoodsTiny.getGoodsNo(), 0, propMap));
-        pv.setColor(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 1, propMap).get(0));
-        pv.setSaleProps(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 2, propMap));
+        pv.setProperties(fillProp(list, "", shiguGoodsTiny.getGoodsNo(), 0, propMap,propImg));
+        pv.setColor(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 1, propMap,propImg).get(0));
+        pv.setSaleProps(fillProp(list, "common", shiguGoodsTiny.getGoodsNo(), 2, propMap,propImg));
         pv.setSkus(calculateSku(pv.getColor(), pv.getSaleProps()));
         return pv;
     }
 
-    private List<PropItemVo> fillProp(List<ItemparametersQueryResponse.ItemparametersQuery> list, String type, String goodNo, int status, Map<String, String> propMap) throws CustomException {
+    private List<PropItemVo> fillProp(List<ItemparametersQueryResponse.ItemparametersQuery> list, String type, String goodNo, int status, Map<String, String> propMap,Map<String,String> propImg) throws CustomException {
         List<PropItemVo> pv = new ArrayList<>();
 
         PropItemVo p = new PropItemVo();
@@ -258,21 +264,21 @@ public class SnUpItemService {
                 flag = false;
             }
             if (flag && !snType.equals("common")) {
-                pv.add(addProp(itemparametersQuery, propMap, 3,goodNo));
+                pv.add(addProp(itemparametersQuery, propMap, 3,goodNo,propImg));
             } else if (snType.equals(type)) {
                 if (status == 1) {
                     if (itemparametersQuery.getParName().equals("色卡")) {
-                        p = addProp(itemparametersQuery, propMap, 1,goodNo);
+                        p = addProp(itemparametersQuery, propMap, 1,goodNo,propImg);
                     }
                     if (itemparametersQuery.getParName().equals("颜色")) {
-                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo);
+                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo,propImg);
                     }
                 } else if (status == 2) {
                     if (!itemparametersQuery.getParCode().equals("G00000") && !itemparametersQuery.getParCode().equals("G00001") && !itemparametersQuery.getParCode().equals("G00002")) {
-                        p = addProp(itemparametersQuery, propMap, 2,goodNo);
+                        p = addProp(itemparametersQuery, propMap, 2,goodNo,propImg);
                     }
                     if (itemparametersQuery.getParName().equals("尺码")) {
-                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo);
+                        p1 = addProp(itemparametersQuery, propMap, 1,goodNo,propImg);
                     }
                 }
             }
@@ -297,7 +303,32 @@ public class SnUpItemService {
         return map;
     }
 
-    private PropItemVo addProp(ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery, Map<String, String> propMap, int status,String goodNo) {
+    private Map<String,String> changeColorImg(String propName,String propImgs){
+        if(propName.equals("")||propImgs.equals("")){
+            return null;
+        }
+        Map<String,String> map=new HashMap<>();
+        Map<String,String> map1=new HashMap<>();
+        Map<String,String> map2=new HashMap<>();
+        String[] props=propName.split(";");
+        String[] imgs=propImgs.split(";");
+        for(String img:imgs){
+            String[] urls=img.split("##");
+            map.put(urls[0],urls[1]);
+        }
+        for(String prop:props){
+            String[] s=prop.split(":");
+            map1.put(s[0]+":"+s[1],s[3]);
+        }
+        for(String s:map.keySet()){
+            if(map1.get(s)!=null){
+                map2.put(map1.get(s),map.get(s));
+            }
+        }
+        return map2;
+    }
+
+    private PropItemVo addProp(ItemparametersQueryResponse.ItemparametersQuery itemparametersQuery, Map<String, String> propMap, int status,String goodNo,Map<String,String> propImg) {
         if (status == 2) {
             String s = propMap.get("尺码");
             if(s==null){
@@ -335,7 +366,7 @@ public class SnUpItemService {
         if (parOptions == null) {
             propItemVo.setValues(null);
         } else {
-            fill(propMap, parOptions, propValueVos, propItemVo,status);
+            fill(propMap, parOptions, propValueVos, propItemVo,status,propImg);
         }
         propItemVo.setSnCode(itemparametersQuery.getParCode());
         propItemVo.setValues(propValueVos);
@@ -343,7 +374,7 @@ public class SnUpItemService {
         return propItemVo;
     }
 
-    private void fill(Map<String, String> propMap, List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, PropItemVo propItemVo,int status) {
+    private void fill(Map<String, String> propMap, List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, PropItemVo propItemVo,int status,Map<String,String> propImg) {
         if (propMap == null) {
             for (ItemparametersQueryResponse.ParOption p : parOptions) {
                 PropValueVo propValueVo = new PropValueVo();
@@ -389,7 +420,7 @@ public class SnUpItemService {
                                 propName = propName.replace(s, s + "码");
                             }
                         }
-                        addParOption(parOptions, propValueVos, propName,status);
+                        addParOption(parOptions, propValueVos, propName,status,propImg);
                     } else {
                         addParOption(parOptions, propValueVos);
                     }
@@ -398,7 +429,7 @@ public class SnUpItemService {
                     ;
                 }
             } else {
-                addParOption(parOptions, propValueVos, propName,status);
+                addParOption(parOptions, propValueVos, propName,status,propImg);
             }
         }
     }
@@ -412,7 +443,7 @@ public class SnUpItemService {
         }
     }
 
-    private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, String propName,int status) {
+    private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, String propName,int status,Map<String,String> propImg) {
         String[] s=null;
         for (ItemparametersQueryResponse.ParOption p : parOptions) {
             PropValueVo propValueVo = new PropValueVo();
@@ -425,6 +456,9 @@ public class SnUpItemService {
                         if(status!=3) {
                             propName = replace(s1, propName);
                         }
+                        if(propImg.get(propValueVo.getName())!=null){
+                            propValueVo.setImgUrl(propImg.get(propValueVo.getName()));
+                        }
                     } else {
                         if (propValueVo.getName().contains(s1)&&status!=2) {
                             propValueVo.setSelected(true);
@@ -433,6 +467,7 @@ public class SnUpItemService {
                     }
                 }
             }
+
             propValueVo.setSnId(p.getParOptionCode());
             propValueVos.add(propValueVo);
         }
@@ -444,6 +479,9 @@ public class SnUpItemService {
                     propValueVo.setSelected(true);
                     propValueVo.setSnId("");
                     propValueVo.setName(s1);
+                    if(propImg.get(propValueVo.getName())!=null){
+                        propValueVo.setImgUrl(propImg.get(propValueVo.getName()));
+                    }
                     propValueVos.add(propValueVo);
                 }
             }

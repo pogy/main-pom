@@ -145,6 +145,7 @@ public class SnGoodsUpAction {
                 map.put("allData",snShowDataVo);
                 map.put("selectedSizeLength",size);
                 map.put("id",itemId);
+                map.put("categoryCode",categoryCode);
                 map.put("sn_yj_sn_session",ps);
                 return "suning/sn";
             }

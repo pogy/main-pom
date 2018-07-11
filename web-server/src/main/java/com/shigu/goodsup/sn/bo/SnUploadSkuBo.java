@@ -4,11 +4,20 @@ package com.shigu.goodsup.sn.bo;
 import java.util.List;
 
 public class SnUploadSkuBo {
+    private String pid;
     private String name;
     private List<SnUploadSkuBo> sizes;
     private Integer num;
     private String price;
     private String code;
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
 
     public String getName() {
         return name;

@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 public class SnUploadTbo extends SnUploadBo{
     private List<String> picUrls;
-    private List<JdUploadPropImgBO> propImg;
+    private List<SnUploadImgBo> propImg;
     private List<SnUploadSkuBo> skus;
-    private List<JdUploadPropInputBO> inputs;
-    private List<JdUploadPropInputBO> props;
+    private List<SnUploadPropBo> inputs;
+    private List<SnUploadPropBo> props;
     private List<Long> sellerCids;
 
     public void callProp_img(List<String> prop_img) {
@@ -21,12 +21,12 @@ public class SnUploadTbo extends SnUploadBo{
             this.propImg=new ArrayList<>();
         }else{
             this.propImg=prop_img.stream().map(s -> {
-                JdUploadPropImgBO bo=new JdUploadPropImgBO();
+                SnUploadImgBo bo=new SnUploadImgBo();
                 String[] ss=s.split("##");
                 bo.setImg(ss[1]);
                 String[] sss=ss[0].split("_");
-                bo.setPid(new Long(sss[0]));
-                bo.setVid(new Long(sss[1]));
+                bo.setSnCode(sss[0]);
+                bo.setValue(sss[1]);
                 return bo;
             }).collect(Collectors.toList());
         }
@@ -36,28 +36,31 @@ public class SnUploadTbo extends SnUploadBo{
         if(sku_props!=null&&sku_props.size()>0){
             for(String sku:sku_props){
                 String[] skus=sku.split(":");
-                JdUploadPropInputBO bo=new JdUploadPropInputBO();
+                SnUploadPropBo bo=new SnUploadPropBo();
+                if(skus.length<2){
+                    continue;
+                }
                 if(skus[1].contains("###")){
-                    bo.setValue(skus[1].substring(3));
+                    bo.setParValue(skus[1].substring(3));
                 }else{
-                    bo.setVid(new Long(skus[1]));
-                    if(bo.getVid()<0L){
+                    bo.setParValue(skus[1]);
+                    if(bo.getParValue().equals("")||bo.getParValue()==null){
                         continue;
                     }
                 }
-                bo.setPid(new Long(skus[0]));
+                bo.setParCode(skus[0]);
                 addSkus(bo);
             }
         }
     }
-    private void addSkus(JdUploadPropInputBO sku){
+    private void addSkus(SnUploadPropBo sku){
         if(this.inputs==null){
             this.inputs=new ArrayList<>();
         }
         if(this.props==null){
             this.props=new ArrayList<>();
         }
-        if(sku.getVid()!=null){
+        if(sku.getParValue()!=null){
             this.props.add(sku);
         }else{
             this.inputs.add(sku);
@@ -97,8 +100,8 @@ public class SnUploadTbo extends SnUploadBo{
 
     public String selInputPids(){
         StringBuilder sku= new StringBuilder();
-        for(JdUploadPropInputBO s:inputs){
-            sku.append(s.getPid()).append("|");
+        for(SnUploadPropBo s:inputs){
+            sku.append(s.getParCode()).append("|");
         }
         if(sku.length()>0){
             sku = new StringBuilder(sku.substring(0, sku.length() - 1));
@@ -109,8 +112,8 @@ public class SnUploadTbo extends SnUploadBo{
     }
     public String selInputValues(){
         StringBuilder sku= new StringBuilder();
-        for(JdUploadPropInputBO s:inputs){
-            sku.append(s.getValue()).append("|");
+        for(SnUploadPropBo s:inputs){
+            sku.append(s.getParValue()).append("|");
         }
         if(sku.length()>0){
             sku = new StringBuilder(sku.substring(0, sku.length() - 1));
@@ -129,11 +132,11 @@ public class SnUploadTbo extends SnUploadBo{
         this.picUrls = picUrls;
     }
 
-    public List<JdUploadPropImgBO> getPropImg() {
+    public List<SnUploadImgBo> getPropImg() {
         return propImg;
     }
 
-    public void setPropImg(List<JdUploadPropImgBO> propImg) {
+    public void setPropImg(List<SnUploadImgBo> propImg) {
         this.propImg = propImg;
     }
 
@@ -145,19 +148,19 @@ public class SnUploadTbo extends SnUploadBo{
         this.skus = skus;
     }
 
-    public List<JdUploadPropInputBO> getInputs() {
+    public List<SnUploadPropBo> getInputs() {
         return inputs;
     }
 
-    public void setInputs(List<JdUploadPropInputBO> inputs) {
+    public void setInputs(List<SnUploadPropBo> inputs) {
         this.inputs = inputs;
     }
 
-    public List<JdUploadPropInputBO> getProps() {
+    public List<SnUploadPropBo> getProps() {
         return props;
     }
 
-    public void setProps(List<JdUploadPropInputBO> props) {
+    public void setProps(List<SnUploadPropBo> props) {
         this.props = props;
     }
 

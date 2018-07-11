@@ -23,7 +23,7 @@ public class SnImageAction {
     public JSONObject imgAdd(SnImgAddRequest request) throws SuningApiException{
         SnImgAddResponse response=new SnImgAddResponse();
         response.setSuccess(true);
-        response.setAddNPic(snImgService.getSnImg(request.getUsername(),request.getPicContent()));
+        response.setAddNPics(snImgService.getSnImg(request.getUsername(),request.getPicContent()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 }

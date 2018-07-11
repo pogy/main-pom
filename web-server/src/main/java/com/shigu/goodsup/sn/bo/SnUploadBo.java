@@ -9,7 +9,7 @@ public class SnUploadBo {
     private String pcContent;
     private Long colorPid;
     private Long sizePid;
-    private Long cid;
+    private String cid;
     private Long uid;
     private Long shopUid;//店铺id
     private Long mid;//商品id
@@ -89,11 +89,11 @@ public class SnUploadBo {
         this.sizePid = sizePid;
     }
 
-    public Long getCid() {
+    public String getCid() {
         return cid;
     }
 
-    public void setCid(Long cid) {
+    public void setCid(String cid) {
         this.cid = cid;
     }
 
