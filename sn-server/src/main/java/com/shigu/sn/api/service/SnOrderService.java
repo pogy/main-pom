@@ -24,7 +24,7 @@ public class SnOrderService {
         request.setPageSize(10);
         FreighttemplateQueryResponse response= new FreighttemplateQueryResponse();
         response=snSdkClient.send(request,snTokenInfo.getAccessToken());
-        if(response.getSnerror().getErrorCode().equals("biz.handler.data-get:no-result")){
+        if(response.getSnerror()!=null){
             return null;
         }
         return response.getSnbody().getQueryFreighttemplate();

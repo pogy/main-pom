@@ -19,10 +19,7 @@ import com.shigu.goodsup.jd.vo.SkuRankVO;
 import com.shigu.goodsup.jd.vo.SkuVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.goodsup.jd.vo.TdVO;
-import com.shigu.goodsup.sn.vo.PropItemVo;
-import com.shigu.goodsup.sn.vo.PropValueVo;
-import com.shigu.goodsup.sn.vo.SnPageItem;
-import com.shigu.goodsup.sn.vo.SnPropsVo;
+import com.shigu.goodsup.sn.vo.*;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.tb.finder.vo.PropType;
 import com.shigu.tools.KeyWordsUtil;
@@ -116,11 +113,11 @@ public class SnUpItemService {
      * @throws AuthOverException
      * @throws CustomException
      */
-    public List<DeliveryTemplate> selPostModel(String username) throws AuthOverException, CustomException {
-        List<DeliveryTemplate> vs = new ArrayList<>();
-        DeliveryTemplate v1 = new DeliveryTemplate();
-        v1.setTemplateId(-1L);
-        v1.setName("不使用运费模版");
+    public List<SnDeliveryVo> selPostModel(String username) throws AuthOverException, CustomException {
+        List<SnDeliveryVo> vs = new ArrayList<>();
+        SnDeliveryVo v1 = new SnDeliveryVo();
+        v1.setFreightId("-1");
+        v1.setFreigtName("不使用运费模版");
         vs.add(v1);
         SnFreightTemplateRequest request = new SnFreightTemplateRequest();
         request.setUsername(username);
@@ -133,9 +130,9 @@ public class SnUpItemService {
             return vs;
         } else {
             vs.addAll(list.stream().map(l -> {
-                DeliveryTemplate v = new DeliveryTemplate();
-                v.setTemplateId(Long.valueOf(l.getFreighttemplateid()));
-                v.setName(l.getFreighttemplatename());
+                SnDeliveryVo v = new SnDeliveryVo();
+                v.setFreightId(l.getFreighttemplateid());
+                v.setFreigtName(l.getFreighttemplatename());
                 return v;
             }).collect(Collectors.toList()));
             return vs;
