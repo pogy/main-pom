@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="renderer" content="webkit">
-    <title>${allData.items.item.title} - 发布商品</title>
+    <title>${allData.snPageItem.item.title} - 发布商品</title>
     <link href="public/css/global-min.css" type="text/css" rel="stylesheet">
     <link href="public/css/fabu20170108.css?t=012001" type="text/css" rel="stylesheet">
     <link href="public/css/tc-min.css" type="text/css" rel="stylesheet">

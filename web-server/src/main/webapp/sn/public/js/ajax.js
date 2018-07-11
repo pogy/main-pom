@@ -9,7 +9,7 @@ $(document).ready(function () {
                 {title : "Image files", extensions : "jpg,gif,png" }
             ],
             randomName: true,
-            accessInfoApiUrl: 'getAccessInfo.json',
+            accessInfoApiUrl: '/pdd/getAccessInfo.json',
             listen:{
                 postInit: function(){
                 },
@@ -118,27 +118,6 @@ function checkform(){
             return false;
         }
     });
-
-    //判断sku是否合法 sku价格只能在主价格的上下10%
-    price=$('#buynow').val();
-    var marketPrice = $('#marketPrice').val();
-    if(parseFloat(marketPrice) < parseFloat(price)){
-        error_msg = '市场价必须大于京东价'
-        actionFocus = 'marketPrice';
-    }
-    if(price){
-        tenPercent=Number(parseFloat(price)*0.1).toFixed(2);
-        priceMini=Number(parseFloat(price)-parseFloat(tenPercent)).toFixed(2);
-        priceMax =Number(parseFloat(price)+parseFloat(tenPercent)).toFixed(2);
-        $(".J_MapPrice").each(function(){
-            skuValue=Number(parseFloat($(this).val())).toFixed(2);
-            if(parseInt(skuValue)>parseInt(priceMax) || parseInt(skuValue)<parseInt(priceMini)){
-                error_msg='价格'+skuValue+'不合法,sku价格只能在主价格的上下10%!'+priceMini+'~'+priceMax;
-                actionFocus=$(this).prop('id');
-                return false;
-            }
-        });
-    }
 
     //如果存在材料成分那么加起来必须为100%
     componentPercentNumDefault=0;
@@ -560,7 +539,7 @@ function ready_publish(){
             c=0;
             timeCount();
             //
-            $('#tip_content').html('<img src='+domainHidden+'public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到京东,请勿取消...<br/>过程大概需要1-3分钟。');
+            $('#tip_content').html('<img src='+domainHidden+'public/images/loading.gif align="absmiddle" />&nbsp;图片搬家完成，正在上传到苏宁,请勿取消...<br/>过程大概需要1-3分钟。');
             $('#tip_content').show();
             $('#tip_default').hide();
             //alert('搞定');return false;

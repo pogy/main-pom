@@ -3,7 +3,7 @@
     <#if deliveyList??>
         <#list deliveyList as dy>
             <#if dy??>
-                <option class='expressType' data-unit="${dy.valuation}" value="${dy.templateId}" <#if erverDyTemplateId==dy.templateId>selected</#if> valu="${dy.valuation}">${dy.name}</option>
+                <option class='expressType' data-unit="${dy.valuation}" value="${dy.freightId}" <#if erverDyTemplateId==dy.freightId>selected</#if> valu="${dy.valuation}">${dy.freigtName}</option>
             </#if>
         </#list>
     </#if>
