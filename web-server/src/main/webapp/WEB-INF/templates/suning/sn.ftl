@@ -242,7 +242,7 @@
                     </div>
                 </div>
 
-                <div class="field clearfix">
+               <#-- <div class="field clearfix">
                     <label class="fl">店铺中分类</label>
                     <div class="field-content fl">
                         <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类<a href="javascript:void(0);" id="ShopCatUpdate" class="gengxin"><i></i>立即更新</a></div>
@@ -255,7 +255,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="field clearfix">
                     <label class="fl">
@@ -283,7 +283,7 @@
                                        checked="checked">
                                 <label for="_now0">立刻</label>
                             </label>
-                            <label>
+                            <#--<label>
                                 <input type="radio" class="radio" name="approve_status" value="0" id="_now1">
                                 <label for="_now1">设定</label>
                                 <select name="_date" disabled="disabled">
@@ -301,7 +301,7 @@
                             <label>
                                 <input type="radio" class="radio" name="approve_status" value="2" <#if !(allData.props.color)??>checked="checked"</#if>>
                                 <label for="inStock">放入仓库</label>
-                            </label>
+                            </label>-->
                         </div>
                     </div>
                 </div>
