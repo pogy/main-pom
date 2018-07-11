@@ -182,6 +182,11 @@ function checkform(){
         }
     }
 
+    var deliverTemplate = $('#J_deliverTemplate').val();
+    if(!deliverTemplate){
+        error_msg='运费模板不能为空';
+    }
+
     //判断可用户自定义的值中是否有,有就报错，接口不允许
     // $("[data-type='input']").each(function(){
     //   val=$(this).val();
