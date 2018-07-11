@@ -314,7 +314,7 @@
                 <input type="hidden" id="token" name="_csrf" value="${allData.token}">
                 <input type="hidden" name="colorPid" value="<#if allData.props.color??>${allData.props.color.snCode}</#if>">
                 <input type="hidden" id="uid" name="shopUid" value="${allData.snPageItem.storeId}">
-                <input type="hidden" id="mid" name="cid" value="">
+                <input type="hidden" id="cid" name="cid" value="">
                 <input type="hidden" id="mid" name="mid" value="${allData.snPageItem.goodsId}">
                 <input type="hidden" id="domain" value="//upload.571xz.com/">
             </div>
