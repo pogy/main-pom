@@ -35,7 +35,8 @@
           count(*) downNum,
           max(t2.`time`) lastDownTime,
           t1.title,
-          t1.pic_url imgSrc
+          t1.pic_url imgSrc,
+          "***" userPhone
         FROM
             (
             SELECT
