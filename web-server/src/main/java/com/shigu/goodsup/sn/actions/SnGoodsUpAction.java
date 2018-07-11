@@ -128,9 +128,7 @@ public class SnGoodsUpAction {
                 int size=0;
                 for(PropItemVo p:snShowDataVo.getPropsVo().getSaleProps()){
                     for(PropValueVo propValueVo:p.getValues()){
-                        if(propValueVo.isFirstChange()){
-                            System.out.println(propValueVo.getName());
-                        }
+
                         if(propValueVo.isSelected()){
                             size++;
                         }

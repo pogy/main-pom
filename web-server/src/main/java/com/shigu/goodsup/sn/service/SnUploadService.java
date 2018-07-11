@@ -1,8 +1,12 @@
 package com.shigu.goodsup.sn.service;
 
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.GetObjectRequest;
 import com.openJar.beans.SnGood;
+import com.openJar.requests.api.SnGetProductCodeRequest;
 import com.openJar.requests.api.SnItemAddRequest;
 import com.openJar.requests.img.SnImgAddRequest;
+import com.openJar.responses.api.SnGetProductCodeResponse;
 import com.openJar.responses.api.SnItemAddResponse;
 import com.openJar.responses.img.SnImgAddResponse;
 import com.shigu.goodsup.jd.exceptions.AuthOverException;
@@ -12,6 +16,7 @@ import com.shigu.goodsup.sn.bo.SnUploadImgBo;
 import com.shigu.goodsup.sn.bo.SnUploadPropBo;
 import com.shigu.goodsup.sn.bo.SnUploadSkuBo;
 import com.shigu.goodsup.sn.bo.SnUploadTbo;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.tools.XzSdkClient;
 import com.suning.api.exception.SuningApiException;
 import org.apache.commons.lang3.StringUtils;
@@ -21,10 +26,9 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +36,12 @@ public class SnUploadService {
     @Autowired
     XzJdSdkSend xzJdSdkSend;
 
-    public String upload(String username, SnUploadTbo sbo) throws AuthOverException, CustomException {
+    @Autowired
+    OssIO ossIO;
+
+    public String upload(String username, SnUploadTbo sbo) throws AuthOverException, CustomException,UnsupportedEncodingException {
+
+        String newKey=sbo.getPicUrls().get(0)+"?x-oss-process=image/resize,m_pad,w_800,h_1200";
         Map<String, String> map = new HashMap<>();
         if (sbo.getPicUrls() != null) {
             int i = 0;
@@ -46,9 +55,15 @@ public class SnUploadService {
             }
         }
 
+        SnImgAddRequest snImgAddRequest1 = new SnImgAddRequest();
+        snImgAddRequest1.setUsername(username);
+        snImgAddRequest1.setPicContent(newKey);
+        SnImgAddResponse snImgAddResponse1 = xzJdSdkSend.send(snImgAddRequest1);
+
         SnItemAddRequest request = new SnItemAddRequest();
         request.setUsername(username);
         SnGood snGood = new SnGood();
+        snGood.setVerticalPic(snImgAddResponse1.getAddNPics().get(0).getPicUrl());
         if (map.get("1") != null) {
             snGood.setSupplierImg1Url(map.get("1"));
         }
@@ -80,7 +95,7 @@ public class SnUploadService {
             snGood.setSupplierImg10Url(map.get("10"));
         }
 
-
+        snGood.setFreightTemplateId(sbo.getPostage_id());
         snGood.setCategoryCode(sbo.getCid());
         snGood.setCmTitle(sbo.getTitle());
         snGood.setProductName(sbo.getTitle());
@@ -88,6 +103,7 @@ public class SnUploadService {
         snGood.setPrice(sbo.getPrice());
         snGood.setInvQty(sbo.getNum().toString());
         snGood.setSaleSet(sbo.getApprove_status());
+
         List<SnGood.Par> pars = new ArrayList<>();
         List<SnGood.ChildItem> childItems = new ArrayList<>();
         if (sbo.getProps() != null) {
@@ -129,8 +145,16 @@ public class SnUploadService {
             SnImgAddResponse snImgAddResponse = xzJdSdkSend.send(snImgAddRequest);
             for (SnUploadSkuBo ssb : sbo.getSkus()) {
                 SnGood.Par par1 = new SnGood.Par();
-                par1.setParCode(ssb.getPid());
-                par1.setParValue(ssb.getName());
+                if(!ssb.getOldName().equals("")){
+                    par1.setParCode(ssb.getPid());
+                    par1.setParValue(ssb.getOldName());
+                }else{
+                    par1.setParCode(ssb.getPid());
+                    par1.setParValue(ssb.getName());
+                }
+                SnGood.Par par2=new SnGood.Par();
+                par2.setParCode("G00001");
+                par2.setParValue(ssb.getName());
                 for (SnUploadSkuBo ssb1 : ssb.getSizes()) {
                     SnGood.ChildItem childItem = new SnGood.ChildItem();
                     childItem.setItemCode(ssb1.getCode());
@@ -138,10 +162,20 @@ public class SnUploadService {
                     childItem.setPrice(ssb1.getPrice());
                     List<SnGood.Par> pars1 = new ArrayList<>();
                     SnGood.Par par = new SnGood.Par();
-                    par.setParCode(ssb1.getPid());
-                    par.setParValue(ssb1.getName());
+                    if(!ssb1.getOldName().equals("")){
+                        par.setParCode(ssb1.getPid());
+                        par.setParValue(ssb1.getOldName());
+                    }else{
+                        par.setParCode(ssb1.getPid());
+                        par.setParValue(ssb1.getName());
+                    }
+                    SnGood.Par par3=new SnGood.Par();
+                    par3.setParCode("G00002");
+                    par3.setParValue(ssb1.getName());
                     pars1.add(par);
                     pars1.add(par1);
+                    pars1.add(par2);
+                    pars1.add(par3);
                     childItem.setPars(pars1);
 
 
@@ -175,12 +209,17 @@ public class SnUploadService {
             html=html.replace(descImgUrls.get(i),snImgAddResponse.getAddNPics().get(i).getPicUrl());
         }
 
-        snGood.setIntroduction(html);
+        snGood.setIntroduction(Base64.getEncoder().encodeToString(html.getBytes("utf-8")));
         snGood.setChildItems(childItems);
         request.setSnGood(snGood);
         SnItemAddResponse response = new SnItemAddResponse();
         response = xzJdSdkSend.send(request);
 
-        return response.getApplyParams().getApplyCode();
+        String applyCode= response.getApplyParams().getApplyCode();
+        SnGetProductCodeRequest snGetProductCodeRequest=new SnGetProductCodeRequest();
+        snGetProductCodeRequest.setApplyCode(applyCode);
+        snGetProductCodeRequest.setUsername(username);
+        SnGetProductCodeResponse snGetProductCodeResponse=xzJdSdkSend.send(snGetProductCodeRequest);
+        return snGetProductCodeResponse.getProductCode();
     }
 }

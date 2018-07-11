@@ -40,23 +40,37 @@ public class SnImgService {
     public List<NPicAddResponse.AddNPic> getSnImg(String username, String picContent) throws SuningApiException {
         SnTokenInfo snTokenInfo = snAuthService.getToken(username);
         List<NPicAddResponse.AddNPic> list = new ArrayList<>();
-        StringBuilder imgIds = new StringBuilder();
-        String[] urls = picContent.split(",");
-        for (String s : urls) {
+        if(picContent.contains("x-oss-process=image/resize,m_pad,w_800,h_1200")){
+            StringBuilder imgIds = new StringBuilder();
             try {
-//                String picName = selName(s);
-                byte[] imgData = DownImage.downImgFile(s);
-                if (imgData.length > 1024 * 1024) {
-                    break;
-                }
+                byte[] imgData = DownImage.downImgFile(picContent);
                 NPicAddRequest nPicAddRequest = new NPicAddRequest();
                 nPicAddRequest.setPicFileData(imgData);
                 NPicAddResponse response = snSdkClient.mulSend(nPicAddRequest, snTokenInfo.getAccessToken());
+                imgIds.append(response.getSnbody().getAddNPic().getPicUrl());
                 list.add(response.getSnbody().getAddNPic());
-                imgIds.append(",").append(response.getSnbody().getAddNPic().getPicUrl());
-            } catch (OtherCustomException e) {
-                imgDelete(username, imgIds.toString());
-                return null;
+            }catch (OtherCustomException e){
+                imgDelete(username,imgIds.toString());
+            }
+        }else {
+            StringBuilder imgIds = new StringBuilder();
+            String[] urls = picContent.split(",");
+            for (String s : urls) {
+                try {
+//                String picName = selName(s);
+                    byte[] imgData = DownImage.downImgFile(s);
+//                if (imgData.length > 1024 * 1024) {
+//                    break;
+//                }
+                    NPicAddRequest nPicAddRequest = new NPicAddRequest();
+                    nPicAddRequest.setPicFileData(imgData);
+                    NPicAddResponse response = snSdkClient.mulSend(nPicAddRequest, snTokenInfo.getAccessToken());
+                    list.add(response.getSnbody().getAddNPic());
+                    imgIds.append(",").append(response.getSnbody().getAddNPic().getPicUrl());
+                } catch (OtherCustomException e) {
+                    imgDelete(username, imgIds.toString());
+                    return null;
+                }
             }
         }
         return list;

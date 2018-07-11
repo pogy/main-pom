@@ -2,8 +2,10 @@ package com.shigu.sn.action;
 
 import com.openJar.commons.ResponseUtil;
 import com.openJar.requests.api.SnFreightTemplateRequest;
+import com.openJar.requests.api.SnGetProductCodeRequest;
 import com.openJar.requests.api.SnShopCategoryRequest;
 import com.openJar.responses.api.SnFreightTemplateResponse;
+import com.openJar.responses.api.SnGetProductCodeResponse;
 import com.openJar.responses.api.SnShopCategoryResponse;
 import com.shigu.sn.api.service.SnGoodsService;
 import com.shigu.sn.api.service.SnOrderService;
@@ -37,6 +39,15 @@ public class SnUserAction {
         SnShopCategoryResponse response = new SnShopCategoryResponse();
         response.setSuccess(true);
         response.setSnShopCategories(snGoodsService.selSnCats(request.getUsername()));
+        return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
+    }
+
+    @RequestMapping("getCode")
+    @ResponseBody
+    public JSONObject getCode(SnGetProductCodeRequest request) throws SuningApiException{
+        SnGetProductCodeResponse response=new SnGetProductCodeResponse();
+        response.setSuccess(true);
+        response.setProductCode(snOrderService.getCode(request.getUsername(),request.getApplyCode()));
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 }

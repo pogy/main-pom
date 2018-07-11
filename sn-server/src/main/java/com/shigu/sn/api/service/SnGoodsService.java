@@ -221,7 +221,7 @@ public class SnGoodsService {
         request.setWriteoffPayment(snGood.getWirteoffPayment());
         request.setWriteoffShop(snGood.getWirteoffShop());
         request.setSourceCountry("CN");
-        List<Pars> pars=pars(snGood.getPars());
+        List<Pars> pars=pars(snGood.getPars(),1);
         List<ItemAddRequest.ChildItem> childItems=new ArrayList<>();
         for(SnGood.ChildItem childItem:snGood.getChildItems()){
             ItemAddRequest.ChildItem childItem1=new ItemAddRequest.ChildItem();
@@ -230,7 +230,7 @@ public class SnGoodsService {
             childItem1.setPrice(childItem.getPrice());
             childItem1.setSupplierImg1Url(childItem.getSupplierImg1Url());
             childItem1.setItemCode(childItem.getItemCode());
-            childItem1.setPars(pars(childItem.getPars()));
+            childItem1.setPars(pars(childItem.getPars(),2));
             childItems.add(childItem1);
         }
         request.setChildItem(childItems);
@@ -245,18 +245,32 @@ public class SnGoodsService {
         request.setSupplierImg8Url(snGood.getSupplierImg8Url());
         request.setSupplierImg9Url(snGood.getSupplierImg9Url());
         request.setSupplierImg10Url(snGood.getSupplierImg10Url());
-
+        request.setVerticalPic(snGood.getVerticalPic());
         ItemAddResponse response=snSdkClient.send(request,snTokenInfo.getAccessToken());
         return response.getSnbody().getApplyParams();
     }
 
-    public List<Pars> pars(List<SnGood.Par> list){
+    public List<Pars> pars(List<SnGood.Par> list,int status){
         List<Pars> pars=new ArrayList<>();
         for(SnGood.Par p:list){
             Pars ps=new Pars();
             ps.setParCode(p.getParCode());
             ps.setParValue(p.getParValue());
             pars.add(ps);
+        }
+        if(status==1){
+            Pars ps=new Pars();
+            Pars ps1=new Pars();
+            Pars ps2=new Pars();
+            ps.setParCode("country");
+            ps.setParValue("CN");
+            pars.add(ps);
+            ps1.setParCode("region");
+            ps1.setParValue("130");
+            pars.add(ps1);
+            ps2.setParCode("city");
+            ps2.setParValue("000001000323");
+            pars.add(ps2);
         }
         return pars;
     }

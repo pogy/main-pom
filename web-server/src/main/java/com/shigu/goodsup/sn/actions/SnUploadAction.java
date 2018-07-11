@@ -10,6 +10,7 @@ import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUploadService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
 import com.shigu.goodsup.sn.vo.SnPageItem;
+import com.shigu.goodsup.sn.vo.SnPropsVo;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.session.main4.PersonalSession;

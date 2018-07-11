@@ -6,10 +6,19 @@ import java.util.List;
 public class SnUploadSkuBo {
     private String pid;
     private String name;
+    private String oldName;
     private List<SnUploadSkuBo> sizes;
     private Integer num;
     private String price;
     private String code;
+
+    public String getOldName() {
+        return oldName;
+    }
+
+    public void setOldName(String oldName) {
+        this.oldName = oldName;
+    }
 
     public String getPid() {
         return pid;

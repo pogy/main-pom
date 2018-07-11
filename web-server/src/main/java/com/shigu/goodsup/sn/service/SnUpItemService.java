@@ -115,10 +115,6 @@ public class SnUpItemService {
      */
     public List<SnDeliveryVo> selPostModel(String username) throws AuthOverException, CustomException {
         List<SnDeliveryVo> vs = new ArrayList<>();
-        SnDeliveryVo v1 = new SnDeliveryVo();
-        v1.setFreightId("-1");
-        v1.setFreigtName("不使用运费模版");
-        vs.add(v1);
         SnFreightTemplateRequest request = new SnFreightTemplateRequest();
         request.setUsername(username);
         SnFreightTemplateResponse response = xzJdSdkSend.send(request);
@@ -167,26 +163,6 @@ public class SnUpItemService {
     }
 
     public SnPropsVo selProps(Long goodId, String categoryCode, String username, List<NewbrandQueryResponse.QueryNewbrand> brands) throws AuthOverException, CustomException, CloneNotSupportedException {
-        //PropsVO tbPropsVO=propsService.selProps(item.getCid());
-        /*List<PropImg> propImgs=item.getPropImgs();
-        if (propImgs == null) {
-            propImgs=new ArrayList<>();
-        }
-        tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
-                .getInputStr(),item.getInputPids());
-        PropsVO prop=new PropsVO();
-        jdUpItemService.fillPropValue(prop.getColor(),tbPropsVO.getColor());
-        jdUpItemService.fillProp(prop.getSaleProps(),tbPropsVO.getSaleProps());
-        jdUpItemService.fillProp(prop.getProperties(),tbPropsVO.getProperties());
-        for(PropertyItemVO p:prop.getProperties()){
-            if("颜色".equals(p.getName())&&p.getType().equals(PropType.CHECKBOX)){
-                jdUpItemService.fillPropValue(p,tbPropsVO.getColor());
-                break;
-            }
-        }
-        jdUpItemService.fillProp(prop.getProperties(),tbPropsVO.getSaleProps());
-        jdUpItemService.fillProp(prop.getSpecification(),tbPropsVO.getProperties());
-        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));*/
         ShiguGoodsIdGenerator shiguGoodsIdGenerator = new ShiguGoodsIdGenerator();
         shiguGoodsIdGenerator.setGoodId(goodId);
         shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(shiguGoodsIdGenerator);
@@ -280,10 +256,11 @@ public class SnUpItemService {
                 }
             }
         }
-        if (!type.equals("")) {
-            p1.addPropValueList(p.getValues());
-            pv.add(p1);
-        }
+//        if (!type.equals("")) {
+//            p1.addPropValueList(p.getValues());
+//            pv.add(p1);
+//        }
+        pv.add(p);
         return pv;
     }
 
@@ -471,15 +448,18 @@ public class SnUpItemService {
         if(status!=3) {
             if (!propName.equals("")) {
                 s = propName.split(",");
-                for (String s1 : s) {
-                    PropValueVo propValueVo = new PropValueVo();
-                    propValueVo.setSelected(true);
-                    propValueVo.setSnId("");
-                    propValueVo.setName(s1);
-                    if(propImg.get(propValueVo.getName())!=null){
-                        propValueVo.setImgUrl(propImg.get(propValueVo.getName()));
-                    }
-                    propValueVos.add(propValueVo);
+                for (int j=s.length-1,n=1;j>=0; j--,n++) {
+                   if(!propValueVos.get(propValueVos.size()-n).isSelected()){
+                       propValueVos.get(propValueVos.size()-n).setOldName(propValueVos.get(propValueVos.size()-n).getName());
+                       propValueVos.get(propValueVos.size()-n).setName(s[j]);
+                       propValueVos.get(propValueVos.size()-n).setSelected(true);
+                   }
+//                    propValueVo.setName(s[j]);
+//                    propValueVo.setOldName(parOptions.get(parOptions.size()-n).getParOptionDesc());
+//                    if(propImg.get(propValueVo.getName())!=null){
+//                        propValueVo.setImgUrl(propImg.get(propValueVo.getName()));
+//                    }
+//                    propValueVos.add(propValueVo);
                 }
             }
         }

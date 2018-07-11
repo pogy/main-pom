@@ -13,7 +13,7 @@ public class SnUploadBo {
     private Long uid;
     private Long shopUid;//店铺id
     private Long mid;//商品id
-    private Long postage_id;
+    private String postage_id;
     private String approve_status;
     private String categoryCode;
 
@@ -121,11 +121,11 @@ public class SnUploadBo {
         this.mid = mid;
     }
 
-    public Long getPostage_id() {
+    public String getPostage_id() {
         return postage_id;
     }
 
-    public void setPostage_id(Long postage_id) {
+    public void setPostage_id(String postage_id) {
         this.postage_id = postage_id;
     }
 
