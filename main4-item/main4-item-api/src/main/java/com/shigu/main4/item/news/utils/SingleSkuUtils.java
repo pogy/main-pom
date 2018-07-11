@@ -260,7 +260,8 @@ public class SingleSkuUtils {
                     } else {
                         singleSkuBO.setStockNum(sku.getQuantity().intValue());
                     }
-                    singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
+//                    singleSkuBO.setPriceString(MoneyUtil.dealPrice(MoneyUtil.StringToLong(sku.getPrice())));
+                    singleSkuBO.setPriceString(null);
                     break;
                 }
             }
