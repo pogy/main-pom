@@ -31,12 +31,4 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
     List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
 
     ShopNumAndMarket selMarketInfo(@Param("shopId") Long shopId);
-
-    List<WeekReadDataVO> qzIndexCount(@Param("shopId") Long shopId,@Param("webSite")String webSite,@Param("num")Integer num);
-
-    List<DataListVO> qzIndexCountForDay(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
-
-    List<DataListVO> qzIndexDownCountForDay(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
-
-    List<DownlaodDataVO> qzIndexDownCountForDayGroupItem(@Param("shopId") Long shopId, @Param("webSite")String webSite, @Param("day")String day);
 }
