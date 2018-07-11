@@ -159,6 +159,18 @@ function checkform(){
         }
     }
 
+    var isError = false;
+    $('.J_SKUImgTable tbody tr').each(function(){
+        if(!$(this).find('.prop_img_default')[0]){
+            isError = true;
+            return false;
+        }
+    });
+    if(isError){
+        error_msg = '颜色必须添加图片展示';
+    }
+
+
     //判断你是否是重量或者体积运费模板,如果有则体积或重量必填
     unit=0;
     $(".expressType").each(function(){
