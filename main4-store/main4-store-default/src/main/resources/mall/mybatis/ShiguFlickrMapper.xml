@@ -14,13 +14,21 @@
         <result property="clicks" column="clicks"/>
     </resultMap>
     <select id="selectFlickrByShop" resultMap="Flickr">
-        select sf.f_name,sf.f_id,sf.create_time,sf.f_cover,sf.clicks,count(1) from shigu_flickr sf LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id
+        select sf.f_name,sf.f_id,sf.create_time,sf.f_cover,sf.clicks,count(1) from
+        shigu_flickr sf
+        LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id
+        <if test="shopId!=null">
+        LEFT JOIN (SELECT flickr_store_id FROM shigu_flickr_shop WHERE relevancy_shop_id = #{shopId})AS sfs ON sf.store_id = sfs.flickr_store_id
+        </if>
         where
+        <if test="cPid!=null">
+            sf.c_pid=#{cPid} AND
+        </if>
         <if test="cId!=null">
             sf.c_id=#{cId} AND
         </if>
         <if test="shopId!=null">
-            sf.store_id=#{shopId} AND
+            sf.store_id=sfs.flickr_store_id AND
         </if>
         <if test="webSite!=null and webSite!=''">
             sf.web_site=#{webSite} AND
@@ -40,17 +48,43 @@
         <result column="market_name" property="marketName"/>
     </resultMap>
     <select id="selectFlickrByCategory" resultMap="Flickrshow">
-        select sf.f_name,sf.f_id,DATE_FORMAT(sf.create_time,'%Y-%m-%d') AS create_time,sf.f_cover,sf.clicks,count(1),ss.shop_id,ss.shop_num,sm.market_name
-        from shigu_flickr sf LEFT JOIN shigu_flickr_picture sfp ON sf.f_id=sfp.f_id , (SELECT shop_id,shop_num,market_id FROM shigu_shop) ss ,
-        (SELECT market_id,market_name FROM shigu_market) sm
-        where
+        SELECT
+        sf.f_name,
+        sf.f_id,
+        DATE_FORMAT( sf.create_time, '%Y-%m-%d' ) AS create_time,
+        sf.f_cover,
+        sf.clicks,
+        count( 1 ),
+        sfs.sId,
+        sfs.shop_num,
+        sm.market_name
+        FROM
+        shigu_flickr sf
+        LEFT JOIN shigu_flickr_picture sfp ON sf.f_id = sfp.f_id
+        LEFT JOIN (
+        SELECT
+        a.relevancy_shop_id AS sId,
+        a.flickr_store_id,
+        b.shop_num,
+        b.market_id
+        FROM
+        shigu_flickr_shop AS a
+        LEFT JOIN ( SELECT shop_id, shop_num, market_id FROM shigu_shop ) b ON b.shop_id = a.relevancy_shop_id
+        WHERE
+        a.relevancy_shop_id > 0
+        ) sfs ON sfs.flickr_store_id = sf.store_id,
+        ( SELECT market_id, market_name FROM shigu_market ) sm
+        WHERE
+        <if test="cPid!=null">
+            sf.c_pid=#{cPid} AND
+        </if>
         <if test="cId!=null">
             sf.c_id=#{cId} AND
         </if>
         <if test="webSite!=null and webSite!=''">
             sf.web_site=#{webSite} AND
         </if>
-        sf.store_id=ss.shop_id AND sm.market_id=ss.market_id AND sfp.pic_status=1 AND sf.f_cover != '' AND sf.f_status=#{status} GROUP BY sf.f_id LIMIT #{start}, #{size}
+         sm.market_id=sfs.market_id  AND sfp.pic_status=1 AND sf.f_cover != '' AND sf.f_status=#{status} GROUP BY sf.f_id LIMIT #{start}, #{size}
     </select>
 
     <resultMap id="FlickrDetails" type="com.shigu.main4.vo.FlickrDetails">
@@ -77,5 +111,17 @@
 
     <select id="selectPicTwo" resultType="java.lang.String">
         SELECT pic_url FROM shigu_flickr_picture WHERE f_id=#{fId} AND pic_status=#{status} LIMIT 2
+    </select>
+
+    <select id="isRelevancyShop" resultType="java.lang.Integer">
+        SELECT
+            COUNT( 1 )
+        FROM
+            shigu_flickr_shop
+        WHERE
+            sfs_status = 1
+            AND relevancy_shop_id = 26843
+        GROUP BY
+	        relevancy_shop_id
     </select>
 </mapper>

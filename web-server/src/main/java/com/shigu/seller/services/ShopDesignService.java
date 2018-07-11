@@ -13,6 +13,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.FitmentPageType;
 import com.shigu.main4.exceptions.ShopFitmentException;
+import com.shigu.main4.storeservices.FlickrManageService;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -71,6 +72,9 @@ public class ShopDesignService {
 
     @Autowired
     ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    FlickrManageService flickrManageService;
 
     /**
      * 得到模块
@@ -259,6 +263,12 @@ public class ShopDesignService {
         mv.getData().put("isEditer", isEditer);
         Long shopId = shop.getShopId();
         Integer syntaobao = shiguShopMapper.selectByPrimaryKey(shopId).getType();
+        Integer showFlickr = flickrManageService.isShowFlickr(shopId);
+        if (showFlickr==1){
+            mv.getData().put("showShopFlickr",true);
+        }else {
+            mv.getData().put("showShopFlickr",true);
+        }
         if (module instanceof CategoryModule) {//如果是店内分类模块
             if (syntaobao==1) {
                 mv.getData().put("shopcats", shopForCdnService.selShopCatsById(shopId));

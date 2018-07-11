@@ -258,7 +258,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
      * @return
      */
     @Override
-    public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize) {
+    public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Long cPid,Integer pageNo, Integer pageSize) {
         ShiguPager<ShopFlickrsVo> pager = new ShiguPager<>();
         if (pageNo==null || pageNo < 1)
             pageNo = 1;
@@ -269,7 +269,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageno,pageSize);
+            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,cPid,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 pager.setContent(new ArrayList<>());
                 return pager;
@@ -351,7 +351,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
 //        return vo;
     }
 
-    public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize) {
+    public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Long cPid,Integer pageNo, Integer pageSize) {
         ShiguPager<FlickrHomeVo> pager = new ShiguPager<>();
         if (pageNo==null || pageNo < 1)
             pageNo = 1;
@@ -362,7 +362,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageno,pageSize);
+            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,cPid,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 return pager;
             }
@@ -374,5 +374,10 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     @Override
     public Integer getFlickrPicCount(Long fId) {
         return shiguFlickrMapper.countFlickrPicture(fId,1);
+    }
+
+    @Override
+    public Integer isShowFlickr(Long shopId) {
+        return shiguFlickrMapper.isRelevancyShop(shopId);
     }
 }
