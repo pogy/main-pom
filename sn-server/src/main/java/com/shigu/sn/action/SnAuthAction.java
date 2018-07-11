@@ -49,6 +49,6 @@ public class SnAuthAction {
         snAuthInfoResponse.setData(snTokenInfo);
         JSONObject jsonObject = JSONObject.fromObject(snAuthInfoResponse);
         String encryptPlainData = Opt3Des.encryptPlainData(jsonObject.toString());//加密
-        return "redirect:http://www.571xz.com:8080/sn/callback.htm?code="+encryptPlainData;
+        return "redirect:http://www.571xz.com/sn/callback.htm?code="+encryptPlainData;
     }
 }

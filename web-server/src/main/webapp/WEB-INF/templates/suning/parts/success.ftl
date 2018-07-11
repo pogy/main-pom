@@ -1,7 +1,6 @@
 <div style='float:left;'>
-    <#if numIid??>
-        发布成功：<a id='resultTaobaoUrl' data-numiid='${numIid}'
-                href='https://product.suning.com/${shopId}/${numIid}.html' target='_blank' style="color: blue;">https://product.suning.com/${shopId}/${numIid}.html</a>
+    <#if success??>
+        发布成功：商品编码-${numIid}
         <#else>
         上传失败:${errorMsg}
     </#if>
