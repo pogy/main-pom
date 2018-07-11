@@ -18,7 +18,7 @@
                             <label class="color-lump" for="prop_${color.snCode}_${c_index}"></label>
                             <label class="labelname" for="prop_${color.snCode}_${c_index}" title="${c.name}" <#if c.selected>style="display: none;" </#if>>${c.name}</label>
                             <input type="text" data-pid='${color.snCode}' data-vid='${c.name}' data-name='${c.name}'
-                                   id="J_Alias_${color.snCode}-${c_index}" class="editbox text" maxlength=15
+                                   id="J_Alias_${color.snCode}-${c_index}" class="editbox text" maxlength=15 data-oldname="${c.oldName}"
                                    value="${c.name}" <#if !c.selected>style="display: none;"</#if>/>
                         </li>
                     </#list>
@@ -85,7 +85,7 @@
                                     </#if>/>
                                     <label class="labelname" for="prop_${s.snCode}_${sv_index}"
                                            title="${sv.name}">${sv.name}</label>
-                                    <input type="text" id="J_Alias_${s.snCode}-${sv_index}" class="editbox text" maxlength=15
+                                    <input type="text" id="J_Alias_${s.snCode}-${sv_index}" class="editbox text" maxlength=15 data-oldname="${sv.oldName}"
                                            value="${sv.name}"/>
                                 </li>
                             </#list>

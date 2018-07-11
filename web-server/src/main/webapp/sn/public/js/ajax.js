@@ -301,6 +301,8 @@ function ready_publish(){
 
         colorName = $('.J_Map_'+dataDetailTemp[0]).html();
         sizeName  = $('.J_Map_'+dataDetailTemp[1]).html();
+        oldColorName = $('#J_Alias_'+dataDetailTemp[0]).data('oldname');
+        oldSizeName = $('#J_Alias_'+dataDetailTemp[1]).data('oldname');
         quantity = $('#J_SkuField_quantity_'+data).val();
         price = $('#J_SkuField_price_'+data).val();
         var tsc=$('#J_SkuField_tsc_'+data).val();
@@ -315,7 +317,8 @@ function ready_publish(){
                         name: sizeName,
                         num: quantity,
                         price: price,
-                        code: tsc
+                        code: tsc,
+                        oldName: oldSizeName
                     })
                     return false;
                 }
@@ -328,6 +331,7 @@ function ready_publish(){
                 pid: colorPid,
                 vid: colorVid,
                 name: colorName,
+                oldName: oldColorName,
                 sizes:[]
             })
             $.each(skudata, function(i, item){
@@ -338,7 +342,8 @@ function ready_publish(){
                         name: sizeName,
                         num: quantity,
                         price: price,
-                        code: tsc
+                        code: tsc,
+                        oldName: oldSizeName
                     })
                 }
             });
