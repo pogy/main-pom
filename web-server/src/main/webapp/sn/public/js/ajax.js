@@ -161,7 +161,7 @@ function checkform(){
 
     var isError = false;
     $('.J_SKUImgTable tbody tr.needSure').each(function(){
-        if(!$(this).find('.prop_img_default')[0]){
+        if(!$(this).find('.prop_img_default').val()){
             isError = true;
             return false;
         }
