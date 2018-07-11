@@ -258,6 +258,7 @@ $(function(){
                 var imgId = $(this).attr("id").substr(10+(dataP.length)); //id="J_MapImg_1627207-28327"
                 if(propId==imgId){
                     $(this).show();
+                    $(this).addClass('needSure');
                 }
             });
 
@@ -332,6 +333,7 @@ $(function(){
                 var imgId = $(this).attr("id").substr(10+(dataP.length));
                 if(propId==imgId){
                     $(this).hide();
+                    $(this).removeClass('needSure');
                 }
             });
 

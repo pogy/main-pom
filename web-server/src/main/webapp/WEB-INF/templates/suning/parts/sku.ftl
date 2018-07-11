@@ -43,6 +43,9 @@
                     <tr id="J_MapImg_${color.snCode}-${c_index}" <#if !c.selected>
                         style="display: none;"
                     </#if>
+                     <#if c.selected>
+                        class="needSure"
+                    </#if>
                     >
                         <td class="tile">
                             <i class="color-lump" style="background-color:#${colorMap["${c.vid}"]};"></i>

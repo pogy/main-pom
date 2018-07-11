@@ -160,7 +160,7 @@ function checkform(){
     }
 
     var isError = false;
-    $('.J_SKUImgTable tbody tr').each(function(){
+    $('.J_SKUImgTable tbody tr.needSure').each(function(){
         if(!$(this).find('.prop_img_default')[0]){
             isError = true;
             return false;
