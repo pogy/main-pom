@@ -6,7 +6,7 @@
             <#assign color=allData.propsVo.color>
             <#assign selected_color={}>
         <div class="sku-group sku-color " data-caption="${color.name}" data-p="${color.snCode}" data-features="image edit">
-            <label class="sku-lable">${color.name}：</label>
+            <label class="sku-lable">颜色：</label>
             <div class="sku-box sku-color" id="sku-color-wrap">
                 <ul class="sku-list">
                     <#list color.values as c>
@@ -74,7 +74,7 @@
         <#if allData.propsVo.saleProps??>
             <#list allData.propsVo.saleProps as s>
                 <div class="sku-group required sku-size " data-caption="${s.name}" data-features=" edit" data-p="${s.snCode}">
-                    <label class="sku-lable">${s.name}：</label>
+                    <label class="sku-lable">尺码：</label>
                     <div class="sku-box ">
                         <ul class="sku-list">
                             <#list s.values as sv>
