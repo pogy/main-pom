@@ -8,6 +8,16 @@ import java.util.List;
 public class SnCategoryResponse extends Response {
     private List<CategoryQueryResponse.CategoryQuery> categoryQueryList;
 
+    private String cname;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
     private String totalSize;
 
     public String getTotalSize() {

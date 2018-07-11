@@ -3,6 +3,7 @@ package com.shigu.goodsup.sn.actions;
 import com.openJar.beans.SnToken;
 import com.openJar.beans.SnTokenInfo;
 import com.openJar.responses.api.SnAuthInfoResponse;
+import com.openJar.responses.api.SnCategoryResponse;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -98,10 +99,17 @@ public class SnGoodsUpAction {
             if(total==0){
                 throw new CustomException("不是苏宁商家");
             }
-            List<CategoryQueryResponse.CategoryQuery> categoryQueries = snCategoryService.getCategory(SnUsername, itemId).getCategoryQueryList();
+            SnCategoryResponse response=snCategoryService.getCategory(SnUsername, itemId);
+            List<CategoryQueryResponse.CategoryQuery> categoryQueries = response.getCategoryQueryList();
             if(categoryQueries.size()!=1){
                 return "suning/catChoose";
             }else {
+                if(response.getCname()!=null) {
+                    if (!categoryQueries.get(0).getDescPath().contains(response.getCname())){
+                        map.put("errmsg","商品类目与店内类目不匹配");
+                        return "suning/uperror";
+                    }
+                }
                 String categoryCode=categoryQueries.get(0).getCategoryCode();
                 List<NewbrandQueryResponse.QueryNewbrand> brands= snUserInfoService.getBrand(SnUsername,categoryCode);
                 if(brands==null){

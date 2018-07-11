@@ -186,7 +186,12 @@ public class SnUpItemService {
         ShiguPropImgs shiguPropImgs=new ShiguPropImgs();
         ShiguPropImgsExample shiguPropImgsExample=new ShiguPropImgsExample();
         shiguPropImgsExample.createCriteria().andItemIdEqualTo(goodId);
-        shiguPropImgs=shiguPropImgsMapper.selectByExample(shiguPropImgsExample).get(0);
+        List<ShiguPropImgs> list1=shiguPropImgsMapper.selectByExample(shiguPropImgsExample);
+        if(list1==null){
+            shiguPropImgs=new ShiguPropImgs();
+        }else{
+            shiguPropImgs=list1.get(0);
+        }
         Map<String, String> propMap = new HashMap<>();
         if (shiguGoodsExtends.getPropsName() == null) {
             propMap = null;
@@ -278,7 +283,7 @@ public class SnUpItemService {
     }
 
     private Map<String,String> changeColorImg(String propName,String propImgs){
-        if(propName.equals("")||propImgs.equals("")){
+        if(propName.equals("")||propImgs==null||propImgs.equals("")){
             return null;
         }
         Map<String,String> map=new HashMap<>();
@@ -419,6 +424,9 @@ public class SnUpItemService {
 
     private void addParOption(List<ItemparametersQueryResponse.ParOption> parOptions, List<PropValueVo> propValueVos, String propName,int status,Map<String,String> propImg) {
         String[] s=null;
+        if(propImg==null){
+            propImg=new HashMap<>();
+        }
         for (ItemparametersQueryResponse.ParOption p : parOptions) {
             PropValueVo propValueVo = new PropValueVo();
             propValueVo.setName(p.getParOptionDesc());

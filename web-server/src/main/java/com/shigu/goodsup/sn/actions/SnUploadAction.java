@@ -89,6 +89,9 @@ public class SnUploadAction {
                 snPageItem.setSellPointLength(snPageItem.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
             }
             numIid = snUploadService.upload(SnUsername, sbo);
+            if(numIid!=null){
+                map.put("success","发布成功");
+            }
         }catch (AuthOverException e){
             String queryString = request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=8&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
@@ -96,6 +99,7 @@ public class SnUploadAction {
         }catch (CustomException e){
             errorMsg=e.getMessage();
         }
+
         map.put("numIid",numIid);
         map.put("errorMsg",errorMsg);
         return "suning/parts/success";

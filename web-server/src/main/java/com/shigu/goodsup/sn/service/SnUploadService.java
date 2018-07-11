@@ -215,11 +215,11 @@ public class SnUploadService {
         SnItemAddResponse response = new SnItemAddResponse();
         response = xzJdSdkSend.send(request);
 
-        String applyCode= response.getApplyParams().getApplyCode();
-        SnGetProductCodeRequest snGetProductCodeRequest=new SnGetProductCodeRequest();
-        snGetProductCodeRequest.setApplyCode(applyCode);
-        snGetProductCodeRequest.setUsername(username);
-        SnGetProductCodeResponse snGetProductCodeResponse=xzJdSdkSend.send(snGetProductCodeRequest);
-        return snGetProductCodeResponse.getProductCode();
+//        String applyCode= response.getApplyParams().getApplyCode();
+//        SnGetProductCodeRequest snGetProductCodeRequest=new SnGetProductCodeRequest();
+//        snGetProductCodeRequest.setApplyCode(applyCode);
+//        snGetProductCodeRequest.setUsername(username);
+//        SnGetProductCodeResponse snGetProductCodeResponse=xzJdSdkSend.send(snGetProductCodeRequest);
+        return response.getApplyParams().getApplyCode();
     }
 }

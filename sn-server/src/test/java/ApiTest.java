@@ -1,9 +1,6 @@
 import com.shigu.sn.client.SnSdkClient;
 import com.suning.api.DefaultSuningClient;
-import com.suning.api.entity.custom.CategoryredictGetRequest;
-import com.suning.api.entity.custom.CategoryredictGetResponse;
-import com.suning.api.entity.custom.NewbrandQueryRequest;
-import com.suning.api.entity.custom.NewbrandQueryResponse;
+import com.suning.api.entity.custom.*;
 import com.suning.api.entity.fontorder.IsvorderQueryRequest;
 import com.suning.api.entity.fontorder.IsvorderQueryResponse;
 import com.suning.api.entity.item.*;
@@ -112,10 +109,10 @@ public class ApiTest {
     @Test
     public void cat6() throws SuningApiException{
         SnSdkClient snSdkClient=new SnSdkClient();
-        NationQueryRequest request=new NationQueryRequest();
-        request.setNationName("中国");
+        GetproductcodeQueryRequest request=new GetproductcodeQueryRequest();
+        request.setApplycode("100612683");
 //        request.setCheckParam(true);
-        NationQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","0d2f1006ed803c80a4bf73ad5c657d6a");
+        GetproductcodeQueryResponse res= snSdkClient.testSend(request, "715ddac6a126cbd540b8203a08a4ad73", "6779e1cddd0567e09df169d66daca2cb","c761d98dddaa39299a3f288132f94f50");
         System.out.println(res.getBody());
     }
 

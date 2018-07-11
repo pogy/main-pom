@@ -74,6 +74,7 @@ public class SnCategoryService {
         if(!response.isSuccess()){
             return null;
         }
+        response.setCname(shiguTaobaocat.getParentCname());
         return response;
     }
 

@@ -193,7 +193,11 @@ public class SnGoodsService {
     public ApplyParams getItemAdd(String username, SnGood snGood) throws SuningApiException{
         SnTokenInfo snTokenInfo=snAuthService.getToken(username);
         ItemAddRequest request=new ItemAddRequest();
-        request.setAfterSaleServiceDec(snGood.getAfterSaleServiceDec());
+        if(snGood.getAfterSaleServiceDec()==null) {
+            request.setAfterSaleServiceDec(" ");
+        }else {
+            request.setAfterSaleServiceDec(snGood.getAfterSaleServiceDec());
+        }
         request.setAlertQty(snGood.getAlertQty());
         request.setAssortCode(snGood.getAssortCode());
         request.setAutoRefund(snGood.getAutoRefund());
@@ -216,7 +220,11 @@ public class SnGoodsService {
         request.setSaleDate(snGood.getSaleDate());
         request.setSaleSet(snGood.getSaleSet());
         request.setSellChannel(snGood.getSellChannel());
-        request.setSellPoint(snGood.getSellPoint());
+        if(snGood.getSellPoint()==null||snGood.getSellPoint().equals("")){
+            request.setSellPoint(" ");
+        }else {
+            request.setSellPoint(snGood.getSellPoint());
+        }
         request.setVerticalPic(snGood.getVerticalPic());
         request.setWriteoffPayment(snGood.getWirteoffPayment());
         request.setWriteoffShop(snGood.getWirteoffShop());
@@ -271,6 +279,14 @@ public class SnGoodsService {
             ps2.setParCode("city");
             ps2.setParValue("000001000323");
             pars.add(ps2);
+            Pars pars20=new Pars();
+            pars20.setParCode("VOLUM");
+            pars20.setParValue("1");
+            Pars pars21=new Pars();
+            pars21.setParCode("BRGEW");
+            pars21.setParValue("1");
+            pars.add(pars20);
+            pars.add(pars21);
         }
         return pars;
     }
