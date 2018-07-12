@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class AliPayQzService {
 
     @Value("${qzSignType}")
     private String signType;
+    @PostConstruct
+    public void v(){
+        System.out.println();
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public void payNotice(Map<String, String> paramsMapAli) throws PayerException {

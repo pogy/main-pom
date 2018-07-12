@@ -38,7 +38,7 @@ public class AlipayQzAction {
         }
         logger.info("notifyUrl : " + paramsMapAli.toString());
         try {
-            boolean signVerified = AlipaySignature.rsaCheckV2(paramsMapAli, aliPayQzService.getPublicKey(), "utf-8", aliPayQzService.getSignType()) ;//调用SDK验证签名
+            boolean signVerified = AlipaySignature.rsaCheckV1(paramsMapAli, aliPayQzService.getPublicKey(), "utf-8", aliPayQzService.getSignType()) ;//调用SDK验证签名
             String tradeStatus =  paramsMapAli.get("trade_status");
             if(signVerified){
                 if ("TRADE_SUCCESS".equalsIgnoreCase(tradeStatus) || "TRADE_FINISHED".equalsIgnoreCase(tradeStatus)) {

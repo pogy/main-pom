@@ -27,7 +27,7 @@ import javax.annotation.Resource;
  * 支付宝App支付
  * Created by gtx on 18/4/24.
  */
-@Service("aliAppPayerQzService")
+@Service("aliAppPayerService")
 public class AliAppPayerServiceImpl extends PayerServiceAble {
     @Resource(name="alipayClient")
     private AlipayClient alipayClient;

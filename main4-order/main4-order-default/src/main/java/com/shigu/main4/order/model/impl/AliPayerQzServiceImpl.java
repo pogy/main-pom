@@ -29,10 +29,10 @@ public class AliPayerQzServiceImpl extends PayerServiceAble {
     @Resource(name="alipayQzClient")
     private AlipayClient alipayClient;
 
-    @Value("${qzreturnUrl}")
+    @Value("${qzReturnUrl}")
     private String  returnUrl;
 
-    @Value("${qznotifyUrl}")
+    @Value("${qzNotifyUrl}")
     private String notifyUrl;
 
 
@@ -43,8 +43,7 @@ public class AliPayerQzServiceImpl extends PayerServiceAble {
         if (oids == null || oids.length==0) {
             throw new PayApplyException("缺少订单ID");
         }
-        OrderPayApply apply = payApplyPrepare(userId,money,PayType.ALI,oids);
-
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.QZ_ALI,oids);
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
@@ -64,7 +63,7 @@ public class AliPayerQzServiceImpl extends PayerServiceAble {
         } catch (AlipayApiException e) {
             throw new PayApplyException(e.getMessage());
         }
-
+        System.out.println(form);
         OrderPayApply payApply = new OrderPayApply();
         payApply.setApplyId(apply.getApplyId());
         payApply.setPayLink(form);

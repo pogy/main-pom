@@ -17,10 +17,10 @@
     <dubbo:reference interface="com.shigu.main4.daifa.process.DaifaActProcess" id="daifaActProcess" group="${DAIFA_GROUP}" timeout="10000"/>
 
 
-    <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" group="${DAIFA_GROUP}" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" group="${DAIFA_GROUP}" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
 
-    <dubbo:reference interface="com.shigu.main4.order.process.TemplateProcess" id="templateProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.TemplateProcess" id="templateProcess" timeout="10000"/>
 
 </beans>

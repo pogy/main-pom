@@ -9,10 +9,6 @@ import java.util.List;
  */
 public class ConfirmBO implements Serializable{
     /**
-     * 发件单位ID
-     */
-    private Long senderId;
-    /**
      * 收货地址ID
      */
     private String addressId;
@@ -35,14 +31,6 @@ public class ConfirmBO implements Serializable{
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
     }
 
     public String getAddressId() {

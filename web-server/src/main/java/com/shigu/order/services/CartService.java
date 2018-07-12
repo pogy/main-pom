@@ -99,7 +99,6 @@ public class CartService {
         Map<Long, List<CartVO>> groupByShop = vos.stream().collect(Collectors.groupingBy(CartVO::getShopId));
         vo.setOrders(new ArrayList<>(groupByShop.size()));
         int num=0;
-        Set<String> webs=new HashSet<>();
         if (!groupByShop.isEmpty()) {
             Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
 
@@ -116,7 +115,6 @@ public class CartService {
                     orderVO.setWebSite(shiguShop.getWebSite());
                     orderVO.setStoreNum(shiguShop.getShopNum());
                     orderVO.setMarketName(shiguShop.getParentMarketName());
-                    webs.add(shiguShop.getWebSite());
                 }
                 List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<>(productVOS.size()));
@@ -138,18 +136,13 @@ public class CartService {
                     if (cdnItem == null) {
                         childOrderVO.setDisabled(true);
                         orderVO.setWebSite(productVO.getWebSite());
-                        webs.add(productVO.getWebSite());
                     } else {
                         childOrderVO.setGoodsNo(cdnItem.getHuohao());
                         childOrderVO.setColors(BeanMapper.getFieldList(cdnItem.getColors(), "value", String.class));
                         childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
                         num+=productVO.getNum();
                         orderVO.setWebSite(cdnItem.getWebSite());
-                        webs.add(cdnItem.getWebSite());
                     }
-                }
-                if(webs.size()>1){
-                    throw new OrderException("单次只能结算单个分站的订单");
                 }
                 Collections.sort(orderVO.getChildOrders());
                 Collections.reverse(orderVO.getChildOrders());
@@ -195,7 +188,10 @@ public class CartService {
         }
         List<CartVO> cartVOS = itemCartProcess.someOneCart(userId);
         cartVOS.removeIf(cartVO -> !cids.contains(cartVO.getCartId()));
-
+        Set<String> webs=cartVOS.stream().map(CartVO::getWebSite).collect(Collectors.toSet());
+        if(webs.size()>1){
+            throw new JsonErrException("单次只能结算单个分站的订单");
+        }
         String uuid = UUIDGenerator.getUUID();
 
         OrderSubmitVo submitVo = new OrderSubmitVo();
