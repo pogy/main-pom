@@ -42,8 +42,8 @@
         <result column="create_time" property="created"/>
         <result column="f_cover" property="cover"/>
         <result column="clicks" property="readCount"/>
-        <result column="count(1)" property="picCount"/>
-        <result column="shop_id" property="shopId"/>
+        <result column="count( 1 )" property="picCount"/>
+        <result column="sId" property="shopId"/>
         <result column="shop_num" property="shopNo"/>
         <result column="market_name" property="marketName"/>
     </resultMap>
@@ -120,7 +120,7 @@
             shigu_flickr_shop
         WHERE
             sfs_status = 1
-            AND relevancy_shop_id = 26843
+            AND relevancy_shop_id = #{shopId}
         GROUP BY
 	        relevancy_shop_id
     </select>

@@ -264,10 +264,10 @@ public class ShopDesignService {
         Long shopId = shop.getShopId();
         Integer syntaobao = shiguShopMapper.selectByPrimaryKey(shopId).getType();
         Integer showFlickr = flickrManageService.isShowFlickr(shopId);
-        if (showFlickr==1){
+        if (showFlickr != null && showFlickr == 1){
             mv.getData().put("showShopFlickr",true);
         }else {
-            mv.getData().put("showShopFlickr",true);
+            mv.getData().put("showShopFlickr",false);
         }
         if (module instanceof CategoryModule) {//如果是店内分类模块
             if (syntaobao==1) {

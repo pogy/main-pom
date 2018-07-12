@@ -95,9 +95,10 @@ public class FlickrAction {
             }
             model.addAttribute("photoAlbums",svoList);
         }
-        if (bo.getCid() != null) {
+        if (bo.getCid() != null || bo.getcPid() != null) {
             QueryVo q = new QueryVo();
             q.setCid(bo.getCid());
+            q.setcPid(bo.getcPid());
             model.addAttribute("query", q);
         }
         List<CategoryVo> categroyVos = flickrService.getCategroy();
@@ -106,7 +107,7 @@ public class FlickrAction {
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", shiguPager.selPageOption(bo.getRows()));
         model.addAttribute("webSite","cs");
-        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getCid()));
+        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getcPid()));
         return "goodsDetail/photoShop";
     }
 
@@ -129,16 +130,17 @@ public class FlickrAction {
         }else {
             model.addAttribute("photoAlbums",new ArrayList<>());
         }
-        if (bo.getCid() != null) {
+        if (bo.getCid() != null || bo.getcPid() != null) {
             QueryVo q = new QueryVo();
             q.setCid(bo.getCid());
+            q.setcPid(bo.getcPid());
             model.addAttribute("query", q);
         }
         List<CategoryVo> categroyVos = flickrService.getCategroy();
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite","cs");
-        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getCid()));
+        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getcPid()));
         return "search/photoPics";
     }
 

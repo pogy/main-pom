@@ -118,6 +118,8 @@ public class FlickrService {
     }
 
     public List<CategoryVo> getSubCategroy(Long cId){
+        if (cId==null)
+            return null;
         ShiguTaobaocat shiguTaobaocat = new ShiguTaobaocat();
         shiguTaobaocat.setParentCid(cId);
         List<ShiguTaobaocat> shiguTaobaocats = shiguTaobaocatMapper.select(shiguTaobaocat);
