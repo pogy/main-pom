@@ -59,6 +59,9 @@
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
         <sn-sdk.version>${project.version}</sn-sdk.version>
 
+        <!-- 新版sdk-->
+        <pinduoduo-sdk.version>0.0.1-SNAPSHOT</pinduoduo-sdk.version>
+
 
 
         <spring.version>4.3.9.RELEASE</spring.version>

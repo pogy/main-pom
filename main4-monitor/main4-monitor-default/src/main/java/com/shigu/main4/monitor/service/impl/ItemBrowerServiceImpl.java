@@ -1,7 +1,9 @@
 package com.shigu.main4.monitor.service.impl;
 
 import com.opentae.data.mall.beans.GoodsCountForsearch;
+import com.opentae.data.mall.beans.VirtualFlow;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
+import com.opentae.data.mall.interfaces.VirtualFlowMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.vo.ItemBrowerFlowVO;
@@ -41,6 +43,8 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
+    @Autowired
+    VirtualFlowMapper virtualFlowMapper;
 
     /**
      * 真实浏览
@@ -170,8 +174,9 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 //            return 0L;
 //        }
 //        return click;
+        Long num;
         try {
-            return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+            num= ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
                     .setTypes("item").setSearchType(SearchType.COUNT)
                     .setQuery(QueryBuilders.termQuery("itemId", itemId)).setSize(0)
                     .execute().actionGet().getHits().getTotalHits();
@@ -185,8 +190,13 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
             }else{
                 click = goodsCountForsearch.getClick();
             }
-            return click;
+            num= click;
         }
+        VirtualFlow virtualFlow = virtualFlowMapper.selectByPrimaryKey(itemId);
+        if(virtualFlow!=null){
+            num+=virtualFlow.getVirtualClicks();
+        }
+        return num;
     }
 
     @Override

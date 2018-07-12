@@ -13,7 +13,8 @@ public enum LoginFromType {
     PHONE("手机验证码","phone",7),
     SUPER("超级权限无密登陆","supper",-1),
     JD("京东","jd",8),
-    SN("苏宁","sn",10)
+    PDD("拼多多","pdd",9),
+    SN("苏宁","sn",10),
 
     ;
 

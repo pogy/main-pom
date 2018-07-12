@@ -48,6 +48,6 @@ public interface PackDeliveryProcess {
      * @param dfTradeId
      */
     void queryExpressCode(Long dfTradeId) throws DaifaException;
-
+    List<SubOrderExpressBO> cheackeSend(Long dfTradeId) throws DaifaException;
     ExpressVO dealSendTest(Long dfTradeId)throws DaifaException;
 }

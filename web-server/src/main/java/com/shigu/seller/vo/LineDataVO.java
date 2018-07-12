@@ -3,6 +3,7 @@ package com.shigu.seller.vo;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * Created by gtx on 2018/5/31.
  * 访问下载数据

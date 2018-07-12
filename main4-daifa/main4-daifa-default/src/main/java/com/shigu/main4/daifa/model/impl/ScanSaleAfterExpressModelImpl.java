@@ -77,6 +77,8 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
                             daifaAfterReceiveExpresStockMapper.insertSelective(stock);
                         }
                         updateIds.add(sub.getAfterSaleSubId());
+                    }else if(sub.getAfterStatus()==3&&sub.getReceivedTime()!=null){
+                        updateIds.add(sub.getAfterSaleSubId());
                     }
                 }
             }
