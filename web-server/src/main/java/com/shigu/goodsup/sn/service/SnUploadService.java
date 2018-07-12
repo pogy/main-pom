@@ -39,7 +39,7 @@ public class SnUploadService {
     @Autowired
     OssIO ossIO;
 
-    public String upload(String username, SnUploadTbo sbo) throws AuthOverException, CustomException,UnsupportedEncodingException {
+    public SnItemAddResponse upload(String username, SnUploadTbo sbo) throws AuthOverException, CustomException,UnsupportedEncodingException {
 
         String newKey=sbo.getPicUrls().get(0)+"?x-oss-process=image/resize,m_pad,w_800,h_1200";
         Map<String, String> map = new HashMap<>();
@@ -220,6 +220,6 @@ public class SnUploadService {
 //        snGetProductCodeRequest.setApplyCode(applyCode);
 //        snGetProductCodeRequest.setUsername(username);
 //        SnGetProductCodeResponse snGetProductCodeResponse=xzJdSdkSend.send(snGetProductCodeRequest);
-        return response.getApplyParams().getApplyCode();
+        return response;
     }
 }

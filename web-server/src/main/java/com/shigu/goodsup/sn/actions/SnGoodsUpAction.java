@@ -215,9 +215,11 @@ public class SnGoodsUpAction {
      */
     private String loginSuccessUrl(String backUrl) {
         String toUrl;
-        if (backUrl != null && !"http://www.571xz.com/".equals(backUrl)) {//TODO 首页的,等页面改好,这里再去掉
+        if(backUrl != null && backUrl.equals("")){
+            toUrl="http://www.571xz.com";
+        }else if (!"http://www.571xz.com/".equals(backUrl)) {//TODO 首页的,等页面改好,这里再去掉
             toUrl = backUrl;
-        } else {
+        }else {
             //如果个人,跳到这个,如果商户跳到seller
             toUrl = memberFilter.getSuccessUrl();
         }

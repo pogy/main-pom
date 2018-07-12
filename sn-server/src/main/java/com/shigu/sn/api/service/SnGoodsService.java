@@ -190,7 +190,7 @@ public class SnGoodsService {
      * @return
      * @throws SuningApiException
      */
-    public ApplyParams getItemAdd(String username, SnGood snGood) throws SuningApiException{
+    public ItemAddResponse getItemAdd(String username, SnGood snGood) throws SuningApiException{
         SnTokenInfo snTokenInfo=snAuthService.getToken(username);
         ItemAddRequest request=new ItemAddRequest();
         if(snGood.getAfterSaleServiceDec()==null) {
@@ -255,7 +255,7 @@ public class SnGoodsService {
         request.setSupplierImg10Url(snGood.getSupplierImg10Url());
         request.setVerticalPic(snGood.getVerticalPic());
         ItemAddResponse response=snSdkClient.send(request,snTokenInfo.getAccessToken());
-        return response.getSnbody().getApplyParams();
+        return response;
     }
 
     public List<Pars> pars(List<SnGood.Par> list,int status){

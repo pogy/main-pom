@@ -309,10 +309,10 @@ public class UserLoginAction {
                 break;
             }
             //苏宁授权
-//            case 8: {
-//                url = "http://www.571xz.com/pdd/login.htm";
-//                break;
-//            }
+            case 8: {
+                url = "http://www.571xz.com/sn/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
         return "redirect:" + url;

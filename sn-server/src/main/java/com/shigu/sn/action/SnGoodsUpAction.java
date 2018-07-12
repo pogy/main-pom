@@ -6,6 +6,7 @@ import com.openJar.requests.api.SnItemParametersRequest;
 import com.openJar.responses.api.SnItemAddResponse;
 import com.openJar.responses.api.SnItemParametersResponse;
 import com.shigu.sn.api.service.SnGoodsService;
+import com.suning.api.entity.item.ItemAddResponse;
 import com.suning.api.exception.SuningApiException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,12 @@ public class SnGoodsUpAction {
     public JSONObject itemAdd(SnItemAddRequest request) throws SuningApiException{
         SnItemAddResponse response=new SnItemAddResponse();
         response.setSuccess(true);
-        response.setApplyParams(snGoodsService.getItemAdd(request.getUsername(),request.getSnGood()));
+        ItemAddResponse itemAddResponse=snGoodsService.getItemAdd(request.getUsername(),request.getSnGood());
+        if(itemAddResponse.getSnerror()!=null){
+            response.setErrmsg(itemAddResponse.getSnerror().getErrorCode());
+        }else {
+            response.setApplyParams(response.getApplyParams());
+        }
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }
 

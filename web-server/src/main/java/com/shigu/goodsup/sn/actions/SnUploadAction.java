@@ -1,5 +1,7 @@
 package com.shigu.goodsup.sn.actions;
 
+import com.openJar.responses.api.SnItemAddResponse;
+import com.openJar.responses.img.SnImgAddResponse;
 import com.shigu.goodsup.jd.exceptions.AuthOverException;
 import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.sn.bo.SnUploadBo;
@@ -88,9 +90,17 @@ public class SnUploadAction {
             if (snPageItem.getItem().getSellPoint() != null) {
                 snPageItem.setSellPointLength(snPageItem.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
             }
-            numIid = snUploadService.upload(SnUsername, sbo);
-            if(numIid!=null){
+            SnItemAddResponse response = snUploadService.upload(SnUsername, sbo);
+            if(response.getErrmsg()==null){
                 map.put("success","发布成功");
+                numIid=response.getApplyParams().getApplyCode();
+            }else{
+                errorMsg=response.getErrmsg();
+                if(errorMsg.equals("biz.custom.additem.invalid-biz:175")){
+                    errorMsg="颜色属性图上传错误:必须800*800规格";
+                }else if(errorMsg.equals("biz.custom.additem.invalid-biz:124")){
+                    errorMsg="商品以存在";
+                }
             }
         }catch (AuthOverException e){
             String queryString = request.getQueryString();
