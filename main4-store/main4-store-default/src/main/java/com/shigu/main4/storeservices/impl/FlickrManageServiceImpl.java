@@ -2,8 +2,10 @@ package com.shigu.main4.storeservices.impl;
 
 import com.opentae.data.mall.beans.ShiguFlickr;
 import com.opentae.data.mall.beans.ShiguFlickrPicture;
+import com.opentae.data.mall.beans.ShiguFlickrShop;
 import com.opentae.data.mall.interfaces.ShiguFlickrMapper;
 import com.opentae.data.mall.interfaces.ShiguFlickrPictureMapper;
+import com.opentae.data.mall.interfaces.ShiguFlickrShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -36,6 +38,8 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     private ShiguFlickrMapper shiguFlickrMapper;
     @Autowired
     private ShiguFlickrPictureMapper shiguFlickrPictureMapper;
+    @Autowired
+    private ShiguFlickrShopMapper shiguFlickrShopMapper;
 
     @Autowired
     private OssIO ossIO;
@@ -310,7 +314,8 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         vo.setfId(shiguFlickr.getFId());
         vo.setName(shiguFlickr.getFName());
         vo.setDesc(shiguFlickr.getFDesc());
-        vo.setStoreId(shiguFlickr.getStoreId());
+        ShiguFlickrShop flickrShop = shiguFlickrShopMapper.selectByPrimaryKey(shiguFlickr.getStoreId());
+        vo.setStoreId(flickrShop.getRelevancyShopId());
         List<PicturesVo> picVos = new ArrayList<>();
         if (shiguFlickrPictureList.size() > 0){
             vo.setNumber(Long.valueOf(shiguFlickrPictureList.size()));
