@@ -87,7 +87,7 @@ public class SnGoodsUpAction {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             if (ps == null || ps.getLoginFromType() != LoginFromType.SN) {
                 String queryString = request.getQueryString();
-                return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=7&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
+                return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=8&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
                         (queryString == null ? "" : ("?" + queryString)), "utf-8");
             }
             String SnUsername=snUserInfoService.getSnUsernameBySubUid(ps.getSubUserId());
