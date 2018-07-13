@@ -7,6 +7,7 @@ import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.VirtualFlow;
 
 import java.util.*;
+
 public class VirtualFlowExample extends SgExample<VirtualFlowExample.Criteria> {
     public static final Class<VirtualFlow> beanClass = VirtualFlow.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -16,6 +17,7 @@ public class VirtualFlowExample extends SgExample<VirtualFlowExample.Criteria> {
     public static EntityColumn clicksScale;
     public static EntityColumn goodsId;
     public static EntityColumn gmtCreate;
+    public static EntityColumn virtualDownNum;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -28,6 +30,7 @@ public class VirtualFlowExample extends SgExample<VirtualFlowExample.Criteria> {
         clicksScale = listMap.get("clicksScale");
         goodsId = listMap.get("goodsId");
         gmtCreate = listMap.get("gmtCreate");
+        virtualDownNum = listMap.get("virtualDownNum");
         }
 
     public VirtualFlowExample() {
@@ -330,6 +333,53 @@ public class VirtualFlowExample extends SgExample<VirtualFlowExample.Criteria> {
 
         public VirtualFlowExample.Criteria andGmtCreateNotBetween(Date value1, Date value2) {
             return notBetween(gmtCreate, value1, value2);
+        }
+        public VirtualFlowExample.Criteria andVirtualDownNumIsNull() {
+            return isNull(virtualDownNum);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumIsNotNull() {
+            return isNotNull(virtualDownNum);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumEqualTo(Long value) {
+            return equalTo(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumNotEqualTo(Long value) {
+            return notEqualTo(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumGreaterThan(Long value) {
+            return greaterThan(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumLessThan(Long value) {
+            return lessThan(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(virtualDownNum, value);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumIn(List<Long> values) {
+            return in(virtualDownNum, values);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumNotIn(List<Long> values) {
+            return notIn(virtualDownNum, values);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumBetween(Long value1, Long value2) {
+            return between(virtualDownNum, value1, value2);
+        }
+
+        public VirtualFlowExample.Criteria andVirtualDownNumNotBetween(Long value1, Long value2) {
+            return notBetween(virtualDownNum, value1, value2);
         }
     }
 }
