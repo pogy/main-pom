@@ -77,7 +77,7 @@ public interface FlickrManageService {
      * @param cId
      * @return
      */
-    ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize);
+    ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Long cPid,Integer pageNo, Integer pageSize);
 
     /**
      * 获取相册的展示信息
@@ -90,8 +90,10 @@ public interface FlickrManageService {
      * 获取图片库展示信息
      * @return
      */
-    ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize);
+    ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Long cPid,Integer pageNo, Integer pageSize);
 
     Integer getFlickrPicCount(Long fId);
+
+    Integer isShowFlickr(Long shopId);
 
 }
