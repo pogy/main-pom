@@ -99,7 +99,7 @@ public class SnUploadAction {
                 if(errorMsg.equals("biz.custom.additem.invalid-biz:175")){
                     errorMsg="颜色属性图上传错误:必须800*800规格";
                 }else if(errorMsg.equals("biz.custom.additem.invalid-biz:124")){
-                    errorMsg="商品以存在";
+                    errorMsg="商品已存在";
                 }
             }
         }catch (AuthOverException e){

@@ -57,6 +57,9 @@ public class SnImgService {
             String[] urls = picContent.split(",");
             for (String s : urls) {
                 try {
+                    if(!s.contains("imgs.571xz.net")){
+                        continue;
+                    }
 //                String picName = selName(s);
                     byte[] imgData = DownImage.downImgFile(s);
 //                if (imgData.length > 1024 * 1024) {

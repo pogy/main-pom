@@ -30,7 +30,7 @@ public class SnGoodsUpAction {
         if(itemAddResponse.getSnerror()!=null){
             response.setErrmsg(itemAddResponse.getSnerror().getErrorCode());
         }else {
-            response.setApplyParams(response.getApplyParams());
+            response.setApplyParams(itemAddResponse.getSnbody().getApplyParams());
         }
         return JSONObject.fromObject(ResponseUtil.dealResponse(response).toString());
     }

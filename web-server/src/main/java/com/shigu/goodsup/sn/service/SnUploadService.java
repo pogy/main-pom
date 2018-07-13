@@ -206,7 +206,11 @@ public class SnUploadService {
         snImgAddRequest.setPicContent(imgs);
         SnImgAddResponse snImgAddResponse = xzJdSdkSend.send(snImgAddRequest);
         for(int i =0;i<descImgUrls.size();i++){
-            html=html.replace(descImgUrls.get(i),snImgAddResponse.getAddNPics().get(i).getPicUrl());
+            if(snImgAddResponse.getAddNPics().size()<=i){
+                html=html.replace(descImgUrls.get(i),"");
+            }else {
+                html = html.replace(descImgUrls.get(i), snImgAddResponse.getAddNPics().get(i).getPicUrl());
+            }
         }
 
         snGood.setIntroduction(Base64.getEncoder().encodeToString(html.getBytes("utf-8")));
