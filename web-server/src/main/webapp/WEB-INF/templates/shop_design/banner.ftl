@@ -146,7 +146,7 @@
                             </li>
                         </#if>
                     </#if>
-                    <#if shop.webSite == "cs">
+                    <#if showShopFlickr == true>
                         <li>
                                 <a href="//www.571xz.com/photoShop.htm?id=${shop.shopId}" style="color:${moduleSet.storeNav.color};">
                                     相册

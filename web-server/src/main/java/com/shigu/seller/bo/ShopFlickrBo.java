@@ -13,6 +13,7 @@ public class ShopFlickrBo implements Serializable{
 
     private Long id;
     private Long cid;
+    private Long cPid;
     private Integer page;
     private Integer rows = 60;
 
@@ -46,5 +47,13 @@ public class ShopFlickrBo implements Serializable{
 
     public void setRows(Integer rows) {
 //        this.rows = rows;
+    }
+
+    public Long getcPid() {
+        return cPid;
+    }
+
+    public void setcPid(Long cPid) {
+        this.cPid = cPid;
     }
 }

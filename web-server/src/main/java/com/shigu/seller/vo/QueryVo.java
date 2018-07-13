@@ -13,6 +13,7 @@ public class QueryVo implements Serializable{
 
     private Long cid;
     private Long id;
+    private Long cPid;
 
     public Long getCid() {
         return cid;
@@ -28,5 +29,13 @@ public class QueryVo implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getcPid() {
+        return cPid;
+    }
+
+    public void setcPid(Long cPid) {
+        this.cPid = cPid;
     }
 }
