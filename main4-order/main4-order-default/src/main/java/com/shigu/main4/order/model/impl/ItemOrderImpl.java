@@ -22,6 +22,7 @@ import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.services.SellerMsgService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
@@ -85,6 +86,9 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
+
+    @Autowired
+    private SellerMsgService sellerMsgService;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -429,6 +433,11 @@ public class ItemOrderImpl implements ItemOrder {
         order.setPayTime(new Date());
         itemOrderMapper.updateByPrimaryKeySelective(order);
         changeStatus(OrderStatus.BUYER_PAYED);
+
+        //推送新订单消息
+        long start = System.currentTimeMillis();
+        sellerMsgService.pushNewOrderMsg(oid);
+        System.err.println(System.currentTimeMillis()-start);
     }
 
     @Override

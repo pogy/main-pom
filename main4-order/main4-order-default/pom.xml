@@ -71,6 +71,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.shigu.common</groupId>
+            <artifactId>push-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-order-api</artifactId>
             <version>${parent.version}</version>

@@ -17,11 +17,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-    <context:component-scan base-package="com.opentae.*,com.shigu.*"/>
-
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -30,6 +38,35 @@
             </list>
         </property>
     </bean>
+
+    <context:component-scan base-package="com.opentae.*,com.shigu.*"/>
+
+    <bean id="pushMsgService1" class="com.shigu.common.push.services.impl.GtPushMsgService">
+        <constructor-arg index="0" value="${push.appId}" />
+        <constructor-arg index="1" value="${push.appKey}" />
+        <constructor-arg index="2" value="${push.masterSecret}" />
+        <constructor-arg index="3" value="${push.url}" />
+    </bean>
+
+    <bean id="pushMsgService2" class="com.shigu.common.push.services.impl.GtPushMsgService">
+        <constructor-arg index="0" value="${push.appId2}" />
+        <constructor-arg index="1" value="${push.appKey2}" />
+        <constructor-arg index="2" value="${push.masterSecret2}" />
+        <constructor-arg index="3" value="${push.url2}" />
+    </bean>
+
+
+    <bean id="pushMsgServiceManager" class="com.shigu.common.push.services.PushMsgServicesManager">
+        <property name="pushMsgServices">
+            <list>
+                <ref bean="pushMsgService1"/>
+                <ref bean="pushMsgService2"/>
+            </list>
+        </property>
+    </bean>
+
+    <task:executor id="shiguexecutor" pool-size="5"/>
+    <task:annotation-driven executor="shiguexecutor"/>
 
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
