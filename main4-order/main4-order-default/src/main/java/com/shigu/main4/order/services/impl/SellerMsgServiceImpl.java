@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by gtx on 2018/7/9.
@@ -201,9 +202,16 @@ public class SellerMsgServiceImpl implements SellerMsgService {
                 StringBuffer sendMsg = new StringBuffer();
                 StringBuffer goodsNos = new StringBuffer();
                 goodsNos.append("货号：");
-                orderSubs.stream().filter(item->item.getGoodsNo() != null && item.getGoodsNo().trim().length() > 0).limit(5).forEach(item->{
-                    goodsNos.append(item.getGoodsNo());
-                });
+                List<ItemOrderSub> goodsNoList = orderSubs.stream()
+                        .filter(item -> item.getGoodsNo() != null && item.getGoodsNo().trim().length() > 0)
+                        .limit(5)
+                        .collect(Collectors.toList());
+                if (goodsNoList == null || goodsNoList.isEmpty()) {
+                    goodsNos.append("暂无货号");
+                }else {
+                    goodsNoList.stream().forEach(item-> goodsNos.append(item.getGoodsNo()));
+                }
+
                 for (int i =0 ;i< orderSubs.size();i++){
                     ItemOrderSub itemOrderSub = orderSubs.get(i);
                     orderPay += itemOrderSub.getShouldPayMoney();
