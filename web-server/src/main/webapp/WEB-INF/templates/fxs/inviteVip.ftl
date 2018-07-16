@@ -47,7 +47,7 @@
     </div>
 </div>
 <script modulepath="fxs/inviteVip#myLink">
-var qrcodeUrl = '${inviteQrcode!}';
+var qrcodeUrl = '${inviteSrc!}';
 </script>
 <div class="rules actbox yahei">
     <h2><span>活动细则</span></h2>
