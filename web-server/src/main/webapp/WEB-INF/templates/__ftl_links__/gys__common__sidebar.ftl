@@ -4,6 +4,7 @@
     <h2>交易管理</h2>
     <ul>
         <#if 'myOrder' != 'xiufuGoods21init' && 'myOrder' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'myOrder' != 'videoSpace' || 'myOrder' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'myOrder' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -16,8 +17,10 @@
                 >我的订单</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'distributionOrder' != 'xiufuGoods21init' && 'distributionOrder' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'distributionOrder' != 'videoSpace' || 'distributionOrder' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'distributionOrder' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -30,12 +33,14 @@
                 >配货订单</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
     </#if>
     <h2>商品管理</h2>
     <ul>
         <#if 'createGoods21init' != 'xiufuGoods21init' && 'createGoods21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'createGoods21init' != 'videoSpace' || 'createGoods21init' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'createGoods21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -57,8 +62,10 @@
                 >发布商品</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'storeGoodsList21init' != 'xiufuGoods21init' && 'storeGoodsList21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'storeGoodsList21init' != 'videoSpace' || 'storeGoodsList21init' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'storeGoodsList21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -77,8 +84,10 @@
                 >出售中的商品</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'storeGoodsListinit' != 'xiufuGoods21init' && 'storeGoodsListinit' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'storeGoodsListinit' != 'videoSpace' || 'storeGoodsListinit' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'storeGoodsListinit' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -91,8 +100,10 @@
                 >仓库中的商品</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'storeGoodsNoListinit' != 'xiufuGoods21init' && 'storeGoodsNoListinit' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'storeGoodsNoListinit' != 'videoSpace' || 'storeGoodsNoListinit' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'storeGoodsNoListinit' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -105,8 +116,10 @@
                 >批量修改货号</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'xiufuGoods21init' != 'xiufuGoods21init' && 'xiufuGoods21init' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'xiufuGoods21init' != 'videoSpace' || 'xiufuGoods21init' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'xiufuGoods21init' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -119,8 +132,10 @@
                 >商品类目管理</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'goodsCategory' != 'xiufuGoods21init' && 'goodsCategory' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'goodsCategory' != 'videoSpace' || 'goodsCategory' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'goodsCategory' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -133,11 +148,13 @@
                 >商品分类</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
     <h2>店铺管理</h2>
     <ul>
         <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'xiufuGoods21init' && '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'videoSpace' || '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if '//www.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -151,8 +168,10 @@
                 >查看我的店铺</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'design' != 'xiufuGoods21init' && 'design' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'design' != 'videoSpace' || 'design' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'design' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -166,8 +185,10 @@
                 >店铺装修</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'pictureSpace' != 'xiufuGoods21init' && 'pictureSpace' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'pictureSpace' != 'videoSpace' || 'pictureSpace' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'pictureSpace' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -177,11 +198,29 @@
                         </#if>
                     "
                         href="pictureSpace.htm"
-                >图片空间<i class="new"></i></a>
+                >图片空间</a>
             </li>
+            </#if>
+            </#if>
+        </#if>
+        <#if 'videoSpace' != 'xiufuGoods21init' && 'videoSpace' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'videoSpace' != 'videoSpace' || 'videoSpace' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
+            <#if 'videoSpace' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
+            <li>
+                <a
+                    class="
+                        <#if 'videoSpace' == $pageid >
+                                selected
+                        </#if>
+                    "
+                        href="videoSpace.htm"
+                >视频空间<i class="new"></i></a>
+            </li>
+            </#if>
             </#if>
         </#if>
         <#if 'shiguStoreerjiyuming' != 'xiufuGoods21init' && 'shiguStoreerjiyuming' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'shiguStoreerjiyuming' != 'videoSpace' || 'shiguStoreerjiyuming' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'shiguStoreerjiyuming' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -194,8 +233,10 @@
                 >二级域名</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'shiguStorebasicStore' != 'xiufuGoods21init' && 'shiguStorebasicStore' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'shiguStorebasicStore' != 'videoSpace' || 'shiguStorebasicStore' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'shiguStorebasicStore' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -208,8 +249,10 @@
                 >店铺资料</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'ghTongbu' != 'xiufuGoods21init' && 'ghTongbu' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'ghTongbu' != 'videoSpace' || 'ghTongbu' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'ghTongbu' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -222,8 +265,10 @@
                 >授权管理</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'goodsStyleManager' != 'xiufuGoods21init' && 'goodsStyleManager' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'goodsStyleManager' != 'videoSpace' || 'goodsStyleManager' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'goodsStyleManager' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -236,12 +281,14 @@
                 >风格管理</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
         <#if session_user_redis__.logshop.webSite != 'qz'>
     <h2>营销管理</h2>
     <ul>
         <#if 'dtggapply' != 'xiufuGoods21init' && 'dtggapply' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'dtggapply' != 'videoSpace' || 'dtggapply' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'dtggapply' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -272,8 +319,10 @@
                 >免费LED广告</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'https://shop121675953.taobao.com' != 'xiufuGoods21init' && 'https://shop121675953.taobao.com' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'https://shop121675953.taobao.com' != 'videoSpace' || 'https://shop121675953.taobao.com' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'https://shop121675953.taobao.com' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -288,8 +337,10 @@
                 >广告位竞拍</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'indexgglist' != 'xiufuGoods21init' && 'indexgglist' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'indexgglist' != 'videoSpace' || 'indexgglist' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'indexgglist' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -330,8 +381,10 @@
                 >广告申请</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'promotion' != 'xiufuGoods21init' && 'promotion' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'promotion' != 'videoSpace' || 'promotion' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'promotion' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -344,8 +397,10 @@
                 >广告展示管理</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if '//www.571xz.com/qualityControl.htm' != 'xiufuGoods21init' && '//www.571xz.com/qualityControl.htm' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if '//www.571xz.com/qualityControl.htm' != 'videoSpace' || '//www.571xz.com/qualityControl.htm' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if '//www.571xz.com/qualityControl.htm' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -359,8 +414,10 @@
                 >我要质检</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'actRegister' != 'xiufuGoods21init' && 'actRegister' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'actRegister' != 'videoSpace' || 'actRegister' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'actRegister' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -373,6 +430,7 @@
                 >立即报名活动</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
     </#if>
@@ -380,6 +438,7 @@
     <h2>我的钱包</h2>
     <ul>
         <#if 'userBalance' != 'xiufuGoods21init' && 'userBalance' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'userBalance' != 'videoSpace' || 'userBalance' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'userBalance' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -401,8 +460,10 @@
                 >我的资金</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'bindAlipayUser' != 'xiufuGoods21init' && 'bindAlipayUser' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'bindAlipayUser' != 'videoSpace' || 'bindAlipayUser' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'bindAlipayUser' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -421,12 +482,14 @@
                 >绑定设置</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
     <#elseif $it.type == 'safecenter'>
     <h2>安全中心</h2>
     <ul>
         <#if 'safeindex' != 'xiufuGoods21init' && 'safeindex' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'safeindex' != 'videoSpace' || 'safeindex' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'safeindex' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -445,8 +508,10 @@
                 >安全设置</a>
             </li>
             </#if>
+            </#if>
         </#if>
         <#if 'sysSetsindex' != 'xiufuGoods21init' && 'sysSetsindex' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'sysSetsindex' != 'videoSpace' || 'sysSetsindex' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'sysSetsindex' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -459,12 +524,14 @@
                 >个人信息</a>
             </li>
             </#if>
+            </#if>
         </#if>
     </ul>
     <#elseif $it.type == 'goodsAblum'>
     <h2>相册管理</h2>
     <ul>
         <#if 'photoAlbumManagement' != 'xiufuGoods21init' && 'photoAlbumManagement' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
+            <#if 'photoAlbumManagement' != 'videoSpace' || 'photoAlbumManagement' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'photoAlbumManagement' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -479,6 +546,7 @@
                         href="photoAlbumManagement.htm"
                 >商品相册</a>
             </li>
+            </#if>
             </#if>
         </#if>
     </ul>
