@@ -605,6 +605,7 @@ public class GoodsFileService extends OssIO {
 
 
 
+
     /**
      * 拿用户根目录
      * @param shopId
