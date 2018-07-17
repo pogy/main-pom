@@ -21,13 +21,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * 支付宝App支付
  * Created by gtx on 18/4/24.
  */
 @Service("aliAppPayerService")
 public class AliAppPayerServiceImpl extends PayerServiceAble {
-    @Autowired
+    @Resource(name="alipayClient")
     private AlipayClient alipayClient;
 
     @Value("${returnUrl}")

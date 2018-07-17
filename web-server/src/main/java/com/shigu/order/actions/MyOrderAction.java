@@ -5,11 +5,10 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.order.services.AfterSaleService;
-import com.shigu.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
+import com.shigu.order.bo.OrderBO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 /**
@@ -115,7 +113,7 @@ public class MyOrderAction {
     @ResponseBody
     public JSONObject isCanApplyRefund(Long childOrderId){
         try {
-            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 2);
+            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId)>0 ? 1 : 2);
         } catch (OrderNotFindException e) {
             return JsonResponseUtil.success().element("refundState",3);
         }

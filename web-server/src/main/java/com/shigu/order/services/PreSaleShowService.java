@@ -23,9 +23,6 @@ public class PreSaleShowService {
     @Autowired
     AfterSaleService afterSaleService;
 
-    @Autowired
-    OrderManageProcess orderManageProcess;
-
     public SubRefundOrderVO selSubRefundOrderVO(Long subOrderId){
         SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(subOrderId);
         SubRefundOrderVO sub=new SubRefundOrderVO();
@@ -70,8 +67,5 @@ public class PreSaleShowService {
         return vos;
     }
 
-    public int maxCanPreRefund(Long subId) throws OrderNotFindException {
-        return orderManageProcess.tryRefund(subId.toString()).size();
-    }
 
 }
