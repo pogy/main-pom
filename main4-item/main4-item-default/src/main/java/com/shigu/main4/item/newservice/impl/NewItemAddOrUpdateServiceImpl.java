@@ -75,7 +75,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Transactional(rollbackFor = Exception.class)
     public int systemUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
         int i = super.systemUpdateItem(BeanMapper.map(item,SynItem.class));
-        if (i > 0 && item.getSingleSkus() != null) {
+        if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
         return i;
@@ -85,7 +85,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Transactional(rollbackFor = Exception.class)
     public int officeUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
         int i = super.officeUpdateItem(BeanMapper.map(item,SynItem.class));
-        if (i > 0 && item.getSingleSkus() != null) {
+        if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
         return i;
@@ -95,7 +95,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
         int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class));
-        if (i > 0 && item.getSingleSkus() != null) {
+        if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
         return i;
@@ -105,7 +105,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(NewPushSynItemBO item, Boolean updatePrice) throws ItemModifyException {
         int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class),updatePrice);
-        if (i > 0 && item.getSingleSkus() != null) {
+        if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
         }
         return i;

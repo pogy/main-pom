@@ -137,6 +137,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 sku.setColorInputStr(singleSkuBO.getColorInput());
                 sku.setSizeInputStr(singleSkuBO.getSizeInput());
                 sku.setStockNum(singleSkuBO.getStockNum());
+                sku.setPriceString(singleSkuBO.getPriceString());
                 sku.setStatus(1);
                 if (singleSkuBO.getStockNum() == 0) {
                     sku.setStatus(0);
