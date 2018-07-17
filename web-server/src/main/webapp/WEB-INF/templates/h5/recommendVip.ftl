@@ -60,6 +60,6 @@
     </div>
 </div>
 <script modulepath="h5/recommendVip#inviteContainer">
-var qrcodeUrl = '${inviteQrcode!}';
+var qrcodeUrl = '${inviteSrc!}';
 </script>
 <#include "/common/cnzz.ftl">
