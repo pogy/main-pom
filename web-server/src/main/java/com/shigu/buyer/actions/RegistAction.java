@@ -7,6 +7,7 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.services.SendMsgService;
@@ -17,6 +18,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.RedomUtil;
 import com.shigu.tools.VerifyUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -49,6 +51,9 @@ public class RegistAction {
 
     @Autowired
     RegisterAndLoginService registerAndLoginService;
+
+    @Autowired
+    MemberInviteService memberInviteService;
 
     /**
      * 用户注册
@@ -109,24 +114,37 @@ public class RegistAction {
     public JSONObject jsonregeditSubmit(@Valid RegistBO bo, BindingResult result, HttpSession session,
                                         HttpServletRequest request) throws JsonErrException {
         if(result.hasErrors()){
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
+            //throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         //认证手机
         PhoneVerify pv= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue());
         if(!bo.getTelephone().equals(pv.getPhone())||!bo.getMsgValidate().equals(pv.getVerify())){
-            throw new JsonErrException("手机验证码错误").addErrMap("ele", "msgValidate");
+            return JsonResponseUtil.error("手机验证码错误").element("ele", "msgValidate");
+            //throw new JsonErrException("手机验证码错误").addErrMap("ele", "msgValidate");
         }
         RegisterUser registerUser=new RegisterUser();
         registerUser.setPassword(bo.getPassword());
         registerUser.setTelephone(bo.getTelephone());
+        String inviteCode = bo.getInviteCode();
+        if (StringUtils.isNotBlank(inviteCode)) {
+            //有邀请码时验证邀请码
+            Long invitedUserId = memberInviteService.findUserByInviteCode(inviteCode);
+            if (invitedUserId == null) {
+                return JsonResponseUtil.error("邀请码错误");
+            }
+            registerUser.setInviteUserId(invitedUserId);
+        }
         Long userId = null;
         try {
             userId = registerAndLoginService.registerByPhone(registerUser);
             if(userId ==null){
-                throw new JsonErrException("用户已经存在");
+                return JsonResponseUtil.error("用户已经存在");
+                //throw new JsonErrException("用户已经存在");
             }
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
+            return JsonResponseUtil.error(e.getMessage()).element("ele","telephone");
+            //throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
         }
         //成功以后,需要登陆一下
         Subject currentUser = SecurityUtils.getSubject();

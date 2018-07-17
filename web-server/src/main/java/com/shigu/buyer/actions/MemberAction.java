@@ -23,6 +23,7 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
+import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -123,6 +124,9 @@ public class MemberAction {
 
     @Autowired
     GoodsupRecordSimpleService goodsupRecordSimpleService;
+
+    @Autowired
+    MemberInviteService memberInviteService;
 
     @Autowired
     private RedisIO redisIO;
@@ -1437,5 +1441,17 @@ public class MemberAction {
 
     private boolean isMemberOrSeller(String identityPath) {
         return MEMBER_PATH.equals(identityPath) || SELLER_PATH.equals(identityPath);
+    }
+
+
+
+    @RequestMapping("member/inviteVip")
+    public String inviteVip(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String inviteCode = memberInviteService.userInviteCode(ps.getUserId());
+        model.addAttribute("inviteCode", inviteCode);
+        model.addAttribute("inviteSrc", "www.571xz.com/regedit.htm?inviteCode=" + inviteCode);
+        model.addAttribute("invitedUserList", memberInviteService.inviteUserInfoList(ps.getUserId()));
+        return "fxs/inviteVip";
     }
 }
