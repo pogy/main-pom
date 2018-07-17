@@ -21,6 +21,7 @@
 <#list [{}] as $it>
 <#include "/common/xz__topbar.ftl">
 </#list>
+<#include "/__ftl_links__/goodsDetail__common__topGoat.ftl">
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
@@ -189,13 +190,26 @@
 <div class="photoConBox">
 <div class="layout">
     <div class="filterBox clearfix yahei">
-        <label class="fl fc9">分类：</label>
-        <ul class="clearfix fl">
-            <li><a href="photoShop.htm?id=${shopInfo.shopId!}" <#if !query.cid>class="selected"</#if>>全部</a></li>
-            <#list cates as cate>
-            <li><a href="photoShop.htm?id=${shopInfo.shopId!}&cid=${cate.cateId!}" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
-            </#list>
-        </ul>
+        <div class="clearfix">
+            <label class="fl fc9">分类：</label>
+            <ul class="clearfix fl">
+                <li><a href="photoShop.htm?id=${shopInfo.shopId!}" <#if !query.cPid>class="selected"</#if>>全部</a></li>
+                <#list cates as cate>
+                <li><a href="photoShop.htm?id=${shopInfo.shopId!}&cPid=${cate.cateId!}" <#if query.cPid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
+                </#list>
+            </ul>
+        </div>
+        <#if childCates??>
+        <div class="clearfix">
+            <label class="fl fc9">子类：</label>
+            <ul class="clearfix fl">
+                <li><a href="photoShop.htm?id=${shopInfo.shopId!}<#if query.cPid??>&amp;cPid=${query.cPid!}</#if>" <#if !query.cid>class="selected"</#if>>全部</a></li>
+                <#list childCates as cate>
+                <li><a href="photoShop.htm?id=${shopInfo.shopId!}&cid=${cate.cateId!}<#if query.cPid??>&amp;cPid=${query.cPid!}</#if>" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
+                </#list>
+            </ul>
+        </div>
+        </#if>
     </div>
 </div>
 <div class="layout pb70">

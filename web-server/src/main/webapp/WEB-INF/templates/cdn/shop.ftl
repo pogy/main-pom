@@ -23,10 +23,10 @@
         <#if baseUrl??>
             <base href="${baseUrl!}">
         </#if>
-    
+
     <link href="//style.571xz.com/shopItemCopy/css/shopV20180524.css?t=1516693917873" rel="stylesheet">
-    
-    
+
+
     <script src="//style.571xz.com/global/js/jquery.js"></script>
     <script src="//style.571xz.com/shopItemCopy/js/shopV20180524.js?t=1516693917873"></script>
   </head>
@@ -47,6 +47,7 @@
                         <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="//wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
                         <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
                     </ul>
                 </div>
             </div>
@@ -56,10 +57,10 @@
                 <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
                 <a href="//www.571xz.com/regedit.htm"  target="_blank">注册</a>
                 <a class="tbLogin" href="//www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
-                
+
             </div>
         </div>
-        
+
         <div class="rightbox">
             <ul>
                 <li class="noIndex">
@@ -76,7 +77,7 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <#else>
                     <li class="noDown">
@@ -107,10 +108,10 @@
                                     <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     </#if>
-                    
+
                 <#else>
                     <li class="noDown">
                         <a href="${main_host!}order/cart.htm">
@@ -140,7 +141,7 @@
                                     <li><a href="${main_host!}member/goodsCollectOriginal.htm">收藏的宝贝</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                     <li>
                         <div class="cnBox">
@@ -151,12 +152,12 @@
                                     <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
                                 </ul>
                             </div>
-                        </div>    
+                        </div>
                     </li>
                 </#if>
                 <li class="noDown">
                     <a href="//www.571xz.com/contact.htm" target="_blank">联系客服</a>
-                    
+
                 </li>
                 <li>
                     <div class="cnBox">
@@ -164,7 +165,7 @@
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
-                                
+
                                 <li><a href="//hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="//hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="//hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -187,9 +188,9 @@
                                 <li><a href="//hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
-                    </div>    
+                    </div>
                 </li>
-                    
+
             </ul>
         </div>
     </div>
@@ -218,7 +219,7 @@ var webSite = '${webSite!}';
         <div class="splitline"></div>
         <div class="storeInfobox hover">
             <div class="storeLogo iconfont"></div>
-            
+
             <div class="storeNamebox">
                 <h3 onclick="openShop()">${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
 <#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
@@ -231,7 +232,7 @@ var webSite = '${webSite!}';
                 </#if>
                 <i class="ti iconfont">&#xe60b;</i>
             </div>
-            
+
 <script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
 
 function openShop(){
@@ -243,7 +244,7 @@ function openShop(){
 /*============ shopItemCopy/page#headeV1 END ============*/
 
 
-</script>            
+</script>
             <div class="storeXybox">
 <#assign text>{"num":${vo.starNum!}}</#assign>
 <#assign $it=text?eval />
@@ -332,7 +333,7 @@ function openShop(){
                 </#if>
                 </em>
             </div>
-            
+
             <div class="storeDetailInfobox">
                 <div class="p1 clearfix">
                     <ul class="r1">
@@ -344,7 +345,7 @@ function openShop(){
                     <ul class="r2">
                         <#if vo.shopLicenses??>
                         <#list vo.shopLicenses as license>
-                            <#if license.licenseType == 3> 
+                            <#if license.licenseType == 3>
                             <li><i class="i1"></i>实体认证</li>
                             </#if>
                         </#list>
@@ -358,28 +359,28 @@ function openShop(){
                         </#if>
                     </ul>
                 </div>
-                
+
                 <div class="p2 clearfix">
                     <b><a href="//${webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
                     <#if vo.other.taobaoUrl??>
                     <b xzclick="openTaobaoShop" data-href="${vo.other.taobaoUrl!}">淘宝店铺</b>
                     </#if>
                     <#if session_user_redis__.logshop.shopId??>
-                        
+
                         <b xzclick="collectShopCannot" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
                     <#else>
-                        
+
                         <b xzclick="collectShop" data-shopid="${vo.storeRelation.storeId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
                     </#if>
-            
-            
-            
+
+
+
                 </div>
-                
+
             </div>
-            
+
         </div>
-        
+
         <form id="searchgo3" class="c_shop_search_2016" action="//so.571xz.com/${vo.storeRelation.webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
@@ -389,7 +390,7 @@ function openShop(){
                 </div>
             </div>
         </form>
-        
+
 <script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
 
 var webSite = '${webSite!}';
@@ -397,7 +398,7 @@ var webSite = '${webSite!}';
 /*============ shopItemCopy/page#headeV1 END ============*/
 
 
-</script>        
+</script>
     </div>
 </div>
 <#assign text>{    "freemarker":true,    "fields":[        {"name":'id', "value":${vo.storeRelation.storeId!}},        {"name":'timeflag', "value":"${query.timeflag!}"},        {"name":'pageNo', "value":"${query.pageNo!}"},        {"name":'order', "value":"${query.order!}"},        {"name":'pstring', "value":"${query.pstring!}"},        {"name":'beginPrice', "value":"${query.beginPrice!}"},        {"name":'endPrice', "value":"${query.endPrice!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'scid', "value":"${query.scid!}"},        {"name":'option', "value":"${query.option!}"}    ]}</#assign>
@@ -410,7 +411,7 @@ var webSite = '${webSite!}';
 ${container.html!}
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:656px;"> 
+        <p class="sitemap" style="width:656px;">
             <a href="/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
             <a href="//bj.571xz.com" target="_blank">北京站</a>
@@ -419,11 +420,12 @@ ${container.html!}
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
             <a href="//wa.571xz.com" target="_blank">辽源站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
+            <a href="//qz.571xz.com" target="_blank">泉州站</a>
             <a href="//zixun.571xz.com" target="_blank">资讯</a>
-            
-            
+
+
             <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
@@ -434,8 +436,8 @@ ${container.html!}
         </p>
         <p class="jyga">
             <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
-            <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <br>
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a>
         </p>
     </div>
 </div>

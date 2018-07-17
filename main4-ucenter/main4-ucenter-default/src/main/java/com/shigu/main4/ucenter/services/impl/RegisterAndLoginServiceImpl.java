@@ -14,6 +14,7 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.model.BindOuterRdUser;
 import com.shigu.main4.ucenter.model.impl.BindJdUser;
+import com.shigu.main4.ucenter.model.impl.BindPddUser;
 import com.shigu.main4.ucenter.model.impl.BindTbUser;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -244,7 +245,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         }
 
         BindOuterRdUser bindOuterRdUser = null;
-        switch (tempUser.getLoginFromType()) {
+        switch (tempUser.getLoginFromType()) {//不要来加default
             case TAOBAO:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindTbUser.class);
                 break;
@@ -253,6 +254,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 break;
             case ALI:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindJdUser.class);
+                break;
+            case PDD:
+                bindOuterRdUser = SpringBeanFactory.getBean(BindPddUser.class);
                 break;
         }
         //检验是否准入

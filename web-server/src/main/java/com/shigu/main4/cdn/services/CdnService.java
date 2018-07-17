@@ -112,6 +112,8 @@ public class CdnService {
      */
     @Autowired
     ItemTradeForbidMapper itemTradeForbidMapper;
+    @Autowired
+    ItemOrderSenderMapper itemOrderSenderMapper;
 
     /**
      * banner部分的html
@@ -610,5 +612,13 @@ public class CdnService {
         } else {
             return type==1?SpreadEnum.ITEM_GOAT_MAN:SpreadEnum.ITEM_BOTTOM_GOAT_MAN;
         }
+    }
+
+    /**
+     * 查询星帮代发联系电话
+     */
+    public String selDaifaPhoneNo() {
+        ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(999999990L);
+        return itemOrderSender == null ? null : itemOrderSender.getTelephone();
     }
 }

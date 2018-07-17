@@ -4,6 +4,9 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShopNumAndMarket;
+import com.shigu.seller.vo.DataListVO;
+import com.shigu.seller.vo.DownlaodDataVO;
+import com.shigu.seller.vo.WeekReadDataVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -28,5 +31,4 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
     List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
 
     ShopNumAndMarket selMarketInfo(@Param("shopId") Long shopId);
-
 }

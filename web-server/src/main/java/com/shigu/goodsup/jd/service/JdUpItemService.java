@@ -376,7 +376,7 @@ public class JdUpItemService {
     }
 
 
-    private void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
+    public void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
         for(PropertyItemVO jdV:jdVS){
             for(PropertyItemVO tbV:tbVS){
                 if(tbV.getName().equals(jdV.getName())){
@@ -411,7 +411,7 @@ public class JdUpItemService {
             }
         }
     }
-    private void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
+    public void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
         if (jdV == null) {
             return;
         }

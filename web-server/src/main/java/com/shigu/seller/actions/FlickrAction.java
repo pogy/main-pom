@@ -86,7 +86,7 @@ public class FlickrAction {
      */
     @RequestMapping("photoShop")
     public String photoShop(ShopFlickrBo bo ,Model model) throws IOException, TemplateException {
-        ShiguPager<ShopFlickrsVo> shiguPager = flickrManageService.getFlickrbyShop(bo.getId(),bo.getCid(),bo.getPage(),bo.getRows());
+        ShiguPager<ShopFlickrsVo> shiguPager = flickrManageService.getFlickrbyShop(bo.getId(),bo.getCid(),bo.getcPid(),bo.getPage(),bo.getRows());
         if (shiguPager.getContent() != null && shiguPager.getContent().size()>0){
             List<ShopFlickrsVo> svoList = shiguPager.getContent();
             for (int i = 0; i < svoList.size(); i++) {
@@ -95,9 +95,10 @@ public class FlickrAction {
             }
             model.addAttribute("photoAlbums",svoList);
         }
-        if (bo.getCid() != null) {
+        if (bo.getCid() != null || bo.getcPid() != null) {
             QueryVo q = new QueryVo();
             q.setCid(bo.getCid());
+            q.setcPid(bo.getcPid());
             model.addAttribute("query", q);
         }
         List<CategoryVo> categroyVos = flickrService.getCategroy();
@@ -106,6 +107,7 @@ public class FlickrAction {
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", shiguPager.selPageOption(bo.getRows()));
         model.addAttribute("webSite","cs");
+        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getcPid()));
         return "goodsDetail/photoShop";
     }
 
@@ -117,7 +119,7 @@ public class FlickrAction {
      */
     @RequestMapping("photoPics")
     public String photoPics(CateFlickrBo bo, Model model){
-        ShiguPager<FlickrHomeVo> pager = flickrManageService.getFlickrByCategory(bo.getCid(),bo.getPage(),bo.getRows());
+        ShiguPager<FlickrHomeVo> pager = flickrManageService.getFlickrByCategory(bo.getCid(),bo.getcPid(),bo.getPage(),bo.getRows());
         if (pager.getContent() != null && pager.getContent().size()>0){
             List<FlickrHomeVo> flickrHomeVos = pager.getContent();
             for (int i = 0; i <flickrHomeVos.size() ; i++) {
@@ -128,15 +130,17 @@ public class FlickrAction {
         }else {
             model.addAttribute("photoAlbums",new ArrayList<>());
         }
-        if (bo.getCid() != null) {
+        if (bo.getCid() != null || bo.getcPid() != null) {
             QueryVo q = new QueryVo();
             q.setCid(bo.getCid());
+            q.setcPid(bo.getcPid());
             model.addAttribute("query", q);
         }
         List<CategoryVo> categroyVos = flickrService.getCategroy();
         model.addAttribute("cates",categroyVos);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite","cs");
+        model.addAttribute("childCates",flickrService.getSubCategroy(bo.getcPid()));
         return "search/photoPics";
     }
 

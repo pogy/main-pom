@@ -4,6 +4,9 @@ import com.openJar.beans.*;
 import com.openJar.requests.api.*;
 import com.openJar.responses.api.*;
 import com.openJar.responses.imgs.JdUpImgResponse;
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.examples.MemberUserSubExample;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.goodsup.jd.bo.JdUploadPropImgBO;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.bo.JdUploadTmpBO;
@@ -35,6 +38,8 @@ public class JdUploadService {
     JdImgService jdImgService;
     @Autowired
     JdGoodsUpService jdGoodsUpService;
+    @Autowired
+    MemberUserSubMapper memberUserSubMapper;
     static List<Integer> cdnIndexs = Arrays.asList(10, 11, 12, 13, 14);
 
     public SdkJdWareAdd upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
@@ -254,6 +259,11 @@ public class JdUploadService {
             b.setImgIndex(index.toString());
             jdImgService.bindGoodsImgs(b, jdUid);
         }
+
+        MemberUserSubExample example = new MemberUserSubExample();
+        example.createCriteria().andSubUserKeyEqualTo(String.valueOf(jdUid));
+        MemberUserSub memberUserSub = memberUserSubMapper.selectByExample(example).get(0);
+
         ItemUpRecordVO vo = new ItemUpRecordVO();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         vo.setDaiTime(sdf.format(new Date()));
@@ -261,7 +271,7 @@ public class JdUploadService {
         vo.setFenImage(imgMap.get(headImgUrls.get(0)).getPictureUrl());
         vo.setFenPrice(tbo.getPrice());
         vo.setFenNumiid(jdGoods.getGoodsId());
-        vo.setFenUserId(jdUid);
+        vo.setFenUserId(memberUserSub.getUserId());
         vo.setFenUserNick(jdUid.toString());
         vo.setFlag("jd");
         vo.setSupperGoodsId(tbo.getMid());

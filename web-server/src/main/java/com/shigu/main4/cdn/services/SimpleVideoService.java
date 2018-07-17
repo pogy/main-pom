@@ -1,9 +1,16 @@
 package com.shigu.main4.cdn.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.ShopBase;
+import com.shigu.main4.vo.StoreRelation;
+import com.shigu.session.main4.PersonalSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +20,7 @@ import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * 类名：SimpleVideoService
@@ -27,7 +35,6 @@ public class SimpleVideoService {
 
     @Autowired
     private ShowForCdnService showForCdnService;
-
     @Autowired
     private CdnService cdnService;
 
@@ -89,4 +96,5 @@ public class SimpleVideoService {
         }
         return false;
     }
+
 }

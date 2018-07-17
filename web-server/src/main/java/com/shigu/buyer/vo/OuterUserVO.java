@@ -30,6 +30,14 @@ public class OuterUserVO implements Serializable{
      * 输出 淘宝、阿里巴巴、微信   中文字样
      */
     private String name;
+    /**
+     * 1淘宝 2阿里 4微信 6京东 7拼多多 第三方登陆type
+     */
+    private String ortherLoginType;
+    /**
+     * 图标地址
+     */
+    private String iconUrl;
 
     public OuterUserVO() {
     }
@@ -40,22 +48,37 @@ public class OuterUserVO implements Serializable{
             case JD:{
                 setFrom("jingdong");
                 setName("京东");
+                setOrtherLoginType("6");
                 break;
             }
             case WX: {
                 setFrom("weixin");
                 setName("微信");
+                setOrtherLoginType("4");
                 break;
             }
             case TAOBAO:{
                 setFrom("taobao");
                 setName("淘宝");
+                setOrtherLoginType("1");
                 break;
             }
             case ALI:{
                 setFrom("ali");
                 setName("阿里");
+                setOrtherLoginType("2");
                 break;
+            }
+            case PDD:{
+                setFrom("pinduoduo");
+                setName("拼多多");
+                setOrtherLoginType("7");
+                break;
+            }
+            case SN:{
+                setFrom("suning");
+                setName("苏宁");
+                setOrtherLoginType("8");
             }
             default:{
                 setFrom("");
@@ -104,5 +127,21 @@ public class OuterUserVO implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOrtherLoginType() {
+        return ortherLoginType;
+    }
+
+    public void setOrtherLoginType(String ortherLoginType) {
+        this.ortherLoginType = ortherLoginType;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

@@ -232,11 +232,13 @@ ${userShopHdHtml}
 </#if>
     </div>
     <div class="imgTabBox">
-        <div class="<#if (goodsInfo.imgUrls?size) gt 6>imgScroll</#if>">
+        <div class="<#if goodsInfo.imgUrls?? && (goodsInfo.imgUrls?size) gt 6>imgScroll</#if>">
             <ul class="clearfix">
-            <#list goodsInfo.imgUrls as imgUrl>
-                <li data-img='${imgUrl!}' <#if img_index == 0 >class="selected"</#if>><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
-            </#list>
+            <#if goodsInfo.imgUrls??>
+                <#list goodsInfo.imgUrls as imgUrl>
+                    <li data-img='${imgUrl!}' <#if img_index == 0 >class="selected"</#if>><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                </#list>
+            </#if>
             </ul>
         </div>
         <#if goodsInfo.imgUrls?? && (goodsInfo.imgUrls?size) gt 6>

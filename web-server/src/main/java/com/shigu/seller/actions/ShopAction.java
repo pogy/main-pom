@@ -1305,7 +1305,7 @@ public class ShopAction {
         if(domain==null||domain.equals(oldDomain)){
             model.addAttribute("domain",oldDomain);
         } else {
-            if (StringUtils.isBlank(domain) || isContainChinese(domain)) {
+            if (StringUtils.isBlank(domain) || !chexDomain(domain)) {
                 model.addAttribute("domain",oldDomain);
                 model.addAttribute("msg","二级域名只允许字母和数字的组合，建议长度3-8位");
             }else {
@@ -1321,8 +1321,8 @@ public class ShopAction {
         return "gys/shiguStoreerjiyuming";
     }
 
-    private static boolean isContainChinese(String str) {
-        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+    private static boolean chexDomain(String str) {
+        Pattern p = Pattern.compile("^[0-9a-zA-Z]{3,30}$");//不要太长
         Matcher m = p.matcher(str);
         if (m.find()) {
             return true;

@@ -2,8 +2,10 @@ package com.shigu.main4.storeservices.impl;
 
 import com.opentae.data.mall.beans.ShiguFlickr;
 import com.opentae.data.mall.beans.ShiguFlickrPicture;
+import com.opentae.data.mall.beans.ShiguFlickrShop;
 import com.opentae.data.mall.interfaces.ShiguFlickrMapper;
 import com.opentae.data.mall.interfaces.ShiguFlickrPictureMapper;
+import com.opentae.data.mall.interfaces.ShiguFlickrShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -36,6 +38,8 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     private ShiguFlickrMapper shiguFlickrMapper;
     @Autowired
     private ShiguFlickrPictureMapper shiguFlickrPictureMapper;
+    @Autowired
+    private ShiguFlickrShopMapper shiguFlickrShopMapper;
 
     @Autowired
     private OssIO ossIO;
@@ -258,7 +262,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
      * @return
      */
     @Override
-    public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Integer pageNo, Integer pageSize) {
+    public ShiguPager<ShopFlickrsVo> getFlickrbyShop(Long shopId,Long cId,Long cPid,Integer pageNo, Integer pageSize) {
         ShiguPager<ShopFlickrsVo> pager = new ShiguPager<>();
         if (pageNo==null || pageNo < 1)
             pageNo = 1;
@@ -269,7 +273,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,"cs",1,pageno,pageSize);
+            List<FlickrShow> showList = shiguFlickrMapper.selectFlickrByShop(shopId,cId,cPid,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 pager.setContent(new ArrayList<>());
                 return pager;
@@ -310,7 +314,8 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         vo.setfId(shiguFlickr.getFId());
         vo.setName(shiguFlickr.getFName());
         vo.setDesc(shiguFlickr.getFDesc());
-        vo.setStoreId(shiguFlickr.getStoreId());
+        ShiguFlickrShop flickrShop = shiguFlickrShopMapper.selectByPrimaryKey(shiguFlickr.getStoreId());
+        vo.setStoreId(flickrShop.getRelevancyShopId());
         List<PicturesVo> picVos = new ArrayList<>();
         if (shiguFlickrPictureList.size() > 0){
             vo.setNumber(Long.valueOf(shiguFlickrPictureList.size()));
@@ -351,7 +356,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
 //        return vo;
     }
 
-    public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Integer pageNo, Integer pageSize) {
+    public ShiguPager<FlickrHomeVo> getFlickrByCategory(Long cId,Long cPid,Integer pageNo, Integer pageSize) {
         ShiguPager<FlickrHomeVo> pager = new ShiguPager<>();
         if (pageNo==null || pageNo < 1)
             pageNo = 1;
@@ -362,7 +367,7 @@ public class FlickrManageServiceImpl implements FlickrManageService {
         int count = shiguFlickrMapper.countFlickr(1);
         pager.calPages(count, pageSize);
         if (count > 0) {
-            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,"cs",1,pageno,pageSize);
+            List<FlickrHomeVo> showList = shiguFlickrMapper.selectFlickrByCategory(cId,cPid,"cs",1,pageno,pageSize);
             if (showList.size() <=0 ){
                 return pager;
             }
@@ -374,5 +379,10 @@ public class FlickrManageServiceImpl implements FlickrManageService {
     @Override
     public Integer getFlickrPicCount(Long fId) {
         return shiguFlickrMapper.countFlickrPicture(fId,1);
+    }
+
+    @Override
+    public Integer isShowFlickr(Long shopId) {
+        return shiguFlickrMapper.isRelevancyShop(shopId);
     }
 }

@@ -4,6 +4,12 @@ import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
 import com.shigu.buyer.services.*;
+import com.shigu.buyer.enums.OutUserBindTypeEnum;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
+import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.UserAccountService;
+import com.shigu.buyer.services.UserCollectSimpleService;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -170,13 +176,8 @@ public class MemberAction {
     public String fenxiaoZhanghao(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
-        for (OuterUser ou : outerUsers) {
-            if (ou == null || ou.getLoginFromType() == null) {
-                continue;
-            }
-            OuterUserVO vo = new OuterUserVO(ou);
-            model.addAttribute("outer_" + vo.getFrom(), vo);
-        }
+        List<OuterUserVO> outerUserVOS = OutUserBindTypeEnum.psrseToOutUserVO(outerUsers);
+        model.addAttribute("_outer_accountType_", outerUserVOS);
         return "fxs/fenxiaoZhanghao";
     }
 
