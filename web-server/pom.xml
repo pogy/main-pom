@@ -28,7 +28,7 @@
                 <version>9.4.8.v20171121</version>
                 <configuration>
                     <httpConnector>
-                        <port>80</port>
+                        <port>8080</port>
                     </httpConnector>
                 </configuration>
             </plugin>
@@ -49,6 +49,12 @@
             <groupId>com.shigu.common</groupId>
             <artifactId>pinduoduo-sdk</artifactId>
             <version>${pinduoduo-sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>sn-sdk</artifactId>
+            <version>${sn-sdk.version}</version>
         </dependency>
 
         <dependency>

@@ -1,15 +1,14 @@
 package com.shigu.main4.item.services.utils;
 
-import com.opentae.data.mall.beans.GoodsCountForsearch;
-import com.opentae.data.mall.beans.GoodsupNoreal;
-import com.opentae.data.mall.beans.ShiguGoodsModified;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsupNorealExample;
 import com.opentae.data.mall.examples.ShiguGoodsModifiedExample;
+import com.opentae.data.mall.examples.VirtualFlowExample;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsModifiedMapper;
+import com.opentae.data.mall.interfaces.VirtualFlowMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.beans.GoodsupLongTerms;
 import com.shigu.main4.item.vo.GoodsAggsVO;
@@ -36,14 +35,18 @@ public class ElasticCountUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticCountUtil.class);
 
+//    @Autowired
+//    GoodsupNorealMapper goodsupNorealMapper;
     @Autowired
-    GoodsupNorealMapper goodsupNorealMapper;
+    VirtualFlowMapper virtualFlowMapper;
 
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Autowired
     ShiguGoodsModifiedMapper shiguGoodsModifiedMapper;
+
+
 
 
     /**
@@ -65,12 +68,12 @@ public class ElasticCountUtil {
 
             //把增量数据补上
             List<Long> goodsIdsList = new ArrayList<>(goodsIds);
-            GoodsupNorealExample example = new GoodsupNorealExample();
-            example.createCriteria().andItemIdIn(goodsIdsList);
-            for (GoodsupNoreal gn : goodsupNorealMapper.selectByExample(example)) {
-                Integer value = goodsupLongTerms.get(gn.getItemId().toString());
-                int count = gn.getAddNum() + (value == null ? 0 : value);
-                goodsupLongTerms.put(gn.getItemId().toString(), count);
+            VirtualFlowExample example=new VirtualFlowExample();
+            example.createCriteria().andGoodsIdIn(goodsIdsList);
+            for (VirtualFlow v : virtualFlowMapper.selectByExample(example)) {
+                Integer value = goodsupLongTerms.get(v.getGoodsId().toString());
+                int count = v.getVirtualUploadNum().intValue() + (value == null ? 0 : value);
+                goodsupLongTerms.put(v.getGoodsId().toString(), count);
             }
         }
         return goodsupLongTerms;
@@ -97,15 +100,15 @@ public class ElasticCountUtil {
 
                 itemResult.put(goodsCountForsearch.getGoodsId().toString(), goodsAggsVO);
             }
-            GoodsupNorealExample norealExample = new GoodsupNorealExample();
-            norealExample.createCriteria().andItemIdIn(goodsIds);
-            for (GoodsupNoreal goodsupNoreal : goodsupNorealMapper.selectByExample(norealExample)) {
-                GoodsAggsVO goodsAggsVO = itemResult.get(goodsupNoreal.getItemId().toString());
+            VirtualFlowExample virtualFlowExample=new VirtualFlowExample();
+            virtualFlowExample.createCriteria().andGoodsIdIn(goodsIds);
+            for (VirtualFlow v : virtualFlowMapper.selectByExample(virtualFlowExample)) {
+                GoodsAggsVO goodsAggsVO = itemResult.get(v.getGoodsId().toString());
                 if (goodsAggsVO == null) {
                     goodsAggsVO = new GoodsAggsVO();
-                    itemResult.put(goodsupNoreal.getItemId().toString(), goodsAggsVO);
+                    itemResult.put(v.getGoodsId().toString(), goodsAggsVO);
                 }
-                goodsAggsVO.addGoodsupNum(goodsupNoreal.getAddNum());
+                goodsAggsVO.addGoodsupNum(v.getVirtualUploadNum().intValue());
             }
             ShiguGoodsModifiedExample modifiedExample = new ShiguGoodsModifiedExample();
             modifiedExample.createCriteria().andItemIdIn(goodsIds);

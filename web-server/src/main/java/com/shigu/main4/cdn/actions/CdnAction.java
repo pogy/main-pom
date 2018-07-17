@@ -1,7 +1,6 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.openJar.utils.JsonUtil;
 import com.shigu.main4.bo.OnsaleItemQueryBO;
 import com.shigu.main4.cdn.bo.*;
 import com.shigu.main4.cdn.exceptions.CdnException;
@@ -47,14 +46,9 @@ import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.*;
 import com.shigu.tools.*;
 import com.shigu.vo.ItemGoatVO;
-import com.sun.mail.iap.Response;
 import freemarker.template.TemplateException;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.jsoup.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,11 +58,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.validation.Valid;
-import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -142,6 +133,7 @@ public class CdnAction {
     @Autowired
     SearchCategoryService searchCategoryService;
 
+
     /**
      * 联系我们
      *
@@ -151,6 +143,7 @@ public class CdnAction {
     public String contact(Model model) {
         model.addAttribute("webSite", "hz");
         model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
         return "xzSearch/contact";
     }
 
@@ -1076,15 +1069,58 @@ public class CdnAction {
 
     @RequestMapping("smallpic")
     @ResponseBody
-    public JSONObject smallPic(Long id) {
+    public JSONObject smallPic(Long id,HttpSession
+            session) {
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         try {
             String picUrl = shopsItemService.itemImgzipUrl(id);
+            addUploadRecord(id, personalSession);
             return JsonResponseUtil.success().element("pic", picUrl.replace("#", "%23"));
         } catch (Exception e) {
             return JsonResponseUtil.error("下载失败，请重试！");
         }
 
     }
+    private void addUploadRecord(Long id, PersonalSession personalSession){
+        CdnItem cdnItem = showForCdnService.selItemById(id);
+        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId());
+        ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
+        ItemUpRecordVO record = new ItemUpRecordVO();
+        record.setFenUserId(personalSession.getUserId());
+        record.setFenUserNick(personalSession.getUserNick());
+        record.setFenPrice(cdnItem.getPiPrice());
+        record.setSupperPiPrice(cdnItem.getPiPrice());
+        record.setSupperPrice(cdnItem.getPrice());
+        record.setStatus(0L);
+        record.setFenGoodsName(cdnItem.getTitle());
+        record.setSupperGoodsId(id);
+        record.setSupperStoreId(cdnItem.getShopId());
+        record.setSupperMarketId(cdnItem.getMarketId());
+        record.setSupperNumiid(cdnItem.getTbNumIid());
+        record.setCid(cdnItem.getCid());
+        if (!cdnItem.getImgUrl().isEmpty()) {
+            String img = cdnItem.getImgUrl().get(0);
+            record.setSupperImage(img);
+            record.setFenImage(img);
+        }
+        record.setFlag("imgzip");
+        record.setSupperGoodsName(cdnItem.getTitle());
+        record.setWebSite(cdnItem.getWebSite());
+        record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
+        record.setFenNumiid(cdnItem.getTbNumIid());
+        if (storeRelation != null) {
+            record.setSupperServers("退现金,包换款");
+            record.setSupperStorenum(storeRelation.getStoreNum());
+            record.setSupperImww(storeRelation.getImWw());
+            record.setSupperTelephone(storeRelation.getTelephone());
+            record.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
+            record.setSupperMarket(storeRelation.getMarketName());
+            record.setSupperStoreName(shopBase.getShopName());
+            record.setSupperQq(storeRelation.getImQq());
+        }
+        itemUpRecordService.addItemUpRecord(record);
+    }
+
 
     @RequestMapping("downloadVideo")
     public void downloadVideo(Long id, HttpServletResponse resp) throws JsonErrException {
@@ -1104,7 +1140,6 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback, "{'result':'error','msg':'档口不支持代理功能'}", response);
             return;
         }
-        String upflag = "imgzip";
         DatuVO bigVo = goodsFileService.datuUrl(goodsId);
         String url = "smallpic.json?id=" + goodsId;//shopsItemService.itemImgzipUrl(goodsId);
 //        String url="11";
@@ -1112,43 +1147,6 @@ public class CdnAction {
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
         } else {
-            CdnItem cdnItem = showForCdnService.selItemById(goodsId);
-            StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId());
-            ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
-            ItemUpRecordVO record = new ItemUpRecordVO();
-            record.setFenUserId(personalSession.getUserId());
-            record.setFenUserNick(personalSession.getUserNick());
-            record.setFenPrice(cdnItem.getPiPrice());
-            record.setSupperPiPrice(cdnItem.getPiPrice());
-            record.setSupperPrice(cdnItem.getPrice());
-            record.setStatus(0L);
-            record.setFenGoodsName(cdnItem.getTitle());
-            record.setSupperGoodsId(goodsId);
-            record.setSupperStoreId(cdnItem.getShopId());
-            record.setSupperMarketId(cdnItem.getMarketId());
-            record.setSupperNumiid(cdnItem.getTbNumIid());
-            record.setCid(cdnItem.getCid());
-            if (!cdnItem.getImgUrl().isEmpty()) {
-                String img = cdnItem.getImgUrl().get(0);
-                record.setSupperImage(img);
-                record.setFenImage(img);
-            }
-            record.setFlag(upflag);
-            record.setSupperGoodsName(cdnItem.getTitle());
-            record.setWebSite(cdnItem.getWebSite());
-            record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
-            record.setFenNumiid(cdnItem.getTbNumIid());
-            if (storeRelation != null) {
-                record.setSupperServers("退现金,包换款");
-                record.setSupperStorenum(storeRelation.getStoreNum());
-                record.setSupperImww(storeRelation.getImWw());
-                record.setSupperTelephone(storeRelation.getTelephone());
-                record.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
-                record.setSupperMarket(storeRelation.getMarketName());
-                record.setSupperStoreName(shopBase.getShopName());
-                record.setSupperQq(storeRelation.getImQq());
-            }
-            itemUpRecordService.addItemUpRecord(record);
             content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'";
             if (bigVo != null) {
                 content += ",'bigPicSource':'" + bigVo.getUrl() + "'";
@@ -1160,6 +1158,9 @@ public class CdnAction {
         }
         ResultRetUtil.returnJsonp(callback, content, response);
     }
+
+
+
 
     /**
      * 著作权
@@ -1428,6 +1429,7 @@ public class CdnAction {
     public String daifaIndex(Model model) {
         model.addAttribute("webSite", "hz");
         model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
         return "xzSearch/daifaIndex";
     }
 

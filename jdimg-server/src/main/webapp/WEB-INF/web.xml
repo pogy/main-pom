@@ -10,7 +10,7 @@
 		<param-value>/WEB-INF/classes/log4j.properties</param-value>
 	</context-param>
 	<listener>
-		<listener-class>com.shigu.component.core.config.Log4jListener</listener-class>
+		<listener-class>com.shigu.component.Log4jListener</listener-class>
 	</listener>
 
 	<!--spring配置文件 -->
