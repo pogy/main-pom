@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 public class CateFlickrBo implements Serializable{
     private Long cid;
+    private Long cPid;
     private Integer page;
     private Integer rows = 72;
 
@@ -36,5 +37,13 @@ public class CateFlickrBo implements Serializable{
 
     public void setRows(Integer rows) {
 //        this.rows = rows;
+    }
+
+    public Long getcPid() {
+        return cPid;
+    }
+
+    public void setcPid(Long cPid) {
+        this.cPid = cPid;
     }
 }

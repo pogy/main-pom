@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoodsBogusUploadRecordsMapper" >
+    <select id="qzIndexDownCountGroupDay" resultType="com.shigu.seller.vo.DataListVO">
+        SELECT
+          t2.`day` text,
+          count(*) `value`
+        FROM
+          (
+            SELECT
+              goods_id
+            FROM
+              shigu_goods_tiny_${webSite}
+            WHERE
+              store_id = ${shopId}
+            UNION ALL
+            SELECT
+              goods_id
+            FROM
+              shigu_goods_soldout_${webSite}
+            WHERE
+              store_id = ${shopId}
+            ) t1,
+            goods_bogus_upload_records t2
+        WHERE
+            t1.goods_id = t2.goods_id
+        AND t2.`day` &gt;= ${day}
+        GROUP BY
+        t2.`day`
+    </select>
+
+    <select id="qzIndexDownCountForDayGroupItem" resultType="com.shigu.seller.vo.DownlaodDataVO">
+        SELECT
+          t2.goods_id goodsId,
+          count(*) downNum,
+          max(t2.`time`) lastDownTime,
+          t1.title,
+          t1.pic_url imgSrc,
+          "***" userPhone
+        FROM
+            (
+            SELECT
+              goods_id,title,pic_url
+            FROM
+              shigu_goods_tiny_${webSite}
+            WHERE
+              store_id = ${shopId}
+            UNION ALL
+            SELECT
+              goods_id,title,pic_url
+            FROM
+              shigu_goods_soldout_${webSite}
+            WHERE
+              store_id = ${shopId}
+            ) t1,
+            goods_bogus_upload_records t2
+        WHERE
+          t1.goods_id = t2.goods_id
+        AND t2.`day` &gt;= ${day}
+        GROUP BY
+        t2.goods_id
+    </select>
+
+    <select id="qzIndexDownCountForDay" resultType="java.lang.Integer">
+        SELECT
+          count(*)
+        FROM
+        (
+            SELECT
+              goods_id,title,pic_url
+            FROM
+              shigu_goods_tiny_${webSite}
+            WHERE
+              store_id = ${shopId}
+            UNION ALL
+            SELECT
+              goods_id,title,pic_url
+            FROM
+              shigu_goods_soldout_${webSite}
+            WHERE
+              store_id = ${shopId}
+        ) t1,
+        goods_bogus_upload_records t2
+        WHERE
+        t1.goods_id = t2.goods_id
+        <if test="day != null">
+            AND t2.`day` &gt;= ${day}
+        </if>
+    </select>
+
+</mapper>

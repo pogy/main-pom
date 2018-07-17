@@ -1,5 +1,7 @@
 package com.shigu.seller.services;
 
+import com.opentae.data.mall.beans.ShiguTaobaocat;
+import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.CategoryVo;
@@ -25,6 +27,9 @@ public class FlickrService {
 
     @Autowired
     private RedisForFlickrPage redisForFlickrPage;
+
+    @Autowired
+    private ShiguTaobaocatMapper shiguTaobaocatMapper;
     @Autowired
     private RedisIO redisIO;
     @Autowired
@@ -112,5 +117,21 @@ public class FlickrService {
         return targetUrl;
     }
 
-
+    public List<CategoryVo> getSubCategroy(Long cId){
+        if (cId==null)
+            return null;
+        ShiguTaobaocat shiguTaobaocat = new ShiguTaobaocat();
+        shiguTaobaocat.setParentCid(cId);
+        List<ShiguTaobaocat> shiguTaobaocats = shiguTaobaocatMapper.select(shiguTaobaocat);
+        if (shiguTaobaocats == null || shiguTaobaocats.size() <= 0)
+            return null;
+        List<CategoryVo> vos = new ArrayList<>();
+        for (ShiguTaobaocat taobaocat : shiguTaobaocats) {
+            CategoryVo vo = new CategoryVo();
+            vo.setCateId(taobaocat.getCid());
+            vo.setCateName(taobaocat.getCname());
+            vos.add(vo);
+        }
+        return vos;
+    }
 }

@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
-import com.opentae.data.mall.examples.LogisticsTemplateExample;
-import com.opentae.data.mall.examples.OrderStatusRecordExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -38,10 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 商品订单服务
@@ -175,6 +169,22 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) throws OrderException {
         // 初始化一个订单
+        ItemOrderSenderExample itemOrderSenderExample=new ItemOrderSenderExample();
+        itemOrderSenderExample.createCriteria().andWebSiteEqualTo(orderBO.getWebSite());
+        List<ItemOrderSender> seller=itemOrderSenderMapper.selectByExample(itemOrderSenderExample);
+        if(seller.size()>0){
+            Long sellerId=orderBO.getSenderId();
+            orderBO.setSenderId(null);
+            for(ItemOrderSender itemOrderSender:seller){
+                if(Objects.equals(sellerId,itemOrderSender.getSenderId())){
+                    orderBO.setSenderId(sellerId);
+                    break;
+                }
+            }
+            if(orderBO.getSenderId()==null){
+                orderBO.setSenderId(seller.get(0).getSenderId());
+            }
+        }
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setOid(idGenerator(OrderType.XZ));
         //判断订单是淘宝订单还是星座订单

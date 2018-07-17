@@ -22,4 +22,5 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
 
     List<Long> getOidListByOrderStatus(@Param("userId") Long userId, @Param("createTime") Date createTime);
     List<Long> getRidListByOrderStatus(@Param("userId") Long userId,@Param("createTime") Date createTime);
+    Long getSenderIdByRefundId(@Param("refundId")Long refundId);
 }

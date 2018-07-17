@@ -49,7 +49,7 @@ public class PropsService {
 
     public PropsVO selProps(Long cid){
         Cache cache=ehCacheManager.getCache("jdProps");
-        PropsVO propsVO=cache.get("tbprop_"+cid,PropsVO.class);
+        PropsVO propsVO=cache.get("prop_"+cid,PropsVO.class);
         if(propsVO!=null){
             return propsVO;
         }

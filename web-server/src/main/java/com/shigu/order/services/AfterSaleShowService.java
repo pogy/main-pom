@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -14,6 +15,7 @@ import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.decorateUtil.AbstractRefundVo;
 import com.shigu.order.decorateUtil.concreteCompents.OrderExchangeVo;
@@ -45,13 +47,11 @@ public class AfterSaleShowService {
     @Autowired
     private PreSaleShowService preSaleShowService;
     @Autowired
-    private OrderManageProcess orderManageProcess;
-    @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
     @Autowired
-    private SaleAfterProcess saleAfterProcess;
-    @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
         //TODO:: 退货为什么要加一个分配验证？？ 能退货不是代表已经收到货了吗？
@@ -337,6 +337,8 @@ public class AfterSaleShowService {
     @Transactional(rollbackFor = Exception.class)
     public void finishExchange(Long refundId,Long userId) throws OrderException, DaifaException {
         afterSaleService.finishExchange(refundId,userId);
+        Long senderId = itemOrderMapper.getSenderIdByRefundId(refundId);
+        SaleAfterProcess saleAfterProcess= SpringBeanFactory.getBean("saleAfterProcess_"+senderId,SaleAfterProcess.class);
         saleAfterProcess.changeEnt(refundId);
     }
 

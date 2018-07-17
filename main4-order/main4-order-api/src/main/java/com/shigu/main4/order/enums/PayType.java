@@ -5,8 +5,9 @@ package com.shigu.main4.order.enums;
  * Created by zhaohongbo on 17/5/31.
  */
 public enum PayType {
+    QZ_ALI_APP(6,"aliAppPayerQzService"),
+    QZ_ALI(5,"aliPayerQzService"),
     ALI_APP(4, "aliAppPayerService"),  //支付宝App支付
-
     XZ(3, "xzPayerService"),  //星座
     ALI(2, "aliPayerService"),  //阿里
     WX(1, "wxPayerService");  //微信

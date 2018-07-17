@@ -138,6 +138,5 @@
     </bean>
     <tx:annotation-driven transaction-manager="order_tx"/>
     <import resource="classpath*:/order.xml"/>
-    <import resource="classpath*:/message_queue.xml"/>
-
+    <import resource="classpath*:/message/*.xml"/>
 </beans>

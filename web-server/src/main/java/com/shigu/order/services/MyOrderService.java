@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.opentae.core.mybatis.mapper.MultipleMapper;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.interfaces.*;
@@ -65,8 +66,6 @@ public class MyOrderService {
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
-    @Autowired
-    private OrderManageProcess orderManageProcess;
     @Autowired
     private ItemOrderProcess itemOrderProcess;
     @Autowired
@@ -176,9 +175,15 @@ public class MyOrderService {
         return vo;
     }
 
-    public boolean testRefund(Long subId) throws OrderNotFindException {
+    public int testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
-        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
+        if(sub==null){
+            return 0;
+        }
+        Long senderId = itemOrderMapper.selectFieldsByPrimaryKey(sub.getOid(), FieldUtil.codeFields("oid,sender_id"))
+                .getSenderId();
+        OrderManageProcess orderManageProcess=SpringBeanFactory.getBean("orderManageProcess_"+senderId,OrderManageProcess.class);
+        return orderManageProcess.tryRefund(subId.toString()).size();
     }
 
     public void tbSend(Long userId, Long oid) throws Main4Exception {

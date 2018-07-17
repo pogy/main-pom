@@ -23,13 +23,15 @@ public interface ShiguFlickrMapper extends Mapper<ShiguFlickr> {
 
     Integer countFlickrPicture(@Param("fId") Long fId,@Param("status") Integer status);
 
-    List<FlickrShow> selectFlickrByShop(@Param("shopId") Long shopId,@Param("cId") Long cId,@Param("webSite") String webSite,@Param("status") Integer status,@Param("start") Integer start,@Param("size") Integer size);
+    List<FlickrShow> selectFlickrByShop(@Param("shopId") Long shopId,@Param("cId") Long cId,@Param("cPid") Long cPid,@Param("webSite") String webSite,@Param("status") Integer status,@Param("start") Integer start,@Param("size") Integer size);
 
-    List<FlickrHomeVo> selectFlickrByCategory(@Param("cId") Long cId, @Param("webSite") String webSite, @Param("status") Integer status, @Param("start") Integer start, @Param("size") Integer size);
+    List<FlickrHomeVo> selectFlickrByCategory(@Param("cId") Long cId,@Param("cPid") Long cPid, @Param("webSite") String webSite, @Param("status") Integer status, @Param("start") Integer start, @Param("size") Integer size);
 
     FlickrDetails selectFlickrPictureByfId(@Param("fId") Long fId, @Param("status") Integer status);
 
     Integer countFlickr(@Param("status") Integer status);
 
    List<String> selectPicTwo(@Param("fId") Long fId, @Param("status") Integer status);
+
+   Integer isRelevancyShop(@Param("shopId") Long shopId);
 }

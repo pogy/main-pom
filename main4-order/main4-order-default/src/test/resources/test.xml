@@ -178,6 +178,5 @@
         <property name="url" value="${taobao.app.server.url}"/>
     </bean>
 
-
-    <import resource="message_queue.xml"/>
+    <import resource="message/message_queue.xml"/>
 </beans>

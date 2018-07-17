@@ -38,6 +38,9 @@ public class DaifaScanService {
                 }
 
                 Object pc=order.get("PackageCode");//集包编码
+                if(pc==null){
+                    return "";
+                }
                 return pc.toString ();
             }
         }else{

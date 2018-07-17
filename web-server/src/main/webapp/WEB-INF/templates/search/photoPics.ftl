@@ -27,13 +27,26 @@
 <div class="photoPicsBox">
 <div class="layout">
     <div class="filterBox clearfix yahei">
-        <label class="fl fc9">分类：</label>
-        <ul class="clearfix fl">
-            <li><a href="photoPics.htm" <#if !query.cid>class="selected"</#if>>全部</a></li>
-            <#list cates as cate>
-            <li><a href="photoPics.htm?cid=${cate.cateId!}" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
-            </#list>
-        </ul>
+        <div class="clearfix">
+            <label class="fl fc9">分类：</label>
+            <ul class="clearfix fl">
+                <li><a href="photoPics.htm?webSite=${webSite!}" <#if !query.cPid>class="selected"</#if>>全部</a></li>
+                <#list cates as cate>
+                <li><a href="photoPics.htm?cPid=${cate.cateId!}&webSite=${webSite!}" <#if query.cPid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
+                </#list>
+            </ul>
+        </div>
+        <#if childCates??>
+        <div class="clearfix">
+            <label class="fl fc9">子类：</label>
+            <ul class="clearfix fl">
+                <li><a href="photoPics.htm?webSite=${webSite!}<#if query.cPid??>&amp;cPid=${query.cPid!}</#if>" <#if !query.cid>class="selected"</#if>>全部</a></li>
+                <#list childCates as cate>
+                <li><a href="photoPics.htm?cid=${cate.cateId!}&webSite=${webSite!}<#if query.cPid??>&amp;cPid=${query.cPid!}</#if>" <#if query.cid == cate.cateId>class="selected"</#if>>${cate.cateName!}</a></li>
+                </#list>
+            </ul>
+        </div>
+        </#if>
     </div>
 </div>
 <div class="layout pb70">
