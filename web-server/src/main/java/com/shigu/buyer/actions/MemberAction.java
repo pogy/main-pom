@@ -156,6 +156,11 @@ public class MemberAction {
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
         }
+        //用户首单减免
+        Integer b = memberSimpleService.getUserFirstReduction(ps.getUserId());
+        if (b != null && b==1) {
+            model.addAttribute("creditAmount", String.format("%.2f", 1000 * 0.01));
+        }
         // 用户红包余额
         Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
         model.addAttribute("bonusBalance", String.format("%.2f", bonusBalance * 0.01));
@@ -1151,6 +1156,24 @@ public class MemberAction {
                 }
                 bonusRecordVoList.add(bonusRecordVo);
             }
+        }
+        //用户首单减免
+        Integer b = memberSimpleService.getUserFirstReduction(ps.getUserId());
+        if (b==1) {
+            BonusRecordVo bonusRecordVo = new BonusRecordVo();
+            bonusRecordVo.setMoney("+" + String.format("%.2f", 1000 * 0.01));
+            bonusRecordVo.setPayState(1);
+            bonusRecordVo.setPayText("新用户首单减免红包");
+            bonusRecordVo.setTime(memberSimpleService.getUserCreateTime(ps.getUserId()));
+            bonusRecordVoList.add(0,bonusRecordVo);
+            model.addAttribute("creditAmount", String.format("%.2f", 1000 * 0.01));
+        }else if (b == 2){
+            BonusRecordVo bonusRecordVo = new BonusRecordVo();
+            bonusRecordVo.setMoney("-" + String.format("%.2f", 1000 * 0.01));
+            bonusRecordVo.setPayState(2);
+            bonusRecordVo.setPayText("新用户首单减免红包");
+            bonusRecordVoList.add(0,bonusRecordVo);
+            bonusRecordVo.setTime(memberSimpleService.getUserCreateTime(ps.getUserId()));
         }
         model.addAttribute("bonusList", bonusRecordVoList);
         if (SELLER_PATH.equals(identity)) {

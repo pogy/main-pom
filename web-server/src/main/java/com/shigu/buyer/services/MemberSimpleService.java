@@ -1,11 +1,12 @@
 package com.shigu.buyer.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguBonusRecord;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.custombeans.BalanceVO;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.MemberInviteMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.component.shiro.enums.CacheEnum;
@@ -23,6 +24,7 @@ import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -56,6 +58,12 @@ public class MemberSimpleService {
 
     @Autowired
     PaySdkClientService paySdkClientService;
+
+    @Autowired
+    MemberInviteMapper memberInviteMapper;
+
+    @Autowired
+    ItemOrderMapper itemOrderMapper;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -137,6 +145,10 @@ public class MemberSimpleService {
             throw new JsonErrException(e.getMessage());
         }
         userBaseService.setNewPayPwd(userId, newPwd);
+    }
+    public String getUserCreateTime(Long userId){
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        return DateFormatUtils.format(memberUser.getRegTime(), "yyyy-MM-dd HH:mm:ss");
     }
 
     public boolean isPayPwdMatch(Long userId, String payPwd) {
@@ -233,6 +245,29 @@ public class MemberSimpleService {
             return null;
         }
         return memberUserMapper.getUserBonusRecord(userId);
+    }
+
+    /**
+     * 获取用户红包明细
+     *
+     * @param userId
+     * @return
+     */
+    public Integer getUserFirstReduction(Long userId) {
+        if (userId == null) {
+            return -1;
+        }
+        MemberInvite memberInvite = new MemberInvite();
+        memberInvite.setUserId(userId);
+        List<MemberInvite> userList = memberInviteMapper.select(memberInvite);
+        if (userList == null || userList.size() <= 0)
+            return -1;
+        ItemOrderExample itemOrderExample = new ItemOrderExample();
+        itemOrderExample.createCriteria().andUserIdEqualTo(userId).andOrderStatusGreaterThan(1);
+        List<ItemOrder> orderList = itemOrderMapper.selectByExample(itemOrderExample);
+        if (orderList == null || orderList.size() <= 0)
+            return 1;
+        return 2;
     }
 
     /**
