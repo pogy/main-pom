@@ -1,1 +1,1 @@
-<script src="//style.571xz.com/v6/gys/js/videoSpace_v20180716_163605.js"></script>
+<script src="//style.571xz.com/v6/gys/js/videoSpace_v20180718_154027.js"></script>
