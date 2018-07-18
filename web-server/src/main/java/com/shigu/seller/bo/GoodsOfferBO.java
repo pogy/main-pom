@@ -286,8 +286,8 @@ public class GoodsOfferBO implements Serializable{
         synItem.setInputStr(this.getInputStr());
         synItem.setProps(this.getParamstr());
         synItem.setPropertyAlias(this.getPropertyAlias());
-        if (StringUtils.isBlank(this.buynow)) {
-            this.buynow = this.getPiPrice();
+        if (StringUtils.isBlank(this.getBuynow())) {
+            this.setBuynow(this.getPiPrice());
         }
         synItem.setPriceString(this.getBuynow());
         synItem.setPiPriceString(this.getPiPrice());
@@ -302,7 +302,7 @@ public class GoodsOfferBO implements Serializable{
 
         List<SingleSkuBO> singleSkus=new ArrayList<>();
         List<Long> singlePrices=new ArrayList<>();
-        for(String skuSpec:skuSpecs){
+        for(String skuSpec:getSkuSpecs()){
             String[] cs=skuSpec.split("-");
             String[] colorStrs=cs[0].split("_");
             String[] sizeStrs=cs[1].split("_");
@@ -342,13 +342,13 @@ public class GoodsOfferBO implements Serializable{
         synItem.setSingleSkus(singleSkus);
 
 
-        synItem.setPicUrl(dataPackageImportService.banjia(picPath));
+        synItem.setPicUrl(dataPackageImportService.banjia(this.getPicPath()));
         List<String> allImgUrl=new ArrayList<>();
-        if(this.picPath!=null){
+        if(this.getPicPath()!=null){
             allImgUrl.add(synItem.getPicUrl());
         }
-        if(this.allimg!=null&&!"".equals(allimg)){
-            List<String> images=Arrays.asList(allimg.split(","));
+        if(this.getAllimg()!=null&&!"".equals(this.getAllimg())){
+            List<String> images=Arrays.asList(this.getAllimg().split(","));
             for(int i=0;i<images.size();i++){
                 images.set(i,dataPackageImportService.banjia(images.get(i)));
             }
