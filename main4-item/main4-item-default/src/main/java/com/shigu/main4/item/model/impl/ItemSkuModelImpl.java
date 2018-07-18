@@ -126,9 +126,9 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 //参数中存在的,数据库中不存在的,写入新增集合
                 ShiguGoodsSingleSku sku = new ShiguGoodsSingleSku();
                 sku.setGoodsId(goodsId);
-                sku.setColorPid(singleSkuBO.getColorPid());
+                sku.setColorPid(selColorSizeMap().getColorPid());
                 sku.setColorVid(singleSkuBO.getColorVid());
-                sku.setSizePid(singleSkuBO.getSizePid());
+                sku.setSizePid(selColorSizeMap().getSizePid());
                 sku.setSizeVid(singleSkuBO.getSizeVid());
                 sku.setColorName(singleSkuBO.getColorVname());
                 sku.setSizeName(singleSkuBO.getSizeVname());
@@ -143,6 +143,8 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 inserts.add(sku);
             } else {
                 //参数中存在的,数据库中也存在的
+                singleSkuVO.setSizePid(selColorSizeMap().getSizePid());
+                singleSkuVO.setColorPid(selColorSizeMap().getColorPid());
                 ShiguGoodsSingleSku sku = BeanMapper.map(singleSkuVO, ShiguGoodsSingleSku.class);
                 //根据条件修改别名
                 if (sku.getColorPropertyAlias() != null) {
@@ -247,6 +249,8 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         if (skus.size() != 0) {
             singleSkuVOS = new ArrayList<>(skus.size());
             skus.forEach((ShiguGoodsSingleSku o) -> {
+                o.setColorPid(selColorSizeMap().getColorPid());
+                o.setSizePid(selColorSizeMap().getSizePid());
                 SingleSkuVO vo = BeanMapper.map(o, SingleSkuVO.class);
                 vo.setIsDefaultPrice(false);
                 if(StringUtils.isBlank(vo.getPriceString())){
