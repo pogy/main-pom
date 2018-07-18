@@ -112,6 +112,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
             }
             if(singlePrices.size()>0){
                 long piprice=MoneyUtil.StringToLong(item.getPiPriceString());
+                singlePrices.sort(Comparator.comparingLong(o -> o));
                 if(piprice<singlePrices.get(0)||piprice>singlePrices.get(singlePrices.size()-1)){
                     throw new ItemModifyException(
                             "批发价修改失败,批发价必须在sku价格的区间范围之内,当前范围:(" + MoneyUtil.dealPrice(singlePrices.get(0)) + "-" +

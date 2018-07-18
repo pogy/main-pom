@@ -324,9 +324,9 @@ public class GoodsOfferBO implements Serializable{
             singleSkus.add(sbo);
         }
         if(singlePrices.size()>0){
-            singlePrices.sort(Comparator.comparingInt(Long::intValue));
-            long piprice=MoneyUtil.StringToLong(this.getPiPrice());
-            if(piprice<singlePrices.get(0)||piprice>singlePrices.get(singlePrices.size()-1)){
+            singlePrices.sort(Comparator.comparingLong(o -> o));
+            Long piprice=MoneyUtil.StringToLong(this.getPiPrice());
+            if(piprice < singlePrices.get(0) || piprice >singlePrices.get(singlePrices.size()-1)){
                 throw new JsonErrException(
                         "批发价修改失败,批发价必须在sku价格的区间范围之内,当前范围:[" + MoneyUtil.dealPrice(singlePrices.get(0)) + "-" +
                                 MoneyUtil.dealPrice(singlePrices.get(singlePrices.size() - 1)) + "]");
