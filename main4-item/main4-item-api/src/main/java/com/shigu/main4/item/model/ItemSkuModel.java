@@ -32,4 +32,6 @@ public interface ItemSkuModel {
      * @param stockNum
      */
     void updateStockNum(Long skuId,Integer stockNum);
+
+    Long tinyPiPrice();
 }

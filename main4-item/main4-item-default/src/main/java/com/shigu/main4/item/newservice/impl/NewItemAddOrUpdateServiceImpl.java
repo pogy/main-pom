@@ -5,9 +5,12 @@ import com.opentae.data.mall.beans.TaobaoItemProp;
 import com.opentae.data.mall.examples.ShiguGoodsSingleSkuExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsSingleSkuMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.bo.TaobaoPropValueBO;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.main4.item.dao.SingleSkuDao;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.model.ItemSkuModel;
@@ -16,6 +19,7 @@ import com.shigu.main4.item.services.impl.ItemAddOrUpdateServiceImpl;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -94,9 +98,31 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(NewPushSynItemBO item) throws ItemModifyException {
+        ItemSkuModel model=null;
+        if(StringUtils.isNotBlank(item.getPiPriceString())){
+            List<Long> singlePrices;
+            List<SingleSkuBO> singleSkus = item.getSingleSkus();
+            if(singleSkus==null||singleSkus.isEmpty()){
+                model = SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId());
+                List<SingleSkuVO> pull = model.pull();
+                List<SingleSkuVO> customPrices = pull.stream().filter(SingleSkuVO::getIsDefaultPrice).collect(Collectors.toList());
+                singlePrices=customPrices.stream().map(singleSkuVO ->MoneyUtil.StringToLong(singleSkuVO.getPriceString())).collect(Collectors.toList());
+            }else{
+                singlePrices=singleSkus.stream().map(singleSkuBO -> MoneyUtil.StringToLong(singleSkuBO.getPriceString())).collect(Collectors.toList());
+            }
+            if(singlePrices.size()>0){
+                long piprice=MoneyUtil.StringToLong(item.getPiPriceString());
+                if(piprice<singlePrices.get(0)||piprice>singlePrices.get(singlePrices.size()-1)){
+                    throw new ItemModifyException(
+                            "批发价修改失败,批发价必须在sku价格的区间范围之内,当前范围:(" + MoneyUtil.dealPrice(singlePrices.get(0)) + "-" +
+                                    MoneyUtil.dealPrice(singlePrices.get(singlePrices.size() - 1)) + ")");
+                }
+            }
+        }
         int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class));
         if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
-            SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
+            model=model==null?SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()):model;
+            model.push(item.getSingleSkus());
         }
         return i;
     }

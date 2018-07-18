@@ -227,6 +227,11 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         singleSkuDao.updateByPrimaryKeySelective(sku);
     }
 
+    @Override
+    public Long tinyPiPrice() {
+        return this.tinyPiPrice;
+    }
+
     private CatColorSizeVO selColorSizeMap() {
         if (catColorSizeVO == null) {
             catColorSizeVO = singleSkuDao.selCatColorSize(cid);
@@ -243,8 +248,10 @@ public class ItemSkuModelImpl implements ItemSkuModel {
             singleSkuVOS = new ArrayList<>(skus.size());
             skus.forEach((ShiguGoodsSingleSku o) -> {
                 SingleSkuVO vo = BeanMapper.map(o, SingleSkuVO.class);
+                vo.setIsDefaultPrice(false);
                 if(StringUtils.isBlank(vo.getPriceString())){
                     vo.setPriceString(MoneyUtil.dealPrice(this.tinyPiPrice));
+                    vo.setIsDefaultPrice(true);
                 }
                 vo.setThisColor(StringUtils.isNotBlank(vo.getColorInputStr()) ? vo.getColorInputStr() : (StringUtils
                         .isNotBlank(vo.getColorPropertyAlias()) ? vo.getColorPropertyAlias() : vo.getColorName()));

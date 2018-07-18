@@ -78,6 +78,11 @@ public class SingleSkuVO implements Serializable {
     private String priceString;
 
     /**
+     * 标记priceString使用的是不是tiny表的piPriceString的值
+     */
+    private Boolean isDefaultPrice;
+
+    /**
      *
      */
     private Integer status;
@@ -222,5 +227,19 @@ public class SingleSkuVO implements Serializable {
 
     public void setThisSize(String thisSize) {
         this.thisSize = thisSize;
+    }
+
+    /**
+     * 获取 标记priceString使用的是不是tiny表的piPriceString的值
+     */
+    public Boolean getIsDefaultPrice() {
+        return this.isDefaultPrice;
+    }
+
+    /**
+     * 设置 标记priceString使用的是不是tiny表的piPriceString的值
+     */
+    public void setIsDefaultPrice(Boolean isDefaultPrice) {
+        this.isDefaultPrice = isDefaultPrice;
     }
 }
