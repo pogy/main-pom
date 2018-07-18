@@ -138,5 +138,5 @@
 
     </bean>
 
-    <import resource="message_queue.xml"/>
+    <import resource="message/message_queue.xml"/>
 </beans>

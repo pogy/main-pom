@@ -3,6 +3,8 @@ package com.shigu.order.services;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ExpressCompanyExample;
+import com.opentae.data.mall.examples.ItemOrderSenderExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -41,7 +43,7 @@ import java.util.stream.Collectors;
  */
 @Service("confirmOrderService")
 public class ConfirmOrderService {
-
+    static Map<String,Long> webSender=new HashMap<>();
     @Autowired
     private RedisIO redisIO;
 
@@ -185,7 +187,6 @@ public class ConfirmOrderService {
     private ItemOrderBO generateItemOrderBO(ConfirmBO bo, OrderSubmitVo orderSubmitVo) throws JsonErrException {
         ItemOrderBO itemOrderBO = new ItemOrderBO();
         itemOrderBO.setUserId(orderSubmitVo.getUserId());
-        itemOrderBO.setSenderId(bo.getSenderId());
 
         // 设置物流信息
         LogisticsBO logisticsBO = new LogisticsBO();
@@ -250,6 +251,9 @@ public class ConfirmOrderService {
         itemOrderBO.setTitle(title);
         itemOrderBO.setWebSite(webSite);
         itemOrderBO.setMark(subItemOrderBO.getMark());
+        itemOrderBO.setSenderId(this.selSendIdByItemId(webSite));
+
+
 
         return itemOrderBO;
     }
@@ -339,7 +343,7 @@ public class ConfirmOrderService {
             SenderInfoVO info = new SenderInfoVO();
             info.setId(sender.getSenderId().toString());
             info.setText(sender.getSenderName());
-            info.setChecked(Objects.equals(sender.getSenderId(), senderId));
+            info.setChecked(Objects.equals(sender.getSenderId(), senderId)?"":null);
             infoVOS.add(info);
         }
         return infoVOS;
@@ -521,9 +525,9 @@ public class ConfirmOrderService {
     public String confirmTbBatchOrders(ConfirmMoreTbBO bo, Long userId, List<OrderSubmitVo> tbTrades) throws JsonErrException {
         String code = bo.getIdCode();
         List<ItemOrderBO> items = new ArrayList<>();
+        Set<String> webs=new HashSet<>();
         for (OrderSubmitVo orderSubmitVo : tbTrades) {
             ConfirmBO b = new ConfirmBO();
-            b.setSenderId(bo.getSenderId());
             b.setAddressId(orderSubmitVo.getTbOrderAddressInfo().getAddressId());
             b.setCourierId(bo.getPostId());
             b.setOrders(orderSubmitVo.getProducts().stream().collect(Collectors.groupingBy(CartVO::getShopId))
@@ -535,10 +539,14 @@ public class ConfirmOrderService {
                             ConfirmSubOrderBO cn = new ConfirmSubOrderBO();
                             cn.setId(cartVO.getCartId().toString());
                             cn.setNum(cartVO.getNum());
+                            webs.add(cartVO.getWebSite());
                             return cn;
                         }).collect(Collectors.toList()));
                         return c;
                     }).collect(Collectors.toList()));
+            if(webs.size()>1||!webs.contains("hz")){
+                throw new JsonErrException("批量下单暂时只支持杭州站商品");
+            }
             ItemOrderBO itemOrderBO = generateItemOrderBO(b, orderSubmitVo);
             if (!userId.equals(itemOrderBO.getUserId())) {
                 throw new JsonErrException("只能操作本用户下的订单");
@@ -561,8 +569,9 @@ public class ConfirmOrderService {
 
     public String getArea() {
         List<OrderProv> orderProvs = orderProvMapper.select(new OrderProv());
-        if (orderProvs == null || orderProvs.size() <= 0)
+        if (orderProvs == null || orderProvs.size() <= 0) {
             return "";
+        }
         List<ProvVo> provVoList = new ArrayList<>();
         for (OrderProv orderProv : orderProvs) {
             ProvVo provVo = new ProvVo();
@@ -597,6 +606,22 @@ public class ConfirmOrderService {
         String date = JSONArray.fromObject(provVoList).toString();
         redisIO.put(ORDER_EXPRESS_ADDRESS, date);
         return date;
+    }
+
+
+    public Long selSendIdByItemId(String webSite){
+        Long senderId = webSender.get(webSite);
+        if(senderId==null){
+            ItemOrderSenderExample itemOrderSenderExample=new ItemOrderSenderExample();
+            itemOrderSenderExample.createCriteria().andWebSiteEqualTo(webSite);
+            List<ItemOrderSender> s=itemOrderSenderMapper.selectByExample(itemOrderSenderExample);
+            if(s.size()==0){
+                return selSendIdByItemId("hz");
+            }
+            senderId=s.get(0).getSenderId();
+            webSender.put(webSite,senderId);
+        }
+        return senderId;
     }
 
 }

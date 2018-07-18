@@ -2,9 +2,12 @@ package com.shigu.main4.order.model.impl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.AlipayResponse;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.util.BeanMapper;
@@ -21,18 +24,18 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
- * 支付宝支付
- * Created by zhaohongbo on 17/6/9.
+ * 支付宝App支付
+ * Created by gtx on 18/4/24.
  */
-@Service("aliPayerService")
-public class AliPayerServiceImpl extends PayerServiceAble {
-    @Resource(name="alipayClient")
+@Service("aliAppPayerQzService")
+public class AliAppPayerQzServiceImpl extends PayerServiceAble {
+    @Resource(name="alipayQzClient")
     private AlipayClient alipayClient;
 
-    @Value("${returnUrl}")
+    @Value("${qzReturnUrl}")
     private String  returnUrl;
 
-    @Value("${notifyUrl}")
+    @Value("${qzNotifyUrl}")
     private String notifyUrl;
 
 
@@ -43,38 +46,38 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         if (oids == null || oids.length==0) {
             throw new PayApplyException("缺少订单ID");
         }
-        OrderPayApply apply = payApplyPrepare(userId,money,PayType.ALI,oids);
+        OrderPayApply apply = payApplyPrepare(userId,money, PayType.QZ_ALI_APP,oids);
 
-        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-//        alipayRequest.setReturnUrl(returnUrl);
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
         if (title != null) {
             String regex = "[^\\u4e00-\\u9fa5A-Za-z\\d\\.]+";
             title = title.replaceAll(regex,"");
         }
-        alipayRequest.setBizContent("{" +
-                "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
-                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + String.format("%.2f", money * .01) + "," +
-                "    \"subject\":\"" + title + "\"" +
-                "  }");//填充业务参数
-        String form = "";
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setSubject(title);
+        model.setOutTradeNo(apply.getApplyId().toString());
+        model.setTotalAmount(String.format("%.2f", money * .01));
+        model.setProductCode("FAST_INSTANT_TRADE_PAY");
+
+        alipayRequest.setBizModel(model);//填充业务参数
+        AlipayTradeAppPayResponse response = null;
         try {
-            form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+            response = alipayClient.sdkExecute(alipayRequest);
         } catch (AlipayApiException e) {
             throw new PayApplyException(e.getMessage());
         }
 
         OrderPayApply payApply = new OrderPayApply();
         payApply.setApplyId(apply.getApplyId());
-        payApply.setPayLink(form);
+        payApply.setPayLink(response.getBody());
         orderPayApplyMapper.updateByPrimaryKeySelective(payApply);
 
         return BeanMapper.map(orderPayApplyMapper.selectByPrimaryKey(apply.getApplyId()), PayApplyVO.class);
     }
 
     @Override
-    protected void realRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+    protected void realRefund(String refundNo, OrderPay orderPay, Long money) throws PayerException {
         alipayRefund(refundNo,orderPay, money);
     }
 
@@ -90,7 +93,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     }
 
 
-    private void alipayRefund(String refundNo,OrderPay orderPay, Long money) throws PayerException {
+    private void alipayRefund(String refundNo, OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
 //        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
 //        if (itemOrder == null || itemOrder.selSender() == null) {
@@ -98,19 +101,18 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 //        }
         //查出第几次退
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
-        request.setBizContent("{" +
-                "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
-                "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
-                "    \"refund_reason\":\"正常退款\"," +
-                "    \"out_request_no\":\"" + refundNo + "\"" +
-                "  }");
+
+        AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+        model.setOutTradeNo(orderPayApply.getApplyId().toString());
+        model.setRefundAmount(String.format("%.2f", money * .01));
+        model.setRefundReason("正常退款");
+        model.setOutRequestNo(refundNo);
+
+        request.setBizModel(model);
         try {
-            AlipayTradeRefundResponse response = alipayClient.execute(request);
+            AlipayResponse response = alipayClient.execute(request);
             if(!response.isSuccess()){
                 throw new PayerException("支付宝退款失败: "+ response.getCode() + ", " + response.getMsg());
-            }
-            if("N".equals(response.getFundChange())){
-                throw new PayerException("退款重复,回滚");
             }
         } catch (AlipayApiException e) {
             throw new PayerException(e.getMessage());

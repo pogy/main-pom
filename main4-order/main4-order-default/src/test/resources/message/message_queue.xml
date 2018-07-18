@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-    <bean id="orderProduct" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+    <bean id="orderProduct_999999990" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
         <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
         <property name="properties" > <!--生产者配置信息-->
             <props>
@@ -13,7 +13,16 @@
             </props>
         </property>
     </bean>
-
+    <bean id="orderProduct_999999980" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+        <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
+        <property name="properties" > <!--生产者配置信息-->
+            <props>
+                <prop key="ProducerId">QZ_PID_SORDER_TEST</prop> <!--请替换XXX-->
+                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
+                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
+            </props>
+        </property>
+    </bean>
     <!--<bean id="dfConsumer" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start"-->
           <!--destroy-method="shutdown">-->
         <!--<property name="properties"> &lt;!&ndash;消费者配置信息&ndash;&gt;-->

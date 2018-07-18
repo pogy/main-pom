@@ -67,9 +67,9 @@
 </#list>
                 <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
                 <#if orderId??>
-                <input type=hidden name="alipayUrl" value="/order/alipay.htm?id=${orderId!}&tempCode=${tempCode!}">
+                <input type=hidden name="alipayUrl" value="${alipayUrl}?id=${orderId!}&tempCode=${tempCode!}">
                 <#else>
-                <input type=hidden name="alipayUrl" value="/order/alipay.htm?orderCode=${orderCode!}&tempCode=${tempCode!}">
+                <input type=hidden name="alipayUrl" value="${alipayUrl}?orderCode=${orderCode!}&tempCode=${tempCode!}">
                 </#if>
             </li>
             <li>

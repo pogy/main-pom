@@ -24,15 +24,15 @@ import javax.annotation.Resource;
  * 支付宝支付
  * Created by zhaohongbo on 17/6/9.
  */
-@Service("aliPayerService")
-public class AliPayerServiceImpl extends PayerServiceAble {
-    @Resource(name="alipayClient")
+@Service("aliPayerQzService")
+public class AliPayerQzServiceImpl extends PayerServiceAble {
+    @Resource(name="alipayQzClient")
     private AlipayClient alipayClient;
 
-    @Value("${returnUrl}")
+    @Value("${qzReturnUrl}")
     private String  returnUrl;
 
-    @Value("${notifyUrl}")
+    @Value("${qzNotifyUrl}")
     private String notifyUrl;
 
 
@@ -43,8 +43,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         if (oids == null || oids.length==0) {
             throw new PayApplyException("缺少订单ID");
         }
-        OrderPayApply apply = payApplyPrepare(userId,money,PayType.ALI,oids);
-
+        OrderPayApply apply = payApplyPrepare(userId,money,PayType.QZ_ALI,oids);
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
@@ -64,7 +63,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         } catch (AlipayApiException e) {
             throw new PayApplyException(e.getMessage());
         }
-
+        System.out.println(form);
         OrderPayApply payApply = new OrderPayApply();
         payApply.setApplyId(apply.getApplyId());
         payApply.setPayLink(form);
