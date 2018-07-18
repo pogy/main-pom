@@ -138,9 +138,9 @@
     </p>
     <input type="hidden" id="tempCode" value="${tempCode!}">
 </div>
-<div class="fl userBouns">
-    <h4 class="fs14 fc3">红包余额（元）</h4>
-    <div class="bounsMoney pr">
+<div class="fl userBouns pr">
+    <h4 class="fs14 fc3 pr">红包余额（元）</h4>
+    <div class="bounsMoney ">
         <span>
             <#if bonusBalance??>
                 ${bonusBalance!}
@@ -148,10 +148,16 @@
                 0.00
             </#if>
         </span>
-        <div class="tips fc3 pa">红包使用方式 <i class="icon-warn fcF40 pr" id="bonusTipIcon"><em></em><b></b></i>
-            <div class="tipTest pa">${bonusTips!}</div>
-        </div>
+        <#if creditAmount??>
+        <span class="credit">
+            +${creditAmount!}（新人红包）
+        </span>
+        </#if>
     </div>
+    <!--<div class="tips fc3 pa"><i class="icon-warn fcF40 pr" id="bonusTipIcon"><em></em><b></b></i>
+        <div class="tipTest pa">${bonusTips!}</div>
+    </div>-->
+    <p class="newTip">10元新人红包仅限于首次下单减免使用</p>
     <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display == false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
 </div>
 </div>
