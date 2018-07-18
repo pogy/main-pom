@@ -204,8 +204,8 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
                 }
             }
         }
-        String inputPids = "";//用户输入ID串@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        String inputValues = "";//用户输入名-值对@@@@@@@@@@@@@@@@@@@@@@@
+        String inputPids = sge.getInputPids();//用户输入ID串@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        String inputValues = sge.getInputStr();//用户输入名-值对@@@@@@@@@@@@@@@@@@@@@@@
 
         String auto_fill = "0";//代充类型
         String num_id = "0";//数字ID
