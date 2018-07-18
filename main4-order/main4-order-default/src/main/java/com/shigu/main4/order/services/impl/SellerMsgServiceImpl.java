@@ -15,6 +15,8 @@ import com.shigu.common.push.services.PushMsgService;
 import com.shigu.common.push.services.PushMsgServicesManager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.order.bo.NewOrderMsg;
+import com.shigu.main4.order.bo.NewOrderTransparentMsg;
 import com.shigu.main4.order.services.SellerMsgService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
@@ -149,7 +151,7 @@ public class SellerMsgServiceImpl implements SellerMsgService {
             shiguPhonePushMarkMapper.updateByPrimaryKeySelective(shiguPhonePushMark);
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -159,14 +161,17 @@ public class SellerMsgServiceImpl implements SellerMsgService {
     @Override
     @Async
     public void pushNewOrderMsg(Long oid) {
-        ItemOrder itemOrder = itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("pay_time"));
+        ItemOrder itemOrder = itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("oid,pay_time"));
         if (itemOrder == null) {
             return;
+        }
+        if (itemOrder.getPayTime() == null) {
+            itemOrder.setPayTime(new Date());
         }
         ItemOrderExample example = new ItemOrderExample();
         example.createCriteria().andOidEqualTo(oid);
         List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectFieldsByExample(example,
-                FieldUtil.codeFields("shop_id,num,goods_no,color,size,num,should_pay_money"));
+                FieldUtil.codeFields("soid,shop_id,num,goods_no,color,size,num,should_pay_money"));
         if (itemOrderSubs == null || itemOrderSubs.isEmpty()) {
             return;
         }
@@ -188,11 +193,11 @@ public class SellerMsgServiceImpl implements SellerMsgService {
         ShiguPhonePushMarkExample shiguPhonePushMarkExample = new ShiguPhonePushMarkExample();
         shiguPhonePushMarkExample.createCriteria().andPhoneModelEqualTo(0).andXzUserKeyIn(new ArrayList<>(xzUserKeys));
         List<ShiguPhonePushMark> shiguPhonePushMarks = shiguPhonePushMarkMapper.selectFieldsByExample(shiguPhonePushMarkExample,
-                FieldUtil.codeFields("xz_user_key,push_cid,push_app_id"));
+                FieldUtil.codeFields("id,xz_user_key,push_cid,push_app_id"));
         Map<String, List<ShiguPhonePushMark>> cidGroup = shiguPhonePushMarks.stream()
                 .collect(Collectors.groupingBy(ShiguPhonePushMark::getXzUserKey));
 
-        String msgTitle = "您有新的代发订单";
+        String msgTitle = "您有新的代发订单!";
         Date now = new Date();
         for (Map.Entry<String, List<ItemOrderSub>> entry : shopOrderGroup.entrySet()){
             try {
@@ -209,7 +214,8 @@ public class SellerMsgServiceImpl implements SellerMsgService {
                 if (goodsNoList == null || goodsNoList.isEmpty()) {
                     goodsNos.append("暂无货号");
                 }else {
-                    goodsNoList.stream().forEach(item-> goodsNos.append(item.getGoodsNo()));
+                    goodsNoList.stream().limit(goodsNoList.size()-1).forEach(item-> goodsNos.append(item.getGoodsNo()).append("、"));
+                    goodsNos.append(goodsNoList.get(goodsNoList.size()-1).getGoodsNo());
                 }
 
                 for (int i =0 ;i< orderSubs.size();i++){
@@ -238,9 +244,12 @@ public class SellerMsgServiceImpl implements SellerMsgService {
 
                 int badge = shiguSellerAppMsgMapper.countByExample(shiguSellerAppMsgExample);
 
+                List<ShiguPhonePushMark> shiguPhonePushMarksList = cidGroup.get("shop" + strShopId);
+                if (shiguPhonePushMarksList == null || shiguPhonePushMarksList.isEmpty()) {
+                    return;
+                }
                 //推消息
                 String msgStr = sendMsg.toString();
-                this.pushNewOrderMsg(msgTitle,msgStr,strShopId,badge,cidGroup);
 
                 //添加消息记录
                 ShiguSellerAppMsg shiguSellerAppMsg = new ShiguSellerAppMsg();
@@ -255,6 +264,15 @@ public class SellerMsgServiceImpl implements SellerMsgService {
                 shiguSellerAppMsg.setGmtModify(now);
 
                 shiguSellerAppMsgMapper.insert(shiguSellerAppMsg);
+
+                NewOrderMsg newOrderMsg = new NewOrderMsg();
+                newOrderMsg.setMsgId(shiguSellerAppMsg.getId());
+                newOrderMsg.setMsgTitle(msgTitle);
+                newOrderMsg.setMsgStr(msgStr);
+                newOrderMsg.setStrShopId(strShopId);
+                newOrderMsg.setBadge(badge);
+                newOrderMsg.setShiguPhonePushMarksList(shiguPhonePushMarksList);
+                this.pushNewOrderMsg(newOrderMsg);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -263,31 +281,30 @@ public class SellerMsgServiceImpl implements SellerMsgService {
 
     /**
      * 推消息
-     * @param msgTitle
-     * @param msgStr
-     * @param strShopId
+     * @param newOrderMsg
      */
-    private  void pushNewOrderMsg (String msgTitle,String msgStr,String strShopId,Integer badge,Map<String, List<ShiguPhonePushMark>> cidGroup ){
-        PushData<String> pushData = new PushData<>();
-        pushData.setTitle(msgTitle);
+    private  void pushNewOrderMsg (NewOrderMsg newOrderMsg){
+        NewOrderTransparentMsg msg = new NewOrderTransparentMsg();
+        msg.setMsgId(newOrderMsg.getMsgId());
+        msg.setMsgStr(newOrderMsg.getMsgStr());
+
+        PushData<NewOrderTransparentMsg> pushData = new PushData<>();
+        pushData.setTitle(newOrderMsg.getMsgTitle());
         pushData.setPushType(0);
-        pushData.setData(msgStr);
-        pushData.setNotifyData(msgStr);
+        pushData.setData(msg);
+        pushData.setNotifyData(newOrderMsg.getMsgStr());
 
         PushEvent<String> pushEvent = new PushEvent<>();
-        pushEvent.setTarget(strShopId);
+        pushEvent.setTarget(newOrderMsg.getStrShopId());
         pushEvent.setData(pushData);
 
 
-        badge = badge == null ? badge : badge +1;
+        Integer badge = newOrderMsg.getBadge() == null ? 1 : newOrderMsg.getBadge() +1;
         pushMsgServiceManager.pushTransparentToAlias(pushEvent,badge,String.class);
 
-        List<ShiguPhonePushMark> shiguPhonePushMarksList = cidGroup.get("shop" + strShopId);
-        if (shiguPhonePushMarksList == null || shiguPhonePushMarksList.isEmpty()) {
-            return;
-        }
-        Map<String, List<ShiguPhonePushMark>> pushAppIdGroup = shiguPhonePushMarksList.stream()
+        Map<String, List<ShiguPhonePushMark>> pushAppIdGroup = newOrderMsg.getShiguPhonePushMarksList().stream()
                 .collect(Collectors.groupingBy(ShiguPhonePushMark::getPushAppId));
+
         Map<String, PushMsgService> pushMsgServicesMap = pushMsgServiceManager.getPushMsgServicesMap();
         for (Map.Entry<String,PushMsgService> pushMsgServiceEntry : pushMsgServicesMap.entrySet()){
             String appId = MD5Attestation.MD5Encode(pushMsgServiceEntry.getValue().getAppId());

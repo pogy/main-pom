@@ -435,9 +435,9 @@ public class ItemOrderImpl implements ItemOrder {
         changeStatus(OrderStatus.BUYER_PAYED);
 
         //推送新订单消息
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         sellerMsgService.pushNewOrderMsg(oid);
-        System.err.println(System.currentTimeMillis()-start);
+//        System.err.println(System.currentTimeMillis()-start);
     }
 
     @Override
