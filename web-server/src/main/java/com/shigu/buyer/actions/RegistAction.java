@@ -61,7 +61,10 @@ public class RegistAction {
      * @return
      */
     @RequestMapping(value = "regedit", method = RequestMethod.GET)
-    public String regedit() {
+    public String regedit(String inviteCode, Model model) {
+        if (StringUtils.isNotBlank(inviteCode)) {
+            model.addAttribute("inviteCode", inviteCode);
+        }
         return "login/regedit";
     }
 
