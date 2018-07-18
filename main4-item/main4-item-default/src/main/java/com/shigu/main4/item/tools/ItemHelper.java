@@ -227,7 +227,7 @@ public class ItemHelper {
                     this.tiny.setPiPrice(piPrice);
                     this.tiny.setPiPriceString(MoneyUtil.dealPrice(piPrice));
                 } catch (Exception ignored) {}
-                if(StringUtils.isNotBlank(this.tiny.getPriceString())){
+                if(StringUtils.isBlank(this.tiny.getPriceString())){
                     this.tiny.setPrice(this.tiny.getPiPrice());
                     this.tiny.setPriceString(this.tiny.getPiPriceString());
                 }

@@ -568,7 +568,9 @@ public class ShopAction {
             synItem.setListTime(created);
             //淘宝下架时间，手动发布商品默认为七天后
             synItem.setDelistTime(DateUtil.addDay(created,7));
-            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            if(StringUtils.isNotBlank(bo.getOffer().getLowestLiPrice())){
+                synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            }
             itemId=newItemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat = new EverUsedCatForAdd();
@@ -779,7 +781,9 @@ public class ShopAction {
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
             synItem.setItemFrom(ItemFrom.MEMBER);
-            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            if(StringUtils.isNotBlank(bo.getOffer().getLowestLiPrice())) {
+                synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            }
             newItemAddOrUpdateService.userUpdateItem(synItem);
 
         } catch (ItemModifyException e) {
