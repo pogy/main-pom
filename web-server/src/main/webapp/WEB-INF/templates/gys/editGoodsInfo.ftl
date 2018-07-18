@@ -78,7 +78,7 @@ var deschtml = '${goodsInfo.deschtml}';
     <label class="formKey">宝贝属性：</label>
     <div class="formData">
         <p class="tips">填错宝贝属性，可能会引起宝贝下架，影响您的正常销售。请认真准确填写</p>
-        <ul>
+        <ul class="clearfix">
             <#list goodsInfo.formAttribute as item>
             <li>
                 <label class="attrKey"><#if item.need??><i>*</i></#if>${item.name!}</label>
@@ -142,7 +142,7 @@ var deschtml = '${goodsInfo.deschtml}';
         <div class="batchSkuBox">
             <div class="batchEdit">
                 <label class="fc3">批量填充：</label>
-                <input type="number" class="fmInput fmInput-sm pPrice" placeholder="价格">
+                <input type="text" class="fmInput fmInput-sm pPrice" placeholder="价格">
                 <input type="text" class="fmInput fmInput-sm batchEditNum" placeholder="数量">
 <#list [{}] as $it>
     <#if $it.href??>
