@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +41,12 @@ public class VideoSpaceAction {
             }
         }
         String[] names = new String[list.size()];
-        for (int i = 0; i < list.size() - 1; i++) {
+        for (int i = 0; i < list.size(); i++) {
             names[i] = list.get(i).getTitle();
         }
 
         map.put("videoList", list1);
-        map.put("existeVideos", names);
+        map.put("existeVideos", Arrays.toString(names));
         map.put("pageOption", pageOption);
         return "gys/videoSpace";
     }
