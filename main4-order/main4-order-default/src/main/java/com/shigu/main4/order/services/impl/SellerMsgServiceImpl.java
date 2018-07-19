@@ -207,15 +207,21 @@ public class SellerMsgServiceImpl implements SellerMsgService {
                 StringBuffer sendMsg = new StringBuffer();
                 StringBuffer goodsNos = new StringBuffer();
                 goodsNos.append("货号：");
-                List<ItemOrderSub> goodsNoList = orderSubs.stream()
+                Set<String> goodsNoList = orderSubs.stream()
                         .filter(item -> item.getGoodsNo() != null && item.getGoodsNo().trim().length() > 0)
-                        .limit(5)
-                        .collect(Collectors.toList());
+                        .limit(10)
+                        .map(ItemOrderSub::getGoodsNo).collect(Collectors.toSet());
                 if (goodsNoList == null || goodsNoList.isEmpty()) {
                     goodsNos.append("暂无货号");
                 }else {
-                    goodsNoList.stream().limit(goodsNoList.size()-1).forEach(item-> goodsNos.append(item.getGoodsNo()).append("、"));
-                    goodsNos.append(goodsNoList.get(goodsNoList.size()-1).getGoodsNo());
+                    List<String> collect = goodsNoList.stream().limit(5).collect(Collectors.toList());
+                    for (int i=0;i<collect.size();i++){
+                        if (i == collect.size() - 1) {
+                            goodsNos.append(collect.get(i));
+                        }else {
+                            goodsNos.append(collect.get(i)).append("、");
+                        }
+                    }
                 }
 
                 for (int i =0 ;i< orderSubs.size();i++){
@@ -224,6 +230,7 @@ public class SellerMsgServiceImpl implements SellerMsgService {
 
                     if (i == 2) {//订单信息来2个
                         sendMsg.append("......");
+                        break;
                     } else {
                         sendMsg.append("下单时间：").append(payDate).append("，");
                         if (itemOrderSub.getGoodsNo() != null && itemOrderSub.getGoodsNo().trim().length() > 0) {
