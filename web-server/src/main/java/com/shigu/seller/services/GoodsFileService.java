@@ -4,14 +4,9 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.GoodsCountForsearchExample;
-import com.opentae.data.mall.examples.GoodsFileExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
-import com.opentae.data.mall.interfaces.GoodsFileMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.beans.ShopSize;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -68,9 +63,12 @@ public class GoodsFileService extends OssIO {
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
 
+    @Autowired
+    ShopSizeMapper shopSizeMapper;
+
     final String ROOT_PATH = "udf/";
 
-    final long DEFAULT_SIZE = 1048576;
+    final long DEFAULT_SIZE = 1024*1024;
 
     @PostConstruct
     private void init() {
@@ -98,7 +96,7 @@ public class GoodsFileService extends OssIO {
      * @return
      */
     public Long shopDataSize(Long shopId){
-        ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.SHOPDATA);
+        /*ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.SHOPDATA);
         if (license == null) {
             //判断是否电商
             ShiguShopExample example=new ShiguShopExample();
@@ -110,7 +108,17 @@ public class GoodsFileService extends OssIO {
             int much=shiguShopMapper.countByExample(example)>0?3:1;
             return much*DEFAULT_SIZE;
         }
-        return Long.valueOf(license.getContext());
+        return Long.valueOf(license.getContext());*/
+        ShopSizeExample shopSizeExample=new ShopSizeExample();
+        shopSizeExample.createCriteria().andShopIdEqualTo(shopId);
+        List<ShopSize> shopSizes=shopSizeMapper.selectByExample(shopSizeExample);
+        if(shopSizes.size()==0){
+            return DEFAULT_SIZE;
+        }else if(shopSizes.get(0).getPicSize()==null){
+            return DEFAULT_SIZE;
+        }else {
+            return shopSizes.get(0).getPicSize()*1024;
+        }
     }
 
     /**

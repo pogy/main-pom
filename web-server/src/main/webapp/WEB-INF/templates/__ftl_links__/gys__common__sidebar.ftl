@@ -204,7 +204,7 @@
             </#if>
         </#if>
         <#if 'videoSpace' != 'xiufuGoods21init' && 'videoSpace' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'videoSpace' != 'videoSpace' || 'videoSpace' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
+            <#if 'videoSpace' != 'pictureSpace' || 'videoSpace' == 'pictureSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'videoSpace' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
