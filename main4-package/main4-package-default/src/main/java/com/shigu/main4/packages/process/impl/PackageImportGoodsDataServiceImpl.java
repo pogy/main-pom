@@ -245,11 +245,15 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         if ("second".equals(goods.getStuffStatus())) {
             stuff_status = "3";
         }
+        String goodsNo=goods.getOuterId();
+        goodsNo=StringUtils.isBlank(goodsNo)?goods.getGoodsNo():goodsNo;
+
+
         StringBufferAgent contentsString = new StringBufferAgent();
         contentsString.append(goods.getTitle()).append('\t').append(goods.getCid()).append('\t').append(goods.getCidAll()).append('\t').append(stuff_status).append('\t').append(goods.getProv()).append('\t').append(goods.getCity()).append('\t').append(item_type).append('\t').append(goods.getPriceString()).append('\t').append(auction_increment).append('\t');
         contentsString.append(goods.getNum()).append('\t').append(valid_thru).append('\t').append(freight_payer).append('\t').append('0').append('\t').append('0').append('\t').append('0').append('\t').append(has_invoice).append('\t').append(has_warranty).append('\t').append(approve_status).append('\t').append(has_showcase).append('\t');
         contentsString.append(list_time).append('\t').append("\"").append(goodsdesc).append("\"").append('\t').append(sge.getProps()).append('\t').append(postage_id).append('\t').append(has_discount).append('\t').append(modified).append('\t').append(upload_fail_msg).append('\t').append(picture_status).append('\t').append(auction_point).append('\t');
-        contentsString.append(subimageString).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goods.getOuterId()).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
+        contentsString.append(subimageString).append('\t').append(video).append('\t').append(skuProps.toString()).append('\t').append(inputPids).append('\t').append(inputValues).append('\t').append(goodsNo).append('\t').append(sge.getPropertyAlias()).append('\t').append(auto_fill).append('\t').append(num_id).append('\t').append(local_cid).append('\t').append(navigation_type).append('\t');
         contentsString.append(user_name).append('\t').append(syncStatus).append('\t').append(is_lighting_consigment).append('\t').append(is_xinpin).append('\t').append(foodparame).append('\t').append(features).append('\t').append(buyareatype).append('\t').append(global_stock_type).append('\t').append(global_stock_country).append('\t').append(sub_stock_type).append('\t').append(item_size).append('\t');
         contentsString.append(item_weight).append('\t').append(sell_promise).append('\t').append(custom_design_flag).append('\t').append(wireless_desc).append('\t').append(barcode).append('\t').append(sku_barcode).append('\t').append(newprepay).append('\t').append(subtitle).append('\t').append(cpv_memo).append('\t').append(input_custom_cpv).append('\t').append(qualification).append('\t');
         contentsString.append(add_qualification).append('\t').append(o2o_bind_service).append('\t').append(tmall_extend).append('\t').append(product_combine).append('\t').append(tmall_item_prop_combine).append('\t').append(taoschema_extend).append('\r').append('\n');
