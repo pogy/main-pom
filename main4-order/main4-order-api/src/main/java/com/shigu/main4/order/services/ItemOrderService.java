@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
+import com.shigu.main4.order.bo.VoucherBO;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
@@ -121,4 +122,10 @@ public interface ItemOrderService {
      * @return
      */
     ItemOrderVO orderInfo(Long orderId);
+
+    /**
+     * 为用户生成优惠券
+     * @return
+     */
+    Long giveVoucher(VoucherBO bo);
 }

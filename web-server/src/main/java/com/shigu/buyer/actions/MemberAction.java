@@ -4,11 +4,7 @@ import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
 import com.shigu.buyer.enums.OutUserBindTypeEnum;
-import com.shigu.buyer.services.GoodsupRecordSimpleService;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.services.UserAccountService;
-import com.shigu.buyer.services.UserCollectSimpleService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -23,7 +19,6 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
-import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -47,7 +42,6 @@ import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -126,7 +120,7 @@ public class MemberAction {
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     @Autowired
-    MemberInviteService memberInviteService;
+    InviteService inviteService;
 
     @Autowired
     private RedisIO redisIO;
@@ -1471,10 +1465,10 @@ public class MemberAction {
     @RequestMapping("member/inviteVip")
     public String inviteVip(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String inviteCode = memberInviteService.userInviteCode(ps.getUserId());
+        String inviteCode = inviteService.userInviteCode(ps.getUserId());
         model.addAttribute("inviteCode", inviteCode);
         model.addAttribute("inviteSrc", "www.571xz.com/regedit.htm?inviteCode=" + inviteCode);
-        model.addAttribute("invitedUserList", memberInviteService.inviteUserInfoList(ps.getUserId()));
+        model.addAttribute("invitedUserList", inviteService.inviteUserInfoList(ps.getUserId()));
         return "fxs/inviteVip";
     }
 }

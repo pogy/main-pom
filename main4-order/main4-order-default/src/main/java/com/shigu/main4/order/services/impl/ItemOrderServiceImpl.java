@@ -94,6 +94,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
 
+    @Autowired
+    private ItemVoucherMapper itemVoucherMapper;
+
     private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
 
     /**
@@ -535,4 +538,23 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId).orderInfo();
     }
 
+
+    @Override
+    public Long giveVoucher(VoucherBO bo) {
+        ItemVoucher itemVoucher = new ItemVoucher();
+        itemVoucher.setUserId(bo.getUserId());
+        itemVoucher.setVoucherTag(bo.getVoucherTag());
+        ItemVoucher existVoucher = itemVoucherMapper.selectOne(itemVoucher);
+        if (existVoucher != null) {
+            return existVoucher.getVoucherId();
+        }
+        itemVoucher.setVoucherAmount(bo.getVoucherAmount());
+        Calendar calendar = Calendar.getInstance();
+        itemVoucher.setCreateTime(calendar.getTime());
+        calendar.add(Calendar.DATE,bo.getGuaranteePeriod());
+        itemVoucher.setExpireTime(calendar.getTime());
+        itemVoucher.setVoucherState(1);
+        itemVoucherMapper.insertSelective(itemVoucher);
+        return itemVoucher.getVoucherId();
+    }
 }

@@ -2,6 +2,7 @@ package com.shigu.buyer.actions;
 
 import com.shigu.buyer.bo.RegistBO;
 import com.shigu.buyer.bo.RegistVerifyBO;
+import com.shigu.buyer.services.InviteService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
@@ -53,7 +54,7 @@ public class RegistAction {
     RegisterAndLoginService registerAndLoginService;
 
     @Autowired
-    MemberInviteService memberInviteService;
+    InviteService inviteService;
 
     /**
      * 用户注册
@@ -132,7 +133,7 @@ public class RegistAction {
         String inviteCode = bo.getInviteCode();
         if (StringUtils.isNotBlank(inviteCode)) {
             //有邀请码时验证邀请码
-            Long invitedUserId = memberInviteService.findUserByInviteCode(inviteCode);
+            Long invitedUserId = inviteService.findUserByInviteCode(inviteCode);
             if (invitedUserId == null) {
                 return JsonResponseUtil.error("邀请码错误");
             }
