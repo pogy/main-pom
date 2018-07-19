@@ -136,7 +136,7 @@
         <div class="batchSkuBox">
             <div class="batchEdit">
                 <label class="fc3">批量填充：</label>
-                <input type="number" class="fmInput fmInput-sm pPrice" placeholder="价格">
+                <input type="text" class="fmInput fmInput-sm pPrice" placeholder="价格">
                 <input type="text" class="fmInput fmInput-sm batchEditNum" placeholder="数量">
 <#list [{}] as $it>
     <#if $it.href??>
