@@ -117,6 +117,9 @@
 </div>
 <div class="successTip"><i></i><span>文件上传成功！</span></div>
 <div class="errorTips"><i></i><span>上传失败！单个文件大于10M！</span></div>
+<script modulepath="gys/videoSpace#file">
+var existeVideos = '${existeVideos!}';
+</script>
             </div>
     </div>
 </div>
