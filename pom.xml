@@ -27,6 +27,8 @@
         <module>jdimg-server</module>
         <module>jdimg-sdk</module>
         <module>main4-photo</module>
+        <module>sn-sdk</module>
+        <module>sn-server</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -55,6 +57,7 @@
         <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
         <daifa-sdk.version>${project.version}</daifa-sdk.version>
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>
+        <sn-sdk.version>${project.version}</sn-sdk.version>
 
         <!-- 新版sdk-->
         <pinduoduo-sdk.version>0.0.1-SNAPSHOT</pinduoduo-sdk.version>

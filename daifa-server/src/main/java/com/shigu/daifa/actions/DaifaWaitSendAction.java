@@ -8,9 +8,11 @@ import com.shigu.daifa.vo.DaifaWaitSendVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,11 +71,22 @@ public class DaifaWaitSendAction {
      * ====================================================================================
      *
      */
+    @Value("{DAIFA_IS_TEST}")
+    String daifaIsTest;
+    @Value("{DAIFA_IS_PAY_TEST}")
+    String daifaIsPayTest;
+
     @RequestMapping("daifa/noPostRefund")
     @ResponseBody
     public JSONObject noPostRefund(Long childOrderId,String refundMoney) throws DaifaException {
-
-        return daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
+        JSONObject jsonObject=new JSONObject();
+        if("true".equals(daifaIsTest)){
+            if("false".equals(daifaIsPayTest)){
+                return JsonResponseUtil.error("因配置信息设置,关闭测试环境下的退款");
+            }
+        }
+        jsonObject=daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
+        return jsonObject;
     }
 
 }

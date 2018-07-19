@@ -174,9 +174,12 @@ public class MyTbOrderService {
             GoodsVO g=new GoodsVO();
             g.setTitle(pa.getTitle());
             g.setPrice(pa.getPrice());
-            StoreRelation shop=storeRelationService.selRelationById(pa.getStoreId());
-            g.setStoreNum(shop.getStoreNum());
-            g.setMarketName(shop.getMarketName());
+            try {
+                StoreRelation shop=storeRelationService.selRelationById(pa.getStoreId());
+                g.setStoreNum(shop.getStoreNum());
+                g.setMarketName(shop.getMarketName());
+            } catch (Exception e) {
+            }
             g.setImgSrc(pa.getPicUrl());
             g.setId(pa.getItemId());
 //            g.setGoodsNo(pa.getGoodsNo());//搜索中其实没有货号
@@ -217,6 +220,7 @@ public class MyTbOrderService {
             throw new OrderException("非法请求");
         }
         List<CartVO> cartVOS = new ArrayList<>();
+        Long senderId=null;
         for(int i=0;i<order.getChildOrders().size();i++){
             SubTbOrderVO sub=order.getChildOrders().get(i);
             TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(sub.getNumiid());

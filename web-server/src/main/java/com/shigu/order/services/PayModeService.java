@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +88,11 @@ public class PayModeService {
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
-        payModePageVO.setAlipayUrl("/order/alipay.htm");
+        if("qz".equals(itemOrderVO.getWebSite())){
+            payModePageVO.setAlipayUrl("/order/qzAlipay.htm");
+        }else{
+            payModePageVO.setAlipayUrl("/order/alipay.htm");
+        }
         payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         payModePageVO.setNotSetPassword(memberUser.getPayPassword() == null ? "没有支付密码" : null);
@@ -197,10 +198,15 @@ public class PayModeService {
         }
         ItemOrderExample itemOrderExample=new ItemOrderExample();
         itemOrderExample.createCriteria().andOidIn(orderIds);
-        List<ItemOrder> ios=itemOrderMapper.selectFieldsByExample(itemOrderExample, FieldUtil.codeFields("oid,user_id"));
+        List<ItemOrder> ios=itemOrderMapper.selectFieldsByExample(itemOrderExample, FieldUtil.codeFields("oid,user_id,sender_id"));
+        Set<Long> sids=new HashSet<>();
         for(ItemOrder io:ios){
             if(!Objects.equals(io.getUserId(), userId)){
                 throw new PayApplyException("只能支付自己的订单");
+            }
+            sids.add(io.getSenderId());
+            if(sids.size()>1){
+                throw new PayApplyException("单次只能支付同一分站的订单");
             }
         }
         return ios.stream().map(ItemOrder::getOid).collect(Collectors.toList());

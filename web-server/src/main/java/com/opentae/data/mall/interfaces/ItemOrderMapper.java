@@ -48,5 +48,5 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
 
     Long selectUserIdByOid(@Param("oid") Long oid);
-
+    Long getSenderIdByRefundId(@Param("refundId")Long refundId);
 }

@@ -7,12 +7,12 @@ public class SenderInfoVO {
 
     private String id;
     private String text;
-    private boolean checked;
+    private String checked;
 
     public SenderInfoVO() {
     }
 
-    public SenderInfoVO(String id, String text, boolean checked) {
+    public SenderInfoVO(String id, String text, String checked) {
         this.id = id;
         this.text = text;
         this.checked = checked;
@@ -34,11 +34,11 @@ public class SenderInfoVO {
         this.text = text;
     }
 
-    public boolean isChecked() {
-        return checked;
+    public String getChecked() {
+        return this.checked;
     }
 
-    public void setChecked(boolean checked) {
+    public void setChecked(String checked) {
         this.checked = checked;
     }
 }

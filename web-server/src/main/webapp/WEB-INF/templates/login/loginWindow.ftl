@@ -128,6 +128,8 @@
         <li class="separated"></li>
         <li><a href="ortherLogin.htm?ortherLoginType=6&backUrl=${backUrl!}" target="_blank"  alt="京东登陆" title="京东登陆"><i class="icon-s-jingdong"></i><span>京东</span></a></li>
         <li><a href="ortherLogin.htm?ortherLoginType=7&backUrl=${backUrl!}" target="_blank"  alt="拼多多登陆" title="拼多多登陆"><i class="icon-s-pinduoduo"></i><span>拼多多</span></a></li>
+        <li class="separated"></li>
+        <li><a href="ortherLogin.htm?ortherLoginType=8&backUrl=${backUrl!}" target="_blank"  alt="苏宁登陆" title="苏宁登陆"><i class="icon-s-suning"></i><span>苏宁</span></a></li>
     </ul>
 </div>
 </div>

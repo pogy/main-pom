@@ -42,6 +42,19 @@
         <constructor-arg index="6" value="${signType}"/>
     </bean>
 
+    <bean id="alipayQzClient"
+          class="com.alipay.api.DefaultAlipayClient">
+        <constructor-arg index="0" value="${qzServerUrl}"/>
+        <constructor-arg index="1" value="${qzAppId}"/>
+        <constructor-arg index="2" value="${qzPrivateKey}"/>
+        <constructor-arg index="3" value="${qzFormat}"/>
+        <constructor-arg index="4" value="${qzCharset}"/>
+        <constructor-arg index="5" value="${qzAlipayPulicKey}"/>
+        <constructor-arg index="6" value="${qzSignType}"/>
+    </bean>
+
+
+
     <!--星座的sdk-->
     <bean id="xzSdkClient" class="com.shigu.tools.XzSdkClient">
         <property name="appkey" value="${xz_appkey}"/>
@@ -74,6 +87,7 @@
     <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="xzPayerService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="wxPayerService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="aliPayerService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="aliPayerQzService" retries="0" timeout="10000"/>
     <dubbo:service interface="com.shigu.main4.order.process.PayProcess" ref="payProcess" retries="0" timeout="20000" />
 
     <dubbo:service interface="com.shigu.main4.order.process.TemplateProcess" ref="templateProcess" retries="0" timeout="20000" />

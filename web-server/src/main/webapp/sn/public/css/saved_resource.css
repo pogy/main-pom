@@ -1,0 +1,552 @@
+@charset "UTF-8";
+.mobileEditor {
+    position:relative;
+    background:#7d7d7d;
+    margin-bottom:10px
+}
+.mobileEditor .text-tip {
+    padding:0 10px 10px;
+    color:#999
+}
+.mobileEditor .text-tip b {
+    color:#f60;
+    font-weight:400
+}
+.mobileEditor .err-tip {
+    color:#f60
+}
+.mobileEditor .mszie-tips {
+    height:50px;
+    line-height:50px;
+    padding:0 10px;
+    background:#F2F2F2;
+    border-style:solid;
+    border-color:#d1d1d1;
+    border-width:1px 1px 0
+}
+.mobileEditor .mszie-tips a {
+    color:#0c9dfe
+}
+.mobileEditor .mszie-tips span {
+    display:inline-block
+}
+.mobileEditor .mszie-tips .import-detail {
+    padding:10px 15px;
+    background:#fff;
+    border:1px solid #0c9dfe;
+    border-radius:5px;
+    margin-right:10px
+}
+.mobileEditor .mszie-tips .size-tip {
+    color:#9C9C9C;
+    float:right;
+    line-height:48px;
+    padding-right:8px
+}
+.mobileEditor .mszie-tips .preview-mobile-detail {
+    float:right;
+    display:none;
+    line-height:25px;
+    color:#09F;
+    cursor:pointer
+}
+.mobileEditor .mszie-tips .preview-mobile-detail .mtips-icon {
+    height:25px;
+    margin-right:3px;
+    padding-left:15px;
+    background:url(//img.alicdn.com/tps/i1/TB1HHxPGXXXXXXiXpXXMs3..VXX-14-14.png) 0 6px no-repeat
+}
+.mobileEditor .mdetail-left {
+    position:relative;
+    border:none;
+    width:322px;
+    height:465px;
+    margin:1px auto 0
+}
+.mobileEditor .mdetail-left .add-btn {
+    height:60px;
+    width:322px;
+    background:#ececec;
+
+}
+.mobileEditor .mdetail-left .add-btn:hover .jia {
+    display:none
+}
+.mobileEditor .mdetail-left .add-btn:hover ul {
+    display:block
+}
+.mobileEditor .mdetail-left .add-btn ul {
+    display:none
+}
+.mobileEditor .mdetail-left .add-btn ul li {
+    cursor:pointer;
+    width:50px;
+    margin:0;
+    padding:15px 11px 0 15px;
+    float:left;
+    clear:none;
+    position:relative;
+}
+.mobileEditor .mdetail-left .add-btn ul li.image {
+    padding-top:14px
+}
+.mobileEditor .mdetail-left .add-btn ul li.image .icon-picture {
+    margin-bottom:0
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text i {
+    width:20px;
+    height:20px;
+    display:block;
+    margin:0 auto;
+    color:#515151;
+    background:url(../images/iconfont.png);
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text .icon-music{
+    background-position: -20px 0;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text:hover .icon-music{
+    background-position: -20px -40px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text .icon-listbullet{
+    background-position: -40px 0;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text:hover .icon-listbullet{
+    background-position: -40px -40px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text .icon-picture{
+    background-position: -40px -20px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text:hover .icon-picture{
+    background-position: -40px -60px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text .icon-wenzi14{
+    background-position: -20px -20px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text:hover .icon-wenzi14{
+    background-position: -20px -60px;
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text:hover i {
+    color:#878787
+}
+.mobileEditor .mdetail-left .add-btn ul li .btn-text p {
+    font-size:12px;
+    text-align:center;
+    color:#878787
+}
+.mobileEditor .mdetail-left .add-btn ul li:hover p {
+    color:#404040
+}
+.mobileEditor .mdetail-left .add-btn .jia {
+    color:#878787;
+    text-align:center;
+    line-height:17px;
+    cursor:pointer;
+    overflow:hidden
+}
+.mobileEditor .mdetail-left .add-btn .hasAudio,.mobileEditor .mdetail-left .add-btn .hasShortDesc {
+    cursor:default
+}
+.mobileEditor .mdetail-left .add-btn .jia i {
+    display:block;
+    text-align:center;
+    padding-top:6px;
+    font-size:26px;
+    margin-bottom:9px;
+    font-style: normal;
+}
+.mobileEditor .mdetail-left .add-btn .overlay {
+    color:#bababa;
+    width:80px;
+    margin:5px 0 0 -10px
+}
+.mobileEditor .mdetail-left .add-btn .overlay b {
+    color:#f60;
+    font-weight:400;
+    padding:0 2px
+}
+.mobileEditor .mdetail-left .add-btn .hasAudio .btn-text i {
+    background-position:-38px 0
+}
+.mobileEditor .mdetail-left .add-btn .hasAudio:hover div {
+    display:none
+}
+.mobileEditor .mdetail-left .add-btn .hasAudio:hover .overlay {
+    display:block
+}
+.mobileEditor .mdetail-left .add-btn .hasShortDesc .btn-text i {
+    width:26px;
+    background-position:-95px 0
+}
+.mobileEditor .mdetail-left .add-btn .hasShortDesc:hover div {
+    display:none
+}
+.mobileEditor .mdetail-left .add-btn .hasShortDesc:hover .overlay {
+    display:block
+}
+.mobileEditor .mdetail-left .edit-area {
+    clear:both;
+    margin:20px 0;
+    background-color:#F2F2F2;
+    display:none
+}
+.mobileEditor .mdetail-left .edit-text {
+    clear:both;
+    width:320px;
+    position:relative;
+    padding-top:10px
+}
+.mobileEditor .mdetail-left .edit-text .text-textarea textarea {
+    padding:10px;
+    resize:none;
+    outline:0;
+    border:1px solid #dedede;
+    background:#fff;
+    margin:0 10px 10px;
+    width:250px
+}
+.mobileEditor .mdetail-left .edit-text .text-close {
+    position:absolute;
+    top:10px;
+    right:25px;
+    width:16px;
+    height:16px;
+    text-indent:-9999px;
+    display:none
+}
+.mobileEditor .mdetail-left .edit-text .button {
+    text-align:left
+}
+.mobileEditor .mdetail-left .edit-text .button input {
+    cursor:pointer;
+    width:80px;
+    height:25px;
+    margin:20px 15px;
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    border:0
+}
+.mobileEditor .mdetail-left .edit-text .button .text-submit {
+    width:80px;
+    height:30px;
+    background-color:#09F;
+    border-radius:2px;
+    background-image:none;
+    margin:0 10px 15px
+}
+.mobileEditor .mdetail-left .edit-text .button .text-disable {
+    color:#999;
+    background-position:-80px -21px
+}
+.mobileEditor .mdetail-left .edit-text .button .text-cancel {
+    color:#000;
+    width:80px;
+    height:30px;
+    background-color:#F2F2F2;
+    border-radius:2px;
+    background-image:none;
+    margin:0 10px 15px 5px;
+    border:1px solid #D1D1D1
+}
+.mobileEditor .pannel {
+    position:relative;
+    border:1px solid #dedede;
+    width:320px;
+    height:400px;
+    background:#fff
+}
+.mobileEditor .pannel .detail-title {
+    background:#f8f8f8;
+    padding:0 10px;
+    line-height:40px;
+    height:40px
+}
+.mobileEditor .pannel .detail-title .import-detail {
+    float:right;
+    color:#999;
+    cursor:pointer
+}
+.mobileEditor .pannel .content-edit {
+    max-height:360px;
+    overflow-y:auto;
+    overflow-x:hidden
+}
+.mobileEditor .pannel #J_MdetailTitle span {
+    display:inline-block
+}
+.mobileEditor .pannel #J_MdetailTitle span.import-detail {
+    /*display:none*/
+}
+.mobileEditor .pannel .control-panel {
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none
+}
+.mobileEditor .pannel .control-panel::-webkit-scrollbar {
+    width:8px;
+    height:8px
+}
+.mobileEditor .pannel .control-panel::-webkit-scrollbar-track {
+    background:#eee
+}
+.mobileEditor .pannel .control-panel::-webkit-scrollbar-thumb {
+    background:#666;
+    border-radius:4px
+}
+.mobileEditor .pannel .control-panel .module {
+    /*width:290px;*/
+    margin:10px 10px 0;
+    background:#fff;
+    position:relative
+}
+.mobileEditor .pannel .control-panel .module:hover {
+    cursor:pointer
+}
+.mobileEditor .pannel .control-panel .module .text-div {
+    line-height:150%;
+    word-wrap:break-word
+}
+.mobileEditor .pannel .control-panel .m-voice {
+    width:auto;
+    margin:0;
+    border-bottom:1px solid #dedede
+}
+.mobileEditor .pannel .control-panel .m-voice .audio-div {
+    height:20px;
+    padding:15px 60px 15px 35px;
+    position:relative
+}
+.mobileEditor .pannel .control-panel .m-voice .audio-icon {
+    position:absolute;
+    top:19px;
+    left:17px;
+    width:12px;
+    height:12px;
+    color:#515151
+}
+.mobileEditor .pannel .control-panel .m-voice .audio-size {
+    position:absolute;
+    top:17px;
+    right:17px;
+    color:#aaa
+}
+.mobileEditor .pannel .control-panel .m-voice .audio-title {
+    height:21px;
+    overflow:hidden
+}
+.mobileEditor .pannel .control-panel .m-shortDesc {
+    width:auto;
+    margin:0 15px;
+    border-bottom:1px solid #dedede
+}
+.mobileEditor .pannel .control-panel .m-shortDesc .text-div {
+    position:relative;
+    line-height:20px;
+    padding:10px 10px 10px 35px
+}
+.mobileEditor .pannel .control-panel .m-shortDesc .shortDesc-icon {
+    position:absolute;
+    top:17px;
+    left:15px;
+    width:10px;
+    height:10px;
+    background: url(../images/iconfont.png);
+    background-size: 30px 40px;
+    background-position: -20px 0;
+}
+.mobileEditor .pannel .control-panel .current {
+    min-height:40px
+}
+.mobileEditor .pannel .control-panel .current .cover,.mobileEditor .pannel .control-panel .current .tools {
+    display:block
+}
+.mobileEditor .pannel .control-panel .m-image {
+    overflow:hidden
+}
+.mobileEditor .pannel .control-panel .m-image img {
+    max-width:290px
+}
+.mobileEditor .pannel .control-panel .m-image .content {
+    line-height:0;
+    font-size:0
+}
+.mobileEditor .pannel .control-panel .editing {
+    margin:10px 0 0
+}
+.mobileEditor .pannel .control-panel .editing .cover,.mobileEditor .pannel .control-panel .editing .text-div,.mobileEditor .pannel .control-panel .editing .tools {
+    display:none
+}
+.mobileEditor .pannel .control-panel .editing .edit-text {
+    background:#f9f9f9;
+    border-width:1px 0
+}
+.mobileEditor .pannel .control-panel .editing .edit-text .text-tip {
+    padding:10px
+}
+.mobileEditor .pannel .control-panel .editing .edit-text .button input {
+    margin:0 5px 0 10px
+}
+.mobileEditor .pannel .control-panel .end .down,.mobileEditor .pannel .control-panel .first .up {
+    display:none
+}
+.mobileEditor .pannel .control-panel .tools {
+    display:none;
+    position:absolute;
+    top:5px;
+    right:10px;
+    z-index:20
+}
+.mobileEditor .pannel .control-panel .tools li {
+    clear:none;
+    float:left;
+    margin:0
+}
+.mobileEditor .pannel .control-panel .tools a {
+    float:left;
+    line-height:25px;
+    margin-right:1px;
+    padding:0 10px;
+    background:#fff;
+    color:#000
+}
+.mobileEditor .pannel .control-panel .tools a:hover {
+    text-decoration:none
+}
+.mobileEditor .pannel .control-panel .cover {
+    display:none;
+    background:#000;
+    opacity:.5;
+    filter:alpha(opacity=50);
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0
+}
+.mobileEditor .pannel .add-btn {
+    height:60px;
+    margin:10px 15px;
+    background:#ececec;
+    overflow:hidden
+}
+.mobileEditor .pannel .add-btn:hover .jia {
+    display:none
+}
+.mobileEditor .pannel .add-btn:hover ul {
+    display:block
+}
+.mobileEditor .pannel .add-btn ul {
+    display:none
+}
+.mobileEditor .pannel .add-btn ul li {
+    cursor:pointer;
+    width:50px;
+    margin:0;
+    padding:10px 11px 0;
+    float:left;
+    clear:none
+}
+.mobileEditor .pannel .add-btn ul li .btn-text i {
+    width:18px;
+    height:18px;
+    background-image:url(//img.alicdn.com/tps/i1/T1rI7LFdleXXbuqJfo-227-63.png);
+    background-repeat:no-repeat;
+    display:block;
+    margin:0 auto 5px
+}
+.mobileEditor .pannel .add-btn ul li .btn-text i p {
+    font-size:12px;
+    text-align:center;
+    color:#878787
+}
+.mobileEditor .pannel .add-btn ul li:hover p {
+    color:#404040
+}
+.mobileEditor .pannel .add-btn .jia {
+    color:#878787;
+    text-align:center;
+    line-height:90px;
+    cursor:pointer;
+    overflow:hidden
+}
+.mobileEditor .pannel .add-btn .hasAudio,.mobileEditor .pannel .add-btn .hasShortDesc {
+    cursor:default
+}
+.mobileEditor .pannel .add-btn .overlay {
+    color:#bababa;
+    width:80px;
+    margin:5px 0 0 -10px
+}
+.mobileEditor .pannel .add-btn .overlay b {
+    color:#f60;
+    font-weight:400;
+    padding:0 2px
+}
+.mobileEditor .pannel .add-btn .shortDesc .btn-text i,.mobileEditor .pannel .add-btn .shortDesc:hover .btn-text i {
+    width:18px
+}
+.mobileEditor .pannel .add-btn .image .btn-text i,.mobileEditor .pannel .add-btn .image:hover .btn-text i {
+    width:19px
+}
+.mobileEditor .pannel .add-btn .text .btn-text i,.mobileEditor .pannel .add-btn .text:hover .btn-text i {
+    width:16px
+}
+.mobileEditor .pannel .add-btn .hasAudio .btn-text i:hover div {
+    display:none
+}
+.mobileEditor .pannel .add-btn .hasAudio .btn-text i:hover .overlay {
+    display:block
+}
+.mobileEditor .pannel .add-btn .hasShortDesc .btn-text i {
+    width:26px
+}
+.mobileEditor .pannel .add-btn .hasShortDesc:hover div {
+    display:none
+}
+.mobileEditor .pannel .add-btn .hasShortDesc:hover .overlay {
+    display:block
+}
+.mobileEditor .explain {
+    margin:-198px 15px 0 542px;
+    float:right
+}
+.mobileEditor .explain dl dt {
+    font-size:12px;
+    font-weight:400;
+    color:#fff
+}
+.mobileEditor .explain dl dd {
+    line-height:1.5
+}
+.mobileEditor .explain dl dd a {
+    color:#fff
+}
+.mobileEditor .explain .case {
+    border-top:1px dashed #eee;
+    margin:20px 0 0;
+    padding:20px 0 0
+}
+.mobileEditor .none {
+    display:none
+}
+.mobileEditor .errorbox {
+    clear:both
+}
+
+.overlay {
+    position: absolute;
+    border: 1px solid #bbb;
+    box-shadow: 1px 1px 4px #999;
+    border-color: #bbb #999 #999 #bbb;
+    background-color: #fafafa;
+    min-height: 100px;
+    min-width: 50px;
+    top:10px;
+}
+.overlay {
+    color: #bababa;
+    width: 80px;
+    margin: 5px 0 0 -10px;
+}

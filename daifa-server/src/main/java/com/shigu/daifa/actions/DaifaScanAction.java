@@ -10,6 +10,7 @@ import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.vo.PackResultVO;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +94,9 @@ public class DaifaScanAction {
         if(vo.getPackageCode ()==null||"".equals(vo.getPackageCode ())){
             //查询快递
            String packageCode= daifaScanService.queryPackageCode (vo.getDfTradeId ());
-           vo.setPackageCode (packageCode);
+           if(StringUtils.isNotBlank(packageCode)){
+               vo.setPackageCode (packageCode);
+           }
         }
 
         JSONObject obj= JsonResponseUtil.success();

@@ -143,6 +143,7 @@ public class CdnAction {
     public String contact(Model model) {
         model.addAttribute("webSite", "hz");
         model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
         return "xzSearch/contact";
     }
 
@@ -1428,6 +1429,7 @@ public class CdnAction {
     public String daifaIndex(Model model) {
         model.addAttribute("webSite", "hz");
         model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
         return "xzSearch/daifaIndex";
     }
 
