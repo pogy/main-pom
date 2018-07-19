@@ -34,10 +34,12 @@ public class VideoSpaceAction {
     public String videoSpace(Map<String, Object> map, HttpSession session, String page) {
         List<VideoFileVo> list = videoService.selFilesByVid(logshop(session).getShopId(), null);
         List<VideoFileVo> list1 = new ArrayList<>();
-        String pageOption = list.size() + "," + "10," + (page == null ? String.valueOf(1) : page);
-        for (int i = (Integer.valueOf(page == null ? String.valueOf(1) : page) - 1) * 10; i < list.size(); i++) {
-            list1.add(list.get(i));
-            if (i >= 9 * (Integer.valueOf(page == null ? String.valueOf(1) : page))) {
+        page=page == null ? String.valueOf(1) : page;
+        String pageOption = list.size() +",10," + page;
+        for (int i = (Integer.valueOf(page) - 1) * 10; i < list.size(); i++) {
+            if (i < 10 * (Integer.valueOf(page))) {
+                list1.add(list.get(i));
+            }else {
                 break;
             }
         }
