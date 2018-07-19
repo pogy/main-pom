@@ -1,10 +1,7 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.GoodsCountForsearch;
-import com.opentae.data.mall.beans.GoodsFile;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShopSize;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -65,6 +62,9 @@ public class GoodsFileService extends OssIO {
 
     @Autowired
     ShopSizeMapper shopSizeMapper;
+
+    @Autowired
+    ShopVideoTimeMapper shopVideoTimeMapper;
 
     final String ROOT_PATH = "udf/";
 
@@ -483,6 +483,15 @@ public class GoodsFileService extends OssIO {
                 itemPicRelationService.updateFileRelationByDir(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }else{
                 itemPicRelationService.updateFileRelation(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+                ShopVideoTimeExample shopVideoTimeExample=new ShopVideoTimeExample();
+                shopVideoTimeExample.createCriteria().andShopIdEqualTo(shopId).andVideoEqualTo(fileKey);
+                List<ShopVideoTime> shopVideoTimes= shopVideoTimeMapper.selectByExample(shopVideoTimeExample);
+                if(shopVideoTimes.size()!=0){
+                    ShopVideoTime shopVideoTime=new ShopVideoTime();
+                    shopVideoTime.setId(shopVideoTimes.get(0).getId());
+                    shopVideoTime.setVideo(newFileKey);
+                    shopVideoTimeMapper.update(shopVideoTime);
+                }
             }
         }
         return result;

@@ -5,6 +5,12 @@
 		INSERT shop_video_time(shop_id,video,`time`) VALUES (#{shopId},#{video},#{time})
 	</insert>
 
+	<update id="update">
+		UPDATE shop_video_time SET video=#{video} WHERE id=#{id}
+	</update>
 
+	<delete id="delete">
+		DELETE FROM shop_video_time WHERE shop_id=#{shopId} AND video=#{video}
+	</delete>
 
 </mapper>

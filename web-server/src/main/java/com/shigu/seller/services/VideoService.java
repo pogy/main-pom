@@ -49,7 +49,19 @@ public class VideoService extends GoodsFileService{
             fileKey = fileKey +"/";
         }
         String path=getHomeDir(shopId)+fileKey;
-        return super.deleteFile(path);
+        if(super.deleteFile(path)){
+            ShopVideoTime shopVideoTime=new ShopVideoTime();
+            shopVideoTime.setVideo(fileKey);
+            shopVideoTime.setShopId(shopId);
+            int i= shopVideoTimeMapper.delete(shopVideoTime);
+            if(i>0){
+                return true;
+            }else {
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
     public VideoFileVo upload(Long shopId, String vid,String time) throws JsonErrException {
@@ -96,7 +108,11 @@ public class VideoService extends GoodsFileService{
             if(shopVideoTimes.size()==0){
                 videoFileVo.setVideoTime("时长未知");
             }else {
-                videoFileVo.setVideoTime(shopVideoTimes.get(0).getTime());
+                if(shopVideoTimes.get(0).getTime().equals("00:00")){
+                    videoFileVo.setVideoTime("时长未知");
+                }else {
+                    videoFileVo.setVideoTime(shopVideoTimes.get(0).getTime());
+                }
             }
             newFiles.add(videoFileVo);
         }

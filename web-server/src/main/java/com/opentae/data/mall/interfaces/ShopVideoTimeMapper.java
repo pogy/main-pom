@@ -15,4 +15,8 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ShopVideoTimeMapper extends Mapper<ShopVideoTime> {
     public int insert(ShopVideoTime shopVideoTime);
+
+    public void update(ShopVideoTime shopVideoTime);
+
+    public int delete(ShopVideoTime shopVideoTime);
 }
