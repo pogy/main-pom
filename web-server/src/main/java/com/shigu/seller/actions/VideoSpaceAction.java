@@ -29,10 +29,24 @@ public class VideoSpaceAction {
     VideoService videoService;
 
     @RequestMapping("videoSpace")
-    public String videoSpace(Map<String,Object> map,HttpSession session){
-        List<VideoFileVo> list=videoService.selFilesByVid(logshop(session).getShopId(),null);
-//        List<VideoFileVo> list=new ArrayList<>();
-        map.put("videoList",list);
+    public String videoSpace(Map<String, Object> map, HttpSession session, String page) {
+        List<VideoFileVo> list = videoService.selFilesByVid(logshop(session).getShopId(), null);
+        List<VideoFileVo> list1 = new ArrayList<>();
+        String pageOption = list.size() + "," + "10," + (page == null ? String.valueOf(1) : page);
+        for (int i = (Integer.valueOf(page == null ? String.valueOf(1) : page) - 1) * 10; i < list.size(); i++) {
+            list1.add(list.get(i));
+            if (i >= 9 * (Integer.valueOf(page == null ? String.valueOf(1) : page))) {
+                break;
+            }
+        }
+        String[] names = new String[list.size()];
+        for (int i = 0; i < list.size() - 1; i++) {
+            names[i] = list.get(i).getTitle();
+        }
+
+        map.put("videoList", list1);
+        map.put("existeVideos", names);
+        map.put("pageOption", pageOption);
         return "gys/videoSpace";
     }
 
@@ -42,17 +56,18 @@ public class VideoSpaceAction {
         if (!videoService.checkFileId(vid) || !videoService.checkFileId(newTitle)) {
             throw new JsonErrException("key信息异常");
         }
-        videoService.rename(logshop(session).getShopId(),vid, "other", newTitle);
+        videoService.rename(logshop(session).getShopId(), vid, "other", newTitle);
 
         return JsonResponseUtil.success();
     }
 
     /**
      * 得到当前登陆的店铺
+     *
      * @param session
      * @return
      */
-    private ShopSession logshop(HttpSession session){
+    private ShopSession logshop(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return ps.getLogshop();
     }
@@ -60,16 +75,17 @@ public class VideoSpaceAction {
 
     /**
      * 删除文件
+     *
      * @param vid
      * @return
      */
     @RequestMapping("deleteVideo")
     @ResponseBody
-    public JSONObject deleteFile(String vid,HttpSession session) throws JsonErrException {
+    public JSONObject deleteFile(String vid, HttpSession session) throws JsonErrException {
         if (!videoService.checkFileId(vid)) {
             throw new JsonErrException("key信息异常");
         }
-        if(videoService.deleteFile(logshop(session).getShopId(),vid, "other")){
+        if (videoService.deleteFile(logshop(session).getShopId(), vid, "other")) {
             return JsonResponseUtil.success();
         }
         throw new JsonErrException("删除文件失败");
@@ -77,16 +93,17 @@ public class VideoSpaceAction {
 
     /**
      * 通知服务器创建文件成功并返回文件信息
+     *
      * @return
      */
     @RequestMapping("setVideoFile")
     @ResponseBody
-    public JSONObject noticeUploadFile(String fileName,HttpSession session) throws JsonErrException {
+    public JSONObject noticeUploadFile(String fileName, HttpSession session) throws JsonErrException {
         if (!videoService.checkFileId(fileName)) {
             throw new JsonErrException("key信息异常");
         }
-        VideoFileVo vo=videoService.upload(logshop(session).getShopId(),fileName);
-        return JSONObject.fromObject(vo).element("result","success");
+        VideoFileVo vo = videoService.upload(logshop(session).getShopId(), fileName);
+        return JSONObject.fromObject(vo).element("result", "success");
     }
 
 }

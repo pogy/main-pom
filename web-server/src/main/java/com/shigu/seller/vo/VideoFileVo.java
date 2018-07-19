@@ -1,6 +1,8 @@
 package com.shigu.seller.vo;
 
-public class VideoFileVo {
+import com.shigu.component.common.page.PageParameter;
+
+public class VideoFileVo extends PageParameter{
     private String videoId;
     private String videoSrc;
     private String title;
