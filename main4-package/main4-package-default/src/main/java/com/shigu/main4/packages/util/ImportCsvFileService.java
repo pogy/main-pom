@@ -511,6 +511,7 @@ public class ImportCsvFileService {
                         case "outer_id"://商家编码 ,货号//outer_id
                             if (v11.get(k) != null) {
                                 record.setOuterId((String) v11.get(k));
+                                record.setGoodsNo(record.getOuterId());
                             }
                             break;
                         case "propAlias"://销售属性别名//propAlias
