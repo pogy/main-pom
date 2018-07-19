@@ -153,6 +153,7 @@ public class ItemOrderImpl implements ItemOrder {
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNum(vo.getNum());
             ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class,orderSub.getPid(),orderSub.getSkuId()).info();
+            info.setPrice(orderSub.getPrice());
             vo.setProduct(info);
         }
         return vos;
