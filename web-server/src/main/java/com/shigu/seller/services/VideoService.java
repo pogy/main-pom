@@ -10,17 +10,11 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.OssFile;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.VideoFileVo;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.MultimediaInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
