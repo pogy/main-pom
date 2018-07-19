@@ -11,6 +11,9 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
@@ -82,6 +85,8 @@ public class ConfirmOrderService {
 
     @Autowired
     private BuyerAddressMapper buyerAddressMapper;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
 
     private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
 
@@ -200,6 +205,7 @@ public class ConfirmOrderService {
         Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(), "cartId", Long.class);
         List<ConfirmOrderBO> confirmOrderBOS = bo.getOrders();
         String webSite = null;
+        Map<Long,NewCdnItem> longNewCdnItemMap=new HashMap<>();
         for (ConfirmOrderBO confirmOrderBO : confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             //按店分子单信息
@@ -215,6 +221,32 @@ public class ConfirmOrderService {
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
                 ItemProductVO productVO = productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
+                NewCdnItem cdnItem = longNewCdnItemMap.get(productVO.getGoodsId());
+                if(cdnItem==null){
+                    cdnItem=newShowForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                    longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
+                }
+                if(cdnItem==null){
+                    throw new JsonErrException("存在无效商品");
+                }else{
+                    boolean err=true;
+                    List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+                    for(SingleSkuVO singleSkuVO:singleSkus){
+                        String color = singleSkuVO.getThisColor();
+                        String size = singleSkuVO.getThisSize();
+                        Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
+                        if(color.equals(productVO.getSelectiveSku().getColor())&&size.equals(productVO.getSelectiveSku().getSize())){
+                            if(stockNum==0){
+                                throw new JsonErrException("存在无效商品");
+                            }
+                            err=false;
+                            break;
+                        }
+                    }
+                    if(err){
+                        throw new JsonErrException("存在无效商品");
+                    }
+                }
                 subOrder.setNum(num);
                 subOrder.setPid(productVO.getPid());
                 subOrder.setTitle(productVO.getTitle());
