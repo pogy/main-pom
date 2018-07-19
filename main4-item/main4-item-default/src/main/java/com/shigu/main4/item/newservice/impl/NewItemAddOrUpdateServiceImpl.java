@@ -81,6 +81,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         int i = super.systemUpdateItem(BeanMapper.map(item,SynItem.class));
         if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
+            super.cleanItemCache(item.getGoodsId());
         }
         return i;
     }
@@ -91,6 +92,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         int i = super.officeUpdateItem(BeanMapper.map(item,SynItem.class));
         if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
+            super.cleanItemCache(item.getGoodsId());
         }
         return i;
     }
@@ -124,6 +126,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             model=model==null?SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()):model;
             model.push(item.getSingleSkus());
+            super.cleanItemCache(item.getGoodsId());
         }
         return i;
     }
@@ -134,6 +137,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         int i = super.userUpdateItem(BeanMapper.map(item,SynItem.class),updatePrice);
         if (item.getSingleSkus() != null&&item.getSingleSkus().size()>0) {
             SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId()).push(item.getSingleSkus());
+            super.cleanItemCache(item.getGoodsId());
         }
         return i;
     }

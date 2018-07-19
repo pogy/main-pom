@@ -237,7 +237,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         goodsAddToRedis.addGoodsOnShelfInfoToRedis(shelfInfo);
     }
 
-    private void cleanItemCache(Long itemId) {
+    public void cleanItemCache(Long itemId) {
         itemCache.cleanItemCache(itemId);
     }
 
