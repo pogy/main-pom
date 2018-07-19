@@ -70,7 +70,6 @@
     </div>
 </div>
 <div class="fileList yahei" id="fileList">
-    <div class="subNav" id="subNav"><span class="active">全部文件</span></div>
     <div class="fileItems" id="fileItemsBox">
         <#if (videoList?size) gt 0>
         <ul class="clearfix">
