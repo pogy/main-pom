@@ -102,11 +102,11 @@ public class VideoSpaceAction {
      */
     @RequestMapping("setVideoFile")
     @ResponseBody
-    public JSONObject noticeUploadFile(String fileName, HttpSession session) throws JsonErrException {
+    public JSONObject noticeUploadFile(String fileName,String videoTime, HttpSession session) throws JsonErrException {
         if (!videoService.checkFileId(fileName)) {
             throw new JsonErrException("key信息异常");
         }
-        VideoFileVo vo = videoService.upload(logshop(session).getShopId(), fileName);
+        VideoFileVo vo = videoService.upload(logshop(session).getShopId(), fileName,videoTime);
         return JSONObject.fromObject(vo).element("result", "success");
     }
 

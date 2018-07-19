@@ -1,15 +1,24 @@
 package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.ShopSize;
+import com.opentae.data.mall.beans.ShopVideoTime;
 import com.opentae.data.mall.examples.ShopSizeExample;
+import com.opentae.data.mall.examples.ShopVideoTimeExample;
+import com.opentae.data.mall.interfaces.ShopVideoTimeMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.tools.OssFile;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.VideoFileVo;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.MultimediaInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,10 +26,13 @@ import java.util.List;
 @Service
 public class VideoService extends GoodsFileService{
 
+    @Autowired
+    ShopVideoTimeMapper shopVideoTimeMapper;
+
     @PostConstruct
     private void init() {
         super.setBucketName("shigu-media");
-        super.setDomain("https://media.571xz.com/");
+        super.setDomain("http://media.571xz.com/");
     }
 
     @Override
@@ -46,7 +58,7 @@ public class VideoService extends GoodsFileService{
         return super.deleteFile(path);
     }
 
-    public VideoFileVo upload(Long shopId, String vid) throws JsonErrException {
+    public VideoFileVo upload(Long shopId, String vid,String time) throws JsonErrException {
         //取新文件大小
         Long newSize=super.getSizeInfo(getTempDir(shopId)+vid)/1024;
         //取已存总大小
@@ -61,7 +73,12 @@ public class VideoService extends GoodsFileService{
         VideoFileVo fileVO=new VideoFileVo();
         fileVO.setVideoId(vid);
         fileVO.setTitle(vid);
-        fileVO.setVideoTime(new Date().getTime());
+        ShopVideoTime shopVideoTime=new ShopVideoTime();
+        shopVideoTime.setShopId(shopId);
+        shopVideoTime.setVideo(vid);
+        shopVideoTime.setTime(time);
+        shopVideoTimeMapper.insert(shopVideoTime);
+//        fileVO.setVideoTime(new Date().getTime());
         BeanMapper.map(sizeparseToShow(newSize.doubleValue()),fileVO);
         return fileVO;
     }
@@ -79,7 +96,14 @@ public class VideoService extends GoodsFileService{
             double fileSize = Double.parseDouble(item.getFileSize());
             FileSizeVO fileSizeVO=sizeparseToShow(fileSize);
             videoFileVo.setVideoSize(fileSizeVO.getFileSize()+fileSizeVO.getUnit());
-            videoFileVo.setVideoTime(item.getFileCreateTime());
+            ShopVideoTimeExample shopVideoTimeExample=new ShopVideoTimeExample();
+            shopVideoTimeExample.createCriteria().andShopIdEqualTo(shopId).andVideoEqualTo(videoFileVo.getTitle());
+            List<ShopVideoTime> shopVideoTimes=shopVideoTimeMapper.selectByExample(shopVideoTimeExample);
+            if(shopVideoTimes.size()==0){
+                videoFileVo.setVideoTime("时长未知");
+            }else {
+                videoFileVo.setVideoTime(shopVideoTimes.get(0).getTime());
+            }
             newFiles.add(videoFileVo);
         }
         return newFiles;
@@ -107,4 +131,76 @@ public class VideoService extends GoodsFileService{
     private String getTempDir(Long shopId) {
         return ROOT_PATH + shopId + "/temp/";
     }
+
+    /*public static boolean download(String urlString, String filename,int timeout){
+        boolean ret = false;
+        File file = new File(filename);
+        try {
+            if(file.exists()){
+                ret = true;
+            }else{
+                // 构造URL
+                URL url = new URL(urlString);
+                // 打开连接
+                HttpURLConnection con = (HttpURLConnection )url.openConnection();
+                con.setConnectTimeout(timeout);
+                con.setReadTimeout(timeout);
+                con.connect();
+                int contentLength = con.getContentLength();
+                // 输入流
+                InputStream is = con.getInputStream();
+                // 1K的数据缓冲
+                byte[] bs = new byte[1024];
+                // 读取到的数据长度
+                int len;
+                // 输出的文件流
+
+                file.createNewFile();//创建文件
+                OutputStream os = new FileOutputStream(file);
+                // 开始读取
+                while ((len = is.read(bs)) != -1) {
+                    os.write(bs, 0, len);
+                }
+                // 完毕，关闭所有链接
+                os.close();
+                is.close();
+                if(contentLength != file.length()){
+                    file.delete();
+                    ret = false;
+                }else{
+                    ret = true;
+                }
+            }
+        } catch (IOException e) {
+            file.delete();
+            ret = false;
+        }finally {
+            return ret;
+        }
+    }*/
+
+    /*public String getTime(String filename){
+        File source = new File(filename);
+        Encoder encoder = new Encoder();
+        try {
+            MultimediaInfo m = encoder.getInfo(source);
+            long ls = m.getDuration();
+            int second = (int)Math.ceil(Double.valueOf(String.valueOf(ls)) / 1000.00);
+            int min=0;
+            if(second>60L){
+                min=second/60;
+                second=second%60;
+            }
+            source.delete();
+            if(min<10){
+                return "0"+min+":"+second;
+            }else{
+                return min+":"+second;
+            }
+        } catch (Exception e) {
+            source.delete();
+            e.printStackTrace();
+        }
+        return "";
+    }*/
 }

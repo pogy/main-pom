@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShopVideoTimeMapper" >
+	<insert id="insert">
+		INSERT shop_video_time(shop_id,video,`time`) VALUES (#{shopId},#{video},#{time})
+	</insert>
+
+
+
+</mapper>

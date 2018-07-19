@@ -6,7 +6,7 @@ public class VideoFileVo extends PageParameter{
     private String videoId;
     private String videoSrc;
     private String title;
-    private Long videoTime;
+    private String videoTime;
     private String videoSize;
 
     public String getVideoId() {
@@ -33,11 +33,11 @@ public class VideoFileVo extends PageParameter{
         this.title = title;
     }
 
-    public Long getVideoTime() {
+    public String getVideoTime() {
         return videoTime;
     }
 
-    public void setVideoTime(Long videoTime) {
+    public void setVideoTime(String videoTime) {
         this.videoTime = videoTime;
     }
 

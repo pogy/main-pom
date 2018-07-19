@@ -275,6 +275,13 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.22</version>
         </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!--对象拷贝-->
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
