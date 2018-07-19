@@ -147,8 +147,8 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 singleSkuVO.setColorPid(selColorSizeMap().getColorPid());
                 ShiguGoodsSingleSku sku = BeanMapper.map(singleSkuVO, ShiguGoodsSingleSku.class);
                 //根据条件修改别名
-                if (sku.getColorPropertyAlias() != null) {
-                    if (singleSkuBO.getColorAlias() == null) {
+                if (!Objects.equals(sku.getColorPropertyAlias(),singleSkuBO.getColorAlias())) {
+                    if (singleSkuBO.getColorAlias()== null) {
                         sku.setColorPropertyAlias("");
                     } else {
                         if (singleSkuBO.getColorAlias().equals(sku.getColorName())) {
@@ -158,7 +158,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                         }
                     }
                 }
-                if (sku.getSizePropertyAlias() != null) {
+                if (!Objects.equals(sku.getSizePropertyAlias(),singleSkuBO.getSizeAlias())) {
                     if (singleSkuBO.getSizeAlias() == null) {
                         sku.setSizePropertyAlias("");
                     } else {
@@ -169,14 +169,14 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                         }
                     }
                 }
-                if (sku.getColorInputStr() != null) {
+                if (!Objects.equals(sku.getColorInputStr(),singleSkuBO.getColorInput())) {
                     if (singleSkuBO.getColorInput() == null) {
                         sku.setColorInputStr("");
                     } else if(!singleSkuBO.getColorInput().equals(sku.getColorInputStr())){
                         sku.setColorInputStr(singleSkuBO.getColorInput());
                     }
                 }
-                if (sku.getSizeInputStr() != null) {
+                if (!Objects.equals(sku.getSizeInputStr(),singleSkuBO.getSizeInput())) {
                     if (singleSkuBO.getSizeInput() == null) {
                         sku.setSizeInputStr("");
                     } else if (!singleSkuBO.getSizeInput().equals(sku.getSizeInputStr())) {
