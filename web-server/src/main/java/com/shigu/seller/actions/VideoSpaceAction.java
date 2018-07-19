@@ -8,6 +8,7 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class VideoSpaceAction {
         }
 
         map.put("videoList", list1);
-        map.put("existeVideos", Arrays.toString(names));
+        map.put("existeVideos", JSONArray.fromObject(names).toString());
         map.put("pageOption", pageOption);
         return "gys/videoSpace";
     }
