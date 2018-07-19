@@ -222,7 +222,6 @@ public class MyTbOrderService {
             throw new OrderException("非法请求");
         }
         List<CartVO> cartVOS = new ArrayList<>();
-        Long senderId=null;
         for(int i=0;i<order.getChildOrders().size();i++){
             SubTbOrderVO sub=order.getChildOrders().get(i);
             TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(sub.getNumiid());
@@ -235,8 +234,7 @@ public class MyTbOrderService {
             vo.setShopId(goods.getShopId());
             vo.setMarketId(goods.getMarketId());
             vo.setMarketName(info.getMarketName());
-            ItemSkuVO itemSkuVO=BeanMapper.map(info, ItemSkuVO.class);
-            itemSkuVO.setSkuId(info.getSelectiveSku().getSkuId());
+            ItemSkuVO itemSkuVO=BeanMapper.map(info.getSelectiveSku(), ItemSkuVO.class);
             vo.setSelectiveSku(itemSkuVO);
             vo.setShopNum(info.getShopNum());
             vo.setFloor(info.getFloor());
@@ -443,8 +441,7 @@ public class MyTbOrderService {
                     vo.setShopId(goods.getShopId());
                     vo.setMarketId(goods.getMarketId());
                     vo.setMarketName(info.getMarketName());
-                    ItemSkuVO itemSkuVO=BeanMapper.map(info, ItemSkuVO.class);
-                    itemSkuVO.setSkuId(info.getSelectiveSku().getSkuId());
+                    ItemSkuVO itemSkuVO=BeanMapper.map(info.getSelectiveSku(), ItemSkuVO.class);
                     vo.setSelectiveSku(itemSkuVO);
                     vo.setShopNum(info.getShopNum());
                     vo.setFloor(info.getFloor());
