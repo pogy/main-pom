@@ -31,13 +31,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -89,6 +87,18 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private ItemOrderVoucherRelationMapper itemOrderVoucherRelationMapper;
+
+    @Autowired
+    private ShiguRebateTypeMapper shiguRebateTypeMapper;
+
+    @Autowired
+    private ShiguRebateGoodsMapper shiguRebateGoodsMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
+
+    @Autowired
+    private MemberInviteMapper memberInviteMapper;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -482,6 +492,72 @@ public class ItemOrderImpl implements ItemOrder {
                 }
             }
         }
+        // 邀请新人返点是否可用
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
+        if (inviteRebateActive) {
+            Long userId = orderInfo().getUserId();
+            MemberInvite memberInvite = new MemberInvite();
+            memberInvite.setUserId(userId);
+            memberInvite = memberInviteMapper.selectOne(memberInvite);
+            if (memberInvite != null) {
+                List<SubItemOrderVO> subItemOrderVOS = subOrdersInfo();
+                List<Long> goodsIds = BeanMapper.getFieldList(subItemOrderVOS, "goodsId", Long.class);
+                if (goodsIds.size()>0) {
+                    // 返现金额
+                    Long rebateAmount = 0L;
+                    //默认返点比例 万分之几
+                    Integer defaultRebateNum = 0;
+                    Map<Long, ShiguRebateType> shiguRebateTypeIdMap = new HashMap<>();
+                    //查询默认返点类型
+                    ShiguRebateType defaultType = new ShiguRebateType();
+                    defaultType.setIsDefault(1);
+                    defaultType.setIsActive(1);
+                    List<ShiguRebateType> defaultTypes = shiguRebateTypeMapper.select(defaultType);
+                    if (defaultTypes.size()>0) {
+                        defaultRebateNum = defaultTypes.get(0).getRebateNum();
+                    }
+                    // 查看设置有效的商品返现类别
+                    ShiguRebateGoodsExample goodsExample = new ShiguRebateGoodsExample();
+                    goodsExample.createCriteria().andGoodsStatusEqualTo(1).andGoodsIdIn(goodsIds);
+                    List<ShiguRebateGoods> goodsRebates = shiguRebateGoodsMapper.selectByExample(goodsExample);
+                    Map<Long, ShiguRebateGoods> goodsTypeMap = goodsRebates.stream().collect(Collectors.toMap(ShiguRebateGoods::getGoodsId, o -> o));
+                    Set<Long> typeTabs = goodsRebates.stream().map(ShiguRebateGoods::getGoodsTabId).collect(Collectors.toSet());
+                    if (typeTabs.size()>0) {
+                        ShiguRebateTypeExample shiguRebateTypeExample = new ShiguRebateTypeExample();
+                        shiguRebateTypeExample.createCriteria().andIsActiveEqualTo(1).andTypeIdIn(new ArrayList<>(typeTabs));
+                        shiguRebateTypeIdMap.putAll(shiguRebateTypeMapper.selectByExample(shiguRebateTypeExample).stream().collect(Collectors.toMap(ShiguRebateType::getTypeId,o->o)));
+                    }
+                    // 完成退款/售后的商品
+                    ItemOrderRefund itemOrderRefundQuery = new ItemOrderRefund();
+                    itemOrderRefundQuery.setOid(oid);
+                    itemOrderRefundQuery.setStatus(2);
+                    List<ItemOrderRefund> refunds = itemOrderRefundMapper.select(itemOrderRefundQuery);
+                    Map<Long, List<ItemOrderRefund>> soidMaps = refunds.stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid, Collectors.toList()));
+                    Integer goodsRebateNum = 0;
+                    for (SubItemOrderVO subItemOrderVO : subItemOrderVOS) {
+                        // 未退款/售后商品数量
+                        int goodsUnRefundNum = subItemOrderVO.getNum() - soidMaps.get(subItemOrderVO.getSoid()).stream().mapToInt(ItemOrderRefund::getNumber).sum();
+                        BigDecimal unRefundItemPrice = BigDecimal.valueOf(goodsUnRefundNum).multiply(BigDecimal.valueOf(subItemOrderVO.getPrice()));
+                        if (goodsUnRefundNum>0) {
+                            Long goodsId = subItemOrderVO.getGoodsId();
+                            ShiguRebateGoods rebateType = goodsTypeMap.get(goodsId);
+                            if (rebateType != null && shiguRebateTypeIdMap.get(rebateType.getGoodsTabId())!=null && shiguRebateTypeIdMap.get(rebateType.getGoodsTabId()).getIsDefault()!=1) {
+                                goodsRebateNum =  shiguRebateTypeIdMap.get(rebateType.getGoodsTabId()).getRebateNum();
+                            } else {
+                                goodsRebateNum = defaultRebateNum;
+                            }
+                            rebateAmount += unRefundItemPrice.multiply(BigDecimal.valueOf(goodsRebateNum)).divide(BigDecimal.valueOf(10000)).longValue();
+                        }
+                    }
+                    // 邀请人用户id
+                    Long inviteUserId = memberInvite.getUserId();
+                    if (rebateAmount > 0) {
+                        // TODO: 7/20/18 支付站返点要做一点修改
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
